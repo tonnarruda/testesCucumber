@@ -6,6 +6,7 @@ import java.util.Date;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 
@@ -21,4 +22,5 @@ public interface SolicitacaoEpiDao extends GenericDao<SolicitacaoEpi>
 	public Collection<SolicitacaoEpiItemEntrega> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiCheck, Long[] areaIds, Long[] colaboradorCheck, char agruparPor, boolean exibirDesligados);
 	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, String situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem);
 	Collection<SolicitacaoEpi> findByColaboradorId(Long colaboradorId);
+	Collection<SolicitacaoEpiItemDevolucao> findDevolucaoEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiIds, Long[] areaIds, Long[] colaboradorCheck, char agruparPor, boolean exibirDesligados);
 }

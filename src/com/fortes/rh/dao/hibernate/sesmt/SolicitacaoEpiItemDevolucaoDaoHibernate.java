@@ -39,7 +39,7 @@ public class SolicitacaoEpiItemDevolucaoDaoHibernate extends GenericDaoHibernate
 		p.add(Projections.property("seid.dataDevolucao"), "dataDevolucao");
 		
 		criteria.setProjection(p);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(SolicitacaoEpiItemDevolucao.class));
 
 		return criteria.list();
 	}

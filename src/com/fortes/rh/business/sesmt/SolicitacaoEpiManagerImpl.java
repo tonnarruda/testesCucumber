@@ -16,6 +16,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.util.LongUtil;
@@ -197,5 +198,14 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;
+	}
+
+	public Collection<SolicitacaoEpiItemDevolucao> findRelatorioDevolucaoEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck, String[] areasCheck, String[] colaboradorCheck, char agruparPor,boolean exibirDesligados) throws ColecaoVaziaException {
+		Collection<SolicitacaoEpiItemDevolucao> devolucoes = getDao().findDevolucaoEpi(empresaId, dataIni, dataFim, LongUtil.arrayStringToArrayLong(epiCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(colaboradorCheck), agruparPor, exibirDesligados);
+		
+		if (devolucoes == null || devolucoes.isEmpty())
+			throw new ColecaoVaziaException("Não existem EPIs a serem listados para os filtros informados.");
+		
+		return devolucoes;
 	}
 }

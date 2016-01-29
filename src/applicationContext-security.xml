@@ -619,6 +619,9 @@
 				/sesmt/solicitacaoEpi/prepareUpdate.action*=ROLE_GERENCIAMENTO_EPI_EDITAR_SOLICITACAO
 				/sesmt/solicitacaoEpi/update.action*=ROLE_GERENCIAMENTO_EPI_EDITAR_SOLICITACAO
 				/sesmt/solicitacaoEpi/delete.action*=ROLE_GERENCIAMENTO_EPI_EXCLUIR_SOLICITACAO
+				/sesmt/solicitacaoEpi/prepareRelatorioDevolucaoEpi*/**=ROLE_REL_EPI_DEVOLVIDO
+				/sesmt/solicitacaoEpi/relatorioDevolucaoEpi*/**=ROLE_REL_EPI_DEVOLVIDO
+				/sesmt/solicitacaoEpi/relatorioDevolucaoEpiXls*/**=ROLE_REL_EPI_DEVOLVIDO
 				/sesmt/motivoSolicitacaoEpi/*/**=ROLE_CAD_MOTIVO_SOLICITACAO_EPI
 				/sesmt/etapaProcessoEleitoral/*/**=ROLE_CAD_ETAPAPROCESSOELEITORAL
 				/sesmt/eleicao/*/**=ROLE_CAD_ELEICAO

@@ -26,6 +26,7 @@ import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.util.LongUtil;
@@ -311,7 +312,72 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 
 		return query.list();
 	}
-	
+		
+	public Collection<SolicitacaoEpiItemDevolucao> findDevolucaoEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiIds, Long[] areaIds, Long[] colaboradorCheck, char agruparPor, boolean exibirDesligados)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new SolicitacaoEpiItemDevolucao(seid.id as id, seid.dataDevolucao as dataDevolucao, seid.qtdDevolvida as qtdDevolvida, ");
+		hql.append(" 										(select coalesce(sum(qtdEntregue), 0) from SolicitacaoEpiItemEntrega where solicitacaoEpiItem.id = sei.id) as totalEntregue, " );
+		hql.append(" 										seid.observacao, ep.nome, ep.ativo, ca.nome, co.nome, co.desligado, a.nome ) ");
+		
+		hql.append("from SolicitacaoEpiItemDevolucao seid ");
+		hql.append("join seid.solicitacaoEpiItem sei ");
+		hql.append("join sei.solicitacaoEpi se ");
+		hql.append("join se.colaborador co ");
+		hql.append("join co.historicoColaboradors hc ");
+		hql.append("join hc.areaOrganizacional a ");
+		hql.append("join se.cargo ca ");
+		hql.append("join sei.epi ep ");
+
+		hql.append("where ep.empresa.id = :empresaId ");
+		hql.append("and seid.dataDevolucao >= :dataIni ");
+		hql.append("and hc.data = ("); 
+		hql.append("	select max(hc2.data) "); 
+		hql.append("	from HistoricoColaborador as hc2 ");
+		hql.append("	where hc2.colaborador.id = co.id ");
+		hql.append("	and hc2.data <= :hoje and hc2.status = :status ");
+		hql.append(" ) ");
+		
+		if (dataFim != null)
+			hql.append("and seid.dataDevolucao <= :dataFim ");
+		
+		if(epiIds != null && epiIds.length != 0)
+			hql.append("and ep.id in (:epiCheck) ");
+		
+		if(colaboradorCheck != null && colaboradorCheck.length != 0)
+			hql.append("and co.id in (:colaboradorCheck) ");
+		
+		if(areaIds != null && areaIds.length > 0)
+			hql.append("and a.id in (:areaIds) ");
+		
+		if (!exibirDesligados)
+			hql.append("and co.desligado = false ");
+
+		if (agruparPor == 'E')
+			hql.append("order by ep.nome,co.nome,se.data ");
+		if (agruparPor == 'C')
+			hql.append("order by co.nome,ep.nome,se.data ");
+			
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setDate("dataIni", dataIni);
+		query.setDate("hoje", new Date());
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if (dataFim != null)
+			query.setDate("dataFim", dataFim);
+		
+		if(epiIds != null && epiIds.length != 0)
+			query.setParameterList("epiCheck", epiIds, Hibernate.LONG);
+		
+		if (colaboradorCheck != null && colaboradorCheck.length != 0)
+			query.setParameterList("colaboradorCheck", colaboradorCheck, Hibernate.LONG);
+		
+		if(areaIds != null && areaIds.length > 0)
+			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+
+		return query.list();
+	}
 	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, String situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
 	{
 		getSession().flush(); //Necessário para que nos testes a view enxergue os dados inseridos via hibernate 

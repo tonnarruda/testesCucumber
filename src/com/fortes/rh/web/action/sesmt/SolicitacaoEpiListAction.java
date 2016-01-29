@@ -19,6 +19,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
@@ -73,6 +74,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private char agruparPor = 'E'; 
 	private Collection<SolicitacaoEpi> dataSource;
 	private Collection<SolicitacaoEpiItemEntrega> dataSourceEntrega;
+	private Collection<SolicitacaoEpiItemDevolucao> dataSourceDevolucao;
 	private Collection<SolicitacaoEpiItemVO> dataSourceLista;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private boolean exibirVencimentoCA;
@@ -215,7 +217,48 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 			return INPUT;
 		}
 	}
+	
+	public String prepareRelatorioDevolucaoEpi()
+	{
+		epiCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), null);
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		colaboradorCheckList = colaboradorManager.populaCheckBox(getEmpresaSistema().getId());
+		
+		empresa = getEmpresaSistema();
+		return SUCCESS;
+	}
 
+	public String relatorioDevolucaoEpi()
+	{
+		try {
+			reportTitle = "EPIs Devolvidos";
+			reportFilter = "";
+			
+			dataSourceDevolucao = solicitacaoEpiManager.findRelatorioDevolucaoEpi(getEmpresaSistema().getId(), dataIni, dataFim, epiCheck, areasCheck, colaboradorCheck, agruparPor, exibirDesligados);
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), null);
+
+			switch (agruparPor)
+			{
+			case 'C':
+				return "success_agrupar_colaborador";
+			case 'E':
+				return SUCCESS;
+			default:
+				return INPUT;
+			}
+		} catch (ColecaoVaziaException e) {
+			addActionMessage(e.getMessage());
+			prepareRelatorioEntregaEpi();
+			return INPUT;
+		}
+		
+	}
+	
+	public String relatorioDevolucaoEpiXls()
+	{
+		return relatorioDevolucaoEpi() + "Xls";
+	}
+	
 	public Collection<SolicitacaoEpi> getSolicitacaoEpis() {
 		return solicitacaoEpis;
 	}
@@ -441,6 +484,10 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	public Collection<SolicitacaoEpiItemEntrega> getDataSourceEntrega() {
 		return dataSourceEntrega;
 	}
+	
+	public Collection<SolicitacaoEpiItemDevolucao> getDataSourceDevolucao() {
+		return dataSourceDevolucao;
+	}
 
 	public Collection<SolicitacaoEpiItemVO> getDataSourceLista() {
 		return dataSourceLista;
@@ -509,5 +556,4 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	public void setOrdem(char ordem) {
 		this.ordem = ordem;
 	}
-
 }

@@ -152,5 +152,46 @@
 			</result>
 			<result name="inputXls" type="freemarker">/WEB-INF/forms/sesmt/relatorioEntregaEpi.ftl</result>
 		</action>
+		<action name="prepareRelatorioDevolucaoEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="prepareRelatorioDevolucaoEpi">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioDevolucaoEpi.ftl</result>
+		</action>
+		<action name="relatorioDevolucaoEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="relatorioDevolucaoEpi">
+			<result name="success" type="jasper">
+				<param name="dataSource">dataSourceDevolucao</param>
+				<param name="location">WEB-INF/report/Epi_Devolvidos.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">epiDevolvidos.pdf</param>
+			</result>
+			<result name="success_agrupar_colaborador" type="jasper">
+				<param name="dataSource">dataSourceDevolucao</param>
+				<param name="location">WEB-INF/report/Epi_Devolvidos_agrupaColab.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">epiDevolvidos.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioDevolucaoEpi.ftl</result>
+		</action>
+			<action name="relatorioDevolucaoEpiXls" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="relatorioDevolucaoEpiXls">
+			<result name="successXls" type="xls">
+				<param name="dataSource">dataSourceDevolucao</param>
+				<param name="documentName">Epi_Devolvidos.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">EPI,Área Organizacional,Colaborador,Cargo,Qtd. Entregue,Qtd. Devolvida,Data Devolução</param>
+				<param name="propertiesGroup">solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.solicitacaoEpi.colaborador.areaOrganizacional.nome,solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,qtdEntregue</param>
+				<param name="properties">solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.solicitacaoEpi.colaborador.areaOrganizacional.nome,solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,qtdEntregue,qtdDevolvida,dataDevolucao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
+			<result name="success_agrupar_colaboradorXls" type="xls">
+				<param name="dataSource">dataSourceDevolucao</param>
+				<param name="documentName">Epi_Devolvidos_agrupaColab.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Área Organizacional,Colaborador,Cargo,Epi,Qtd. Entregue,Qtd. Devolvida,Data Devolução</param>
+				<param name="propertiesGroup">solicitacaoEpiItem.solicitacaoEpi.colaborador.areaOrganizacional.nome,solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.epi.nomeInativo,qtdEntregue</param>
+				<param name="properties">solicitacaoEpiItem.solicitacaoEpi.colaborador.areaOrganizacional.nome,solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.epi.nomeInativo,qtdEntregue,qtdDevolvida,dataDevolucao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="inputXls" type="freemarker">/WEB-INF/forms/sesmt/relatorioDevolucaoEpi.ftl</result>
+		</action>
 	</package>
 </xwork>
