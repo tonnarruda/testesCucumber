@@ -190,6 +190,15 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		return getDao().findByColaboradorId(colaboradorId);
 	}
 
+	public Collection<SolicitacaoEpiItemDevolucao> findRelatorioDevolucaoEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck, String[] areasCheck, String[] colaboradorCheck, char agruparPor,boolean exibirDesligados) throws ColecaoVaziaException {
+		Collection<SolicitacaoEpiItemDevolucao> devolucoes = getDao().findDevolucaoEpi(empresaId, dataIni, dataFim, LongUtil.arrayStringToArrayLong(epiCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(colaboradorCheck), agruparPor, exibirDesligados);
+		
+		if (devolucoes == null || devolucoes.isEmpty())
+			throw new ColecaoVaziaException("Não existem EPIs a serem listados para os filtros informados.");
+		
+		return devolucoes;
+	}
+	
 	public void setSolicitacaoEpiItemManager(SolicitacaoEpiItemManager solicitacaoEpiItemManager)
 	{
 		this.solicitacaoEpiItemManager = solicitacaoEpiItemManager;
@@ -199,13 +208,5 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 	{
 		this.transactionManager = transactionManager;
 	}
-
-	public Collection<SolicitacaoEpiItemDevolucao> findRelatorioDevolucaoEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck, String[] areasCheck, String[] colaboradorCheck, char agruparPor,boolean exibirDesligados) throws ColecaoVaziaException {
-		Collection<SolicitacaoEpiItemDevolucao> devolucoes = getDao().findDevolucaoEpi(empresaId, dataIni, dataFim, LongUtil.arrayStringToArrayLong(epiCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(colaboradorCheck), agruparPor, exibirDesligados);
-		
-		if (devolucoes == null || devolucoes.isEmpty())
-			throw new ColecaoVaziaException("Não existem EPIs a serem listados para os filtros informados.");
-		
-		return devolucoes;
-	}
+	
 }

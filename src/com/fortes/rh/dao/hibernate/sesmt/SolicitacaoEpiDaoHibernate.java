@@ -318,7 +318,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new SolicitacaoEpiItemDevolucao(seid.id as id, seid.dataDevolucao as dataDevolucao, seid.qtdDevolvida as qtdDevolvida, ");
 		hql.append(" 										(select coalesce(sum(qtdEntregue), 0) from SolicitacaoEpiItemEntrega where solicitacaoEpiItem.id = sei.id) as totalEntregue, " );
-		hql.append(" 										seid.observacao, ep.nome, ep.ativo, ca.nome, co.nome, co.desligado, a.nome ) ");
+		hql.append(" 										seid.observacao, ep.nome, ep.ativo, ca.nome, co.nome, co.desligado, cast(monta_familia_area(a.id), text) as areaNome ) ");
 		
 		hql.append("from SolicitacaoEpiItemDevolucao seid ");
 		hql.append("join seid.solicitacaoEpiItem sei ");

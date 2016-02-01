@@ -175,7 +175,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		}
 	}
 
-	public String prepareRelatorioEntregaEpi()
+	public String prepareRelatorioEpi()
 	{
 		epiCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), null);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
@@ -213,21 +213,11 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		catch (ColecaoVaziaException e)
 		{
 			addActionMessage(e.getMessage());
-			prepareRelatorioEntregaEpi();
+			prepareRelatorioEpi();
 			return INPUT;
 		}
 	}
 	
-	public String prepareRelatorioDevolucaoEpi()
-	{
-		epiCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), null);
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		colaboradorCheckList = colaboradorManager.populaCheckBox(getEmpresaSistema().getId());
-		
-		empresa = getEmpresaSistema();
-		return SUCCESS;
-	}
-
 	public String relatorioDevolucaoEpi()
 	{
 		try {
@@ -248,7 +238,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 			}
 		} catch (ColecaoVaziaException e) {
 			addActionMessage(e.getMessage());
-			prepareRelatorioEntregaEpi();
+			prepareRelatorioEpi();
 			return INPUT;
 		}
 		

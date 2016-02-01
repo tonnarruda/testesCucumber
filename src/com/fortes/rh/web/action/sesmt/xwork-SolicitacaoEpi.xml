@@ -111,7 +111,7 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioVencimentoEpi.ftl</result>
 		</action>
-		<action name="prepareRelatorioEntregaEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="prepareRelatorioEntregaEpi">
+		<action name="prepareRelatorioEntregaEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="prepareRelatorioEpi">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioEntregaEpi.ftl</result>
 		</action>
 		<action name="relatorioEntregaEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="relatorioEntregaEpi">
@@ -152,7 +152,7 @@
 			</result>
 			<result name="inputXls" type="freemarker">/WEB-INF/forms/sesmt/relatorioEntregaEpi.ftl</result>
 		</action>
-		<action name="prepareRelatorioDevolucaoEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="prepareRelatorioDevolucaoEpi">
+		<action name="prepareRelatorioDevolucaoEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="prepareRelatorioEpi">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioDevolucaoEpi.ftl</result>
 		</action>
 		<action name="relatorioDevolucaoEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="relatorioDevolucaoEpi">

@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -24,11 +25,14 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.test.util.mockObjects.MockTransactionStatus;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 
 public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 {
@@ -272,5 +276,49 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		}
 
 		assertNotNull(exception);
+	}
+	
+	public void testFndRelatorioDevolucaoEpiSemDevolucoes(){
+		solicitacaoEpiDao.expects(once()).method("findDevolucaoEpi").withAnyArguments().will(returnValue(new ArrayList<SolicitacaoEpiItemDevolucao>()));
+		Exception exception = new Exception();
+		try {
+			solicitacaoEpiManager.findRelatorioDevolucaoEpi(1L, new Date(), new Date(), null, null, null, 'E', false);
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertEquals("Não existem EPIs a serem listados para os filtros informados.", exception.getMessage());
+	}
+	
+	public void testFndRelatorioDevolucaoEpi(){
+		solicitacaoEpiDao.expects(once()).method("findDevolucaoEpi").withAnyArguments().will(returnValue(Arrays.asList(new SolicitacaoEpiItemDevolucao())));
+		Exception exception = null;
+		try {
+			solicitacaoEpiManager.findRelatorioDevolucaoEpi(1L, new Date(), new Date(), null, null, null, 'E', false);
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNull(exception);
+	}
+	
+	public void testFindEpisWithItens() {
+		solicitacaoEpiDao.expects(once()).method("findEpisWithItens").withAnyArguments().will(returnValue(Arrays.asList(new SolicitacaoEpiItemVO())));
+		Exception exception = null;
+		try {
+			solicitacaoEpiManager.findEpisWithItens(1L, new Date(), new Date(), "", null, null, null, null, 'D');
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNull(exception);
+	}
+	
+	public void testFindByColaboradorId() {
+		solicitacaoEpiDao.expects(once()).method("findByColaboradorId").withAnyArguments().will(returnValue(Arrays.asList(new SolicitacaoEpi())));
+		Exception exception = null;
+		try {
+			solicitacaoEpiManager.findByColaboradorId(1L);
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNull(exception);
 	}
 }

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
@@ -15,6 +18,7 @@ import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.dao.sesmt.EpiHistoricoDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
+import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDevolucaoDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemEntregaDao;
 import com.fortes.rh.dao.sesmt.TipoEPIDao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -30,6 +34,7 @@ import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
@@ -41,6 +46,7 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
+import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemDevolucaoFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemEntregaFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemFactory;
 import com.fortes.rh.util.DateUtil;
@@ -60,6 +66,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 	TipoEPIDao tipoEPIDao;
 	EstabelecimentoDao estabelecimentoDao;
 	HistoricoColaboradorDao historicoColaboradorDao;
+	SolicitacaoEpiItemDevolucaoDao solicitacaoEpiItemDevolucaoDao;
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
@@ -776,7 +783,75 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		assertEquals(2, solicitacaoEpis.size());
 	}
 	
-	
+	public void testFindDevolucaoEpi(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setDesligado(false);
+		colaborador.setNome("nometeste");
+		colaboradorDao.save(colaborador);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2014));
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setNome("cargo");
+		cargoDao.save(cargo);
+		
+		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi.setData(DateUtil.criarDataMesAno(01, 11, 2015));
+		solicitacaoEpi.setColaborador(colaborador);
+		solicitacaoEpi.setCargo(cargo);
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		Epi epi = EpiFactory.getEntity();
+		epi.setEmpresa(empresa);
+		epi.setNome("teste");
+		epiDao.save(epi);
+		
+		EpiHistorico epiHistorico = new EpiHistorico();
+		epiHistorico.setEpi(epi);
+		epiHistoricoDao.save(epiHistorico);
+		
+		SolicitacaoEpiItem solicitacaoEpiItem = new SolicitacaoEpiItem();
+		solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
+		solicitacaoEpiItem.setQtdSolicitado(3);
+		solicitacaoEpiItem.setEpi(epi);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
+		
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega.setEpiHistorico(epiHistorico);
+		entrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
+		entrega.setDataEntrega(DateUtil.criarDataMesAno(15, 11, 2015));
+		entrega.setQtdEntregue(3);
+		solicitacaoEpiItemEntregaDao.save(entrega);
+
+		SolicitacaoEpiItemDevolucao epiItemDevolucao = SolicitacaoEpiItemDevolucaoFactory.getEntity();
+		epiItemDevolucao.setSolicitacaoEpiItem(solicitacaoEpiItem);
+		epiItemDevolucao.setQtdDevolvida(2);
+		epiItemDevolucao.setDataDevolucao(DateUtil.criarDataMesAno(01, 12, 2015));
+		solicitacaoEpiItemDevolucaoDao.save(epiItemDevolucao);
+		
+		Long[] epiCheck = {epi.getId()};
+
+		Collection<SolicitacaoEpiItemDevolucao> devolucoesComDataIgualADataDaDevolucao = solicitacaoEpiDao.findDevolucaoEpi(empresa.getId(), DateUtil.criarDataMesAno(01, 12, 2015), DateUtil.criarDataMesAno(01, 12, 2015), epiCheck, null, null, 'E', false);
+		assertEquals(1, devolucoesComDataIgualADataDaDevolucao.size());
+		assertEquals(2, ((SolicitacaoEpiItemDevolucao) devolucoesComDataIgualADataDaDevolucao.toArray()[0]).getQtdDevolvida().intValue());
+		
+		Collection<SolicitacaoEpiItemDevolucao> devolucoesComDataInicialAnteriorADataDaDevolucao = solicitacaoEpiDao.findDevolucaoEpi(empresa.getId(), DateUtil.criarDataMesAno(30, 11, 2015), DateUtil.criarDataMesAno(01, 12, 2015), epiCheck, null, null, 'E', false);
+		assertEquals(1, devolucoesComDataInicialAnteriorADataDaDevolucao.size());
+		assertEquals(2, ((SolicitacaoEpiItemDevolucao) devolucoesComDataIgualADataDaDevolucao.toArray()[0]).getQtdDevolvida().intValue());
+		
+		Collection<SolicitacaoEpiItemDevolucao> devolucoesComDataPosteriorADevolucao = solicitacaoEpiDao.findDevolucaoEpi(empresa.getId(), DateUtil.criarDataMesAno(02, 12, 2015), DateUtil.criarDataMesAno(31, 12, 2015), epiCheck, null, null, 'E', false);
+		assertEquals(0, devolucoesComDataPosteriorADevolucao.size());
+	}
 	
 	public void setEpiDao(EpiDao epiDao)
 	{
@@ -818,4 +893,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		this.solicitacaoEpiItemEntregaDao = solicitacaoEpiItemEntregaDao;
 	}
 
+	public void setSolicitacaoEpiItemDevolucaoDao(SolicitacaoEpiItemDevolucaoDao solicitacaoEpiItemDevolucaoDao) {
+		this.solicitacaoEpiItemDevolucaoDao = solicitacaoEpiItemDevolucaoDao;
+	}
 }
