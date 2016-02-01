@@ -429,7 +429,6 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 
 		Turma turma = TurmaFactory.getEntity();
 		turma.setCurso(curso);
-		turma.setRealizada(true);
 		turmaDao.save(turma);
 		
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);

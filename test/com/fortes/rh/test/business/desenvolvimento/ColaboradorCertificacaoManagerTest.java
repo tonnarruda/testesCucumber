@@ -81,6 +81,7 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		
 		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
 		colaboradorCertificacao.setColaborador(ColaboradorFactory.getEntity(1L));
+		colaboradorCertificacao.setData(DateUtil.criarDataMesAno(1, 1, 2016));
 		colaboradorCertificacao.setCertificacao(certificacao);
 		
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
@@ -123,7 +124,7 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
 		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2016);
 		
-		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, 'T', null, null, new Long[]{colaboradorCertificacao.getId()});
+		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, true, true, null, null, null, new Long[]{colaboradorCertificacao.getId()});
 		
 		assertEquals(2, colaboradoresNasCertificacoes.size());
 		

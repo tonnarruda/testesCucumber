@@ -254,15 +254,15 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		sql.append("ct.id as ctId, ct.nome as certNome, ct.periodicidade as certPer, ");
 		sql.append("cp.colaborador_id as ColId, cp.matricula, cp.nome as ColNome,  cp.nomeComercial, ");
 		sql.append("est.id as estId, est.nome as estNome, ");
-		sql.append("cg.id as cgId, cg.nome as cgNome ");
+		sql.append("cg.id as cgId, cg.nome as cgNome, ");
+		sql.append("ao.id as aoId, ao.nome as aoNome ");
 		sql.append("from (WITH colaboradorNoCursoDaCertificacao as ( ");
 		sql.append("select distinct ct.colaborador_id, cu.id from colaboradorturma ct ");
 		sql.append("inner join turma t on t.id = ct.turma_id ");
 		sql.append("inner join curso cu on cu.id = t.curso_id ");
-		sql.append("where t.realizada ");
-		sql.append("and cu.id in (select cursos_id from certificacao_curso where certificacaos_id = :certificadoId) ");
+		sql.append("where cu.id in (select cursos_id from certificacao_curso where certificacaos_id = :certificadoId) ");
 		sql.append("order by ct.colaborador_id) ");
-		sql.append("select ccc.colaborador_id, c.nome, c.matricula, c.nomecomercial, hc.faixasalarial_id, hc.estabelecimento_id ");
+		sql.append("select ccc.colaborador_id, c.nome, c.matricula, c.nomecomercial, hc.faixasalarial_id, hc.estabelecimento_id, hc.areaorganizacional_id ");
 		sql.append("from colaboradorNoCursoDaCertificacao ccc ");
 		sql.append("inner join colaborador c on c.id = ccc.colaborador_id ");
 		sql.append("inner join historicocolaborador hc on  hc.colaborador_id = ccc.colaborador_id ");
@@ -275,7 +275,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		if(estabelecimentosIds != null && estabelecimentosIds.length >0)
 			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
 		
-		sql.append("group by ccc.colaborador_id, c.nome, c.matricula, c.nomecomercial, hc.faixasalarial_id, hc.estabelecimento_id ");
+		sql.append("group by ccc.colaborador_id, c.nome, c.matricula, c.nomecomercial, hc.faixasalarial_id, hc.estabelecimento_id, hc.areaorganizacional_id ");
 		sql.append("having count(ccc.colaborador_id) = (select count(cursos_id) from certificacao_curso where certificacaos_id = :certificadoId) ");
 		sql.append("order by c.nome) as cp ");
 		sql.append("left join colaboradorcertificacao cc on cc.colaborador_id = cp.colaborador_id and cc.certificacao_id = :certificadoId ");
@@ -283,6 +283,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		sql.append("left join faixasalarial fx on fx.id = cp.faixasalarial_id ");
 		sql.append("left join cargo cg on cg.id = fx.cargo_id ");
 		sql.append("left join estabelecimento est on est.id = cp.estabelecimento_id ");
+		sql.append("left join areaOrganizacional ao on ao.id = cp.areaorganizacional_id ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("certificadoId", certificadoId);
@@ -311,10 +312,12 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 			colabs.setColaboradorMatricula(res[6]!= null ? (String)res[6] : null);
 			colabs.setColaboradorNome(res[7]!= null ? (String)res[7] : null);
 			colabs.setColaboradorNomeComercial(res[8]!= null ? (String)res[8] : null);
-			colabs.setFaixaSalarialId(res[9] != null ? ((BigInteger)res[9]).longValue() : null);
-			colabs.setFaixaSalarialNome(res[10]!= null ? (String)res[10] : null);
+			colabs.setEstabelecimentoId(res[9] != null ? ((BigInteger)res[9]).longValue() : null);
+			colabs.setEstabelecimentoNome(res[10]!= null ? (String)res[10] : null);
 			colabs.setCargoId(res[11] != null ? ((BigInteger)res[11]).longValue() : null);
 			colabs.setCargoNome(res[12]!= null ? (String)res[12] : null);
+			colabs.setAreaOrganizacionalId(res[13] != null ? ((BigInteger)res[13]).longValue() : null);
+			colabs.setAreaOrganizacionalNome(res[14]!= null ? (String)res[14] : null);
 			
 			ColaboradoresCertificacao.add(colabs);
 		}

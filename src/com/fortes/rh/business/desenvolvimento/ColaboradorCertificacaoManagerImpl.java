@@ -31,7 +31,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
 	}
 
-	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, char filtroCetificacao, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds)
+	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Integer mesesCertificacoesAVencer, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds)
 	{
 		Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno = new ArrayList<ColaboradorCertificacao>();
 
@@ -46,9 +46,30 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			colaboradoresQueParticipamDaCerttificacao.addAll(getDao().colaboradoresQueParticipaDoCertificado(areaIds, estabelecimentoIds, certificacao.getId()));
 		
 		ColaboradorCertificacao	colabCertificacao;
+		Date hoje = new Date();
 		colaboradoresQueParticipamDaCerttificacao = new CollectionUtil<ColaboradorCertificacao>().sortCollection(colaboradoresQueParticipamDaCerttificacao, "colaborador.nome");
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresQueParticipamDaCerttificacao) 
 		{
+			if(colaboradorCertificado && !colaboradorNaoCertificado && colaboradorCertificacao.getId() == null)
+				continue;
+			
+			if(!colaboradorCertificado && colaboradorNaoCertificado && colaboradorCertificacao.getId() != null)
+				continue;	
+			
+			if(colaboradorCertificado && colaboradorCertificacao.getId() != null)
+			{
+				if(dataIni != null && colaboradorCertificacao.getData().getTime() < dataIni.getTime())
+					continue;
+				if(dataFim != null && colaboradorCertificacao.getData().getTime() > dataFim.getTime())
+					continue;
+				if(mesesCertificacoesAVencer != null)
+				{
+					Date dataDeAntecendenciaDoVencimento = DateUtil.incrementaMes(colaboradorCertificacao.getData(), (colaboradorCertificacao.getCertificacao().getPeriodicidade() - mesesCertificacoesAVencer));
+					if(dataDeAntecendenciaDoVencimento.getTime() < hoje.getTime())
+						continue;
+				}
+			}
+			
 			Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getCertificacao().getId(), colaboradorCertificacao.getId());
 		
 			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)

@@ -50,7 +50,7 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 		return getDao().findMatrizTreinamento(faixaIds);
 	}
 	
-	public Collection<CheckBox> populaCheckBoxDesabilitandoSemPeriodicidade(Long empresaId)
+	public Collection<CheckBox> populaCheckBoxSemPeriodicidade(Long empresaId)
 	{
 		try
 		{
@@ -63,14 +63,9 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 				checkBox = new CheckBox();
 				checkBox.setId(certificacao.getId());
 				checkBox.setNome(certificacao.getNome());
-				checkBox.setDesabilitado(true);
 				
-				if (certificacao.getPeriodicidade() == null)
-					checkBox.setTitulo("Essa certificação não possui periodicidade");
-				else
-					checkBox.setDesabilitado(false);
-				
-				checkboxes.add(checkBox);
+				if (certificacao.getPeriodicidade() != null)
+					checkboxes.add(checkBox);
 			}
 			
 			return checkboxes;

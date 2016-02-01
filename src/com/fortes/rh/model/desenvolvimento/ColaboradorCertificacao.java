@@ -117,7 +117,7 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	public String getDataVencimentoCertificacao()
 	{
 		if(this.data == null)
-			return "Não Certificado";
+			return "-";
 		else if(this.certificacao.getPeriodicidade() == null)
 			return "Sem vencimento";
 		else{
@@ -138,6 +138,18 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		this.colaborador.setCargoIdProjection(cargoId);
 	}
 	
+	public void setEstabelecimentoId(Long estabelecimentoId)
+	{
+		inicializaColaborador();
+		this.colaborador.setEstabelecimentoIdProjection(estabelecimentoId);
+	}
+	
+	public void setEstabelecimentoNome(String estabelecimentoNome)
+	{
+		inicializaColaborador();
+		this.colaborador.setEstabelecimentoNomeProjection(estabelecimentoNome);
+	}
+	
 	public void setFaixaSalarialId(Long faixaSalarialId)
 	{
 		inicializaColaborador();
@@ -155,7 +167,6 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		inicializaColaborador();
 		this.colaborador.setEmailColaborador(colaboradorEmail);
 	}
-	
 
 	public void setColaboradorMatricula(String colaboradorMatricula) 
 	{

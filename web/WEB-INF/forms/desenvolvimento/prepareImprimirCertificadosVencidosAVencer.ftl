@@ -7,11 +7,11 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#tooltipHelp').qtip({
-				content: 'Algumas Certificações estão desabilitadas por não possuirem periodicidade.'
+				content: 'Abaixo só serão exibidas as certificações que possuirem periodicidade configurada em seu cadastro.'
 			});
 			
-			$('#tooltipHelpMeses').qtip({
-				content: 'O Campo só será habilitado quando o select "Considerar colaboradores" for por "Certificados".'
+			$('#tooltipHelpMeses,#tooltipHelpPeriodo').qtip({
+				content: 'O campo só será habilitado ao marcar a opção "Certificados" de "Considerar colaboradores".'
 			});
 
 			habilitaCampos();
@@ -31,6 +31,7 @@
 		
 		function submit()
 		{
+			$('#wwgrp_colaboradorCertificado,#wwgrp_colaboradorNaoCertificado').css("background-color", "#FFF");
 			var submit = validaFormulario('form', new Array('@certificacoesCheck'), new Array('dataIni', 'dataFim'), true);
 			
 			if(!$('#colaboradorCertificado').is(':checked') && !$('#colaboradorNaoCertificado').is(':checked')){
@@ -87,10 +88,10 @@
 			<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft" />
 			<img id="tooltipHelpMeses" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 1px" />
 			</br>
-			Colaboradores certificados com a certificação a vencer em 
-			<@ww.textfield id="meses" theme="simple" name="meses" onkeypress="return somenteNumeros(event,'');" maxLength="3" cssStyle="width:30px; text-align:right; margin-top: 8px;"/>
+			Colaboradores certificados com a certificação a vencer em até 
+			<@ww.textfield id="meses" theme="simple" name="mesesCertificacoesAVencer" onkeypress="return somenteNumeros(event,'');" maxLength="3" cssStyle="width:30px; text-align:right; margin-top: 8px;"/>
 			meses.
-			<img id="tooltipHelpMeses" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
+			<img id="tooltipHelpPeriodo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
 		</@ww.div>
 		
 	</@ww.form>

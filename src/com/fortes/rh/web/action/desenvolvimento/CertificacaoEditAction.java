@@ -67,13 +67,13 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private String reportTitle;
 		
 	private String nomeBusca;//filtro listagem
-	private char filtroCetificacao;
 	private boolean exibirPeriodicidade;
 	private Date dataIni;
 	private Date dataFim;
 	private Boolean bloquearEdicao = false;
 	private boolean colaboradorCertificado;
 	private boolean colaboradorNaoCertificado;
+	private Integer mesesCertificacoesAVencer;
 
 	private void prepare() throws Exception
 	{
@@ -144,7 +144,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	
 	public String prepareImprimirCertificadosVencidosAVencer()
 	{
-		certificacoesCheckList = certificacaoManager.populaCheckBoxDesabilitandoSemPeriodicidade(getEmpresaSistema().getId());
+		certificacoesCheckList = certificacaoManager.populaCheckBoxSemPeriodicidade(getEmpresaSistema().getId());
 		certificacoesCheckList = CheckListBoxUtil.marcaCheckListBox(certificacoesCheckList, certificacoesCheck);
 
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
@@ -188,7 +188,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 				reportFilter += " não certificados";
 				
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
-			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, filtroCetificacao, areaIds, estabelecimentoIds, certificacoesIds);
+			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, colaboradorCertificado, colaboradorNaoCertificado, mesesCertificacoesAVencer, areaIds, estabelecimentoIds, certificacoesIds);
 		
 			if(colaboradorCertificacoes.size() == 0){
 				addActionMessage("Não existem dados para o filtro informado.");
@@ -337,14 +337,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		this.empresaId = empresaId;
 	}
 
-	public char getFiltroCetificacao() {
-		return filtroCetificacao;
-	}
-
-	public void setFiltroCetificacao(char filtroCetificacao) {
-		this.filtroCetificacao = filtroCetificacao;
-	}
-
 	public Collection<ColaboradorCertificacao> getColaboradorCertificacoes() {
 		return colaboradorCertificacoes;
 	}
@@ -412,5 +404,13 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public void setColaboradorNaoCertificado(boolean colaboradorNaoCertificado) {
 		this.colaboradorNaoCertificado = colaboradorNaoCertificado;
+	}
+
+	public Integer getMesesCertificacoesAVencer() {
+		return mesesCertificacoesAVencer;
+	}
+
+	public void setMesesCertificacoesAVencer(Integer mesesCertificacoesAVencer) {
+		this.mesesCertificacoesAVencer = mesesCertificacoesAVencer;
 	}
 }
