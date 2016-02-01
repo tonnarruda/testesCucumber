@@ -45,8 +45,8 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		for (Certificacao certificacao : certificacoes) 
 			colaboradoresQueParticipamDaCerttificacao.addAll(getDao().colaboradoresQueParticipaDoCertificado(areaIds, estabelecimentoIds, certificacao.getId()));
 		
-		ColaboradorCertificacao	colabCertificacao;
 		Date hoje = new Date();
+		ColaboradorCertificacao	colabCertificacao;
 		colaboradoresQueParticipamDaCerttificacao = new CollectionUtil<ColaboradorCertificacao>().sortCollection(colaboradoresQueParticipamDaCerttificacao, "colaborador.nome");
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresQueParticipamDaCerttificacao) 
 		{

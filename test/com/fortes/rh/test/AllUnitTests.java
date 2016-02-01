@@ -599,7 +599,6 @@ import com.fortes.rh.test.web.action.sesmt.PpraEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ProntuarioEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.RiscoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoEpiEditActionTest;
-import com.fortes.rh.test.web.action.sesmt.SolicitacaoEpiListActionTest;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoExameEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoExameListActionTest;
 import com.fortes.rh.test.web.action.sesmt.TamanhoEPIListActionTest;
@@ -1128,7 +1127,6 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(SolicitacaoEpiItemDevolucaoManagerTest.class);
         suite.addTestSuite(SolicitacaoEpiItemDevolucaoDaoHibernateTest.class);
         suite.addTestSuite(SolicitacaoEpiEditActionTest.class);
-        suite.addTestSuite(SolicitacaoEpiListActionTest.class);
 
         suite.addTestSuite(EtapaProcessoEleitoralTest.class);
         suite.addTestSuite(EtapaProcessoEleitoralDaoHibernateTest.class);
