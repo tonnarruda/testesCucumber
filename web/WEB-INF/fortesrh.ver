@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.158.189" db="" data="26/01/2016">
 		<Item visivel="S" motivo="S16010000270"><![CDATA[SESMT > Relatórios > Exames: Mudança da nomenclatura do relatório de 'Funções por Exames' para 'Exames por Função'.]]></Item>
+		<Item visivel="S" motivo="P16020000028"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Otimização do processo de inserção da configuração de 'dias de antecedência para o aviso'.]]></Item>
 	</Versao>
 	<Versao id="1.1.158.189" db="" data="26/01/2016">
 		<Item visivel="S" motivo="S15100000103"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova coluna de Nome Comercial ao exportar para o excel.]]></Item>
