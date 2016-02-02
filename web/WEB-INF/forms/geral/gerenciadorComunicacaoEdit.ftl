@@ -76,7 +76,7 @@
 				   $('#operacao').val() == ${lembreteAberturaSolicitacaoEpiId} || $('#operacao').val() == ${lembreteEntregaSolicitacaoEpiId} || $('#operacao').val() == ${lembreteTerminoContratoTemporarioColaboradorId} ||
 				   $('#operacao').val() == ${notificarCursosAVencer} || $('#operacao').val() == ${notificarCertificacoesAVencer} )
 				{
-					if($('.dias').size() == 0 )
+					if($('.dias').size() == 0  && $('#qtdDias').val() == "")
 					{
 						$('#qtdDias').css("background-color", "#FFEEC2");
 						valido = false;
@@ -110,6 +110,14 @@
 				}
 				
 				$('#qtdDiasLembrete').val($('.dias').map(function() { return $(this).text() }).get().join('&'));
+				
+				if( $('#qtdDias').val() != "")
+				{
+					if($('.dias').size() > 0 ){
+						$('#qtdDiasLembrete').val($('#qtdDiasLembrete').val() + '&' + $('#qtdDias').val())
+					}else
+						$('#qtdDiasLembrete').val($('#qtdDias').val())
+				}	
 				
 				if(submeter)
 					document.form.submit();
@@ -198,15 +206,10 @@
 			
 			function addDia(qtd)
 			{
-				if($(".dias").size() >= 20 ){
-					jAlert("Não é possível cadastrar mais que 20 dias.");
-				}
-				else { 
-				    	if(qtd != "" && $('.dias[id="' + qtd + '"]').size() == 0)
-							$('#configDias').append('<span class="dias" id="' + qtd + '">' + qtd + '</span><span class="del" title="Excluir configuração" onclick="delDia(this)"><img src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" /></span>');
-				
-						$('#qtdDias').val('').focus();
-				}
+		    	if(qtd != "" && $('.dias[id="' + qtd + '"]').size() == 0)
+					$('#configDias').append('<span class="dias" id="' + qtd + '">' + qtd + '</span><span class="del" title="Excluir configuração" onclick="delDia(this)"><img src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" /></span>');
+		
+				$('#qtdDias').val('').focus();
 			}
 	
 			function delDia(item)
