@@ -218,7 +218,7 @@ public class CertificacaoDaoHibernateTest extends GenericDaoHibernateTest<Certif
 		
 		certificacaoDao.getHibernateTemplateByGenericDao().flush();
 		
-		Collection<Colaborador> retorno = certificacaoDao.findColaboradoresNaCertificacoa(certificacao1.getId());
+		Collection<Colaborador> retorno = certificacaoDao.findColaboradoresNaCertificacao(certificacao1.getId());
 		assertEquals(1, retorno.size());
 	}
 	

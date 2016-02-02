@@ -160,7 +160,7 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		}
 	}
 
-	public Collection<Colaborador> findColaboradoresNaCertificacoa(Long certificacaoId) 
+	public Collection<Colaborador> findColaboradoresNaCertificacao(Long certificacaoId) 
 	{
 		StringBuilder sql = new StringBuilder();
 		sql.append("WITH cursoCertificados AS ( ");

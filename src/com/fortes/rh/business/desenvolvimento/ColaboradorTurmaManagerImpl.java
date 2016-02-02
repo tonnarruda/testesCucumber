@@ -523,20 +523,38 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		Colaborador colaborador = null;
 		Collection<Certificacao> certificacoes = certificacaoManager.findByCursoId(cursoId);
 		String msgAlert = "";
-		String msgAlertColaborador = null;
+		String msgAlertColaborador = "";
+		
+		boolean possuiPreRequisito;
 
 		for(Certificacao certificacao : certificacoes)
 		{
-			for(int i = 0; i < colaboradoresId.length; i++)
-			{
-				colaborador = getDao().verificaColaboradorCertificado(colaboradoresId[i], certificacao.getCertificacaoPreRequisito().getId());
-				if(colaborador != null && colaborador.getNome() != null)
-					msgAlertColaborador += colaborador.getNome() + "<br>";
+			possuiPreRequisito = true;
+
+			while(possuiPreRequisito){
+				for(int i = 0; i < colaboradoresId.length; i++)
+				{
+					colaborador = getDao().verificaColaboradorCertificado(colaboradoresId[i], certificacao.getCertificacaoPreRequisito().getId());
+					if(colaborador == null){
+						colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradoresId[i]);
+						msgAlertColaborador += "&bull; " +colaborador.getNome() + "<br>";
+					}
+				}
+				if(!msgAlertColaborador.isEmpty()  ){
+					msgAlert += "Certificação que tem pré-requisito: <b>" + certificacao.getNome() + "</b><br>";
+					msgAlert += "Pré-requisito: <b>"+ certificacao.getCertificacaoPreRequisito().getNome() + "</b><br><br>";
+					msgAlert += "Colaboradores não certificados no pré-requisito: </br>" + msgAlertColaborador;
+					msgAlert +="</br></br>";
+				}
+				msgAlertColaborador = "";
+				
+				Certificacao certificacaoTemp = certificacaoManager.findById(certificacao.getCertificacaoPreRequisito().getId());
+				
+				if(certificacaoTemp.getCertificacaoPreRequisito() != null && certificacaoTemp.getCertificacaoPreRequisito().getId() != null){
+					certificacao = certificacaoTemp;
+				}
+				else possuiPreRequisito = false;
 			}
-			if(msgAlertColaborador != null )
-				msgAlert = "Certificação " + certificacao.getNome() + " possui a certificação " + certificacao.getCertificacaoPreRequisito().getNome() + "como pre requisito. E os seguintes colaboradores não estão certificados: </br>" + msgAlertColaborador;
-			
-			msgAlertColaborador = null;
 		}
 		
 		return msgAlert;

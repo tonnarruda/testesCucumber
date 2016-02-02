@@ -63,8 +63,13 @@
 				colaboradoresIds = new Array($('#colaborador').val());
 				DWRUtil.useLoadingMessage('Carregando...');
 				ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma(function(data){
-																				colabNaOutraTurma(data, 180, 430, 'Colaborador já inscrito no curso<br />Deseja realmente incluí-lo nesta turma?', true);
-																			}, ${turma.id}, ${turma.curso.id}, colaboradoresIds);																			
+																				colabNaOutraTurma(data, 180, 430, 'Colaborador já inscrito no curso<br />Deseja realmente incluí-lo nesta turma?', false);
+																			}, ${turma.id}, ${turma.curso.id}, colaboradoresIds);
+																																						
+																																						
+				ColaboradorTurmaDWR.verificaColaboradorCertificadoNaCertificacaoPreRequisito(function(data){
+																				colabNaOutraTurma(data, 400, 575, 'Este curso está em uma certificação com pré-requisito.<br/> Existem colaboradores que não estão certificados. Deseja realmente incluí-los neste curso?', true);
+																			},$("input[name='turma.curso.id']").val(), new Array($("#colaborador").val()), false);
 				
 			}
 			else

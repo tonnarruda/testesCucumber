@@ -1249,4 +1249,36 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		assertEquals(dataVencimento1, ((ColaboradorTurma) colaboradorTurmasRetrono.toArray()[0]).getTurma().getVencimento() );
 		assertEquals(dataVencimento2, ((ColaboradorTurma) colaboradorTurmasRetrono.toArray()[1]).getTurma().getVencimento() );
 	}
+	
+	public void testVerificaColaboradorCertificado(){
+		Long[] colaboradoresIds = new Long[]{3L};
+		Curso cursoGerencial = CursoFactory.getEntity(1L);
+		
+		Certificacao certificacaoIntermediaria = CertificacaoFactory.getEntity(1L);
+		certificacaoIntermediaria.setNome("Certificação Intermediária");
+		
+		Certificacao certificacaoGerencial = CertificacaoFactory.getEntity(2L);
+		certificacaoGerencial.setNome("Certificação Gerencial");
+		certificacaoGerencial.setCertificacaoPreRequisito(certificacaoIntermediaria);
+		certificacaoGerencial.setCursos(Arrays.asList(cursoGerencial));
+		
+		Collection<Certificacao> certificacoes = Arrays.asList(certificacaoGerencial);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Colaborador");
+		
+		certificacaoManager.expects(once()).method("findByCursoId").withAnyArguments().will(returnValue(certificacoes));
+		colaboradorTurmaDao.expects(atLeastOnce()).method("verificaColaboradorCertificado").withAnyArguments().will(returnValue(null));
+		
+		colaboradorManager.expects(atLeastOnce()).method("findColaboradorByIdProjection").withAnyArguments().will(returnValue(colaborador));
+		
+		certificacaoManager.expects(atLeastOnce()).method("findById").with(eq(certificacaoGerencial.getCertificacaoPreRequisito().getId())).will(returnValue(certificacaoIntermediaria));;
+		
+		String msgAlert = "Certificação que tem pré-requisito: <b>" + certificacaoGerencial.getNome()+ "</b><br>";
+		msgAlert += "Pré-requisito: <b>"+ certificacaoGerencial.getCertificacaoPreRequisito().getNome() + "</b><br><br>";
+		msgAlert += "Colaboradores não certificados no pré-requisito: </br>" + "&bull; " +colaborador.getNome() + "<br>";
+		msgAlert +="</br></br>";
+		
+		assertEquals(msgAlert.trim(), colaboradorTurmaManager.verificaColaboradorCertificado(colaboradoresIds, cursoGerencial.getId()).trim());
+	}
 }
