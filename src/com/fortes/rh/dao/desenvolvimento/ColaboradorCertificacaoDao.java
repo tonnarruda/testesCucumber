@@ -18,5 +18,5 @@ public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertif
 	void removeDependencias(Long colaboradorCertificacaoId);
 	Collection<ColaboradorTurma> colaboradoresTurmaCertificados(Long colaboradorId, Long certificacaoId);
 	ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId);
-	Collection<ColaboradorCertificacao> colaboradoresQueParticipaDoCertificado(Long[] areasIds, Long[] estabelecimentosIds, Long certificadoId);
+	Collection<ColaboradorCertificacao> colaboradoresQueParticipaDoCertificado(Date dataFim, Long certificadoId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds);
 }

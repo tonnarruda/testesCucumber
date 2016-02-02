@@ -28,6 +28,7 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
+import com.ibm.icu.impl.duration.impl.DataRecord.ESeparatorVariant;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ModelDriven;
@@ -61,6 +62,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 	private String[] certificacoesCheck;
 	private Collection<CheckBox> certificacoesCheckList = new ArrayList<CheckBox>();
+	private String[] colaboradoresCheck;
+	private Collection<CheckBox> colaboradoresCheckList = new ArrayList<CheckBox>();
 	
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private String reportFilter;
@@ -172,23 +175,11 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
 			Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
 			Long[] certificacoesIds = LongUtil.arrayStringToArrayLong(certificacoesCheck);
+			Long[] colaboradoresIds = LongUtil.arrayStringToArrayLong(colaboradoresCheck);
 			
-			reportTitle = "Relatório de certificações vencidas e a vencer ";
-			reportFilter = getDataReferenciaFormatada() + "\n";
-			
-			reportFilter += "Colaboradores";
-			
-			if(colaboradorCertificado)
-				reportFilter += " certificados"; 
-			
-			if(colaboradorCertificado && colaboradorNaoCertificado)
-				reportFilter += " e";
-			
-			if(colaboradorNaoCertificado)
-				reportFilter += " não certificados";
-				
+			montaReportTitleAndFilter();
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
-			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, colaboradorCertificado, colaboradorNaoCertificado, mesesCertificacoesAVencer, areaIds, estabelecimentoIds, certificacoesIds);
+			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, colaboradorCertificado, colaboradorNaoCertificado, mesesCertificacoesAVencer, areaIds, estabelecimentoIds, certificacoesIds, colaboradoresIds);
 		
 			if(colaboradorCertificacoes.size() == 0){
 				addActionMessage("Não existem dados para o filtro informado.");
@@ -205,15 +196,29 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		
 		return Action.SUCCESS;
 	}
-	
-	private String getDataReferenciaFormatada(){
-		String dataReferenciaFormatada = "-";
-		if (dataIni != null && dataFim != null)
-			dataReferenciaFormatada = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
 
-		return dataReferenciaFormatada;
+	private void montaReportTitleAndFilter() 
+	{
+		reportTitle = "Relatório de Colaboradores por Certificações";
+		reportTitle += "\nData dor Relatório: " + DateUtil.formataDiaMesAno(new Date());
+
+		reportFilter = "Colaboradores";
+		
+		if(colaboradorCertificado)
+			reportFilter += " certificados"; 
+		
+		if(colaboradorCertificado && colaboradorNaoCertificado)
+			reportFilter += " e";
+		
+		if(colaboradorNaoCertificado)
+			reportFilter += " não certificados";
+
+		if (dataIni != null && dataFim != null)
+			reportFilter += "\nPeríodo Certificado: " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
+		
+		if (mesesCertificacoesAVencer != null && mesesCertificacoesAVencer != 0)
+			reportFilter += "\nColaboradores com certificação a vencer em até " + mesesCertificacoesAVencer + " meses.";
 	}
-	
 	
 	public Object getModel()
 	{
@@ -412,5 +417,13 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public void setMesesCertificacoesAVencer(Integer mesesCertificacoesAVencer) {
 		this.mesesCertificacoesAVencer = mesesCertificacoesAVencer;
+	}
+
+	public void setColaboradoresCheck(String[] colaboradoresCheck) {
+		this.colaboradoresCheck = colaboradoresCheck;
+	}
+
+	public Collection<CheckBox> getColaboradoresCheckList() {
+		return colaboradoresCheckList;
 	}
 }

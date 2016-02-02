@@ -445,8 +445,8 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		
 		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
 		
-		assertEquals(2, colaboradorCertificacaoDao.colaboradoresQueParticipaDoCertificado(new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, null, certificacao.getId()).size());
-		assertEquals(1, colaboradorCertificacaoDao.colaboradoresQueParticipaDoCertificado(new Long[]{areaOrganizacional.getId()}, null, certificacao.getId()).size());
+		assertEquals(2, colaboradorCertificacaoDao.colaboradoresQueParticipaDoCertificado(null, certificacao.getId(), new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, null, null).size());
+		assertEquals(1, colaboradorCertificacaoDao.colaboradoresQueParticipaDoCertificado(null, certificacao.getId(), new Long[]{areaOrganizacional.getId()}, null, new Long[]{colaborador1.getId()}).size());
 	}
 
 	public void setColaboradorCertificacaoDao(ColaboradorCertificacaoDao colaboradorCertificacaoDao)

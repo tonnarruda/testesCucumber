@@ -247,7 +247,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		return colaboradorCertificacao;
 	}
 	
-	public Collection<ColaboradorCertificacao> colaboradoresQueParticipaDoCertificado(Long[] areasIds, Long[] estabelecimentosIds, Long certificadoId) 
+	public Collection<ColaboradorCertificacao> colaboradoresQueParticipaDoCertificado(Date dataFim, Long certificadoId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds) 
 	{
 		StringBuilder sql = new StringBuilder();
 		sql.append("select cc.id as ccId, cc.data as ccData, ");
@@ -255,12 +255,16 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		sql.append("cp.colaborador_id as ColId, cp.matricula, cp.nome as ColNome,  cp.nomeComercial, ");
 		sql.append("est.id as estId, est.nome as estNome, ");
 		sql.append("cg.id as cgId, cg.nome as cgNome, ");
-		sql.append("ao.id as aoId, ao.nome as aoNome ");
+		sql.append("ao.id as aoId, monta_familia_area(ao.id) as aoNome ");
 		sql.append("from (WITH colaboradorNoCursoDaCertificacao as ( ");
 		sql.append("select distinct ct.colaborador_id, cu.id from colaboradorturma ct ");
 		sql.append("inner join turma t on t.id = ct.turma_id ");
 		sql.append("inner join curso cu on cu.id = t.curso_id ");
 		sql.append("where cu.id in (select cursos_id from certificacao_curso where certificacaos_id = :certificadoId) ");
+		
+		if(colaboradoresIds != null && colaboradoresIds.length > 0)
+			sql.append("and ct.colaborador_id in (:colaboradoresIds) ");
+
 		sql.append("order by ct.colaborador_id) ");
 		sql.append("select ccc.colaborador_id, c.nome, c.matricula, c.nomecomercial, hc.faixasalarial_id, hc.estabelecimento_id, hc.areaorganizacional_id ");
 		sql.append("from colaboradorNoCursoDaCertificacao ccc ");
@@ -269,17 +273,22 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		sql.append("where hc.data = (select max(data) from historicocolaborador hc2 where hc2.colaborador_id = ccc.colaborador_id) ");
 		sql.append("and hc.status = :status ");
 		
-		if(areasIds != null && areasIds.length >0)
+		if(areasIds != null && areasIds.length > 0)
 			sql.append("and hc.areaorganizacional_id in (:areasIds) ");
 		
-		if(estabelecimentosIds != null && estabelecimentosIds.length >0)
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
 		
 		sql.append("group by ccc.colaborador_id, c.nome, c.matricula, c.nomecomercial, hc.faixasalarial_id, hc.estabelecimento_id, hc.areaorganizacional_id ");
 		sql.append("having count(ccc.colaborador_id) = (select count(cursos_id) from certificacao_curso where certificacaos_id = :certificadoId) ");
 		sql.append("order by c.nome) as cp ");
 		sql.append("left join colaboradorcertificacao cc on cc.colaborador_id = cp.colaborador_id and cc.certificacao_id = :certificadoId ");
-		sql.append("left join certificacao ct on ct.id = :certificadoId ");
+		sql.append("and cc.data = (select max(cc2.data) from colaboradorcertificacao cc2 where cc2.colaborador_id = cp.colaborador_id ");
+		
+		if(dataFim != null)
+			sql.append("and cc2.data <= :dataFim ");
+		
+		sql.append(") left join certificacao ct on ct.id = :certificadoId ");
 		sql.append("left join faixasalarial fx on fx.id = cp.faixasalarial_id ");
 		sql.append("left join cargo cg on cg.id = fx.cargo_id ");
 		sql.append("left join estabelecimento est on est.id = cp.estabelecimento_id ");
@@ -289,11 +298,17 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		query.setLong("certificadoId", certificadoId);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
+		if(dataFim != null)
+			query.setDate("dataFim", dataFim);
+		
 		if(areasIds != null && areasIds.length >0)
 			query.setParameterList("areasIds", areasIds);
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.length >0)
 			query.setParameterList("estabelecimentosIds", estabelecimentosIds);
+		
+		if(colaboradoresIds != null && colaboradoresIds.length >0)
+			query.setParameterList("colaboradoresIds", colaboradoresIds);
 		
 		@SuppressWarnings("rawtypes")
 		List resultado = query.list();

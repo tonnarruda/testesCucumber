@@ -42,9 +42,6 @@ public class Certificacao extends AbstractModel implements Serializable
 	
 	@OneToOne
 	private Certificacao certificacaoPreRequisito;
-
-	@Transient
-	private Boolean aprovadoNaCertificacao;
 	
 	public String getNome()
 	{
@@ -141,20 +138,5 @@ public class Certificacao extends AbstractModel implements Serializable
 	private void inicializarCertificacaoPreRequisito(){
 		if(this.certificacaoPreRequisito == null)
 			this.certificacaoPreRequisito = new Certificacao();
-	}
-
-	public Boolean getAprovadoNaCertificacao() {
-		return aprovadoNaCertificacao;
-	}
-
-	public void setAprovadoNaCertificacao(Boolean aprovadoNaCertificacao) {
-		this.aprovadoNaCertificacao = aprovadoNaCertificacao;
-	}
-	
-	public String getAprovadoNaCertificacaoString() {
-		if(aprovadoNaCertificacao != null && aprovadoNaCertificacao)
-			return "Certificado";
-		
-		return "Não Certificado";
 	}
 }

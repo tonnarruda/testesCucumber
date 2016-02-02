@@ -39,6 +39,8 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	private String periodoTurma;
 	@Transient
 	private Boolean aprovadoNaTurma;
+	@Transient
+	private Boolean aprovadoNaCertificacao;
 	
 	@ManyToMany
 	private Collection<ColaboradorTurma> colaboradoresTurmas; 
@@ -285,5 +287,23 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 			this.certificacao = new Certificacao();
 		
 		this.certificacao.setId(certificacaoId);
+	}
+	
+	public String getAprovadoNaCertificacaoString() {
+		if(this.data != null && this.data.getTime() < (new Date()).getTime())
+			return "Certificado vencido";
+		
+		if(aprovadoNaCertificacao != null && aprovadoNaCertificacao)
+			return "Certificado";
+		
+		return "Não Certificado";
+	}
+
+	public Boolean getAprovadoNaCertificacao() {
+		return aprovadoNaCertificacao;
+	}
+
+	public void setAprovadoNaCertificacao(Boolean aprovadoNaCertificacao) {
+		this.aprovadoNaCertificacao = aprovadoNaCertificacao;
 	}
 }
