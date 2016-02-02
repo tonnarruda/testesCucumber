@@ -17,5 +17,6 @@ public interface CatDao extends GenericDao<Cat>
 	Cat findUltimoCat(Long empresaId);
 	Map<Integer,Integer> findQtdPorDiaSemana(Long empresaId, Date dataIni, Date dataFim);
 	Map<String,Integer> findQtdPorHorario(Long empresaId, Date dataIni, Date dataFim);
-	Cat findByIdProjection(Long catId);
+	Cat findByIdProjectionSimples(Long catId);
+	Cat findByIdProjectionDetalhada(Long catId);
 }

@@ -101,7 +101,7 @@
 		</@ww.form>
 	</#if>
 
-	<#assign validarCampos="return validaFormulario('form', new Array('colaborador', 'data', 'horario'), new Array('data'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('colaborador', 'data', 'horario'), new Array('data', 'testemunha1Cep', 'testemunha2Cep', 'testemunha1Telefone', 'testemunha2Telefone'))"/>
 
 	<#if (colaboradors?exists && colaboradors?size > 0) || (edicao?exists)>
 
@@ -160,7 +160,7 @@
 				<@ww.textfield label="Endereço" id="testemunha1Endereco" name="cat.testemunha1Endereco" cssStyle="width:391px;" maxLength="100" liClass="liLeft"/>
 				<@ww.textfield label="Bairro" id="testemunha1Bairro" name="cat.testemunha1Bairro" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
 				<@ww.textfield label="Município" id="testemunha1Municipio" name="cat.testemunha1Municipio" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
-				<@ww.textfield label="UF" id="testemunha1UF" name="cat.testemunha1Uf" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
+				<@ww.textfield label="UF" id="testemunha1UF" name="cat.testemunha1UF" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
 				<@ww.textfield label="Telefone" id="testemunha1Telefone" name="cat.testemunha1Telefone" cssStyle="width:105px;" maxLength="11" liClass="liLeft" cssClass="mascaraTelefone"/>
 			</fieldset>
 			
@@ -172,7 +172,7 @@
 				<@ww.textfield label="Endereço" id="testemunha2Endereco" name="cat.testemunha2Endereco" cssStyle="width:391px;" maxLength="100" liClass="liLeft"/>
 				<@ww.textfield label="Bairro" id="testemunha2Bairro" name="cat.testemunha2Bairro" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
 				<@ww.textfield label="Município" id="testemunha2Municipio" name="cat.testemunha2Municipio" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
-				<@ww.textfield label="UF" id="testemunha2UF" name="cat.testemunha2Uf" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
+				<@ww.textfield label="UF" id="testemunha2UF" name="cat.testemunha2UF" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
 				<@ww.textfield label="Telefone" id="testemunha2Telefone" name="cat.testemunha2Telefone" cssStyle="width:105px;" maxLength="11" liClass="liLeft" cssClass="mascaraTelefone"/>
 			</fieldset>
 			

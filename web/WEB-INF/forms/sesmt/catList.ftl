@@ -40,7 +40,7 @@
 				            if ( $('#tipoRelatorio').val() == 'S' ) {
 				            	popupConfigRelatorio(catId);
 				            } else {
-				            	$("#formRelatorio").find("");
+				            	$("#formRelatorio").find("#catId").val(catId);
 				            	$("#formRelatorio").submit();
 				            }
 							$(this).dialog("close");
@@ -178,7 +178,7 @@
 	</div>
 	
 	<div id="selectRelatorio" title="Configurar Informações para Impressão">
-		<@ww.form name="formRelatorio" id="formRelatorio" action="imprimirCAT.action" method="POST">
+		<@ww.form name="formRelatorio" id="formRelatorio" action="imprimirCat.action" method="POST">
 			<@ww.hidden name="cat.id" id="catId"/>
 			<@ww.select label="Tipo de relatório" name="tipoRelatorio" id="tipoRelatorio" list=r"#{'S':'Simples','D':'Detalhado'}"/>
 		</@ww.form>

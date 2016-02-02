@@ -152,9 +152,14 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		return graficoCatsPorHorario;
 	}
 	
-	public Cat findByIdProjection(Long catId) 
+	public Cat findByIdProjectionSimples(Long catId) 
 	{
-		return getDao().findByIdProjection(catId);
+		return getDao().findByIdProjectionSimples(catId);
+	}
+	
+	public Cat findByIdProjectionDetalhada(Long catId) 
+	{
+		return getDao().findByIdProjectionDetalhada(catId);
 	}
 
 	public void setFoto(Cat cat, boolean manterFoto, File foto, String local) 
