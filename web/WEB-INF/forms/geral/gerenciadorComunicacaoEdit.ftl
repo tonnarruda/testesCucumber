@@ -206,16 +206,28 @@
 			
 			function addDia(qtd)
 			{
-		    	if(qtd != "" && $('.dias[id="' + qtd + '"]').size() == 0)
-					$('#configDias').append('<span class="dias" id="' + qtd + '">' + qtd + '</span><span class="del" title="Excluir configuração" onclick="delDia(this)"><img src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" /></span>');
-		
-				$('#qtdDias').val('').focus();
+				if($('.dias').size() == 19 && $('#qtdDias').val() != "" ){
+					jAlert("Não é possível cadastrar mais que 20 dias.");
+				}
+		    	else if($(".dias").size() >= 20 ){
+					jAlert("Não é possível cadastrar mais que 20 dias.");
+				}
+				else { 
+			    	if(qtd != "" && $('.dias[id="' + qtd + '"]').size() == 0)
+						$('#configDias').append('<span class="dias" id="' + qtd + '">' + qtd + '</span><span class="del" title="Excluir configuração" onclick="delDia(this)"><img src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" /></span>');
+			
+					$('#qtdDias').val('').focus();
+				}
 			}
 	
 			function delDia(item)
 			{
 				$(item).prev().remove();
 				$(item).remove();
+				
+				if($('.dias').size() < 20 ){
+					 $('#qtdDias').show(); 
+				}
 			}
 			
 			function populaUsuarios()
@@ -261,7 +273,9 @@
 					exibeCampoPermitirResponderAvaliacao();
 				</#if>
 				
-				
+				if($('.dias').size() == 20 ){
+					 $('#qtdDias').hide(); 
+				}
 			});
 		</script>
 	
