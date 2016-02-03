@@ -32,7 +32,7 @@
 	<columnFooter>
 		<band height="163" splitType="Stretch">
 			<barChart>
-				<chart isShowLegend="false">
+				<chart isShowLegend="false" customizerClass="com.fortes.rh.web.chart.BarChartCustomizer">
 					<reportElement x="0" y="0" width="790" height="163" uuid="bd3e26ca-4cc2-46e1-85b4-04ba4f3a7e97"/>
 					<chartTitle/>
 					<chartSubtitle/>
