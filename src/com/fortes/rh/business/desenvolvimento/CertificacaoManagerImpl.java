@@ -173,7 +173,7 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 		getDao().deleteByFaixaSalarial(faixaIds);
 	}
 
-	public Collection<Colaborador> findColaboradoresNaCertificacoa(Long certificacaoId) 
+	public Collection<Colaborador> findColaboradoresNaCertificacao(Long certificacaoId) 
 	{
 		return getDao().findColaboradoresNaCertificacao(certificacaoId);
 	}

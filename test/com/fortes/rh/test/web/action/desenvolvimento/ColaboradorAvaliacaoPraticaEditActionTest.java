@@ -106,7 +106,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		action.setEmpresaSistema(empresa);
 		
 		certificacaoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Certificacao>()));
-		certificacaoManager.expects(once()).method("findColaboradoresNaCertificacoa").will(returnValue(new ArrayList<Colaborador>()));
+		certificacaoManager.expects(once()).method("findColaboradoresNaCertificacao").will(returnValue(new ArrayList<Colaborador>()));
 		
 		assertEquals("success", action.buscaColaboradores());
 	}
@@ -153,13 +153,14 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		Collection<ColaboradorTurma> colaboradorTurmas = Arrays.asList(colaboradorTurma);
 		
 		certificacaoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Certificacao>()));
-		certificacaoManager.expects(once()).method("findColaboradoresNaCertificacoa").will(returnValue(colaboradoresNaCertificacao));
+		certificacaoManager.expects(once()).method("findColaboradoresNaCertificacao").will(returnValue(colaboradoresNaCertificacao));
 		areaOrganizacionalManager.expects(once()).method("findAreasByUsuarioResponsavel").will(returnValue(new ArrayList<AreaOrganizacional>()));
 		colaboradorManager.expects(once()).method("findByNomeCpfMatriculaComHistoricoComfirmado").will(returnValue(colaboradoresPermitidos));
 		colaboradorCertificacaoManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(new ArrayList<ColaboradorCertificacao>()));
 		avaliacaoPraticaManager.expects(once()).method("findByCertificacaoId").will(returnValue(avaliacaoPraticas));
 		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(colaboradorAvaliacaoPraticas));
 		colaboradorTurmaManager.expects(once()).method("findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId").will(returnValue(colaboradorTurmas));
+		colaboradorCertificacaoManager.expects(once()).method("findColaboradorCertificadoInfomandoSeEUltimaCertificacao").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorCertificacao));
 		
 		assertEquals("success", action.buscaColaboradores());
 		assertEquals(2, action.getColaboradores().size());

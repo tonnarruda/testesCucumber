@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -17,6 +18,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
@@ -34,6 +36,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cc.id"), "id");
 		p.add(Projections.property("cc.data"), "data");
+		
 		criteria.setProjection(p);
 
 		if(colaboradorId != null)
@@ -338,5 +341,27 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		}
 
 		return ColaboradoresCertificacao;
+	}
+
+	public ColaboradorCertificacao findColaboradorCertificadoInfomandoSeEUltimaCertificacao(Long colaboradorCertificacaoId, Long colaboradorId, Long certificacaoId) {
+		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cc.id"), "id");
+		p.add(Projections.property("cc.data"), "data");
+		p.add(Projections.property("cc.colaborador.id"), "colaboradorId");
+		p.add(Projections.property("cc.certificacao.id"), "certificacaoId");
+		p.add(Projections.sqlProjection(" case when {alias}.data = (select max(data) from colaboradorcertificacao where colaborador_id = " + colaboradorId + "  and certificacao_id = "+ certificacaoId +" ) "
+				+ " and not exists(select * from colaboradoravaliacaopratica where colaborador_id = " + colaboradorId + "  and certificacao_id = "+ certificacaoId +")"
+				+ "then true else false end as ultimaCertificacao ", new String[] {"ultimaCertificacao"}, new Type[] {Hibernate.BOOLEAN}), "ultimaCertificacao");
+	        
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("cc.colaborador.id", colaboradorId));
+		criteria.add(Expression.eq("cc.certificacao.id", certificacaoId));
+		criteria.add(Expression.eq("cc.id", colaboradorCertificacaoId));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
+
+		return (ColaboradorCertificacao) criteria.uniqueResult();
 	}
 }

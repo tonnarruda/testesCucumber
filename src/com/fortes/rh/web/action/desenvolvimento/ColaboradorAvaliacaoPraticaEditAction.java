@@ -63,7 +63,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		if(certificacao == null || certificacao.getId() == null)
 			return Action.SUCCESS;
 
-		Collection<Colaborador> colaboradoresNaCertificacao = certificacaoManager.findColaboradoresNaCertificacoa(certificacao.getId());
+		Collection<Colaborador> colaboradoresNaCertificacao = certificacaoManager.findColaboradoresNaCertificacao(certificacao.getId());
 
 		if(colaborador != null)
 		{
@@ -77,6 +77,9 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 				populaColaboradorAvaliacaoPratica();
 			}
 		}
+		
+		if(colaboradorCertificacao!= null && colaboradorCertificacao.getId() != null && colaborador != null  && colaborador.getId() != null  && certificacao != null && certificacao.getId() != null)
+			colaboradorCertificacao = colaboradorCertificacaoManager.findColaboradorCertificadoInfomandoSeEUltimaCertificacao(colaboradorCertificacao.getId(), colaborador.getId(), certificacao.getId());
 		
 		return Action.SUCCESS;
 	}
@@ -158,12 +161,10 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 					
 					if(colaboradorAvaliacaoPratica.getData() != null && colaboradorAvaliacaoPratica.getNota() != null){
 						colaboradorAvaliacaoPraticaRealizada.setNota(colaboradorAvaliacaoPratica.getNota());
+						colaboradorAvaliacaoPraticaRealizada.setData(colaboradorAvaliacaoPratica.getData());
 						colaboradorAvaliacaoPraticaRealizada.setCertificacao(certificacao);
 						colaboradorAvaliacaoPraticaRealizada.setColaborador(colaborador);
 						colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPraticaRealizada);
-						AvaliacaoPratica avaliacaoPratica = avaliacaoPraticaManager.findEntidadeComAtributosSimplesById(colaboradorAvaliacaoPratica.getAvaliacaoPratica().getId());
-						if(colaboradorAvaliacaoPratica.getNota() < avaliacaoPratica.getNotaMinima())
-							colaboradorCertificacaoManager.descertificarColaborador(colaboradorCertificacao.getId(), false);
 					}else{
 						colaboradorAvaliacaoPraticaManager.removeColaboradorAvaliacaoPraticaAndColaboradorCertificado(colaboradorAvaliacaoPraticaRealizada);
 					}
@@ -171,7 +172,6 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 					break;
 				}
 			}
-
 			if(!edicao && colaboradorAvaliacaoPratica.getData() != null && colaboradorAvaliacaoPratica.getNota() != null)
 			{
 				colaboradorAvaliacaoPratica.setId(null);
@@ -181,6 +181,8 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 				
 			}	
 		}
+
+		colaboradorCertificacaoManager.descertificarColaborador(colaboradorCertificacao.getId(), false);
 		
 		if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
 		{

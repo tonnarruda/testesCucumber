@@ -448,6 +448,31 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(2, colaboradorCertificacaoDao.colaboradoresQueParticipaDoCertificado(null, certificacao.getId(), new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, null, null).size());
 		assertEquals(1, colaboradorCertificacaoDao.colaboradoresQueParticipaDoCertificado(null, certificacao.getId(), new Long[]{areaOrganizacional.getId()}, null, new Long[]{colaborador1.getId()}).size());
 	}
+	
+	public void testFindColaboradorCertificadoInfomandoSeEUltimaCertificacao() {
+		Date data = DateUtil.criarDataMesAno(1, 1, 2015);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome("Feião");
+		colaborador.setEmailColaborador("bla@ble.com");
+		colaboradorDao.save(colaborador);
+
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setPeriodicidade(1);
+		certificacaoDao.save(certificacao);
+
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
+		avaliacaoPraticaDao.save(avaliacaoPratica);
+
+		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao();
+		colaboradorCertificacao.setColaborador(colaborador);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setData(data);
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+				
+		ColaboradorCertificacao retorno =  colaboradorCertificacaoDao.findColaboradorCertificadoInfomandoSeEUltimaCertificacao(colaboradorCertificacao.getId(), colaborador.getId(), certificacao.getId());
+		assertTrue(retorno.getUltimaCertificacao());
+	}
 
 	public void setColaboradorCertificacaoDao(ColaboradorCertificacaoDao colaboradorCertificacaoDao)
 	{
@@ -487,8 +512,7 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		this.faixaSalarialDao = faixaSalarialDao;
 	}
 
-	public void setHistoricoColaboradorDao(
-			HistoricoColaboradorDao historicoColaboradorDao) {
+	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
 		this.historicoColaboradorDao = historicoColaboradorDao;
 	}
 
@@ -500,8 +524,7 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		this.avaliacaoPraticaDao = avaliacaoPraticaDao;
 	}
 
-	public void setColaboradorAvaliacaoPraticaDao(
-			ColaboradorAvaliacaoPraticaDao colaboradorAvaliacaoPraticaDao) {
+	public void setColaboradorAvaliacaoPraticaDao(ColaboradorAvaliacaoPraticaDao colaboradorAvaliacaoPraticaDao) {
 		this.colaboradorAvaliacaoPraticaDao = colaboradorAvaliacaoPraticaDao;
 	}
 }

@@ -63,11 +63,40 @@ public class ColaboradorAvaliacaoPraticaDaoHibernateTest extends GenericDaoHiber
 		colaboradorAvaliacaoPratica.setColaborador(colaborador);
 		colaboradorAvaliacaoPratica.setNota(90.0);
 		colaboradorAvaliacaoPratica.setData(DateUtil.criarDataMesAno(1, 10, 2015));
+		colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
 		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica);
 		
-		colaboradorAvaliacaoPraticaDao.getHibernateTemplateByGenericDao().flush();
-		
 		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaDao.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId());
+		
+		assertEquals(1, colaboradorAvaliacaoPraticas.size());
+		
+		ColaboradorAvaliacaoPratica result = ((ColaboradorAvaliacaoPratica) colaboradorAvaliacaoPraticas.toArray()[0]);
+		
+		assertEquals(90.0, result.getNota());
+		assertEquals(80.0, result.getAvaliacaoPratica().getNotaMinima());
+	}
+	
+	public void testFindByColaboradorIdAndCertificacaoIdSemColaboradorCertificacaoId()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacaoDao.save(certificacao);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
+		avaliacaoPratica.setNotaMinima(80.0);
+		avaliacaoPraticaDao.save(avaliacaoPratica);
+		
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity();
+		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
+		colaboradorAvaliacaoPratica.setCertificacao(certificacao);
+		colaboradorAvaliacaoPratica.setColaborador(colaborador);
+		colaboradorAvaliacaoPratica.setNota(90.0);
+		colaboradorAvaliacaoPratica.setData(DateUtil.criarDataMesAno(1, 10, 2015));
+		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica);
+		
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaDao.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), null);
 		
 		assertEquals(1, colaboradorAvaliacaoPraticas.size());
 		

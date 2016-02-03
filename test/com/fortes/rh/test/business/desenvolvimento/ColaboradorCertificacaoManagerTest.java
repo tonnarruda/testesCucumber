@@ -22,6 +22,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoPraticaFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
@@ -131,5 +132,13 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		ColaboradorCertificacao result2 = (ColaboradorCertificacao) colaboradoresNasCertificacoes.toArray()[1];
 		
 		assertEquals("Avaliação Prática: Beber Cachaça", result2.getNomeCurso());
+	}
+	
+	public void testFindColaboradorCertificadoInfomandoSeEUltimaCertificacao() {
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaboradorCertificacaoDao.expects(once()).method("findColaboradorCertificadoInfomandoSeEUltimaCertificacao").with(eq(colaboradorCertificacao.getId()), eq(colaborador.getId()), eq(certificacao.getId())).will(returnValue(colaboradorCertificacao));
+		assertEquals(colaboradorCertificacao, colaboradorCertificacaoManager.findColaboradorCertificadoInfomandoSeEUltimaCertificacao(colaboradorCertificacao.getId(), colaborador.getId(), certificacao.getId()));
 	}
 }

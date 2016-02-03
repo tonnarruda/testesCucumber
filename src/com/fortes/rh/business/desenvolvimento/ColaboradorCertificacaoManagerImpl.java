@@ -254,8 +254,11 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findByColaboradorTurma(colaboradorTurmaId);
 	}
 
-	public void setAvaliacaoPraticaManager(
-			AvaliacaoPraticaManager avaliacaoPraticaManager) {
+	public ColaboradorCertificacao findColaboradorCertificadoInfomandoSeEUltimaCertificacao( Long colaboradorCertificacaoId, Long colaboradorId, Long certificacaoId) {
+		return getDao().findColaboradorCertificadoInfomandoSeEUltimaCertificacao(colaboradorCertificacaoId, colaboradorId, certificacaoId);
+	}
+
+	public void setAvaliacaoPraticaManager( AvaliacaoPraticaManager avaliacaoPraticaManager) {
 		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
 	}
 }

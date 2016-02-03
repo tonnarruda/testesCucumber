@@ -41,6 +41,8 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	private Boolean aprovadoNaTurma;
 	@Transient
 	private Boolean aprovadoNaCertificacao;
+	@Transient
+	private Boolean ultimaCertificacao;
 	
 	@ManyToMany
 	private Collection<ColaboradorTurma> colaboradoresTurmas; 
@@ -305,5 +307,13 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 
 	public void setAprovadoNaCertificacao(Boolean aprovadoNaCertificacao) {
 		this.aprovadoNaCertificacao = aprovadoNaCertificacao;
+	}
+
+	public Boolean getUltimaCertificacao() {
+		return ultimaCertificacao;
+	}
+
+	public void setUltimaCertificacao(Boolean ultimaCertificacao) {
+		this.ultimaCertificacao = ultimaCertificacao;
 	}
 }

@@ -23,7 +23,7 @@ public interface CertificacaoManager extends GenericManager<Certificacao>
 	Collection<Certificacao> findAllSelect(Integer page, Integer pagingSize, Long id, String nomeBusca);
 	Integer getCount(Long empresaId, String nomeBusca);
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
-	Collection<Colaborador> findColaboradoresNaCertificacoa(Long certificacaoId);
+	Collection<Colaborador> findColaboradoresNaCertificacao(Long certificacaoId);
 	Collection<Certificacao> findAllSelectNotCertificacaoId(Long empresaId, Long certificacaoId);
 	Collection<Certificacao> findByCursoId(Long cursoId);
 	Collection<CheckBox> populaCheckBoxSemPeriodicidade(Long empresaId);

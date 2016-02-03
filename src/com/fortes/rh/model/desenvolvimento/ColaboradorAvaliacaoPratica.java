@@ -88,8 +88,7 @@ public class ColaboradorAvaliacaoPratica extends AbstractModel implements Serial
 	public ColaboradorCertificacao getColaboradorCertificacao() {
 		return colaboradorCertificacao;
 	}
-	public void setColaboradorCertificacao(
-			ColaboradorCertificacao colaboradorCertificacao) {
+	public void setColaboradorCertificacao(ColaboradorCertificacao colaboradorCertificacao) {
 		this.colaboradorCertificacao = colaboradorCertificacao;
 	}
 	public void setColaboradorId(Long colaboradorId){

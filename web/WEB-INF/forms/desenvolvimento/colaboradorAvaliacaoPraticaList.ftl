@@ -11,6 +11,7 @@
 	<script type="text/javascript">
 		$(function(){
 			$('.mascaraData').css("border","1px solid #BEBEBE");
+			insereHelp();
 		});
 		
 		function submeter(action)
@@ -33,6 +34,17 @@
 					return	document.form.submit();
 			}
 		}
+		
+		function insereHelp(posicao, help)
+		{
+			<#if colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists && !colaboradorCertificacao.ultimaCertificacao>
+			$("#tituloTabelaAP").append('<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin: 1px 0px -2px 10px;" />');
+			
+			$('#tooltipHelp').qtip({
+				content:"O sistema não possibilita a edição da data e nota da avaliação prática, quando a mesma não é referente a última certificação do colaborador."
+			});
+			</#if>
+		}
 	</script>
 </head>
 <body>
@@ -47,7 +59,7 @@
 				<ul>
 					<@ww.select label="Certificações" name="certificacao.id" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;" />
 					<@ww.select label="Colaborador" name="colaborador.id" list="colaboradores" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
-					<@ww.select label="Certificações Realizadas pelo Colaborador" name="colaboradorCertificacao.id" list="colaboradorCertificacaos" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
+					<@ww.select label="Certificações aprovadas pelo colaborador" name="colaboradorCertificacao.id" list="colaboradorCertificacaos" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
 					<br><br>
 				</ul>
 			</@ww.div>
@@ -68,7 +80,7 @@
 				<#assign i = 0/>		
 				
 				<@display.table name="colaboradorAvaliacaoPraticas" id="colaboradorAvaliacaoPratica" class="dados">
-					<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;">Avaliações Práticas</div> </@display.caption>
+					<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;" id="tituloTabelaAP" >Avaliações Práticas</div> </@display.caption>
 					
 					<#if colaboradorAvaliacaoPratica.id?exists>
 						<#assign colaboradorAvaliacaoPraticaId = "${colaboradorAvaliacaoPratica.id}"/>
@@ -90,22 +102,33 @@
 					
 						<@display.column property="avaliacaoPratica.titulo" title="Título" style="width: 500px;"/>
 						<@display.column property="avaliacaoPratica.notaMinima" title="Nota Mínima Aprovação" style="width: 100px;text-align: center;" />
-						<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
-							<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) >
-								<@ww.datepicker id="data[${i}]" name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple"/><br>
-							</#if>
-							<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.id" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.id}"/>
-							<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].id" value="${colaboradorAvaliacaoPraticaId}"/>
-						</@display.column>
-						<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
-							<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) >
-								<@ww.textfield id="nota[${i}]" name="colaboradorAvaliacaoPraticas[${i}].nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));"/>
-							</#if>
-						</@display.column>
+						
+						<#if colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists && !colaboradorCertificacao.ultimaCertificacao>
+							<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
+								${colaboradorAvaliacaoPraticaData}
+							</@display.column>
+
+							<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
+								${colaboradorAvaliacaoPraticaNota}
+							</@display.column>
+						<#else>						
+							<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
+								<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) >
+										<@ww.datepicker id="data[${i}]" name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple"/><br>
+								</#if>
+								<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.id" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.id}"/>
+								<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].id" value="${colaboradorAvaliacaoPraticaId}"/>
+							</@display.column>
+							<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
+								<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) >
+										<@ww.textfield id="nota[${i}]" name="colaboradorAvaliacaoPraticas[${i}].nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));"/>
+								</#if>
+							</@display.column>
+						</#if>
 						<#assign i = i + 1/>
 					</@display.table>
 				
-					<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) >
+					<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) &&  !(colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists && !colaboradorCertificacao.ultimaCertificacao) >
 						<div class="buttonGroup">
 							<button type="button" class="btnGravar" onclick="submeter('insertOrUpdate.action');"></button>
 						</div>
