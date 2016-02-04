@@ -28,7 +28,6 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
-import com.ibm.icu.impl.duration.impl.DataRecord.ESeparatorVariant;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ModelDriven;
@@ -77,6 +76,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private boolean colaboradorCertificado;
 	private boolean colaboradorNaoCertificado;
 	private Integer mesesCertificacoesAVencer;
+	private Character agruparPor;
 
 	private void prepare() throws Exception
 	{
@@ -180,12 +180,17 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			montaReportTitleAndFilter();
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, colaboradorCertificado, colaboradorNaoCertificado, mesesCertificacoesAVencer, areaIds, estabelecimentoIds, certificacoesIds, colaboradoresIds);
-		
+			
 			if(colaboradorCertificacoes.size() == 0){
 				addActionMessage("Não existem dados para o filtro informado.");
 				prepareImprimirCertificadosVencidosAVencer();
 				return Action.INPUT;	
 			}
+			
+			if(agruparPor == 'T')
+				return agruparPorCertificacao();
+			
+			return Action.SUCCESS;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -194,7 +199,38 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			return Action.INPUT;
 		}
 		
-		return Action.SUCCESS;
+	}
+
+	private String agruparPorCertificacao() 
+	{
+		colaboradorCertificacoes = new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "certificacao.nome");
+		
+		Map<Long, Collection<Long>> qtdcolabsCertificado = new HashMap<Long, Collection<Long>>();
+		Map<Long, Collection<Long>> qtdcolabsNaoCertificado = new HashMap<Long, Collection<Long>>();
+		for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
+			if(colabcertificacao.getAprovadoNaCertificacao()){
+				if(!qtdcolabsCertificado.containsKey(colabcertificacao.getCertificacao().getId()))
+					qtdcolabsCertificado.put(colabcertificacao.getCertificacao().getId(), new ArrayList<Long>());
+				
+				if(!qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()).contains(colabcertificacao.getColaborador().getId()))
+					qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()).add(colabcertificacao.getColaborador().getId());
+			}else{
+				if(!qtdcolabsNaoCertificado.containsKey(colabcertificacao.getCertificacao().getId()))
+					qtdcolabsNaoCertificado.put(colabcertificacao.getCertificacao().getId(), new ArrayList<Long>());
+				
+				if(!qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).contains(colabcertificacao.getColaborador().getId()))
+					qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).add(colabcertificacao.getColaborador().getId());
+			}
+		}
+		
+		for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
+			if(qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()) != null)
+				colabcertificacao.setQtdColaboradorAprovado(qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()).size());
+			if(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()) != null)
+				colabcertificacao.setQtdColaboradorNaoAprovado(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).size());
+		}
+		
+		return "sucessoAgrupadoPorCertificacao";
 	}
 
 	private void montaReportTitleAndFilter() 
@@ -425,5 +461,13 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public Collection<CheckBox> getColaboradoresCheckList() {
 		return colaboradoresCheckList;
+	}
+
+	public Character getAgruparPor() {
+		return agruparPor;
+	}
+
+	public void setAgruparPor(Character agruparPor) {
+		this.agruparPor = agruparPor;
 	}
 }

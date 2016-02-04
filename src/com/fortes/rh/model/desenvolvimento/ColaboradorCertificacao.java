@@ -33,6 +33,12 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	@Temporal(TemporalType.DATE)
 	private Date data;
 	
+	@ManyToMany
+	private Collection<ColaboradorTurma> colaboradoresTurmas; 
+
+	@OneToMany(fetch=FetchType.LAZY,  mappedBy="colaboradorCertificacao", cascade = {CascadeType.ALL})
+	private Collection<ColaboradorAvaliacaoPratica> colaboradoresAvaliacoesPraticas;
+	
 	@Transient
 	private String nomeCurso;
 	@Transient
@@ -43,13 +49,11 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	private Boolean aprovadoNaCertificacao;
 	@Transient
 	private Boolean ultimaCertificacao;
-	
-	@ManyToMany
-	private Collection<ColaboradorTurma> colaboradoresTurmas; 
+	@Transient
+	private Integer qtdColaboradorAprovado = 0;
+	@Transient
+	private Integer qtdColaboradorNaoAprovado = 0;
 
-	@OneToMany(fetch=FetchType.LAZY,  mappedBy="colaboradorCertificacao", cascade = {CascadeType.ALL})
-	private Collection<ColaboradorAvaliacaoPratica> colaboradoresAvaliacoesPraticas;
-	
 	public ColaboradorCertificacao() {
 	}
 	
@@ -315,5 +319,21 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 
 	public void setUltimaCertificacao(Boolean ultimaCertificacao) {
 		this.ultimaCertificacao = ultimaCertificacao;
+	}
+	
+	public Integer getQtdColaboradorAprovado() {
+		return qtdColaboradorAprovado;
+	}
+
+	public void setQtdColaboradorAprovado(Integer qtdColaboradorAprovado) {
+		this.qtdColaboradorAprovado = qtdColaboradorAprovado;
+	}
+
+	public Integer getQtdColaboradorNaoAprovado() {
+		return qtdColaboradorNaoAprovado;
+	}
+
+	public void setQtdColaboradorNaoAprovado(Integer qtdColaboradorNaoAprovado) {
+		this.qtdColaboradorNaoAprovado = qtdColaboradorNaoAprovado;
 	}
 }

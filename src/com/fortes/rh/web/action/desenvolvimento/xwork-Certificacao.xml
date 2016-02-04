@@ -64,24 +64,40 @@
 		</action>
 		<action name="imprimirCertificadosVencidosAVencer" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction" method="imprimirCertificadosVencidosAVencer">
 			<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/certificadosVencidosAVencer.jasper</param>
+				<param name="location">WEB-INF/report/colaboradorPorCertificado.jasper</param>
 				<param name="dataSource">colaboradorCertificacoes</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">certificadosVencidosAVencer.pdf</param>
+				<param name="documentName">colaboradorPorCertificacao.pdf</param>
+			</result>
+			<result name="sucessoAgrupadoPorCertificacao" type="jasper">
+				<param name="location">WEB-INF/report/colaboradorPorCertificadoAgrupadoPorCertificacao.jasper</param>
+				<param name="dataSource">colaboradorCertificacoes</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradorPorCertificacao.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareImprimirCertificadosVencidosAVencer.ftl</result>
 		</action>
 		<action name="imprimirCertificadosVencidosAVencerXlS" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction" method="imprimirCertificadosVencidosAVencer">
 			<result name="success" type="xls">
 				<param name="dataSource">colaboradorCertificacoes</param>
-				<param name="documentName">certificadosVencidosAVencer.xls</param>
+				<param name="documentName">colaboradorPorCertificacao.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Nome,Nome Comercial,Matrícula,Estabelecimento,Cargo,Área Organizacional,Certificação,Status Certificação,Certificado em,Periodicidade,Vencimento do Certificado,Curso,Período,Aprovado</param>
-				<param name="propertiesGroup">colaborador.id,colaborador.id,colaborador.matricula,colaborador.estabelecimento.id,colaborador.faixaSalarial.cargo.id,colaborador.areaOrganizacional.id,certificacao.id,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidade,dataVencimentoCertificacao</param>
-				<param name="properties">colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.faixaSalarial.cargo.nome,colaborador.areaOrganizacional.nome,certificacao.nome,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,nomeCurso,periodoTurma,aprovadoNaTurmaString</param>
+				<param name="columns">Nome,Nome Comercial,Matrícula,Estabelecimento,Área Organizacional,Cargo,Certificação,Status Certificação,Certificado em,Periodicidade,Vencimento do Certificado,Curso,Período,Aprovado</param>
+				<param name="propertiesGroup">colaborador.id,colaborador.id,colaborador.matricula,colaborador.estabelecimento.id,colaborador.areaOrganizacional.id,colaborador.faixaSalarial.cargo.id,certificacao.id,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidade,dataVencimentoCertificacao</param>
+				<param name="properties">colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.nome,colaborador.faixaSalarial.cargo.nome,certificacao.nome,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,nomeCurso,periodoTurma,aprovadoNaTurmaString</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
-			</result>	
+			</result>
+			<result name="sucessoAgrupadoPorCertificacao" type="xls">
+				<param name="dataSource">colaboradorCertificacoes</param>
+				<param name="documentName">colaboradorPorCertificacao.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Certificação,Status Certificação,Certificado em,Periodicidade,Vencimento do Certificado,Qtd Aprovado,Qtd Não Aprovado,Nome,Nome Comercial,Matrícula,Estabelecimento,Área Organizacional,Cargo,Curso,Período,Aprovado</param>
+				<param name="propertiesGroup">certificacao.id,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidade,dataVencimentoCertificacao,qtdColaboradorAprovado,qtdColaboradorNaoAprovado,colaborador.id,colaborador.id,colaborador.matricula,colaborador.estabelecimento.id,colaborador.areaOrganizacional.id,colaborador.faixaSalarial.cargo.id</param>
+				<param name="properties">certificacao.nome,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,qtdColaboradorAprovado,qtdColaboradorNaoAprovado,colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.nome,colaborador.faixaSalarial.cargo.nome,nomeCurso,periodoTurma,aprovadoNaTurmaString</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>		
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareImprimirCertificadosVencidosAVencer.ftl</result>
 		</action>
 	</package>

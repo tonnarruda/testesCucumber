@@ -33,13 +33,12 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 
 	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Integer mesesCertificacoesAVencer, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] colaboradoresIds)
 	{
-		Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno = new ArrayList<ColaboradorCertificacao>();
-
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
 		CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBeanOld("certificacaoManager");
 
+		Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno = new ArrayList<ColaboradorCertificacao>();
 		Collection<Certificacao> certificacoes = certificacaoManager.findById(certificacoesIds);
-		certificacoes = new CollectionUtil<Certificacao>().sortCollection(certificacoes, "nome");
+		certificacoes = new CollectionUtil<Certificacao>().sortCollectionStringIgnoreCase(certificacoes, "nome");
 		
 		Collection<ColaboradorCertificacao> colaboradoresQueParticipamDaCerttificacao = new ArrayList<ColaboradorCertificacao>();
 		for (Certificacao certificacao : certificacoes) 
@@ -48,9 +47,8 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		Date hoje = new Date();
 		Date dataDoVencimento = null;
 		ColaboradorCertificacao	colabCertificacao;
-		colaboradoresQueParticipamDaCerttificacao = new CollectionUtil<ColaboradorCertificacao>().sortCollection(colaboradoresQueParticipamDaCerttificacao, "colaborador.nome");
+		colaboradoresQueParticipamDaCerttificacao = new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradoresQueParticipamDaCerttificacao, "colaborador.nome");
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresQueParticipamDaCerttificacao){
-			
 			if( colaboradorCertificacao.getData() != null && colaboradorCertificacao.getCertificacao() != null && colaboradorCertificacao.getCertificacao().getPeriodicidade() != null)
 				dataDoVencimento = DateUtil.incrementaMes(colaboradorCertificacao.getData(), colaboradorCertificacao.getCertificacao().getPeriodicidade());
 
