@@ -51,6 +51,15 @@
 			</result>
 			<result name="input" type="redirect">list.action</result>
 		</action>
+		<action name="imprimirCat" class="com.fortes.rh.web.action.sesmt.CatEditAction" method="imprimirCat">
+			<result name="success" type="jasper">
+				<param name="dataSource">cat</param>
+				<param name="location">/WEB-INF/report/fichacat.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">fichacat.pdf</param>
+			</result>
+			<result name="input" type="redirect">list.action</result>
+		</action>
 		<action name="relatorioCats" class="com.fortes.rh.web.action.sesmt.CatEditAction" method="relatorioCats">
 			<result name="success" type="jasper">
 				<param name="dataSource">Cats</param>

@@ -15,10 +15,16 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.captacao.Ctps;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.TipoAcidente;
+import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -77,6 +83,36 @@ public class Cat extends AbstractModel implements Serializable
     private boolean limitacaoFuncional;
     @Lob
     private String obsLimitacaoFuncional;
+    
+    @Column(length=100)
+    private String testemunha1Nome;
+    @Column(length=100)
+    private String testemunha1Endereco;
+    @Column(length=100)
+    private String testemunha1Bairro;
+    @Column(length=8)
+    private String testemunha1Cep;
+    @Column(length=100)
+    private String testemunha1Municipio;
+    @Column(length=2)
+    private String testemunha1UF;
+    @Column(length=20)
+    private String testemunha1Telefone;
+    
+    @Column(length=100)
+    private String testemunha2Nome;
+    @Column(length=100)
+    private String testemunha2Endereco;
+    @Column(length=100)
+    private String testemunha2Bairro;
+    @Column(length=8)
+    private String testemunha2Cep;
+    @Column(length=100)
+    private String testemunha2Municipio;
+    @Column(length=2)
+    private String testemunha2UF;
+    @Column(length=20)
+    private String testemunha2Telefone;
     
     public Cat()
 	{
@@ -140,6 +176,114 @@ public class Cat extends AbstractModel implements Serializable
 
 		this.funcaoColaborador = new Funcao();
 		funcaoColaborador.setNome(funcaoNome);
+
+		this.naturezaLesao = new NaturezaLesao();
+		naturezaLesao.setDescricao(naturezaLesaoDescricao);
+	}
+    
+    public Cat(Cat cat, String empresaRazaoSocial, String empresaCnpj, String empresaCnae, String empresaEndereco, String empresaCidadeNome, String empresaUfSigla, String empresaTelefone,
+			String colaboradorNome, String colaboradorMae, Date colaboradorDataNascimento, Character colaboradorSexo, String colaboradorEstadoCivil, String colaboradorCtpsNumero,
+			String colaboradorCtpsSerie, Date colaboradorCtpsDataExpedicao, Estado colaboradorCtpsUf, String colaboradorRg, Date colaboradorRgDataExpedicao, String colaboradorRgOrgaoEmissor,
+			Estado colaboradorRgUf, String colaboradorPis, Double colaboradorSalario,
+			String colaboradorLogradouro, String colaboradorNumero, String colaboradorBairro, String colaboradorCep, Cidade colaboradorCidade, Estado colaboradorUf, 
+			String colaboradorDdd, String colaboradorFoneFixo, String cargoNomeMercado, String cargoCboCodigo, String naturezaLesaoDescricao )
+    {
+		setId(cat.getId());
+		this.data = cat.getData();
+		this.horario = cat.getHorario();
+		this.local = cat.getLocal();
+		this.emitiuCAT = cat.isEmitiuCAT();
+		this.numeroCat = cat.getNumeroCat();
+		this.gerouAfastamento = cat.getGerouAfastamento();
+		this.foiTreinadoParaFuncao = cat.isFoiTreinadoParaFuncao();
+		this.usavaEPI = cat.isUsavaEPI();
+		this.tipoAcidente = cat.getTipoAcidente();
+		this.parteAtingida = cat.getParteAtingida();
+		this.fonteLesao = cat.getFonteLesao();
+		this.qtdDiasAfastado = cat.getQtdDiasAfastado();
+		this.observacao = cat.getObservacao();
+		this.conclusao = cat.getConclusao();
+		this.epis = cat.getEpis();
+		this.fotoUrl = cat.getFotoUrl();
+		this.qtdDiasDebitados = cat.getQtdDiasDebitados();
+		this.limitacaoFuncional = cat.isLimitacaoFuncional();
+		this.obsLimitacaoFuncional = cat.getObsLimitacaoFuncional();
+		
+		this.testemunha1Nome = cat.getTestemunha1Nome();
+		this.testemunha1Bairro = cat.getTestemunha1Bairro();
+		this.testemunha1Cep = cat.getTestemunha1Cep();
+		this.testemunha1Endereco = cat.getTestemunha1Endereco();
+		this.testemunha1Municipio = cat.getTestemunha1Municipio();
+		this.testemunha1Telefone = cat.getTestemunha1Telefone();
+		this.testemunha1UF = cat.getTestemunha1UF();
+		
+		this.testemunha2Nome = cat.getTestemunha2Nome();
+		this.testemunha2Bairro = cat.getTestemunha2Bairro();
+		this.testemunha2Cep = cat.getTestemunha2Cep();
+		this.testemunha2Endereco = cat.getTestemunha2Endereco();
+		this.testemunha2Municipio = cat.getTestemunha2Municipio();
+		this.testemunha2Telefone = cat.getTestemunha2Telefone();
+		this.testemunha2UF = cat.getTestemunha2UF();
+		
+		this.colaborador = new Colaborador();
+		colaborador.setNome(colaboradorNome);
+		colaborador.setSalario(colaboradorSalario);
+		
+		colaborador.setEnderecoLogradouro(colaboradorLogradouro);
+		colaborador.setEnderecoNumero(colaboradorNumero);
+		colaborador.setEnderecoBairro(colaboradorBairro);
+		colaborador.setEnderecoCep(colaboradorCep);
+		colaborador.setEnderecoCidadeId(colaboradorCidade.getId());
+		colaborador.setEnderecoCidadeNome(colaboradorCidade.getNome());
+		colaborador.setEnderecoUfId(colaboradorUf.getId());
+		colaborador.setEnderecoUfSigla(colaboradorUf.getSigla());
+		colaborador.setContatoDdd(colaboradorDdd);
+		colaborador.setContatoFoneFixo(colaboradorFoneFixo);
+
+		Cargo cargo =  new Cargo();
+		cargo.setNomeMercado(cargoNomeMercado);
+		cargo.setCboCodigo(cargoCboCodigo);
+		FaixaSalarial faixaSalarial = new FaixaSalarial();
+		faixaSalarial.setCargo(cargo);
+		colaborador.setFaixaSalarial(faixaSalarial);
+		
+		Pessoal pessoal = new Pessoal();
+		pessoal.setMae(colaboradorMae);
+		pessoal.setDataNascimento(colaboradorDataNascimento);
+		pessoal.setSexo(colaboradorSexo);
+		pessoal.setEstadoCivil(new EstadoCivil().get(colaboradorEstadoCivil).toString());
+		pessoal.setRg(colaboradorRg);
+		pessoal.setRgDataExpedicao(colaboradorRgDataExpedicao);
+		pessoal.setRgOrgaoEmissor(colaboradorRgOrgaoEmissor);
+		pessoal.setPis(colaboradorPis);
+		pessoal.setRgUf(colaboradorRgUf);
+		
+		Ctps ctps = new Ctps();
+		ctps.setCtpsNumero(colaboradorCtpsNumero);
+		ctps.setCtpsSerie(colaboradorCtpsSerie);
+		ctps.setCtpsDataExpedicao(colaboradorCtpsDataExpedicao);
+		ctps.setCtpsUf(colaboradorCtpsUf);
+		pessoal.setCtps(ctps);
+		colaborador.setPessoal(pessoal);
+		
+		Empresa empresa = new Empresa();
+		empresa.setCnpj(empresaCnpj);
+		empresa.setCnae(empresaCnae);
+		empresa.setRazaoSocial(empresaRazaoSocial);
+		empresa.setEndereco(empresaEndereco);
+		empresa.setProjectionCidadeNome(empresaCidadeNome);
+		empresa.setTelefone(empresaTelefone);
+		colaborador.setEmpresa(empresa);
+		
+		Estado uf = new Estado();
+		uf.setSigla(empresaUfSigla);
+		empresa.setUf(uf);
+		
+//		this.ambienteColaborador = new Ambiente();
+//		ambienteColaborador.setNome(ambienteNome);
+
+//		this.funcaoColaborador = new Funcao();
+//		funcaoColaborador.setNome(funcaoNome);
 
 		this.naturezaLesao = new NaturezaLesao();
 		naturezaLesao.setDescricao(naturezaLesaoDescricao);
@@ -408,5 +552,117 @@ public class Cat extends AbstractModel implements Serializable
 
 	public void setObsLimitacaoFuncional(String obsLimitacaoFuncional) {
 		this.obsLimitacaoFuncional = obsLimitacaoFuncional;
+	}
+
+	public String getTestemunha1Nome() {
+		return testemunha1Nome;
+	}
+
+	public void setTestemunha1Nome(String testemunha1Nome) {
+		this.testemunha1Nome = testemunha1Nome;
+	}
+
+	public String getTestemunha1Endereco() {
+		return testemunha1Endereco;
+	}
+
+	public void setTestemunha1Endereco(String testemunha1Endereco) {
+		this.testemunha1Endereco = testemunha1Endereco;
+	}
+
+	public String getTestemunha1Bairro() {
+		return testemunha1Bairro;
+	}
+
+	public void setTestemunha1Bairro(String testemunha1Bairro) {
+		this.testemunha1Bairro = testemunha1Bairro;
+	}
+
+	public String getTestemunha1Cep() {
+		return testemunha1Cep;
+	}
+
+	public void setTestemunha1Cep(String testemunha1Cep) {
+		this.testemunha1Cep = testemunha1Cep;
+	}
+
+	public String getTestemunha1Municipio() {
+		return testemunha1Municipio;
+	}
+
+	public void setTestemunha1Municipio(String testemunha1Municipio) {
+		this.testemunha1Municipio = testemunha1Municipio;
+	}
+
+	public String getTestemunha1UF() {
+		return testemunha1UF;
+	}
+
+	public void setTestemunha1UF(String testemunha1uf) {
+		testemunha1UF = testemunha1uf;
+	}
+
+	public String getTestemunha1Telefone() {
+		return testemunha1Telefone;
+	}
+
+	public void setTestemunha1Telefone(String testemunha1Telefone) {
+		this.testemunha1Telefone = testemunha1Telefone;
+	}
+
+	public String getTestemunha2Nome() {
+		return testemunha2Nome;
+	}
+
+	public void setTestemunha2Nome(String testemunha2Nome) {
+		this.testemunha2Nome = testemunha2Nome;
+	}
+
+	public String getTestemunha2Endereco() {
+		return testemunha2Endereco;
+	}
+
+	public void setTestemunha2Endereco(String testemunha2Endereco) {
+		this.testemunha2Endereco = testemunha2Endereco;
+	}
+
+	public String getTestemunha2Bairro() {
+		return testemunha2Bairro;
+	}
+
+	public void setTestemunha2Bairro(String testemunha2Bairro) {
+		this.testemunha2Bairro = testemunha2Bairro;
+	}
+
+	public String getTestemunha2Cep() {
+		return testemunha2Cep;
+	}
+
+	public void setTestemunha2Cep(String testemunha2Cep) {
+		this.testemunha2Cep = testemunha2Cep;
+	}
+
+	public String getTestemunha2Municipio() {
+		return testemunha2Municipio;
+	}
+
+	public void setTestemunha2Municipio(String testemunha2Municipio) {
+		this.testemunha2Municipio = testemunha2Municipio;
+	}
+
+	public String getTestemunha2UF() {
+		return testemunha2UF;
+	}
+
+	public void setTestemunha2UF(String testemunha2uf) {
+		testemunha2UF = testemunha2uf;
+	}
+
+	public String getTestemunha2Telefone() {
+		return testemunha2Telefone;
+	}
+
+	public void setTestemunha2Telefone(String testemunha2Telefone) {
+		this.testemunha2Telefone = testemunha2Telefone;
 	}
 }

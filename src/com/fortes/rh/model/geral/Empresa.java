@@ -60,6 +60,8 @@ public class Empresa extends AbstractModel implements Serializable
     private String horarioTrabalho;
 	@Column(length=100)
     private String endereco;
+	@Column(length=11)
+	private String telefone;
 
 	private boolean solPessoalExibirSalario;
 	private boolean solPessoalExibirColabSubstituido;
@@ -618,5 +620,13 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setProcessoExportacaoAC(boolean processoExportacaoAC) {
 		this.processoExportacaoAC = processoExportacaoAC;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 }

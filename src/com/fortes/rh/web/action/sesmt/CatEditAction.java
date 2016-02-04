@@ -229,7 +229,6 @@ public class CatEditAction extends MyActionSupportList
 			catManager.update(cat);
 			
 			addActionSuccess("Ficha de investigação de acidente atualizada com sucesso.");
-		
 		} catch (Exception e) {
 			addActionError("Não foi possível atualizar a ficha de investigação de acidente.");
 			e.printStackTrace();
@@ -285,11 +284,34 @@ public class CatEditAction extends MyActionSupportList
 		return SUCCESS;
 	}
 
+	public String imprimirCat() throws Exception
+	{
+		try
+		{
+			cat = catManager.findByIdProjectionDetalhada(cat.getId());
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Ficha de Investigacao de Acidente", getEmpresaSistema(), "Comissão Interna de Prevenção de Acidentes");
+			
+			String pathImg = ServletActionContext.getServletContext().getRealPath("/imgs/") + java.io.File.separatorChar;
+			parametros.put("IMG_DIR", pathImg);
+			parametros.put("FOTO_URL", ArquivoUtil.getPathAnexo("sesmt") + java.io.File.separatorChar + cat.getFotoUrl());
+			
+			configuraImpressaoInformacoes();
+			
+			return SUCCESS;
+		}
+		catch (Exception e)
+		{
+			addActionMessage(e.getMessage());
+			return INPUT;
+		}
+	}
+	
 	public String imprimirFichaInvestigacaoAcidente() throws Exception
 	{
 		try
 		{
-			cat = catManager.findByIdProjection(cat.getId());
+			cat = catManager.findByIdProjectionSimples(cat.getId());
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Ficha de Investigacao de Acidente", getEmpresaSistema(), "Comissão Interna de Prevenção de Acidentes");
 			

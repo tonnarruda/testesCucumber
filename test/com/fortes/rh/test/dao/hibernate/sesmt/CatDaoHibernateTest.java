@@ -323,7 +323,7 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 		cat.setEpis(epis);
 		catDao.save(cat);
 
-		Cat retorno = catDao.findByIdProjection(cat.getId());
+		Cat retorno = catDao.findByIdProjectionSimples(cat.getId());
 
 		assertEquals(cat.getColaborador().getNome(), retorno.getColaborador().getNome());
 		assertEquals(cat.getColaborador().getEmpresa().getEnderecoCidadeUf(), retorno.getColaborador().getEmpresa().getEnderecoCidadeUf());

@@ -23,6 +23,13 @@
 	
 	<style type="text/css">
 		#ambiente, #funcao { font-weight: bold; }
+		.testemunha {
+			margin: -4px -10px 5px -10px;
+			padding: 5px 10px;
+			font-weight: bold;
+			border-bottom: 1px solid #e7e7e7;
+			background: #e7e7e7;
+		}
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
@@ -94,7 +101,7 @@
 		</@ww.form>
 	</#if>
 
-	<#assign validarCampos="return validaFormulario('form', new Array('colaborador', 'data', 'horario'), new Array('data'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('colaborador', 'data', 'horario'), new Array('data', 'testemunha1Cep', 'testemunha2Cep', 'testemunha1Telefone', 'testemunha2Telefone'))"/>
 
 	<#if (colaboradors?exists && colaboradors?size > 0) || (edicao?exists)>
 
@@ -143,6 +150,30 @@
 			<fieldset style="width:480px;">
 				<@ww.checkbox label="Limitação funcional?" id="limitacaoFuncional" name="cat.limitacaoFuncional" labelPosition="left"/>
 				<@ww.textarea label="Observação" name="cat.obsLimitacaoFuncional" cssStyle="width:477px;" />
+			</fieldset>
+			
+			<fieldset style="width:480px; margin-top: 10px;">
+				<div class="testemunha">Testemunha 1</div>
+			
+				<@ww.textfield label="Nome" id="testemunha1Nome" name="cat.testemunha1Nome" cssStyle="width:473px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="CEP" id="testemunha1Cep" name="cat.testemunha1Cep" maxLength="8" cssStyle="width:75px;" liClass="liLeft" cssClass="mascaraCep"/>
+				<@ww.textfield label="Endereço" id="testemunha1Endereco" name="cat.testemunha1Endereco" cssStyle="width:391px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="Bairro" id="testemunha1Bairro" name="cat.testemunha1Bairro" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="Município" id="testemunha1Municipio" name="cat.testemunha1Municipio" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="UF" id="testemunha1UF" name="cat.testemunha1UF" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
+				<@ww.textfield label="Telefone" id="testemunha1Telefone" name="cat.testemunha1Telefone" cssStyle="width:105px;" maxLength="11" liClass="liLeft" cssClass="mascaraTelefone"/>
+			</fieldset>
+			
+			<fieldset style="width:480px; margin-top: 10px;">
+				<div class="testemunha">Testemunha 2</div>
+				
+				<@ww.textfield label="Nome" id="testemunha2Nome" name="cat.testemunha2Nome" cssStyle="width:473px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="CEP" id="testemunha2Cep" name="cat.testemunha2Cep" cssStyle="width:75px;" maxLength="8" liClass="liLeft" cssClass="mascaraCep"/>
+				<@ww.textfield label="Endereço" id="testemunha2Endereco" name="cat.testemunha2Endereco" cssStyle="width:391px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="Bairro" id="testemunha2Bairro" name="cat.testemunha2Bairro" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="Município" id="testemunha2Municipio" name="cat.testemunha2Municipio" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="UF" id="testemunha2UF" name="cat.testemunha2UF" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
+				<@ww.textfield label="Telefone" id="testemunha2Telefone" name="cat.testemunha2Telefone" cssStyle="width:105px;" maxLength="11" liClass="liLeft" cssClass="mascaraTelefone"/>
 			</fieldset>
 			
 			<br />

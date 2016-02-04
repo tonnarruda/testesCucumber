@@ -206,7 +206,7 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 		return qtds;
 	}
 
-	public Cat findByIdProjection(Long catId) 
+	public Cat findByIdProjectionSimples(Long catId) 
 	{
 		StringBuilder hql = new StringBuilder("select new Cat(cat, col.nome, amb.nome, func.nome, nat.descricao, emp.nome, emp.razaoSocial, emp.endereco, cid.nome, uf.sigla) ");
 		hql.append(" from Cat cat");
@@ -222,6 +222,41 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("catId", catId);
 
+		return  (Cat) query.uniqueResult();
+	}
+	
+	public Cat findByIdProjectionDetalhada(Long catId) 
+	{
+		StringBuilder hql = new StringBuilder("select new Cat(cat, emp.razaoSocial, emp.cnpj, emp.cnae, emp.endereco, empCid.nome, empUf.sigla, emp.telefone, " +
+				"col.nome, col.pessoal.mae, col.pessoal.dataNascimento, col.pessoal.sexo, col.pessoal.estadoCivil, col.pessoal.ctps.ctpsNumero, col.pessoal.ctps.ctpsSerie, col.pessoal.ctps.ctpsDataExpedicao, ctpsUf, col.pessoal.rg, col.pessoal.rgDataExpedicao, col.pessoal.rgOrgaoEmissor, rgUf, col.pessoal.pis, hc.salario," +
+				"col.endereco.logradouro, col.endereco.numero, col.endereco.bairro, col.endereco.cep, cid, uf, " +
+				"col.contato.ddd, col.contato.foneFixo, ca.nomeMercado, ca.cboCodigo, " +
+				"nat.descricao ) ");
+		hql.append(" from Cat cat");
+		hql.append(" inner join cat.colaborador col");
+		hql.append(" inner join col.empresa emp");
+		hql.append(" left join col.endereco.cidade cid");
+		hql.append(" left join col.endereco.uf uf");
+		hql.append(" left join col.pessoal.ctps.ctpsUf ctpsUf ");
+		hql.append(" left join col.pessoal.rgUf rgUf ");
+		hql.append(" left join col.historicoColaboradors hc ");
+		hql.append(" left join hc.faixaSalarial fs ");
+		hql.append(" left join fs.cargo ca ");
+		hql.append(" left join emp.cidade empCid");
+		hql.append(" left join emp.uf empUf");
+		hql.append(" left join cat.naturezaLesao nat");
+		hql.append(" left join cat.ambienteColaborador amb");
+		hql.append(" left join cat.funcaoColaborador func");
+		hql.append(" where cat.id = :catId");
+		hql.append(" and hc.data = (select max(hc2.data)");
+		hql.append("				from HistoricoColaborador hc2");
+		hql.append(" 				where hc2.data <= cat.data and hc2.status = :status ");
+		hql.append(" 				and col.id = hc2.colaborador.id)");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("catId", catId);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
 		return  (Cat) query.uniqueResult();
 	}
 }

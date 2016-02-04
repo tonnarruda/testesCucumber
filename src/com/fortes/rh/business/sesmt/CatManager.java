@@ -21,6 +21,7 @@ public interface CatManager extends GenericManager<Cat>
 	int findQtdDiasSemAcidentes(Long empresaId);
 	Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataDe, Date dataAte);
 	Collection<DataGrafico> findQtdCatsPorHorario(Long empresaId, Date dataDe, Date dataAte);
-	Cat findByIdProjection(Long catId);
+	Cat findByIdProjectionSimples(Long catId);
+	Cat findByIdProjectionDetalhada(Long catId);
 	void setFoto(Cat cat, boolean manterFoto, File foto, String local);
 }

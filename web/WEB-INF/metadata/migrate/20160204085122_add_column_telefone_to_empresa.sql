@@ -1,0 +1,1 @@
+alter table empresa add column telefone character varying(11);--.go

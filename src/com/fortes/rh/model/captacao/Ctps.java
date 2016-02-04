@@ -11,6 +11,7 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.util.DateUtil;
 
 public class Ctps implements Serializable
 {
@@ -31,6 +32,14 @@ public class Ctps implements Serializable
 	public void setCtpsDataExpedicao(Date ctpsDataExpedicao)
 	{
 		this.ctpsDataExpedicao = ctpsDataExpedicao;
+	}
+	public String getCtpsDataExpedicaoFormatada()
+	{
+		String dataFmt = "";
+		if (ctpsDataExpedicao != null)
+			dataFmt += DateUtil.formataDiaMesAno(ctpsDataExpedicao);
+
+		return dataFmt;
 	}
 	public Character getCtpsDv()
 	{
