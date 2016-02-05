@@ -352,7 +352,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cc.colaborador.id"), "colaboradorId");
 		p.add(Projections.property("cc.certificacao.id"), "certificacaoId");
 		p.add(Projections.sqlProjection(" case when {alias}.data = (select max(data) from colaboradorcertificacao where colaborador_id = " + colaboradorId + "  and certificacao_id = "+ certificacaoId +" ) "
-				+ " and not exists(select * from colaboradoravaliacaopratica where colaborador_id = " + colaboradorId + "  and certificacao_id = "+ certificacaoId +")"
+				+ " and not exists(select * from colaboradoravaliacaopratica where colaborador_id = " + colaboradorId + "  and certificacao_id = "+ certificacaoId +" and colaboradorcertificacao_id is null )"
 				+ "then true else false end as ultimaCertificacao ", new String[] {"ultimaCertificacao"}, new Type[] {Hibernate.BOOLEAN}), "ultimaCertificacao");
 	        
 		criteria.setProjection(p);
@@ -363,5 +363,19 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
 
 		return (ColaboradorCertificacao) criteria.uniqueResult();
+	}
+
+	public Date getMaiorDataDasTurmasDaCertificacao(Long colaboradorCertificacaoId) {
+		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
+		criteria.createCriteria("cc.colaboradoresTurmas", "ccct", Criteria.INNER_JOIN);
+		criteria.createCriteria("ccct.turma", "t", Criteria.INNER_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.max("t.dataPrevFim"));
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("cc.id", colaboradorCertificacaoId));
+
+		return  (Date) criteria.uniqueResult();
 	}
 }

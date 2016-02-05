@@ -37,7 +37,7 @@
 		
 		function insereHelp(posicao, help)
 		{
-			<#if colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists && !colaboradorCertificacao.ultimaCertificacao>
+			<#if colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists && (colaboradorCertificacao.ultimaCertificacao?exists && !colaboradorCertificacao.ultimaCertificacao)>
 			$("#tituloTabelaAP").append('<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin: 1px 0px -2px 10px;" />');
 			
 			$('#tooltipHelp').qtip({
@@ -103,7 +103,7 @@
 						<@display.column property="avaliacaoPratica.titulo" title="Título" style="width: 500px;"/>
 						<@display.column property="avaliacaoPratica.notaMinima" title="Nota Mínima Aprovação" style="width: 100px;text-align: center;" />
 						
-						<#if colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists && !colaboradorCertificacao.ultimaCertificacao>
+						<#if colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists && (colaboradorCertificacao.ultimaCertificacao?exists && !colaboradorCertificacao.ultimaCertificacao)>
 							<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
 								${colaboradorAvaliacaoPraticaData}
 							</@display.column>
@@ -128,7 +128,7 @@
 						<#assign i = i + 1/>
 					</@display.table>
 				
-					<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) &&  !(colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists && !colaboradorCertificacao.ultimaCertificacao) >
+					<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) &&  !(colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists && (colaboradorCertificacao.ultimaCertificacao?exists && !colaboradorCertificacao.ultimaCertificacao) ) >
 						<div class="buttonGroup">
 							<button type="button" class="btnGravar" onclick="submeter('insertOrUpdate.action');"></button>
 						</div>

@@ -259,4 +259,8 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	public void setAvaliacaoPraticaManager( AvaliacaoPraticaManager avaliacaoPraticaManager) {
 		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
 	}
+
+	public Date getMaiorDataDasTurmasDaCertificacao( Long colaboradorCertificacaoId) {
+		return getDao().getMaiorDataDasTurmasDaCertificacao(colaboradorCertificacaoId);
+	}
 }

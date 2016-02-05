@@ -19,4 +19,5 @@ public interface ColaboradorCertificacaoManager extends GenericManager<Colaborad
 	void saveColaboradorCertificacao(ColaboradorCertificacao colaboradorCertificacao);
 	public ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId);
 	public ColaboradorCertificacao findColaboradorCertificadoInfomandoSeEUltimaCertificacao(Long colaboradorCertificacaoId, Long colaboradorId, Long certificacaoId);
+	Date getMaiorDataDasTurmasDaCertificacao(Long colaboradorCertificacaoId);
 }

@@ -1795,4 +1795,12 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 	    return criteria.list();
 	}
+	
+	public boolean exists (){
+		
+		
+//		select exists (select turma_id from colaboradorturma where id in(select colaboradoresturmas_id from colaboradorcertificacao_colaboradorturma)  and turma_id = 1405)
+		return false;
+		
+	}
 }
