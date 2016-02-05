@@ -207,7 +207,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 	public Collection<ColaboradorTurma> colaboradoresTurmaCertificados(Long colaboradorId, Long certificacaoId) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT ct.id as colaboradorTurmaId, t.id as turmaId, t.dataPrevFim as turmaDataPrevFim FROM colaboradorTurma ct ");
-		sql.append("INNER JOIN turma t ON t.id = ct.turma_id AND t.dataprevfim = ( (SELECT MAX(dataprevfim) FROM turma t2 WHERE t2.curso_id = t.curso_id AND t2.realizada AND t2.id = ct.turma_id) ) ");
+		sql.append("INNER JOIN turma t ON t.id = ct.turma_id AND t.dataprevfim = ( (SELECT MAX(dataprevfim) FROM turma t2 WHERE t2.curso_id = t.curso_id AND t2.realizada ) ) ");
 		sql.append("INNER JOIN curso c ON c.id = t.curso_id ");
 		sql.append("WHERE ct.colaborador_id = :colaboradorId AND t.realizada AND c.id IN ((SELECT cursos_id FROM certificacao_curso WHERE certificacaos_id = :certificacaoId)) ");
 		sql.append("AND verifica_aprovacao(c.id, t.id, ct.id, c.percentualminimofrequencia) order by t.dataprevfim desc");

@@ -172,16 +172,14 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 					descertifica = true;
 			}
 		}
+		
 		atualizaDataOrDescertificaColaboradorCertificacao(descertifica, colaboradorAvaliacaoPraticas);
 		
 		if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
 		{
 			Collection<ColaboradorCertificacao> colaboradoresCertificados = colaboradorCertificacaoManager.colaboradoresCertificadosByColaboradorIdAndCertificacaId(colaborador.getId(), certificacao.getId());
-			
 			for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificados) 
-			{
 				colaboradorCertificacaoManager.saveColaboradorCertificacao(colaboradorCertificacao);
-			}
 		}
 		colaboradorCertificacao = new ColaboradorCertificacao();
 
