@@ -306,7 +306,7 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	}
 
 	public Boolean getAprovadoNaCertificacao() {
-		return aprovadoNaCertificacao;
+		return aprovadoNaCertificacao != null ? aprovadoNaCertificacao : false;
 	}
 
 	public void setAprovadoNaCertificacao(Boolean aprovadoNaCertificacao) {

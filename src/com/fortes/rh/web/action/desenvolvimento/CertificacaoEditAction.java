@@ -107,7 +107,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			prepare();
 			cursosCheckList = CheckListBoxUtil.marcaCheckListBox(cursosCheckList, certificacao.getCursos(), "getId");
 			avaliacoesPraticasCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacoesPraticasCheckList, certificacao.getAvaliacoesPraticas(), "getId");
-			bloquearEdicao = (colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(null, certificacao.getId()).size() > 0) && getEmpresaSistema().isControlarVencimentoPorCertificacao();
+			bloquearEdicao = getEmpresaSistema().isControlarVencimentoPorCertificacao() && (colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(null, certificacao.getId()).size() > 0);
 		}
 		else
 			addActionError("A Certificação solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
@@ -187,7 +187,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 				return Action.INPUT;	
 			}
 			
-			if(agruparPor == 'T')
+			if(agruparPor != null && agruparPor == 'T')
 				return agruparPorCertificacao();
 			
 			return Action.SUCCESS;

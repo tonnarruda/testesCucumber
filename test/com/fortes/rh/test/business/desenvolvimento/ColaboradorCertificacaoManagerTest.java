@@ -75,18 +75,34 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
 		MockSpringUtil.mocks.put("certificacaoManager", certificacaoManager);
 		
-		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
-		certificacao.setNome("cert. admin");
-		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
-		certificacoes.add(certificacao);
+		Certificacao certificacao1 = CertificacaoFactory.getEntity(1L);
+		certificacao1.setNome("cert. admin");
 		
-		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
-		colaboradorCertificacao.setColaborador(ColaboradorFactory.getEntity(1L));
-		colaboradorCertificacao.setData(DateUtil.criarDataMesAno(1, 1, 2016));
-		colaboradorCertificacao.setCertificacao(certificacao);
+		Certificacao certificacao2 = CertificacaoFactory.getEntity(1L);
+		certificacao2.setNome("cert. Dev");
+
+		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
+		certificacoes.add(certificacao1);
+		
+		Colaborador colab1 = ColaboradorFactory.getEntity(1L);
+		colab1.setNome("Astrogildis");
+		
+		Colaborador colab2 = ColaboradorFactory.getEntity(1L);
+		colab2.setNome("Margnoris");
+		
+		ColaboradorCertificacao colaboradorCertificacao1 = ColaboradorCertificacaoFactory.getEntity(1L);
+		colaboradorCertificacao1.setColaborador(colab1);
+		colaboradorCertificacao1.setData(DateUtil.criarDataMesAno(1, 1, 2016));
+		colaboradorCertificacao1.setCertificacao(certificacao1);
+		
+		ColaboradorCertificacao colaboradorCertificacao2 = ColaboradorCertificacaoFactory.getEntity(1L);
+		colaboradorCertificacao2.setColaborador(colab2);
+		colaboradorCertificacao2.setData(DateUtil.criarDataMesAno(1, 1, 2016));
+		colaboradorCertificacao2.setCertificacao(certificacao2);
 		
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
-		colaboradorCertificacaos.add(colaboradorCertificacao);
+		colaboradorCertificacaos.add(colaboradorCertificacao1);
+		colaboradorCertificacaos.add(colaboradorCertificacao2);
 		
 		Curso curso = CursoFactory.getEntity(1L);
 		
@@ -94,13 +110,23 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		turma.setDataPrevIni(DateUtil.criarDataMesAno(1, 3, 2015));
 		turma.setDataPrevFim(DateUtil.criarDataMesAno(1, 4, 2015));
 		
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
-		colaboradorTurma.setCurso(curso);
-		colaboradorTurma.setTurma(turma);
-		colaboradorTurma.setAprovado(true);
+		ColaboradorTurma colaboradorTurma1 = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma1.setCurso(curso);
+		colaboradorTurma1.setTurma(turma);
+		colaboradorTurma1.setColaborador(colab1);
+		colaboradorTurma1.setAprovado(true);
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-		colaboradorTurmas.add(colaboradorTurma);
+		Collection<ColaboradorTurma> colaboradorTurmas1 = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas1.add(colaboradorTurma1);
+		
+		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity(2L);
+		colaboradorTurma2.setCurso(curso);
+		colaboradorTurma2.setTurma(turma);
+		colaboradorTurma2.setColaborador(colab1);
+		colaboradorTurma2.setAprovado(true);
+		
+		Collection<ColaboradorTurma> colaboradorTurmas2 = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas2.add(colaboradorTurma2);
 		
 		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
 		avaliacaoPratica.setNotaMinima(90.0);
@@ -109,25 +135,33 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		Collection<AvaliacaoPratica> avaliacoesPraticas = new ArrayList<AvaliacaoPratica>();
 		avaliacoesPraticas.add(avaliacaoPratica);
 		
-		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity(1L);
-		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
-		colaboradorAvaliacaoPratica.setNota(90.0);
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica1 = ColaboradorAvaliacaoPraticaFactory.getEntity(1L);
+		colaboradorAvaliacaoPratica1.setColaborador(colab1);
+		colaboradorAvaliacaoPratica1.setAvaliacaoPratica(avaliacaoPratica);
+		colaboradorAvaliacaoPratica1.setNota(90.0);
+		
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica2 = ColaboradorAvaliacaoPraticaFactory.getEntity(2L);
+		colaboradorAvaliacaoPratica2.setColaborador(colab2);
+		colaboradorAvaliacaoPratica1.setAvaliacaoPratica(avaliacaoPratica);
+		colaboradorAvaliacaoPratica1.setNota(90.0);
 		
 		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = new ArrayList<ColaboradorAvaliacaoPratica>();
-		avaliacoesPraticasDoColaboradorRealizadas.add(colaboradorAvaliacaoPratica);
+		avaliacoesPraticasDoColaboradorRealizadas.add(colaboradorAvaliacaoPratica1);
+		avaliacoesPraticasDoColaboradorRealizadas.add(colaboradorAvaliacaoPratica2);
 		
 		colaboradorCertificacaoDao.expects(once()).method("colaboradoresQueParticipaDoCertificado").will(returnValue(colaboradorCertificacaos));
-		colaboradorTurmaManager.expects(once()).method("findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId").will(returnValue(colaboradorTurmas));
-		avaliacaoPraticaManager.expects(once()).method("findByCertificacaoId").will(returnValue(avaliacoesPraticas));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(avaliacoesPraticasDoColaboradorRealizadas));
+		colaboradorTurmaManager.expects(once()).method("findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId").will(returnValue(colaboradorTurmas1));
+		colaboradorTurmaManager.expects(once()).method("findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId").will(returnValue(colaboradorTurmas2));
+		avaliacaoPraticaManager.expects(atLeastOnce()).method("findByCertificacaoId").will(returnValue(avaliacoesPraticas));
+		colaboradorAvaliacaoPraticaManager.expects(atLeastOnce()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(avaliacoesPraticasDoColaboradorRealizadas));
 		certificacaoManager.expects(once()).method("findById").will(returnValue(certificacoes));
 		
 		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
 		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2016);
 		
-		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, true, true, null, null, null, new Long[]{colaboradorCertificacao.getId()}, null);
+		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, true, true, null, null, null, new Long[]{colaboradorCertificacao1.getId()}, null);
 		
-		assertEquals(2, colaboradoresNasCertificacoes.size());
+		assertEquals(4, colaboradoresNasCertificacoes.size());
 		
 		ColaboradorCertificacao result2 = (ColaboradorCertificacao) colaboradoresNasCertificacoes.toArray()[1];
 		
