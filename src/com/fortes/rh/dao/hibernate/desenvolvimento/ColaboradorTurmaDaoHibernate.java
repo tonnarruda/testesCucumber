@@ -1812,7 +1812,6 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	}
 	
 	public Boolean verificaAprovacao(Long cursoId, Long turmaId, Long colaboradorTurmaId, Double percentualMinimoFrequencia) {
-		
 		StringBuilder sql = new StringBuilder();
 		sql.append("select verifica_aprovacao(:cursoId, :turmaId, :colaboradorTurmaId, :percentualMinimoFrequencia) as aprovacao ");
 		

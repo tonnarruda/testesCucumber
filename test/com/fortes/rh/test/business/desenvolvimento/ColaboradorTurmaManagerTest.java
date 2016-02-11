@@ -1290,4 +1290,15 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		assertEquals(msgAlert.trim(), colaboradorTurmaManager.verificaColaboradorCertificado(colaboradoresIds, cursoGerencial.getId()).trim());
 	}
+	
+	public void testVerificaAprovacao(){
+		colaboradorTurmaDao.expects(once()).method("verificaAprovacao").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(true));
+		assertTrue(colaboradorTurmaManager.verificaAprovacao(1L, 1L, 1L, 100.0));
+	}
+	
+	public void testFindByTurmaPresenteNoDiaTurmaId(){
+		Collection<ColaboradorTurma> colaboradorTurmas = Arrays.asList(ColaboradorTurmaFactory.getEntity());
+		colaboradorTurmaDao.expects(once()).method("findByTurmaPresenteNoDiaTurmaId").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
+		assertEquals(1, colaboradorTurmaManager.findByTurmaPresenteNoDiaTurmaId(1L, 1L).size());
+	}
 }

@@ -2481,6 +2481,83 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		assertEquals(colaborador.getId(), colaborador.getId());
 	}
     
+	public void testVerificaAprovacao() {
+		Date dataInicio = DateUtil.criarDataMesAno(1, 1, 2015);
+		Date dataFim = DateUtil.criarDataMesAno(15, 1, 2015);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome("Curso de Introdução a Java");
+		curso.setEmpresa(empresa);
+		curso.setPeriodicidade(5);
+		curso.setPercentualMinimoFrequencia(50.0);
+		cursoDao.save(curso);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome("Antônio ");
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turma.setDescricao("Turma");
+		turma.setDataPrevIni(dataInicio);
+		turma.setDataPrevFim(dataFim);
+		turma.setRealizada(true);
+		turmaDao.save(turma);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		assertTrue(colaboradorTurmaDao.verificaAprovacao(curso.getId(), turma.getId(), colaboradorTurma.getId(), curso.getPercentualMinimoFrequencia()));
+	}
+	
+	public void testFindByTurmaPresenteNoDiaTurmaId(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Colaborador colaboradorAusente = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaboradorAusente);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turmaDao.save(turma);
+		
+		ColaboradorTurma colaboradorTurmaPresente = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurmaPresente.setTurma(turma);
+		colaboradorTurmaPresente.setCurso(curso);
+		colaboradorTurmaPresente.setColaborador(colaborador);
+		colaboradorTurmaDao.save(colaboradorTurmaPresente);
+		
+		DiaTurma diaTurma = DiaTurmaFactory.getEntity();
+		diaTurma.setTurma(turma);
+    	diaTurmaDao.save(diaTurma);
+
+    	ColaboradorPresenca colaboradorPresenca = ColaboradorPresencaFactory.getEntity();
+    	colaboradorPresenca.setColaboradorTurma(colaboradorTurmaPresente);
+    	colaboradorPresenca.setDiaTurma(diaTurma);
+    	colaboradorPresencaDao.save(colaboradorPresenca);
+
+    	ColaboradorTurma colaboradorTurmaAusente = getEntity();
+    	colaboradorTurmaAusente.setTurma(turma);
+    	colaboradorTurmaAusente.setCurso(curso);
+    	colaboradorTurmaAusente.setColaborador(colaboradorAusente);
+    	colaboradorTurmaDao.save(colaboradorTurmaAusente);
+
+    	Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaDao.findByTurmaPresenteNoDiaTurmaId(turma.getId(), diaTurma.getId());
+    	
+    	assertEquals(1, colaboradorTurmas.size());
+    	assertEquals(colaboradorTurmaPresente.getId(), ((ColaboradorTurma) colaboradorTurmas.toArray()[0]).getId());
+	}
+	
     public GenericDao<ColaboradorTurma> getGenericDao()
     {
         return colaboradorTurmaDao;
@@ -2567,8 +2644,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		this.avaliacaoCursoDao = avaliacaoCursoDao;
 	}
 
-	public void setColaboradorQuestionarioDao(
-			ColaboradorQuestionarioDao colaboradorQuestionarioDao) {
+	public void setColaboradorQuestionarioDao( ColaboradorQuestionarioDao colaboradorQuestionarioDao) {
 		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
 	}
 
@@ -2580,14 +2656,11 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		this.avaliacaoDao = avaliacaoDao;
 	}
 
-	public void setAproveitamentoAvaliacaoCursoDao(
-			AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao) {
+	public void setAproveitamentoAvaliacaoCursoDao( AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao) {
 		this.aproveitamentoAvaliacaoCursoDao = aproveitamentoAvaliacaoCursoDao;
 	}
 
-	public void setColaboradorCertificacaoDao(
-			ColaboradorCertificacaoDao colaboradorCertificacaoDao) {
+	public void setColaboradorCertificacaoDao( ColaboradorCertificacaoDao colaboradorCertificacaoDao) {
 		this.colaboradorCertificacaoDao = colaboradorCertificacaoDao;
 	}
-	
 }

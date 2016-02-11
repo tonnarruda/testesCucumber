@@ -460,7 +460,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findByTurmaSemPresenca(turmaId, diaTurmaId);
 	}
 	
-	public Collection<ColaboradorTurma> findByTurmaPresenteNoDiaTurmaId(Long turmaId, Long diaTurmaId){
+	public Collection<ColaboradorTurma> findByTurmaPresenteNoDiaTurmaId(Long turmaId, Long diaTurmaId)
+	{
 		return getDao().findByTurmaPresenteNoDiaTurmaId(turmaId, diaTurmaId);
 	}
 
