@@ -187,6 +187,8 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private ByteArrayInputStream byteArrayInputStream;
 	private String mesAno;
+	private String dataInicioGozo;
+	private String dataFimGozo;
 
 	private enum Nomenclatura {
 		ENVIADO_FP("Enviado Fortes Pessoal"),
@@ -264,6 +266,53 @@ public class ColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
+	public String prepareReciboDeFerias() throws Exception
+	{
+		preparaRecibo("seu recibo de férias");
+		if ( getActionWarnings().size() == 0 )
+			dataCalculos = colaboradorManager.getDatasPeriodoDeGozoPorEmpregado(colaborador);
+		return Action.SUCCESS;
+	}
+	
+	public String reciboDeFerias() throws Exception
+	{
+		try {
+			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+			
+			String reciboDeFerias = colaboradorManager.getAvisoReciboDeFerias(colaborador, dataInicioGozo, dataFimGozo);
+			
+	        byte[] reciboreciboDeFeriasBytes = Base64.decodeBase64(reciboDeFerias.getBytes()); 
+			
+	        byteArrayInputStream = new ByteArrayInputStream(reciboreciboDeFeriasBytes);
+	        
+	        HttpServletResponse response = ServletActionContext.getResponse();
+
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.setContentType("application/force-download");
+			response.setContentLength((int)reciboreciboDeFeriasBytes.length);
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition","attachment; filename=\"recibo_ferias_" + dataInicioGozo+"_"+dataFimGozo.replace("/", "") + ".pdf\"");
+
+			response.getOutputStream().write(reciboreciboDeFeriasBytes);
+		} 
+		catch (Exception e) 
+		{
+			if(e instanceof IntegraACException)
+				addActionWarning(e.getMessage());
+			else
+				addActionError(e.getMessage());
+			
+			e.printStackTrace();
+			addActionError(e.getMessage());
+			prepareReciboDeFerias();
+			return Action.INPUT;
+		}
+        
+		return Action.SUCCESS;
+	}
+	
 	public String prepareReciboPagamento() throws Exception
 	{
 		preparaRecibo("seu recibo de pagamento");
@@ -311,8 +360,9 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public String prepareReciboDeDecimoTerceiro() throws Exception
 	{
-	
 		preparaRecibo("seu recibo de décimo terceiro");
+		if ( getActionWarnings().size() == 0 )
+			dataCalculos = colaboradorManager.getDatasDecimoTerceiroPorEmpregado(colaborador);
 		return Action.SUCCESS;
 	}
 	
@@ -1571,5 +1621,13 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
 		this.empresasPermitidas = empresasPermitidas;
+	}
+
+	public void setDataInicioGozo(String dataInicioGozo) {
+		this.dataInicioGozo = dataInicioGozo;
+	}
+
+	public void setDataFimGozo(String dataFimGozo) {
+		this.dataFimGozo = dataFimGozo;
 	}
 }

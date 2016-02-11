@@ -2834,6 +2834,16 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return acPessoalClientColaborador.getDeclaracaoRendimentos(colaborador, ano);
 	}
 	
+	public String getAvisoReciboDeFerias(Colaborador colaborador, String dataInicioGozo, String dataFimGozo) throws Exception 
+	{
+		return acPessoalClientColaborador.getAvisoReciboDeFerias(colaborador, dataInicioGozo, dataFimGozo);
+	}
+	
+	public String[] getDatasPeriodoDeGozoPorEmpregado(Colaborador colaborador) throws Exception 
+	{
+		return acPessoalClientColaborador.getDatasPeriodoDeGozoPorEmpregado(colaborador);
+	}
+	
 	public String[] getDatasDecimoTerceiroPorEmpregado(Colaborador colaborador) throws Exception 
 	{
 		return acPessoalClientColaborador.getDatasDecimoTerceiroPorEmpregado(colaborador);

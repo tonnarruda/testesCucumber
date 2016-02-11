@@ -18,6 +18,18 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboPagamento.ftl</result>
 		</action>
+		<action name="prepareReciboDeFerias" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareReciboDeFerias">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/reciboDeFerias.ftl</result>
+		</action>
+		<action name="reciboDeFerias" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="reciboDeFerias">
+		    <result name="success" type="stream">
+			    <param name="contentDisposition">filename=reciboDeFerias.pdf</param>
+			    <param name="contentType">application/PDF;charset=UTF-8</param>
+			    <param name="inputName">byteArrayInputStream</param>
+			    <param name="bufferSize">1024</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboDeFerias.ftl</result>
+		</action>
 		<action name="prepareReciboDeDecimoTerceiro" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareReciboDeDecimoTerceiro">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/reciboDeDecimoTerceiro.ftl</result>
 		</action>

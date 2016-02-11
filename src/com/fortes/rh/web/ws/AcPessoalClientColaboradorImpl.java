@@ -366,6 +366,65 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
        	return result.getRetorno();
 	}
 	
+	public String getAvisoReciboDeFerias(Colaborador colaborador, String dataInicioGozo, String dataFimGozo) throws Exception
+	{
+		StringBuilder token = new StringBuilder();
+		GrupoAC grupoAC = new GrupoAC();
+		Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetAvisoReciboDeFerias");
+
+		QName xmlstring = new QName("xs:string");
+
+		call.addParameter("Token", xmlstring, ParameterMode.IN);
+		call.addParameter("Empresa", xmlstring, ParameterMode.IN);
+		call.addParameter("Empregado", xmlstring, ParameterMode.IN);
+		call.addParameter("DataInicioGozo", xmlstring, ParameterMode.IN);
+		call.addParameter("DataFimGozo", xmlstring, ParameterMode.IN);
+		
+		acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+		
+		Object[] param = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC(), dataInicioGozo, dataFimGozo };
+    	
+		TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+       	Boolean retorno = result.getSucesso("GetDeclaracaoRendimentos", param, this.getClass());
+		
+       	if (!retorno)
+        	throw new IntegraACException(result.getMensagem());
+       	
+       	return result.getRetorno();
+	}
+	
+	public String[] getDatasPeriodoDeGozoPorEmpregado(Colaborador colaborador) throws Exception
+	{
+		String[] result = null;
+		try
+		{
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetDatasPeriodoDeGozoPorEmpregado");
+
+            QName qnameAr = new QName("urn:UnTypesPessoalWebService", "TPeriodosDeGozo");
+            call.registerTypeMapping(String[].class, qnameAr, new ArraySerializerFactory(qnameAr), new ArrayDeserializerFactory(qnameAr));
+
+			QName xmlstring = new QName("xs:string");
+
+			call.addParameter("Token",xmlstring,ParameterMode.IN);
+			call.addParameter("Empresa",xmlstring,ParameterMode.IN);
+			call.addParameter("Empregado",xmlstring,ParameterMode.IN);
+
+			call.setReturnType(qnameAr);
+
+			Object[] params = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC() };
+
+			result = (String[]) call.invoke(params);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+	
 	public String[] getDatasDecimoTerceiroPorEmpregado(Colaborador colaborador) throws Exception
 	{
 		String[] result = null;

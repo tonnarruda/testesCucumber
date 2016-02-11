@@ -247,6 +247,8 @@
 				/geral/colaborador/reciboPagamento.action* = ROLE_REL_RECIBO_PAGAMENTO
 				/geral/colaborador/prepareReciboDeDecimoTerceiro.action* = ROLE_REL_RECIBO_DECIMO_TERCEIRO
 				/geral/colaborador/reciboDeDecimoTerceiro.action* = ROLE_REL_RECIBO_DECIMO_TERCEIRO
+				/geral/colaborador/prepareReciboDeFerias.action* = ROLE_REL_RECIBO_FERIAS
+				/geral/colaborador/reciboDeFerias.action* = ROLE_REL_RECIBO_FERIAS
 				/geral/colaborador/prepareDeclaracaoRendimentos.action* = ROLE_REL_DECLARACAO_RENDIMENTOS
 				/geral/colaborador/declaracaoRendimentos.action* = ROLE_REL_DECLARACAO_RENDIMENTOS
 				/geral/colaborador/prepareReciboPagamentoAdiantamentoDeFolha.action* = ROLE_REL_ADIANTAMENTO_DE_FOLHA

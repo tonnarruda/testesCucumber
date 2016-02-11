@@ -208,6 +208,8 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public String getReciboPagamento(Colaborador colaborador, Date mesAno) throws Exception;
 	public String getDeclaracaoRendimentos(Colaborador colaborador, String ano) throws Exception;
 	public String getReciboDeDecimoTerceiro(Colaborador colaborador, String dataCalculo) throws Exception;
+	public String getAvisoReciboDeFerias(Colaborador colaborador, String dataInicioGozo, String dataFimGozo) throws Exception;
+	public String[] getDatasPeriodoDeGozoPorEmpregado(Colaborador colaborador) throws Exception;
 	public String[] getDatasDecimoTerceiroPorEmpregado(Colaborador colaborador) throws Exception;
 	public String getReciboDePagamentoComplementar(Colaborador colaborador, Date mesAno) throws Exception;
 	public String getReciboPagamentoAdiantamentoDeFolha(Colaborador colaborador, Date mesAno) throws Exception;
