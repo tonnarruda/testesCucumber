@@ -474,6 +474,67 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		assertTrue(retorno.getUltimaCertificacao());
 	}
 
+	public void testColaboradorCertificadoEmUmaTurmaPosterior(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		Curso curso = CursoFactory.getEntity();
+		curso.setEmpresa(empresa);
+		cursoDao.save(curso);
+		
+		Collection<Curso> cursos = Arrays.asList(curso);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setEmpresa(empresa);
+		certificacao.setPeriodicidade(1);
+		certificacao.setCursos(cursos);
+		certificacaoDao.save(certificacao);
+
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turma.setDataPrevFim(DateUtil.criarDataMesAno(1, 1, 2015));
+		turmaDao.save(turma);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setCurso(curso);
+		turma2.setDataPrevFim(DateUtil.criarDataMesAno(1, 1, 2016));
+		turmaDao.save(turma2);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma2.setColaborador(colaborador);
+		colaboradorTurma2.setCurso(curso);
+		colaboradorTurma2.setTurma(turma2);
+		colaboradorTurmaDao.save(colaboradorTurma2);
+		
+		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao();
+		colaboradorCertificacao.setColaborador(colaborador);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		colaboradorCertificacao.setColaboradoresTurmas(Arrays.asList(colaboradorTurma));
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+		
+		ColaboradorCertificacao colaboradorCertificacao1 = new ColaboradorCertificacao();
+		colaboradorCertificacao1.setColaborador(colaborador);
+		colaboradorCertificacao1.setCertificacao(certificacao);
+		colaboradorCertificacao1.setData(DateUtil.criarDataMesAno(1, 1, 2016));
+		colaboradorCertificacao1.setColaboradoresTurmas(Arrays.asList(colaboradorTurma2));
+		colaboradorCertificacaoDao.save(colaboradorCertificacao1);
+		
+		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
+		
+		assertTrue(colaboradorCertificacaoDao.findColaboradorCertificadoEmUmaTurmaPosterior(turma.getId(), colaborador.getId()).size() > 0);
+	}
+	
 	public void setColaboradorCertificacaoDao(ColaboradorCertificacaoDao colaboradorCertificacaoDao)
 	{
 		this.colaboradorCertificacaoDao = colaboradorCertificacaoDao;

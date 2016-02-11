@@ -20,6 +20,7 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManagerImpl;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -66,16 +67,17 @@ import com.fortes.rh.util.SpringUtil;
 public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 {
 	private ColaboradorTurmaManagerImpl colaboradorTurmaManager = new ColaboradorTurmaManagerImpl();
-	private Mock colaboradorTurmaDao;
-	private Mock colaboradorManager;
+	private Mock aproveitamentoAvaliacaoCursoManager;
+	private Mock colaboradorCertificacaoManager;
+	private Mock colaboradorPresencaManager;
 	private Mock areaOrganizacionalManager;
 	private Mock avaliacaoCursoManager;
-	private Mock aproveitamentoAvaliacaoCursoManager;
-	private Mock cursoManager;
-	private Mock empresaManager;
 	private Mock certificacaoManager;
-	Mock turmaManager;
-	Mock colaboradorPresencaManager;
+	private Mock colaboradorTurmaDao;
+	private Mock colaboradorManager;
+	private Mock empresaManager;
+	private Mock cursoManager;
+	private Mock turmaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -102,6 +104,10 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 
 		empresaManager = new Mock(EmpresaManager.class);
 		colaboradorTurmaManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
+		
+		colaboradorCertificacaoManager = new Mock(ColaboradorCertificacaoManager.class);
+		colaboradorTurmaManager.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
+		
 
 		turmaManager = new Mock(TurmaManager.class);
 
@@ -258,17 +264,20 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	{
 		Turma turma = TurmaFactory.getEntity();
 		turma.setId(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 
 		ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
 		colaboradorTurma.setId(1L);
 		colaboradorTurma.setTurma(turma);
+		colaboradorTurma.setColaborador(colaborador);
 
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		colaboradorTurmas.add(colaboradorTurma);
 
 		colaboradorTurmaDao.expects(once()).method("findByTurma").with(new Constraint[]{ eq(turma.getId()), eq(null), ANYTHING,  ANYTHING, ANYTHING, eq(true), ANYTHING, ANYTHING}).will(returnValue(colaboradorTurmas));
-
-		Collection<ColaboradorTurma> retornos = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null);
+		colaboradorCertificacaoManager.expects(once()).method("existeColaboradorCertificadoEmUmaTurmaPosterior").with(eq(turma.getId()), eq(colaboradorTurma.getColaborador().getId())).will(returnValue(false));		
+		Collection<ColaboradorTurma> retornos = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null, true);
 
 		assertEquals(1, retornos.size());
 	}

@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -174,5 +175,12 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaboradorCertificacaoDao.expects(once()).method("findColaboradorCertificadoInfomandoSeEUltimaCertificacao").with(eq(colaboradorCertificacao.getId()), eq(colaborador.getId()), eq(certificacao.getId())).will(returnValue(colaboradorCertificacao));
 		assertEquals(colaboradorCertificacao, colaboradorCertificacaoManager.findColaboradorCertificadoInfomandoSeEUltimaCertificacao(colaboradorCertificacao.getId(), colaborador.getId(), certificacao.getId()));
+	}
+	
+	public void testExisteColaboradorCertificadoEmUmaTurmaPosterior() {
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(2L);
+		Collection<ColaboradorTurma> colaboradorTurmas = Arrays.asList(colaboradorTurma);
+		colaboradorCertificacaoDao.expects(once()).method("findColaboradorCertificadoEmUmaTurmaPosterior").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
+		assertTrue(colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(1L, 1L));
 	}
 }

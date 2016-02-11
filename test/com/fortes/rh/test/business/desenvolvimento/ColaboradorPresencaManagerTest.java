@@ -15,6 +15,8 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
@@ -74,12 +76,32 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 	
 	public void testMarcarTodos() throws Exception
 	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma.setColaborador(colaborador);
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		colaboradorTurmas.add(colaboradorTurma);
 		
 		colaboradorTurmaManager.expects(once()).method("findByTurmaSemPresenca").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
+		colaboradorCertificacaoManager.expects(once()).method("existeColaboradorCertificadoEmUmaTurmaPosterior").with(ANYTHING, eq(colaboradorTurma.getColaborador().getId())).will(returnValue(false));
 		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
+		colaboradorCertificacaoManager.expects(once()).method("verificaCertificacaoByColaboradorTurmaId").with(eq(colaboradorTurma.getId()));
+		
+		colaboradorPresencaManager.marcarTodos(null, null, true);
+	}
+	
+	public void testMarcarTodosComColaboradorCertificadoEmTurmaPosterior() throws Exception
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma.setColaborador(colaborador);
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas.add(colaboradorTurma);
+		
+		colaboradorTurmaManager.expects(once()).method("findByTurmaSemPresenca").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
+		colaboradorCertificacaoManager.expects(once()).method("existeColaboradorCertificadoEmUmaTurmaPosterior").with(ANYTHING, eq(colaboradorTurma.getColaborador().getId())).will(returnValue(true));
 		
 		colaboradorPresencaManager.marcarTodos(null, null, false);
 	}

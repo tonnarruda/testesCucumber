@@ -41,20 +41,22 @@
 			{
 				var idImg = diaTurmaId + "_" + count;
 				elemento = document.getElementById(idImg);
+				certificadoEmTurmaPosterior = $("#"+idImg).parent(".false");
+				if(certificadoEmTurmaPosterior.size() > 0){
+					if(img.title == "${marcarTodos}" && elemento.title == "${faltou}")
+					{
+						elemento.src = "<@ww.url includeParams="none" value="/imgs/check.gif"/>";
+						elemento.title = "${presente}";
+					}
+	
+					if(img.title == "${desmarcarTodos}" && elemento.title == "${presente}")
+					{
+						elemento.src = "<@ww.url includeParams="none" value="/imgs/no_check.gif"/>";
+						elemento.title = "${faltou}";
+					}
 
-				if(img.title == "${marcarTodos}" && elemento.title == "${faltou}")
-				{
-					elemento.src = "<@ww.url includeParams="none" value="/imgs/check.gif"/>";
-					elemento.title = "${presente}";
+					calculaFrequencia(colaboradorTurmaIds[count]);
 				}
-
-				if(img.title == "${desmarcarTodos}" && elemento.title == "${presente}")
-				{
-					elemento.src = "<@ww.url includeParams="none" value="/imgs/no_check.gif"/>";
-					elemento.title = "${faltou}";
-				}
-
-				calculaFrequencia(colaboradorTurmaIds[count]);
 			}
 
 			if(img.title == "${marcarTodos}")
@@ -69,17 +71,20 @@
 			}
 		}
 
-		function setFrequencia(diaTurmaId, colaboradorTurmaId, img)
+		function setFrequencia(diaTurmaId, colaboradorTurmaId, certificadoEmTurmaPosterior, img )
 		{
 			var presente = img.title != "${presente}"
 			DWREngine.setErrorHandler(errorListaPresenca);
-			ListaPresencaDWR.calculaFrequencia(function(data){alteraFrequencia(data, colaboradorTurmaId);}, colaboradorTurmaId, ${diaTurmas?size});
-			ListaPresencaDWR.updateFrequencia(function(data){mudaImagem(data, colaboradorTurmaId, img);}, diaTurmaId, colaboradorTurmaId, presente, ${empresaSistema.controlarVencimentoCertificacaoPor});
+			ListaPresencaDWR.calculaFrequencia(function(data){alteraFrequencia(data, colaboradorTurmaId);}, colaboradorTurmaId, ${diaTurmas?size}, certificadoEmTurmaPosterior);
+			ListaPresencaDWR.updateFrequencia(function(data){mudaImagem(data, colaboradorTurmaId, img, certificadoEmTurmaPosterior);}, diaTurmaId, colaboradorTurmaId, presente, ${empresaSistema.controlarVencimentoCertificacaoPor}, certificadoEmTurmaPosterior);
 		}
 
-		function mudaImagem(data, colaboradorTurmaId, img)
+		function mudaImagem(data, colaboradorTurmaId, img, certificadoEmTurmaPosterior)
 		{
-			if(data)
+			if(data==null){
+				jAlert('O sistema não possibilita a edição da frequência quando a mesma não é referente a última certificação do colaborador.');
+			}
+			else if(data)
 			{
 				img.src = "<@ww.url includeParams="none" value="/imgs/check.gif"/>";
 				img.title="${presente}";
@@ -90,13 +95,15 @@
 				img.title="${faltou}";
 		    }
 
-		    calculaFrequencia(colaboradorTurmaId);
+		    calculaFrequencia(colaboradorTurmaId, certificadoEmTurmaPosterior);
 		}
 
-		function calculaFrequencia(colaboradorTurmaId)
+		function calculaFrequencia(colaboradorTurmaId, certificadoEmTurmaPosterior)
 		{
-			DWREngine.setErrorHandler(errorListaPresenca);
-			ListaPresencaDWR.calculaFrequencia(function(data){alteraFrequencia(data, colaboradorTurmaId);}, colaboradorTurmaId, ${diaTurmas?size});
+			if(!certificadoEmTurmaPosterior){
+				DWREngine.setErrorHandler(errorListaPresenca);
+				ListaPresencaDWR.calculaFrequencia(function(data){alteraFrequencia(data, colaboradorTurmaId);}, colaboradorTurmaId, ${diaTurmas?size});
+			}
 		}
 
 		function alteraFrequencia(data, colaboradorTurmaId)
@@ -106,11 +113,11 @@
 				obj.innerHTML = data;
 		}
 
-		function calculaFrequenciaOnLoad()
+		function calculaFrequenciaOnLoad(certificadoEmTurmaPosterior)
 		{
 			for(var count = 0; count < colaboradorTurmaIds.length; count++)
 			{
-				calculaFrequencia(colaboradorTurmaIds[count]);
+				calculaFrequencia(colaboradorTurmaIds[count], certificadoEmTurmaPosterior);
 			}
 		}
 
@@ -137,6 +144,13 @@
 		Curso: ${turma.curso.nome}<br>
 		Turma: ${turma.descricao}<br>
 		Período: ${turma.dataPrevIni?string("dd'/'MM'/'yyyy")} a ${turma.dataPrevFim?string("dd'/'MM'/'yyyy")}<br><br>
+		
+		<#if somenteLeitura>
+			<div id="legenda" align="left">
+			 	<span style='background-color: #F3F3F3; border:1px solid #7E7E7E;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Frequência não pode ser editada, pois não é referente a última certificação do colaborador.
+			</div>
+			<br />
+		</#if>
 
 		<div id="espaco">
 			<table class="matriz" cellpadding="5">
@@ -158,30 +172,37 @@
 				</thead>
 				<tbody>
 					<#list colaboradorTurmasLista as lista>
+						<#assign certificadoEmTurmaPosterior = "false" >
+						<#assign style="''">
+						<#if lista.certificadoEmTurmaPosterior>
+							<#assign certificadoEmTurmaPosterior = "true" >
+							<#assign style="'color:#ADADAD;; background: #F3F3F3;'">
+							<#assign opacity = "opacity: 0.2;">
+						</#if>
 						<tr>
-							<td>
+							<td style=${style} >
 								<script type="text/javascript">
 									colaboradorTurmaIds[${rowCount}] = ${lista.id};
 								</script>
 								${lista.colaborador.nome}
 							</td>
 							<#list diaTurmas as diaTurma>
-							<td>
+							<td style=${style} class=${certificadoEmTurmaPosterior}>
 								<#assign checked = false>
 								<#list colaboradorPresencas as cp>
 									<#if cp.diaTurma.id == diaTurma.id && cp.colaboradorTurma.id == lista.id>
 										<#assign checked = true>
 									</#if>
 								</#list>
-	
+								
 								<#if checked>
-									<img border="0" style="cursor: pointer;" id="${diaTurma.id}_${rowCount}" title="${presente}" onclick="setFrequencia(${diaTurma.id}, ${lista.id}, this);"  src="<@ww.url includeParams="none" value="/imgs/check.gif"/>">
+									<img border="0" style="cursor: pointer; ${opacity}" id="${diaTurma.id}_${rowCount}" title="${presente}" onclick="setFrequencia(${diaTurma.id}, ${lista.id}, ${certificadoEmTurmaPosterior}, this);"  src="<@ww.url includeParams="none" value="/imgs/check.gif"/>">
 								<#else>
-									<img border="0" style="cursor: pointer;" id="${diaTurma.id}_${rowCount}" title="${faltou}" onclick="setFrequencia(${diaTurma.id}, ${lista.id}, this);"  src="<@ww.url includeParams="none" value="/imgs/no_check.gif"/>">
+									<img border="0" style="cursor: pointer;" id="${diaTurma.id}_${rowCount}" title="${faltou}" onclick="setFrequencia(${diaTurma.id}, ${lista.id},${certificadoEmTurmaPosterior}, this);"  src="<@ww.url includeParams="none" value="/imgs/no_check.gif"/>">
 								</#if>
 							</td>
 							</#list>
-							<td align="right">
+							<td align="right" style=${style}>
 								<div id="${lista.id}_"></div>
 							</td>
 						</tr>

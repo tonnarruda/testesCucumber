@@ -12,6 +12,10 @@
 		var alterouCampo = false;
 		var valorCampo = "";
 
+		$(function(){
+			insereHelp();
+		});
+		
 		function verificaEdicao()
 		{
 			if (alterouCampo)
@@ -29,6 +33,18 @@
 		{
 			alterouCampo = valorCampo != valor;
 		}
+		function insereHelp()
+		{
+			<#if somenteLeitura>
+				var id = "tooltipHelp" + 0;
+				$("#colaboradorTurma th:eq(" + 2 + ")" ).append('<img id="' + id + '" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 1px" />');
+				
+				$('#' + id).qtip({
+					content: "O sistema não possibilita a edição da nota da avaliação, quando a mesma não é referente a última certificação do colaborador."
+				});
+			</#if>
+				
+		}
 	</script>
 </head>
 <body>
@@ -42,12 +58,15 @@
 	</@ww.form>
 
 	<#if colaboradoresTurma?exists && 0 < colaboradoresTurma?size>
+	<div id="legendas" align="right"></div>
+		<br />
 		<@ww.form name="form" action="saveAproveitamentoCurso.action" onsubmit="" method="POST">
 			<@display.table name="colaboradoresTurma" id="colaboradorTurma" class="dados">
+			
 				<@display.column property="colaborador.nome" title="Nome" style="width: 400px;"/>
 				<@display.column property="colaborador.matricula" title="Matrícula" style="width: 80px;"/>
 
-				<@display.column title="${avaliacaoCurso.titulo}" style="width: 300px;text-align: center;">
+				<@display.column title="${avaliacaoCurso.titulo}" style="width: 300px;text-align: center;" >
 					<#assign valorNota = "" />
 
 					<#if avaliacaoCurso.tipo == 'a'>
@@ -59,13 +78,21 @@
 							</#if>
 						</a>
 					<#else>
+						<#assign valorNota = -1/>
 						<#list aproveitamentos as aproveitamento>
 							<#if aproveitamento.colaboradorTurma.id == colaboradorTurma.id>
 								<#assign valorNota = aproveitamento.valor />
+								<#if !colaboradorTurma.certificadoEmTurmaPosterior>
+									<@ww.textfield id="" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value);"/>
+								<#else>
+									${valorNota}
+									<@ww.hidden name="notas" value="${valorNota}"/>
+								</#if>
 							</#if>
 						</#list>
-					
-						<@ww.textfield id="" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value);"/>
+						<#if valorNota == -1 >
+							<@ww.textfield id="" name="notas" value="" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value);"/>
+						</#if>
 					</#if>
 					<@ww.hidden name="colaboradorTurmaIds" value="${colaboradorTurma.id}"/>
 				</@display.column>

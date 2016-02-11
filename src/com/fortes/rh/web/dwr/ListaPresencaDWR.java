@@ -6,11 +6,14 @@ public class ListaPresencaDWR
 {
 	private ColaboradorPresencaManager colaboradorPresencaManager;
 	
-	public boolean updateFrequencia(Long diaTurmaId, Long colaboradorTurmaId, boolean presenca, int controlarVencimentoCertificacaoPor) throws Exception
+	public Boolean updateFrequencia(Long diaTurmaId, Long colaboradorTurmaId, boolean presenca, int controlarVencimentoCertificacaoPor, boolean certificadoEmTurmaPorterior) throws Exception
 	{
 		try
 		{
-			colaboradorPresencaManager.updateFrequencia(diaTurmaId, colaboradorTurmaId, presenca, verificaCertificacao(controlarVencimentoCertificacaoPor));
+			if(!certificadoEmTurmaPorterior)
+				colaboradorPresencaManager.updateFrequencia(diaTurmaId, colaboradorTurmaId, presenca, verificaCertificacao(controlarVencimentoCertificacaoPor));
+			else
+				return null;
 		}
 		catch (Exception e)
 		{

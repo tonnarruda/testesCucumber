@@ -89,12 +89,22 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private Double nota;
 	@Transient
 	private Collection<MatrizTreinamento> matrizTreinamentos;
+	@Transient
+    private boolean certificadoEmTurmaPosterior;
 
 	public ColaboradorTurma() {	}
 
-	public ColaboradorTurma(Long id)
+	public ColaboradorTurma(Long id, Long colaboradorId )
 	{
 		setId(id);
+		setColaboradorId(colaboradorId);
+	}
+	public ColaboradorTurma(Long id, Long cursoId, Double percentualMinimoFrequencia, Long colaboradorId)
+	{
+		setId(id);
+		setCursoId(cursoId);
+		setCursoPercentualMinimoFrequencia(percentualMinimoFrequencia);
+		setColaboradorId(colaboradorId);
 	}
 	
 	public ColaboradorTurma(Long id, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, Long colaboradorQuestionarioId)
@@ -918,5 +928,13 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		
 		this.colaborador.getFaixaSalarial().setCargo(new Cargo());
 		this.colaborador.getFaixaSalarial().getCargo().setNome(cargoNome);
+	}
+
+	public boolean isCertificadoEmTurmaPosterior() {
+		return certificadoEmTurmaPosterior;
+	}
+
+	public void setCertificadoEmTurmaPosterior(boolean certificadoEmTurmaPosterior) {
+		this.certificadoEmTurmaPosterior = certificadoEmTurmaPosterior;
 	}
 }

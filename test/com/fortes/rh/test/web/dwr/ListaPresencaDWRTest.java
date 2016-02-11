@@ -25,7 +25,7 @@ public class ListaPresencaDWRTest extends MockObjectTestCase
 	public void testUpdatePresenca() throws Exception
 	{
 		colaboradorPresencaManager.expects(once()).method("updateFrequencia").with(eq(null),eq(null),eq(true),eq(false));
-		assertEquals(true, listaPresencaDWR.updateFrequencia(null, null, true, FiltroControleVencimentoCertificacao.CURSO.getOpcao()));
+		assertTrue(listaPresencaDWR.updateFrequencia(null, null, true, FiltroControleVencimentoCertificacao.CURSO.getOpcao(),false));
 	}
 
 	public void testUpdatePresencaException() throws Exception
@@ -35,7 +35,7 @@ public class ListaPresencaDWRTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{			
-			listaPresencaDWR.updateFrequencia(null, null, true, FiltroControleVencimentoCertificacao.CURSO.getOpcao());
+			listaPresencaDWR.updateFrequencia(null, null, true, FiltroControleVencimentoCertificacao.CURSO.getOpcao(), false);
 		}
 		catch (Exception e)
 		{

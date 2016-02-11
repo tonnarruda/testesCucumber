@@ -378,4 +378,36 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 
 		return  (Date) criteria.uniqueResult();
 	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<ColaboradorCertificacao> findColaboradorCertificadoEmUmaTurmaPosterior(Long turmaId, Long colaboradorId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("WITH colaboradorescertificadosNaTurma AS ( ");
+		sql.append("		SELECT cc.id, cc.certificacao_id, cc.colaborador_id, cc.data FROM colaboradorcertificacao cc ");
+		sql.append("																	 JOIN colaboradorcertificacao_colaboradorturma cc_ct ON cc_ct.colaboradorcertificacao_id = cc.id ");
+		sql.append("																	 WHERE cc_ct.colaboradoresturmas_id in( ");
+		sql.append("																											(select id from colaboradorturma where turma_id = :turmaId) ");
+		sql.append("																										   )");
+		sql.append("		) ");
+		sql.append("SELECT  cc.id, cc.certificacao_id, cc.colaborador_id, cc.data FROM colaboradorcertificacao cc ");
+		sql.append("															  JOIN colaboradorescertificadosNaTurma cct ON cc.certificacao_id = cct.certificacao_id ");
+		sql.append("																										   AND cc.colaborador_id = cct.colaborador_id AND cc.data > cct.data ");
+		if(colaboradorId != null)
+			sql.append("WHERE cc.colaborador_id = :colaboradorId");
+		
+		Query q = getSession().createSQLQuery(sql.toString());
+		q.setLong("turmaId", turmaId);
+		
+		if(colaboradorId != null)
+			q.setLong("colaboradorId", colaboradorId);
+		
+		Collection<Object[]> resultado = q.list();
+		Collection<ColaboradorCertificacao> colaboradoresCertificados = new ArrayList<ColaboradorCertificacao>();
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			colaboradoresCertificados.add(new ColaboradorCertificacao(((BigInteger)res[0]).longValue(), ((BigInteger)res[1]).longValue(), ((BigInteger)res[2]).longValue(), ((Date)res[3])));
+		}
+		return colaboradoresCertificados;	
+	}
 }

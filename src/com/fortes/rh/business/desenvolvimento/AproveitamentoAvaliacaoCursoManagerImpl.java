@@ -77,9 +77,9 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 		}
 	}
 
-	public Collection<AproveitamentoAvaliacaoCurso> findNotas(Long avaliacaoId, Long[] colaboradoresIds)
+	public Collection<AproveitamentoAvaliacaoCurso> findNotas(Long avaliacaoId, Long[] colaboradoresTurmaIds)
 	{
-		return getDao().findNotas(avaliacaoId, colaboradoresIds);
+		 return getDao().findNotas(avaliacaoId, colaboradoresTurmaIds);
 	}
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager)

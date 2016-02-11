@@ -37,9 +37,9 @@
 	</#if>
 
 	<#if avaliacaoRespondida == true>
-		<#assign somenteLeitura = true />
+		<#assign avaliacoesSomenteLeitura = true />
 	<#else>
-		<#assign somenteLeitura = false />
+		<#assign avaliacoesSomenteLeitura = false />
 	</#if>
 
 	<#if turma.custo?exists>
@@ -219,7 +219,7 @@
 													$('#custos').val(despesasJSON);
 													$('#custo').val(float2moeda(despesasTotal));
 													
-													somenteLeitura((despesasTotal <= 0), 'custo');
+													avaliacoesSomenteLeitura((despesasTotal <= 0), 'custo');
 													
 										        	$(this).dialog("close"); 
 										        }
@@ -321,7 +321,7 @@
 		
 		$(function() {
 			<#if contemCustosDetalhados>
-				somenteLeitura(false, 'custo');
+				avaliacoesSomenteLeitura(false, 'custo');
 			</#if>
 	
 			$('.despesa').blur(function() {
@@ -361,6 +361,8 @@
 </head>
 <body>
 	<@ww.actionerror />
+	<@ww.actionmessage />
+	
 	<@ww.form id="formTurma" name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST" enctype="multipart/form-data">
 		
 		<#if turmaPertenceAEmpresaLogada>
@@ -488,7 +490,7 @@
 		<@ww.hidden name="custos" id="custos"/>
 		<@ww.token/>
 		
-		<#if somenteLeitura>
+		<#if avaliacoesSomenteLeitura>
 			<#list avaliacaoTurmasCheckList as avaliacaoCheck>
 				<#if avaliacaoCheck.selecionado>
 					<@ww.hidden name="avaliacaoTurmasCheck" value="${avaliacaoCheck.id}" />
@@ -503,10 +505,12 @@
 		<#assign urlVoltar="list.action?curso.id=${curso.id}"/>
 	</#if>
 
-	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}"></button>
-		<button onclick="window.location='${urlVoltar}'" class="btnVoltar"></button>
-	</div>
+	<#if !somenteLeitura>
+		<div class="buttonGroup">
+			<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}"></button>
+			<button onclick="window.location='${urlVoltar}'" class="btnVoltar"></button>
+		</div>
+	</#if>
 	
 	<div id="formDialog" title="Detalhamento dos custos">
 		<br />
@@ -526,7 +530,7 @@
 	
 	<script type="text/javascript">
 		$(function() {
-			<#if somenteLeitura>
+			<#if avaliacoesSomenteLeitura>
 				 $("input[type='checkbox'][name='avaliacaoTurmasCheck']").attr("disabled" , "disabled");
 			</#if>
 		});

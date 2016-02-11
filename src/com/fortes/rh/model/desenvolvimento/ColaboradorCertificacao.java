@@ -67,6 +67,17 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		this.certificacao.setCertificacaoPreRequisitoId(certificacaoPreRequisitoId);
 	}
 	
+	public ColaboradorCertificacao(Long id, Long certificacaoId, Long colaboradorId, Date data)
+	{
+		this.setId(id);
+		this.setData(data);
+		this.colaborador = new Colaborador();
+		this.colaborador.setId(colaboradorId);
+
+		this.certificacao = new Certificacao();
+		this.certificacao.setId(certificacaoId);
+	}
+	
 	public Colaborador getColaborador() {
 		return colaborador;
 	}

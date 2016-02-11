@@ -11,6 +11,7 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -35,6 +36,7 @@ import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
@@ -61,23 +63,24 @@ import com.opensymphony.webwork.ServletActionContext;
 
 public class TurmaEditActionTest extends MockObjectTestCase
 {
-	private TurmaEditAction action;
-	private Mock diaTurmaManager;
-	private Mock turmaManager;
-	private Mock colaboradorTurmaManager;
+	private Mock colaboradorCertificacaoManager;
+	private Mock turmaAvaliacaoTurmaManager;
 	private Mock colaboradorPresencaManager;
 	private Mock areaOrganizacionalManager;
-	private Mock cursoManager;
-	private Mock dNTManager;
+	private Mock turmaTipoDespesaManager;
+	private Mock colaboradorTurmaManager;
 	private Mock estabelecimentoManager;
+	private Mock documentoAnexoManager;
 	private Mock avaliacaoTurmaManager;
 	private Mock certificacaoManager;
-	private Mock empresaManager;
 	private Mock colaboradorManager;
 	private Mock tipoDespesaManager;
-	private Mock turmaTipoDespesaManager;
-	private Mock turmaAvaliacaoTurmaManager;
-	private Mock documentoAnexoManager;
+	private TurmaEditAction action;
+	private Mock diaTurmaManager;
+	private Mock empresaManager;
+	private Mock turmaManager;
+	private Mock cursoManager;
+	private Mock dNTManager;
 
     protected void setUp() throws Exception
     {
@@ -130,6 +133,9 @@ public class TurmaEditActionTest extends MockObjectTestCase
         
         documentoAnexoManager = new Mock(DocumentoAnexoManager.class);
         action.setDocumentoAnexoManager((DocumentoAnexoManager) documentoAnexoManager.proxy());
+        
+        colaboradorCertificacaoManager = new Mock(ColaboradorCertificacaoManager.class);
+        action.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
         
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         Mockit.redefineMethods(CheckListBoxUtil.class, MockCheckListBoxUtil.class);
@@ -235,26 +241,35 @@ public class TurmaEditActionTest extends MockObjectTestCase
     
     public void testPreparePresenca() throws Exception
     {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	empresa.setControlarVencimentoCertificacaoPor(FiltroControleVencimentoCertificacao.CERTIFICACAO.getOpcao());
+    	action.setEmpresaSistema(empresa);
+    	
     	Turma turma = TurmaFactory.getEntity(10L);
     	action.setTurma(turma);
     	Collection<Turma> turmas = new ArrayList<Turma>();
     	turmas.add(turma);
     	
     	diaTurmaManager.expects(once()).method("findByTurma").with(eq(10L)).will(returnValue(turmas));
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(new Constraint[] { eq(10L), ANYTHING, eq(true), ANYTHING, ANYTHING }).will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(new Constraint[] { eq(10L), ANYTHING, eq(true), ANYTHING, ANYTHING,eq(empresa.isControlarVencimentoPorCertificacao()) }).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(10L)).will(returnValue(turma));
     	colaboradorPresencaManager.expects(once()).method("findPresencaByTurma").with(eq(10L)).will(returnValue(new ArrayList<ColaboradorPresenca>()));
+    	colaboradorCertificacaoManager.expects(once()).method("existeColaboradorCertificadoEmUmaTurmaPosterior").with(eq(10L), eq(null)).will(returnValue(false));
     	
     	assertEquals("success", action.preparePresenca());
     	assertTrue(action.getActionMessages().isEmpty());
     }
     public void testPreparePresencaVazio() throws Exception
     {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	empresa.setControlarVencimentoCertificacaoPor(FiltroControleVencimentoCertificacao.CURSO.getOpcao());
+    	action.setEmpresaSistema(empresa);
+    	
     	Turma turma = TurmaFactory.getEntity(10L);
     	action.setTurma(turma);
     	
     	diaTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId())).will(returnValue(new ArrayList<Turma>()));
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(new Constraint[] { eq(10L), ANYTHING, eq(true), ANYTHING, ANYTHING }).will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(new Constraint[] { eq(10L), ANYTHING, eq(true), ANYTHING, ANYTHING, eq(empresa.isControlarVencimentoPorCertificacao()) }).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(10L)).will(returnValue(turma));
     	colaboradorPresencaManager.expects(once()).method("findPresencaByTurma").with(eq(10L)).will(returnValue(new ArrayList<ColaboradorPresenca>()));
     	

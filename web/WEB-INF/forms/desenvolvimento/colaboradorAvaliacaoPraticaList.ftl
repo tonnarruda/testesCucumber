@@ -35,7 +35,7 @@
 			}
 		}
 		
-		function insereHelp(posicao, help)
+		function insereHelp()
 		{
 			<#if colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists && (colaboradorCertificacao.ultimaCertificacao?exists && !colaboradorCertificacao.ultimaCertificacao)>
 			$("#tituloTabelaAP").append('<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin: 1px 0px -2px 10px;" />');
@@ -59,7 +59,7 @@
 				<ul>
 					<@ww.select label="Certificações" name="certificacao.id" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;" />
 					<@ww.select label="Colaborador" name="colaborador.id" list="colaboradores" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
-					<@ww.select label="Certificações aprovadas pelo colaborador" name="colaboradorCertificacao.id" list="colaboradorCertificacaos" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
+					<@ww.select label="Certificações em que o colaborador foi aprovado" name="colaboradorCertificacao.id" list="colaboradorCertificacaos" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
 					<br><br>
 				</ul>
 			</@ww.div>

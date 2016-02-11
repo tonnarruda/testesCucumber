@@ -18,6 +18,7 @@ import com.fortes.model.type.File;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -72,24 +73,25 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 {
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 
-	private TurmaManager turmaManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
+	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
+	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
 	private ColaboradorPresencaManager colaboradorPresencaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private CursoManager cursoManager;
-	private DiaTurmaManager diaTurmaManager;
-	private DNTManager dNTManager;
+	private ColaboradorTurmaManager colaboradorTurmaManager;
+	private TurmaTipoDespesaManager turmaTipoDespesaManager;
 	private EstabelecimentoManager estabelecimentoManager;
+	private DocumentoAnexoManager documentoAnexoManager;
 	private AvaliacaoCursoManager avaliacaoCursoManager;
-	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private AvaliacaoTurmaManager avaliacaoTurmaManager;
-	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
 	private CertificacaoManager certificacaoManager;
 	private ColaboradorManager colaboradorManager;
-	private EmpresaManager empresaManager;
 	private TipoDespesaManager tipoDespesaManager;
-	private TurmaTipoDespesaManager turmaTipoDespesaManager;
-	private DocumentoAnexoManager documentoAnexoManager;
+	private DiaTurmaManager diaTurmaManager;
+	private EmpresaManager empresaManager;
+	private TurmaManager turmaManager;
+	private CursoManager cursoManager;
+	private DNTManager dNTManager;
 
 	private Turma turma;
 	private Colaborador colaborador;
@@ -184,6 +186,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private boolean exibirAssinaturaDigital;
 	private boolean manterAssinatura;
 	private boolean imprimirNotaNoVerso;
+	private boolean somenteLeitura;
 
 	private Map<Long, String> despesas = new HashMap<Long, String>();
 	private String[] horariosIni;
@@ -271,6 +274,11 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		turma.setTemPresenca(colaboradorPresencaManager.existPresencaByTurma(turma.getId()));
 		contemCustosDetalhados = !turmaTipoDespesaManager.findTipoDespesaTurma(turma.getId()).isEmpty();
 
+		somenteLeitura = getEmpresaSistema().isControlarVencimentoPorCertificacao() && colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turma.getId(), null);
+		
+		if(somenteLeitura)
+			addActionMessage("Não é possível realizar a edição, existem colaboradores certificados nesta turma e em turmas posteriores.");
+		
 		return Action.SUCCESS;
 	}
 
@@ -334,13 +342,15 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		if (diaTurmas.isEmpty())
 			addActionMessage("Não existe previsão de dias para esta turma.");
 
-		colaboradorTurmasLista = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null);
+		colaboradorTurmasLista = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null, getEmpresaSistema().isControlarVencimentoPorCertificacao());
 		CollectionUtil<ColaboradorTurma> util = new CollectionUtil<ColaboradorTurma>();
 		colaboradorTurmasIds = util.convertCollectionToArrayIds(colaboradorTurmasLista);
 
 		turma = turmaManager.findByIdProjection(turma.getId());
 		colaboradorPresencas = colaboradorPresencaManager.findPresencaByTurma(turma.getId());
 
+		somenteLeitura = getEmpresaSistema().isControlarVencimentoPorCertificacao() && colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turma.getId(), null);
+		
 		return Action.SUCCESS;
 	}
 
@@ -518,8 +528,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 		if(avaliacaoCurso != null && !avaliacaoCurso.getId().equals(-1L))
 		{
-			colaboradoresTurma = colaboradorTurmaManager.findColaboradorByTurma(turma.getId(), avaliacaoCurso.getId());
-
+			colaboradoresTurma = colaboradorTurmaManager.findColaboradorByTurma(turma.getId(), avaliacaoCurso.getId(), getEmpresaSistema().isControlarVencimentoPorCertificacao());
+			somenteLeitura = getEmpresaSistema().isControlarVencimentoPorCertificacao() && colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turma.getId(), null);
 			if(colaboradoresTurma.isEmpty())
 				addActionMessage("Não existe colaborador inscrito nesta turma.");
 			else
@@ -1344,5 +1354,13 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public void setImprimirNotaNoVerso(boolean imprimirNotaNoVerso)
 	{
 		this.imprimirNotaNoVerso = imprimirNotaNoVerso;
+	}
+
+	public void setColaboradorCertificacaoManager( ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
+	}
+
+	public boolean isSomenteLeitura() {
+		return somenteLeitura;
 	}
 }

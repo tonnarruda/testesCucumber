@@ -13,7 +13,7 @@ public interface AproveitamentoAvaliacaoCursoManager extends GenericManager<Apro
 	void saveNotas(Long[] colaboradorTurmaIds, String[] notas, AvaliacaoCurso avaliacaoCurso, boolean validarCertificacao) throws Exception;
 	void saveNotas(ColaboradorTurma colaboradorTurma, String[] notas, Long[] avaliacaoCursoIds);
 
-	Collection<AproveitamentoAvaliacaoCurso> findNotas(Long avaliacaoId, Long[] colaboradoresIds);
+	Collection<AproveitamentoAvaliacaoCurso> findNotas(Long avaliacaoId, Long[] colaboradoresTurmaIds);
 
 	Collection<Long> find(Long turmaId, int qtdAvaliacao, String wherePor, Boolean aprovado);
 

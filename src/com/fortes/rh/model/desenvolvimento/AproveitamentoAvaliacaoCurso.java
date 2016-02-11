@@ -19,7 +19,7 @@ public class AproveitamentoAvaliacaoCurso extends AbstractModel implements Seria
     @OneToOne(fetch = FetchType.LAZY)
     private AvaliacaoCurso avaliacaoCurso;
     private Double valor;
-
+    
     public AproveitamentoAvaliacaoCurso()
 	{
 	}

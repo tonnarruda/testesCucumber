@@ -20,7 +20,6 @@ import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
-import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DNT;
@@ -300,9 +299,14 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findIdEstabelecimentosByTurma(turmaid, empresaId);
 	}
 	
-	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId, boolean exibirSituacaoAtualColaborador, Integer page, Integer pagingSize)
+	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId, boolean exibirSituacaoAtualColaborador, Integer page, Integer pagingSize, boolean controlaVencimentoPorCertificacao)
 	{
-		return getDao().findByTurma(turmaId, null, empresaId, null, null, exibirSituacaoAtualColaborador, page, pagingSize);
+		Collection<ColaboradorTurma> colaboradoresTurma = getDao().findByTurma(turmaId, null, empresaId, null, null, exibirSituacaoAtualColaborador, page, pagingSize);
+		if(controlaVencimentoPorCertificacao)
+			for (ColaboradorTurma colaboradorTurma : colaboradoresTurma) {
+				colaboradorTurma.setCertificadoEmTurmaPosterior(colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turmaId, colaboradorTurma.getColaborador().getId()));
+			}
+		return colaboradoresTurma;
 	}
 
 	public Collection<ColaboradorTurma> findByTurmaColaborador(Long turmaId, Long empresaId, String colaboradorNome, Long[] estabelecimentoIds, Long[] cargoIds, Integer page, Integer pagingSize)
@@ -454,6 +458,10 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId)
 	{
 		return getDao().findByTurmaSemPresenca(turmaId, diaTurmaId);
+	}
+	
+	public Collection<ColaboradorTurma> findByTurmaPresenteNoDiaTurmaId(Long turmaId, Long diaTurmaId){
+		return getDao().findByTurmaPresenteNoDiaTurmaId(turmaId, diaTurmaId);
 	}
 
 	public String insereColaboradorTurmas(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Turma turma, DNT dnt, int filtrarPor, String[] selectPrioridades)
@@ -992,9 +1000,16 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurma, notas, avaliacaoCursoIds);
 	}
 
-	public Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId, Long avaliacaoCursoId)
+	public Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId, Long avaliacaoCursoId, boolean controlaVencimentoPorCertificacao)
 	{
-		return getDao().findColaboradorByTurma(turmaId, avaliacaoCursoId);
+		Collection<ColaboradorTurma> colaboradoresTurma = getDao().findColaboradorByTurma(turmaId, avaliacaoCursoId);
+
+		if(controlaVencimentoPorCertificacao)
+			for (ColaboradorTurma colaboradorTurma : colaboradoresTurma) {
+				colaboradorTurma.setCertificadoEmTurmaPosterior(colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turmaId, colaboradorTurma.getColaborador().getId()));
+			}
+		
+		return colaboradoresTurma;
 	}
 	
 	public HashMap<String, Integer> getResultado(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds) 
@@ -1202,17 +1217,21 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacaoId);
 	}
 
-	public void setColaboradorCertificacaoManager(
-			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
-	}
 
 	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId) {
 		return getDao().findByTurmaId(turmaId);
 	}
 
-	public void setColaboradorAvaliacaoPraticaManager(
-			ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
+	public boolean verificaAprovacao(Long cursoId, Long turmaId, Long colaboradorTurmaId, Double percentualMinimoFrequencia) {
+		return getDao().verificaAprovacao(cursoId, turmaId, colaboradorTurmaId, percentualMinimoFrequencia);
+	}
+
+	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
+	}
+	
+	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
 		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
 	}
+
 }

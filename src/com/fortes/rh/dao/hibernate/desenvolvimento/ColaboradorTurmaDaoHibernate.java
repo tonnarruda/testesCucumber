@@ -1080,7 +1080,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id) from ColaboradorTurma ct ");
+		hql.append("select new ColaboradorTurma(ct.id, ct.colaborador.id) from ColaboradorTurma ct ");
 		hql.append("where ct.turma.id = :turmaId ");
 		hql.append("and ct.id not in (select cp.colaboradorTurma.id from ColaboradorPresenca cp where cp.diaTurma.id = :diaTurmaId)");
 
@@ -1090,7 +1090,22 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		return query.list();
 	}
+	
+	public Collection<ColaboradorTurma> findByTurmaPresenteNoDiaTurmaId(Long turmaId, Long diaTurmaId)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new ColaboradorTurma(ct.id, c.id, c.percentualMinimoFrequencia, ct.colaborador.id) from ColaboradorTurma ct ");
+		hql.append("inner join ct.curso as c ");
+		hql.append("where ct.turma.id = :turmaId ");
+		hql.append("and ct.id in (select cp.colaboradorTurma.id from ColaboradorPresenca cp where cp.diaTurma.id = :diaTurmaId)");
 
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("turmaId", turmaId);
+		query.setLong("diaTurmaId", diaTurmaId);
+
+		return query.list();
+	}
+	
 	public Collection<ColaboradorTurma> findHistoricoTreinamentosByColaborador(Long empresaId, Date dataIni, Date dataFim, Long... colaboradorIds)
 	{
 		StringBuilder hql = new StringBuilder();
@@ -1796,11 +1811,16 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	    return criteria.list();
 	}
 	
-	public boolean exists (){
+	public Boolean verificaAprovacao(Long cursoId, Long turmaId, Long colaboradorTurmaId, Double percentualMinimoFrequencia) {
 		
+		StringBuilder sql = new StringBuilder();
+		sql.append("select verifica_aprovacao(:cursoId, :turmaId, :colaboradorTurmaId, :percentualMinimoFrequencia) as aprovacao ");
 		
-//		select exists (select turma_id from colaboradorturma where id in(select colaboradoresturmas_id from colaboradorcertificacao_colaboradorturma)  and turma_id = 1405)
-		return false;
-		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("cursoId", cursoId);
+		query.setLong("turmaId", turmaId);
+		query.setLong("colaboradorTurmaId", colaboradorTurmaId);
+		query.setDouble("percentualMinimoFrequencia", percentualMinimoFrequencia);
+		return (Boolean) query.uniqueResult();
 	}
 }

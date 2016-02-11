@@ -63,31 +63,30 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		{
 			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
 			{
-				getDao().save(new ColaboradorPresenca(colaboradorTurma, diaTurma, true));
+				if(!colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turmaId, colaboradorTurma.getColaborador().getId())){
+					getDao().save(new ColaboradorPresenca(colaboradorTurma, diaTurma, true));
 				
-				if(validarCertificacao)
-					colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurma.getId());
+					if(validarCertificacao)
+						colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurma.getId());
+				}
 			}
 		}
 	}
 
 	public void removeByDiaTurma(Long diaTurmaId, Long turmaId, boolean validarCertificacao) throws Exception
 	{
-		getDao().remove(diaTurmaId, null);
-		
 		if(validarCertificacao){
-			DiaTurma diaTurma = new DiaTurma();
-			diaTurma.setId(diaTurmaId);
-			Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findByTurmaSemPresenca(turmaId, diaTurmaId);
-			
-			if(colaboradorTurmas != null && colaboradorTurmas.size() > 0)
-			{
-				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
-				{
-					colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), false);
+			Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findByTurmaPresenteNoDiaTurmaId(turmaId, diaTurmaId);
+			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
+				if(!colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turmaId, colaboradorTurma.getColaborador().getId())){
+					getDao().remove(diaTurmaId, colaboradorTurma.getId());
+					if(!colaboradorTurmaManager.verificaAprovacao(colaboradorTurma.getCurso().getId(), turmaId, colaboradorTurma.getId(),colaboradorTurma.getCurso().getPercentualMinimoFrequencia()))
+						colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), false);
 				}
 			}
 		}
+		else
+			getDao().remove(diaTurmaId, null);
 	}
 
 	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds)

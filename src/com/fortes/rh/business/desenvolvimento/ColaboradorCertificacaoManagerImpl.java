@@ -256,6 +256,11 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findColaboradorCertificadoInfomandoSeEUltimaCertificacao(colaboradorCertificacaoId, colaboradorId, certificacaoId);
 	}
 
+	public boolean existeColaboradorCertificadoEmUmaTurmaPosterior(Long turmaId, Long colaboradorCertificacaoId) {
+		Collection<ColaboradorCertificacao> colaboradorCertificacoes = getDao().findColaboradorCertificadoEmUmaTurmaPosterior(turmaId, colaboradorCertificacaoId);
+		return colaboradorCertificacoes.size() > 0;
+	}
+
 	public void setAvaliacaoPraticaManager( AvaliacaoPraticaManager avaliacaoPraticaManager) {
 		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
 	}
@@ -263,4 +268,5 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	public Date getMaiorDataDasTurmasDaCertificacao( Long colaboradorCertificacaoId) {
 		return getDao().getMaiorDataDasTurmasDaCertificacao(colaboradorCertificacaoId);
 	}
+
 }
