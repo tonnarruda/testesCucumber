@@ -44,8 +44,6 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	@Transient
 	private String periodoTurma;
 	@Transient
-	private Boolean aprovadoNaTurma;
-	@Transient
 	private Boolean aprovadoNaCertificacao;
 	@Transient
 	private Boolean ultimaCertificacao;
@@ -110,21 +108,6 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		return DateUtil.formataDiaMesAno(data);
 	}
 
-	public Boolean getAprovadoNaTurma() {
-		return aprovadoNaTurma;
-	}
-	
-	public String getAprovadoNaTurmaString() {
-		if(aprovadoNaTurma != null && aprovadoNaTurma)
-			return "Sim";
-		
-		return "Não";
-	}
-
-	public void setAprovadoNaTurma(Boolean aprovadoNaTurma) {
-		this.aprovadoNaTurma = aprovadoNaTurma;
-	}
-	
 	public String getDataCertificadoFormatada()
 	{
 		if(this.data == null)
@@ -240,6 +223,12 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		iniciaCertificacao();
 		this.certificacao.setNome(CertificacaoNome);
 	}
+	
+	public void setCertificacaoPreRequisitoId(Long certificacaoPreRequisitoId)
+	{
+		iniciaCertificacao();
+		this.certificacao.setCertificacaoPreRequisitoId(certificacaoPreRequisitoId);
+	}
 
 	private void iniciaCertificacao() 
 	{
@@ -307,7 +296,7 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	}
 	
 	public String getAprovadoNaCertificacaoString() {
-		if(this.data != null && this.data.getTime() < (new Date()).getTime())
+		if(this.data != null && DateUtil.incrementaMes(this.data, this.certificacao.getPeriodicidade()).getTime() < (new Date()).getTime())
 			return "Certificado vencido";
 		
 		if(aprovadoNaCertificacao != null && aprovadoNaCertificacao)

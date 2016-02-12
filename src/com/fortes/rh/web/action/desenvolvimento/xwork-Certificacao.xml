@@ -84,7 +84,7 @@
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Nome,Nome Comercial,Matrícula,Estabelecimento,Área Organizacional,Cargo,Certificação,Status Certificação,Certificado em,Periodicidade,Vencimento do Certificado,Curso,Período,Aprovado</param>
 				<param name="propertiesGroup">colaborador.id,colaborador.id,colaborador.matricula,colaborador.estabelecimento.id,colaborador.areaOrganizacional.id,colaborador.faixaSalarial.cargo.id,certificacao.id,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidade,dataVencimentoCertificacao</param>
-				<param name="properties">colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.nome,colaborador.faixaSalarial.cargo.nome,certificacao.nome,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,nomeCurso,periodoTurma,aprovadoNaTurmaString</param>
+				<param name="properties">colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.nome,colaborador.faixaSalarial.cargo.nome,certificacao.nome,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,nomeCurso,periodoTurma,certificacao.aprovadoNaTurmaString</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -94,7 +94,7 @@
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Certificação,Status Certificação,Certificado em,Periodicidade,Vencimento do Certificado,Qtd Aprovado,Qtd Não Aprovado,Nome,Nome Comercial,Matrícula,Estabelecimento,Área Organizacional,Cargo,Curso,Período,Aprovado</param>
 				<param name="propertiesGroup">certificacao.id,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidade,dataVencimentoCertificacao,qtdColaboradorAprovado,qtdColaboradorNaoAprovado,colaborador.id,colaborador.id,colaborador.matricula,colaborador.estabelecimento.id,colaborador.areaOrganizacional.id,colaborador.faixaSalarial.cargo.id</param>
-				<param name="properties">certificacao.nome,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,qtdColaboradorAprovado,qtdColaboradorNaoAprovado,colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.nome,colaborador.faixaSalarial.cargo.nome,nomeCurso,periodoTurma,aprovadoNaTurmaString</param>
+				<param name="properties">certificacao.nome,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,qtdColaboradorAprovado,qtdColaboradorNaoAprovado,colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.nome,colaborador.faixaSalarial.cargo.nome,nomeCurso,periodoTurma,certificacao.aprovadoNaTurmaString</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>		

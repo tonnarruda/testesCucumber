@@ -84,7 +84,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 				colabCertificacao = (ColaboradorCertificacao) colaboradorCertificacao.clone();
 				colabCertificacao.setPeriodoTurma(formataPeriodo(colaboradorTurma.getTurma().getDataPrevIni(), colaboradorTurma.getTurma().getDataPrevFim()));
 				colabCertificacao.setNomeCurso(colaboradorTurma.getCurso().getNome());
-				colabCertificacao.setAprovadoNaTurma(colaboradorTurma.isAprovado());
+				colabCertificacao.getCertificacao().setAprovadoNaTurma(colaboradorTurma.isAprovado());
 				colaboradorCertificacaosRetorno.add(colabCertificacao);
 			}
 			
@@ -101,23 +101,42 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		Long certificacaIdTemp = 0L;
 		Long colaboradorIdTemp = 0L;
 		boolean certificadoAnterior = false;
-		Map<Long, Boolean> colaboradorCertificado = new HashMap<Long, Boolean>();
+		Map<String, Certificacao> colaboradorCertificadoMap = new HashMap<String, Certificacao>();
 		
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradorCertificacaosRetorno) 
 		{
 			if(certificacaIdTemp.equals(colaboradorCertificacao.getCertificacao().getId()) && colaboradorIdTemp.equals(colaboradorCertificacao.getColaborador().getId())){
-				certificadoAnterior = certificadoAnterior && colaboradorCertificacao.getAprovadoNaTurma();	
+				certificadoAnterior = certificadoAnterior && colaboradorCertificacao.getCertificacao().getAprovadoNaTurma();	
 			}else{
 				certificacaIdTemp = colaboradorCertificacao.getCertificacao().getId();
 				colaboradorIdTemp = colaboradorCertificacao.getColaborador().getId();
-				certificadoAnterior = colaboradorCertificacao.getAprovadoNaTurma();
+				certificadoAnterior = colaboradorCertificacao.getCertificacao().getAprovadoNaTurma();
 			}
 
-			colaboradorCertificado.put(colaboradorCertificacao.getColaborador().getId(), certificadoAnterior);
+			colaboradorCertificacao.getCertificacao().setAprovadoNaTurma(certificadoAnterior);
+			colaboradorCertificadoMap.put(colaboradorCertificacao.getColaborador().getId() + "_" + colaboradorCertificacao.getCertificacao().getId(), colaboradorCertificacao.getCertificacao());
 		}
 		
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradorCertificacaosRetorno) 
-			colaboradorCertificacao.setAprovadoNaCertificacao(colaboradorCertificado.get(colaboradorCertificacao.getColaborador().getId()));
+			colaboradorCertificacao.setAprovadoNaCertificacao(verificaStatusCertificacaoRecursivo(colaboradorCertificadoMap, colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getCertificacao()));
+	}
+
+	private boolean verificaStatusCertificacaoRecursivo(Map<String, Certificacao> colaboradorCertificadoMap, Long colaboradorId, Certificacao certificacao) 
+	{
+		String colaboradorCertificacaoId = colaboradorId + "_" + certificacao.getId();
+		
+		if(certificacao.getCertificacaoPreRequisito() == null || certificacao.getCertificacaoPreRequisito().getId() == null)
+			return colaboradorCertificadoMap.get(colaboradorCertificacaoId).getAprovadoNaTurma();
+		else{
+			
+			boolean aprovadoNoCertificadoFilha = colaboradorCertificadoMap.get(colaboradorCertificacaoId).getAprovadoNaTurma();
+			boolean aprovadoNoCertificadoMae = false;
+			
+			if(colaboradorCertificadoMap.containsKey(colaboradorId + "_" + certificacao.getCertificacaoPreRequisito().getId()))
+				aprovadoNoCertificadoMae = verificaStatusCertificacaoRecursivo(colaboradorCertificadoMap, colaboradorId, colaboradorCertificadoMap.get(colaboradorId + "_" + certificacao.getCertificacaoPreRequisito().getId()));
+			
+			return aprovadoNoCertificadoFilha && aprovadoNoCertificadoMae;
+		}
 	}
 
 	private void populaAvaliacoesPraticas(Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno, ColaboradorCertificacao colaboradorCertificacao) 
@@ -135,12 +154,12 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			colabCertificacao.setPeriodoTurma("-");
 			colabCertificacao.setNomeCurso("Avaliação Prática: " + avaliacaoPratica.getTitulo());
 			
-			colabCertificacao.setAprovadoNaTurma(false);
+			colabCertificacao.getCertificacao().setAprovadoNaTurma(false);
 			for (ColaboradorAvaliacaoPratica avaliacaoPraticaDoColaboradorRealizada : avaliacoesPraticasDoColaboradorRealizadas) 
 			{
 				if(avaliacaoPraticaDoColaboradorRealizada.getAvaliacaoPratica().getId().equals(avaliacaoPratica.getId()))
 				{
-					colabCertificacao.setAprovadoNaTurma(avaliacaoPraticaDoColaboradorRealizada.getNota() >= avaliacaoPratica.getNotaMinima());
+					colabCertificacao.getCertificacao().setAprovadoNaTurma(avaliacaoPraticaDoColaboradorRealizada.getNota() >= avaliacaoPratica.getNotaMinima());
 					break;
 				}
 			}

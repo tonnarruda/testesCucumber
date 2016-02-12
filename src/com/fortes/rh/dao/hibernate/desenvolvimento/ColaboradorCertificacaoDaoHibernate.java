@@ -254,7 +254,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 	{
 		StringBuilder sql = new StringBuilder();
 		sql.append("select cc.id as ccId, cc.data as ccData, ");
-		sql.append("ct.id as ctId, ct.nome as certNome, ct.periodicidade as certPer, ");
+		sql.append("ct.id as ctId, ct.nome as certNome, ct.periodicidade as certPer, ct.certificacaoPreRequisito_id, ");
 		sql.append("cp.colaborador_id as ColId, cp.matricula, cp.nome as ColNome,  cp.nomeComercial, ");
 		sql.append("est.id as estId, est.nome as estNome, ");
 		sql.append("cg.id as cgId, cg.nome as cgNome, ");
@@ -326,16 +326,17 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 			colabs.setCertificacaoId(res[2] != null ? ((BigInteger)res[2]).longValue() : null);
 			colabs.setCertificacaoNome(res[3] != null ? (String)res[3] : null);
 			colabs.setCertificacaoPeriodicidade(res[4] != null ? (Integer)res[4] : null);
-			colabs.setColaboradorId(((BigInteger)res[5]).longValue());
-			colabs.setColaboradorMatricula(res[6]!= null ? (String)res[6] : null);
-			colabs.setColaboradorNome(res[7]!= null ? (String)res[7] : null);
-			colabs.setColaboradorNomeComercial(res[8]!= null ? (String)res[8] : null);
-			colabs.setEstabelecimentoId(res[9] != null ? ((BigInteger)res[9]).longValue() : null);
-			colabs.setEstabelecimentoNome(res[10]!= null ? (String)res[10] : null);
-			colabs.setCargoId(res[11] != null ? ((BigInteger)res[11]).longValue() : null);
-			colabs.setCargoNome(res[12]!= null ? (String)res[12] : null);
-			colabs.setAreaOrganizacionalId(res[13] != null ? ((BigInteger)res[13]).longValue() : null);
-			colabs.setAreaOrganizacionalNome(res[14]!= null ? (String)res[14] : null);
+			colabs.setCertificacaoPreRequisitoId(res[5] != null ? ((BigInteger)res[5]).longValue() : null);
+			colabs.setColaboradorId(((BigInteger)res[6]).longValue());
+			colabs.setColaboradorMatricula(res[7]!= null ? (String)res[7] : null);
+			colabs.setColaboradorNome(res[8]!= null ? (String)res[8] : null);
+			colabs.setColaboradorNomeComercial(res[9]!= null ? (String)res[9] : null);
+			colabs.setEstabelecimentoId(res[10] != null ? ((BigInteger)res[10]).longValue() : null);
+			colabs.setEstabelecimentoNome(res[11]!= null ? (String)res[11] : null);
+			colabs.setCargoId(res[12] != null ? ((BigInteger)res[12]).longValue() : null);
+			colabs.setCargoNome(res[13]!= null ? (String)res[13] : null);
+			colabs.setAreaOrganizacionalId(res[14] != null ? ((BigInteger)res[14]).longValue() : null);
+			colabs.setAreaOrganizacionalNome(res[15]!= null ? (String)res[15] : null);
 			
 			ColaboradoresCertificacao.add(colabs);
 		}

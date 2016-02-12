@@ -95,12 +95,12 @@
 	<#if dataIni?exists>
 		<#assign dateIni = dataIni?date/>
 	<#else>
-		<#assign dateIni = ""/>
+		<#assign dateIni = "  /  /    "/>
 	</#if>
 	<#if dataFim?exists>
 		<#assign dateFim = dataFim?date/>
 	<#else>
-		<#assign dateFim = ""/>
+		<#assign dateFim = "  /  /    "/>
 	</#if>
 	
 	<#assign validarCampos="return validaFormulario('form', new Array('@certificacoesCheck'), new Array('dataIni', 'dataFim'))"/>
