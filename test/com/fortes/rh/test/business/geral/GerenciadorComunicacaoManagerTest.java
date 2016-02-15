@@ -1283,6 +1283,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setNome("Empresa I");
 		
+		ParametrosDoSistema parametroSistema = new ParametrosDoSistema();
+		parametroSistema.setAppUrl("url");
+		
 		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity(1L);
 		ocorrencia.setEmpresa(empresa);
 		
@@ -1312,6 +1315,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CADASTRAR_OCORRENCIA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
 		usuarioMensagemManager.expects(atLeastOnce()).method("saveMensagemAndUsuarioMensagem").withAnyArguments().isVoid();
+		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));;
 		
 		Exception exception = null;
 		try {

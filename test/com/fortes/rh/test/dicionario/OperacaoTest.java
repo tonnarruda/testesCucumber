@@ -98,7 +98,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 19
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 20
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 21
-		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 22
+		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 22
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 23 
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 24 
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 25 
@@ -394,7 +394,7 @@ public class OperacaoTest extends TestCase
 		
 		Operacao operacao = Operacao.CADASTRAR_OCORRENCIA;
 		
-		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(3, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
 		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}

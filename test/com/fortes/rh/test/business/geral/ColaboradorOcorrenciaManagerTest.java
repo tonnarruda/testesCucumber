@@ -253,6 +253,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		setDadosOcorrenciaAC(empresa, ocorrencia, colaborador, colaboradorOcorrencia);
 
 		colaboradorOcorrenciaDao.expects(once()).method("save");
+		colaboradorManager.expects(once()).method("findById").will(returnValue(colaborador));
 		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoOcorrenciaCadastrada");
 
 		Exception exception = null;
@@ -287,6 +288,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		
 		acPessoalClientColaboradorOcorrencia.expects(once()).method("criarColaboradorOcorrencia").will(returnValue(true));
 		colaboradorOcorrenciaDao.expects(once()).method("save");
+		colaboradorManager.expects(once()).method("findById").will(returnValue(colaborador));
 		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoOcorrenciaCadastrada");
 		
 		Exception exception = null;
