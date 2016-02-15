@@ -265,7 +265,7 @@ public class SolicitacaoEpiListActionTest extends MockObjectTestCase
 		assertEquals("success", action.imprimir());
 	}
 	
-	public void testListSemSolicitaçõesASeremListadas() throws Exception
+	public void testListSemSolicitacoesASeremListadas() throws Exception
 	{
 		estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<CheckBox>()));
 		tipoEPIManager.expects(once()).method("find").with(eq(new String[]{"empresa.id"}), eq(new Object[]{action.getEmpresaSistema().getId()})).will(returnValue(new ArrayList<TipoEPI>()));
