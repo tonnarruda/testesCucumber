@@ -167,8 +167,11 @@ public enum Operacao
 	CADASTRAR_OCORRENCIA(22, "Cadastrar ocorrência", "Info. Funcionais"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			this.add(MeioComunicacao.EMAIL);
 			
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.COGESTOR_AREA);
 			
 			return this.getListMeioComunicacao();
 		}

@@ -754,33 +754,48 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void enviaAvisoOcorrenciaCadastrada(ColaboradorOcorrencia colaboradorOcorrencia, Long empresaId) 
 	{
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
-		Colaborador colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorOcorrencia.getColaborador().getId());
-		
-		String providenciaDescricao = "";
-		Providencia providencia = null;
-		if (colaboradorOcorrencia.getProvidencia() != null && colaboradorOcorrencia.getProvidencia().getId() != null) {
-			providencia = providenciaManager.findById(colaboradorOcorrencia.getProvidencia().getId());
-			providenciaDescricao = providencia.getDescricao();
-		}
-		
-		StringBuilder mensagem = new StringBuilder();
-		mensagem.append("Nova ocorrência cadastrada para "+ colaborador.getNomeMaisNomeComercial() +".");
-		mensagem.append("\nOcorrência      : " + colaboradorOcorrencia.getOcorrencia().getDescricao());
-		mensagem.append("\nData de Início  : " + DateUtil.formataDiaMesAno(colaboradorOcorrencia.getDataIni()));
-		mensagem.append("\nData de Término : " + DateUtil.formataDiaMesAno(colaboradorOcorrencia.getDataIni()));
-		mensagem.append("\nProvidência     : " + providenciaDescricao);
-		mensagem.append("\nObservação      : ");
-		mensagem.append(colaboradorOcorrencia.getObservacao());
-		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_OCORRENCIA.getId(), colaboradorOcorrencia.getOcorrencia().getEmpresa().getId());
-		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
-		{
-			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
-			{	
-				Collection<UsuarioEmpresa> usuarioEmpresas = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
-				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(),"RH", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null);
+		try {
+			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+			Colaborador colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorOcorrencia.getColaborador().getId());
+			
+			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+			
+			String providenciaDescricao = "";
+			Providencia providencia = null;
+			if (colaboradorOcorrencia.getProvidencia() != null && colaboradorOcorrencia.getProvidencia().getId() != null) {
+				providencia = providenciaManager.findById(colaboradorOcorrencia.getProvidencia().getId());
+				providenciaDescricao = providencia.getDescricao();
 			}
+			
+			StringBuilder mensagem = new StringBuilder();
+			mensagem.append("Nova ocorrência cadastrada para "+ colaborador.getNomeMaisNomeComercial() +".");
+			mensagem.append("\nOcorrência      : " + colaboradorOcorrencia.getOcorrencia().getDescricao());
+			mensagem.append("\nData de Início  : " + DateUtil.formataDiaMesAno(colaboradorOcorrencia.getDataIni()));
+			mensagem.append("\nData de Término : " + DateUtil.formataDiaMesAno(colaboradorOcorrencia.getDataIni()));
+			if ( colaboradorOcorrencia.getProvidencia() != null && colaboradorOcorrencia.getProvidencia().getId() != null )
+			mensagem.append("\nProvidência     : " + providenciaDescricao);
+			if ( colaboradorOcorrencia.getObservacao() != null && colaboradorOcorrencia.getObservacao().equals("") )
+			mensagem.append("\nObservação      : ");
+			mensagem.append(colaboradorOcorrencia.getObservacao());
+			
+			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_OCORRENCIA.getId(), colaboradorOcorrencia.getOcorrencia().getEmpresa().getId());
+			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+			{
+				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
+				{	
+					Collection<UsuarioEmpresa> usuarioEmpresas = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
+					usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(),"RH", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null);
+				} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
+					String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaboradorOcorrencia.getColaborador().getAreaOrganizacional().getId(), gerenciadorComunicacao.getEmpresa().getId(), AreaOrganizacional.RESPONSAVEL);
+					mail.send(gerenciadorComunicacao.getEmpresa(), parametrosDoSistema, "Nova ocorrência para colaborador", mensagem.toString().replace("\n", "<br />"), true, emails);
+				} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) {
+					String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaboradorOcorrencia.getColaborador().getAreaOrganizacional().getId(), gerenciadorComunicacao.getEmpresa().getId(), AreaOrganizacional.CORRESPONSAVEL);
+					mail.send(gerenciadorComunicacao.getEmpresa(), parametrosDoSistema, "Nova ocorrência para colaborador", mensagem.toString().replace("\n", "<br />"), true, emails);
+				}
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 	
