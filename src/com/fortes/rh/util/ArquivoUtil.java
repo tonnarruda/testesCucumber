@@ -461,4 +461,18 @@ public class ArquivoUtil
 			response.getOutputStream().write(arquivo.getBytes());
 		}
 	}
+
+	public static void geraPdfByBytes(HttpServletResponse response,	byte[] reciboBytes, String nomeDoArquivo) throws IOException 
+	{
+		response.addHeader("Expires", "0");
+		response.addHeader("Pragma", "no-cache");
+		response.setContentType("application/force-download");
+		response.setContentLength((int)reciboBytes.length);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Disposition","attachment; filename=\"" + nomeDoArquivo + ".pdf\"");
+
+		response.getOutputStream().write(reciboBytes);		
+	}
+	
+	
 }

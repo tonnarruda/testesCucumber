@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.158.189" db="" data="26/01/2016">
+	<Versao id="1.1.15x.1xx" db="" data="xx/xx/2016">
+		<Item visivel="S" motivo="S16020000055"><![CDATA[Info. Funcionais > Relatórios > Recibo de Férias: Novo relatório. Visível somente quando integrado com o sistema Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S15110000204"><![CDATA[SESMT > Relatórios > EPIs > EPIs Devolvidos: Novo relatório.]]></Item>
 		<Item visivel="S" motivo="S16010000270"><![CDATA[SESMT > Relatórios > Exames: Mudança da nomenclatura do relatório de 'Funções por Exames' para 'Exames por Função'.]]></Item>
-		<Item visivel="S" motivo="P16020000028"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Otimização do processo de inserção da configuração de 'dias de antecedência para o aviso'.]]></Item>
+		<Item visivel="S" motivo="P16020000028"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Otimização do processo de inserção da configuração de "dias de antecedência para o aviso".]]></Item>
 	</Versao>
 	<Versao id="1.1.158.189" db="" data="26/01/2016">
 		<Item visivel="S" motivo="S15100000103"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova coluna de Nome Comercial ao exportar para o excel.]]></Item>
@@ -12,7 +13,7 @@
 		<Item visivel="S" motivo="P16010000126"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Inserir/Editar: Nova validação para não permitir responder a avaliação com data inferior a data de contratação do colaborador.]]></Item>
 		<Item visivel="S" motivo="P16010000172"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores + Nota: Correção de inconsistência ao inserir colaborador.]]></Item>
 		<Item visivel="S" motivo="S20150800138"><![CDATA[Info. Funcionais > Movimentações > Ocorrências: Possibilidade de movimentar ocorrências para colaboradores desligados.]]></Item>
-		<Item visivel="S" motivo="S15120000241"><![CDATA[Info. Funcionais > Relatórios > Declaração de Rendimentos: Novo relatório, quando integrado com o sistema Fortes Pessoal.]]></Item>		
+		<Item visivel="S" motivo="S15120000241"><![CDATA[Info. Funcionais > Relatórios > Declaração de Rendimentos: Novo relatório. Visível somente quando integrado com o sistema Fortes Pessoal.]]></Item>		
 		<Item visivel="S" motivo="P15120000077"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Correção de inconsistência ao exibir estabelecimentos no relatório.]]></Item>
 		<Item visivel="S" motivo="S16010000043"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Apresentar somente as áreas organizacionais que o usuário tenha permissão de visualizar.]]></Item>
 		<Item visivel="S" motivo="S15120000004"><![CDATA[SESMT > Movimentações > Solicitação de EPIs > Inserir: Possibilidade de cadastrar apenas para colaboradores ativos.]]></Item>
@@ -36,7 +37,7 @@
 	</Versao>
 	<Versao id="1.1.155.186" db="" data="16/12/2015">
 		<Item visivel="S" motivo="S15120000024"><![CDATA[T&D > Painel de Indicadores: Ajuste de inconsistência no indicador de “percentual de frequência (aprovados)”.]]></Item>
-		<Item visivel="S" motivo="S15110000258"><![CDATA[Info. Funcionais > Relatórios > Recibo de 13º salário: Novo relatório, quando integrado com o sistema Fortes Pessoal.]]></Item>
+		<Item visivel="S" motivo="S15110000258"><![CDATA[Info. Funcionais > Relatórios > Recibo de 13º salário: Novo relatório. Visível somente quando integrado com o sistema Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="P15110000246"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Apresentar hierarquia das áreas organizacionais ao imprimir.]]></Item>		
 		<Item visivel="S" motivo="P15120000056"><![CDATA[Info. Funcionais > Painel de Indicadores > Ocorrências/Absenteísmo: Ajuste de inconsistência ao gerar indicador de absenteísmo.]]></Item>
 	</Versao>

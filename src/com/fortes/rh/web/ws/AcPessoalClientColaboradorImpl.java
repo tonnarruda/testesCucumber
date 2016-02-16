@@ -385,7 +385,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		Object[] param = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC(), dataInicioGozo, dataFimGozo };
     	
 		TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
-       	Boolean retorno = result.getSucesso("GetDeclaracaoRendimentos", param, this.getClass());
+       	Boolean retorno = result.getSucesso("GetAvisoReciboDeFerias", param, this.getClass());
 		
        	if (!retorno)
         	throw new IntegraACException(result.getMensagem());
@@ -414,7 +414,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			call.setReturnType(qnameAr);
 
 			Object[] params = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC() };
-
+			
 			result = (String[]) call.invoke(params);
 		}
 		catch (Exception e)

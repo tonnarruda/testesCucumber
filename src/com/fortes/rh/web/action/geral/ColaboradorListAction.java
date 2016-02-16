@@ -68,6 +68,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ReportColumn;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -266,46 +267,51 @@ public class ColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareReciboDeFerias() throws Exception
-	{
-		preparaRecibo("seu recibo de férias");
-		if ( getActionWarnings().size() == 0 )
-			dataCalculos = colaboradorManager.getDatasPeriodoDeGozoPorEmpregado(colaborador);
-		return Action.SUCCESS;
-	}
-	
-	public String reciboDeFerias() throws Exception
-	{
+	private void geraComprovante(Comprovante comprovante) throws Exception {
+
 		try {
 			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
 			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
-			
-			String reciboDeFerias = colaboradorManager.getAvisoReciboDeFerias(colaborador, dataInicioGozo, dataFimGozo);
-			
-	        byte[] reciboreciboDeFeriasBytes = Base64.decodeBase64(reciboDeFerias.getBytes()); 
-			
-	        byteArrayInputStream = new ByteArrayInputStream(reciboreciboDeFeriasBytes);
-	        
-	        HttpServletResponse response = ServletActionContext.getResponse();
 
-			response.addHeader("Expires", "0");
-			response.addHeader("Pragma", "no-cache");
-			response.setContentType("application/force-download");
-			response.setContentLength((int)reciboreciboDeFeriasBytes.length);
-			response.setHeader("Content-Transfer-Encoding", "binary");
-			response.setHeader("Content-Disposition","attachment; filename=\"recibo_ferias_" + dataInicioGozo+"_"+dataFimGozo.replace("/", "") + ".pdf\"");
+			String recibo = comprovante.gera();
 
-			response.getOutputStream().write(reciboreciboDeFeriasBytes);
-		} 
-		catch (Exception e) 
-		{
+			byte[] reciboBytes = Base64.decodeBase64(recibo.getBytes()); 
+
+			byteArrayInputStream = new ByteArrayInputStream(reciboBytes);
+
+			ArquivoUtil.geraPdfByBytes(ServletActionContext.getResponse(), reciboBytes, comprovante.nomeDoArquivo());
+
+		} catch (Exception e) {
 			if(e instanceof IntegraACException)
 				addActionWarning(e.getMessage());
 			else
 				addActionError(e.getMessage());
 			
 			e.printStackTrace();
-			addActionError(e.getMessage());
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	public String prepareReciboDeFerias() 
+	{
+		try {
+			preparaRecibo("seu recibo de férias");
+			if ( getActionWarnings().size() == 0 )
+				dataCalculos = colaboradorManager.getDatasPeriodoDeGozoPorEmpregado(colaborador);
+		} catch (Exception e) {
+			addActionError("Houve um erro inesperado: "+e.getMessage());
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String reciboDeFerias()
+	{
+		try {
+			geraComprovante(new ReciboDeFerias());
+		} 
+		catch (Exception e) 
+		{
 			prepareReciboDeFerias();
 			return Action.INPUT;
 		}
@@ -313,44 +319,24 @@ public class ColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareReciboPagamento() throws Exception
+	public String prepareReciboPagamento()
 	{
-		preparaRecibo("seu recibo de pagamento");
+		try {
+			preparaRecibo("seu recibo de pagamento");
+		} catch (Exception e) {
+			addActionError("Houve um erro inesperado: "+e.getMessage());
+			e.printStackTrace();
+		}
 		return Action.SUCCESS;
 	}
 	
-	public String reciboPagamento() throws Exception
+	public String reciboPagamento() 
 	{
 		try {
-			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
-			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
-			
-			String reciboPagamento = colaboradorManager.getReciboPagamento(colaborador, DateUtil.criarDataMesAno(mesAno));
-			
-	        byte[] reciboPagamentoBytes = Base64.decodeBase64(reciboPagamento.getBytes()); 
-			
-	        byteArrayInputStream = new ByteArrayInputStream(reciboPagamentoBytes);
-	        
-	        HttpServletResponse response = ServletActionContext.getResponse();
-
-			response.addHeader("Expires", "0");
-			response.addHeader("Pragma", "no-cache");
-			response.setContentType("application/force-download");
-			response.setContentLength((int)reciboPagamentoBytes.length);
-			response.setHeader("Content-Transfer-Encoding", "binary");
-			response.setHeader("Content-Disposition","attachment; filename=\"recibo_" + mesAno.replace("/", "") + ".pdf\"");
-
-			response.getOutputStream().write(reciboPagamentoBytes);
+			geraComprovante(new ReciboPagamento());
 		} 
 		catch (Exception e) 
 		{
-			if(e instanceof IntegraACException)
-				addActionWarning(e.getMessage());
-			else
-				addActionError(e.getMessage());
-			
-			e.printStackTrace();
-			addActionError(e.getMessage());
 			prepareReciboPagamento();
 			return Action.INPUT;
 		}
@@ -358,44 +344,27 @@ public class ColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareReciboDeDecimoTerceiro() throws Exception
+	public String prepareReciboDeDecimoTerceiro() 
 	{
-		preparaRecibo("seu recibo de décimo terceiro");
-		if ( getActionWarnings().size() == 0 )
-			dataCalculos = colaboradorManager.getDatasDecimoTerceiroPorEmpregado(colaborador);
+		try {
+			preparaRecibo("seu recibo de décimo terceiro");
+			if (getActionWarnings().size() == 0)
+				dataCalculos = colaboradorManager.getDatasDecimoTerceiroPorEmpregado(colaborador);
+		} catch (Exception e) {
+			addActionError("Houve um erro inesperado: "+e.getMessage());
+			e.printStackTrace();
+		}
+		
 		return Action.SUCCESS;
 	}
 	
 	public String reciboDeDecimoTerceiro() throws Exception
 	{
 		try {
-			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
-			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
-			
-			String reciboDeDecimoTerceiro = colaboradorManager.getReciboDeDecimoTerceiro(colaborador, dataCalculo);
-			
-	        byte[] reciboPagamentoBytes = Base64.decodeBase64(reciboDeDecimoTerceiro.getBytes()); 
-	        byteArrayInputStream = new ByteArrayInputStream(reciboPagamentoBytes);
-	        
-	        HttpServletResponse response = ServletActionContext.getResponse();
-
-			response.addHeader("Expires", "0");
-			response.addHeader("Pragma", "no-cache");
-			response.setContentType("application/force-download");
-			response.setContentLength((int)reciboPagamentoBytes.length);
-			response.setHeader("Content-Transfer-Encoding", "binary");
-			response.setHeader("Content-Disposition","attachment; filename=\"recibo_decimo_terceiro_" + dataCalculo.replace("/", "_") + ".pdf\"");
-
-			response.getOutputStream().write(reciboPagamentoBytes);
+			geraComprovante(new ReciboDecimoTerceiro());
 		} 
 		catch (Exception e) 
 		{
-			if(e instanceof IntegraACException)
-				addActionWarning(e.getMessage());
-			else
-				addActionError(e.getMessage());
-			
-			e.printStackTrace();
 			prepareReciboDeDecimoTerceiro();
 			return Action.INPUT;
 		}
@@ -405,40 +374,22 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public String prepareDeclaracaoRendimentos() throws Exception
 	{
-		preparaRecibo("sua declaração de rendimentos");
+		try {
+			preparaRecibo("sua declaração de rendimentos");
+		} catch (Exception e) {
+			addActionError("Houve um erro inesperado: "+e.getMessage());
+			e.printStackTrace();
+		}
 		return Action.SUCCESS;
 	}
 	
 	public String declaracaoRendimentos() throws Exception
 	{
 		try {
-			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
-			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
-			
-			String declaracaoRendimentos = colaboradorManager.getDeclaracaoRendimentos(colaborador, anoDosRendimentos);
-			
-	        byte[] reciboPagamentoBytes = Base64.decodeBase64(declaracaoRendimentos.getBytes()); 
-	        byteArrayInputStream = new ByteArrayInputStream(reciboPagamentoBytes);
-	        
-	        HttpServletResponse response = ServletActionContext.getResponse();
-
-			response.addHeader("Expires", "0");
-			response.addHeader("Pragma", "no-cache");
-			response.setContentType("application/force-download");
-			response.setContentLength((int)reciboPagamentoBytes.length);
-			response.setHeader("Content-Transfer-Encoding", "binary");
-			response.setHeader("Content-Disposition","attachment; filename=\"declaracao_rendimentos_" + anoDosRendimentos + ".pdf\"");
-
-			response.getOutputStream().write(reciboPagamentoBytes);
+			geraComprovante(new DeclaracaoDeRendimento());
 		} 
 		catch (Exception e) 
 		{
-			if(e instanceof IntegraACException)
-				addActionWarning(e.getMessage());
-			else
-				addActionError(e.getMessage());
-
-			e.printStackTrace();
 			prepareDeclaracaoRendimentos();
 			return Action.INPUT;
 		}
@@ -449,41 +400,22 @@ public class ColaboradorListAction extends MyActionSupportList
 	public String prepareReciboPagamentoComplementar()
 	{
 	
-		preparaRecibo("seu recibo de complemento da folha com encargos");
+		try {
+			preparaRecibo("seu recibo de complemento da folha com encargos");
+		} catch (Exception e) {
+			addActionError("Houve um erro inesperado: "+e.getMessage());
+			e.printStackTrace();
+		}
 		return Action.SUCCESS;
 	}
 	
-	public String reciboPagamentoComplementar() throws Exception
+	public String reciboPagamentoComplementar()
 	{
 		try {
-			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
-			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
-			
-			String reciboPagamentoComplementar = colaboradorManager.getReciboDePagamentoComplementar(colaborador, DateUtil.criarDataMesAno(mesAno));
-			
-	        byte[] reciboPagamentoComplementarBytes = Base64.decodeBase64(reciboPagamentoComplementar.getBytes()); 
-			
-	        byteArrayInputStream = new ByteArrayInputStream(reciboPagamentoComplementarBytes);
-	        
-	        HttpServletResponse response = ServletActionContext.getResponse();
-
-			response.addHeader("Expires", "0");
-			response.addHeader("Pragma", "no-cache");
-			response.setContentType("application/force-download");
-			response.setContentLength((int)reciboPagamentoComplementarBytes.length);
-			response.setHeader("Content-Transfer-Encoding", "binary");
-			response.setHeader("Content-Disposition","attachment; filename=\"reciboComplementoDeFolhaComEncargos_"+mesAno+".pdf\"");
-
-			response.getOutputStream().write(reciboPagamentoComplementarBytes);
+			geraComprovante(new ReciboPagamentoComplementar());
 		} 
 		catch (Exception e) 
 		{
-			if(e instanceof IntegraACException)
-				addActionWarning(e.getMessage());
-			else
-				addActionError(e.getMessage());
-			
-			e.printStackTrace();
 			prepareReciboPagamentoComplementar();
 			return Action.INPUT;
 		}
@@ -493,41 +425,22 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public String prepareReciboPagamentoAdiantamentoDeFolha() 
 	{
-		preparaRecibo("seu recibo de adiantamento de folha");
+		try {
+			preparaRecibo("seu recibo de adiantamento de folha");
+		} catch (Exception e) {
+			addActionError("Houve um erro inesperado: "+e.getMessage());
+			e.printStackTrace();
+		}
 		return Action.SUCCESS;
 	}
 
 	public String reciboPagamentoAdiantamentoDeFolha() throws Exception
 	{
 		try {
-			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
-			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
-			
-			String reciboPagamentoComplementar = colaboradorManager.getReciboPagamentoAdiantamentoDeFolha(colaborador, DateUtil.criarDataMesAno(mesAno));
-			
-	        byte[] reciboPagamentoComplementarBytes = Base64.decodeBase64(reciboPagamentoComplementar.getBytes()); 
-			
-	        byteArrayInputStream = new ByteArrayInputStream(reciboPagamentoComplementarBytes);
-	        
-	        HttpServletResponse response = ServletActionContext.getResponse();
-
-			response.addHeader("Expires", "0");
-			response.addHeader("Pragma", "no-cache");
-			response.setContentType("application/force-download");
-			response.setContentLength((int)reciboPagamentoComplementarBytes.length);
-			response.setHeader("Content-Transfer-Encoding", "binary");
-			response.setHeader("Content-Disposition","attachment; filename=\"reciboPagamentoAdiantamentoDeFolha_" + mesAno.replace("/", "") + ".pdf\"");
-
-			response.getOutputStream().write(reciboPagamentoComplementarBytes);
+			geraComprovante(new ReciboPagamentoAdiantamentoDeFolha());
 		} 
 		catch (Exception e) 
 		{
-			if(e instanceof IntegraACException)
-				addActionWarning(e.getMessage());
-			else
-				addActionError(e.getMessage());
-			
-			e.printStackTrace();
 			prepareReciboPagamentoAdiantamentoDeFolha();
 			return Action.INPUT;
 		}
@@ -539,16 +452,13 @@ public class ColaboradorListAction extends MyActionSupportList
 		colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 		
-		if(!getEmpresaSistema().isAcIntegra())
-		{
-			addActionWarning("Esta empresa não está integrada com Fortes Pessoal.");
-		}
-		else if(colaborador == null)
-		{
-			addActionWarning("Sua conta de usuário não está vinculada à nenhum colaborador");
-		}
-		else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))
-		{
+		if(!getEmpresaSistema().isAcIntegra()) {
+			addActionWarning("Esta empresa não está integrada com o Fortes Pessoal.");
+			
+		} else if(colaborador == null) {
+			addActionWarning("Sua conta de usuário não está vinculada à um colaborador.");
+			
+		} else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId())) {
 			addActionWarning("Só é possível solicitar " + descricaoRecibo + " pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar seu recibo.");
 			colaborador = null;
 		}
@@ -1039,6 +949,73 @@ public class ColaboradorListAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 	}
+	
+	// Início INNER CLASS
+	interface Comprovante {
+		public String gera() throws Exception;
+		public String nomeDoArquivo();
+	}
+	
+	class ReciboDeFerias implements Comprovante {
+		public String gera() throws Exception {
+			return colaboradorManager.getAvisoReciboDeFerias(colaborador, dataInicioGozo, dataFimGozo);
+		}
+		
+		public String nomeDoArquivo() {
+			return "aviso_ferias_" + dataInicioGozo+"_"+dataFimGozo.replace("/", "");
+		}
+	}
+	
+	class ReciboPagamento implements Comprovante {
+		public String gera() throws Exception {
+			return colaboradorManager.getReciboPagamento(colaborador, DateUtil.criarDataMesAno(mesAno));
+		}
+		
+		public String nomeDoArquivo() {
+			return "recibo_pagamento" + mesAno.replace("/", "");
+		}
+	}
+	
+	class ReciboDecimoTerceiro implements Comprovante {
+		public String gera() throws Exception {
+			return colaboradorManager.getReciboDeDecimoTerceiro(colaborador, dataCalculo);
+		}
+		
+		public String nomeDoArquivo() {
+			return "recibo_decimo_terceiro_" + dataCalculo.replace("/", "_");
+		}
+	}
+	
+	class DeclaracaoDeRendimento implements Comprovante {
+		public String gera() throws Exception {
+			return colaboradorManager.getDeclaracaoRendimentos(colaborador, anoDosRendimentos);
+		}
+		
+		public String nomeDoArquivo() {
+			return "declaracao_rendimentos_" + anoDosRendimentos;
+		}
+	}
+	
+	class ReciboPagamentoComplementar implements Comprovante {
+		public String gera() throws Exception {
+			return colaboradorManager.getReciboDePagamentoComplementar(colaborador, DateUtil.criarDataMesAno(mesAno));
+		}
+		
+		public String nomeDoArquivo() {
+			return "recibo_complemento_folha_encargos_"+mesAno;
+		}
+	}
+	
+	class ReciboPagamentoAdiantamentoDeFolha implements Comprovante {
+		public String gera() throws Exception {
+			return colaboradorManager.getReciboPagamentoAdiantamentoDeFolha(colaborador, DateUtil.criarDataMesAno(mesAno));
+		}
+		
+		public String nomeDoArquivo() {
+			return "recibo_adiantamento_folha_"+mesAno;
+		}
+	}
+	// Fim INNER CLASS
 	
 	public Collection getColaboradors()
 	{

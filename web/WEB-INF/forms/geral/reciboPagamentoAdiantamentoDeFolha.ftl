@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<@ww.head/>
-		<title>Adiantamento de folha</title>
+		<title>Adiantamento de Folha</title>
 		
 		<#include "../ftl/mascarasImports.ftl" />
 	

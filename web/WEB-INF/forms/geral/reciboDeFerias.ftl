@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<@ww.head/>
-		<title>Recibo de férias</title>
+		<title>Recibo de Férias</title>
 		
 		<#include "../ftl/mascarasImports.ftl" />
 		
