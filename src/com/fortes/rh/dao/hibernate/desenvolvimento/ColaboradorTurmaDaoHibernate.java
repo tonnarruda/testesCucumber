@@ -1813,13 +1813,23 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	
 	public Boolean verificaAprovacao(Long cursoId, Long turmaId, Long colaboradorTurmaId, Double percentualMinimoFrequencia) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("select verifica_aprovacao(:cursoId, :turmaId, :colaboradorTurmaId, :percentualMinimoFrequencia) as aprovacao ");
+		sql.append("select verifica_aprovacao(:cursoId, :turmaId, :colaboradorTurmaId, ");
+		
+		if(percentualMinimoFrequencia != null)
+			sql.append(":percentualMinimoFrequencia ");
+		else
+			sql.append(" 0 ");
+		
+		sql.append(") as aprovacao ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("cursoId", cursoId);
 		query.setLong("turmaId", turmaId);
 		query.setLong("colaboradorTurmaId", colaboradorTurmaId);
-		query.setDouble("percentualMinimoFrequencia", percentualMinimoFrequencia);
+		
+		if(percentualMinimoFrequencia != null)
+			query.setDouble("percentualMinimoFrequencia", percentualMinimoFrequencia);
+		
 		return (Boolean) query.uniqueResult();
 	}
 }

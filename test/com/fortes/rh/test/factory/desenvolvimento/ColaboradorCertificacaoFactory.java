@@ -2,6 +2,7 @@ package com.fortes.rh.test.factory.desenvolvimento;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 
@@ -11,6 +12,7 @@ public class ColaboradorCertificacaoFactory
 	{
 		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao();
 		colaboradorCertificacao.setId(null);
+		colaboradorCertificacao.setData(new Date());
 		return colaboradorCertificacao;
 	}
 

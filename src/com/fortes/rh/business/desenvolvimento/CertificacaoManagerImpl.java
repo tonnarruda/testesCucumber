@@ -186,13 +186,15 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 		return getDao().findByCursoId(cursoId);
 	}
 
-	public void setColaboradorCertificacaoManager(
-			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+	public Collection<Certificacao> findDependentes(Long certificacaoId) {
+		return getDao().findDependentes(certificacaoId);
+	}
+
+	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
 
-	public void setColaboradorAvaliacaoPraticaManager(
-			ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
+	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
 		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
 	}
 }

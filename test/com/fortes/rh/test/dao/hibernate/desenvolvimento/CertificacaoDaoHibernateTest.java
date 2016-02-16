@@ -222,6 +222,29 @@ public class CertificacaoDaoHibernateTest extends GenericDaoHibernateTest<Certif
 		assertEquals(1, retorno.size());
 	}
 	
+	public void testFindDependentesByPreRequisitoId()
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Certificacao certificacaoMae = CertificacaoFactory.getEntity();
+		certificacaoMae.setCursos(Arrays.asList(curso));
+		certificacaoDao.save(certificacaoMae);
+		
+		Certificacao certificacaoFilha1 = CertificacaoFactory.getEntity();
+		certificacaoFilha1.setCursos(Arrays.asList(curso));
+		certificacaoFilha1.setCertificacaoPreRequisito(certificacaoMae);
+		certificacaoDao.save(certificacaoFilha1);
+		
+		Certificacao certificacaoFilha2 = CertificacaoFactory.getEntity();
+		certificacaoFilha2.setCursos(Arrays.asList(curso));
+		certificacaoFilha2.setCertificacaoPreRequisito(certificacaoMae);
+		certificacaoDao.save(certificacaoFilha2);
+		
+		Collection<Certificacao> retorno = certificacaoDao.findDependentes(certificacaoMae.getId());
+		assertEquals(2, retorno.size());
+	}
+	
 	public void setCertificacaoDao(CertificacaoDao certificacaoDao)
 	{
 		this.certificacaoDao = certificacaoDao;

@@ -22,6 +22,7 @@ import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.thread.certificaColaboradorThread;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -120,14 +121,14 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			turmaDocumentoAnexoManager.salvarDocumentoAnexos(turma.getId(), documentoAnexoIds);
 		}
 		if(validarCertificacao && colaboradorTurma == null)
-				verificaCertificacaoByColaboradorTurmaId(turma);
+			verificaCertificacaoByColaboradorTurmaId(turma);
 	}
 	
 	private void verificaCertificacaoByColaboradorTurmaId(Turma turma){
 		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaId(turma.getId());
 		if(turma.getRealizada()){
 			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) {
-				colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurma.getId());
+				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId()).start();
 			}
 		}
 		else

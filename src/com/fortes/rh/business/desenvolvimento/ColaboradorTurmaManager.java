@@ -21,13 +21,12 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TAula;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma>
 {
 	public Collection<ColaboradorTurma> filtrarColaboradores(int page, int pagingSize, String[] areasCheck, String[] cargosCheck, String[] estabelecimentosCheck, String[] gruposCheck, String[] colaboradoresCursosCheck, Turma turma, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId) throws ColecaoVaziaException;
 	public Collection<ColaboradorTurma> filtroRelatorioMatriz(LinkedHashMap filtro);
 	public Collection<Colaborador> getListaColaboradores(Collection<ColaboradorTurma> colaboradorTurmasLista);
-	public Collection<ColaboradorTurma> filtroRelatorioPlanoTrei(LinkedHashMap filtro);
 	public void saveUpdate(String[] colaboradorTurma, String[] selectPrioridades, boolean validarCertificacao) throws Exception;
 	public Collection<Curso> getListaCursos(Collection<ColaboradorTurma> colaboradorTurmasLista);
 	public Collection<ColaboradorCursoMatriz> montaMatriz(Collection<ColaboradorTurma> colaboradorTurmasLista);

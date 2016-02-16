@@ -13,6 +13,7 @@ import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
 import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.thread.certificaColaboradorThread;
 
 public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<AproveitamentoAvaliacaoCurso, AproveitamentoAvaliacaoCursoDao> implements AproveitamentoAvaliacaoCursoManager
 {
@@ -38,10 +39,11 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 				
 				AproveitamentoAvaliacaoCurso aproveitamento = new AproveitamentoAvaliacaoCurso(colabTurma, avaliacaoCurso, valor);
 				
-				saveOrUpdate(aproveitamento);
+				getDao().saveOrUpdate(aproveitamento);
+				getDao().getHibernateTemplateByGenericDao().flush();
 				
 				if(validarCertificacao)
-					colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colabTurma.getId());
+					new certificaColaboradorThread(colaboradorCertificacaoManager, colabTurma.getId()).start();
 			}
 
 			transactionManager.commit(status);
@@ -52,14 +54,6 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 			e.printStackTrace();
 			throw e;
 		}
-	}
-
-	private void remove(Long colaboradorTurmaId, AvaliacaoCurso avaliacaoCurso) {
-
-		AproveitamentoAvaliacaoCurso aproveitamento = getDao().findByColaboradorTurmaAvaliacaoId(colaboradorTurmaId, avaliacaoCurso.getId());
-		
-		if (aproveitamento != null)
-			getDao().remove(aproveitamento);
 	}
 
 	public void saveOrUpdate(AproveitamentoAvaliacaoCurso aproveitamento)

@@ -16,6 +16,7 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
@@ -60,6 +61,7 @@ import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DntFactory;
 import com.fortes.rh.test.factory.desenvolvimento.PrioridadeTreinamentoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -114,6 +116,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorPresencaManager = new Mock(ColaboradorPresencaManager.class);
 		
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
+		Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
 		
 	}
 
@@ -418,13 +421,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorTurmaManager.filtroRelatorioMatriz(null);
 	}
 
-	public void testFiltroRelatorioPlanoTrei()
-	{
-		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-		colaboradorTurmaDao.expects(once()).method("filtroRelatorioPlanoTrei").with(ANYTHING).will(returnValue(colaboradorTurmas));
-		colaboradorTurmaManager.filtroRelatorioPlanoTrei(null);
-	}
-
 	public void testGetListaColaboradores()
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
@@ -444,6 +440,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		String[] selectPrioridades = new String[] { "1" };
 
 		colaboradorTurmaDao.expects(once()).method("updateColaboradorTurmaSetPrioridade").with(ANYTHING, ANYTHING).isVoid();
+		colaboradorTurmaDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 
 		Exception ex = null;
 		try

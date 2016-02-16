@@ -228,7 +228,7 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		
 		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
 		
-		ColaboradorCertificacao colaboradorCertificacaos = colaboradorCertificacaoDao.colaboradorCertificadoByColaboradorIdAndCertificacaId(colaborador.getId(), certificacao.getId());
+		ColaboradorCertificacao colaboradorCertificacaos = colaboradorCertificacaoDao.verificaCertificacao(colaborador.getId(), certificacao.getId());
 		
 		assertNotNull(colaboradorCertificacaos);
 	}

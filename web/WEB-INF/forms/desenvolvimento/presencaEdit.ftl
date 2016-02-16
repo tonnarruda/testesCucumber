@@ -174,6 +174,7 @@
 					<#list colaboradorTurmasLista as lista>
 						<#assign certificadoEmTurmaPosterior = "false" >
 						<#assign style="''">
+						<#assign opacity = "opacity: 1;">
 						<#if lista.certificadoEmTurmaPosterior>
 							<#assign certificadoEmTurmaPosterior = "true" >
 							<#assign style="'color:#ADADAD;; background: #F3F3F3;'">

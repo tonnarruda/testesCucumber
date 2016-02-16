@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import mockit.Mockit;
+
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManagerImpl;
@@ -18,6 +21,7 @@ import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
+import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
 
 public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 {
@@ -32,9 +36,10 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		aproveitamentoAvaliacaoCursoManager.setDao((AproveitamentoAvaliacaoCursoDao) aproveitamentoAvaliacaoCursoDao.proxy());
 		colaboradorCertificacaoManager = new Mock(ColaboradorCertificacaoManager.class);
 		aproveitamentoAvaliacaoCursoManager.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
-		
 		transactionManager = new Mock(PlatformTransactionManager.class);
 		aproveitamentoAvaliacaoCursoManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+
+		Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
 	}
 	
 	public void testUpdateNotas() throws Exception
@@ -48,10 +53,9 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		aproveitamento.setAvaliacaoCurso(avaliacaoCurso);
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(aproveitamento));
-		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("update").with(ANYTHING);
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("saveOrUpdate");
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
-		colaboradorCertificacaoManager.expects(once()).method("descertificarColaboradorByColaboradorTurma").with(ANYTHING, ANYTHING).isVoid();
 
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
 	}
@@ -63,15 +67,10 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(10L);
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(1L), eq(10L)).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(2L), eq(10L)).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(3L), ANYTHING).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("save").with(ANYTHING);
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("saveOrUpdate");
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
-		
-		//aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(3L), eq(10L)).will(returnValue(new AproveitamentoAvaliacaoCurso()));
-		//aproveitamentoAvaliacaoCursoDao.expects(once()).method("remove");
-		
+
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
 	}
 	
@@ -82,12 +81,9 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(10L);
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(1L), eq(10L)).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(2L), eq(10L)).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(3L), ANYTHING).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("save").with(ANYTHING);
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("saveOrUpdate");
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
-		colaboradorCertificacaoManager.expects(atLeastOnce()).method("verificaCertificacaoByColaboradorTurmaId").with(ANYTHING).isVoid();
 		
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, true);
 	}
@@ -117,8 +113,8 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(1);
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(once()).method("save").with(ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));;
+		aproveitamentoAvaliacaoCursoDao.expects(once()).method("saveOrUpdate").withAnyArguments().will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));;
+		
 		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
 		Exception exc = null;

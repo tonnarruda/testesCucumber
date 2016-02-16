@@ -19,4 +19,5 @@ public interface CertificacaoDao extends GenericDao<Certificacao>
 	Collection<Colaborador> findColaboradoresNaCertificacao(Long certificacaoId);
 	public Collection<Certificacao> findAllSelectNotCertificacaoId(Long empresaId, Long certificacaoId);
 	public Collection<Certificacao> findByCursoId(Long cursoId);
+	Collection<Certificacao> findDependentes(Long certificacaoId);
 }

@@ -9,6 +9,7 @@ public class CertificacaoFactory
 		Certificacao certificacao = new Certificacao();
 		certificacao.setId(null);
 		certificacao.setNome("Teste");
+		certificacao.setPeriodicidade(1);
 		return certificacao;
 	}
 

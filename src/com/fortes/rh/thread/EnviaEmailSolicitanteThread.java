@@ -20,11 +20,9 @@ public class EnviaEmailSolicitanteThread extends Thread{
 	}
 	
 	public void run() {
-		
 		try {
 			SolicitacaoManager solicitacaoManager = (SolicitacaoManager) SpringUtil.getBeanOld("solicitacaoManager");
 			solicitacaoManager.emailSolicitante(solicitacao, empresa, usuario);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

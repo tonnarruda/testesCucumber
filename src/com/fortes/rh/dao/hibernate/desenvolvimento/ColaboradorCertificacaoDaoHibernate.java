@@ -57,10 +57,15 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 				.add(Restrictions.eqProperty("cc2.colaborador.id", "cc.colaborador.id"));
 		
 		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
+		criteria.createCriteria("cc.certificacao", "ct", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cc.id"), "id");
 		p.add(Projections.property("cc.data"), "data");
+		p.add(Projections.property("ct.id"), "certificacaoId");
+		p.add(Projections.property("ct.periodicidade"), "certificacaoPeriodicidade");
+		p.add(Projections.property("ct.certificacaoPreRequisito.id"), "certificacaoPreRequisitoId");
+		
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("cc.colaborador.id",colaboradorId));
@@ -101,7 +106,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ColaboradorCertificacao colaboradorCertificadoByColaboradorIdAndCertificacaId(Long colaboradorId, Long certificacaoId) 
+	public ColaboradorCertificacao verificaCertificacao(Long colaboradorId, Long certificacaoId) 
 	{
 		StringBuilder sql = new StringBuilder();
 		sql.append("select c.id, :colaboradorId, c.certificacaoPreRequisito_id ");
@@ -127,26 +132,26 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		return colaboradorCertificacao;
 	}
 	
-	public Collection<ColaboradorCertificacao> getColaboradorCertificadoFilhas(Long[] colaboradorCertificacaoIds, Long colaboradorId) 
-	{
-		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("cc.id"), "id");
-		p.add(Projections.property("cc.data"), "data");
-		p.add(Projections.property("cc.certificacao"), "certificacao");
-		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("cc.colaborador.id",colaboradorId));
-		criteria.add(Expression.in("cc.certificacao.id" , colaboradorCertificacaoIds));
-		criteria.add(Expression.not(Expression.in("cc.id" , colaboradorCertificacaoIds)));
-		
-		criteria.addOrder(Order.asc("cc.data"));
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
-
-		return criteria.list();
-	}
+//	public Collection<ColaboradorCertificacao> getColaboradorCertificadoFilhas(Long[] colaboradorCertificacaoIds, Long colaboradorId) 
+//	{
+//		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
+//
+//		ProjectionList p = Projections.projectionList().create();
+//		p.add(Projections.property("cc.id"), "id");
+//		p.add(Projections.property("cc.data"), "data");
+//		p.add(Projections.property("cc.certificacao"), "certificacao");
+//		criteria.setProjection(p);
+//
+//		criteria.add(Expression.eq("cc.colaborador.id",colaboradorId));
+//		criteria.add(Expression.in("cc.certificacao.id" , colaboradorCertificacaoIds));
+//		criteria.add(Expression.not(Expression.in("cc.id" , colaboradorCertificacaoIds)));
+//		
+//		criteria.addOrder(Order.asc("cc.data"));
+//		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+//		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
+//
+//		return criteria.list();
+//	}
 	
 	@SuppressWarnings("unchecked")
 	public Collection<ColaboradorCertificacao> getCertificacoesAVencer(Date data, Long empresaId) 
@@ -210,7 +215,8 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		sql.append("INNER JOIN turma t ON t.id = ct.turma_id AND t.dataprevfim = ( (SELECT MAX(dataprevfim) FROM turma t2 WHERE t2.curso_id = t.curso_id AND t2.realizada ) ) ");
 		sql.append("INNER JOIN curso c ON c.id = t.curso_id ");
 		sql.append("WHERE ct.colaborador_id = :colaboradorId AND t.realizada AND c.id IN ((SELECT cursos_id FROM certificacao_curso WHERE certificacaos_id = :certificacaoId)) ");
-		sql.append("AND verifica_aprovacao(c.id, t.id, ct.id, c.percentualminimofrequencia) order by t.dataprevfim desc");
+		sql.append("AND verifica_aprovacao(c.id, t.id, ct.id, c.percentualminimofrequencia) order ");
+		sql.append("order by t.dataprevfim desc");//Não remover importante
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("colaboradorId", colaboradorId);

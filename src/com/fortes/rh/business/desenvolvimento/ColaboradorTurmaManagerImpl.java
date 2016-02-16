@@ -35,6 +35,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TAula;
+import com.fortes.rh.thread.certificaColaboradorThread;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
@@ -45,7 +46,6 @@ import com.ibm.icu.math.BigDecimal;
 public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorTurma, ColaboradorTurmaDao> implements ColaboradorTurmaManager
 {
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
-	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -85,6 +85,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return retorno;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Collection<ColaboradorTurma> filtroRelatorioMatriz(LinkedHashMap filtro)
 	{
 		return getDao().filtroRelatorioMatriz(filtro);
@@ -105,11 +106,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Integer getCount(Long turmaId, Long empresaId, String colaboradorNome, Long[] estabelecimentoIds, Long[] cargoIds)
 	{
 		return getDao().getCount(turmaId, empresaId, colaboradorNome, estabelecimentoIds, cargoIds);
-	}
-
-	public Collection<ColaboradorTurma> filtroRelatorioPlanoTrei(LinkedHashMap filtro)
-	{
-		return getDao().filtroRelatorioPlanoTrei(filtro);
 	}
 
 	public Collection<ColaboradorTurma> findRelatorioSemIndicacaoTreinamento(Long empresaId, Long[] areaIds, Long[] estabelecimentoIds, int qtdMeses) throws ColecaoVaziaException
@@ -150,9 +146,10 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			{
 				Long colaboradorTurmaId = Long.parseLong(colaboradorTurma[i].replace(".", ""));
 				getDao().updateColaboradorTurmaSetPrioridade(colaboradorTurmaId, Long.parseLong(selectPrioridades[i].replace(".", "")));
+				getDao().getHibernateTemplateByGenericDao().flush();
 				
 				if(validarCertificacao)
-					colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurmaId);
+					new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurmaId).start();
 			}
 		}
 	}
@@ -231,6 +228,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			cursoPontuacaos.addAll(colabCursoMatriz.getCursoPontuacaos());
 		}
 
+		@SuppressWarnings("rawtypes")
 		Map soma = new HashMap<Long, Integer>();
 		Integer subTotal = 0;
 		for (CursoPontuacaoMatriz cursoPontuacao : cursoPontuacaos)
@@ -244,6 +242,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			soma.put(cursoId, subTotal);
 		}
 
+		@SuppressWarnings("rawtypes")
 		Set chaves = soma.keySet();
 
 		Collection<SomatorioCursoMatriz> somatorios = new ArrayList<SomatorioCursoMatriz>();
@@ -327,6 +326,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	public Collection<ColaboradorTurma> setCustoRateado(Collection<ColaboradorTurma> colaboradorTurmas)
 	{
+		@SuppressWarnings("rawtypes")
 		List custosRateados = getDao().findCustoRateado();
 
 		for (Object custoRateado : custosRateados)
@@ -1230,9 +1230,4 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
-	
-	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
-		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
-	}
-
 }

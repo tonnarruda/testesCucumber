@@ -46,9 +46,6 @@
     <property name="colaboradorCertificacaoManager">
       <ref bean="colaboradorCertificacaoManager" />
     </property>
-    <property name="colaboradorAvaliacaoPraticaManager">
-      <ref bean="colaboradorAvaliacaoPraticaManager" />
-    </property>
   </bean>
   <bean id="colaboradorTurmaManager" parent="parentManager">
     <property name="proxyInterfaces">

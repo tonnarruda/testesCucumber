@@ -10,6 +10,7 @@ import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
+import com.fortes.rh.thread.certificaColaboradorThread;
 
 public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<ColaboradorPresenca, ColaboradorPresencaDao> implements ColaboradorPresencaManager
 {
@@ -42,9 +43,10 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			
 			ColaboradorPresenca colaboradorPresenca = new ColaboradorPresenca(colaboradorTurma, diaTurma, true);
 			getDao().save(colaboradorPresenca);
+			getDao().getHibernateTemplateByGenericDao().flush();
 			
 			if(validarCertificacao)
-				colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurma.getId());
+				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId()).start();
 		}
 		else{
 			getDao().remove(diaTurmaId, colaboradorTurmaId);
@@ -65,9 +67,10 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			{
 				if(!colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turmaId, colaboradorTurma.getColaborador().getId())){
 					getDao().save(new ColaboradorPresenca(colaboradorTurma, diaTurma, true));
+					getDao().getHibernateTemplateByGenericDao().flush();
 				
 					if(validarCertificacao)
-						colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurma.getId());
+						new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId()).start();
 				}
 			}
 		}

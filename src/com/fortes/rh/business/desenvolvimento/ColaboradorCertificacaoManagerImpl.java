@@ -31,6 +31,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
 	}
 
+	@SuppressWarnings("deprecation")
 	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Integer mesesCertificacoesAVencer, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] colaboradoresIds)
 	{
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
@@ -179,27 +180,64 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return periodo;
 	}
 	
-	public void verificaCertificacaoByColaboradorTurmaId(Long colaboradorTurmaId) 
-	{
-		Collection<ColaboradorCertificacao> colaboradoresCertificados  = getDao().colaboradoresCertificadosByColaboradorTurmaId(colaboradorTurmaId);
-		Collection<ColaboradorCertificacao> colaboradoresCertificadosTemp = new ArrayList<ColaboradorCertificacao>();
+	@SuppressWarnings("deprecation")
+	public Collection<ColaboradorCertificacao> certificaByColaboradorTurmaId(Long colaboradorTurmaId){
+		CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBeanOld("certificacaoManager");
+		Collection<ColaboradorCertificacao> colaboradorCertificadosRetorno = new ArrayList<ColaboradorCertificacao>();
+		Collection<ColaboradorCertificacao> colaboradorCertificados  = getDao().colaboradoresCertificadosByColaboradorTurmaId(colaboradorTurmaId);
 		
-		for (ColaboradorCertificacao colaboradorCertificado : colaboradoresCertificados) 
-			if(colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito() != null && colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito().getId() != null)
-				colaboradoresCertificadosTemp.addAll(colaboradoresCertificadosByColaboradorIdAndCertificacaId(colaboradorCertificado.getColaborador().getId(), colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito().getId()));
+		for (ColaboradorCertificacao colaboradorCertificado : colaboradorCertificados){
+			if(colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito() == null || colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito().getId() == null){
+				colaboradorCertificadosRetorno.add(colaboradorCertificado);
+			}else if(verificaCertificacaoPreRequisitoRecursivo(colaboradorCertificado.getColaborador().getId(), colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito().getId()).size() > 0){
+				colaboradorCertificadosRetorno.add(colaboradorCertificado);
+			}
+		}
 		
-		colaboradoresCertificados.addAll(colaboradoresCertificadosTemp);
-		
-		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificados) 
-		{
+		for (ColaboradorCertificacao colaboradorCertificacao : colaboradorCertificadosRetorno){ 
 			saveColaboradorCertificacao(colaboradorCertificacao);
+			certificaDependentesRecursivo(colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getCertificacao().getId(), certificacaoManager);
+		}
+		
+		return colaboradorCertificadosRetorno;
+	}
+
+	private void certificaDependentesRecursivo(Long colaboradorId, Long certificacaoId, CertificacaoManager certificacaoManager) {
+		Collection<Certificacao> certificadosDependentes = certificacaoManager.findDependentes(certificacaoId);
+		
+		if(certificadosDependentes != null){
+			for (Certificacao certificacao : certificadosDependentes){ 
+				ColaboradorCertificacao colaboradorCertificacao  = getDao().verificaCertificacao(colaboradorId,certificacao.getId());
+				if(colaboradorCertificacao != null){
+					saveColaboradorCertificacao(colaboradorCertificacao);
+					certificaDependentesRecursivo(colaboradorId, certificacao.getId(), certificacaoManager);
+				}
+			}
 		}
 	}
 
+	private Collection<ColaboradorCertificacao> verificaCertificacaoPreRequisitoRecursivo(Long colaboradorId, Long certificacaoId)
+	{
+		Collection<ColaboradorCertificacao> colaboradoresCertificados = new ArrayList<ColaboradorCertificacao>();
+		ColaboradorCertificacao colaboradorCertificado  = getDao().findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
+		
+		if(colaboradorCertificado != null && DateUtil.incrementaMes(colaboradorCertificado.getData(),colaboradorCertificado.getCertificacao().getPeriodicidade()).getTime() >= (new Date()).getTime())
+		{
+			if(colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito() == null || colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito().getId() == null){
+				colaboradoresCertificados.add(colaboradorCertificado);
+			}else if(verificaCertificacaoPreRequisitoRecursivo(colaboradorId, colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito().getId()).size() > 0){
+				colaboradoresCertificados.add(colaboradorCertificado);
+			}
+		}
+		
+		return colaboradoresCertificados;
+	}
+	
+	//Verificar Samuel
 	public Collection<ColaboradorCertificacao> colaboradoresCertificadosByColaboradorIdAndCertificacaId(Long colaboradorId, Long certificacaoId)
 	{
 		Collection<ColaboradorCertificacao> colaboradoresCertificados = new ArrayList<ColaboradorCertificacao>();
-		ColaboradorCertificacao colaboradorCertificado  = getDao().colaboradorCertificadoByColaboradorIdAndCertificacaId(colaboradorId, certificacaoId);
+		ColaboradorCertificacao colaboradorCertificado  = getDao().verificaCertificacao(colaboradorId, certificacaoId);
 		
 		if(colaboradorCertificado != null)
 		{
@@ -208,23 +246,19 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 				colaboradoresCertificados.addAll(colaboradoresCertificadosByColaboradorIdAndCertificacaId(colaboradorCertificado.getColaborador().getId(), colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito().getId()));
 		}
 
-		if(colaboradoresCertificados.size() > 0)
-		{
-			Collection<ColaboradorCertificacao> colaboradoresCertificadosFilhas = getDao().getColaboradorCertificadoFilhas(new CollectionUtil<ColaboradorCertificacao>().convertCollectionToArrayIds(colaboradoresCertificados), colaboradorId);  
-			for (ColaboradorCertificacao colaboradorCertificacaoFilha : colaboradoresCertificadosFilhas) 
-				colaboradoresCertificados.add(getDao().colaboradorCertificadoByColaboradorIdAndCertificacaId(colaboradorId, colaboradorCertificacaoFilha.getCertificacao().getId()));
-		}
-		
+//		if(colaboradoresCertificados.size() > 0)
+//		{
+//			Collection<ColaboradorCertificacao> colaboradoresCertificadosFilhas = getDao().getColaboradorCertificadoFilhas(new CollectionUtil<ColaboradorCertificacao>().convertCollectionToArrayIds(colaboradoresCertificados), colaboradorId);  
+//			for (ColaboradorCertificacao colaboradorCertificacaoFilha : colaboradoresCertificadosFilhas) 
+//				colaboradoresCertificados.add(getDao().colaboradorCertificadoByColaboradorIdAndCertificacaId(colaboradorId, colaboradorCertificacaoFilha.getCertificacao().getId()));
+//		}
+//		
 		return colaboradoresCertificados;
 	}
 	
 	public Collection<ColaboradorCertificacao> getCertificacoesAVencer(Date data, Long empresaId) 
 	{
 		return getDao().getCertificacoesAVencer(data, empresaId);
-	}
-
-	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
-		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
 	}
 
 	public void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId, boolean removerColaboradorAvaliacaoPratica) {
@@ -260,6 +294,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		colaboradorCertificacao.setColaboradoresTurmas(colaboradoresTurmas);
 		colaboradorCertificacao.setData(dataColaboradorCertificacao);
 		getDao().save(colaboradorCertificacao);
+		getDao().getHibernateTemplateByGenericDao().flush();
 
 		for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica : colaboradorAvaliacoesPraticas) {
 			colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
@@ -279,13 +314,16 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		Collection<ColaboradorCertificacao> colaboradorCertificacoes = getDao().findColaboradorCertificadoEmUmaTurmaPosterior(turmaId, colaboradorCertificacaoId);
 		return colaboradorCertificacoes.size() > 0;
 	}
+	
+	public Date getMaiorDataDasTurmasDaCertificacao( Long colaboradorCertificacaoId) {
+		return getDao().getMaiorDataDasTurmasDaCertificacao(colaboradorCertificacaoId);
+	}
 
 	public void setAvaliacaoPraticaManager( AvaliacaoPraticaManager avaliacaoPraticaManager) {
 		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
 	}
 
-	public Date getMaiorDataDasTurmasDaCertificacao( Long colaboradorCertificacaoId) {
-		return getDao().getMaiorDataDasTurmasDaCertificacao(colaboradorCertificacaoId);
+	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
+		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
 	}
-
 }

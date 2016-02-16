@@ -3,8 +3,11 @@ package com.fortes.rh.test.business.desenvolvimento;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import mockit.Mockit;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManagerImpl;
@@ -22,8 +25,8 @@ import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
 
-@SuppressWarnings("deprecation")
 public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 {
 	private ColaboradorPresencaManagerImpl colaboradorPresencaManager = new ColaboradorPresencaManagerImpl();
@@ -41,6 +44,8 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		
 		colaboradorCertificacaoManager = new Mock(ColaboradorCertificacaoManager.class);
 		colaboradorPresencaManager.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
+		
+		Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
 		
         super.setUp();
     }
@@ -86,7 +91,7 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		colaboradorTurmaManager.expects(once()).method("findByTurmaSemPresenca").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
 		colaboradorCertificacaoManager.expects(once()).method("existeColaboradorCertificadoEmUmaTurmaPosterior").with(ANYTHING, eq(colaboradorTurma.getColaborador().getId())).will(returnValue(false));
 		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
-		colaboradorCertificacaoManager.expects(once()).method("verificaCertificacaoByColaboradorTurmaId").with(eq(colaboradorTurma.getId()));
+		colaboradorPresencaDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		
 		colaboradorPresencaManager.marcarTodos(null, null, true);
 	}
@@ -115,10 +120,11 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 	public void testUpdatePresenca() throws Exception
 	{
 		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
+		colaboradorPresencaDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		colaboradorPresencaManager.updateFrequencia(null, null, true, false);
 		
 		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
-		colaboradorCertificacaoManager.expects(once()).method("verificaCertificacaoByColaboradorTurmaId").with(ANYTHING);
+		colaboradorPresencaDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		colaboradorPresencaManager.updateFrequencia(null, null, true, true);
 		
 		colaboradorPresencaDao.expects(once()).method("remove").with(ANYTHING,ANYTHING);
