@@ -384,6 +384,62 @@
 			return validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}), (noSubmit == true ? true : false));
 		}
 		
+		function prepareSubmit() {
+			var selectsAvalPeriodoExperiencia = $(".periodoExperiencia");
+			var selectsAvalPeriodoExperienciaSelecionados = $(".periodoExperiencia[value!='']");
+			console.log(selectsAvalPeriodoExperiencia.length);
+			console.log(selectsAvalPeriodoExperienciaSelecionados.length);
+			if ( selectsAvalPeriodoExperiencia.length > 0 && selectsAvalPeriodoExperiencia.length > selectsAvalPeriodoExperienciaSelecionados.length ) {
+				var corpo = "Existem modelos do acompanhamento do período de experiência não configurados: <br>";
+				var modelosColaborador = [];
+				var modelosGestor = [];
+				
+				$(selectsAvalPeriodoExperiencia).each(function(){
+					if ( $.inArray(this, selectsAvalPeriodoExperienciaSelecionados) == -1 ) {
+						if ($(this).parents("fieldset").find("legend").text() == "Colaborador")
+							modelosColaborador.push(this);
+						else
+							modelosGestor.push(this);
+					}
+				});
+				
+				if(modelosColaborador.length > 0) {
+					corpo += "<br> COLABORADOR: <br>";
+					$(modelosColaborador).each(function(){
+						corpo += " - "+$(this).parents("tr").find("td:eq(0)").text() + " dias <br>" ;
+					});
+				}
+					
+				if(modelosColaborador.length > 0) {
+					corpo += "<br> GESTOR: <br>";
+					$(modelosGestor).each(function(){
+						corpo += " - "+$(this).parents("tr").find("td:eq(0)").text() + " dias <br>" ;
+					});
+				}
+				
+				corpo += "<br><br>Gravar mesmo assim?";
+				
+				//$("<div>"+corpo+"</div>").dialog({ title: 'Modelos de avaliação não configurados', width: 600 });
+				$("<div>"+corpo+"</div>").dialog({ 	modal: true, 
+													title: 'Modelos de avaliação não configurados',
+													width: 400,
+													buttons: 
+													[
+													    {
+													        text: "Sim",
+													        click: function() { submit(); }
+													    },
+													    {
+													        text: "Não",
+													        click: function() { $(this).dialog("close"); }
+													    }
+													]
+												});
+			} else {
+				submit();
+			}
+		}
+		
 		function submit()
 		{
 			if (setaCampos() && validaFormularioDinamico(true))
@@ -666,7 +722,7 @@
 					<@display.column title="Dias" property="dias" style="width:80px;" />
 					<@display.column title="Modelo do Acompanhamento do Período de Experiência">
 						<@ww.hidden name="colaboradorAvaliacoes[${i}].periodoExperiencia.id" value="${periodoExperiencia.id}" />
-						<@ww.select theme="simple" name="colaboradorAvaliacoes[${i}].avaliacao.id" id="modeloPeriodo${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
+						<@ww.select theme="simple" name="colaboradorAvaliacoes[${i}].avaliacao.id" cssClass="periodoExperiencia" id="modeloPeriodo${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
 					</@display.column>
 					
 					<#assign i = i + 1 />
@@ -682,7 +738,7 @@
 					<@display.column title="Dias" property="dias" style="width:80px;" />
 					<@display.column title="Modelo do Acompanhamento do Período de Experiência">
 						<@ww.hidden name="colaboradorAvaliacoesGestor[${i}].periodoExperiencia.id" value="${periodoExperiencia.id}" />
-						<@ww.select theme="simple" name="colaboradorAvaliacoesGestor[${i}].avaliacao.id" id="modeloPeriodoGestor${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
+						<@ww.select theme="simple" name="colaboradorAvaliacoesGestor[${i}].avaliacao.id" cssClass="periodoExperiencia" id="modeloPeriodoGestor${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
 					</@display.column>
 					
 					<#assign i = i + 1 />
@@ -751,7 +807,7 @@
 		</div>
 
 		<div style="width: 440px;">
-			<button onclick="submit();" id="gravar" <#if !colaborador.id?exists> </#if> class="btnGravar" accesskey="${accessKey}">
+			<button onclick="prepareSubmit();" id="gravar" <#if !colaborador.id?exists> </#if> class="btnGravar" accesskey="${accessKey}">
 			</button>
 
 			<#if nomeBusca?exists && cpfBusca?exists>
