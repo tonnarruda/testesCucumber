@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.3579476910000357"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="337"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -20,7 +20,7 @@
 	<field name="certificado" class="java.lang.Boolean"/>
 	<field name="colaborador.id" class="java.lang.Long"/>
 	<field name="periodoTurma" class="java.lang.String"/>
-	<field name="aprovadoNaTurmaString" class="java.lang.String"/>
+	<field name="certificacao.aprovadoNaTurmaString" class="java.lang.String"/>
 	<field name="dataCertificadoFormatada" class="java.lang.String"/>
 	<field name="certificacao.periodicidadeFormatada" class="java.lang.String"/>
 	<field name="dataVencimentoCertificacao" class="java.lang.String"/>
@@ -362,7 +362,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{aprovadoNaTurmaString}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificacao.aprovadoNaTurmaString}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-11" x="42" y="0" width="277" height="12" uuid="c4cc9dbd-f534-48eb-bbf9-6a963ba9736b"/>

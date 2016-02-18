@@ -93,7 +93,6 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		action.setCertificacao(certificacao);
 		
 		certificacaoManager.expects(once()).method("findById").with(eq(certificacao.getId())).will(returnValue(certificacao));
-		certificacaoManager.expects(once()).method("findAllSelectNotCertificacaoId").withAnyArguments().will(returnValue(new ArrayList<Certificacao>()));
 		cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[] {empresa.getId()})).will(returnValue(new ArrayList<Curso>()));
 		avaliacaoPraticaManager.expects(once()).method("find").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoPratica>()));
 		
@@ -125,7 +124,7 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		certificacaoManager.expects(once()).method("verificaEmpresa").with(eq(certificacao.getId()), eq(empresa.getId())).will(returnValue(true));
 		certificacaoManager.expects(once()).method("findById").with(eq(certificacao.getId())).will(returnValue(certificacao));
 		cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[] {empresa.getId()})).will(returnValue(new ArrayList<Curso>()));
-		certificacaoManager.expects(once()).method("findAllSelectNotCertificacaoId").withAnyArguments().will(returnValue(new ArrayList<Certificacao>()));
+		certificacaoManager.expects(once()).method("findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito").withAnyArguments().will(returnValue(new ArrayList<Certificacao>()));
 		avaliacaoPraticaManager.expects(once()).method("find").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoPratica>()));
 		colaboradorCertificacaoManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoPratica>()));
 		

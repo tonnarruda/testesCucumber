@@ -31,7 +31,7 @@
 		<@ww.actionerror />
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.textfield label="Nome" id="nome" name="certificacao.nome"  cssStyle="width:500px" maxLength="100" required="true"/>
-			<#if exibirPeriodicidade>
+			<#if empresaSistema.controlarVencimentoPorCertificacao>
 				<@ww.textfield label="Periodicidade em meses" name="certificacao.periodicidade" id="periodicidade" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/>
 
 				Certificação pré-requisito:	
@@ -46,7 +46,7 @@
 			<#if bloquearEdicao><img id="tooltipHelpMult" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  /></#if>
         	<@frt.checkListBox name="cursosCheck" list="cursosCheckList" filtro="true" readonly =bloquearEdicao/>
 	        
-	        <#if exibirPeriodicidade>
+	        <#if empresaSistema.controlarVencimentoPorCertificacao>
 	        	Avaliações Práticas:
 	        	<#if bloquearEdicao><img id="tooltipHelpMultAv" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  /></#if>
         		<@frt.checkListBox name="avaliacoesPraticasCheck" list="avaliacoesPraticasCheckList" filtro="true" readonly =bloquearEdicao />

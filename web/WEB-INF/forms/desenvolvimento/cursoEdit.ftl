@@ -64,10 +64,9 @@
 		<@ww.textfield label="Carga Horária" name="curso.cargaHorariaMinutos" cssStyle="width:55px;text-align:right" maxLength="7" cssClass="hora"/>
 		<@ww.textfield label="Percentual mínimo de frequência para aprovação (%)" id ="percentualMinimoFrequencia" name="curso.percentualMinimoFrequencia" maxLength="6" cssStyle="width:50px;text-align: right;" onblur="validaPercentual()"/>
 		
-		<#if exibirPeriodicidade>
+		<#if empresaSistema.controlarVencimentoPorCurso>
 			<@ww.textfield label="Periodicidade em meses" name="curso.periodicidade" id="periodicidade" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/>
 		</#if>
-		
 
 		<div style="display:<#if compartilharCursos>block<#else>none</#if>">
 			<@frt.checkListBox label="Compartilhar com as empresas" name="empresasCheck" list="empresasCheckList"/>

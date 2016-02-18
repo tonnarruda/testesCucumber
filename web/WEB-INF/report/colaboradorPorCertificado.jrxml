@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.5937424601000374"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="7"/>
+	<property name="ireport.x" value="482"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -20,7 +20,7 @@
 	<field name="certificado" class="java.lang.Boolean"/>
 	<field name="colaborador.id" class="java.lang.Long"/>
 	<field name="periodoTurma" class="java.lang.String"/>
-	<field name="aprovadoNaTurmaString" class="java.lang.String"/>
+	<field name="certificacao.aprovadoNaTurmaString" class="java.lang.String"/>
 	<field name="dataCertificadoFormatada" class="java.lang.String"/>
 	<field name="certificacao.periodicidadeFormatada" class="java.lang.String"/>
 	<field name="dataVencimentoCertificacao" class="java.lang.String"/>
@@ -56,8 +56,7 @@
 					<textElement verticalAlignment="Middle">
 						<paragraph leftIndent="3"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Matrícula: " + ($F{colaborador.matricula} == null ? "Sem matrícula" : $F{colaborador.matricula})
-]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Matrícula: " + ($F{colaborador.matricula} == null ? "Sem matrícula" : $F{colaborador.matricula})]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="2" y="56" width="532" height="13" uuid="3ef1ae63-9bba-430a-8ebd-1b4859906a65"/>
@@ -105,8 +104,7 @@
 					<textElement verticalAlignment="Middle">
 						<paragraph leftIndent="3"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Certificados: "
-]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Certificados: "]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -358,7 +356,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{aprovadoNaTurmaString}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificacao.aprovadoNaTurmaString}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-11" x="42" y="0" width="277" height="12" uuid="c4cc9dbd-f534-48eb-bbf9-6a963ba9736b"/>

@@ -154,7 +154,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 				colaboradorAvaliacaoPratica.setColaborador(colaborador);
 				
 				if(colaboradorCertificacao != null && colaboradorCertificacao.getId() != null){
-					if(colaboradorAvaliacaoPratica.getNota() < colaboradorAvaliacaoPratica.getAvaliacaoPratica().getNotaMinima())	{
+					if(colaboradorAvaliacaoPratica.getAvaliacaoPratica().getNotaMinima() > colaboradorAvaliacaoPratica.getNota())	{
 						colaboradorCertificacaoManager.descertificarColaborador(colaboradorCertificacao.getId());
 					}else{
 						colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
@@ -167,14 +167,14 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 				if(colaboradorCertificacao == null || colaboradorCertificacao.getId() == null){
 					Collection<ColaboradorCertificacao> colaboradorCertificacoes = colaboradorCertificacaoManager.certificaColaborador(null, colaborador.getId(), certificacao.getId()); 
 					if(colaboradorCertificacoes.size() > 0){
-						colaboradorCertificacao = (ColaboradorCertificacao) colaboradorCertificacoes.toArray()[0];
-						colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
+						ColaboradorCertificacao colaboradorCertificacaoTemp = (ColaboradorCertificacao) colaboradorCertificacoes.toArray()[0];
+						colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacaoTemp);
 						colaboradorAvaliacaoPraticaManager.saveOrUpdate(colaboradorAvaliacaoPratica);
 					}
 				}
 			}else if(colaboradorAvaliacaoPratica.getId() != null){
 				colaboradorAvaliacaoPraticaManager.removeByColaboradorCertificacaoId(colaboradorCertificacao.getId());
-				colaboradorCertificacaoManager.descertificarColaborador(colaboradorAvaliacaoPratica.getColaboradorCertificacao().getId());
+				colaboradorCertificacaoManager.descertificarColaborador(colaboradorCertificacao.getId());
 			}
 		}
 

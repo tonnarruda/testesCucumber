@@ -10,7 +10,6 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
-import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -39,7 +38,6 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 	private Long[] empresasCheck;
 	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
 	private boolean avaliacaoAlunoRespondida;
-	private boolean exibirPeriodicidade;
 	
 	private Collection<Empresa> empresas;
 
@@ -62,8 +60,6 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId","getNome");
 		
 		compartilharCursos = parametrosDoSistemaManager.findById(1L).getCompartilharCursos();
-		
-		setExibirPeriodicidade(getEmpresaSistema().getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CURSO.getOpcao());
 	}
 
 	public String prepareInsert() throws Exception
@@ -234,13 +230,5 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 	public boolean isAvaliacaoAlunoRespondida()
 	{
 		return avaliacaoAlunoRespondida;
-	}
-
-	public boolean isExibirPeriodicidade() {
-		return exibirPeriodicidade;
-	}
-	
-	public void setExibirPeriodicidade(boolean exibirPeriodicidade) {
-		this.exibirPeriodicidade = exibirPeriodicidade;
 	}
 }

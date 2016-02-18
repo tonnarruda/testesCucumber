@@ -478,13 +478,18 @@ public class Empresa extends AbstractModel implements Serializable
 		this.controlaRiscoPor = controlaRiscoPor;
 	}
 
-	public int getControlarVencimentoCertificacaoPor() {
-		return controlarVencimentoCertificacaoPor;
-	}
-
 	public boolean isControlarVencimentoPorCertificacao()
 	{
-		return getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CERTIFICACAO.getOpcao();
+		return controlarVencimentoCertificacaoPor == FiltroControleVencimentoCertificacao.CERTIFICACAO.getOpcao();
+	}
+	
+	public boolean isControlarVencimentoPorCurso()
+	{
+		return controlarVencimentoCertificacaoPor == FiltroControleVencimentoCertificacao.CURSO.getOpcao();
+	}
+
+	public int getControlarVencimentoCertificacaoPor() {
+		return controlarVencimentoCertificacaoPor;
 	}
 	
 	public void setControlarVencimentoCertificacaoPor(int controlarVencimentoCertificacaoPor) {

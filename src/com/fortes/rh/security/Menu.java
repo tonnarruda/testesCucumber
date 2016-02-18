@@ -6,7 +6,6 @@ import java.util.Collection;
 import org.apache.axis.utils.StringUtils;
 
 import com.fortes.rh.model.acesso.Papel;
-import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 
@@ -130,8 +129,8 @@ public abstract class Menu
 		{
 			if (papel.getPapelMae() != null && papel.getPapelMae().getId() == id )
 			{
-				if(((empresaLogada.getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CURSO.getOpcao() && !papel.getId().equals(648L)) 
-						|| (empresaLogada.getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CERTIFICACAO.getOpcao() && !papel.getId().equals(635L)))){
+				if(((empresaLogada.isControlarVencimentoPorCurso() && !papel.getId().equals(648L)) 
+						|| (empresaLogada.isControlarVencimentoPorCertificacao() && !papel.getId().equals(635L)))){
 					
 					String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
 					

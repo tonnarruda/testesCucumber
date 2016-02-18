@@ -17,7 +17,7 @@ public interface CertificacaoDao extends GenericDao<Certificacao>
 	Integer getCount(Long empresaId, String nomeBusca);
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 	Collection<Colaborador> findColaboradoresNaCertificacao(Long certificacaoId);
-	public Collection<Certificacao> findAllSelectNotCertificacaoId(Long empresaId, Long certificacaoId);
+	public Collection<Certificacao> findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(Long empresaId, Long certificacaoId);
 	public Collection<Certificacao> findByCursoId(Long cursoId);
 	Collection<Certificacao> findDependentes(Long certificacaoId);
 }

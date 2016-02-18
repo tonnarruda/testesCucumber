@@ -18,7 +18,6 @@ import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
-import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -69,7 +68,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private String reportTitle;
 		
 	private String nomeBusca;//filtro listagem
-	private boolean exibirPeriodicidade;
 	private Date dataIni;
 	private Date dataFim;
 	private Boolean bloquearEdicao = false;
@@ -89,9 +87,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		Collection<AvaliacaoPratica> avaliacaoPraticas = avaliacaoPraticaManager.find(new String[] {"empresa.id"}, new Object[] { getEmpresaSistema().getId() }, new String[] { "titulo" });
 		avaliacoesPraticasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoPraticas, "getId", "getTitulo");
 		
-		setExibirPeriodicidade(getEmpresaSistema().getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CERTIFICACAO.getOpcao());
-		
-		certificacoes = certificacaoManager.findAllSelectNotCertificacaoId(getEmpresaSistema().getId(), certificacao.getId());
+		if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
+			certificacoes = certificacaoManager.findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(getEmpresaSistema().getId(), certificacao.getId());
 	}
 
 	public String prepareInsert() throws Exception
@@ -317,14 +314,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public void setAvaliacoesPraticasCheck(String[] avaliacoesPraticasCheck) {
 		this.avaliacoesPraticasCheck = avaliacoesPraticasCheck;
-	}
-
-	public boolean isExibirPeriodicidade() {
-		return exibirPeriodicidade;
-	}
-
-	public void setExibirPeriodicidade(boolean exibirPeriodicidade) {
-		this.exibirPeriodicidade = exibirPeriodicidade;
 	}
 
 	public Collection<Certificacao> getCertificacoes() {
