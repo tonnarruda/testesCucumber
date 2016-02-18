@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.15x.1xx" db="" data="xx/xx/2016">
-		<Item visivel="S" motivo="S16020000055"><![CDATA[Info. Funcionais > Relatórios > Recibo de Férias: Novo relatório. Visível somente quando integrado com o sistema Fortes Pessoal.]]></Item>
+		<Item visivel="S" motivo="S16020000055"><![CDATA[Info. Funcionais > Relatórios > Recibos de Pagamentos > Férias: Novo relatório. Visível somente quando integrado com o sistema Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S15110000204"><![CDATA[SESMT > Relatórios > EPIs > EPIs Devolvidos: Novo relatório.]]></Item>
-		<Item visivel="S" motivo="S16010000270"><![CDATA[SESMT > Relatórios > Exames: Mudança da nomenclatura do relatório de 'Funções por Exames' para 'Exames por Função'.]]></Item>
-		<Item visivel="S" motivo="P16020000028"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Otimização do processo de inserção da configuração de "dias de antecedência para o aviso".]]></Item>
+		<Item visivel="S" motivo="S16010000270"><![CDATA[SESMT > Relatórios > Exames: Mudança da nomenclatura do relatório de "Funções por Exames" para "Exames por Função".]]></Item>
+		<Item visivel="S" motivo="P16020000028"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Otimização do processo de inserção da configuração de "Dias de antecedência para o aviso".]]></Item>
 	</Versao>
 	<Versao id="1.1.158.189" db="" data="26/01/2016">
 		<Item visivel="S" motivo="S15100000103"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova coluna de Nome Comercial ao exportar para o excel.]]></Item>
@@ -18,7 +18,7 @@
 		<Item visivel="S" motivo="S16010000043"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Apresentar somente as áreas organizacionais que o usuário tenha permissão de visualizar.]]></Item>
 		<Item visivel="S" motivo="S15120000004"><![CDATA[SESMT > Movimentações > Solicitação de EPIs > Inserir: Possibilidade de cadastrar apenas para colaboradores ativos.]]></Item>
 		<Item visivel="S" motivo="S15110000203"><![CDATA[SESMT > Movimentações > Gerenciamento de EPIs: Nova tela para gerenciamento de EPIs, a qual é a unificação das telas de "Solicitação de EPI" e "Entregas de EPI".]]></Item>
-		<Item visivel="S" motivo="S15110000208"><![CDATA[SESMT > Relatórios > EPI: Agrupamento dos menus "EPI's com CA vencer", "EPI's com prazos a vencer", "EPI's Entregues" e "Ficha de EPI".]]></Item>
+		<Item visivel="S" motivo="S15110000208"><![CDATA[SESMT > Relatórios > EPI: Agrupamento dos menus "EPI's com CA a vencer", "EPI's com prazos a vencer", "EPI's Entregues" e "Ficha de EPI".]]></Item>
 		<Item visivel="S" motivo="S15110000208"><![CDATA[SESMT > Relatórios > Exames: Agrupamento dos menus "Exames Previstos", "Exames Realizados" e "Função por exame".]]></Item>
 		<Item visivel="S" motivo="S15110000208"><![CDATA[SESMT > Relatórios > Afastamentos: Agrupamento dos menus "Resumo de afastamentos" e "Afastamentos".]]></Item>
 		<Item visivel="S" motivo="P16010000084"><![CDATA[Utilitários > Exportar Curso/Turma como ocorrência para o TRU: Correção de inconsistência ao filtrar turmas dos cursos selecionados.]]></Item>

@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<@ww.head/>
-		<title>Adiantamento de Folha</title>
+		<title>Recibo de Pagamento - Adiantamento de Folha</title>
 		
 		<#include "../ftl/mascarasImports.ftl" />
 	

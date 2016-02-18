@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<@ww.head/>
-		<title>Recibo de 13º Salário</title>
+		<title>Recibo de Pagamento - 13º Salário</title>
 		
 		<#include "../ftl/mascarasImports.ftl" />
 	

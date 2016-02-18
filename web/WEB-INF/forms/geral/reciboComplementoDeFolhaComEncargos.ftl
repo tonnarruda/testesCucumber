@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<@ww.head/>
-		<title>Complemento de Folha com Encargos</title>
+		<title>Recibo de Pagamento - Complemento de Folha com Encargos</title>
 		
 		<#include "../ftl/mascarasImports.ftl" />
 	

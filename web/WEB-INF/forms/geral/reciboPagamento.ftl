@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<@ww.head/>
-		<title>Recibo de Pagamento</title>
+		<title>Recibo de Pagamento - Folha</title>
 		
 		<#include "../ftl/mascarasImports.ftl" />
 	

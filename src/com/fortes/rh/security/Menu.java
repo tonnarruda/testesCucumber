@@ -13,17 +13,20 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 public abstract class Menu 
 {
 	private static Collection<Papel> roles;
-	private static Collection<String> papeisParaEmpresasIntegradas = new ArrayList<String>();
 	private static String CURSOSVENCIDOSAVENCER = "ROLE_REL_CURSOS_VENCIDOS_A_VENCER";
 	private static String CERTIFICADOSVENCIDOSAVENCER = "ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER";
 	private static String COLABORADORAVALIACAOPRATICA = "ROLE_COLABORADOR_AVALIACAO_PRATICA";
 	private static String COLABORADORES_CERTIFICACOES = "ROLE_REL_COLABORADORES_CERTIFICACOES";
 	private static String AVALIACAOPRATICA = "ROLE_AVALIACAO_PRATICA";
 	
+	private static Collection<String> papeisParaEmpresasIntegradas = new ArrayList<String>();
 	static{
 		papeisParaEmpresasIntegradas.add("ROLE_REL_RECIBO_PAGAMENTO");
 		papeisParaEmpresasIntegradas.add("ROLE_REL_RECIBO_DECIMO_TERCEIRO");
 		papeisParaEmpresasIntegradas.add("ROLE_REL_DECLARACAO_RENDIMENTOS");
+		papeisParaEmpresasIntegradas.add("ROLE_REL_RECIBO_FERIAS");
+		papeisParaEmpresasIntegradas.add("ROLE_REL_ADIANTAMENTO_DE_FOLHA");
+		papeisParaEmpresasIntegradas.add("ROLE_REL_PAGAMENTO_COMPLEMENTAR");
 	}
 	
 	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto, ParametrosDoSistema parametros, Collection<Empresa> empresasDoUsuario, Empresa empresaLogada)
