@@ -5,11 +5,9 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorAvaliacaoPraticaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
-import com.fortes.rh.util.SpringUtil;
 
 public class ColaboradorAvaliacaoPraticaManagerImpl extends GenericManagerImpl<ColaboradorAvaliacaoPratica, ColaboradorAvaliacaoPraticaDao> implements ColaboradorAvaliacaoPraticaManager
 {
-
 	public Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId) {
 		return getDao().findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacaoId);
 	}
@@ -18,14 +16,7 @@ public class ColaboradorAvaliacaoPraticaManagerImpl extends GenericManagerImpl<C
 		return getDao().findColaboradorAvaliacaoPraticaQueNaoEstaCertificado(colaboradorId, certificacaoId);
 	}
 
-	public void removeColaboradorAvaliacaoPraticaAndColaboradorCertificado(ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaRealizada) {
-		if(colaboradorAvaliacaoPraticaRealizada != null && colaboradorAvaliacaoPraticaRealizada.getId()!= null){
-			ColaboradorCertificacaoManager colaboradorCertificacaoManager = (ColaboradorCertificacaoManager) SpringUtil.getBeanOld("colaboradorCertificacaoManager");
-			colaboradorCertificacaoManager.descertificarColaborador(colaboradorAvaliacaoPraticaRealizada.getColaboradorCertificacao().getId(), true);
-		}
-	}
-
-	public void removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(Long colaboradorCertificacaoId) {
+	public void removeByColaboradorCertificacaoId(Long colaboradorCertificacaoId) {
 		getDao().removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(colaboradorCertificacaoId);
 	}
 }

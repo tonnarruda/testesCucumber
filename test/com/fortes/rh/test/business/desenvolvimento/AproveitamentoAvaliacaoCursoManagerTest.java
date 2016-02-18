@@ -53,10 +53,12 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		aproveitamento.setAvaliacaoCurso(avaliacaoCurso);
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("saveOrUpdate");
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("update");
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
-
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(aproveitamento));
+		colaboradorCertificacaoManager.expects(atLeastOnce()).method("descertificarColaboradorByColaboradorTurma").with(ANYTHING, ANYTHING);
+		
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
 	}
 
@@ -67,9 +69,10 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(10L);
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("saveOrUpdate");
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("save");
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(null));
 
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
 	}
@@ -81,9 +84,10 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(10L);
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("saveOrUpdate");
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("save");
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(null));
 		
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, true);
 	}
@@ -113,8 +117,8 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(1);
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		aproveitamentoAvaliacaoCursoDao.expects(once()).method("saveOrUpdate").withAnyArguments().will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));;
-		
+		aproveitamentoAvaliacaoCursoDao.expects(once()).method("save").withAnyArguments().will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));;
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(null));
 		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
 		Exception exc = null;

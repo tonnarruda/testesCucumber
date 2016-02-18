@@ -211,7 +211,7 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		colaboradorCertificacaoDao.expects(once()).method("colaboradoresCertificadosByColaboradorTurmaId").will(returnValue(colaboradorCertificacaos));
 		colaboradorCertificacaoDao.expects(once()).method("findUltimaCertificacaoByColaboradorIdAndCertificacaoId").will(returnValue(null));
 			
-		assertEquals(0, colaboradorCertificacaoManager.certificaByColaboradorTurmaId(1L).size());
+		assertEquals(0, colaboradorCertificacaoManager.certificaColaborador(1L, null, null).size());
 	}
 	
 	public void testverificaCertificacaoByColaboradorTurmaIdCertificado()
@@ -262,7 +262,7 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		colaboradorCertificacaoDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		certificacaoManager.expects(once()).method("findDependentes").will(returnValue(new ArrayList<Certificacao>()));
 		
-		assertEquals(1, colaboradorCertificacaoManager.certificaByColaboradorTurmaId(1L).size());
+		assertEquals(1, colaboradorCertificacaoManager.certificaColaborador(1L, null, null).size());
 	}
 	
 	public void testverificaCertificacaoByColaboradorTurmaIdTresNiveisNaoCertificadoNaBasica()
@@ -298,7 +298,7 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		colaboradorCertificacaoDao.expects(once()).method("findUltimaCertificacaoByColaboradorIdAndCertificacaoId").with(eq(1L), eq(2L)).will(returnValue(colaboradorCertificacaoDev));
 		colaboradorCertificacaoDao.expects(once()).method("findUltimaCertificacaoByColaboradorIdAndCertificacaoId").with(eq(1L), eq(1L)).will(returnValue(null));
 		
-		assertEquals(0, colaboradorCertificacaoManager.certificaByColaboradorTurmaId(1L).size());
+		assertEquals(0, colaboradorCertificacaoManager.certificaColaborador(1L, null, null).size());
 	}
 	
 	public void testverificaCertificacaoByColaboradorTurmaIdDependentes()
@@ -363,6 +363,36 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		
 		certificacaoManager.expects(once()).method("findDependentes").with(eq(2L)).will(returnValue(new ArrayList<Certificacao>()));
 		
-		assertEquals(1, colaboradorCertificacaoManager.certificaByColaboradorTurmaId(1L).size());
+		assertEquals(1, colaboradorCertificacaoManager.certificaColaborador(1L, null, null).size());
+	}
+	
+	public void testDescertificarColaborador()
+	{
+		ColaboradorCertificacao colaboradorCertificacaoPreRequisito = ColaboradorCertificacaoFactory.getEntity(1L);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacaosPreRequisitos = new ArrayList<ColaboradorCertificacao>();
+		colaboradorCertificacaosPreRequisitos.add(colaboradorCertificacaoPreRequisito);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(2L);
+		colaboradorCertificacao.setColaboradorCertificacaoPreRequisito(colaboradorCertificacaoPreRequisito);
+		
+		colaboradorCertificacaoDao.expects(once()).method("removeDependenciaDaAvPratica").with(eq(colaboradorCertificacao.getId())).isVoid();
+		colaboradorCertificacaoDao.expects(once()).method("findColaboradorCertificacaoPreRequisito").with(eq(colaboradorCertificacao.getId())).will(returnValue(colaboradorCertificacaosPreRequisitos));
+
+		colaboradorCertificacaoDao.expects(once()).method("removeDependenciaDaAvPratica").with(eq(colaboradorCertificacaoPreRequisito.getId())).isVoid();
+		colaboradorCertificacaoDao.expects(once()).method("findColaboradorCertificacaoPreRequisito").with(eq(colaboradorCertificacaoPreRequisito.getId())).will(returnValue(new ArrayList<ColaboradorCertificacao>()));
+		
+		colaboradorCertificacaoDao.expects(once()).method("remove").with(eq(colaboradorCertificacaoPreRequisito.getId()));
+		colaboradorCertificacaoDao.expects(once()).method("remove").with(eq(colaboradorCertificacao.getId()));
+		
+		Exception ex = null;
+		
+		try {
+			colaboradorCertificacaoManager.descertificarColaborador(colaboradorCertificacao.getId());
+		} catch (Exception e) {
+			ex = e;
+		}
+		
+		assertNull(ex);
 	}
 }

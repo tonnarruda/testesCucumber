@@ -62,6 +62,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cc.id"), "id");
 		p.add(Projections.property("cc.data"), "data");
+		p.add(Projections.property("cc.colaborador.id"), "colaboradorId");
 		p.add(Projections.property("ct.id"), "certificacaoId");
 		p.add(Projections.property("ct.periodicidade"), "certificacaoPeriodicidade");
 		p.add(Projections.property("ct.certificacaoPreRequisito.id"), "certificacaoPreRequisitoId");
@@ -132,27 +133,6 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		return colaboradorCertificacao;
 	}
 	
-//	public Collection<ColaboradorCertificacao> getColaboradorCertificadoFilhas(Long[] colaboradorCertificacaoIds, Long colaboradorId) 
-//	{
-//		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
-//
-//		ProjectionList p = Projections.projectionList().create();
-//		p.add(Projections.property("cc.id"), "id");
-//		p.add(Projections.property("cc.data"), "data");
-//		p.add(Projections.property("cc.certificacao"), "certificacao");
-//		criteria.setProjection(p);
-//
-//		criteria.add(Expression.eq("cc.colaborador.id",colaboradorId));
-//		criteria.add(Expression.in("cc.certificacao.id" , colaboradorCertificacaoIds));
-//		criteria.add(Expression.not(Expression.in("cc.id" , colaboradorCertificacaoIds)));
-//		
-//		criteria.addOrder(Order.asc("cc.data"));
-//		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-//		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
-//
-//		return criteria.list();
-//	}
-	
 	@SuppressWarnings("unchecked")
 	public Collection<ColaboradorCertificacao> getCertificacoesAVencer(Date data, Long empresaId) 
 	{
@@ -201,7 +181,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		return Colaboradores;
 	}
 
-	public void removeDependencias(Long colaboradorCertificacaoId) {
+	public void removeDependenciaDaAvPratica(Long colaboradorCertificacaoId) {
 		Query query = getSession().createQuery("update ColaboradorAvaliacaoPratica cap set colaboradorCertificacao.id = null where cap.colaboradorCertificacao.id = :colaboradorCertificacaoId ");
 		query.setLong("colaboradorCertificacaoId", colaboradorCertificacaoId);
 		
@@ -215,7 +195,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		sql.append("INNER JOIN turma t ON t.id = ct.turma_id AND t.dataprevfim = ( (SELECT MAX(dataprevfim) FROM turma t2 WHERE t2.curso_id = t.curso_id AND t2.realizada ) ) ");
 		sql.append("INNER JOIN curso c ON c.id = t.curso_id ");
 		sql.append("WHERE ct.colaborador_id = :colaboradorId AND t.realizada AND c.id IN ((SELECT cursos_id FROM certificacao_curso WHERE certificacaos_id = :certificacaoId)) ");
-		sql.append("AND verifica_aprovacao(c.id, t.id, ct.id, c.percentualminimofrequencia) order ");
+		sql.append("AND verifica_aprovacao(c.id, t.id, ct.id, c.percentualminimofrequencia) ");
 		sql.append("order by t.dataprevfim desc");//Não remover importante
 		
 		Query query = getSession().createSQLQuery(sql.toString());
@@ -236,6 +216,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		return colaboradoresTurma;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT distinct cc.id as id, cc.colaborador_id as colaboradorId, cc.certificacao_id as certificacaoId FROM colaboradorcertificacao cc ");
@@ -416,5 +397,20 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 			colaboradoresCertificados.add(new ColaboradorCertificacao(((BigInteger)res[0]).longValue(), ((BigInteger)res[1]).longValue(), ((BigInteger)res[2]).longValue(), ((Date)res[3])));
 		}
 		return colaboradoresCertificados;	
+	}
+
+	public Collection<ColaboradorCertificacao> findColaboradorCertificacaoPreRequisito(Long colaboradorCertificacaoId) {
+		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cc.id"), "id");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("cc.colaboradorCertificacaoPreRequisito.id",colaboradorCertificacaoId));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
+
+		return criteria.list();
 	}
 }

@@ -117,6 +117,7 @@
 										<@ww.datepicker id="data[${i}]" name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple"/><br>
 								</#if>
 								<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.id" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.id}"/>
+								<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.notaMinima" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.notaMinima}"/>
 								<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].id" value="${colaboradorAvaliacaoPraticaId}"/>
 							</@display.column>
 							<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">

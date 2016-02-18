@@ -39,6 +39,9 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	@OneToMany(fetch=FetchType.LAZY,  mappedBy="colaboradorCertificacao", cascade = {CascadeType.ALL})
 	private Collection<ColaboradorAvaliacaoPratica> colaboradoresAvaliacoesPraticas;
 	
+	@ManyToOne
+	private ColaboradorCertificacao colaboradorCertificacaoPreRequisito;
+	
 	@Transient
 	private String nomeCurso;
 	@Transient
@@ -335,5 +338,14 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 
 	public void setQtdColaboradorNaoAprovado(Integer qtdColaboradorNaoAprovado) {
 		this.qtdColaboradorNaoAprovado = qtdColaboradorNaoAprovado;
+	}
+
+	public ColaboradorCertificacao getColaboradorCertificacaoPreRequisito() {
+		return colaboradorCertificacaoPreRequisito;
+	}
+
+	public void setColaboradorCertificacaoPreRequisito(
+			ColaboradorCertificacao colaboradorCertificacaoPreRequisito) {
+		this.colaboradorCertificacaoPreRequisito = colaboradorCertificacaoPreRequisito;
 	}
 }

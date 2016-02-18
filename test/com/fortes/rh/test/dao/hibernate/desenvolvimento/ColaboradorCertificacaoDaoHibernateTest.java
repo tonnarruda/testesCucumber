@@ -319,7 +319,7 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		
 		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
 		
-		colaboradorCertificacaoDao.removeDependencias(colaboradorCertificacao.getId());
+		colaboradorCertificacaoDao.removeDependenciaDaAvPratica(colaboradorCertificacao.getId());
 		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaDao.findColaboradorAvaliacaoPraticaQueNaoEstaCertificado(colaborador.getId(), certificacao.getId());
 		assertNull(((ColaboradorAvaliacaoPratica) colaboradorAvaliacoesPraticas.toArray()[0]).getColaboradorCertificacao());
 	}
@@ -533,6 +533,75 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
 		
 		assertTrue(colaboradorCertificacaoDao.findColaboradorCertificadoEmUmaTurmaPosterior(turma.getId(), colaborador.getId()).size() > 0);
+	}
+	
+	public void testGetMaiorDataDasTurmasDaCertificacao() {
+		Date data1 = DateUtil.criarDataMesAno(1, 1, 2015);
+		Date data2 = DateUtil.criarDataMesAno(1, 1, 2016);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setCurso(curso);
+		turma1.setDataPrevFim(data1);
+		turmaDao.save(turma1);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setCurso(curso);
+		turma2.setDataPrevFim(data2);
+		turmaDao.save(turma2);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorTurma colaboradorTurma1 = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma1.setColaborador(colaborador);
+		colaboradorTurma1.setCurso(curso);
+		colaboradorTurma1.setTurma(turma1);
+		colaboradorTurmaDao.save(colaboradorTurma1);
+		
+		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma2.setColaborador(colaborador);
+		colaboradorTurma2.setCurso(curso);
+		colaboradorTurma2.setTurma(turma2);
+		colaboradorTurmaDao.save(colaboradorTurma2);
+
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacaoDao.save(certificacao);
+
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
+		avaliacaoPraticaDao.save(avaliacaoPratica);
+
+		Collection<ColaboradorTurma> colaboradoresTurma = new ArrayList<ColaboradorTurma>();
+		colaboradoresTurma.add(colaboradorTurma1);
+		colaboradoresTurma.add(colaboradorTurma2);
+		
+		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao();
+		colaboradorCertificacao.setColaborador(colaborador);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setColaboradoresTurmas(colaboradoresTurma);
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+				
+		Date retorno =  colaboradorCertificacaoDao.getMaiorDataDasTurmasDaCertificacao(colaboradorCertificacao.getId());
+		assertEquals(data2.getTime(), retorno.getTime());
+	}
+	
+	public void testFindColaboradorCertificacaoPreRequisito() 
+	{
+		ColaboradorCertificacao colaboradorCertificacaoPreRequisito = new ColaboradorCertificacao();
+		colaboradorCertificacaoDao.save(colaboradorCertificacaoPreRequisito);
+		
+		ColaboradorCertificacao colabCertificacao1 = new ColaboradorCertificacao();
+		colabCertificacao1.setColaboradorCertificacaoPreRequisito(colaboradorCertificacaoPreRequisito);
+		colaboradorCertificacaoDao.save(colabCertificacao1);
+		
+		ColaboradorCertificacao colabCertificacao2 = new ColaboradorCertificacao();
+		colabCertificacao2.setColaboradorCertificacaoPreRequisito(colaboradorCertificacaoPreRequisito);
+		colaboradorCertificacaoDao.save(colabCertificacao2);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacaos = colaboradorCertificacaoDao.findColaboradorCertificacaoPreRequisito(colaboradorCertificacaoPreRequisito.getId());
+		assertEquals(2, colaboradorCertificacaos.size());
 	}
 	
 	public void setColaboradorCertificacaoDao(ColaboradorCertificacaoDao colaboradorCertificacaoDao)

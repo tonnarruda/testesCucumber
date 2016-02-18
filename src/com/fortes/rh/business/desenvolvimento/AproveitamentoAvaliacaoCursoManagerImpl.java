@@ -39,7 +39,7 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 				
 				AproveitamentoAvaliacaoCurso aproveitamento = new AproveitamentoAvaliacaoCurso(colabTurma, avaliacaoCurso, valor);
 				
-				getDao().saveOrUpdate(aproveitamento);
+				saveOrUpdate(aproveitamento);
 				getDao().getHibernateTemplateByGenericDao().flush();
 				
 				if(validarCertificacao)

@@ -1,0 +1,2 @@
+ALTER TABLE colaboradorcertificacao ADD COLUMN colaboradorCertificacaoPreRequisito_id bigint;--.go
+ALTER TABLE colaboradorcertificacao ADD CONSTRAINT colaboradorCertificacaoPreRequisito_fk FOREIGN KEY (colaboradorCertificacaoPreRequisito_id) REFERENCES colaboradorcertificacao(id);--.go

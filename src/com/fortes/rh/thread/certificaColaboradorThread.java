@@ -14,7 +14,7 @@ public class certificaColaboradorThread extends Thread{
 	
 	public void run() {
 		try {
-			colaboradorCertificacaoManager.certificaByColaboradorTurmaId(colaboradorTurmaId);
+			colaboradorCertificacaoManager.certificaColaborador(colaboradorTurmaId, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

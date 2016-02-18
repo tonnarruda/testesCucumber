@@ -95,33 +95,6 @@ public class ColaboradorAvaliacaoPraticaManagerTest extends MockObjectTestCase
 		assertEquals(1, colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId()).size());
 	}
 	
-	public void testRemoveColaboradorAvaliacaoPraticaAndColaboradorCertificado(){
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		
-		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
-		
-		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
-		
-		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
-		
-		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity(1L);
-		colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
-		colaboradorAvaliacaoPratica.setCertificacao(certificacao);
-		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
-		colaboradorAvaliacaoPratica.setColaborador(colaborador);
-		
-		colaboradorCertificacaoManager.expects(once()).method("descertificarColaborador").with(eq(colaboradorCertificacao.getId()), eq(true)).isVoid();
-
-		Exception exception = null;
-		try {
-			colaboradorAvaliacaoPraticaManager.removeColaboradorAvaliacaoPraticaAndColaboradorCertificado(colaboradorAvaliacaoPratica);
-			
-		} catch (Exception e) {
-			exception = e;
-		}
-		assertNull(exception);
-	}
-	
 	public void testRemoveColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(){
 		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
 		
@@ -129,7 +102,7 @@ public class ColaboradorAvaliacaoPraticaManagerTest extends MockObjectTestCase
 
 		Exception exception = null;
 		try {
-			colaboradorAvaliacaoPraticaManager.removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(colaboradorCertificacao.getId());
+			colaboradorAvaliacaoPraticaManager.removeByColaboradorCertificacaoId(colaboradorCertificacao.getId());
 		} catch (Exception e) {
 			exception = e;
 		}

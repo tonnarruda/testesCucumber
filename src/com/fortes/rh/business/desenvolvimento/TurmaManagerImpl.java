@@ -61,11 +61,11 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			//	Remove todos os relacionamentos com Questionario/Resposta na turma
 			colaboradorQuestionarioManager.removeByColaboradorETurma(null, turmaId);
 			
-			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) {
-				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), true);
-			}
 			if(colaboradoresTurmas.size() > 0)
 			{
+				for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 
+					colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), true);
+				
 				CollectionUtil<ColaboradorTurma> cc = new CollectionUtil<ColaboradorTurma>();
 				Long[] colaboradorTurmaIds = cc.convertCollectionToArrayIds(colaboradoresTurmas);
 				colaboradorPresencaManager.removeByColaboradorTurma(colaboradorTurmaIds);
@@ -127,14 +127,13 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	private void verificaCertificacaoByColaboradorTurmaId(Turma turma){
 		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaId(turma.getId());
 		if(turma.getRealizada()){
-			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) {
+			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 
 				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId()).start();
-			}
 		}
-		else
-			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) {
+		else{
+			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 
 				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), false);
-			}
+		}
 	}
 
 	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, String[] horasIni, String[] horasFim, String despesaJSON) throws Exception
