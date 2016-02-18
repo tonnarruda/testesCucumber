@@ -20,6 +20,7 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
@@ -64,6 +65,8 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	private ColaboradorQuestionario colaboradorQuestionario;
 	private Colaborador colaborador;
+	
+	private Solicitacao solicitacao;
 
 	private Questionario questionario;
 
@@ -594,9 +597,17 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	public GerenciadorComunicacaoManager getGerenciadorComunicacaoManager() {
 		return gerenciadorComunicacaoManager;
 	}
-
+	
 	public void setGerenciadorComunicacaoManager(
 			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public Solicitacao getSolicitacao() {
+		return solicitacao;
+	}
+
+	public void setSolicitacao(Solicitacao solicitacao) {
+		this.solicitacao = solicitacao;
 	}
 }

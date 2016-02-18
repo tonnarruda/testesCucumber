@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.15x.1xx" db="" data="xx/xx/2016">
+		<Item visivel="S" motivo="S16020000159"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Avaliações das Solicitações: Nova opção para excluir respostas da avaliação.]]></Item>
 		<Item visivel="S" motivo="S16020000055"><![CDATA[Info. Funcionais > Relatórios > Recibos de Pagamentos > Férias: Novo relatório. Visível somente quando integrado com o sistema Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S15110000204"><![CDATA[SESMT > Relatórios > EPIs > EPIs Devolvidos: Novo relatório.]]></Item>
 		<Item visivel="S" motivo="S16010000270"><![CDATA[SESMT > Relatórios > Exames: Mudança da nomenclatura do relatório de "Funções por Exames" para "Exames por Função".]]></Item>

@@ -64,6 +64,10 @@
 	    <action name="updateAvaliacaoSolicitacao" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="updateAvaliacaoExperiencia">
 			<result name="success" type="redirect">../../captacao/candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}</result>
 	    </action>
+	    
+	    <action name="deleteAvaliacaoSolicitacao" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioListAction" method="delete">
+			<result name="success" type="redirect">../../captacao/candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}</result>
+		</action>
 
 	    <action name="popupAvaliacoesCandidatoSolicitacao" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="popupAvaliacoesCandidatoSolicitacao">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/popupAvaliacoesCandidatoSolicitacao.ftl</result>
