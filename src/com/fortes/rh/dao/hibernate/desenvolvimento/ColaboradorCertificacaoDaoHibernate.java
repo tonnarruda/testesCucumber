@@ -54,7 +54,8 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 	{
 		DetachedCriteria subQuery = DetachedCriteria.forClass(ColaboradorCertificacao.class, "cc2")
 				.setProjection(Projections.max("cc2.data"))
-				.add(Restrictions.eqProperty("cc2.colaborador.id", "cc.colaborador.id"));
+				.add(Restrictions.eqProperty("cc2.colaborador.id", "cc.colaborador.id"))
+				.add(Restrictions.eqProperty("cc2.certificacao.id", "cc.certificacao.id"));
 		
 		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
 		criteria.createCriteria("cc.certificacao", "ct", Criteria.LEFT_JOIN);
@@ -262,6 +263,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		sql.append("inner join historicocolaborador hc on  hc.colaborador_id = ccc.colaborador_id ");
 		sql.append("where hc.data = (select max(data) from historicocolaborador hc2 where hc2.colaborador_id = ccc.colaborador_id) ");
 		sql.append("and hc.status = :status ");
+		sql.append("and c.desligado = false ");
 		
 		if(areasIds != null && areasIds.length > 0)
 			sql.append("and hc.areaorganizacional_id in (:areasIds) ");
@@ -273,7 +275,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		sql.append("having count(ccc.colaborador_id) = (select count(cursos_id) from certificacao_curso where certificacaos_id = :certificadoId) ");
 		sql.append("order by c.nome) as cp ");
 		sql.append("left join colaboradorcertificacao cc on cc.colaborador_id = cp.colaborador_id and cc.certificacao_id = :certificadoId ");
-		sql.append("and cc.data = (select max(cc2.data) from colaboradorcertificacao cc2 where cc2.colaborador_id = cp.colaborador_id ");
+		sql.append("and cc.data = (select max(cc2.data) from colaboradorcertificacao cc2 where cc2.colaborador_id = cp.colaborador_id and cc2.certificacao_id = cc.certificacao_id ");
 		
 		if(dataFim != null)
 			sql.append("and cc2.data <= :dataFim ");

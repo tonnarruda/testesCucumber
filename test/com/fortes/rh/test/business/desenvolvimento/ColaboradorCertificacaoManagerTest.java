@@ -211,7 +211,7 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		colaboradorCertificacaoDao.expects(once()).method("colaboradoresCertificadosByColaboradorTurmaId").will(returnValue(colaboradorCertificacaos));
 		colaboradorCertificacaoDao.expects(once()).method("findUltimaCertificacaoByColaboradorIdAndCertificacaoId").will(returnValue(null));
 			
-		assertEquals(0, colaboradorCertificacaoManager.certificaColaborador(1L, null, null).size());
+		assertEquals(0, colaboradorCertificacaoManager.certificaColaborador(1L, null, null, null).size());
 	}
 	
 	public void testverificaCertificacaoByColaboradorTurmaIdCertificado()
@@ -262,7 +262,7 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		colaboradorCertificacaoDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		certificacaoManager.expects(once()).method("findDependentes").will(returnValue(new ArrayList<Certificacao>()));
 		
-		assertEquals(1, colaboradorCertificacaoManager.certificaColaborador(1L, null, null).size());
+		assertEquals(1, colaboradorCertificacaoManager.certificaColaborador(1L, null, null, null).size());
 	}
 	
 	public void testverificaCertificacaoByColaboradorTurmaIdTresNiveisNaoCertificadoNaBasica()
@@ -298,7 +298,7 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		colaboradorCertificacaoDao.expects(once()).method("findUltimaCertificacaoByColaboradorIdAndCertificacaoId").with(eq(1L), eq(2L)).will(returnValue(colaboradorCertificacaoDev));
 		colaboradorCertificacaoDao.expects(once()).method("findUltimaCertificacaoByColaboradorIdAndCertificacaoId").with(eq(1L), eq(1L)).will(returnValue(null));
 		
-		assertEquals(0, colaboradorCertificacaoManager.certificaColaborador(1L, null, null).size());
+		assertEquals(0, colaboradorCertificacaoManager.certificaColaborador(1L, null, null, null).size());
 	}
 	
 	public void testverificaCertificacaoByColaboradorTurmaIdDependentes()
@@ -363,7 +363,7 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		
 		certificacaoManager.expects(once()).method("findDependentes").with(eq(2L)).will(returnValue(new ArrayList<Certificacao>()));
 		
-		assertEquals(1, colaboradorCertificacaoManager.certificaColaborador(1L, null, null).size());
+		assertEquals(1, colaboradorCertificacaoManager.certificaColaborador(1L, null, null, null).size());
 	}
 	
 	public void testDescertificarColaborador()

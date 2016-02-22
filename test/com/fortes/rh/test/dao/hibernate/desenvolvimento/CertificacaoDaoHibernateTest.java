@@ -259,15 +259,38 @@ public class CertificacaoDaoHibernateTest extends GenericDaoHibernateTest<Certif
 		certificacao2.setCertificacaoPreRequisito(certificacao1);
 		certificacaoDao.save(certificacao2);
 		
-		Certificacao certificacao3 = CertificacaoFactory.getEntity();
-		certificacao3.setEmpresa(empresa);
-		certificacao3.setCertificacaoPreRequisito(certificacao2);
-		certificacaoDao.save(certificacao3);
-		
 		Collection<Certificacao> retorno = certificacaoDao.findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(empresa.getId(), certificacao1.getId());
 		assertEquals(1, retorno.size());
 	}
 	
+	public void testFindOsQuePossuemAvaliacaoPratica()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
+		avaliacaoPraticaDao.save(avaliacaoPratica);
+		
+		Collection<AvaliacaoPratica> avaliacoesPraticas = new ArrayList<AvaliacaoPratica>();
+		avaliacoesPraticas.add(avaliacaoPratica);
+		
+		Certificacao certificacao1 = CertificacaoFactory.getEntity();
+		certificacao1.setAvaliacoesPraticas(avaliacoesPraticas);
+		certificacao1.setEmpresa(empresa);
+		certificacaoDao.save(certificacao1);
+		
+		Certificacao certificacao2 = CertificacaoFactory.getEntity();
+		certificacao2.setAvaliacoesPraticas(avaliacoesPraticas);
+		certificacao2.setEmpresa(empresa);
+		certificacaoDao.save(certificacao2);
+		
+		Certificacao certificacao3 = CertificacaoFactory.getEntity();
+		certificacao3.setEmpresa(empresa);
+		certificacaoDao.save(certificacao3);
+		
+		Collection<Certificacao> retorno = certificacaoDao.findOsQuePossuemAvaliacaoPratica(empresa.getId());
+		assertEquals(2, retorno.size());
+	}
 	public void setCertificacaoDao(CertificacaoDao certificacaoDao)
 	{
 		this.certificacaoDao = certificacaoDao;

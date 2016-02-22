@@ -18,7 +18,7 @@
 		{
 			if(action == 'buscaColaboradores.action'){
 				document.formBusca.action = action; 
-				return document.formBusca.submit();
+				document.formBusca.submit();
 			}else{ 			
 				document.form.action = action;
 				var arrayDataValida = [];
@@ -37,12 +37,12 @@
 		
 		function insereHelp()
 		{
-			<#if colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists && (colaboradorCertificacao.ultimaCertificacao?exists && !colaboradorCertificacao.ultimaCertificacao)>
-			$("#tituloTabelaAP").append('<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin: 1px 0px -2px 10px;" />');
-			
-			$('#tooltipHelp').qtip({
-				content:"O sistema não possibilita a edição da data e nota da avaliação prática, quando a mesma não é referente a última certificação do colaborador."
-			});
+			<#if colaboradorCertificacao?exists && colaboradorCertificacao.id?exists && (colaboradorCertificacao.ultimaCertificacao?exists && !colaboradorCertificacao.ultimaCertificacao)>
+				$("#tituloTabelaAP").append('<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin: 1px 0px -2px 10px;" />');
+				
+				$('#tooltipHelp').qtip({
+					content:"O sistema não possibilita a edição da data e nota da avaliação prática, quando a mesma não é referente a última certificação do colaborador."
+				});
 			</#if>
 		}
 	</script>
@@ -57,7 +57,7 @@
 		<li>
 			<@ww.div cssClass="divInfo" cssStyle="width: 950px;">
 				<ul>
-					<@ww.select label="Certificações" name="certificacao.id" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;" />
+					<@ww.select label="Certificações com avaliações práticas" name="certificacao.id" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;" />
 					<@ww.select label="Colaborador" name="colaborador.id" list="colaboradores" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
 					<@ww.select label="Certificações em que o colaborador foi aprovado" name="colaboradorCertificacao.id" list="colaboradorCertificacaos" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
 					<br><br>
@@ -103,7 +103,7 @@
 						<@display.column property="avaliacaoPratica.titulo" title="Título" style="width: 500px;"/>
 						<@display.column property="avaliacaoPratica.notaMinima" title="Nota Mínima Aprovação" style="width: 100px;text-align: center;" />
 						
-						<#if colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists && (colaboradorCertificacao.ultimaCertificacao?exists && !colaboradorCertificacao.ultimaCertificacao)>
+						<#if colaboradorCertificacao?exists && colaboradorCertificacao.id?exists && (colaboradorCertificacao.ultimaCertificacao?exists && !colaboradorCertificacao.ultimaCertificacao)>
 							<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
 								${colaboradorAvaliacaoPraticaData}
 							</@display.column>
@@ -113,16 +113,16 @@
 							</@display.column>
 						<#else>						
 							<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
-								<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) >
-										<@ww.datepicker id="data[${i}]" name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple"/><br>
+								<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size)>
+									<@ww.datepicker id="data[${i}]" name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple"/><br>
+									<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.id" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.id}"/>
+									<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.notaMinima" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.notaMinima}"/>
+									<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].id" value="${colaboradorAvaliacaoPraticaId}"/>
 								</#if>
-								<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.id" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.id}"/>
-								<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.notaMinima" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.notaMinima}"/>
-								<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].id" value="${colaboradorAvaliacaoPraticaId}"/>
 							</@display.column>
 							<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
-								<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) >
-										<@ww.textfield id="nota[${i}]" name="colaboradorAvaliacaoPraticas[${i}].nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));"/>
+								<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size)>
+									<@ww.textfield id="nota[${i}]" name="colaboradorAvaliacaoPraticas[${i}].nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));"/>
 								</#if>
 							</@display.column>
 						</#if>

@@ -23496,7 +23496,7 @@ return (
 		  		(select Array(
 			  				select cu.id from colaboradorturma ct inner join turma t on t.id = ct.turma_id 
 			  				and t.dataprevfim = (select max(dataprevfim) from turma t2 where t2.curso_id = t.curso_id and t2.realizada 
-							and dataprevfim > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000')))
+							and dataprevfim >= (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000')))
 							inner join curso cu on cu.id = t.curso_id
 							where ct.colaborador_id = id_colaborador
 							and t.realizada

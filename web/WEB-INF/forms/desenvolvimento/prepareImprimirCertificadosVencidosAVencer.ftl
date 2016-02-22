@@ -71,16 +71,6 @@
 			else
 				$('#listCheckBoxcolaboradoresCheck').append('<tbody> <tr> <td colspan="7"> <div class="info">  <ul> <li>Não existem colaboradores para o filtro informado acima.</li> </ul> </div> </tr></td> </tbody>');
 		}
-		
-		function changeMeses(event)
-		{
-			if(somenteNumeros(event,'')){
-				populaColaborador();
-				return true;
-			}else
-				return false;
-		}
-		
 	</script>
 	
 	<style type="text/css">
@@ -111,10 +101,6 @@
 	<@ww.actionerror />
 	
 	<@ww.form name="form" action="imprimirCertificadosVencidosAVencer.action" onsubmit="${validarCampos}" validate="true" method="POST">
-		Certificações*:
-		<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
-		<@frt.checkListBox name="certificacoesCheck" id="certificacoesCheck" list="certificacoesCheckList" filtro="true" onClick="populaColaborador();"/>
-
 		<fieldset style="padding: 5px 0px 5px 5px; width: 495px;">
 			<legend>Considerar colaboradores:*</legend>
 			<@ww.checkbox label="Não certificados" id="colaboradorNaoCertificado" name="colaboradorNaoCertificado" liClass="liLeft" labelPosition="left" cssStyle="margin-left: 15px;"  onchange="populaColaborador()"/>
@@ -122,18 +108,21 @@
 			
 			<@ww.div cssStyle="margin-left: 50px;">
 				Período Certificado:<br>
-				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni " onchange="populaColaborador()" onblur="populaColaborador()" />
+				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 				<@ww.label value="a" liClass="liLeft" />
-				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft" onchange="populaColaborador()" onblur="populaColaborador()"/>
+				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
 				<img id="tooltipHelpMeses" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 1px" />
 				</br>
 				Com certificação a vencer em até 
-				<@ww.textfield id="meses" theme="simple" name="mesesCertificacoesAVencer" onkeypress="return changeMeses(event);" maxLength="3" cssStyle="width:30px; text-align:right; margin-top: 8px;"/>
+				<@ww.textfield id="meses" theme="simple" name="mesesCertificacoesAVencer" onkeypress="somenteNumeros(event,'');" maxLength="3" cssStyle="width:30px; text-align:right; margin-top: 8px;"/>
 				meses.
 				<img id="tooltipHelpPeriodo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
 			</@ww.div>
 		</fieldset>
 		
+		Certificações*:
+		<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
+		<@frt.checkListBox name="certificacoesCheck" id="certificacoesCheck" list="certificacoesCheckList" filtro="true" onClick="populaColaborador();"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true" onClick="populaColaborador();"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true" onClick="populaColaborador();"/>
 		<@frt.checkListBox name="colaboradoresCheck" id="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" filtro="true"/>

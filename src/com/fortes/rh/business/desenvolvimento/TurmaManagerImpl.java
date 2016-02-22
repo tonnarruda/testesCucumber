@@ -127,8 +127,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	private void verificaCertificacaoByColaboradorTurmaId(Turma turma){
 		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaId(turma.getId());
 		if(turma.getRealizada()){
+			CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBean("certificacaoManager");
 			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 
-				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId()).start();
+				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
 		}
 		else{
 			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 

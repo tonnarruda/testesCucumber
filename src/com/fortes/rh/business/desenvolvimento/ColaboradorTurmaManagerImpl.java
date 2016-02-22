@@ -149,7 +149,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 				getDao().getHibernateTemplateByGenericDao().flush();
 				
 				if(validarCertificacao)
-					new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurmaId).start();
+					new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurmaId, certificacaoManager).start();
 			}
 		}
 	}
@@ -1217,7 +1217,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId){
 		return getDao().findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacaoId);
 	}
-
 
 	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId) {
 		return getDao().findByTurmaId(turmaId);

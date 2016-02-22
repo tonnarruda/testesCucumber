@@ -179,7 +179,25 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 	}
 
 	public Collection<Certificacao> findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(Long empresaId, Long certificacaoId) {
-		return getDao().findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(empresaId, certificacaoId);
+		Collection<Certificacao> certificacaos =  getDao().findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(empresaId, certificacaoId);
+		
+		if(certificacaoId != null)
+			certificacaos.removeAll(certificacaoDescendenteRecursivo(certificacaos, certificacaoId));
+		
+		return certificacaos;
+	}
+
+	private Collection<Certificacao> certificacaoDescendenteRecursivo(Collection<Certificacao> certificacoes, Long certificacaoId){
+		Collection<Certificacao> certificacaosDescendente = new ArrayList<Certificacao>();
+		
+		for (Certificacao certificacao : certificacoes){ 
+			if(certificacao.getCertificacaoPreRequisito() != null && certificacao.getCertificacaoPreRequisito().getId() != null && certificacaoId.equals(certificacao.getCertificacaoPreRequisito().getId())){
+				certificacaosDescendente.add(certificacao);
+				certificacaosDescendente.addAll(certificacaoDescendenteRecursivo(certificacoes, certificacao.getId()));
+			}
+		}
+		
+		return certificacaosDescendente;
 	}
 	
 	public Collection<Certificacao> findByCursoId(Long cursoId) {
@@ -188,6 +206,10 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 
 	public Collection<Certificacao> findDependentes(Long certificacaoId) {
 		return getDao().findDependentes(certificacaoId);
+	}
+
+	public Collection<Certificacao> findOsQuePossuemAvaliacaoPratica(Long empresaId) {
+		return getDao().findOsQuePossuemAvaliacaoPratica(empresaId);
 	}
 
 	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {

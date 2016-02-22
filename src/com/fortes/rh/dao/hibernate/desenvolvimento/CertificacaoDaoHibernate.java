@@ -9,13 +9,11 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -38,15 +36,8 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 	{
 		Criteria criteria = createCriteria(empresaId);
 		
-		if(certificacaoId != null){
+		if(certificacaoId != null)
 			criteria.add(Expression.ne("c.id", certificacaoId));
-
-			DetachedCriteria subQuery = DetachedCriteria.forClass(Certificacao.class, "c2")
-					.setProjection(Projections.property("c2.id"))
-					.add(Expression.eq("c2.certificacaoPreRequisito.id", certificacaoId));
-			
-			criteria.add(Subqueries.propertyNotIn("c.id", subQuery));
-		}
 		
 		return criteria.list();
 	}
@@ -58,6 +49,7 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.periodicidade"), "periodicidade");
+		p.add(Projections.property("c.certificacaoPreRequisito.id"), "certificacaoPreRequisitoId");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
@@ -230,6 +222,14 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
+
+	public Collection<Certificacao> findOsQuePossuemAvaliacaoPratica(Long empresaId) 
+	{
+		Criteria criteria = createCriteria(empresaId);
+		criteria.add(Expression.isNotEmpty("c.avaliacoesPraticas"));
 		
 		return criteria.list();
 	}

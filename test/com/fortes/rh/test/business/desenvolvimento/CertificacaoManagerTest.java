@@ -86,4 +86,37 @@ public class CertificacaoManagerTest extends MockObjectTestCase
 		
 		assertEquals(matrizs, certificacaoManager.getByFaixasOrCargos(faixaSalarialsCheck, cargosCheck));
 	}
+	
+	public void testFindAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(){
+
+		Certificacao certificacao1 = CertificacaoFactory.getEntity(1L);
+		
+		Certificacao certificacao2 = CertificacaoFactory.getEntity(2L);
+		certificacao2.setCertificacaoPreRequisito(certificacao1);
+		
+		Certificacao certificacao3 = CertificacaoFactory.getEntity(3L);
+		certificacao3.setCertificacaoPreRequisito(certificacao2);
+		
+		Certificacao certificacao4 = CertificacaoFactory.getEntity(4L);
+		certificacao4.setCertificacaoPreRequisito(certificacao3);
+		
+		Certificacao certificacao5 = CertificacaoFactory.getEntity(5L);
+		certificacao5.setCertificacaoPreRequisito(certificacao3);
+		
+		Certificacao certificacao6 = CertificacaoFactory.getEntity(6L);
+		
+		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
+		certificacoes.add(certificacao2);
+		certificacoes.add(certificacao3);
+		certificacoes.add(certificacao4);
+		certificacoes.add(certificacao5);
+		certificacoes.add(certificacao6);
+		
+		certificacaoDao.expects(once()).method("findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito").will(returnValue(certificacoes));
+		
+		Collection<Certificacao> retorno = certificacaoManager.findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(1L, certificacao1.getId());
+		
+		assertEquals(1, retorno.size());
+		assertEquals(certificacao6.getId(), ((Certificacao)retorno.toArray()[0]).getId());
+	}
 }

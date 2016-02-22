@@ -20,7 +20,7 @@ import com.fortes.rh.model.geral.Empresa;
 
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="certificacao_sequence", allocationSize=1)
-public class Certificacao extends AbstractModel implements Serializable
+public class Certificacao extends AbstractModel implements Serializable, Cloneable
 {
 	@Transient private static final long serialVersionUID = 1L;
 	
@@ -156,5 +156,18 @@ public class Certificacao extends AbstractModel implements Serializable
 
 	public void setAprovadoNaTurma(Boolean aprovadoNaTurma) {
 		this.aprovadoNaTurma = aprovadoNaTurma;
+	}
+	
+	@Override
+	public Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto.");
+		}
 	}
 }

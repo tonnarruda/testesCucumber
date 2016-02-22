@@ -16,6 +16,7 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 {
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	private CertificacaoManager certificacaoManager;
 
 	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager)
 	{
@@ -46,7 +47,7 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			getDao().getHibernateTemplateByGenericDao().flush();
 			
 			if(validarCertificacao)
-				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId()).start();
+				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
 		}
 		else{
 			getDao().remove(diaTurmaId, colaboradorTurmaId);
@@ -70,7 +71,7 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 					getDao().getHibernateTemplateByGenericDao().flush();
 				
 					if(validarCertificacao)
-						new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId()).start();
+						new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
 				}
 			}
 		}
@@ -141,6 +142,10 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 	public void setColaboradorCertificacaoManager(
 			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
+	}
+
+	public void setCertificacaoManager(CertificacaoManager certificacaoManager) {
+		this.certificacaoManager = certificacaoManager;
 	} 
 	
 }

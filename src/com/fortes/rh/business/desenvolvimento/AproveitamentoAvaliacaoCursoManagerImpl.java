@@ -19,6 +19,7 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 {
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	private CertificacaoManager certificacaoManager;
 
 	public void saveNotas(Long[] colaboradorTurmaIds, String[] notas, AvaliacaoCurso avaliacaoCurso, boolean validarCertificacao) throws Exception
 	{
@@ -43,7 +44,7 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 				getDao().getHibernateTemplateByGenericDao().flush();
 				
 				if(validarCertificacao)
-					new certificaColaboradorThread(colaboradorCertificacaoManager, colabTurma.getId()).start();
+					new certificaColaboradorThread(colaboradorCertificacaoManager, colabTurma.getId(), certificacaoManager).start();
 			}
 
 			transactionManager.commit(status);
@@ -151,5 +152,9 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 	public void setColaboradorCertificacaoManager(
 			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
+	}
+
+	public void setCertificacaoManager(CertificacaoManager certificacaoManager) {
+		this.certificacaoManager = certificacaoManager;
 	}
 }
