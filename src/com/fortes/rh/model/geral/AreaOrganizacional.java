@@ -179,6 +179,7 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		return familiaIds;
 	}
 	
+	@NaoAudita
 	public String getDescricaoComEmpresaStatusAtivo()
 	{
 		return getDescricaoComEmpresa() + (ativo ? " (Ativa)" : " (Inativa)");
