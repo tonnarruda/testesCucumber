@@ -5,6 +5,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import com.fortes.security.auditoria.NaoAudita;
+
 @MappedSuperclass
 public abstract class AbstractModel
 {
@@ -22,6 +24,7 @@ public abstract class AbstractModel
 		this.id = id;
 	}
 
+	@NaoAudita
 	public String[] getDependenciasDesconsideradasNaRemocao(){
 		return null;
 	}

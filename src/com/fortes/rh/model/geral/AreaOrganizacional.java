@@ -137,6 +137,7 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		this.areasInteresse = areasInteresse;
 	}
 
+	@NaoAudita
 	public String getDescricaoStatusAtivo()
 	{
 		return getDescricao() + (ativo ? " (Ativa)" : " (Inativa)");
@@ -152,6 +153,7 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		return descricao;
 	}
 	
+	@NaoAudita
 	public String getDescricaoComCodigoAC() {
 		String codigoACComMascara;
 		try {
