@@ -40,16 +40,6 @@
 			</#if>
 		});
 		
-		function gerarPercentual()
-		{
-			percentualUnitario = 100/$('.configHistoricoNivel:checkbox:checked').size();
-			percentualAcumulado = 0;
-			$('.configHistoricoNivel:checkbox:checked').parent().parent().find('.percentual').each(function(){
-				percentualAcumulado = percentualAcumulado +  percentualUnitario;
-				$(this).val((percentualAcumulado.toFixed(2)).replace('.',','));
-			});
-		}
-		
 		function submeter()
 		{
 			camposObrigatorios = new Array();
@@ -136,7 +126,6 @@
 		<div class="buttonGroup">
 			<#if podeEditar || !obrigarPercentual>
 				<button onclick="submeter();" class="btnGravar"></button>
-				<button class="btnDividirPercentualIgualmente" onclick="gerarPercentual();"></button>
 			</#if>
 			<button onclick="window.location='../nivelCompetenciaHistorico/list.action'" class="btnVoltar"></button>
 		</div>
