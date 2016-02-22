@@ -152,8 +152,10 @@
 	
 	function repopulaListaRealinhamento(data)
 	{
-		DWRUtil.removeAllOptions("optReajuste");
-		addOptionsByCollection('optReajuste', data, 'Selecione...');
+		<#if !tabelaReajusteColaborador?exists>
+			DWRUtil.removeAllOptions("optReajuste");
+			addOptionsByCollection('optReajuste', data, 'Selecione...');
+		</#if>
 	}
 
 </script>

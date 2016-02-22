@@ -32,7 +32,7 @@ Funcionalidade: Cadastrar Planejamentos de Realinhamentos
     E eu devo ver o título "Planejamentos de Realinhamentos"
 
     E eu clico em imprimir "_Dissídio 2011"
-    E eu devo ver o título "Relatório de Planejamento de Realinhamentos"
+    E eu devo ver o título "Planejamento de Realinhamentos"
     Então eu clico no botão "Cancelar"
     
     E eu clico em excluir "_Dissídio 2011"

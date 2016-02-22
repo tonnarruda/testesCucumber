@@ -1,11 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.15x.1xx" db="" data="xx/xx/2016">
+	<Versao id="1.1.159.190" db="" data="22/02/2016">
 		<Item visivel="S" motivo="S16020000159"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Avaliações das Solicitações: Nova opção para excluir respostas da avaliação.]]></Item>
+		<Item visivel="S" motivo="S15110000226"><![CDATA[C&S > Relatórios > Realinhamentos: Novo filtro por período para filtrar realinhamentos na seleção  do planejamento de realinhamento.]]></Item>
+		<Item visivel="S" motivo="P16010000042"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Nova notificação ao gravar colaborador sem configurar modelos de avaliação.]]></Item>
+		<Item visivel="S" motivo="S16010000210"><![CDATA[Info. Funcionais > Relatórios > Recibos de Pagamentos > Adiantamento de Folha: Novo relatório, quando integrado com o sistema Fortes Pessoal.]]></Item>
+		<Item visivel="S" motivo="S16010000210"><![CDATA[Info. Funcionais > Relatórios > Recibos de Pagamentos > Complemento de Folha com Encargos: Novo relatório, quando integrado com o sistema Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S16020000055"><![CDATA[Info. Funcionais > Relatórios > Recibos de Pagamentos > Férias: Novo relatório. Visível somente quando integrado com o sistema Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S15110000204"><![CDATA[SESMT > Relatórios > EPIs > EPIs Devolvidos: Novo relatório.]]></Item>
 		<Item visivel="S" motivo="S16010000270"><![CDATA[SESMT > Relatórios > Exames: Mudança da nomenclatura do relatório de "Funções por Exames" para "Exames por Função".]]></Item>
 		<Item visivel="S" motivo="P16020000028"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Otimização do processo de inserção da configuração de "Dias de antecedência para o aviso".]]></Item>
+		<Item visivel="S" motivo="S16010000041"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Novo gerenciador de comunicação para notificar o gestor e o cogestor da área organizacional através de email ao cadastrar ocorrência.]]></Item>
 	</Versao>
 	<Versao id="1.1.158.189" db="" data="26/01/2016">
 		<Item visivel="S" motivo="S15100000103"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova coluna de Nome Comercial ao exportar para o excel.]]></Item>

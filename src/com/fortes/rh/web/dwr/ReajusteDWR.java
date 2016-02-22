@@ -386,7 +386,6 @@ public class ReajusteDWR
 	
 	public Collection<Option> findRealinhamentosByPeriodo(Long empresaId, String dataIniStr, String dataFimStr)
 	{
-		Collection<TabelaReajusteColaborador> tabelaReajusteColaboradores = new ArrayList<TabelaReajusteColaborador>();
 		Collection<Option> retorno = new ArrayList<Option>();
 
 		if (empresaId != null)
@@ -397,11 +396,11 @@ public class ReajusteDWR
 			Collection<TabelaReajusteColaborador> tabelaReajusteColaboradorLista = new LinkedList<TabelaReajusteColaborador>();
 			
 			Date dataIni = null;
-			if(!dataIniStr.equals("") && !dataIniStr.equals("  /  /    "))
+			if(dataIniStr != null && !dataIniStr.equals("") && !dataIniStr.equals("  /  /    "))
 				dataIni = DateUtil.criarDataDiaMesAno(dataIniStr);
 			
 			Date dataFim = null;
-			if(!dataFimStr.equals("") && !dataFimStr.equals("  /  /    "))
+			if(dataFimStr != null && !dataFimStr.equals("") && !dataFimStr.equals("  /  /    "))
 				dataFim = DateUtil.criarDataDiaMesAno(dataFimStr);
 			
 			tabelaReajusteColaboradorLista = tabelaReajusteColaboradorManager.findAllSelect(empresaId, dataIni, dataFim);

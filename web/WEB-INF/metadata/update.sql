@@ -23596,3 +23596,89 @@ insert into migrations values('20160113123402');--.go
 update parametrosdosistema set acversaowebservicecompativel='1.1.59.1';--.go
 insert into migrations values('20160126103555');--.go
 update parametrosdosistema set appversao = '1.1.158.189';--.go
+-- versao 1.1.159.190
+
+update papel set ordem = ordem + 2 where papelmae_id = 377 and ordem > 3 ;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (663, 'ROLE_REL_ADIANTAMENTO_DE_FOLHA', 'Adiantamento de Folha', '/geral/colaborador/prepareReciboPagamentoAdiantamentoDeFolha.action', 4, true, 377);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 663);--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (664, 'ROLE_REL_PAGAMENTO_COMPLEMENTAR', 'Complemento de Folha com Encargos', '/geral/colaborador/prepareReciboPagamentoComplementar.action', 5, true, 377);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 664);--.go
+
+alter sequence papel_sequence restart with 665;--.go
+insert into migrations values('20160127135026');--.go
+update parametrosdosistema set acversaowebservicecompativel='1.1.60.1';--.go
+insert into migrations values('20160127135433');--.go
+
+update papel set nome = 'Exames por Função', url= '/sesmt/funcao/prepareRelatorioExamesPorFuncao.action' where id = 559;--.go 
+insert into migrations values('20160127140455');--.go
+update papel set nome = 'Colaboradores por Certificações' where id = 655;--.go
+insert into migrations values('20160203085806');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (665, 'ROLE_REL_EPI_DEVOLVIDO', 'EPIs Devolvidos', '/sesmt/solicitacaoEpi/prepareRelatorioDevolucaoEpi.action', 4, true, 657);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 665);--.go
+
+update papel set ordem = 5 where id = 432;--.go
+
+alter sequence papel_sequence restart with 666;--.go
+insert into migrations values('20160204102047');--.go
+update papel set ordem = ordem + 1 where papelmae_id = 377 and ordem > 1;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (666, 'ROLE_REL_RECIBO_FERIAS', 'Recibo de Férias', '/geral/colaborador/prepareReciboDeFerias.action', 2, true, 377);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 666);--.go
+alter sequence papel_sequence restart with 667;--.go
+
+update parametrosdosistema set acversaowebservicecompativel = '1.1.58.1' where id = 1;--.go
+insert into migrations values('20160211104944');--.go
+ALTER TABLE colaboradorcertificacao ADD COLUMN colaboradorCertificacaoPreRequisito_id bigint;--.go
+ALTER TABLE colaboradorcertificacao ADD CONSTRAINT colaboradorCertificacaoPreRequisito_fk FOREIGN KEY (colaboradorCertificacaoPreRequisito_id) REFERENCES colaboradorcertificacao(id);--.go
+insert into migrations values('20160218084207');--.go
+update papel set nome = 'Recibos de Pagamentos', url = '#' where id = 572 ;--.go
+update papel set papelmae_id = 572, nome = 'Adiantamento de Folha', ordem = 1 where id = 663 ;--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (667, 'ROLE_REL_RECIBO_FOLHA', 'Folha', '/geral/colaborador/prepareReciboPagamento.action', 2, true, 572);--.go
+update papel set papelmae_id = 572, nome = 'Complemento de Folha com Encargos', ordem = 3 where id = 664 ;--.go
+update papel set papelmae_id = 572, nome = 'Férias',ordem = 4 where id = 666 ;--.go
+update papel set papelmae_id = 572, nome = '13º Salário', ordem = 5 where id = 647 ;--.go
+update papel set ordem = 2 where id = 656;--.go
+update papel set ordem = ordem - 4 where papelmae_id = 377 and ordem >= 7;--.go
+
+alter sequence papel_sequence restart with 668;--.go
+insert into migrations values('20160218135913');--.go
+CREATE OR REPLACE FUNCTION verifica_certificacao(id_certificado BIGINT, id_colaborador BIGINT) RETURNS BOOLEAN AS $$  
+BEGIN 
+return (
+
+		select (
+				(select (select Array(select distinct cursos_id from certificacao_curso where certificacaos_id = id_certificado order by cursos_id)) =
+		  		(select Array(
+			  				select distinct cu.id from colaboradorturma ct inner join turma t on t.id = ct.turma_id 
+			  				and t.dataprevfim = (select max(dataprevfim) from turma t2 where t2.curso_id = t.curso_id and t2.realizada 
+							and dataprevfim >= (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000')))
+							inner join curso cu on cu.id = t.curso_id
+							where ct.colaborador_id = id_colaborador
+							and t.realizada
+							and cu.id in (select cursos_id from certificacao_curso where certificacaos_id = id_certificado)
+							and verifica_aprovacao(cu.id, t.id, ct.id, cu.percentualminimofrequencia)
+							order by cu.id
+							)
+				)
+			)
+		and
+		(
+			select (select Array(select distinct avaliacoespraticas_id from certificacao_avaliacaopratica where certificacao_id = id_certificado order by avaliacoespraticas_id)) =
+			(select Array( 
+						select distinct caval.avaliacaopratica_id from colaboradoravaliacaopratica caval where caval.colaborador_id = id_colaborador
+						and caval.certificacao_id = id_certificado
+						and caval.nota >= (select aval.notaMinima from avaliacaopratica aval where aval.id = caval.avaliacaopratica_id)
+						and caval.data > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000'))
+						order by caval.avaliacaopratica_id)))
+		) 
+		as situacao 
+	);
+END; 
+$$ LANGUAGE plpgsql; --.go 
+insert into migrations values('20160222101554');--.go
+
+update parametrosdosistema set acversaowebservicecompativel='1.1.60.1';--.go
+insert into migrations values('20160222153541');--.go
+update parametrosdosistema set appversao = '1.1.159.190';--.go

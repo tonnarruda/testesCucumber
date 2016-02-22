@@ -7,7 +7,7 @@ Funcionalidade: Relatório de Afastamentos
     Dado que exista um afastamento "doença"
     Dado que eu esteja logado com o usuário "fortes"
 
-    Quando eu acesso o menu "SESMT > Relatórios > Afastamentos"
+    Quando eu acesso o menu "SESMT > Relatórios > Afastamentos > Afastamentos"
     Então eu devo ver o título "Afastamentos"
 
     Então eu preencho o campo (JS) "inicio" com "01/07/2011"

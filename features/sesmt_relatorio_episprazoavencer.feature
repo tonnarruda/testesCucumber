@@ -8,7 +8,7 @@ Funcionalidade: Relatório de EPIs com Prazo a Vencer
     Dado que exista a área organizacional "ambulatorio"
 
     Dado que eu esteja logado com o usuário "fortes"
-    Quando eu acesso o menu "SESMT > Relatórios > EPIs com Prazo a Vencer"
+    Quando eu acesso o menu "SESMT > Relatórios > EPI > EPIs com Prazo a Vencer"
     Então eu devo ver o título "EPIs com Prazo a Vencer"
     E eu clico no botão "Relatorio"
     E eu devo ver o alert do valida campos e clico no ok
