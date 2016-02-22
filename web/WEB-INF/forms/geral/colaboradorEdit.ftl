@@ -431,7 +431,10 @@
 													    },
 													    {
 													        text: "Não",
-													        click: function() { $(this).dialog("close"); }
+													        click: function() {
+													        	abas(6, '', true, 6);
+													        	$(this).dialog("close");
+													        }
 													    }
 													]
 												});
