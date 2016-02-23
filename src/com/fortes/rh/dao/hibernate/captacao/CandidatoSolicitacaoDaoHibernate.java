@@ -202,12 +202,12 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         
         if(status != null && status == 'I'){
         	criteria.add(Expression.eq("cs.status", status));
-        	criteria.add(Expression.isNull("h.apto"));
+        	criteria.add(Expression.or(Expression.isNull("h.apto"), Expression.eq("h.apto", Apto.INDIFERENTE)));
         }
         if(status != null && status == 'A')
-        	criteria.add(Expression.isNotNull("h.apto"));
+        	criteria.add(Expression.eq("h.apto", Apto.SIM));
         if(status != null && status == 'P')
-        	criteria.add(Expression.ne("cs.status", 'I'));
+        	criteria.add(Expression.eq("c.contratado", true));
 
         if(etapaSeletivaId != null)
         	criteria.add(Expression.eq("e.id", etapaSeletivaId));
@@ -430,7 +430,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         return criteria.list();
     }
 
-    public Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, String observacaoRH, String nomeBusca)
+    public Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, String observacaoRH, String nomeBusca, Character status)
     {
         Criteria criteria = getSession().createCriteria(CandidatoSolicitacao.class, "cs");
         criteria.createCriteria("cs.candidato", "c", Criteria.LEFT_JOIN);
@@ -452,6 +452,15 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         	char apto = visualizar?Apto.SIM:Apto.NAO;
         	criteria.add(Expression.eq("h.apto", apto));
         }
+        
+        if(status != null && status == 'I'){
+        	criteria.add(Expression.eq("cs.status", status));
+        	criteria.add(Expression.or(Expression.isNull("h.apto"), Expression.eq("h.apto", Apto.INDIFERENTE)));
+        }
+        if(status != null && status == 'A')
+        	criteria.add(Expression.eq("h.apto", Apto.SIM));
+        if(status != null && status == 'P')
+        	criteria.add(Expression.eq("c.contratado", true));
 
         if(etapaSeletivaId != null)
         	criteria.add(Expression.eq("e.id", etapaSeletivaId));

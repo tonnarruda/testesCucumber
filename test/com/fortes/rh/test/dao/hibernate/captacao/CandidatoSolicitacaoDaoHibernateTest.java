@@ -390,7 +390,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		candidatoSolicitacao = prepareFindCandidatoSolicitacao();
 		candidatoSolicitacao = candidatoSolicitacaoDao.save(candidatoSolicitacao);
 
-		assertEquals(new Integer(1), candidatoSolicitacaoDao.getCount(solicitacao.getId(), null, null, null, true, null, null));
+		assertEquals(new Integer(1), candidatoSolicitacaoDao.getCount(solicitacao.getId(), null, null, null, true, null, null, null));
 	}
 
 	public void testFindCandidatosAptosMover()

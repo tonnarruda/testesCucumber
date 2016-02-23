@@ -30,7 +30,7 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 	void updateTriagem(Long[] candidatoSolicitacaoIdsSelecionados, boolean triagem);
 	Boolean isCandidatoSolicitacaoByCandidato(Long candidatoId);
 	Collection<Long> getCandidatosBySolicitacao(Long solicitacaoId);
-	Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, String observacaoRH, String nomeBusca);
+	Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, String observacaoRH, String nomeBusca, Character status);
 	void setStatus(Long candidatoSolicitacaoId, char status);
 	Collection<Integer> getIdF2RhCandidato(Long SolicitacaoId);
 	void setStatusByColaborador(char status, Long... colaboradoresIds);
