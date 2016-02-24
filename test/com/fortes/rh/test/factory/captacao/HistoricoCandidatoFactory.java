@@ -1,5 +1,9 @@
 package com.fortes.rh.test.factory.captacao;
 
+import java.util.Date;
+
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.dicionario.Apto;
 
@@ -12,6 +16,16 @@ public class HistoricoCandidatoFactory
 		entity.setId(1L);
 		entity.setApto(Apto.INDIFERENTE);
 
+		return entity;
+	}
+
+	public static HistoricoCandidato getEntity(EtapaSeletiva etapaSeletiva,Date data, CandidatoSolicitacao candidatoSolicitacao) 
+	{
+		HistoricoCandidato entity = getEntity();
+		entity.setEtapaSeletiva(etapaSeletiva);
+		entity.setData(data);
+		entity.setCandidatoSolicitacao(candidatoSolicitacao);
+		
 		return entity;
 	}
 

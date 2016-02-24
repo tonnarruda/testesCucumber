@@ -68,7 +68,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		etapas = etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId());
 		solicitacao = solicitacaoManager.getValor(solicitacao.getId());
 		
-		setTotalSize(candidatoSolicitacaoManager.getCount(solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, observacaoRH, nomeBusca, visualizar));
+		setTotalSize(candidatoSolicitacaoManager.getCount(solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, true, observacaoRH, nomeBusca, visualizar));
 		candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(getPage(), getPagingSize(), solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, true, observacaoRH, nomeBusca, visualizar);
 
 		solicitacaoAvaliacaos = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacao.getId(), null);
@@ -102,11 +102,11 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	private Boolean getValueApto(char visual)
+	private Boolean getValueApto(char opcaoVisualizar)
 	{
-		if(visual == 'A')
+		if(opcaoVisualizar == 'A')
 			return true;
-		else if(visual == 'N')
+		else if(opcaoVisualizar == 'N')
 			return false;
 
 		return null;

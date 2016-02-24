@@ -141,12 +141,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
     //TODO BACALHAU, ajustar parametros. Ex.: o contratado passa true e usa false
     public Collection<CandidatoSolicitacao> getCandidatoSolicitacaoList(Integer page, Integer pagingSize, Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca, Character status)
     {
-    	//cuidado com a ordem das joins, tem um sql amarrado...h2_ IMUNDO
         Criteria criteria = getSession().createCriteria(CandidatoSolicitacao.class, "cs");
-        criteria.createCriteria("cs.candidato", "c", Criteria.LEFT_JOIN);
-        criteria.createCriteria("cs.historicoCandidatos", "h", Criteria.LEFT_JOIN);
-        criteria.createCriteria("h.etapaSeletiva", "e", Criteria.LEFT_JOIN);
-        criteria.createCriteria("c.empresa", "emp", Criteria.LEFT_JOIN);
 
         ProjectionList p = Projections.projectionList().create();
         p.add(Projections.property("cs.id"), "id");
@@ -170,7 +165,32 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         p.add(Projections.property("emp.nome"), "projectionCandidatoEmpresaNome");
         criteria.setProjection(p);
         
-        criteria.add(Expression.eq("cs.triagem", false));
+        montaConsulta(criteria, solicitacaoId, etapaSeletivaId, indicadoPor, visualizar, contratado, semHistorico, observacaoRH, nomeBusca, status);
+
+        if (page != null && pagingSize != null)
+        {
+			criteria.setFirstResult(((page - 1) * pagingSize));
+			criteria.setMaxResults(pagingSize);
+        }
+
+        criteria.addOrder(Order.asc("c.nome"));
+        criteria.addOrder(Order.asc("h.data"));
+        criteria.addOrder(Order.asc("e.ordem"));
+
+        criteria.setResultTransformer(new AliasToBeanResultTransformer(CandidatoSolicitacao.class));
+
+        return criteria.list();
+    }
+
+	private void montaConsulta(Criteria criteria, Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca, Character status) 
+	{
+		// cuidado com a ordem das joins, tem um alias amarrado...h2_ IMUNDO
+        criteria.createCriteria("cs.candidato", "c", Criteria.LEFT_JOIN);
+        criteria.createCriteria("cs.historicoCandidatos", "h", Criteria.LEFT_JOIN);
+        criteria.createCriteria("h.etapaSeletiva", "e", Criteria.LEFT_JOIN);
+        criteria.createCriteria("c.empresa", "emp", Criteria.LEFT_JOIN);
+        
+		criteria.add(Expression.eq("cs.triagem", false));
 
         if(contratado)
         	criteria.add(Expression.eq("c.contratado", false));
@@ -222,27 +242,14 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         	criteria.add(Restrictions.sqlRestriction("normalizar(c1_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", Hibernate.STRING));
 
         criteria.add(Expression.eq("cs.solicitacao.id", solicitacaoId));
-
-        if (page != null && pagingSize != null)
-        {
-			criteria.setFirstResult(((page - 1) * pagingSize));
-			criteria.setMaxResults(pagingSize);
-        }
-
+        
         Disjunction any = Expression.disjunction();
         any.add(Expression.isNull("h.id"));
-        any.add(Expression.sql("h2_.id = (select h3.id from HistoricoCandidato h3 left join EtapaSeletiva e2 on e2.id = h3.etapaSeletiva_id where h3.candidatoSolicitacao_id = this_.id order by h3.data desc, e2.ordem desc limit 1) "));
+        any.add(Expression.sql("h2_.id = (select hcand.id from HistoricoCandidato hcand left join EtapaSeletiva e2 on e2.id = hcand.etapaSeletiva_id where hcand.candidatoSolicitacao_id = this_.id order by hcand.data desc, e2.ordem desc limit 1) "));
         criteria.add(any);
-
-        criteria.addOrder(Order.asc("c.nome"));
-        criteria.addOrder(Order.asc("h.data"));
-        criteria.addOrder(Order.asc("e.ordem"));
-
+        
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        criteria.setResultTransformer(new AliasToBeanResultTransformer(CandidatoSolicitacao.class));
-
-        return criteria.list();
-    }
+	}
     
     public Collection<CandidatoSolicitacao> getCandidatoSolicitacaoEtapasEmGrupo(Long solicitacaoId, Long etapaSeletivaId)
     {
@@ -430,57 +437,17 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         return criteria.list();
     }
 
-    public Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, String observacaoRH, String nomeBusca, Character status)
+    public Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, String observacaoRH, String nomeBusca, Character status, boolean semHistorico)
     {
         Criteria criteria = getSession().createCriteria(CandidatoSolicitacao.class, "cs");
-        criteria.createCriteria("cs.candidato", "c", Criteria.LEFT_JOIN);
-        criteria.createCriteria("cs.historicoCandidatos", "h", Criteria.LEFT_JOIN);
-        criteria.createCriteria("h.etapaSeletiva", "e", Criteria.LEFT_JOIN);
 
         ProjectionList p = Projections.projectionList().create();
         p.add(Projections.property("cs.id"), "id");
         criteria.setProjection(p);
         criteria.setProjection(Projections.rowCount());
 
-        criteria.add(Expression.eq("cs.triagem", false));
-
-        if(contratado)
-        	criteria.add(Expression.eq("c.contratado", false));
-
-        if(visualizar != null)
-        {
-        	char apto = visualizar?Apto.SIM:Apto.NAO;
-        	criteria.add(Expression.eq("h.apto", apto));
-        }
+        montaConsulta(criteria, solicitacaoId, etapaSeletivaId, indicadoPor, visualizar, contratado, semHistorico, observacaoRH, nomeBusca, status);
         
-        if(status != null && status == 'I'){
-        	criteria.add(Expression.eq("cs.status", status));
-        	criteria.add(Expression.or(Expression.isNull("h.apto"), Expression.eq("h.apto", Apto.INDIFERENTE)));
-        }
-        if(status != null && status == 'A')
-        	criteria.add(Expression.eq("h.apto", Apto.SIM));
-        if(status != null && status == 'P')
-        	criteria.add(Expression.eq("c.contratado", true));
-
-        if(etapaSeletivaId != null)
-        	criteria.add(Expression.eq("e.id", etapaSeletivaId));
-
-        if (StringUtils.isNotBlank(indicadoPor))
-        	criteria.add(Restrictions.sqlRestriction("normalizar(c1_.indicadoPor) ilike  normalizar(?)", "%" + indicadoPor + "%", Hibernate.STRING));
-
-        if (StringUtils.isNotBlank(observacaoRH))
-			criteria.add(Restrictions.sqlRestriction("normalizar(c1_.observacaoRH) ilike  normalizar(?)", "%" + observacaoRH + "%", Hibernate.STRING));
-
-        if (StringUtils.isNotBlank(nomeBusca))
-        	criteria.add(Restrictions.sqlRestriction("normalizar(c1_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", Hibernate.STRING));
-        
-        criteria.add(Expression.eq("cs.solicitacao.id", solicitacaoId));
-
-        Disjunction any = Expression.disjunction();
-        any.add(Expression.isNull("h.id"));
-        any.add(Expression.sql("h2_.id = (select h3.id from HistoricoCandidato h3 left join EtapaSeletiva e2 on e2.id = h3.etapaSeletiva_id where h3.candidatoSolicitacao_id = this_.id order by h3.data desc, e2.ordem desc limit 1) "));
-        criteria.add(any);
-
         return (Integer) criteria.uniqueResult();
     }
 

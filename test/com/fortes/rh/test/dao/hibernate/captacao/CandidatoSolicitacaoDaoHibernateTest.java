@@ -302,39 +302,58 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 
 		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.findByFiltroSolicitacaoTriagem(true);
 		assertNotNull(candidatoSolicitacaos);
-
 	}
 	
 	public void testGetCandidatoSolicitacaoList()
 	{
 		EtapaSeletiva etapaSeletiva1 = EtapaSeletivaFactory.getEntity();
 		etapaSeletiva1.setOrdem(1);
-		etapaSeletiva1 = etapaSeletivaDao.save(etapaSeletiva1);
+		etapaSeletivaDao.save(etapaSeletiva1);
 
 		EtapaSeletiva etapaSeletiva2 = EtapaSeletivaFactory.getEntity();
 		etapaSeletiva2.setOrdem(4);
-		etapaSeletiva2 = etapaSeletivaDao.save(etapaSeletiva2);
+		etapaSeletivaDao.save(etapaSeletiva2);
 
 		candidatoSolicitacao = prepareFindCandidatoSolicitacao();
 		candidatoSolicitacao = candidatoSolicitacaoDao.save(candidatoSolicitacao);
 
-		HistoricoCandidato historicoCandidato1 = HistoricoCandidatoFactory.getEntity();
-		historicoCandidato1.setEtapaSeletiva(etapaSeletiva1);
-		historicoCandidato1.setData(DateUtil.criarDataMesAno(01, 02, 2009));
-		historicoCandidato1.setCandidatoSolicitacao(candidatoSolicitacao);
-		historicoCandidato1 = historicoCandidatoDao.save(historicoCandidato1);
+		HistoricoCandidato historicoCandidato1 = HistoricoCandidatoFactory.getEntity(etapaSeletiva1, DateUtil.criarDataMesAno(01, 02, 2009), candidatoSolicitacao);
+		historicoCandidatoDao.save(historicoCandidato1);
 
-		HistoricoCandidato historicoCandidato2 = HistoricoCandidatoFactory.getEntity();
-		historicoCandidato2.setEtapaSeletiva(etapaSeletiva2);
-		historicoCandidato2.setData(DateUtil.criarDataMesAno(01, 02, 2009));
-		historicoCandidato2.setCandidatoSolicitacao(candidatoSolicitacao);
-		historicoCandidato2 = historicoCandidatoDao.save(historicoCandidato2);
+		HistoricoCandidato historicoCandidato2 = HistoricoCandidatoFactory.getEntity(etapaSeletiva2, DateUtil.criarDataMesAno(01, 02, 2009), candidatoSolicitacao);
+		historicoCandidatoDao.save(historicoCandidato2);
 
-		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), null, null, null, false, false, null, null, null);
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), null, null, null, false, true, null, null, null);
 		assertEquals(1, candidatoSolicitacaos.size());
 
 		CandidatoSolicitacao candidatoSolicitacaoTmp = (CandidatoSolicitacao) candidatoSolicitacaos.toArray()[0];
 		assertEquals(etapaSeletiva2, candidatoSolicitacaoTmp.getEtapaSeletiva());
+	}
+	
+	public void testGetCandidatoSolicitacaoListComCondicoes() falta testar
+	{
+		EtapaSeletiva etapaSeletiva1 = EtapaSeletivaFactory.getEntity();
+		etapaSeletiva1.setOrdem(1);
+		etapaSeletivaDao.save(etapaSeletiva1);
+		
+		EtapaSeletiva etapaSeletiva2 = EtapaSeletivaFactory.getEntity();
+		etapaSeletiva2.setOrdem(4);
+		etapaSeletivaDao.save(etapaSeletiva2);
+		
+		candidatoSolicitacao = prepareFindCandidatoSolicitacao();
+		candidatoSolicitacao = candidatoSolicitacaoDao.save(candidatoSolicitacao);
+		
+		HistoricoCandidato historicoCandidato1 = HistoricoCandidatoFactory.getEntity(etapaSeletiva1, DateUtil.criarDataMesAno(01, 02, 2009), candidatoSolicitacao);
+		historicoCandidatoDao.save(historicoCandidato1);
+		
+		HistoricoCandidato historicoCandidato2 = HistoricoCandidatoFactory.getEntity(etapaSeletiva2, DateUtil.criarDataMesAno(01, 02, 2009), candidatoSolicitacao);
+		historicoCandidatoDao.save(historicoCandidato2);
+		
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatoSolicitacaoList(0, 15, solicitacao.getId(), etapaSeletiva1.getId(), null, null, false, true, null, null, null);
+		assertEquals(1, candidatoSolicitacaos.size());
+		
+		CandidatoSolicitacao candidatoSolicitacaoTmp = (CandidatoSolicitacao) candidatoSolicitacaos.toArray()[0];
+		assertEquals(etapaSeletiva1, candidatoSolicitacaoTmp.getEtapaSeletiva());
 	}
 	
 	public void testGetCandidatoSolicitacaoEtapaSeletiva()
@@ -390,7 +409,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		candidatoSolicitacao = prepareFindCandidatoSolicitacao();
 		candidatoSolicitacao = candidatoSolicitacaoDao.save(candidatoSolicitacao);
 
-		assertEquals(new Integer(1), candidatoSolicitacaoDao.getCount(solicitacao.getId(), null, null, null, true, null, null, null));
+		assertEquals(new Integer(1), candidatoSolicitacaoDao.getCount(solicitacao.getId(), null, null, null, true, null, null, null, true));
 	}
 
 	public void testFindCandidatosAptosMover()
