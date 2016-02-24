@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -293,6 +294,31 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 
 		return criteria.list();
+	}
+	
+	public Collection<Colaborador> findComAnoDeEmpresa(Long empresaId, Date data) {
+		Calendar date = Calendar.getInstance();
+		date.setTime(data);
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Colaborador(co.id, co.nome, "); 
+		hql.append(" ( date_part('year', cast(:data AS date) ) - date_part('year', co.dataAdmissao) ) ) "); 
+		hql.append("from Colaborador as co ");
+		hql.append("where ");
+		hql.append("		co.desligado = false ");
+		hql.append("		and co.empresa.id = :empresaId ");
+		hql.append("		and date_part('day', co.dataAdmissao) = date_part('day', cast(:data AS date) ) ");
+		hql.append("		and date_part('month', co.dataAdmissao) = date_part('month', cast(:data AS date) ) ");
+		hql.append(" order by co.nome");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setDate("data", data);
+//		query.setInteger("ano", date.get(Calendar.YEAR));
+//		query.setInteger("mes", date.get(Calendar.MONTH));
+//		query.setInteger("dia", date.get(Calendar.DAY_OF_MONTH));
+		query.setLong("empresaId", empresaId);
+
+		return query.list();
 	}
 	
 	public Integer getCount(Map parametros, int tipoBuscaHistorico)

@@ -185,6 +185,19 @@
     <property name="targetObject" ref="lembreteResponderAvaliacaoDesempenhoJob"/>
     <property name="targetMethod" value="enviarLembreteResponderAvaliacaoDesempenho"/>
   </bean>
+  
+  <bean name="emailQuandoColaboradorCompletaAnoDeEmpresaJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
+    <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
+    <property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
+    <property name="empresaManager" ref="empresaManager" />
+    <property name="colaboradorManager" ref="colaboradorManager" />
+    <property name="mail" ref="mail" />
+  </bean>
+  <bean name="emailQuandoColaboradorCompletaAnoDeEmpresa" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Enviar email quando colaborador completa ano de empresa"/>
+    <property name="targetObject" ref="emailQuandoColaboradorCompletaAnoDeEmpresaJob"/>
+    <property name="targetMethod" value="enviaEmailQuandoColaboradorCompletaAnoDeEmpresa"/>
+  </bean>
 
   <bean name="lembreteEntregaEpiJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
     <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
@@ -328,6 +341,10 @@
     <property name="jobDetail" ref="lembreteResponderAvaliacaoDesempenho" />
 	<property name="cronExpression" value="0 30 6 * * ?" /> <!-- Todo os dias as 06:30h am -->
   </bean>
+  <bean id="cronTriggeremailQuandoColaboradorCompletaAnoDeEmpresa" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="emailQuandoColaboradorCompletaAnoDeEmpresa" />
+	<property name="cronExpression" value="0 50 6 * * ?" /> <!-- Todo os dias as 06:50h am -->
+  </bean>
   <bean id="cronTriggerlembreteContratoTemporarioColaborador" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteContratoTemporarioColaborador" />
 	<property name="cronExpression" value="0 30 5 * * ?" /> <!-- Todo os dias as 05:30h am -->
@@ -361,6 +378,7 @@
 		<ref bean="cronTriggerLembreteAberturaSolicitacaoEpi" />
 		<ref bean="cronTriggerLembreteEntregaEpi" />
 		<ref bean="cronTriggerlembreteResponderAvaliacaoDesempenho" />
+		<ref bean="cronTriggeremailQuandoColaboradorCompletaAnoDeEmpresa" />
 		<ref bean="cronTriggerlembreteContratoTemporarioColaborador" />
 		<ref bean="cronTriggerlembreteHabilitacaoAVencer" />
 		<ref bean="cronTriggerImportarUltimasNoticias" />

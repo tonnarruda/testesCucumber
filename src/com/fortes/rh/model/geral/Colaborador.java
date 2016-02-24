@@ -241,6 +241,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private BigDecimal nota;
 	@Transient
 	private boolean manterFoto;
+	@Transient
+	private Double qtdAnosDeEmpresa;
 
 	public Colaborador()
 	{
@@ -252,6 +254,22 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.nomeComercial = nomeComercial;
 		this.empresa = new Empresa();
 		this.empresa.setNome(nomeEmpresa);
+	}
+	
+	//findComAnoDeEmpresa
+	public Colaborador(Long id, Date dataAdmissao, String nomeComercial)
+	{
+		this.setId(id);
+		this.nomeComercial = nomeComercial;
+		this.dataAdmissao = dataAdmissao;
+	}
+	
+	//findComAnoDeEmpresa
+	public Colaborador(Long id, String nome, Double qtdAnosDeEmpresa )
+	{
+		this.setId(id);
+		this.nome = nome;
+		this.qtdAnosDeEmpresa = qtdAnosDeEmpresa;
 	}
 
 	//findDemitidosTurnover
@@ -2966,5 +2984,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setManterFoto(boolean manterFoto) {
 		this.manterFoto = manterFoto;
+	}
+
+	public Double getQtdAnosDeEmpresa() {
+		return qtdAnosDeEmpresa;
+	}
+
+	public void setQtdAnosDeEmpresa(Double qtdAnosDeEmpresa) {
+		this.qtdAnosDeEmpresa = qtdAnosDeEmpresa;
 	}
 }

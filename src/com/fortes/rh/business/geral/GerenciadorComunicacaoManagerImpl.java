@@ -94,6 +94,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	ProvidenciaManager providenciaManager;
 	MensagemManager mensagemManager;
 	EmpresaManager empresaManager;
+	ColaboradorManager colaboradorManager;
 	PerfilManager perfilManager;
 	CargoManager cargoManager;
 	CidManager cidManager;
@@ -385,7 +386,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	{
 		String subject = "[RH] - Candidatos cadastros no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes);
 		
-		StringBuilder body = new StringBuilder("Candidatos cadastrados no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes) + "<br>");
+		StringBuilder body = new StringBuilder("Candidatos cadastrados no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes) + "<br />");
 		body.append( "<table>" );
 		body.append("<thead><tr>");
 		body.append("<th>Empresa</th>");
@@ -2099,6 +2100,70 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			}
 		}
 	}
+	
+	public void enviaEmailQuandoColaboradorCompletaAnoDeEmpresa() 
+	{
+		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
+		Collection<Empresa> empresas = empresaManager.findTodasEmpresas();
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		Collection<Integer> diasLembrete = new ArrayList<Integer>();
+		Calendar data;
+		
+		String subject = "[RH] - Faltam Colaboradores com ano de empresa";
+		
+		try
+		{
+			for (Empresa empresa : empresas) {
+				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId(), empresa.getId());
+	    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+	    			diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
+					for (Integer diaLembrete : diasLembrete)
+					{
+						data = Calendar.getInstance(); 
+						data.setTime(new Date());
+						data.add(Calendar.DAY_OF_MONTH, +diaLembrete);
+	    			
+						colaboradores = colaboradorManager.findComAnoDeEmpresa(empresa.getId(), data.getTime());
+						
+						if ( colaboradores.size() > 0 ) {
+							subject = "[RH] - Falta(m) "+diaLembrete+" dia(s) para colaboradores completarem ano de empresa";
+							StringBuilder body = new StringBuilder("<b>Empresa:</b> "+ empresa.getNome() +" <br><br>");
+							body.append("Colaboradores que completarão ano de empresa: <br><br>");
+							body.append("<table>");
+							body.append("<thead><tr>");
+							body.append("<th>Colaborador</th>");
+							body.append("<th>|</th>");
+							body.append("<th>Qtd. anos</th>");
+							body.append("</tr></thead><tbody>");
+							
+							for (Colaborador colaborador : colaboradores) 
+							{
+								body.append("<tr>");
+								body.append("<td>" + colaborador.getNome() + "</td>");
+								body.append("<td>|</td>");
+								body.append("<td align='center'>" + colaborador.getQtdAnosDeEmpresa().intValue() + "</td>");
+								body.append("</tr>");
+							}
+							
+							body.append("</tbody></table><br>");
+							
+							body.append("<b>Total de colaboradores:</b> " + colaboradores.size());
+							
+			    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
+			    				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
+			    				mail.send(empresa, subject, body.toString(), null, emails);
+			    			}
+						}
+					}
+	    		}
+			}
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 
 	private Collection<ColaboradorTurma> agrupaCertificacoes(Collection<ColaboradorTurma> colaboradoresTurmas) 
 	{
@@ -2178,5 +2243,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void setColaboradorCertificacaoManager(
 			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
 	}
 }

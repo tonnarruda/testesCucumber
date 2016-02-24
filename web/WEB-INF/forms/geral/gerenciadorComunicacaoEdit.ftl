@@ -198,7 +198,7 @@
 			{
 				$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId} || operacaoId == ${avaliacaoPeriodoExperienciaVencendoId} || operacaoId == ${habilitacaoAVencerId} ||
 												   operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId} || operacaoId == ${lembreteTerminoContratoTemporarioColaboradorId} || 
-												   operacaoId == ${notificarCursosAVencer} || operacaoId == ${notificarCertificacoesAVencer} );
+												   operacaoId == ${notificarCursosAVencer} || operacaoId == ${notificarCertificacoesAVencer} || operacaoId == ${emailQuandoColaboradorCompletaAnoDeEmpresaId} );
 										   
 				var label = (operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId}) ? 'Dias de prazo para o aviso:' : 'Dias de antecedência para o aviso:';
 				$('#camposQtdDiasLembrete label').text(label);

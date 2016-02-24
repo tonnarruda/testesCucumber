@@ -152,6 +152,11 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		return list();
 	}
 	
+	public int getEmailQuandoColaboradorCompletaAnoDeEmpresaId()
+	{
+		return Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId();
+	}
+	
 	public int getLembreteQuestionarioNaoLiberadoId()
 	{
 		return Operacao.PESQUISA_NAO_LIBERADA.getId();

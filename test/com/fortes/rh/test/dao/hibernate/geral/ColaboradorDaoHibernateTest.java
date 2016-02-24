@@ -577,6 +577,41 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertFalse(colaboradores.isEmpty());
 		assertEquals(c1.getId(), ((Colaborador) colaboradores.toArray()[0]).getId());
 	}
+	
+	public void testFindComAnoDeEmpresa() {
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario = usuarioDao.save(usuario);
+
+		Empresa empresa = new Empresa();
+		empresa.setNome("empresa");
+		empresa.setRazaoSocial("empresa");
+		empresa = empresaDao.save(empresa);
+
+		Empresa empresa2 = new Empresa();
+		empresa2.setNome("empresa");
+		empresa2 = empresaDao.save(empresa2);
+
+		Colaborador c1 = getColaborador();
+		c1.setEmpresa(empresa);
+		c1.setDataAdmissao(DateUtil.criarDataMesAno(01, 01, 2015));
+		c1 = colaboradorDao.save(c1);
+
+		Colaborador c2 = getColaborador();
+		c2.setEmpresa(empresa);
+		c2.setDataAdmissao(DateUtil.criarDataMesAno(01, 02, 2015));
+		c2 = colaboradorDao.save(c2);
+
+		Colaborador c3 = getColaborador();
+		c3.setEmpresa(empresa2);
+		c3.setDataAdmissao(DateUtil.criarDataMesAno(02, 01, 2015));
+		c3 = colaboradorDao.save(c3);
+
+		Collection<Colaborador> colaboradores = colaboradorDao.findComAnoDeEmpresa(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2016));
+
+		assertFalse(colaboradores.isEmpty());
+		assertEquals(colaboradores.size(), 1);
+		assertEquals(c1.getId(), ((Colaborador) colaboradores.toArray()[0]).getId());
+	}
 
 	public void testFindSemUsuariosComUsuario() {
 		Usuario usuario = UsuarioFactory.getEntity();

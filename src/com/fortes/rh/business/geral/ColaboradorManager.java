@@ -231,4 +231,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void setDataSolicitacaoDesligamentoACByDataDesligamento(Long empresaId);
 	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId);
 	public void getRemuneracaoVariavelFromAcPessoalByColaboradores(Collection<Colaborador> colaboradores) throws Exception;
+	public Collection<Colaborador> findComAnoDeEmpresa(Long empresaId, Date data);
 }

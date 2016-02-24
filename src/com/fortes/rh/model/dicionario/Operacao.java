@@ -400,6 +400,15 @@ public enum Operacao
 			
 			return this.getListMeioComunicacao();
 		}
+	},
+	
+	COLABORADORES_COM_ANO_DE_EMPRESA(38, "Colaborador completar ano de empresa", "Info. Funcionais"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			
+			return this.getListMeioComunicacao();
+		}
 	};
 	
 	private int id;

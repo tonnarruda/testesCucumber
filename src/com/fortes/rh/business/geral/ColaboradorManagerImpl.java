@@ -1261,6 +1261,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			throw new ColecaoVaziaException("O reajuste não pode ser aplicado pois os seguintes colaboradores estão desligados da empresa:<br>" + colaboradoresDesligados);
 		}
 	}
+	
+	public Collection<Colaborador> findComAnoDeEmpresa(Long empresaId, Date data) {
+		return getDao().findComAnoDeEmpresa(empresaId, data);
+	}
 
 	public void setIndiceManager(IndiceManager indiceManager)
 	{

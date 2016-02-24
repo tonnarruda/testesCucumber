@@ -24,6 +24,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findByArea(AreaOrganizacional areaFiltro);
 
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario);
+	public Collection<Colaborador> findComAnoDeEmpresa(Long empresaId, Date data);
 	public Integer getCount(Map parametros, int tipoBuscaHistorico);
 	public Collection findList(int page, int pagingSize, Map parametros, int tipoBuscaHistorico);
 	public Colaborador findColaboradorPesquisa(Long id,Long empresaId);

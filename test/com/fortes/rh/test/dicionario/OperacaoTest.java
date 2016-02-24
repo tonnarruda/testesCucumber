@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(37, Operacao.values().length);
+		assertEquals(38, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -61,6 +61,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Criar acesso ao sistema para colaborador", Operacao.getDescricaoById(++i));
 		assertEquals("Notificar quando existir cursos a vencer", Operacao.getDescricaoById(++i));
 		assertEquals("Notificar quando existir certificações a vencer", Operacao.getDescricaoById(++i));
+		assertEquals("Colaborador completar ano de empresa", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -114,6 +115,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 35
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 36
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 37
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 38
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -159,6 +161,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(++i, Operacao.CRIAR_ACESSO_SISTEMA.getId());							// 35
 		assertEquals(++i, Operacao.CURSOS_A_VENCER.getId());			     				// 36
 		assertEquals(++i, Operacao.CERTIFICACOES_A_VENCER.getId());			     			// 37
+		assertEquals(++i, Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId());			     			// 38
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -577,6 +580,17 @@ public class OperacaoTest extends TestCase
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
 		assertEquals(6,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 		
+	}
+	
+	public void testColaboradoresComAnoDeEmpresa(){
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.COLABORADORES_COM_ANO_DE_EMPRESA;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testQtdDeOperacoesTestadas() 
