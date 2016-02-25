@@ -16,7 +16,7 @@ public class AuditoriaGeralAdviceTest extends MockObjectTestCase {
 	
 	private static final String DADOS_ESPERADOS = "[DADOS ANTERIORES]\n"
 													+ "{\n"
-													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n" 
+//													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n" 
 													+ "  \"id\": 29,\n"
 													+ "  \"nome\": \"Minha Festa\"\n"
 													+ "}";

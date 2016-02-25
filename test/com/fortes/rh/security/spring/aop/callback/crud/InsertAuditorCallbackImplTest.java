@@ -23,7 +23,7 @@ public class InsertAuditorCallbackImplTest extends TestCase {
 	
 	private static final String DADOS_ESPERADOS = "[DADOS ATUALIZADOS]\n"
 													+ "{\n"
-													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
+//													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
 													+ "  \"id\": 2,\n"
 													+ "  \"nome\": \"Natal\"\n"
 													+ "}";

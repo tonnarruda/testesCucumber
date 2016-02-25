@@ -25,28 +25,28 @@ public class CrudAuditorCallbackImplTest extends TestCase {
 	
 	private static final String DADOS_ESPERADOS_SAVE = "[DADOS ATUALIZADOS]\n"
 													+ "{\n"
-													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
+//													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
 													+ "  \"id\": 2,\n"
 													+ "  \"nome\": \"Natal\"\n"
 													+ "}";
 	
 	private static final String DADOS_ESPERADOS_UPDATE = "[DADOS ANTERIORES]\n"
 													+ "{\n"
-													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
+//													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
 													+ "  \"id\": 2,\n"
 													+ "  \"nome\": \"Minha Festa\"\n"
 													+ "}"
 													+ "\n\n"
 													+ "[DADOS ATUALIZADOS]\n"
 													+ "{\n"
-													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
+//													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
 													+ "  \"id\": 2,\n"
 													+ "  \"nome\": \"Minha Festa 2010\"\n"
 													+ "}";
 	
 	private static final String DADOS_ESPERADOS_REMOVE = "[DADOS ANTERIORES]\n"
 													+ "{\n"
-													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
+//													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
 													+ "  \"id\": 2,\n"
 													+ "  \"nome\": \"Minha Festa\"\n"
 													+ "}";

@@ -22,7 +22,7 @@ public class RemoveAuditorCallbackImplTest extends TestCase {
 	
 	private static final String DADOS_ESPERADOS = "[DADOS ANTERIORES]\n"
 													+ "{\n"
-													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
+//													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
 													+ "  \"id\": 2,\n"
 													+ "  \"nome\": \"Minha Festa\"\n"
 													+ "}";

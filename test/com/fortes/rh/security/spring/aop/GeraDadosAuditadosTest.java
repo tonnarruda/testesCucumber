@@ -15,14 +15,14 @@ public class GeraDadosAuditadosTest extends TestCase {
 						"[DADOS ANTERIORES]\n" +
 						"{\n" +
 //						"  \"chaveParaAuditoria\": \"Carnaval\",\n" +
-						"  \"dependenciasDesconsideradasNaRemocao\": [],\n" +
+//						"  \"dependenciasDesconsideradasNaRemocao\": [],\n" +
 						"  \"id\": 1,\n" +
 						"  \"nome\": \"Carnaval\"\n" +
 						"}" +
 						"\n\n[DADOS ATUALIZADOS]\n" +
 						"{\n" +
 //						"  \"chaveParaAuditoria\": \"Carnaval\",\n" +
-						"  \"dependenciasDesconsideradasNaRemocao\": [],\n"+
+//						"  \"dependenciasDesconsideradasNaRemocao\": [],\n"+
 						"  \"id\": 1,\n" +
 						"  \"nome\": \"Carnaval\"\n" +
 						"}";
