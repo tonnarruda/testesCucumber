@@ -24,7 +24,6 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
-import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -42,7 +41,6 @@ import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
-import com.fortes.rh.test.factory.desenvolvimento.ColaboradorAvaliacaoPraticaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorCertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
@@ -280,48 +278,6 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = colaboradorCertificacaoDao.getCertificacoesAVencer(DateUtil.incrementaMes(data, 1), empresa.getId());
 		
 		assertEquals(1, colaboradorCertificacaos.size());
-	}
-	
-	public void testRemoveDependencias(){
-		Date data = DateUtil.criarDataMesAno(1, 1, 2015);
-		
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setNome("Feião");
-		colaborador.setEmpresa(empresa);
-		colaborador.setEmailColaborador("bla@ble.com");
-		colaboradorDao.save(colaborador);
-
-		Certificacao certificacao = CertificacaoFactory.getEntity();
-		certificacao.setEmpresa(empresa);
-		certificacao.setPeriodicidade(1);
-		certificacaoDao.save(certificacao);
-		
-		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
-		avaliacaoPraticaDao.save(avaliacaoPratica);
-
-		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao();
-		colaboradorCertificacao.setColaborador(colaborador);
-		colaboradorCertificacao.setCertificacao(certificacao);
-		colaboradorCertificacao.setData(data);
-		colaboradorCertificacaoDao.save(colaboradorCertificacao);
-		
-		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity(1L);
-		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
-		colaboradorAvaliacaoPratica.setColaborador(colaborador);
-		colaboradorAvaliacaoPratica.setCertificacao(certificacao);
-		colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
-		colaboradorAvaliacaoPratica.setData(data);
-		colaboradorAvaliacaoPratica.setNota(10.0);
-		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica);
-		
-		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
-		
-		colaboradorCertificacaoDao.removeDependenciaDaAvPratica(colaboradorCertificacao.getId());
-		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaDao.findColaboradorAvaliacaoPraticaQueNaoEstaCertificado(colaborador.getId(), certificacao.getId());
-		assertNull(((ColaboradorAvaliacaoPratica) colaboradorAvaliacoesPraticas.toArray()[0]).getColaboradorCertificacao());
 	}
 	
 	public void testFindByColaboradorTurma(){

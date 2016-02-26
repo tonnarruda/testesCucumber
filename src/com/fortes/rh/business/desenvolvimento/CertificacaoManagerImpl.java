@@ -116,7 +116,7 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 				colaboradorAvaliacoesPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
 				
 				if(colaboradorCertificacao != null && colaboradorCertificacao.getId() != null)
-					colaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacao.getId());
+					colaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacao.getId(), null, true, true);
 				
 				Curso curso = null;
 				for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica : colaboradorAvaliacoesPraticas) {

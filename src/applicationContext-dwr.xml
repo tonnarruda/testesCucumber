@@ -196,4 +196,8 @@
 	<bean id="certificacaoDWR" class="com.fortes.rh.web.dwr.CertificacaoDWR">
 		<property name="colaboradorCertificacaoManager" ref="colaboradorCertificacaoManager"/>
 	</bean>
+	<bean id="colaboradorAvaliacaoPraticaDWR" class="com.fortes.rh.web.dwr.ColaboradorAvaliacaoPraticaDWR">
+		<property name="colaboradorCertificacaoManager" ref="colaboradorCertificacaoManager"/>
+		<property name="colaboradorAvaliacaoPraticaManager" ref="colaboradorAvaliacaoPraticaManager"/>
+	</bean>
 </beans>

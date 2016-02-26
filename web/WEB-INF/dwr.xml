@@ -163,6 +163,9 @@
 		<create creator="spring" javascript="CertificacaoDWR">
 			<param name="beanName" value="certificacaoDWR"/>
 		</create>
+		<create creator="spring" javascript="ColaboradorAvaliacaoPraticaDWR">
+			<param name="beanName" value="colaboradorAvaliacaoPraticaDWR"/>
+		</create>
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
 		
@@ -210,6 +213,12 @@
 			<param name="include" value="id, nome"/>
 		</convert>
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.AvaliacaoCurso"/>
+		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao">
+			<param name="include" value="id, ultimaCertificacao"/>
+		</convert>
+		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica">
+			<param name="include" value="dataString, nota, colaboradorCertificacao"/>
+		</convert>
 		
 		<!-- AVALIACAO -->
 		<convert converter="bean" match="com.fortes.rh.model.avaliacao.Avaliacao"/>

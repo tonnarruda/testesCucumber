@@ -66,7 +66,7 @@ public class ColaboradorAvaliacaoPraticaDaoHibernateTest extends GenericDaoHiber
 		colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
 		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica);
 		
-		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaDao.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId());
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaDao.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId(), null, null, true);
 		
 		assertEquals(1, colaboradorAvaliacaoPraticas.size());
 		
@@ -96,7 +96,7 @@ public class ColaboradorAvaliacaoPraticaDaoHibernateTest extends GenericDaoHiber
 		colaboradorAvaliacaoPratica.setData(DateUtil.criarDataMesAno(1, 10, 2015));
 		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica);
 		
-		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaDao.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), null);
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaDao.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), null, null, null, true);
 		
 		assertEquals(1, colaboradorAvaliacaoPraticas.size());
 		
@@ -104,45 +104,6 @@ public class ColaboradorAvaliacaoPraticaDaoHibernateTest extends GenericDaoHiber
 		
 		assertEquals(90.0, result.getNota());
 		assertEquals(80.0, result.getAvaliacaoPratica().getNotaMinima());
-	}
-	
-	public void testFindColaboradorAvaliacaoPraticaQueNaoEstaCertificado(){
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador);
-		
-		Certificacao certificacao = CertificacaoFactory.getEntity();
-		certificacaoDao.save(certificacao);
-		
-		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
-		avaliacaoPratica.setNotaMinima(80.0);
-		avaliacaoPraticaDao.save(avaliacaoPratica);
-		
-		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity();
-		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
-		colaboradorAvaliacaoPratica.setCertificacao(certificacao);
-		colaboradorAvaliacaoPratica.setColaborador(colaborador);
-		colaboradorAvaliacaoPratica.setNota(90.0);
-		colaboradorAvaliacaoPratica.setData(DateUtil.criarDataMesAno(1, 15, 2015));
-		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica);
-		
-		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity();
-		colaboradorCertificacao.setColaborador(colaborador);
-		colaboradorCertificacao.setCertificacao(certificacao);
-		colaboradorCertificacao.setData(DateUtil.criarDataMesAno(1, 12, 2015));
-		colaboradorCertificacaoDao.save(colaboradorCertificacao);
-		
-		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaCertificado = ColaboradorAvaliacaoPraticaFactory.getEntity();
-		colaboradorAvaliacaoPraticaCertificado.setColaboradorCertificacao(colaboradorCertificacao);
-		colaboradorAvaliacaoPraticaCertificado.setAvaliacaoPratica(avaliacaoPratica);
-		colaboradorAvaliacaoPraticaCertificado.setCertificacao(certificacao);
-		colaboradorAvaliacaoPraticaCertificado.setColaborador(colaborador);
-		colaboradorAvaliacaoPraticaCertificado.setNota(100.0);
-		colaboradorAvaliacaoPraticaCertificado.setData(DateUtil.criarDataMesAno(1, 10, 2015));
-		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPraticaCertificado);
-		
-		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaDao.findColaboradorAvaliacaoPraticaQueNaoEstaCertificado(colaborador.getId(), certificacao.getId());
-		
-		assertEquals(1, colaboradorAvaliacaoPraticas.size());
 	}
 	
 	public void testRemoveColaboradorAvaliacaoPraticaByColaboradorCertificacaoId()

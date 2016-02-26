@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
@@ -32,6 +33,9 @@ public class ColaboradorAvaliacaoPratica extends AbstractModel implements Serial
 	@Temporal(TemporalType.DATE)
 	private Date data;
 	private Double nota;
+	
+	@Transient
+	private String dataString;//Usado no DWR
 	
 	public Certificacao getCertificacao() {
 		return certificacao;
@@ -112,5 +116,14 @@ public class ColaboradorAvaliacaoPratica extends AbstractModel implements Serial
 			
 			colaboradorCertificacao.setId(colaboradorCertificacaoId);
 		}
+	}
+	public String getDataString() {
+		if(data != null)
+			return DateUtil.formataDate(data, "dd/MM/yyyy");
+		
+		return "";
+	}
+	public void setDataString(String dataString) {
+		this.dataString = dataString;
 	}
 }

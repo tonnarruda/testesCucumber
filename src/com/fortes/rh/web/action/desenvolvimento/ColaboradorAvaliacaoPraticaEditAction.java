@@ -41,7 +41,10 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	private Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
 	private Collection<Colaborador>  colaboradores = new ArrayList<Colaborador>();
 	private Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-	private Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>(); 
+	private Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
+	
+	private AvaliacaoPratica avaliacaoPratica;
+	private Collection<AvaliacaoPratica> avaliacoesPraticas = new ArrayList<AvaliacaoPratica>();
 	
 	private Certificacao certificacao;
 	private Colaborador colaborador; 
@@ -115,7 +118,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	private void populaColaboradorAvaliacaoPratica() 
 	{
 		Collection<AvaliacaoPratica> avaliacoesPraticasDoCertificado = avaliacaoPraticaManager.findByCertificacaoId(certificacao.getId());
-		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId());
+		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId(), null, true, true);
 		colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
 		ColaboradorAvaliacaoPratica ColaboradorAvaliacaoPratica = null;
 		
@@ -169,8 +172,11 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 					}
 				}
 			}else if(colaboradorAvaliacaoPratica.getId() != null){
-				colaboradorAvaliacaoPraticaManager.removeByColaboradorCertificacaoId(colaboradorCertificacao.getId());
-				colaboradorCertificacaoManager.descertificarColaborador(colaboradorCertificacao.getId());
+				if(colaboradorCertificacao.getId() != null){
+					colaboradorAvaliacaoPraticaManager.removeByColaboradorCertificacaoId(colaboradorCertificacao.getId());
+					colaboradorCertificacaoManager.descertificarColaborador(colaboradorCertificacao.getId());
+				}else
+					colaboradorAvaliacaoPraticaManager.remove(colaboradorAvaliacaoPratica.getId());
 			}
 		}
 
@@ -195,7 +201,108 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 			colaboradorCertificacao.setData(dataColaboradorCertificacao);
 			colaboradorCertificacaoManager.update(colaboradorCertificacao);
 		}	
-	}	
+	}
+	
+	public String prepareLote() throws Exception
+	{
+		certificacoes = certificacaoManager.findOsQuePossuemAvaliacaoPratica(getEmpresaSistema().getId());
+
+		if(certificacao != null && certificacao.getId() != null)
+			avaliacoesPraticas = avaliacaoPraticaManager.findByCertificacaoId(certificacao.getId());
+		
+		return Action.SUCCESS;
+	}
+	
+	public String buscaColaboradoresLote() throws Exception
+	{
+		prepareLote();
+		if(certificacao == null || certificacao.getId() == null)
+			return Action.SUCCESS;
+
+		colaboradorCertificacaos = colaboradorCertificacaoManager.colaboradoresQueParticipaDoCertificado(certificacao.getId());
+		populaColaboradorAvaliacaoPraticaLote();
+
+		return Action.SUCCESS;
+	}
+
+	private void populaColaboradorAvaliacaoPraticaLote() {
+		if(avaliacaoPratica != null && avaliacaoPratica.getId() != null)
+		{
+			Collection<ColaboradorAvaliacaoPratica> colaboradoresAvaliacoesPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
+			
+			for (ColaboradorCertificacao colaboradorCertificacaoTemp : colaboradorCertificacaos){
+				colaboradoresAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorCertificacaoTemp.getColaborador().getId(), colaboradorCertificacaoTemp.getCertificacao().getId(), null, avaliacaoPratica.getId(), false, false);
+				
+				if(colaboradoresAvaliacoesPraticas != null && colaboradoresAvaliacoesPraticas.size() > 0){
+					colaboradorCertificacaoTemp.setColaboradoresAvaliacoesPraticas(colaboradoresAvaliacoesPraticas);
+					colaboradorCertificacaoTemp.setColaboradorAvaliacaoPraticaAtual((ColaboradorAvaliacaoPratica)colaboradoresAvaliacoesPraticas.toArray()[0]);
+				}
+			}
+		}
+	}
+	
+	public String insertOrUpdateLote() throws Exception
+	{
+		avaliacaoPratica = avaliacaoPraticaManager.findById(avaliacaoPratica.getId());
+		
+		for (ColaboradorCertificacao colabCertificacao : colaboradorCertificacaos) 
+		{
+			if(colabCertificacao.getColaboradorAvaliacaoPraticaAtual().getData() != null && colabCertificacao.getColaboradorAvaliacaoPraticaAtual().getNota() != null){
+				
+				colaboradorAvaliacaoPratica = colabCertificacao.getColaboradorAvaliacaoPraticaAtual();
+				colaboradorAvaliacaoPratica.setColaborador(colabCertificacao.getColaborador());
+				colaboradorAvaliacaoPratica.setCertificacao(certificacao);
+				colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
+
+				if(colabCertificacao.getId() != null){
+					if(avaliacaoPratica.getNotaMinima() > colabCertificacao.getColaboradorAvaliacaoPraticaAtual().getNota()){	
+						colaboradorCertificacaoManager.descertificarColaborador(colabCertificacao.getId());
+					}else{
+						colaboradorAvaliacaoPratica.setColaboradorCertificacao(colabCertificacao);
+						atualizaDataColaboradorCertificacaoLote(colabCertificacao.getId(), colabCertificacao.getColaboradorAvaliacaoPraticaAtual().getData());
+					}
+				}
+				
+				colaboradorAvaliacaoPraticaManager.saveOrUpdate(colaboradorAvaliacaoPratica);
+
+				if(colabCertificacao.getId() == null){
+					Collection<ColaboradorCertificacao> colaboradorCertificacoes = colaboradorCertificacaoManager.certificaColaborador(null, colabCertificacao.getColaborador().getId(), certificacao.getId(), certificacaoManager); 
+					if(colaboradorCertificacoes.size() > 0){
+						ColaboradorCertificacao colaboradorCertificacaoTemp = (ColaboradorCertificacao) colaboradorCertificacoes.toArray()[0];
+						colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacaoTemp);
+						colaboradorAvaliacaoPraticaManager.saveOrUpdate(colaboradorAvaliacaoPratica);
+					}
+				}
+			}else if(colabCertificacao.getColaboradorAvaliacaoPraticaAtual().getId() != null){
+				if(colabCertificacao.getId() != null){
+					colaboradorAvaliacaoPraticaManager.removeByColaboradorCertificacaoId(colabCertificacao.getId());
+					colaboradorCertificacaoManager.descertificarColaborador(colabCertificacao.getId());
+				}else
+					colaboradorAvaliacaoPraticaManager.remove(colabCertificacao.getColaboradorAvaliacaoPraticaAtual().getId());
+			}
+		}
+
+		if(colaboradorCertificacaos.size() > 1)
+			setActionMsg("Avaliações gravadas com sucesso");
+		else if(colaboradorCertificacaos.size() > 0)
+			setActionMsg("Avaliação gravada com sucesso");
+		
+		colaboradorCertificacao = new ColaboradorCertificacao();//Não remover 
+		
+		return buscaColaboradoresLote();
+	}
+	
+	private void atualizaDataColaboradorCertificacaoLote(Long colaboradorCertificacaoId, Date dataAvPraticaRealizada){
+		Date maiorDataDasTurmas = colaboradorCertificacaoManager.getMaiorDataDasTurmasDaCertificacao(colaboradorCertificacaoId);
+		Date dataColaboradorCertificacao = dataAvPraticaRealizada.after(maiorDataDasTurmas) ? dataAvPraticaRealizada : maiorDataDasTurmas;
+		
+		colaboradorCertificacao = colaboradorCertificacaoManager.findById(colaboradorCertificacaoId);
+		if(!colaboradorCertificacao.getData().equals(dataColaboradorCertificacao)){
+			colaboradorCertificacao.setData(dataColaboradorCertificacao);
+			colaboradorCertificacaoManager.update(colaboradorCertificacao);
+		}	
+	}
+	
 	public ColaboradorAvaliacaoPratica getColaboradorAvaliacaoPratica()
 	{
 		if(colaboradorAvaliacaoPratica == null)
@@ -289,5 +396,22 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 
 	public ColaboradorCertificacao getColaboradorCertificacao() {
 		return colaboradorCertificacao;
+	}
+
+	public void setAvaliacaoPratica(AvaliacaoPratica avaliacaoPratica) {
+		this.avaliacaoPratica = avaliacaoPratica;
+	}
+
+	public AvaliacaoPratica getAvaliacaoPratica() {
+		return avaliacaoPratica;
+	}
+
+	public Collection<AvaliacaoPratica> getAvaliacoesPraticas() {
+		return avaliacoesPraticas;
+	}
+
+	public void setColaboradorCertificacaos(
+			Collection<ColaboradorCertificacao> colaboradorCertificacaos) {
+		this.colaboradorCertificacaos = colaboradorCertificacaos;
 	}
 }

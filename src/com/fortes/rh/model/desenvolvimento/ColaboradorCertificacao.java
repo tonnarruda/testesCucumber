@@ -54,6 +54,8 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	private Integer qtdColaboradorAprovado = 0;
 	@Transient
 	private Integer qtdColaboradorNaoAprovado = 0;
+	@Transient
+	private ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaAtual;
 
 	public ColaboradorCertificacao() {
 	}
@@ -348,5 +350,14 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	public void setColaboradorCertificacaoPreRequisito(
 			ColaboradorCertificacao colaboradorCertificacaoPreRequisito) {
 		this.colaboradorCertificacaoPreRequisito = colaboradorCertificacaoPreRequisito;
+	}
+
+	public ColaboradorAvaliacaoPratica getColaboradorAvaliacaoPraticaAtual() {
+		return colaboradorAvaliacaoPraticaAtual;
+	}
+
+	public void setColaboradorAvaliacaoPraticaAtual(
+			ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaAtual) {
+		this.colaboradorAvaliacaoPraticaAtual = colaboradorAvaliacaoPraticaAtual;
 	}
 }

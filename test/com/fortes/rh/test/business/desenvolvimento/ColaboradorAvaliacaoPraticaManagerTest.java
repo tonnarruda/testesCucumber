@@ -71,28 +71,9 @@ public class ColaboradorAvaliacaoPraticaManagerTest extends MockObjectTestCase
 		
 		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacoesPraticas = Arrays.asList(colaboradorAvaliacaoPratica);
 		
-		colaboradorAvaliacaoPraticaDao.expects(once()).method("findByColaboradorIdAndCertificacaoId").with(eq(colaborador.getId()), eq(certificacao.getId()), eq(colaboradorCertificacao.getId())).will(returnValue(colaboradorAvaliacoesPraticas));
+		colaboradorAvaliacaoPraticaDao.expects(once()).method("findByColaboradorIdAndCertificacaoId").withAnyArguments().will(returnValue(colaboradorAvaliacoesPraticas));
 		
-		assertEquals(1, colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId()).size());
-	}
-	
-	public void testFindByColaboradorIdAndCertificacaoIdRetonaSomenteColaboradoresCertificados() {
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		
-		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
-		
-		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
-		
-		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity(1L);
-		colaboradorAvaliacaoPratica.setCertificacao(certificacao);
-		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
-		colaboradorAvaliacaoPratica.setColaborador(colaborador);
-		
-		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacoesPraticas = Arrays.asList(colaboradorAvaliacaoPratica);
-		
-		colaboradorAvaliacaoPraticaDao.expects(once()).method("findColaboradorAvaliacaoPraticaQueNaoEstaCertificado").with(eq(colaborador.getId()), eq(certificacao.getId())).will(returnValue(colaboradorAvaliacoesPraticas));
-		
-		assertEquals(1, colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId()).size());
+		assertEquals(1, colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId(), null, null, true).size());
 	}
 	
 	public void testRemoveColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(){

@@ -17,8 +17,11 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 @SuppressWarnings("unchecked")
 public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate<ColaboradorAvaliacaoPratica> implements ColaboradorAvaliacaoPraticaDao
 {
-	public Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId) 
+	public Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId, Long avaliacaoPraticaId, Boolean ordenarPorDataAscOuDesc, Boolean colabCertificacaoIsNull) 
 	{
+		Criteria criteria = getSession().createCriteria(ColaboradorAvaliacaoPratica.class, "cap");
+		criteria.createCriteria("cap.avaliacaoPratica", "ap", Criteria.INNER_JOIN);
+		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cap.id"), "id");
 		p.add(Projections.property("cap.data"), "data");
@@ -29,40 +32,26 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 		p.add(Projections.property("ap.id"), "avaliacaoPraticaId");
 		p.add(Projections.property("ap.notaMinima"), "avaliacaoPraticaNotaMinima");
 		p.add(Projections.property("ap.titulo"), "avaliacaoPraticaTitulo");
-		
-		Criteria criteria = getSession().createCriteria(ColaboradorAvaliacaoPratica.class, "cap");
-		criteria.createCriteria("cap.avaliacaoPratica", "ap", Criteria.INNER_JOIN)
-		.add(Expression.eq("cap.colaborador.id", colaboradorId))
-		.add(Expression.eq("cap.certificacao.id",certificacaoId));
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("cap.colaborador.id", colaboradorId));
+		criteria.add(Expression.eq("cap.certificacao.id",certificacaoId));
 		
 		if(colaboradorCertificacaoId != null)
 			criteria.add(Expression.eq("cap.colaboradorCertificacao.id", colaboradorCertificacaoId));
-		else
+		else if (colabCertificacaoIsNull)
 			criteria.add(Expression.isNull("cap.colaboradorCertificacao.id"));
 		
-		criteria.setProjection(p);
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorAvaliacaoPratica.class));
-		return criteria.list();
-	}
-
-	public Collection<ColaboradorAvaliacaoPratica> findColaboradorAvaliacaoPraticaQueNaoEstaCertificado(Long colaboradorId, Long certificacaoId) {
-		Criteria criteria = getSession().createCriteria(ColaboradorAvaliacaoPratica.class, "cap");
-		criteria.add(Expression.eq("colaborador.id", colaboradorId))
-		.add(Expression.eq("certificacao.id",certificacaoId))
-		.add(Expression.isNull("colaboradorCertificacao.id"))
-		.addOrder(Order.desc("cap.data"));
+		if(avaliacaoPraticaId != null)
+			criteria.add(Expression.eq("cap.avaliacaoPratica.id", avaliacaoPraticaId));
 		
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("cap.id"), "id");
-		p.add(Projections.property("cap.data"), "data");
-		p.add(Projections.property("cap.nota"), "nota");
-		p.add(Projections.property("cap.avaliacaoPratica.id"), "avaliacaoPraticaId");
-		p.add(Projections.property("cap.certificacao.id"), "certificacaoId");
-		p.add(Projections.property("cap.colaborador.id"), "colaboradorId");
-
-		criteria.setProjection(p);
-
+		if(ordenarPorDataAscOuDesc != null){
+			if(ordenarPorDataAscOuDesc)
+				criteria.addOrder(Order.asc("cap.data"));
+			else
+				criteria.addOrder(Order.desc("cap.data"));
+		}
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorAvaliacaoPratica.class));
 		return criteria.list();
