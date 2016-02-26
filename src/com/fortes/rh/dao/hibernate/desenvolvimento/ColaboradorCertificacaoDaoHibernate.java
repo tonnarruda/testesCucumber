@@ -285,6 +285,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		sql.append("left join cargo cg on cg.id = fx.cargo_id ");
 		sql.append("left join estabelecimento est on est.id = cp.estabelecimento_id ");
 		sql.append("left join areaOrganizacional ao on ao.id = cp.areaorganizacional_id ");
+		sql.append("order by cp.nome ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("certificadoId", certificadoId);

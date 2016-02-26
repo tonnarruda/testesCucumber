@@ -15,8 +15,8 @@
 				content: 'Abaixo só serão exibidas as certificações que possuirem periodicidade configurada em seu cadastro.'
 			});
 			
-			$('#tooltipHelpMeses,#tooltipHelpPeriodo').qtip({
-				content: 'O campo só será habilitado ao marcar a opção "Certificados" de "Considerar colaboradores".'
+			$('#tooltipHelpPeriodo').qtip({
+				content: 'Os campos "Período Certificado" e "Com certificação a vencer em até" só serão habilitados ao marcar a opção "Certificados".'
 			});
 
 			habilitaCampos();
@@ -102,7 +102,10 @@
 	
 	<@ww.form name="form" action="imprimirCertificadosVencidosAVencer.action" onsubmit="${validarCampos}" validate="true" method="POST">
 		<fieldset style="padding: 5px 0px 5px 5px; width: 495px;">
-			<legend>Considerar colaboradores:*</legend>
+			<legend>
+				Considerar colaboradores:*  
+				<img id="tooltipHelpPeriodo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
+			</legend>
 			<@ww.checkbox label="Não certificados" id="colaboradorNaoCertificado" name="colaboradorNaoCertificado" liClass="liLeft" labelPosition="left" cssStyle="margin-left: 15px;"  onchange="populaColaborador()"/>
 			<@ww.checkbox label="Certificados" id="colaboradorCertificado" name="colaboradorCertificado" liClass="liLeft" labelPosition="left" cssStyle="margin-left: 15px;" onclick="habilitaCampos()" onchange="populaColaborador()"/>
 			
@@ -110,13 +113,10 @@
 				Período Certificado:<br>
 				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 				<@ww.label value="a" liClass="liLeft" />
-				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
-				<img id="tooltipHelpMeses" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 1px" />
-				</br>
+				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim"/>
 				Com certificação a vencer em até 
 				<@ww.textfield id="meses" theme="simple" name="mesesCertificacoesAVencer" onkeypress="somenteNumeros(event,'');" maxLength="3" cssStyle="width:30px; text-align:right; margin-top: 8px;"/>
 				meses.
-				<img id="tooltipHelpPeriodo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
 			</@ww.div>
 		</fieldset>
 		
@@ -133,6 +133,6 @@
 		<button onclick="$('form[name=form]').attr('action', 'imprimirCertificadosVencidosAVencer.action');submit();" class="btnRelatorio" ></button>
 		<button onclick="$('form[name=form]').attr('action', 'imprimirCertificadosVencidosAVencerXlS.action');submit();" class="btnRelatorioExportar" ></button>
 	</div>
-	
+	</br><span>*A informação de quantidade de colaboradores certificados e não certificados </br>sairá apenas no relatório agrupado por certificação.</span>
 </body>
 </html>

@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="atendimentos_medicos_agrupaMotivo" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="39094f60-c904-4403-94dd-637d5b2f5c3f">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.5937424601000374"/>
-	<property name="ireport.x" value="482"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="3.7974983358324663"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="274"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -26,6 +26,7 @@
 	<field name="dataVencimentoCertificacao" class="java.lang.String"/>
 	<field name="colaborador.estabelecimento.nome" class="java.lang.String"/>
 	<field name="colaborador.areaOrganizacional.nome" class="java.lang.String"/>
+	<field name="aprovadoNaCertificacaoString" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{nomeCurso}]]></variableExpression>
 	</variable>
@@ -126,9 +127,9 @@
 	<group name="certificacao">
 		<groupExpression><![CDATA[$F{certificacao.id}]]></groupExpression>
 		<groupHeader>
-			<band height="75">
+			<band height="87">
 				<staticText>
-					<reportElement x="2" y="0" width="532" height="75" uuid="9c9b0e93-4135-4f5d-8f6e-adb444e567e6"/>
+					<reportElement x="2" y="0" width="532" height="87" uuid="9c9b0e93-4135-4f5d-8f6e-adb444e567e6"/>
 					<box>
 						<leftPen lineWidth="0.5"/>
 						<rightPen lineWidth="0.5"/>
@@ -139,7 +140,7 @@
 					<text><![CDATA[]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="18" y="62" width="490" height="13" uuid="39efd91c-ca69-45d9-a950-91880a7f575a"/>
+					<reportElement x="18" y="74" width="490" height="13" uuid="39efd91c-ca69-45d9-a950-91880a7f575a"/>
 					<box>
 						<leftPen lineWidth="0.25"/>
 						<rightPen lineWidth="0.25"/>
@@ -190,7 +191,7 @@
 					<textFieldExpression><![CDATA["Periodicidade: " + $F{certificacao.periodicidadeFormatada}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="18" y="38" width="490" height="13" uuid="3c2be249-c764-4557-add2-8be363122348"/>
+					<reportElement x="18" y="50" width="490" height="13" uuid="3c2be249-c764-4557-add2-8be363122348"/>
 					<box>
 						<leftPen lineWidth="0.25"/>
 						<bottomPen lineWidth="0.0"/>
@@ -203,7 +204,7 @@
 					<textFieldExpression><![CDATA["Vencimento do Certificado:" + $F{dataVencimentoCertificacao}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-6" x="42" y="62" width="277" height="13" uuid="1f569800-406a-4763-a68e-fc8452f76371"/>
+					<reportElement key="staticText-6" x="42" y="74" width="277" height="13" uuid="1f569800-406a-4763-a68e-fc8452f76371"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -216,7 +217,7 @@
 					<text><![CDATA[Cursos/Avaliações práticas]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-8" x="321" y="62" width="135" height="13" uuid="e33a42c9-4dfb-4a46-a2e7-648dd6898f6f"/>
+					<reportElement key="staticText-8" x="321" y="74" width="135" height="13" uuid="e33a42c9-4dfb-4a46-a2e7-648dd6898f6f"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -229,7 +230,7 @@
 					<text><![CDATA[Período]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-9" x="458" y="62" width="44" height="13" uuid="28920c75-4826-40f2-b47c-787c5ab0012d"/>
+					<reportElement key="staticText-9" x="458" y="74" width="44" height="13" uuid="28920c75-4826-40f2-b47c-787c5ab0012d"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -242,7 +243,7 @@
 					<text><![CDATA[Aprovado]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="18" y="50" width="490" height="13" uuid="679b3fa4-45cd-49a1-a3a4-d47067badd42"/>
+					<reportElement x="18" y="62" width="490" height="13" uuid="679b3fa4-45cd-49a1-a3a4-d47067badd42"/>
 					<box>
 						<leftPen lineWidth="0.25"/>
 						<bottomPen lineWidth="0.0"/>
@@ -253,6 +254,19 @@
 						<paragraph leftIndent="3"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Cursos ou avaliações práticas do certificado:"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="18" y="38" width="490" height="13" uuid="520420f1-3e94-4c85-8461-3bfcd303f947"/>
+					<box>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="9"/>
+						<paragraph leftIndent="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Status Certificação: " + $F{aprovadoNaCertificacaoString}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>

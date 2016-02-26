@@ -75,6 +75,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private boolean colaboradorNaoCertificado;
 	private Integer mesesCertificacoesAVencer;
 	private Character agruparPor;
+	private Integer qtdTotalColaboradoresCertificados;
+	private Integer qtdTotalColaboradoresNaoCertificados;
 
 	private void prepare() throws Exception
 	{
@@ -174,8 +176,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			Long[] certificacoesIds = LongUtil.arrayStringToArrayLong(certificacoesCheck);
 			Long[] colaboradoresIds = LongUtil.arrayStringToArrayLong(colaboradoresCheck);
 			
-			montaReportTitleAndFilter();
-			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, colaboradorCertificado, colaboradorNaoCertificado, mesesCertificacoesAVencer, areaIds, estabelecimentoIds, certificacoesIds, colaboradoresIds);
 			
 			if(colaboradorCertificacoes.size() == 0){
@@ -185,9 +185,15 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			}
 			
 			if(agruparPor != null && agruparPor == 'T')
-				return agruparPorCertificacao();
+				agruparPorCertificacao();
 			
-			return Action.SUCCESS;
+			montaReportTitleAndFilter();
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
+			
+			if(agruparPor != null && agruparPor == 'T')
+				return "sucessoAgrupadoPorCertificacao";
+			else
+				return Action.SUCCESS;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -198,14 +204,13 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		
 	}
 
-	private String agruparPorCertificacao() 
+	private void agruparPorCertificacao() 
 	{
-		colaboradorCertificacoes = new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "certificacao.nome");
-		
+		ordenarColaboradoresCertificacao();
 		Map<Long, Collection<Long>> qtdcolabsCertificado = new HashMap<Long, Collection<Long>>();
 		Map<Long, Collection<Long>> qtdcolabsNaoCertificado = new HashMap<Long, Collection<Long>>();
 		for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
-			if(colabcertificacao.getAprovadoNaCertificacao()){
+			if(colabcertificacao.getData() != null){
 				if(!qtdcolabsCertificado.containsKey(colabcertificacao.getCertificacao().getId()))
 					qtdcolabsCertificado.put(colabcertificacao.getCertificacao().getId(), new ArrayList<Long>());
 				
@@ -227,7 +232,45 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 				colabcertificacao.setQtdColaboradorNaoAprovado(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).size());
 		}
 		
-		return "sucessoAgrupadoPorCertificacao";
+		qtdTotalColaboradoresCertificados = 0;
+		for(Long certificacaoId : qtdcolabsCertificado.keySet()) 
+			qtdTotalColaboradoresCertificados += qtdcolabsCertificado.get(certificacaoId).size();
+		
+		qtdTotalColaboradoresNaoCertificados = 0;
+		for(Long certificacaoId : qtdcolabsNaoCertificado.keySet()) 
+			qtdTotalColaboradoresNaoCertificados += qtdcolabsNaoCertificado.get(certificacaoId).size();
+		
+	}
+
+	private void ordenarColaboradoresCertificacao() 
+	{
+		colaboradorCertificacoes = new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "certificacao.nome");
+		
+		Map<Long, Collection<ColaboradorCertificacao>> colabsCertificado = new HashMap<Long, Collection<ColaboradorCertificacao>>();
+		Map<Long, Collection<ColaboradorCertificacao>> colabsNaoCertificado = new HashMap<Long, Collection<ColaboradorCertificacao>>();
+		
+		for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
+			
+			if(!colabsCertificado.containsKey(colabcertificacao.getCertificacao().getId()))
+				colabsCertificado.put(colabcertificacao.getCertificacao().getId(), new ArrayList<ColaboradorCertificacao>());
+
+			if(!colabsNaoCertificado.containsKey(colabcertificacao.getCertificacao().getId()))
+				colabsNaoCertificado.put(colabcertificacao.getCertificacao().getId(), new ArrayList<ColaboradorCertificacao>());
+
+			if(colabcertificacao.getData() != null)
+				colabsCertificado.get(colabcertificacao.getCertificacao().getId()).add(colabcertificacao);
+			else
+				colabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).add(colabcertificacao);
+		}
+		
+		Collection<ColaboradorCertificacao> colabscertiticacaoOrdenados = new ArrayList<ColaboradorCertificacao>();
+		
+		for(Long certificacaoId : colabsCertificado.keySet()) {
+			colabscertiticacaoOrdenados.addAll(colabsCertificado.get(certificacaoId));
+			colabscertiticacaoOrdenados.addAll(colabsNaoCertificado.get(certificacaoId));
+		}
+		
+		colaboradorCertificacoes = colabscertiticacaoOrdenados;
 	}
 
 	private void montaReportTitleAndFilter() 
@@ -251,6 +294,11 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		
 		if (mesesCertificacoesAVencer != null && mesesCertificacoesAVencer != 0)
 			reportFilter += "\nColaboradores com certificação a vencer em até " + mesesCertificacoesAVencer + " meses.";
+		
+		if (qtdTotalColaboradoresCertificados != null && qtdTotalColaboradoresNaoCertificados != 0){
+			reportFilter += "\nQuantidade de colaboradores Certificados: " + qtdTotalColaboradoresCertificados;
+			reportFilter += "\nQuantidade de colaboradores Não Certificados: " + qtdTotalColaboradoresNaoCertificados;
+		}
 	}
 	
 	public Object getModel()

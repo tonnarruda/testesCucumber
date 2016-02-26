@@ -92,9 +92,9 @@
 				<param name="dataSource">colaboradorCertificacoes</param>
 				<param name="documentName">colaboradorPorCertificacao.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Certificação,Status Certificação,Certificado em,Periodicidade,Vencimento do Certificado,Qtd Aprovado,Qtd Não Aprovado,Nome,Nome Comercial,Matrícula,Estabelecimento,Área Organizacional,Cargo,Curso,Período,Aprovado</param>
-				<param name="propertiesGroup">certificacao.id,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidade,dataVencimentoCertificacao,qtdColaboradorAprovado,qtdColaboradorNaoAprovado,colaborador.id,colaborador.id,colaborador.matricula,colaborador.estabelecimento.id,colaborador.areaOrganizacional.id,colaborador.faixaSalarial.cargo.id</param>
-				<param name="properties">certificacao.nome,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,qtdColaboradorAprovado,qtdColaboradorNaoAprovado,colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.nome,colaborador.faixaSalarial.cargo.nome,nomeCurso,periodoTurma,certificacao.aprovadoNaTurmaString</param>
+				<param name="columns">Certificação,Qtd Aprovado,Qtd Não Aprovado,Status Certificação,Certificado em,Periodicidade,Vencimento do Certificado,Nome,Nome Comercial,Matrícula,Estabelecimento,Área Organizacional,Cargo,Curso,Período,Aprovado</param>
+				<param name="propertiesGroup">certificacao.id,qtdColaboradorAprovado,qtdColaboradorNaoAprovado,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidade,dataVencimentoCertificacao,colaborador.id,colaborador.id,colaborador.matricula,colaborador.estabelecimento.id,colaborador.areaOrganizacional.id,colaborador.faixaSalarial.cargo.id</param>
+				<param name="properties">certificacao.nome,qtdColaboradorAprovado,qtdColaboradorNaoAprovado,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.nome,colaborador.faixaSalarial.cargo.nome,nomeCurso,periodoTurma,certificacao.aprovadoNaTurmaString</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>		
