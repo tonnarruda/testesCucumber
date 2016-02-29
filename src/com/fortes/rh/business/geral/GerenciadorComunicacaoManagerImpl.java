@@ -2126,12 +2126,13 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						
 						if ( colaboradores.size() > 0 ) {
 							subject = "[RH] - Falta(m) "+ diaLembrete + " dia(s) para colaboradores completarem ano de empresa";
-							StringBuilder body = new StringBuilder("<b>Empresa:</b> "+ empresa.getNome() +" <br><br>");
+							StringBuilder body = new StringBuilder("Falta(m) "+ diaLembrete + " dia(s) para colaboradores completarem ano de empresa <br><br> ");
+							body.append("<b>Empresa:</b> "+ empresa.getNome() +" <br><br>");
 							body.append("Colaboradores que completarão ano de empresa: <br><br>");
 							body.append("<table>");
 							body.append("<thead><tr>");
 							body.append("<th>Colaborador</th>");
-							body.append("<th>|</th>");
+							body.append("<th></th>");
 							body.append("<th>Qtd. anos</th>");
 							body.append("</tr></thead><tbody>");
 							
@@ -2139,7 +2140,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 							{
 								body.append("<tr>");
 								body.append("<td>" + colaborador.getNome() + "</td>");
-								body.append("<td>|</td>");
+								body.append("<td></td>");
 								body.append("<td align='center'>" + colaborador.getQtdAnosDeEmpresa().intValue() + "</td>");
 								body.append("</tr>");
 							}
