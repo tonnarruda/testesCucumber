@@ -2103,13 +2103,12 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 	public void enviaEmailQuandoColaboradorCompletaAnoDeEmpresa() 
 	{
-		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
 		Collection<Empresa> empresas = empresaManager.findTodasEmpresas();
+
+		Calendar data;
+		String subject = "";
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		Collection<Integer> diasLembrete = new ArrayList<Integer>();
-		Calendar data;
-		
-		String subject = "[RH] - Faltam Colaboradores com ano de empresa";
 		
 		try
 		{
@@ -2121,12 +2120,12 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					{
 						data = Calendar.getInstance(); 
 						data.setTime(new Date());
-						data.add(Calendar.DAY_OF_MONTH, +diaLembrete);
+						data.add(Calendar.DAY_OF_MONTH, + diaLembrete);
 	    			
 						colaboradores = colaboradorManager.findComAnoDeEmpresa(empresa.getId(), data.getTime());
 						
 						if ( colaboradores.size() > 0 ) {
-							subject = "[RH] - Falta(m) "+diaLembrete+" dia(s) para colaboradores completarem ano de empresa";
+							subject = "[RH] - Falta(m) "+ diaLembrete + " dia(s) para colaboradores completarem ano de empresa";
 							StringBuilder body = new StringBuilder("<b>Empresa:</b> "+ empresa.getNome() +" <br><br>");
 							body.append("Colaboradores que completarão ano de empresa: <br><br>");
 							body.append("<table>");

@@ -21,7 +21,8 @@ public class HistoricoCandidatoFactory
 
 	public static HistoricoCandidato getEntity(EtapaSeletiva etapaSeletiva,Date data, CandidatoSolicitacao candidatoSolicitacao) 
 	{
-		HistoricoCandidato entity = getEntity();
+		HistoricoCandidato entity = new HistoricoCandidato();
+		entity.setApto(Apto.INDIFERENTE);
 		entity.setEtapaSeletiva(etapaSeletiva);
 		entity.setData(data);
 		entity.setCandidatoSolicitacao(candidatoSolicitacao);

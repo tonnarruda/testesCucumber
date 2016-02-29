@@ -188,7 +188,6 @@
   
   <bean name="emailQuandoColaboradorCompletaAnoDeEmpresaJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
     <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
-    <property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
     <property name="empresaManager" ref="empresaManager" />
     <property name="colaboradorManager" ref="colaboradorManager" />
     <property name="mail" ref="mail" />

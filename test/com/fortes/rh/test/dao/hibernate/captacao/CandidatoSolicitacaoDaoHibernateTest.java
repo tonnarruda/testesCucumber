@@ -193,7 +193,6 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		candidatoSolicitacao = new CandidatoSolicitacao();
 		candidatoSolicitacao.setCandidato(candidato);
 		candidatoSolicitacao.setSolicitacao(solicitacao);
-		
 
 		return candidatoSolicitacao;
 	}
@@ -330,7 +329,8 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(etapaSeletiva2, candidatoSolicitacaoTmp.getEtapaSeletiva());
 	}
 	
-	public void testGetCandidatoSolicitacaoListComCondicoes() falta testar
+	//TODO
+	public void testGetCandidatoSolicitacaoListComCondicoes()
 	{
 		EtapaSeletiva etapaSeletiva1 = EtapaSeletivaFactory.getEntity();
 		etapaSeletiva1.setOrdem(1);
@@ -341,15 +341,16 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		etapaSeletivaDao.save(etapaSeletiva2);
 		
 		candidatoSolicitacao = prepareFindCandidatoSolicitacao();
+		candidatoSolicitacao.setTriagem(false);
 		candidatoSolicitacao = candidatoSolicitacaoDao.save(candidatoSolicitacao);
 		
-		HistoricoCandidato historicoCandidato1 = HistoricoCandidatoFactory.getEntity(etapaSeletiva1, DateUtil.criarDataMesAno(01, 02, 2009), candidatoSolicitacao);
+		HistoricoCandidato historicoCandidato1 = HistoricoCandidatoFactory.getEntity(etapaSeletiva1, DateUtil.criarDataMesAno(01, 03, 2009), candidatoSolicitacao);
 		historicoCandidatoDao.save(historicoCandidato1);
 		
 		HistoricoCandidato historicoCandidato2 = HistoricoCandidatoFactory.getEntity(etapaSeletiva2, DateUtil.criarDataMesAno(01, 02, 2009), candidatoSolicitacao);
 		historicoCandidatoDao.save(historicoCandidato2);
 		
-		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatoSolicitacaoList(0, 15, solicitacao.getId(), etapaSeletiva1.getId(), null, null, false, true, null, null, null);
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), etapaSeletiva1.getId(), null, null, false, true, null, null, null);
 		assertEquals(1, candidatoSolicitacaos.size());
 		
 		CandidatoSolicitacao candidatoSolicitacaoTmp = (CandidatoSolicitacao) candidatoSolicitacaos.toArray()[0];

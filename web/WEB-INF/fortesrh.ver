@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.1xx.19x" db="" data="x/02/2016">
+	<Versao id="1.1.160.191" db="" data="29/02/2016">
 		<Item visivel="S" motivo="P16020000212"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste na contagem dos candidatos ao filtrar por situação.]]></Item>
+		<Item visivel="S" motivo="S16020000033"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Novo gerenciador de comunicação para notificar o responsável do RH através de email quando o colaborador completar ano na empresa.]]></Item>
 		<Item visivel="N" motivo="S20151100111"><![CDATA[Criação de uma URL que retorna um JSON com uma lista de colaboradores da área organizacional "SAD".]]></Item>
 	</Versao>
 	<Versao id="1.1.159.190" db="" data="22/02/2016">

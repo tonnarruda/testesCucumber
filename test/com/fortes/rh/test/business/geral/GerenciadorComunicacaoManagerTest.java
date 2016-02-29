@@ -1810,7 +1810,6 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		Collection<Colaborador> colaboradores = Arrays.asList(colaborador);
 		
-		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
 		empresaManager.expects(once()).method("findTodasEmpresas").will(returnValue(Arrays.asList(empresa)));
 		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
 		colaboradorManager.expects(once()).method("findComAnoDeEmpresa").with(eq(empresa.getId()), ANYTHING).will(returnValue(colaboradores));
