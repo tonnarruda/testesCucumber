@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.1xx.19x" db="" data="x/02/2016">
 		<Item visivel="S" motivo="P16020000212"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste na contagem dos candidatos ao filtrar por situação.]]></Item>
+		<Item visivel="N" motivo="S20151100111"><![CDATA[Criação de uma URL que retorna um JSON com uma lista de colaboradores da área organizacional "SAD".]]></Item>
 	</Versao>
 	<Versao id="1.1.159.190" db="" data="22/02/2016">
 		<Item visivel="S" motivo="S16020000159"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Avaliações das Solicitações: Nova opção para excluir respostas da avaliação.]]></Item>

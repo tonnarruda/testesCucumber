@@ -1,11 +1,15 @@
 package com.fortes.rh.test.web.action.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 import mockit.Mockit;
 
+import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -15,6 +19,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorJsonVO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
@@ -25,6 +30,7 @@ import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.geral.ColaboradorListAction;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
@@ -110,6 +116,32 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 //		assertEquals("success", action.list());
 //		assertTrue(action.getColaboradors().isEmpty());
 //	}
+	
+	public void testColaboradoresPorArea()
+	{
+		ColaboradorJsonVO colaboradorJsonVO = new ColaboradorJsonVO();
+		colaboradorJsonVO.setId("1");
+		colaboradorJsonVO.setAddress("address");
+		colaboradorJsonVO.setBurgh("burgh");
+		Collection<ColaboradorJsonVO> colaboradores = Arrays.asList(colaboradorJsonVO);
+		
+		String json = StringUtil.toJSON(colaboradores, new String[]{"id"});
+		
+		colaboradorManager.expects(once()).method("getColaboradoresJsonVO").with(eq(new Long[]{ 59L })).will(returnValue(colaboradores));
+		
+		assertEquals(Action.SUCCESS, action.colaboradoresPorArea());
+		assertEquals(json, action.getJson());
+		
+	}
+
+	public void testColaboradoresPorAreaException()
+	{
+		colaboradorManager.expects(once()).method("getColaboradoresJsonVO").with(eq(new Long[]{ 59L })).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		
+		assertEquals(Action.SUCCESS, action.colaboradoresPorArea());
+		assertEquals("error", action.getJson());
+		
+	}
 	
 	public void testDelete() throws Exception
 	{

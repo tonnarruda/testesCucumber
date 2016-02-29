@@ -92,6 +92,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorJsonVO;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.Contato;
@@ -309,6 +310,34 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorForaDaConsulta = colaboradorDao.save(colaboradorForaDaConsulta);
 
 		assertEquals(4, colaboradorDao.getAutoComplete("milos", empresa.getId()).size());
+	}
+	
+	public void testGetColaboradoresJsonVO() throws Exception 
+	{
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
+		colaborador1.getEndereco().setLogradouro("Rua A");
+		colaboradorDao.save(colaborador1);
+		
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, new Date(), null, null, areaOrganizacional1, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador1);
+
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(1L);
+		colaborador2.getEndereco().setLogradouro("Rua B");
+		colaboradorDao.save(colaborador2);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacionalDao.save(areaOrganizacional2);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(colaborador2, new Date(), null, null, areaOrganizacional2, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		Collection<ColaboradorJsonVO> colaboradorJsonVOs = colaboradorDao.getColaboradoresJsonVO(new Long[]{areaOrganizacional1.getId()});
+		
+		assertEquals(1, colaboradorJsonVOs.size());
+		assertEquals(colaborador1.getEndereco().getLogradouro()+", 00", ((ColaboradorJsonVO) colaboradorJsonVOs.toArray()[0]).getAddress());
 	}
 	
 	public void testFindByAvaliacao() throws Exception 

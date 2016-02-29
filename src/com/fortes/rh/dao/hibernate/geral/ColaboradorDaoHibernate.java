@@ -4212,6 +4212,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		from HistoricoColaborador as hc2 ");
 		hql.append("			where hc2.colaborador.id = c.id ");
 		hql.append("			and hc2.data <= current_date ");
+		hql.append("			and hc2.status = :status ");
 		hql.append("		) ");
 		hql.append("and hc.areaOrganizacional.id in (:areaOrganizacionalIds) ");
 		
@@ -4219,6 +4220,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		return query.list();
 	}

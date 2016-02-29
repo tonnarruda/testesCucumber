@@ -216,7 +216,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String colaboradoresPorArea() throws Exception
+	public String colaboradoresPorArea()
 	{
 		try {
 			Collection<ColaboradorJsonVO> colaboradores = colaboradorManager.getColaboradoresJsonVO(new Long[]{ 59L });
