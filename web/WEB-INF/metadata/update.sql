@@ -23682,3 +23682,19 @@ insert into migrations values('20160222101554');--.go
 update parametrosdosistema set acversaowebservicecompativel='1.1.60.1';--.go
 insert into migrations values('20160222153541');--.go
 update parametrosdosistema set appversao = '1.1.159.190';--.go
+-- versao 1.1.160.191
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (668,'ROLE_COLABORADOR_AVALIACAO_PRATICA', 'Avaliação Prática', '#', 6, true, 367);--.go
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 668);--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (669,'ROLE_COLABORADOR_AVALIACAO_PRATICA', 'Notas em Lote', '/desenvolvimento/colaboradorAvaliacaoPratica/prepareLote.action', 2, false, 668);--.go
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 669);--.go
+
+update papel set nome = 'Notas',ordem = 1,papelmae_id = 668  where id = 654;--.go
+
+alter sequence papel_sequence restart with 670; --.go
+insert into migrations values('20160223093932');--.go
+update papel set nome = 'Colaboradores por Certificação' where id = 655;--.go
+insert into migrations values('20160226162014');--.go
+update parametrosdosistema set acversaowebservicecompativel='1.1.60.1';--.go
+update parametrosdosistema set appversao = '1.1.160.191';--.go
