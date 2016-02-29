@@ -14,14 +14,14 @@ public class ColaboradorTurmaDWR
 		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaCurso(cursoId);
 		return colaboradorTurmaManager.checaColaboradorInscritoEmOutraTurma(colaboradorIds, colaboradoresTurmas, turmaId);
 	}
-
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
 	
 	public String verificaColaboradorCertificadoNaCertificacaoPreRequisito(Long cursoId, Long[] colaboradorIds) throws Exception
 	{
 		return colaboradorTurmaManager.verificaColaboradorCertificado(colaboradorIds, cursoId);
+	}
+
+	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
+		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 		
 }

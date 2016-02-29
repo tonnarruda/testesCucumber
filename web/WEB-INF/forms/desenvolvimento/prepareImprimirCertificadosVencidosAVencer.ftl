@@ -3,7 +3,7 @@
 <html>
 <head>
 	<@ww.head/>
-	<title>Colaboradores por Certificações</title>
+	<title>Colaboradores por Certificação</title>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CertificacaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>

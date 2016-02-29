@@ -45,6 +45,12 @@
 				});
 			</#if>
 		}
+		
+		function apagarNota(i){
+			$('#nota-' + i).val('');
+			$('#data-' + i).val('  /  /    ');
+		}
+		
 	</script>
 </head>
 <body>
@@ -114,7 +120,7 @@
 						<#else>						
 							<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
 								<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size)>
-									<@ww.datepicker id="data[${i}]" name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple"/><br>
+									<@ww.datepicker id="data-${i}" name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple"/><br>
 									<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.id" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.id}"/>
 									<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.notaMinima" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.notaMinima}"/>
 									<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].id" value="${colaboradorAvaliacaoPraticaId}"/>
@@ -122,7 +128,8 @@
 							</@display.column>
 							<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
 								<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size)>
-									<@ww.textfield id="nota[${i}]" name="colaboradorAvaliacaoPraticas[${i}].nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));"/>
+									<@ww.textfield id="nota-${i}" name="colaboradorAvaliacaoPraticas[${i}].nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" liClass="liLeft"/>
+									<a href="#" onclick="apagarNota(${i})"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 								</#if>
 							</@display.column>
 						</#if>

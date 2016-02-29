@@ -276,7 +276,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private void montaReportTitleAndFilter() 
 	{
 		reportTitle = "Relatório de Colaboradores por Certificações";
-		reportTitle += "\nData dor Relatório: " + DateUtil.formataDiaMesAno(new Date());
+		reportTitle += "\nData do Relatório: " + DateUtil.formataDiaMesAno(new Date());
 
 		reportFilter = "Colaboradores";
 		
