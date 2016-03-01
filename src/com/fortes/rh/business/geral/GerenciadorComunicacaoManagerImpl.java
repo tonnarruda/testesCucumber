@@ -773,12 +773,13 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			mensagem.append("\nOcorrência      : " + colaboradorOcorrencia.getOcorrencia().getDescricao());
 			mensagem.append("\nData de Início  : " + DateUtil.formataDiaMesAno(colaboradorOcorrencia.getDataIni()));
 			mensagem.append("\nData de Término : " + DateUtil.formataDiaMesAno(colaboradorOcorrencia.getDataIni()));
-			if ( colaboradorOcorrencia.getProvidencia() != null && colaboradorOcorrencia.getProvidencia().getId() != null )
-			mensagem.append("\nProvidência     : " + providenciaDescricao);
-			if ( colaboradorOcorrencia.getObservacao() != null && colaboradorOcorrencia.getObservacao().equals("") )
-			mensagem.append("\nObservação      : ");
-			mensagem.append(colaboradorOcorrencia.getObservacao());
 			
+			if ( colaboradorOcorrencia.getProvidencia() != null && colaboradorOcorrencia.getProvidencia().getId() != null )
+				mensagem.append("\nProvidência     : " + providenciaDescricao);
+			
+			if ( colaboradorOcorrencia.getObservacao() != null && !colaboradorOcorrencia.getObservacao().trim().isEmpty() )
+				mensagem.append("\nObservação      : " + colaboradorOcorrencia.getObservacao());
+						
 			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_OCORRENCIA.getId(), colaboradorOcorrencia.getOcorrencia().getEmpresa().getId());
 			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 			{
