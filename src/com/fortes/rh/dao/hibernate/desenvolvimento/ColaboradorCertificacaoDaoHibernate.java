@@ -43,7 +43,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 			criteria.add(Expression.eq("cc.colaborador.id",colaboradorId));
 		
 		criteria.add(Expression.eq("cc.certificacao.id" , certificacaoId));
-		criteria.addOrder(Order.asc("cc.data"));
+		criteria.addOrder(Order.desc("cc.data"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
 

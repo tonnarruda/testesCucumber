@@ -12,6 +12,8 @@
 		$(function(){
 			$('.mascaraData').css("border","1px solid #BEBEBE");
 			insereHelp();
+			
+			calculaDataPermitida();
 		});
 		
 		function submeter(action)
@@ -51,6 +53,57 @@
 			$('#data-' + i).val('  /  /    ');
 		}
 		
+		function onKeyPressData(dataAlterada)
+		{
+			dataDigitadoArray = dataAlterada.val().split("/");
+			exibirMensagem = false;
+			
+			if(dataDigitadoArray.length == 3 && (dataDigitadoArray[0]).length == 2 && (dataDigitadoArray[1]).length == 2 && (dataDigitadoArray[2]).length == 4)
+			{
+				dataDigitada = new Date(dataDigitadoArray[2], dataDigitadoArray[1] - 1, dataDigitadoArray[0]);
+				
+				$('#colaboradorCertificacaoId').find('option').each(function(){
+	    			if($(this).val() && $('#colaboradorCertificacaoId :selected').text() !=  $(this).text()){
+		    			dataArray = $(this).text().split("/");
+						data = new Date(dataArray[2], dataArray[1] - 1, dataArray[0]);
+		    			
+						if(dataDigitada.getTime() <= data.getTime()) 
+		    				exibirMensagem = true;
+	    			}
+				});
+			}
+			
+			if(exibirMensagem){
+				jAlert('Não é possível inserir uma data igual ou inferior a data da última avaliação.');
+				dataAlterada.val('  /  /    ');			
+				calculaDataPermitida();
+			}
+		}
+		
+		function calculaDataPermitida()
+		{
+			if(!$('#colaboradorCertificacaoId :selected').val())
+			{
+				var maiorData;
+				$('#colaboradorCertificacaoId').find('option').each(function(){
+	    			if($(this).val()){
+		    			dataArray = $(this).text().split("/");
+						data = new Date(dataArray[2], dataArray[1] - 1, dataArray[0]);
+		    			
+						if(!maiorData || maiorData.getTime() <= data.getTime()) 
+		    				maiorData = data;
+	    			}
+				});
+	
+				maiorData.setDate(maiorData.getDate() + 1);
+				
+				$('.mascaraData').each(function(){
+					if($(this).val() == '  /  /    ')
+						$(this).val($.datepicker.formatDate('dd/mm/yy',maiorData));
+				});
+			}
+		}
+		
 	</script>
 </head>
 <body>
@@ -65,7 +118,7 @@
 				<ul>
 					<@ww.select label="Certificações com avaliações práticas" name="certificacao.id" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;" />
 					<@ww.select label="Colaborador" name="colaborador.id" list="colaboradores" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
-					<@ww.select label="Certificações em que o colaborador foi aprovado" name="colaboradorCertificacao.id" list="colaboradorCertificacaos" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
+					<@ww.select label="Certificações em que o colaborador foi aprovado" id="colaboradorCertificacaoId" name="colaboradorCertificacao.id" list="colaboradorCertificacaos" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
 					<br><br>
 				</ul>
 			</@ww.div>
@@ -103,7 +156,7 @@
 					<#if colaboradorAvaliacaoPratica.data?exists>
 						<#assign colaboradorAvaliacaoPraticaData = "${colaboradorAvaliacaoPratica.data?date}"/>
 					<#else>
-						<#assign colaboradorAvaliacaoPraticaData = "${hoje?date}"/>
+						<#assign colaboradorAvaliacaoPraticaData = "  /  /    "/>
 					</#if>
 					
 						<@display.column property="avaliacaoPratica.titulo" title="Título" style="width: 500px;"/>
@@ -120,7 +173,7 @@
 						<#else>						
 							<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
 								<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size)>
-									<@ww.datepicker id="data-${i}" name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple"/><br>
+									<@ww.datepicker id="data-${i}" name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple" onchange="onKeyPressData($(this));" onblur="onKeyPressData($(this));"/><br>
 									<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.id" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.id}"/>
 									<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.notaMinima" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.notaMinima}"/>
 									<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].id" value="${colaboradorAvaliacaoPraticaId}"/>

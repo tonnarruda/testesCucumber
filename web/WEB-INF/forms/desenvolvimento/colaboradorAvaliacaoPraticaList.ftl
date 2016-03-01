@@ -43,48 +43,53 @@
 			if(ColabAvPraticaId){
 				DWRUtil.useLoadingMessage('Carregando...');
 				ColaboradorAvaliacaoPraticaDWR.verificaUltimaCertificacao(ColabAvPraticaId, function(colabAvaliacaoPratica) {
-						$('#nota-' + i).val(colabAvaliacaoPratica.nota);
-						$('#data-' + i).val(colabAvaliacaoPratica.dataString);
-						
-						if(colabAvaliacaoPratica.colaboradorCertificacao)
-						{
-							$('#colaboradorCertificacaoId-' + i).val(colabAvaliacaoPratica.colaboradorCertificacao.id);
-						
-							if(!colabAvaliacaoPratica.colaboradorCertificacao.ultimaCertificacao){
-								$('#data-' + i + '_button').hide();
-								$('#data-' + i).attr('disabled','disabled').css("background-color", "#EFEFEF").css( { marginLeft : "-22px"} );
-								$('#data-' + i).parent().append('<div id ="imagem-' + i +'" style="margin-left: 95px;margin-top: -16px;margin-bottom: -3px;vertical-align: top;" ><img id="tooltipHelp' + i + '" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />');
-								$('#tooltipHelp' + i).qtip({
-									content:"O sistema não possibilita a edição da data da avaliação prática, quando a mesma não é referente a última certificação do colaborador."
-								});
-	
-								$('#nota-' + i).attr('disabled','disabled').css("background-color", "#EFEFEF");
-								$('#nota-' + i).parent().append('<div id ="imagemNota-' + i +'" style="margin-left: 80px;margin-top: -16px;margin-bottom: -3px;vertical-align: top;" ><img id="tooltipHelpNota' + i + '" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />');
-								$('#tooltipHelpNota' + i).qtip({
-									content:"O sistema não possibilita a edição da nota da avaliação prática, quando a mesma não é referente a última certificação do colaborador."
-								});
-							}
+					$('#nota-' + i).val(colabAvaliacaoPratica.nota);
+					$('#data-' + i).val(colabAvaliacaoPratica.dataString);
+					
+					if(colabAvaliacaoPratica.colaboradorCertificacao)
+					{
+						$('#colaboradorCertificacaoId-' + i).val(colabAvaliacaoPratica.colaboradorCertificacao.id);
+					
+						if(!colabAvaliacaoPratica.colaboradorCertificacao.ultimaCertificacao){
+							$('#data-' + i + '_button').hide();
+							$('#excluir-' + i).hide();
+							$('#data-' + i).attr('disabled','disabled').css("background-color", "#EFEFEF").css( { marginLeft : "-22px"} );
+							$('#data-' + i).parent().append('<div id ="imagem-' + i +'" style="margin-left: 95px;margin-top: -16px;margin-bottom: -3px;vertical-align: top;" ><img id="tooltipHelp' + i + '" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />');
+							$('#tooltipHelp' + i).qtip({
+								content:"O sistema não possibilita a edição da data da avaliação prática, quando a mesma não é referente a última certificação do colaborador."
+							});
+
+							$('#nota-' + i).attr('disabled','disabled').css("background-color", "#EFEFEF");
+							$('#nota-' + i).parent().append('<div id ="imagemNota-' + i +'" style="margin-left: 80px;margin-top: -16px;margin-bottom: -3px;vertical-align: top;" ><img id="tooltipHelpNota' + i + '" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />');
+							$('#tooltipHelpNota' + i).qtip({
+								content:"O sistema não possibilita a edição da nota da avaliação prática, quando a mesma não é referente a última certificação do colaborador."
+							});
+							
+							$('#ultimaCertificacao-' + i).val(false);
 						}
-					});
+					}
+				});
 			}else{
 				$('#nota-' + i).val('');
-				$('#data-' + i).val($.datepicker.formatDate('dd/mm/yy',new Date()));
-				$('#colaboradorCertificacaoId-' + i).val('');
+				calculaDataPermitida(i);
 			}
 		} 
 		
 		function removeAtributos(i){
 			$('#data-' + i).removeAttr('disabled').css("background-color", "#FFF").css( { marginLeft : "0px"} );
 			$('#nota-' + i).removeAttr('disabled').css("background-color", "#FFF");
+			$('#colaboradorCertificacaoId-' + i).val('');
+			$('#ultimaCertificacao-' + i).val(true);
 			$('#data-' + i + '_button').show();
-			$('#imagem-' + i).remove();
+			$('#excluir-' + i).show();
 			$('#imagemNota-' + i).remove();
+			$('#imagem-' + i).remove();
 		}
 		
 		function onKeyPressData(i){
 			
 			dataDigitadoArray = $("#data-" + i).val().split("/");
-			exibirmensagem = false;
+			exibirMensagem = false;
 			
 			if(dataDigitadoArray.length == 3 && (dataDigitadoArray[0]).length == 2 && (dataDigitadoArray[1]).length == 2 && (dataDigitadoArray[2]).length == 4)
 			{
@@ -96,17 +101,38 @@
 						data = new Date(dataArray[2], dataArray[1] - 1, dataArray[0]);
 		    			
 						if(dataDigitada.getTime() <= data.getTime()) 
-		    				exibirmensagem = true;
+		    				exibirMensagem = true;
 	    			}
 				});
 			}
 			
-			if(exibirmensagem){
+			if(exibirMensagem){
 				jAlert('Não é possível inserir uma data igual ou inferior a data da última avaliação.');
-				$('#data-' + i).val($.datepicker.formatDate('dd/mm/yy',new Date()));
+				calculaDataPermitida(i);
 			}
 		}
 		
+		function calculaDataPermitida(i)
+		{
+			var maiorData;
+			$('#avPraticas-' + i).find('option').each(function(){
+    			if($(this).val()){
+	    			dataArray = $(this).text().split("/");
+					data = new Date(dataArray[2], dataArray[1] - 1, dataArray[0]);
+	    			
+					if(!maiorData || maiorData.getTime() <= data.getTime()) 
+	    				maiorData = data;
+    			}
+			});
+
+			maiorData.setDate(maiorData.getDate() + 1);
+			$('#data-' + i).val($.datepicker.formatDate('dd/mm/yy',maiorData));
+		}
+		
+		function apagarNota(i){
+			$('#nota-' + i).val('');
+			$('#data-' + i).val('  /  /    ');
+		}
 	</script>
 </head>
 <body>
@@ -115,7 +141,7 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 
-	<@ww.form name="formBusca" action="buscaColaboradores.action" method="POST">
+	<@ww.form name="formBusca" action="buscaColaboradoresLote.action" method="POST">
 		<li>
 			<@ww.div cssClass="divInfo" cssStyle="width: 950px;">
 				<ul>
@@ -128,7 +154,7 @@
 	</@ww.form>
 	</br>
 	<#if avaliacaoPratica?exists && avaliacaoPratica.id?exists && certificacao?exists && certificacao.id?exists>
-		<@ww.form name="form" action="insertOrUpdate.action" method="POST">
+		<@ww.form name="form" action="insertOrUpdateLote.action" method="POST">
 			<@ww.hidden name="certificacao.id" value="${certificacao.id}"/>
 			<@ww.hidden name="avaliacaoPratica.id" value="${avaliacaoPratica.id}"/>
 			
@@ -163,11 +189,11 @@
 				
 				<@display.column property="colaborador.nome" title="Nome do Colaborador" style="width: 500px;"/>
 					
-				<@display.column title="Avaliações Respondidas em" style="width: 80px;text-align: center;height: 30px !important">
+				<@display.column title="Avaliações Certificadas Respondidas em" style="width: 180px;text-align: center;height: 30px !important">
 					<#if (!colabCertificacao.colaboradoresAvaliacoesPraticas?exists) || (colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao.id?exists)>
-						<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Nova nota" onchange="verificaCertificacao(${i}, this.value);"/>
+						<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" cssStyle="width: 100px;" headerKey="" headerValue="Nova nota" onchange="verificaCertificacao(${i}, this.value);"/>
 					<#else>
-						<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" onchange="verificaCertificacao(${i}, this.value);"/>
+						<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" cssStyle="width: 100px;" onchange="verificaCertificacao(${i}, this.value);"/>
 					</#if>
 				</@display.column>
 					
@@ -180,13 +206,15 @@
 						${colaboradorAvaliacaoPraticaNota}
 					</@display.column>
 				<#else>						
-					<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
+					<@display.column title="Realizada em" style="width: 180px;text-align: center;height: 30px !important">
 						<@ww.datepicker id="data-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple" onchange="onKeyPressData(${i});" onblur="onKeyPressData(${i});" /> 
 						<@ww.hidden name="colaboradorCertificacaos[${i}].id" id="colaboradorCertificacaoId-${i}" value="${colaboradorCertificacaoId}"/>
+						<@ww.hidden name="colaboradorCertificacaos[${i}].ultimaCertificacao" id="ultimaCertificacao-${i}" value="true"/>
 						<@ww.hidden name="colaboradorCertificacaos[${i}].colaborador.id" id="colaboradorId-${i}" value="${colaboradorId}"/>
 					</@display.column>
 					<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
-						<@ww.textfield id="nota-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));"/>
+						<@ww.textfield id="nota-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" liClass="liLeft"/>
+						<a href="#" onclick="apagarNota(${i})"><img id="excluir-${i}" border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 					</@display.column>
 				</#if>
 				

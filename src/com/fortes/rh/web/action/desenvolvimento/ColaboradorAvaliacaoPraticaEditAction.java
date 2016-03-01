@@ -263,17 +263,20 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 					}
 				}
 				
-				colaboradorAvaliacaoPraticaManager.saveOrUpdate(colaboradorAvaliacaoPratica);
+				if(colaboradorAvaliacaoPratica.getId() != null)
+					colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
+				else if(!existeColaboradorAvalPraticaComMesmaData(colabCertificacao))
+						colaboradorAvaliacaoPraticaManager.save(colaboradorAvaliacaoPratica);
 
 				if(colabCertificacao.getId() == null){
 					Collection<ColaboradorCertificacao> colaboradorCertificacoes = colaboradorCertificacaoManager.certificaColaborador(null, colabCertificacao.getColaborador().getId(), certificacao.getId(), certificacaoManager); 
 					if(colaboradorCertificacoes.size() > 0){
 						ColaboradorCertificacao colaboradorCertificacaoTemp = (ColaboradorCertificacao) colaboradorCertificacoes.toArray()[0];
 						colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacaoTemp);
-						colaboradorAvaliacaoPraticaManager.saveOrUpdate(colaboradorAvaliacaoPratica);
+						colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
 					}
 				}
-			}else if(colabCertificacao.getColaboradorAvaliacaoPraticaAtual().getId() != null){
+			}else if(colabCertificacao.getColaboradorAvaliacaoPraticaAtual().getId() != null && colabCertificacao.getUltimaCertificacao()){
 				if(colabCertificacao.getId() != null){
 					colaboradorAvaliacaoPraticaManager.removeByColaboradorCertificacaoId(colabCertificacao.getId());
 					colaboradorCertificacaoManager.descertificarColaborador(colabCertificacao.getId());
@@ -290,6 +293,19 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		colaboradorCertificacao = new ColaboradorCertificacao();//Não remover 
 		
 		return buscaColaboradoresLote();
+	}
+
+	private boolean existeColaboradorAvalPraticaComMesmaData(ColaboradorCertificacao colabCertificacao) 
+	{
+		boolean existeAvPraticaComaMesmaDataPassada = false;
+		
+		Collection<ColaboradorAvaliacaoPratica> colabAvPraticasTemp = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colabCertificacao.getColaborador().getId(), certificacao.getId(), null, avaliacaoPratica.getId(), true, true);
+		
+		for (ColaboradorAvaliacaoPratica colabAvaliacaoPratica : colabAvPraticasTemp)
+			if(colabAvaliacaoPratica.getData().getTime() == colaboradorAvaliacaoPratica.getData().getTime())
+				existeAvPraticaComaMesmaDataPassada = true;
+		
+		return existeAvPraticaComaMesmaDataPassada;
 	}
 	
 	private void atualizaDataColaboradorCertificacaoLote(Long colaboradorCertificacaoId, Date dataAvPraticaRealizada){
