@@ -323,4 +323,282 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		assertEquals("success", action.insertOrUpdate());
 	}
+	
+	private void mocksBuscaColaboradoresLote(Collection<AvaliacaoPratica> avaliacaoPraticas,Collection<Certificacao> certificacoes,Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas,Collection<ColaboradorCertificacao> colaboradorCertificacoes) 
+	{
+		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(certificacoes));
+		avaliacaoPraticaManager.expects(once()).method("findByCertificacaoId").will(returnValue(avaliacaoPraticas));
+		colaboradorCertificacaoManager.expects(once()).method("colaboradoresQueParticipaDoCertificado").will(returnValue(colaboradorCertificacoes));
+		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(colaboradorAvaliacaoPraticas));
+	}
+	
+	public void testBuscaColaboradoresLote() throws Exception
+	{
+		Colaborador colaboradoraMaria = ColaboradorFactory.getEntity(1L);
+		colaboradoraMaria.setNome("Maria");
+		action.setColaborador(colaboradoraMaria);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		action.setCertificacao(certificacao);
+
+		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
+		certificacoes.add(certificacao);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
+		colaboradorCertificacao.setColaborador(colaboradoraMaria);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		action.setColaboradorCertificacao(colaboradorCertificacao);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacoes = new ArrayList<ColaboradorCertificacao>();
+		colaboradorCertificacoes.add(colaboradorCertificacao);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(2L);
+		avaliacaoPratica.setTitulo("Mega avaliação");
+		action.setAvaliacaoPratica(avaliacaoPratica);
+		
+		Collection<AvaliacaoPratica> avaliacaoPraticas = new ArrayList<AvaliacaoPratica>();
+		avaliacaoPraticas.add(avaliacaoPratica);
+		
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity(1L);
+		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
+		
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
+		colaboradorAvaliacaoPraticas.add(colaboradorAvaliacaoPratica);
+		
+		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes,	colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
+		
+		assertEquals("success", action.buscaColaboradoresLote());
+		assertEquals(1, action.getColaboradorCertificacaos().size());
+	}
+	
+	public void testInsertOrUpdateLote() throws Exception
+	{
+		Date data1 = DateUtil.criarDataMesAno(1, 1, 2000);
+		Date data2 = DateUtil.criarDataMesAno(1, 1, 2001);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
+		avaliacaoPratica.setNotaMinima(8.0);
+		action.setAvaliacaoPratica(avaliacaoPratica);
+		Collection<AvaliacaoPratica> avaliacaoPraticas = new ArrayList<AvaliacaoPratica>();
+		avaliacaoPraticas.add(avaliacaoPratica);
+		
+		Colaborador colaboradoraMaria = ColaboradorFactory.getEntity(1L);
+		colaboradoraMaria.setNome("Maria");
+		action.setColaborador(colaboradoraMaria);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		action.setCertificacao(certificacao);
+		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
+		certificacoes.add(certificacao);
+
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica1 = ColaboradorAvaliacaoPraticaFactory.getEntity();
+		colaboradorAvaliacaoPratica1.setData(data1);
+		colaboradorAvaliacaoPratica1.setNota(10.0);
+		colaboradorAvaliacaoPratica1.setAvaliacaoPratica(avaliacaoPratica);
+		
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
+		colaboradorAvaliacaoPraticas.add(colaboradorAvaliacaoPratica1);
+		
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica2 = ColaboradorAvaliacaoPraticaFactory.getEntity();
+		colaboradorAvaliacaoPratica2.setData(data2);
+		colaboradorAvaliacaoPratica2.setNota(10.0);
+		colaboradorAvaliacaoPratica2.setAvaliacaoPratica(avaliacaoPratica);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
+		colaboradorCertificacao.setColaborador(colaboradoraMaria);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setColaboradorAvaliacaoPraticaAtual(colaboradorAvaliacaoPratica2);
+		action.setColaboradorCertificacao(colaboradorCertificacao);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacoes = new ArrayList<ColaboradorCertificacao>();
+		colaboradorCertificacoes.add(colaboradorCertificacao);
+		action.setColaboradorCertificacaos(colaboradorCertificacoes);
+		
+		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
+		colaboradorCertificacaoManager.expects(once()).method("getMaiorDataDasTurmasDaCertificacao").will(returnValue(data2));
+		colaboradorCertificacaoManager.expects(once()).method("findById").will(returnValue(colaboradorCertificacao));
+		colaboradorCertificacaoManager.expects(once()).method("update");
+		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(colaboradorAvaliacaoPraticas));
+		colaboradorAvaliacaoPraticaManager.expects(once()).method("save");
+		
+		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes,	colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
+		
+		assertEquals("success", action.insertOrUpdateLote());
+	}
+
+	public void testInsertOrUpdateLoteAprovadoCertificar() throws Exception
+	{
+		Date data1 = DateUtil.criarDataMesAno(1, 1, 2000);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
+		avaliacaoPratica.setNotaMinima(8.0);
+		action.setAvaliacaoPratica(avaliacaoPratica);
+		Collection<AvaliacaoPratica> avaliacaoPraticas = new ArrayList<AvaliacaoPratica>();
+		avaliacaoPraticas.add(avaliacaoPratica);
+		
+		Colaborador colaboradoraMaria = ColaboradorFactory.getEntity(1L);
+		colaboradoraMaria.setNome("Maria");
+		action.setColaborador(colaboradoraMaria);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		action.setCertificacao(certificacao);
+		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
+		certificacoes.add(certificacao);
+
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity(1L);
+		colaboradorAvaliacaoPratica.setData(data1);
+		colaboradorAvaliacaoPratica.setNota(6.0);
+		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
+		
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
+		colaboradorAvaliacaoPraticas.add(colaboradorAvaliacaoPratica);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity();
+		colaboradorCertificacao.setColaborador(colaboradoraMaria);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setColaboradorAvaliacaoPraticaAtual(colaboradorAvaliacaoPratica);
+		action.setColaboradorCertificacao(colaboradorCertificacao);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacoes = new ArrayList<ColaboradorCertificacao>();
+		colaboradorCertificacoes.add(colaboradorCertificacao);
+		action.setColaboradorCertificacaos(colaboradorCertificacoes);
+		
+		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
+		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
+		colaboradorCertificacaoManager.expects(once()).method("certificaColaborador").will(returnValue(colaboradorCertificacoes));
+		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
+		
+		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes,	colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
+		
+		assertEquals("success", action.insertOrUpdateLote());
+	}
+	
+	public void testInsertOrUpdateLoteAprovadoDescertificar() throws Exception
+	{
+		Date data1 = DateUtil.criarDataMesAno(1, 1, 2000);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
+		avaliacaoPratica.setNotaMinima(8.0);
+		action.setAvaliacaoPratica(avaliacaoPratica);
+		Collection<AvaliacaoPratica> avaliacaoPraticas = new ArrayList<AvaliacaoPratica>();
+		avaliacaoPraticas.add(avaliacaoPratica);
+		
+		Colaborador colaboradoraMaria = ColaboradorFactory.getEntity(1L);
+		colaboradoraMaria.setNome("Maria");
+		action.setColaborador(colaboradoraMaria);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		action.setCertificacao(certificacao);
+		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
+		certificacoes.add(certificacao);
+
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity(1L);
+		colaboradorAvaliacaoPratica.setData(data1);
+		colaboradorAvaliacaoPratica.setNota(6.0);
+		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
+		
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
+		colaboradorAvaliacaoPraticas.add(colaboradorAvaliacaoPratica);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
+		colaboradorCertificacao.setColaborador(colaboradoraMaria);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setColaboradorAvaliacaoPraticaAtual(colaboradorAvaliacaoPratica);
+		action.setColaboradorCertificacao(colaboradorCertificacao);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacoes = new ArrayList<ColaboradorCertificacao>();
+		colaboradorCertificacoes.add(colaboradorCertificacao);
+		action.setColaboradorCertificacaos(colaboradorCertificacoes);
+		
+		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
+		colaboradorCertificacaoManager.expects(once()).method("descertificarColaborador");
+		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
+		
+		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
+		
+		assertEquals("success", action.insertOrUpdateLote());
+	}
+	
+	public void testInsertOrUpdateLoteSemData() throws Exception
+	{
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
+		avaliacaoPratica.setNotaMinima(8.0);
+		action.setAvaliacaoPratica(avaliacaoPratica);
+		Collection<AvaliacaoPratica> avaliacaoPraticas = new ArrayList<AvaliacaoPratica>();
+		avaliacaoPraticas.add(avaliacaoPratica);
+		
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity(1L);
+		colaboradorAvaliacaoPratica.setNota(6.0);
+		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
+		
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
+		colaboradorAvaliacaoPraticas.add(colaboradorAvaliacaoPratica);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		action.setCertificacao(certificacao);
+		Colaborador colaboradoraMaria = ColaboradorFactory.getEntity(1L);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
+		colaboradorCertificacao.setUltimaCertificacao(true);
+		colaboradorCertificacao.setColaborador(colaboradoraMaria);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setColaboradorAvaliacaoPraticaAtual(colaboradorAvaliacaoPratica);
+		action.setColaboradorCertificacao(colaboradorCertificacao);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacoes = new ArrayList<ColaboradorCertificacao>();
+		colaboradorCertificacoes.add(colaboradorCertificacao);
+		action.setColaboradorCertificacaos(colaboradorCertificacoes);
+		
+		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
+		certificacoes.add(certificacao);
+		
+		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
+		colaboradorAvaliacaoPraticaManager.expects(once()).method("removeByColaboradorCertificacaoId");
+		colaboradorCertificacaoManager.expects(once()).method("descertificarColaborador");
+		
+		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
+		
+		assertEquals("success", action.insertOrUpdateLote());
+	}
+	
+	public void testInsertOrUpdateLoteSemDataESemColaboradorCertificacaoId() throws Exception
+	{
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
+		avaliacaoPratica.setNotaMinima(8.0);
+		action.setAvaliacaoPratica(avaliacaoPratica);
+		Collection<AvaliacaoPratica> avaliacaoPraticas = new ArrayList<AvaliacaoPratica>();
+		avaliacaoPraticas.add(avaliacaoPratica);
+		
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity(1L);
+		colaboradorAvaliacaoPratica.setNota(6.0);
+		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
+		
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
+		colaboradorAvaliacaoPraticas.add(colaboradorAvaliacaoPratica);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		action.setCertificacao(certificacao);
+		Colaborador colaboradoraMaria = ColaboradorFactory.getEntity(1L);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity();
+		colaboradorCertificacao.setUltimaCertificacao(true);
+		colaboradorCertificacao.setColaborador(colaboradoraMaria);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setColaboradorAvaliacaoPraticaAtual(colaboradorAvaliacaoPratica);
+		action.setColaboradorCertificacao(colaboradorCertificacao);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacoes = new ArrayList<ColaboradorCertificacao>();
+		colaboradorCertificacoes.add(colaboradorCertificacao);
+		action.setColaboradorCertificacaos(colaboradorCertificacoes);
+		
+		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
+		certificacoes.add(certificacao);
+		
+		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
+		colaboradorAvaliacaoPraticaManager.expects(once()).method("remove");
+		
+		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
+		
+		assertEquals("success", action.insertOrUpdateLote());
+	}
 }

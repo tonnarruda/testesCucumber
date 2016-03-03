@@ -6,7 +6,7 @@
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 
-	<title>Avaliação Prática Notas</title>
+	<title>Avaliação Prática Notas Individuais</title>
 	
 	<script type="text/javascript">
 		$(function(){
