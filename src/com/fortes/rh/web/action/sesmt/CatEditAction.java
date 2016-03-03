@@ -18,6 +18,7 @@ import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.NaturezaLesaoManager;
+import com.fortes.rh.business.sesmt.TestemunhaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.TipoAcidente;
 import com.fortes.rh.model.geral.Colaborador;
@@ -47,6 +48,7 @@ public class CatEditAction extends MyActionSupportList
 	private EpiManager epiManager;
 	private AmbienteManager ambienteManager;
 	private NaturezaLesaoManager naturezaLesaoManager;
+	private TestemunhaManager testemunhaManager;
 
 	private Colaborador colaborador;
 	private Cat cat;
@@ -209,6 +211,7 @@ public class CatEditAction extends MyActionSupportList
 	{
 		try {
 			beforeInsertUpdate();
+			validatestemunha(cat);
 			catManager.save(cat);
 			
 			addActionSuccess("Ficha de investigação de acidente cadastrada com sucesso.");
@@ -226,6 +229,7 @@ public class CatEditAction extends MyActionSupportList
 	{
 		try {
 			beforeInsertUpdate();
+			validatestemunha(cat);
 			catManager.update(cat);
 			
 			addActionSuccess("Ficha de investigação de acidente atualizada com sucesso.");
@@ -238,6 +242,19 @@ public class CatEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
+	private void validatestemunha(Cat cat) {
+		if(cat.getTestemunha1() == null || cat.getTestemunha1().getNome() == null || cat.getTestemunha1().getNome().isEmpty()){
+			if(cat.getTestemunha1() != null && cat.getTestemunha1().getId() != null)
+				testemunhaManager.removeTestemunha(cat.getTestemunha1().getId(), "testemunha1");
+			cat.setTestemunha1(null);
+		}
+		if(cat.getTestemunha2() == null || cat.getTestemunha2().getNome() == null || cat.getTestemunha2().getNome().isEmpty()){
+			if(cat.getTestemunha2() != null && cat.getTestemunha2().getId() != null)
+				testemunhaManager.removeTestemunha(cat.getTestemunha2().getId(), "testemunha2");
+			cat.setTestemunha2(null);
+		}
+	}
+
 	public String showFoto() throws Exception
 	{
 		if (cat.getFotoUrl() != null && !cat.getFotoUrl().equals(""))
@@ -604,5 +621,9 @@ public class CatEditAction extends MyActionSupportList
 	public void setExibirFotoAcidente(boolean exibirFotoAcidente)
 	{
 		this.exibirFotoAcidente = exibirFotoAcidente;
+	}
+
+	public void setTestemunhaManager(TestemunhaManager testemunhaManager) {
+		this.testemunhaManager = testemunhaManager;
 	}
 }

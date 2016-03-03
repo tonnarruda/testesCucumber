@@ -513,6 +513,14 @@
       <ref bean="solicitacaoEpiItemDevolucaoDaoTarget" />
     </property>
   </bean>
+  <bean id="testemunhaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.TestemunhaDao</value>
+    </property>
+    <property name="target">
+      <ref bean="testemunhaDaoTarget" />
+    </property>
+  </bean>  
 </beans>
 
 

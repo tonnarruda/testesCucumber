@@ -177,7 +177,8 @@
 		<@ww.textfield label="Nome" name="empresa.nome" id="nome" required="true" cssClass="inputNome" maxLength="15" onkeypress = "return(naoInseririrCharacterComValor(event,'\\''));"/>
 		<@ww.textfield label="Denominação Social" name="empresa.razaoSocial" id="razao" required="true" cssClass="inputNome" maxLength="60" onkeypress = "return(naoInseririrCharacterComValor(event,'\\''));"/>
 		<@ww.textfield label="Endereço" name="empresa.endereco" cssClass="inputNome" maxLength="100" />
-		<@ww.textfield label="Telefone" name="empresa.telefone" id="inputTelefone" cssClass="mascaraTelefone" maxLength="11" cssStyle="width:105px;" />
+		<@ww.textfield label="DDD" name="empresa.ddd" id="inputDDD" liClass="liLeft" maxLength="2" cssStyle="width:25px;"/>
+		<@ww.textfield label="Telefone" name="empresa.telefone" id="inputTelefone" cssClass="mascaraTelefone" maxLength="9" cssStyle="width:105px;" />
 		<@ww.select label="Estado" name="empresa.uf.id" id="uf" list="ufs" required="true" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="-1" headerValue="" onchange="javascript:populaCidades()"/>
 		<@ww.select label="Cidade" name="empresa.cidade.id" id="cidade" list="cidades" required="true" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" />
 		<@ww.textfield label="Base CNPJ" name="empresa.cnpj" id="cnpj" required="true"  onkeypress="return(somenteNumeros(event,''));" cssStyle="width:100px;" maxLength="8"/>

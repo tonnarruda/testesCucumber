@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.693421790161515"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="72"/>
+	<property name="ireport.y" value="209"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -65,7 +65,7 @@
 	<field name="colaborador.endereco.bairro" class="java.lang.String"/>
 	<field name="colaborador.endereco.cep" class="java.lang.String"/>
 	<field name="colaborador.contato.ddd" class="java.lang.String"/>
-	<field name="colaborador.contato.foneFixo" class="java.lang.String"/>
+	<field name="colaborador.contato.foneFixoFormatado" class="java.lang.String"/>
 	<field name="colaborador.faixaSalarial.cargo.nomeMercado" class="java.lang.String"/>
 	<field name="colaborador.faixaSalarial.cargo.cboCodigo" class="java.lang.String"/>
 	<field name="colaborador.pessoal.mae" class="java.lang.String"/>
@@ -85,21 +85,25 @@
 	<field name="colaborador.endereco.cidade.nome" class="java.lang.String"/>
 	<field name="colaborador.pessoal.ctps.ctpsUf.sigla" class="java.lang.String"/>
 	<field name="colaborador.endereco.uf.sigla" class="java.lang.String"/>
-	<field name="testemunha1Nome" class="java.lang.String"/>
-	<field name="testemunha1Endereco" class="java.lang.String"/>
-	<field name="testemunha1Bairro" class="java.lang.String"/>
-	<field name="testemunha1Cep" class="java.lang.String"/>
-	<field name="testemunha1Municipio" class="java.lang.String"/>
-	<field name="testemunha1UF" class="java.lang.String"/>
-	<field name="testemunha1Telefone" class="java.lang.String"/>
-	<field name="testemunha2Nome" class="java.lang.String"/>
-	<field name="testemunha2Endereco" class="java.lang.String"/>
-	<field name="testemunha2Bairro" class="java.lang.String"/>
-	<field name="testemunha2Cep" class="java.lang.String"/>
-	<field name="testemunha2Municipio" class="java.lang.String"/>
-	<field name="testemunha2UF" class="java.lang.String"/>
-	<field name="testemunha2Telefone" class="java.lang.String"/>
-	<field name="colaborador.empresa.telefone" class="java.lang.String"/>
+	<field name="testemunha1.nome" class="java.lang.String"/>
+	<field name="testemunha1.logradouro" class="java.lang.String"/>
+	<field name="testemunha1.bairro" class="java.lang.String"/>
+	<field name="testemunha1.cep" class="java.lang.String"/>
+	<field name="testemunha1.municipio" class="java.lang.String"/>
+	<field name="testemunha1.uf" class="java.lang.String"/>
+	<field name="testemunha1.telefoneFormatado" class="java.lang.String"/>
+	<field name="testemunha2.nome" class="java.lang.String"/>
+	<field name="testemunha2.logradouro" class="java.lang.String"/>
+	<field name="testemunha2.bairro" class="java.lang.String"/>
+	<field name="testemunha2.cep" class="java.lang.String"/>
+	<field name="testemunha2.municipio" class="java.lang.String"/>
+	<field name="testemunha2.uf" class="java.lang.String"/>
+	<field name="testemunha2.telefoneFormatado" class="java.lang.String"/>
+	<field name="colaborador.empresa.DDDTelefoneFormatado" class="java.lang.String"/>
+	<field name="testemunha1.numero" class="java.lang.String"/>
+	<field name="testemunha2.numero" class="java.lang.String"/>
+	<field name="testemunha1.complemento" class="java.lang.String"/>
+	<field name="testemunha2.complemento" class="java.lang.String"/>
 	<group name="grpObservacao">
 		<groupExpression><![CDATA[null]]></groupExpression>
 		<groupHeader>
@@ -294,7 +298,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{colaborador.empresa.telefone}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{colaborador.empresa.DDDTelefoneFormatado}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-25" positionType="Float" x="2" y="1" width="438" height="10" uuid="a110e7e3-e1d7-4b29-98c0-f7d140b77551"/>
@@ -673,7 +677,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<text><![CDATA[Remuneração Mensal]]></text>
+				<text><![CDATA[Remuneração mensal]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-20" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="313" y="10" width="33" height="10" isPrintWhenDetailOverflows="true" uuid="681c596f-59dc-4392-974e-4ab96175c93b"/>
@@ -699,7 +703,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<text><![CDATA[Data de Emissão]]></text>
+				<text><![CDATA[Data de emissão]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-109" positionType="Float" x="257" y="1" width="56" height="9" uuid="36267256-8665-49d2-a9da-7f197e6d1cdb"/>
@@ -837,7 +841,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{colaborador.contato.foneFixo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{colaborador.contato.ddd}!= null ? "(" + $F{colaborador.contato.ddd} +") " : "ddada") + $F{colaborador.contato.foneFixoFormatado}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-109" positionType="Float" x="257" y="0" width="56" height="9" uuid="3cbb14b5-69c1-48d0-ba06-f90df4e529e1"/>
@@ -1047,7 +1051,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<text><![CDATA[Hora do Acidente]]></text>
+				<text><![CDATA[Hora do acidente]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-89" positionType="Float" x="2" y="16" width="135" height="9" uuid="70c524a6-d59c-4640-8ebb-582680b46b69"/>
@@ -1060,7 +1064,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<text><![CDATA[Data do Acidente]]></text>
+				<text><![CDATA[Data do acidente]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-10" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="137" y="25" width="120" height="10" uuid="d04d5ffe-a635-4376-91eb-47e779c90b3b"/>
@@ -1255,7 +1259,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha1Nome}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{testemunha1.nome}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-36" positionType="Float" x="2" y="1" width="530" height="14" uuid="4c8ad749-2776-4db4-b05a-509c32229561"/>
@@ -1287,7 +1291,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha1UF}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{testemunha1.uf}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-92" positionType="Float" x="363" y="2" width="88" height="9" uuid="9ebd8b28-ed1a-41f2-8112-8b98388aba36"/>
@@ -1339,7 +1343,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<text><![CDATA[Endereço]]></text>
+				<text><![CDATA[Endereço  (Logradouro - Número - Complemento)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-7" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="2" y="11" width="217" height="10" uuid="ed9ae91c-d472-4119-9702-0e052e494c82"/>
@@ -1352,7 +1356,9 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha1Endereco}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{testemunha1.logradouro} != null) ? $F{testemunha1.logradouro} : "" +
+(($F{testemunha1.numero} != null && !$F{testemunha1.numero}.equals("")) ?" - " +  $F{testemunha1.numero}: "") +
+(($F{testemunha1.complemento} != null && !$F{testemunha1.complemento}.equals("")) ?" - " +  $F{testemunha1.complemento}: "")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-10" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="470" y="11" width="62" height="10" uuid="1470815b-c042-414c-b83c-2effcc6c2fc2"/>
@@ -1365,7 +1371,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha1Telefone}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{testemunha1.telefoneFormatado}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-10" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="313" y="11" width="50" height="10" uuid="5f8e77f8-5ead-4801-ad42-d03b2c77278e"/>
@@ -1378,7 +1384,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha1Cep}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{testemunha1.cep}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-92" positionType="Float" x="313" y="2" width="50" height="9" uuid="874005dd-31e1-47e8-ae9d-77e59aeabfbd"/>
@@ -1417,7 +1423,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha1Bairro}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{testemunha1.bairro}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-10" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="363" y="11" width="88" height="10" uuid="c804faeb-4d5b-48d0-89d7-6c699ce9ae94"/>
@@ -1430,7 +1436,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha1Municipio}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{testemunha1.municipio}]]></textFieldExpression>
 			</textField>
 		</band>
 		<band height="20">
@@ -1448,7 +1454,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha2Nome}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{testemunha2.nome}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-89" positionType="Float" x="2" y="1" width="529" height="9" uuid="ded2791e-a162-4fbf-ad21-693b4c70a504"/>
@@ -1495,7 +1501,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<text><![CDATA[Endereço]]></text>
+				<text><![CDATA[Endereço  (Logradouro - Número - Complemento)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-7" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="2" y="10" width="217" height="10" uuid="31a17dec-484a-407d-9925-06f04b02ff90"/>
@@ -1508,7 +1514,9 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha2Endereco}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{testemunha2.logradouro} != null) ? $F{testemunha2.logradouro} : "" +
+(($F{testemunha2.numero} != null && !$F{testemunha2.numero}.equals("")) ?" - " +  $F{testemunha2.numero}: "") +
+(($F{testemunha2.complemento} != null && !$F{testemunha2.complemento}.equals("")) ?" - " +  $F{testemunha2.complemento}: "")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-10" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="470" y="10" width="62" height="10" uuid="79463716-9fc7-4cfd-b678-fd82c6353e55"/>
@@ -1521,7 +1529,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha2Telefone}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{testemunha2.telefoneFormatado}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-10" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="363" y="10" width="88" height="10" uuid="fa7e3d6e-0428-4cad-80d7-3ff73aa9174e"/>
@@ -1534,7 +1542,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha2Municipio}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{testemunha2.municipio}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-10" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="313" y="10" width="50" height="10" uuid="58375eda-5382-4f9e-8b4c-cd87cc428e8c"/>
@@ -1547,7 +1555,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha2Cep}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{testemunha2.cep}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-92" positionType="Float" x="313" y="1" width="50" height="9" uuid="7faed31c-e554-4c74-b998-4c6f9610803a"/>
@@ -1586,7 +1594,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha2Bairro}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{testemunha2.bairro}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line-27" positionType="Float" x="0" y="20" width="534" height="1" uuid="7602bea2-3114-4b9f-bacc-888409e368e0"/>
@@ -1618,7 +1626,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{testemunha2UF}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{testemunha2.uf}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-92" positionType="Float" x="470" y="1" width="62" height="9" uuid="1f1a495a-b34f-46e0-b5de-67047128dd35"/>

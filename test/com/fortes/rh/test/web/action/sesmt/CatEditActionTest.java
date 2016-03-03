@@ -22,12 +22,16 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.sesmt.Cat;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.sesmt.CatEditAction;
+import com.opensymphony.webwork.ServletActionContext;
 
 public class CatEditActionTest extends MockObjectTestCase
 {
@@ -64,6 +68,9 @@ public class CatEditActionTest extends MockObjectTestCase
         action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
         action.setInicio(new Date());
         action.setFim(new Date());
+        
+        Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
+        Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
 
     protected void tearDown() throws Exception
@@ -284,4 +291,30 @@ public class CatEditActionTest extends MockObjectTestCase
     	assertEquals(action.relatorioCats(), "success");
     }
     
+    public void testImprimirCat(){
+    	Cat cat = new Cat();
+    	cat.setId(1L);
+    	action.setCat(cat);
+    	
+    	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+    	
+    	Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
+    	
+    	manager.expects(once()).method("findByIdProjectionDetalhada").with(eq(cat.getId())).will(returnValue(cat));
+    	try {
+    		assertEquals(action.imprimirCat(), "success");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public void testImprimirCatException(){
+    	//Nesse teste a action não tem o objeto cat. 
+    	try {
+    		assertEquals(action.imprimirCat(), "input");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    }
 }

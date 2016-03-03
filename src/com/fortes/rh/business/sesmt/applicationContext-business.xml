@@ -1141,6 +1141,19 @@
       <ref bean="solicitacaoEpiItemDevolucaoManagerTarget" />
     </property>
   </bean>
+  <bean id="testemunhaManagerTarget" class="com.fortes.rh.business.sesmt.TestemunhaManagerImpl">
+    <property name="dao">
+      <ref bean="testemunhaDao" />
+    </property>
+  </bean>
+   <bean id="testemunhaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.TestemunhaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="testemunhaManagerTarget" />
+    </property>
+  </bean>
 </beans>
 
 

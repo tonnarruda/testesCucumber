@@ -93,6 +93,7 @@
     <mapping class="com.fortes.rh.model.sesmt.Epi" />
     <mapping class="com.fortes.rh.model.sesmt.Ambiente" />
     <mapping class="com.fortes.rh.model.sesmt.Cat" />
+    <mapping class="com.fortes.rh.model.sesmt.Testemunha" />
     <mapping class="com.fortes.rh.model.sesmt.TipoEPI" />
     <mapping class="com.fortes.rh.model.sesmt.TamanhoEPI" />
     <mapping class="com.fortes.rh.model.sesmt.HistoricoAmbiente" />

@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -22,7 +23,9 @@ import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 import com.fortes.rh.model.dicionario.FormulaTurnover;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -60,9 +63,11 @@ public class Empresa extends AbstractModel implements Serializable
     private String horarioTrabalho;
 	@Column(length=100)
     private String endereco;
-	@Column(length=11)
+	@Column(length=9)
 	private String telefone;
-
+	@Column(length=2)
+	private String ddd;
+	
 	private boolean solPessoalExibirSalario;
 	private boolean solPessoalExibirColabSubstituido;
 	private boolean solPessoalObrigarDadosComplementares;
@@ -628,5 +633,27 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public String getDdd() {
+		return ddd;
+	}
+
+	public void setDdd(String ddd) {
+		this.ddd = ddd;
+	}
+	
+	@NaoAudita
+	public String getDDDTelefoneFormatado()
+	{
+		String result = "";
+		
+		if (StringUtils.isNotBlank(ddd))
+			result += "(" + ddd + ") ";
+		
+		if (StringUtils.isNotBlank(telefone))
+			result += StringUtil.criarMascaraTelefone(telefone);
+
+		return result;
 	}
 }

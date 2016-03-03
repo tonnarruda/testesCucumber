@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -84,35 +86,11 @@ public class Cat extends AbstractModel implements Serializable
     @Lob
     private String obsLimitacaoFuncional;
     
-    @Column(length=100)
-    private String testemunha1Nome;
-    @Column(length=100)
-    private String testemunha1Endereco;
-    @Column(length=100)
-    private String testemunha1Bairro;
-    @Column(length=8)
-    private String testemunha1Cep;
-    @Column(length=100)
-    private String testemunha1Municipio;
-    @Column(length=2)
-    private String testemunha1UF;
-    @Column(length=20)
-    private String testemunha1Telefone;
-    
-    @Column(length=100)
-    private String testemunha2Nome;
-    @Column(length=100)
-    private String testemunha2Endereco;
-    @Column(length=100)
-    private String testemunha2Bairro;
-    @Column(length=8)
-    private String testemunha2Cep;
-    @Column(length=100)
-    private String testemunha2Municipio;
-    @Column(length=2)
-    private String testemunha2UF;
-    @Column(length=20)
-    private String testemunha2Telefone;
+    @OneToOne (fetch=FetchType.LAZY, cascade= {CascadeType.ALL, CascadeType.REMOVE})
+    private Testemunha testemunha1;
+
+    @OneToOne (fetch=FetchType.LAZY, cascade= CascadeType.ALL)
+    private Testemunha testemunha2;
     
     public Cat()
 	{
@@ -181,7 +159,7 @@ public class Cat extends AbstractModel implements Serializable
 		naturezaLesao.setDescricao(naturezaLesaoDescricao);
 	}
     
-    public Cat(Cat cat, String empresaRazaoSocial, String empresaCnpj, String empresaCnae, String empresaEndereco, String empresaCidadeNome, String empresaUfSigla, String empresaTelefone,
+    public Cat(Cat cat, String empresaRazaoSocial, String empresaCnpj, String empresaCnae, String empresaEndereco, String empresaCidadeNome, String empresaUfSigla, String empresaDDD, String empresaTelefone,
 			String colaboradorNome, String colaboradorMae, Date colaboradorDataNascimento, Character colaboradorSexo, String colaboradorEstadoCivil, String colaboradorCtpsNumero,
 			String colaboradorCtpsSerie, Date colaboradorCtpsDataExpedicao, Estado colaboradorCtpsUf, String colaboradorRg, Date colaboradorRgDataExpedicao, String colaboradorRgOrgaoEmissor,
 			Estado colaboradorRgUf, String colaboradorPis, Double colaboradorSalario,
@@ -209,21 +187,8 @@ public class Cat extends AbstractModel implements Serializable
 		this.limitacaoFuncional = cat.isLimitacaoFuncional();
 		this.obsLimitacaoFuncional = cat.getObsLimitacaoFuncional();
 		
-		this.testemunha1Nome = cat.getTestemunha1Nome();
-		this.testemunha1Bairro = cat.getTestemunha1Bairro();
-		this.testemunha1Cep = cat.getTestemunha1Cep();
-		this.testemunha1Endereco = cat.getTestemunha1Endereco();
-		this.testemunha1Municipio = cat.getTestemunha1Municipio();
-		this.testemunha1Telefone = cat.getTestemunha1Telefone();
-		this.testemunha1UF = cat.getTestemunha1UF();
-		
-		this.testemunha2Nome = cat.getTestemunha2Nome();
-		this.testemunha2Bairro = cat.getTestemunha2Bairro();
-		this.testemunha2Cep = cat.getTestemunha2Cep();
-		this.testemunha2Endereco = cat.getTestemunha2Endereco();
-		this.testemunha2Municipio = cat.getTestemunha2Municipio();
-		this.testemunha2Telefone = cat.getTestemunha2Telefone();
-		this.testemunha2UF = cat.getTestemunha2UF();
+		this.testemunha1 = cat.getTestemunha1();
+		this.testemunha2 = cat.getTestemunha2();
 		
 		this.colaborador = new Colaborador();
 		colaborador.setNome(colaboradorNome);
@@ -272,6 +237,7 @@ public class Cat extends AbstractModel implements Serializable
 		empresa.setRazaoSocial(empresaRazaoSocial);
 		empresa.setEndereco(empresaEndereco);
 		empresa.setProjectionCidadeNome(empresaCidadeNome);
+		empresa.setDdd(empresaDDD);
 		empresa.setTelefone(empresaTelefone);
 		colaborador.setEmpresa(empresa);
 		
@@ -554,115 +520,20 @@ public class Cat extends AbstractModel implements Serializable
 		this.obsLimitacaoFuncional = obsLimitacaoFuncional;
 	}
 
-	public String getTestemunha1Nome() {
-		return testemunha1Nome;
+	public Testemunha getTestemunha1() {
+		return testemunha1;
 	}
 
-	public void setTestemunha1Nome(String testemunha1Nome) {
-		this.testemunha1Nome = testemunha1Nome;
+	public void setTestemunha1(Testemunha testemunha1) {
+		this.testemunha1 = testemunha1;
 	}
 
-	public String getTestemunha1Endereco() {
-		return testemunha1Endereco;
+	public Testemunha getTestemunha2() {
+		return testemunha2;
 	}
 
-	public void setTestemunha1Endereco(String testemunha1Endereco) {
-		this.testemunha1Endereco = testemunha1Endereco;
+	public void setTestemunha2(Testemunha testemunha2) {
+		this.testemunha2 = testemunha2;
 	}
-
-	public String getTestemunha1Bairro() {
-		return testemunha1Bairro;
-	}
-
-	public void setTestemunha1Bairro(String testemunha1Bairro) {
-		this.testemunha1Bairro = testemunha1Bairro;
-	}
-
-	public String getTestemunha1Cep() {
-		return testemunha1Cep;
-	}
-
-	public void setTestemunha1Cep(String testemunha1Cep) {
-		this.testemunha1Cep = testemunha1Cep;
-	}
-
-	public String getTestemunha1Municipio() {
-		return testemunha1Municipio;
-	}
-
-	public void setTestemunha1Municipio(String testemunha1Municipio) {
-		this.testemunha1Municipio = testemunha1Municipio;
-	}
-
-	public String getTestemunha1UF() {
-		return testemunha1UF;
-	}
-
-	public void setTestemunha1UF(String testemunha1uf) {
-		testemunha1UF = testemunha1uf;
-	}
-
-	public String getTestemunha1Telefone() {
-		return testemunha1Telefone;
-	}
-
-	public void setTestemunha1Telefone(String testemunha1Telefone) {
-		this.testemunha1Telefone = testemunha1Telefone;
-	}
-
-	public String getTestemunha2Nome() {
-		return testemunha2Nome;
-	}
-
-	public void setTestemunha2Nome(String testemunha2Nome) {
-		this.testemunha2Nome = testemunha2Nome;
-	}
-
-	public String getTestemunha2Endereco() {
-		return testemunha2Endereco;
-	}
-
-	public void setTestemunha2Endereco(String testemunha2Endereco) {
-		this.testemunha2Endereco = testemunha2Endereco;
-	}
-
-	public String getTestemunha2Bairro() {
-		return testemunha2Bairro;
-	}
-
-	public void setTestemunha2Bairro(String testemunha2Bairro) {
-		this.testemunha2Bairro = testemunha2Bairro;
-	}
-
-	public String getTestemunha2Cep() {
-		return testemunha2Cep;
-	}
-
-	public void setTestemunha2Cep(String testemunha2Cep) {
-		this.testemunha2Cep = testemunha2Cep;
-	}
-
-	public String getTestemunha2Municipio() {
-		return testemunha2Municipio;
-	}
-
-	public void setTestemunha2Municipio(String testemunha2Municipio) {
-		this.testemunha2Municipio = testemunha2Municipio;
-	}
-
-	public String getTestemunha2UF() {
-		return testemunha2UF;
-	}
-
-	public void setTestemunha2UF(String testemunha2uf) {
-		testemunha2UF = testemunha2uf;
-	}
-
-	public String getTestemunha2Telefone() {
-		return testemunha2Telefone;
-	}
-
-	public void setTestemunha2Telefone(String testemunha2Telefone) {
-		this.testemunha2Telefone = testemunha2Telefone;
-	}
+	
 }

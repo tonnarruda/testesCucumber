@@ -421,6 +421,8 @@ public final class StringUtil
 		if (StringUtils.isBlank(telefone))
 			return telefoneFormatado;
 		
+		if(telefone.length() == 9)
+			telefoneFormatado = telefone.substring(0,5) + "-" + telefone.substring(5,9);
 		if(telefone.length() == 8)
 			telefoneFormatado = telefone.substring(0,4) + "-" + telefone.substring(4,8);
 		if(telefone.length() == 7)

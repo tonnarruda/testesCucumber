@@ -153,30 +153,37 @@
 			</fieldset>
 			
 			<fieldset style="width:480px; margin-top: 10px;">
-				<div class="testemunha">Testemunha 1</div>
-			
-				<@ww.textfield label="Nome" id="testemunha1Nome" name="cat.testemunha1Nome" cssStyle="width:473px;" maxLength="100" liClass="liLeft"/>
-				<@ww.textfield label="CEP" id="testemunha1Cep" name="cat.testemunha1Cep" maxLength="8" cssStyle="width:75px;" liClass="liLeft" cssClass="mascaraCep"/>
-				<@ww.textfield label="Endereço" id="testemunha1Endereco" name="cat.testemunha1Endereco" cssStyle="width:391px;" maxLength="100" liClass="liLeft"/>
-				<@ww.textfield label="Bairro" id="testemunha1Bairro" name="cat.testemunha1Bairro" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
-				<@ww.textfield label="Município" id="testemunha1Municipio" name="cat.testemunha1Municipio" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
-				<@ww.textfield label="UF" id="testemunha1UF" name="cat.testemunha1UF" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
-				<@ww.textfield label="Telefone" id="testemunha1Telefone" name="cat.testemunha1Telefone" cssStyle="width:105px;" maxLength="11" liClass="liLeft" cssClass="mascaraTelefone"/>
+				<div class="testemunha">1ª Testemunha</div>
+				<@ww.textfield label="Nome" id="testemunha1Nome" name="cat.testemunha1.nome" cssStyle="width:473px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="CEP" id="testemunha1Cep" name="cat.testemunha1.cep" maxLength="8" cssStyle="width:75px;" liClass="liLeft" cssClass="mascaraCep"/>
+				<@ww.textfield label="Logradouro" id="testemunha1Logradouro" name="cat.testemunha1.logradouro" cssStyle="width:391px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="Número" id="testemunha1Numero" name="cat.testemunha1.numero" cssStyle="width:47px;" maxLength="10" liClass="liLeft"/>
+				<@ww.textfield label="Complemento" id="testemunha1Complemento" name="cat.testemunha1.complemento" cssStyle="width:100px;" maxLength="20" liClass="liLeft"/>
+				<@ww.textfield label="Bairro" id="testemunha1Bairro" name="cat.testemunha1.bairro" cssStyle="width:311px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="Município" id="testemunha1Municipio" name="cat.testemunha1.municipio" cssStyle="width:288px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="UF" id="testemunha1UF" name="cat.testemunha1.uf" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
+				<@ww.textfield label="DDD" id="testemunha1DDD" name="cat.testemunha1.ddd" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
+				<@ww.textfield label="Telefone" id="testemunha1Telefone" name="cat.testemunha1.telefone" cssStyle="width:105px;" maxLength="9" liClass="liLeft"/>
 			</fieldset>
 			
 			<fieldset style="width:480px; margin-top: 10px;">
-				<div class="testemunha">Testemunha 2</div>
-				
-				<@ww.textfield label="Nome" id="testemunha2Nome" name="cat.testemunha2Nome" cssStyle="width:473px;" maxLength="100" liClass="liLeft"/>
-				<@ww.textfield label="CEP" id="testemunha2Cep" name="cat.testemunha2Cep" cssStyle="width:75px;" maxLength="8" liClass="liLeft" cssClass="mascaraCep"/>
-				<@ww.textfield label="Endereço" id="testemunha2Endereco" name="cat.testemunha2Endereco" cssStyle="width:391px;" maxLength="100" liClass="liLeft"/>
-				<@ww.textfield label="Bairro" id="testemunha2Bairro" name="cat.testemunha2Bairro" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
-				<@ww.textfield label="Município" id="testemunha2Municipio" name="cat.testemunha2Municipio" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
-				<@ww.textfield label="UF" id="testemunha2UF" name="cat.testemunha2UF" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
-				<@ww.textfield label="Telefone" id="testemunha2Telefone" name="cat.testemunha2Telefone" cssStyle="width:105px;" maxLength="11" liClass="liLeft" cssClass="mascaraTelefone"/>
+				<div class="testemunha">2ª Testemunha</div>
+				<@ww.textfield label="Nome" id="testemunha2Nome" name="cat.testemunha2.nome" cssStyle="width:473px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="CEP" id="testemunha2Cep" name="cat.testemunha2.cep" maxLength="8" cssStyle="width:75px;" liClass="liLeft" cssClass="mascaraCep"/>
+				<@ww.textfield label="Logradouro" id="testemunha2Logradouro" name="cat.testemunha2.logradouro" cssStyle="width:391px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="Número" id="testemunha2Numero" name="cat.testemunha2.numero" cssStyle="width:47px;" maxLength="10" liClass="liLeft"/>
+				<@ww.textfield label="Complemento" id="testemunha2Complemento" name="cat.testemunha2.complemento" cssStyle="width:100px;" maxLength="20" liClass="liLeft"/>
+				<@ww.textfield label="Bairro" id="testemunha2Bairro" name="cat.testemunha2.bairro" cssStyle="width:311px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="Município" id="testemunha2Municipio" name="cat.testemunha2.municipio" cssStyle="width:288px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="UF" id="testemunha2UF" name="cat.testemunha2.uf" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
+				<@ww.textfield label="DDD" id="testemunha1DDD" name="cat.testemunha2.ddd" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
+				<@ww.textfield label="Telefone" id="testemunha2Telefone" name="cat.testemunha2.telefone" cssStyle="width:105px;" maxLength="9" liClass="liLeft"/>
 			</fieldset>
 			
 			<br />
+			
+			<@ww.hidden name="cat.testemunha1.id" />
+			<@ww.hidden name="cat.testemunha2.id" />
 			
 			<@ww.hidden name="cat.id" />
 			<@ww.hidden name="cat.fotoUrl" />

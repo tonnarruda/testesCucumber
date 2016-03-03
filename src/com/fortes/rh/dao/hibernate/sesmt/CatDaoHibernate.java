@@ -227,12 +227,14 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 	
 	public Cat findByIdProjectionDetalhada(Long catId) 
 	{
-		StringBuilder hql = new StringBuilder("select new Cat(cat, emp.razaoSocial, emp.cnpj, emp.cnae, emp.endereco, empCid.nome, empUf.sigla, emp.telefone, " +
+		StringBuilder hql = new StringBuilder("select new Cat(cat, emp.razaoSocial, emp.cnpj, emp.cnae, emp.endereco, empCid.nome, empUf.sigla, emp.ddd, emp.telefone, " +
 				"col.nome, col.pessoal.mae, col.pessoal.dataNascimento, col.pessoal.sexo, col.pessoal.estadoCivil, col.pessoal.ctps.ctpsNumero, col.pessoal.ctps.ctpsSerie, col.pessoal.ctps.ctpsDataExpedicao, ctpsUf, col.pessoal.rg, col.pessoal.rgDataExpedicao, col.pessoal.rgOrgaoEmissor, rgUf, col.pessoal.pis, hc.salario," +
 				"col.endereco.logradouro, col.endereco.numero, col.endereco.bairro, col.endereco.cep, cid, uf, " +
 				"col.contato.ddd, col.contato.foneFixo, ca.nomeMercado, ca.cboCodigo, " +
 				"nat.descricao ) ");
 		hql.append(" from Cat cat");
+		hql.append(" left join cat.testemunha1");
+		hql.append(" left join cat.testemunha2");
 		hql.append(" inner join cat.colaborador col");
 		hql.append(" inner join col.empresa emp");
 		hql.append(" left join col.endereco.cidade cid");
