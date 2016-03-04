@@ -23698,3 +23698,14 @@ update papel set nome = 'Colaboradores por Certificação' where id = 655;--.go
 insert into migrations values('20160226162014');--.go
 update parametrosdosistema set acversaowebservicecompativel='1.1.60.1';--.go
 update parametrosdosistema set appversao = '1.1.160.191';--.go
+-- versao 1.1.161.192
+
+update parametrosdosistema set acversaowebservicecompativel='1.1.60.1';--.go
+insert into migrations values('20160229141315');--.go
+update papel set menu = true where id = 669;--.go
+insert into migrations values('20160229145549');--.go
+update papel set nome = 'Notas Individuais'  where id = 654;--.go
+update papel set nome = 'Colaboradores x Certificações'  where id = 655;--.go
+update papel set ordem = 17  where id = 465;--.go
+insert into migrations values('20160301161123');--.go
+update parametrosdosistema set appversao = '1.1.161.192';--.go

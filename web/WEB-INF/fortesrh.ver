@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.1xx.1xx" db="" data="xx/xx/2016">
-		<Item visivel="S" motivo="P16020000028"><![CDATA[T&D > Cadastros > Avaliações Práticas: Novo cadastro, quando a empresa controlar vencimento da certificação por periodicidade da certificação.]]></Item>
-		<Item visivel="S" motivo="P16020000029"><![CDATA[T&D > Cadastros > Certificações > Inserir/Editar: Novos campos "Periodicidade em meses" e "Avaliações Práticas", quando a empresa controlar vencimento da certificação por periodicidade da certificação.]]></Item>
-		<Item visivel="S" motivo="P16020000030"><![CDATA[T&D > Movimentações > Avaliação Prática > Notas Individuais: Nova tela par inserir notas das avaliações do colaborador individualmente, quando a empresa controlar vencimento da certificação por periodicidade da certificação.]]></Item>
-		<Item visivel="S" motivo="P16020000031"><![CDATA[T&D > Movimentações > Avaliação Prática > Notas em Lote: Nova tela par inserir nota da avaliação de vários colaboradores, quando a empresa controlar vencimento da certificação por periodicidade da certificação.]]></Item>
-		<Item visivel="S" motivo="P16020000027"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Novo relatório para exibir colaboradores que participam de uma certificação, quando a empresa controlar vencimento da certificação por periodicidade da certificação.]]></Item>
+	<Versao id="1.1.161.192" db="" data="04/03/2016">
+		<Item visivel="S" motivo="P16020000028"><![CDATA[T&D > Cadastros > Avaliações Práticas: Novo cadastro, quando a empresa controlar vencimento por periodicidade da certificação.]]></Item>
+		<Item visivel="S" motivo="P16020000029"><![CDATA[T&D > Cadastros > Certificações > Inserir/Editar: Novos campos "Periodicidade em meses" e "Avaliações Práticas", quando a empresa controlar vencimento por periodicidade da certificação.]]></Item>
+		<Item visivel="S" motivo="P16020000030"><![CDATA[T&D > Movimentações > Avaliação Prática > Notas Individuais: Nova tela par inserir notas das avaliações do colaborador individualmente, quando a empresa controlar vencimento por periodicidade da certificação.]]></Item>
+		<Item visivel="S" motivo="P16020000031"><![CDATA[T&D > Movimentações > Avaliação Prática > Notas em Lote: Nova tela par inserir nota da avaliação de vários colaboradores, quando a empresa controlar vencimento por periodicidade da certificação.]]></Item>
+		<Item visivel="S" motivo="P16020000027"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Novo relatório para exibir colaboradores que participam de uma certificação, quando a empresa controlar vencimento por periodicidade da certificação.]]></Item>
 		<Item visivel="S" motivo="P16020000026"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar: Nova opção de controlar vencimento da certificação por periodicidade do curso ou por periodicidade da certificação.]]></Item>
 	</Versao>
 	<Versao id="1.1.160.191" db="" data="29/02/2016">
