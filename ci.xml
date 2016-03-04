@@ -187,6 +187,13 @@
             <test name="${allTests.class}" todir="${junit.xml.dir}"/>
 		</junit>
 	</target>
+	
+	<target name="executeSonar">
+		<exec executable="sonar-runner" outputproperty="sonar">
+		</exec>
+		
+		<echo message="${sonar}"/>
+	</target>
 
 	<target name="integrate-server" depends="coverage">
 		<echo message="Integração concluída com sucesso." />
