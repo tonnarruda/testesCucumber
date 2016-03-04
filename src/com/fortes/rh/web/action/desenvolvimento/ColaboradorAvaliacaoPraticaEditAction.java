@@ -161,7 +161,10 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 					}
 				}
 				
-				colaboradorAvaliacaoPraticaManager.saveOrUpdate(colaboradorAvaliacaoPratica);
+				if(colaboradorAvaliacaoPratica.getId() == null)
+					colaboradorAvaliacaoPraticaManager.save(colaboradorAvaliacaoPratica);
+				else
+					colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
 
 				if(colaboradorCertificacao == null || colaboradorCertificacao.getId() == null){
 					Collection<ColaboradorCertificacao> colaboradorCertificacoes = colaboradorCertificacaoManager.certificaColaborador(null, colaborador.getId(), certificacao.getId(), certificacaoManager); 
