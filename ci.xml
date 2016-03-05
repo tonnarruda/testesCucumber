@@ -189,8 +189,19 @@
 	</target>
 	
 	<target name="executeSonar">
+		<echo message="Executando SONAR para FortesRH..."/>
 		<exec executable="sonar-runner" outputproperty="sonar">
 		</exec>
+		
+		<move file="/home/fortes/sonar/sonar-runner-2.2/conf/sonar-runner.properties" tofile="/home/fortes/sonar/sonar-runner-2.2/conf/sonar-runner.properties.bkp"/>
+		<move file="/home/fortes/sonar/sonar-runner-2.2/conf/sonar-runner.properties.test" tofile="/home/fortes/sonar/sonar-runner-2.2/conf/sonar-runner.properties"/>
+		
+		<echo message="Executando SONAR para FortesRHTest..."/>
+		<exec executable="sonar-runner" outputproperty="sonar">
+		</exec>
+		
+		<move file="/home/fortes/sonar/sonar-runner-2.2/conf/sonar-runner.properties" tofile="/home/fortes/sonar/sonar-runner-2.2/conf/sonar-runner.properties.test"/>
+		<move file="/home/fortes/sonar/sonar-runner-2.2/conf/sonar-runner.properties.bkp" tofile="/home/fortes/sonar/sonar-runner-2.2/conf/sonar-runner.properties"/>
 		
 		<echo message="${sonar}"/>
 	</target>
@@ -323,7 +334,7 @@
 		  ssl="false">
 		  <message>
 			${body}
-			 	
+			
 			RH Homologação:
 			http://10.1.3.48:8080/fortesrhhomologacao
 		  </message>

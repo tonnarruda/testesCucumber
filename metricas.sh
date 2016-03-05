@@ -5,7 +5,7 @@ count_class_by_read=0
 qtd_methods_bigs=0
 qtd_methods=0
 qtd_linhas=0
-metodos_grandes=""
+metodos_grandes=''
 
 dbname="sonar"
 username="postgres"
@@ -114,7 +114,7 @@ EOF
 									comandos="$comandos INSERT INTO big_methods(qtd_linhas, method_name, class) VALUES('$count_lines_by_method', '$metodo', '$arq');"
 									
 									nome_arquivo=${arq##*/}
-							  		metodos_grandes=$metodos_grandes' Método "$metodo" da classe $nome_arquivo está com '$count_lines_by_method' linhas.<br>'
+							  		metodos_grandes=$metodos_grandes' Método '"$metodo"' da classe "'$nome_arquivo'" está com '$count_lines_by_method' linhas.\n'
 								fi
 							  
 							  	qtd_methods_bigs=$(($qtd_methods_bigs+1))
@@ -236,13 +236,13 @@ EOF
 
 if [[ ${#metodos_grandes} -ge 1 ]] 
 then
-	echo ' - Surgiram novos métodos grandes: <br> '$metodos_grandes
+	echo $'\n - Surgiram novos métodos grandes: \n '$metodos_grandes
 fi
 
 compare_cod_duplicado=$(awk 'BEGIN{ print "'$ultima_porcentagem_cod_dupicado'"<"'$atual_porcentagem_cod_duplicado'" }')
 if [[ "$compare_cod_duplicado" -ne 1  ]]
 then
-	echo '<br><br> - Porcentagem de cód. duplicado aumentou de '$ultima_porcentagem_cod_dupicado' para '$atual_porcentagem_cod_duplicado
+	echo $'\n\n - Porcentagem de cód. duplicado aumentou de '$ultima_porcentagem_cod_dupicado' para '$atual_porcentagem_cod_duplicado
 fi
 
 psql -qtAU $username $dbname << EOF
