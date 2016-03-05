@@ -10,9 +10,11 @@ metodos_grandes=""
 dbname="sonar"
 username="postgres"
 
+comandos=""
+
 body_email="Algumas métricas aumentaram após o commit $1 <br><br>"
 
-for arq in $( locate src/*.java ) ; do   
+for arq in $( locate $(pwd)/src/com/fortes/rh/web/action/geral/ColaboradorEditAction.java ) ; do   
     i=1
     init_class=0
     init_line_class=0
@@ -107,24 +109,18 @@ EOF
 								
 								if [[ "$count_para_saber_se_ja_existe" -gt 0 ]]
 								then
-									psql -qtAU $username $dbname << EOF
-										UPDATE big_methods SET qtd_linhas = '$count_lines_by_method' WHERE method_name = '$metodo' and class = '$arq';
-EOF
+									comandos="$comandos UPDATE big_methods SET qtd_linhas = '$count_lines_by_method' WHERE method_name = '$metodo' and class = '$arq';"
 								else
-									psql -qtAU $username $dbname << EOF
-										INSERT INTO big_methods(qtd_linhas, method_name, class) VALUES('$count_lines_by_method', '$metodo', '$arq');
-EOF
+									comandos="$comandos INSERT INTO big_methods(qtd_linhas, method_name, class) VALUES('$count_lines_by_method', '$metodo', '$arq');"
 									
 									nome_arquivo=${arq##*/}
-							  		metodos_grandes="$metodos_grandes$metodo da classe $nome_arquivo aumentou para $count_lines_by_method<br>"
+							  		metodos_grandes="$metodos_grandes Método '$metodo' da classe $nome_arquivo aumentou para $count_lines_by_method<br>"
 								fi
 							  
 							  	qtd_methods_bigs=$(($qtd_methods_bigs+1))
 							  	qtd_methods_bigs_class=$(($qtd_methods_bigs_class+1))
 							  else
-							  	psql -qtAU $username $dbname << EOF
-									delete FROM big_methods WHERE method_name = '$metodo' and class = '$arq';
-EOF
+							  	comandos="$comandos delete FROM big_methods WHERE method_name = '$metodo' and class = '$arq';"
 							  fi
 							  
 							  count_lines_by_method=0
@@ -174,6 +170,14 @@ EOF
 	COUNT_CLASS=$(($COUNT_CLASS+1))
 done
 
+#echo "$comandos"
+
+#echo "Executando comandos..."
+
+psql -qtAU $username $dbname << EOF
+	$comandos
+EOF
+
 ultima_porcentagem_cobertura=$({
 psql -qtAU $username $dbname << EOF
 	SELECT val FROM ultimas_metricas WHERE 'metrica' = 'coverage' and data = (select max(data) from ultimas_metricas WHERE 'metrica' = 'coverage');
@@ -205,7 +209,7 @@ psql -qtAU $username $dbname << EOF
 EOF
 })
 
-atual_porcentagem_cod_dupicado=$({
+atual_porcentagem_cod_duplicado=$({
 psql -qtAU $username $dbname << EOF	
 	select val from (
 		select distinct proj.name NAME_OF_PROJ, metric.name metric_name, metric.description Description, projdesc.value val,
@@ -225,11 +229,25 @@ EOF
 })
 
 #echo "Total de métodos grandes: $qtd_methods_bigs"
-echo "$bodyemail $metodos_grandes"
+#echo "$bodyemail $metodos_grandes"
 #echo "Ultima porcentagem de cobertura: $ultima_porcentagem_cobertura"
 #echo "Porcentagem atual de cobertura: $atual_porcentagem_cobertura"
 #echo "Ultima porcentagem de cod. duplicado: $ultima_porcentagem_cod_duplicado"
-#echo "Porcentagem atual de cod. duplicado: $atual_porcentagem_cod_duplicado"
+
+if [[ ${#metodos_grandes} -ge 1 ]] 
+then
+	echo " - Surgiram novos métodos grandes: <br> $metodos_grandes"
+fi
+
+compare_cod_duplicado=$(awk 'BEGIN{ print "'$ultima_porcentagem_cod_dupicado'"<"'$atual_porcentagem_cod_duplicado'" }')
+if [[ "$compare_cod_duplicado" -ne 1  ]]
+then
+	echo "<br><br> - Porcentagem de cód. duplicado aumentou de $ultima_porcentagem_cod_dupicado para $atual_porcentagem_cod_duplicado"
+fi
+
+psql -qtAU $username $dbname << EOF
+	INSERT INTO ultimas_metricas (data, metrica, val) VALUES (current_date, 'cod_duplicado', '$atual_porcentagem_cod_duplicado');
+EOF
 
 now=$(date +"%T")
 #echo "Current time : $now"
