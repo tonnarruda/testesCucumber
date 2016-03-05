@@ -114,7 +114,7 @@ EOF
 									comandos="$comandos INSERT INTO big_methods(qtd_linhas, method_name, class) VALUES('$count_lines_by_method', '$metodo', '$arq');"
 									
 									nome_arquivo=${arq##*/}
-							  		metodos_grandes="$metodos_grandes Método '$metodo' da classe $nome_arquivo aumentou para $count_lines_by_method<br>"
+							  		metodos_grandes=$metodos_grandes' Método "$metodo" da classe $nome_arquivo está com '$count_lines_by_method' linhas.<br>'
 								fi
 							  
 							  	qtd_methods_bigs=$(($qtd_methods_bigs+1))
@@ -180,7 +180,7 @@ EOF
 
 ultima_porcentagem_cobertura=$({
 psql -qtAU $username $dbname << EOF
-	SELECT val FROM ultimas_metricas WHERE 'metrica' = 'coverage' and data = (select max(data) from ultimas_metricas WHERE 'metrica' = 'coverage');
+	SELECT val FROM ultimas_metricas WHERE 'metrica' = 'coverage' and data = (select max(data) from ultimas_metricas WHERE 'metrica' = 'coverage') limit 1;
 EOF
 })
 
@@ -205,7 +205,7 @@ EOF
 
 ultima_porcentagem_cod_dupicado=$({
 psql -qtAU $username $dbname << EOF
-	SELECT val FROM ultimas_metricas WHERE 'metrica' = 'cod_duplicado' and data = (select max(data) from ultimas_metricas WHERE 'metrica' = 'cod_duplicado');
+	SELECT val FROM ultimas_metricas WHERE metrica = 'cod_duplicado' and data = (select max(data) from ultimas_metricas WHERE metrica = 'cod_duplicado');
 EOF
 })
 
@@ -236,17 +236,17 @@ EOF
 
 if [[ ${#metodos_grandes} -ge 1 ]] 
 then
-	echo " - Surgiram novos métodos grandes: <br> $metodos_grandes"
+	echo ' - Surgiram novos métodos grandes: <br> '$metodos_grandes
 fi
 
 compare_cod_duplicado=$(awk 'BEGIN{ print "'$ultima_porcentagem_cod_dupicado'"<"'$atual_porcentagem_cod_duplicado'" }')
 if [[ "$compare_cod_duplicado" -ne 1  ]]
 then
-	echo "<br><br> - Porcentagem de cód. duplicado aumentou de $ultima_porcentagem_cod_dupicado para $atual_porcentagem_cod_duplicado"
+	echo '<br><br> - Porcentagem de cód. duplicado aumentou de '$ultima_porcentagem_cod_dupicado' para '$atual_porcentagem_cod_duplicado
 fi
 
 psql -qtAU $username $dbname << EOF
-	INSERT INTO ultimas_metricas (data, metrica, val) VALUES (current_date, 'cod_duplicado', '$atual_porcentagem_cod_duplicado');
+	INSERT INTO ultimas_metricas (data, metrica, val) VALUES (current_timestamp, 'cod_duplicado', '$atual_porcentagem_cod_duplicado');
 EOF
 
 now=$(date +"%T")
