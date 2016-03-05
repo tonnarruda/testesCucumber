@@ -247,7 +247,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		colaboradorCertificacaoManager.expects(once()).method("getMaiorDataDasTurmasDaCertificacao").with(eq(colaboradorCertificacao.getId())).will(returnValue(DateUtil.criarDataMesAno(1, 2, 2015)));
 		colaboradorCertificacaoManager.expects(once()).method("findById").with(eq(colaboradorCertificacao.getId())).will(returnValue(colaboradorCertificacao));
 		colaboradorCertificacaoManager.expects(once()).method("update").with(eq(colaboradorCertificacao));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("saveOrUpdate");
+		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
 		
 		assertEquals("success", action.insertOrUpdate());
 	}
@@ -276,7 +276,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
 		colaboradorCertificacaoManager.expects(once()).method("descertificarColaborador").with(eq(colaboradorCertificacao.getId()));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("saveOrUpdate");
+		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
 		
 		assertEquals("success", action.insertOrUpdate());
 	}
@@ -317,6 +317,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
 		
+		colaboradorAvaliacaoPraticaManager.expects(atLeastOnce()).method("update");
 		colaboradorAvaliacaoPraticaManager.expects(atLeastOnce()).method("saveOrUpdate");
 		colaboradorCertificacaoManager.expects(once()).method("certificaColaborador").withAnyArguments().will(returnValue(colaboradorCertificacoes));
 		colaboradorCertificacaoManager.expects(once()).method("certificaColaborador").withAnyArguments().will(returnValue(colaboradorCertificacoes));
