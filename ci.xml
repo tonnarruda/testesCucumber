@@ -202,8 +202,6 @@
 		
 		<move file="/home/fortes/sonar/sonar-runner-2.2/conf/sonar-runner.properties" tofile="/home/fortes/sonar/sonar-runner-2.2/conf/sonar-runner.properties.test"/>
 		<move file="/home/fortes/sonar/sonar-runner-2.2/conf/sonar-runner.properties.bkp" tofile="/home/fortes/sonar/sonar-runner-2.2/conf/sonar-runner.properties"/>
-		
-		<echo message="${sonar}"/>
 	</target>
 
 	<target name="integrate-server" depends="coverage">
