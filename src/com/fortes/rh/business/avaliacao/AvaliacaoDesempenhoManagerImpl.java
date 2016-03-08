@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaCriterioManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -26,6 +27,7 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
@@ -53,6 +55,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private NivelCompetenciaManager nivelCompetenciaManager;
+	private ConfiguracaoNivelCompetenciaCriterioManager configuracaoNivelCompetenciaCriterioManager;
 	
 	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) 
 	{
@@ -307,14 +310,15 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		Double ordemMaxima = nivelCompetenciaManager.getOrdemMaximaByNivelCompetenciaHistoricoId(nivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId()); 
 		
 		Competencia competencia;
-		Integer pesoAvaliador, pesoPorPontuacaoObtidaAvaliadorAcumulado, somaPesoAvaliadores;
-		Integer pontuacaoObtidaColaborador = 0;
-		Integer pesoPorPontuacaoAutoAvaliacao = 0;
+		Integer pesoAvaliador, somaPesoAvaliadores;
+		Double pesoPorPontuacaoObtidaAvaliadorAcumulado;
+		Double pontuacaoObtidaColaborador = 0.0;
+		Double pesoPorPontuacaoAutoAvaliacao = 0.0;
 		Integer somaPesosCompetenciasDaAutoAvaliacao = 0;
 		
 		for (ConfiguracaoNivelCompetencia cncFaixa : configNiveisCompetenciasDaFaixaSalarial) 
 		{
-			pesoPorPontuacaoObtidaAvaliadorAcumulado = 0;
+			pesoPorPontuacaoObtidaAvaliadorAcumulado = 0.0;
 			somaPesoAvaliadores = 0;
 			
 			for (ConfiguracaoNivelCompetencia cncColaborador : configNiveisCompetenciasDoColaborador) 
@@ -322,7 +326,23 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 				if(cncFaixa.getCompetenciaId().equals(cncColaborador.getCompetenciaId()) && cncFaixa.getTipoCompetencia().equals(cncColaborador.getTipoCompetencia()) )
 				{
 					pesoAvaliador = cncColaborador.getAvaliadorPeso() != null ? cncColaborador.getAvaliadorPeso() : 1;
-					pontuacaoObtidaColaborador = cncColaborador.getNivelCompetenciaColaborador().getOrdem() * cncFaixa.getPesoCompetencia();
+					
+					Double pontuacaoDaCompetencia = 0.0;
+					
+					Collection<ConfiguracaoNivelCompetenciaCriterio> cncCriterios = configuracaoNivelCompetenciaCriterioManager.findByConfiguracaoNivelCompetencia(cncColaborador.getId(), nivelCompetenciaFaixaSalarial.getId());
+					
+					if ( cncCriterios != null && cncCriterios.size() > 0 ) {
+						Double soma = 0.0;
+						for (ConfiguracaoNivelCompetenciaCriterio criterioAvaliacaoCompetencia : cncCriterios) {
+							soma+=criterioAvaliacaoCompetencia.getNivelCompetencia().getOrdem();
+						}
+						
+						pontuacaoDaCompetencia += soma / cncCriterios.size();
+					} else {
+						pontuacaoDaCompetencia += cncColaborador.getNivelCompetenciaColaborador().getOrdem();
+					}
+					
+					pontuacaoObtidaColaborador = pontuacaoDaCompetencia * cncFaixa.getPesoCompetencia();
 					
 					pesoPorPontuacaoObtidaAvaliadorAcumulado += pesoAvaliador * pontuacaoObtidaColaborador;
 					somaPesoAvaliadores += pesoAvaliador;
@@ -386,6 +406,10 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	public void setNivelCompetenciaManager(
 			NivelCompetenciaManager nivelCompetenciaManager) {
 		this.nivelCompetenciaManager = nivelCompetenciaManager;
+	}
+	
+	public void setConfiguracaoNivelCompetenciaCriterioManager( ConfiguracaoNivelCompetenciaCriterioManager configuracaoNivelCompetenciaCriterioManager ) {
+		this.configuracaoNivelCompetenciaCriterioManager = configuracaoNivelCompetenciaCriterioManager;
 	}
 
 }

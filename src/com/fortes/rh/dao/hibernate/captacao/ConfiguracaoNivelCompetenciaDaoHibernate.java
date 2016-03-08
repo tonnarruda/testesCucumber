@@ -803,7 +803,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciasAndPesos(Long avaliacaoDesempenhoId, Long avaliadoId) 
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("select distinct cnc.competencia_Id as competenciaId, cnc.tipocompetencia as tipocompetencia, chn.ordem as ordem, cq.avaliador_id as avaliadorId, cq.pesoAvaliador as pesoAvaliador, nc.descricao, cncf.id as cncfId, chn.nivelcompetenciaHistorico_id as nivelcompetenciaHistoricoId ");
+		sql.append("select distinct cnc.id, cnc.competencia_Id as competenciaId, cnc.tipocompetencia as tipocompetencia, chn.ordem as ordem, cq.avaliador_id as avaliadorId, cq.pesoAvaliador as pesoAvaliador, nc.descricao, cncf.id as cncfId, chn.nivelcompetenciaHistorico_id as nivelcompetenciaHistoricoId ");
 		sql.append("from configuracaonivelcompetenciacolaborador cncc ");
 		sql.append("inner join configuracaonivelcompetencia cnc on cncc.id = cnc.configuracaonivelcompetenciacolaborador_id ");
 		sql.append("inner join colaboradorquestionario cq on cq.configuracaonivelcompetenciacolaborador_id = cncc.id ");
@@ -812,7 +812,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("inner join nivelcompetencia nc on nc.id = chn.nivelcompetencia_id ");
 		sql.append("where cncc.colaborador_id = :avaliadoId ");
 		sql.append("and cq.avaliacaodesempenho_id  = :avaliacaoDesempenhoId ");
-		sql.append("group by cnc.competencia_Id,cnc.tipocompetencia,chn.ordem, cq.avaliador_id, cq.pesoAvaliador, nc.descricao, cncf.id, chn.nivelcompetenciaHistorico_id ");
+		sql.append("group by cnc.id,cnc.competencia_Id,cnc.tipocompetencia,chn.ordem, cq.avaliador_id, cq.pesoAvaliador, nc.descricao, cncf.id, chn.nivelcompetenciaHistorico_id ");
 		sql.append("order by cnc.tipocompetencia, cnc.competencia_Id ");
 
 		Query query = getSession().createSQLQuery(sql.toString());
@@ -826,7 +826,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-			lista.add(new ConfiguracaoNivelCompetencia(((BigInteger)res[0]).longValue(), (Character)res[1], (Integer)res[2], ((BigInteger)res[3]).longValue(), (res[4]!=null ? (Integer)res[4] : 1), (String)res[5], ((BigInteger)res[6]).longValue(), ((BigInteger)res[7]).longValue()));
+			lista.add(new ConfiguracaoNivelCompetencia(((BigInteger)res[0]).longValue(), ((BigInteger)res[1]).longValue(), (Character)res[2], (Integer)res[3], ((BigInteger)res[4]).longValue(), (res[5]!=null ? (Integer)res[5] : 1), (String)res[6], ((BigInteger)res[7]).longValue(), ((BigInteger)res[8]).longValue()));
 		}
 		
 		return lista;

@@ -761,7 +761,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 		historicoColaborador.setColaborador(colaborador);
 		
 		colaboradorManager.expects(once()).method("findColaboradorByDataHistorico").will(returnValue(colaborador));
-		nivelCompetenciaManager.expects(once()).method("getPontuacaoObtidaByConfiguracoesNiveisCompetencia").with(eq(confgniveisCompetencia)).will(returnValue(20));
+		nivelCompetenciaManager.expects(once()).method("getPontuacaoObtidaByConfiguracoesNiveisCompetencia").with(eq(confgniveisCompetencia)).will(returnValue(20.0));
 		nivelCompetenciaManager.expects(once()).method("getOrdemMaxima").with(eq(empresa.getId()), eq(configuracaoNivelCompetenciaFaixaSalarial.getData())).will(returnValue(50));
     	
 		historicoColaboradorManager.expects(once()).method("getHistoricoAtual").will(returnValue(historicoColaborador));

@@ -75,6 +75,11 @@ public class ConfiguracaoNivelCompetenciaCriterio extends AbstractModel implemen
 		this.nivelCompetencia.setDescricao(nivelCompetenciaDescricao);
 	}
 	
+	public void setNivelCompetenciaOrdem(Integer ordem) {
+		iniciaNivelCompetencia();
+		this.nivelCompetencia.setOrdem(ordem);
+	}
+	
 	public void setNivelCompetenciaPercentual(Double percentual) {
 		iniciaNivelCompetencia();
 		this.nivelCompetencia.setPercentual(percentual);

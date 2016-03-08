@@ -13,6 +13,7 @@ import org.jmock.cglib.MockObjectTestCase;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManagerImpl;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaCriterioManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -29,6 +30,7 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
@@ -68,6 +70,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock nivelCompetenciaManager;
 	private Mock participanteAvaliacaoDesempenhoManager;
+	private Mock configuracaoNivelCompetenciaCriterioManager;
 	
 	protected void setUp() throws Exception
     {
@@ -96,6 +99,8 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
         avaliacaoDesempenhoManager.setNivelCompetenciaManager((NivelCompetenciaManager) nivelCompetenciaManager.proxy());
         participanteAvaliacaoDesempenhoManager = mock(ParticipanteAvaliacaoDesempenhoManager.class);
         avaliacaoDesempenhoManager.setParticipanteAvaliacaoDesempenhoManager((ParticipanteAvaliacaoDesempenhoManager) participanteAvaliacaoDesempenhoManager.proxy());
+        configuracaoNivelCompetenciaCriterioManager = mock(ConfiguracaoNivelCompetenciaCriterioManager.class);
+        avaliacaoDesempenhoManager.setConfiguracaoNivelCompetenciaCriterioManager((ConfiguracaoNivelCompetenciaCriterioManager) configuracaoNivelCompetenciaCriterioManager.proxy());
     }
 
 	public void testFindAllSelect()
@@ -318,11 +323,21 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDaFaixa = new ArrayList<ConfiguracaoNivelCompetencia>();
 		configNiveisCompetenciasDaFaixa.add(cncFaixa);
 		
+		ConfiguracaoNivelCompetenciaCriterio cncCriterio1 = new ConfiguracaoNivelCompetenciaCriterio();
+		cncCriterio1.setNivelCompetencia(nivelCompetenciaColaborador1);
+		
+		ConfiguracaoNivelCompetenciaCriterio cncCriterio2 = new ConfiguracaoNivelCompetenciaCriterio();
+		cncCriterio2.setNivelCompetencia(nivelCompetenciaColaborador2);
+		
+		Collection<ConfiguracaoNivelCompetenciaCriterio> cncCriterios = Arrays.asList(cncCriterio1, cncCriterio2);
+		
 		configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciasAndPesos").withAnyArguments().will(returnValue(configNiveisCompetenciasDoColaborador));
 		configuracaoNivelCompetenciaManager.expects(once()).method("findByConfiguracaoNivelCompetenciaFaixaSalarial").withAnyArguments().will(returnValue(configNiveisCompetenciasDaFaixa));
 		colaboradorManager.expects(once()).method("findByIdHistoricoAtual").withAnyArguments().will(returnValue(ColaboradorFactory.getEntity(1L)));
 		nivelCompetenciaManager.expects(once()).method("getOrdemMaximaByNivelCompetenciaHistoricoId").withAnyArguments().will(returnValue(5.0));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findByAvalDesempenhoIdAbadColaboradorId").withAnyArguments().will(returnValue(5.0));
+		configuracaoNivelCompetenciaCriterioManager.expects(once()).method("findByConfiguracaoNivelCompetencia").with(eq(cncColab2.getId()), ANYTHING).will(returnValue(new ArrayList<ConfiguracaoNivelCompetenciaCriterio>()));
+		configuracaoNivelCompetenciaCriterioManager.expects(once()).method("findByConfiguracaoNivelCompetencia").with(eq(cncColab1.getId()), ANYTHING).will(returnValue(cncCriterios));
 		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
 		avaliacaoDesempenho.setPermiteAutoAvaliacao(true);
@@ -334,6 +349,6 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		
 		Competencia competencia = ((Competencia) resultado.getCompetencias().toArray()[0]);
 		
-		assertEquals(60.0, competencia.getPerformance());
+		assertEquals(80.0, competencia.getPerformance());
 	}
 }

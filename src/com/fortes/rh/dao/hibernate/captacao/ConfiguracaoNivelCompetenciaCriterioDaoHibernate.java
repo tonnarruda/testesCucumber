@@ -41,6 +41,7 @@ public class ConfiguracaoNivelCompetenciaCriterioDaoHibernate extends GenericDao
 		p.add(Projections.property("configuracaoNivelCompetencia.id"), "configuracaoNivelCompetenciaId");
 		p.add(Projections.property("n.id"), "nivelCompetenciaId");
 		p.add(Projections.property("n.descricao"), "nivelCompetenciaDescricao");
+		p.add(Projections.property("chn.ordem"), "nivelCompetenciaOrdem");
 		p.add(Projections.property("chn.percentual"), "nivelCompetenciaPercentual");
 		criteria.setProjection(p);
 		

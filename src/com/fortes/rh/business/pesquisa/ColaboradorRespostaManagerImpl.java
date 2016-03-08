@@ -447,7 +447,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 					(colaboradorResposta.getResposta() != null && colaboradorResposta.getResposta().getPeso() == null))
 				perguntasIdsComPesoNulo.add(colaboradorResposta.getPergunta().getId());
 		
-		int pontuacaoNivelCompetenciaObtida = 0;
+		Double pontuacaoNivelCompetenciaObtida = 0.0;
 		int pontuacaoMaximaNivelcompetencia = 0;
 		if(niveisCompetenciaMarcados != null && !niveisCompetenciaMarcados.isEmpty())
 		{

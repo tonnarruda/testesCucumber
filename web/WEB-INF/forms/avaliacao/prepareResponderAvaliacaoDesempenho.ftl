@@ -70,7 +70,7 @@
 						
 						<#if nivelSalvo.configuracaoNivelCompetenciaCriterios?exists>
 							<#list nivelSalvo.configuracaoNivelCompetenciaCriterios as criterio >
-								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").parent().parent().find(".checkNivelCriterio[value='${criterio.nivelCompetencia.id}").attr("checked", "checked");
+								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").parent().parent().find(".checkNivelCriterio[value='${criterio.nivelCompetencia.id}").attr("checked", "checked").change();
 								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").attr("checked", "checked").change();
 							</#list>
 						</#if>
@@ -147,7 +147,14 @@
 		
 		function setOrdem(i, ordem)
 		{
+			console.log("chamou 1");
 			$('#ordem_' + i).val(ordem);
+		}
+		
+		function setOrdemNivelCriterio(i, y, ordem)
+		{
+			console.log("chamou");
+			$('#ordemNivel_criterio_' + i + '_' + y).val(ordem);
 		}
 		
 		function calcularPerformance()
@@ -166,11 +173,30 @@
 					});
 					
 					$('#configuracaoNivelCompetencia').find('.checados:checkbox:checked').parent().parent().each(function(){
-						 calculoPerformance = ($(this).find('#peso').val() * $(this).find('.checkNivel:checked').attr('ordem')) / pontuacaoMaximaTotal;
-						 if(!isNaN(calculoPerformance)){
+						var niveisSelecionadosDosCriterios = $("input[competencia="+$(this).find('.checkCompetencia').attr("id").replace("competencia_","")+"]:checked").not(":disabled");
+						var somaPescetualDosCriterios = 0;
+						var somaOrdemDosCriterios = 0;
+						
+						var competencia = $(this);
+						
+						$(niveisSelecionadosDosCriterios).each(function(){
+							somaPescetualDosCriterios += parseFloat($(this).attr("percentual"));
+							
+							//console.log($(this).val());
+							//console.log($(competencia).find('.checkNivel[value='+$(this).val()+']'));
+							
+							somaOrdemDosCriterios += parseFloat($(competencia).find('.checkNivel[value='+$(this).val()+']').attr('ordem'));
+						});
+						var media = somaOrdemDosCriterios/niveisSelecionadosDosCriterios.length;
+						
+						var ordemValue = niveisSelecionadosDosCriterios.length > 0 ? media : $(this).find('.checkNivel:checked').attr('ordem');
+						
+						calculoPerformance = ($(this).find('#peso').val() * ordemValue ) / pontuacaoMaximaTotal; // --calc
+						
+						if(!isNaN(calculoPerformance)){
 						 	notaCompetencias+=calculoPerformance;
 						 	$(this).find('.performance').text((calculoPerformance * 100).toFixed(2) + "%");
-						 }
+						}
 					});
 					$('#performanceCompetencias').text('Performance Competencias: ' + (notaCompetencias* 100).toFixed(2) + "%" );
 				</#if>
@@ -335,6 +361,7 @@
 								<#list configuracaoNivelCompetencia.criteriosAvaliacaoCompetencia as criterio>
 									<tr class="odd">
 										<td style="padding: 5px 25px;">
+											<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].nivelCompetencia.ordem" id="ordemNivel_criterio_${i}_${y}" class="ordem" value=""/>
 											<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].criterioDescricao" value="${criterio.descricao}" />
 											<input type="checkbox" id="competencia_${i}_criterio_${y}" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].criterioId" value="${criterio.id}" class="checkCompetenciaCriterio" />
 											<label for="competencia_${i}_criterio_${y}">${criterio.descricao}</label>
@@ -342,7 +369,7 @@
 										
 										<#list nivelCompetencias as nivelCriterio>
 											<td style="width: 100px; text-align: center;">
-												<input type="radio" disabled="disabled" class="checkNivelCriterio radio" competencia="${i}" percentual="${nivelCriterio.percentualString}" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].nivelCompetencia.id" value="${nivelCriterio.id}" />
+												<input type="radio" disabled="disabled" class="checkNivelCriterio radio" competencia="${i}" percentual="${nivelCriterio.percentualString}" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].nivelCompetencia.id" value="${nivelCriterio.id}" onchange="setOrdemNivelCriterio(${i}, ${y}, ${nivelCriterio.ordem})"/>
 											</td>
 										</#list>
 									</tr>

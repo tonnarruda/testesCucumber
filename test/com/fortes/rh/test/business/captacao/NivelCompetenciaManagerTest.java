@@ -9,6 +9,7 @@ import org.jmock.MockObjectTestCase;
 import com.fortes.rh.business.captacao.NivelCompetenciaManagerImpl;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
 
@@ -77,15 +78,24 @@ public class NivelCompetenciaManagerTest extends MockObjectTestCase
 		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity(2L);
 		nivelCompetencia2.setOrdem(3);
 		
+		ConfiguracaoNivelCompetenciaCriterio cncCriterio1 = new ConfiguracaoNivelCompetenciaCriterio();
+		cncCriterio1.setNivelCompetencia(nivelCompetencia1);
+		
+		ConfiguracaoNivelCompetenciaCriterio cncCriterio2 = new ConfiguracaoNivelCompetenciaCriterio();
+		cncCriterio2.setNivelCompetencia(nivelCompetencia2);
+		
+		Collection<ConfiguracaoNivelCompetenciaCriterio> cncCriterios = Arrays.asList(cncCriterio1, cncCriterio2);
+		
 		ConfiguracaoNivelCompetencia configNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
 		configNivelCompetencia1.setNivelCompetencia(nivelCompetencia1);
+		configNivelCompetencia1.setConfiguracaoNivelCompetenciaCriterios(cncCriterios);
 
 		ConfiguracaoNivelCompetencia configNivelCompetencia2 = new ConfiguracaoNivelCompetencia();
 		configNivelCompetencia2.setNivelCompetencia(nivelCompetencia2);
 		
 		Collection<ConfiguracaoNivelCompetencia> confgniveisCompetencia = Arrays.asList(configNivelCompetencia1, configNivelCompetencia2);
 		
-		assertEquals((Integer) 7, nivelCompetenciaManager.getPontuacaoObtidaByConfiguracoesNiveisCompetencia(confgniveisCompetencia));
+		assertEquals((Double) 6.5, nivelCompetenciaManager.getPontuacaoObtidaByConfiguracoesNiveisCompetencia(confgniveisCompetencia));
 	}
 
 }

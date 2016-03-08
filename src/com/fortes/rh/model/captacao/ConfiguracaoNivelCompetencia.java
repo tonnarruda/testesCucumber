@@ -206,8 +206,9 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	}
 	
 	//findCompetenciasAndPesos
-	public ConfiguracaoNivelCompetencia(Long competenciaId, Character tipoCompetencia, Integer ordem, Long avaliadorId, Integer avaliadorPeso, String nivelDescricao, Long cncfId, Long nivelcompetenciaHistoricoId)
+	public ConfiguracaoNivelCompetencia(Long id, Long competenciaId, Character tipoCompetencia, Integer ordem, Long avaliadorId, Integer avaliadorPeso, String nivelDescricao, Long cncfId, Long nivelcompetenciaHistoricoId)
 	{
+		setId(id);
 		this.competenciaId = competenciaId;
 		this.tipoCompetencia = tipoCompetencia;
 		

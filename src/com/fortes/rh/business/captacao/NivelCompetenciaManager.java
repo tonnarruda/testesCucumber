@@ -17,7 +17,7 @@ public interface NivelCompetenciaManager extends GenericManager<NivelCompetencia
 
 	Collection<ConfiguracaoNivelCompetencia> findByCargoOrEmpresa(Long id, Long empresaId);
 
-	Integer getPontuacaoObtidaByConfiguracoesNiveisCompetencia(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados);
+	Double getPontuacaoObtidaByConfiguracoesNiveisCompetencia(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados);
 
 	int getOrdemMaxima(Long empresaId, Date data);
 

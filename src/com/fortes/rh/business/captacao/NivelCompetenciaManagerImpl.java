@@ -7,6 +7,8 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
+import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 
 public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompetencia, NivelCompetenciaDao> implements NivelCompetenciaManager
@@ -32,12 +34,25 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 		return getDao().findByCargoOrEmpresa(cargoId, empresaId);
 	}
 
-	public Integer getPontuacaoObtidaByConfiguracoesNiveisCompetencia(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados) 
+	public Double getPontuacaoObtidaByConfiguracoesNiveisCompetencia(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados) 
 	{
-		Integer pontuacao = 0;
+		Double pontuacao = 0.0;
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaMarcados) {
-			if(configuracaoNivelCompetencia.getNivelCompetencia() != null && configuracaoNivelCompetencia.getNivelCompetencia().getId() != null)
-				pontuacao += configuracaoNivelCompetencia.getNivelCompetencia().getOrdem() * (configuracaoNivelCompetencia.getPesoCompetencia()==null?1:configuracaoNivelCompetencia.getPesoCompetencia());
+			if(configuracaoNivelCompetencia.getNivelCompetencia() != null && configuracaoNivelCompetencia.getNivelCompetencia().getId() != null) {
+				Double pontuacaoDaCompetencia = 0.0;
+				if ( configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios() != null && configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios().size() > 0 ) {
+					Double soma = 0.0;
+					for (ConfiguracaoNivelCompetenciaCriterio criterioAvaliacaoCompetencia : configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios()) {
+						soma+=criterioAvaliacaoCompetencia.getNivelCompetencia().getOrdem();
+					}
+					
+					pontuacaoDaCompetencia += soma / configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios().size();
+				} else {
+					pontuacaoDaCompetencia += configuracaoNivelCompetencia.getNivelCompetencia().getOrdem();
+				}
+				
+				pontuacao += pontuacaoDaCompetencia * (configuracaoNivelCompetencia.getPesoCompetencia()==null?1:configuracaoNivelCompetencia.getPesoCompetencia());
+			}
 		}
 		
 		return pontuacao;
