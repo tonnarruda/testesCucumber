@@ -30,6 +30,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -263,7 +264,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			absenteismoCollection.setAbsenteismos(colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(getEmpresaSistema().getId()), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(ocorrenciasCheck), LongUtil.arrayStringToCollectionLong(afastamentosCheck), null, getEmpresaSistema()));
 			dataSource = Arrays.asList(absenteismoCollection);
 			
-			String filtro =  "Período: " + dataDe + " a " + dataAte;
+			String filtro = montaFiltroRelatorio();
 			parametros = RelatorioUtil.getParametrosRelatorio("Absenteísmo", getEmpresaSistema(), filtro);
 			
 			return Action.SUCCESS;
@@ -273,6 +274,22 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			prepareRelatorioAbsenteismo();
 			return Action.INPUT;
 		}
+	}
+	
+	private String montaFiltroRelatorio() {
+		String filtro =  "Período: " + dataDe + " a " + dataAte;
+
+		if (estabelecimentosCheck != null && estabelecimentosCheck.length > 0)
+			filtro +=  "\nEstabelecimentos: " + StringUtil.subStr(estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null), 90, "...");
+		else
+			filtro +=  "\nTodos os Estabelecimentos";
+		
+		if (areasCheck != null && areasCheck.length > 0)
+			filtro +=  "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areasCheck));
+		else
+			filtro +=  "\nTodas as Áreas Organizacionais";
+		
+		return filtro;
 	}
 
 	public void setColaboradorOcorrencia(ColaboradorOcorrencia colaboradorOcorrencia)
