@@ -70,6 +70,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	private String observacaoLiberador;
 	private boolean encerrada;
 	private char status = StatusAprovacaoSolicitacao.ANALISE;
+	private boolean invisivelParaGestor;
 	@ManyToOne
 	private MotivoSolicitacao motivoSolicitacao;
 	@Column(length=100)
@@ -907,5 +908,13 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 			this.motivoSolicitacao = new MotivoSolicitacao();
 		}
 		this.motivoSolicitacao.setDescricao(descricaoMotivoSolicitacao);
+	}
+
+	public boolean isInvisivelParaGestor() {
+		return invisivelParaGestor;
+	}
+
+	public void setInvisivelParaGestor(boolean invisivelParaGestor) {
+		this.invisivelParaGestor = invisivelParaGestor;
 	}
 }

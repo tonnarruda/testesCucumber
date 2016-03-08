@@ -1186,4 +1186,20 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		assertEquals(areasPermitidas.length, areasRetonadas.length );
 		assertEquals(areasPermitidas[0], areasRetonadas[0]);
 	}
+	
+	public void testGetEmailResponsavel(){
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacional.setEmailResponsavel("gestor@gmail.com");
+		areaOrganizacionalDao.expects(once()).method("findByIdProjection").with(eq(areaOrganizacional.getId())).will(returnValue(areaOrganizacional));
+		Exception exception = null;
+		try {
+			assertEquals("gestor@gmail.com", areaOrganizacionalManager.getEmailResponsavel(areaOrganizacional.getId()));
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNull(exception);
+		
+		
+	}
+	
 }

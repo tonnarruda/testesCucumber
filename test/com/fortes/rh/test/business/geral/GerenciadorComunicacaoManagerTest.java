@@ -1701,6 +1701,68 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoManager.enviarEmailParaResponsaveisSolicitacaoPessoal(solicitacao, empresa, emailsmMrcados);
 	}
 	
+	public void testEnviarEmailParaUsuarioComPermiAprovarOrReprovarAndGestorSolicitacaoInviselParaGestor () throws Exception
+	{
+		ParametrosDoSistema parametroSistema = new ParametrosDoSistema();
+		parametroSistema.setAppUrl("url");
+		parametroSistema.setEmailDoSuporteTecnico("t@t.com.br");
+		
+		Empresa empresa = criaEmpresa();
+		
+		Usuario solicitante = UsuarioFactory.getEntity(1L);
+		
+		Colaborador colabSolicitante = ColaboradorFactory.getEntity(1L);
+		colabSolicitante.setNome("nome");
+		colabSolicitante.setNomeComercial("nomeComercial");
+		colabSolicitante.setUsuario(solicitante);
+		
+		Colaborador gestor = ColaboradorFactory.getEntity(1L);
+
+		AreaOrganizacional areaOrganizacionalMae = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacionalMae.setNome("Area Mãe");
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(2L);
+		areaOrganizacional.setResponsavel(gestor);
+		areaOrganizacional.setAreaMae(areaOrganizacionalMae);
+		
+		Collection<AreaOrganizacional> areas = Arrays.asList(areaOrganizacionalMae, areaOrganizacional);
+		Collection<Long> areasId = Arrays.asList(areaOrganizacionalMae.getId(), areaOrganizacional.getId());
+		
+		MotivoSolicitacao motivoSolicitacao = MotivoSolicitacaoFactory.getEntity();
+		motivoSolicitacao.setId(1L);
+		motivoSolicitacao.setDescricao("Motivo");
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		estabelecimento.setNome("Estabelecimento");
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacao.setDescricao("descricao");
+		solicitacao.setSolicitante(solicitante);
+		solicitacao.setInvisivelParaGestor(true);
+		solicitacao.setMotivoSolicitacao(motivoSolicitacao);
+		solicitacao.setData(DateUtil.criarDataMesAno(20, 8, 2013));
+		solicitacao.setObservacaoLiberador("observacaoLiberador");
+		solicitacao.setEstabelecimento(estabelecimento);
+		solicitacao.setAreaOrganizacional(areaOrganizacional);
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.ANALISE);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL_AND_GESTOR);
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		String emailGestor = "gestor@gmail.com";
+		
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CADASTRAR_SOLICITACAO.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));
+		colaboradorManager.expects(atLeastOnce()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId()), eq(true)).will(returnValue(colabSolicitante));
+		motivoSolicitacaoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getMotivoSolicitacao().getId())).will(returnValue(motivoSolicitacao));
+		estabelecimentoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getEstabelecimento().getId())).will(returnValue(estabelecimento));
+		usuarioManager.expects(once()).method("findEmailByPerfilAndGestor").with(new Constraint[]{eq("ROLE_LIBERA_SOLICITACAO"), eq(empresa.getId()), eq(solicitacao.getAreaOrganizacional().getId()), eq(false), eq(emailGestor)}).will(returnValue(new String[]{}));
+		areaOrganizacionalManager.expects(once()).method("getEmailResponsavel").with(eq(solicitacao.getAreaOrganizacional().getId())).will(returnValue(emailGestor));
+		
+		gerenciadorComunicacaoManager.enviarEmailParaResponsaveisSolicitacaoPessoal(solicitacao, empresa,  new String[]{});
+	}
+	
 	public void testEnviaComunicadoAoCadastrarSolicitacaoRealinhamentoColaborador() throws Exception
 	{
 		Empresa empresa = criaEmpresa();

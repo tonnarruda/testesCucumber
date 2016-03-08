@@ -1039,4 +1039,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		
 		return areasIds;
 	}
+
+	public String getEmailResponsavel(Long areaId) throws Exception {
+		AreaOrganizacional areaOrganizacional = getDao().findByIdProjection(areaId);
+		return areaOrganizacional.getResponsavelEmail();
+	}
 }

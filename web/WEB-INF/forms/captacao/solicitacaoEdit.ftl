@@ -357,6 +357,9 @@
 			<@ww.textfield readonly="true" label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" cssStyle="width:35px; text-align:right; background: #EBEBEB;"/>
 			<@ww.textfield readonly="true" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.descricao" id="motivoSolicitacaoId" cssClass="inputNome" cssStyle="width: 250px; background: #EBEBEB;" />
 		<#else>
+			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_BLOQUEAR_VISUALIZACAO_GESTOR">
+				<@ww.checkbox label="Definir solicitação de pessoal como invisível para o gestor da área organizacional selecionada" name="solicitacao.invisivelParaGestor" id="invisivelparagestor" labelPosition="left"/>
+			</@authz.authorize>
 			<@ww.textfield label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" onkeypress = "return(somenteNumeros(event,''));" required="true" cssStyle="width:35px; text-align:right;" maxLength="4" />
 			<@ww.select  id="motivoSolicitacaoId" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.id" list="motivoSolicitacaos"  required="true" cssStyle="width: 250px;" listKey="id" listValue="descricao"  headerKey="" headerValue="" />
 		</#if>

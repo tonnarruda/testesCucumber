@@ -29,7 +29,6 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.EventoAgenda;
@@ -122,16 +121,15 @@ public class SolicitacaoListAction extends MyActionSupportList
 		
 		if(roleMovSolicitacaoSelecao)
 		{
-			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, codigoBusca, dataIni, dataFim));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, codigoBusca, dataIni, dataFim);
+			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, null, codigoBusca, dataIni, dataFim, true));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, null, codigoBusca, dataIni, dataFim, true);
 		}
 		else
 		{
-			Usuario usuario = getUsuarioLogado();
-			Long[] areasIdsComFilhas = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuario, getEmpresaSistema().getId());
-			
-			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas, codigoBusca, dataIni, dataFim));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas, codigoBusca, dataIni, dataFim);
+			Long[] areasIdsComFilhas = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
+			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas, codigoBusca, dataIni, dataFim, false));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(),
+					areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas, codigoBusca, dataIni, dataFim, false);
 		}
 
 		if(solicitacaos == null || solicitacaos.size() == 0)
