@@ -5515,11 +5515,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		 cargoDao.save(cargo);
 		 retorno.put("cargo", cargo);
 		
-		 FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity("I", cargo);
+		 FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(null, "I", cargo);
 		 faixaSalarialDao.save(faixaSalarial);
 		 retorno.put("faixaSalarial", faixaSalarial);
 
-		 FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity("II", cargo);
+		 FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity(null, "II", cargo);
 		 faixaSalarialDao.save(faixaSalarial2);
 		 retorno.put("faixaSalarial2", faixaSalarial2);
 		
@@ -5952,7 +5952,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	{
 		String qtdTabelasComColaborador = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col where col.column_name = 'colaborador_id' and col.table_schema = 'public' and is_updatable = 'YES';");
 		//se esse quebrar, provavelmente tem que inserir uma linha de delete no Importador colaboradorJDBC.java método removerColaborador();
-		assertEquals("24", qtdTabelasComColaborador);
+		assertEquals("25", qtdTabelasComColaborador);
 	}
 
 	public void testAtualizaSolicitacaoDesligamento() 
@@ -6742,7 +6742,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertNull(colaboradorDao.findEntidadeComAtributosSimplesById(-1L));
 		
 		String qtdTabelasComColaborador = JDBCConnection.executeQuery("SELECT COUNT(kcu.column_name) FROM information_schema.table_constraints AS tc INNER JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name INNER JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND ccu.table_name = 'colaborador'");
-		assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em ColaboradorDaoHibernate.removeComDependencias", "32", qtdTabelasComColaborador);
+		assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em ColaboradorDaoHibernate.removeComDependencias", "34", qtdTabelasComColaborador);
 	}
 	
 	public void testFindUsuarioByAreaEstabelecimento()

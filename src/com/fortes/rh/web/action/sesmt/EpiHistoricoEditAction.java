@@ -39,7 +39,7 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
 		} catch (Exception e) {
 			e.printStackTrace();
 			
-			ExceptionUtil.traduzirMensagem(this, e);
+			ExceptionUtil.traduzirMensagem(this, e, null);
 		}
 
 		return Action.SUCCESS;

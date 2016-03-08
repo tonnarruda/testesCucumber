@@ -49,7 +49,7 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		
 		if(nivelCompetenciaHistoricoId != null)
 			criteria.add(Expression.eq("chn.nivelCompetenciaHistorico.id", nivelCompetenciaHistoricoId));
-		else
+		else if(data != null)
 			criteria.add(subQueryNHC(data));
 
 		criteria.addOrder(Order.asc("chn.ordem"));

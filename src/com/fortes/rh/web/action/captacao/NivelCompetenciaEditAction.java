@@ -32,6 +32,7 @@ import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -102,8 +103,20 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public String prepareInsert() throws Exception
 	{
-		prepare();
-		return Action.SUCCESS;
+		try {
+			nivelCompetenciaManager.validaLimite(getEmpresaSistema().getId());
+			prepare();
+			
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			if(e instanceof FortesException)
+				addActionWarning(e.getMessage());
+			else
+				addActionError("Houve um erro inesperado.");
+			e.printStackTrace();
+			
+			return Action.INPUT;
+		}
 	}
 
 	public String prepareUpdate() throws Exception
@@ -114,25 +127,30 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public String insert()
 	{
-		try
-		{
-			nivelCompetenciaManager.validaLimite(getEmpresaSistema().getId());
+		try {
 			nivelCompetencia.setEmpresa(getEmpresaSistema());
 			nivelCompetenciaManager.save(nivelCompetencia);
-			
+
 			return Action.SUCCESS;
-		}
-		catch (Exception e)
-		{
-			addActionMessage(e.getMessage());
+		} catch (Exception e) {
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível realizar o cadastro.");
+			e.printStackTrace();
+			
 			return Action.INPUT;
 		}
 	}
 
 	public String update() throws Exception
 	{
-		nivelCompetenciaManager.update(nivelCompetencia);
-		return Action.SUCCESS;
+		try {
+			nivelCompetenciaManager.update(nivelCompetencia);
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			ExceptionUtil.traduzirMensagem(this, e,	"Não foi possível atualizar o cadastro.");
+			e.printStackTrace();
+
+			return Action.INPUT;
+		}
 	}
 
 	public String list() throws Exception
@@ -146,12 +164,12 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		try
 		{
 			nivelCompetenciaManager.remove(nivelCompetencia.getId());
-			addActionSuccess("Nível de competência excluído com sucesso");
+			addActionSuccess("Nível de competência excluído com sucesso.");
 		}
 		catch (Exception e)
 		{
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível realizar a exclusão.");
 			e.printStackTrace();
-			addActionWarning("Não foi possível excluir este nível de competência, pois possui refererências no sistema");
 		}
 
 		return list();

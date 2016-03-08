@@ -3,7 +3,11 @@ package com.fortes.rh.test.factory.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.sesmt.Funcao;
 
 public class ReajusteColaboradorFactory
 {
@@ -34,5 +38,26 @@ public class ReajusteColaboradorFactory
 		Collection<ReajusteColaborador> collection = new ArrayList<ReajusteColaborador>();
 		collection.add(getReajusteColaborador());
 		return collection;
+	}
+	
+	public static ReajusteColaborador getReajusteColaborador(Colaborador colaborador,AreaOrganizacional areaOrganizacionalAtual,AreaOrganizacional areaOrganizacionalProposta,
+			FaixaSalarial faixaSalarialAtual, FaixaSalarial faixaSalarialProposta, Funcao funcaoAtual, Funcao funcaoProposta, Integer tipoSalarioAtual, Integer tipoSalarioProposto,
+			Double salarioAtual, Double salarioProposto) 
+	{
+		ReajusteColaborador reajusteColaborador = getReajusteColaborador();
+
+		reajusteColaborador.setColaborador(colaborador);
+		reajusteColaborador.setAreaOrganizacionalProposta(areaOrganizacionalProposta);
+		reajusteColaborador.setAreaOrganizacionalAtual(areaOrganizacionalAtual);
+		reajusteColaborador.setFaixaSalarialAtual(faixaSalarialAtual);
+		reajusteColaborador.setFaixaSalarialProposta(faixaSalarialProposta);
+		reajusteColaborador.setFuncaoAtual(funcaoAtual);
+		reajusteColaborador.setFuncaoProposta(funcaoProposta);
+		reajusteColaborador.setTipoSalarioAtual(tipoSalarioAtual);
+		reajusteColaborador.setSalarioAtual(salarioAtual);
+		reajusteColaborador.setTipoSalarioProposto(tipoSalarioProposto);
+		reajusteColaborador.setSalarioProposto(salarioProposto);
+
+		return reajusteColaborador;
 	}
 }

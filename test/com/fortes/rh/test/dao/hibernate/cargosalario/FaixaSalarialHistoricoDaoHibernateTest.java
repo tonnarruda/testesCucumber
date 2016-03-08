@@ -829,13 +829,13 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		cargo.setEmpresa(empresa);
 		cargoDao.save(cargo);
 		
-		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity("Faixa 1", cargo);
+		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity(null, "Faixa 1", cargo);
 		faixaSalarialDao.save(faixa1);
 		
-		FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity("Faixa 2", cargo);
+		FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity(null, "Faixa 2", cargo);
 		faixaSalarialDao.save(faixa2);
 		
-		FaixaSalarial faixa3 = FaixaSalarialFactory.getEntity("Faixa 3", cargo);
+		FaixaSalarial faixa3 = FaixaSalarialFactory.getEntity(null, "Faixa 3", cargo);
 		faixaSalarialDao.save(faixa3);
 		
 		FaixaSalarialHistorico historico1 = FaixaSalarialHistoricoFactory.getEntity(faixa1, DateUtil.criarDataMesAno(01, 01, 2010), StatusRetornoAC.CONFIRMADO);

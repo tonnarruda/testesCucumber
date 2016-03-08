@@ -11,6 +11,12 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
+import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
 import com.fortes.rh.util.HistoricoColaboradorUtil;
 
 public class HistoricoColaboradorUtilTest extends TestCase
@@ -24,51 +30,25 @@ public class HistoricoColaboradorUtilTest extends TestCase
 
 	public void testGetMotivoReajuste(){
 
-		AreaOrganizacional areaOrganizacionalAtual = new AreaOrganizacional();
-		areaOrganizacionalAtual.setId(1L);
-		areaOrganizacionalAtual.setNome("area 1");
+		AreaOrganizacional areaOrganizacionalAtual = AreaOrganizacionalFactory.getEntity(1L, "area 1",null, null);
+		AreaOrganizacional areaOrganizacionalProposta = AreaOrganizacionalFactory.getEntity(2L, "area 2",null, null);
 
-		AreaOrganizacional areaOrganizacionalProposta = new AreaOrganizacional();
-		areaOrganizacionalProposta.setId(2L);
-		areaOrganizacionalProposta.setNome("area 2");
-
-		Colaborador colaborador = new Colaborador();
-		colaborador.setId(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 
 		HistoricoColaborador historicoColaborador = new HistoricoColaborador();
 		historicoColaborador.setAreaOrganizacional(areaOrganizacionalAtual);
 
-		Cargo cargoAtual = new Cargo();
-		cargoAtual.setId(1L);
+		Cargo cargoAtual = CargoFactory.getEntity(1L);
+		Cargo cargoProposto = CargoFactory.getEntity(2L);
 
-		Cargo cargoProposto = new Cargo();
-		cargoProposto.setId(2L);
+		FaixaSalarial faixaSalarialAtual = FaixaSalarialFactory.getEntity(1L, "Atual", cargoAtual);
+		FaixaSalarial faixaSalarialProposta = FaixaSalarialFactory.getEntity(2L, "Proposta", cargoProposto);
 
-		FaixaSalarial faixaSalarialAtual = new FaixaSalarial();
-		faixaSalarialAtual.setId(1L);
-		faixaSalarialAtual.setCargo(cargoAtual);
+		Funcao funcaoAtual = FuncaoFactory.getEntity(1L);
+		Funcao funcaoProposta = FuncaoFactory.getEntity(2L);
 
-		FaixaSalarial faixaSalarialProposta = new FaixaSalarial();
-		faixaSalarialProposta.setId(2L);
-		faixaSalarialProposta.setCargo(cargoProposto);
-
-		Funcao funcaoAtual = new Funcao();
-		funcaoAtual.setId(1L);
-
-		Funcao funcaoProposta = new Funcao();
-		funcaoProposta.setId(2L);
-
-		ReajusteColaborador reajuste = new ReajusteColaborador();
-		reajuste.setColaborador(colaborador);
-		reajuste.setTipoSalarioAtual(TipoAplicacaoIndice.VALOR);
-		reajuste.setSalarioAtual(10.00);
-		reajuste.setTipoSalarioProposto(TipoAplicacaoIndice.VALOR);
-		reajuste.setSalarioProposto(20.00);
-		reajuste.setAreaOrganizacionalProposta(areaOrganizacionalProposta);
-		reajuste.setFaixaSalarialAtual(faixaSalarialAtual);
-		reajuste.setFaixaSalarialProposta(faixaSalarialProposta);
-		reajuste.setFuncaoAtual(funcaoAtual);
-		reajuste.setFuncaoProposta(funcaoProposta);
+		ReajusteColaborador reajuste = ReajusteColaboradorFactory.getReajusteColaborador(colaborador, null, areaOrganizacionalProposta, faixaSalarialAtual, faixaSalarialProposta, funcaoAtual, funcaoProposta, 
+				TipoAplicacaoIndice.VALOR, TipoAplicacaoIndice.VALOR, 10.00, 20.00);
 
 		String motivo = HistoricoColaboradorUtil.getMotivoReajuste(reajuste, historicoColaborador);
 

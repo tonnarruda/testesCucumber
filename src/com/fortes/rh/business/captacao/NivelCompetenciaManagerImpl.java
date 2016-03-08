@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 
@@ -22,8 +23,8 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 
 	public void validaLimite(Long empresaId) throws Exception 
 	{
-		if (getDao().findAllSelect(empresaId, null, null).size() >= 10)
-			throw new Exception("Não é permitido cadastrar mais do que dez Níveis de Competência.");
+		if (getDao().findToList(new String[] {"id"}, new String[] {"id"}, new String[] {"empresa.id"}, new Long[] {empresaId}).size() >= 10)
+			throw new FortesException("Não é permitido cadastrar mais que 10(dez) níveis de competência.");
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> findByCargoOrEmpresa(Long cargoId, Long empresaId) 

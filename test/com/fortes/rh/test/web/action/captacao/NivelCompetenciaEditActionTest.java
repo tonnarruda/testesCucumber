@@ -23,6 +23,7 @@ import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
@@ -142,7 +143,39 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 
 		assertEquals("success", action.delete());
 	}
+	
+	public void testPrepareInsert() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresaSistema(empresa);
+		
+		manager.expects(once()).method("validaLimite").with(eq(empresa.getId())).isVoid();
+		
+		assertEquals("success", action.prepareInsert());
+	}
+	
+	public void testPrepareInsertException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresaSistema(empresa);
+		
+		manager.expects(once()).method("validaLimite").with(eq(empresa.getId())).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		
+		assertEquals("input", action.prepareInsert());
+		assertEquals("Houve um erro inesperado.", ((String)action.getActionErrors().toArray()[0]));
+	}
 
+	public void testPrepareInsertFortesException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresaSistema(empresa);
+		
+		manager.expects(once()).method("validaLimite").with(eq(empresa.getId())).will(throwException(new FortesException("Limite excedido")));
+		
+		assertEquals("input", action.prepareInsert());
+		assertEquals("Limite excedido", ((String)action.getActionWarnings().toArray()[0]));
+	}
+	
 	public void testInsert() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -151,7 +184,6 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity(1L);
 		action.setNivelCompetencia(nivelCompetencia);
 
-		manager.expects(once()).method("validaLimite").with(ANYTHING).isVoid();
 		manager.expects(once()).method("save").with(eq(nivelCompetencia)).will(returnValue(nivelCompetencia));
 
 		assertEquals("success", action.insert());
@@ -162,7 +194,6 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		action.setEmpresaSistema(empresa);
 		
-		manager.expects(once()).method("validaLimite").with(ANYTHING).isVoid();
 		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		assertEquals("input", action.insert());
 	}
@@ -175,6 +206,16 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("update").with(eq(nivelCompetencia)).isVoid();
 
 		assertEquals("success", action.update());
+	}
+	
+	public void testUpdateException() throws Exception
+	{
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity(1L);
+		action.setNivelCompetencia(nivelCompetencia);
+		
+		manager.expects(once()).method("update").with(eq(nivelCompetencia)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));;
+		
+		assertEquals("input", action.update());
 	}
 	
 	public void testPrepareCompetenciasByFaixaSalarialInsert()

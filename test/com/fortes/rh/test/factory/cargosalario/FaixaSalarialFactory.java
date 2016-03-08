@@ -28,9 +28,9 @@ public class FaixaSalarialFactory
 		return faixaSalarial;
 	}
 
-	public static FaixaSalarial getEntity(String nome, Cargo cargo)
+	public static FaixaSalarial getEntity(Long id, String nome, Cargo cargo)
 	{
-		FaixaSalarial faixaSalarial = new FaixaSalarial();
+		FaixaSalarial faixaSalarial = getEntity(id);
 
 		faixaSalarial.setNome(nome);
 		faixaSalarial.setCargo(cargo);

@@ -15,7 +15,7 @@ public class NivelCompetenciaHistoricoManagerImpl extends GenericManagerImpl<Niv
 	
 	public void removeNivelConfiguracaoHistorico(Long id) throws Exception {
 		if(getDao().existeDependenciaComCompetenciasDaFaixaSalarial(id))
-			throw new FortesException("Este histórico dos níveis de competância não pode ser excluído, pois existe dependência com a configuração de competências da faixa salarial.");
+			throw new FortesException("Este histórico dos níveis de competência não pode ser excluído, pois existe dependência com a configuração de competências da faixa salarial.");
 
 		configHistoricoNivelManager.removeByNivelConfiguracaoHistorico(id);
 		getDao().remove(id);

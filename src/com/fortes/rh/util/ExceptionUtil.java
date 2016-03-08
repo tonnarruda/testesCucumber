@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.dicionario.Entidade;
 import com.fortes.rh.web.action.MyActionSupport;
 
@@ -15,7 +16,7 @@ public class ExceptionUtil
 {
 	private static Logger logger = Logger.getLogger(ExceptionUtil.class);
 	
-	public static void traduzirMensagem(MyActionSupport action, Exception exception)
+	public static void traduzirMensagem(MyActionSupport action, Exception exception, String mensagemDefault)
 	{
 		try {
 			
@@ -26,10 +27,18 @@ public class ExceptionUtil
 				BatchUpdateException batchUpdateException = (BatchUpdateException) exception.getCause();
 				action.addActionWarning(verificaEntidades(batchUpdateException.getNextException().getMessage().trim())); 
 			} else if (exception instanceof InvocationTargetException) {
-				DataIntegrityViolationException dataIntegrityViolationException = (DataIntegrityViolationException) exception.getCause();
-				BatchUpdateException batchUpdateException = (BatchUpdateException) dataIntegrityViolationException.getCause();
-				action.addActionWarning(verificaEntidades(batchUpdateException.getNextException().getMessage().trim())); 
+				if (exception.getCause() instanceof DataIntegrityViolationException){
+					DataIntegrityViolationException dataIntegrityViolationException = (DataIntegrityViolationException) exception.getCause();
+					BatchUpdateException batchUpdateException = (BatchUpdateException) dataIntegrityViolationException.getCause();
+					action.addActionWarning(verificaEntidades(batchUpdateException.getNextException().getMessage().trim())); 
+				} else if (exception.getCause() instanceof FortesException){
+					FortesException fortesException = (FortesException) exception.getCause();
+					action.addActionWarning(fortesException.getMessage()); 
+				}
 			}
+			
+			if(mensagemDefault != null && action.getActionWarnings().size() == 0)
+				action.addActionError(mensagemDefault); 
 			
 		} catch (Exception e) {
 			logger.error("Houve um erro ao tentar traduzir a mensagem de erro.");

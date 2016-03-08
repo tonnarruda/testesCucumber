@@ -80,7 +80,7 @@ public class CargoListAction extends MyActionSupportList
 			addActionSuccess("Cargo excluído com sucesso.");
 		}catch (InvocationTargetException ive){
 			ive.printStackTrace();
-			ExceptionUtil.traduzirMensagem(this, ive);
+			ExceptionUtil.traduzirMensagem(this, ive, null);
 		} catch (Exception e) {
 			String message = "Erro ao excluir Cargo.<br/>";
 			

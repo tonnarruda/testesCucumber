@@ -41,7 +41,7 @@ public class NivelCompetenciaManagerTest extends MockObjectTestCase
 		Long empresaId = 1L;
 		
 		Collection<NivelCompetencia> nivelCompetencias = NivelCompetenciaFactory.getCollection(1L);
-		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId), ANYTHING, ANYTHING).will(returnValue(nivelCompetencias));
+		nivelCompetenciaDao.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(nivelCompetencias));
 		
 		try {
 			nivelCompetenciaManager.validaLimite(empresaId);
@@ -58,7 +58,7 @@ public class NivelCompetenciaManagerTest extends MockObjectTestCase
 		Long empresaId = 1L;
 		
 		Collection<NivelCompetencia> nivelCompetencias = Arrays.asList(NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity());
-		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId), ANYTHING, ANYTHING).will(returnValue(nivelCompetencias));
+		nivelCompetenciaDao.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(nivelCompetencias));
 		
 		try {
 			nivelCompetenciaManager.validaLimite(empresaId);

@@ -193,6 +193,8 @@ public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implemen
 		criteria.createCriteria("q.colaboradorQuestionarios", "cq", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.colaborador", "c", Criteria.LEFT_JOIN);
 
+		criteria.setProjection(Projections.id());
+		
 		criteria.add(Expression.eq("c.codigoAC", colaboradorCodigoAC));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		criteria.add(Expression.eq("cq.respondida", false));

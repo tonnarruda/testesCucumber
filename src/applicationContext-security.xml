@@ -429,7 +429,14 @@
 				/captacao/nivelCompetencia/imprimirRelatorioCompetenciasColaborador*/** = ROLE_REL_COLAB_NIVEL_COMPETENCIA
 				/captacao/nivelCompetencia/prepareRelatorioMatrizCompetenciasColaborador*/** = ROLE_REL_COLAB_NIVEL_COMPETENCIA
 				/captacao/nivelCompetencia/imprimirMatrizCompetenciasColaborador*/** = ROLE_REL_COLAB_NIVEL_COMPETENCIA
-				/captacao/nivelCompetencia/*/**=ROLE_CAD_NIVEL_COMPETENCIA,ROLE_MOV_SOLICITACAO_CANDIDATO	
+				/captacao/nivelCompetencia/list.action*=ROLE_CAD_NIVEL_COMPETENCIA_CAD	
+				/captacao/nivelCompetencia/prepareInsert.action*=ROLE_CAD_NIVEL_COMPETENCIA_CAD	
+				/captacao/nivelCompetencia/insert.action*=ROLE_CAD_NIVEL_COMPETENCIA_CAD	
+				/captacao/nivelCompetencia/prepareUpdate.action*=ROLE_CAD_NIVEL_COMPETENCIA_CAD	
+				/captacao/nivelCompetencia/update.action*=ROLE_CAD_NIVEL_COMPETENCIA_CAD	
+				/captacao/nivelCompetencia/delete.action*=ROLE_CAD_NIVEL_COMPETENCIA_CAD	
+				/captacao/nivelCompetencia/*/**=ROLE_MOV_SOLICITACAO_CANDIDATO	
+				/captacao/nivelCompetenciaHistorico/*.action*=ROLE_CAD_NIVEL_COMPETENCIA_HIST	
 				
 				/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR,ROLE_DISSIDIO_COLABORADOR
 				/cargosalario/reajusteColaborador/prepareDissidio*/**=ROLE_DISSIDIO_COLABORADOR

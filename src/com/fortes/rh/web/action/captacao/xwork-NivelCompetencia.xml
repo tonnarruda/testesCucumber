@@ -4,13 +4,16 @@
 <xwork>
 	<package name="nivelCompetencia" extends="default" namespace="/captacao/nivelCompetencia">
 		<action name="list" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/nivelCompetenciaList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="delete">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/nivelCompetenciaList.ftl</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareInsert">
+			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/nivelCompetenciaEdit.ftl</result>
+			<result name="input" type="redirect">list.action</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/nivelCompetenciaEdit.ftl</result>

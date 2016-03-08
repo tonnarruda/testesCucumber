@@ -320,7 +320,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(avaliacao, avaliado.getId());
 			
 			if(resultadoAvaliacaoDesempenho.getCompetencias().size() == 0){
-				addActionMessage("Não existem competências para o avalado informado.");
+				addActionMessage("Não existem competências para o avaliado informado.");
 				prepareAnaliseDesempenhoCompetenciaColaborador();
 				return INPUT;
 			}

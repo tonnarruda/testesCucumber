@@ -78,10 +78,11 @@ public class Entidade extends LinkedHashMap<String, String> {
 		put("configuracaocampoextra", "configuração de campos extras");
 		put("configuracaoimpressaocurriculo", "configuração de impressão de currículo");
 		put("configuracaolimitecolaborador", "configuração de limite de colaborador por cargo");
-		put("configuracaonivelcompetencia", "nível de competência");
+		put("configuracaonivelcompetencia", "configuração de nível de competência");
 		put("configuracaonivelcompetenciacolaborador", "competência do colaborador");
 		put("configuracaoperformance", "configuração de performance");
 		put("configuracaorelatoriodinamico", "configuração de relatório dinâmico");
+		put("confighistoriconivel", "histórico do nível de competência");
 		put("conhecimento", "conhecimento");
 		put("conhecimento_areaorganizacional", "áreas organizacionais do conhecimento");
 		put("conhecimento_curso", "cursos sugeridos para o conhecimento");

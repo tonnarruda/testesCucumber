@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(38, Operacao.values().length);
+		assertEquals(39, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -117,7 +117,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 36
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 37
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 38
-		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 36
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 39
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -163,8 +163,8 @@ public class OperacaoTest extends TestCase
 		assertEquals(++i, Operacao.CRIAR_ACESSO_SISTEMA.getId());							// 35
 		assertEquals(++i, Operacao.CURSOS_A_VENCER.getId());			     				// 36
 		assertEquals(++i, Operacao.CERTIFICACOES_A_VENCER.getId());			     			// 37
-		assertEquals(++i, Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId());			     			// 38
-		assertEquals(++i, Operacao.INSERIR_CONFIGURACAO_NIVEL_COMPETENCIA_FAIXA.getId());	// 37
+		assertEquals(++i, Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId());			    // 38
+		assertEquals(++i, Operacao.INSERIR_CONFIGURACAO_NIVEL_COMPETENCIA_FAIXA.getId());	// 39
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
