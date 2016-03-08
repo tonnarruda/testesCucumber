@@ -157,7 +157,6 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Collection<ColaboradorQuestionario> colaboradorQuestionarioCollection = new ArrayList<ColaboradorQuestionario>();
     	colaboradorQuestionarioCollection.add(colaboradorQuestionario);
 
-    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("getCount").with(new Constraint[]{eq(turma.getId()), eq(null), eq(""), eq(new String[]{}), ANYTHING}).will(returnValue(1));
     	colaboradorTurmaManager.expects(once()).method("findByTurmaColaborador").with(new Constraint[] {eq(turma.getId()), eq(null), eq(""), ANYTHING, ANYTHING, eq(1), eq(15)}).will(returnValue(colaboradorTurmas));
     	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING);
@@ -439,8 +438,6 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Turma turma = TurmaFactory.getEntity(1L);
     	action.setTurma(turma);
     	turmaManager.expects(once()).method("findById").with(eq(turma.getId())).will(returnValue(turma));
-
-    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
 
 		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
     	parametrosDoSistema.setCompartilharCandidatos(true);

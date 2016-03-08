@@ -155,7 +155,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		if(msgAlert != null && !msgAlert.equals(""))
 			addActionMessage(msgAlert);
 
-		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
+		if(empresaId != null && empresaId.equals(-1L))
+			empresaId =  null;
+		
 		populaEmpresa(new String[]{"ROLE_MOV_TURMA","ROLE_MOV_PLANO_TREINAMENTO"});	
 		if(empresaId != null){
 			estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(empresaId);

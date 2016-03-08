@@ -184,7 +184,7 @@
 				<@ww.hidden name="questionario.id"/>
 			</#if>
 			
-			<#if questionario.tipo == tipoQuestionario.getPESQUISA() >
+			<#if questionario.tipo == tipoQuestionario.getPESQUISA() || questionario.tipo == tipoQuestionario.getAVALIACAOTURMA()>
 				<@frt.checkListBox label="Empresas" name="empresasCheck" id="empresasCheck" list="empresasCheckList" onClick="populaEstabelecimentos(); populaAreas();" filtro="true"/>
 			</#if> 
 

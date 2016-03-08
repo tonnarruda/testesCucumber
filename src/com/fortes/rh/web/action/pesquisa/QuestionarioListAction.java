@@ -319,7 +319,7 @@ public class QuestionarioListAction extends MyActionSupportList
     	if(questionario.verificaTipo(TipoQuestionario.FICHAMEDICA))
     		fichaMedicas = fichaMedicaManager.findAllSelect(getEmpresaSistema().getId(), null);
 
-		if(questionario.verificaTipo(TipoQuestionario.PESQUISA)) {
+		if(questionario.verificaTipo(TipoQuestionario.PESQUISA) || questionario.verificaTipo(TipoQuestionario.AVALIACAOTURMA)) {
 			Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
 			empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
 			empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);
