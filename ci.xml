@@ -345,22 +345,28 @@
 		    <arg value="/tmp"/>
 		</exec>
 		
+		<condition property="metricasAumentaram">
+			<and>
+				<length string="${metricasQueAumentaram}" trim="true" when="greater" length="0"/>
+			</and>
+		</condition>
+		
 		<echo message="${metricasQueAumentaram}"/>
 	</target>
 	
-	<target name="enviarEmailMetricas" depends="calculaMetricas" if="metricasQueAumentaram" >
+	<target name="enviarEmailMetricas" depends="calculaMetricas" if="metricasAumentaram" >
 		<mail
-		  tolist="${emailDestino}"
+		  tolist="${emailDestinoDev}"
 		  from="${emailFrom}"
 		  subject="Algumas métricas aumentaram após o último commit."
 		  mailhost="smtp.tifortes.com.br"
 		  mailport="25"
 		  ssl="false">
 		  <message>
-			${metricasQueAumentaram}
+${metricasQueAumentaram}
 			 	
-			RH Homologação:
-			http://10.1.3.48:8080/fortesrhhomologacao
+RH Homologação:
+http://10.1.3.48:8080/fortesrhhomologacao
 		  </message>
 		</mail>
 	</target>
