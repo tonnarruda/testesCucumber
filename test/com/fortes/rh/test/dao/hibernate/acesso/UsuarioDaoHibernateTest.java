@@ -490,7 +490,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		usuarioEmpresaDao.save(usuarioEmpresa);
 		
 		usuarioDao.getHibernateTemplateByGenericDao().flush();
-		String[] retorno = usuarioDao.findEmailsByPerfilAndGestor(papel.getCodigo(), empresa.getId(), LongUtil.collectionToCollectionLong(areas), true); 
+		String[] retorno = usuarioDao.findEmailsByPerfilAndGestor(papel.getCodigo(), empresa.getId(), LongUtil.collectionToCollectionLong(areas), true, null); 
 		assertEquals("colab@gmail.com", ((String) retorno[0]));
 	}
 
@@ -551,7 +551,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		usuarioEmpresaDao.save(usuarioEmpresa);
 		
 		usuarioDao.getHibernateTemplateByGenericDao().flush();
-		String[] retorno = usuarioDao.findEmailsByPerfilAndGestor(papel.getCodigo(), empresa.getId(), LongUtil.collectionToCollectionLong(areas), true); 
+		String[] retorno = usuarioDao.findEmailsByPerfilAndGestor(papel.getCodigo(), empresa.getId(), LongUtil.collectionToCollectionLong(areas), true, null); 
 		assertEquals("colab@gmail.com", ((String) retorno[0]));
 	}
 	
@@ -602,7 +602,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		usuarioEmpresa.setPerfil(perfil);
 		usuarioEmpresaDao.save(usuarioEmpresa);
 		
-		String[] retorno = usuarioDao.findEmailsByPerfilAndGestor(papel.getCodigo(), empresa.getId(),  LongUtil.collectionToCollectionLong(areas), true); 
+		String[] retorno = usuarioDao.findEmailsByPerfilAndGestor(papel.getCodigo(), empresa.getId(),  LongUtil.collectionToCollectionLong(areas), true, null); 
 		assertEquals(0, retorno.length);
 	}
 	

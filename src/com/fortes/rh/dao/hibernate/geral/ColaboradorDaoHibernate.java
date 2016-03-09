@@ -4925,7 +4925,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.executeUpdate();
 	}
 
-	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel) 
+	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel, Long colaboradorId) 
 	{
 		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
 
@@ -4956,8 +4956,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Expression.isNotNull("c.dataSolicitacaoDesligamento"));
 		criteria.add(Expression.isNull("c.dataSolicitacaoDesligamentoAc"));
 		criteria.add(Expression.isNull("c.dataDesligamento"));
+		
 		if(areasIdsPorResponsavel != null)
 			criteria.add(Expression.in("ao.id", areasIdsPorResponsavel));
+		
+		if(colaboradorId != null)
+			criteria.add(Expression.not(Expression.eq("c.id", colaboradorId)));
 		
 		criteria.add(Expression.or(Expression.isNull("hc.data"), Subqueries.propertyEq("hc.data", subQueryHc)));
 		
@@ -5105,6 +5109,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.codigoAC"), "codigoAC");
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		p.add(Projections.property("c.empresa.id"), "empresaId");
+		p.add(Projections.property("c.contato.email"), "emailColaborador");
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.empresa.id", empresaId));

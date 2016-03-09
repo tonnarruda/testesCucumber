@@ -2898,9 +2898,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().desvinculaCandidato(candidatoId);
 	}
 
-	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel) 
+	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel, Long colaboradorId) 
 	{
-		return getDao().findAguardandoDesligamento(empresaId, areasIdsPorResponsavel);
+		return getDao().findAguardandoDesligamento(empresaId, areasIdsPorResponsavel, colaboradorId);
 	}
 
 	public void removeComDependencias(Long id) throws Exception

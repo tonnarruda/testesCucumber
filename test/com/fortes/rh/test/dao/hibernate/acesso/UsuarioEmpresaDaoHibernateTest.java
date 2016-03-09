@@ -314,10 +314,10 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		usuarioEmpresa3= usuarioEmpresaDao.save(usuarioEmpresa3);
 		
 		// por codigoAC
-		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRole(empresa.getCodigoAC(), "XXX", null, "ROLE_VISUALIZAR_PENDENCIA_AC").size());
+		assertEquals(1, usuarioEmpresaDao.findUsuariosByEmpresaRole(empresa.getCodigoAC(), "XXX", null, "ROLE_VISUALIZAR_PENDENCIA_AC", usuario1.getId()).size());
 		
 		// por empresaId
-		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRole(null, null, empresa.getId(), "ROLE_VISUALIZAR_PENDENCIA_AC").size());
+		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRole(null, null, empresa.getId(), "ROLE_VISUALIZAR_PENDENCIA_AC", null).size());
 	}
 	
 	public void testFindUsuariosByEmpresaRole()

@@ -323,7 +323,7 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		return new CollectionUtil<String>().convertCollectionToArrayString(criteria.list());
 	}
 
-	public String[] findEmailsByPerfilAndGestor(String role, Long empresaId, Collection<Long> areaOrganizacionalIds, boolean isVerTodosColaboradores) {
+	public String[] findEmailsByPerfilAndGestor(String role, Long empresaId, Collection<Long> areaOrganizacionalIds, boolean isVerTodosColaboradores, String notEmail) {
 		
 		StringBuilder sql = new StringBuilder();
 		
@@ -352,14 +352,20 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		sql.append(" 			) "	);
 		sql.append("			and u.acessosistema = true " );
 		sql.append("        	and ue.empresa_id= :empresaId " ); 
-		sql.append("        	and c.email is not null " ); 
-		sql.append("    	order by ");
-		sql.append("       		c.email asc ");
+		sql.append("        	and c.email is not null " );
+		
+		if(notEmail != null && !"".equals(notEmail))
+			sql.append("       	and c.email != :emailPossivelGestor " );
+		
+		sql.append("    		order by c.email asc ");
 		
 		Query q = getSession().createSQLQuery(sql.toString());
 		q.setString("role", role);
 		q.setLong("empresaId", empresaId);
 		q.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds);
+		
+		if(notEmail != null && !"".equals(notEmail))
+			q.setString("emailPossivelGestor", notEmail);
 			
 		return new CollectionUtil<String>().convertCollectionToArrayString(q.list());
 	}

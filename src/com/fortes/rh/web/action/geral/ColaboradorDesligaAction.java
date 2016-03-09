@@ -203,7 +203,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			}
 		}
 		
-		colaboradores = colaboradorManager.findAguardandoDesligamento(getEmpresaSistema().getId(), areasIdsPorResponsavel); 
+		colaboradores = colaboradorManager.findAguardandoDesligamento(getEmpresaSistema().getId(), areasIdsPorResponsavel, colaboradorManager.findByUsuario(getUsuarioLogado().getId())); 
 		return Action.SUCCESS;
 	}
 
@@ -229,7 +229,9 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			boolean integraAC = colaborador.isNaoIntegraAc() ? false : getEmpresaSistema().isAcIntegra();
 			colaboradorManager.desligaColaborador(true, dataDesligamento, observacaoDemissao, motDemissao.getId(), gerouSubstituicao, false, integraAC, colaborador.getId());
 			
-			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), true);
+			Long colaboradorIdLogado = colaboradorManager.findByUsuario(getUsuarioLogado().getId()); 
+			if(!colaboradorIdLogado.equals(colaborador.getId()))
+				gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), true);
 			
 			addActionSuccess("Colaborador desligado com sucesso.");
 		
@@ -246,8 +248,10 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	{
 		try {
 			colaboradorManager.reprovaSolicitacaoDesligamento(colaborador.getId());
-			
-			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), false);
+
+			Long colaboradorIdLogado = colaboradorManager.findByUsuario(getUsuarioLogado().getId()); 
+			if(!colaboradorIdLogado.equals(colaborador.getId()))
+				gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), false);
 			
 			addActionSuccess("Solicitação de desligamento reprovada com sucesso.");
 		

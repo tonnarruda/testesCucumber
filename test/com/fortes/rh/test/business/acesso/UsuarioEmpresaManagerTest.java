@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
+import org.jmock.core.Constraint;
 
 import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
 import com.fortes.rh.model.acesso.Usuario;
@@ -57,8 +58,8 @@ public class UsuarioEmpresaManagerTest extends MockObjectTestCase
 	{
 		String codigoAC = "";
 		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
-		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRole").with(eq(codigoAC), eq(""), eq(null), ANYTHING).will(returnValue(usuarioEmpresas));
-		assertEquals(usuarioEmpresas, usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(codigoAC, ""));
+		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRole").with(new Constraint[]{eq(codigoAC), eq(""), eq(null), ANYTHING, ANYTHING}).will(returnValue(usuarioEmpresas));
+		assertEquals(usuarioEmpresas, usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(codigoAC, "", null));
 	}
 	
 	public void testFindByUsuarioEmpresa()

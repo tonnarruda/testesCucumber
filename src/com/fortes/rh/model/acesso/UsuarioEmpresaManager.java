@@ -11,7 +11,7 @@ public interface UsuarioEmpresaManager extends GenericManager<UsuarioEmpresa>
 	UsuarioEmpresa findByUsuarioEmpresa(Long usuarioId, Long empresaId);
 	Collection<UsuarioEmpresa> findAllBySelectUsuarioEmpresa(Long empresaId);
 	void removeAllUsuario(Usuario usuario);
-	Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC, String grupoAC);
+	Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC, String grupoAC, Long notUsuarioId);
 	@Audita(operacao="Inserção/Atualização", auditor=UsuarioEmpresaAuditorCallbackImpl.class)
 	void save(Usuario usuario, String[] empresaIds, String[] selectPerfils);
 	Collection<UsuarioEmpresa> findByUsuario(Long usuarioId);

@@ -28,9 +28,9 @@ public class UsuarioEmpresaManagerImpl extends GenericManagerImpl<UsuarioEmpresa
 		return getDao().findAllBySelectUsuarioEmpresa(empresaId);
 	}
 
-	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC, String grupoAC)
+	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC, String grupoAC, Long notUsuarioId)
 	{
-		return getDao().findUsuariosByEmpresaRole(empresaCodigoAC, grupoAC, null, "ROLE_VISUALIZAR_PENDENCIA_AC");
+		return getDao().findUsuariosByEmpresaRole(empresaCodigoAC, grupoAC, null, "ROLE_VISUALIZAR_PENDENCIA_AC", notUsuarioId);
 	}
 
 	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRole(Long empresaId, String role)

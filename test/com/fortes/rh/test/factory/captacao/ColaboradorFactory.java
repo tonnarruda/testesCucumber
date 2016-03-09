@@ -75,6 +75,7 @@ public class ColaboradorFactory
 		colaborador.setCodigoAC(codigoAC);
 		colaborador.setPessoalCpf(cpf);
 		colaborador.setEmpresa(empresa);
+		colaborador.setContato(new Contato());
 		
 		return colaborador;
 	}

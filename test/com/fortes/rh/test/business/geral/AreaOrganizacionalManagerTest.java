@@ -1083,7 +1083,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		Collection<AreaOrganizacional> todasAsAreas = Arrays.asList(areaMae1, areaMae2, areaFilha1, areaFilha2, areaAvo);
 		areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0),eq(0),eq(null),eq(null), ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})}).will(returnValue(todasAsAreas));
 		
-		assertEquals(4, areaOrganizacionalManager.getEmailsResponsaveis(areaFilha1.getId(), empresa.getId(), AreaOrganizacional.RESPONSAVEL).length);
+		assertEquals(4, areaOrganizacionalManager.getEmailsResponsaveis(areaFilha1.getId(), empresa.getId(), AreaOrganizacional.RESPONSAVEL, null).length);
 	}
 	
 	public void testGetEmailsResponsaveisPassandoCollection() throws Exception 
