@@ -26,6 +26,7 @@ for arq in $( locate $(pwd)/src/*.java ) ; do
     lines_with_key=0
     last_line=""
     metodo=""
+    methods_class=()
     
     while read line 
 	do 
@@ -96,6 +97,15 @@ for arq in $( locate $(pwd)/src/*.java ) ; do
 							if [[ $init_class -eq 1 && $init_method -eq 1 && $lines_with_key -eq 0 && $line == *"}"* ]]
 							then
 							  init_method=0
+							  
+							  qtd_this_method_in_class=0
+							  for word in ${methods_class[*]}; do
+								if [[ $word = $metodo ]]; then
+									(( qtd_this_method_in_class++ ))
+								fi
+							  done 
+							  
+							  methods_class+=($metodo)
 							 
 							  qtd_methods_class=$(($qtd_methods_class+1))
 							  qtd_methods=$(($qtd_methods+1))
@@ -104,15 +114,15 @@ for arq in $( locate $(pwd)/src/*.java ) ; do
 							  
 							    count_para_saber_se_ja_existe=$({
 							    psql -qtAU $username $dbname << EOF
-							    select count (*) FROM big_methods WHERE method_name = '$metodo' and class = '$arq' and project = 'RH';
+							    select count (*) FROM big_methods WHERE method_name = '$metodo' and class = '$arq' and project = 'RH' and position_class=($qtd_this_method_in_class+1);
 EOF
 							    })
 								
 								if [[ "$count_para_saber_se_ja_existe" -gt 0 ]]
 								then
-									comandos="$comandos UPDATE big_methods SET qtd_linhas = '$count_lines_by_method' WHERE method_name = '$metodo' and class = '$arq' and project = 'RH';"
+									comandos="$comandos UPDATE big_methods SET qtd_linhas = '$count_lines_by_method' WHERE method_name = '$metodo' and class = '$arq' and project = 'RH' and position_class=($qtd_this_method_in_class+1);"
 								else
-									comandos="$comandos INSERT INTO big_methods(qtd_linhas, method_name, class, project) VALUES('$count_lines_by_method', '$metodo', '$arq', 'RH');"
+									comandos="$comandos INSERT INTO big_methods(qtd_linhas, method_name, class, project, position_class) VALUES('$count_lines_by_method', '$metodo', '$arq', 'RH',  ($qtd_this_method_in_class+1));"
 									
 									nome_arquivo=${arq##*/}
 							  		metodos_grandes_src="$metodos_grandes_src"'  Método '"$metodo"' da classe "'$nome_arquivo'" está com '$count_lines_by_method$' linhas.\n'
@@ -121,7 +131,10 @@ EOF
 							  	qtd_methods_bigs=$(($qtd_methods_bigs+1))
 							  	qtd_methods_bigs_class=$(($qtd_methods_bigs_class+1))
 							  else
-							  	comandos="$comandos delete FROM big_methods WHERE method_name = '$metodo' and class = '$arq' and project = 'RH';"
+							  	if  [[ ${#metodo} -ge 1 ]]
+								then
+							  		comandos="$comandos delete FROM big_methods WHERE method_name = '$metodo' and class = '$arq' and project = 'RH' and position_class=($qtd_this_method_in_class+1);"
+							  	fi
 							  fi
 							  
 							  count_lines_by_method=0
@@ -184,6 +197,7 @@ for arq in $( locate $(pwd)/test/*.java ) ; do
     lines_with_key=0
     last_line=""
     metodo=""
+    methods_class=()
     
     while read line 
 	do 
@@ -254,6 +268,15 @@ for arq in $( locate $(pwd)/test/*.java ) ; do
 							if [[ $init_class -eq 1 && $init_method -eq 1 && $lines_with_key -eq 0 && $line == *"}"* ]]
 							then
 							  init_method=0
+							  
+							  qtd_this_method_in_class=0
+							  for word in ${methods_class[*]}; do
+								if [[ $word = $metodo ]]; then
+									(( qtd_this_method_in_class++ ))
+								fi
+							  done 
+							  
+							  methods_class+=($metodo)
 							 
 							  qtd_methods_class=$(($qtd_methods_class+1))
 							  qtd_methods=$(($qtd_methods+1))
@@ -262,15 +285,15 @@ for arq in $( locate $(pwd)/test/*.java ) ; do
 							  
 							    count_para_saber_se_ja_existe=$({
 							    psql -qtAU $username $dbname << EOF
-							    select count (*) FROM big_methods WHERE method_name = '$metodo' and class = '$arq' and project = 'RHTest';
+							    select count (*) FROM big_methods WHERE method_name = '$metodo' and class = '$arq' and project = 'RHTest' and position_class=($qtd_this_method_in_class+1);
 EOF
 							    })
 								
 								if [[ "$count_para_saber_se_ja_existe" -gt 0 ]]
 								then
-									comandos="$comandos UPDATE big_methods SET qtd_linhas = '$count_lines_by_method' WHERE method_name = '$metodo' and class = '$arq' and project = 'RHTest';"
+									comandos="$comandos UPDATE big_methods SET qtd_linhas = '$count_lines_by_method' WHERE method_name = '$metodo' and class = '$arq' and project = 'RHTest' and position_class=($qtd_this_method_in_class+1);"
 								else
-									comandos="$comandos INSERT INTO big_methods(qtd_linhas, method_name, class, project) VALUES('$count_lines_by_method', '$metodo', '$arq', 'RHTest');"
+									comandos="$comandos INSERT INTO big_methods(qtd_linhas, method_name, class, project, position_class) VALUES('$count_lines_by_method', '$metodo', '$arq', 'RHTest', ($qtd_this_method_in_class+1));"
 									
 									nome_arquivo=${arq##*/}
 							  		metodos_grandes_test="$metodos_grandes_test"'  Método '"$metodo"' da classe "'$nome_arquivo'" está com '$count_lines_by_method$' linhas.\n'
@@ -279,7 +302,7 @@ EOF
 							  	qtd_methods_bigs=$(($qtd_methods_bigs+1))
 							  	qtd_methods_bigs_class=$(($qtd_methods_bigs_class+1))
 							  else
-							  	comandos="$comandos delete FROM big_methods WHERE method_name = '$metodo' and class = '$arq' and project = 'RHTest';"
+							  	comandos="$comandos delete FROM big_methods WHERE method_name = '$metodo' and class = '$arq' and project = 'RHTest' and position_class=($qtd_this_method_in_class+1);"
 							  fi
 							  
 							  count_lines_by_method=0
@@ -413,6 +436,7 @@ EOF
 })
 
 
+
 if [[ ${#metodos_grandes_src} -ge 1 ]] 
 then
 	echo $'\n - Surgiram novos métodos grandes no projeto principal: \n'"$metodos_grandes_src"$'\n'
@@ -423,8 +447,9 @@ then
 	echo $'\n - Surgiram novos métodos grandes no projeto de testes: \n'"$metodos_grandes_test"$'\n'
 fi
 
-compare_cod_duplicado_src=$(awk 'BEGIN{ print "'$ultima_porcentagem_cod_dupicado_src'"<"'$atual_porcentagem_cod_duplicado_src'" }')
-if [[ "$compare_cod_duplicado_src" -ne 1  ]]
+atual_porcentagem_cod_duplicado_src=$(awk 'BEGIN{print '$atual_porcentagem_cod_duplicado_src'}')
+compare_cod_duplicado_src=$(awk 'BEGIN{ print "'$ultima_porcentagem_cod_dupicado_src'">="'$atual_porcentagem_cod_duplicado_src'" }')
+if [[ "$compare_cod_duplicado_src" -ne 1 ]]
 then
 	echo $'\n\n - Porcentagem de cód. duplicado aumentou de '$ultima_porcentagem_cod_dupicado_src' para '$atual_porcentagem_cod_duplicado_src
 fi
@@ -433,7 +458,8 @@ psql -qtAU $username $dbname << EOF
 	INSERT INTO ultimas_metricas (data, metrica, val, project) VALUES (current_timestamp, 'cod_duplicado', '$atual_porcentagem_cod_duplicado_src', 'RH');
 EOF
 
-compare_cod_duplicado_test=$(awk 'BEGIN{ print "'$ultima_porcentagem_cod_dupicado_test'"<"'$atual_porcentagem_cod_duplicado_test'" }')
+atual_porcentagem_cod_duplicado_test=$(awk 'BEGIN{print '$atual_porcentagem_cod_duplicado_test'}')
+compare_cod_duplicado_test=$(awk 'BEGIN{ print "'$ultima_porcentagem_cod_dupicado_test'">="'$atual_porcentagem_cod_duplicado_test'" }')
 if [[ "$compare_cod_duplicado_test" -ne 1  ]]
 then
 	echo $'\n\n - Porcentagem de cód. duplicado aumentou de '$ultima_porcentagem_cod_dupicado_test' para '$atual_porcentagem_cod_duplicado_test
