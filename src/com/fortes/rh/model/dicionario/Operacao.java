@@ -255,6 +255,8 @@ public enum Operacao
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			MeioComunicacao.EMAIL.add(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_DESLIGAMENTO);
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
 			
 			return this.getListMeioComunicacao();
 		}

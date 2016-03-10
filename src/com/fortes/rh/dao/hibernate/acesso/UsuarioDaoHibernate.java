@@ -242,7 +242,7 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		query.executeUpdate();
 	}
 	
-	public String[] findEmailsByUsuario(Long[] usuariosIds)
+	public String[] findEmailsByUsuario(Long[] usuariosIds, String notEmail)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.usuario", "u");
@@ -252,9 +252,9 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 
 		criteria.setProjection(p);
 		criteria.add(Expression.in("u.id", usuariosIds));
+		if(notEmail != null) criteria.add(Expression.not(Expression.eq("c.contato.email", notEmail)));
 		
 		criteria.addOrder(Order.asc("c.contato.email"));
-
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
 		return new CollectionUtil<String>().convertCollectionToArrayString(criteria.list());

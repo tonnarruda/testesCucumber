@@ -255,7 +255,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		}
 	}
 
-	public void saveMensagemAndUsuarioMensagem(String msg, String remetente, String link, Collection<UsuarioEmpresa> usuarioEmpresas, Colaborador colaborador, char tipoMensagem, Avaliacao avaliacao)
+	public void saveMensagemAndUsuarioMensagem(String msg, String remetente, String link, Collection<UsuarioEmpresa> usuarioEmpresas, Colaborador colaborador, char tipoMensagem, Avaliacao avaliacao, Long notUsuarioId)
 	{
 		Mensagem mensagem = new Mensagem();
 		mensagem.setData(new Date());
@@ -271,6 +271,9 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 
 		for (UsuarioEmpresa usuarioEmpresa : usuarioEmpresas)
 		{
+			if(notUsuarioId != null && notUsuarioId.equals(usuarioEmpresa.getUsuario().getId()))
+				continue;
+			
 			UsuarioMensagem usuarioMensagem = new UsuarioMensagem();
 			usuarioMensagem.setUsuario(usuarioEmpresa.getUsuario());
 			usuarioMensagem.setMensagem(mensagem);
@@ -284,13 +287,13 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 	public void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String msg, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao)
 	{
 		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionais = usuarioEmpresaManager.findUsuarioResponsavelAreaOrganizacional(areasIds);
-		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, tipoMensagem, avaliacao);
+		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, tipoMensagem, avaliacao, null);
 	}
 
 	public void saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao)
 	{
 		Collection<UsuarioEmpresa> usuariosCoResponsaveisAreaOrganizacionais = usuarioEmpresaManager.findUsuarioCoResponsavelAreaOrganizacional(areasIds);
-		saveMensagemAndUsuarioMensagem(mensagem, remetente, link, usuariosCoResponsaveisAreaOrganizacionais, null, tipoMensagem, avaliacao);
+		saveMensagemAndUsuarioMensagem(mensagem, remetente, link, usuariosCoResponsaveisAreaOrganizacionais, null, tipoMensagem, avaliacao, null);
 	}
 
 	public void setMensagemManager(MensagemManager mensagemManager)

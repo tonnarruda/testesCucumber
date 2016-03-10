@@ -427,7 +427,7 @@
 													[
 													    {
 													        text: "Sim",
-													        click: function() { submit(); }
+													        click: function() { $(this).dialog("close"); submit(); }
 													    },
 													    {
 													        text: "Não",

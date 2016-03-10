@@ -955,6 +955,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 colaborador.setEmpresa(empresa);
 		 colaborador.setContato(new Contato());
 		 colaborador.setAreaOrganizacional(areaOrganizacional);
+		 colaborador.setUsuarioIdProjection(1L);
 		 
 		 TSituacao situacao = new TSituacao();
 		 situacao.setEmpresaCodigoAC("0010");
@@ -1459,7 +1460,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
 		Long[] usuariosIds = collUtil.convertCollectionToArrayIds(gerenciadorComunicacao3.getUsuarios());
-		usuarioManager.expects(once()).method("findEmailsByUsuario").with(eq(usuariosIds)).will(returnValue(emails));
+		usuarioManager.expects(once()).method("findEmailsByUsuario").with(eq(usuariosIds), ANYTHING).will(returnValue(emails));
 		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(situacao.getLotacaoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(areaOrganizacional));
@@ -1570,7 +1571,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		
 		// Email para usuarios
-		usuarioManager.expects(once()).method("findEmailsByUsuario").with(eq(usuariosIds)).will(returnValue(emails));
+		usuarioManager.expects(once()).method("findEmailsByUsuario").with(eq(usuariosIds), ANYTHING).will(returnValue(emails));
 		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		
 		// Caixa de mensagem para gestor
@@ -1665,9 +1666,6 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		areaOrganizacional.setResponsavel(gestor);
 		areaOrganizacional.setAreaMae(areaOrganizacionalMae);
 		
-		Collection<AreaOrganizacional> areas = Arrays.asList(areaOrganizacionalMae, areaOrganizacional);
-		Collection<Long> areasId = Arrays.asList(areaOrganizacionalMae.getId(), areaOrganizacional.getId());
-		
 		MotivoSolicitacao motivoSolicitacao = MotivoSolicitacaoFactory.getEntity();
 		motivoSolicitacao.setId(1L);
 		motivoSolicitacao.setDescricao("Motivo");
@@ -1723,6 +1721,49 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa), eq(subject), eq(body), eq(null), eq(emails)});
 		
 		gerenciadorComunicacaoManager.enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(empresa.getId(), colaborador, null);
+	}
+	
+	public void testEnviaAvisoSolicitacaoDesligamento() throws Exception
+	{
+		Empresa empresa = criaEmpresa();
+		String[] emailsByUsuario = new String[]{empresa.getEmailRespRH()};
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Colaborador");
+		colaborador.setEmailColaborador("colab@gmail.com");
+		colaborador.setDataSolicitacaoDesligamento(DateUtil.criarDataMesAno(1, 1, 2016));
+		colaborador.setMotivoDemissaoMotivo("pq sim");
+		colaborador.setObservacaoDemissao("obs: demissão");
+		colaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		
+		ParametrosDoSistema parametroSistema = new ParametrosDoSistema();
+		parametroSistema.setAppUrl("url");
+		parametroSistema.setEmailDoSuporteTecnico("t@t.com.br");
+		
+		GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
+		gerenciadorComunicacao1.setEmpresa(empresa);
+		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.APROVAR_REPROVAR_SOLICITACAO_DESLIGAMENTO);
+		GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.USUARIOS);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2, gerenciadorComunicacao3);
+		
+		String subject = "[RH] - Solicitação de desligamento de colaborador";
+		String body = "Existe uma solicitação de desligamento para o colaborador <b>Colaborador</b> da empresa <b>Empresa I</b> pendente. Para aprovar ou reprovar essa solicitação, acesse o sistema <a href='url/geral/colaborador/visualizarSolicitacaoDesligamento.action?colaborador.id=1'>RH</a>.<br/><br /><b>Data da Solicitação:</b><br />01/01/2016<br /><br /><b>Motivo:</b><br />pq sim<br /><br /><b>Observação:</b><br />obs: demissão";
+
+		colaboradorManager.expects(atLeastOnce()).method("findByIdComHistorico").withAnyArguments().will(returnValue(colaborador));
+		empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
+		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));
+		usuarioManager.expects(once()).method("findEmailByPerfilAndGestor").withAnyArguments().will(returnValue(emailsByUsuario));
+		usuarioManager.expects(once()).method("findEmailsByUsuario").withAnyArguments().will(returnValue(emailsByUsuario));
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.SOLICITAR_DESLIGAMENTO.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		mail.expects(atLeastOnce()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema), eq(subject), eq(body), eq(true), ANYTHING});
+		
+		Exception e = null;
+		try {
+			gerenciadorComunicacaoManager.enviaAvisoSolicitacaoDesligamento(colaborador.getId(), empresa.getId());
+		} catch (Exception ex) {
+			e = ex;
+		}
+		assertNull(e);
 	}
 	
 	public void testEnviarEmailAoCriarAcessoSistemaSemEmail()
@@ -1857,4 +1898,39 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		return empresa;
 	}
+	
+	 public void testEnviaAvisoAprovacaoSolicitacaoDesligamento() throws Exception
+	 {
+		Empresa empresa = criaEmpresa();
+		
+		Colaborador solicitanteDemissao = ColaboradorFactory.getEntity(1L);
+		solicitanteDemissao.setEmailColaborador("email@gmail.com");
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Colaborador");
+		
+		ParametrosDoSistema parametroSistema = new ParametrosDoSistema();
+		parametroSistema.setAppUrl("url");
+		parametroSistema.setEmailDoSuporteTecnico("t@t.com.br");
+
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.SOLICITANTE_DESLIGAMENTO);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		String subject = "[RH] - Solicitação de desligamento de colaborador aprovada";
+		String body = "<br />Sua solicitação de desligamento para o(a) colaborador(a) <b>Colaborador</b> da empresa <b>Empresa I</b> foi aprovada.<br /><br />";
+		
+		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.APROVAR_SOLICITACAO_DESLIGAMENTO.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(solicitanteDemissao.getId())).will(returnValue(solicitanteDemissao)); 
+		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema), eq(subject), eq(body), eq(true), ANYTHING}).isVoid();
+		
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(5L, colaborador.getNome(), solicitanteDemissao.getId(), empresa, true);
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
 }

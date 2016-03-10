@@ -5068,6 +5068,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(!ArrayUtils.isEmpty(estabelecimentosIds))
 			criteria.add(Expression.in("hc.estabelecimento.id", estabelecimentosIds));
 		
+		criteria.add(Expression.eq("u.acessoSistema", true));
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Usuario.class));
 
@@ -5110,6 +5112,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		p.add(Projections.property("c.empresa.id"), "empresaId");
 		p.add(Projections.property("c.contato.email"), "emailColaborador");
+		p.add(Projections.property("c.usuario.id"), "usuarioIdProjection");
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.empresa.id", empresaId));

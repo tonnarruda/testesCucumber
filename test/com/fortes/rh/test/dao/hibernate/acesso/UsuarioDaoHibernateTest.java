@@ -286,9 +286,9 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		
 		Long[] usuariosIds = new Long[]{usuario.getId(), usuario2.getId()};
 		
-		String[] emails = usuarioDao.findEmailsByUsuario(usuariosIds);
-		assertEquals(2, emails.length);
-		assertEquals(colaborador.getContato().getEmail(), emails[0]);
+		String[] emails = usuarioDao.findEmailsByUsuario(usuariosIds, colaborador.getContato().getEmail());
+		assertEquals(1, emails.length);
+		assertEquals(colaborador2.getContato().getEmail(), emails[0]);
 	}
 	
 	public void testFindAllSelectEmpresa()

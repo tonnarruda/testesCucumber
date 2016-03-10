@@ -256,9 +256,9 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		return getDao().findEmpresas(usuarioNome);
 	}
 	
-	public String[] findEmailsByUsuario(Long[] usuariosIds)
+	public String[] findEmailsByUsuario(Long[] usuariosIds, String notEmail)
 	{
-		return getDao().findEmailsByUsuario(usuariosIds);
+		return getDao().findEmailsByUsuario(usuariosIds, notEmail);
 	}
 
 	public void setUltimoLogin(Long id) 

@@ -240,7 +240,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		mensagemManager.expects(once()).method("save").with(ANYTHING).will(returnValue(mensagem));
 		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
 
-		usuarioMensagemManager.saveMensagemAndUsuarioMensagem("Msg", "Chico Bagulhoso", "link", usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null);
+		usuarioMensagemManager.saveMensagemAndUsuarioMensagem("Msg", "Chico Bagulhoso", "link", usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null, null);
 	}
 
 	public void testSaveMensagemAndUsuarioMensagemRespAreaOrganizacional() throws Exception

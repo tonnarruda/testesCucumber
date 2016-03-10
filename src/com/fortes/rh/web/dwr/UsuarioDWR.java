@@ -6,7 +6,6 @@ import java.util.Map;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.TipoMensagem;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.ConfiguracaoCaixasMensagens;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.ArrayUtil;
@@ -59,6 +58,7 @@ public class UsuarioDWR
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Map getEmpresaUsuario(String usuarioNome)
 	{
 		Collection<Empresa> empresas = usuarioManager.findEmpresas(usuarioNome);
@@ -68,7 +68,6 @@ public class UsuarioDWR
 	public Collection<Usuario> getByAreaOrganizacionalEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds)
 	{
 		Collection<Usuario> usuarios = usuarioManager.findByAreaEstabelecimento(areasIds, estabelecimentosIds);
-		
 		return new CollectionUtil<Usuario>().sortCollectionStringIgnoreCase(usuarios, "nome"); 
 	}
 	

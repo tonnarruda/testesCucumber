@@ -55,7 +55,7 @@ public interface UsuarioManager extends GenericManager<Usuario>
 	
 	public Collection<Usuario> findAllSelect(Long empresaId);
 	
-	public String[] findEmailsByUsuario(Long[] usuariosIds);
+	public String[] findEmailsByUsuario(Long[] usuariosIds, String notEmail);
 
 	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagens);
 
