@@ -72,7 +72,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 	private CandidatoDao candidatoDao;
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
 	private PausaPreenchimentoVagasDao pausaPreenchimentoVagasDao;
-	
+
 	public Solicitacao getEntity()
 	{
 		Solicitacao solicitacao = new Solicitacao();
@@ -192,7 +192,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 		assertEquals(1, solicitacaos.size());
 	}
-
+	
 	public void testFindAllByVisualizacaoInvivelParaGestorUsuarioGestorComPermisaoVerTodasSolicitacoes()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -201,45 +201,26 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Usuario solicitante = UsuarioFactory.getEntity();
 		solicitante = usuarioDao.save(solicitante);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setUsuario(solicitante);
-		colaborador.setEmpresa(empresa);
+		Colaborador colaborador = ColaboradorFactory.getEntity(empresa, solicitante);
 		colaborador = colaboradorDao.save(colaborador);
 
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional.setResponsavel(colaborador);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L, colaborador);
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
+		Solicitacao solicitacaoInvisivelParaGestor = SolicitacaoFactory.getSolicitacao(empresa, solicitante, areaOrganizacional, true, false, false);
+		solicitacaoInvisivelParaGestor = solicitacaoDao.save(solicitacaoInvisivelParaGestor);
+
+		Solicitacao solicitacaoVisivelParaGestor = SolicitacaoFactory.getSolicitacao(empresa, solicitante, areaOrganizacional, false, false, false);
+		solicitacaoVisivelParaGestor = solicitacaoDao.save(solicitacaoVisivelParaGestor);
+		
 		Long cargoId = -1L;
 		Long areaOrganizacionalId = -1L;
 		Long estabelecimentoId = -1L;
 		Long motivoId = -1L;
-		
-		Solicitacao solicitacaoInvisivelParaGestor = SolicitacaoFactory.getSolicitacao();
-		solicitacaoInvisivelParaGestor.setInvisivelParaGestor(true);
-		solicitacaoInvisivelParaGestor.setEncerrada(false);
-		solicitacaoInvisivelParaGestor.setSuspensa(false);
-		solicitacaoInvisivelParaGestor.setEmpresa(empresa);
-		solicitacaoInvisivelParaGestor.setSolicitante(solicitante);
-		solicitacaoInvisivelParaGestor.setAreaOrganizacional(areaOrganizacional);
-		solicitacaoInvisivelParaGestor = solicitacaoDao.save(solicitacaoInvisivelParaGestor);
-		
+
 		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, null, 'T', null, null, new Date(), new Date(), true);
-
-		assertEquals(0, solicitacaos.size());
-		
-		Solicitacao solicitacaoVisivelParaGestor = SolicitacaoFactory.getSolicitacao();
-		solicitacaoVisivelParaGestor.setInvisivelParaGestor(false);
-		solicitacaoVisivelParaGestor.setEncerrada(false);
-		solicitacaoVisivelParaGestor.setSuspensa(false);
-		solicitacaoVisivelParaGestor.setEmpresa(empresa);
-		solicitacaoVisivelParaGestor.setSolicitante(solicitante);
-		solicitacaoVisivelParaGestor.setAreaOrganizacional(areaOrganizacional);
-		solicitacaoVisivelParaGestor = solicitacaoDao.save(solicitacaoVisivelParaGestor);
-		
-		solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, null, 'T', null, null, new Date(), new Date(), true);
-
 		assertEquals(1, solicitacaos.size());
+		assertEquals(solicitacaoVisivelParaGestor.getId(), solicitacaos.iterator().next().getId());
 	}
 	
 	public void testFindAllByVisualizacaoInvivelParaGestorUsuarioGestorSemPermisaoVerTodasSolicitacoes()
@@ -250,44 +231,25 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Usuario solicitante = UsuarioFactory.getEntity();
 		solicitante = usuarioDao.save(solicitante);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setUsuario(solicitante);
-		colaborador.setEmpresa(empresa);
+		Colaborador colaborador = ColaboradorFactory.getEntity(empresa, solicitante);
 		colaborador = colaboradorDao.save(colaborador);
 
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional.setResponsavel(colaborador);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L, colaborador);
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
 		Long cargoId = -1L;
 		Long estabelecimentoId = -1L;
 		Long motivoId = -1L;
 		
-		Solicitacao solicitacaoInvisivelParaGestor = SolicitacaoFactory.getSolicitacao();
-		solicitacaoInvisivelParaGestor.setInvisivelParaGestor(true);
-		solicitacaoInvisivelParaGestor.setEncerrada(false);
-		solicitacaoInvisivelParaGestor.setSuspensa(false);
-		solicitacaoInvisivelParaGestor.setEmpresa(empresa);
-		solicitacaoInvisivelParaGestor.setSolicitante(solicitante);
-		solicitacaoInvisivelParaGestor.setAreaOrganizacional(areaOrganizacional);
+		Solicitacao solicitacaoInvisivelParaGestor = SolicitacaoFactory.getSolicitacao(empresa, solicitante, areaOrganizacional, true, false, false);
 		solicitacaoInvisivelParaGestor = solicitacaoDao.save(solicitacaoInvisivelParaGestor);
 		
-		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacional.getId(), cargoId, motivoId, null, 'T', new Long[]{areaOrganizacional.getId()}, null, new Date(), new Date(), false);
-
-		assertEquals(0, solicitacaos.size());
-		
-		Solicitacao solicitacaoVisivelParaGestor = SolicitacaoFactory.getSolicitacao();
-		solicitacaoVisivelParaGestor.setInvisivelParaGestor(false);
-		solicitacaoVisivelParaGestor.setEncerrada(false);
-		solicitacaoVisivelParaGestor.setSuspensa(false);
-		solicitacaoVisivelParaGestor.setEmpresa(empresa);
-		solicitacaoVisivelParaGestor.setSolicitante(solicitante);
-		solicitacaoVisivelParaGestor.setAreaOrganizacional(areaOrganizacional);
+		Solicitacao solicitacaoVisivelParaGestor = SolicitacaoFactory.getSolicitacao(empresa, solicitante, areaOrganizacional, false, false, false);
 		solicitacaoVisivelParaGestor = solicitacaoDao.save(solicitacaoVisivelParaGestor);
-		
-		solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacional.getId(), cargoId, motivoId, null, 'T', new Long[]{areaOrganizacional.getId()}, null, new Date(), new Date(), false);
 
+		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacional.getId(), cargoId, motivoId, null, 'T', new Long[]{areaOrganizacional.getId()}, null, new Date(), new Date(), false);
 		assertEquals(1, solicitacaos.size());
+		assertEquals(solicitacaoVisivelParaGestor.getId(), solicitacaos.iterator().next().getId());
 	}
 	
 	public void testFindAllByVisualizacaoInvivelParaGestorUsuarioNaoGestorComPermisaoVerTodasSolicitacoes()
@@ -297,6 +259,9 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 		Usuario solicitante = UsuarioFactory.getEntity();
 		solicitante = usuarioDao.save(solicitante);
+
+		Usuario solicitante2 = UsuarioFactory.getEntity();
+		solicitante2 = usuarioDao.save(solicitante2);
 		
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
@@ -306,33 +271,13 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long estabelecimentoId = -1L;
 		Long motivoId = -1L;
 		
-		Solicitacao solicitacaoInvisivelParaGestor = SolicitacaoFactory.getSolicitacao();
-		solicitacaoInvisivelParaGestor.setInvisivelParaGestor(true);
-		solicitacaoInvisivelParaGestor.setEncerrada(false);
-		solicitacaoInvisivelParaGestor.setSuspensa(true);
-		solicitacaoInvisivelParaGestor.setEmpresa(empresa);
-		solicitacaoInvisivelParaGestor.setSolicitante(solicitante);
-		solicitacaoInvisivelParaGestor.setAreaOrganizacional(areaOrganizacional);
+		Solicitacao solicitacaoInvisivelParaGestor = SolicitacaoFactory.getSolicitacao(empresa, solicitante, areaOrganizacional, true, false, true);
 		solicitacaoInvisivelParaGestor = solicitacaoDao.save(solicitacaoInvisivelParaGestor);
-		
-		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'S', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, "", 'T', null, null, new Date(), new Date(), true);
 
-		assertEquals(1, solicitacaos.size());
-		
-		Usuario solicitante2 = UsuarioFactory.getEntity();
-		solicitante2 = usuarioDao.save(solicitante2);
-		
-		Solicitacao solicitacaoVisivelParaGestor = SolicitacaoFactory.getSolicitacao();
-		solicitacaoVisivelParaGestor.setInvisivelParaGestor(false);
-		solicitacaoVisivelParaGestor.setEncerrada(false);
-		solicitacaoVisivelParaGestor.setSuspensa(true);
-		solicitacaoVisivelParaGestor.setEmpresa(empresa);
-		solicitacaoVisivelParaGestor.setSolicitante(solicitante2);
-		solicitacaoVisivelParaGestor.setAreaOrganizacional(areaOrganizacional);
+		Solicitacao solicitacaoVisivelParaGestor = SolicitacaoFactory.getSolicitacao(empresa, solicitante2, areaOrganizacional, false, false, true);
 		solicitacaoVisivelParaGestor = solicitacaoDao.save(solicitacaoVisivelParaGestor);
 		
-		solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'S', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, null, 'T', new Long[]{}, null, new Date(), new Date(), true);
-
+		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'S', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, "", 'T', null, null, new Date(), new Date(), true);
 		assertEquals(2, solicitacaos.size());
 	}
 	
@@ -343,6 +288,9 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 		Usuario solicitante = UsuarioFactory.getEntity();
 		solicitante = usuarioDao.save(solicitante);
+
+		Usuario solicitante2 = UsuarioFactory.getEntity();
+		solicitante2 = usuarioDao.save(solicitante2);
 		
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
@@ -352,33 +300,16 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long estabelecimentoId = -1L;
 		Long motivoId = -1L;
 		
-		Solicitacao solicitacaoInvisivelParaGestor = SolicitacaoFactory.getSolicitacao();
-		solicitacaoInvisivelParaGestor.setInvisivelParaGestor(true);
-		solicitacaoInvisivelParaGestor.setEncerrada(false);
-		solicitacaoInvisivelParaGestor.setSuspensa(false);
-		solicitacaoInvisivelParaGestor.setEmpresa(empresa);
-		solicitacaoInvisivelParaGestor.setSolicitante(solicitante);
-		solicitacaoInvisivelParaGestor.setAreaOrganizacional(areaOrganizacional);
+		Solicitacao solicitacaoInvisivelParaGestor = SolicitacaoFactory.getSolicitacao(empresa, solicitante, areaOrganizacional, true, false, false);
 		solicitacaoInvisivelParaGestor = solicitacaoDao.save(solicitacaoInvisivelParaGestor);
 		
-		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, null, 'T', null, null, new Date(), new Date(), false);
+		Solicitacao solicitacaoVisivelParaGestor = SolicitacaoFactory.getSolicitacao(empresa, solicitante2, areaOrganizacional, false, false, false);
+		solicitacaoVisivelParaGestor = solicitacaoDao.save(solicitacaoVisivelParaGestor);
 
+		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, null, 'T', null, null, new Date(), new Date(), false);
 		assertEquals(1, solicitacaos.size());
 		
-		Usuario solicitante2 = UsuarioFactory.getEntity();
-		solicitante2 = usuarioDao.save(solicitante2);
-		
-		Solicitacao solicitacaoVisivelParaGestor = SolicitacaoFactory.getSolicitacao();
-		solicitacaoVisivelParaGestor.setInvisivelParaGestor(false);
-		solicitacaoVisivelParaGestor.setEncerrada(false);
-		solicitacaoVisivelParaGestor.setSuspensa(false);
-		solicitacaoVisivelParaGestor.setEmpresa(empresa);
-		solicitacaoVisivelParaGestor.setSolicitante(solicitante2);
-		solicitacaoVisivelParaGestor.setAreaOrganizacional(areaOrganizacional);
-		solicitacaoVisivelParaGestor = solicitacaoDao.save(solicitacaoVisivelParaGestor);
-		
 		solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'T', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, null, 'T', null, null, new Date(), new Date(), false);
-
 		assertEquals(1, solicitacaos.size());
 	}
 	public void testFindQtdVagasDisponiveis()
@@ -413,68 +344,22 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		
 		Date hoje = new Date();
 		
-		Solicitacao solicitacao1 =SolicitacaoFactory.getSolicitacao();
-		solicitacao1.setEncerrada(false);
-		solicitacao1.setSuspensa(false);
-		solicitacao1.setStatus(StatusAprovacaoSolicitacao.APROVADO);
-		solicitacao1.setData(hoje);
-		solicitacao1.setEmpresa(empresa);		
-		solicitacao1.setFaixaSalarial(faixaSalarial1);
-		solicitacao1.setQuantidade(5);
+		Solicitacao solicitacao1 =SolicitacaoFactory.getSolicitacao(empresa, faixaSalarial1, false, false, StatusAprovacaoSolicitacao.APROVADO, 5,hoje);
 		solicitacaoDao.save(solicitacao1);
 		
-		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
-		solicitacao2.setEncerrada(false);
-		solicitacao2.setSuspensa(false);
-		solicitacao2.setStatus(StatusAprovacaoSolicitacao.APROVADO);
-		solicitacao2.setData(hoje);
-		solicitacao2.setEmpresa(empresa);		
-		solicitacao2.setFaixaSalarial(faixaSalarial2);
-		solicitacao2.setQuantidade(20);
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao(empresa, faixaSalarial2, false, false, StatusAprovacaoSolicitacao.APROVADO, 20, hoje);
 		solicitacaoDao.save(solicitacao2);
 		
-		Solicitacao solicitacaoTesteEstabelecimento1 = SolicitacaoFactory.getSolicitacao();
-		solicitacaoTesteEstabelecimento1.setEncerrada(false);
-		solicitacaoTesteEstabelecimento1.setSuspensa(false);
-		solicitacaoTesteEstabelecimento1.setStatus(StatusAprovacaoSolicitacao.APROVADO);
-		solicitacaoTesteEstabelecimento1.setData(hoje);
-		solicitacaoTesteEstabelecimento1.setEmpresa(empresa);		
-		solicitacaoTesteEstabelecimento1.setEstabelecimento(estabelecimentoFora);		
-		solicitacaoTesteEstabelecimento1.setFaixaSalarial(faixaSalarial2);
-		solicitacaoTesteEstabelecimento1.setQuantidade(2);
+		Solicitacao solicitacaoTesteEstabelecimento1 = SolicitacaoFactory.getSolicitacao(empresa, estabelecimentoFora, faixaSalarial2, false, false, StatusAprovacaoSolicitacao.APROVADO, 2, hoje);
 		solicitacaoDao.save(solicitacaoTesteEstabelecimento1);
 		
-		Solicitacao solicitacaoTesteEstabelecimento2 = SolicitacaoFactory.getSolicitacao();
-		solicitacaoTesteEstabelecimento2.setEncerrada(false);
-		solicitacaoTesteEstabelecimento2.setSuspensa(false);
-		solicitacaoTesteEstabelecimento2.setStatus(StatusAprovacaoSolicitacao.APROVADO);
-		solicitacaoTesteEstabelecimento2.setData(hoje);
-		solicitacaoTesteEstabelecimento2.setEmpresa(empresa);		
-		solicitacaoTesteEstabelecimento2.setEstabelecimento(estabelecimento);		
-		solicitacaoTesteEstabelecimento2.setFaixaSalarial(faixaSalarial1);
-		solicitacaoTesteEstabelecimento2.setQuantidade(4);
+		Solicitacao solicitacaoTesteEstabelecimento2 = SolicitacaoFactory.getSolicitacao(empresa, estabelecimento, faixaSalarial1, false, false, StatusAprovacaoSolicitacao.APROVADO, 4, hoje);
 		solicitacaoDao.save(solicitacaoTesteEstabelecimento2);
 		
-		Solicitacao solicitacaoTesteArea1 = SolicitacaoFactory.getSolicitacao();
-		solicitacaoTesteArea1.setEncerrada(false);
-		solicitacaoTesteArea1.setSuspensa(false);
-		solicitacaoTesteArea1.setStatus(StatusAprovacaoSolicitacao.APROVADO);
-		solicitacaoTesteArea1.setData(hoje);
-		solicitacaoTesteArea1.setEmpresa(empresa);		
-		solicitacaoTesteArea1.setFaixaSalarial(faixaSalarial1);
-		solicitacaoTesteArea1.setAreaOrganizacional(areaOrganizacional);
-		solicitacaoTesteArea1.setQuantidade(6);
+		Solicitacao solicitacaoTesteArea1 = SolicitacaoFactory.getSolicitacao(empresa, areaOrganizacional, faixaSalarial1, false, false, StatusAprovacaoSolicitacao.APROVADO, 6, hoje);
 		solicitacaoDao.save(solicitacaoTesteArea1);
 		
-		Solicitacao solicitacaoTesteArea2 = SolicitacaoFactory.getSolicitacao();
-		solicitacaoTesteArea2.setEncerrada(false);
-		solicitacaoTesteArea2.setSuspensa(false);
-		solicitacaoTesteArea2.setStatus(StatusAprovacaoSolicitacao.APROVADO);
-		solicitacaoTesteArea2.setData(hoje);
-		solicitacaoTesteArea2.setEmpresa(empresa);		
-		solicitacaoTesteArea2.setFaixaSalarial(faixaSalarial2);
-		solicitacaoTesteArea2.setAreaOrganizacional(areaOrganizacionalFora);
-		solicitacaoTesteArea2.setQuantidade(8);
+		Solicitacao solicitacaoTesteArea2 = SolicitacaoFactory.getSolicitacao(empresa, areaOrganizacionalFora, faixaSalarial2, false, false, StatusAprovacaoSolicitacao.APROVADO, 8, hoje);
 		solicitacaoDao.save(solicitacaoTesteArea2);
 		
 		Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};

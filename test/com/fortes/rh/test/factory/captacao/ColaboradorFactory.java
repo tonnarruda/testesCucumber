@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Habilitacao;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.Colaborador;
@@ -111,5 +112,12 @@ public class ColaboradorFactory
 
 		return colaboradors;
 	}
-
+	
+	public static Colaborador getEntity(Empresa empresa, Usuario usuario)
+	{
+		Colaborador colaborador = getEntity();
+		colaborador.setEmpresa(empresa);
+		colaborador.setUsuario(usuario);
+		return colaborador;
+	}
 }
