@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -1614,8 +1615,34 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	}
 	
 	public Collection<ColaboradorTurma> findCursosCertificacoesAVencer(Date dataReferencia, Long empresaId) {
-		
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
+		joinsFindCursosCertificacoesAVencer(criteria);
+		projectionsListFindCursosCertificacoesAVencer(criteria);
+		criteria.add(Expression.eq("e.id", empresaId));
+		criteria.add(Expression.eq("t.realizada", true));
+		criteria.add(Expression.eq("cb.desligado", false));
+		criteria.add(Expression.gt("c.periodicidade", 0));
+		
+	    DetachedCriteria subSelect = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+	    		.setProjection(Projections.max("hc2.data"))
+	    		.add(Restrictions.eqProperty("hc2.colaborador.id", "cb.id"))
+	    		.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+	    
+	    criteria.add(Subqueries.propertyEq("hc.data", subSelect));
+		criteria.add(criterionCursosAVencer(dataReferencia, "=", StatusAprovacao.APROVADO));
+		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.addOrder(Order.asc("cb.nome"));
+		criteria.addOrder(Order.asc("cb.id"));
+		criteria.addOrder(Order.asc("cc.nome"));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
+		Collection<ColaboradorTurma> colaboradores = criteria.list();
+		
+		return colaboradores;
+	}
+
+	private void joinsFindCursosCertificacoesAVencer(Criteria criteria) throws HibernateException {
 		criteria.createCriteria("ct.colaborador", "cb", Criteria.INNER_JOIN);
 		criteria.createCriteria("cb.empresa", "e", Criteria.INNER_JOIN);
 		criteria.createCriteria("ct.curso", "c", Criteria.INNER_JOIN);
@@ -1625,7 +1652,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		criteria.createCriteria("fs.cargo", "ca", Criteria.INNER_JOIN);
 		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.INNER_JOIN);
 		criteria.createCriteria("c.certificacaos", "cc", Criteria.LEFT_JOIN);
-		
+	}
+
+	private void projectionsListFindCursosCertificacoesAVencer(Criteria criteria) {
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cc.nome"), "certificacaoNome");
 		p.add(Projections.property("cb.id"), "colaboradorId");
@@ -1642,32 +1671,6 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.sqlProjection("( t4_.dataprevfim + (c3_.periodicidade || ' month')::interval) as vencimento", new String[] {"vencimento"}, new Type[] {Hibernate.DATE}), "vencimento");
 		
 		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("e.id", empresaId));
-		criteria.add(Expression.eq("t.realizada", true));
-		criteria.add(Expression.eq("cb.desligado", false));
-		criteria.add(Expression.gt("c.periodicidade", 0));
-		
-	    DetachedCriteria subSelect = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
-	    		.setProjection(Projections.max("hc2.data"))
-	    		.add(Restrictions.eqProperty("hc2.colaborador.id", "cb.id"))
-	    		.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
-	    
-	    criteria.add(Subqueries.propertyEq("hc.data", subSelect));
-	    
-		criteria.add(criterionCursosAVencer(dataReferencia, "=", StatusAprovacao.APROVADO));
-		
-		criteria.addOrder(Order.asc("c.nome"));
-		criteria.addOrder(Order.asc("cb.nome"));
-		criteria.addOrder(Order.asc("cb.id"));
-		criteria.addOrder(Order.asc("cc.nome"));
-		
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
-		
-		Collection<ColaboradorTurma> colaboradores = criteria.list();
-		
-		return colaboradores;
-		
 	}
 	
 	private Criterion criterionCursosAVencer(Date dataReferencia, String operador, char filtroAprovado){
