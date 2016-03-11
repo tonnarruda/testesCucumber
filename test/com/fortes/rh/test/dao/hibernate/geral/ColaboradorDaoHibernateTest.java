@@ -1850,17 +1850,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(colaborador.getId(), colaboradorTmp.getId());
 		assertEquals(colaborador.getNomeComercial(), colaboradorTmp.getNomeComercial());
 	}
-
-	public void testFindByFuncaoAmbienteNull() {
-		Ambiente ambiente = AmbienteFactory.getEntity();
-		ambiente = ambienteDao.save(ambiente);
-
-		Funcao funcao = FuncaoFactory.getEntity();
-		funcao.setId(null);
-
-		Collection<Colaborador> colaboradores = colaboradorDao.findByFuncaoAmbiente(funcao.getId(), ambiente.getId());
-		assertEquals(null, colaboradores);
-	}
 	
 	public void testFindFuncaoAmbiente() {
 		Empresa empresa = EmpresaFactory.getEmpresa();

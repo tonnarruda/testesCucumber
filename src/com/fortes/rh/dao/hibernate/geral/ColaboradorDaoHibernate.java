@@ -70,28 +70,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	private static final int GRUPO_OCUPACIONAL = 2;
 	@SuppressWarnings("unused")
 	private static final int CARGO = 3;
-	
 	private static final int MOTIVODEMISSAO = 1;
 	private static final int MOTIVODEMISSAOQUANTIDADE = 2;
 
-	/**
-	 * Retorna a lista de colaboradores das áreas organizacionais informadas com
-	 * opção do uso de paginação. A informação historica(Área, Faixa e Salário)
-	 * é buscada do Histórico do colaborador e setada em campos transientes.
-	 * 
-	 * @author Igo Coelho
-	 * @param colaborador
-	 * @param Coleção
-	 *            com os ID das Áreas Organizacionais
-	 * @param Número
-	 *            da página
-	 * @param Quantidade
-	 *            de itens para paginação
-	 * @since 16/02/2008
-	 * @return Coleção com os colaboradores das Áreas Organizacionais Informadas
-	 */
-	public Collection<Colaborador> findByAreaOrganizacionalIds(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentosIds, Collection<Long> cargosIds, Integer page, Integer pagingSize, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo, boolean somenteDesligados)
-	{
+	public Collection<Colaborador> findByAreaOrganizacionalIds(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentosIds, Collection<Long> cargosIds, Integer page, Integer pagingSize, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo, boolean somenteDesligados){
 		String whereNome = "";
 		String whereMatricula = "";
 		String whereAreaIds = "";
@@ -108,8 +90,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
 			whereEstabelecimentosIds = "and hc.estabelecimento.id in (:estabelecimentosIds) ";
 
-		if(colaborador != null)
-		{
+		if(colaborador != null){
 			if(colaborador.getNome() != null && !colaborador.getNome().equals(""))
 				whereNome = "and lower(co.nome) like :nome ";
 
@@ -198,51 +179,29 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	/**
-	 * @author Igo Coelho
-	 * @since 16/02/2008
-	 * @param page
-	 *            : Número da página
-	 * @param pagingSize
-	 *            : Quantidade de itens para paginação
-	 * @param areasIds
-	 *            : Array de Long com os ID das Áreas Organizacionais
-	 * @return Coleção com os colaboradores das Áreas Organizacionais Informadas
-	 */
 	public Collection<Colaborador> findByAreaOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Long[] cargosIds, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo, boolean somenteDesligados)
 	{
 		Collection<Long> param = new HashSet<Long>();
-		if(areasIds != null && areasIds.length > 0)
-		{
+		if(areasIds != null && areasIds.length > 0){
 			for (int i = 0; i < areasIds.length; i++)
 				param.add(areasIds[i]);			
 		}
 		
 		Collection<Long> param2 = new HashSet<Long>();
-		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
-		{
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0){
 			for (int i = 0; i < estabelecimentosIds.length; i++)
 				param2.add(estabelecimentosIds[i]);
 		}
 		
 		Collection<Long> param3 = new HashSet<Long>();
-		if(cargosIds != null && cargosIds.length > 0)
-		{
+		if(cargosIds != null && cargosIds.length > 0){
 			for (int i = 0; i < cargosIds.length; i++)
 				param3.add(cargosIds[i]);
 		}
 		
-		
 		return findByAreaOrganizacionalIds(param, param2, param3, page, pagingSize, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, comHistColaboradorFuturo, somenteDesligados);
 	}
 
-	/**
-	 * @author Igo Coelho
-	 * @since 16/02/2008
-	 * @param Array
-	 *            de Long com os ID das Áreas Organizacionais
-	 * @return Coleção com os colaboradores das Áreas Organizacionais Informadas
-	 */
 	public Collection<Colaborador> findByAreaOrganizacionalIds(Long[] ids)
 	{
 		Collection<Long> param = new HashSet<Long>();
@@ -251,13 +210,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null, null, null, false, false);
 	}
 
-	/**
-	 * @author Igo Coelho
-	 * @since 16/02/2008
-	 * @param Área
-	 *            Organizacionai desejada
-	 * @return Coleção com os colaboradores das Áreas Organizacionais Informadas
-	 */
 	public Collection<Colaborador> findByArea(AreaOrganizacional area)
 	{
 		Collection<Long> param = new HashSet<Long>();
@@ -265,10 +217,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null, null, null, false, false);
 	}
 
-	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario)
-	{
+	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario){
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
-
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
@@ -479,25 +429,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return result;
 	}
 
-	public Colaborador findColaboradorPesquisa(Long id, Long empresaId)
-	{
+	public Colaborador findColaboradorPesquisa(Long id, Long empresaId){
 		Colaborador colaborador = new Colaborador();
-
 		StringBuilder hql = new StringBuilder();
 		hql.append("select co.id, co.nomeComercial, ao.id, ao.nome, co.empresa.id, co.nome ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.areaOrganizacional as ao ");
-		hql.append("where ");
-		hql.append("	co.empresa.id = :empresaId ");
-		hql.append("	and co.id = :id ");
-		hql.append("	and hc.status = :status ");
-		hql.append("	and hc.data = ( ");
-		hql.append("		select max(hc2.data) ");
-		hql.append("		from HistoricoColaborador as hc2 ");
-		hql.append("		where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
-		hql.append("	)");
+		hql.append("where co.empresa.id = :empresaId ");
+		hql.append("	and co.id = :id and hc.status = :status ");
+		hql.append("	and hc.data = ( select max(hc2.data) from HistoricoColaborador as hc2 where hc2.colaborador.id = co.id ");
+		hql.append("					and hc2.data <= :hoje and hc2.status = :status )");
 		hql.append("order by co.nomeComercial");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -509,18 +451,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Collection<Colaborador> colaboradors = new LinkedList<Colaborador>();
 		Collection lista = query.list();
 
-		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
-		{
+		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();){
 			Object[] array = it.next();
-			Colaborador colaboradorTmp = new Colaborador();
-			colaboradorTmp.setId((Long) array[0]);
-			colaboradorTmp.setNomeComercial((String) array[1]);
-			colaboradorTmp.setAreaOrganizacionalId((Long) array[2]);
-			colaboradorTmp.setAreaOrganizacionalNome((String) array[3]);
-			colaboradorTmp.setEmpresaId((Long) array[4]);
-			colaboradorTmp.setNome((String) array[5]);
-
-			colaboradors.add(colaboradorTmp);
+			colaboradors.add(new Colaborador((Long) array[0], (String) array[5], (String) array[1], null, null, (Long) array[2], (String) array[3], null, null, (Long) array[4], new Date()));
 		}
 
 		if(colaboradors != null && !colaboradors.isEmpty())
@@ -541,21 +474,69 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.createCriteria("c.pessoal.rgUf", "rgUf", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("c.id"), "id");
-		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
-		p.add(Projections.property("c.nome"), "nome");
-		p.add(Projections.property("c.matricula"), "matricula");
-		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
-		p.add(Projections.property("c.codigoAC"), "codigoAC");
-		p.add(Projections.property("c.cursos"), "cursos");
-		p.add(Projections.property("c.desligado"), "desligado");
-		p.add(Projections.property("c.dataDesligamento"), "dataDesligamento");
-		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
-		p.add(Projections.property("c.observacao"), "observacao");
-		p.add(Projections.property("c.observacaoDemissao"), "observacaoDemissao");
-		p.add(Projections.property("c.demissaoGerouSubstituicao"), "demissaoGerouSubstituicao");
-		p.add(Projections.property("c.vinculo"), "vinculo");
-		p.add(Projections.property("c.naoIntegraAc"), "naoIntegraAc");
+		projectionDadosColaborador(p);
+		projectionDadosPessoaisDoColaborador(p);
+		projectionDadosHabilidadeEContatoColaborador(p);
+		projectionDadosCamposExtrasColaborador(p);
+		p.add(Projections.property("c.candidato.id"), "candidatoId");
+		p.add(Projections.property("ci.id"), "enderecoCidadeId");
+		p.add(Projections.property("ci.nome"), "enderecoCidadeNome");
+		p.add(Projections.property("ci.codigoAC"), "projectionCidadeCodigoAC");
+		p.add(Projections.property("m.id"), "projectionMotivoDemissaoId");
+		p.add(Projections.property("m.motivo"), "motivoDemissaoMotivo");
+		p.add(Projections.property("u.sigla"), "enderecoUfSigla");
+		p.add(Projections.property("u.id"), "enderecoUfId");
+		p.add(Projections.property("emp.id"), "empresaId");
+		p.add(Projections.property("emp.nome"), "empresaNome");
+		p.add(Projections.property("emp.codigoAC"), "empresaCodigoAC");
+		p.add(Projections.property("emp.grupoAC"), "empresaGrupoAC");
+		p.add(Projections.property("emp.campoExtraColaborador"), "campoExtraColaborador");
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("c.id", id));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return (Colaborador) criteria.uniqueResult();
+	}
+
+	private void projectionDadosCamposExtrasColaborador(ProjectionList p) {
+		p.add(Projections.property("ce.id"), "projectionCamposExtrasId");
+		p.add(Projections.property("ce.texto1"), "projectionTexto1");
+		p.add(Projections.property("ce.texto2"), "projectionTexto2");
+		p.add(Projections.property("ce.texto3"), "projectionTexto3");
+		p.add(Projections.property("ce.texto4"), "projectionTexto4");
+		p.add(Projections.property("ce.texto5"), "projectionTexto5");
+		p.add(Projections.property("ce.texto6"), "projectionTexto6");
+		p.add(Projections.property("ce.texto7"), "projectionTexto7");
+		p.add(Projections.property("ce.texto8"), "projectionTexto8");
+		p.add(Projections.property("ce.textolongo1"), "projectionTextolongo1");
+		p.add(Projections.property("ce.textolongo2"), "projectionTextolongo2");
+		p.add(Projections.property("ce.data1"), "projectionData1");
+		p.add(Projections.property("ce.data2"), "projectionData2");
+		p.add(Projections.property("ce.data3"), "projectionData3");
+		p.add(Projections.property("ce.valor1"), "projectionValor1");
+		p.add(Projections.property("ce.valor2"), "projectionValor2");
+		p.add(Projections.property("ce.numero1"), "projectionNumero1");
+	}
+
+	private void projectionDadosHabilidadeEContatoColaborador(ProjectionList p) {
+		p.add(Projections.property("ctpsUf.id"), "projectionCtpsUfId");
+		p.add(Projections.property("ctpsUf.sigla"), "projectionCtpsUfSigla");
+		p.add(Projections.property("c.habilitacao.numeroHab"), "projectionNumeroHabilitacao");
+		p.add(Projections.property("c.habilitacao.emissao"), "projectionEmissaoHabilitacao");
+		p.add(Projections.property("c.habilitacao.vencimento"), "projectionVencimentoHabilitacao");
+		p.add(Projections.property("c.habilitacao.categoria"), "projectionCategoriaHabilitacao");
+		p.add(Projections.property("c.endereco.logradouro"), "enderecoLogradouro");
+		p.add(Projections.property("c.endereco.complemento"), "enderecoComplemento");
+		p.add(Projections.property("c.endereco.numero"), "enderecoNumero");
+		p.add(Projections.property("c.endereco.bairro"), "enderecoBairro");
+		p.add(Projections.property("c.endereco.cep"), "enderecoCep");
+		p.add(Projections.property("c.contato.email"), "emailColaborador");
+		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
+		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
+		p.add(Projections.property("c.contato.foneFixo"), "contatoFoneFixo");
+	}
+
+	private void projectionDadosPessoaisDoColaborador(ProjectionList p) {
 		p.add(Projections.property("c.pessoal.estadoCivil"), "pessoalEstadoCivil");
 		p.add(Projections.property("c.pessoal.escolaridade"), "pessoalEscolaridade");
 		p.add(Projections.property("c.pessoal.mae"), "pessoalMae");
@@ -582,66 +563,29 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.pessoal.ctps.ctpsSerie"), "projectionCtpsSerie");
 		p.add(Projections.property("c.pessoal.ctps.ctpsDv"), "projectionCtpsDv");
 		p.add(Projections.property("c.pessoal.ctps.ctpsDataExpedicao"), "projectionCtpsDataExpedicao");
-		p.add(Projections.property("ctpsUf.id"), "projectionCtpsUfId");
-		p.add(Projections.property("ctpsUf.sigla"), "projectionCtpsUfSigla");
-		p.add(Projections.property("c.habilitacao.numeroHab"), "projectionNumeroHabilitacao");
-		p.add(Projections.property("c.habilitacao.emissao"), "projectionEmissaoHabilitacao");
-		p.add(Projections.property("c.habilitacao.vencimento"), "projectionVencimentoHabilitacao");
-		p.add(Projections.property("c.habilitacao.categoria"), "projectionCategoriaHabilitacao");
-		p.add(Projections.property("c.endereco.logradouro"), "enderecoLogradouro");
-		p.add(Projections.property("c.endereco.complemento"), "enderecoComplemento");
-		p.add(Projections.property("c.endereco.numero"), "enderecoNumero");
-		p.add(Projections.property("c.endereco.bairro"), "enderecoBairro");
-		p.add(Projections.property("c.endereco.cep"), "enderecoCep");
-		p.add(Projections.property("c.contato.email"), "emailColaborador");
-		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
-		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
-		p.add(Projections.property("c.contato.foneFixo"), "contatoFoneFixo");
-		p.add(Projections.property("c.candidato.id"), "candidatoId");
-		p.add(Projections.property("ci.id"), "enderecoCidadeId");
-		p.add(Projections.property("ci.nome"), "enderecoCidadeNome");
-		p.add(Projections.property("ci.codigoAC"), "projectionCidadeCodigoAC");
-		p.add(Projections.property("m.id"), "projectionMotivoDemissaoId");
-		p.add(Projections.property("m.motivo"), "motivoDemissaoMotivo");
-		p.add(Projections.property("u.sigla"), "enderecoUfSigla");
-		p.add(Projections.property("u.id"), "enderecoUfId");
-		p.add(Projections.property("emp.id"), "empresaId");
-		p.add(Projections.property("emp.nome"), "empresaNome");
-		p.add(Projections.property("emp.codigoAC"), "empresaCodigoAC");
-		p.add(Projections.property("emp.grupoAC"), "empresaGrupoAC");
-		p.add(Projections.property("emp.campoExtraColaborador"), "campoExtraColaborador");
-		p.add(Projections.property("ce.id"), "projectionCamposExtrasId");
-		p.add(Projections.property("ce.texto1"), "projectionTexto1");
-		p.add(Projections.property("ce.texto2"), "projectionTexto2");
-		p.add(Projections.property("ce.texto3"), "projectionTexto3");
-		p.add(Projections.property("ce.texto4"), "projectionTexto4");
-		p.add(Projections.property("ce.texto5"), "projectionTexto5");
-		p.add(Projections.property("ce.texto6"), "projectionTexto6");
-		p.add(Projections.property("ce.texto7"), "projectionTexto7");
-		p.add(Projections.property("ce.texto8"), "projectionTexto8");
-		p.add(Projections.property("ce.textolongo1"), "projectionTextolongo1");
-		p.add(Projections.property("ce.textolongo2"), "projectionTextolongo2");
-		p.add(Projections.property("ce.data1"), "projectionData1");
-		p.add(Projections.property("ce.data2"), "projectionData2");
-		p.add(Projections.property("ce.data3"), "projectionData3");
-		p.add(Projections.property("ce.valor1"), "projectionValor1");
-		p.add(Projections.property("ce.valor2"), "projectionValor2");
-		p.add(Projections.property("ce.numero1"), "projectionNumero1");
-		
+	}
 
-		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("c.id", id));
-
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
-
-		return (Colaborador) criteria.uniqueResult();
+	private void projectionDadosColaborador(ProjectionList p) {
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.matricula"), "matricula");
+		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
+		p.add(Projections.property("c.codigoAC"), "codigoAC");
+		p.add(Projections.property("c.cursos"), "cursos");
+		p.add(Projections.property("c.desligado"), "desligado");
+		p.add(Projections.property("c.dataDesligamento"), "dataDesligamento");
+		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
+		p.add(Projections.property("c.observacao"), "observacao");
+		p.add(Projections.property("c.observacaoDemissao"), "observacaoDemissao");
+		p.add(Projections.property("c.demissaoGerouSubstituicao"), "demissaoGerouSubstituicao");
+		p.add(Projections.property("c.vinculo"), "vinculo");
+		p.add(Projections.property("c.naoIntegraAc"), "naoIntegraAc");
 	}
 
 	public Colaborador findColaboradorByIdProjection(Long colaboradorId)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
-
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
@@ -660,41 +604,29 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.camposExtras.id"), "projectionCamposExtrasId");
 		p.add(Projections.property("c.candidato.id"), "candidatoId");
 		p.add(Projections.property("c.empresa.id"), "empresaId");
-
 		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
 		p.add(Projections.property("c.pessoal.rg"), "projectionRg");
 		p.add(Projections.property("c.pessoal.dataNascimento"), "projectionDataNascimento");
-
 		p.add(Projections.property("c.contato.email"), "emailColaborador");
 
 		criteria.setProjection(p);
-
 		criteria.add(Expression.eq("c.id", colaboradorId));
-
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 
 		return (Colaborador) criteria.uniqueResult();
 	}
 
-	public Colaborador findByUsuario(Usuario usuario, Long empresaId)
-	{
-		Colaborador colaborador = new Colaborador();
-
+	public Colaborador findByUsuario(Usuario usuario, Long empresaId){
 		StringBuilder hql = new StringBuilder();
 		hql.append("select co.id, ao.id ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.areaOrganizacional as ao ");
-		hql.append("where ");
-		hql.append("	co.empresa.id = :empresaId ");
+		hql.append("where co.empresa.id = :empresaId ");
 		hql.append("	and co.usuario.id = :id ");
 		hql.append("	and hc.status = :status ");
-		hql.append("	and hc.data = ( ");
-		hql.append("		select max(hc2.data) ");
-		hql.append("		from HistoricoColaborador as hc2 ");
-		hql.append("		where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
-		hql.append("	)");
+		hql.append("	and hc.data = (select max(hc2.data) from HistoricoColaborador as hc2 where hc2.colaborador.id = co.id ");
+		hql.append("					and hc2.data <= :hoje and hc2.status = :status )");
 		hql.append("order by co.nomeComercial");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -703,27 +635,23 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setLong("id", usuario.getId());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
-		Collection<Colaborador> colaboradors = new LinkedList<Colaborador>();
 		Collection lista = query.list();
-
-		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
-		{
+		Collection<Colaborador> colaboradors = new LinkedList<Colaborador>();
+		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();){
 			Object[] array = it.next();
 			Colaborador colaboradorTmp = new Colaborador();
 			colaboradorTmp.setId((Long) array[0]);
 			colaboradorTmp.setAreaOrganizacionalId((Long) array[1]);
-
 			colaboradors.add(colaboradorTmp);
 		}
-
+		Colaborador colaborador = new Colaborador();
 		if(colaboradors != null && !colaboradors.isEmpty())
 			colaborador = (Colaborador) colaboradors.toArray()[0];
 
 		return colaborador;
 	}
 
-	public Colaborador findColaboradorUsuarioByCpf(String cpf, Long empresaId)
-	{
+	public Colaborador findColaboradorUsuarioByCpf(String cpf, Long empresaId){
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.usuario", "u");
 
@@ -747,8 +675,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 
-	public Colaborador findbyCandidato(Long candidatoId, Long empresaId)
-	{
+	public Colaborador findbyCandidato(Long candidatoId, Long empresaId){
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.empresa", "emp", Criteria.LEFT_JOIN);
 		
@@ -771,11 +698,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 
-	public Collection<Colaborador> findByFuncaoAmbiente(Long funcaoId, Long ambienteId)
-	{
-		if(funcaoId == null || ambienteId == null)
-			return null;
-
+	public Collection<Colaborador> findByFuncaoAmbiente(Long funcaoId, Long ambienteId){
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.desligado) "); 
 		hql.append("from HistoricoColaborador as hc ");
@@ -785,12 +708,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		and hc.status = :status ");
 		hql.append("		and hc.ambiente.id = :ambienteId and "); 
 		hql.append("		co.desligado = false ");
-		hql.append("		and hc.data = ("); 
-		hql.append("					select max(hc2.data) "); 
-		hql.append("					from HistoricoColaborador as hc2 ");
-		hql.append("					where hc2.colaborador.id = co.id ");
-		hql.append("					and hc2.data <= :hoje and hc2.status = :status ");
-		hql.append("				 )");
+		hql.append("		and hc.data = (select max(hc2.data) from HistoricoColaborador as hc2 where hc2.colaborador.id = co.id ");
+		hql.append("						and hc2.data <= :hoje and hc2.status = :status)");
 		hql.append(" order by co.nomeComercial");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -802,8 +721,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Colaborador findFuncaoAmbiente(Long colaboradorId)
-	{
+	public Colaborador findFuncaoAmbiente(Long colaboradorId){
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nomeComercial, func, amb) "); 
 		hql.append("from HistoricoColaborador as hc ");
@@ -828,8 +746,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) query.uniqueResult();
 	}
 
-	public boolean setCodigoColaboradorAC(String codigo, Long id)
-	{
+	public boolean setCodigoColaboradorAC(String codigo, Long id){
 		String hql = "update Colaborador set codigoac = :codigo where id = :id";
 		Query query = getSession().createQuery(hql);
 		query.setString("codigo", codigo);
@@ -854,7 +771,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Colaborador findByCodigoAC(String codigoAC, Empresa empresa)
 	{
 		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
-
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 		criteria.createCriteria("c.empresa", "e");
 		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
@@ -886,13 +802,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 
-	@Override
-	public Colaborador findById(Long colaboradorId)
-	{
+	public Colaborador findById(Long colaboradorId){
 		Colaborador colaborador = new Colaborador();
-
 		StringBuilder hql = new StringBuilder();
-
 		montaSelectFindById(hql);
 
 		hql.append("	where co.id = :id ");
@@ -957,8 +869,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByAreasOrganizacionaisEstabelecimentos(Collection<Long> areasOrganizacionaisIds, Collection<Long> estabelecimentoIds, String colaboradorNome, Long empresaId)
-	{
+	public Collection<Colaborador> findByAreasOrganizacionaisEstabelecimentos(Collection<Long> areasOrganizacionaisIds, Collection<Long> estabelecimentoIds, String colaboradorNome, Long empresaId){
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome, faixa.id, faixa.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
@@ -966,27 +877,20 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc.areaOrganizacional as a ");
 		hql.append("left join hc.faixaSalarial as faixa ");
 		hql.append("left join a.areaMae as am ");
-		hql.append("	where co.desligado = :desligado ");
+		hql.append(" where co.desligado = :desligado ");
 		
 		if(StringUtils.isNotBlank(colaboradorNome))
 			hql.append(" and normalizar(upper(co.nome)) like normalizar(:colaboradorNome) ");
-		
 		if(areasOrganizacionaisIds != null && !areasOrganizacionaisIds.isEmpty())
 			hql.append("	and a.id in (:areaIds) ");
-		
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			hql.append("	and hc.estabelecimento.id in (:estabelecimentoIds) ");
-		
 		if(empresaId != null)
 			hql.append("	and co.empresa.id = :empresaId ");
 		
-		hql.append("	and hc.data = (");
-		hql.append("		select max(hc2.data) ");
-		hql.append("		from HistoricoColaborador as hc2 ");
-		hql.append("			where hc2.colaborador.id = co.id ");
+		hql.append("	and hc.data = (select max(hc2.data) from HistoricoColaborador as hc2 where hc2.colaborador.id = co.id ");
 		hql.append("			and hc2.data <= :hoje ");
-		hql.append("			and hc2.status = :status ");
-		hql.append("		) ");
+		hql.append("			and hc2.status = :status) ");
 		hql.append(" order by co.nomeComercial ");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -1006,9 +910,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByCargoIdsEstabelecimentoIds(Collection<Long> cargoIds, Collection<Long> estabelecimentoIds, String colaboradorNome, Long empresaId)
-	{
-		
+	public Collection<Colaborador> findByCargoIdsEstabelecimentoIds(Collection<Long> cargoIds, Collection<Long> estabelecimentoIds, String colaboradorNome, Long empresaId){
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
@@ -1017,43 +919,30 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join fs.cargo as ca ");
 		hql.append("left join hc.areaOrganizacional as a ");
 		hql.append("left join a.areaMae as am ");
-		hql.append("	where co.desligado = :desligado ");
-		
+		hql.append(" where co.desligado = :desligado ");
+		hql.append(" and hc.data = (select max(hc2.data) from HistoricoColaborador as hc2 where hc2.colaborador.id = co.id and hc2.data <= :hoje and hc2.status = :status ) ");
 		if(StringUtils.isNotBlank(colaboradorNome))
 			hql.append(" and normalizar(upper(co.nome)) like normalizar(:colaboradorNome) ");
-		
 		if(cargoIds != null && !cargoIds.isEmpty())
-			hql.append("	and ca.id in (:cargoIds) ");
-		
+			hql.append(" and ca.id in (:cargoIds) ");
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
-			hql.append("	and hc.estabelecimento.id in (:estabelecimentoIds) ");
-		
+			hql.append(" and hc.estabelecimento.id in (:estabelecimentoIds) ");
 		if(empresaId != null)
-			hql.append("	and co.empresa.id = :empresaId ");
-		
-		hql.append("	and hc.data = (");
-		hql.append("		select max(hc2.data) ");
-		hql.append("		from HistoricoColaborador as hc2 ");
-		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje ");
-		hql.append("			and hc2.status = :status ");
-		hql.append("		) ");
+			hql.append(" and co.empresa.id = :empresaId ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setBoolean("desligado", false);
 		query.setDate("hoje", new Date());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		
 		if(StringUtils.isNotBlank(colaboradorNome))
 			query.setString("colaboradorNome", "%" + colaboradorNome.toUpperCase() + "%");
-		
 		if(cargoIds != null && !cargoIds.isEmpty())
 			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
-
+		
 		return query.list();
 	}
 

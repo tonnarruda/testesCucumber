@@ -1368,7 +1368,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					notEmail = areaOrganizacionalManager.getEmailResponsavel(solicitacao.getAreaOrganizacional().getId());
 				UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 				String[] emailsByUsuario = usuarioManager.findEmailByPerfilAndGestor("ROLE_LIBERA_SOLICITACAO", empresa.getId(), solicitacao.getAreaOrganizacional().getId(), false, notEmail);
-				
 				if(emailsByUsuario != null && emailsByUsuario.length > 0 ){
 					String link = parametrosDoSistema.getAppUrl() + "/captacao/solicitacao/prepareUpdate.action?solicitacao.id=" + solicitacao.getId();
 					String bodyAprovarReprovar = body.toString();

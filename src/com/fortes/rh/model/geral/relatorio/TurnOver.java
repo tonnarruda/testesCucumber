@@ -28,6 +28,16 @@ public class TurnOver
 		this.setQtdColaboradores(qtdColaboradores);
 		this.setTempoServico(tempoServico);
 	}
+	
+	public TurnOver (Date mesAno, double qtdAtivosInicioMes, double qtdAtivosFinalMes, double qtdAdmitidos, double qtdDemitidos)
+	{
+		super();
+		setMesAno(mesAno);
+		setQtdAdmitidos(qtdAdmitidos);
+		setQtdDemitidos(qtdDemitidos);
+		setQtdAtivosInicioMes(qtdAtivosInicioMes);
+		setQtdAtivosFinalMes(qtdAtivosFinalMes);
+	}
 
 	public void setMesAnoQtdDemitidos(Date mesAno, Double qtdDemitidos) 
 	{

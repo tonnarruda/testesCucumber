@@ -843,6 +843,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Colaborador> findByFuncaoAmbiente(Long funcaoId, Long ambienteId)
 	{
+		if(funcaoId == null || ambienteId == null)
+			return null;
+		
 		return getDao().findByFuncaoAmbiente(funcaoId, ambienteId);
 	}
 
@@ -1174,45 +1177,27 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		ArrayList<String> colaboradoresIdsList = new ArrayList<String>();
 		ArrayList<Long> empresasIdsList = new ArrayList<Long>();
-		
-		for (Colaborador colaborador : colaboradores) 
-		{			
-			if (colaborador.getEmpresa().isAcIntegra() && colaborador.getCodigoAC() != null && !colaborador.getCodigoAC().equals("") && !colaborador.isNaoIntegraAc())
-			{
-				colaboradoresIdsList.remove(colaborador.getCodigoAC().toString());
-				colaboradoresIdsList.add(colaborador.getCodigoAC().toString());
-				
-				Long empresaId = colaborador.getEmpresa().getId();
-				if (empresaId != null && !empresasIdsList.contains(empresaId))
-					empresasIdsList.add(empresaId);
-			}
-		}
+		preparaCollectionRemuneracaoVariavel(colaboradores, colaboradoresIdsList, empresasIdsList);
 		
 		String[] colaboradoresIds = new String[colaboradoresIdsList.size()];
 		colaboradoresIds = colaboradoresIdsList.toArray(colaboradoresIds);
 		
-		if (colaboradoresIdsList.size() != 0)
-		{
+		if (colaboradoresIdsList.size() != 0){
 			List<TRemuneracaoVariavel> remuneracoesVariaveisList = new ArrayList<TRemuneracaoVariavel>();
 			Empresa empresa;
 			TRemuneracaoVariavel[] remuneracoesVariaveisTemp;
 
-			for (Long empresaId : empresasIdsList)
-			{
+			for (Long empresaId : empresasIdsList){
 				empresa = empresaManager.findById(empresaId);
 				remuneracoesVariaveisTemp = acPessoalClientColaborador.getRemuneracoesVariaveis(empresa, colaboradoresIds, DateUtil.formataAnoMes(new Date()), DateUtil.formataAnoMes(new Date())); 
 				CollectionUtil<TRemuneracaoVariavel> util = new CollectionUtil<TRemuneracaoVariavel>();
 				remuneracoesVariaveisList.addAll(util.convertArrayToCollection(remuneracoesVariaveisTemp));
 			}
 						
-			for (TRemuneracaoVariavel remuneracaoVariavel : remuneracoesVariaveisList)
-			{
-				for (Colaborador colaborador : colaboradores) 
-				{
-					if (colaborador.getCodigoAC() != null && !colaborador.getCodigoAC().equals(""))
-					{
-						if (colaborador.getCodigoAC().equals(remuneracaoVariavel.getCodigoEmpregado()))
-						{
+			for (TRemuneracaoVariavel remuneracaoVariavel : remuneracoesVariaveisList){
+				for (Colaborador colaborador : colaboradores) {
+					if (colaborador.getCodigoAC() != null && !colaborador.getCodigoAC().equals(""))	{
+						if (colaborador.getCodigoAC().equals(remuneracaoVariavel.getCodigoEmpregado()))	{
 							colaborador.getHistoricoColaborador().setSalarioVariavel(remuneracaoVariavel.getValor());
 							colaborador.getHistoricoColaborador().setMensalidade(remuneracaoVariavel.getMensalidade());
 							break;
@@ -1223,21 +1208,27 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 
+	private void preparaCollectionRemuneracaoVariavel(Collection<Colaborador> colaboradores, ArrayList<String> colaboradoresIdsList, ArrayList<Long> empresasIdsList) {
+		for (Colaborador colaborador : colaboradores){			
+			if (colaborador.getEmpresa().isAcIntegra() && colaborador.getCodigoAC() != null && !colaborador.getCodigoAC().equals("") && !colaborador.isNaoIntegraAc()){
+				colaboradoresIdsList.remove(colaborador.getCodigoAC().toString());
+				colaboradoresIdsList.add(colaborador.getCodigoAC().toString());
+				
+				Long empresaId = colaborador.getEmpresa().getId();
+				if (empresaId != null && !empresasIdsList.contains(empresaId))
+					empresasIdsList.add(empresaId);
+			}
+		}
+	}
+
 	public void verificaColaboradoresSemCodigoAC(Collection<ReajusteColaborador> reajustes) throws Exception
 	{
 		StringBuilder colaboradoresSemCodigoAC = new StringBuilder();
-
 		for (ReajusteColaborador reajusteColaborador : reajustes)
-		{
-			if (!reajusteColaborador.getColaborador().isNaoIntegraAc()
-					&& StringUtils.isBlank(reajusteColaborador.getColaborador().getCodigoAC()))
-			{
+			if (!reajusteColaborador.getColaborador().isNaoIntegraAc() && StringUtils.isBlank(reajusteColaborador.getColaborador().getCodigoAC()))
 				colaboradoresSemCodigoAC.append(reajusteColaborador.getColaborador().getNomeComercial() + ", ");
-			}
-		}
 
-		if (colaboradoresSemCodigoAC.length() > 0)
-		{
+		if (colaboradoresSemCodigoAC.length() > 0){
 			colaboradoresSemCodigoAC = colaboradoresSemCodigoAC.replace(colaboradoresSemCodigoAC.length() - 2, colaboradoresSemCodigoAC.length(), ".");
 			throw new ColecaoVaziaException("O reajuste não pode ser aplicado enquanto os cadastros destes colaboradores não for concluído no Fortes Pessoal:<br>"
 					+ colaboradoresSemCodigoAC);
@@ -1247,17 +1238,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void verificaColaboradoresDesligados(Collection<ReajusteColaborador> reajustes) throws Exception
 	{
 		StringBuilder colaboradoresDesligados = new StringBuilder();
-
 		for (ReajusteColaborador reajusteColaborador : reajustes)
-		{
 			if (reajusteColaborador.getColaborador().getDataDesligamento() != null && reajusteColaborador.getColaborador().getDataDesligamento().before(reajusteColaborador.getTabelaReajusteColaborador().getData()))
-			{
 				colaboradoresDesligados.append(reajusteColaborador.getColaborador().getNomeComercial() + ", ");
-			}
-		}
 
-		if (colaboradoresDesligados.length() > 0)
-		{
+		if (colaboradoresDesligados.length() > 0){
 			colaboradoresDesligados = colaboradoresDesligados.replace(colaboradoresDesligados.length() - 2, colaboradoresDesligados.length(), ".");
 			throw new ColecaoVaziaException("O reajuste não pode ser aplicado pois os seguintes colaboradores estão desligados da empresa:<br>" + colaboradoresDesligados);
 		}
@@ -1334,13 +1319,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findComNotaDoCurso(colaboradorIds, turmaId);
 	}
 
-	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas,
-			Collection<Experiencia> experiencias, Empresa empresa) throws Exception
-			{
-		try
-		{
+	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa) throws Exception{
+		try{
 			Colaborador colaboradorOriginal = findColaboradorById(colaborador.getId());
-
 			getDao().updateInfoPessoais(colaborador);
 			salvarBairro(colaborador);
 
@@ -1350,8 +1331,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 			saveDetalhes(colaborador, formacaos, idiomas, experiencias);
 
-			if(empresa.isAcIntegra() && verifyExists(new String[]{"id", "naoIntegraAc", "codigoAC"}, new Object[]{colaborador.getId(), false, colaborador.getCodigoAC()}))
-			{
+			if(empresa.isAcIntegra() && verifyExists(new String[]{"id", "naoIntegraAc", "codigoAC"}, new Object[]{colaborador.getId(), false, colaborador.getCodigoAC()})){
 				colaborador = findColaboradorById(colaborador.getId());
 				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa);
 			}
@@ -1360,14 +1340,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			replicaUpdateCandidato(findAllRelacionamentos(colaborador.getId()), idiomas);
 			
 			gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
-			
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e){
 			e.printStackTrace();
 			throw new Exception("Não foi possível editar o colaborador.");
 		}
-			}
+	}
 
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId)
 	{
@@ -1393,8 +1370,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void saveEmpregadosESituacoes(TEmpregado[] tEmpregados, TSituacao[] tSituacoes, Empresa empresa) throws Exception
 	{
-		for(TEmpregado tEmpregado: tEmpregados)
-		{
+		for(TEmpregado tEmpregado: tEmpregados){
 			Colaborador colaborador = new Colaborador();
 			bindColaborador(colaborador, tEmpregado);
 			colaborador.setCodigoAC(tEmpregado.getCodigoACDestino());
@@ -1420,8 +1396,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 
-	private Colaborador bindColaborador(Colaborador colaborador, TEmpregado empregado) throws Exception
-	{
+	private Colaborador bindColaborador(Colaborador colaborador, TEmpregado empregado) throws Exception {
 		colaborador.setCodigoAC(empregado.getCodigoAC());
 		colaborador.setNome(empregado.getNome());
 		if(empregado.getNomeComercial() != null && !empregado.getNomeComercial().equals(""))
@@ -1429,10 +1404,90 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		colaborador.setDataAdmissao(empregado.getDataAdmissaoFormatada());
 		colaborador.setMatricula(empregado.getMatricula());
+
+		bindEnderecoColaborador(colaborador, empregado);
+		bindPessoalColaborador(colaborador, empregado);
+
+		if(colaborador.getContato() == null)
+			colaborador.setContato(new Contato());
+		colaborador.getContato().setDdd(empregado.getDdd());
+		colaborador.getContato().setFoneFixo(empregado.getFoneFixo());
+		colaborador.getContato().setFoneCelular(empregado.getFoneCelular());
+		colaborador.getContato().setEmail(empregado.getEmail());
+
+		if(colaborador.getHabilitacao() == null)
+			colaborador.setHabilitacao(new Habilitacao());
+		colaborador.getHabilitacao().setNumeroHab(empregado.getHabilitacaoNumero());
+		colaborador.getHabilitacao().setEmissao(empregado.getHabilitacaoEmissaoFormatada());
+		colaborador.getHabilitacao().setVencimento(empregado.getHabilitacaoVencimentoFormatada());
+		colaborador.getHabilitacao().setCategoria(empregado.getHabilitacaoCategoria());
+
+		String vinculo = getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo(), empregado.getCategoria());
+		colaborador.setVinculo(vinculo);
+		bindFoto(colaborador, empregado);
+
+		return colaborador;
+	}
+
+	private void bindPessoalColaborador(Colaborador colaborador, TEmpregado empregado) {
+		if(colaborador.getPessoal() == null)
+			colaborador.setPessoal(new Pessoal());
+
+		colaborador.getPessoal().setCpf(empregado.getCpf());
+		colaborador.getPessoal().setPis(empregado.getPis());
+		colaborador.getPessoal().setDataNascimento(empregado.getDataNascimentoFormatada());
+		populaEscolaridade(colaborador, empregado);
+		bindPessoalTituloEleitoralColaborador(colaborador, empregado);
+		bindPessoalCertificadoMilitarColaborador(colaborador, empregado);
+		bindPessoalCtpsColaborador(colaborador, empregado);
+		colaborador.getPessoal().setEstadoCivil(empregado.getEstadoCivil());
+		colaborador.getPessoal().setConjuge(empregado.getConjuge());
+		colaborador.getPessoal().setPai(empregado.getPai());
+		colaborador.getPessoal().setMae(empregado.getMae());
+		colaborador.getPessoal().setRg(empregado.getIdentidadeNumero());
+		colaborador.getPessoal().setRgOrgaoEmissor(empregado.getIdentidadeOrgao());
+		colaborador.getPessoal().setRgDataExpedicao(empregado.getIdentidadeDataExpedicaoFormatada());
 		
+		if (StringUtils.isNotBlank(empregado.getSexo()))
+			colaborador.getPessoal().setSexo(empregado.getSexo().charAt(0));
+		if (StringUtils.isNotBlank(empregado.getDeficiencia()))
+			colaborador.getPessoal().setDeficiencia(empregado.getDeficiencia().charAt(0));
+		if (StringUtils.isNotBlank(empregado.getIdentidadeUF()))
+			colaborador.getPessoal().setRgUf(estadoManager.findBySigla(empregado.getIdentidadeUF()));
+		if (StringUtils.isNotBlank(empregado.getCtpsUFSigla()))
+			colaborador.getPessoal().getCtps().setCtpsUf(estadoManager.findBySigla(empregado.getCtpsUFSigla()));
+		if (StringUtils.isNotBlank(empregado.getCtpsDV()))
+			colaborador.getPessoal().getCtps().setCtpsDv(empregado.getCtpsDV().charAt(0));
+	}
+
+	private void bindPessoalTituloEleitoralColaborador(Colaborador colaborador, TEmpregado empregado) {
+		if(colaborador.getPessoal().getTituloEleitoral() == null)
+			colaborador.getPessoal().setTituloEleitoral(new TituloEleitoral());
+		colaborador.getPessoal().getTituloEleitoral().setTitEleitNumero(empregado.getTituloNumero());
+		colaborador.getPessoal().getTituloEleitoral().setTitEleitSecao(empregado.getTituloSecao());
+		colaborador.getPessoal().getTituloEleitoral().setTitEleitZona(empregado.getTituloZona());
+	}
+
+	private void bindPessoalCtpsColaborador(Colaborador colaborador, TEmpregado empregado) {
+		if(colaborador.getPessoal().getCtps() == null)
+			colaborador.getPessoal().setCtps(new Ctps());
+		colaborador.getPessoal().getCtps().setCtpsNumero(empregado.getCtpsNumero());
+		colaborador.getPessoal().getCtps().setCtpsSerie(empregado.getCtpsSerie());
+		colaborador.getPessoal().getCtps().setCtpsDataExpedicao(empregado.getCtpsDataExpedicaoFormatada());
+	}
+
+	private void bindPessoalCertificadoMilitarColaborador(Colaborador colaborador, TEmpregado empregado) {
+		if(colaborador.getPessoal().getCertificadoMilitar() == null)
+			colaborador.getPessoal().setCertificadoMilitar(new CertificadoMilitar());
+		colaborador.getPessoal().getCertificadoMilitar().setCertMilNumero(empregado.getCertificadoMilitarNumero());
+		colaborador.getPessoal().getCertificadoMilitar().setCertMilTipo(empregado.getCertificadoMilitarTipo());
+		colaborador.getPessoal().getCertificadoMilitar().setCertMilSerie(empregado.getCertificadoMilitarSerie());
+	}
+
+	private void bindEnderecoColaborador(Colaborador colaborador, TEmpregado empregado) throws Exception {
 		if(colaborador.getEndereco() == null)
 			colaborador.setEndereco(new Endereco());
-
+		
 		colaborador.getEndereco().setLogradouro(empregado.getLogradouro());
 		colaborador.getEndereco().setNumero(empregado.getNumero());
 		colaborador.getEndereco().setComplemento(empregado.getComplemento());
@@ -1448,79 +1503,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.getEndereco().setCidade(cidade);
 			colaborador.getEndereco().setUf(colaborador.getEndereco().getCidade().getUf());
 		}
-
-		if(colaborador.getPessoal() == null)
-			colaborador.setPessoal(new Pessoal());
-
-		colaborador.getPessoal().setCpf(empregado.getCpf());
-		colaborador.getPessoal().setPis(empregado.getPis());
-
-		if (StringUtils.isNotBlank(empregado.getSexo()))
-			colaborador.getPessoal().setSexo(empregado.getSexo().charAt(0));
-
-		colaborador.getPessoal().setDataNascimento(empregado.getDataNascimentoFormatada());
-
-		populaEscolaridade(colaborador, empregado);
-		
-		colaborador.getPessoal().setEstadoCivil(empregado.getEstadoCivil());
-		colaborador.getPessoal().setConjuge(empregado.getConjuge());
-		colaborador.getPessoal().setPai(empregado.getPai());
-		colaborador.getPessoal().setMae(empregado.getMae());
-
-		if (StringUtils.isNotBlank(empregado.getDeficiencia()))
-			colaborador.getPessoal().setDeficiencia(empregado.getDeficiencia().charAt(0));
-
-		if(colaborador.getContato() == null)
-			colaborador.setContato(new Contato());
-		colaborador.getContato().setDdd(empregado.getDdd());
-		colaborador.getContato().setFoneFixo(empregado.getFoneFixo());
-		colaborador.getContato().setFoneCelular(empregado.getFoneCelular());
-		colaborador.getContato().setEmail(empregado.getEmail());
-
-		colaborador.getPessoal().setRg(empregado.getIdentidadeNumero());
-		colaborador.getPessoal().setRgOrgaoEmissor(empregado.getIdentidadeOrgao());
-		colaborador.getPessoal().setRgDataExpedicao(empregado.getIdentidadeDataExpedicaoFormatada());
-
-		if (StringUtils.isNotBlank(empregado.getIdentidadeUF()))
-			colaborador.getPessoal().setRgUf(estadoManager.findBySigla(empregado.getIdentidadeUF()));
-
-		if(colaborador.getPessoal().getTituloEleitoral() == null)
-			colaborador.getPessoal().setTituloEleitoral(new TituloEleitoral());
-		colaborador.getPessoal().getTituloEleitoral().setTitEleitNumero(empregado.getTituloNumero());
-		colaborador.getPessoal().getTituloEleitoral().setTitEleitSecao(empregado.getTituloSecao());
-		colaborador.getPessoal().getTituloEleitoral().setTitEleitZona(empregado.getTituloZona());
-
-		if(colaborador.getPessoal().getCertificadoMilitar() == null)
-			colaborador.getPessoal().setCertificadoMilitar(new CertificadoMilitar());
-		colaborador.getPessoal().getCertificadoMilitar().setCertMilNumero(empregado.getCertificadoMilitarNumero());
-		colaborador.getPessoal().getCertificadoMilitar().setCertMilTipo(empregado.getCertificadoMilitarTipo());
-		colaborador.getPessoal().getCertificadoMilitar().setCertMilSerie(empregado.getCertificadoMilitarSerie());
-
-		if(colaborador.getHabilitacao() == null)
-			colaborador.setHabilitacao(new Habilitacao());
-		colaborador.getHabilitacao().setNumeroHab(empregado.getHabilitacaoNumero());
-		colaborador.getHabilitacao().setEmissao(empregado.getHabilitacaoEmissaoFormatada());
-		colaborador.getHabilitacao().setVencimento(empregado.getHabilitacaoVencimentoFormatada());
-		colaborador.getHabilitacao().setCategoria(empregado.getHabilitacaoCategoria());
-
-		if(colaborador.getPessoal().getCtps() == null)
-			colaborador.getPessoal().setCtps(new Ctps());
-		colaborador.getPessoal().getCtps().setCtpsNumero(empregado.getCtpsNumero());
-		colaborador.getPessoal().getCtps().setCtpsSerie(empregado.getCtpsSerie());
-		colaborador.getPessoal().getCtps().setCtpsDataExpedicao(empregado.getCtpsDataExpedicaoFormatada());
-
-		if (StringUtils.isNotBlank(empregado.getCtpsUFSigla()))
-			colaborador.getPessoal().getCtps().setCtpsUf(estadoManager.findBySigla(empregado.getCtpsUFSigla()));
-
-		if (StringUtils.isNotBlank(empregado.getCtpsDV()))
-			colaborador.getPessoal().getCtps().setCtpsDv(empregado.getCtpsDV().charAt(0));
-
-		String vinculo = getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo(), empregado.getCategoria());
-		colaborador.setVinculo(vinculo);
-		
-		bindFoto(colaborador, empregado);
-
-		return colaborador;
 	}
 
 	private void bindFoto(Colaborador colaborador, TEmpregado empregado) 
@@ -1696,8 +1678,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return dependenciasDaTabelaColaborador;
 	}
 	
-	public Colaborador removeColaboradorDependencias(Colaborador colaborador) 
-	{
+	public Colaborador removeColaboradorDependencias(Colaborador colaborador){
 		formacaoManager.removeColaborador(colaborador);
 		colaboradorIdiomaManager.removeColaborador(colaborador);
 		experienciaManager.removeColaborador(colaborador);
@@ -1710,12 +1691,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			solicitacaoExameManager.transferirColaboradorToCandidato(colaborador.getEmpresa().getId(), colaborador.getCandidato().getId(), colaborador.getId());
 
 		solicitacaoExameManager.removeByColaborador(colaborador.getId());
-		
 		Colaborador	colaboradorTmp = getDao().findColaboradorByIdProjection(colaborador.getId());
-
 		candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaborador.getId());
 		candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaborador.getId());
-
 		historicoColaboradorManager.removeColaborador(colaborador.getId());
 		
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -1725,21 +1703,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			remove(colaborador.getId());
 			mensagemManager.removerMensagensViculadasByColaborador(new Long[]{colaborador.getId()});
 			transactionManager.commit(status);
-		} catch (Exception e) {
-			transactionManager.rollback(status);
-		}
+		} catch (Exception e) {transactionManager.rollback(status);}
 
 		if(colaboradorTmp.getCamposExtras() != null && colaboradorTmp.getCamposExtras().getId() != null && !candidatoManager.existeCamposExtras(colaboradorTmp.getCamposExtras().getId()))
 			camposExtrasManager.remove(colaboradorTmp.getCamposExtras().getId());
-
 		
 		return colaboradorTmp;
 	}
 
 	public Collection<CheckBox> populaCheckBox(Long empresaId)
 	{
-		try
-		{
+		try{
 			Collection<Colaborador> colaboradoresTmp = getDao().findAllSelect(empresaId, "nomeComercial");
 			return CheckListBoxUtil.populaCheckListBox(colaboradoresTmp, "getId", "getNomeMaisNomeComercial");
 		}
@@ -1901,21 +1875,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 
 	@SuppressWarnings("rawtypes")
-	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros) throws Exception
-	{
+	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros) throws Exception{
 		Collection<Colaborador> result = new LinkedList<Colaborador>();
-
 		Collection lista = getDao().findComHistoricoFuturoSQL(parametros, pagingSize, page);
-
-		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
-		{
+		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();){
 			Object[] array = it.next();
-			Colaborador colaborador = new Colaborador();
-
-			if(array[0] != null)
-				colaborador.setId(((BigInteger)array[0]).longValue());
-
-			colaborador.setNome((String) array[1]);
+			Colaborador colaborador = new Colaborador((String) array[1]);
+			colaborador.setId(array[0] != null ? ((BigInteger)array[0]).longValue(): null);
 			colaborador.setNomeComercial((String) array[2]);
 			colaborador.setMatricula((String) array[3]);
 			colaborador.setDesligado((Boolean) array[4]);
@@ -1923,151 +1889,76 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.setPessoal(new Pessoal());
 			colaborador.getPessoal().setCpf((String) array[6]);
 			colaborador.setUsuario(new Usuario());
-
-			if(array[7] != null)
-				colaborador.getUsuario().setId(((BigInteger)array[7]).longValue());
-
+			colaborador.getUsuario().setId(array[7] != null ? ((BigInteger)array[7]).longValue() : null);
 			colaborador.setDataDesligamento((Date) array[8]);
 			colaborador.setMotivoDemissaoMotivo((String) array[9]);
-
-			if (colaborador.isDesligado() == true)
-				colaborador.setNome((String) array[1] + " (Desligado em " + DateUtil.formataDiaMesAno(colaborador.getDataDesligamento()) + ")");
-
-			if(array[10] != null)
-				colaborador.setRespondeuEntrevista((Boolean) array[10]);
-			else
-				colaborador.setRespondeuEntrevista(false);
-
+			colaborador.setNome(colaborador.isDesligado() == true ? (String) array[1] + " (Desligado em " + DateUtil.formataDiaMesAno(colaborador.getDataDesligamento()) + ")": null);
+			colaborador.setRespondeuEntrevista(array[10] != null ? (Boolean) array[10] : false);
 			colaborador.setCandidato(new Candidato());
-
-			if(array[11] != null)
-				colaborador.getCandidato().setId(((BigInteger)array[11]).longValue());
-
+			colaborador.getCandidato().setId(array[11] != null ? ((BigInteger)array[11]).longValue() : null);
 			colaborador.setNaoIntegraAc((Boolean) array[12]);
-			
-			if(array[13] != null)
-				colaborador.setDataSolicitacaoDesligamento((Date) array[13]);
-
-			if(array[14] != null)
-				colaborador.setDataSolicitacaoDesligamentoAc((Date) array[14]);
-
-			if(array[15] != null)
-				colaborador.setAreaOrganizacionalId(((BigInteger)array[15]).longValue());
-			
-			if(array[16] != null)
-				colaborador.setStatusAcPessoal(((Integer)array[16]).intValue());
-				
+			colaborador.setDataSolicitacaoDesligamento(array[13] != null ? (Date) array[13] : null);
+			colaborador.setDataSolicitacaoDesligamentoAc(array[14] != null ? (Date) array[14] : null);
+			colaborador.setAreaOrganizacionalId(array[15] != null ? ((BigInteger)array[15]).longValue() : null);
+			colaborador.setStatusAcPessoal(array[16] != null ? ((Integer)array[16]).intValue() : null);
 			colaborador.setCodigoAC((String)array[17]);
-			
 			result.add(colaborador);
 		}
-
 		return result;
-
 	}
 
-	public Collection<Colaborador> getAvaliacoesExperienciaPendentes(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, Integer diasDeAcompanhamento, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception 
-	{
-		int gordura = 0;
-		if(diasDeAcompanhamento != null)
-			gordura = diasDeAcompanhamento;
-
-		int menorPeriodo = 0;
-		if(!periodoExperiencias.isEmpty())
-			menorPeriodo = ((PeriodoExperiencia)periodoExperiencias.toArray()[0]).getDias();
-
-		menorPeriodo = menorPeriodo - gordura;
-
+	public Collection<Colaborador> getAvaliacoesExperienciaPendentes(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, Integer diasDeAcompanhamento, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception{
+		int gordura = calculaGordura(diasDeAcompanhamento, periodoExperiencias);
 		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(periodoIni, periodoFim, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa);
 		Collection<Colaborador> colaboradoresComAvaliacoes = getDao().findComAvaliacoesExperiencias(periodoIni, periodoFim, empresa, areasCheck, estabelecimentoCheck);
-
-		//autorizado essa ruma de forIf, aprovado
-		StringBuilder datasAvaliacao;
-		StringBuilder statusAvaliacao;
-		for (Colaborador colaborador : colaboradores)
-		{
-			datasAvaliacao = new StringBuilder();
-			statusAvaliacao = new StringBuilder();
-
-			for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
-			{
+		
+		for (Colaborador colaborador : colaboradores){
+			StringBuilder datasAvaliacao = new StringBuilder();
+			StringBuilder statusAvaliacao = new StringBuilder();
+			for (PeriodoExperiencia periodoExperiencia : periodoExperiencias){
 				String dataSugerida = DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colaborador.getDataAdmissao(), periodoExperiencia.getDias()-1));
 				String msg = periodoExperiencia.getDias() + " dias, não respondida";
 
-				if(colaborador.getDiasDeEmpresa() >= (periodoExperiencia.getDias() - gordura))
-				{
+				if(colaborador.getDiasDeEmpresa() >= (periodoExperiencia.getDias() - gordura)){
 					for (Colaborador colaboradorRespondidas : colaboradoresComAvaliacoes)
-					{
 						if(colaborador.getId().equals(colaboradorRespondidas.getId()))
-						{
 							if(periodoExperiencia.getId().equals(colaboradorRespondidas.getPeriodoExperienciaId()))
 								msg = periodoExperiencia.getDias() + " dias, respondida (" + colaboradorRespondidas.getQtdDiasRespondeuAvExperiencia() + " dias)";
-						}
-					}
 
 					datasAvaliacao.append(dataSugerida + "\n");
 					statusAvaliacao.append(msg + "\n");
 				}
 			}
-
 			if(statusAvaliacao.length() != 0)
 				statusAvaliacao.replace(statusAvaliacao.length()-1, statusAvaliacao.length(), "");
 			if(datasAvaliacao.length() != 0)
 				datasAvaliacao.replace(datasAvaliacao.length()-1, datasAvaliacao.length(), "");
-
 			colaborador.setStatusAvaliacao(statusAvaliacao.toString());
 			colaborador.setDatasDeAvaliacao(datasAvaliacao.toString());
 		}
-
-		if(colaboradores.isEmpty())
-			throw new Exception ("Não existem colaboradores com os filtros selecionados" ); 
-
+		if(colaboradores.isEmpty()) throw new Exception ("Não existem colaboradores com os filtros selecionados" ); 
 		return colaboradores;
+	}
+
+	private int calculaGordura(Integer diasDeAcompanhamento, Collection<PeriodoExperiencia> periodoExperiencias) {
+		int gordura = 0;
+		if(diasDeAcompanhamento != null) gordura = diasDeAcompanhamento;
+
+		int menorPeriodo = 0;
+		if(!periodoExperiencias.isEmpty()) menorPeriodo = ((PeriodoExperiencia)periodoExperiencias.toArray()[0]).getDias();
+
+		menorPeriodo = menorPeriodo - gordura;
+		return gordura;
 	}
 
 	public List<AcompanhamentoExperienciaColaborador> getAvaliacoesExperienciaPendentesPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception 
 	{
 		List<AcompanhamentoExperienciaColaborador> acompanhamentos = new ArrayList<AcompanhamentoExperienciaColaborador>();
-
 		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(null, null, empresa, areasCheck, estabelecimentoCheck, null);
 		Collection<Colaborador> colaboradoresRespostas = getDao().findComAvaliacoesExperiencias(null, null, empresa, areasCheck, estabelecimentoCheck);
-
-		Date data;
-	 	String performance;
-	 	boolean temPeriodoExperiencia;
-
+	 	
 		for (Colaborador colab : colaboradores)
-		{
-			temPeriodoExperiencia = false;
-			AcompanhamentoExperienciaColaborador experienciaColaborador = new AcompanhamentoExperienciaColaborador(colab.getMatricula(), colab.getNome(), colab.getCargoFaixa(), colab.getAreaOrganizacional(), colab.getDataAdmissao());
-			for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
-			{
-				data = null;
-				performance = null;
-				for (Colaborador colaboradorResposta : colaboradoresRespostas)
-				{
-					if(colab.getId().equals(colaboradorResposta.getId()) && periodoExperiencia.getId().equals(colaboradorResposta.getPeriodoExperienciaId()))
-					{
-						performance = colaboradorResposta.getPerformance();
-						data = colaboradorResposta.getAvaliacaoRespondidaEm();
-					}
-				}
-
-				Date dataDoPeriodoDeExperiencia = DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()-1);
-
-				if(dataDoPeriodoDeExperiencia.getTime() <= periodoFim.getTime() && dataDoPeriodoDeExperiencia.getTime() >= periodoIni.getTime())
-				{
-					String DataPeriodoExperienciaPrevista = DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()-1));
-					experienciaColaborador.addPeriodo(data, performance, DataPeriodoExperienciaPrevista);
-					temPeriodoExperiencia = true;
-				}else
-					experienciaColaborador.addPeriodo(null, null, null);
-
-			}
-
-			if (temPeriodoExperiencia)
-				acompanhamentos.add(experienciaColaborador);
-		}
+			defineAcompanhamentoColaborador(periodoIni, periodoFim,	periodoExperiencias, acompanhamentos, colaboradoresRespostas, colab);
 
 		if(acompanhamentos.isEmpty())
 			throw new Exception ("Não existem colaboradores com os filtros selecionados" ); 
@@ -2080,6 +1971,32 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		Collections.sort(acompanhamentos);
 		return acompanhamentos;
+	}
+
+	private void defineAcompanhamentoColaborador(Date periodoIni, Date periodoFim, Collection<PeriodoExperiencia> periodoExperiencias, List<AcompanhamentoExperienciaColaborador> acompanhamentos, Collection<Colaborador> colaboradoresRespostas, Colaborador colab) {
+		AcompanhamentoExperienciaColaborador experienciaColaborador = new AcompanhamentoExperienciaColaborador(colab.getMatricula(), colab.getNome(), colab.getCargoFaixa(), colab.getAreaOrganizacional(), colab.getDataAdmissao());
+		boolean temPeriodoExperiencia = false;
+		for (PeriodoExperiencia periodoExperiencia : periodoExperiencias){
+			Date data = null;
+			String performance = null;
+			for (Colaborador colaboradorResposta : colaboradoresRespostas){
+				if(colab.getId().equals(colaboradorResposta.getId()) && periodoExperiencia.getId().equals(colaboradorResposta.getPeriodoExperienciaId())){
+					performance = colaboradorResposta.getPerformance();
+					data = colaboradorResposta.getAvaliacaoRespondidaEm();
+				}
+			}
+
+			Date dataDoPeriodoDeExperiencia = DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()-1);
+			if(dataDoPeriodoDeExperiencia.getTime() <= periodoFim.getTime() && dataDoPeriodoDeExperiencia.getTime() >= periodoIni.getTime()){
+				String DataPeriodoExperienciaPrevista = DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()-1));
+				experienciaColaborador.addPeriodo(data, performance, DataPeriodoExperienciaPrevista);
+				temPeriodoExperiencia = true;
+			}else
+				experienciaColaborador.addPeriodo(null, null, null);
+		}
+
+		if (temPeriodoExperiencia)
+			acompanhamentos.add(experienciaColaborador);
 	}
 
 	public Collection<Colaborador> findColabPeriodoExperiencia(Date periodoIni, Date periodoFim, String[] avaliacaoCheck, String[] areasCheck, String[] estabelecimentoCheck, String[] colaboradorsCheck, boolean agruparPorArea, Long... empresasIds) throws Exception 
@@ -2244,45 +2161,29 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return totalPorEmpresas;
 	}
 
-	public TurnOverCollection montaTurnOver(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) throws Exception 
-	{
-		if(filtrarPor == 1)
-			cargosIds = null;
-		else if(filtrarPor == 2)
-			areasIds = null;
-
+	public TurnOverCollection montaTurnOver(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) throws Exception {
+		if(filtrarPor == 1)	cargosIds = null; 
+		else if(filtrarPor == 2) areasIds = null;
+		
 		int ate = DateUtil.mesesEntreDatas(dataIni, dataFim);
 		Date dataTmp = DateUtil.getInicioMesData(dataIni);
-		Collection<TurnOver> admitidos = new ArrayList<TurnOver>();
-		Collection<TurnOver> demitidos = new ArrayList<TurnOver>();
 		Collection<TurnOver> turnOvers = new LinkedList<TurnOver>();
-		double qtdAtivosInicioMes;
-		double qtdAtivosFinalMes;
-		double qtdAdmitidos;
-		double qtdDemitidos;
-		double totalAdmitidos = 0;
-		double totalDemitidos = 0;
-
+		double qtdAtivosInicioMes, qtdAtivosFinalMes, qtdAdmitidos, qtdDemitidos, totalAdmitidos = 0, totalDemitidos = 0;
 		Empresa empresa = empresaManager.findByIdProjection(empresaId);
 		
-		for (int i = 0; i <= ate; i++)
-		{
-			qtdAtivosInicioMes = 0;
-			qtdAtivosFinalMes = 0;
-			qtdAdmitidos = 0;
-			qtdDemitidos = 0;
+		for (int i = 0; i <= ate; i++){
 			dataFim = DateUtil.getUltimoDiaMes(dataTmp);
 
-			admitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, true);
-			if(admitidos != null && admitidos.size() > 0)
-			{
+			qtdAdmitidos = 0;
+			Collection<TurnOver>  admitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, true);
+			if(admitidos != null && admitidos.size() > 0){
 				qtdAdmitidos = ((TurnOver) admitidos.toArray()[0]).getQtdAdmitidos();
 				totalAdmitidos += qtdAdmitidos;
 			}
 
-			demitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, false);
-			if(demitidos != null && demitidos.size() > 0)
-			{
+			qtdDemitidos = 0;
+			Collection<TurnOver> demitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, false);
+			if(demitidos != null && demitidos.size() > 0){
 				qtdDemitidos = ((TurnOver) demitidos.toArray()[0]).getQtdDemitidos();
 				totalDemitidos += qtdDemitidos;
 			}
@@ -2290,20 +2191,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			qtdAtivosInicioMes = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
 			qtdAtivosFinalMes = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMes(dataTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
 			
-			TurnOver turnOverTmp = new TurnOver();
-			turnOverTmp.setMesAno(dataTmp);
-			turnOverTmp.setQtdAdmitidos(qtdAdmitidos);
-			turnOverTmp.setQtdDemitidos(qtdDemitidos);
-			turnOverTmp.setQtdAtivosInicioMes(qtdAtivosInicioMes);
-			turnOverTmp.setQtdAtivosFinalMes(qtdAtivosFinalMes);
-
+			TurnOver turnOverTmp = new TurnOver(dataTmp, qtdAtivosInicioMes, qtdAtivosFinalMes, qtdAdmitidos, qtdDemitidos);
 			if (empresa.getFormulaTurnover() == FormulaTurnover.MEDIA_ATIVOS_MES)
 				turnOverTmp.setTurnOver((((qtdAdmitidos + qtdDemitidos) / 2) / ((qtdAtivosInicioMes + qtdAtivosFinalMes) / 2)) * 100);
 			else
 				turnOverTmp.setTurnOver((((qtdAdmitidos + qtdDemitidos) / 2) / qtdAtivosInicioMes) * 100);
 			
 			turnOvers.add(turnOverTmp);
-			
 			dataTmp = DateUtil.setaMesPosterior(dataTmp);
 		}
 		
@@ -2321,8 +2215,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return turnOverCollection;
 	}
 	
-	public TaxaDemissaoCollection montaTaxaDemissao(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) throws Exception 
-	{
+	public TaxaDemissaoCollection montaTaxaDemissao(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) throws Exception{
 		if(filtrarPor == 1)
 			cargosIds = null;
 		else if(filtrarPor == 2)
@@ -2332,10 +2225,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Date dataIniTmp = DateUtil.getInicioMesData(dataIni);
 		Collection<TaxaDemissao> taxaDemissoes = new LinkedList<TaxaDemissao>();
 
-		for (int i = 0; i <= ate; i++)
-		{
+		for (int i = 0; i <= ate; i++){
 			dataFim = DateUtil.getUltimoDiaMes(dataIniTmp);
-			
 			TaxaDemissao taxaDeDemissaoTmp = new TaxaDemissao();
 			taxaDeDemissaoTmp.setMesAno(dataIniTmp);
 			taxaDeDemissaoTmp.setQtdDemitidosReducaoQuadro(getDao().countDemitidosPeriodo(dataIniTmp, dataFim, empresaId, estabelecimentosIds, areasIds, cargosIds, vinculos, true));
@@ -2343,7 +2234,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			taxaDeDemissaoTmp.setQtdAtivosInicioMes(getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataIniTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false));
 			taxaDeDemissaoTmp.setQtdAtivosFinalMes(getDao().countAtivosPeriodo(dataFim, Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false));
 			taxaDemissoes.add(taxaDeDemissaoTmp);
-			
 			dataIniTmp = DateUtil.setaMesPosterior(dataIniTmp);
 		}
 		
@@ -2356,28 +2246,21 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return taxaDemissaoCollection;
 	}
 
-	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional areaOrganizacional) 
-	{
+	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional areaOrganizacional){
 		Collection<Colaborador> colaboradores = getDao().findProjecaoSalarialByHistoricoColaborador(dataBase, null, null, null, null, "99", empresaId);
 		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByEmpresa(empresaId);
-
 		HashMap<AreaOrganizacional, Double> areaSalario = new HashMap<AreaOrganizacional, Double>();
-		for (Colaborador colaborador : colaboradores) 
-		{
+		for (Colaborador colaborador : colaboradores) {
 			AreaOrganizacional matriarca = areaOrganizacionalManager.getMatriarca(areas, colaborador.getAreaOrganizacional(), areaOrganizacional.getId());
 
-			if(areaOrganizacional.getId() != null)
-			{
-				if(matriarca != null && matriarca.getAreaMae() != null && matriarca.getAreaMae().getId() != null && matriarca.getAreaMae().getId().equals(areaOrganizacional.getId()))
-				{
+			if(areaOrganizacional.getId() != null){
+				if(matriarca != null && matriarca.getAreaMae() != null && matriarca.getAreaMae().getId() != null && matriarca.getAreaMae().getId().equals(areaOrganizacional.getId())){
 					if (!areaSalario.containsKey(matriarca))
 						areaSalario.put(matriarca, 0.0);
 
 					areaSalario.put(matriarca, areaSalario.get(matriarca) + (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado()));																		
 				}
-			}
-			else
-			{
+			} else {
 				if (!areaSalario.containsKey(matriarca))
 					areaSalario.put(matriarca, 0.0);
 
@@ -2386,8 +2269,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 
 		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
-		if(!areaSalario.isEmpty())
-		{
+		if(!areaSalario.isEmpty()) {
 			for (AreaOrganizacional area : areaSalario.keySet()) 
 				dados.add(new DataGrafico(area.getId(), area.getNome(), areaSalario.get(area), areaOrganizacional.getDescricao()));			
 		}
@@ -2453,24 +2335,18 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return StringUtil.toJSON(retorno, null);
 	}
 	
-	public Collection<DataGrafico> montaGraficoTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 
-	{
+	public Collection<DataGrafico> montaGraficoTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos){
 		Map<String, Integer> qtdDeColaboradoresPorPeriodoDeMeses = new HashMap<String, Integer>();
 		Empresa empresa;
 		String chave;
 		
-		for (Long empresaId : empresasIds)
-		{
+		for (Long empresaId : empresasIds){
 			empresa = empresaManager.findByIdProjection(empresaId);
-			
 			Collection<TurnOver> turnOvers = getDao().countDemitidosTempoServico(empresa, dataIni, dataFim, estabelecimentosIds, areasIds, cargosIds, vinculos);
 			
-			for (TurnOver turnOver : turnOvers)
-			{				
-				for (int i = 0; i < tempoServicoIni.length; i++) 
-				{
-					if (turnOver.getTempoServico() >= tempoServicoIni[i] && turnOver.getTempoServico() <= tempoServicoFim[i])
-					{
+			for (TurnOver turnOver : turnOvers)	{				
+				for (int i = 0; i < tempoServicoIni.length; i++){
+					if (turnOver.getTempoServico() >= tempoServicoIni[i] && turnOver.getTempoServico() <= tempoServicoFim[i]){
 						chave = StringUtils.leftPad(tempoServicoIni[i].toString(), 2, '0') + " a " + StringUtils.leftPad(tempoServicoFim[i].toString(), 2, '0') + " meses";
 						if (!qtdDeColaboradoresPorPeriodoDeMeses.containsKey(chave))
 							qtdDeColaboradoresPorPeriodoDeMeses.put(chave, 0);
@@ -2482,36 +2358,28 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 
 		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
-		
 		for (Map.Entry<String, Integer> entry : qtdDeColaboradoresPorPeriodoDeMeses.entrySet()) 
 			dados.add(new DataGrafico(null, entry.getKey(), entry.getValue(), null));
 
 		return new CollectionUtil<DataGrafico>().sortCollectionStringIgnoreCase(dados, "label");
 	}
 	
-	public Collection<DataGrafico> montaGraficoColaboradoresTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Integer[] mesesParaMultiplicar, Collection<Long> empresasIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 
-	{
+	public Collection<DataGrafico> montaGraficoColaboradoresTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Integer[] mesesParaMultiplicar, Collection<Long> empresasIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) {
 		Map<String, Integer> qtds = new HashMap<String, Integer>();
 		Empresa empresa;
 		String chave;
-		
 		Integer tempoServicoIniEmMeses;
 		Integer tempoServicoFimEmMeses;
 		String tempo;
 		
 		if (tempoServicoIni != null)
-			for (Long empresaId : empresasIds)
-			{
+			for (Long empresaId : empresasIds){
 				empresa = empresaManager.findByIdProjection(empresaId);
-	
-				for (int i = 0; i < tempoServicoIni.length; i++) 
-				{
+				for (int i = 0; i < tempoServicoIni.length; i++){
 					tempoServicoIniEmMeses = tempoServicoIni[i] * mesesParaMultiplicar[i];
 					tempoServicoFimEmMeses = tempoServicoFim[i] * mesesParaMultiplicar[i];
 					tempo = mesesParaMultiplicar[i] == 12 ? "anos" : "meses";
-					
 					Integer qtdColaboradoresPorTempo = getDao().countColaboradoresPorTempoServico(empresa, tempoServicoIniEmMeses, tempoServicoFimEmMeses, estabelecimentosIds, areasIds, cargosIds, vinculos);
-					
 					chave = StringUtils.leftPad(tempoServicoIni[i].toString(), 2, '0') + " a " + StringUtils.leftPad(tempoServicoFim[i].toString(), 2, '0') + " " + tempo;
 					if (!qtds.containsKey(chave))
 						qtds.put(chave, 0);
@@ -2521,7 +2389,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			}
 		
 		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
-		
 		for (Map.Entry<String, Integer> entry : qtds.entrySet()) 
 			dados.add(new DataGrafico(null, entry.getKey(), entry.getValue(), null));
 		
@@ -2538,19 +2405,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByEstabelecimentoDataAdmissao(estabelecimentoId, dataAdmissao, empresaId);
 	}
 
-	public Collection<CartaoAcompanhamentoExperienciaVO> montaCartoesPeriodoExperiencia(Long[] colaboradoresIds, Long[] dias, String observacao) throws Exception 
-	{
+	public Collection<CartaoAcompanhamentoExperienciaVO> montaCartoesPeriodoExperiencia(Long[] colaboradoresIds, Long[] dias, String observacao) throws Exception {
 		Collection<Colaborador> colaboradores = getDao().findColaboradoresByIds(colaboradoresIds);
 		Collection<CartaoAcompanhamentoExperienciaVO> vos = new ArrayList<CartaoAcompanhamentoExperienciaVO>();
-
 		if (colaboradores.isEmpty())
 			throw new Exception("Não existem dados para o filtro informado");
 
 		Collection<PeriodoExperiencia> periodos = new ArrayList<PeriodoExperiencia>();
 		PeriodoExperiencia periodo;
-
-		for (Colaborador colaborador : colaboradores) 
-		{
+		for (Colaborador colaborador : colaboradores){
 			CartaoAcompanhamentoExperienciaVO vo = new CartaoAcompanhamentoExperienciaVO();
 			vo.setColaborador(colaborador);
 			vo.setObservacao(observacao);
@@ -2722,87 +2585,70 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaborador.getEmpresa().getId().equals(empresaId);
 	}
 
-	public Collection<Colaborador> triar(Long solicitacaoId, String escolaridade, String sexo, String idadeMin, String idadeMax, String[] faixasCheck, String[] areasCheck, boolean exibeCompatibilidade, Integer percentualMinimo, boolean opcaoTodasEmpresas, Long... empresaIds) throws Exception 
-	{
+	public Collection<Colaborador> triar(Long solicitacaoId, String escolaridade, String sexo, String idadeMin, String idadeMax, String[] faixasCheck, String[] areasCheck, boolean exibeCompatibilidade, Integer percentualMinimo, boolean opcaoTodasEmpresas, Long... empresaIds) throws Exception{
 		Date dataNascIni = null;
 		Date dataNascFim = null;
 		Date hoje = new Date();
-
+		
 		if( isNotBlank(idadeMin) && !idadeMin.equals("0"))
 			dataNascIni = DateUtil.incrementaAno(hoje, (-1)*(Integer.parseInt(idadeMin)));
-
 		if( isNotBlank(idadeMax) && !idadeMax.equals("0"))
 			dataNascFim = DateUtil.incrementaAno(hoje, (-1)*Integer.parseInt(idadeMax));
-
+		
 		Solicitacao solicitacao = solicitacaoManager.findByIdProjection(solicitacaoId);
 		Long faixaSolicitacaoId = solicitacao.getFaixaSalarial().getId();
-
 		Long[] competenciasIdsFaixaSolicitacao = configuracaoNivelCompetenciaManager.findCompetenciasIdsConfiguradasByFaixaSolicitacao(faixaSolicitacaoId);
 		Integer pontuacaoMaxima = configuracaoNivelCompetenciaManager.somaConfiguracoesByFaixa(faixaSolicitacaoId);
-
+		
 		if(exibeCompatibilidade && pontuacaoMaxima == null)
 			throw new Exception("Não existe configuração de nível de competência para a faixa salarial desta solictação.");
-
+		
 		Collection<Colaborador> colaboradores = getDao().triar(empresaIds, escolaridade, sexo, dataNascIni, dataNascFim, faixasCheck, LongUtil.arrayStringToArrayLong(areasCheck), competenciasIdsFaixaSolicitacao, exibeCompatibilidade, opcaoTodasEmpresas);
-		double compatibilidade;
-
 		if (exibeCompatibilidade && pontuacaoMaxima > 0)
-		{
-			Collection<Colaborador> colabs = new ArrayList<Colaborador>();
-			for (Colaborador colaborador : colaboradores) 
-			{
-				compatibilidade = (Double.valueOf(colaborador.getSomaCompetencias()) / pontuacaoMaxima) * 100.0;
-				compatibilidade = (compatibilidade > 100.0) ? 100.0 : compatibilidade;
-
-				if (compatibilidade >= percentualMinimo) 
-				{
-					colaborador.setPercentualCompatibilidade(compatibilidade);
-					colabs.add(colaborador);
-				}
-			}
-
-			return colabs;
-
-		} else {
+			return montaPercentualCompatibilidadeColaborador(percentualMinimo, pontuacaoMaxima, colaboradores);
+		else 
 			return colaboradores;
-		}
 	}
 
-	public void insertColaboradoresSolicitacao(Long[] colaboradoresIds, Solicitacao solicitacao, char statusCandidatoSolicitacao) throws Exception
-	{
+	private Collection<Colaborador> montaPercentualCompatibilidadeColaborador(Integer percentualMinimo, Integer pontuacaoMaxima, Collection<Colaborador> colaboradores) {
+		double compatibilidade;
+		Collection<Colaborador> colabs = new ArrayList<Colaborador>();
+		for (Colaborador colaborador : colaboradores){
+			compatibilidade = (Double.valueOf(colaborador.getSomaCompetencias()) / pontuacaoMaxima) * 100.0;
+			compatibilidade = (compatibilidade > 100.0) ? 100.0 : compatibilidade;
+			
+			if (compatibilidade >= percentualMinimo) {
+				colaborador.setPercentualCompatibilidade(compatibilidade);
+				colabs.add(colaborador);
+			}
+		}
+		return colabs;
+	}
+
+	public void insertColaboradoresSolicitacao(Long[] colaboradoresIds, Solicitacao solicitacao, char statusCandidatoSolicitacao) throws Exception{
 		Colaborador colaborador = null;
 		Candidato candidato = null;
 		Collection<String> candidatosIds = new ArrayList<String>();
 
-		// Atualiza candidato do colaborador
 		for (Long colaboradorId : colaboradoresIds) {
-
 			colaborador = (Colaborador) findByIdComHistoricoConfirmados(colaboradorId);
-
 			colaborador.setColaboradorIdiomas(colaboradorIdiomaManager.find(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()}));
 			colaborador.setExperiencias(experienciaManager.findByColaborador(colaborador.getId()));
 			colaborador.setFormacao(formacaoManager.findByColaborador(colaborador.getId()));
-
 			candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(colaborador);
 			candidatosIds.add(candidato.getId().toString());
-
 			colaborador.setCandidato(candidato);
-
 			update(colaborador);
 		}
 
-		// Grava colaboradores na solicitação
 		candidatoSolicitacaoManager.insertCandidatos(candidatosIds.toArray(new String[candidatosIds.size()]), solicitacao, statusCandidatoSolicitacao);
 	}
 
-	//sou feio mais tenho teste, heheheh
-	public Collection<Colaborador> ordenaByMediaPerformance(Collection<Colaborador> colaboradores)
-	{
+	public Collection<Colaborador> ordenaByMediaPerformance(Collection<Colaborador> colaboradores){
 		HashMap<Long, Double> performaces = new HashMap<Long, Double>();
 		HashMap<Long, Double> qtdColaboradores = new HashMap<Long, Double>();
 
-		for (Colaborador colaborador : colaboradores) 
-		{
+		for (Colaborador colaborador : colaboradores){
 
 			Double mediaColab = performaces.get(colaborador.getId()) == null ? 0.0: performaces.get(colaborador.getId());
 			Double qtdColab = qtdColaboradores.get(colaborador.getId()) == null ? 0.0: qtdColaboradores.get(colaborador.getId());
