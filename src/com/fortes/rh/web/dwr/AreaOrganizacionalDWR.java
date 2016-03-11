@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AreaOrganizacionalOrganograma;
 import com.fortes.rh.model.geral.Empresa;
@@ -212,6 +213,20 @@ public class AreaOrganizacionalDWR
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Map<Object, Object> getByResponsavelCoResponsavel(Long usuarioId, Long empresaId) throws Exception
+	{		
+		Usuario usuario = new Usuario();
+		usuario.setId(usuarioId);
+		
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuario, empresaId);
+
+		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
+		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoComEmpresaStatusAtivo");
+
+		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo");
+	}
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{

@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.VerificacaoParentesco;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.Empresa;
@@ -38,6 +40,7 @@ public class ColaboradorDWR
     private SolicitacaoManager solicitacaoManager;
     private EmpresaManager empresaManager;
     private UsuarioManager usuarioManager;
+    private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	public Map<Long, String> getColaboradores(String[] areaOrganizacionalIds, Long empresaId)
     {
@@ -172,6 +175,34 @@ public class ColaboradorDWR
     			empresaIds = new Long[]{empresaId};
     			
     		colaboradores = colaboradorManager.findAllSelect(situacao, empresaIds);
+    	}
+    	else
+    	{
+    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao);        	
+    	}
+    	
+    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", (exibirNomeEmpresa ? "getNomeComercialEmpresa" : "getNomeEOuNomeComercial"), Colaborador.class);
+    }
+    
+    public Map<Long, String> getByAreaEstabelecimentoEmpresasResponsavel(Long usuarioLogadoId, boolean verTodasAreas, String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId, Long[] empresaIds, String situacao, boolean exibirNomeEmpresa) throws Exception
+    {
+    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+    	
+    	if((areaOrganizacionalIds == null || areaOrganizacionalIds.length == 0) && (estabelecimentoIds == null || estabelecimentoIds.length == 0))
+    	{
+    		if(empresaId != null && empresaId != 0)
+    			empresaIds = new Long[]{empresaId};
+    		
+    		if (verTodasAreas)
+    			colaboradores = colaboradorManager.findAllSelect(situacao, empresaIds);
+    		else {
+    			Usuario usuario = new Usuario();
+    			usuario.setId(usuarioLogadoId);
+    			
+    			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuario, empresaId);
+    			
+    			colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.collectionToCollectionLong(areaOrganizacionals), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao);        	
+    		}
     	}
     	else
     	{
@@ -371,5 +402,10 @@ public class ColaboradorDWR
 	
 	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
 		this.historicoColaboradorManager = historicoColaboradorManager;
+	}
+
+	public void setAreaOrganizacionalManager(
+			AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

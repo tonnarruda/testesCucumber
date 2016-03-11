@@ -41,6 +41,9 @@
 			</#list>
 		</#if>
 		
+		var verTodasAreas = false;
+		<@authz.authorize ifAllGranted="ROLE_VER_AREAS"> verTodasAreas = true; </@authz.authorize>
+		
 		function populaColaboradores(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -48,7 +51,7 @@
 			var estabelecimentoIds = getArrayCheckeds(document.forms[0], 'estabelecimentoCheck');
 			var situacao = $('#situacao').val();
 			
-			ColaboradorDWR.getByAreaEstabelecimentoEmpresas(createListcolaborador, areasIds, estabelecimentoIds, empresaId, empresaIds, situacao, true);
+			ColaboradorDWR.getByAreaEstabelecimentoEmpresasResponsavel(createListcolaborador, ${usuarioLogado.id}, verTodasAreas, areasIds, estabelecimentoIds, empresaId, empresaIds, situacao, true);
 		}
 
 		function createListcolaborador(data)
@@ -82,7 +85,20 @@
 		function populaArea(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(function(data){createListArea(data, empresaId);}, empresaId, empresaIds, null);
+			
+			if (verTodasAreas)
+				AreaOrganizacionalDWR.getByEmpresas(function(data){createListArea(data, empresaId);}, empresaId, empresaIds, null);
+			else {
+				console.log(empresaId);
+				if ( empresaId == null ) { 
+					console.log("empresa é nula" + ${empresaSistema.id})
+					AreaOrganizacionalDWR.getByResponsavelCoResponsavel(function(data){createListArea(data, ${empresaSistema.id});}, ${usuarioLogado.id}, ${empresaSistema.id});
+				} else {
+					console.log("empresa não é nula")
+					AreaOrganizacionalDWR.getByResponsavelCoResponsavel(function(data){createListArea(data, empresaId);}, ${usuarioLogado.id}, empresaId);
+				}
+			}
+				
 		}
 
 		function createListArea(data, empresaId)

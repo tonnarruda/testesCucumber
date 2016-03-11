@@ -414,12 +414,18 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 	{
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"a");
 		criteria.createCriteria("a.areaMae", "am", Criteria.LEFT_JOIN);
+		criteria.createCriteria("a.empresa", "e", Criteria.LEFT_JOIN);
+		criteria.createCriteria("am.empresa", "em", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 
 		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.ativo"), "ativo");
 		p.add(Projections.property("a.nome"), "nome");
+		p.add(Projections.property("e.nome"), "empresaNome");
 		p.add(Projections.property("am.id"), "idAreaMae");
+		p.add(Projections.property("am.nome"), "nomeAreaMae");
+		p.add(Projections.property("em.nome"), "empresaAreaMaeNome");
 
 		criteria.setProjection(p);
 		

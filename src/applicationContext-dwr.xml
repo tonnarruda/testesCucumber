@@ -83,6 +83,7 @@
 		<property name="solicitacaoManager" ref="solicitacaoManager"/>
 		<property name="empresaManager" ref="empresaManager"/>
 		<property name="usuarioManager" ref="usuarioManager"/>
+		<property name="areaOrganizacionalManager" ref="areaOrganizacionalManager"/>
 	</bean>
 	<bean id="candidatoDWR" class="com.fortes.rh.web.dwr.CandidatoDWR">
 		<property name="candidatoManager" ref="candidatoManager"/>

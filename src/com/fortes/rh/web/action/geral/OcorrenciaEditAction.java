@@ -9,11 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
@@ -26,7 +26,6 @@ import com.fortes.rh.model.geral.relatorio.ColaboradorOcorrenciaRelatorio;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -41,6 +40,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private EmpresaManager empresaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	private Ocorrencia ocorrencia;
 	@SuppressWarnings("unused")
@@ -146,6 +146,8 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);
 		
+//		colaborador = getUsuarioLogado().getColaborador().getId().toString();
+		
 		empresa = getEmpresaSistema();
 		
 		return Action.SUCCESS;
@@ -155,6 +157,10 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	{
 		try
 		{
+			@SuppressWarnings("rawtypes")
+			Map session = ActionContext.getContext().getSession();
+			boolean roleVerTodasAreas = SecurityUtil.verifyRole(session, new String[]{"ROLE_VER_AREAS"});
+			
 			Collection<Long> empresaIds = new ArrayList<Long>();
 			if(empresa == null || empresa.getId() == null)
 			{
@@ -168,8 +174,12 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			
 			Collection<Long> ocorrenciaIds = LongUtil.arrayStringToCollectionLong(ocorrenciaCheck);
 			Collection<Long> colaboradorIds = LongUtil.arrayStringToCollectionLong(colaboradorCheck);
-			Collection<Long> areaIds = LongUtil.arrayStringToCollectionLong(areaCheck);
 			Collection<Long> estabelecimentoIds = LongUtil.arrayStringToCollectionLong(estabelecimentoCheck);
+
+			Collection<Long> areaIds = LongUtil.arrayStringToCollectionLong(areaCheck);
+			if ( areaIds.size() == 0 && !roleVerTodasAreas) {
+				areaIds = LongUtil.collectionToCollectionLong(areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(), empresa.getId()));
+			}
 			
 			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento, agruparPorColaborador);
 
@@ -507,6 +517,11 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
 	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void setAreaOrganizacionalManager(
+			AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public Boolean getCompartilharColaboradores()
