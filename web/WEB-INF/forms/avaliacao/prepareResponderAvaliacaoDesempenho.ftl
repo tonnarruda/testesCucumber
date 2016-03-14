@@ -147,13 +147,11 @@
 		
 		function setOrdem(i, ordem)
 		{
-			console.log("chamou 1");
 			$('#ordem_' + i).val(ordem);
 		}
 		
 		function setOrdemNivelCriterio(i, y, ordem)
 		{
-			console.log("chamou");
 			$('#ordemNivel_criterio_' + i + '_' + y).val(ordem);
 		}
 		
@@ -181,10 +179,6 @@
 						
 						$(niveisSelecionadosDosCriterios).each(function(){
 							somaPescetualDosCriterios += parseFloat($(this).attr("percentual"));
-							
-							//console.log($(this).val());
-							//console.log($(competencia).find('.checkNivel[value='+$(this).val()+']'));
-							
 							somaOrdemDosCriterios += parseFloat($(competencia).find('.checkNivel[value='+$(this).val()+']').attr('ordem'));
 						});
 						var media = somaOrdemDosCriterios/niveisSelecionadosDosCriterios.length;

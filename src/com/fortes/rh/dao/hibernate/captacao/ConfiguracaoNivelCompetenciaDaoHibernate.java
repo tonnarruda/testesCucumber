@@ -93,20 +93,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		criteria.createCriteria("f.cargo", "c", Criteria.LEFT_JOIN);
 		criteria.add(Subqueries.propertyEq("nch.data", subQueryHc));
 
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("cnc.id"), "id");
-		p.add(Projections.property("cnc.faixaSalarial.id"), "faixaSalarialIdProjection");
-		p.add(Projections.property("cnc.candidato.id"), "candidatoIdProjection");
-		p.add(Projections.property("cnc.configuracaoNivelCompetenciaColaborador.id"), "projectionConfiguracaoNivelCompetenciaColaboradorId");
-		p.add(Projections.property("cnc.configuracaoNivelCompetenciaFaixaSalarial.id"), "configuracaoNivelCompetenciaFaixaSalarialId");
-		p.add(Projections.property("cnc.configuracaoNivelCompetenciaCriterios"), "configuracaoNivelCompetenciaCriterios");
-		p.add(Projections.property("cnc.pesoCompetencia"), "pesoCompetencia");
-		p.add(Projections.property("nc.id"), "nivelCompetenciaIdProjection");
-		p.add(Projections.property("nc.descricao"), "projectionNivelCompetenciaDescricao");
-		p.add(Projections.property("chn.ordem"), "nivelCompetenciaOrdemProjection");
-		p.add(Projections.property("cnc.competenciaId"), "competenciaId");
-		p.add(Projections.sqlProjection("(select nome from competencia where id = {alias}.competencia_id and {alias}.tipoCompetencia = tipo) as competenciaDescricao", new String[] {"competenciaDescricao"}, new Type[] {Hibernate.STRING}), "competenciaDescricao");
-		p.add(Projections.property("cnc.tipoCompetencia"), "tipoCompetencia");
+		ProjectionList p = montaProjectionFindByConfiguracaoNivelCompetenciaFaixaSalarial();
 		p.add(Projections.property("s.id"), "solicitacaoId");
 		p.add(Projections.property("s.descricao"), "solicitacaoDescricao");
 		p.add(Projections.property("s.data"), "solicitacaoData");
@@ -157,14 +144,29 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return criteria.list();
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelCompetenciaFaixaSalarialId)
-	{
+	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelCompetenciaFaixaSalarialId){
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetencia.class,"cnc");
 		criteria.createCriteria("cnc.configuracaoNivelCompetenciaFaixaSalarial", "cncf", Criteria.INNER_JOIN);
 		criteria.createCriteria("cncf.nivelCompetenciaHistorico", "nch", Criteria.INNER_JOIN);
 		criteria.createCriteria("nch.configHistoricoNiveis", "chn", Criteria.INNER_JOIN);
 		criteria.createCriteria("chn.nivelCompetencia", "nc", Criteria.INNER_JOIN);
+		criteria.setProjection(montaProjectionFindByConfiguracaoNivelCompetenciaFaixaSalarial());
 
+		criteria.add(Expression.eq("cncf.id", configuracaoNivelCompetenciaFaixaSalarialId));
+		criteria.add(Expression.eqProperty("chn.nivelCompetencia.id", "cnc.nivelCompetencia.id"));
+		
+		criteria.addOrder(Order.asc("cnc.tipoCompetencia"));
+		criteria.addOrder(Order.asc("chn.ordem"));
+		criteria.addOrder(Order.asc("nc.descricao"));
+		criteria.addOrder(Order.asc("cnc.id"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetencia.class));
+
+		return criteria.list();
+	}
+
+	private ProjectionList montaProjectionFindByConfiguracaoNivelCompetenciaFaixaSalarial(){
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cnc.id"), "id");
 		p.add(Projections.property("cnc.faixaSalarial.id"), "faixaSalarialIdProjection");
@@ -179,15 +181,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		p.add(Projections.property("cnc.competenciaId"), "competenciaId");
 		p.add(Projections.sqlProjection("(select nome from competencia where id = {alias}.competencia_id and {alias}.tipoCompetencia = tipo) as competenciaDescricao", new String[] {"competenciaDescricao"}, new Type[] {Hibernate.STRING}), "competenciaDescricao");
 		p.add(Projections.property("cnc.tipoCompetencia"), "tipoCompetencia");
-
-		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("cncf.id", configuracaoNivelCompetenciaFaixaSalarialId));
-		criteria.add(Expression.eqProperty("chn.nivelCompetencia.id", "cnc.nivelCompetencia.id"));
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetencia.class));
-
-		return criteria.list();
+		return p;
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId, Date data, Long configuracaoNivelCompetenciaFaixaSalarialId, Long avaliadorId, Long avaliacaoDesempenhoId) 
