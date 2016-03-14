@@ -303,8 +303,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
     public String insert() throws Exception
     {
-        if (bairrosCheck != null)
-        {
+        if (bairrosCheck != null){
         	Collection<Bairro> bairrosTmp = montaBairros();
         	solicitacao.setBairros(bairrosTmp);
         }
@@ -316,10 +315,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         if (solicitacao.getCidade() != null && solicitacao.getCidade().getId() == null)
         	solicitacao.setCidade(null);
         
+        solicitacao.setLiberador(null);
         if(solicitacao.getStatus() == StatusAprovacaoSolicitacao.APROVADO)
            	solicitacao.setLiberador(usuarioLogado);
-        else
-           	solicitacao.setLiberador(null);
         
       	if (solicitacao.getFuncao() == null || solicitacao.getFuncao().getId() == null || solicitacao.getFuncao().getId() == -1L)
       		solicitacao.setFuncao(null);
@@ -327,7 +325,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
       		solicitacao.setAmbiente(null);
       	
       	insereColaboradorSubstituto();
-
         solicitacaoManager.save(solicitacao, emailsCheck, LongUtil.arrayStringToArrayLong(avaliacoesCheck));
         
         return Action.SUCCESS;

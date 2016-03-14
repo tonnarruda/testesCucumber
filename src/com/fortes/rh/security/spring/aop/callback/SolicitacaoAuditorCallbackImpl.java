@@ -156,6 +156,7 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		dadosAnteriores.put("liberadorId", solicitacaoAnterior.getLiberador() != null && solicitacaoAnterior.getLiberador().getId() != null ? solicitacaoAnterior.getLiberador().getId().toString() : "");
 		dadosAnteriores.put("liberadorNome", solicitacaoAnterior.getLiberador() != null && solicitacaoAnterior.getLiberador().getNome() != null ? solicitacaoAnterior.getLiberador().getNome() : "");
 		dadosAnteriores.put("liberadorObservacao", solicitacaoAnterior.getObservacaoLiberador() != null ? solicitacaoAnterior.getObservacaoLiberador() : "");
+		dadosAnteriores.put("Invisível para o gestor da área organizacional", solicitacaoAnterior.isInvisivelParaGestor()? "Sim" : "Não");
 
 		//Dados atualizados 
 		Map<String, String> dadosAtualizados = new LinkedHashMap<String, String>();
@@ -269,6 +270,7 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		dadosAtualizados.put("liberadorId", solicitacao.getLiberador() != null && solicitacao.getLiberador().getId() != null ? solicitacao.getLiberador().getId().toString() : "");
 		dadosAtualizados.put("liberadorNome", solicitacao.getLiberador() != null && solicitacao.getLiberador().getNome() != null ? solicitacao.getLiberador().getNome() : "");
 		dadosAtualizados.put("liberadorObservacao", solicitacao.getObservacaoLiberador() != null ? solicitacao.getObservacaoLiberador() : "");
+		dadosAtualizados.put("Invisível para o gestor da área organizacional", solicitacao.isInvisivelParaGestor()? "Sim" : "Não");
 		
 		return dadosAtualizados;
 	}

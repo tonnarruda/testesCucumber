@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.1xx.1xx" db="" data="xx/03/2016">
+		<Item visivel="S" motivo="16020000207"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Possibilidade de definir solicitação de pessoal como invisível para o gestor da área organizacional selecionada.]]></Item>
 		<Item visivel="S" motivo="S16010000268"><![CDATA[Info. Funcionais > Relatórios > Absenteísmo: Apresentar no cabeçalho do relatório quais áreas organizacionais e estabelecimentos foram selecionados no filtro.]]></Item>
 		<Item visivel="S" motivo="S20150800139"><![CDATA[SESMT > Movimentações > Ficha de Investigação de Acidente(CAT) > Imprimir Ficha de Investigação de Acidente: Nova opção para imprimir relatório detalhado.]]></Item>
 	</Versao>
