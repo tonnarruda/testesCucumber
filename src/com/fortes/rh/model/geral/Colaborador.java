@@ -1038,12 +1038,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public Colaborador(String nome) {
 		this.nome = nome;
 	}
-	
-		public Colaborador(Long id, String nome, String noeComercial, Long areaId, String areaNome, Long empresaId) {
-		// TODO Auto-generated constructor stub
-	}
 
-		private void setFaixaSalarialHistoricoStatusProjection(Integer faixaSalarialHistoricoStatus)
+	private void setFaixaSalarialHistoricoStatusProjection(Integer faixaSalarialHistoricoStatus)
 	{
 		inicializaHistoricoColaborador();
 

@@ -1892,7 +1892,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.getUsuario().setId(array[7] != null ? ((BigInteger)array[7]).longValue() : null);
 			colaborador.setDataDesligamento((Date) array[8]);
 			colaborador.setMotivoDemissaoMotivo((String) array[9]);
-			colaborador.setNome(colaborador.isDesligado() == true ? (String) array[1] + " (Desligado em " + DateUtil.formataDiaMesAno(colaborador.getDataDesligamento()) + ")": null);
+			colaborador.setNome(colaborador.isDesligado() == true ? (String) array[1] + " (Desligado em " + DateUtil.formataDiaMesAno(colaborador.getDataDesligamento()) + ")": (String) array[1]);
 			colaborador.setRespondeuEntrevista(array[10] != null ? (Boolean) array[10] : false);
 			colaborador.setCandidato(new Candidato());
 			colaborador.getCandidato().setId(array[11] != null ? ((BigInteger)array[11]).longValue() : null);

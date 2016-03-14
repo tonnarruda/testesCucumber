@@ -229,32 +229,36 @@ public class ColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String list() throws Exception
-	{
+	public String list() throws Exception{
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, getEmpresaSistema().getId());
 		areasList = areaOrganizacionalManager.montaFamilia(areaOrganizacionalsTmp);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
 		areasList = cu1.sortCollectionStringIgnoreCase(areasList, "descricao");
-
 		estabelecimentosList = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		cargosList = cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, getEmpresaSistema().getId());
-
-		if(StringUtils.isNotBlank(cpfBusca))
+		if(StringUtils.isNotBlank(cpfBusca)) 
 			cpfBusca = StringUtil.removeMascara(cpfBusca);
-
-		if(situacao == null)
+		if(situacao == null) 
 			situacao = "A";
 		
 		Long[] areasIdsPorResponsavel = null;
-		
-		if(getUsuarioLogado().getId() != 1L && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COLAB_VER_TODOS"}))
-		{
+		if(getUsuarioLogado().getId() != 1L && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COLAB_VER_TODOS"})){
 			areasIdsPorResponsavel = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
-			
 			if(areasIdsPorResponsavel.length == 0)
 				areasIdsPorResponsavel = new Long[]{-1L};//não vai achar nenhum colaborador
 		}
 		
+		Map<String, Object> parametros = montaParametros(areasIdsPorResponsavel);
+		setTotalSize(colaboradorManager.getCountComHistoricoFuturoSQL(parametros));
+		colaboradors = colaboradorManager.findComHistoricoFuturoSQL(getPage(), getPagingSize(), parametros);
+		if (colaboradors == null || colaboradors.size() == 0)
+			addActionMessage("Não existem colaboradores a serem listados.");
+		integraAc = getEmpresaSistema().isAcIntegra();
+		
+		return Action.SUCCESS;
+	}
+
+	private Map<String, Object> montaParametros(Long[] areasIdsPorResponsavel) {
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("codigoACBusca", codigoACBusca);
 		parametros.put("nomeBusca", nomeBusca);
@@ -268,17 +272,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		parametros.put("cargoId", cargo.getId());
 		parametros.put("faixaSalarialId", faixaSalarial.getId());
 		parametros.put("situacao", situacao);
-		
-		//BACALHAU, refatorar outra consulta que ta com HQL, essa é em SQL...ajustar size ta pegando o tamanho da lista
-		setTotalSize(colaboradorManager.getCountComHistoricoFuturoSQL(parametros));
-		colaboradors = colaboradorManager.findComHistoricoFuturoSQL(getPage(), getPagingSize(), parametros);
-		
-		if (colaboradors == null || colaboradors.size() == 0)
-			addActionMessage("Não existem colaboradores a serem listados.");
-		
-		integraAc = getEmpresaSistema().isAcIntegra();
-		
-		return Action.SUCCESS;
+		return parametros;
 	}
 	
 	private void geraComprovante(Comprovante comprovante) throws Exception {

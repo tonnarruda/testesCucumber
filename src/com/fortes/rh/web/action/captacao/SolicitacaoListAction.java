@@ -114,18 +114,13 @@ public class SolicitacaoListAction extends MyActionSupportList
 	public String list() throws Exception
     {
 		setVideoAjuda(678L);
+		boolean roleMovSolicitacaoSelecao = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_SELECAO"});
 		
-        Map session = ActionContext.getContext().getSession();
-
-		boolean roleMovSolicitacaoSelecao = SecurityUtil.verifyRole(session, new String[]{"ROLE_MOV_SOLICITACAO_SELECAO"});
-		
-		if(roleMovSolicitacaoSelecao)
-		{
+		if(roleMovSolicitacaoSelecao){
 			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, null, codigoBusca, dataIni, dataFim, true));
 			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, null, codigoBusca, dataIni, dataFim, true);
 		}
-		else
-		{
+		else{
 			Long[] areasIdsComFilhas = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
 			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas, codigoBusca, dataIni, dataFim, false));
 			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(),
@@ -137,7 +132,14 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 		cargos = cargoManager.findAllSelect("nome", null, Cargo.TODOS, getEmpresaSistema().getId());
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		motivosSolicitacoes = motivoSolicitacaoManager.findAll();
+		populaAreas(roleMovSolicitacaoSelecao);
+		status = new StatusAprovacaoSolicitacao();
 		
+        return Action.SUCCESS;
+    }
+
+	private void populaAreas(boolean roleMovSolicitacaoSelecao) throws Exception {
 		if(roleMovSolicitacaoSelecao)
 			areasOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, null, false);
 		else
@@ -146,18 +148,11 @@ public class SolicitacaoListAction extends MyActionSupportList
 		if ( getEmpresaSistema().isAcIntegra() ) {
 			String mascara = areaOrganizacionalManager.getMascaraLotacoesAC(getEmpresaSistema()).replaceAll("9", "A");
 			if(mascara != "") {
-				for (AreaOrganizacional area : areasOrganizacionais) {
+				for (AreaOrganizacional area : areasOrganizacionais) 
 					area.setMascara(mascara);
-				}
 			}
 		}
-		
-		motivosSolicitacoes = motivoSolicitacaoManager.findAll();
-		
-		status = new StatusAprovacaoSolicitacao();
-		
-        return Action.SUCCESS;
-    }
+	}
 	
 	public String getNomeLiberador(Long idLiberador){
 		
