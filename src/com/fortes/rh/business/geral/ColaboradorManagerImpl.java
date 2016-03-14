@@ -2644,7 +2644,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		candidatoSolicitacaoManager.insertCandidatos(candidatosIds.toArray(new String[candidatosIds.size()]), solicitacao, statusCandidatoSolicitacao);
 	}
 
-	//sou feio mais tenho teste, heheheh
 	public Collection<Colaborador> ordenaByMediaPerformance(Collection<Colaborador> colaboradores)
 	{
 		HashMap<Long, Integer> pesos = new HashMap<Long, Integer>();
