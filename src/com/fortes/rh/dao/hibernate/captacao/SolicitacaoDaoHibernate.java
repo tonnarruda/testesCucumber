@@ -100,7 +100,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 
 		criteria.add(Expression.eq("s.empresa.id",empresaId));
 		
-		montaCriterionInvisivelParaGestor(criteria, usuarioId);
+		montaCriterionInvisivelParaGestor(criteria, usuarioId, empresaId);
 			
 		if (visualizar == 'E')
 			criteria.add(Expression.eq("s.encerrada", true));
@@ -152,12 +152,25 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 			criteria.add(Expression.eq("s.motivoSolicitacao.id", motivoId));
 	}
 
-	private void montaCriterionInvisivelParaGestor(Criteria criteria, Long usuarioLogadoId){
-		StringBuilder sql = new StringBuilder("this_.areaorganizacional_id not in(");
-		sql.append("							select id from areaorganizacional where responsavel_id = (select id from colaborador where usuario_id = ?) ");
-		sql.append("																	or coresponsavel_id = (select id from colaborador where usuario_id = ? )");
-		sql.append("							)");
-		Criterion criterion = Expression.sqlRestriction(sql.toString(), new Long[] {usuarioLogadoId, usuarioLogadoId}, new Type[]{Hibernate.LONG, Hibernate.LONG});
+	private void montaCriterionInvisivelParaGestor(Criteria criteria, Long usuarioLogadoId, Long empresaId){
+		StringBuilder sql = new StringBuilder();
+		sql.append("(with areasId as(select a.id from areaOrganizacional a ");
+		sql.append("								inner join colaborador c on ( c.id = a.responsavel_id or c.id = a.coResponsavel_id )"); 
+		sql.append("								where c.usuario_id = ? and a.empresa_id = ? )");
+		sql.append("	select not exists ( ");
+		sql.append("					select * from areasId as a where a.id in ( ");
+		sql.append("									with recursive areaorganizacional_recursiva AS ( ");
+		sql.append("										select id, areamae_id from areaorganizacional"); 
+		sql.append("										where id = this_.areaOrganizacional_id");
+		sql.append("										union all ");
+		sql.append("										select ao.id, ao.areamae_id from areaorganizacional ao"); 
+		sql.append("										inner join areaorganizacional_recursiva ao_r on ao.id = ao_r.areamae_id ");
+		sql.append("	 				 				)select id from areaorganizacional_recursiva ");
+		sql.append("					) ");
+		sql.append("	) ");
+		sql.append(") ");
+
+		Criterion criterion = Expression.sqlRestriction(sql.toString(), new Long[] {usuarioLogadoId, empresaId}, new Type[]{Hibernate.LONG, Hibernate.LONG});
 		criteria.add(Expression.or(Expression.eq("s.invisivelParaGestor", false), Expression.conjunction().add(Expression.eq("s.invisivelParaGestor", true)).add(criterion)));
 	}
 	

@@ -205,6 +205,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		colaborador = colaboradorDao.save(colaborador);
 
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L, colaborador);
+		areaOrganizacional.setEmpresa(empresa);
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
 		Solicitacao solicitacaoInvisivelParaGestor = SolicitacaoFactory.getSolicitacao(empresa, solicitante, areaOrganizacional, true, false, false);
@@ -218,7 +219,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long estabelecimentoId = -1L;
 		Long motivoId = -1L;
 
-		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, null, 'T', null, null, new Date(), new Date(), true);
+		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, null, 'T', null, null, null, null, true);
 		assertEquals(1, solicitacaos.size());
 		assertEquals(solicitacaoVisivelParaGestor.getId(), solicitacaos.iterator().next().getId());
 	}
@@ -235,6 +236,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		colaborador = colaboradorDao.save(colaborador);
 
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L, colaborador);
+		areaOrganizacional.setEmpresa(empresa);
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
 		Long cargoId = -1L;
@@ -247,7 +249,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Solicitacao solicitacaoVisivelParaGestor = SolicitacaoFactory.getSolicitacao(empresa, solicitante, areaOrganizacional, false, false, false);
 		solicitacaoVisivelParaGestor = solicitacaoDao.save(solicitacaoVisivelParaGestor);
 
-		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacional.getId(), cargoId, motivoId, null, 'T', new Long[]{areaOrganizacional.getId()}, null, new Date(), new Date(), false);
+		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacional.getId(), cargoId, motivoId, null, 'T', new Long[]{areaOrganizacional.getId()}, null, null, null, false);
 		assertEquals(1, solicitacaos.size());
 		assertEquals(solicitacaoVisivelParaGestor.getId(), solicitacaos.iterator().next().getId());
 	}
