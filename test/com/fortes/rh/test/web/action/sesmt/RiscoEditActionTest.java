@@ -55,6 +55,7 @@ public class RiscoEditActionTest extends MockObjectTestCase
 		manager = null;
 		epiManager = null;
 		action = null;
+        MockSecurityUtil.verifyRole = false;
 		super.tearDown();
 	}
 

@@ -75,7 +75,8 @@ public class ColaboradorQuestionarioListActionTest extends MockObjectTestCase
     {
     	colaboradorQuestionarioAction = null;
         colaboradorQuestionarioManager = null;
-
+        MockSecurityUtil.verifyRole = false;
+        
         super.tearDown();
     }
 

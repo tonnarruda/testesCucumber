@@ -80,6 +80,7 @@ public class ColaboradorReportActionTest extends MockObjectTestCase
 
 	protected void tearDown() throws Exception
 	{
+        MockSecurityUtil.verifyRole = false;
 		Mockit.restoreAllOriginalDefinitions();
 	}
 

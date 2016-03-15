@@ -104,6 +104,7 @@ public class QuestionarioListActionTest extends MockObjectTestCase
     {
     	action = null;
         questionarioManager = null;
+        MockSecurityUtil.verifyRole = false;
 
         Mockit.restoreAllOriginalDefinitions();
         super.tearDown();

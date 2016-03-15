@@ -78,6 +78,7 @@ public class AmbienteEditActionTest extends MockObjectTestCase
     	manager = null;
     	historicoAmbienteManager = null;
         action = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

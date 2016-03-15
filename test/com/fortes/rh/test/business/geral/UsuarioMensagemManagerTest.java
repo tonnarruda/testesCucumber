@@ -95,6 +95,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 
 	protected void tearDown() throws Exception
 	{
+    	MockSecurityUtil.verifyRole = false;
 		Mockit.restoreAllOriginalDefinitions();
 	}
 

@@ -37,6 +37,7 @@ public class MailTest extends MockObjectTestCase
 
 	protected void tearDown()
 	{
+    	MockSecurityUtil.verifyRole = false;
 		Mockit.restoreOriginalDefinition(SecurityUtil.class);
 	}
 

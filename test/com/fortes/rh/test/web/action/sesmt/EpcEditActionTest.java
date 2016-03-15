@@ -73,6 +73,7 @@ public class EpcEditActionTest extends MockObjectTestCase
 	{
 		Mockit.restoreAllOriginalDefinitions();
 		ambientesCheckList = null;
+        MockSecurityUtil.verifyRole = false;
 	}
 
 	public void testPrepareInsert() throws Exception

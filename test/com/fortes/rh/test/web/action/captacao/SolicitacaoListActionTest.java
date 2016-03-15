@@ -91,6 +91,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
         candidatoManager = null;
         candidatoSolicitacaoManager = null;
         action = null;
+    	MockSecurityUtil.verifyRole = false;
     }
 
     public void testList() throws Exception

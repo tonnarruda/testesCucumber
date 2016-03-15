@@ -34,6 +34,7 @@ public class AnuncioListActionTest extends MockObjectTestCase
 	protected void tearDown() throws Exception
 	{
 		super.tearDown();
+    	MockSecurityUtil.verifyRole = false;
 		Mockit.restoreAllOriginalDefinitions();
 	}
 

@@ -78,6 +78,7 @@ public class CatEditActionTest extends MockObjectTestCase
         manager = null;
         colaboradorManager = null;
         action = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

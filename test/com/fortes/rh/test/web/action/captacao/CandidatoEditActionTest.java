@@ -119,6 +119,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     {
         manager = null;
         action = null;
+    	MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
     

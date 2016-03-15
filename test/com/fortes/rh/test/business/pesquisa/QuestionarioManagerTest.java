@@ -125,7 +125,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     protected void tearDown() throws Exception
 	{
 		super.tearDown();
-
+    	MockSecurityUtil.verifyRole = false;
 		Mockit.restoreAllOriginalDefinitions();
 	}
 

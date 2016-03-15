@@ -61,6 +61,7 @@ public class EpiEditActionTest extends MockObjectTestCase
         epiManager = null;
         action = null;
         tipoEpiManager = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

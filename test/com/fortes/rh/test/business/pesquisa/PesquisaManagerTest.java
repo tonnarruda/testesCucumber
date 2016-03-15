@@ -13,7 +13,6 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
@@ -77,6 +76,11 @@ public class PesquisaManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("colaboradorRespostaManager", colaboradorRespostaManager);
     }
 
+    protected void tearDown() throws Exception
+    {
+    	MockSecurityUtil.verifyRole = false;
+    }
+    
     public void testDelete() throws Exception
     {
     	Exception exception = null;

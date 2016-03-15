@@ -81,6 +81,11 @@ public class IndexTest extends MockObjectTestCase
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 	}
+	
+	protected void tearDown() throws Exception
+    {
+        MockSecurityUtil.verifyRole = false;
+    }
 
 	public void testIndex()
 	{

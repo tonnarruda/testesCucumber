@@ -236,6 +236,11 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         Mockit.redefineMethods(RPClient.class, MockRPClient.class);
         Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
     }
+    
+    protected void tearDown() throws Exception
+    {
+    	MockSecurityUtil.verifyRole = false;
+    }
 
     public void testFindAdmitidosNoPeriodo() throws Exception
     {

@@ -50,6 +50,7 @@ public class CertificacaoListActionTest extends MockObjectTestCase
     {
         cursoManager = null;
         action = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

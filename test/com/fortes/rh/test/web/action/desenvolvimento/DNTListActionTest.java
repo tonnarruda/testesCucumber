@@ -63,6 +63,7 @@ public class DNTListActionTest extends MockObjectTestCase
     {
         DNTManager = null;
         action = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

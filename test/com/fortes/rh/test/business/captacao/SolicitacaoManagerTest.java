@@ -97,6 +97,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 	protected void tearDown() throws Exception
 	{
 		Mockit.restoreAllOriginalDefinitions();
+		MockSecurityUtil.verifyRole = false;
 	}
 
 	public void testSetBlackList() throws Exception

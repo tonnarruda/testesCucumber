@@ -38,6 +38,7 @@ public class AspectoEditActionTest extends MockObjectTestCase
 		Mockit.restoreAllOriginalDefinitions();
 		aspectoManager = null;
 		aspectoAction = null;
+        MockSecurityUtil.verifyRole = false;
 		super.tearDown();
 	}
 

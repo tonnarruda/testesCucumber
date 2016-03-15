@@ -86,6 +86,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 	{
 		manager = null;
 		action = null;
+		MockSecurityUtil.verifyRole = false;
 		super.tearDown();
 	}
 

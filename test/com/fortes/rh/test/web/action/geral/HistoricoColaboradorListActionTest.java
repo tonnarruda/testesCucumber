@@ -53,6 +53,7 @@ public class HistoricoColaboradorListActionTest extends MockObjectTestCase
     {
         historicoColaboradorManager = null;
         action = null;
+        MockSecurityUtil.verifyRole = false;
         Mockit.restoreAllOriginalDefinitions();
         super.tearDown();
     }

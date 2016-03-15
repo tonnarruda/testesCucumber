@@ -52,7 +52,8 @@ public class PerguntaListActionTest extends MockObjectTestCase
     {
     	perguntaListAction = null;
         perguntaManager = null;
-
+        MockSecurityUtil.verifyRole = false;
+        
         super.tearDown();
     }
 

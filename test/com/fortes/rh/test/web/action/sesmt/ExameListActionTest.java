@@ -96,6 +96,7 @@ public class ExameListActionTest extends MockObjectTestCase
 		Mockit.restoreAllOriginalDefinitions();
 		action = null;
 		exameManager = null;
+        MockSecurityUtil.verifyRole = false;
 
 		super.tearDown();
 	}

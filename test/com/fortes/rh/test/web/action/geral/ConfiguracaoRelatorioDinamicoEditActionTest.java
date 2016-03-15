@@ -29,6 +29,7 @@ public class ConfiguracaoRelatorioDinamicoEditActionTest extends MockObjectTestC
 	{
 		manager = null;
 		action = null;
+        MockSecurityUtil.verifyRole = false;
 		super.tearDown();
 	}
 

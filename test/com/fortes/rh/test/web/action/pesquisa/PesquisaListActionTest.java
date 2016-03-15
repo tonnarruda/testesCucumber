@@ -44,6 +44,7 @@ public class PesquisaListActionTest extends MockObjectTestCase
 	{
 		pesquisaListAction = null;
 		pesquisaManager = null;
+        MockSecurityUtil.verifyRole = false;
 
 		super.tearDown();
 	}

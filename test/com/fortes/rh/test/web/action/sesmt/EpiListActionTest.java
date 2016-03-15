@@ -47,6 +47,7 @@ public class EpiListActionTest extends MockObjectTestCase
     	Mockit.restoreAllOriginalDefinitions();
     	manager = null;
         action = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

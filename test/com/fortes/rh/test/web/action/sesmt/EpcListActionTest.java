@@ -36,6 +36,7 @@ public class EpcListActionTest extends MockObjectTestCase
 		Mockit.restoreAllOriginalDefinitions();
 		action = null;
 		epcManager = null;
+        MockSecurityUtil.verifyRole = false;
 
 		super.tearDown();
 	}

@@ -39,6 +39,8 @@ public class ColaboradorRespostaEditActionTest extends MockObjectTestCase
 		colaboradorRespostaManager = null;
 		colaboradorRespostaEditAction = null;
 
+        MockSecurityUtil.verifyRole = false;
+		
 		super.tearDown();
 	}
 

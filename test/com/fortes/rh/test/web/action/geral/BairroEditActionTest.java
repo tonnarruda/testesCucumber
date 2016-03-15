@@ -44,6 +44,11 @@ public class BairroEditActionTest extends MockObjectTestCase
 
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
+	
+	protected void tearDown() throws Exception
+    {
+        MockSecurityUtil.verifyRole = false;
+    }
 
 	public void testExecute() throws Exception
 	{

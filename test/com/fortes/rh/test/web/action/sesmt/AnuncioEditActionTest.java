@@ -44,6 +44,11 @@ public class AnuncioEditActionTest extends MockObjectTestCase
         Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
+	
+	protected void tearDown() throws Exception
+    {
+        MockSecurityUtil.verifyRole = false;
+    }
 
 	public void testPrepareInsert() throws Exception
 	{

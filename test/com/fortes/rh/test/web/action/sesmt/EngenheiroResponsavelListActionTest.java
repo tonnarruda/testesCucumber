@@ -37,6 +37,7 @@ public class EngenheiroResponsavelListActionTest extends MockObjectTestCase
     	Mockit.restoreAllOriginalDefinitions();
     	manager = null;
         action = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

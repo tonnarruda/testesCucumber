@@ -41,6 +41,11 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(SessionMap.class, MockSessionMap.class);
 	}
+	
+	protected void tearDown() throws Exception
+    {
+        MockSecurityUtil.verifyRole = false;
+    }
 
 	public void testeGetEmailsResponsaveis()
 	{

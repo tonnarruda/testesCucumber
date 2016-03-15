@@ -56,6 +56,7 @@ public class EntrevistaListActionTest extends MockObjectTestCase
     {
         entrevistaManager = null;
         entrevistaListAction = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

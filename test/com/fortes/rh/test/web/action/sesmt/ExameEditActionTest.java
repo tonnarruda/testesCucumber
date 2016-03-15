@@ -32,6 +32,7 @@ public class ExameEditActionTest extends MockObjectTestCase
 	protected void tearDown() throws Exception
 	{
 		Mockit.restoreAllOriginalDefinitions();
+        MockSecurityUtil.verifyRole = false;
 	}
 
 	public void testExecute() throws Exception

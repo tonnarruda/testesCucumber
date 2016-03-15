@@ -74,6 +74,7 @@ public class FuncaoListActionTest extends MockObjectTestCase
         action = null;
         colaboradorManager=null;
         areaOrganizacionalManager = null;
+        MockSecurityUtil.verifyRole = false;
         Mockit.restoreAllOriginalDefinitions();
     }
 

@@ -51,6 +51,7 @@ public class SolicitacaoEditActionTest extends MockObjectTestCase
     {
         candidatoSolicitacaoManager = null;
         action = null;
+    	MockSecurityUtil.verifyRole = false;
         MockSecurityUtil.verifyRole = false;
     }
 

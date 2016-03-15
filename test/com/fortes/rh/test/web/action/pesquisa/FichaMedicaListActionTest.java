@@ -64,6 +64,7 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
     {
         fichaMedicaManager = null;
         fichaMedicaListAction = null;
+        MockSecurityUtil.verifyRole = false;
     }
 
     public void testDelete() throws Exception

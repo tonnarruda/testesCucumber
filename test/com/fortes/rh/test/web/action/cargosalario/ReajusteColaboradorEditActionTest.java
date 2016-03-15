@@ -103,6 +103,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 	{
 		action = null;
 		manager = null;
+		MockSecurityUtil.verifyRole = false;
 	}
 	
 	public void testInsertSolicitacaoReajuste() throws Exception

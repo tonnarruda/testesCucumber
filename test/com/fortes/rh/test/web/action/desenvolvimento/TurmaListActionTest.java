@@ -63,6 +63,7 @@ public class TurmaListActionTest extends MockObjectTestCase
     {
         turmaManager = null;
         action = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

@@ -36,6 +36,7 @@ public class DNTEditActionTest extends MockObjectTestCase
     {
         DTNManager = null;
         action = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

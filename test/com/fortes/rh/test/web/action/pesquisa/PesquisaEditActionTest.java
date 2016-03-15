@@ -48,7 +48,8 @@ public class PesquisaEditActionTest extends MockObjectTestCase
 
 		pesquisaManager = null;
 		pesquisaAction = null;
-
+        MockSecurityUtil.verifyRole = false;
+		
 		super.tearDown();
 	}
 

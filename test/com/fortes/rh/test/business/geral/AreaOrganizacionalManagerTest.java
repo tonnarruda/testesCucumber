@@ -100,6 +100,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     protected void tearDown() throws Exception
     {
+    	MockSecurityUtil.verifyRole = false;
     	Mockit.restoreAllOriginalDefinitions();
     }
 

@@ -33,6 +33,7 @@ public class AreaFormacaoListActionTest extends MockObjectTestCase
     {
         manager = null;
         action = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

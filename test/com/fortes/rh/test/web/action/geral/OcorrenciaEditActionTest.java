@@ -66,6 +66,11 @@ public class OcorrenciaEditActionTest extends MockObjectTestCase
 		empresa.setAcIntegra(true);
 		action.setEmpresaSistema(empresa);
 	}
+	
+	protected void tearDown() throws Exception
+    {
+        MockSecurityUtil.verifyRole = false;
+    }
 
 	public void testExecute() throws Exception
 	{
@@ -130,6 +135,26 @@ public class OcorrenciaEditActionTest extends MockObjectTestCase
 		assertEquals("success", action.prepareRelatorioOcorrencia());
 	}
 	
+	public void testBuscaOcorrencia() throws Exception
+	{
+		ColaboradorOcorrencia colaboradorOcorrencia = ColaboradorOcorrenciaFactory.getEntity();
+		
+		Collection<ColaboradorOcorrencia> colaboradoresOcorrencia = new ArrayList<ColaboradorOcorrencia>();
+		colaboradoresOcorrencia.add(colaboradorOcorrencia);
+		
+		MockSecurityUtil.verifyRole = false;
+		
+		colaboradorOcorrenciaManager.expects(once()).method("filtrarOcorrencias").withAnyArguments().will(returnValue(colaboradoresOcorrencia));
+		areaOrganizacionalManager.expects(once()).method("findAreasByUsuarioResponsavel").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Long>()));
+		
+		action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
+		action.setDataFim(DateUtil.criarAnoMesDia(2012, 01, 01)); 
+		action.setExibirProvidencia(false);
+		action.setEmpresa(action.getEmpresaSistema());
+		
+		assertEquals("semProvidenciaPDF", action.buscaOcorrencia());
+	}
+
 	public void testBuscaOcorrenciaComVerTodasAreas() throws Exception
 	{
 		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
@@ -149,27 +174,6 @@ public class OcorrenciaEditActionTest extends MockObjectTestCase
 		action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
 		action.setDataFim(DateUtil.criarAnoMesDia(2012, 01, 01));
 		action.setExibirProvidencia(false);
-		
-		assertEquals("semProvidenciaPDF", action.buscaOcorrencia());
-	}
-
-	public void testBuscaOcorrencia() throws Exception
-	{
-		ColaboradorOcorrencia colaboradorOcorrencia = ColaboradorOcorrenciaFactory.getEntity();
-		
-		Collection<ColaboradorOcorrencia> colaboradoresOcorrencia = new ArrayList<ColaboradorOcorrencia>();
-		colaboradoresOcorrencia.add(colaboradorOcorrencia);
-		
-		MockSecurityUtil.verifyRole = false;
-		MockSecurityUtil.roles = new String[]{};
-		
-		colaboradorOcorrenciaManager.expects(once()).method("filtrarOcorrencias").withAnyArguments().will(returnValue(colaboradoresOcorrencia));
-		areaOrganizacionalManager.expects(once()).method("findAreasByUsuarioResponsavel").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Long>()));
-		
-		action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
-		action.setDataFim(DateUtil.criarAnoMesDia(2012, 01, 01)); 
-		action.setExibirProvidencia(false);
-		action.setEmpresa(action.getEmpresaSistema());
 		
 		assertEquals("semProvidenciaPDF", action.buscaOcorrencia());
 	}

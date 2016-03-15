@@ -20,6 +20,11 @@ public class MyActionSupportEditTest extends TestCase
 		myActionSupportEdit = new MyActionSupportEdit();
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
+	
+	protected void tearDown() throws Exception
+    {
+        MockSecurityUtil.verifyRole = false;
+    }
 
 	public void testGetEmpresaSistema()
 	{

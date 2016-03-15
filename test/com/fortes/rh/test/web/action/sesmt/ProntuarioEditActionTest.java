@@ -43,6 +43,7 @@ public class ProntuarioEditActionTest extends MockObjectTestCase
 	@Override
 	protected void tearDown() throws Exception
 	{
+        MockSecurityUtil.verifyRole = false;
 		Mockit.restoreAllOriginalDefinitions();
 	}
 

@@ -85,6 +85,7 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
 	{
 		manager = null;
 		action = null;
+    	MockSecurityUtil.verifyRole = false;
 		super.tearDown();
 	}
 

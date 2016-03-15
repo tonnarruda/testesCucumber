@@ -30,6 +30,11 @@ public class TamanhoEPIListActionTest extends MockObjectTestCase
         action.setTamanhoEPIManager((TamanhoEPIManager) manager.proxy());
     }
 	
+	protected void tearDown() throws Exception
+    {
+        MockSecurityUtil.verifyRole = false;
+    }
+	
 	public void testList() throws Exception
     {
     	prepareListTamanhosEpi();

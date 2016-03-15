@@ -101,6 +101,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
         ambienteManager = null;
 
         Mockit.restoreAllOriginalDefinitions();
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

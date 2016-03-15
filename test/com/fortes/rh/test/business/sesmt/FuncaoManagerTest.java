@@ -23,7 +23,6 @@ import com.fortes.rh.exception.PppRelatorioException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
-import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -81,6 +80,7 @@ public class FuncaoManagerTest extends MockObjectTestCase
     
     @Override
     protected void tearDown() throws Exception {
+    	MockSecurityUtil.verifyRole = false;
     	Mockit.restoreAllOriginalDefinitions();
     }
 
@@ -316,6 +316,8 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		historicoFuncaoManager.expects(once()).method("findUltimoHistoricoAteData").with(eq(funcao.getId()), eq(historicoColaboradorComHistoricoAmbienteSemMedicao.getData())).will(returnValue(historicoFuncao));
 		PppRelatorioException pppRelatorioException = null;
 		Exception exception = null;
+		
+		MockSecurityUtil.verifyRole = true;
 		
 		try 
 		{

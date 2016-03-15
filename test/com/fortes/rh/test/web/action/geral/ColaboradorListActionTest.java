@@ -76,6 +76,7 @@ public class ColaboradorListActionTest extends MockObjectTestCase
     {
         colaboradorManager = null;
         action = null;
+        MockSecurityUtil.verifyRole = false;
         Mockit.restoreAllOriginalDefinitions();
         super.tearDown();
     }

@@ -78,6 +78,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
         estabelecimentoManager = null;
         areaOrganizacionalManager = null;
         action = null;
+    	MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

@@ -41,6 +41,7 @@ public class ClinicaAutorizadaEditActionTest extends MockObjectTestCase
 		Mockit.restoreAllOriginalDefinitions();
 		manager = null;
 		action = null;
+        MockSecurityUtil.verifyRole = false;
 		super.tearDown();
 	}
 

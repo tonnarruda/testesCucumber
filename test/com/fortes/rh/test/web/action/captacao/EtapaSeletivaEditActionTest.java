@@ -32,6 +32,7 @@ public class EtapaSeletivaEditActionTest extends MockObjectTestCase
     {
         manager = null;
         action = null;
+    	MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

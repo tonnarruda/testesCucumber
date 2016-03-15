@@ -35,6 +35,7 @@ public class MedicoCoordenadorEditActionTest extends MockObjectTestCase
 		Mockit.restoreAllOriginalDefinitions();
 		medicoCoordenadorManager = null;
 		action = null;
+        MockSecurityUtil.verifyRole = false;
 		super.tearDown();
 	}
 

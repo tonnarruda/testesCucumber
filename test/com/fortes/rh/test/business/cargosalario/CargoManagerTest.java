@@ -149,7 +149,7 @@ public class CargoManagerTest extends MockObjectTestCase
 	protected void tearDown() throws Exception
 	{
 		Mockit.restoreAllOriginalDefinitions();
-
+		MockSecurityUtil.verifyRole = false;
 		super.tearDown();
 	}
 

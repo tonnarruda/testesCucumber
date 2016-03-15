@@ -11,6 +11,11 @@ import com.fortes.web.tags.LinkTag;
 
 public class LinkTagTest extends MockObjectTestCase
 {
+	protected void tearDown() throws Exception
+    {
+        MockSecurityUtil.verifyRole = false;
+    }
+	
 	public void testMontaLink()
 	{
 		StringBuffer link = new StringBuffer("");

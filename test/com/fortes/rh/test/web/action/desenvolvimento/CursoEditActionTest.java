@@ -58,6 +58,7 @@ public class CursoEditActionTest extends MockObjectTestCase
     {
         cursoManager = null;
         action = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

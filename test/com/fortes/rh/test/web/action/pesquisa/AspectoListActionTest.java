@@ -41,6 +41,7 @@ public class AspectoListActionTest extends MockObjectTestCase
     {
         aspectoManager = null;
         aspectoListAction = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

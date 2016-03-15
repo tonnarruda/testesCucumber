@@ -66,6 +66,11 @@ public class FichaMedicaManagerTest extends MockObjectTestCase
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
     }
+    
+    protected void tearDown() throws Exception
+    {
+    	MockSecurityUtil.verifyRole = false;
+    }
 
     public void testDelete() throws Exception
     {

@@ -30,6 +30,11 @@ public class HistoricoBeneficioEditActionTest extends MockObjectTestCase
 		action.setBeneficioManager((BeneficioManager) beneficioManager.proxy());
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
+	
+	protected void tearDown() throws Exception
+    {
+        MockSecurityUtil.verifyRole = false;
+    }
 
 	public void testExecute() throws Exception
 	{

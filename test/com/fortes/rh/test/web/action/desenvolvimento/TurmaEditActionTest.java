@@ -149,6 +149,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     protected void tearDown() throws Exception
     {
         action = null;
+        MockSecurityUtil.verifyRole = false;
         super.tearDown();
     }
 

@@ -139,6 +139,8 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 
 		colaboradorQuestionarioManager = null;
 		action = null;
+		
+        MockSecurityUtil.verifyRole = false;
 
 		super.tearDown();
 	}

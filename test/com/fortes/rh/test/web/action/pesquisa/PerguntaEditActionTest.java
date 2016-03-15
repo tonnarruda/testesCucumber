@@ -49,6 +49,7 @@ public class PerguntaEditActionTest extends MockObjectTestCase
 		Mockit.restoreAllOriginalDefinitions();
 		perguntaManager = null;
 		perguntaEditAction = null;
+        MockSecurityUtil.verifyRole = false;
 		super.tearDown();
 	}
 
