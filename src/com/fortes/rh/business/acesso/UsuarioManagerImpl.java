@@ -221,11 +221,9 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		if(colaboradores.isEmpty())
 			throw new ColecaoVaziaException("Não existe colaborador sem usuário.");
 
-		for (Colaborador colaborador : colaboradores)
-		{
+		for (Colaborador colaborador : colaboradores){
 			Usuario usuario = findByLogin(colaborador.getPessoal().getCpf());
-			if (usuario == null)
-			{
+			if (usuario == null){
 				usuario = new Usuario();
 				usuario.setLogin(colaborador.getPessoal().getCpf());
 				usuario.setAcessoSistema(true);
@@ -235,8 +233,7 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 			}
 			
 			UsuarioEmpresa usuarioEmpresa = usuarioEmpresaManager.findByUsuarioEmpresa(usuario.getId(), empresa.getId());
-			if (usuarioEmpresa == null)
-			{
+			if (usuarioEmpresa == null){
 				usuarioEmpresa = new UsuarioEmpresa();
 				usuarioEmpresa.setUsuario(usuario);
 				usuarioEmpresa.setEmpresa(empresa);
@@ -245,7 +242,6 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 			}
 			
 			colaboradorManager.atualizarUsuario(colaborador.getId(), usuario.getId());
-			
 			gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema(usuario.getLogin(), senhaPadrao, colaborador.getContato().getEmail(), empresa);
 		}
 	}
