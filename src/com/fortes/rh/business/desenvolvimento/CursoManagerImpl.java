@@ -64,9 +64,10 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().findAllByEmpresasParticipantes(empresasIds);
 	}
 	
+	// TODO: SEM TESTE
 	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds)
 	{
-		IndicadorTreinamento indicadorTreinamento = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, areasIds, cursoIds, estabelecimentosIds);
+		IndicadorTreinamento indicadorTreinamento = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds);
 		indicadorTreinamento.setDataIni(dataIni);
 		indicadorTreinamento.setDataFim(dataFim);
 		
@@ -75,7 +76,9 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		Double somaCustos = indicadorTreinamento.getSomaCustos();
 
 		indicadorTreinamento.setCustoMedioHora( qtdHoras > 0 ? somaCustos / qtdHoras : 0);
-		indicadorTreinamento.setTotalHorasTreinamento(getDao().findCargaHorariaTotalTreinamento(cursoIds, empresaIds, dataIni, dataFim, true));
+		
+		/**Indicador: Total de horas de treinamento (h:min)*/
+		indicadorTreinamento.setTotalHorasTreinamento(getDao().findCargaHorariaTotalTreinamento(cursoIds, empresaIds, estabelecimentosIds, areasIds, dataIni, dataFim, true));
 		
 		Double custoPerCapita = 0d;
 		Double horasPerCapita = 0d;

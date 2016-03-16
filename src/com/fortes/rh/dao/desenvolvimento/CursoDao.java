@@ -15,16 +15,15 @@ public interface CursoDao extends GenericDao<Curso>
 	public String getConteudoProgramatico(Long id);
 	public Collection<Curso> findByCertificacao(Long certificacaoId);
 	public Double somaCustosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
-	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds);
+	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cursoIds);
 	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public Integer findSomaColaboradoresPrevistosTreinamentos(Date dataIni, Date dataFim, Long empresaId);
 	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Boolean realizado);
-	public Integer findCargaHorariaTotalTreinamento(Long[] cursosIds, Long[] empresasIds, Date dataInicio, Date dataFim, boolean realizada);
+	public Integer findCargaHorariaTotalTreinamento(Long[] cursosIds, Long[] empresasIds, Long[] estabelecimentosIds, Long[] areasOrganizacionaisIds, Date dataInicio, Date dataFim, boolean realizada);
 	public Collection<Long> findComAvaliacao(Long empresaId, Date dataIni, Date dataFim);
 	public Collection<Curso> findByFiltro(Integer page, Integer pagingSize, Curso curso, Long empresaId);
 	public Empresa findEmpresaByCurso(Long cursoId);
 	public Integer getCount(Curso curso, Long empresaId);
-	public Collection<Long> findTurmas(Long empresaId, Long[] cursoIds);
 	public Collection<Curso> findCursosSemTurma(Long empresaId);
 	public Collection<Curso> findByIdProjection(Long[] cursoIds);
 	public Collection<Curso> findByCompetencia(Long competenciaId, Character tipoCompetencia);

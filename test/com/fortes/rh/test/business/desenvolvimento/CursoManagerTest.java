@@ -1,18 +1,15 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
-import java.util.Arrays;
-
 import com.fortes.rh.business.desenvolvimento.CursoManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
-import com.fortes.rh.model.captacao.Conhecimento;
-import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;

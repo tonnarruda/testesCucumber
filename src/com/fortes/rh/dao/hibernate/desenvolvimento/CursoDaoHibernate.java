@@ -138,7 +138,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return (Double) criteria.uniqueResult();
 	}
 	
-	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds)
+	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cursoIds)
 	{
 		getSession().flush();
 		
@@ -153,7 +153,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		sql.append("inner join turma tur on ct.turma_id = tur.id "); 
 		sql.append("inner join curso cur on tur.curso_id = cur.id ");
 		sql.append("inner join colaborador col on ct.colaborador_id = col.id ");
-		sql.append("inner join historicoColaborador hc on hc.colaborador_id = col.id ");
+		sql.append("inner join historicoColaborador hc on hc.colaborador_id = col.id and data = (select max(data) from historicoColaborador hc1 where hc1.colaborador_id = col.id and hc1.data <= tur.dataPrevIni) ");
 		sql.append("left join ( ");
 		sql.append("   select ct2.turma_id, cast(coalesce(count(ct2.id), 0) as integer) as qtdeInscritosTotal from colaboradorTurma ct2 group by ct2.turma_id ");
 		sql.append(") as ct3 on ct3.turma_id = tur.id ");
@@ -167,9 +167,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		sql.append("			where  dt2.dia between :dataIni and :dataFim " );
 		sql.append("			group by dt2.turma_id ");
 		sql.append(") as dt2 on dt2.turma_id = tur.id  ");
-
-		sql.append("where hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador_id = col.id) ");
-		sql.append("and col.empresa_id in (:empresaIds) ");
+		sql.append("where col.empresa_id in (:empresaIds) ");
 		sql.append("and tur.dataPrevIni between :dataIni and :dataFim "); 
 		sql.append("and tur.realizada = true ");
 		
@@ -276,33 +274,44 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return (Integer)criteria.uniqueResult();
 	}
 
-	public Integer findCargaHorariaTotalTreinamento(Long[] cursosIds, Long[] empresasIds, Date dataInicio, Date dataFim, boolean realizada){
-		StringBuilder hql = new StringBuilder("select coalesce(sum(coalesce(c.cargaHoraria, 0)* (");
-												hql.append("select count(t.id) from Turma as t where t.curso_id = c.id and t.realizada = :realizada ");
-													hql.append("and t.dataPrevIni between :dataInicio and :dataFim ");
-												hql.append(") ");
-												hql.append("), 0) ");
-											hql.append("from Curso c ");
-											hql.append("where 1=1 ");
-												
+	public Integer findCargaHorariaTotalTreinamento(Long[] cursosIds, Long[] empresasIds, Long[] estabelecimentosIds, Long[] areasOrganizacionaisIds, Date dataInicio, Date dataFim, boolean realizada){
+		StringBuilder hql = new StringBuilder("");
+		hql.append("select  coalesce( sum(totalHorasTreinamento.cargahoraria * totalHorasTreinamento.qtdTurmaCursoId),0)  from (select distinct c.id,  c.cargahoraria, count(t.id) OVER( PARTITION BY c.id) AS qtdTurmaCursoId ");
+		hql.append("from Curso c ");
+		hql.append("inner join Turma t  on t.curso_id = c.id ");
+		hql.append("inner join ColaboradorTurma ct on t.id = ct.turma_id ");
+		hql.append("inner join historicoColaborador hc on hc.colaborador_id = ct.colaborador_id and data = (select max(data) from historicoColaborador hc1 where hc1.colaborador_id = ct.colaborador_id and hc1.data <= t.dataPrevIni) ");
+		hql.append("where t.realizada = :realizada ");
+		hql.append("and t.dataPrevIni between :dataInicio and :dataFim " );
+		
 		if(cursosIds != null && cursosIds.length > 0)
 			hql.append("and c.id in(:cursosIds) ");
-			
+		if(areasOrganizacionaisIds != null && areasOrganizacionaisIds.length > 0)
+			hql.append("and hc.areaorganizacional_id in (:areasOrganizacionaisIds) ");
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			hql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
 		if(empresasIds != null && empresasIds.length > 0)
-			hql.append("and c.empresa_id in(:empresasIds) ");
-		
+			hql.append("and c.empresa_id in(:empresasIds) ");								        
+
+		hql.append("group by c.id, t.id, c.cargahoraria) as totalHorasTreinamento "); 
+												
 		Query query = getSession().createSQLQuery(hql.toString());
 		
 		if(cursosIds != null && cursosIds.length > 0)
 			query.setParameterList("cursosIds", cursosIds);
 			
+		if(areasOrganizacionaisIds != null && areasOrganizacionaisIds.length > 0)
+			query.setParameterList("areasOrganizacionaisIds", areasOrganizacionaisIds);
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds);
+		
 		if(empresasIds != null && empresasIds.length > 0)
 			query.setParameterList("empresasIds", empresasIds);
 		
 		query.setBoolean("realizada", realizada);
 		query.setDate("dataInicio", dataInicio);
 		query.setDate("dataFim", dataFim);
-		
 		return ((BigDecimal)query.uniqueResult()).intValue();
 	}
 	
@@ -361,23 +370,6 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
-
-		return criteria.list();
-	}
-
-	public Collection<Long> findTurmas(Long empresaId, Long[] cursoIds)
-	{
-		Criteria criteria = getSession().createCriteria(Curso.class,"c");
-		criteria.createCriteria("c.turmas", "t");
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("t.id"), "id");
-
-		criteria.setProjection(Projections.distinct(p));
-
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
-		criteria.add(Expression.in("c.id", cursoIds));
-
 
 		return criteria.list();
 	}
