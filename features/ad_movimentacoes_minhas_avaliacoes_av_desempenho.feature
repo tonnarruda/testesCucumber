@@ -4,7 +4,6 @@ Funcionalidade: Minhas Avaliações - Avaliação Desempenho
 
   Cenário: Minhas Avaliações - Avaliação Desempenho
     Dado que exista um colaborador "Samuel", da area "Desenvolvimento", com o cargo "Desenvolvedor" e a faixa salarial "3"
-
     Dado que eu esteja logado com o usuário "fortes"
 
     Quando eu acesso o menu "Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência"
@@ -39,18 +38,24 @@ Funcionalidade: Minhas Avaliações - Avaliação Desempenho
     E eu clico no botão "Avancar"
 
     Então eu devo ver o título "Participantes - _avaliacao 1"
-    E eu clico no botão "Inserir"
+    E eu clico no botão de Id "inserir_Avaliado"
+    E eu espero 1 segundos
     Então eu devo ver "Inserir Avaliado"
     E eu clico no botão "Pesquisar"
     E eu marco "Samuel"
     E eu clico no botão "Gravar"
 
-    Entao eu clico no botão de Id "ativaAvaliador"
-    E eu clico no botão "Inserir"
-    Então eu devo ver "Inserir Avaliado"
+    Entao eu clico no botão de Id "inserir_Avaliador"
+    E eu espero 1 segundos
     E eu clico no botão "Pesquisar"
     E eu marco "Samuel"
     E eu clico no botão "Gravar"
+
+    Entao eu clico no botão de Id "btnGravar"
+    E eu devo ver "Gravado com sucesso"
+    E eu adiciono o avaliado no avaliador da avaliação de desempenho
+    E eu clico no botão de Id "btnGravar"
+    E eu devo ver "Gravado com sucesso"
     E eu clico no botão "Voltar"
 
     Então eu clico na linha "_avaliacao 1" da imagem "Liberar"
@@ -69,7 +74,7 @@ Funcionalidade: Minhas Avaliações - Avaliação Desempenho
     E eu devo ver o título "Responder Avaliação de Desempenho"
     E eu seleciono "8" de "Selecione a nota de 5 a 10"
     E eu clico no botão "Gravar"
-    E eu devo ver "Avaliação respondida com sucesso."
+    E eu devo ver "Respostas gravadas com sucesso."
     Entao eu devo ver "80%"
 
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
@@ -86,19 +91,15 @@ Funcionalidade: Minhas Avaliações - Avaliação Desempenho
 
     Quando eu acesso o menu "Aval. Desempenho > Movimentações > Minhas Avaliações"
     E eu devo ver o título "Respostas das Minhas Avaliações"
-    E eu clico em editar "_avaliacao I"
+    E eu clico em editar "_avaliacao 1"
     E eu devo ver "Responder Avaliação de Desempenho"
     E eu clico no botão "Cancelar"
     E eu devo ver o título "Respostas das Minhas Avaliações"
 
-    Então eu clico em editar "_avaliacao I"
+    Então eu clico em editar "_avaliacao 1"
     E eu seleciono "6" de "Selecione a nota de 5 a 10"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Respostas das Minhas Avaliações"
-    E eu devo ver "Avaliação respondida com sucesso."
-
-
-
-
+    E eu devo ver "Respostas gravadas com sucesso."
 
     Quando eu acesso o menu "Sair"

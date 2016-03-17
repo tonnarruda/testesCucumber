@@ -267,12 +267,8 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		if(moduloExterno)
 		{
 			Map session = ActionContext.getContext().getSession();
-			if(session.get("SESSION_CANDIDATO_ID") == null)
+			if(session.get("SESSION_CANDIDATO_ID") == null || !((Long) session.get("SESSION_CANDIDATO_ID")).equals(candidato.getId()))
 				return Action.INPUT;
-			else if ( !((Long) session.get("SESSION_CANDIDATO_ID")).equals(candidato.getId()) ) {
-				HttpServletResponse response = ServletActionContext.getResponse();
-				response.sendError(HttpServletResponse.SC_FORBIDDEN);
-			}
 
 			empresaId = this.empresaId;
 		}

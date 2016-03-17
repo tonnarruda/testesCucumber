@@ -450,7 +450,8 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		colaboradorManager.expects(atLeastOnce()).method("findColaboradorByDataHistorico").with(ANYTHING,ANYTHING).will(returnValue(colaborador));
 		colaboradorQuestionarioManager.expects(once()).method("populaQuestionario").will(returnValue(new ArrayList<ColaboradorResposta>()));
 		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionarioAgrupadosPorAspecto").with(eq(10L), ANYTHING).will(returnValue(new ArrayList<Pergunta>()));
-		avaliacaoManager.expects(atLeastOnce()).method("getPontuacaoMaximaDaPerformance").withAnyArguments().will(returnValue(new Integer(2)));
+		colaboradorRespostaManager.expects(once()).method("findByColaboradorQuestionario").with(eq(colaboradorQuestionario.getId())).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		colaboradorRespostaManager.expects(atLeastOnce()).method("calculaPontuacaoMaximaQuestionario").withAnyArguments().will(returnValue(new Integer(2)));
 		
 		assertEquals("success",action.prepareResponderAvaliacaoDesempenho());
 		
@@ -461,6 +462,8 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findByIdProjectionEmpresa").will(returnValue(colaborador));
 		colaboradorRespostaManager.expects(once()).method("findByColaboradorQuestionario").will(returnValue(new ArrayList<ColaboradorResposta>()));
 		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionarioAgrupadosPorAspecto").with(eq(10L), ANYTHING).will(returnValue(new ArrayList<Pergunta>()));
+		colaboradorRespostaManager.expects(once()).method("findByColaboradorQuestionario").with(eq(colaboradorQuestionario.getId())).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		colaboradorRespostaManager.expects(atLeastOnce()).method("calculaPontuacaoMaximaQuestionario").withAnyArguments().will(returnValue(new Integer(2)));
 		
 		assertEquals("success",action.prepareResponderAvaliacaoDesempenho());
 	}

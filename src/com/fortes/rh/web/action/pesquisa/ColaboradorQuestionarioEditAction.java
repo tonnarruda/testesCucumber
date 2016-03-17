@@ -320,8 +320,10 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaxima(colaborador.getEmpresa().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 			}
 		}
-		if(colaboradorQuestionario.getAvaliacao().getId() != null)
-			pontuacaoMaximaQuestionario = avaliacaoManager.getPontuacaoMaximaDaPerformance(colaboradorQuestionario.getAvaliacao().getId(), new Long[]{});
+		if(colaboradorQuestionario.getAvaliacao().getId() != null){
+			Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
+			pontuacaoMaximaQuestionario = colaboradorRespostaManager.calculaPontuacaoMaximaQuestionario(colaboradorQuestionario, colaboradorRespostas, null);
+		}
 		
 		return Action.SUCCESS;
 	}

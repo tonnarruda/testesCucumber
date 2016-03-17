@@ -212,7 +212,7 @@
 			<@ww.form name="formParticipantes" id="formParticipantes" action="saveParticipantes" method="POST">
 				<div id="avaliados" class="box">
 				  <h1 class="ui-widget-header title">
-				  	<span class="ui-icon ui-icon-plusthick more-avaliado" title="Inserir Avaliado" <#if !avaliacaoDesempenho.liberada>onclick="openboxAvaliado('Inserir Avaliado', 'nomeBusca');"<#else>disabled="disabled"</#if> ></span>
+				  	<span id = "inserir_Avaliado" class="ui-icon ui-icon-plusthick more-avaliado" title="Inserir Avaliado" <#if !avaliacaoDesempenho.liberada>onclick="openboxAvaliado('Inserir Avaliado', 'nomeBusca');"<#else>disabled="disabled"</#if> ></span>
 				  	Avaliados
 					<span class="ui-icon ui-icon-circle-triangle-e show-info"></span>
 					<span class="ui-icon ui-icon-circle-triangle-w hide-info"></span>
@@ -221,7 +221,7 @@
 				  	<div class="option remove only-selectables disabled" title="Remover selecionados">
 						<span class="ui-icon ui-icon-trash"></span>
 				    </div>
-				  	<div class="option move-all only-selectables disabled" title="Relacionar selecionados aos avaliadores">
+				  	<div class="option move-all only-selectables disabled" id = "relacionar_selecionados" title="Relacionar selecionados aos avaliadores">
 						<i class="fa fa-users"></i>
 						<i class="fa fa-long-arrow-right"></i>
 				    </div>
@@ -272,7 +272,7 @@
 			 
 				<div id="avaliadores" class="box">
 					<h1 class="ui-widget-header title">
-						<span class="ui-icon ui-icon-plusthick more-avaliador" title="Inserir Avaliador" <#if !avaliacaoDesempenho.liberada>onclick="openboxAvaliador('Inserir Avaliador', 'nomeBusca');"<#else>disabled="disabled"</#if> ></span>
+						<span id = "inserir_Avaliador" class="ui-icon ui-icon-plusthick more-avaliador" title="Inserir Avaliador" <#if !avaliacaoDesempenho.liberada>onclick="openboxAvaliador('Inserir Avaliador', 'nomeBusca');"<#else>disabled="disabled"</#if> ></span>
 						<span>Avaliadores</span>
 						<span class="ui-icon ui-icon-circle-triangle-e show-info"></span>
 						<span class="ui-icon ui-icon-circle-triangle-w hide-info"></span>
@@ -375,7 +375,7 @@
 				<script>countParticipantesAvaliadores=${countParticipantesAvaliadores};</script>
 				<@ww.hidden name="avaliacaoDesempenho.id"/>
 				
-				<button type="button" onclick="validForm();" class="btnGravar"></button>
+				<button type="button" onclick="validForm();" class="btnGravar" id = "btnGravar"></button>
 				<button type="button" onclick="window.location='list.action'" class="btnVoltar"></button>
 			</@ww.form>
 			<div style="clear: both;"></div>

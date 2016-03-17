@@ -45,7 +45,7 @@ Funcionalidade: Cadastrar Avaliações de Desempenho
 
     Então eu clico na linha "_avaliacao 2" da imagem "Liberar"
     Então eu devo ver o alert do confirmar e clico no ok
-    E eu devo ver "Não foi possível liberar esta avaliação: Número insuficiente de participantes"
+    E eu devo ver "Não foi possível liberar esta avaliação: Nenhum avaliador possui colaboradores para avaliar."
 
     Então eu clico em excluir "_avaliacao 2"
     E eu devo ver o alert do confirmar exclusão e clico no ok

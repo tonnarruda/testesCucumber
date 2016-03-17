@@ -954,7 +954,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		faixaSalarialHistoricoManager.expects(once()).method("findByIdProjection").with(eq(faixaSalarialHistorico.getId())).will(returnValue(faixaSalarialHistorico));
 		mensagemManager.expects(once()).method("formataMensagemCancelamentoFaixaSalarialHistorico").with(eq(mensagem), eq(faixaSalarialHistorico)).will(returnValue(mensagemFinal));
-		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(empresaCodigoAC), eq("XXX")).will(returnValue(usuarioEmpresas));
+		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(empresaCodigoAC), eq("XXX"), eq(null)).will(returnValue(usuarioEmpresas));
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();
 		faixaSalarialHistoricoManager.expects(once()).method("setStatus").with(eq(faixaSalarialHistoricoId), eq(aprovado)).will(returnValue(true));
 

@@ -113,6 +113,8 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		sql.append(" 	from pergunta p ");
 		sql.append(" 	where p.avaliacao_id = :avaliacaoId ");
 		sql.append(" 	and p.tipo = :tipoPerguntaNota ");
+		if(LongUtil.arrayIsNotEmpty(perguntaIds))
+			sql.append("  	 								and p.id not in (:perguntaIds) ");
 		
 		Query q = getSession().createSQLQuery(sql.toString());
 		

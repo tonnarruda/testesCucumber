@@ -594,7 +594,9 @@
 									<td style="${bgcolor} width: 100px; text-align: center;" class="${class}">
 										<input type="radio" disabled="disabled" percentual="${nivelPercentual}" 
 										<#if hasCriterios > onclick="return false;"  class="checkNivel radio" <#else>  class="checkNivel changed radio" </#if>
-										name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" nivelcolaborador="${nivel.ordem}" nivelfaixa="${configuracaoNivelCompetencia.nivelCompetencia.ordem}" onchange="setOrdem(${i}, ${nivel.ordem})"/>
+										name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" nivelcolaborador="${nivel.ordem}" 
+										<#if configuracaoNivelCompetencia.nivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.ordem?exists > nivelfaixa="${configuracaoNivelCompetencia.nivelCompetencia.ordem}" <#else>  nivelfaixa="" </#if> 
+										onchange="setOrdem(${i}, ${nivel.ordem})"/>
 									</td>
 								</#list>
 							</tr>

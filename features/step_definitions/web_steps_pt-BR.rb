@@ -33,6 +33,10 @@ Dado /^que a opção de solicitação de confirmação de desligamento para a em
   exec_sql "update empresa set solicitarConfirmacaoDesligamento = #{solicitar_desligamento};"
 end
 
+Dado /^que a opção apresentar performance de forma parcial ao responder avaliação de desempenho seja "([^"]*)"$/ do |apresentar_performance|
+  exec_sql "update empresa set mostrarPerformanceAvalDesempenho = #{apresentar_performance};"
+end
+
 Quando /^eu acesso "([^"]*)"$/ do |path|
   page.execute_script("window.location = 'http://localhost:8080/fortesrh/#{path}'")
 end
@@ -169,6 +173,12 @@ Quando /^eu seleciono \(JS\) "([^"]*)" de "([^"]*)"$/ do |value, field|
   page.execute_script("$('##{field}').val('#{value}')")
 end
 
+Quando /^eu adiciono o avaliado no avaliador da avaliação de desempenho$/ do
+  page.execute_script("$('#1').addClass('ui-selected')")
+  page.execute_script("$('#relacionar_selecionados').removeClass('disabled')")
+  page.execute_script("$('#relacionar_selecionados').click()")
+end
+
 Quando /^eu seleciono "([^"]*)" de "([^"]*)"$/ do |value, field|
   field = get_field(field)
   When %{I select "#{value}" from "#{field}"}
@@ -208,6 +218,11 @@ end
 
 Quando /^eu marco o checkbox com name "([^"]*)"$/ do |field|
   page.execute_script("$(\"input[name='#{field}']\").attr('checked',true)")
+end
+
+Quando /^eu desmarco o checkbox com id "([^"]*)"$/ do |field|
+  field = find_field(field)
+  page.execute_script("$('##{field[:id]}').attr('checked',false)")
 end
 
 Quando /^eu desmarco "([^"]*)"$/ do |field|
@@ -838,11 +853,25 @@ Dado /^que exista um conhecimento "([^"]*)" no cargo "([^"]*)"$/ do |conheciment
   end
 end
 
-Dado /^que exista um nivel de competencia "([^"]*)" com a ordem (\d+)$/ do |nivelcompetencia_descricao, numero_ordem|
+Dado /^que exista um nivel de competencia "([^"]*)"$/ do |nivelcompetencia_descricao|
   insert :nivelcompetencia do
     descricao nivelcompetencia_descricao
-    ordem numero_ordem
     empresa :id => 1
+  end
+end
+
+Dado /^que exista um historico de nivel de competencia na data "([^"]*)"$/ do |data|
+  insert :nivelcompetenciahistorico do
+    data data
+    empresa :id => 1
+  end
+end
+
+Dado /^que exista uma configuracao de nivel de competencia com nivel "([^"]*)" no historico do nivel de data "([^"]*)" na ordem (\d+)$/ do |nivelcompetenciadescricao, hsitoriconivelcompetenciadata, numero_ordem|
+  insert :confighistoriconivel do
+    nivelcompetencia :nivelcompetencia, :descricao => nivelcompetenciadescricao
+    nivelcompetenciahistorico :nivelcompetenciahistorico, :data => hsitoriconivelcompetenciadata
+    ordem numero_ordem
   end
 end
 

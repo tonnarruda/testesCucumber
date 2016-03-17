@@ -155,12 +155,13 @@
 			$('#ordemNivel_criterio_' + i + '_' + y).val(ordem);
 		}
 		
+		//PELO AMOR DE DEUS SE BULIR NESTE MÉTODO VERIFICAR CÁCULO DO MÉTODO calculaPerformance DE ColaboradorRespostaManagerImpl 
 		function calcularPerformance()
 		{
 			<#if exibirPerformance >
-				
 				var pontuacaoMaximaTotal = ${pontuacaoMaximaQuestionario};
 				var notaCompetencias = 0; 
+				var pontuacaoMaxCompetencia = 0;
 				<#if !colaboradorQuestionario.avaliacao.id?exists || colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
 					var pontuacaoMaximaNivelCompetencia = ${pontuacaoMaximaNivelCompetencia};
 				
@@ -168,31 +169,30 @@
 					
 					$('#configuracaoNivelCompetencia').find('.checados:checkbox:checked').parent().parent().each(function(){
 						pontuacaoMaximaTotal += $(this).find('#peso').val()*pontuacaoMaximaNivelCompetencia; 
+						pontuacaoMaxCompetencia += $(this).find('#peso').val()*pontuacaoMaximaNivelCompetencia;
 					});
 					
 					$('#configuracaoNivelCompetencia').find('.checados:checkbox:checked').parent().parent().each(function(){
 						var niveisSelecionadosDosCriterios = $("input[competencia="+$(this).find('.checkCompetencia').attr("id").replace("competencia_","")+"]:checked").not(":disabled");
 						var somaPescetualDosCriterios = 0;
 						var somaOrdemDosCriterios = 0;
-						
 						var competencia = $(this);
 						
 						$(niveisSelecionadosDosCriterios).each(function(){
 							somaPescetualDosCriterios += parseFloat($(this).attr("percentual"));
 							somaOrdemDosCriterios += parseFloat($(competencia).find('.checkNivel[value='+$(this).val()+']').attr('ordem'));
 						});
+						
 						var media = somaOrdemDosCriterios/niveisSelecionadosDosCriterios.length;
-						
 						var ordemValue = niveisSelecionadosDosCriterios.length > 0 ? media : $(this).find('.checkNivel:checked').attr('ordem');
-						
-						calculoPerformance = ($(this).find('#peso').val() * ordemValue ) / pontuacaoMaximaTotal; // --calc
+						calculoPerformance = ($(this).find('#peso').val() * ordemValue ) / pontuacaoMaximaTotal;
 						
 						if(!isNaN(calculoPerformance)){
 						 	notaCompetencias+=calculoPerformance;
 						 	$(this).find('.performance').text((calculoPerformance * 100).toFixed(2) + "%");
 						}
 					});
-					$('#performanceCompetencias').text('Performance Competencias: ' + (notaCompetencias* 100).toFixed(2) + "%" );
+					
 				</#if>
 				<#if colaboradorQuestionario.avaliacao.id?exists>
 					var notaObtidaQuestionario = 0;
@@ -220,9 +220,18 @@
 						performanceQuestionario = notaObtidaQuestionario / pontuacaoMaximaTotal;
 					else
 						performanceQuestionario = 0;
-					$('#performanceQuestionario').text('Performance Questionário: ' + (performanceQuestionario * 100).toFixed(2) + "%" );
 				</#if>
 			</#if>
+
+			performanceMaxQuestionarioPermitido =  1 - (pontuacaoMaxCompetencia / pontuacaoMaximaTotal);
+			if(performanceQuestionario > performanceMaxQuestionarioPermitido)
+				performanceQuestionario = performanceMaxQuestionarioPermitido;
+				
+			if(performanceQuestionario < 0)
+				performanceQuestionario = 0;
+			
+			$('#performanceQuestionario').text('Performance Questionário: ' + (performanceQuestionario * 100).toFixed(2) + "%" );
+			$('#performanceCompetencias').text('Performance Competencias: ' + (notaCompetencias* 100).toFixed(2) + "%" );
 		}
 	</script>
 	

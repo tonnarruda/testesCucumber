@@ -1,11 +1,27 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.1xx.1xx" db="" data="xx/03/2016">
+	<Versao id="1.1.162.193" db="" data="16/03/2016">
 		<Item visivel="S" motivo="S16020000207"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Possibilidade de definir solicitação de pessoal como invisível para o gestor da área organizacional selecionada.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[C&S > Cadastros > Níveis de Competência > Cadastros: Nova forma de inserir os níveis de competências.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Nova funcionalidade para inserir históricos para os níveis de competências com seu respectivos pesos.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[C&S > Cadastros > Conhecimentos: Nova funcionalidade para inserir os comportamentos observados para a competência.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[C&S > Cadastros > Habilidades: Nova funcionalidade para inserir os comportamentos observados para a competência.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[C&S > Cadastros > Atitudes: Nova funcionalidade para inserir os comportamentos observados para a competência.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Movimentações > Avaliação de Desempenho > Competências: Possibilidade de definir quais competências cada avaliador irá avaliar nos avaliados.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Movimentações > Avaliação de Desempenho > Inserir/Editar: Possibilitar avaliar somente as competências sem utilizar o modelo de questionário.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Movimentações > Avaliação de Desempenho > Inserir/Editar: Nova funcionalidade para inserção de avaliados e avaliadores de forma dinâmica.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Movimentações > Avaliação de Desempenho > Inserir/Editar: Possibilidade de inserir diversos tipos de avaliações em um só evento.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Movimentações > Avaliação de Desempenho > Inserir/Editar: Nova funcionalidade para inserir a nota da produtividade para que seja considerada na performance final do colaborador avaliado.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Movimentações > Avaliação de Desempenho > Inserir/Editar: Nova funcionalidade para inserção dos pesos dos avaliadores sobre os avaliados.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliação de Desempenho: Possibilitar responder a avaliação de desempenho de forma parcial.]]></Item>
 		<Item visivel="S" motivo="S16020000034"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Ajuste no cálculo da performance da competência de acordo com o percentual obtido pelos comportamentos.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Possibilitar responder as competências da avaliação de desempenho através dos comportamentos observados.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Relatórios  Análise de Desempenho das Competência do Colaborador: Novo relatório.]]></Item>
+		<Item visivel="S" motivo="P16030000030"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações da Turma > Resultado das Avaliações: Novo filtro por empresa.]]></Item>
 		<Item visivel="S" motivo="S16010000268"><![CDATA[Info. Funcionais > Relatórios > Absenteísmo: Apresentar no cabeçalho do relatório quais áreas organizacionais e estabelecimentos foram selecionados no filtro.]]></Item>
 		<Item visivel="S" motivo="S15110000095"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Exibir somente as áreas organizacionais que o usuário possui permissão de visualizar.]]></Item>
 		<Item visivel="S" motivo="S20150800139"><![CDATA[SESMT > Movimentações > Ficha de Investigação de Acidente(CAT) > Imprimir Ficha de Investigação de Acidente: Nova opção para imprimir relatório detalhado.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[Utilitários > Cadastros > Empresas: Nova configuração para que o sistema apresente a performance de forma parcial ao responder avaliação de desempenho.]]></Item>
 		<Item visivel="S" motivo="S16020000211"><![CDATA[Sistema: Remover notificação de solicitação de desligamento quando o destinatário for o próprio colaborador em desligamento.]]></Item>
 	</Versao>
 	<Versao id="1.1.161.192" db="" data="04/03/2016">
@@ -61,6 +77,7 @@
 		<Item visivel="S" motivo="S15120000287"><![CDATA[Mudança de ícone do Chat Fortes.]]></Item>
 		<Item visivel="S" motivo="S15110000222"><![CDATA[Nova nomenclatura "Fortes Tecnologia" na tela de login.]]></Item>
 		<Item visivel="S" motivo="S15090000071"><![CDATA[Sistema: Nova forma de controlar o vencimento da certificação dos colaboradores.]]></Item>
+	</Versao>
 	<Versao id="1.1.156.187" db="" data="31/12/2015">
 		<Item visivel="S" motivo="P15110000249"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão: Desconsiderar progressões salariais referentes a faixa salarial após desligamento do colaborador.]]></Item>
 		<Item visivel="S" motivo="S15120000211"><![CDATA[R&S > Relatórios > Duração para preenchimento de vagas: Nova flag para considerar contrações futuras no cálculo do preenchimento de vagas.]]></Item>

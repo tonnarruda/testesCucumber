@@ -10,10 +10,13 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que haja uma faixa salarial historico com id 1, data "2011-06-01", faixasalarial_id 1, tipo 3, valor 500, status 1
     Dado que haja um motivo da solicitacao com id 1 e descricao "Aumento de quadro"
     
-    Dado que exista um nivel de competencia "Ruim" com a ordem 1
-    Dado que exista um nivel de competencia "Bom" com a ordem 2
-    Dado que exista um nivel de competencia "Otimo" com a ordem 3
-
+    Dado que exista um nivel de competencia "ruim"
+    Dado que exista um nivel de competencia "regular"
+    Dado que exista um nivel de competencia "bom"
+    Dado que exista um historico de nivel de competencia na data "01/01/2000"
+    Dado que exista uma configuracao de nivel de competencia com nivel "ruim" no historico do nivel de data "01/01/2000" na ordem 1
+    Dado que exista uma configuracao de nivel de competencia com nivel "regular" no historico do nivel de data "01/01/2000" na ordem 2
+    Dado que exista uma configuracao de nivel de competencia com nivel "bom" no historico do nivel de data "01/01/2000" na ordem 3
     Dado que eu esteja logado com o usuário "fortes"
     Dado que exista um candidato "Nikita"
     Dado que exista um bairro "Aldeota" na cidade de "Fortaleza"

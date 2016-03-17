@@ -435,17 +435,14 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		}
 	}
 	
+	//PELO AMOR DE DEUS SE BULIR NESTE MÉTODO VERIFICAR CÁCULO DO MÉTODO calcularPerformance DE prepareResponderAvaliacaoDesempenho.ftl
 	public void calculaPerformance(ColaboradorQuestionario colaboradorQuestionario, Long empresaId, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados)
 	{
 		Long colaboradorQuestionarioId = colaboradorQuestionario.getId();
 		
 		Collection<Long> perguntasIdsComPesoNulo = new ArrayList<Long>();
 		Collection<ColaboradorResposta> colaboradorRespostas = getDao().findByColaboradorQuestionario(colaboradorQuestionarioId);
-		
-		for (ColaboradorResposta colaboradorResposta : colaboradorRespostas)
-			if((colaboradorResposta.getPergunta() != null && (colaboradorResposta.getPergunta().getTipo() == TipoPergunta.OBJETIVA || colaboradorResposta.getPergunta().getTipo() == TipoPergunta.MULTIPLA_ESCOLHA)) &&
-					(colaboradorResposta.getResposta() != null && colaboradorResposta.getResposta().getPeso() == null))
-				perguntasIdsComPesoNulo.add(colaboradorResposta.getPergunta().getId());
+		int pontuacaoMaximaQuestionario = calculaPontuacaoMaximaQuestionario(colaboradorQuestionario, colaboradorRespostas, perguntasIdsComPesoNulo);
 		
 		Double pontuacaoNivelCompetenciaObtida = 0.0;
 		int pontuacaoMaximaNivelcompetencia = 0;
@@ -461,10 +458,6 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 				if(configuracaoNivelCompetenciaMarcado.getNivelCompetencia() != null && configuracaoNivelCompetenciaMarcado.getNivelCompetencia().getId() != null)
 					pontuacaoMaximaNivelcompetencia += configuracaoNivelCompetenciaMarcado.getPesoCompetencia() * pontuacaoMaximaNivelCompetencia;
 		}
-		
-		int pontuacaoMaximaQuestionario = 0;
-		if(colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getId() != null)
-		pontuacaoMaximaQuestionario = avaliacaoManager.getPontuacaoMaximaDaPerformance(colaboradorQuestionario.getAvaliacao().getId(), new CollectionUtil<Long>().convertCollectionToArrayLong(perguntasIdsComPesoNulo));
 		
 		if(pontuacaoMaximaQuestionario != 0 || pontuacaoMaximaNivelcompetencia != 0 )//A performance vai ter que ficar nula, pois não posso dividir por zero
 		{
@@ -498,6 +491,20 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 			colaboradorQuestionario.setPerformance(performanceQuestionario);
 			colaboradorQuestionario.setPerformanceNivelCompetencia((double) pontuacaoNivelCompetenciaObtida / pontuacaoMaxima);
 		}
+	}
+
+	public int calculaPontuacaoMaximaQuestionario(ColaboradorQuestionario colaboradorQuestionario, Collection<ColaboradorResposta> colaboradorRespostas, Collection<Long> perguntasIdsComPesoNulo) {
+		if(perguntasIdsComPesoNulo == null)
+			perguntasIdsComPesoNulo = new ArrayList<Long>();
+		
+		for (ColaboradorResposta colaboradorResposta : colaboradorRespostas)
+			if(colaboradorResposta.getPergunta() != null && colaboradorResposta.getPergunta().getOrdem() == null)
+				perguntasIdsComPesoNulo.add(colaboradorResposta.getPergunta().getId());
+		
+		int pontuacaoMaximaQuestionario = 0;
+		if(colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getId() != null)
+			pontuacaoMaximaQuestionario = avaliacaoManager.getPontuacaoMaximaDaPerformance(colaboradorQuestionario.getAvaliacao().getId(), new CollectionUtil<Long>().convertCollectionToArrayLong(perguntasIdsComPesoNulo));
+		return pontuacaoMaximaQuestionario;
 	}
 
 	/**

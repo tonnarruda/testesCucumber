@@ -3,9 +3,32 @@
 Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência
 
   Cenário: Cadastro de Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência
-    Dado que exista um colaborador "Samuel", da area "Desenvolvimento", com o cargo "Desenvolvedor" e a faixa salarial "3"
-
+    Dado que exista um colaborador "Paula", da area "Desenvolvimento", com o cargo "Desenvolvedor" e a faixa salarial "3"
+    Dado que exista um colaborador "Samuel", da area "Desenvolvimento1", com o cargo "Desenvolvedor1" e a faixa salarial "2"
+    Dado que a opção apresentar performance de forma parcial ao responder avaliação de desempenho seja "true"
+    Dado que exista um nivel de competencia "ruim"
+    Dado que exista um nivel de competencia "regular"
+    Dado que exista um nivel de competencia "bom"
+    Dado que exista um historico de nivel de competencia na data "01/01/2010"
+    Dado que exista uma configuracao de nivel de competencia com nivel "ruim" no historico do nivel de data "01/01/2010" na ordem 1
+    Dado que exista uma configuracao de nivel de competencia com nivel "regular" no historico do nivel de data "01/01/2010" na ordem 2
+    Dado que exista uma configuracao de nivel de competencia com nivel "bom" no historico do nivel de data "01/01/2010" na ordem 3
+    Dado que exista um conhecimento "Java"
+    Dado que exista um conhecimento "Java" na area organizacional "Desenvolvimento"
     Dado que eu esteja logado com o usuário "fortes"
+    
+    Quando eu acesso o menu "C&S > Cadastros > Cargos e Faixas"
+    E eu clico em editar "Desenvolvedor"
+    E eu marco "Desenvolvimento (Ativa)"
+    E eu marco "Java"
+    E eu clico no botão "Gravar"
+    
+    E eu clico na linha "Desenvolvedor" da imagem "Faixas Salariais"
+    E eu clico na linha "3" da imagem "Níveis de Competência"
+    E eu clico no botão "Inserir"
+    E eu marco "Java"
+    E eu escolho "niveisCompetenciaFaixaSalariaisConhecimento[0].nivelCompetencia.id"
+    E eu clico no botão "Gravar"
 
     Quando eu acesso o menu "Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência"
     Então eu devo ver o título "Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência"
@@ -14,6 +37,7 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do
     E eu preencho "Título" com "_avaliacao I"
     E eu preencho "Observação" com "_experiencia"
     E eu seleciono "Avaliação de Desempenho" de "Tipo de Avaliação"
+    E eu marco "Avaliar também as competências exigidas pelo cargo"
     E eu clico no botão "Avancar"
 
     Então eu devo ver o título "Inserir Pergunta da Avaliação"
@@ -94,18 +118,24 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do
     E eu clico no botão "Avancar"
 
     Então eu devo ver o título "Participantes - _avaliacao 1"
-    E eu clico no botão "Inserir"
-    Então eu devo ver "Inserir Avaliado"
+    E eu clico no botão de Id "inserir_Avaliador"
+    E eu espero 1 segundos
+    E eu devo ver "Inserir Avaliado"
+    E eu clico no botão "Pesquisar"
+    E eu marco "Paula"
+    E eu clico no botão "Gravar"
+
+    Entao eu clico no botão de Id "inserir_Avaliador"
+    E eu espero 1 segundos
     E eu clico no botão "Pesquisar"
     E eu marco "Samuel"
     E eu clico no botão "Gravar"
 
-    Entao eu clico no botão de Id "ativaAvaliador"
-    E eu clico no botão "Inserir"
-    Então eu devo ver "Inserir Avaliado"
-    E eu clico no botão "Pesquisar"
-    E eu marco "Samuel"
-    E eu clico no botão "Gravar"
+    Entao eu clico no botão de Id "btnGravar"
+    E eu devo ver "Gravado com sucesso"
+    E eu adiciono o avaliado no avaliador da avaliação de desempenho
+    Entao eu clico no botão de Id "btnGravar"
+    E eu devo ver "Gravado com sucesso"
     E eu clico no botão "Voltar"
 
     Então eu devo ver o título "Avaliações de Desempenho"
@@ -123,7 +153,7 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do
     E eu seleciono "Samuel" de "Avaliador"
     E eu seleciono "Todas" de "Situação"
     E eu clico no botão "Pesquisar"
-    
+
     Quando eu clico na imagem com o título "Responder"
     E eu devo ver o título "Responder Avaliação de Desempenho"
     E eu preencho campo pelo class "opcaoResposta1" com "Respota 1"
@@ -131,15 +161,33 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do
     E eu marco o checkbox com name "perguntas[2].colaboradorRespostas[0].resposta.id"
     E eu marco o checkbox com name "perguntas[3].colaboradorRespostas[1].resposta.id"
     E eu clico no botão "Gravar"
-    E eu devo ver "Avaliação respondida com sucesso."
+    E eu devo ver "Respostas gravadas com sucesso."
     Entao eu devo ver "90,7%"
 
     Quando eu clico na imagem com o título "Editar respostas"
     E eu devo ver o título "Responder Avaliação de Desempenho"
     E eu marco o checkbox com name "perguntas[3].colaboradorRespostas[2].resposta.id"
     E eu clico no botão "Gravar"
-    E eu devo ver "Avaliação respondida com sucesso."
-    Entao eu devo ver "82,61%"
+    E eu devo ver "Respostas gravadas com sucesso."
+    Entao eu devo ver "90,7%"
+
+    Quando eu clico na imagem com o título "Editar respostas"
+    E eu devo ver o título "Responder Avaliação de Desempenho"
+    E eu espero 1 segundo
+    E eu devo ver "90.70%"
+    E eu marco "Java"
+
+    Entao eu escolho "niveisCompetenciaFaixaSalariais[0].nivelCompetencia.id"
+    E eu clico no botão "Gravar"
+    E eu devo ver "Respostas gravadas com sucesso."
+    E eu devo ver "2,17%"
+    E eu devo ver "84,78%"
+
+    Entao eu clico na imagem com o título "Editar respostas"
+    E eu espero 1 segundo
+    E eu devo ver "2.17%"
+    E eu devo ver "84.78%"
+
 
 
 

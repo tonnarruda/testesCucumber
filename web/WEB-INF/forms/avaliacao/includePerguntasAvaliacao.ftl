@@ -3,7 +3,7 @@
 
 
 <style>
-	<#if respostasCompactas>
+	<#if respostasCompactas?exists && respostasCompactas>
 		.perguntaResposta input { float: left; }
 		.perguntaResposta .labelResposta { float: left; width: 157px; margin-right: 15px; margin-bottom: 10px; }
 	</#if>
@@ -42,9 +42,9 @@
 					<#assign pesoResposta="0"/>
 				</#if>
 				<input type="radio" peso="${pesoResposta}" class="opcaoResposta${pergunta.id}, radio objetiva pergunta" name="perguntas[${i}].colaboradorRespostas[0].resposta.id" value="${resposta.id}" id="${resposta.id}" <#if perguntas[i].colaboradorRespostas[0].temResposta() && (resposta.id == perguntas[i].colaboradorRespostas[0].resposta.id)>checked</#if>/><label class="labelResposta" for="${resposta.id}">${resposta.texto}</label>
-				<#if !respostasCompactas><br></#if>
+				<#if respostasCompactas?exists && !respostasCompactas><br></#if>
 				<#assign h = h + 1 >
-				<#if respostasCompactas && h%5 == 0 >
+				<#if respostasCompactas?exists && respostasCompactas && h%5 == 0 >
 					<div style="clear: both;"></div>
 				</#if>
 			</#list>
@@ -91,13 +91,13 @@
 					<#assign pesoResposta="0"/>
 				</#if>
 				<input type="checkbox" peso="${pesoResposta}" class="opcaoResposta${pergunta.id}, radio multiplaEscolha pergunta" name="perguntas[${i}].colaboradorRespostas[${j}].resposta.id" value="${resposta.id}" id="${resposta.id}" ${checked}/><label  class="labelResposta" for="${resposta.id}">${resposta.texto}</label>
-				<#if !respostasCompactas><br></#if>
+				<#if respostasCompactas?exists && !respostasCompactas><br></#if>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.id" value="${pergunta.id}"/>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.tipo" value="${pergunta.tipo}" id= "tipo"/>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.comentario" value="${pergunta.comentario?string}"/>
 				
 				<#assign j = j + 1/>
-				<#if respostasCompactas && j%5 == 0 >
+				<#if respostasCompactas?exists && respostasCompactas && j%5 == 0 >
 					<div style="clear: both;"></div>
 				</#if>
 			</#list>

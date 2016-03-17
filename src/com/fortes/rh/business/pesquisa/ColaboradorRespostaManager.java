@@ -52,4 +52,5 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	ColaboradorManager getColaboradorManager(); // usado pela auditoria
 	CandidatoManager getCandidatoManager(); // usado pela auditoria
 	boolean verificaQuantidadeColaboradoresQueResponderamPesquisaAnonima(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long questionarioId, int quantidadeColaboradoresRelatorioPesquisaAnonima);
+	int calculaPontuacaoMaximaQuestionario(ColaboradorQuestionario colaboradorQuestionario, Collection<ColaboradorResposta> colaboradorRespostas, Collection<Long> perguntasIdsComPesoNulo);
 }

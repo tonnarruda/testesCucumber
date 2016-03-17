@@ -376,7 +376,7 @@
 				<td>
 				<@display.table name="avaliacaoDesempenhos" id="avaliacaoDesempenho" class="dados">
 						<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
-						<#if avaliacaoDesempenho.avaliacaoDesempenho.exibirPerformanceProfissional>
+						<#if avaliacaoDesempenho?exists && avaliacaoDesempenho.exibirPerformanceProfissional>
 							<@display.column title="Avaliação" >					
 								<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action?colaboradorQuestionario.id=${avaliacaoDesempenho.id}', 600, 1100)">
 										${avaliacaoDesempenho.avaliacaoDesempenho.titulo}

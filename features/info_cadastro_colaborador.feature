@@ -14,9 +14,13 @@ Funcionalidade: Cadastrar Colaborador
     Dado que exista um conhecimento "java" na area organizacional "Compras"
     Dado que exista um conhecimento "testes" no cargo "Contador"
     Dado que exista um conhecimento "java" no cargo "Contador"
-    Dado que exista um nivel de competencia "ruim" com a ordem 1
-    Dado que exista um nivel de competencia "regular" com a ordem 2
-    Dado que exista um nivel de competencia "bom" com a ordem 3
+    Dado que exista um nivel de competencia "ruim"
+    Dado que exista um nivel de competencia "regular"
+    Dado que exista um nivel de competencia "bom"
+    Dado que exista um historico de nivel de competencia na data "01/01/2010"
+    Dado que exista uma configuracao de nivel de competencia com nivel "ruim" no historico do nivel de data "01/01/2010" na ordem 1
+    Dado que exista uma configuracao de nivel de competencia com nivel "regular" no historico do nivel de data "01/01/2010" na ordem 2
+    Dado que exista uma configuracao de nivel de competencia com nivel "bom" no historico do nivel de data "01/01/2010" na ordem 3
     Dado que exista uma solicitacao "Solicitacao1" para área "Compras" na faixa "I"
     Dado que exista uma solicitacao "Solicitacao2" para área "Compras" na faixa "I"
     Dado que exista um motivo de desligamento "Porque eu quero"
@@ -185,7 +189,7 @@ Funcionalidade: Cadastrar Colaborador
     E eu escolho "niveisCompetenciaFaixaSalariais[0].nivelCompetencia.id"
     E eu marco "testes"
     E eu clico no botão "Gravar"
-    E eu devo ver o alert "Selecione os níveis para as competências indicadas." e clico no ok
+    E eu devo ver o alert "Selecione os níveis para as competências ou comportamentos indicados." e clico no ok
     E eu escolho "niveisCompetenciaFaixaSalariais[1].nivelCompetencia.id"
     E eu clico no botão "Gravar"
     E eu devo ver o alert "Selecione um avaliador" e clico no ok

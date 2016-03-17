@@ -156,6 +156,7 @@ Funcionalidade: Cadastrar Certificações dos Cursos
     E eu devo ver "Jose"
     E eu marco "Empresa Padrão - Estabelecimento Padrão"
     E eu marco "area1 (Ativa)"
+    E eu espero 1 segundo
     E eu marco "Jose"
     E eu preencho o campo (JS) "dataIni" com "01/03/2016"
     E eu preencho o campo (JS) "dataFim" com "05/03/2016"
