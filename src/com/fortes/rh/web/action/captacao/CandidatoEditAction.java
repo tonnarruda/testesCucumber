@@ -269,6 +269,10 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			Map session = ActionContext.getContext().getSession();
 			if(session.get("SESSION_CANDIDATO_ID") == null)
 				return Action.INPUT;
+			else if ( !((Long) session.get("SESSION_CANDIDATO_ID")).equals(candidato.getId()) ) {
+				HttpServletResponse response = ServletActionContext.getResponse();
+				response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			}
 
 			empresaId = this.empresaId;
 		}
