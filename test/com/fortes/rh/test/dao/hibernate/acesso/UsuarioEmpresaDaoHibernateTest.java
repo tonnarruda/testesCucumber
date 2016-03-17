@@ -333,6 +333,49 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaDao.findUsuariosByEmpresaRole(empresa.getId(), "xx");
 		assertEquals(1, usuarioEmpresas.size());
 	}
+	
+	public void testContainsRole() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		criaUsuarioEmpresa(usuario, empresa, "aaa");
+		
+		assertTrue(usuarioEmpresaDao.containsRole(usuario.getId(), empresa.getId(), "aaa"));
+	}
+	
+	public void testContainsRoleReturnFalse() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		criaUsuarioEmpresa(usuario, empresa, "xxx");
+		
+		assertFalse(usuarioEmpresaDao.containsRole(usuario.getId(), empresa.getId(), "x"));
+	}
+	
+	private void criaUsuarioEmpresa(Usuario usuario, Empresa empresa, String role){
+		Papel papel = new Papel();
+		papel.setCodigo(role);
+		papelDao.save(papel);
+		
+		Collection<Papel> papeis = new ArrayList<Papel>();
+		papeis.add(papel);
+		
+		Perfil perfil = new Perfil();
+		perfil.setPapeis(papeis);
+		perfilDao.save(perfil);
+		
+		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
+		usuarioEmpresa.setEmpresa(empresa);
+		usuarioEmpresa.setUsuario(usuario);
+		usuarioEmpresa.setPerfil(perfil);
+		usuarioEmpresaDao.save(usuarioEmpresa);
+	}
 
 	public GenericDao<UsuarioEmpresa> getGenericDao()
 	{

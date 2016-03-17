@@ -15,7 +15,9 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.dicionario.TipoRelatorio;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
@@ -38,6 +40,7 @@ public class OcorrenciaEditActionTest extends MockObjectTestCase
 	private Mock empresaManager;
 	private Mock colaboradorOcorrenciaManager;
 	private Mock areaOrganizacionalManager;
+	private Mock usuarioEmpresaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -58,6 +61,9 @@ public class OcorrenciaEditActionTest extends MockObjectTestCase
 		
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+		
+		usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
+		action.setUsuarioEmpresaManager((UsuarioEmpresaManager) usuarioEmpresaManager.proxy());
 		
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
@@ -142,8 +148,7 @@ public class OcorrenciaEditActionTest extends MockObjectTestCase
 		Collection<ColaboradorOcorrencia> colaboradoresOcorrencia = new ArrayList<ColaboradorOcorrencia>();
 		colaboradoresOcorrencia.add(colaboradorOcorrencia);
 		
-		MockSecurityUtil.verifyRole = false;
-		
+		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(action.getUsuarioLogado().getId()), ANYTHING, eq("ROLE_VER_AREAS")).will(returnValue(false));
 		colaboradorOcorrenciaManager.expects(once()).method("filtrarOcorrencias").withAnyArguments().will(returnValue(colaboradoresOcorrencia));
 		areaOrganizacionalManager.expects(once()).method("findAreasByUsuarioResponsavel").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Long>()));
 		
@@ -204,11 +209,11 @@ public class OcorrenciaEditActionTest extends MockObjectTestCase
 	
 	public void testBuscaOcorrenciaColecaoVaziaException() throws Exception
 	{
-		MockSecurityUtil.roles = new String[]{"ROLE_VER_AREAS"};
-		
 		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
 		parametrosDoSistema.setAppUrl("url");
 		
+		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(action.getUsuarioLogado().getId()), ANYTHING, eq("ROLE_VER_AREAS")).will(returnValue(true));
+		areaOrganizacionalManager.expects(once()).method("findByEmpresa").with(ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Empresa>()));
 		colaboradorOcorrenciaManager.expects(once()).method("filtrarOcorrencias").withAnyArguments().will(returnValue(null));
@@ -228,6 +233,8 @@ public class OcorrenciaEditActionTest extends MockObjectTestCase
 		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
 		parametrosDoSistema.setAppUrl("url");
 		
+		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(action.getUsuarioLogado().getId()), ANYTHING, eq("ROLE_VER_AREAS")).will(returnValue(true));
+		areaOrganizacionalManager.expects(once()).method("findByEmpresa").with(ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Empresa>()));
 		colaboradorOcorrenciaManager.expects(once()).method("filtrarOcorrencias").withAnyArguments().will(returnValue(null));

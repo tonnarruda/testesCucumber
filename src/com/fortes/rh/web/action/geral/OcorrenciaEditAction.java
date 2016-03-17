@@ -16,8 +16,10 @@ import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.TipoRelatorio;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
@@ -41,6 +43,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	private EmpresaManager empresaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private UsuarioEmpresaManager usuarioEmpresaManager;
 
 	private Ocorrencia ocorrencia;
 	@SuppressWarnings("unused")
@@ -157,10 +160,6 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			@SuppressWarnings("rawtypes")
-			Map session = ActionContext.getContext().getSession();
-			boolean roleVerTodasAreas = SecurityUtil.verifyRole(session, new String[]{"ROLE_VER_AREAS"});
-			
 			Collection<Long> empresaIds = new ArrayList<Long>();
 			if(empresa == null || empresa.getId() == null)
 			{
@@ -177,10 +176,17 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			Collection<Long> estabelecimentoIds = LongUtil.arrayStringToCollectionLong(estabelecimentoCheck);
 
 			Collection<Long> areaIds = LongUtil.arrayStringToCollectionLong(areaCheck);
-			if ( areaIds.size() == 0 && !roleVerTodasAreas) {
-				areaIds = LongUtil.collectionToCollectionLong(areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(), empresa.getId()));
+			if ( areaIds.size() == 0 ) {
+				Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
+				for (Long empresaId : empresaIds) {
+					if ( usuarioEmpresaManager.containsRole(getUsuarioLogado().getId(), empresaId, "ROLE_VER_AREAS") ) {
+						areas.addAll(areaOrganizacionalManager.findByEmpresa(empresaId));
+					} else {
+						areas.addAll(areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(), empresaId)); 
+					}
+				}
+				areaIds = LongUtil.collectionToCollectionLong(areas);
 			}
-			
 			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento, agruparPorColaborador);
 
 			if(colaboradoresOcorrencias == null || colaboradoresOcorrencias.isEmpty())
@@ -522,6 +528,10 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	public void setAreaOrganizacionalManager(
 			AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+	
+	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
+		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 
 	public Boolean getCompartilharColaboradores()

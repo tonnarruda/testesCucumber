@@ -18,6 +18,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.VerificacaoParentesco;
@@ -41,6 +42,7 @@ public class ColaboradorDWR
     private EmpresaManager empresaManager;
     private UsuarioManager usuarioManager;
     private AreaOrganizacionalManager areaOrganizacionalManager;
+    private UsuarioEmpresaManager usuarioEmpresaManager;
 
 	public Map<Long, String> getColaboradores(String[] areaOrganizacionalIds, Long empresaId)
     {
@@ -184,7 +186,7 @@ public class ColaboradorDWR
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", (exibirNomeEmpresa ? "getNomeComercialEmpresa" : "getNomeEOuNomeComercial"), Colaborador.class);
     }
     
-    public Map<Long, String> getByAreaEstabelecimentoEmpresasResponsavel(Long usuarioLogadoId, boolean verTodasAreas, String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId, Long[] empresaIds, String situacao, boolean exibirNomeEmpresa) throws Exception
+    public Map<Long, String> getByAreaEstabelecimentoEmpresasResponsavel(Long usuarioLogadoId, String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId, Long[] empresaIds, String situacao, boolean exibirNomeEmpresa) throws Exception
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	
@@ -192,25 +194,28 @@ public class ColaboradorDWR
     	{
     		if(empresaId != null && empresaId != 0)
     			empresaIds = new Long[]{empresaId};
-    		
-    		if (verTodasAreas)
-    			colaboradores = colaboradorManager.findAllSelect(situacao, empresaIds);
-    		else {
-    			Usuario usuario = new Usuario();
-    			usuario.setId(usuarioLogadoId);
-    			
-    			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuario, empresaId);
-    			
-    			colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.collectionToCollectionLong(areaOrganizacionals), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao);        	
-    		}
-    	}
-    	else
+
+    		setColaboradoresPermitidos(usuarioLogadoId, empresaIds, situacao, estabelecimentoIds, colaboradores);
+    	}else
     	{
     		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao);        	
     	}
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", (exibirNomeEmpresa ? "getNomeComercialEmpresa" : "getNomeEOuNomeComercial"), Colaborador.class);
     }
+    
+    private void setColaboradoresPermitidos(Long usuarioId, Long[] empresaIds, String situacao, String[] estabelecimentoIds,  Collection<Colaborador> colaboradores) throws Exception {
+    	Usuario usuario = new Usuario();
+		usuario.setId(usuarioId);
+    	for (Long empresaId : empresaIds) {
+			if ( usuarioEmpresaManager.containsRole(usuario.getId(), empresaId, "ROLE_VER_AREAS") ) {
+				colaboradores.addAll(colaboradorManager.findAllSelect(situacao, empresaId));
+			} else {
+				Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuario, empresaId);
+				colaboradores.addAll(colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.collectionToCollectionLong(areaOrganizacionals), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao));        	
+			}
+		}
+	}
 
     public Map<Long, String> getColaboradoresByEstabelecimentoDataAdmissao(Long estabelecimentoId, String dataAdmissao, Long empresaId)
     {
@@ -407,5 +412,9 @@ public class ColaboradorDWR
 	public void setAreaOrganizacionalManager(
 			AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
+		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 }

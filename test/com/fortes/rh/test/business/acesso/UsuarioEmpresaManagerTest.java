@@ -102,4 +102,9 @@ public class UsuarioEmpresaManagerTest extends MockObjectTestCase
 		usuarioEmpresaDao.expects(once()).method("save").with(ANYTHING).isVoid();
 		usuarioEmpresaManager.save(usuario, empresaIds, selectPerfils);
 	}
+	
+	public void testContainsRole(){
+		usuarioEmpresaDao.expects(once()).method("containsRole").with(eq(2L), eq(1L), eq("xxx")).will(returnValue(true));
+		assertTrue(usuarioEmpresaManager.containsRole(2L, 1L, "xxx"));
+	}
 }

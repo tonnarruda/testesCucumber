@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AreaOrganizacionalOrganograma;
 import com.fortes.rh.model.geral.Empresa;
@@ -23,6 +24,7 @@ import com.opensymphony.webwork.dispatcher.SessionMap;
 public class AreaOrganizacionalDWR
 {
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private UsuarioEmpresaManager usuarioEmpresaManager;
 
 	public void verificaMaternidade(Long areaId) throws Exception
 	{
@@ -214,22 +216,41 @@ public class AreaOrganizacionalDWR
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Map<Object, Object> getByResponsavelCoResponsavel(Long usuarioId, Long empresaId) throws Exception
+	public Map<Object, Object> getAreasPermitidas(Long usuarioId, Long empresaId, Long[] empresasIds) throws Exception
 	{		
 		Usuario usuario = new Usuario();
 		usuario.setId(usuarioId);
+			
+		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
+	
+		if( !(empresaId == null || empresaId.equals(-1L)) )
+			empresasIds = new Long[]{empresaId};
 		
-		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuario, empresaId);
-
+		setAreasPermitidas(usuario, empresasIds, areaOrganizacionals);
+		
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
 		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoComEmpresaStatusAtivo");
 
 		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo");
 	}
-
+	
+	private void setAreasPermitidas(Usuario usuario, Long[] empresaIds, Collection<AreaOrganizacional> areas) throws Exception {
+		for (Long empresaId : empresaIds) {
+			if ( usuarioEmpresaManager.containsRole(usuario.getId(), empresaId, "ROLE_VER_AREAS") ) {
+				areas.addAll(areaOrganizacionalManager.findByEmpresa(empresaId));
+			} else {
+				areas.addAll(areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuario, empresaId));
+			}
+		}
+	}
+	
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
+		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 }
