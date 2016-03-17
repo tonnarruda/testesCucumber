@@ -14,6 +14,7 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -1512,6 +1513,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					mail.send(gerenciadorComunicacao.getEmpresa(), parametrosDoSistema, subject, body.toString(), true, emails);
 				}else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
 					String[] emails = gerenciadorComunicacao.getEmpresa().getArrayEmailRespRH();
+					emails = (String[]) ArrayUtils.removeElement(emails, email);
 					mail.send(gerenciadorComunicacao.getEmpresa(), parametrosDoSistema, subject, body.toString(), true, emails);
 				}
 			}
