@@ -83,7 +83,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	private Collection<Empresa> empresas;
 	private Boolean compartilharColaboradores;
 	private Boolean exibirProvidencia;
-	private boolean agruparPorColaborador = true;
+	private Character agruparPor;
 	
 	private Map situacaos = new SituacaoColaborador();
 	
@@ -187,7 +187,8 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 				}
 				areaIds = LongUtil.collectionToCollectionLong(areas);
 			}
-			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento, agruparPorColaborador);
+			
+			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento, agruparPor);
 
 			if(colaboradoresOcorrencias == null || colaboradoresOcorrencias.isEmpty())
 				throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
@@ -212,13 +213,15 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			
 			if(detalhamento)
 			{
-				if (agruparPorColaborador)
+				if (agruparPor == 'C')
 				{
 					if(exibirProvidencia)
 						acao = "comProvidencia";
 					else
 						acao = "semProvidencia";
 				}
+				else if (agruparPor == 'O')
+					acao = "ocorrencia";
 				else
 					acao = "providenciaAgrupada";
 			}
@@ -554,14 +557,12 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 		this.empresas = empresas;
 	}
 
-	public boolean isAgruparPorColaborador()
-	{
-		return agruparPorColaborador;
+	public Character getAgruparPor() {
+		return agruparPor;
 	}
 
-	public void setAgruparPorColaborador(boolean agruparPorColaborador)
-	{
-		this.agruparPorColaborador = agruparPorColaborador;
+	public void setAgruparPor(Character agruparPor) {
+		this.agruparPor = agruparPor;
 	}
 
 	public Map getSituacaos()

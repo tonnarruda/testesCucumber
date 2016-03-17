@@ -154,6 +154,7 @@ public class OcorrenciaEditActionTest extends MockObjectTestCase
 		
 		action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
 		action.setDataFim(DateUtil.criarAnoMesDia(2012, 01, 01)); 
+		action.setAgruparPor('C');
 		action.setExibirProvidencia(false);
 		action.setEmpresa(action.getEmpresaSistema());
 		
@@ -178,6 +179,7 @@ public class OcorrenciaEditActionTest extends MockObjectTestCase
 		
 		action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
 		action.setDataFim(DateUtil.criarAnoMesDia(2012, 01, 01));
+		action.setAgruparPor('C');
 		action.setExibirProvidencia(false);
 		
 		assertEquals("semProvidenciaPDF", action.buscaOcorrencia());
@@ -201,6 +203,7 @@ public class OcorrenciaEditActionTest extends MockObjectTestCase
 		
 		action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
 		action.setDataFim(DateUtil.criarAnoMesDia(2012, 01, 01));
+		action.setAgruparPor('C');
 		action.setExibirProvidencia(false);
 		action.setTipo(TipoRelatorio.XLS);
 		

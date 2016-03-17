@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ocorrencia_agrupado_por_providencia" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="8c01584e-ce06-4169-8b1b-05c20d9aa3c3">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.5937424601000023"/>
+	<property name="ireport.zoom" value="2.3579476910000023"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -22,12 +22,12 @@
 	<field name="dataFim" class="java.util.Date"/>
 	<field name="providencia.descricao" class="java.lang.String"/>
 	<field name="colaborador.matricula" class="java.lang.String"/>
-	<variable name="pontuacao_SUM" class="java.lang.Integer" resetType="Group" resetGroup="providencia" calculation="Sum">
+	<variable name="pontuacao_SUM" class="java.lang.Integer" resetType="Group" resetGroup="ocorrencia" calculation="Sum">
 		<variableExpression><![CDATA[$F{ocorrencia.pontuacao}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
-	<group name="providencia">
-		<groupExpression><![CDATA[$F{providencia.descricao}]]></groupExpression>
+	<group name="ocorrencia">
+		<groupExpression><![CDATA[$F{ocorrencia.descricao}]]></groupExpression>
 		<groupHeader>
 			<band height="14" splitType="Stretch">
 				<textField isBlankWhenNull="false">
@@ -41,7 +41,7 @@
 					<textElement>
 						<font size="8" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{providencia.descricao} != null ? $F{providencia.descricao} : "Sem Providência"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{ocorrencia.descricao}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -84,7 +84,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Total de Providências: " + $V{providencia_COUNT}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Total de Ocorrências: " + $V{ocorrencia_COUNT}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -137,7 +137,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Ocorrência]]></text>
+				<text><![CDATA[Providência]]></text>
 			</staticText>
 			<subreport isUsingCache="true">
 				<reportElement key="subreport-1" x="0" y="0" width="782" height="50" uuid="542dec56-dcf0-4d58-a6bc-4805112dbf66"/>
@@ -186,7 +186,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Providência]]></text>
+				<text><![CDATA[Ocorrência]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-13" positionType="Float" mode="Transparent" x="14" y="69" width="220" height="11" isPrintInFirstWholeBand="true" backcolor="#FFFFFF" uuid="a79b21cd-d934-4647-a64b-d46477a77874"/>
@@ -219,8 +219,8 @@
 	<detail>
 		<band height="12" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="782" height="12" backcolor="#EEEEEE" uuid="fedeb907-169b-419c-9451-3ca25dc938b6">
-					<printWhenExpression><![CDATA[new Boolean(($V{providencia_COUNT}.intValue() % 2) == 1)]]></printWhenExpression>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="1" width="782" height="11" backcolor="#EEEEEE" uuid="ade9bd6e-6f0d-4d69-9e6f-bd5a922d06bb">
+					<printWhenExpression><![CDATA[new Boolean(($V{ocorrencia_COUNT}.intValue() % 2) == 1)]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
@@ -237,7 +237,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{ocorrencia.descricao}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{providencia.descricao}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement key="textField-5" positionType="Float" x="402" y="1" width="53" height="11" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="695c7c3e-f5c1-46e4-bcca-a51eaea17d66"/>

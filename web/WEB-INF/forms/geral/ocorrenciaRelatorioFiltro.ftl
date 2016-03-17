@@ -135,7 +135,7 @@
 			});
 			
 			$('#agruparPorColaborador').click(function() {
-			  	if($(this).val() == 'true')
+			  	if($(this).val() == 'C')
 			 		$('#providencia').removeAttr('disabled');
 			 	else
 					$('#providencia').attr("disabled", true);
@@ -179,7 +179,7 @@
 		<br />
 		<@ww.checkbox label="Detalhado" id="detalhe" labelPosition="left" name="detalhamento"/>
 		
-		<@ww.select label="Agrupar Por" name="agruparPorColaborador" list=r"#{true:'Colaborador',false:'Providência'}" id="agruparPorColaborador"/>
+		<@ww.select label="Agrupar Por" name="agruparPor" list=r"#{'C':'Colaborador','P':'Providência','O':'Ocorrência'}" id="agruparPorColaborador"/>
 		<@ww.checkbox label="Exibir Providências"  id="providencia" labelPosition="left" name="exibirProvidencia"/>
 	</@ww.form>
 

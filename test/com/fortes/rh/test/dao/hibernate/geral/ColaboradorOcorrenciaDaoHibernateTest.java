@@ -180,8 +180,8 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		colabOcorAcidente.setDataFim(DateUtil.criarDataMesAno(22, 12, 2011));
 		colaboradorOcorrenciaDao.save(colabOcorAcidente);
 		
-		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaDao.findColaboradorOcorrencia(Arrays.asList(falta.getId(), acidente.getId()), Arrays.asList(joao.getId()), data1, data2, Arrays.asList(empresa.getId()), null, null, false, true);
-		Collection<ColaboradorOcorrencia> colaboradorOcorrenciasDetalhados = colaboradorOcorrenciaDao.findColaboradorOcorrencia(Arrays.asList(falta.getId(), acidente.getId()), Arrays.asList(joao.getId()), data1, data2, Arrays.asList(empresa.getId()), null, null, true, true);
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaDao.findColaboradorOcorrencia(Arrays.asList(falta.getId(), acidente.getId()), Arrays.asList(joao.getId()), data1, data2, Arrays.asList(empresa.getId()), null, null, false, 'C');
+		Collection<ColaboradorOcorrencia> colaboradorOcorrenciasDetalhados = colaboradorOcorrenciaDao.findColaboradorOcorrencia(Arrays.asList(falta.getId(), acidente.getId()), Arrays.asList(joao.getId()), data1, data2, Arrays.asList(empresa.getId()), null, null, true, 'C');
 		
 		assertEquals(1, colaboradorOcorrencias.size());
 		assertEquals(12, ((ColaboradorOcorrencia)colaboradorOcorrencias.toArray()[0]).getOcorrencia().getPontuacao());

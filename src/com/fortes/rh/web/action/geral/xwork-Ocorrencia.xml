@@ -51,6 +51,12 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">ocorrencias_providencias.pdf</param>
 			</result>
+			<result name="ocorrenciaPDF" type="jasper">
+				<param name="location">WEB-INF/report/ocorrencia_agrupada.jasper</param>
+				<param name="dataSource">colaboradoresOcorrencias</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">ocorrencias_providencias.pdf</param>
+			</result>
 			<result name="relatorioSemDetalhePDF" type="jasper">
 				<param name="location">WEB-INF/report/ocorrencia_sem_detalhe.jasper</param>
 				<param name="dataSource">colaboradoresOcorrencias</param>

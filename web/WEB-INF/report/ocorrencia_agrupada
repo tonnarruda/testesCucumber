@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ocorrencia_agrupado_por_providencia" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="8c01584e-ce06-4169-8b1b-05c20d9aa3c3">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.5937424601000023"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -218,14 +218,6 @@
 	</columnHeader>
 	<detail>
 		<band height="12" splitType="Stretch">
-			<rectangle>
-				<reportElement x="0" y="0" width="782" height="12" backcolor="#EEEEEE" uuid="fedeb907-169b-419c-9451-3ca25dc938b6">
-					<printWhenExpression><![CDATA[new Boolean(($V{providencia_COUNT}.intValue() % 2) == 1)]]></printWhenExpression>
-				</reportElement>
-				<graphicElement>
-					<pen lineWidth="0.0"/>
-				</graphicElement>
-			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-4" positionType="Float" x="288" y="1" width="111" height="11" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="b3c46137-2bcd-4ef0-8664-8597daf4bef5"/>
 				<box>

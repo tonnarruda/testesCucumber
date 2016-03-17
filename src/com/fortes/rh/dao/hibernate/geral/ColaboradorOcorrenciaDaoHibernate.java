@@ -289,7 +289,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		}
 	}
 
-	public Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, boolean detalhamento, boolean agruparPorColaborador) 
+	public Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, boolean detalhamento, Character agruparPor) 
 	{
 		StringBuilder hql = new StringBuilder();
 
@@ -336,8 +336,10 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		{
 			hql.append("order by ");
 			
-			if(!agruparPorColaborador)
+			if( agruparPor == 'P' )
 				hql.append(" p.descricao asc, p.id asc, ");
+			else if ( agruparPor == 'O' )
+				hql.append(" o.descricao asc asc, ");
 			
 			hql.append(" c.nome asc, c.id asc, co.dataIni asc ");
 		} else
