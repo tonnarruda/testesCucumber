@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="S16020000034"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Ajuste no cálculo da performance da competência de acordo com o percentual obtido pelos comportamentos.]]></Item>
 		<Item visivel="S" motivo="S16010000268"><![CDATA[Info. Funcionais > Relatórios > Absenteísmo: Apresentar no cabeçalho do relatório quais áreas organizacionais e estabelecimentos foram selecionados no filtro.]]></Item>
 		<Item visivel="S" motivo="S20150800139"><![CDATA[SESMT > Movimentações > Ficha de Investigação de Acidente(CAT) > Imprimir Ficha de Investigação de Acidente: Nova opção para imprimir relatório detalhado.]]></Item>
+		<Item visivel="S" motivo="S16020000211"><![CDATA[Sistema: Remover notificação de solicitação de desligamento quando o destinatário for o próprio colaborador em desligamento.]]></Item>
 	</Versao>
 	<Versao id="1.1.161.192" db="" data="04/03/2016">
 		<Item visivel="S" motivo="S16020000028"><![CDATA[T&D > Cadastros > Avaliações Práticas: Novo cadastro, quando a empresa controlar vencimento por periodicidade da certificação.]]></Item>

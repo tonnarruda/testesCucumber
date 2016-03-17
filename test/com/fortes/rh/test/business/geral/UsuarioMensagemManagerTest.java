@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -228,23 +229,42 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		assertNotNull(exception);
 	}
 
-	public void testSaveMensagemAndUsuarioMensagem() throws Exception
+	public void testSaveMensagemAndUsuarioMensagemSemUsuarioDesconsiderado() throws Exception
 	{
-		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity(1L);
-
+		UsuarioEmpresa usuarioEmpresa1 = UsuarioEmpresaFactory.getEntity(1L);
+		UsuarioEmpresa usuarioEmpresa2 = UsuarioEmpresaFactory.getEntity(2L);
+		
 		Mensagem mensagem = MensagemFactory.getEntity(1L);
 		mensagem.setTipo(TipoMensagem.INFO_FUNCIONAIS);
-
-		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
-		usuarioEmpresas.add(usuarioEmpresa);
-
+		
+		Collection<UsuarioEmpresa> usuarioEmpresas = Arrays.asList(usuarioEmpresa1, usuarioEmpresa2);
+		
 		mensagemManager.expects(once()).method("save").with(ANYTHING).will(returnValue(mensagem));
-		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
-
+		usuarioMensagemDao.expects(atLeastOnce()).method("save").with(ANYTHING);
+		
 		usuarioMensagemManager.saveMensagemAndUsuarioMensagem("Msg", "Chico Bagulhoso", "link", usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null, null);
 	}
+	
+	public void testSaveMensagemAndUsuarioMensagemComUsuarioDesconsiderado() 
+	{
+		Usuario usuario1 = UsuarioFactory.getEntity(1L);
+		Usuario usuario2 = UsuarioFactory.getEntity(2L);
+		
+		UsuarioEmpresa usuarioEmpresa1 = UsuarioEmpresaFactory.getEntity(1L, usuario1, null, null);
+		UsuarioEmpresa usuarioEmpresa2 = UsuarioEmpresaFactory.getEntity(2L, usuario2, null, null);
+		
+		Mensagem mensagem = MensagemFactory.getEntity(1L);
+		mensagem.setTipo(TipoMensagem.INFO_FUNCIONAIS);
+		
+		Collection<UsuarioEmpresa> usuarioEmpresas = Arrays.asList(usuarioEmpresa1, usuarioEmpresa2);
+		
+		mensagemManager.expects(once()).method("save").with(ANYTHING).will(returnValue(mensagem));
+		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
+		
+		usuarioMensagemManager.saveMensagemAndUsuarioMensagem("Msg", "Chico Bagulhoso", "link", usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null, usuarioEmpresa1.getId());
+	}
 
-	public void testSaveMensagemAndUsuarioMensagemRespAreaOrganizacional() throws Exception
+	public void testSaveMensagemAndUsuarioMensagemRespAreaOrganizacional() 
 	{
 		Usuario usuario = UsuarioFactory.getEntity(1L);
 		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity(1L);

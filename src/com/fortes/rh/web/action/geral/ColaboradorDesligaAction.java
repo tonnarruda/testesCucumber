@@ -9,6 +9,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -34,6 +39,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	private MotivoDemissaoManager motivoDemissaoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private PlatformTransactionManager transactionManager;
 	
 	private Colaborador colaborador;
 	private Comissao comissao;
@@ -67,6 +73,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 
+	// TODO: SEM TESTE
 	public String prepareDesliga() throws Exception
 	{
 		integraAc = getEmpresaSistema().isAcIntegra();
@@ -75,6 +82,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 	
+	// TODO: SEM TESTE
 	public String desliga() throws Exception
 	{
 		try {
@@ -108,6 +116,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 	
+	// TODO: SEM TESTE
 	public String solicitacaoDesligamento() throws Exception
 	{
 		try {
@@ -136,6 +145,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 	
+	// TODO: SEM TESTE
 	public String reLiga() throws Exception
 	{
 		try
@@ -157,6 +167,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 
+	// TODO: SEM TESTE
 	public String imprimiSolicitacaoDesligamento() throws Exception
 	{
 		try {
@@ -189,6 +200,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		}
 	}
 	
+	// TODO: SEM TESTE
 	public String prepareAprovarReprovarSolicitacaoDesligamento() throws Exception
 	{
 		Long[] areasIdsPorResponsavel = null;
@@ -207,6 +219,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 
+	// TODO: SEM TESTE
 	public String visualizarSolicitacaoDesligamento() throws Exception
 	{
 		colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
@@ -215,8 +228,13 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 	
+	// TODO: SEM TESTE
 	public String aprovarSolicitacaoDesligamento() throws Exception
 	{
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+
 		try {
 			dataDesligamento = colaborador.getDataSolicitacaoDesligamento();
 			motDemissao = colaborador.getMotivoDemissao();
@@ -230,9 +248,12 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			colaboradorManager.desligaColaborador(true, dataDesligamento, observacaoDemissao, motDemissao.getId(), gerouSubstituicao, false, integraAC, colaborador.getId());
 			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getId(), colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), true);
 			
+			transactionManager.commit(status);
+			
 			addActionSuccess("Colaborador desligado com sucesso.");
 		
 		} catch (Exception e) {
+			transactionManager.rollback(status);
 			e.printStackTrace();
 			addActionError("Não foi possível gravar a aprovação dessa solicitação de desligamento");
 			return Action.INPUT;
@@ -241,6 +262,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 	
+	// TODO: SEM TESTE
 	public String reprovarSolicitacaoDesligamento() throws Exception
 	{
 		try {
@@ -390,5 +412,9 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
 	}
 }

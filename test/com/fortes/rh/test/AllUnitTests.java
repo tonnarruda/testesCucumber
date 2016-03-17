@@ -511,6 +511,7 @@ import com.fortes.rh.test.web.action.geral.BeneficioListActionTest;
 import com.fortes.rh.test.web.action.geral.CidEditActionTest;
 import com.fortes.rh.test.web.action.geral.ClienteEditActionTest;
 import com.fortes.rh.test.web.action.geral.CodigoCBOEditActionTest;
+import com.fortes.rh.test.web.action.geral.ColaboradorDesligaActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorEditActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorListActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorReportActionTest;
@@ -784,6 +785,7 @@ public class AllUnitTests extends TestSuite
 
         suite.addTestSuite(ColaboradorEditActionTest.class);
         suite.addTestSuite(ColaboradorListActionTest.class);
+        suite.addTestSuite(ColaboradorDesligaActionTest.class);
 
         suite.addTestSuite(ReajusteColaboradorDaoHibernateTest.class);
         suite.addTestSuite(ReajusteColaboradorManagerTest.class);

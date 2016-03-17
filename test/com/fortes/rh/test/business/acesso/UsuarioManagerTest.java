@@ -1,12 +1,15 @@
 package com.fortes.rh.test.business.acesso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.acesso.UsuarioManagerImpl;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.dao.acesso.UsuarioDao;
@@ -16,9 +19,11 @@ import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.util.StringUtil;
@@ -29,6 +34,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
 	Mock usuarioDao;
 	Mock colaboradorManager;
 	Mock usuarioEmpresaManager;
+	Mock areaOrganizacionalManager;
 	Mock gerenciadorComunicacaoManager;
 
     protected void setUp() throws Exception
@@ -44,6 +50,9 @@ public class UsuarioManagerTest extends MockObjectTestCase
         usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
         usuarioManager.setUsuarioEmpresaManager((UsuarioEmpresaManager) usuarioEmpresaManager.proxy());
 
+        areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
+        usuarioManager.setAreaOrganizacionalManager((AreaOrganizacionalManager)areaOrganizacionalManager.proxy());
+        
         gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
         usuarioManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
     }
@@ -461,6 +470,24 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	}
 
     	assertNull(ex);
+    }
+    
+    public void testFindEmailByPerfilAndGestor()
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+    	Collection<AreaOrganizacional> areaOrganizacionals = Arrays.asList(areaOrganizacional);
+    	String role = "ROLE";
+    	Collection<Long> areasIds = Arrays.asList(areaOrganizacional.getId());
+    	boolean isVerTodosColaboradores = true;
+    	String emailDesconsiderado = null;
+    	String[] emails = null;
+    	
+    	areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(true), eq(null), eq(new Long[]{empresa.getId()})).will(returnValue(areaOrganizacionals));
+    	areaOrganizacionalManager.expects(once()).method("getAncestrais").with(eq(areaOrganizacionals), eq(areaOrganizacional.getId())).will(returnValue(areaOrganizacionals));
+    	usuarioDao.expects(once()).method("findEmailsByPerfilAndGestor").with(new Constraint[]{eq(role), eq(empresa.getId()), eq(areasIds), eq(isVerTodosColaboradores), eq(emailDesconsiderado)}).will(returnValue(emails));
+    	
+    	assertEquals(emails, usuarioManager.findEmailByPerfilAndGestor(role, empresa.getId(), areaOrganizacional.getId(), isVerTodosColaboradores, emailDesconsiderado));
     }
 
 }

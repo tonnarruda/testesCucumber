@@ -65,6 +65,6 @@ public interface UsuarioManager extends GenericManager<Usuario>
 
 	public Collection<Usuario> findByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);
 	
-	public String[] findEmailByPerfilAndGestor(String role, Long empresaId, Long areaOrganizacionalId, boolean isVerTodosColaboradores, String notEmail);
+	public String[] findEmailByPerfilAndGestor(String role, Long empresaId, Long areaOrganizacionalId, boolean isVerTodosColaboradores, String emailDesconsiderado);
 
 }

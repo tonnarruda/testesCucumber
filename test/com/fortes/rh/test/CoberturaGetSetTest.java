@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import org.apache.log4j.Logger;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.geral.AreaOrganizacionalManagerImpl;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
@@ -981,6 +982,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new ColaboradorCertificacao());
 		cobreGetSet(new ConfigHistoricoNivel());
 		cobreGetSet(new NivelCompetenciaHistorico());
+		cobreGetSet(new AreaOrganizacionalManagerImpl());
 	}
 	
 	private void cobreGetSet(Object obj)

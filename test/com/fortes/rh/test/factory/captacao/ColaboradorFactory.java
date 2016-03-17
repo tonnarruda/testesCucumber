@@ -7,10 +7,12 @@ import java.util.Date;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Habilitacao;
 import com.fortes.rh.model.dicionario.Vinculo;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Pessoal;
 
 public class ColaboradorFactory
@@ -81,6 +83,20 @@ public class ColaboradorFactory
 		return colaborador;
 	}
 	
+	public static Colaborador getEntity(Long id, String nome, String email, Date dataSolicitacaoDesligamento, String motivoDemissao, String observacaoDemissao, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional)
+	{
+		Colaborador colaborador = getEntity(id);
+		colaborador.setNome(nome);
+		colaborador.setEmailColaborador(email);
+		colaborador.setDataSolicitacaoDesligamento(dataSolicitacaoDesligamento);
+		colaborador.setMotivoDemissaoMotivo(motivoDemissao);
+		colaborador.setObservacaoDemissao(observacaoDemissao);
+		colaborador.setEstabelecimento(null);
+		colaborador.setAreaOrganizacional(areaOrganizacional);
+		
+		return colaborador;
+	}
+	
 	public static Colaborador getEntity(String matricula, String nome, Empresa empresa, Date dataAdmissao, Date dataDesligamento)
 	{
 		Colaborador colaborador = getEntity();
@@ -113,11 +129,13 @@ public class ColaboradorFactory
 		return colaboradors;
 	}
 	
-	public static Colaborador getEntity(Empresa empresa, Usuario usuario)
+	public static Colaborador getEntity(Empresa empresa, Usuario usuario, String email)
 	{
 		Colaborador colaborador = getEntity();
 		colaborador.setEmpresa(empresa);
 		colaborador.setUsuario(usuario);
+		colaborador.setEmailColaborador(email);
+		
 		return colaborador;
 	}
 }

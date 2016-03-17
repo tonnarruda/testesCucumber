@@ -33,7 +33,7 @@ public interface UsuarioDao extends GenericDao<Usuario>
 	
 	Collection<Usuario> findAllSelect(Long empresaId);
 	
-	String[] findEmailsByUsuario(Long[] usuariosIds, String notEmail);
+	String[] findEmailsByUsuario(Long[] usuariosIds, String emailDesconsiderado);
 
 	void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagens);
 

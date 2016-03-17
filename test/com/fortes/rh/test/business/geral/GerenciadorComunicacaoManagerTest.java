@@ -10,9 +10,11 @@ import java.util.List;
 import mockit.Mockit;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
@@ -1790,20 +1792,13 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Empresa empresa = criaEmpresa();
 		String[] emailsByUsuario = new String[]{empresa.getEmailRespRH()};
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		colaborador.setNome("Colaborador");
-		colaborador.setEmailColaborador("colab@gmail.com");
-		colaborador.setDataSolicitacaoDesligamento(DateUtil.criarDataMesAno(1, 1, 2016));
-		colaborador.setMotivoDemissaoMotivo("pq sim");
-		colaborador.setObservacaoDemissao("obs: demissão");
-		colaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Colaborador", "colab@gmail.com", DateUtil.criarDataMesAno(1, 1, 2016), "pq sim", "obs: demissão", null, AreaOrganizacionalFactory.getEntity(1L));
 		
 		ParametrosDoSistema parametroSistema = new ParametrosDoSistema();
 		parametroSistema.setAppUrl("url");
 		parametroSistema.setEmailDoSuporteTecnico("t@t.com.br");
 		
 		GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
-		gerenciadorComunicacao1.setEmpresa(empresa);
 		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.APROVAR_REPROVAR_SOLICITACAO_DESLIGAMENTO);
 		GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.USUARIOS);
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2, gerenciadorComunicacao3);
@@ -1960,39 +1955,85 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		return empresa;
 	}
-	
-	 public void testEnviaAvisoAprovacaoSolicitacaoDesligamento() throws Exception
-	 {
+
+	public void testEnviaAvisoAprovacaoSolicitacaoDesligamento() throws Exception
+	{
 		Empresa empresa = criaEmpresa();
-		
+
 		Colaborador solicitanteDemissao = ColaboradorFactory.getEntity(1L);
 		solicitanteDemissao.setEmailColaborador("email@gmail.com");
-		
+
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setNome("Colaborador");
-		
+
 		ParametrosDoSistema parametroSistema = new ParametrosDoSistema();
 		parametroSistema.setAppUrl("url");
 		parametroSistema.setEmailDoSuporteTecnico("t@t.com.br");
 
 		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.SOLICITANTE_DESLIGAMENTO);
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
-		
+
 		String subject = "[RH] - Solicitação de desligamento de colaborador aprovada";
 		String body = "<br />Sua solicitação de desligamento para o(a) colaborador(a) <b>Colaborador</b> da empresa <b>Empresa I</b> foi aprovada.<br /><br />";
-		
+
 		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));
 		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.APROVAR_SOLICITACAO_DESLIGAMENTO.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(solicitanteDemissao.getId())).will(returnValue(solicitanteDemissao)); 
 		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema), eq(subject), eq(body), eq(true), ANYTHING}).isVoid();
-		
-		 Exception exception = null;
-		 try {
-			 gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(5L, colaborador.getNome(), solicitanteDemissao.getId(), empresa, true);
-		 } catch (Exception e) {
-			 exception = e;
-		 }
-		 
-		 assertNull(exception);
-	 }
+
+		Exception exception = null;
+		try {
+			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(5L, colaborador.getNome(), solicitanteDemissao.getId(), empresa, true);
+		} catch (Exception e) {
+			exception = e;
+		}
+
+		assertNull(exception);
+	}
+	
+	public void testEnviaAvisoAprovacaoSolicitacaoDesligamentoException()
+	{
+		Empresa empresa = criaEmpresa();
+
+		Colaborador solicitanteDemissao = ColaboradorFactory.getEntity(1L);
+		solicitanteDemissao.setEmailColaborador("email@gmail.com");
+
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Colaborador");
+
+		ParametrosDoSistema parametroSistema = new ParametrosDoSistema();
+		parametroSistema.setAppUrl("url");
+		parametroSistema.setEmailDoSuporteTecnico("t@t.com.br");
+
+		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+
+		Exception exception = null;
+		try {
+			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(5L, colaborador.getNome(), solicitanteDemissao.getId(), empresa, true);
+		} catch (Exception e) {
+			exception = e;
+		}
+
+		assertNull(exception);
+	}
+
+	public void testEnviaAvisoAprovacaoSolicitacaoDesligamentoSolicitanteIgualDestinatario() 
+	{
+		Empresa empresa = criaEmpresa();
+
+		Colaborador solicitanteDemissao = ColaboradorFactory.getEntity(1L);
+		solicitanteDemissao.setEmailColaborador("email@gmail.com");
+
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Colaborador");
+
+		Exception exception = null;
+		try {
+			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(solicitanteDemissao.getId(), colaborador.getNome(), solicitanteDemissao.getId(), empresa, true);
+		} catch (Exception e) {
+			exception = e;
+		}
+
+		assertNull(exception);
+	}
 }

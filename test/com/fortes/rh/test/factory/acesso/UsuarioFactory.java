@@ -25,4 +25,13 @@ public class UsuarioFactory
 		
 		return usuario;
 	}
+	
+	public static Usuario getEntity(String login, Boolean acessoSistema)
+	{
+		Usuario usuario = getEntity();
+		usuario.setAcessoSistema(acessoSistema);
+		usuario.setLogin(login);
+
+		return usuario;
+	}
 }

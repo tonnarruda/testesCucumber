@@ -256,7 +256,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		}
 	}
 
-	public void saveMensagemAndUsuarioMensagem(String msg, String remetente, String link, Collection<UsuarioEmpresa> usuarioEmpresas, Colaborador colaborador, char tipoMensagem, Avaliacao avaliacao, Long notUsuarioId)
+	public void saveMensagemAndUsuarioMensagem(String msg, String remetente, String link, Collection<UsuarioEmpresa> usuarioEmpresas, Colaborador colaborador, char tipoMensagem, Avaliacao avaliacao, Long usuarioIdDesconsiderado)
 	{
 		Mensagem mensagem = new Mensagem();
 		mensagem.setData(new Date());
@@ -272,7 +272,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 
 		for (UsuarioEmpresa usuarioEmpresa : usuarioEmpresas)
 		{
-			if(notUsuarioId != null && notUsuarioId.equals(usuarioEmpresa.getUsuario().getId()))
+			if(usuarioIdDesconsiderado != null && usuarioIdDesconsiderado.equals(usuarioEmpresa.getUsuario().getId()))
 				continue;
 			
 			UsuarioMensagem usuarioMensagem = new UsuarioMensagem();
