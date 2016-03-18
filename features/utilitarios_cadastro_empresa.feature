@@ -25,7 +25,7 @@ Funcionalidade: Cadastrar Empresa
     E eu preencho "Denominação Social" com "fortes sa"
     E eu seleciono "CE" de "Estado"
     E eu seleciono "Fortaleza" de "cidade"
-    E eu seleciono "[(Admissões + Demissões / 2) / Ativos no final do mês anterior] * 100"
+    E eu seleciono "[(Admissões + Demissões / 2) / Ativos no final do mês anterior] * 100" de "Fórmula"
     E eu preencho "Base CNPJ" com "12345678"
     E eu preencho "Email Remetente" com "ab@com.com"
     E eu preencho "Email Resp. Setor Pessoal" com "ab@com.com"

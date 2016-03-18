@@ -13,10 +13,10 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que exista um nivel de competencia "ruim"
     Dado que exista um nivel de competencia "regular"
     Dado que exista um nivel de competencia "bom"
-    Dado que exista um historico de nivel de competencia na data "01/01/2000"
-    Dado que exista uma configuracao de nivel de competencia com nivel "ruim" no historico do nivel de data "01/01/2000" na ordem 1
-    Dado que exista uma configuracao de nivel de competencia com nivel "regular" no historico do nivel de data "01/01/2000" na ordem 2
-    Dado que exista uma configuracao de nivel de competencia com nivel "bom" no historico do nivel de data "01/01/2000" na ordem 3
+    Dado que exista um historico de nivel de competencia na data "01/01/2010"
+    Dado que exista uma configuracao de nivel de competencia com nivel "ruim" no historico do nivel de data "01/01/2010" na ordem 1
+    Dado que exista uma configuracao de nivel de competencia com nivel "regular" no historico do nivel de data "01/01/2010" na ordem 2
+    Dado que exista uma configuracao de nivel de competencia com nivel "bom" no historico do nivel de data "01/01/2010" na ordem 3
     Dado que eu esteja logado com o usuário "fortes"
     Dado que exista um candidato "Nikita"
     Dado que exista um bairro "Aldeota" na cidade de "Fortaleza"
@@ -61,8 +61,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
 	E eu clico na linha "I" da imagem "Níveis de Competência"
 	E eu clico no botão "Inserir"
     E eu devo ver o título "Competências da Faixa Salarial"
-    E eu preencho o campo (JS) "A partir de" com "01/01/2011"
-	E eu marco "Java"
+    E eu marco "Java"
 	E eu marco o checkbox com name "niveisCompetenciaFaixaSalariaisConhecimento[0].nivelCompetencia.id"
     E eu clico no botão "Gravar"
 	Então eu clico no botão "Voltar"
@@ -78,7 +77,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
 
     Então eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Solicitação de Pessoal"
-    E eu preencho o campo (JS) "Data" com "10/06/2011"
+    E eu preencho o campo (JS) "Data" com "10/06/2020"
     E eu preencho "Descrição" com "Vaga java"
     E eu preencho "Horário de Trabalho" com "8h às 18h"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
@@ -159,7 +158,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
 
     Então eu clico na linha "1" da imagem "Clonar"
     E eu devo ver o título "Inserir Solicitação de Pessoal"
-    E eu preencho o campo (JS) "Data" com "11/06/2011"
+    E eu preencho o campo (JS) "Data" com "11/06/2021"
     E eu preencho "Descrição" com "JavaScript"
     E eu preencho "Horário de Trabalho" com "8h às 18h"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
@@ -170,7 +169,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu devo ver o título "Solicitação de Pessoal"
     E eu devo ver "Vaga java"
     E eu devo ver "JavaScript"
-    E eu devo ver "11/06/2011"
+    E eu devo ver "11/06/2021"
 
     Então eu clico na linha "1" da imagem "Liberar solicitação. Observação: Observações sobre a suspensão"
     E eu clico na linha "1" da imagem "Suspender solicitação"
@@ -268,7 +267,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
 
     Então eu clico no botão "Inserir"
     E eu seleciono (JS) "fase" de "Entrevista"
-    E eu preencho o campo (JS) "data" com "01/10/2013"
+    E eu preencho o campo (JS) "data" com "01/10/2023"
     E eu preencho o campo (JS) "horaIni" com "08:00"
     E eu preencho o campo (JS) "horaFim" com "10:00"
     E eu preencho "Responsável" com "Samuel"
@@ -279,11 +278,11 @@ Funcionalidade: Movimentação Solicitações de Pessoal
 
     Então eu devo ver "Histórico do Candidato"
     E eu devo ver "Entrevista"
-    E eu devo ver "01/10/2013"
+    E eu devo ver "01/10/2023"
 
     Então eu clico na linha "Entrevista" da imagem "Editar"
     E o campo "Responsável" deve conter "Samuel"
-    E o campo "Data" deve conter "01/10/2013"
+    E o campo "Data" deve conter "01/10/2023"
     E eu clico no botão "Cancelar"
     E eu clico no botão "ImprimirPdf"
     E eu espero 2 segundos
@@ -295,9 +294,8 @@ Funcionalidade: Movimentação Solicitações de Pessoal
 
     Então eu clico na linha "Nikita" da imagem "Avaliações da Solicitação"
     E eu clico na imagem com o título "Responder Avaliação"
-    E eu preencho campo pelo class "opcaoResposta1" com "Resposta 1"
-    E eu preencho campo pelo class "opcaoResposta2" com "Resposta 2"
     E eu clico no botão "Gravar"
+    E eu devo ver o alert "Deseja realmente gravar o questionário sem responder todas as perguntas?" e clico no sim
     E eu devo ver o título "Candidatos da Seleção"
 
     Então eu clico na linha "Nikita" da imagem "Excluir"

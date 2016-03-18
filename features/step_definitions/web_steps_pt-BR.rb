@@ -106,6 +106,10 @@ Quando /^eu preencho o campo do item "([^"]*)" com "([^"]*)"$/ do |desc, value|
   field.set(value)
 end
 
+Quando /^eu preencho o campo pelo name "([^"]*)" com "([^"]*)"$/ do |field, value|
+  page.execute_script("$(\"input[name='#{field}']\").val(\"#{value}\")")
+end
+
 Quando /^eu clico no botão com o texto "([^"]*)"$/ do |label|
   find(:xpath, "//button/descendant::*[contains(text(), '#{label}')]").click
 end
@@ -305,6 +309,11 @@ end
 Então /^eu devo ver o alert "([^"]*)" e clico no ok/ do |msg_alert|
   Then %{I should see "#{msg_alert}"}
   When %{I press "OK"}
+end
+
+Então /^eu devo ver o alert "([^"]*)" e clico no sim/ do |msg_alert|
+  Then %{I should see "#{msg_alert}"}
+  When %{I press "Sim"}
 end
 
 Então /^eu devo ver o alert do confirmar exclusão e clico no ok/ do

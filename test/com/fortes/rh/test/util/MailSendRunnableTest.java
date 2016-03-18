@@ -30,27 +30,5 @@ public class MailSendRunnableTest extends MockObjectTestCase
 		
 		assertEquals("Teste de email", msg.getSubject());
 	}
-	
-	//Teste não funfa pq mailtrap não é mais free
-//	public void testExecutar() throws Exception
-	{
-		ParametrosDoSistema params = ParametrosDoSistemaFactory.getEntity();
-		params.setEmailSmtp("mailtrap.io");
-		params.setEmailPort(465);
-		params.setEmailUser("284638900eb69f13d");
-		params.setEmailPass("c464f07aac55db");
-		params.setAutenticacao(true);
-		params.setTls(true);
 
-		mailSendRunnable = new MailSendRunnable(params,"junitremetente@gmail.com", "Teste de email", "body", null,"junitdestinatario@gmail.com");
-		
-		Exception e = null;
-		try {
-			mailSendRunnable.executar();
-		} catch (Exception ex) {
-			e = ex;
-		}
-		
-		assertNull(e);
-	}
 }

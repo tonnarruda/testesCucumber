@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.162.193" db="" data="16/03/2016">
+	<Versao id="1.1.162.193" db="" data="17/03/2016">
 		<Item visivel="S" motivo="S16020000207"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Possibilidade de definir solicitação de pessoal como invisível para o gestor da área organizacional selecionada.]]></Item>
 		<Item visivel="S" motivo="S15100000012"><![CDATA[C&S > Cadastros > Níveis de Competência > Cadastros: Nova forma de inserir os níveis de competências.]]></Item>
 		<Item visivel="S" motivo="S15100000012"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Nova funcionalidade para inserir históricos para os níveis de competências com seu respectivos pesos.]]></Item>

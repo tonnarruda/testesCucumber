@@ -10,21 +10,21 @@ Funcionalidade: Cadastrar Certificações dos Cursos
     Quando eu acesso o menu "Utilitários > Cadastros > Empresas"
     Entao eu clico em editar "Empresa Padrão"
     E eu preencho "Email Resp. RH" com "sl@teste.com"
-    E eu seleciono "Estado" como "CE"
-    E eu seleciono "Controlar vencimento da certificação por" como "Periodicidade da certificação"
+    E eu seleciono "CE" de "Estado"
+    E eu seleciono "Periodicidade da certificação" de "Controlar vencimento da certificação por"
     E eu clico no botão "Gravar"
 
     Quando eu acesso o menu "T&D > Cadastros > Avaliação Prática"
     Então eu devo ver o título "Avaliação Prática"
     E eu clico no botão "Inserir"
-    Então eu devo ver o título "Inserir Avaliação Prática
+    Então eu devo ver o título "Inserir Avaliação Prática"
     E eu clico no botão "Gravar"
     Então eu devo ver o alert do valida campos e clico no ok
     E eu clico no botão "Voltar"
 
     Então eu devo ver o título "Avaliação Prática"
     E eu clico no botão "Inserir"
-    Então eu devo ver o título "Inserir Avaliação Prática
+    Então eu devo ver o título "Inserir Avaliação Prática"
     E eu preencho "Título" com "Pular Corda"
     E eu preencho "Nota Mínima para Aprovação" com "8"
     E eu clico no botão "Gravar"

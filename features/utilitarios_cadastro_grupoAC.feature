@@ -28,7 +28,7 @@ Funcionalidade: Cadastrar Grupo AC
     Entao eu clico em editar "grupoAC"
     E eu devo ver o título "Editar Grupo AC"
     E o campo "Descrição" deve conter "grupoAC"
-      E eu preencho "Descrição" com "FortesAc"
+    E eu preencho "Descrição" com "FortesAc"
     E eu clico no botão "Gravar"
     Então eu devo ver o título "Grupo AC (Utilizado no Fortes Pessoal)"
     E eu não devo ver "grupoAC"
