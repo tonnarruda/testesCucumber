@@ -24,6 +24,17 @@ public class ConfigHistoricoNivelFactory
 
 		return configHistoricoNivel;
 	}
+	
+	public static ConfigHistoricoNivel getEntity(Long id, Integer ordem, NivelCompetenciaHistorico nivelCompetenciaHistorico, NivelCompetencia nivelCompetencia, Double percentual)
+	{
+		ConfigHistoricoNivel configHistoricoNivel = getEntity(id);
+		configHistoricoNivel.setOrdem(ordem);
+		configHistoricoNivel.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configHistoricoNivel.setNivelCompetencia(nivelCompetencia);
+		configHistoricoNivel.setPercentual(percentual);
+		
+		return configHistoricoNivel;
+	}
 
 	public static Collection<ConfigHistoricoNivel> getCollection()
 	{

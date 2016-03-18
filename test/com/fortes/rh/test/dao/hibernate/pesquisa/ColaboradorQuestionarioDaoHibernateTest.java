@@ -1390,13 +1390,13 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
-		ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(joao, modeloAvaliacaoPerExp, null, null);
+		ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(joao, null, modeloAvaliacaoPerExp, null, null);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
 		
-		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity(joao, modeloAvaliacaoPerExp, avaliacaoDesempenho, null);
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity(joao, null, modeloAvaliacaoPerExp, avaliacaoDesempenho, null);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
 		
-		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity(joao, modeloAvaliacaoDes, null, null);
+		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity(joao, null, modeloAvaliacaoDes, null, null);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
 		
 		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByAvaliacaoComQtdDesempenhoEPeriodoExperiencia(modeloAvaliacaoPerExp.getId());
@@ -1430,13 +1430,13 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
-		ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(maria, modeloAvaliacaoPerExp, null, null);
+		ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(maria, null, modeloAvaliacaoPerExp, null, null);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
 		
-		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity(joao, modeloAvaliacaoPerExp, avaliacaoDesempenho, null);
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity(joao, null, modeloAvaliacaoPerExp, avaliacaoDesempenho, null);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
 		
-		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity(joao, modeloAvaliacaoDes, null, null);
+		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity(joao, null, modeloAvaliacaoDes, null, null);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
 		
 		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByAvaliacaoComQtdDesempenhoEPeriodoExperiencia(modeloAvaliacaoPerExp.getId());

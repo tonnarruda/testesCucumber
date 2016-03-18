@@ -142,7 +142,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity(pedro, ontem, faixaSalarial, null, null, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaboradorPedro);
 		
-		ColaboradorQuestionario colaboradorQuestionarioMaria = ColaboradorQuestionarioFactory.getEntity(maria, avPeriodoExperiencia, null, true);
+		ColaboradorQuestionario colaboradorQuestionarioMaria = ColaboradorQuestionarioFactory.getEntity(maria, null, avPeriodoExperiencia, null, true);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioMaria);
 			
 		ColaboradorPeriodoExperienciaAvaliacao config1Joao = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(joao, periodo1, avPeriodoExperiencia, ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
@@ -214,10 +214,10 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity(pedro, ontem, faixaSalarial, null, null, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaboradorPedro);
 		
-		ColaboradorQuestionario colaboradorQuestionarioJoao = ColaboradorQuestionarioFactory.getEntity(joao, avPeriodoExperiencia, avaliacaoDesempenho, false);
+		ColaboradorQuestionario colaboradorQuestionarioJoao = ColaboradorQuestionarioFactory.getEntity(joao, null, avPeriodoExperiencia, avaliacaoDesempenho, false);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioJoao);
 		
-		ColaboradorQuestionario colaboradorQuestionarioMaria = ColaboradorQuestionarioFactory.getEntity(maria, avPeriodoExperiencia, null, true);
+		ColaboradorQuestionario colaboradorQuestionarioMaria = ColaboradorQuestionarioFactory.getEntity(maria, null, avPeriodoExperiencia, null, true);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioMaria);
 		
 		ColaboradorPeriodoExperienciaAvaliacao config1Joao = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(joao, periodo1, avPeriodoExperiencia, ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);

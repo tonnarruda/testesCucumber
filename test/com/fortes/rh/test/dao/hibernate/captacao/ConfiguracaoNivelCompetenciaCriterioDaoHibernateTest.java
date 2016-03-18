@@ -60,19 +60,13 @@ public class ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest extends Generi
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
-		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity();
-		nivelCompetenciaHistorico.setData(DateUtil.criarDataMesAno(1, 1, 2015));
-		nivelCompetenciaHistorico.setEmpresa(empresa);
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(DateUtil.criarDataMesAno(1, 1, 2015), empresa);
 		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
 		
-		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
-		nivelCompetencia.setEmpresa(empresa);
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity(null, null, empresa);
 		nivelCompetenciaDao.save(nivelCompetencia);
 		
-		ConfigHistoricoNivel configHistoricoNivel1 = new ConfigHistoricoNivel();
-		configHistoricoNivel1.setOrdem(1);
-		configHistoricoNivel1.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
-		configHistoricoNivel1.setNivelCompetencia(nivelCompetencia);
+		ConfigHistoricoNivel configHistoricoNivel1 = ConfigHistoricoNivelFactory.getEntity(null, 1, nivelCompetenciaHistorico, nivelCompetencia, null);
 		configHistoricoNivelDao.save(configHistoricoNivel1);
 		
 		CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia1 = new CriterioAvaliacaoCompetencia();
@@ -89,10 +83,7 @@ public class ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest extends Generi
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
 		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity();
-		configuracaoNivelCompetencia.setCompetenciaId(conhecimento.getId());
-		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
-		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, conhecimento.getId(), configuracaoNivelCompetenciaColaborador, null, null, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
 		
 		ConfiguracaoNivelCompetenciaCriterio configuracaoNivelCompetenciaCriterio = ConfiguracaoNivelCompetenciaCriterioFactory.getEntity(criterioAvaliacaoCompetencia1.getId(), criterioAvaliacaoCompetencia1.getDescricao());

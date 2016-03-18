@@ -27,10 +27,11 @@ public class ColaboradorQuestionarioFactory
 		return colaboradorQuestionario;
 	}
 	
-	public static ColaboradorQuestionario getEntity(Colaborador colaborador, Avaliacao avaliacao, AvaliacaoDesempenho avaliacaoDesempenho, Boolean respondida)
+	public static ColaboradorQuestionario getEntity(Colaborador colaborador, Colaborador avaliador, Avaliacao avaliacao, AvaliacaoDesempenho avaliacaoDesempenho, Boolean respondida)
 	{
 		ColaboradorQuestionario colaboradorQuestionario = getEntity();
 		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setAvaliador(avaliador);
 		colaboradorQuestionario.setAvaliacao(avaliacao);
 		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		colaboradorQuestionario.setRespondida(respondida);

@@ -4383,7 +4383,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		ColaboradorPeriodoExperienciaAvaliacao colabDesligadoPeriodoExperienciaAvaliacao = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(colabDesligado, periodoExperiencia, avaliacao, ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabDesligadoPeriodoExperienciaAvaliacao);
 		
-		ColaboradorQuestionario colaboradorQuestionarioJoseAvaliado = ColaboradorQuestionarioFactory.getEntity(joseAvaliado, avaliacao, null, false);
+		ColaboradorQuestionario colaboradorQuestionarioJoseAvaliado = ColaboradorQuestionarioFactory.getEntity(joseAvaliado, null, avaliacao, null, false);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioJoseAvaliado);
 		
 		//Avaliação Desempenho
@@ -4391,7 +4391,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		avaliacaoDesempenho.setAvaliacao(avaliacao);
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
-		ColaboradorQuestionario colaboradorQuestionarioMariaAvalDesempenho = ColaboradorQuestionarioFactory.getEntity(maria, null, avaliacaoDesempenho, false);
+		ColaboradorQuestionario colaboradorQuestionarioMariaAvalDesempenho = ColaboradorQuestionarioFactory.getEntity(maria, null, null, avaliacaoDesempenho, false);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioMariaAvalDesempenho);
 		
 		//Avaliação Curso

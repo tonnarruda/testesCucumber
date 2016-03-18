@@ -27,6 +27,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.ConfigHistoricoNivelFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
@@ -137,6 +138,7 @@ public class CriterioAvaliacaoCompetenciaDaoHibernateTest extends GenericDaoHibe
 
 		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
 		conhecimento.setEmpresa(empresa);
+		
 		criterioAvaliacaoCompetencia1.setConhecimento(conhecimento);
 		criterioAvaliacaoCompetencia2.setConhecimento(conhecimento);
 		conhecimento.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetencias);
@@ -149,20 +151,13 @@ public class CriterioAvaliacaoCompetenciaDaoHibernateTest extends GenericDaoHibe
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
-		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity();
-		nivelCompetenciaHistorico.setData(DateUtil.criarDataMesAno(1, 1, 2015));
-		nivelCompetenciaHistorico.setEmpresa(empresa);
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(DateUtil.criarDataMesAno(1, 1, 2015), empresa);
 		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
 		
-		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
-		nivelCompetencia.setEmpresa(empresa);
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity(null, null, empresa);
 		nivelCompetenciaDao.save(nivelCompetencia);
 		
-		ConfigHistoricoNivel configHistoricoNivel1 = new ConfigHistoricoNivel();
-		configHistoricoNivel1.setOrdem(1);
-		configHistoricoNivel1.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
-		configHistoricoNivel1.setNivelCompetencia(nivelCompetencia);
-		configHistoricoNivel1.setPercentual(100.0);
+		ConfigHistoricoNivel configHistoricoNivel1 = ConfigHistoricoNivelFactory.getEntity(null, 1, nivelCompetenciaHistorico, nivelCompetencia, 100.0);
 		configHistoricoNivelDao.save(configHistoricoNivel1);
 		
 		CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia1 = new CriterioAvaliacaoCompetencia();
