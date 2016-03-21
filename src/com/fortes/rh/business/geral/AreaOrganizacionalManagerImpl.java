@@ -48,6 +48,7 @@ import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientLotacao;
+import com.fortes.security.auditoria.TesteAutomatico;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.ActionContext;
 
@@ -244,6 +245,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			acPessoalClientLotacao.deleteLotacao(areaTmp, empresa);
 	}
 
+	//@TesteAutomatico
 	public boolean verificaMaternidade(Long areaOrganizacionalId, Boolean ativa)
 	{
 		return getDao().verificaMaternidade(areaOrganizacionalId, ativa);
@@ -258,16 +260,19 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return retorno;
 	}
 
+	//@TesteAutomatico(metodoMock="findAllList")
 	public Collection<AreaOrganizacional> findAllListAndInativas(Boolean ativo, Collection<Long> areaInativaIds, Long... empresasIds)
 	{
 		return getDao().findAllList(0, 0, null, null, ativo, areaInativaIds, empresasIds);
 	}
 
+	//@TesteAutomatico
 	public Collection<AreaOrganizacional> findAllList(Long idColaborador, Long empresaId, Boolean ativo, Long areaInativaId)
 	{
 		return getDao().findAllList(0, 0, idColaborador, null, ativo, null, empresaId);
 	}
-
+	
+	//@TesteAutomatico
 	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, String nome, Long empresaId, Boolean ativo)
 	{
 		return getDao().findAllList(page, pagingSize, null, nome, ativo, null, empresaId);
@@ -359,6 +364,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		this.acPessoalClientLotacao = acPessoalClientLotacao;
 	}
 
+	//@TesteAutomatico
 	public AreaOrganizacional findAreaOrganizacionalCodigoAc(Long idAreaOrganizacional)
 	{
 		return getDao().findAreaOrganizacionalCodigoAc(idAreaOrganizacional);
@@ -436,6 +442,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return retorno;
 	}
 
+	//@TesteAutomatico
 	public Collection<AreaOrganizacional> findByCargo(Long cargoId)
 	{
 		return getDao().findByCargo(cargoId);
@@ -471,11 +478,13 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return null;
 	}
 	
+	//@TesteAutomatico
 	public Map<String, Object> getParametrosRelatorio(String nomeRelatorio, Empresa empresa, String filtro)
 	{
 		return RelatorioUtil.getParametrosRelatorio(nomeRelatorio, empresa, filtro);
 	}
 
+	//@TesteAutomatico(metodoMock="findAreaIdsByAreaInteresse")
 	public Collection<AreaOrganizacional> getAreasByAreaInteresse(Long areaInteresseId)
 	{
 		return getDao().findAreaIdsByAreaInteresse(areaInteresseId);
@@ -544,32 +553,39 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return findAllListAndInativasByUsuarioId(empresaId, usuarioId, ativo, areasInativas);
 	}
 	
+	//@TesteAutomatico
 	public Collection<AreaOrganizacional> findByConhecimento(Long conhecimentoId)
 	{
 		return getDao().findByConhecimento(conhecimentoId);
 	}
 	
+	//@TesteAutomatico
 	public Collection<AreaOrganizacional> findByHabilidade(Long habilidadeId)
 	{
 		return getDao().findByHabilidade(habilidadeId);
 	}
 
+	//@TesteAutomatico
 	public Collection<AreaOrganizacional> findByAtitude(Long atitudeId)
 	{
 		return getDao().findByAtitude(atitudeId);
 	}
 
+	//@TesteAutomatico
 	public AreaOrganizacional findByIdProjection(Long areaId)
 	{
 		return getDao().findByIdProjection(areaId);
 	}
 
+	//@TesteAutomatico
 	public Collection<AreaOrganizacional> findQtdColaboradorPorArea(Long estabelecimentoId, Date data)
 	{
 		return getDao().findQtdColaboradorPorArea(estabelecimentoId, data);
 	}
 
-	public Collection<AreaOrganizacional> findByEmpresasIds(Long[] empresaIds, Boolean ativo) {
+	//@TesteAutomatico
+	public Collection<AreaOrganizacional> findByEmpresasIds(Long[] empresaIds, Boolean ativo) 
+	{
 		return getDao().findByEmpresasIds(empresaIds, ativo);
 	}
 
@@ -776,11 +792,13 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return matriarca;
 	}
 
+	//@TesteAutomatico
 	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId) 
 	{
 		return getDao().findByEmpresa(empresaId);
 	}
 
+	//@TesteAutomatico
 	public Long[] findIdsAreasDoResponsavelCoResponsavel(Long usuarioId, Long empresaId) 
 	{
 		return getDao().findIdsAreasDoResponsavelCoResponsavel(usuarioId, empresaId);
@@ -804,6 +822,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return cul.distinctCollection(familia).toArray(new Long[]{});
 	}
 
+	//@TesteAutomatico
 	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId) {
 		return getDao().findSemCodigoAC(empresaId);
 	}
@@ -1001,6 +1020,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		getDao().removeComDependencias(id);
 	}
 	
+	@TesteAutomatico
 	public boolean possuiAreaFilhasByCodigoAC(String codigoAC, Long empresaId) {
 		return getDao().possuiAreaFilhasByCodigoAC(codigoAC, empresaId);
 	}
@@ -1014,10 +1034,13 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		this.transactionManager = transactionManager;
 	}
 	
-	public Collection<AreaOrganizacional> findAllListAndInativasByUsuarioId(Long empresaId, Long usuarioId, Boolean ativo, Collection<Long> areaInativaIds) {
+	//@TesteAutomatico(metodoMock="findAreasDoResponsavelCoResponsavel")
+	public Collection<AreaOrganizacional> findAllListAndInativasByUsuarioId(Long empresaId, Long usuarioId, Boolean ativo, Collection<Long> areaInativaIds) 
+	{
 		return getDao().findAreasDoResponsavelCoResponsavel(usuarioId, empresaId, ativo, areaInativaIds);
 	}
 
+	//@TesteAutomatico
 	public Long[] findAreasMaesIdsByEmpresaId(Long empresaId) 
 	{
 		return getDao().findAreasMaesIdsByEmpresaId(empresaId);

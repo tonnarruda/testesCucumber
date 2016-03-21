@@ -70,7 +70,7 @@ public class UsuarioEmpresaManagerTest extends MockObjectTestCase
 		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity(1L);
 		usuarioEmpresas.add(usuarioEmpresa);
 		
-		usuarioEmpresaDao.expects(once()).method("find").with(ANYTHING, ANYTHING).will(returnValue(usuarioEmpresas));
+		usuarioEmpresaDao.expects(once()).method("find").with(new Constraint[]{ANYTHING, ANYTHING}).will(returnValue(usuarioEmpresas));
 		assertEquals(usuarioEmpresa, usuarioEmpresaManager.findByUsuarioEmpresa(usuario.getId(), empresa.getId()));
 	}
 	

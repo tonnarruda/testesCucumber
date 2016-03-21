@@ -1,6 +1,9 @@
 package com.fortes.rh.test.business.geral;
 
 import java.io.File;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,6 +14,8 @@ import java.util.Map;
 
 import mockit.Mockit;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
@@ -19,6 +24,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -51,6 +57,7 @@ import com.fortes.rh.test.util.mockObjects.MockTransactionStatus;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientLotacao;
+import com.fortes.security.auditoria.TesteAutomatico;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionContext;
@@ -103,7 +110,41 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	MockSecurityUtil.verifyRole = false;
     	Mockit.restoreAllOriginalDefinitions();
     }
-
+    
+    private Object[] geraParametros(Class<?>[] tipoParametros) 
+    {
+    	String[] p = {"boolean","byte","char","double","float","int","long","short"};
+    	Object[] v = {true,0,0,0,0,0,0.0,0.0};
+    	int i = 0;
+    	Object[] r = new Object[tipoParametros.length];
+    	for (Class<?> tipoParametro : tipoParametros) {
+			if (Arrays.binarySearch(p, tipoParametro.getName()) > 0) 
+				r[i++] = v[Arrays.binarySearch(p, tipoParametro.getName())];
+			else
+				r[i++] = null;
+		}
+    	return r;
+	}
+    
+    public void testtGeral()
+    {
+    	AreaOrganizacionalManagerImpl clazz = areaOrganizacionalManager;
+    	for (Method method : clazz.getClass().getDeclaredMethods()) {
+			if (method.isAnnotationPresent(TesteAutomatico.class)){
+				Annotation annotation = method.getAnnotation(TesteAutomatico.class);
+				String metodoMock = StringUtils.defaultIfEmpty(((TesteAutomatico) annotation).metodoMock(), method.getName());
+				areaOrganizacionalDao.expects(once()).method(metodoMock).withAnyArguments();
+				try {
+					Object[] parametros = geraParametros(method.getParameterTypes()) ;
+					method.invoke(clazz, parametros);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				System.out.println(method.getName());
+			}
+		}
+    }
+    
     public void testPopulaAreas()
     {
     	String[] areasCheck = {"1","2"};
