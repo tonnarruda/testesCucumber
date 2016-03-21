@@ -24012,8 +24012,8 @@ CREATE OR REPLACE FUNCTION atualiza_nova_avaliacao_desempenho() RETURNS void AS 
 $$ LANGUAGE plpgsql;--.go
 select atualiza_nova_avaliacao_desempenho();--.go
 
-UPDATE papel set codigo = 'ROLE_CAD_NIVEL_COMPETENCIA_CAD' WHERE id = 650;
-UPDATE papel set codigo = 'ROLE_CAD_NIVEL_COMPETENCIA_HIST' WHERE id = 651;
+UPDATE papel set codigo = 'ROLE_CAD_NIVEL_COMPETENCIA_CAD' WHERE id = 650;--.go
+UPDATE papel set codigo = 'ROLE_CAD_NIVEL_COMPETENCIA_HIST' WHERE id = 651;--.go
 
 drop function criaConfigHistoricoNivel();--.go
 drop function relaciona_avaliado_avaliador();--.go
