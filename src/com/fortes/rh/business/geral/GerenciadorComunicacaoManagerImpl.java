@@ -902,7 +902,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		String subject = "[RH] - Avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome();
 		String bodySubject =  "#COLABORADOR#, a avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome() + " está liberada para ser respondida.<br><br>"
 						+ "<a href='" + parametrosDoSistema.getAppUrl() + "/pesquisa/colaboradorResposta/prepareResponderQuestionario.action?"
-						+ "&colaborador.id=#COLABORADOR_ID#&" + "questionario.id="+avaliacaoTurma.getQuestionario().getId()	+ "turmaId="+turma.getId()+"'>Acesse o RH para responder a avaliação</a><br><br>";
+						+ "colaborador.id=#COLABORADOR_ID#" + "&questionario.id="+avaliacaoTurma.getQuestionario().getId()	+ "&turmaId="+turma.getId()+"&voltarPara=../../index.action"+"   '>Acesse o RH para responder a avaliação</a><br><br>";
 		
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas){
 			try {
