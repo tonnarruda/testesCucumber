@@ -360,13 +360,13 @@ psql -qtAU $username $dbname << EOF
 	$comandos
 EOF
 
-ultima_porcentagem_cobertura=$({
+ultima_porcentagem_cobertura_src=$({
 psql -qtAU $username $dbname << EOF
-	SELECT val FROM ultimas_metricas WHERE 'metrica' = 'coverage' and data = (select max(data) from ultimas_metricas WHERE 'metrica' = 'coverage') limit 1;
+	SELECT val FROM ultimas_metricas WHERE 'metrica' = 'coverage' and data = (select max(data) from ultimas_metricas WHERE 'metrica' = 'coverage' and project = 'RH') limit 1;
 EOF
 })
 
-atual_porcentagem_cobertura=$({
+atual_porcentagem_cobertura_src=$({
 psql -qtAU $username $dbname << EOF
 	select val from (
 		select distinct proj.name NAME_OF_PROJ, metric.name metric_name, metric.description Description, projdesc.value val,
@@ -380,6 +380,31 @@ psql -qtAU $username $dbname << EOF
 		--metric.id in ( 1, 2, 3, 4 , 5, 6, 7 ,8,9,10,22 ) and
 		metric.name = 'coverage' and
 		proj.name = 'RH' and
+		proj.scope = 'PRJ' ORDER BY proj.name
+	) as m;
+EOF
+})
+
+ultima_porcentagem_cobertura_test=$({
+psql -qtAU $username $dbname << EOF
+	SELECT val FROM ultimas_metricas WHERE 'metrica' = 'coverage' and data = (select max(data) from ultimas_metricas WHERE 'metrica' = 'coverage' and project = 'RHTest') limit 1;
+EOF
+})
+
+atual_porcentagem_cobertura_test=$({
+psql -qtAU $username $dbname << EOF
+	select val from (
+		select distinct proj.name NAME_OF_PROJ, metric.name metric_name, metric.description Description, projdesc.value val,
+		projdesc.variation_value_1, projdesc.variation_value_2, projdesc.variation_value_3, projdesc.variation_value_4, projdesc.variation_value_5, snap.created_at CREATED_DATE
+		from projects proj
+		inner join snapshots snap on snap.project_id=proj.id
+		inner join (select max(snap2.id) as id from snapshots snap2 GROUP BY snap2.project_id ) as Lookup on Lookup.id=snap.id
+		inner join project_measures projdesc on projdesc.snapshot_id=snap.id
+		inner join metrics metric on  projdesc.metric_id =metric.id
+		where 
+		--metric.id in ( 1, 2, 3, 4 , 5, 6, 7 ,8,9,10,22 ) and
+		metric.name = 'coverage' and
+		proj.name = 'RHTest' and
 		proj.scope = 'PRJ' ORDER BY proj.name
 	) as m;
 EOF
@@ -451,7 +476,7 @@ atual_porcentagem_cod_duplicado_src=$(awk 'BEGIN{print '$atual_porcentagem_cod_d
 compare_cod_duplicado_src=$(awk 'BEGIN{ print "'$ultima_porcentagem_cod_dupicado_src'">="'$atual_porcentagem_cod_duplicado_src'" }')
 if [[ "$compare_cod_duplicado_src" -ne 1 ]]
 then
-	echo $'\n\n - Porcentagem de cód. duplicado aumentou de '$ultima_porcentagem_cod_dupicado_src' para '$atual_porcentagem_cod_duplicado_src
+	echo $'\n\n - Porcentagem de cód. duplicado aumentou de '$ultima_porcentagem_cod_dupicado_src' para '$atual_porcentagem_cod_duplicado_src' no projeto principal.'
 fi
 
 psql -qtAU $username $dbname << EOF
@@ -462,9 +487,33 @@ atual_porcentagem_cod_duplicado_test=$(awk 'BEGIN{print '$atual_porcentagem_cod_
 compare_cod_duplicado_test=$(awk 'BEGIN{ print "'$ultima_porcentagem_cod_dupicado_test'">="'$atual_porcentagem_cod_duplicado_test'" }')
 if [[ "$compare_cod_duplicado_test" -ne 1  ]]
 then
-	echo $'\n\n - Porcentagem de cód. duplicado aumentou de '$ultima_porcentagem_cod_dupicado_test' para '$atual_porcentagem_cod_duplicado_test
+	echo $'\n\n - Porcentagem de cód. duplicado aumentou de '$ultima_porcentagem_cod_dupicado_test' para '$atual_porcentagem_cod_duplicado_test' no projeto de testes.'
 fi
 
 psql -qtAU $username $dbname << EOF
 	INSERT INTO ultimas_metricas (data, metrica, val, project) VALUES (current_timestamp, 'cod_duplicado', '$atual_porcentagem_cod_duplicado_test', 'RHTest');
+EOF
+
+#######
+
+atual_porcentagem_cobertura_src=$(awk 'BEGIN{print '$atual_porcentagem_cobertura_src'}')
+compare_cod_duplicado_src=$(awk 'BEGIN{ print "'$ultima_porcentagem_cobertura_src'"<="'$atual_porcentagem_cobertura_src'" }')
+if [[ "$compare_cod_duplicado_src" -ne 1 ]]
+then
+	echo $'\n\n - Porcentagem de cód. duplicado aumentou de '$ultima_porcentagem_cobertura_src' para '$atual_porcentagem_cobertura_src' no projeto principal.'
+fi
+
+psql -qtAU $username $dbname << EOF
+	INSERT INTO ultimas_metricas (data, metrica, val, project) VALUES (current_timestamp, 'coverage', '$atual_porcentagem_cobertura_src', 'RH');
+EOF
+
+atual_porcentagem_cobertura_test=$(awk 'BEGIN{print '$atual_porcentagem_cobertura_test'}')
+compare_cod_duplicado_test=$(awk 'BEGIN{ print "'$ultima_porcentagem_cobertura_test'"<="'$atual_porcentagem_cobertura_test'" }')
+if [[ "$compare_cod_duplicado_test" -ne 1  ]]
+then
+	echo $'\n\n - Porcentagem da cobertura diminuiu de '$ultima_porcentagem_cobertura_test' para '$atual_porcentagem_cobertura_test' no projeto de testes.'
+fi
+
+psql -qtAU $username $dbname << EOF
+	INSERT INTO ultimas_metricas (data, metrica, val, project) VALUES (current_timestamp, 'coverage', '$atual_porcentagem_cobertura_test', 'RHTest');
 EOF
