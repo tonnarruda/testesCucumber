@@ -560,6 +560,26 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		assertEquals("success",action.avaliacaoDesempenhoQuestionarioList());
 	}
 	
+	public void testAvaliacaoDesempenhoRespostasList()
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		
+		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = Arrays.asList(avaliacaoDesempenho);
+		action.setAvaliacaoDesempenhos(avaliacaoDesempenhos);
+		
+		action.setRespondida('R');
+		MockSecurityUtil.roles = new String[]{"ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO"};
+		
+		manager.expects(once()).method("findByAvaliador").with(ANYTHING, eq(true), ANYTHING).will(returnValue(avaliacaoDesempenhos));
+		colaboradorQuestionarioManager.expects(once()).method("findAvaliadosByAvaliador").with(new Constraint[]{ANYTHING,ANYTHING,eq(FiltroSituacaoAvaliacao.RESPONDIDA.getOpcao()),eq(false),eq(true), eq(false)}).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(new ArrayList<Empresa>()));
+		manager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(avaliacaoDesempenho));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[]{eq(avaliacaoDesempenho.getId()), eq(false), eq(null), eq(null), eq(null)}).will(returnValue(new ArrayList<Colaborador>()));
+		
+		assertEquals("success",action.avaliacaoDesempenhoRespostasList());
+	}
+	
 	public void testPrepareAnaliseDesempenhoCompetenciaColaborador() throws Exception
 	{
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();

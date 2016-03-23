@@ -8,6 +8,8 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 	
+		#resultadoDialog { display: none; }
+		#resultadoDialog li { list-style: none; }
 		#formDialog { display: none; width: 600px; }
 		#liberarEmLoteDialog { display: none; width: 600px; }
 		.buscaEmLote li{list-style:none;}
@@ -91,6 +93,24 @@
 			});			
 		}
 		
+		function dialogResultado(avaliacaoDesempenhoId) {
+			$('#resultadoDialog').dialog({
+				title: 'Resultado e Respostas da Avaliação',
+				modal: true, 
+				height: 145,
+				width: 300,
+				buttons: [ 	{ text: "Ok", click: function() {
+				            if ( $('#analisarResultado').val() == 'RESULTADO' ) {
+				            	window.location='prepareResultado.action?avaliacaoDesempenho.id='+avaliacaoDesempenhoId;
+				            } else {
+				            	window.location='avaliacaoDesempenhoRespostasList.action?avaliacaoDesempenho.id='+avaliacaoDesempenhoId;
+				            }
+							$(this).dialog("close");
+						} },
+			    		{ text: "Cancelar", click: function() { $(this).dialog("close"); } } ] 
+			});
+		}
+		
 		function submitLiberarEmLote()
 		{
 			var avaliacaoDesempenhoIds =  $("input[name=avaliacoesCheck]:checked").map(function(){return $(this).val();}).get();
@@ -171,9 +191,9 @@
 			<#if avaliacaoDesempenho.liberada>
 				<a href="javascript:existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(${avaliacaoDesempenho.id});"><img border="0" title="Bloquear" src="<@ww.url includeParams="none" value="/imgs/bloquear.gif"/>"></a>
 				<#if avaliacaoDesempenho.avaliacao?exists && avaliacaoDesempenho.avaliacao.id?exists>
-					<a href="prepareResultado.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Resultado da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>
+					<a href="javascript:;" onclick="dialogResultado(${avaliacaoDesempenho.id})"><img border="0" title="Resultado e Respostas da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>
 				<#else>
-					<img border="0" title="Resultado da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+					<img border="0" title="Resultado e Respostas da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				</#if>
 				<a href="javascript:newConfirm('Deseja enviar e-mail de lembrete para os colaboradores que ainda não respoderam esta avaliação desempenho?', function(){window.location='enviarLembrete.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}'});"><img border="0" title="Enviar e-mail de Lembrete" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>"></a>
 			<#else>
@@ -208,6 +228,10 @@
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
 		<button class="btnLiberarAvalEmLote" onclick="$('#liberarEmLoteDialog').dialog({ modal: true, width: 530 });">
+	</div>
+	
+	<div id="resultadoDialog" title="Configurar Informações para Impressão">
+		<@ww.select label="Analisar" name="analisarResultado" id="analisarResultado" list=r"#{'RESULTADO':'Resultado da Avaliação','RESPOSTAS':'Respostas das Avaliação'}"/>
 	</div>
 	
 	<div id="formDialog">

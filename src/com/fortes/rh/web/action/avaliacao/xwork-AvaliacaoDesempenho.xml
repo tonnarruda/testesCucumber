@@ -116,6 +116,13 @@
 			</interceptor-ref>
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoDesempenhoQuestionarioList.ftl</result>
 		</action>
+		
+		<action name="avaliacaoDesempenhoRespostasList" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="avaliacaoDesempenhoRespostasList">
+      		<interceptor-ref name="defaultListStack">
+        		<param name="scope.session">avaliacaoDesempenho, avaliador, showFilter</param>
+			</interceptor-ref>
+			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoDesempenhoRespostasList.ftl</result>
+		</action>
 
 		<action name="enviarLembrete" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="enviarLembrete">
       		<interceptor-ref name="defaultDeleteStack"/>

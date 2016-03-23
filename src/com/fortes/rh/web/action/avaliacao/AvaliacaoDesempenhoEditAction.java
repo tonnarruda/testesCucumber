@@ -525,8 +525,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
-	public String avaliacaoDesempenhoQuestionarioList()
-	{
+	private void prepareList(){
 		empresaId = getEmpresaSistema().getId();
 		empresas = empresaManager.findEmpresasPermitidas(true, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
 		
@@ -557,6 +556,23 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			this.msgResultadoAvaliacao = this.msgResultadoAvaliacao + "<br/><span>Pontuação da Avaliação: " + colaboradorQuestionario.getPerformanceFormatada() + "</span>" +
 					"<br/><span>Pontuação da Competência: " + colaboradorQuestionario.getPerformanceNivelCompetenciaFormatada() + "</span>" +
 					"<br/><h4>Pontuação Final: " + colaboradorQuestionario.getPerformanceFinal() + "</h4>";
+		}
+	}
+	
+	public String avaliacaoDesempenhoQuestionarioList()
+	{
+		prepareList();
+		
+		return Action.SUCCESS;
+	}
+	
+	public String avaliacaoDesempenhoRespostasList()
+	{
+		setRespondida('R');
+		prepareList();
+		
+		if(avaliacaoDesempenho != null && avaliacaoDesempenho.getId() != null ) {
+			avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(avaliacaoDesempenho.getId());
 		}
 		
 		return Action.SUCCESS;
