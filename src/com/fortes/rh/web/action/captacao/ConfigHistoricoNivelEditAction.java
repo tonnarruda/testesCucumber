@@ -36,6 +36,9 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 		obrigarPercentual = criterioAvaliacaoCompetenciaManager.existeCriterioAvaliacaoCompetencia(getEmpresaSistema().getId());
 		podeEditar = true;
 		
+		if(configHistoricoNivels == null || configHistoricoNivels.size() == 0)
+			setActionMsg("Não existe cadastro de competência a ser configurada.");
+		
 		return Action.SUCCESS;
 	}
 
@@ -158,8 +161,7 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 		return obrigarPercentual;
 	}
 
-	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(
-			ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
 		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
 	}
 }

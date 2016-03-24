@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.16x.19x" db="" data="xx/xx/2016">
+		<Item visivel="S" motivo="P16030000328"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Ajuste da inconsistência ao tentar inserir histórico de nível quando não existir nível de competência.]]></Item>
+	</Versao>
 	<Versao id="1.1.162.193" db="" data="17/03/2016">
 		<Item visivel="S" motivo="S16020000207"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Possibilidade de definir solicitação de pessoal como invisível para o gestor da área organizacional selecionada.]]></Item>
 		<Item visivel="S" motivo="S15100000012"><![CDATA[C&S > Cadastros > Níveis de Competência > Cadastros: Nova forma de inserir os níveis de competências.]]></Item>
