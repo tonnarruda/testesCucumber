@@ -1,4 +1,4 @@
-package com.fortes.security.auditoria;
+package com.fortes.rh.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

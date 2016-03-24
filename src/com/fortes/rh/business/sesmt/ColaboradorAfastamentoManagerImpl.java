@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -105,6 +106,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		return colaboradorAfastamentos;
 	}
 	
+	// TODO: SEM TESTE 
 	public Collection<ColaboradorAfastamento> findRelatorioResumoAfastamentos(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento) throws ColecaoVaziaException 
 	{
 		Collection<ColaboradorAfastamento> colaboradorAfastamentos = getDao().findRelatorioResumoAfastamentos(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(motivosCheck), colaboradorAfastamento);
@@ -267,6 +269,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		return true;
 	}
 	
+	@TesteAutomatico
 	public Integer findQtdAfastamentosInss(Long empresaId, Date dataIni, Date dataFim, boolean inss) 
 	{
 		return getDao().findQtdAfastamentosInss(empresaId, dataIni, dataFim, inss);
@@ -293,6 +296,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		return countTiposAfastamentosCriados;
 	}
 
+	@TesteAutomatico
 	public Collection<ColaboradorAfastamento> findByColaborador(Long colaboradorId) {
 		return getDao().findByColaborador(colaboradorId);
 	}
@@ -426,11 +430,13 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		return colaboradorAfastamentoMatrizes;
 	}
 
+	@TesteAutomatico
 	public Collection<Absenteismo> countAfastamentosByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> afastamentosIds) 
 	{
 		return getDao().countAfastamentosByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, afastamentosIds);
 	}
 
+	@TesteAutomatico
 	public ColaboradorAfastamento findByColaboradorAfastamentoId(Long colaboradorAfastamentoId)
 	{
 		return getDao().findByColaboradorAfastamentoId(colaboradorAfastamentoId);
@@ -440,8 +446,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		return colaboradorAfastamentos;
 	}
 
-	public void setColaboradorAfastamentos(
-			Collection<ColaboradorAfastamento> colaboradorAfastamentos) {
+	public void setColaboradorAfastamentos(Collection<ColaboradorAfastamento> colaboradorAfastamentos) {
 		this.colaboradorAfastamentos = colaboradorAfastamentos;
 	}
 }

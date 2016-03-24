@@ -1,9 +1,6 @@
 package com.fortes.rh.test.business.geral;
 
 import java.io.File;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,17 +11,13 @@ import java.util.Map;
 
 import mockit.Mockit;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
-import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -42,6 +35,8 @@ import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.ws.TAreaOrganizacional;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -57,14 +52,12 @@ import com.fortes.rh.test.util.mockObjects.MockTransactionStatus;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientLotacao;
-import com.fortes.security.auditoria.TesteAutomatico;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionContext;
 
-public class AreaOrganizacionalManagerTest extends MockObjectTestCase
+public class AreaOrganizacionalManagerTest extends MockObjectTestCaseManager<AreaOrganizacionalManagerImpl> implements TesteAutomaticoManager
 {
-	private AreaOrganizacionalManagerImpl areaOrganizacionalManager = new AreaOrganizacionalManagerImpl();
 	private Mock acPessoalClientLotacao = null;
 	private Mock areaOrganizacionalDao = null;
 	Mock parametrosDoSistemaManager;
@@ -76,15 +69,16 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     protected void setUp() throws Exception
     {
         super.setUp();
-
+        manager = new AreaOrganizacionalManagerImpl();
+        
         areaOrganizacionalDao = new Mock(AreaOrganizacionalDao.class);
         acPessoalClientLotacao = new Mock(AcPessoalClientLotacao.class);
 
-        areaOrganizacionalManager.setDao((AreaOrganizacionalDao) areaOrganizacionalDao.proxy());
-		areaOrganizacionalManager.setAcPessoalClientLotacao((AcPessoalClientLotacao) acPessoalClientLotacao.proxy());
+        manager.setDao((AreaOrganizacionalDao) areaOrganizacionalDao.proxy());
+		manager.setAcPessoalClientLotacao((AcPessoalClientLotacao) acPessoalClientLotacao.proxy());
 
         transactionManager = new Mock(PlatformTransactionManager.class);
-        areaOrganizacionalManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+        manager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 
         parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
 		MockSpringUtil.mocks.put("parametrosDoSistemaManager", parametrosDoSistemaManager);
@@ -111,40 +105,6 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	Mockit.restoreAllOriginalDefinitions();
     }
     
-    private Object[] geraParametros(Class<?>[] tipoParametros) 
-    {
-    	String[] p = {"boolean","byte","char","double","float","int","long","short"};
-    	Object[] v = {true,0,0,0,0,0,0.0,0.0};
-    	int i = 0;
-    	Object[] r = new Object[tipoParametros.length];
-    	for (Class<?> tipoParametro : tipoParametros) {
-			if (Arrays.binarySearch(p, tipoParametro.getName()) > 0) 
-				r[i++] = v[Arrays.binarySearch(p, tipoParametro.getName())];
-			else
-				r[i++] = null;
-		}
-    	return r;
-	}
-    
-    public void testtGeral()
-    {
-    	AreaOrganizacionalManagerImpl clazz = areaOrganizacionalManager;
-    	for (Method method : clazz.getClass().getDeclaredMethods()) {
-			if (method.isAnnotationPresent(TesteAutomatico.class)){
-				Annotation annotation = method.getAnnotation(TesteAutomatico.class);
-				String metodoMock = StringUtils.defaultIfEmpty(((TesteAutomatico) annotation).metodoMock(), method.getName());
-				areaOrganizacionalDao.expects(once()).method(metodoMock).withAnyArguments();
-				try {
-					Object[] parametros = geraParametros(method.getParameterTypes()) ;
-					method.invoke(clazz, parametros);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				System.out.println(method.getName());
-			}
-		}
-    }
-    
     public void testPopulaAreas()
     {
     	String[] areasCheck = {"1","2"};
@@ -157,7 +117,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	areas.add(a1);
     	areas.add(a2);
 
-    	Collection<AreaOrganizacional> areasTmp = areaOrganizacionalManager.populaAreas(areasCheck);
+    	Collection<AreaOrganizacional> areasTmp = manager.populaAreas(areasCheck);
 
     	assertTrue(areasTmp.size() == 2);
     	assertEquals(areas, areasTmp);
@@ -182,7 +142,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	
     	Exception exp = null;
     	try {
-			areaOrganizacionalManager.bind(areaOrganizacional, tAreaOrganizacional);
+			manager.bind(areaOrganizacional, tAreaOrganizacional);
 		} catch (Exception e) {
 			exp = e;
 		}
@@ -195,7 +155,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
     	areaOrganizacionalDao.expects(atLeastOnce()).method("verificaMaternidade").with(eq(areaOrganizacional.getId()), ANYTHING).will(returnValue(true));
 
-    	assertTrue(areaOrganizacionalManager.verificaMaternidade(areaOrganizacional.getId(), null));
+    	assertTrue(manager.verificaMaternidade(areaOrganizacional.getId(), null));
     }
 
     public void testFindAllList()
@@ -204,7 +164,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0), eq(0), eq(null), eq(null), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{1L})}).will(returnValue(areas));
 
-    	assertEquals(areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, 1L), areas);
+    	assertEquals(manager.findAllListAndInativas(AreaOrganizacional.TODAS, null, 1L), areas);
     }
 
     public void testFindAllListComIdUsuario()
@@ -213,7 +173,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0), eq(0), eq(1L), eq(null), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{1L})}).will(returnValue(areas));
 
-    	assertEquals(areaOrganizacionalManager.findAllList(1L,1L, AreaOrganizacional.TODAS, null), areas);
+    	assertEquals(manager.findAllList(1L,1L, AreaOrganizacional.TODAS, null), areas);
     }
 
     public void testFindAllListComPaginacao()
@@ -222,7 +182,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(1), eq(15), eq(null), eq(""), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{1L})}).will(returnValue(areas));
 
-    	assertEquals(areaOrganizacionalManager.findAllList(1, 15, "", 1L, AreaOrganizacional.TODAS), areas);
+    	assertEquals(manager.findAllList(1, 15, "", 1L, AreaOrganizacional.TODAS), areas);
     }
 
     public void testPopulaCheckOrderDescricao()
@@ -231,11 +191,11 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
 		areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING, ANYTHING}).will(returnValue(areas));
 
-		assertEquals(areaOrganizacionalManager.populaCheckOrderDescricao(1L), new ArrayList<CheckBox>());
+		assertEquals(manager.populaCheckOrderDescricao(1L), new ArrayList<CheckBox>());
 
 		areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING, ANYTHING});
 
-		assertEquals(areaOrganizacionalManager.populaCheckOrderDescricao(1L), new ArrayList<CheckBox>());
+		assertEquals(manager.populaCheckOrderDescricao(1L), new ArrayList<CheckBox>());
 
 	}
     
@@ -245,7 +205,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	
     	areaOrganizacionalDao.expects(once()).method("findByEmpresasIds").with(new Constraint[]{ANYTHING,ANYTHING}).will(returnValue(areas));
     	
-    	assertEquals(new ArrayList<CheckBox>(), areaOrganizacionalManager.populaCheckOrderDescricao(new Long[]{1L}));
+    	assertEquals(new ArrayList<CheckBox>(), manager.populaCheckOrderDescricao(new Long[]{1L}));
     }
 
     public void testGetDistinctAreaMae()
@@ -278,7 +238,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	todasAreas.add(area4);
     	todasAreas.add(area5);
 
-    	Collection<AreaOrganizacional> retorno = areaOrganizacionalManager.getDistinctAreaMae(todasAreas, areas);
+    	Collection<AreaOrganizacional> retorno = manager.getDistinctAreaMae(todasAreas, areas);
 
     	assertEquals(3, retorno.size());
     }
@@ -316,7 +276,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	todasAreas.add(babau);
     	todasAreas.add(irma);
     	
-    	Collection<AreaOrganizacional> retorno = areaOrganizacionalManager.getAncestrais(todasAreas, filha.getId());
+    	Collection<AreaOrganizacional> retorno = manager.getAncestrais(todasAreas, filha.getId());
     	
     	assertEquals(3, retorno.size());
     }
@@ -351,7 +311,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(af1));
 
-    	assertEquals(areasFilhas.size(), areaOrganizacionalManager.findAreasPossiveis(areas, 1L).size());
+    	assertEquals(areasFilhas.size(), manager.findAreasPossiveis(areas, 1L).size());
 
     }
 
@@ -367,7 +327,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	areas.add(a1);
     	areas.add(a2);
 
-    	assertEquals(a1.getId(), areaOrganizacionalManager.getAreaOrganizacional(areas, a1.getId()).getId());
+    	assertEquals(a1.getId(), manager.getAreaOrganizacional(areas, a1.getId()).getId());
     }
 
     public void testGetAreaOrganizacionalComNull()
@@ -385,7 +345,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	areas.add(a1);
     	areas.add(a2);
 
-    	AreaOrganizacional retorno = areaOrganizacionalManager.getAreaOrganizacional(areas, a3.getId());
+    	AreaOrganizacional retorno = manager.getAreaOrganizacional(areas, a3.getId());
 
     	assertNull(retorno);
     }
@@ -407,7 +367,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	area.setId(1L);
     	area.setAreaMae(areaMae);
 
-    	assertEquals(area.getAreaMae(), areaOrganizacionalManager.getAreaMae(areas, area).getAreaMae());
+    	assertEquals(area.getAreaMae(), manager.getAreaMae(areas, area).getAreaMae());
     }
 
     public void testFindAreaOrganizacionalCodigoAc()
@@ -418,7 +378,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("findAreaOrganizacionalCodigoAc").with(eq(a1.getId())).will(returnValue(a1));
 
-    	AreaOrganizacional retorno = areaOrganizacionalManager.findAreaOrganizacionalCodigoAc(a1.getId());
+    	AreaOrganizacional retorno = manager.findAreaOrganizacionalCodigoAc(a1.getId());
 
     	assertEquals(a1.getCodigoAC(), retorno.getCodigoAC());
     	assertEquals(a1.getId(), retorno.getId());
@@ -432,14 +392,14 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("findByCargo").with(eq(cargo.getId())).will(returnValue(new ArrayList<AreaOrganizacional>()));
 
-    	assertNotNull(areaOrganizacionalManager.findByCargo(cargo.getId()));
+    	assertNotNull(manager.findByCargo(cargo.getId()));
     }
 
     public void testMontaFamilia() throws Exception
     {
     	Collection<AreaOrganizacional> areas = preparaCollection();
 
-    	Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areas);
+    	Collection<AreaOrganizacional> areaOrganizacionals = manager.montaFamilia(areas);
 
     	assertEquals(5, areaOrganizacionals.size());
     	for (AreaOrganizacional areaTmp : areaOrganizacionals)
@@ -506,7 +466,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	areaOrganizacionalDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
     	areaOrganizacionalDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
     	
-    	areaOrganizacionalManager.insert(areaOrganizacional, empresa);
+    	manager.insert(areaOrganizacional, empresa);
     	assertEquals("001", areaOrganizacional.getCodigoAC());
     }
     
@@ -526,7 +486,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	areaOrganizacionalDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
     	areaOrganizacionalDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
     	
-    	areaOrganizacionalManager.insert(areaOrganizacional, empresa);
+    	manager.insert(areaOrganizacional, empresa);
     	assertEquals("001", areaOrganizacional.getCodigoAC());
     }
 
@@ -538,7 +498,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	Collection<AreaOrganizacional> areas = preparaCollection();
     	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[] {eq(0), eq(0), eq(null), eq(null), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})}).will(returnValue(areas));
 
-    	assertEquals(5, areaOrganizacionalManager.montaAllSelect(empresa.getId()).size());
+    	assertEquals(5, manager.montaAllSelect(empresa.getId()).size());
     }
 
     public void testMontaAllSelectException()
@@ -548,7 +508,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[] {eq(0), eq(0), eq(null), eq(null), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})}).will(returnValue(null));
 
-    	assertTrue(areaOrganizacionalManager.montaAllSelect(empresa.getId()).isEmpty());
+    	assertTrue(manager.montaAllSelect(empresa.getId()).isEmpty());
     }
 
     public void testFindAllSelectOrderDescricao() throws Exception
@@ -558,7 +518,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[] {eq(0), eq(0), eq(null), eq(null), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})}).will(returnValue(preparaCollection()));
 
-    	assertEquals(5, areaOrganizacionalManager.findAllSelectOrderDescricao(empresa.getId(), AreaOrganizacional.TODAS, null, false).size());
+    	assertEquals(5, manager.findAllSelectOrderDescricao(empresa.getId(), AreaOrganizacional.TODAS, null, false).size());
     }
     
     public void testFindAllSelectOrderDescricaoSomenteFolhas() throws Exception
@@ -568,7 +528,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[] {eq(0), eq(0), eq(null), eq(null), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})}).will(returnValue(preparaCollection()));
 
-    	assertEquals(2, areaOrganizacionalManager.findAllSelectOrderDescricao(empresa.getId(), AreaOrganizacional.TODAS, null, true).size());
+    	assertEquals(2, manager.findAllSelectOrderDescricao(empresa.getId(), AreaOrganizacional.TODAS, null, true).size());
     }
 
     public void testGetNaoFamilia() throws Exception
@@ -590,7 +550,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	areas.add(areaSemFamilia);
 
     	areaOrganizacionalDao.expects(once()).method("findByIdProjection").with(eq(area.getId())).will(returnValue(area));
-    	assertEquals(2, areaOrganizacionalManager.getNaoFamilia(areas, area.getId()).size());
+    	assertEquals(2, manager.getNaoFamilia(areas, area.getId()).size());
     }
 
     public void testGetAreasByAreaInteresse()
@@ -603,12 +563,12 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("findAreaIdsByAreaInteresse").with(eq(areaInteresse.getId())).will(returnValue(areasIds));
 
-    	assertEquals(2, areaOrganizacionalManager.getAreasByAreaInteresse(areaInteresse.getId()).size());
+    	assertEquals(2, manager.getAreasByAreaInteresse(areaInteresse.getId()).size());
     }
 
     public void testSet()
     {
-    	areaOrganizacionalManager.setAcPessoalClientLotacao(null);
+    	manager.setAcPessoalClientLotacao(null);
     }
 
 	public void testGetParametrosRelatorio()
@@ -622,7 +582,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
 		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametrosDoSistema));
 
-		Map<String, Object> parametros = areaOrganizacionalManager.getParametrosRelatorio("Relatório Teste", empresa, "");
+		Map<String, Object> parametros = manager.getParametrosRelatorio("Relatório Teste", empresa, "");
 
 		Cabecalho cabecalho = (Cabecalho) parametros.get("CABECALHO");
 		assertEquals("xxx" + File.separatorChar, parametros.get("SUBREPORT_DIR"));
@@ -647,7 +607,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			areaOrganizacionalManager.deleteLotacaoAC(areaOrganizacional, empresa);
+			manager.deleteLotacaoAC(areaOrganizacional, empresa);
 		}
 		catch (Exception e)
 		{
@@ -674,7 +634,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			areaOrganizacionalManager.deleteLotacaoAC(areaOrganizacional, empresa);
+			manager.deleteLotacaoAC(areaOrganizacional, empresa);
 		}
 		catch (IntegraACException e)
 		{
@@ -694,7 +654,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
 		areaOrganizacionalDao.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(areaCodigoAC), eq(empresaCodigoAC), eq("XXX")).will(returnValue(areaOrganizacional));
 
-		AreaOrganizacional retorno = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC, "XXX");
+		AreaOrganizacional retorno = manager.findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC, "XXX");
 
 		assertEquals(areaCodigoAC, retorno.getCodigoAC());
 	}
@@ -742,9 +702,9 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areas.add(areaVizim);
 		areas.add(areaSolitaria);
 		
-		assertEquals(areaVo.getId(), areaOrganizacionalManager.getMatriarca(areas, area, null).getId());
-		assertEquals(areaPaiVizim.getId(), areaOrganizacionalManager.getMatriarca(areas, areaVizim, null).getId());
-		assertEquals(areaSolitaria.getId(), areaOrganizacionalManager.getMatriarca(areas, areaSolitaria, null).getId());
+		assertEquals(areaVo.getId(), manager.getMatriarca(areas, area, null).getId());
+		assertEquals(areaPaiVizim.getId(), manager.getMatriarca(areas, areaVizim, null).getId());
+		assertEquals(areaSolitaria.getId(), manager.getMatriarca(areas, areaSolitaria, null).getId());
 	}
 	
 	public void testSetMatriarca2()
@@ -785,10 +745,10 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areas.add(areaVizim);
 		areas.add(areaSolitaria);
 		
-		assertEquals(areaMae.getId(), areaOrganizacionalManager.getMatriarca(areas, areaFilinha, areaVo.getId()).getId());
-		assertEquals(areaMae.getId(), areaOrganizacionalManager.getMatriarca(areas, area, areaVo.getId()).getId());
-		assertEquals(areaTia.getId(), areaOrganizacionalManager.getMatriarca(areas, areaTia, areaVo.getId()).getId());
-		assertEquals(areaSolitaria.getId(), areaOrganizacionalManager.getMatriarca(areas, areaSolitaria, areaVo.getId()).getId());
+		assertEquals(areaMae.getId(), manager.getMatriarca(areas, areaFilinha, areaVo.getId()).getId());
+		assertEquals(areaMae.getId(), manager.getMatriarca(areas, area, areaVo.getId()).getId());
+		assertEquals(areaTia.getId(), manager.getMatriarca(areas, areaTia, areaVo.getId()).getId());
+		assertEquals(areaSolitaria.getId(), manager.getMatriarca(areas, areaSolitaria, areaVo.getId()).getId());
 	}
 
 	public void testEditarLotacaoAC() throws Exception
@@ -806,7 +766,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			areaOrganizacionalManager.update(areaOrganizacional, empresa);
+			manager.update(areaOrganizacional, empresa);
 		}
 		catch (Exception e)
 		{
@@ -832,7 +792,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			areaOrganizacionalManager.update(areaOrganizacional, empresa);
+			manager.update(areaOrganizacional, empresa);
 		}
 		catch (Exception e)
 		{
@@ -845,7 +805,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 	public void testFindQtdColaboradorPorArea()
 	{
 		areaOrganizacionalDao.expects(once()).method("findQtdColaboradorPorArea").will(returnValue(new ArrayList<AreaOrganizacional>()));
-		assertEquals(0,areaOrganizacionalManager.findQtdColaboradorPorArea(1L, new Date()).size());
+		assertEquals(0,manager.findQtdColaboradorPorArea(1L, new Date()).size());
 	}
 	
 	public void testSincronizar()
@@ -881,7 +841,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		Empresa empresaDestino=EmpresaFactory.getEmpresa();
 		List<String> mensagens = new ArrayList<String>();
 		
-		areaOrganizacionalManager.sincronizar(empresaOrigemId, empresaDestino, areaIds, mensagens);
+		manager.sincronizar(empresaOrigemId, empresaDestino, areaIds, mensagens);
 		
 		assertEquals(3, areaIds.size());
 	}
@@ -903,7 +863,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	
 		areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0),eq(0),eq(null),eq(null), ANYTHING, ANYTHING, eq(new Long[]{empresaId})}).will(returnValue(areas));
 		
-		assertEquals(1,areaOrganizacionalManager.setFamiliaAreas(examesPrevistosRelatorios, empresaId).size());
+		assertEquals(1,manager.setFamiliaAreas(examesPrevistosRelatorios, empresaId).size());
 	} 
 	
 	public void testSelecionaFamilia()
@@ -945,7 +905,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areas.add(comercial);
 		areas.add(vendedor);
 		
-		Long[] areasIdsJaConfiguradas = areaOrganizacionalManager.selecionaFamilia(areas, areasIds);
+		Long[] areasIdsJaConfiguradas = manager.selecionaFamilia(areas, areasIds);
 		assertEquals(8, areasIdsJaConfiguradas.length);
 	}
 	
@@ -979,7 +939,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaFilha1.getId(), areaFilha2.getId()))).will(returnValue(new ArrayList<Long>()));
 		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaFilha1.getId(), areaFilha2.getId()))).will(returnValue(new ArrayList<Long>()));
 		
-		Long[] areaIds = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuarioLogado, empresa.getId());
+		Long[] areaIds = manager.findIdsAreasDoResponsavelCoResponsavel(usuarioLogado, empresa.getId());
 		CollectionUtil<Long> cUtil = new CollectionUtil<Long>();
 		Collection<Long> areasIds = cUtil.convertArrayToCollection(areaIds);
 		
@@ -1022,7 +982,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		
 		try {
-			areasIds = areaOrganizacionalManager.findAllSelectOrderDescricaoByUsuarioId(empresa.getId(), usuarioLogado.getId(), true, areaInativa.getId());
+			areasIds = manager.findAllSelectOrderDescricaoByUsuarioId(empresa.getId(), usuarioLogado.getId(), true, areaInativa.getId());
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -1068,7 +1028,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		
 		try {
-			areasIds = areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuarioLogado, empresa.getId());
+			areasIds = manager.findAreasByUsuarioResponsavel(usuarioLogado, empresa.getId());
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -1125,7 +1085,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		Collection<AreaOrganizacional> todasAsAreas = Arrays.asList(areaMae1, areaMae2, areaFilha1, areaFilha2, areaAvo);
 		areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0),eq(0),eq(null),eq(null), ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})}).will(returnValue(todasAsAreas));
 		
-		assertEquals(4, areaOrganizacionalManager.getEmailsResponsaveis(areaFilha1.getId(), empresa.getId(), AreaOrganizacional.RESPONSAVEL, null).length);
+		assertEquals(4, manager.getEmailsResponsaveis(areaFilha1.getId(), empresa.getId(), AreaOrganizacional.RESPONSAVEL, null).length);
 	}
 	
 	public void testGetEmailsResponsaveisPassandoCollection() throws Exception 
@@ -1171,8 +1131,8 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		
 		Collection<AreaOrganizacional> todasAsAreas = Arrays.asList(areaMae1, areaMae2, areaFilha1, areaFilha2, areaAvo);
 		
-		assertEquals(4, areaOrganizacionalManager.getEmailsResponsaveis(areaFilha1.getId(), todasAsAreas, AreaOrganizacional.RESPONSAVEL).length);
-		assertEquals(3, areaOrganizacionalManager.getEmailsResponsaveis(areaFilha1.getId(), todasAsAreas, AreaOrganizacional.CORRESPONSAVEL).length);
+		assertEquals(4, manager.getEmailsResponsaveis(areaFilha1.getId(), todasAsAreas, AreaOrganizacional.RESPONSAVEL).length);
+		assertEquals(3, manager.getEmailsResponsaveis(areaFilha1.getId(), todasAsAreas, AreaOrganizacional.CORRESPONSAVEL).length);
 	}
 	
 	public void testFiltraPermitidasComRoleVerAreas()
@@ -1180,7 +1140,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		MockSecurityUtil.roles = new String[]{"ROLE_VER_AREAS"};
 		Long empresaId = 1L;
 		
-		assertNull(areaOrganizacionalManager.filtraPermitidas(null, empresaId));
+		assertNull(manager.filtraPermitidas(null, empresaId));
 	}
 	
 	public void testFiltraPermitidasSemRoleVerAreasComAreas()
@@ -1189,7 +1149,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		Long empresaId = 1L;
 		String[] areasIds = {"1","2"};
 		
-		assertEquals(areasIds,  areaOrganizacionalManager.filtraPermitidas(areasIds, empresaId));
+		assertEquals(areasIds,  manager.filtraPermitidas(areasIds, empresaId));
 	}
 	
 	public void testFiltraPermitidasSemRoleVerComAreasDoResponsavel()
@@ -1205,7 +1165,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(areasIdsCollection)).will(returnValue(new ArrayList<Long>()));
 		areaOrganizacionalDao.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").with(eq(usuarioId), eq(empresaId)).will(returnValue(areasIdsdoResponsavel));
 		
-		String[] areasRetonadas = areaOrganizacionalManager.filtraPermitidas(areasIds, empresaId);
+		String[] areasRetonadas = manager.filtraPermitidas(areasIds, empresaId);
 		
 		assertEquals(areasPermitidas.length, areasRetonadas.length );
 		assertEquals(areasPermitidas[0], areasRetonadas[0]);
@@ -1224,24 +1184,28 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		
 		areaOrganizacionalDao.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").with(eq(usuarioId), eq(empresaId)).will(returnValue(areasIdsdoResponsavel));
 		
-		String[] areasRetonadas = areaOrganizacionalManager.filtraPermitidas(areasIds, empresaId);
+		String[] areasRetonadas = manager.filtraPermitidas(areasIds, empresaId);
 		assertEquals(areasPermitidas.length, areasRetonadas.length );
 		assertEquals(areasPermitidas[0], areasRetonadas[0]);
 	}
 	
-	public void testGetEmailResponsavel(){
+	public void testGetEmailResponsavel()
+	{
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
 		areaOrganizacional.setEmailResponsavel("gestor@gmail.com");
 		areaOrganizacionalDao.expects(once()).method("findByIdProjection").with(eq(areaOrganizacional.getId())).will(returnValue(areaOrganizacional));
 		Exception exception = null;
 		try {
-			assertEquals("gestor@gmail.com", areaOrganizacionalManager.getEmailResponsavel(areaOrganizacional.getId()));
+			assertEquals("gestor@gmail.com", manager.getEmailResponsavel(areaOrganizacional.getId()));
 		} catch (Exception e) {
 			exception = e;
 		}
 		assertNull(exception);
-		
-		
+	}
+
+	public void testExecutaTesteAutomaticoDoManager() 
+	{
+		testeAutomatico(areaOrganizacionalDao);
 	}
 	
 }

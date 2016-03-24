@@ -24,6 +24,7 @@ import com.fortes.f2rh.Curriculo;
 import com.fortes.f2rh.F2rhFacade;
 import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.model.type.File;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.CamposExtrasManager;
 import com.fortes.rh.business.geral.CidadeManager;
@@ -748,14 +749,6 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	}
 
-	private void enviaEmailEsqueciMinhaSenha(Candidato candidato, Empresa empresa)
-	{
-		//Recupera a senha do candidato e envia
-		String senha = StringUtil.decodeString(candidato.getSenha());
-
-		enviaSenha(candidato, empresa, senha);
-	}
-
 	private Candidato findCandidatoCpf(String cpf, Long empresaId)
 	{
 		return getDao().findCandidatoCpf(cpf, empresaId);
@@ -771,6 +764,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		getDao().updateSetContratado(candidatoId, empresaId);
 	}
 
+	@TesteAutomatico
 	public void updateBlackList(String observacao, boolean blackList, Long... candidatoIds)
 	{
 		getDao().updateBlackList(observacao, blackList, candidatoIds);
@@ -1342,11 +1336,13 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	   	
 	}
 
+	@TesteAutomatico
 	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long... colaboradoresIds) 
 	{
 		getDao().updateDisponivelAndContratadoByColaborador(disponivel, contratado, colaboradoresIds);
 	}
 
+	@TesteAutomatico
 	public void updateDisponivel(boolean disponivel, Long candidatoId)
 	{
 		getDao().updateDisponivel(disponivel, candidatoId);
@@ -1377,16 +1373,19 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 			return StringUtil.converteCollectionToStringComAspas(comoFicouSabendoVagas);
 	}
 
+	@TesteAutomatico
 	public void updateExamePalografico(Candidato candidato) 
 	{
 			getDao().updateExamePalografico(candidato);
 	}
 
+	@TesteAutomatico
 	public Collection<Candidato> triagemAutomatica(Solicitacao solicitacao, Integer tempoExperiencia, Map<String, Integer> pesos, Integer percentualMinimo) 
 	{
 		return getDao().triagemAutomatica(solicitacao, tempoExperiencia, pesos, percentualMinimo);
 	}
 
+	@TesteAutomatico
 	public int findQtdCadastrados(Long empresaId, Date dataDe, Date dataAte) {
 		return getDao().findQtdCadastrados(empresaId, dataDe, dataAte);
 	}
@@ -1401,6 +1400,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return graficoDivulgacaoVaga;
 	}
 	
+	@TesteAutomatico
 	public Collection<Colaborador> findColaboradoresMesmoCpf(String[] candidatosCpfs) 
 	{
 		return getDao().findColaboradoresMesmoCpf(candidatosCpfs);
@@ -1410,15 +1410,18 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return historicoCandidatoManager.findQtdAtendidos(empresaId, estabelecimentoIds, areaIds, solicitacaoIds, dataIni, dataFim);
 	}
 
+	@TesteAutomatico
 	public void deleteCargosPretendidos(Long... cargosIds)
 	{
 		getDao().deleteCargosPretendidos(cargosIds);
 	}
 	
+	@TesteAutomatico
 	public void inserirNonoDigitoCelular(Long[] ufIds){
 		getDao().inserirNonoDigitoCelular(ufIds);
 	}
 
+	@TesteAutomatico
 	public boolean existeCamposExtras(Long camposExtrasId) {
 		return getDao().existeCamposExtras(camposExtrasId);
 	}

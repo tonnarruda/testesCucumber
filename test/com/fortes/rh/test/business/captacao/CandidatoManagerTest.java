@@ -18,7 +18,6 @@ import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.io.FileUtils;
 import org.hibernate.NonUniqueResultException;
 import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -35,6 +34,7 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
+import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.CamposExtrasManager;
@@ -80,6 +80,8 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.test.MockFileUtils;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
@@ -99,9 +101,8 @@ import com.fortes.rh.util.Zip;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-public class CandidatoManagerTest extends MockObjectTestCase
+public class CandidatoManagerTest extends MockObjectTestCaseManager<CandidatoManagerImpl> implements TesteAutomaticoManager
 {
-	private CandidatoManagerImpl candidatoManager = new CandidatoManagerImpl();
 	private Mock candidatoSolicitacaoManager = null;
 	private Mock candidatoDao = null;
 	private Mock mail = null;
@@ -123,11 +124,13 @@ public class CandidatoManagerTest extends MockObjectTestCase
 	private Mock cidadeManager;
 	private Mock configuracaoCampoExtraManager;
 	private Mock camposExtrasManager;
+	private Mock historicoCandidatoManager;
 	
     protected void setUp() throws Exception
     {
         super.setUp();
-
+        manager = new CandidatoManagerImpl();
+        
         candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
         candidatoDao = new Mock(CandidatoDao.class);
         mail = mock(Mail.class);
@@ -147,26 +150,27 @@ public class CandidatoManagerTest extends MockObjectTestCase
         cidadeManager = new Mock(CidadeManager.class); 
         configuracaoCampoExtraManager = new Mock(ConfiguracaoCampoExtraManager.class);
         camposExtrasManager = new Mock(CamposExtrasManager.class);
+        historicoCandidatoManager = new Mock(HistoricoCandidatoManager.class);
         
-        candidatoManager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
-        candidatoManager.setDao((CandidatoDao) candidatoDao.proxy());
-        candidatoManager.setMail((Mail) mail.proxy());
-        candidatoManager.setAnuncioManager((AnuncioManager) anuncioManager.proxy());
-        candidatoManager.setExperienciaManager((ExperienciaManager) experienciaManager.proxy());
-        candidatoManager.setFormacaoManager((FormacaoManager) formacaoManager.proxy());
-        candidatoManager.setCandidatoIdiomaManager((CandidatoIdiomaManager) candidatoIdiomaManager.proxy());
-        candidatoManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
-        candidatoManager.setSolicitacaoManager((SolicitacaoManager) solicitacaoManager.proxy());
-        candidatoManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
-        candidatoManager.setBairroManager((BairroManager) bairroManager.proxy());
-        candidatoManager.setCandidatoCurriculoManager((CandidatoCurriculoManager) candidatoCurriculoManager.proxy());
-        candidatoManager.setSolicitacaoExameManager((SolicitacaoExameManager) solicitacaoExameManager.proxy());
-        candidatoManager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
-        candidatoManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
-        candidatoManager.setCidadeManager((CidadeManager) cidadeManager.proxy());
-        
-        candidatoManager.setConfiguracaoCampoExtraManager((ConfiguracaoCampoExtraManager) configuracaoCampoExtraManager.proxy());
-        candidatoManager.setCamposExtrasManager((CamposExtrasManager) camposExtrasManager.proxy());
+        manager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
+        manager.setDao((CandidatoDao) candidatoDao.proxy());
+        manager.setMail((Mail) mail.proxy());
+        manager.setAnuncioManager((AnuncioManager) anuncioManager.proxy());
+        manager.setExperienciaManager((ExperienciaManager) experienciaManager.proxy());
+        manager.setFormacaoManager((FormacaoManager) formacaoManager.proxy());
+        manager.setCandidatoIdiomaManager((CandidatoIdiomaManager) candidatoIdiomaManager.proxy());
+        manager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+        manager.setSolicitacaoManager((SolicitacaoManager) solicitacaoManager.proxy());
+        manager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
+        manager.setBairroManager((BairroManager) bairroManager.proxy());
+        manager.setCandidatoCurriculoManager((CandidatoCurriculoManager) candidatoCurriculoManager.proxy());
+        manager.setSolicitacaoExameManager((SolicitacaoExameManager) solicitacaoExameManager.proxy());
+        manager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
+        manager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
+        manager.setCidadeManager((CidadeManager) cidadeManager.proxy());
+        manager.setConfiguracaoCampoExtraManager((ConfiguracaoCampoExtraManager) configuracaoCampoExtraManager.proxy());
+        manager.setCamposExtrasManager((CamposExtrasManager) camposExtrasManager.proxy());
+        manager.setHistoricoCandidatoManager((HistoricoCandidatoManager) historicoCandidatoManager.proxy());
 		
         colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
         colaboradorManager = new Mock(ColaboradorManager.class);
@@ -192,7 +196,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	candidatoSolicitacaoManager.expects(once()).method("findCandidatoSolicitacaoById").with(eq(candidatoSolicitacao.getId())).will(returnValue(candidatoSolicitacao));
     	candidatoDao.expects(once()).method("updateBlackList").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING});
 
-    	candidatoManager.setBlackList(historicoCandidato, candidatoSolicitacao.getId(), blackList);
+    	manager.setBlackList(historicoCandidato, candidatoSolicitacao.getId(), blackList);
     }
 
     public void testSetBlackListVariosCandidatos() throws Exception
@@ -231,7 +235,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	candidatoSolicitacaoManager.expects(once()).method("findCandidatoSolicitacaoById").with(eq(idsCandidato)).will(returnValue(candidatoSolicitacaos));
     	candidatoDao.expects(once()).method("updateBlackList").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING});
 
-    	candidatoManager.setBlackList(historicoCandidato, idsCandidatos, blackList);
+    	manager.setBlackList(historicoCandidato, idsCandidatos, blackList);
     }
     
     public void testEnviaEmailQtdCurriculosCadastrados() throws Exception
@@ -258,7 +262,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	
     	Exception exc = null;
     	try {
-    		candidatoManager.enviaEmailQtdCurriculosCadastrados(empresas);
+    		manager.enviaEmailQtdCurriculosCadastrados(empresas);
 			
 		} catch (Exception e) {
 			exc = e;
@@ -280,7 +284,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
     	candidatoDao.expects(once()).method("findCandidatosById").with(eq(ids)).will(returnValue(candidatos));
 
-    	Collection<Candidato> retorno = candidatoManager.findCandidatosById(ids);
+    	Collection<Candidato> retorno = manager.findCandidatosById(ids);
 
     	assertEquals(candidatos.size(), retorno.size());
     }
@@ -299,7 +303,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
     	candidatoDao.expects(once()).method("findByCPF").with(new Constraint[] { eq("cpf"), ANYTHING, ANYTHING, ANYTHING } ).will(returnValue(candidatos));
 
-    	Candidato retorno = candidatoManager.findByCPF("cpf", null);
+    	Candidato retorno = manager.findByCPF("cpf", null);
 
     	assertEquals(candidato.getId(), retorno.getId());
     }
@@ -314,7 +318,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
     	candidatoDao.expects(once()).method("findByCandidatoId").with(eq(candidato.getId())).will(returnValue(candidato));
 
-    	Candidato retorno = candidatoManager.findByCandidatoId(candidato.getId());
+    	Candidato retorno = manager.findByCandidatoId(candidato.getId());
 
     	assertEquals(candidato.getId(), retorno.getId());
     }
@@ -396,7 +400,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(once()).method("findBusca").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,eq(false),ANYTHING,ANYTHING}).will(returnValue(candidatos));
 
-		retorno = candidatoManager.busca(parametros, 1L, false, null, null, empresa);
+		retorno = manager.busca(parametros, 1L, false, null, null, empresa);
 
     	assertEquals(3, retorno.size());
 
@@ -407,7 +411,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
     	parametros.put("experiencias", new Long[]{876587L});
 
-    	retorno = candidatoManager.busca(parametros, 1L, false, null, null, empresa);
+    	retorno = manager.busca(parametros, 1L, false, null, null, empresa);
 
     	assertNull(retorno);
     }
@@ -442,7 +446,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		String cpfBusca = "";
 		Long empresaId = empresa.getId();
 
-		Collection<Candidato> retorno = candidatoManager.list(page, pagingSize, nomeBusca, cpfBusca, null, null, null, "", 'T',null, null, null, false, false, empresaId);
+		Collection<Candidato> retorno = manager.list(page, pagingSize, nomeBusca, cpfBusca, null, null, null, "", 'T',null, null, null, false, false, empresaId);
 
     	assertEquals(3, retorno.size());
     }
@@ -455,7 +459,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	String cpfBusca = "";
     	Long empresaId = 1L;
 
-    	Integer retorno = candidatoManager.getCount(nomeBusca, cpfBusca, null, null, null, "", 'T',null, null, null, false, false, empresaId);
+    	Integer retorno = manager.getCount(nomeBusca, cpfBusca, null, null, null, "", 'T',null, null, null, false, false, empresaId);
 
     	assertTrue(retorno == 3);
     }
@@ -468,7 +472,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(once()).method("getFile").with(eq("foto"),eq(id)).will(returnValue(foto));
 
-		File fotoRetorno = candidatoManager.getFoto(id);
+		File fotoRetorno = manager.getFoto(id);
 
 		assertEquals(foto.getName(), fotoRetorno.getName());
 	}
@@ -499,7 +503,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		try
 		{
-			candidatoManager.removeCandidato(candidato);
+			manager.removeCandidato(candidato);
 		}
 		catch (Exception e)
 		{
@@ -534,7 +538,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		try
 		{
-			candidatoManager.removeCandidato(candidato);
+			manager.removeCandidato(candidato);
 		}
 		catch (Exception e)
 		{
@@ -555,7 +559,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(once()).method("updateSenha").with(eq(candidato.getId()), eq(StringUtil.encodeString(candidato.getSenha())), eq(StringUtil.encodeString(candidato.getNovaSenha())));
 
-		candidatoManager.updateSenha(candidato);
+		manager.updateSenha(candidato);
 	}
 
 	public void testExportaCandidatosBDS() throws Throwable
@@ -571,7 +575,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		anuncioManager.expects(once()).method("montaEmails").with(new Constraint[]{ANYTHING,ANYTHING});
-		boolean exporta = candidatoManager.exportaCandidatosBDS(empresa, candidatos, empresasCheck, emailAvulso, assunto);
+		boolean exporta = manager.exportaCandidatosBDS(empresa, candidatos, empresasCheck, emailAvulso, assunto);
 
 		assertTrue(exporta);
 
@@ -580,7 +584,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		Throwable exp = null;
 
 		try{
-			exporta = candidatoManager.exportaCandidatosBDS(empresa, candidatos, empresasCheck, emailAvulso, assunto);
+			exporta = manager.exportaCandidatosBDS(empresa, candidatos, empresasCheck, emailAvulso, assunto);
 		}catch(Throwable e){
 			exp = e;
 		}
@@ -679,13 +683,13 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(atLeastOnce()).method("getConhecimentosByCandidatoId").with(new Constraint[]{ANYTHING}).will(returnValue(conhecimentos));
 
-		Collection<Candidato> retorno = candidatoManager.populaCandidatos(candidatos);
+		Collection<Candidato> retorno = manager.populaCandidatos(candidatos);
 
 		assertEquals(candidatos.size(), retorno.size());
 
 		Collection<Candidato> candidatosNull = new ArrayList<Candidato>();
 
-		retorno = candidatoManager.populaCandidatos(candidatosNull);
+		retorno = manager.populaCandidatos(candidatosNull);
 
 		assertEquals(0, retorno.size());
 	}
@@ -758,13 +762,13 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		solicitacaoManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(solicitacao));
 
-		candidatoManager.importaBDS(zipFile, solicitacao);
+		manager.importaBDS(zipFile, solicitacao);
 
 
 		Exception exp = null;
 		try
 		{
-			candidatoManager.importaBDS(zipFile, solicitacao);
+			manager.importaBDS(zipFile, solicitacao);
 		}catch (Exception e) {
 			exp = e;
 		}
@@ -828,7 +832,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		experienciaManager.expects(once()).method("montaExperienciasBDS").with(new Constraint[]{ANYTHING,ANYTHING});
 		candidatoSolicitacaoManager.expects(once()).method("save").with(new Constraint[]{ANYTHING});
 
-		candidatoManager.importaBDS(zipFile, solicitacao);
+		manager.importaBDS(zipFile, solicitacao);
 	}
 
 	public void testImportaBDSDadosCandidatoRecente() throws Exception
@@ -903,7 +907,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		solicitacaoManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(solicitacao));
 
-		candidatoManager.importaBDS(zipFile, solicitacao);
+		manager.importaBDS(zipFile, solicitacao);
 	}
 
 	public void testImportaBDSUpdateCandidato() throws Exception
@@ -983,7 +987,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		experienciaManager.expects(once()).method("montaExperienciasBDS").with(new Constraint[]{ANYTHING,ANYTHING});
 		candidatoSolicitacaoManager.expects(once()).method("save").with(new Constraint[]{ANYTHING});
 
-		candidatoManager.importaBDS(zipFile, solicitacao);
+		manager.importaBDS(zipFile, solicitacao);
 	}
 
 	public void testImportaBDSRollbackAoSalvar() throws Exception
@@ -1054,9 +1058,9 @@ public class CandidatoManagerTest extends MockObjectTestCase
 			candidatoDao.expects(once()).method("findById").with(new Constraint[]{ANYTHING}).will(returnValue(candidato));
 			transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 			transactionManager.expects(once()).method("rollback").with(ANYTHING);
-			candidatoManager.setSolicitacaoManager(null);
+			manager.setSolicitacaoManager(null);
 
-			candidatoManager.importaBDS(zipFile, solicitacao);
+			manager.importaBDS(zipFile, solicitacao);
 		}catch (Exception e) {
 			exception = e;
 		}
@@ -1158,7 +1162,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativoCandidato","ativoColaborador", "empresa.id"}),eq(new Object[]{true, true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCamposExtras));
     	camposExtrasManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
 
-    	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
+    	candidato = manager.saveOrUpdateCandidatoByColaborador(c);
 		
     	formacaoManager.expects(once()).method("saveOrUpdate").with(eq(c.getFormacao())).isVoid();
     	candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(candidato));
@@ -1167,7 +1171,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativoCandidato","ativoColaborador", "empresa.id"}),eq(new Object[]{true, true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCamposExtras));
     	camposExtrasManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
 
-    	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
+    	candidato = manager.saveOrUpdateCandidatoByColaborador(c);
 
     	assertTrue("Teste 1", candidatoTemIdioma(i, candidato.getCandidatoIdiomas()));
     	assertEquals("Teste 2", "85", candidato.getContato().getDdd());
@@ -1188,7 +1192,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativoCandidato","ativoColaborador", "empresa.id"}),eq(new Object[]{true, true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCamposExtras));
     	camposExtrasManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
 
-    	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
+    	candidato = manager.saveOrUpdateCandidatoByColaborador(c);
     	
     	assertEquals("Teste 10", c.getCandidato().getId(), candidato.getId());    	
     }
@@ -1217,7 +1221,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		parametrosDoSistema.setAppUrl("url");
 
 		candidatoDao.expects(once()).method("findCandidatoCpf").with(new Constraint[]{ANYTHING,ANYTHING}).will(returnValue(candidato));
-		assertEquals("Candidato não localizado!", candidatoManager.recuperaSenha(cpf, empresa));
+		assertEquals("Candidato não localizado!", manager.recuperaSenha(cpf, empresa));
 	}
 
 	public void testRecuperaSenhaUsuarioSemEmail() throws Exception
@@ -1236,7 +1240,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		parametrosDoSistema.setAppUrl("url");
 
 		candidatoDao.expects(once()).method("findCandidatoCpf").with(new Constraint[]{ANYTHING,ANYTHING}).will(returnValue(candidato));
-		assertEquals("Candidato não possui email cadastrado!\n Por favor entre em contato com a empresa.", candidatoManager.recuperaSenha(cpf, empresa));
+		assertEquals("Candidato não possui email cadastrado!\n Por favor entre em contato com a empresa.", manager.recuperaSenha(cpf, empresa));
 	}
 	
 	public void testRecuperaSenha() throws Exception
@@ -1255,7 +1259,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		candidatoDao.expects(once()).method("atualizaSenha").with(ANYTHING,ANYTHING);
-		assertEquals("Nova Senha enviada por e-mail (mail@mail.com). <br>(Caso não tenha recebido, favor entrar em contato com a empresa)", candidatoManager.recuperaSenha(cpf, empresa));
+		assertEquals("Nova Senha enviada por e-mail (mail@mail.com). <br>(Caso não tenha recebido, favor entrar em contato com a empresa)", manager.recuperaSenha(cpf, empresa));
 	}
 	
 	public void testRecuperaSenhaMaisDeUmUsuario() throws Exception
@@ -1271,7 +1275,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		parametrosDoSistema.setAppUrl("url");
 		
 		candidatoDao.expects(once()).method("findCandidatoCpf").with(ANYTHING,ANYTHING).will(throwException(new NonUniqueResultException(2)));
-		assertEquals("Caro Sr(a) não identificamos uma senha associada ao seu cpf!<br> Por favor entre em contato com a empresa.", candidatoManager.recuperaSenha(cpf, empresa));
+		assertEquals("Caro Sr(a) não identificamos uma senha associada ao seu cpf!<br> Por favor entre em contato com a empresa.", manager.recuperaSenha(cpf, empresa));
 	}
 	
 	public void testRecuperaNovaSenha() throws Exception
@@ -1293,10 +1297,10 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(atLeastOnce()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
 
 		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
-		candidatoManager.enviaNovaSenha(candidato, empresa);
+		manager.enviaNovaSenha(candidato, empresa);
 
-		candidatoManager.setMail(null);
-		candidatoManager.enviaNovaSenha(candidato, empresa);
+		manager.setMail(null);
+		manager.enviaNovaSenha(candidato, empresa);
 	}
 
 	public void testUpdateSetContratado() throws Exception
@@ -1308,7 +1312,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(once()).method("updateSetContratado").with(eq(candidato.getId()), eq(empresa.getId()));
 
-		candidatoManager.updateSetContratado(candidato.getId(), empresa.getId());
+		manager.updateSetContratado(candidato.getId(), empresa.getId());
 
 		assertTrue(candidato.isContratado());
 	}
@@ -1326,7 +1330,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(once()).method("findByIdProjection").with(eq(candidato.getId())).will(returnValue(candidato));
 
-		assertEquals(candidato.getId(), (candidatoManager.findByIdProjection(candidato.getId())).getId());
+		assertEquals(candidato.getId(), (manager.findByIdProjection(candidato.getId())).getId());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1343,7 +1347,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(once()).method("findConhecimentosByCandidatoId").with(eq(candidato.getId())).will(returnValue(retornoBanco));
 
-		Collection<Conhecimento> conhecimentos = candidatoManager.findConhecimentosByCandidatoId(candidato.getId());
+		Collection<Conhecimento> conhecimentos = manager.findConhecimentosByCandidatoId(candidato.getId());
 
 		Conhecimento conhecimento = (Conhecimento) conhecimentos.toArray()[0];
 
@@ -1366,7 +1370,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(once()).method("findCargosByCandidatoId").with(eq(candidato.getId())).will(returnValue(retornoBanco));
 
-		Collection<Cargo> cargos = candidatoManager.findCargosByCandidatoId(candidato.getId());
+		Collection<Cargo> cargos = manager.findCargosByCandidatoId(candidato.getId());
 
 		Cargo cargo = (Cargo) cargos.toArray()[0];
 
@@ -1389,7 +1393,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(once()).method("findAreaInteressesByCandidatoId").with(eq(candidato.getId())).will(returnValue(retornoBanco));
 
-		Collection<AreaInteresse> areaInteresses = candidatoManager.findAreaInteressesByCandidatoId(candidato.getId());
+		Collection<AreaInteresse> areaInteresses = manager.findAreaInteressesByCandidatoId(candidato.getId());
 
 		AreaInteresse areaInteresse = (AreaInteresse) areaInteresses.toArray()[0];
 
@@ -1409,7 +1413,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(candidatos));
 
-		String retorno = candidatoManager.getOcrTextoById(candidato.getId());
+		String retorno = manager.getOcrTextoById(candidato.getId());
 
 		assertEquals("textoocr", retorno);
 
@@ -1423,7 +1427,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(once()).method("atualizaTextoOcr").with(eq(candidato));
 
-		candidatoManager.atualizaTextoOcr(candidato);
+		manager.atualizaTextoOcr(candidato);
 	}
 
 	public void testGetCandidatosByNome()
@@ -1434,14 +1438,14 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(once()).method("getCandidatosByNome").with(eq("nome")).will(returnValue(candidatos));
 
-		assertEquals(2, candidatoManager.getCandidatosByNome("nome").toArray().length);
+		assertEquals(2, manager.getCandidatosByNome("nome").toArray().length);
 	}
 
     public void testMigrarBairro()
     {
     	candidatoDao.expects(once()).method("migrarBairro").with(eq("bairro"), eq("bairroDestino")).isVoid();
 
-    	candidatoManager.migrarBairro("bairro", "bairroDestino");
+    	manager.migrarBairro("bairro", "bairroDestino");
     }
 
 	public void testSaveCandidatoCurriculoException() throws Exception
@@ -1458,7 +1462,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			candidatoManager.saveCandidatoCurriculo(candidato, imagemEscaneada, ocrTexto);
+			manager.saveCandidatoCurriculo(candidato, imagemEscaneada, ocrTexto);
 		}
 		catch (Exception e)
 		{
@@ -1490,7 +1494,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		candidatoCurriculoManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(ccCol));
 		candidatoCurriculoManager.expects(once()).method("remove").with(ANYTHING);
 		candidatoCurriculoManager.expects(once()).method("save").with(ANYTHING);
-		candidatoManager.saveCandidatoCurriculo(candidato, imagemEscaneada, ocrTexto);
+		manager.saveCandidatoCurriculo(candidato, imagemEscaneada, ocrTexto);
 	}
 
 	public void testUpdate()
@@ -1503,7 +1507,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoDao.expects(once()).method("update").with(ANYTHING);
 
-		candidatoManager.update(candidato);
+		manager.update(candidato);
 	}
 
 	public void testBuscaSimplesDaSolicitacaoTodasEmpresasPermitidas()
@@ -1516,7 +1520,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoSolicitacaoManager.expects(once()).method("getCandidatosBySolicitacao").with(ANYTHING).will(returnValue(null));
 		candidatoDao.expects(once()).method("findCandidatosForSolicitacao").will(returnValue(new ArrayList<Candidato>()));
-		Collection<Candidato> candidatos = candidatoManager.buscaSimplesDaSolicitacao("indicadoPor", "nome", "cpf", escolaridade, null , null, cargosCheck, conhecimentosCheck, null, somenteSemSolicitacao, 100, null, false, empresaIds);
+		Collection<Candidato> candidatos = manager.buscaSimplesDaSolicitacao("indicadoPor", "nome", "cpf", escolaridade, null , null, cargosCheck, conhecimentosCheck, null, somenteSemSolicitacao, 100, null, false, empresaIds);
 		assertTrue(candidatos.isEmpty());
 	}
 
@@ -1530,7 +1534,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		candidatoSolicitacaoManager.expects(once()).method("getCandidatosBySolicitacao").with(ANYTHING).will(returnValue(null));
 		candidatoDao.expects(once()).method("findCandidatosForSolicitacao").will(returnValue(new ArrayList<Candidato>()));
-		Collection<Candidato> candidatos = candidatoManager.buscaSimplesDaSolicitacao("indicadoPor", "nome", "cpf", escolaridade, null, null, cargosCheck, conhecimentosCheck, null, somenteSemSolicitacao, 100, null, true, empresaId);
+		Collection<Candidato> candidatos = manager.buscaSimplesDaSolicitacao("indicadoPor", "nome", "cpf", escolaridade, null, null, cargosCheck, conhecimentosCheck, null, somenteSemSolicitacao, 100, null, true, empresaId);
 		assertTrue(candidatos.isEmpty());
 	}
 	
@@ -1540,7 +1544,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		candidato.setCpf("63033783387");
 		candidato.setNome("Carlos Chagas");
 		candidatoDao.expects(once()).method("findByNomeCpf").with(eq(candidato),eq(1L)).will(returnValue(new ArrayList<Candidato>()));
-		assertNotNull(candidatoManager.findByNomeCpf(candidato, 1L));
+		assertNotNull(manager.findByNomeCpf(candidato, 1L));
 	}
 	public void testFindByNomeCpfAllEmpresas()
 	{
@@ -1548,12 +1552,12 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		candidato.setCpf("63033783387");
 		candidato.setNome("Carlos Chagas");
 		candidatoDao.expects(once()).method("findByNomeCpf").with(eq(candidato),eq(null)).will(returnValue(new ArrayList<Candidato>()));
-		assertNotNull(candidatoManager.findByNomeCpfAllEmpresas(candidato));
+		assertNotNull(manager.findByNomeCpfAllEmpresas(candidato));
 	}
 
 	public void testGetsSets()
 	{
-		candidatoManager.getTotalSize();
+		manager.getTotalSize();
 	}
 	
 	public void testEnviaEmailResponsavelRh() throws Exception
@@ -1566,7 +1570,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		empresa.setEmailRespRH("x@x.com");
 
 		gerenciadorComunicacaoManager.expects(once()).method("enviaEmailResponsavelRh").with(ANYTHING, ANYTHING).isVoid();
-		candidatoManager.enviaEmailResponsavelRh(nomeCandidato, empresa.getId());
+		manager.enviaEmailResponsavelRh(nomeCandidato, empresa.getId());
 	}
 	
 	public void testMontaStringBuscaF2rh() throws Exception
@@ -1600,7 +1604,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		idiomas.add(idioma);
 		
 		cidadeManager.expects(once()).method("find").withAnyArguments();
-		String[] retorno = candidatoManager.montaStringBuscaF2rh(curriculo, uf, new Long[]{cidadeValue}, escolaridadeValue, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma.getId(), ufs, idiomas, 1);
+		String[] retorno = manager.montaStringBuscaF2rh(curriculo, uf, new Long[]{cidadeValue}, escolaridadeValue, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma.getId(), ufs, idiomas, 1);
 		
 		String[] camposInformados = new String[]{"",
 				"",
@@ -1649,7 +1653,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		
 		candidatoDao.expects(once()).method("findByCPF").withAnyArguments().will(returnValue(null));
 		candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(new Candidato()));
-		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds, null);
+		Collection<Candidato> candidatos = manager.getCurriculosF2rh(curriculoIds, null);
 		assertEquals(1, candidatos.size());
 	}
 	
@@ -1665,7 +1669,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		candidatos.add(new Candidato());
 		
 		candidatoDao.expects(once()).method("findByCPF").withAnyArguments().will(returnValue(candidatos));
-		Collection<Candidato> candidatosRetorno = candidatoManager.getCurriculosF2rh(curriculoIds, null);
+		Collection<Candidato> candidatosRetorno = manager.getCurriculosF2rh(curriculoIds, null);
 		assertEquals(1, candidatosRetorno.size());
 	}
 	
@@ -1679,7 +1683,19 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		
 		candidatoDao.expects(once()).method("countComoFicouSabendoVagas").with(eq(empresa.getId()), eq(dataDe), eq(dataAte)).will(returnValue(vagas));
 		
-		assertEquals(vagas, candidatoManager.countComoFicouSabendoVagas(empresa.getId(), dataDe, dataAte));
+		assertEquals(vagas, manager.countComoFicouSabendoVagas(empresa.getId(), dataDe, dataAte));
+	}
+
+	public void testfindQtdAtendidos() 
+	{
+		historicoCandidatoManager.expects(once()).method("findQtdAtendidos").withAnyArguments().will(returnValue(0));
+		
+		assertEquals(0, manager.findQtdAtendidos(null, null, null, null, null, null));
+	}
+	
+	public void testExecutaTesteAutomaticoDoManager() 
+	{
+		testeAutomatico(candidatoDao);
 	}
 	
 	//TODO remprot
