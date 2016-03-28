@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import mockit.Mockit;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManagerImpl;
+import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
@@ -21,11 +26,16 @@ import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.SpringUtil;
 
 public class CursoManagerTest extends MockObjectTestCase
 {
 	private CursoManagerImpl cursoManager = new CursoManagerImpl();
 	private Mock colaboradorManager;
+	private Mock colaboradorTurmaManager;
+	private Mock turmaManager;
 	private Mock cursoDao = null;
 
 	protected void setUp() throws Exception
@@ -34,6 +44,10 @@ public class CursoManagerTest extends MockObjectTestCase
 		cursoManager.setDao((CursoDao) cursoDao.proxy());
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		cursoManager.setColaboradorManager((ColaboradorManager)colaboradorManager.proxy());
+		colaboradorTurmaManager = new Mock(ColaboradorTurmaManager.class);
+		turmaManager = new Mock(TurmaManager.class);
+		
+		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 	}
 
 	public void testFindAllSelect()
@@ -137,6 +151,41 @@ public class CursoManagerTest extends MockObjectTestCase
 		
     	assertNull(exception);
     	
+	}
+	
+	public void testMontaIndicadoresTreinamentos() {
+		MockSpringUtil.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
+		MockSpringUtil.mocks.put("turmaManager", turmaManager);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		IndicadorTreinamento indicadorTreinamento = new IndicadorTreinamento();
+		indicadorTreinamento.setSomaHoras(5.0);
+		indicadorTreinamento.setSomaHorasRatiada(4.0);
+		indicadorTreinamento.setSomaCustos(10.0);
+		indicadorTreinamento.setQtdColaboradoresFiltrados(8);
+		
+		cursoDao.expects(once()).method("findIndicadorHorasTreinamentos").withAnyArguments().will(returnValue(indicadorTreinamento));
+		cursoDao.expects(once()).method("findCargaHorariaTotalTreinamento").withAnyArguments().will(returnValue(120));
+		colaboradorManager.expects(once()).method("getCountAtivosQualquerStatus").withAnyArguments().will(returnValue(2));
+		colaboradorTurmaManager.expects(once()).method("percentualFrequencia").withAnyArguments().will(returnValue(100.0));
+		turmaManager.expects(once()).method("getPercentualInvestimento").withAnyArguments().will(returnValue(100.0));
+		
+		Exception exception = null;
+		try
+		{
+    		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(DateUtil.criarAnoMesDia(2010, 01, 01), DateUtil.criarAnoMesDia(2011, 02, 01), new Long[]{empresa.getId()}, new Long[]{}, new Long[]{}, new Long[]{});
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+		
+		assertNull(exception);
+		assertEquals(indicadorTreinamento.getCustoMedioHora(), 10.0/5.0);
+		assertEquals(indicadorTreinamento.getTotalHorasTreinamento(), "2:00");
+		assertEquals(indicadorTreinamento.getCustoPerCapita(), 10.0/8);
+		assertEquals(indicadorTreinamento.getHorasPerCapita(), 4.0/2);
 	}
 	
 	public void testClonarParaOutraEmpresa(){

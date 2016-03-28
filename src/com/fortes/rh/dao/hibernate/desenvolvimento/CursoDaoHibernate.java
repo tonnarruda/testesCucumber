@@ -281,8 +281,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		hql.append("inner join Turma t  on t.curso_id = c.id ");
 		hql.append("inner join ColaboradorTurma ct on t.id = ct.turma_id ");
 		hql.append("inner join historicoColaborador hc on hc.colaborador_id = ct.colaborador_id and data = (select max(data) from historicoColaborador hc1 where hc1.colaborador_id = ct.colaborador_id and hc1.data <= t.dataPrevIni) ");
-		hql.append("where t.realizada = :realizada ");
-		hql.append("and t.dataPrevIni between :dataInicio and :dataFim " );
+		hql.append("where t.realizada = :realizada and t.dataPrevIni between :dataInicio and :dataFim " );
 		
 		if(cursosIds != null && cursosIds.length > 0)
 			hql.append("and c.id in(:cursosIds) ");
