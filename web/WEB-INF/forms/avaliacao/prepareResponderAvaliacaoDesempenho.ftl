@@ -417,9 +417,12 @@
 
 		<div class="buttonGroup">
 			<button onclick="enviarForm(true);" class="btnGravar"></button>
-			<#if !colaboradorQuestionario.respondida>
-				<button onclick="enviarForm(false);" class="btnGravarParcialmente"></button>
-			</#if>
+			<@authz.authorize ifAllGranted="ROLE_MOV_AVALIACAO_GRAVAR_PARCIALMENTE">
+				<#if !colaboradorQuestionario.respondida>
+					<button onclick="enviarForm(false);" class="btnGravarParcialmente"></button>
+				</#if>
+			</@authz.authorize>
+			
 			<#if autoAvaliacao>
 				<button class="btnCancelar" onclick="window.location='../modelo/minhasAvaliacoesList.action'"></button>
 			<#else>
