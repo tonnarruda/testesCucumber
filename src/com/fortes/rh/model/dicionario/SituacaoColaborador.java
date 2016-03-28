@@ -12,8 +12,8 @@ public class SituacaoColaborador extends LinkedHashMap<String, String>
 	public SituacaoColaborador()
 	{
 		put(ATIVO, "Ativo");
-		put(TODOS, "Todos");
 		put(DESLIGADO, "Desligado");
+		put(TODOS, "Todos");
 	}
 
 	public static String getTodos() {

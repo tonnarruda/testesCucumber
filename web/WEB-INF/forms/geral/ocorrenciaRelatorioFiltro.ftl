@@ -81,8 +81,6 @@
 		
 		function populaArea(empresaId)
 		{
-			console.log(empresaId);
-		
 			DWRUtil.useLoadingMessage('Carregando...');
 			
 			AreaOrganizacionalDWR.getAreasPermitidas(function(data){createListArea(data, empresaId);}, ${usuarioLogado.id}, empresaId, empresaIds);
@@ -111,7 +109,6 @@
 		function validarCampos(tipo)
 		{
 			$('#tipo').val(tipo);
-		
 			return validaFormularioEPeriodo('form', new Array('dataPrevIni','dataPrevFim'), new Array('dataPrevIni','dataPrevFim'));
 		}
 		
@@ -122,12 +119,12 @@
 			});
 			
 			$('#detalhe').click(function() {
-			  	if($(this).attr('checked'))
+			  	if($(this).attr('checked') && $('#agruparPorColaborador').val == 'C')
 			    {
 			 		$('#providencia').removeAttr('disabled');
 			 		$('#agruparPorColaborador').removeAttr('disabled');
 			 	}
-			 	else
+			 	else if($('#agruparPorColaborador').val == 'C')
 			 	{
 			 		$('#providencia').attr("disabled", true);
 					$('#agruparPorColaborador').attr("disabled", true);

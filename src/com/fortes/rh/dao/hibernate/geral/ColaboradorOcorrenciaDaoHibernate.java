@@ -20,6 +20,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
@@ -289,7 +290,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		}
 	}
 
-	public Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, boolean detalhamento, Character agruparPor) 
+	public Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, boolean detalhamento, Character agruparPor, String situacao) 
 	{
 		StringBuilder hql = new StringBuilder();
 
@@ -309,7 +310,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		hql.append("where hc.data = (select max(hc2.data) ");
 		hql.append("				from HistoricoColaborador as hc2 "); 
 		hql.append("				where hc2.colaborador.id = hc.colaborador.id ");
-		hql.append("				and hc2.data <= :hoje ");
+		hql.append("				and hc2.data <= co.dataIni ");
 		hql.append("				and hc2.status = :statusHistColab) ");
 		
 		if(colaboradorIds.isEmpty())
@@ -319,6 +320,8 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 
 			if(!estabelecimentoIds.isEmpty())
 				hql.append("and hc.estabelecimento.id in (:estabelecimentoIds) ");
+			if(!situacao.equals(SituacaoColaborador.TODOS))
+				hql.append("and c.desligado = :desligado ");
 		}
 		else
 			hql.append("and hc.colaborador.id in (:colaboradorIds) ");
@@ -357,6 +360,10 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 
 			if(!estabelecimentoIds.isEmpty())
 				query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			
+			if(!situacao.equals(SituacaoColaborador.TODOS)){
+				query.setBoolean("desligado", situacao.equals(SituacaoColaborador.ATIVO) ? false : true);
+			}
 		}
 		else
 			query.setParameterList("colaboradorIds", colaboradorIds, Hibernate.LONG);
@@ -368,7 +375,6 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
 		
 		query.setInteger("statusHistColab", StatusRetornoAC.CONFIRMADO);
-		query.setDate("hoje", new Date());
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 

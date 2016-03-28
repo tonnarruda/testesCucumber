@@ -236,13 +236,17 @@ public class AreaOrganizacionalDWR
 	}
 	
 	private void setAreasPermitidas(Usuario usuario, Long[] empresaIds, Collection<AreaOrganizacional> areas) throws Exception {
-		for (Long empresaId : empresaIds) {
-			if ( usuarioEmpresaManager.containsRole(usuario.getId(), empresaId, "ROLE_VER_AREAS") ) {
-				areas.addAll(areaOrganizacionalManager.findByEmpresa(empresaId));
-			} else {
-				areas.addAll(areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuario, empresaId));
+		if(!usuario.getId().equals(1L)){
+			for (Long empresaId : empresaIds) {
+				if ( usuarioEmpresaManager.containsRole(usuario.getId(), empresaId, "ROLE_VER_AREAS") ) {
+					areas.addAll(areaOrganizacionalManager.findByEmpresa(empresaId));
+				} else {
+					areas.addAll(areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuario, empresaId));
+				}
 			}
 		}
+		else  areas.addAll(areaOrganizacionalManager.findByEmpresasIds(empresaIds, null));
+			
 	}
 	
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)

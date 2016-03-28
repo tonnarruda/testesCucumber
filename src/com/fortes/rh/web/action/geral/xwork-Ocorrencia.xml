@@ -51,6 +51,16 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">ocorrencias_providencias.pdf</param>
 			</result>
+			<result name="ocorrenciaXLS" type="xls">
+				<param name="dataSource">colaboradoresOcorrencias</param>
+				<param name="documentName">ocorrencias_providencias.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Ocorrência,Colaborador,Matrícula,Providência,Início,Término,Observação,Pontos</param>
+				<param name="propertiesGroup">ocorrencia.descricao</param>
+				<param name="properties">ocorrencia.descricao,colaborador.nome,colaborador.matricula,providencia.descricao,dataIniString,dataFimString,observacao,ocorrencia.pontuacao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
 			<result name="ocorrenciaPDF" type="jasper">
 				<param name="location">WEB-INF/report/ocorrencia_agrupada.jasper</param>
 				<param name="dataSource">colaboradoresOcorrencias</param>

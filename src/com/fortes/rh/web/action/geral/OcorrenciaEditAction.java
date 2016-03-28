@@ -90,6 +90,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	private String reportTitle;
 	private String reportFilter;
 	private Character tipo = TipoRelatorio.PDF;
+	private String situacao;
 
 	public String execute() throws Exception
 	{
@@ -149,8 +150,6 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);
 		
-//		colaborador = getUsuarioLogado().getColaborador().getId().toString();
-		
 		empresa = getEmpresaSistema();
 		
 		return Action.SUCCESS;
@@ -188,7 +187,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 				areaIds = LongUtil.collectionToCollectionLong(areas);
 			}
 			
-			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento, agruparPor);
+			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento, agruparPor, situacao);
 
 			if(colaboradoresOcorrencias == null || colaboradoresOcorrencias.isEmpty())
 				throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
@@ -592,5 +591,9 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 
 	public void setTipo(Character tipo) {
 		this.tipo = tipo;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
 	}
 }
