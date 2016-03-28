@@ -42,11 +42,15 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 				Double pontuacaoDaCompetencia = 0.0;
 				if ( configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios() != null && configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios().size() > 0 ) {
 					Double soma = 0.0;
+					Integer qtdCriteriosMarcados = 0;
 					for (ConfiguracaoNivelCompetenciaCriterio criterioAvaliacaoCompetencia : configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios()) {
-						soma+=criterioAvaliacaoCompetencia.getNivelCompetencia().getOrdem();
+						if(criterioAvaliacaoCompetencia.getNivelCompetencia() != null && criterioAvaliacaoCompetencia.getNivelCompetencia().getOrdem() != null){
+							soma+=criterioAvaliacaoCompetencia.getNivelCompetencia().getOrdem();
+							qtdCriteriosMarcados++;
+						}
 					}
-					
-					pontuacaoDaCompetencia += soma / configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios().size();
+					if(qtdCriteriosMarcados != 0)
+						pontuacaoDaCompetencia += soma / qtdCriteriosMarcados;
 				} else {
 					pontuacaoDaCompetencia += configuracaoNivelCompetencia.getNivelCompetencia().getOrdem();
 				}

@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.16x.19x" db="" data="xx/xx/2016">
 		<Item visivel="S" motivo="P16030000328"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Ajuste da inconsistência ao tentar inserir histórico de nível quando não existir nível de competência.]]></Item>
+		<Item visivel="S" motivo="P16030000303"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliação de Desempenho: Ajuste na inconsistência ao exibir comportamentos observados.]]></Item>
 		<Item visivel="S" motivo="S16010000266"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Nova opção para agrupar relatório detalhado por ocorrência.]]></Item>
 	</Versao>
 	<Versao id="1.1.162.193" db="" data="17/03/2016">
@@ -20,7 +21,7 @@
 		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliação de Desempenho: Possibilitar responder a avaliação de desempenho de forma parcial.]]></Item>
 		<Item visivel="S" motivo="S16020000034"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Ajuste no cálculo da performance da competência de acordo com o percentual obtido pelos comportamentos.]]></Item>
 		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Possibilitar responder as competências da avaliação de desempenho através dos comportamentos observados.]]></Item>
-		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Relatórios  Análise de Desempenho das Competência do Colaborador: Novo relatório.]]></Item>
+		<Item visivel="S" motivo="S15100000012"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competência do Colaborador: Novo relatório.]]></Item>
 		<Item visivel="S" motivo="P16030000030"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações da Turma > Resultado das Avaliações: Novo filtro por empresa.]]></Item>
 		<Item visivel="S" motivo="S16010000268"><![CDATA[Info. Funcionais > Relatórios > Absenteísmo: Apresentar no cabeçalho do relatório quais áreas organizacionais e estabelecimentos foram selecionados no filtro.]]></Item>
 		<Item visivel="S" motivo="S15110000095"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Exibir somente as áreas organizacionais que o usuário possui permissão de visualizar.]]></Item>

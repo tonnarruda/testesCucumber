@@ -106,11 +106,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		} 
 
 		if(configuracaoNiveisCompetencias != null) {
-			
-			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNiveisCompetencias) 
-			{
-				if (configuracaoNivelCompetencia.getCompetenciaId() != null) 
-				{
+			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNiveisCompetencias){
+				if (configuracaoNivelCompetencia.getCompetenciaId() != null){
 					configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
 					setConfiguracaoNivelCompetenciaCriterios(configuracaoNivelCompetencia);
 					getDao().save(configuracaoNivelCompetencia);
@@ -119,7 +116,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		}
 	}
 
-	private void setConfiguracaoNivelCompetenciaCriterios(	ConfiguracaoNivelCompetencia configuracaoNivelCompetencia) 
+	private void setConfiguracaoNivelCompetenciaCriterios(ConfiguracaoNivelCompetencia configuracaoNivelCompetencia) 
 	{
 		if (configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios() != null && configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios().size() > 0) {
 			Collection<ConfiguracaoNivelCompetenciaCriterio> criterios = new ArrayList<ConfiguracaoNivelCompetenciaCriterio>();

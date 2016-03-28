@@ -48,6 +48,7 @@
 					calcularPerformance();
 				});
 
+
 				<#if niveisCompetenciaFaixaSalariaisSalvos?exists>
 					<#list niveisCompetenciaFaixaSalariaisSalvos as nivelSalvo>
 						var linha = $('tr').has('.checkCompetencia[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
@@ -70,8 +71,11 @@
 						
 						<#if nivelSalvo.configuracaoNivelCompetenciaCriterios?exists>
 							<#list nivelSalvo.configuracaoNivelCompetenciaCriterios as criterio >
-								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").parent().parent().find(".checkNivelCriterio[value='${criterio.nivelCompetencia.id}").attr("checked", "checked").change();
-								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").attr("checked", "checked").change();
+								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").parent().parent().find(".ordem").val(${criterio.nivelCompetencia.ordem});
+								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").parent().parent().find(".checkNivelCriterio[value='${criterio.nivelCompetencia.id}").attr("checked", "checked");
+								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").parent().parent().find(".checkNivelCriterio").removeAttr("disabled");
+								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").attr("checked", "checked");
+								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").change(function() {calcularPerformance();});
 							</#list>
 						</#if>
 					</#list>
@@ -194,6 +198,7 @@
 					});
 					
 				</#if>
+				
 				<#if colaboradorQuestionario.avaliacao.id?exists>
 					var notaObtidaQuestionario = 0;
 					 $('.perguntaResposta').each(function(){
@@ -220,18 +225,21 @@
 						performanceQuestionario = notaObtidaQuestionario / pontuacaoMaximaTotal;
 					else
 						performanceQuestionario = 0;
+			
+					performanceMaxQuestionarioPermitido =  1 - (pontuacaoMaxCompetencia / pontuacaoMaximaTotal);
+					if(performanceQuestionario > performanceMaxQuestionarioPermitido)
+						performanceQuestionario = performanceMaxQuestionarioPermitido;
+						
+					if(performanceQuestionario < 0)
+						performanceQuestionario = 0;
+					
+					$('#performanceQuestionario').text('Performance Questionário: ' + (performanceQuestionario * 100).toFixed(2) + "%" );
+				</#if>
+
+				<#if !colaboradorQuestionario.avaliacao.id?exists || colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
+					$('#performanceCompetencias').text('Performance Competencias: ' + (notaCompetencias* 100).toFixed(2) + "%" );
 				</#if>
 			</#if>
-
-			performanceMaxQuestionarioPermitido =  1 - (pontuacaoMaxCompetencia / pontuacaoMaximaTotal);
-			if(performanceQuestionario > performanceMaxQuestionarioPermitido)
-				performanceQuestionario = performanceMaxQuestionarioPermitido;
-				
-			if(performanceQuestionario < 0)
-				performanceQuestionario = 0;
-			
-			$('#performanceQuestionario').text('Performance Questionário: ' + (performanceQuestionario * 100).toFixed(2) + "%" );
-			$('#performanceCompetencias').text('Performance Competencias: ' + (notaCompetencias* 100).toFixed(2) + "%" );
 		}
 	</script>
 	
