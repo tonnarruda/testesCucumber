@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
@@ -11,6 +12,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
@@ -150,6 +152,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		p.add(Projections.property("avaliacao.titulo"), "projectionAvaliacaoTitulo");
 		p.add(Projections.property("avaliacao.avaliarCompetenciasCargo"), "projectionAvaliacaoAvaliarCompetenciasCargo");
 		p.add(Projections.property("emp.id"), "empresaId");
+		p.add(Projections.sqlProjection("case when (select exists(select id from ColaboradorQuestionario where avaliacaoDesempenho_id = this_.id and respondida = true)) then true else false end as possuiResposta ", new String[] {"possuiResposta"}, new Type[] {Hibernate.BOOLEAN}), "possuiResposta");		
 		criteria.setProjection(p);
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));

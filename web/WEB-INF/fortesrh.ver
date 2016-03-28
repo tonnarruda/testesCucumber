@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.16x.19x" db="" data="xx/xx/2016">
 		<Item visivel="S" motivo="P16030000328"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Ajuste da inconsistência ao tentar inserir histórico de nível quando não existir nível de competência.]]></Item>
+		<Item visivel="S" motivo="S16030000141"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho: Nova opção para imprimir respostas da avaliação.]]></Item>
 		<Item visivel="S" motivo="P16030000303"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliação de Desempenho: Ajuste na inconsistência ao exibir comportamentos observados.]]></Item>
 		<Item visivel="S" motivo="S16010000266"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Nova opção para agrupar relatório detalhado por ocorrência.]]></Item>
 	</Versao>

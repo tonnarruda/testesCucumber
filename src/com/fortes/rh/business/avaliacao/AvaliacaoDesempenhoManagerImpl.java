@@ -411,5 +411,4 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	public void setConfiguracaoNivelCompetenciaCriterioManager( ConfiguracaoNivelCompetenciaCriterioManager configuracaoNivelCompetenciaCriterioManager ) {
 		this.configuracaoNivelCompetenciaCriterioManager = configuracaoNivelCompetenciaCriterioManager;
 	}
-
 }

@@ -93,7 +93,21 @@
 			});			
 		}
 		
-		function dialogResultado(avaliacaoDesempenhoId) {
+		function dialogResultado(avaliacaoDesempenhoId, avaliacaoId) {
+			if(avaliacaoId == 0 ){
+				document.getElementById("analisarResultado").options[0].setAttribute("disabled", "true");
+				document.getElementById("analisarResultado").options[1].setAttribute("selected", "selected");
+			}
+			var disabled = "true";
+			<@authz.authorize ifAllGranted="ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO">	
+				disabled = "false";
+			</@authz.authorize>
+			
+			if( disabled == true){
+				document.getElementById("analisarResultado").options[1].setAttribute("disabled", disabled);
+				document.getElementById("analisarResultado").options[0].setAttribute("selected", "selected");
+			}
+				 
 			$('#resultadoDialog').dialog({
 				title: 'Resultado e Respostas da Avaliação',
 				modal: true, 
@@ -188,20 +202,25 @@
 			<a href="prepareUpdate.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="prepareParticipantes.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Participantes" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			
+			<#assign avaliacaoId = "0"/>
+			<#if avaliacaoDesempenho.avaliacao?exists && avaliacaoDesempenho.avaliacao.id?exists>
+				<#assign avaliacaoId = "${avaliacaoDesempenho.avaliacao.id}" />
+			</#if>
+			
 			<#if avaliacaoDesempenho.liberada>
 				<a href="javascript:existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(${avaliacaoDesempenho.id});"><img border="0" title="Bloquear" src="<@ww.url includeParams="none" value="/imgs/bloquear.gif"/>"></a>
-				<#if avaliacaoDesempenho.avaliacao?exists && avaliacaoDesempenho.avaliacao.id?exists>
-					<a href="javascript:;" onclick="dialogResultado(${avaliacaoDesempenho.id})"><img border="0" title="Resultado e Respostas da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>
-				<#else>
-					<img border="0" title="Resultado e Respostas da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-				</#if>
 				<a href="javascript:newConfirm('Deseja enviar e-mail de lembrete para os colaboradores que ainda não respoderam esta avaliação desempenho?', function(){window.location='enviarLembrete.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}'});"><img border="0" title="Enviar e-mail de Lembrete" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>"></a>
 			<#else>
 				<a href="javascript:submitLiberar(${avaliacaoDesempenho.id});" id="btnLiberar"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
-				<img border="0" title="Avaliação bloqueada" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				<img border="0" title="Avaliação bloqueada" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
-			
+						
+			<#if avaliacaoDesempenho.possuiResposta>
+				<a href="javascript:;" onclick="dialogResultado(${avaliacaoDesempenho.id}, ${avaliacaoId})"><img border="0" title="Resultado e Respostas da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>
+			<#else>
+				<img border="0" title="Avaliação sem respostas" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+			</#if>
+				
 			<#if !avaliacaoDesempenho.avaliacao?exists || (avaliacaoDesempenho.avaliacao?exists && avaliacaoDesempenho.avaliacao.avaliarCompetenciasCargo) >
 				<a href="prepareCompetencias.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Competências" src="<@ww.url includeParams="none" value="/imgs/competencias.gif"/>"></a>
 			<#else>

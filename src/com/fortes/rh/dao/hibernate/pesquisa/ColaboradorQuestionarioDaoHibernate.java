@@ -795,7 +795,6 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("avDesempenho.titulo"), "projectionAvaliacaoDesempenhoTitulo");
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.eq("avDesempenho.liberada", true));
 		criteria.add(Expression.eq("cq.respondida", true));
 		criteria.add(Expression.eq("cq.respondidaParcialmente", false));
 		

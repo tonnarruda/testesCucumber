@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
@@ -39,6 +40,9 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
 	
     @ManyToOne
 	private Empresa empresa;
+    
+    @Transient
+    private boolean possuiResposta;
     
     public AvaliacaoDesempenho() {}
     
@@ -205,5 +209,13 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
 
 	public void setExibeResultadoAutoAvaliacao(boolean exibeResultadoAutoAvaliacao) {
 		this.exibeResultadoAutoAvaliacao = exibeResultadoAutoAvaliacao;
+	}
+
+	public boolean isPossuiResposta() {
+		return possuiResposta;
+	}
+
+	public void setPossuiResposta(boolean possuiResposta) {
+		this.possuiResposta = possuiResposta;
 	}
 }

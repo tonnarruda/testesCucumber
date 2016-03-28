@@ -689,6 +689,7 @@
 				/avaliacao/desempenho/prepareResponderAvaliacaoDesempenho*=ROLE_USER
 				/avaliacao/desempenho/responderAvaliacaoDesempenho*=ROLE_USER
 				/avaliacao/desempenho/avaliacaoDesempenhoQuestionarioList*=ROLE_USER
+				avaliacao/desempenho/avaliacaoDesempenhoRespostasList*=ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO
 				/avaliacao/desempenho/*/**=ROLE_MOV_AVALIACAO
 				
 				/avaliacao/modelo/minhasAvaliacoesList* = ROLE_MOV_MINHASAVALIACOES
