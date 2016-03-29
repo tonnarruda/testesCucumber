@@ -24040,3 +24040,25 @@ VALUES (670, 'ROLE_MOV_SOLICITACAO_BLOQUEAR_VISUALIZACAO_GESTOR', 'Definir solic
 alter sequence papel_sequence restart with 671; --.go
 insert into migrations values('20160315133931');--.go
 update parametrosdosistema set appversao = '1.1.162.193';--.go
+-- versao 1.1.163.194
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (671, 'ROLE_MOV_AVALIACAO_GRAVAR_PARCIALMENTE', 'Gravar Parcialmente.', '#', 3, false, 483);--.go
+alter sequence papel_sequence restart with 672; --.go
+insert into perfil_papel (perfil_id, papeis_id) select perfil_id,671 from perfil_papel where papeis_id = 483;--.go
+insert into migrations values('20160328151531');--.go
+CREATE FUNCTION insere_empresa_em_avaliacaodesempenho() RETURNS integer AS $$
+DECLARE
+    mv RECORD;
+BEGIN
+    FOR mv IN select id, empresa_id, exiberesultadoautoavaliacao from avaliacao
+	LOOP
+		update avaliacaodesempenho set empresa_id = mv.empresa_id, exiberesultadoautoavaliacao = mv.exiberesultadoautoavaliacao where avaliacao_id = mv.id;  	
+	END LOOP;
+    RETURN 1;
+END;
+$$ LANGUAGE plpgsql;--.go
+
+SELECT insere_empresa_em_avaliacaodesempenho();--.go
+DROP FUNCTION insere_empresa_em_avaliacaodesempenho();--.go
+insert into migrations values('20160328171712');--.go
+update parametrosdosistema set appversao = '1.1.163.194';--.go

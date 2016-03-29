@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.16x.19x" db="" data="xx/xx/2016">
+	<Versao id="1.1.163.194" db="" data="29/03/2016">
 		<Item visivel="S" motivo="P16030000328"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Ajuste da inconsistência ao tentar inserir histórico de nível quando não existir nível de competência.]]></Item>
 		<Item visivel="S" motivo="S16030000141"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho: Nova opção para imprimir respostas da avaliação.]]></Item>
 		<Item visivel="S" motivo="P16030000303"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliação de Desempenho: Ajuste na inconsistência ao exibir comportamentos observados.]]></Item>
+		<Item visivel="S" motivo="P16030000032"><![CDATA[T&D > Painel de Indicadores: Ajuste no cálculo dos indicadores.]]></Item>
 		<Item visivel="S" motivo="S16010000266"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Nova opção para agrupar relatório detalhado por ocorrência.]]></Item>
-		<Item visivel="S" motivo="S16030000346"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Nova opção para exibir o botão gravar parcialmente em "Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho.]]></Item>
+		<Item visivel="S" motivo="S16030000346"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Nova opção para exibir o botão gravar parcialmente em "Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho".]]></Item>
 	</Versao>
 	<Versao id="1.1.162.193" db="" data="17/03/2016">
 		<Item visivel="S" motivo="S16020000207"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Possibilidade de definir solicitação de pessoal como invisível para o gestor da área organizacional selecionada.]]></Item>

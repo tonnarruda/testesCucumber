@@ -119,7 +119,10 @@
 				$("#competencia_"+competenciaId).parent().parent().find(".checkNivel").attr("disabled", "disabled");
 			}
 			
-			$("#competencia_"+competenciaId).parent().parent().find(".checkNivel[percentual="+percentualFinal+"]").attr("checked","checked").change();
+			if(percentualFinal == 0)
+				$("#competencia_"+competenciaId).parent().parent().find(".checkNivel[percentual=0.0]").attr("checked","checked").change();
+			else
+				$("#competencia_"+competenciaId).parent().parent().find(".checkNivel[percentual="+percentualFinal+"]").attr("checked","checked").change();	
 		};
 		
 		function enviarForm(validarRespostas)

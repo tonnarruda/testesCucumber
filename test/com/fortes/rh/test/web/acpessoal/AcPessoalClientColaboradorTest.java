@@ -68,8 +68,9 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 	@Override
 	protected void tearDown() throws Exception
 	{
-		execute("delete from ctt where empcodigoac='" + empCodigo + "'");
+		execute("delete from ctt where emp_codigo='" + empCodigo + "'");
 		execute("delete from epg where emp_codigo='" + empCodigo + "' and codigo='991199'");
+		execute("delete from rhsep where emp_codigo='" + empCodigo + "'");
 		
 		execute("update epg set nome='JOAO BATISTA SOARES' where codigo = '000007' and emp_codigo = '" + empCodigo + "'");
 		
@@ -241,8 +242,8 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		{
 			TRemuneracaoVariavel remuneracaoVariavel = remuneracaos[0];
 			assertEquals("201101", remuneracaoVariavel.getAnoMes());
-			assertEquals("000014", remuneracaoVariavel.getCodigoEmpregado());
-			assertEquals(99.0, remuneracaoVariavel.getValor());
+			assertEquals("000013", remuneracaoVariavel.getCodigoEmpregado());
+			assertEquals(350.0, remuneracaoVariavel.getValor());
 		}else
 			assertTrue("Consulta no AC Retornou nulo no testRemuneracaoVariavel (Banco de dados do AC pode ter novos campos com not null)", false);
 	}
@@ -286,7 +287,6 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		
 		assertTrue(acPessoalClientColaboradorImpl.solicitacaoDesligamentoAc(historicos, empresa).getSucesso());
 	}
-	
 	
 	public void testRemoverColaboradorAC_CTT() throws Exception
 	{
