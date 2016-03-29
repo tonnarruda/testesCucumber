@@ -487,7 +487,17 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
 
     	assertTrue("Existe uma mesma avaliação para Desempenho e Per. Experiência",colaboradorQuestionarioManager.existeMesmoModeloAvaliacaoEmDesempenhoEPeriodoExperiencia(avaliacaoId));
     }
-
+    
+    public void testExisteColaboradorQuestionarioRespondidoParcialmente(){
+    	colaboradorQuestionarioDao.expects(once()).method("verifyExists").with(eq(new String[]{"avaliacaoDesempenho.id", "respondidaParcialmente"}),(eq(new Object[]{1L, true}))).will(returnValue(true));
+    	assertTrue(colaboradorQuestionarioManager.existeColaboradorQuestionarioRespondidoParcialmente(1L, null));
+    }
+    
+    public void testExisteColaboradorQuestionarioRespondidoParcialmenteAvaliadorDiferenteDeNull(){
+    	colaboradorQuestionarioDao.expects(once()).method("verifyExists").with(eq(new String[]{"avaliacaoDesempenho.id", "avaliador.id", "respondidaParcialmente"}),(eq(new Object[]{1L, 1L, true}))).will(returnValue(true));
+    	assertTrue(colaboradorQuestionarioManager.existeColaboradorQuestionarioRespondidoParcialmente(1L, 1L));
+    }
+    
 	private ColaboradorQuestionario criaColaboradorQuestionarioParatestExisteMesmoModeloAvaliacaoEmDesempnhoEPeriodoExperiencia(Integer qtdAvaliacaoDesempenho, Integer qtdPeriodoExperiencia)
 	{
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();

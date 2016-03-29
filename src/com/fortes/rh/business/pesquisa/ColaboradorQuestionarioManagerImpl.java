@@ -522,8 +522,14 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return false;
 	}
 
-	public void setParticipanteAvaliacaoDesempenhoManager(
-			ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager) {
+	public void setParticipanteAvaliacaoDesempenhoManager( ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager) {
 		this.participanteAvaliacaoDesempenhoManager = participanteAvaliacaoDesempenhoManager;
+	}
+
+	public boolean existeColaboradorQuestionarioRespondidoParcialmente(Long avaliacaoDesepenhoId, Long avaliadorId) {
+		if(avaliadorId != null)
+			return getDao().verifyExists(new String[]{"avaliacaoDesempenho.id", "avaliador.id", "respondidaParcialmente"}, new Object[]{avaliacaoDesepenhoId, avaliadorId, true});
+		else
+			return getDao().verifyExists(new String[]{"avaliacaoDesempenho.id", "respondidaParcialmente"}, new Object[]{avaliacaoDesepenhoId, true});
 	}	
 }

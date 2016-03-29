@@ -28,7 +28,7 @@
 				empresaIds.push(${empresa.id});
 			</#list>
 		</#if>
-	
+		
 		$(function() {
 			<#if exibeResultadoAutoAvaliacao && colaboradorQuestionario?exists && msgResultadoAvaliacao?exists>
 				$("<div>${msgResultadoAvaliacao}</div>").dialog({ title: '${colaboradorQuestionario.avaliacaoDesempenho.titulo}', width: 400 });
@@ -88,7 +88,11 @@
 			<@ww.select label="Avaliador" required="true" name="avaliador.id" id="avaliador" list="avaliadors" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="Selecione..."/>
 		</@authz.authorize>
 		
-		<@ww.select label="Situação" name="respondida" list=r"#{'T':'Todas','R':'Respondidas','P':'Respondida Parcialmente','N':'Não respondidas'}"/>
+		<#if exibeMenuRespondidoParcialmente>
+			<@ww.select label="Situação" name="respondida" list=r"#{'T':'Todas','R':'Respondidas','P':'Respondida Parcialmente','N':'Não respondidas'}"/>
+		<#else>
+			<@ww.select label="Situação" name="respondida" list=r"#{'T':'Todas','R':'Respondidas','N':'Não respondidas'}"/>
+		</#if>
 		
 		<input type="submit" value="" class="btnPesquisar grayBGE" onclick="${validarCampos};">
 	</@ww.form>
@@ -98,7 +102,9 @@
 	<div id="legendas" align="right">
 	<p>
 		<span style="background-color: #009900;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Respondida&nbsp;&nbsp;
-		<span style="background-color: #002EB8;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Respondida Parcialmente&nbsp;&nbsp;
+		<#if exibeMenuRespondidoParcialmente>
+			<span style="background-color: #002EB8;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Respondida Parcialmente&nbsp;&nbsp;
+		</#if>
 		<span style="background-color: #555;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Respondida&nbsp;&nbsp;
 	</P>
 	</div>

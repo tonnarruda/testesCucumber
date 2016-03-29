@@ -114,11 +114,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private boolean desconsiderarAutoAvaliacao;
 	private boolean exibirObsAvaliadores;
 	private boolean clonarParticipantes;
+	private boolean exibeResultadoAutoAvaliacao;
+	private boolean exibeMenuRespondidoParcialmente;
 	
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 	private Collection<ResultadoAvaliacaoDesempenho> resultados = new ArrayList<ResultadoAvaliacaoDesempenho>();
 	private Boolean compartilharColaboradores;
-	private boolean exibeResultadoAutoAvaliacao;
 	private String msgResultadoAvaliacao;
 	private Long avaliacaoId;
 	
@@ -540,11 +541,13 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		if(avaliacaoDesempenho == null && ! avaliacaoDesempenhos.isEmpty())
 			avaliacaoDesempenho = (AvaliacaoDesempenho) avaliacaoDesempenhos.toArray()[0];
 		
-		if(avaliacaoDesempenho != null && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO"}) )
-			avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null, null, null);
-		
-		if(avaliacaoDesempenho != null)
+		if(avaliacaoDesempenho != null){
+			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO"}))
+				avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null, null, null);
+
 			colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), respondida, false, true, false);
+			existeColaboradorQuestionarioRespondidoParcialmente();
+		}
 		
 		if(exibeResultadoAutoAvaliacao)
 		{
@@ -556,6 +559,18 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			this.msgResultadoAvaliacao = this.msgResultadoAvaliacao + "<br/><span>Pontuação da Avaliação: " + colaboradorQuestionario.getPerformanceFormatada() + "</span>" +
 					"<br/><span>Pontuação da Competência: " + colaboradorQuestionario.getPerformanceNivelCompetenciaFormatada() + "</span>" +
 					"<br/><h4>Pontuação Final: " + colaboradorQuestionario.getPerformanceFinal() + "</h4>";
+		}
+	}
+
+	private void existeColaboradorQuestionarioRespondidoParcialmente(){
+		if(!SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_AVALIACAO_GRAVAR_PARCIALMENTE"})){
+			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO"}))
+				exibeMenuRespondidoParcialmente = colaboradorQuestionarioManager.existeColaboradorQuestionarioRespondidoParcialmente(avaliacaoDesempenho.getId(), null);
+			else
+				exibeMenuRespondidoParcialmente = colaboradorQuestionarioManager.existeColaboradorQuestionarioRespondidoParcialmente(avaliacaoDesempenho.getId(), avaliador.getId());
+		}		
+		else{
+			exibeMenuRespondidoParcialmente = true;
 		}
 	}
 	
@@ -959,5 +974,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public Colaborador getAvaliado() {
 		return avaliado;
+	}
+
+	public boolean isExibeMenuRespondidoParcialmente() {
+		return exibeMenuRespondidoParcialmente;
 	}
 }

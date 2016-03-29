@@ -65,4 +65,5 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	Collection<ColaboradorQuestionario> findRespondidasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
 	boolean existeMesmoModeloAvaliacaoEmDesempenhoEPeriodoExperiencia(Long avaliacaoId);
 	public void updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho);
+	boolean existeColaboradorQuestionarioRespondidoParcialmente(Long avaliacaoDesepenhoId, Long avaliadorId);
 }
