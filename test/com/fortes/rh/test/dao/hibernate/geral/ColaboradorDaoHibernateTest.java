@@ -1067,7 +1067,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setCandidato(candidato2);
 		colaborador2 = colaboradorDao.save(colaborador2);
 
-		Colaborador colaboradorRetorno = colaboradorDao.findbyCandidato(candidato.getId(), empresa.getId());
+		Colaborador colaboradorRetorno = colaboradorDao.findByCandidato(candidato.getId(), empresa.getId());
 
 		assertEquals(colaborador.getId(), colaboradorRetorno.getId());
 	}
@@ -1088,7 +1088,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		colaboradorDao.setCandidatoNull(candidato.getId());
 
-		assertNull(colaboradorDao.findbyCandidato(candidato.getId(), empresa.getId()));
+		assertNull(colaboradorDao.findByCandidato(candidato.getId(), empresa.getId()));
 	}
 
 	private Candidato getCandidato() 
@@ -4972,7 +4972,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Long> usuarioEmpresaIds = Arrays.asList(ueTeo.getId(), ueLeo.getId()); 
 		
 		//somente para startar a consulta em sql
-		colaboradorDao.findbyCandidato(colabLeo.getId(), 1L);
+		colaboradorDao.findByCandidato(colabLeo.getId(), 1L);
 		
 		String[] emails = colaboradorDao.findEmailsByPapel(usuarioEmpresaIds);
 		
@@ -6687,11 +6687,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setCandidato(candidato);
 		colaboradorDao.save(colaborador);
 		
-		Colaborador colaboradorRetorno = colaboradorDao.findbyCandidato(candidato.getId(), null);
+		Colaborador colaboradorRetorno = colaboradorDao.findByCandidato(candidato.getId(), null);
 		assertNotNull(colaboradorRetorno);
 
 		colaboradorDao.desvinculaCandidato(candidato.getId());
-		colaboradorRetorno = colaboradorDao.findbyCandidato(candidato.getId(), null);
+		colaboradorRetorno = colaboradorDao.findByCandidato(candidato.getId(), null);
 		assertNull(colaboradorRetorno);
 	}
 	

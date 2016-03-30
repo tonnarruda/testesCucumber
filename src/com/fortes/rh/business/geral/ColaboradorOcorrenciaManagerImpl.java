@@ -6,12 +6,14 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.junit.Test;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -224,6 +226,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return tColaboradorOcorrencia;
 	}
 
+	@TesteAutomatico
 	public boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni)
 	{
 		return getDao().verifyExistsMesmaData(colaboradorOcorrenciaId, colaboradorId, ocorrenciaId, empresaId, dataIni);
@@ -332,16 +335,19 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, null, colaborador, null, null, empresaId, false, somenteDesligados);
 	}
 	
+	@TesteAutomatico
 	public Collection<ColaboradorOcorrencia> findByEmpresaId(Long empresaId) 
 	{
 		return getDao().findByEmpresaId(empresaId);
 	}
 	
+	@TesteAutomatico
 	public Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaNome, Boolean comProvidencia, Long[] colaboradoresIds, Long empresaId) 
 	{
 		return getDao().findByFiltros(page, pagingSize, colaboradorNome, ocorrenciaNome, comProvidencia, colaboradoresIds, empresaId);
 	}
 
+	@TesteAutomatico(metodoMock="findColaboradorOcorrencia")
 	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Collection<Long> empresaIds, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento, Character agruparPor, String situacao)
 	{
 		return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaIds, areaIds, estabelecimentoIds, detalhamento, agruparPor, situacao);

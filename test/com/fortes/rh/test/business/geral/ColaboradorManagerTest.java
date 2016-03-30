@@ -12,7 +12,6 @@ import mockit.Mockit;
 
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -80,6 +79,8 @@ import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
@@ -116,9 +117,8 @@ import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 
 @SuppressWarnings("unchecked")
-public class ColaboradorManagerTest extends MockObjectTestCase
+public class ColaboradorManagerTest extends MockObjectTestCaseManager<ColaboradorManagerImpl> implements TesteAutomaticoManager
 {
-    private ColaboradorManagerImpl colaboradorManager = new ColaboradorManagerImpl();
     private Mock colaboradorDao = null;
     private Mock transactionManager;
     private Mock candidatoManager;
@@ -154,75 +154,76 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     protected void setUp() throws Exception
     {
         super.setUp();
+        manager = new ColaboradorManagerImpl();
         colaboradorDao = new Mock(ColaboradorDao.class);
 
-        colaboradorManager.setDao((ColaboradorDao) colaboradorDao.proxy());
+        manager.setDao((ColaboradorDao) colaboradorDao.proxy());
 
         candidatoManager = new Mock(CandidatoManager.class);
-        colaboradorManager.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
+        manager.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
 
         candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
-        colaboradorManager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
+        manager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
         
         historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
-        colaboradorManager.setHistoricoColaboradorManager((HistoricoColaboradorManager)historicoColaboradorManager.proxy());
+        manager.setHistoricoColaboradorManager((HistoricoColaboradorManager)historicoColaboradorManager.proxy());
 
         areaOrganizacinoalManager = new Mock(AreaOrganizacionalManager.class);
-        colaboradorManager.setAreaOrganizacionalManager((AreaOrganizacionalManager)areaOrganizacinoalManager.proxy());
+        manager.setAreaOrganizacionalManager((AreaOrganizacionalManager)areaOrganizacinoalManager.proxy());
 
         indiceManager = new Mock(IndiceManager.class);
-        colaboradorManager.setIndiceManager((IndiceManager)indiceManager.proxy());
+        manager.setIndiceManager((IndiceManager)indiceManager.proxy());
 
         faixaSalarialManager = new Mock(FaixaSalarialManager.class);
-        colaboradorManager.setFaixaSalarialManager((FaixaSalarialManager) faixaSalarialManager.proxy());
+        manager.setFaixaSalarialManager((FaixaSalarialManager) faixaSalarialManager.proxy());
 
         transactionManager = new Mock(PlatformTransactionManager.class);
-        colaboradorManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+        manager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 
         cidadeManager = new Mock(CidadeManager.class);
-        colaboradorManager.setCidadeManager((CidadeManager) cidadeManager.proxy());
+        manager.setCidadeManager((CidadeManager) cidadeManager.proxy());
 
         estadoManager = new Mock(EstadoManager.class);
-        colaboradorManager.setEstadoManager((EstadoManager) estadoManager.proxy());
+        manager.setEstadoManager((EstadoManager) estadoManager.proxy());
 
         experienciaManager = new Mock(ExperienciaManager.class);
-        colaboradorManager.setExperienciaManager((ExperienciaManager) experienciaManager.proxy());
+        manager.setExperienciaManager((ExperienciaManager) experienciaManager.proxy());
 
         formacaoManager = new Mock(FormacaoManager.class);
-        colaboradorManager.setFormacaoManager((FormacaoManager) formacaoManager.proxy());
+        manager.setFormacaoManager((FormacaoManager) formacaoManager.proxy());
 
         colaboradorIdiomaManager = new Mock(ColaboradorIdiomaManager.class);
-        colaboradorManager.setColaboradorIdiomaManager((ColaboradorIdiomaManager) colaboradorIdiomaManager.proxy());
+        manager.setColaboradorIdiomaManager((ColaboradorIdiomaManager) colaboradorIdiomaManager.proxy());
 
         acPessoalClientColaborador = mock(AcPessoalClientColaborador.class);
-		colaboradorManager.setAcPessoalClientColaborador((AcPessoalClientColaborador) acPessoalClientColaborador.proxy());
+		manager.setAcPessoalClientColaborador((AcPessoalClientColaborador) acPessoalClientColaborador.proxy());
 
 		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
-		colaboradorManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
+		manager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 
 		empresaManager = mock(EmpresaManager.class);
-		colaboradorManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
+		manager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 		
 		configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
-		colaboradorManager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
+		manager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
 
 		configuracaoNivelCompetenciaColaboradorManager = new Mock(ConfiguracaoNivelCompetenciaColaboradorManager.class);
-		colaboradorManager.setConfiguracaoNivelCompetenciaColaboradorManager((ConfiguracaoNivelCompetenciaColaboradorManager) configuracaoNivelCompetenciaColaboradorManager.proxy());
+		manager.setConfiguracaoNivelCompetenciaColaboradorManager((ConfiguracaoNivelCompetenciaColaboradorManager) configuracaoNivelCompetenciaColaboradorManager.proxy());
 		
 		colaboradorPeriodoExperienciaAvaliacaoManager = new Mock(ColaboradorPeriodoExperienciaAvaliacaoManager.class);
-		colaboradorManager.setColaboradorPeriodoExperienciaAvaliacaoManager((ColaboradorPeriodoExperienciaAvaliacaoManager) colaboradorPeriodoExperienciaAvaliacaoManager.proxy());
+		manager.setColaboradorPeriodoExperienciaAvaliacaoManager((ColaboradorPeriodoExperienciaAvaliacaoManager) colaboradorPeriodoExperienciaAvaliacaoManager.proxy());
 
 		solicitacaoManager = new Mock(SolicitacaoManager.class);
-		colaboradorManager.setSolicitacaoManager((SolicitacaoManager) solicitacaoManager.proxy());
+		manager.setSolicitacaoManager((SolicitacaoManager) solicitacaoManager.proxy());
 		
 		mensagemManager = new Mock(MensagemManager.class);
-		colaboradorManager.setMensagemManager((MensagemManager) mensagemManager.proxy());
+		manager.setMensagemManager((MensagemManager) mensagemManager.proxy());
 		
 		solicitacaoExameManager = new Mock(SolicitacaoExameManager.class);
-		colaboradorManager.setSolicitacaoExameManager((SolicitacaoExameManager) solicitacaoExameManager.proxy());
+		manager.setSolicitacaoExameManager((SolicitacaoExameManager) solicitacaoExameManager.proxy());
 
 		mail = mock(Mail.class);
-        colaboradorManager.setMail((Mail) mail.proxy());
+        manager.setMail((Mail) mail.proxy());
         
 
         usuarioManager = new Mock(UsuarioManager.class);
@@ -281,7 +282,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(once()).method("findAdmitidosNoPeriodo").withAnyArguments().will(returnValue(colaboradores));
     	colaboradorDao.expects(once()).method("findComAvaliacoesExperiencias").withAnyArguments().will(returnValue(colaboradoresComAvaliacoes));
     	
-    	Collection<Colaborador> colabs = colaboradorManager.getAvaliacoesExperienciaPendentes(null, dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, null, periodoExperiencias);
+    	Collection<Colaborador> colabs = manager.getAvaliacoesExperienciaPendentes(null, dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, null, periodoExperiencias);
     	assertEquals(2, colabs.size());
     	assertEquals("10 dias, respondida (12 dias)\n30 dias, respondida (33 dias)", ((Colaborador)colabs.toArray()[0]).getStatusAvaliacao());
     	assertEquals("10 dias, respondida (12 dias)", ((Colaborador)colabs.toArray()[1]).getStatusAvaliacao());
@@ -360,7 +361,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 	{
     	Exception erro = null;
     	try {
-    		colaboradorManager.enviaEmailAniversariantes(empresas);
+    		manager.enviaEmailAniversariantes(empresas);
 		} catch (Exception e) {
 			erro = e;
 			e.printStackTrace();
@@ -419,7 +420,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         areaOrganizacinoalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
         areaOrganizacinoalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(new AreaOrganizacional()));
     	
-    	List<AcompanhamentoExperienciaColaborador> acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(DateUtil.incrementaMes(dataIni, -2), DateUtil.incrementaAno(dataFim, 2), empresa, areasCheck, estabelecimentoCheck, periodoExperiencias);
+    	List<AcompanhamentoExperienciaColaborador> acompanhamentos = manager.getAvaliacoesExperienciaPendentesPeriodo(DateUtil.incrementaMes(dataIni, -2), DateUtil.incrementaAno(dataFim, 2), empresa, areasCheck, estabelecimentoCheck, periodoExperiencias);
     	assertEquals(2, acompanhamentos.size());
     	
     	assertEquals("1232456", acompanhamentos.get(0).getMatricula());
@@ -448,7 +449,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("findByAreaEstabelecimento").with(eq(areaOrganizacional.getId()), eq(estabelecimento.getId())).will(returnValue(colaboradores));
 
-        assertEquals(1, colaboradorManager.findByAreaEstabelecimento(areaOrganizacional.getId(), estabelecimento.getId()).size());
+        assertEquals(1, manager.findByAreaEstabelecimento(areaOrganizacional.getId(), estabelecimento.getId()).size());
     }
     
     public void testOrdenaByMediaPerformance()
@@ -465,7 +466,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradores.add(chico1);
     	colaboradores.add(chico2);
     	
-    	Collection<Colaborador> ordenadosPorMediaPerformance = colaboradorManager.ordenaByMediaPerformance(colaboradores);
+    	Collection<Colaborador> ordenadosPorMediaPerformance = manager.ordenaByMediaPerformance(colaboradores);
     	assertEquals(4, ordenadosPorMediaPerformance.size());
     	
     	Colaborador testChico1 = (Colaborador) ordenadosPorMediaPerformance.toArray()[0];
@@ -501,7 +502,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("findByAreasOrganizacionaisEstabelecimentos").with(eq(areasIds), eq(estabelecimentosIds), ANYTHING, ANYTHING).will(returnValue(colaboradores));
 
-        assertEquals(1, colaboradorManager.findByAreasOrganizacionaisEstabelecimentos(areasIds, estabelecimentosIds).size());
+        assertEquals(1, manager.findByAreasOrganizacionaisEstabelecimentos(areasIds, estabelecimentosIds).size());
     }
     
     public void testCountAdmitidosDemitidosTurnover()
@@ -519,8 +520,8 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(once()).method("countAdmitidosDemitidosTurnover").withAnyArguments().will(returnValue(new Integer(20)));
     	colaboradorDao.expects(once()).method("countAdmitidosDemitidosTurnover").withAnyArguments().will(returnValue(new Integer(2)));
     	
-    	assertEquals(new Integer(22), colaboradorManager.countAdmitidosDemitidosTurnover(null, null, Arrays.asList(empresa1.getId(), empresa2.getId()), new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()}, null, true));
-    	assertEquals(new Integer(0), colaboradorManager.countAdmitidosDemitidosTurnover(null, null, null, new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()}, null, true));
+    	assertEquals(new Integer(22), manager.countAdmitidosDemitidosTurnover(null, null, Arrays.asList(empresa1.getId(), empresa2.getId()), new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()}, null, true));
+    	assertEquals(new Integer(0), manager.countAdmitidosDemitidosTurnover(null, null, null, new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()}, null, true));
     }
 
     public void testGetColaboradoresByEstabelecimentoAreaGrupo()
@@ -537,10 +538,10 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         colaboradores.add(new Colaborador());
 
         colaboradorDao.expects(once()).method("findByAreasOrganizacionaisEstabelecimentos").with(eq(areasIds), eq(estabelecimentosIds), ANYTHING, ANYTHING).will(returnValue(colaboradores));
-        assertEquals(colaboradores, colaboradorManager.getColaboradoresByEstabelecimentoAreaGrupo('1', estabelecimentosIds, areasIds, null, null, null));
+        assertEquals(colaboradores, manager.getColaboradoresByEstabelecimentoAreaGrupo('1', estabelecimentosIds, areasIds, null, null, null));
 
         colaboradorDao.expects(once()).method("findByCargoIdsEstabelecimentoIds").with(ANYTHING, eq(estabelecimentosIds), ANYTHING, ANYTHING).will(returnValue(colaboradores));
-        assertEquals(colaboradores, colaboradorManager.getColaboradoresByEstabelecimentoAreaGrupo('2', estabelecimentosIds, null, null, null, null));
+        assertEquals(colaboradores, manager.getColaboradoresByEstabelecimentoAreaGrupo('2', estabelecimentosIds, null, null, null, null));
     }
 
     public void testFindByEstabelecimento()
@@ -553,7 +554,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("findByEstabelecimento").with(eq(new Long[]{estabelecimento.getId()})).will(returnValue(colaboradores));
 
-        assertEquals(1, colaboradorManager.findByEstabelecimento(new Long[]{estabelecimento.getId()}).size());
+        assertEquals(1, manager.findByEstabelecimento(new Long[]{estabelecimento.getId()}).size());
     }
     
     public void testPertenceEmpresa()
@@ -564,7 +565,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	
     	colaboradorDao.expects(once()).method("findByIdProjectionEmpresa").with(eq(colaborador.getId())).will(returnValue(colaborador));
     	
-    	assertEquals(true, colaboradorManager.pertenceEmpresa(colaborador.getId(), empresa.getId()));
+    	assertEquals(true, manager.pertenceEmpresa(colaborador.getId(), empresa.getId()));
     }
     
     public void testNaoPertenceEmpresa()
@@ -576,7 +577,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	
     	colaboradorDao.expects(once()).method("findByIdProjectionEmpresa").with(eq(colaborador.getId())).will(returnValue(colaborador));
     	
-    	assertEquals(false, colaboradorManager.pertenceEmpresa(colaborador.getId(), outraEmpresa.getId()));
+    	assertEquals(false, manager.pertenceEmpresa(colaborador.getId(), outraEmpresa.getId()));
     }
     
     public void testTriar() 
@@ -594,7 +595,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Exception exception = null;
     	
     	try {
-			colaboradorManager.triar(solicitacao.getId(), null, Sexo.INDIFERENTE, null, null, new String[0], new String[0], false, null, true, empresa.getId());
+			manager.triar(solicitacao.getId(), null, Sexo.INDIFERENTE, null, null, new String[0], new String[0], false, null, true, empresa.getId());
 		} catch (Exception e) {
 			exception = e;
 			e.printStackTrace();
@@ -622,7 +623,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	
     	Exception exception = null;
     	try {
-			colaboradorManager.insertColaboradoresSolicitacao(colaboradoresIds, solicitacao, StatusCandidatoSolicitacao.APROMOVER);
+			manager.insertColaboradoresSolicitacao(colaboradoresIds, solicitacao, StatusCandidatoSolicitacao.APROMOVER);
 		} catch (Exception e) {
 			exception = e;
 			e.printStackTrace();
@@ -636,27 +637,27 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(once()).method("qtdDemitidosEm90Dias").will(returnValue(21));
     	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodoEm90Dias").will(returnValue(99));
     	
-    	assertEquals(78.79, colaboradorManager.calculaIndiceProcessoSeletivo(null, null, null, null));
+    	assertEquals(78.79, manager.calculaIndiceProcessoSeletivo(null, null, null, null));
 
     	colaboradorDao.expects(once()).method("qtdDemitidosEm90Dias").will(returnValue(21));
     	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodoEm90Dias").will(returnValue(45));
     	//arredonda pra cima 46,666666	
-    	assertEquals(53.33, colaboradorManager.calculaIndiceProcessoSeletivo(null, null, null, null));
+    	assertEquals(53.33, manager.calculaIndiceProcessoSeletivo(null, null, null, null));
 
     	colaboradorDao.expects(once()).method("qtdDemitidosEm90Dias").will(returnValue(0));
     	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodoEm90Dias").will(returnValue(100));
     	
-    	assertEquals(100.0, colaboradorManager.calculaIndiceProcessoSeletivo(null, null, null, null));
+    	assertEquals(100.0, manager.calculaIndiceProcessoSeletivo(null, null, null, null));
     	
     	colaboradorDao.expects(once()).method("qtdDemitidosEm90Dias").will(returnValue(10));
     	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodoEm90Dias").will(returnValue(0));
     	
-    	assertEquals(0.0, colaboradorManager.calculaIndiceProcessoSeletivo(null, null, null, null));
+    	assertEquals(0.0, manager.calculaIndiceProcessoSeletivo(null, null, null, null));
     	
     	colaboradorDao.expects(once()).method("qtdDemitidosEm90Dias").will(returnValue(10));
     	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodoEm90Dias").will(returnValue(3));
     	
-    	assertEquals(-233.33, colaboradorManager.calculaIndiceProcessoSeletivo(null, null, null, null));
+    	assertEquals(-233.33, manager.calculaIndiceProcessoSeletivo(null, null, null, null));
     }
 
     public void testFindColaboradorByIdProjection()
@@ -666,7 +667,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("findColaboradorByIdProjection").with(eq(colaborador.getId())).will(returnValue(colaborador));
 
-        assertEquals(colaborador, colaboradorManager.findColaboradorByIdProjection(colaborador.getId()));
+        assertEquals(colaborador, manager.findColaboradorByIdProjection(colaborador.getId()));
     }
 
     public void testFindByCargoIdsEstabelecimentoIds()
@@ -686,7 +687,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("findByCargoIdsEstabelecimentoIds").with(eq(cargosIds), eq(estabelecimentosIds), ANYTHING, ANYTHING).will(returnValue(colaboradores));
 
-        assertEquals(1, colaboradorManager.findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds).size());
+        assertEquals(1, manager.findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds).size());
     }
 
     public void testFindByGrupoOcupacionalIdsEstabelecimentoIds()
@@ -706,7 +707,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("findByGrupoOcupacionalIdsEstabelecimentoIds").with(eq(grupoOcupacionalIds), eq(estabelecimentosIds)).will(returnValue(colaboradores));
 
-        assertEquals(1, colaboradorManager.findByGrupoOcupacionalIdsEstabelecimentoIds(grupoOcupacionalIds, estabelecimentosIds).size());
+        assertEquals(1, manager.findByGrupoOcupacionalIdsEstabelecimentoIds(grupoOcupacionalIds, estabelecimentosIds).size());
     }
 
 	public void testGetCountParametros()
@@ -715,7 +716,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(2));
 
-        Integer count = colaboradorManager.getCount(parametros);
+        Integer count = manager.getCount(parametros);
 
         assertTrue(count.equals(2));
     }
@@ -733,7 +734,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("findAreaOrganizacionalByAreas").withAnyArguments().will(returnValue(colaboradors));
 
-        Collection<Colaborador> retorno = colaboradorManager.findAreaOrganizacionalByAreas(false, null, null, null, null, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null, null);
+        Collection<Colaborador> retorno = manager.findAreaOrganizacionalByAreas(false, null, null, null, null, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null, null);
 
         assertEquals(1, retorno.size());
     }
@@ -812,7 +813,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
     	colaboradorDao.expects(atLeastOnce()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(973));
     	
-    	TurnOverCollection collection = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), null, null, null, null, 1);
+    	TurnOverCollection collection = manager.montaTurnOver(dataIni, dataFim, empresa.getId(), null, null, null, null, 1);
     	Collection<TurnOver> turnOvers = collection.getTurnOvers();
     	
     	TurnOver[] turnOverArray = (TurnOver[]) turnOvers.toArray(new TurnOver[12]);
@@ -865,7 +866,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(atLeastOnce()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(demitidos));
     	colaboradorDao.expects(atLeastOnce()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(200));
     	
-    	TurnOverCollection collection = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa1.getId(), null, null, null, null, 1);
+    	TurnOverCollection collection = manager.montaTurnOver(dataIni, dataFim, empresa1.getId(), null, null, null, null, 1);
     	Collection<TurnOver> turnOvers = collection.getTurnOvers();
     	
     	assertEquals(12, turnOvers.size());
@@ -897,7 +898,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     public void testFindColaboradoresMotivoDemissao() throws Exception
     {
         colaboradorDao.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
-        assertNotNull(colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), null, null));
+        assertNotNull(manager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), null, null));
     }
 
     public void testFindColaboradoresMotivoDemissaoException() throws Exception
@@ -906,7 +907,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         try
         {
             colaboradorDao.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(null));
-            colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), null, null);
+            manager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), null, null);
         }
         catch (Exception e)
         {
@@ -922,7 +923,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         lista.add(new Object[]{"motivo",true,1});
 
         colaboradorDao.expects(once()).method("findColaboradoresMotivoDemissaoQuantidade").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(lista));
-        assertNotNull(colaboradorManager.findColaboradoresMotivoDemissaoQuantidade(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), null));
+        assertNotNull(manager.findColaboradoresMotivoDemissaoQuantidade(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), null));
     }
 
     public void testSolicitacaoDesligamentoAc() throws Exception
@@ -936,7 +937,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         historicoColaboradorManager.expects(once()).method("deleteHistoricosAguardandoConfirmacaoByColaborador").with(eq(new Long[]{colaborador.getId()}));
         transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
 
-        colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, 'I', true, true, colaborador.getId());
+        manager.desligaColaborador(true, new Date(), "observacao", 1L, 'I', true, true, colaborador.getId());
     }
     
     public void testDesligaColaborador() throws Exception
@@ -952,14 +953,14 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(once()).method("desligaColaborador").withAnyArguments().isVoid();
     	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
     	
-    	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, 'I', false, false, colaborador.getId());
+    	manager.desligaColaborador(true, new Date(), "observacao", 1L, 'I', false, false, colaborador.getId());
     }
     public void testFindByAreasOrganizacionalIds() throws Exception
     {
     	Long[] ids = new Long[]{1L};
     	colaboradorDao.expects(once()).method("findByAreaOrganizacionalIds").with(eq(ids)).will(returnValue(new ArrayList<Colaborador>()));
     	
-    	assertNotNull(colaboradorManager.findByAreasOrganizacionalIds(ids));
+    	assertNotNull(manager.findByAreasOrganizacionalIds(ids));
     }
     
     public void testSaveDetalhes() {
@@ -969,7 +970,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	dadoDoisIdiomas();
     	dadoDuasExperiencias();
     	// quando
-    	colaboradorManager.saveDetalhes(colaborador, formacoes, idiomas, experiencias);
+    	manager.saveDetalhes(colaborador, formacoes, idiomas, experiencias);
     	// entao espera-se que
     	assertQueFormacoesForamSalvas();
     	assertQueIdiomasForamSalvos();
@@ -1067,7 +1068,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Exception exception = null;
     	try
 		{
-    		colaboradorManager.remove(colaborador, empresa);
+    		manager.remove(colaborador, empresa);
 		}
 		catch (Exception e)
 		{
@@ -1090,7 +1091,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Exception exception = null;
     	try
     	{
-    		colaboradorManager.remove(colaborador, empresa);
+    		manager.remove(colaborador, empresa);
     	}
     	catch (Exception e)
     	{
@@ -1106,7 +1107,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         try
         {
             colaboradorDao.expects(once()).method("findColaboradoresMotivoDemissaoQuantidade").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(null));
-            colaboradorManager.findColaboradoresMotivoDemissaoQuantidade(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), null);
+            manager.findColaboradoresMotivoDemissaoQuantidade(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), null);
         }
         catch (Exception e)
         {
@@ -1164,7 +1165,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         areaOrganizacinoalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
         areaOrganizacinoalManager.expects(once()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(new AreaOrganizacional()));
 
-        Collection<Colaborador> retorno = colaboradorManager.findProjecaoSalarial(tabelaReajusteColaborador.getId(), data, estabelecimentoIds, areaIds, grupoIds, cargoIds, filtro, empresa.getId());
+        Collection<Colaborador> retorno = manager.findProjecaoSalarial(tabelaReajusteColaborador.getId(), data, estabelecimentoIds, areaIds, grupoIds, cargoIds, filtro, empresa.getId());
 
         assertEquals("Sem TabelaReajusteColaborador", colaboradors.size(), retorno.size());
 
@@ -1176,7 +1177,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         areaOrganizacinoalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
         areaOrganizacinoalManager.expects(once()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(new AreaOrganizacional()));
 
-        retorno = colaboradorManager.findProjecaoSalarial(tabelaReajusteColaborador.getId(), data, estabelecimentoIds, areaIds, grupoIds, cargoIds, filtro, empresa.getId());
+        retorno = manager.findProjecaoSalarial(tabelaReajusteColaborador.getId(), data, estabelecimentoIds, areaIds, grupoIds, cargoIds, filtro, empresa.getId());
 
         assertEquals("Com TabelaReajusteColaborador", colaboradors.size(), retorno.size());
     }
@@ -1203,7 +1204,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         areaOrganizacinoalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING);
 
-        Collection<Colaborador> retorno = colaboradorManager.ordenaPorEstabelecimentoArea(colaboradors, empresa.getId());
+        Collection<Colaborador> retorno = manager.ordenaPorEstabelecimentoArea(colaboradors, empresa.getId());
 
         assertEquals(colaboradors.size(), retorno.size());
     }
@@ -1230,7 +1231,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         areaOrganizacinoalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING);
 
-        Collection<Colaborador> retorno = colaboradorManager.ordenaPorEstabelecimentoArea(colaboradors, empresa.getId());
+        Collection<Colaborador> retorno = manager.ordenaPorEstabelecimentoArea(colaboradors, empresa.getId());
 
         assertEquals(colaboradors.size(), retorno.size());
     }
@@ -1241,7 +1242,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("setRespondeuEntrevista").with(eq(colaborador.getId()));
 
-        colaboradorManager.respondeuEntrevista(colaborador.getId());
+        manager.respondeuEntrevista(colaborador.getId());
     }
     
     public void testFindAllSelect()
@@ -1249,7 +1250,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	colaboradorDao.expects(once()).method("findAllSelect").with(eq(empresa.getId()), eq("nomeComercial")).will(returnValue(new ArrayList<Colaborador>()));
 
-    	assertNotNull(colaboradorManager.findAllSelect(empresa.getId(), "nomeComercial"));
+    	assertNotNull(manager.findAllSelect(empresa.getId(), "nomeComercial"));
     }
 
     public void testFindByNomeCpfMatricula()
@@ -1257,14 +1258,14 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	colaboradorDao.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{ANYTHING, ANYTHING, eq(null), eq(null), eq(new Long[]{empresa.getId()})}).will(returnValue(new ArrayList<Colaborador>()));
 
-    	assertNotNull(colaboradorManager.findByNomeCpfMatricula(null, false, null, null, empresa.getId()));
+    	assertNotNull(manager.findByNomeCpfMatricula(null, false, null, null, empresa.getId()));
     }
 
     public void testMigrarBairro()
     {
     	colaboradorDao.expects(once()).method("migrarBairro").with(eq("bairro"), eq("bairroDestino")).isVoid();
 
-    	colaboradorManager.migrarBairro("bairro", "bairroDestino");
+    	manager.migrarBairro("bairro", "bairroDestino");
     }
 
     public void testFindListComHistoricoFuturo()
@@ -1277,7 +1278,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
 		colaboradorDao.expects(once()).method("findList").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradors));
 
-		Collection<Colaborador> retorno = colaboradorManager.findListComHistoricoFuturo(1, 10, parametros);
+		Collection<Colaborador> retorno = manager.findListComHistoricoFuturo(1, 10, parametros);
 
 		assertEquals(colaboradors.size(), retorno.size());
 	}
@@ -1288,7 +1289,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
     	colaboradorDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(2));
 
-    	Integer count = colaboradorManager.getCountComHistoricoFuturo(parametros);
+    	Integer count = manager.getCountComHistoricoFuturo(parametros);
 
     	assertTrue(count.equals(2));
 	}
@@ -1300,14 +1301,14 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
     	colaboradorDao.expects(once()).method("findColaboradorByIdProjection").with(eq(colaborador.getId())).will(returnValue(colaborador));
 
-    	assertEquals("Joao", colaboradorManager.getNome(colaborador.getId()));
+    	assertEquals("Joao", manager.getNome(colaborador.getId()));
     }
 
     public void testGetNomeException()
     {
     	colaboradorDao.expects(once()).method("findColaboradorByIdProjection").with(ANYTHING).will(returnValue(null));
 
-    	assertEquals("", colaboradorManager.getNome(null));
+    	assertEquals("", manager.getNome(null));
     }
 
     public void testUpdateEmpregado() throws Exception
@@ -1331,7 +1332,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(once()).method("findByIdComHistorico").with(ANYTHING,eq(null)).will(returnValue(colaborador));
     	colaboradorDao.expects(once()).method("update").with(eq(colaborador));
 
-    	assertEquals(colaborador, colaboradorManager.updateEmpregado(empregado));
+    	assertEquals(colaborador, manager.updateEmpregado(empregado));
     }
 
 	private TEmpregado iniciaTEmpregado() {
@@ -1379,7 +1380,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	
     	Exception e = null;
     	try {
-    		colaboradorManager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);
+    		manager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);
 		} catch (Exception e2) {
 			e = e2;
 		}
@@ -1419,7 +1420,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	
     	Exception e = null;
     	try {
-    		colaboradorManager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);
+    		manager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);
     	} catch (Exception e2) {
     		e = e2;
     	}
@@ -1430,14 +1431,14 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     public void testGetCountAtivosByEstabelecimento()
     {
     	colaboradorDao.expects(once()).method("getCountAtivosByEstabelecimento").with(ANYTHING).will(returnValue(1));
-    	assertEquals((Integer)1,colaboradorManager.getCountAtivosEstabelecimento(1L));
+    	assertEquals((Integer)1,manager.getCountAtivosEstabelecimento(1L));
     }
     
     public void testFindByAreaOrganizacionalEstabelecimento()
     {
     	Collection<AreaOrganizacional> areas = Arrays.asList(new AreaOrganizacional[]{AreaOrganizacionalFactory.getEntity(1L)});
     	colaboradorDao.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
-    	assertNotNull(colaboradorManager.findByAreaOrganizacionalEstabelecimento(new ArrayList<Long>(), null, SituacaoColaborador.ATIVO));
+    	assertNotNull(manager.findByAreaOrganizacionalEstabelecimento(new ArrayList<Long>(), null, SituacaoColaborador.ATIVO));
     }
     
     public void testFindEmailsDeColaboradoresByPerfis()
@@ -1450,13 +1451,13 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		
 		colaboradorDao.expects(once()).method("findEmailsDeColaboradoresByPerfis").with(ANYTHING,ANYTHING).will(returnValue(new ArrayList<String>()));
 		
-		assertEquals(0, colaboradorManager.findEmailsDeColaboradoresByPerfis(perfis, empresaId).size());
+		assertEquals(0, manager.findEmailsDeColaboradoresByPerfis(perfis, empresaId).size());
     }
     public void testFindEmailsDeColaboradoresByPerfisVazio()
     {
     	Collection<Perfil> perfis = null;
     	Long empresaId=1L;
-    	assertEquals(0, colaboradorManager.findEmailsDeColaboradoresByPerfis(perfis, empresaId).size());
+    	assertEquals(0, manager.findEmailsDeColaboradoresByPerfis(perfis, empresaId).size());
     }
     
     public void testFindAdmitidosHaDias() throws Exception
@@ -1468,7 +1469,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		colaboradorDao.expects(once()).method("findAdmitidosHaDias").with(eq(dias),eq(empresa), ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
 		areaOrganizacinoalManager.expects(once()).method("findByEmpresasIds").with(ANYTHING, ANYTHING).will(returnValue(areas));
         areaOrganizacinoalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
-		assertEquals(0, colaboradorManager.findAdmitidosHaDias(dias, empresa, null).size());
+		assertEquals(0, manager.findAdmitidosHaDias(dias, empresa, null).size());
     }
     
     public void testFindAdmitidos() throws Exception
@@ -1482,7 +1483,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Long[] areasIds=new Long[]{1L};
 		Long[] estabelecimentosIds=new Long[]{1L,2L};
 		
-		assertEquals(1, colaboradorManager.findAdmitidos(new Long[]{1L}, Vinculo.EMPREGO, new Date(), new Date(), areasIds, estabelecimentosIds, false).size());
+		assertEquals(1, manager.findAdmitidos(new Long[]{1L}, Vinculo.EMPREGO, new Date(), new Date(), areasIds, estabelecimentosIds, false).size());
     }
     
     public void testFindAdmitidosException() 
@@ -1495,7 +1496,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Exception exception =null;
     	
     	try {
-			colaboradorManager.findAdmitidos(new Long[]{1L}, Vinculo.EMPREGO, new Date(), new Date(), areasIds, estabelecimentosIds, false);
+			manager.findAdmitidos(new Long[]{1L}, Vinculo.EMPREGO, new Date(), new Date(), areasIds, estabelecimentosIds, false);
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -1561,7 +1562,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Date dataFim = DateUtil.criarDataMesAno(01, 03, 2000);
     	
     	Collection<Object[]> dados;
-		dados = colaboradorManager.montaGraficoEvolucaoFolha(dataIni, dataFim, 1L, new Long[]{});
+		dados = manager.montaGraficoEvolucaoFolha(dataIni, dataFim, 1L, new Long[]{});
 	
     	assertEquals(2, dados.size());
     	
@@ -1579,7 +1580,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     public void testFindParticipantesByAvaliacaoDesempenho()
     {
     	colaboradorDao.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(1L), eq(true), eq(null)).will(returnValue(new ArrayList<Colaborador>()));
-    	assertNotNull(colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(1L, true, null));
+    	assertNotNull(manager.findParticipantesDistinctByAvaliacaoDesempenho(1L, true, null));
     }
     
     public void testFindByEstabelecimentoDataAdmissao()
@@ -1597,7 +1598,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		
 		colaboradorDao.expects(once()).method("findByEstabelecimentoDataAdmissao").with(eq(matriz.getId()), eq(hoje), ANYTHING).will(returnValue(colaboradores));
 		
-		assertEquals(2, colaboradorManager.findByEstabelecimentoDataAdmissao(matriz.getId(), hoje, null).size());
+		assertEquals(2, manager.findByEstabelecimentoDataAdmissao(matriz.getId(), hoje, null).size());
     }
     
     public void testFindFormacaoEscolar() throws Exception
@@ -1621,7 +1622,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	formacaoManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(formacoes));
     	colaboradorIdiomaManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(colaboradorIdiomas));;
     	
-    	Collection<Colaborador> colaboradoresRetornados = colaboradorManager.findFormacaoEscolar(empresa.getId(), estabelecimentoIds, areaIds, cargoIds);
+    	Collection<Colaborador> colaboradoresRetornados = manager.findFormacaoEscolar(empresa.getId(), estabelecimentoIds, areaIds, cargoIds);
     	
 		assertEquals(1, colaboradoresRetornados.size());
 		assertEquals(2, ((Colaborador)colaboradoresRetornados.toArray()[0]).getFormacao().size());
@@ -1657,7 +1658,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	TEmpregado tEmpregado = iniciaTEmpregado();
     	tEmpregado.setEscolaridade(escolaridadeDoEmpregado);
     	
-    	colaboradorManager.populaEscolaridade(colaborador, tEmpregado);
+    	manager.populaEscolaridade(colaborador, tEmpregado);
     	
     	assertEquals(escolaridadeEsperada, colaborador.getPessoal().getEscolaridade());
     }
@@ -1672,7 +1673,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(once()).method("findByEstadosCelularOitoDigitos").with(eq(new Long[]{1L})).will(returnValue(colaboradores));
     	colaboradorDao.expects(once()).method("update").with(eq(colaborador));
     	
-    	colaboradorManager.insereNonoDigitoCelular(new Long[]{1L});
+    	manager.insereNonoDigitoCelular(new Long[]{1L});
     	
     	assertEquals(9, colaborador.getContato().getFoneCelular().length());
     	
@@ -1710,7 +1711,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		colaboradorDao.expects(atLeastOnce()).method("countDemitidosPeriodo").with(new Constraint[]{ANYTHING,ANYTHING,eq(empresa.getId()),ANYTHING,ANYTHING,ANYTHING,ANYTHING,eq(false)}).will(returnValue(qtdDemitidos));
 		colaboradorDao.expects(atLeastOnce()).method("countDemitidosPeriodo").with(new Constraint[]{ANYTHING,ANYTHING,eq(empresa.getId()),ANYTHING,ANYTHING,ANYTHING,ANYTHING,eq(true)}).will(returnValue(qtdDemitidosReducaoDeQuadro));
 		
-		TaxaDemissaoCollection taxaDemissaoCollection = colaboradorManager.montaTaxaDemissao(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento.getId()), Arrays.asList(area.getId()), null, Arrays.asList(colaborador.getVinculo()), 1);
+		TaxaDemissaoCollection taxaDemissaoCollection = manager.montaTaxaDemissao(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento.getId()), Arrays.asList(area.getId()), null, Arrays.asList(colaborador.getVinculo()), 1);
 		
 		TaxaDemissao taxaDemissaoRetorno = ((TaxaDemissao) taxaDemissaoCollection.getTaxaDemissoes().toArray()[0]); 
 		Double CalculoTaxaDemissao = (((qtdDemitidos.doubleValue() - qtdDemitidosReducaoDeQuadro.doubleValue()) / ((qtdAtivosFinalEInicioMes.doubleValue() + qtdAtivosFinalEInicioMes.doubleValue()) / 2)) * 100);
@@ -1731,7 +1732,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	acPessoalClientColaborador.expects(once()).method("getReciboDePagamentoComplementar").with(ANYTHING, ANYTHING).will(returnValue(retorno));
 
     	try {
-    		colaboradorManager.getReciboDePagamentoComplementar(colaborador, mesAno);
+    		manager.getReciboDePagamentoComplementar(colaborador, mesAno);
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -1745,7 +1746,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	acPessoalClientColaborador.expects(once()).method("getReciboDePagamentoComplementar").with(ANYTHING, ANYTHING).will(throwException(new Exception()));
 
     	try {
-    		colaboradorManager.getReciboDePagamentoComplementar(colaborador, mesAno);
+    		manager.getReciboDePagamentoComplementar(colaborador, mesAno);
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -1760,7 +1761,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	acPessoalClientColaborador.expects(once()).method("getReciboPagamentoAdiantamentoDeFolha").with(ANYTHING, ANYTHING).will(returnValue(retorno));
 
     	try {
-    		colaboradorManager.getReciboPagamentoAdiantamentoDeFolha(colaborador, mesAno);
+    		manager.getReciboPagamentoAdiantamentoDeFolha(colaborador, mesAno);
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -1774,10 +1775,15 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	acPessoalClientColaborador.expects(once()).method("getReciboPagamentoAdiantamentoDeFolha").with(ANYTHING, ANYTHING).will(throwException(new Exception()));
 
     	try {
-    		colaboradorManager.getReciboPagamentoAdiantamentoDeFolha(colaborador, mesAno);
+    		manager.getReciboPagamentoAdiantamentoDeFolha(colaborador, mesAno);
 		} catch (Exception e) {
 			exception = e;
 		}
     	assertNotNull(exception);
     }
+
+	public void testExecutaTesteAutomaticoDoManager() 
+	{
+		testeAutomatico(colaboradorDao);		
+	}
 }

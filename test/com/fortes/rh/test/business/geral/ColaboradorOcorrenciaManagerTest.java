@@ -13,6 +13,7 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManagerImpl;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -27,6 +28,8 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -36,9 +39,8 @@ import com.fortes.rh.test.util.mockObjects.MockTransactionStatus;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrencia;
 
-public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
+public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<ColaboradorOcorrenciaManagerImpl> implements TesteAutomaticoManager
 {
-	ColaboradorOcorrenciaManagerImpl colaboradorOcorrenciaManager = null;
 	Mock colaboradorOcorrenciaDao = null;
 	Mock transactionManager;
 	Mock ocorrenciaManager;
@@ -52,31 +54,31 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 	{
 		super.setUp();
 
-		colaboradorOcorrenciaManager = new ColaboradorOcorrenciaManagerImpl();
+		manager = new ColaboradorOcorrenciaManagerImpl();
 
 		colaboradorOcorrenciaDao = mock(ColaboradorOcorrenciaDao.class);
-		colaboradorOcorrenciaManager.setDao((ColaboradorOcorrenciaDao) colaboradorOcorrenciaDao.proxy());
+		manager.setDao((ColaboradorOcorrenciaDao) colaboradorOcorrenciaDao.proxy());
 		transactionManager = mock(PlatformTransactionManager.class);
-		colaboradorOcorrenciaManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+		manager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 		ocorrenciaManager = mock(OcorrenciaManager.class);
-		colaboradorOcorrenciaManager.setOcorrenciaManager((OcorrenciaManager)ocorrenciaManager.proxy());
+		manager.setOcorrenciaManager((OcorrenciaManager)ocorrenciaManager.proxy());
 		colaboradorManager = mock(ColaboradorManager.class);
-		colaboradorOcorrenciaManager.setColaboradorManager((ColaboradorManager)colaboradorManager.proxy());
+		manager.setColaboradorManager((ColaboradorManager)colaboradorManager.proxy());
 		colaboradorAfastamentoManager = mock(ColaboradorAfastamentoManager.class);
-		colaboradorOcorrenciaManager.setColaboradorAfastamentoManager((ColaboradorAfastamentoManager)colaboradorAfastamentoManager.proxy());
+		manager.setColaboradorAfastamentoManager((ColaboradorAfastamentoManager)colaboradorAfastamentoManager.proxy());
 		acPessoalClientColaboradorOcorrencia = mock(AcPessoalClientColaboradorOcorrencia.class);
-		colaboradorOcorrenciaManager.setAcPessoalClientColaboradorOcorrencia((AcPessoalClientColaboradorOcorrencia)acPessoalClientColaboradorOcorrencia.proxy());
+		manager.setAcPessoalClientColaboradorOcorrencia((AcPessoalClientColaboradorOcorrencia)acPessoalClientColaboradorOcorrencia.proxy());
 		gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
-		colaboradorOcorrenciaManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager)gerenciadorComunicacaoManager.proxy());
+		manager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager)gerenciadorComunicacaoManager.proxy());
 		areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
-		colaboradorOcorrenciaManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+		manager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 	}
 
 	public void testFindByColaborador()
 	{
 		Collection<ColaboradorOcorrencia> colecao = new ArrayList<ColaboradorOcorrencia>();
 		colaboradorOcorrenciaDao.expects(once()).method("findByColaborador").will(returnValue(colecao));
-		assertNotNull(colaboradorOcorrenciaManager.findByColaborador(1L));
+		assertNotNull(manager.findByColaborador(1L));
 	}
 
 	public void testFindProjection()
@@ -92,7 +94,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		colaboradorOcorrenciaDao.expects(once()).method("findProjection").with(eq(0),eq(0),eq(colaborador.getId())).will(returnValue(colaboradorOcorrencias));
 
-		Collection<ColaboradorOcorrencia> retorno = colaboradorOcorrenciaManager.findProjection(0, 0, colaborador.getId());
+		Collection<ColaboradorOcorrencia> retorno = manager.findProjection(0, 0, colaborador.getId());
 
 		assertEquals(1, retorno.size());
 	}
@@ -107,7 +109,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		colaboradorOcorrenciaDao.expects(once()).method("findByIdProjection").with(eq(colaboradorOcorrencia.getId())).will(returnValue(colaboradorOcorrencia));
 
-		assertEquals(colaboradorOcorrencia, colaboradorOcorrenciaManager.findByIdProjection(colaboradorOcorrencia.getId()));
+		assertEquals(colaboradorOcorrencia, manager.findByIdProjection(colaboradorOcorrencia.getId()));
 	}
 
 	public void testSaveOcorrenciasFromAC() throws Exception
@@ -128,7 +130,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		try
 		{
-			colaboradorOcorrenciaManager.saveOcorrenciasFromAC(colaboradorOcorrencias);
+			manager.saveOcorrenciasFromAC(colaboradorOcorrencias);
 		}
 		catch(Exception e)
 		{
@@ -155,7 +157,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		try
 		{
-			colaboradorOcorrenciaManager.saveOcorrenciasFromAC(colaboradorOcorrencias);
+			manager.saveOcorrenciasFromAC(colaboradorOcorrencias);
 		}
 		catch(Exception e)
 		{
@@ -181,7 +183,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		try
 		{
-			colaboradorOcorrenciaManager.removeFromAC(colaboradorOcorrencias);
+			manager.removeFromAC(colaboradorOcorrencias);
 		}
 		catch(Exception e)
 		{
@@ -207,7 +209,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		try
 		{
-			colaboradorOcorrenciaManager.removeFromAC(colaboradorOcorrencias);
+			manager.removeFromAC(colaboradorOcorrencias);
 		}
 		catch(Exception e)
 		{
@@ -233,7 +235,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 	public void testVerifyExistsMesmaData()
 	{
 		colaboradorOcorrenciaDao.expects(once()).method("verifyExistsMesmaData").will(returnValue(true));
-		assertTrue(colaboradorOcorrenciaManager.verifyExistsMesmaData(1L, 1L, 1L, 1L, new Date()));
+		assertTrue(manager.verifyExistsMesmaData(1L, 1L, 1L, 1L, new Date()));
 	}
 
 	public void testSaveColaboradorOcorrencia()
@@ -260,7 +262,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		try
 		{
-			colaboradorOcorrenciaManager.saveColaboradorOcorrencia(colaboradorOcorrencia, empresa);
+			manager.saveColaboradorOcorrencia(colaboradorOcorrencia, empresa);
 		}
 		catch (Exception e)
 		{
@@ -295,7 +297,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		
 		try
 		{
-			colaboradorOcorrenciaManager.saveColaboradorOcorrencia(colaboradorOcorrencia, empresa);
+			manager.saveColaboradorOcorrencia(colaboradorOcorrencia, empresa);
 		}
 		catch (Exception e)
 		{
@@ -327,7 +329,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		try
 		{
-			colaboradorOcorrenciaManager.saveColaboradorOcorrencia(colaboradorOcorrencia, empresa);
+			manager.saveColaboradorOcorrencia(colaboradorOcorrencia, empresa);
 		}
 		catch (Exception e)
 		{
@@ -360,7 +362,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		
 		try
 		{
-			colaboradorOcorrenciaManager.remove(colaboradorOcorrencia, empresa);
+			manager.remove(colaboradorOcorrencia, empresa);
 		}
 		catch (Exception e)
 		{
@@ -394,7 +396,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		try
 		{
-			colaboradorOcorrenciaManager.remove(colaboradorOcorrencia, empresa);
+			manager.remove(colaboradorOcorrencia, empresa);
 		}
 		catch (Exception e)
 		{
@@ -427,7 +429,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		try
 		{
-			colaboradorOcorrenciaManager.remove(colaboradorOcorrencia, empresa);
+			manager.remove(colaboradorOcorrencia, empresa);
 		}
 		catch (Exception e)
 		{
@@ -453,7 +455,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		colaboradorAfastamentoManager.expects(once()).method("countAfastamentosByPeriodo").will(returnValue(retornoBD));
 		colaboradorManager.expects(atLeastOnce()).method("countAtivosPeriodo").will(returnValue(10));
 		
-		Collection<Object[]> absenteismos = colaboradorOcorrenciaManager.montaGraficoAbsenteismo("01/2011", "05/2011", Arrays.asList(empresa.getId()), Arrays.asList(estabelecimento.getId()), null, null, null);
+		Collection<Object[]> absenteismos = manager.montaGraficoAbsenteismo("01/2011", "05/2011", Arrays.asList(empresa.getId()), Arrays.asList(estabelecimento.getId()), null, null, null);
 		
 		assertEquals(5, absenteismos.size());
 		assertEquals(0.0, ((Object[])absenteismos.toArray()[0])[1]);
@@ -478,7 +480,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		Date dataIni = DateUtil.montaDataByString("02/01/2011");
 		Date dataFim = DateUtil.montaDataByString("19/05/2011");
 		
-		Collection<Absenteismo> absenteismos = colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null, empresa);
+		Collection<Absenteismo> absenteismos = manager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null, empresa);
 		assertEquals(5, absenteismos.size());
 		
 		Absenteismo absenteismoJan = (Absenteismo) absenteismos.toArray()[0];
@@ -521,7 +523,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		Date dataIni = DateUtil.montaDataByString("02/01/2011");
 		Date dataFim = DateUtil.montaDataByString("19/05/2011");
 		
-		Collection<Absenteismo> absenteismos = colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null, empresa);
+		Collection<Absenteismo> absenteismos = manager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null, empresa);
 		assertEquals(5, absenteismos.size());
 		
 		Absenteismo absenteismoJan = (Absenteismo) absenteismos.toArray()[0];
@@ -555,7 +557,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		try
 		{
-			colaboradorOcorrenciaManager.deleteOcorrencias(ocorrenciaIds);
+			manager.deleteOcorrencias(ocorrenciaIds);
 		}
 		catch (Exception e)
 		{
@@ -578,7 +580,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findByAreasOrganizacionalIds").with(new Constraint[]{eq(null), eq(null), 
 				eq(areasIds), eq(null), eq(null), eq(colaborador), eq(null), eq(null), eq(empresaId), eq(false), ANYTHING}).will(returnValue(colaboradores));
 		
-		assertEquals(colaboradores, colaboradorOcorrenciaManager.findColaboraesPermitidosByUsuario(usuario, colaborador, empresaId, false, true));
+		assertEquals(colaboradores, manager.findColaboraesPermitidosByUsuario(usuario, colaborador, empresaId, false, true));
 	}
 	
 
@@ -598,7 +600,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		Date dataIni = DateUtil.montaDataByString("02/01/2011");
 		Date dataFim = DateUtil.montaDataByString("19/05/2011");
 		
-		Collection<Absenteismo> absenteismos = colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null, empresa);
+		Collection<Absenteismo> absenteismos = manager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null, empresa);
 		assertEquals(1, absenteismos.size());
 		
 		Absenteismo absenteismoJan = (Absenteismo) absenteismos.toArray()[0];
@@ -619,7 +621,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		
 		try
 		{
-			colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null, null);
+			manager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null, null);
 		}
 		catch (Exception e)
 		{
@@ -638,5 +640,10 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		colaboradorOcorrencia.setDataIni(new Date());
 		colaboradorOcorrencia.setOcorrencia(ocorrencia);
 		colaboradorOcorrencia.setColaborador(colaborador);
+	}
+
+	public void testExecutaTesteAutomaticoDoManager() 
+	{
+		testeAutomatico(colaboradorOcorrenciaDao);
 	}
 }

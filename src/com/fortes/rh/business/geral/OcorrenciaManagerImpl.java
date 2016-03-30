@@ -5,6 +5,7 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Empresa;
@@ -119,11 +120,13 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 		}
 	}
 	
+	@TesteAutomatico
 	public boolean removeByCodigoAC(String codigo, Long empresaId)
 	{
 		return getDao().removeByCodigoAC(codigo, empresaId);
 	}
 
+	@TesteAutomatico
 	public Ocorrencia findByCodigoAC(String codigo, String codigoEmpresa, String grupoAC)
 	{
 		return getDao().findByCodigoAC(codigo, codigoEmpresa, grupoAC);
@@ -143,28 +146,34 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 		getDao().save(ocorrenciaInteresse);
 	}
 
+	@TesteAutomatico
 	public Collection<Ocorrencia> findAllSelect(Long[] empresaIds)
 	{
 		return getDao().findAllSelect(empresaIds);
 	}
 
+	@TesteAutomatico
 	public Collection<Ocorrencia> findOcorrenciasComAbseteismo(Long empresaId) 
 	{
 		return getDao().findOcorrenciasComAbseteismo(empresaId);
 	}
 
+	@TesteAutomatico
 	public Collection<Ocorrencia> find(int page, int pagingSize, Ocorrencia ocorrencia, Long empresaId) {
 		return getDao().find(page, pagingSize, ocorrencia, empresaId);
 	}
 
+	@TesteAutomatico
 	public Integer getCount(Ocorrencia ocorrencia, Long empresaId) {
 		return getDao().getCount(ocorrencia, empresaId);
 	}
 
+	@TesteAutomatico
 	public Collection<Ocorrencia> findSemCodigoAC(Long empresaId, Boolean integraAC) {
 		return getDao().findSemCodigoAC(empresaId, integraAC);
 	}
 	
+	@TesteAutomatico
 	public Collection<Ocorrencia> findComCodigoAC(Long empresaId) {
 		return getDao().findComCodigoAC(empresaId);
 	}

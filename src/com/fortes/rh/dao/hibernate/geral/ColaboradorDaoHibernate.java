@@ -675,7 +675,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 
-	public Colaborador findbyCandidato(Long candidatoId, Long empresaId){
+	public Colaborador findByCandidato(Long candidatoId, Long empresaId){
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.empresa", "emp", Criteria.LEFT_JOIN);
 		

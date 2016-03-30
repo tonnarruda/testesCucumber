@@ -31,7 +31,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findColaboradorPesquisa(Long id,Long empresaId);
 	public Colaborador findByUsuario(Usuario usuario,Long empresaId);
 	public Colaborador findColaboradorUsuarioByCpf(String cpf, Long empresaId);
-	public Colaborador findbyCandidato(Long candidatoId,Long empresaId);
+	public Colaborador findByCandidato(Long candidatoId,Long empresaId);
 	public Collection<Colaborador> findByFuncaoAmbiente(Long funcaoId, Long ambienteId);
 	public boolean setCodigoColaboradorAC(String codigo, Long id);
 	public Colaborador findByCodigoAC(String codigoAC, Empresa empresa);

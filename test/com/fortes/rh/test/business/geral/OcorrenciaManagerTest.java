@@ -8,21 +8,23 @@ import mockit.Mockit;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.geral.AreaOrganizacionalManagerImpl;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.OcorrenciaManagerImpl;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientOcorrencia;
 
-public class OcorrenciaManagerTest extends MockObjectTestCase
+public class OcorrenciaManagerTest extends MockObjectTestCaseManager<OcorrenciaManagerImpl> implements TesteAutomaticoManager
 {
-	OcorrenciaManagerImpl ocorrenciaManager = null;
 	Mock ocorrenciaDao = null;
 	Mock acPessoalClientOcorrencia;
 	Mock empresaManager;
@@ -32,12 +34,12 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 	{
 		super.setUp();
 
-		ocorrenciaManager = new OcorrenciaManagerImpl();
+		manager = new OcorrenciaManagerImpl();
 
 		ocorrenciaDao = mock(OcorrenciaDao.class);
-		ocorrenciaManager.setDao((OcorrenciaDao) ocorrenciaDao.proxy());
+		manager.setDao((OcorrenciaDao) ocorrenciaDao.proxy());
 		acPessoalClientOcorrencia = mock(AcPessoalClientOcorrencia.class);
-		ocorrenciaManager.setAcPessoalClientOcorrencia((AcPessoalClientOcorrencia)acPessoalClientOcorrencia.proxy());
+		manager.setAcPessoalClientOcorrencia((AcPessoalClientOcorrencia)acPessoalClientOcorrencia.proxy());
 		
 		empresaManager = new Mock(EmpresaManager.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
@@ -46,13 +48,13 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 	public void testRemoveByCodigoAC()
 	{
 		ocorrenciaDao.expects(once()).method("removeByCodigoAC").will(returnValue(true));
-		ocorrenciaManager.removeByCodigoAC("002", 1L);
+		manager.removeByCodigoAC("002", 1L);
 	}
 
 	public void testFindByCodigoAC()
 	{
 		ocorrenciaDao.expects(once()).method("findByCodigoAC").will(returnValue(new Ocorrencia()));
-		ocorrenciaManager.findByCodigoAC("002", "001", "XXX");
+		manager.findByCodigoAC("002", "001", "XXX");
 	}
 
 	public void testSaveOrUpdate()
@@ -68,13 +70,13 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 			//	save
 			acPessoalClientOcorrencia.expects(once()).method("criarTipoOcorrencia").will(returnValue("00123"));
 			ocorrenciaDao.expects(once()).method("save");
-			ocorrenciaManager.saveOrUpdate(ocorrencia, empresa);
+			manager.saveOrUpdate(ocorrencia, empresa);
 
 			// update
 			ocorrencia.setId(1L);
 			acPessoalClientOcorrencia.expects(once()).method("criarTipoOcorrencia").will(returnValue("00123"));
 			ocorrenciaDao.expects(once()).method("update");
-			ocorrenciaManager.saveOrUpdate(ocorrencia, empresa);
+			manager.saveOrUpdate(ocorrencia, empresa);
 		}
 		catch (Exception e)
 		{
@@ -96,7 +98,7 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 		{
 			// Caso: Metodo do cliente retornando codigo vazio
 			acPessoalClientOcorrencia.expects(once()).method("criarTipoOcorrencia").will(returnValue(""));
-			ocorrenciaManager.saveOrUpdate(ocorrencia, empresa);
+			manager.saveOrUpdate(ocorrencia, empresa);
 
 		}
 		catch (Exception e)
@@ -121,7 +123,7 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 
 		try
 		{
-			ocorrenciaManager.remove(ocorrencia, empresa);
+			manager.remove(ocorrencia, empresa);
 		}
 		catch (Exception e)
 		{
@@ -143,7 +145,7 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 		{
 			ocorrenciaDao.expects(once()).method("findById").will(returnValue(ocorrencia));
 			acPessoalClientOcorrencia.expects(once()).method("removerTipoOcorrencia").will(returnValue(false));
-			ocorrenciaManager.remove(ocorrencia, empresa);
+			manager.remove(ocorrencia, empresa);
 		}
 		catch (Exception e)
 		{
@@ -164,11 +166,11 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 		{
 			ocorrenciaDao.expects(once()).method("findByCodigoAC").will(returnValue(new Ocorrencia()));
 			ocorrenciaDao.expects(once()).method("update").isVoid();
-			ocorrenciaManager.saveFromAC(ocorrencia);
+			manager.saveFromAC(ocorrencia);
 
 			ocorrenciaDao.expects(once()).method("findByCodigoAC").will(returnValue(null));
 			ocorrenciaDao.expects(once()).method("save");
-			ocorrenciaManager.saveFromAC(ocorrencia);
+			manager.saveFromAC(ocorrencia);
 		}
 		catch (Exception e) { exception = e; }
 
@@ -188,7 +190,7 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("empresaManager", empresaManager);
 		empresaManager.expects(once()).method("findByIdProjection").with(eq(empresaOrigem.getId())).will(returnValue(empresaOrigem));
 		
-		ocorrenciaManager.sincronizar(empresaOrigem.getId(), empresaDestino, null);
+		manager.sincronizar(empresaOrigem.getId(), empresaDestino, null);
 		
 		assertEquals(empresaDestino.getId(), ocorrencia.getEmpresa().getId() );
 	}
@@ -199,5 +201,10 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 		empresa.setCodigoAC("0004");
 		empresa.setAcIntegra(true);
 		ocorrencia.setEmpresa(empresa);
+	}
+
+	public void testExecutaTesteAutomaticoDoManager() 
+	{
+		testeAutomatico(ocorrenciaDao);		
 	}
 }

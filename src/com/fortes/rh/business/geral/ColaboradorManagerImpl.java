@@ -31,6 +31,7 @@ import remprot.RPClient;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
@@ -206,6 +207,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByAreaOrganizacionalIds(idsLong);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario)
 	{
 		return getDao().findSemUsuarios(empresaId, usuario);
@@ -218,16 +220,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 
 	@SuppressWarnings("rawtypes")
+	@TesteAutomatico
 	public Collection<Colaborador> findList(int page, int pagingSize, Map parametros)
 	{
 		return getDao().findList(page, pagingSize, parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
 	}
 
+	@TesteAutomatico(metodoMock="findByAreaOrganizacionalIds")
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Long[] cargosIds, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo, boolean somenteDesligados)
 	{
 		return getDao().findByAreaOrganizacionalIds(page, pagingSize, areasIds, cargosIds, estabelecimentosIds, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, comHistColaboradorFuturo, somenteDesligados);
 	}
 
+	@TesteAutomatico
 	public Colaborador findColaboradorPesquisa(Long id, Long empresaId)
 	{
 		return getDao().findColaboradorPesquisa(id, empresaId);
@@ -726,11 +731,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
+	@TesteAutomatico
 	public Colaborador findByUsuario(Usuario usuario, Long empresaId)
 	{
 		return getDao().findByUsuario(usuario, empresaId);
 	}
 
+	@TesteAutomatico
 	public Colaborador findColaboradorUsuarioByCpf(String cpf, Long empresaId)
 	{
 		return getDao().findColaboradorUsuarioByCpf(cpf, empresaId);
@@ -792,40 +799,49 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return findByCandidato(candidatoId, empresaId) != null;
 	}
 
+	@TesteAutomatico
 	public Colaborador findByCandidato(Long candidatoId, Long empresaId)
 	{
-		return getDao().findbyCandidato(candidatoId, empresaId);
+		return getDao().findByCandidato(candidatoId, empresaId);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findByGrupoOcupacionalIdsEstabelecimentoIds(Collection<Long> grupoOcupacionalIds, Collection<Long> estabelecimentoIds)
 	{
 		return getDao().findByGrupoOcupacionalIdsEstabelecimentoIds(grupoOcupacionalIds, estabelecimentoIds);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findByAreasOrganizacionaisEstabelecimentos(Collection<Long> areasOrganizacionaisIds, Collection<Long> estabelecimentoIds)
 	{
 		return getDao().findByAreasOrganizacionaisEstabelecimentos(areasOrganizacionaisIds, estabelecimentoIds, null, null);
 	}
 
+	@TesteAutomatico
 	public Colaborador findByCodigoAC(String codigoAC, Empresa empresa)
 	{
 		return getDao().findByCodigoAC(codigoAC, empresa);
 	}
 
+	@TesteAutomatico
 	public Colaborador findColaboradorById(Long id)
 	{
 		return getDao().findColaboradorById(id);
 	}
 
-	public Colaborador findAllRelacionamentos(Long id){
+	@TesteAutomatico(metodoMock="findColaboradorComTodosOsDados")
+	public Colaborador findAllRelacionamentos(Long id)
+	{
 		return getDao().findColaboradorComTodosOsDados(id);
 	}
 	
+	@TesteAutomatico
 	public boolean setCodigoColaboradorAC(String codigo, Long id, Empresa empresa)
 	{
 		return getDao().setCodigoColaboradorAC(codigo, id);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findByArea(AreaOrganizacional areaFiltro)
 	{
 		return getDao().findByArea(areaFiltro);
@@ -889,6 +905,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		this.bairroManager = bairroManager;
 	}
 
+	@TesteAutomatico
 	public Colaborador findByIdProjectionUsuario(Long colaboradorId)
 	{
 		return getDao().findByIdProjectionUsuario(colaboradorId);
@@ -927,6 +944,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 
+	@TesteAutomatico
 	public Colaborador findByIdProjectionEmpresa(Long colaboradorId)
 	{
 		return getDao().findByIdProjectionEmpresa(colaboradorId);
@@ -1004,12 +1022,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 
+	@TesteAutomatico(metodoMock="atualizaSolicitacaoDesligamento")
 	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Character gerouSubstituicao, Long solicitanteDemissaoId, Long colaboradorId) throws Exception 
 	{
 		getDao().atualizaSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, observacaoDemissao, motivoId, gerouSubstituicao, solicitanteDemissaoId, colaboradorId);
 	}
 	
-	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId){
+	@TesteAutomatico
+	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId)
+	{
 		return getDao().listColaboradorComDataSolDesligamentoAC(empresaId);
 	}
 
@@ -1066,6 +1087,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().religaColaborador(colaboradorId);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId, boolean joinComHistorico, String... codigosACColaboradores)
 	{
 		return getDao().findColaboradoresByCodigoAC(empresaId, joinComHistorico, codigosACColaboradores);
@@ -1248,7 +1270,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 	
-	public Collection<Colaborador> findComAnoDeEmpresa(Long empresaId, Date data) {
+	@TesteAutomatico
+	public Collection<Colaborador> findComAnoDeEmpresa(Long empresaId, Date data) 
+	{
 		return getDao().findComAnoDeEmpresa(empresaId, data);
 	}
 
@@ -1267,11 +1291,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().setRespondeuEntrevista(colaboradorId);
 	}
 
+	@TesteAutomatico
 	public boolean setMatriculaColaborador(Long empresaId, String codigoAC, String matricula)
 	{
 		return getDao().setMatriculaColaborador(empresaId, codigoAC, matricula);
 	}
 
+	@TesteAutomatico
 	public boolean setMatriculaColaborador(Long colaboradorId, String matricula)
 	{
 		return getDao().setMatriculaColaborador(colaboradorId, matricula);
@@ -1289,11 +1315,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().getCount(parametros, TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO);
 	}
 
+	@TesteAutomatico(metodoMock="findByIdComHistorico")
 	public Colaborador findByIdComHistoricoConfirmados(Long colaboradorId)
 	{
 		return getDao().findByIdComHistorico(colaboradorId, StatusRetornoAC.CONFIRMADO);
 	}
 
+	@TesteAutomatico
 	public Colaborador findByIdComHistorico(Long colaboradorId)
 	{
 		return getDao().findByIdComHistorico(colaboradorId, null);
@@ -1304,16 +1332,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findAllSelect(empresaId, ordenarPor);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findAllSelect(String situacao, Long... empresaIds)
 	{
 		return getDao().findAllSelect(situacao, empresaIds);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds, Boolean colabDesligado)
 	{
 		return getDao().findAllSelect(colaboradorIds, colabDesligado);
 	}
 	
+	@TesteAutomatico
 	public Collection<Colaborador> findComNotaDoCurso(Collection<Long> colaboradorIds, Long turmaId)
 	{
 		return getDao().findComNotaDoCurso(colaboradorIds, turmaId);
@@ -1346,6 +1377,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 
+	@TesteAutomatico
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId)
 	{
 		return getDao().updateInfoPessoaisByCpf(colaborador, empresaId);
@@ -1555,16 +1587,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		defineEscolaridade(colaborador, empregado);
 	}
 
+	@TesteAutomatico
 	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
 		return getDao().findByCodigoAC(empregadoCodigoAC, empresaCodigoAC, grupoAC);
 	}
 
+	@TesteAutomatico
 	public Long findByUsuario(Long usuarioId)
 	{
 		return getDao().findByUsuario(usuarioId);
 	}
 
+	@TesteAutomatico
 	public Integer getCountAtivosQualquerStatus(Date dataBase, Long[] empresaIds, Long[] areasIds, Long[] estabelecimentosIds)
 	{
 		return getDao().getCountAtivosQualquerStatus(dataBase, empresaIds, areasIds, estabelecimentosIds);
@@ -1575,6 +1610,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().getCountAtivosByEstabelecimento(estabelecimentoId);
 	}
 
+	@TesteAutomatico(metodoMock="getFile")
 	public File getFoto(Long id) throws Exception
 	{
 		return getDao().getFile("foto", id);
@@ -1725,31 +1761,37 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return new ArrayList<CheckBox>();
 	}
 
+	@TesteAutomatico
 	public Colaborador findByIdHistoricoProjection(Long id)
 	{
 		return getDao().findByIdHistoricoProjection(id);
 	}
 
+	@TesteAutomatico
 	public Colaborador findByIdDadosBasicos(Long id, Integer statusRetornoAC)
 	{
 		return getDao().findByIdDadosBasicos(id, statusRetornoAC);
 	}
 
+	@TesteAutomatico(metodoMock="findByAreaOrganizacionalIds")
 	public Collection<Colaborador> findByAreaOrganizacionalIdsNome(Collection<Long> areasIds, Colaborador colaborador)
 	{
 		return getDao().findByAreaOrganizacionalIds(areasIds, null, null, null, null, colaborador, null, null, null, false, false);
 	}
 
+	@TesteAutomatico
 	public Colaborador findByIdHistoricoAtual(Long colaboradorId, boolean exibirSomenteAtivos)
 	{
 		return getDao().findByIdHistoricoAtual(colaboradorId, exibirSomenteAtivos);
 	}
 	
+	@TesteAutomatico
 	public Collection<Colaborador> findByIdHistoricoAtual(Collection<Long> colaboradorIds)
 	{
 		return getDao().findByIdHistoricoAtual(colaboradorIds);
 	}
 
+	@TesteAutomatico
 	public Colaborador findColaboradorByDataHistorico(Long colaboradorId, Date dataHistorico)
 	{
 		return getDao().findColaboradorByDataHistorico(colaboradorId, dataHistorico);
@@ -1829,11 +1871,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return admitidos;
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findByNomeCpfMatriculaComHistoricoComfirmado(Colaborador colaborador, Long empresaId, Long[] areasIds)
 	{
 		return getDao().findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, empresaId, areasIds);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findByCpf(String cpf, Long empresaId, Long colaboradorId, Boolean desligado) 
 	{
 		return getDao().findByCpf(cpf, empresaId, colaboradorId, desligado);
@@ -1844,16 +1888,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenhoId, isAvaliado, respondida);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados, Long empresaId, Long[] areasIds, Long[] cargosIds) 
 	{
 		return getDao().findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, isAvaliados, empresaId, areasIds, cargosIds);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findColaboradorDeAvaliacaoDesempenhoNaoRespondida() 
 	{
 		return getDao().findColaboradorDeAvaliacaoDesempenhoNaoRespondida();
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findColaboradoresByArea(Long[] areaIds, String nome, String matricula,Long empresaId, String nomeComercial) 
 	{
 		return getDao().findColaboradoresByArea(areaIds, nome, matricula, empresaId, nomeComercial);
@@ -2077,6 +2124,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
+	@TesteAutomatico
 	public Colaborador findByUsuarioProjection(Long usuarioId, Boolean ativo) 
 	{
 		return getDao().findByUsuarioProjection(usuarioId, ativo);
@@ -2090,57 +2138,68 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findEmailsByPapel(usuarioEmpresaIds);
 	}
 
+	@TesteAutomatico
 	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, String[] vinculos) 
 	{
 		return getDao().countSexo(data, empresaIds, estabelecimentosIds, areasIds, cargosIds, vinculos);
 	}
 
+	@TesteAutomatico
 	public Collection<DataGrafico> countEstadoCivil(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, String[] vinculos) 
 	{
 		return getDao().countEstadoCivil(data, empresaIds, estabelecimentosIds, areasIds, cargosIds, vinculos);
 	}
 
+	@TesteAutomatico
 	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, String[] vinculos) 
 	{
 		return  getDao().countFormacaoEscolar(data, empresaIds, estabelecimentosIds, areasIds, cargosIds, vinculos);
 	}
 
+	@TesteAutomatico
 	public Collection<DataGrafico> countFaixaEtaria(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, String[] vinculos)
 	{
 		return  getDao().countFaixaEtaria(data, empresaIds, estabelecimentosIds, areasIds, cargosIds, vinculos);
 	}
 
+	@TesteAutomatico
 	public Collection<DataGrafico> countDeficiencia(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, String[] vinculos) 
 	{
 		return getDao().countDeficiencia(data, empresaIds, estabelecimentosIds, areasIds, cargosIds, vinculos);
 	}
 
+	@TesteAutomatico
 	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
 	{
 		return getDao().countMotivoDesligamento(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItens);
 	}
 
+	@TesteAutomatico
 	public Collection<DataGrafico> countColocacao(Date dataBase, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, String[] vinculos) 
 	{
 		return getDao().countColocacao(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds, vinculos);
 	}
 
+	@TesteAutomatico
 	public Collection<DataGrafico> countOcorrencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long[] ocorrenciasIds, int qtdItens) 
 	{
 		return getDao().countOcorrencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, ocorrenciasIds, qtdItens);
 	}
 	
+	@TesteAutomatico
 	public Collection<Ocorrencia> getOcorrenciasByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
 	{
 		Collection<Ocorrencia> ocorrenciasRetorno = getDao().getOcorrenciasByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItens); 
 		return new CollectionUtil<Ocorrencia>().sortCollectionStringIgnoreCase(ocorrenciasRetorno, "descricaoComEmpresa");
 	}
 
+	@TesteAutomatico
 	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long[] ocorrenciasIds, int qtdItens) 
 	{
 		return getDao().countProvidencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, ocorrenciasIds, qtdItens);
 	}
 
+	@TesteAutomatico
 	public int getCountAtivos(Date dataBase, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
 	{
 		return getDao().getCountAtivos(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
@@ -2277,7 +2336,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return dados;
 	}
 
-	public Colaborador findByCodigoACEmpresaCodigoAC(String codigoAC, String empresaCodigoAC, String grupoAC) {
+	@TesteAutomatico
+	public Colaborador findByCodigoACEmpresaCodigoAC(String codigoAC, String empresaCodigoAC, String grupoAC) 
+	{
 		return getDao().findByCodigoACEmpresaCodigoAC(codigoAC, empresaCodigoAC, grupoAC);
 	}
 
@@ -2310,7 +2371,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return valor;
 	}
 
-	public int countAtivosPeriodo(Date dataIni, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasId, boolean considerarDataAdmissao, Long colaboradorId, boolean isAbsenteismo) {
+	@TesteAutomatico
+	public int countAtivosPeriodo(Date dataIni, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasId, boolean considerarDataAdmissao, Long colaboradorId, boolean isAbsenteismo) 
+	{
 		return getDao().countAtivosPeriodo(dataIni, empresaIds, estabelecimentosIds, areasIds, cargosIds, null, ocorrenciasId, considerarDataAdmissao, colaboradorId, isAbsenteismo);
 	}
 
@@ -2395,6 +2458,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return new CollectionUtil<DataGrafico>().sortCollectionStringIgnoreCase(dados, "label");
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findByAvaliacoes(Long... avaliacaoIds) 
 	{
 		return getDao().findByAvaliacoes(avaliacaoIds);
@@ -2433,18 +2497,22 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return vos;
 	}
 
+	@TesteAutomatico
 	public int findQtdVagasPreenchidas(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
 		return getDao().findQtdVagasPreenchidas(empresaId, estabelecimentoIds, areaIds, solicitacaoIds, dataIni, dataFim);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId) {
 		return getDao().findSemCodigoAC(empresaId);
 	}
 
+	@TesteAutomatico
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) {
 		return getDao().getAutoComplete(descricao, empresaId);
 	}
 	
+	@TesteAutomatico
 	public Collection<ColaboradorJsonVO> getColaboradoresJsonVO(Long[] areaOrganizacionalIds) {
 		return getDao().getColaboradoresJsonVO(areaOrganizacionalIds);
 	}
@@ -2465,6 +2533,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		this.mensagemManager = mensagemManager;
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findByQuestionarioNaoRespondido( Long questionarioId) { 
 		return getDao().findByQuestionarioNaoRespondido(questionarioId);
 	}
@@ -2516,6 +2585,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return retorno;
 	}
 
+	@TesteAutomatico
 	public Colaborador findFuncaoAmbiente(Long colaboradorId)
 	{
 		return getDao().findFuncaoAmbiente(colaboradorId);
@@ -2549,16 +2619,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		auditoriaManager.auditaCancelamentoSolicitacoNoAC(colaborador, mensagem);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId)
 	{
 		return getDao().findAdmitidosHaDiasSemEpi(dias, empresaId);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId)
 	{
 		return getDao().findAguardandoEntregaEpi(diasLembrete, empresaId);
 	}
 
+	@TesteAutomatico
 	public void setCandidatoNull(Long candidatoId) 
 	{
 		getDao().setCandidatoNull(candidatoId);
@@ -2668,11 +2741,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return cul.sortCollectionDouble(colaboradores, "mediaPerformance");
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findParaLembreteTerminoContratoTemporario(Collection<Integer> diasLembretes, Long empresaId)
 	{
 		return getDao().findParaLembreteTerminoContratoTemporario(diasLembretes, empresaId);
 	}
 	
+	@TesteAutomatico
 	public Collection<Colaborador> findHabilitacaAVencer(Collection<Integer> diasLembrete, Long empresaId)
 	{
 		return getDao().findHabilitacaAVencer(diasLembrete, empresaId);
@@ -2738,16 +2813,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, boolean comNaoIntegraAC, String situacaoColaborador, boolean primeiroHistorico, String... order)
 	{
 		return getDao().findByEmpresaAndStatusAC(empresaId, estabelecimentosIds, areasIds, statusAC, semcodigoAc, comNaoIntegraAC, situacaoColaborador, primeiroHistorico, order);
 	}
 
+	@TesteAutomatico
 	public void desvinculaCandidato(Long candidatoId) 
 	{
 		getDao().desvinculaCandidato(candidatoId);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel, Long colaboradorId) 
 	{
 		return getDao().findAguardandoDesligamento(empresaId, areasIdsPorResponsavel, colaboradorId);
@@ -2787,19 +2865,23 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 	}
 	
+	@TesteAutomatico(metodoMock="atualizaSolicitacaoDesligamento")
 	public void reprovaSolicitacaoDesligamento(Long colaboradorId) throws Exception{
 		getDao().atualizaSolicitacaoDesligamento(null, null, null, null, null, null, colaboradorId);
 	}
 	
+	@TesteAutomatico
 	public void setDataSolicitacaoDesligamentoACByDataDesligamento(Long empresaId){
 		getDao().setDataSolicitacaoDesligamentoACByDataDesligamento(empresaId);
 	}
 	
+	@TesteAutomatico
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) 
 	{
 		getDao().setSolicitacao(colaboradorId, solicitacaoId);
 	}
 
+	@TesteAutomatico
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds)
 	{
 		return getDao().findUsuarioByAreaEstabelecimento(areasIds, estabelecimentosIds);
