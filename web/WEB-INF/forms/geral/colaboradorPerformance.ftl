@@ -374,18 +374,19 @@
 		<table class="grade">
 			<tr>
 				<td>
-				<@display.table name="avaliacaoDesempenhos" id="avaliacaoDesempenho" class="dados">
+				<@display.table name="cqAvaliacaoDesempenhos" id="cqAvaliacaoDesempenho" class="dados">
 						<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
-						<#if avaliacaoDesempenho?exists && avaliacaoDesempenho.exibirPerformanceProfissional>
+						<#if cqAvaliacaoDesempenho?exists && cqAvaliacaoDesempenho.avaliacaoDesempenho.exibirPerformanceProfissional>
+						
 							<@display.column title="Avaliação" >					
-								<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action?colaboradorQuestionario.id=${avaliacaoDesempenho.id}', 600, 1100)">
-										${avaliacaoDesempenho.avaliacaoDesempenho.titulo}
+								<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action?colaboradorQuestionario.id=${cqAvaliacaoDesempenho.id}', 600, 1100)">
+										${cqAvaliacaoDesempenho.avaliacaoDesempenho.titulo}
 								</a>
 							</@display.column>
 						<#else>
 							<@display.column title="Avaliação" >					
-								<#if avaliacaoDesempenho.titulo?exists>
-									${avaliacaoDesempenho.titulo}
+								<#if cqAvaliacaoDesempenho.titulo?exists>
+									${cqAvaliacaoDesempenho.titulo}
 								</#if>
 							</@display.column>
 						</#if>
@@ -393,8 +394,8 @@
 						<@display.column property="performanceNivelCompetenciaFormatada" title="Performance Competência" style="width:90px; text-align:right;"/>
 						<@display.column property="performanceFinal" title="Performance" style="width:90px; text-align:right;"/>
 						<@display.column title="Obs." style="text-align: center;width: 50px">
-							<#if avaliacaoDesempenho.observacao?exists && avaliacaoDesempenho.observacao?trim != "">
-								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${avaliacaoDesempenho.observacao?j_string?replace("'", "\\'")?replace("\"", "'")}');return false">...</span>
+							<#if cqAvaliacaoDesempenho.observacao?exists && cqAvaliacaoDesempenho.observacao?trim != "">
+								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${cqAvaliacaoDesempenho.observacao?j_string?replace("'", "\\'")?replace("\"", "'")}');return false">...</span>
 							</#if>
 						</@display.column>
 				</@display.table>
@@ -432,19 +433,19 @@
 		<table class="grade">
 			<tr>
 				<td>
-				<@display.table name="avaliacaoExperiencias" id="avaliacaoExperiencia" class="dados">
+				<@display.table name="cqAvaliacaoExperiencias" id="cqAvaliacaoExperiencia" class="dados">
 						<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
 						<@display.column title="Avaliação" >					
-							<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action?colaboradorQuestionario.id=${avaliacaoExperiencia.id}', 600, 1100)">
-								<#if avaliacaoExperiencia.avaliacao.titulo?exists>
-									${avaliacaoExperiencia.avaliacao.titulo}
+							<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action?colaboradorQuestionario.id=${cqAvaliacaoExperiencia.id}', 600, 1100)">
+								<#if cqAvaliacaoExperiencia.avaliacao.titulo?exists>
+									${cqAvaliacaoExperiencia.avaliacao.titulo}
 								</#if>
 							</a>
 						</@display.column>
 						<@display.column property="performanceFormatada" title="Performance" />
 						<@display.column title="Obs." style="text-align: center;width: 50px">
-							<#if avaliacaoExperiencia.observacao?exists && avaliacaoExperiencia.observacao?trim != "">
-								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${avaliacaoExperiencia.observacao?j_string?replace("'", "\\'")?replace("\"", "'")}');return false">...</span>
+							<#if cqAvaliacaoExperiencia.observacao?exists && cqAvaliacaoExperiencia.observacao?trim != "">
+								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${cqAvaliacaoExperiencia.observacao?j_string?replace("'", "\\'")?replace("\"", "'")}');return false">...</span>
 							</#if>
 						</@display.column>
 				</@display.table>

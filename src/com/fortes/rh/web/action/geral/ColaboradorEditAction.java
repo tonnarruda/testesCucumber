@@ -160,8 +160,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private Collection<Estabelecimento> estabelecimentos;
 	private ColaboradorQuestionario avaliacaoExperiencia;
 	private ColaboradorQuestionario avaliacaoDesempenho;
-	private Collection<ColaboradorQuestionario> avaliacaoExperiencias;
-	private Collection<ColaboradorQuestionario> avaliacaoDesempenhos;
+	private Collection<ColaboradorQuestionario> cqAvaliacaoExperiencias;
+	private Collection<ColaboradorQuestionario> cqAvaliacaoDesempenhos;
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarioAvaloacaoExperiencias;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 	private Collection<PeriodoExperiencia> periodoExperiencias;
@@ -901,11 +901,11 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if(habilitaCampoExtra)
 				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, empresaDoColaborador.getId()}, new String[]{"ordem"});
 			
-			avaliacaoDesempenhos = colaboradorQuestionarioManager.findAvaliacaoDesempenhoByColaborador(colaborador.getId());
+			cqAvaliacaoDesempenhos = colaboradorQuestionarioManager.findAvaliacaoDesempenhoByColaborador(colaborador.getId());
 			
 			pesquisas = colaboradorQuestionarioManager.findByColaborador(colaborador.getId());
 			
-			avaliacaoExperiencias = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId());
+			cqAvaliacaoExperiencias = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId());
 			
 			historicoColaboradors = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), empresaDoColaborador.getId());
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
@@ -946,7 +946,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			}
 
 			relatorioPerformanceFuncional = new RelatorioPerformanceFuncional(
-					colaborador, configuracaoCampoExtras, avaliacaoDesempenhos, avaliacaoExperiencias, historicoColaboradors, 
+					colaborador, configuracaoCampoExtras, cqAvaliacaoDesempenhos, cqAvaliacaoExperiencias, historicoColaboradors, 
 					historicoColaborador, idiomasColaborador,formacaos,cursosColaborador, ocorrenciasColaborador, 
 					afastamentosColaborador, documentoAnexosColaborador, documentoAnexosCandidato, historicosCandidatoByColaborador,
 					catsColaborador, participacoesNaCipaColaborador, areaOrganizacionals);
@@ -1576,7 +1576,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios()
 	{
-		return avaliacaoExperiencias;
+		return cqAvaliacaoExperiencias;
 	}
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
@@ -1659,26 +1659,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarioAvaloacaoExperiencias()
 	{
 		return colaboradorQuestionarioAvaloacaoExperiencias;
-	}
-
-	public Collection<ColaboradorQuestionario> getAvaliacaoExperiencias()
-	{
-		return avaliacaoExperiencias;
-	}
-
-	public void setAvaliacaoExperiencias(Collection<ColaboradorQuestionario> avaliacaoExperiencias)
-	{
-		this.avaliacaoExperiencias = avaliacaoExperiencias;
-	}
-
-	public Collection<ColaboradorQuestionario> getAvaliacaoDesempenhos()
-	{
-		return avaliacaoDesempenhos;
-	}
-
-	public void setAvaliacaoDesempenhos(Collection<ColaboradorQuestionario> avaliacaoDesempenhos)
-	{
-		this.avaliacaoDesempenhos = avaliacaoDesempenhos;
 	}
 
 	public ColaboradorQuestionario getAvaliacaoExperiencia()
@@ -1899,5 +1879,25 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setEstabelecimentoCheck(Long[] estabelecimentoCheck)
 	{
 		this.estabelecimentoCheck = estabelecimentoCheck;
+	}
+
+	public Collection<ColaboradorQuestionario> getCqAvaliacaoDesempenhos() 
+	{
+		return cqAvaliacaoDesempenhos;
+	}
+
+	public void setCqAvaliacaoDesempenhos(Collection<ColaboradorQuestionario> cqAvaliacaoDesempenhos)
+	{
+		this.cqAvaliacaoDesempenhos = cqAvaliacaoDesempenhos;
+	}
+
+	public Collection<ColaboradorQuestionario> getCqAvaliacaoExperiencias()
+	{
+		return cqAvaliacaoExperiencias;
+	}
+
+	public void setCqAvaliacaoExperiencias(Collection<ColaboradorQuestionario> cqAvaliacaoExperiencias)
+	{
+		this.cqAvaliacaoExperiencias = cqAvaliacaoExperiencias;
 	}
 }
