@@ -376,20 +376,17 @@
 				<td>
 				<@display.table name="cqAvaliacaoDesempenhos" id="cqAvaliacaoDesempenho" class="dados">
 						<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
-						<#if cqAvaliacaoDesempenho?exists && cqAvaliacaoDesempenho.avaliacaoDesempenho.exibirPerformanceProfissional>
-						
-							<@display.column title="Avaliação" >					
+						<@display.column title="Avaliação" >					
+							<#if cqAvaliacaoDesempenho?exists && cqAvaliacaoDesempenho.avaliacaoDesempenho.exibirPerformanceProfissional>
 								<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action?colaboradorQuestionario.id=${cqAvaliacaoDesempenho.id}', 600, 1100)">
 										${cqAvaliacaoDesempenho.avaliacaoDesempenho.titulo}
 								</a>
-							</@display.column>
-						<#else>
-							<@display.column title="Avaliação" >					
-								<#if cqAvaliacaoDesempenho.titulo?exists>
-									${cqAvaliacaoDesempenho.titulo}
+							<#else>
+								<#if cqAvaliacaoDesempenho.avaliacaoDesempenho.titulo?exists>
+									${cqAvaliacaoDesempenho.avaliacaoDesempenho.titulo}
 								</#if>
-							</@display.column>
-						</#if>
+							</#if>
+						</@display.column>
 						<@display.column property="performanceFormatada" title="Performance  Questionário" style="width:90px; text-align:right;"/>
 						<@display.column property="performanceNivelCompetenciaFormatada" title="Performance Competência" style="width:90px; text-align:right;"/>
 						<@display.column property="performanceFinal" title="Performance" style="width:90px; text-align:right;"/>
