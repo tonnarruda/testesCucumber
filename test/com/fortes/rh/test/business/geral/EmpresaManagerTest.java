@@ -8,7 +8,6 @@ import mockit.Mockit;
 
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.model.type.File;
@@ -24,6 +23,8 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TEmpresa;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -41,9 +42,8 @@ import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.opensymphony.webwork.ServletActionContext;
 
-public class EmpresaManagerTest extends MockObjectTestCase
+public class EmpresaManagerTest extends MockObjectTestCaseManager<EmpresaManagerImpl> implements TesteAutomaticoManager
 {
-	private EmpresaManagerImpl empresaManager = new EmpresaManagerImpl();
 	private Mock empresaDao = null;
 	private Mock colaboradorManager;
 	private Mock estabelecimentoManager;
@@ -56,28 +56,29 @@ public class EmpresaManagerTest extends MockObjectTestCase
     protected void setUp() throws Exception
     {
         super.setUp();
+        manager = new EmpresaManagerImpl();
         empresaDao = new Mock(EmpresaDao.class);
-        empresaManager.setDao((EmpresaDao) empresaDao.proxy());
+        manager.setDao((EmpresaDao) empresaDao.proxy());
         
         colaboradorManager = new Mock(ColaboradorManager.class);
         
         estabelecimentoManager = new Mock(EstabelecimentoManager.class);
-        empresaManager.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
+        manager.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
         
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
-        empresaManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+        manager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 
         faixaSalarialManager = new Mock(FaixaSalarialManager.class);
-        empresaManager.setFaixaSalarialManager((FaixaSalarialManager) faixaSalarialManager.proxy());
+        manager.setFaixaSalarialManager((FaixaSalarialManager) faixaSalarialManager.proxy());
 
         indiceManager = new Mock(IndiceManager.class);
-        empresaManager.setIndiceManager((IndiceManager) indiceManager.proxy());
+        manager.setIndiceManager((IndiceManager) indiceManager.proxy());
 
         OcorrenciaManager = new Mock(OcorrenciaManager.class);
-        empresaManager.setOcorrenciaManager((OcorrenciaManager) OcorrenciaManager.proxy());
+        manager.setOcorrenciaManager((OcorrenciaManager) OcorrenciaManager.proxy());
 
         cidadeManager = new Mock(CidadeManager.class);
-        empresaManager.setCidadeManager((CidadeManager) cidadeManager.proxy());
+        manager.setCidadeManager((CidadeManager) cidadeManager.proxy());
         
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
@@ -91,9 +92,9 @@ public class EmpresaManagerTest extends MockObjectTestCase
 
     public void testAjustaCombo()
     {
-    	assertNull(empresaManager.ajustaCombo(-1L, null));
-    	assertNull(empresaManager.ajustaCombo(null, null));
-    	assertEquals(new Long(22), empresaManager.ajustaCombo(22L, null));
+    	assertNull(manager.ajustaCombo(-1L, null));
+    	assertNull(manager.ajustaCombo(null, null));
+    	assertEquals(new Long(22), manager.ajustaCombo(22L, null));
     }
 
     public void testSaveLogo()
@@ -102,7 +103,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	logo.setName("teste.jpg");
 
     	String retorno = "";
-		retorno = empresaManager.saveLogo(logo, null);
+		retorno = manager.saveLogo(logo, null);
 
     	assertNotNull(retorno);
     }
@@ -114,7 +115,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
 
     	File logo = new File();
     	logo.setName("teste.jpg");
-    	empresa = empresaManager.setLogo(empresa, logo, null, null, null);
+    	empresa = manager.setLogo(empresa, logo, null, null, null);
 
     	assertNotNull(empresa.getLogoUrl());
     }
@@ -139,20 +140,20 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	usuarioEmpresas.add(joaoPapi);
     	    	
     	empresasExibidas.add(fortes);
-    	assertEquals("papi", empresaManager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
+    	assertEquals("papi", manager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
     	
     	empresasExibidas.add(casique);
-    	assertEquals("papi", empresaManager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
+    	assertEquals("papi", manager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
 
     	usuarioEmpresas.add(joaoVega);
-    	assertEquals("papi,vega", empresaManager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
+    	assertEquals("papi,vega", manager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
  
     	empresasExibidas.add(vega);
     	empresasExibidas.add(papi);
-    	assertEquals(null, empresaManager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
+    	assertEquals(null, manager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
 
     	usuarioEmpresas.clear();
-    	assertEquals(null, empresaManager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
+    	assertEquals(null, manager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
     }
 
     public void testSelecionaEmpresa() throws Exception
@@ -160,15 +161,15 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	Empresa empresa = EmpresaFactory.getEmpresa(null);
     	
     	empresaDao.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Empresa>()));
-    	assertEquals(0, empresaManager.selecionaEmpresa(empresa, 2L, "ROLE_REL_ANIVERSARIANTES").length);
+    	assertEquals(0, manager.selecionaEmpresa(empresa, 2L, "ROLE_REL_ANIVERSARIANTES").length);
     	
     	Collection<Empresa> empresas = new ArrayList<Empresa>();
     	empresas.add(empresa);
     	empresaDao.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(empresas));
-    	assertEquals(1, empresaManager.selecionaEmpresa(empresa, 1L, "ROLE_REL_ANIVERSARIANTES").length);
+    	assertEquals(1, manager.selecionaEmpresa(empresa, 1L, "ROLE_REL_ANIVERSARIANTES").length);
     	
     	empresa.setId(1L);
-    	assertEquals(1, empresaManager.selecionaEmpresa(empresa, 2L, "ROLE_REL_ANIVERSARIANTES").length);
+    	assertEquals(1, manager.selecionaEmpresa(empresa, 2L, "ROLE_REL_ANIVERSARIANTES").length);
 
     }
     
@@ -181,7 +182,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	
     	empresaDao.expects(once()).method("save").with(ANYTHING);
     	
-    	assertEquals(true, empresaManager.criarEmpresa(empresaAC));
+    	assertEquals(true, manager.criarEmpresa(empresaAC));
     }
     
     public void testCriarEmpresaException() throws Exception
@@ -193,7 +194,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	
     	empresaDao.expects(once()).method("save").with(ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null, ""))));
     	
-    	assertEquals(false, empresaManager.criarEmpresa(empresaAC));
+    	assertEquals(false, manager.criarEmpresa(empresaAC));
     }
     
     public void testVerifyExistsCnpjSemCnpj() throws Exception
@@ -204,7 +205,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	Collection<Empresa> empresas = new ArrayList<Empresa>();
     	empresaDao.expects(once()).method("verifyExistsCnpj").with(eq(empresa.getCnpj())).will(returnValue(empresas));
     	
-    	assertEquals(false, empresaManager.verifyExistsCnpj(empresa.getId(), empresa.getCnpj()));
+    	assertEquals(false, manager.verifyExistsCnpj(empresa.getId(), empresa.getCnpj()));
     }
     
     public void testVerifyExistsCnpjPropriaEdicao() throws Exception
@@ -217,7 +218,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	
     	empresaDao.expects(once()).method("verifyExistsCnpj").with(eq(empresa.getCnpj())).will(returnValue(empresas));
     	
-    	assertEquals(false, empresaManager.verifyExistsCnpj(empresa.getId(), empresa.getCnpj()));
+    	assertEquals(false, manager.verifyExistsCnpj(empresa.getId(), empresa.getCnpj()));
     }
     
     public void testFindCidade()
@@ -225,10 +226,10 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	
     	empresaDao.expects(once()).method("findCidade").with(eq(empresa.getId())).will(returnValue("Palmacia"));
-    	assertEquals("Palmacia", empresaManager.findCidade(empresa.getId()));
+    	assertEquals("Palmacia", manager.findCidade(empresa.getId()));
 
     	empresaDao.expects(once()).method("findCidade").with(eq(empresa.getId())).will(returnValue(null));
-    	assertEquals("", empresaManager.findCidade(empresa.getId()));
+    	assertEquals("", manager.findCidade(empresa.getId()));
     }
 
     public void testVerifyExistsCnpjJaCadastrado() throws Exception
@@ -242,7 +243,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	empresaDao.expects(once()).method("verifyExistsCnpj").with(eq(empresa.getCnpj())).will(returnValue(empresas));
     	
     	Empresa empresaJaCadastrada = EmpresaFactory.getEmpresa(2L);
-    	assertEquals(true, empresaManager.verifyExistsCnpj(empresaJaCadastrada.getId(), empresa.getCnpj()));
+    	assertEquals(true, manager.verifyExistsCnpj(empresaJaCadastrada.getId(), empresa.getCnpj()));
     }
     
     public void testFindDistinctEmpresasByQuestionario()
@@ -252,12 +253,12 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	
 		empresaDao.expects(once()).method("findDistinctEmpresaByQuestionario").with(eq(questionarioId)).will(returnValue(empresas));
 		
-		assertNotNull(empresaManager.findDistinctEmpresasByQuestionario(questionarioId));    
+		assertNotNull(manager.findDistinctEmpresasByQuestionario(questionarioId));    
 	}
     
     public void testPopulaCadastrosCheckBox()
     {
-    	assertEquals(11, empresaManager.populaCadastrosCheckBox().size());
+    	assertEquals(11, manager.populaCadastrosCheckBox().size());
     }
 
     public void testVerificaInconcistenciaIntegracaoACComColecoes()
@@ -274,7 +275,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	OcorrenciaManager.expects(once()).method("findSemCodigoAC").with(eq(empresa.getId()), ANYTHING).will(returnValue(Arrays.asList(OcorrenciaFactory.getEntity())));
     	cidadeManager.expects(once()).method("findSemCodigoAC").will(returnValue(Arrays.asList(CidadeFactory.getEntity())));
     	
-    	assertTrue(empresaManager.verificaInconcistenciaIntegracaoAC(empresa));
+    	assertTrue(manager.verificaInconcistenciaIntegracaoAC(empresa));
     }
     public void testVerificaInconcistenciaIntegracaoAC()
     {
@@ -293,7 +294,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	faixaSalarialManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("2"));
     	cidadeManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	
-    	assertTrue(empresaManager.verificaInconcistenciaIntegracaoAC(empresa));
+    	assertTrue(manager.verificaInconcistenciaIntegracaoAC(empresa));
     }
     
     public void testValidaIntegracaoAC()
@@ -304,7 +305,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	faixaSalarialManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("2"));
     	cidadeManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	
-    	Collection<String> collectionMsgs = (Collection<String>) empresaManager.verificaIntegracaoAC(empresa);
+    	Collection<String> collectionMsgs = (Collection<String>) manager.verificaIntegracaoAC(empresa);
     	
     	assertEquals(2, collectionMsgs.size());
     	
@@ -313,4 +314,8 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	assertEquals("Verifique os seguintes itens:," +
     			"- Existe faixa salarial duplicada, código AC: 2", msgs);
     }
+
+    public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(empresaDao);
+	}
 }

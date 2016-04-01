@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.ConfiguracaoPerformanceDao;
 import com.fortes.rh.model.geral.ConfiguracaoPerformance;
 
@@ -28,6 +29,7 @@ public class ConfiguracaoPerformanceManagerImpl extends GenericManagerImpl<Confi
 		return configs;
 	}
 
+	@TesteAutomatico
 	public Collection<ConfiguracaoPerformance> findByUsuario(Long id) {
 		return getDao().findByUsuario(id);
 	}

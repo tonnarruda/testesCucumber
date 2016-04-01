@@ -4,24 +4,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.ColaboradorIdiomaManagerImpl;
 import com.fortes.rh.dao.geral.ColaboradorIdiomaDao;
 import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 
-public class ColaboradorIdiomaManagerTest extends MockObjectTestCase
+public class ColaboradorIdiomaManagerTest extends MockObjectTestCaseManager<ColaboradorIdiomaManagerImpl> implements TesteAutomaticoManager
 {
-	private ColaboradorIdiomaManagerImpl manager = new ColaboradorIdiomaManagerImpl();
-
 	Mock colaboradorIdiomaDao = null;
 
     protected void setUp() throws Exception
     {
         super.setUp();
-
+        manager = new ColaboradorIdiomaManagerImpl();
         colaboradorIdiomaDao = new Mock(ColaboradorIdiomaDao.class);
 		manager.setDao((ColaboradorIdiomaDao) colaboradorIdiomaDao.proxy());
     }
@@ -55,5 +54,7 @@ public class ColaboradorIdiomaManagerTest extends MockObjectTestCase
 		assertEquals(2, colaboradorIdiomasRetorno.size());
 	}
 
-
+	public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(colaboradorIdiomaDao);
+	}
 }

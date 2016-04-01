@@ -7,7 +7,6 @@ import mockit.Mockit;
 
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -20,14 +19,15 @@ import com.fortes.rh.dao.geral.BairroDao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.geral.BairroFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.SpringUtil;
 
-public class BairroManagerTest extends MockObjectTestCase
+public class BairroManagerTest extends MockObjectTestCaseManager<BairroManagerImpl> implements TesteAutomaticoManager
 {
-	BairroManagerImpl bairroManager = null;
 	Mock bairroDao = null;
 	Mock transactionManager;
 	Mock candidatoManager;
@@ -37,16 +37,16 @@ public class BairroManagerTest extends MockObjectTestCase
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		bairroManager = new BairroManagerImpl();
+		manager = new BairroManagerImpl();
 
 		transactionManager = new Mock(PlatformTransactionManager.class);
-        bairroManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+        manager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
         
 		bairroDao = new Mock(BairroDao.class);
-		bairroManager.setDao((BairroDao) bairroDao.proxy());
+		manager.setDao((BairroDao) bairroDao.proxy());
 		
 		solicitacaoManager = new Mock(SolicitacaoManager.class);
-		bairroManager.setSolicitacaoManager((SolicitacaoManager) solicitacaoManager.proxy());
+		manager.setSolicitacaoManager((SolicitacaoManager) solicitacaoManager.proxy());
 		
 		candidatoManager = new Mock(CandidatoManager.class);
 		colaboradorManager = new Mock(ColaboradorManager.class);
@@ -73,7 +73,7 @@ public class BairroManagerTest extends MockObjectTestCase
 
 		bairroDao.expects(once()).method("list").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING}).will(returnValue(bairros));
 
-		assertEquals(bairros.size(), bairroManager.list(1, 10, bairro).size());
+		assertEquals(bairros.size(), manager.list(1, 10, bairro).size());
 	}
 
 	public void testExisteBairro()
@@ -87,7 +87,7 @@ public class BairroManagerTest extends MockObjectTestCase
 
 		bairroDao.expects(once()).method("existeBairro").with(eq(bairro)).will(returnValue(true));
 
-		assertTrue(bairroManager.existeBairro(bairro));
+		assertTrue(manager.existeBairro(bairro));
 	}
 
 	public void testFindAllSelect()
@@ -106,7 +106,7 @@ public class BairroManagerTest extends MockObjectTestCase
 
 		bairroDao.expects(once()).method("findAllSelect").with(eq(cidadeIds)).will(returnValue(bairros));
 
-		assertEquals(1, bairroManager.findAllSelect(cidade.getId()).size());
+		assertEquals(1, manager.findAllSelect(cidade.getId()).size());
 	}
 	
 	public void testFindByIdProjection()
@@ -116,7 +116,7 @@ public class BairroManagerTest extends MockObjectTestCase
 		
 		bairroDao.expects(once()).method("findByIdProjection").with(eq(bairro.getId())).will(returnValue(bairro));
 		
-		assertEquals(bairro, bairroManager.findByIdProjection(bairro.getId()));
+		assertEquals(bairro, manager.findByIdProjection(bairro.getId()));
 	}
 
 	public void testGetBairrosBySolicitacao()
@@ -134,7 +134,7 @@ public class BairroManagerTest extends MockObjectTestCase
 
 		bairroDao.expects(once()).method("getBairrosBySolicitacao").with(eq(solicitacao.getId())).will(returnValue(bairros));
 
-		assertEquals(2, bairroManager.getBairrosBySolicitacao(solicitacao.getId()).size());
+		assertEquals(2, manager.getBairrosBySolicitacao(solicitacao.getId()).size());
 	}
 
 	public void testGetBairrosByIds()
@@ -152,7 +152,7 @@ public class BairroManagerTest extends MockObjectTestCase
 
 		bairroDao.expects(once()).method("getBairrosByIds").with(eq(new Long[]{bairro.getId(),bairro2.getId()})).will(returnValue(bairros));
 
-		assertEquals(2, bairroManager.getBairrosByIds(new Long[]{bairro.getId(),bairro2.getId()}).size());
+		assertEquals(2, manager.getBairrosByIds(new Long[]{bairro.getId(),bairro2.getId()}).size());
 	}
 	
 	public void testFindByCidade()
@@ -166,20 +166,20 @@ public class BairroManagerTest extends MockObjectTestCase
 		Long[] cidadeIds = new Long[]{cidade.getId()};
 		
 		bairroDao.expects(once()).method("findAllSelect").with(eq(cidadeIds)).will(returnValue(bairros));		
-		assertEquals(1, bairroManager.findByCidade(cidade).size());
+		assertEquals(1, manager.findByCidade(cidade).size());
 	}
 	
 	public void testGetArrayBairros()
 	{
 		bairroDao.expects(once()).method("findBairrosNomes").will(returnValue(new ArrayList<String>()));		
-		assertEquals("", bairroManager.getArrayBairros());
+		assertEquals("", manager.getArrayBairros());
 	
 		Collection<String> bairros = new ArrayList<String>();
 		bairros.add("Aldeota");
 		bairros.add("Alto do bode");
 		
 		bairroDao.expects(once()).method("findBairrosNomes").will(returnValue(bairros));		
-		assertEquals("\"Aldeota\",\"Alto do bode\"", bairroManager.getArrayBairros());
+		assertEquals("\"Aldeota\",\"Alto do bode\"", manager.getArrayBairros());
 	}
 	
 	public void testMigrarRegistros()
@@ -204,7 +204,7 @@ public class BairroManagerTest extends MockObjectTestCase
 		Exception excep = null;
 		try
 		{
-			bairroManager.migrarRegistros(bairro, bairroDestino);			
+			manager.migrarRegistros(bairro, bairroDestino);			
 		}
 		catch (Exception e)
 		{
@@ -229,7 +229,7 @@ public class BairroManagerTest extends MockObjectTestCase
 		Exception excep = null;
 		try
 		{
-			bairroManager.migrarRegistros(bairro, bairroDestino);			
+			manager.migrarRegistros(bairro, bairroDestino);			
 		}
 		catch (Exception e)
 		{
@@ -243,6 +243,11 @@ public class BairroManagerTest extends MockObjectTestCase
 	{
 		Cidade cidade = null;
 
-		assertEquals(0, bairroManager.findByCidade(cidade).size());
+		assertEquals(0, manager.findByCidade(cidade).size());
+	}
+
+	@Override
+	public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(bairroDao);
 	}
 }

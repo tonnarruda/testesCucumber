@@ -4,26 +4,26 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.CidadeManagerImpl;
 import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 
-public class CidadeManagerTest extends MockObjectTestCase
+public class CidadeManagerTest extends MockObjectTestCaseManager<CidadeManagerImpl> implements TesteAutomaticoManager
 {
-	CidadeManagerImpl cidadeManager = null;
 	Mock cidadeDao = null;
 
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		cidadeManager = new CidadeManagerImpl();
+		manager = new CidadeManagerImpl();
 
 		cidadeDao = new Mock(CidadeDao.class);
-		cidadeManager.setDao((CidadeDao) cidadeDao.proxy());
+		manager.setDao((CidadeDao) cidadeDao.proxy());
 	}
 
 	public void testFindAllSelect()
@@ -36,7 +36,7 @@ public class CidadeManagerTest extends MockObjectTestCase
 
 		cidadeDao.expects(once()).method("findAllSelect").with(eq(cidade.getId())).will(returnValue(cidades));
 
-		assertEquals(1, cidadeManager.findAllSelect(cidade.getId()).size());
+		assertEquals(1, manager.findAllSelect(cidade.getId()).size());
 	}
 
 	public void testFindByCodigoAC()
@@ -49,7 +49,7 @@ public class CidadeManagerTest extends MockObjectTestCase
 
 		cidadeDao.expects(once()).method("findByCodigoAC").with(eq(cidade.getCodigoAC()), eq(sigla)).will(returnValue(cidade));
 
-		assertEquals(cidade, cidadeManager.findByCodigoAC(cidade.getCodigoAC(), sigla));
+		assertEquals(cidade, manager.findByCodigoAC(cidade.getCodigoAC(), sigla));
 
 	}
 	
@@ -64,12 +64,16 @@ public class CidadeManagerTest extends MockObjectTestCase
 		Estado estado = EstadoFactory.getEntity(1L);
 		
 		cidadeDao.expects(once()).method("find").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cidades));		
-		assertEquals(1, cidadeManager.findByEstado(estado).size());
+		assertEquals(1, manager.findByEstado(estado).size());
 	}
 	
 	public void testFindByEstadoNull()
 	{
 		Estado estado = null;
-		assertEquals(0, cidadeManager.findByEstado(estado).size());
+		assertEquals(0, manager.findByEstado(estado).size());
+	}
+
+	public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(cidadeDao);
 	}
 }

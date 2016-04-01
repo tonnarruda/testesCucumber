@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.AreaInteresseDao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -78,6 +79,7 @@ public class AreaInteresseManagerImpl extends GenericManagerImpl<AreaInteresse, 
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
+	@TesteAutomatico
 	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
 		getDao().deleteByAreaOrganizacional(areaIds);
 	}

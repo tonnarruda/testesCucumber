@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.AreaInteresseManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -14,25 +13,28 @@ import com.fortes.rh.dao.geral.AreaInteresseDao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.AreaInteresseFactory;
 
-public class AreaInteresseManagerTest extends MockObjectTestCase
+public class AreaInteresseManagerTest extends MockObjectTestCaseManager<AreaInteresseManagerImpl> implements TesteAutomaticoManager
 {
-	private AreaInteresseManagerImpl areaInteresseManager = new AreaInteresseManagerImpl();
 	private Mock areaInteresseDao = null;
 	Mock areaOrganizacionalManager;
 
     protected void setUp() throws Exception
     {
         super.setUp();
+        manager = new AreaInteresseManagerImpl();
+        
         areaInteresseDao = new Mock(AreaInteresseDao.class);
 
-        areaInteresseManager.setDao((AreaInteresseDao) areaInteresseDao.proxy());
+        manager.setDao((AreaInteresseDao) areaInteresseDao.proxy());
         
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
-        areaInteresseManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+        manager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
     }
 
     public void testFindAreasInteresseByAreaOrganizacional()
@@ -51,7 +53,7 @@ public class AreaInteresseManagerTest extends MockObjectTestCase
 
     	areaInteresseDao.expects(once()).method("findAreasInteresseByAreaOrganizacional").with(eq(ao1)).will(returnValue(areaInteresses));
 
-    	Collection<AreaInteresse> retorno = areaInteresseManager.findAreasInteresseByAreaOrganizacional(ao1);
+    	Collection<AreaInteresse> retorno = manager.findAreasInteresseByAreaOrganizacional(ao1);
 
     	assertEquals(1, retorno.size());
     }
@@ -67,7 +69,7 @@ public class AreaInteresseManagerTest extends MockObjectTestCase
 
     	areaInteresseDao.expects(once()).method("findAllSelect").with(eq(new Long[]{empresa.getId()})).will(returnValue(areaInteresses));
 
-    	assertEquals(1, areaInteresseManager.findAllSelect(empresa.getId()).size());
+    	assertEquals(1, manager.findAllSelect(empresa.getId()).size());
     }
     
     public void testFindByIdProjection()
@@ -76,7 +78,7 @@ public class AreaInteresseManagerTest extends MockObjectTestCase
     	
     	areaInteresseDao.expects(once()).method("findByIdProjection").with(eq(areaInteresse.getId())).will(returnValue(areaInteresse));
     	
-    	assertEquals(areaInteresse, areaInteresseManager.findByIdProjection(areaInteresse.getId()));
+    	assertEquals(areaInteresse, manager.findByIdProjection(areaInteresse.getId()));
     }
     
     public void testSincronizar()
@@ -110,8 +112,13 @@ public class AreaInteresseManagerTest extends MockObjectTestCase
 		Long empresaDestinoId=2L;
     	Map<Long, Long> areaInteresseIds = new  HashMap<Long, Long>();
     	
-		areaInteresseManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, areaInteresseIds);
+		manager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, areaInteresseIds);
 		
 		assertEquals(3, areaInteresseIds.size());
     }
+
+	@Override
+	public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(areaInteresseDao);
+	}
 }

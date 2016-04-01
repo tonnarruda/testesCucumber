@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
@@ -20,7 +21,6 @@ import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
-import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -48,22 +48,22 @@ import com.ibm.icu.text.SimpleDateFormat;
 
 public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> implements EmpresaManager
 {
+	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private EstabelecimentoManager estabelecimentoManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
+	private MotivoDemissaoManager motivoDemissaoManager;
+	private AreaInteresseManager areaInteresseManager;
+	private FaixaSalarialManager faixaSalarialManager;
 	private ConhecimentoManager conhecimentoManager;
 	private HabilidadeManager habilidadeManager;
-	private AtitudeManager atitudeManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private AreaInteresseManager areaInteresseManager;
-	private CargoManager cargoManager;
 	private OcorrenciaManager ocorrenciaManager;
-	private EpiManager epiManager;
-	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
-	private MotivoDemissaoManager motivoDemissaoManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private FaixaSalarialManager faixaSalarialManager;
+	private AtitudeManager atitudeManager;
 	private IndiceManager indiceManager;
 	private CidadeManager cidadeManager;
+	private CargoManager cargoManager;
 	private RiscoManager riscoManager;
+	private EpiManager epiManager;
 	private Mail mail;
 
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
@@ -89,11 +89,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return usuarioEmpresaManager.findByUsuario(usuarioId);
 	}
 
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)
-	{
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
-
+	@TesteAutomatico(metodoMock="findByCodigo")
 	public Empresa findByCodigoAC(String codigoAc, String grupoAC)
 	{
 		return getDao().findByCodigo(codigoAc, grupoAC);
@@ -132,6 +128,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return empresa;
 	}
 
+	@TesteAutomatico(metodoMock="getIntegracaoAC")
 	public boolean findIntegracaoAC(Long id)
 	{
 		return getDao().getIntegracaoAC(id);
@@ -277,26 +274,16 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return mensagens;
 	}
 	
+	@TesteAutomatico(metodoMock="findTodasEmpresas")
 	public Collection<Empresa> findEmailsEmpresa()
 	{
 		return getDao().findTodasEmpresas();
 	}
 	
+	@TesteAutomatico
 	public Empresa findEmailsEmpresa(Long empresaId)
 	{
 		return getDao().findEmailsEmpresa(empresaId);
-	}
-
-	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager) {
-		this.conhecimentoManager = conhecimentoManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setAreaInteresseManager(AreaInteresseManager areaInteresseManager) {
-		this.areaInteresseManager = areaInteresseManager;
 	}
 
 	public Empresa findByIdProjection(Long id) {
@@ -322,22 +309,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		}
 		else
 			return new Long[]{empresa.getId()};
-	}
-
-	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager) {
-		this.ocorrenciaManager = ocorrenciaManager;
-	}
-
-	public void setEpiManager(EpiManager epiManager) {
-		this.epiManager = epiManager;
-	}
-
-	public OcorrenciaManager getOcorrenciaManager() {
-		return ocorrenciaManager;
-	}
-
-	public void setCargoManager(CargoManager cargoManager) {
-		this.cargoManager = cargoManager;
 	}
 
 	public void removeEmpresa(Empresa empresa) 
@@ -403,10 +374,12 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return getDao().findById(new Long[]{empresId});
 	}
 
+	@TesteAutomatico
 	public Collection<Empresa> findTodasEmpresas() {
 		return getDao().findTodasEmpresas();
 	}
 	
+	@TesteAutomatico
 	public Collection<Empresa> findEmpresasIntegradas() {
 		return getDao().findEmpresasIntegradas();
 	}
@@ -480,14 +453,17 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return msgs;
 	}
 	
+	@TesteAutomatico
 	public boolean checkEmpresaIntegradaAc() {
 		return getDao().checkEmpresaIntegradaAc();
 	}
 
+	@TesteAutomatico
 	public boolean checkEmpresaIntegradaAc(Long empresaId) {
 		return getDao().checkEmpresaIntegradaAc(empresaId);
 	}
 
+	@TesteAutomatico
 	public Collection<Empresa> findComCodigoAC() {
 		return getDao().findComCodigoAC();
 	}
@@ -523,34 +499,73 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		} 
 	}
 
+	@TesteAutomatico
 	public boolean isControlaRiscoPorAmbiente(Long empresaId) 
 	{
 		return getDao().isControlaRiscoPorAmbiente(empresaId);
 	}
 	
+	@TesteAutomatico(metodoMock="updateCodigoAC")
 	public void updateCodigoGrupoAC(Long empresaId, String codigoAC, String grupoAC) 
 	{
 		getDao().updateCodigoAC(empresaId, codigoAC, grupoAC);
 	}
 
+	@TesteAutomatico
 	public Collection<Empresa> findByGruposAC(String... gruposAC) 
 	{
 		return getDao().findByGruposAC(gruposAC);
 	}
 	
+	@TesteAutomatico
 	public String getCodigoGrupoAC(Long empresaId)
 	{
 		return getDao().getCodigoGrupoAC(empresaId);
 	}
 	
+	@TesteAutomatico
 	public boolean emProcessoExportacaoAC(Long empresaId) 
 	{
 		return getDao().emProcessoExportacaoAC(empresaId);
 	}
 
+	@TesteAutomatico
 	public void setProcessoExportacaoAC(Long empresaId, boolean processoExportacaoAC)
 	{
 		getDao().setProcessoExportacaoAC(empresaId, processoExportacaoAC);
+	}
+
+	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager) {
+		this.conhecimentoManager = conhecimentoManager;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setAreaInteresseManager(AreaInteresseManager areaInteresseManager) {
+		this.areaInteresseManager = areaInteresseManager;
+	}
+	
+	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)
+	{
+		this.usuarioEmpresaManager = usuarioEmpresaManager;
+	}
+	
+	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager) {
+		this.ocorrenciaManager = ocorrenciaManager;
+	}
+	
+	public void setEpiManager(EpiManager epiManager) {
+		this.epiManager = epiManager;
+	}
+	
+	public OcorrenciaManager getOcorrenciaManager() {
+		return ocorrenciaManager;
+	}
+	
+	public void setCargoManager(CargoManager cargoManager) {
+		this.cargoManager = cargoManager;
 	}
 
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
@@ -596,5 +611,4 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public void setMail(Mail mail) {
 		this.mail = mail;
 	}
-
 }

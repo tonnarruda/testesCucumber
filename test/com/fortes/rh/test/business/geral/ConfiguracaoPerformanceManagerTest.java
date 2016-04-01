@@ -3,22 +3,23 @@ package com.fortes.rh.test.business.geral;
 import java.util.Collection;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.ConfiguracaoPerformanceManagerImpl;
 import com.fortes.rh.dao.geral.ConfiguracaoPerformanceDao;
 import com.fortes.rh.model.geral.ConfiguracaoPerformance;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 
-public class ConfiguracaoPerformanceManagerTest extends MockObjectTestCase
+public class ConfiguracaoPerformanceManagerTest extends MockObjectTestCaseManager<ConfiguracaoPerformanceManagerImpl> implements TesteAutomaticoManager
 {
-	private ConfiguracaoPerformanceManagerImpl configuracaoPerformanceManager = new ConfiguracaoPerformanceManagerImpl();
 	private Mock configuracaoPerformanceDao;
 	
 	protected void setUp() throws Exception
     {
         super.setUp();
+        manager = new ConfiguracaoPerformanceManagerImpl();
         configuracaoPerformanceDao = new Mock(ConfiguracaoPerformanceDao.class);
-        configuracaoPerformanceManager.setDao((ConfiguracaoPerformanceDao) configuracaoPerformanceDao.proxy());
+        manager.setDao((ConfiguracaoPerformanceDao) configuracaoPerformanceDao.proxy());
     }
 
 	public void testGravaConfiguracao()
@@ -30,7 +31,7 @@ public class ConfiguracaoPerformanceManagerTest extends MockObjectTestCase
 		configuracaoPerformanceDao.expects(atLeastOnce()).method("save").with(ANYTHING);
 		
 		
-		Collection<ConfiguracaoPerformance> configuracaoPerformances = configuracaoPerformanceManager.gravaConfiguracao(1L, caixas, caixasStatus);
+		Collection<ConfiguracaoPerformance> configuracaoPerformances = manager.gravaConfiguracao(1L, caixas, caixasStatus);
 		
 		assertEquals(3, configuracaoPerformances.size());
 		
@@ -44,5 +45,9 @@ public class ConfiguracaoPerformanceManagerTest extends MockObjectTestCase
 		assertEquals(caixa, config.getCaixa());
 		assertEquals(ordem, config.getOrdem());
 		assertEquals(aberta, config.isAberta());
+	}
+
+	public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(configuracaoPerformanceDao);
 	}
 }

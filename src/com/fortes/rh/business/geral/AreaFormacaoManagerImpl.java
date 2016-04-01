@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.AreaFormacaoDao;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -55,6 +56,7 @@ public class AreaFormacaoManagerImpl extends GenericManagerImpl<AreaFormacao, Ar
 		return areas;
 	}
 	
+	@TesteAutomatico
 	public Collection<AreaFormacao> findByFiltro(int page, int pagingSize, AreaFormacao areaFormacao)
 	{
 		return getDao().findByFiltro(page, pagingSize, areaFormacao);

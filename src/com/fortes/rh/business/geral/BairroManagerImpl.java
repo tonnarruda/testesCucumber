@@ -9,6 +9,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.dao.geral.BairroDao;
@@ -27,6 +28,7 @@ public class BairroManagerImpl extends GenericManagerImpl<Bairro, BairroDao> imp
 		return getDao().list(page, pagingSize, bairro);
 	}
 	
+	@TesteAutomatico
 	public Integer getCount(Bairro bairro)
 	{
 		return getDao().getCount(bairro);

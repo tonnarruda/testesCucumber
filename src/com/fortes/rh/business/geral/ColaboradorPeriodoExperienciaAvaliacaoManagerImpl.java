@@ -3,10 +3,10 @@ package com.fortes.rh.business.geral;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.ColaboradorPeriodoExperienciaAvaliacaoDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
-import com.fortes.rh.util.CollectionUtil;
 
 public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericManagerImpl<ColaboradorPeriodoExperienciaAvaliacao, ColaboradorPeriodoExperienciaAvaliacaoDao> implements ColaboradorPeriodoExperienciaAvaliacaoManager 
 {
@@ -61,6 +61,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericMa
 		getDao().removeByColaborador(colaboradorIds);
 	}
 	
+	@TesteAutomatico
 	public void removeByAvaliacao(Long avaliacaoId) 
 	{
 		getDao().removeByAvaliacao(avaliacaoId);

@@ -6,27 +6,29 @@ import java.util.Collection;
 import mockit.Mockit;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.AreaFormacaoManagerImpl;
 import com.fortes.rh.dao.geral.AreaFormacaoDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaFormacao;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.util.mockObjects.MockCheckListBoxUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.web.tags.CheckBox;
 
-public class AreaFormacaoManagerTest extends MockObjectTestCase
+public class AreaFormacaoManagerTest extends MockObjectTestCaseManager<AreaFormacaoManagerImpl> implements TesteAutomaticoManager
 {
-	private AreaFormacaoManagerImpl areaFormacaoManager = new AreaFormacaoManagerImpl();
 	private Mock areaFormacaoDao = null;
 
     protected void setUp() throws Exception
     {
         super.setUp();
+        manager = new AreaFormacaoManagerImpl();
+        
         areaFormacaoDao = new Mock(AreaFormacaoDao.class);
 
-        areaFormacaoManager.setDao((AreaFormacaoDao) areaFormacaoDao.proxy());
+        manager.setDao((AreaFormacaoDao) areaFormacaoDao.proxy());
 
 		Mockit.redefineMethods(CheckListBoxUtil.class, MockCheckListBoxUtil.class);
     }
@@ -38,7 +40,7 @@ public class AreaFormacaoManagerTest extends MockObjectTestCase
 
     	areaFormacaoDao.expects(once()).method("findByCargo").with(eq(cargo.getId())).will(returnValue(new ArrayList<AreaFormacao>()));
 
-    	assertNotNull(areaFormacaoManager.findByCargo(cargo.getId()));
+    	assertNotNull(manager.findByCargo(cargo.getId()));
     }
 
     public void testPopulaCheckOrderNome()
@@ -47,7 +49,7 @@ public class AreaFormacaoManagerTest extends MockObjectTestCase
 
 		areaFormacaoDao.expects(once()).method("findAll").will(returnValue(null));
 
-    	Collection<CheckBox> retorno = areaFormacaoManager.populaCheckOrderNome();
+    	Collection<CheckBox> retorno = manager.populaCheckOrderNome();
 
     	assertEquals(checkboxs.size(), retorno.size());
     }
@@ -56,7 +58,7 @@ public class AreaFormacaoManagerTest extends MockObjectTestCase
 	{
 		String[] areas = {"1","2"};
 
-		Collection<AreaFormacao> retorno = areaFormacaoManager.populaAreas(areas);
+		Collection<AreaFormacao> retorno = manager.populaAreas(areas);
 
 		assertEquals(areas.length, retorno.size());
 	}
@@ -69,7 +71,7 @@ public class AreaFormacaoManagerTest extends MockObjectTestCase
 
     	areaFormacaoDao.expects(once()).method("findByFiltro").with(eq(1),eq(15),eq(areaFormacao)).will(returnValue(new ArrayList<AreaFormacao>()));
 
-    	assertNotNull(areaFormacaoManager.findByFiltro(1, 15, areaFormacao));
+    	assertNotNull(manager.findByFiltro(1, 15, areaFormacao));
     }
     
     public void testgetCount()
@@ -80,6 +82,10 @@ public class AreaFormacaoManagerTest extends MockObjectTestCase
     	
     	areaFormacaoDao.expects(once()).method("getCount").with(eq(areaFormacao)).will(returnValue(1));
 
-    	assertNotNull(areaFormacaoManager.getCount(areaFormacao));
+    	assertNotNull(manager.getCount(areaFormacao));
     }
+
+	public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(areaFormacaoDao);
+	}
 }

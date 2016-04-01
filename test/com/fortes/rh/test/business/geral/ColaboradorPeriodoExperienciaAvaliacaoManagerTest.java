@@ -6,28 +6,28 @@ import java.util.Collection;
 import mockit.Mockit;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManagerImpl;
 import com.fortes.rh.dao.geral.ColaboradorPeriodoExperienciaAvaliacaoDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 
-public class ColaboradorPeriodoExperienciaAvaliacaoManagerTest extends MockObjectTestCase
+public class ColaboradorPeriodoExperienciaAvaliacaoManagerTest extends MockObjectTestCaseManager<ColaboradorPeriodoExperienciaAvaliacaoManagerImpl> implements TesteAutomaticoManager
 {
-	ColaboradorPeriodoExperienciaAvaliacaoManagerImpl colaboradorPeriodoExperienciaAvaliacaoManager = null;
 	Mock colaboradorPeriodoExperienciaAvaliacaoDao = null;
 
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		colaboradorPeriodoExperienciaAvaliacaoManager = new ColaboradorPeriodoExperienciaAvaliacaoManagerImpl();
+		manager = new ColaboradorPeriodoExperienciaAvaliacaoManagerImpl();
 
 		colaboradorPeriodoExperienciaAvaliacaoDao = new Mock(ColaboradorPeriodoExperienciaAvaliacaoDao.class);
-		colaboradorPeriodoExperienciaAvaliacaoManager.setDao((ColaboradorPeriodoExperienciaAvaliacaoDao) colaboradorPeriodoExperienciaAvaliacaoDao.proxy());
+		manager.setDao((ColaboradorPeriodoExperienciaAvaliacaoDao) colaboradorPeriodoExperienciaAvaliacaoDao.proxy());
 		
 	}
 
@@ -61,7 +61,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerTest extends MockObjec
 
 		Exception exception = null;
 		try {
-			colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, null);
+			manager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, null);
 		
 		} catch (Exception e) {
 			exception = e;
@@ -82,7 +82,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerTest extends MockObjec
 		Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes = Arrays.asList(config1);
 		colaboradorPeriodoExperienciaAvaliacaoDao.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(colaboradorAvaliacoes));
 		
-		assertEquals(1, colaboradorPeriodoExperienciaAvaliacaoManager.findByColaborador(colaborador.getId()).size());
+		assertEquals(1, manager.findByColaborador(colaborador.getId()).size());
 	}
 	
 	public void testRemoveConfiguracaoAvaliacaoPeriodoExperiencia()
@@ -90,6 +90,10 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerTest extends MockObjec
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		
 		colaboradorPeriodoExperienciaAvaliacaoDao.expects(once()).method("removeByColaborador").withAnyArguments();
-		colaboradorPeriodoExperienciaAvaliacaoManager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador.getId());
+		manager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador.getId());
+	}
+
+	public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(colaboradorPeriodoExperienciaAvaliacaoDao);
 	}
 }

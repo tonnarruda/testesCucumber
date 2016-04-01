@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Estado;
@@ -15,6 +16,7 @@ public class CidadeManagerImpl extends GenericManagerImpl<Cidade, CidadeDao> imp
 		return getDao().findAllSelect(estadoId);
 	}
 
+	@TesteAutomatico
 	public Collection<Cidade> findAllByUf(String uf)
 	{
 		return getDao().findAllByUf(uf);
@@ -25,6 +27,7 @@ public class CidadeManagerImpl extends GenericManagerImpl<Cidade, CidadeDao> imp
 		return getDao().findByCodigoAC(codigoAC, sigla);
 	}
 
+	@TesteAutomatico
 	public Cidade findByIdProjection(Long id)
 	{
 		return getDao().findByIdProjection(id);
@@ -38,15 +41,18 @@ public class CidadeManagerImpl extends GenericManagerImpl<Cidade, CidadeDao> imp
 		return new ArrayList<Cidade>();
 	}
 
+	@TesteAutomatico
 	public Cidade findByNome(String nome, Long estadoId) 
 	{
 		return getDao().findByNome(nome, estadoId);
 	}
 
+	@TesteAutomatico
 	public Collection<Cidade> findSemCodigoAC() {
 		return getDao().findSemCodigoAC();
 	}
 
+	@TesteAutomatico
 	public String findCodigoACDuplicado() {
 		return getDao().findCodigoACDuplicado();
 	}
