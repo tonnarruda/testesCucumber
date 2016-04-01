@@ -652,30 +652,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		return Action.SUCCESS;
 	}
 	
-	private boolean assinaturaValida(com.fortes.model.type.File assinatura)
-	{
-		boolean fotoValida =  true;
-		if(assinatura != null)
-		{
-			if(assinatura.getContentType().length() >= 5)
-			{
-				if(!assinatura.getContentType().substring(0, 5).equals("image"))
-				{
-					addActionError("Tipo de arquivo não suportado");
-					fotoValida = false;
-				}
-
-				else if(assinatura.getSize() > 524288)
-				{
-					addActionError("Tamanho do arquivo maior que o suportado");
-					fotoValida = false;
-				}
-			}
-		}
-
-		return fotoValida;
-	}
-	
 	public Turma getTurma()
 	{
 		if (turma == null)

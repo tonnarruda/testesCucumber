@@ -1,5 +1,6 @@
 package com.fortes.rh.web.ws;
 
+import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -15,7 +16,6 @@ import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
-import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
@@ -148,36 +148,6 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		}
 	}
 
-	// TODO Utilizado apenas nos testes
-	public TEmpregado getEmpregadoACAConfirmar(Integer colaboradorId, Empresa empresa) {
-		TEmpregado empregado = null;
-		try {
-			StringBuilder token = new StringBuilder();
-			Call call = acPessoalClient.createCall(empresa, token, null, "GetEmpregadoAConfirmar");
-
-			QName qname = new QName("urn:AcPessoal", "TEmpregado");
-			call.registerTypeMapping(TEmpregado.class, qname, new BeanSerializerFactory(TEmpregado.class, qname), new BeanDeserializerFactory(TEmpregado.class, qname));
-
-			QName xmlstring = new QName("xs:string");
-			QName xmlint = new QName("xs:int");
-
-			call.addParameter("token", xmlstring, ParameterMode.IN);
-			call.addParameter("empresa", xmlstring, ParameterMode.IN);
-			call.addParameter("rh_id", xmlint, ParameterMode.IN);
-
-			call.setReturnType(qname);
-
-			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), colaboradorId };
-			empregado = (TEmpregado) call.invoke(param);
-			call.clearHeaders();
-			call.clearOperation();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return empregado;
-	}
-
 	public TRemuneracaoVariavel[] getRemuneracoesVariaveis(Empresa empresa, String[] colaboradoresIds, String anoMesInicial, String anoMesFinal) throws Exception {
 		
 		TRemuneracaoVariavel[] result = null;
@@ -185,7 +155,6 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			StringBuilder token = new StringBuilder();
 			Call call = acPessoalClient.createCall(empresa, token, null, "GetRemuneracoesVariaveis");
 
-//			urn:UnTypesPessoalWebService
 			QName qname = new QName("urn:UnTypesPessoalWebService", "TRemuneracaoVariavel");
 			QName qnameArr = new QName("urn:UnTypesPessoalWebService", "TRemuneracoesVariaveis");
 
@@ -238,39 +207,9 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		        for (HistoricoColaborador historico : historicosAc)
 				{
 		        	TItemTabelaEmpregados item = new TItemTabelaEmpregados();
-		        	item.setCargo(historico.getFaixaSalarial().getCodigoAC());
-		        	item.setCodigo(historico.getColaborador().getCodigoAC());
-		        	item.setData(DateUtil.formataDiaMesAno(historico.getData()));
-		        	item.setEmpresa(empresa.getCodigoAC());
-		        	item.setLotacao(historico.getAreaOrganizacional().getCodigoAC());
-		        	item.setEstabelecimento(historico.getEstabelecimento().getCodigoAC());
-		        	item.setSaltipo(String.valueOf(TipoAplicacaoIndice.getCodigoAC(historico.getTipoSalario())));
-		        	item.setDataRescisao(DateUtil.formataDiaMesAno(historico.getDataSolicitacaoDesligamento()));
 		        	item.setObs(StringUtil.subStr(historico.getObsACPessoal(), 255));
-		        	
-		        	item.setExpAgenteNocivo(historico.getGfip());
-
-		    		switch (historico.getTipoSalario())
-		    		{
-		    			case TipoAplicacaoIndice.CARGO:
-		    			{
-		    				item.setIndcodigosalario("");
-		    				item.setIndqtde(0.0);
-		    				item.setValor(0.0);
-		    				break;
-		    			}
-		    			case TipoAplicacaoIndice.INDICE:
-		    				item.setIndcodigosalario(historico.getIndice().getCodigoAC());
-		    				item.setIndqtde(historico.getQuantidadeIndice());
-		    				item.setValor(0.0);
-		    				break;
-		    			case TipoAplicacaoIndice.VALOR:
-		    				item.setIndcodigosalario("");
-		    				item.setIndqtde(0.0);
-		    				item.setValor(historico.getSalarioCalculado());
-		    				break;
-		    		}
-
+		        	item.setDataRescisao(DateUtil.formataDiaMesAno(historico.getDataSolicitacaoDesligamento()));
+		        	AcPessoalClientUtil.montaParametrosTItemTabelaEmpregado(empresa, historico, item);
 		        	arrayReajuste[cont++] = item;
 				}
 
@@ -395,46 +334,23 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 	
 	public String[] getDatasPeriodoDeGozoPorEmpregado(Colaborador colaborador) throws Exception
 	{
-		String[] result = null;
-		try
-		{
-			StringBuilder token = new StringBuilder();
-			GrupoAC grupoAC = new GrupoAC();
-			Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetDatasPeriodoDeGozoPorEmpregado");
-
-            QName qnameAr = new QName("urn:UnTypesPessoalWebService", "TPeriodosDeGozo");
-            call.registerTypeMapping(String[].class, qnameAr, new ArraySerializerFactory(qnameAr), new ArrayDeserializerFactory(qnameAr));
-
-			QName xmlstring = new QName("xs:string");
-
-			call.addParameter("Token",xmlstring,ParameterMode.IN);
-			call.addParameter("Empresa",xmlstring,ParameterMode.IN);
-			call.addParameter("Empregado",xmlstring,ParameterMode.IN);
-
-			call.setReturnType(qnameAr);
-
-			Object[] params = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC() };
-			
-			result = (String[]) call.invoke(params);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return result;
+		return montaInvokDecimoTerceiroEDatasPeriodoDeGozoPorEmpregado(colaborador, "TPeriodosDeGozo", "GetDatasPeriodoDeGozoPorEmpregado");
 	}
 	
 	public String[] getDatasDecimoTerceiroPorEmpregado(Colaborador colaborador) throws Exception
 	{
+		return montaInvokDecimoTerceiroEDatasPeriodoDeGozoPorEmpregado(colaborador, "TDatasDecimo", "GetDatasDecimoTerceiroPorEmpregado");
+	}
+
+	private String[] montaInvokDecimoTerceiroEDatasPeriodoDeGozoPorEmpregado(Colaborador colaborador, String nomeEntidadeWs, String nomeMetodoWS) {
 		String[] result = null;
 		try
 		{
 			StringBuilder token = new StringBuilder();
 			GrupoAC grupoAC = new GrupoAC();
-			Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetDatasDecimoTerceiroPorEmpregado");
+			Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, nomeMetodoWS);
 
-            QName qnameAr = new QName("urn:UnTypesPessoalWebService", "TDatasDecimo");
+            QName qnameAr = new QName("urn:UnTypesPessoalWebService", nomeEntidadeWs);
             call.registerTypeMapping(String[].class, qnameAr, new ArraySerializerFactory(qnameAr), new ArrayDeserializerFactory(qnameAr));
 
 			QName xmlstring = new QName("xs:string");
@@ -484,40 +400,18 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 	
 	public String getReciboDePagamentoComplementar(Colaborador colaborador, Date mesAno) throws Exception
 	{
-		StringBuilder token = new StringBuilder();
-		GrupoAC grupoAC = new GrupoAC();
-		Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetReciboDePagamentoComplementar");
-
-		QName xmlstring = new QName("xs:string");
-		QName xmlint = new QName("xs:int");
-
-		call.addParameter("Token", xmlstring, ParameterMode.IN);
-		call.addParameter("Empresa", xmlstring, ParameterMode.IN);
-		call.addParameter("Empregado", xmlstring, ParameterMode.IN);
-		call.addParameter("Ano", xmlint, ParameterMode.IN);
-		call.addParameter("Mes", xmlint, ParameterMode.IN);
-		
-		acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
-		
-    	Calendar calendar = Calendar.getInstance();
-		calendar.setTime(mesAno);		
-		
-		Object[] param = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC(), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1};
-		
-		TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
-       	Boolean retorno = result.getSucesso("GetReciboDePagamentoComplementar", param, this.getClass());
-		
-       	if (!retorno)
-        	throw new IntegraACException(result.getMensagem());
-       	
-       	return result.getRetorno();
+		return getClientePadraoByNomeWS(colaborador, mesAno, "GetReciboDePagamentoComplementar");
 	}
 	
 	public String getReciboPagamentoAdiantamentoDeFolha(Colaborador colaborador, Date mesAno) throws Exception
 	{
+		return getClientePadraoByNomeWS(colaborador, mesAno, "GetReciboDePagamentoAdiantamento");
+	}
+
+	private String getClientePadraoByNomeWS(Colaborador colaborador, Date mesAno, String nomeMetodoWS) throws Exception, RemoteException, IntegraACException {
 		StringBuilder token = new StringBuilder();
 		GrupoAC grupoAC = new GrupoAC();
-		Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetReciboDePagamentoAdiantamento");
+		Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, nomeMetodoWS);
 
 		QName xmlstring = new QName("xs:string");
 		QName xmlint = new QName("xs:int");
@@ -536,7 +430,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		Object[] param = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC(), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1};
 		
 		TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
-       	Boolean retorno = result.getSucesso("GetReciboDePagamentoAdiantamento", param, this.getClass());
+       	Boolean retorno = result.getSucesso(nomeMetodoWS, param, this.getClass());
 		
        	if (!retorno)
         	throw new IntegraACException(result.getMensagem());

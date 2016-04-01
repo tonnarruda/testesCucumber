@@ -268,29 +268,29 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		this.solicitacaoEpiManager=solicitacaoEpiManager;
 	}
 
+	public void setDataFim(Date dataFim)
+	{
+		this.dataFim = dataFim;
+	}
+	
 	public Date getDataFim()
 	{
 		return dataFim;
 	}
 
-	public void setDataFim(Date dataFim)
+	public Colaborador getColaborador()
 	{
-		this.dataFim = dataFim;
+		return colaborador;
 	}
-
-	public Date getDataIni()
-	{
-		return dataIni;
-	}
-
+	
 	public void setDataIni(Date dataIni)
 	{
 		this.dataIni = dataIni;
 	}
-
-	public Colaborador getColaborador()
+	
+	public Date getDataIni()
 	{
-		return colaborador;
+		return dataIni;
 	}
 
 	public Empresa getEmpresa() {
