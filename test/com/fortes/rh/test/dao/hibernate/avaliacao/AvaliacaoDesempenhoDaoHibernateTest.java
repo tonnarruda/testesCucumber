@@ -197,31 +197,6 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		
 		assertEquals(2, avaliacaoDesempenhoDao.findIdsAvaliacaoDesempenho(avaliacao1.getId()).size());
 	}
-	
-	public void testFindAvaliacaoDesempenhoBloqueadaComConfiguracaoCompetencia()
-	{
-		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
-		avaliacaoDao.save(avaliacao);
-		
-		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
-		avaliacaoDesempenho.setAvaliacao(avaliacao);
-		avaliacaoDesempenho.setLiberada(false);
-		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
-		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
-		faixaSalarialDao.save(faixaSalarial);
-		
-		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(1L, faixaSalarial, DateUtil.criarDataMesAno(1, 2, 2015));
-		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
-		
-		ConfiguracaoCompetenciaAvaliacaoDesempenho configuracaoCompetenciaAvaliacaoDesempenho = new ConfiguracaoCompetenciaAvaliacaoDesempenho();
-		configuracaoCompetenciaAvaliacaoDesempenho.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
-		configuracaoCompetenciaAvaliacaoDesempenho.setAvaliacaoDesempenho(avaliacaoDesempenho);
-		configuracaoCompetenciaAvaliacaoDesempenho.setCompetenciaId(1L);
-		configuracaoCompetenciaAvaliacaoDesempenhoDao.save(configuracaoCompetenciaAvaliacaoDesempenho);
-		
-		assertEquals(1, avaliacaoDesempenhoDao.findAvaliacaoDesempenhoBloqueadaComConfiguracaoCompetencia(configuracaoNivelCompetenciaFaixaSalarial.getId()).size());
-	}	
 
 	public void setEmpresaDao(EmpresaDao empresaDao) {
 		this.empresaDao = empresaDao;

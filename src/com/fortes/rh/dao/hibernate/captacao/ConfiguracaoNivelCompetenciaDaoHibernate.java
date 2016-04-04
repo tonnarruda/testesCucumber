@@ -668,46 +668,6 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return lista;				
 	}
 	
-	public Collection<Competencia> findCompetenciasByFaixaSalarial(Long faixaId, Date data, Character tipo) 
-	{
-		getSession().flush();
-		
-		StringBuilder sql = new StringBuilder();
-		sql.append("select distinct cnc.competencia_id as competenciaId, COALESCE(a.nome, conhe.nome, h.nome) as competenciaDescricao, cnc.tipocompetencia ");
-		sql.append("from ConfiguracaoNivelCompetencia cnc ");
-		sql.append("inner join ConfiguracaoNivelCompetenciaFaixaSalarial cncf on cncf.id = cnc.configuracaoNivelCompetenciaFaixaSalarial_id ");
-		sql.append("left join Atitude a on a.id = cnc.competencia_id and 'A' = cnc.tipocompetencia ");
-		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and 'C' = cnc.tipocompetencia ");
-		sql.append("left join Habilidade h on h.id = cnc.competencia_id and 'H' = cnc.tipocompetencia ");
-		sql.append("where cncf.faixaSalarial_id = :faixaSalarialId ");
-		if(tipo != null)
-			sql.append("and cnc.tipocompetencia = :tipo ");
-		sql.append("and cncf.data = ( select max(cncf2.data) from configuracaonivelcompetenciafaixasalarial cncf2 where cncf2.data <= :data and cncf2.faixasalarial_id = :faixaSalarialId ) ");
-		
-		sql.append("order by competenciaDescricao ");
-		
-		Query query = getSession().createSQLQuery(sql.toString());
-		query.setLong("faixaSalarialId", faixaId);
-		query.setDate("data", data);
-		if(tipo != null)
-			query.setCharacter("tipo", tipo);
-			
-		Collection<Object[]> resultado = query.list();
-		Collection<Competencia> lista = new ArrayList<Competencia>();
-		
-		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
-		{
-			Object[] res = it.next();
-			Competencia competencia = new Competencia();
-			competencia.setId(((BigInteger)res[0]).longValue());
-			competencia.setNome((String)res[1]);
-			competencia.setTipo((Character)res[2]);
-			lista.add(competencia);
-		}
-		
-		return lista;				
-	}
-
 	public boolean existeDependenciaComCompetenciasDoCandidato(Long faixaSalarialId, Date dataInicial, Date dataFinal)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cnc");

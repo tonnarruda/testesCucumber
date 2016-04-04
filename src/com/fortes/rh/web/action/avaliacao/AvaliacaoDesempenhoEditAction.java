@@ -36,6 +36,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -171,13 +172,11 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String prepareCompetencias() throws Exception
 	{
 		empresaId = getEmpresaSistema().getId();
-		
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		if (!avaliacaoDesempenho.isLiberada()) {
-			faixaSalariais = participanteAvaliacaoDesempenhoManager.findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
-		} else {
-			faixaSalariais = configuracaoCompetenciaAvaliacaoDesempenhoManager.findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(avaliacaoDesempenho.getId());
-		}
+
+		faixaSalariais = configuracaoCompetenciaAvaliacaoDesempenhoManager.findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(avaliacaoDesempenho.getId());
+		faixaSalariais.addAll(participanteAvaliacaoDesempenhoManager.findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho(avaliacaoDesempenho,new CollectionUtil<FaixaSalarial>().convertCollectionToArrayIds(faixaSalariais)));
+
 		avaliadors = participanteAvaliacaoDesempenhoManager.findColaboradoresParticipantes(avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
 		
 		for (Colaborador avaliador : avaliadors) {

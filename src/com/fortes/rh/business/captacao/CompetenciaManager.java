@@ -6,6 +6,4 @@ import com.fortes.rh.model.captacao.Competencia;
 public interface CompetenciaManager extends GenericManager<Competencia>
 {
 	boolean existeNome(String nome, Long competenciaId, Character tipo, Long empresaId);
-
-	Competencia findCompetencia(Long id, Character tipoCompetencia);
 }

@@ -39,12 +39,9 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
-import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
-import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.Solicitacao;
-import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -1174,60 +1171,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				colaboradorManager.enviaEmailAniversariantes(empresas);
 			}
 		} catch (Exception e) {e.printStackTrace();}
-	}
-	
-	public void enviaEmailAoInserirConfiguracaoCompetenciaFaixaSalarial(Collection<Competencia> competenciasInseridas, Collection<Competencia> competenciasExcluidas, FaixaSalarial faixaSalarial, Empresa empresa, Collection<AvaliacaoDesempenho> avaliacoesDesempenho )
-	{
-		try 
-		{
-			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.INSERIR_CONFIGURACAO_NIVEL_COMPETENCIA_FAIXA.getId(), empresa.getId());
-			
-			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
-			{
-				StringBuffer mensagem = new StringBuffer();
-				
-				mensagem.append("Um novo histórico de competências foi criado para: \n");
-				mensagem.append("<b>Cargo:</b> " + faixaSalarial.getCargo().getNome() + " <b>Faixa:</b> " + faixaSalarial.getNome() + "\n\n");
-				
-				if (competenciasExcluidas.size() > 0) {
-					mensagem.append("As seguintes competências foram removidas: \n");
-					for (Competencia competencia : competenciasExcluidas) {
-						mensagem.append(" - "+competencia.getNome()+" \n");
-					}
-					mensagem.append("\n\n");
-				}
-				
-				if (competenciasInseridas.size() > 0) {
-					mensagem.append("As seguintes competências foram inseridas: \n");
-					for (Competencia competencia : competenciasInseridas) {
-						mensagem.append(" - "+competencia.getNome()+" \n");
-					}
-					mensagem.append("\n\n");
-				}
-				
-				if(avaliacoesDesempenho != null  && avaliacoesDesempenho.size() > 0 && (competenciasExcluidas.size() > 0 || competenciasInseridas.size() > 0)){
-					mensagem.append("As seguintes Avaliações de Desempenho serão afetadas com está mudança: \n");
-					for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacoesDesempenho) {
-						mensagem.append(" - "+avaliacaoDesempenho.getTitulo()+" \n");
-					}
-					mensagem.append("\n\n");
-				}
-				
-				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId()))
-				{
-					String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
-			
-					try {
-						mail.send(gerenciadorComunicacao.getEmpresa(), "[RH] - Uma novo histórico de competências foi criado para " + faixaSalarial.getDescricao(), null, mensagem.toString().replace("\n", "<br>"), emails);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void enviaMensagemCadastroSituacaoAC(String nomeColaborador, TSituacao situacao)

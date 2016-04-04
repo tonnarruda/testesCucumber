@@ -630,11 +630,6 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().findCompetenciasColaboradorByFaixaSalarialAndPeriodo(faixaId, dataIni, dataFim);
 	}
 	
-	public Collection<Competencia> findCompetenciasByFaixaSalarial(Long faixaId, Date data, Character tipo) 
-	{
-		return getDao().findCompetenciasByFaixaSalarial(faixaId, data, tipo);
-	}
-	
 	public void removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixaSalarial(Long[] faixaIds)
 	{
 		getDao().removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixasSalariais(faixaIds);

@@ -288,10 +288,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 				throw new FortesException(fortesException);
 		}
 	}
-	
-	public Collection<AvaliacaoDesempenho> findAvaliacaoDesempenhoBloqueadaComConfiguracaoCompetencia(Long configuracaoNivelCompetenciaFaixaSalarialId) {
-		return getDao().findAvaliacaoDesempenhoBloqueadaComConfiguracaoCompetencia(configuracaoNivelCompetenciaFaixaSalarialId);
-	}
 
 	public ResultadoAvaliacaoDesempenho getResultadoAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId) 
 	{

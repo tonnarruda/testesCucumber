@@ -411,14 +411,6 @@ public enum Operacao
 			
 			return this.getListMeioComunicacao();
 		}
-	},
-	INSERIR_CONFIGURACAO_NIVEL_COMPETENCIA_FAIXA(39, "Inserir histórico de competências para faixa salarial", "C&S"){
-		public TreeMap<Integer, String> meioComunicação(){
-			this.add(MeioComunicacao.EMAIL);
-			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
-			
-			return this.getListMeioComunicacao();
-		}
 	};
 	
 	private int id;

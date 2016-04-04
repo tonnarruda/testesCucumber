@@ -2,7 +2,6 @@ package com.fortes.rh.business.avaliacao;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
@@ -33,10 +32,10 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 		}
 	}
 	
-	public Collection<FaixaSalarial> findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId) {
-		Collection<FaixaSalarial> faixaSalarials = getDao().findFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho(avaliacaoDesempenhoId);
+	public Collection<FaixaSalarial> findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho, Long[] notFaixasSalariaisId) {
+		Collection<FaixaSalarial> faixaSalarials = getDao().findFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), notFaixasSalariaisId);
 		for (FaixaSalarial faixaSalarial : faixaSalarials) {
-			faixaSalarial.setConfiguracaoNivelCompetencias(configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId(), new Date()));
+			faixaSalarial.setConfiguracaoNivelCompetencias(configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId(), avaliacaoDesempenho.getInicio()));
 		}
 		return faixaSalarials;
 	}

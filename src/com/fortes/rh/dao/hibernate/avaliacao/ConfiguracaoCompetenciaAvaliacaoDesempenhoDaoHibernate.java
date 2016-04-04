@@ -91,24 +91,6 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		query.executeUpdate();
 	}
 	
-	public void removeByCompetenciasQueNaoPermaneceram(Long[] competenciasIds, Long faixaSalarialId, Character tipo) {
-		String hql = "delete from ConfiguracaoCompetenciaAvaliacaoDesempenho ";
-		hql += " where id in ( select ccad2.id from ConfiguracaoCompetenciaAvaliacaoDesempenho ccad2 ";
-		hql += " left join ccad2.configuracaoNivelCompetenciaFaixaSalarial cncf ";
-		hql += " left join ccad2.avaliacaoDesempenho av ";
-		hql += " where cncf.faixaSalarial.id = :faixaSalarialId ";
-		hql += " and ccad2.competenciaId in ( :competenciasIds ) ";
-		hql += " and ccad2.tipoCompetencia = :tipo and av.liberada = false ) ";
-
-		Query query = getSession().createQuery(hql);
-
-		query.setParameterList("competenciasIds", competenciasIds);
-		query.setLong("faixaSalarialId", faixaSalarialId);
-		query.setCharacter("tipo", tipo);
-
-		query.executeUpdate();
-	}
-	
 	public void removeByAvaliacaoDesempenho(Long avaliacaoDesempenhoId) {
 		String hql = "delete from ConfiguracaoCompetenciaAvaliacaoDesempenho where avaliacaoDesempenho.id = :avaliacaoDesempenhoId ";
 

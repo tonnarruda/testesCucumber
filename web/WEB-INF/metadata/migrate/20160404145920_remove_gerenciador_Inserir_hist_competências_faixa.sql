@@ -1,0 +1,1 @@
+DELETE FROM gerenciadorcomunicacao WHERE operacao = 39;--.go

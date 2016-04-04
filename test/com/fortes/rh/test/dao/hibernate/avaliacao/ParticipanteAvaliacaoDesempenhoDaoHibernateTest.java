@@ -100,12 +100,34 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernateTest extends GenericDaoH
 	
 	public void testFindFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho()
 	{
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
 		ParticipanteAvaliacaoDesempenho participanteAvaliacaoDesempenho = getEntity();
+		participanteAvaliacaoDesempenho.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		participanteAvaliacaoDesempenhoDao.save(participanteAvaliacaoDesempenho);
 		
-		participanteAvaliacaoDesempenhoDao.getHibernateTemplateByGenericDao().flush();
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
 		
-		assertEquals(1, participanteAvaliacaoDesempenhoDao.findFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId()).size());
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 02, 2001));
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		ParticipanteAvaliacaoDesempenho participanteAvaliacaoDesempenho2 = new ParticipanteAvaliacaoDesempenho();
+		participanteAvaliacaoDesempenho2.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		participanteAvaliacaoDesempenho2.setColaborador(colaborador);
+		participanteAvaliacaoDesempenho2.setTipo(TipoParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenhoDao.save(participanteAvaliacaoDesempenho2);
+		
+		participanteAvaliacaoDesempenhoDao.getHibernateTemplateByGenericDao().flush();
+		assertEquals(2, participanteAvaliacaoDesempenhoDao.findFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), null).size());
+		assertEquals(1, participanteAvaliacaoDesempenhoDao.findFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), new Long[]{faixaSalarial.getId()}).size());
 	}
 	
 	public void testFindFaixasSalariaisDosAvaliadosByAvaliador()

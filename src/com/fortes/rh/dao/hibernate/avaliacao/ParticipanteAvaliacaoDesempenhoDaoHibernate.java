@@ -94,7 +94,7 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernate extends GenericDaoHiber
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<FaixaSalarial> findFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho(Long avaliacaoDesempenhoId) {
+	public Collection<FaixaSalarial> findFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Long[] notFaixasSalariaisId) {
 		StringBuilder hql = new StringBuilder();
 		
 		hql.append("select distinct new FaixaSalarial(fs.id, fs.nome, ca.nome) ");
@@ -113,9 +113,15 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernate extends GenericDaoHiber
 		hql.append("and p.avaliacaoDesempenho.id = :avaliacaoDesempenhoId ");
 		hql.append("and tipo = :tipo ");
 
+		if(notFaixasSalariaisId != null && notFaixasSalariaisId.length > 0)
+			hql.append("and fs.id not in (:notFaixasSalariaisId) ");
+			
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
 		query.setCharacter("tipo", TipoParticipanteAvaliacao.AVALIADO);
+		
+		if(notFaixasSalariaisId != null && notFaixasSalariaisId.length > 0)
+			query.setParameterList("notFaixasSalariaisId", notFaixasSalariaisId);
 		
 		return query.list();
 	}

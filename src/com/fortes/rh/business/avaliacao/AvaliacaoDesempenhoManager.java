@@ -28,6 +28,5 @@ public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDese
 	Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId);
 	Collection<CheckBox> populaCheckBox(Long empresaId, boolean ativa);
 	void liberarEmLote(String[] avaliacoesCheck, Empresa empresa) throws Exception;
-	Collection<AvaliacaoDesempenho> findAvaliacaoDesempenhoBloqueadaComConfiguracaoCompetencia(Long configuracaoNivelCompetenciaFaixaSalarialId);
 	ResultadoAvaliacaoDesempenho getResultadoAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho,Long avaliadoId);
 }

@@ -261,16 +261,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			atualizaNivelCometenciaFaixaSalarial(niveisCompetenciaFaixaSalariaisConhecimento);
 			atualizaNivelCometenciaFaixaSalarial(niveisCompetenciaFaixaSalariaisHabilidade);
 			atualizaNivelCometenciaFaixaSalarial(niveisCompetenciaFaixaSalariaisAtitude);
-			
-			Collection<Competencia> conhecimentosAnteriores = configuracaoNivelCompetenciaManager.findCompetenciasByFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), new Date(), Competencia.CONHECIMENTO);
-			Collection<Competencia> habilidadesAnteriores = configuracaoNivelCompetenciaManager.findCompetenciasByFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), new Date(), Competencia.HABILIDADE);
-			Collection<Competencia> atitudesAnteriores = configuracaoNivelCompetenciaManager.findCompetenciasByFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), new Date(), Competencia.ATITUDE);
-			
-			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarialAnterior = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(),  new Date());   
 
 			configuracaoNivelCompetenciaManager.saveCompetenciasFaixaSalarial(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaFaixaSalarial);
-			
-			configuracaoCompetenciaAvaliacaoDesempenhoManager.reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(conhecimentosAnteriores, habilidadesAnteriores, atitudesAnteriores, competencias, configuracaoNivelCompetenciaFaixaSalarial, getEmpresaSistema(), configuracaoNivelCompetenciaFaixaSalarialAnterior);
 			
 			setActionMsg("Níveis de competência da faixa salarial salvos com sucesso.");
 		}
