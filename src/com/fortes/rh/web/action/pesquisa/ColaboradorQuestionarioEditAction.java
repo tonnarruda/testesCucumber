@@ -10,7 +10,6 @@ import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
-import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
@@ -34,7 +33,6 @@ import com.fortes.rh.model.avaliacao.relatorio.QuestionarioAvaliacaoVO;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
-import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 import com.fortes.rh.model.captacao.NivelCompetencia;
@@ -83,7 +81,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private CandidatoManager candidatoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private NivelCompetenciaManager nivelCompetenciaManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
@@ -282,64 +279,71 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		prepareResponderAvaliacaoDesempenho();
 		return Action.SUCCESS;
 	}
-		
-	public String prepareResponderAvaliacaoDesempenho()
-	{
-		colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
-		
-		if (colaboradorQuestionario.getAvaliador() != null)
-			avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
-		
-		if (colaboradorQuestionario.getRespondida() || colaboradorQuestionario.isRespondidaParcialmente()){
-			colaborador = colaboradorManager.findColaboradorByDataHistorico(colaboradorQuestionario.getColaborador().getId(), colaboradorQuestionario.getRespondidaEm());
-			colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
-		}
-		else{
-			colaborador = colaboradorManager.findColaboradorByDataHistorico(colaboradorQuestionario.getColaborador().getId(), new Date());
-			colaboradorRespostas = colaboradorQuestionarioManager.populaQuestionario(colaboradorQuestionario.getAvaliacao());
-		}
-		
-		montaPerguntasRespostas();
-		configurarNivelCompetenciaFaixaSalarial();
-		
-		return Action.SUCCESS;
-	}
-
-	private void configurarNivelCompetenciaFaixaSalarial() {
-		if (colaboradorQuestionario.getAvaliacao().getId() == null || colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
-		{
-			Date dataReferencia = colaboradorQuestionario.getRespondidaEm() == null ? colaboradorQuestionario.getAvaliacaoDesempenho().getInicio() : colaboradorQuestionario.getRespondidaEm(); 
-			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(colaborador.getFaixaSalarial().getId(), dataReferencia);
-			
-			
-			
-			if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getId() != null){
-				nivelCompetencias = nivelCompetenciaManager.findAllSelect(colaborador.getEmpresa().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
-				
-				
-				
-				existConfigCompetenciaAvaliacaoDesempenho = configuracaoCompetenciaAvaliacaoDesempenhoManager.existe(configuracaoNivelCompetenciaFaixaSalarial.getId(),colaboradorQuestionario.getAvaliacaoDesempenho().getId());
-
-				
-				
-				
-				
-				if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null){	
-					niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId(), configuracaoNivelCompetenciaFaixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
-					niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), colaboradorQuestionario.getAvaliador().getId(), colaboradorQuestionario.getAvaliacaoDesempenho().getId());
-				}else{
-					if(colaboradorQuestionario.getRespondida() || colaboradorQuestionario.isRespondidaParcialmente())
-						niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(colaborador.getId(), avaliador.getId(), colaboradorQuestionario.getId());
-					
-					niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), colaboradorQuestionario.getAvaliador().getId(), colaboradorQuestionario.getAvaliacaoDesempenho().getId());
-				}
-				pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaxima(colaborador.getEmpresa().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
-			}
-		}
+	
+	public void calculoPontuacaoMaxQuestionario(){
 		if(colaboradorQuestionario.getAvaliacao().getId() != null){
 			Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
 			pontuacaoMaximaQuestionario = colaboradorRespostaManager.calculaPontuacaoMaximaQuestionario(colaboradorQuestionario, colaboradorRespostas, null);
 		}
+	}
+	
+	public String prepareResponderAvaliacaoDesempenho(){
+		colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
+		avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
+		
+		montaPerguntasRespostas();
+		calculoPontuacaoMaxQuestionario();
+
+		if(colaboradorQuestionario.getRespondida() || colaboradorQuestionario.isRespondidaParcialmente())
+			return prepareResponderAvaliacaoDesempenhoUpdate();
+		else
+			return prepareResponderAvaliacaoDesempenhoInsert();
+	}
+	
+	private String prepareResponderAvaliacaoDesempenhoInsert()
+	{
+		colaborador = colaboradorManager.findColaboradorByDataHistorico(colaboradorQuestionario.getColaborador().getId(), new Date());
+		colaboradorRespostas = colaboradorQuestionarioManager.populaQuestionario(colaboradorQuestionario.getAvaliacao());
+		
+		if (colaboradorQuestionario.getAvaliacao().getId() == null || colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo()){
+			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = decideConfiguracaoNivelCompetenciaFaixaSalarial();
+			if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getId() != null){
+				nivelCompetencias = nivelCompetenciaManager.findAllSelect(colaborador.getEmpresa().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
+				niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), colaboradorQuestionario.getAvaliador().getId(), colaboradorQuestionario.getAvaliacaoDesempenho().getId());
+				pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaxima(colaborador.getEmpresa().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
+			}
+		}
+		
+		return Action.SUCCESS;
+	}
+
+	private ConfiguracaoNivelCompetenciaFaixaSalarial decideConfiguracaoNivelCompetenciaFaixaSalarial() {
+		existConfigCompetenciaAvaliacaoDesempenho = configuracaoCompetenciaAvaliacaoDesempenhoManager.verifyExists(new String[]{"avaliacaoDesempenho.id"}, new Object[]{colaboradorQuestionario.getAvaliacaoDesempenho().getId()});
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = null;
+		
+		if(existConfigCompetenciaAvaliacaoDesempenho)
+			configuracaoNivelCompetenciaFaixaSalarial = configuracaoCompetenciaAvaliacaoDesempenhoManager.getConfiguracaoNivelCompetenciaFaixaSalarial(avaliador.getId(), colaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getAvaliacaoDesempenho().getId());
+		else 
+			configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(colaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getAvaliacaoDesempenho().getInicio());
+
+		return configuracaoNivelCompetenciaFaixaSalarial;
+	}
+	
+	private String prepareResponderAvaliacaoDesempenhoUpdate()
+	{
+		colaborador = colaboradorManager.findColaboradorByDataHistorico(colaboradorQuestionario.getColaborador().getId(), colaboradorQuestionario.getRespondidaEm());
+		colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
+		
+		if (colaboradorQuestionario.getAvaliacao().getId() == null || colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo()){
+			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByProjection(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getConfiguracaoNivelCompetenciaFaixaSalarial().getId());
+			nivelCompetencias = nivelCompetenciaManager.findAllSelect(colaborador.getEmpresa().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
+			existConfigCompetenciaAvaliacaoDesempenho = configuracaoCompetenciaAvaliacaoDesempenhoManager.existe(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getConfiguracaoNivelCompetenciaFaixaSalarial().getId(),colaboradorQuestionario.getAvaliacaoDesempenho().getId());
+			niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId(), configuracaoNivelCompetenciaFaixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
+			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), colaboradorQuestionario.getAvaliador().getId(), colaboradorQuestionario.getAvaliacaoDesempenho().getId());
+			pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaximaByNivelCompetenciaHistoricoId(configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId()).intValue();
+		}
+		
+		return Action.SUCCESS;
 	}
 
 	private boolean salvarColaboradorResposta()
@@ -348,8 +352,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		if(perguntas != null){
 			for (Pergunta pergunta : perguntas) {
 				for (ColaboradorResposta colaboradorResposta : pergunta.getColaboradorRespostas()) {
-					if(colaboradorResposta.getValor() != null || colaboradorResposta.getResposta() != null || (colaboradorResposta.getComentario() != null && !"".equals(colaboradorResposta.getComentario())))
-					{
+					if(colaboradorResposta.getValor() != null || colaboradorResposta.getResposta() != null || (colaboradorResposta.getComentario() != null && !"".equals(colaboradorResposta.getComentario()))){
 						existeResposta = true;
 						break;
 					}
@@ -358,9 +361,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 					break;
 			}
 		}
+		
 		boolean existeCompetencia = false;
-		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariais) 
-		{
+		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariais){
 			if (configuracaoNivelCompetencia.getCompetenciaId() != null){
 				existeCompetencia = true;
 				break;
@@ -370,11 +373,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		return existeResposta || existeCompetencia;
 	}
 	
-	public String responderAvaliacaoDesempenho()
-	{
-		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = null;
-		Date hoje = new Date();
-		
+	public String responderAvaliacaoDesempenho(){
 		try {
 			if(colaboradorQuestionario.getAvaliacao()!=null && colaboradorQuestionario.getAvaliacao().getId() == null)
 				colaboradorQuestionario.setAvaliacao(null);
@@ -389,41 +388,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				throw new FortesException("Esta avaliação foi bloqueada e suas respostas não foram gravadas. Entre em contato com o administrador do sistema.");
 			
 			if(colaboradorQuestionario.getRespondidaEm() == null)
-				colaboradorQuestionario.setRespondidaEm(hoje); 
+				colaboradorQuestionario.setRespondidaEm(new Date()); 
 			
-			Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = new ArrayList<ColaboradorResposta>();
 			exibeResultadoAutoAvaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
-				
-			if(colaboradorQuestionario.getAvaliacao()!=null)
-				colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);	
-
-			colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, getUsuarioLogado().getId(), getEmpresaSistema().getId(), niveisCompetenciaFaixaSalariais);
-			
-			if (colaboradorQuestionario.getAvaliacao()==null|| colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
-			{
-				colaborador = colaboradorManager.findByIdDadosBasicos(colaboradorQuestionario.getColaborador().getId(), StatusRetornoAC.CONFIRMADO);
-				avaliador = colaboradorManager.findEntidadeComAtributosSimplesById(colaboradorQuestionario.getAvaliador().getId());
-				
-				if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null)
-					configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findById(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId());
-
-				if (configuracaoNivelCompetenciaColaborador == null){
-					configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
-					configuracaoNivelCompetenciaColaborador.setData(hoje);
-					configuracaoNivelCompetenciaColaborador.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(colaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getRespondidaEm()));
-				}
-
-				configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
-				configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(colaboradorQuestionario);
-				configuracaoNivelCompetenciaColaborador.setAvaliador(avaliador);
-				configuracaoNivelCompetenciaColaborador.setFaixaSalarial(colaborador.getFaixaSalarial());
-				
-				configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
-				colaboradorQuestionario.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
-				
-				colaboradorQuestionarioManager.update(colaboradorQuestionario);
-			}
-			
+			colaborador = colaboradorManager.findByIdDadosBasicos(colaboradorQuestionario.getColaborador().getId(), StatusRetornoAC.CONFIRMADO);
+			avaliador = colaboradorQuestionario.getAvaliador();
+			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = decideConfiguracaoNivelCompetenciaFaixaSalarial();
+			avaliacaoDesempenhoManager.saveOrUpdateRespostaAvDesempenho(getUsuarioLogado(), getEmpresaSistema(), colaborador, colaboradorQuestionario, avaliacaoDesempenho, configuracaoNivelCompetenciaFaixaSalarial, perguntas, niveisCompetenciaFaixaSalariais);
 			addActionSuccess("Respostas gravadas com sucesso.");
 			
 		} catch (FortesException e) 
@@ -584,22 +555,12 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 	
-	/**
-	 * monta as perguntas e os respectivos ColaboradorResposta na estrutura:
-	 * 	Perguntas
-	 * 	 |- ColaboradorRespostas
-	 *     	 |- Resposta
-	 */
-	private void montaPerguntasRespostas() {
-		
+	private void montaPerguntasRespostas() {		
+		perguntas = new ArrayList<Pergunta>();
 		if (colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getId() != null)
 			perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(colaboradorQuestionario.getAvaliacao().getId(), ordenarPorAspecto);
-		else
-			perguntas = new ArrayList<Pergunta>();
 		
-		for (Pergunta pergunta : perguntas)
-		{
-			// setando #AVALIADO# com nome do colaborador avaliado.
+		for (Pergunta pergunta : perguntas){
 			if(colaborador != null && colaborador.getNome() != null)
 				perguntaManager.setAvaliadoNaPerguntaDeAvaliacaoDesempenho(pergunta, colaborador.getNome());
 			else if(candidato != null && candidato.getNome() != null)
@@ -608,25 +569,19 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 			Collection<Resposta> respostas = respostaManager.findByPergunta(pergunta.getId());
 			pergunta.setRespostas(respostas);
 			
-			// agrupando os ColaboradorResposta por pergunta.
-			for (ColaboradorResposta colaboradorResposta : colaboradorRespostas)
-			{
-				if (colaboradorResposta.getPergunta().equals(pergunta))
-				{
+			for (ColaboradorResposta colaboradorResposta : colaboradorRespostas){
+				if (colaboradorResposta.getPergunta().equals(pergunta)){
 					pergunta.addColaboradorResposta(colaboradorResposta);
-					
 					if (! colaboradorResposta.getPergunta().getTipo().equals(TipoPergunta.MULTIPLA_ESCOLHA))
 						break;
 				}
 			}
 			
-			if(pergunta.getColaboradorRespostas() == null)
-			{
+			if(pergunta.getColaboradorRespostas() == null){
 				ColaboradorResposta colaboradorResposta = new ColaboradorResposta();
 				colaboradorResposta.setPergunta(pergunta);
 				pergunta.addColaboradorResposta(colaboradorResposta);
 			}	
-			
 		}
 	}
 	
@@ -1051,11 +1006,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setPreview(boolean preview) {
 		this.preview = preview;
-	}
-
-	public void setConfiguracaoNivelCompetenciaColaboradorManager(
-			ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
-		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
 	}
 
 	public void setConfiguracaoNivelCompetenciaManager(

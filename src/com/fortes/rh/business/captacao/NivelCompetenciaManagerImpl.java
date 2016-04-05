@@ -8,7 +8,6 @@ import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
-import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 
 public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompetencia, NivelCompetenciaDao> implements NivelCompetenciaManager

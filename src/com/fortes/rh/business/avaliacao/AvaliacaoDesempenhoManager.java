@@ -5,10 +5,15 @@ import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.web.tags.CheckBox;
 
 public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDesempenho>
@@ -29,4 +34,5 @@ public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDese
 	Collection<CheckBox> populaCheckBox(Long empresaId, boolean ativa);
 	void liberarEmLote(String[] avaliacoesCheck, Empresa empresa) throws Exception;
 	ResultadoAvaliacaoDesempenho getResultadoAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho,Long avaliadoId);
+	void saveOrUpdateRespostaAvDesempenho(Usuario usuario, Empresa empresa, Colaborador colaborador, ColaboradorQuestionario colaboradorQuestionario, AvaliacaoDesempenho avaliacaoDesempenho, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Collection<Pergunta> perguntas, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais);
 }

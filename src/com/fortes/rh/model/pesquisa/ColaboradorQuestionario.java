@@ -900,4 +900,9 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 	public void setRespondidaParcialmente(boolean respondidaParcialmente) {
 		this.respondidaParcialmente = respondidaParcialmente;
 	}
+	
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialId(Long configuracaoNivelCompetenciaFaixaSalarialId){
+		inicializaConfiguracaoNivelCompetenciaColaborador();
+		this.configuracaoNivelCompetenciaColaborador.setConfiguracaoNivelCompetenciaFaixaSalarialId(configuracaoNivelCompetenciaFaixaSalarialId);
+	}
 }

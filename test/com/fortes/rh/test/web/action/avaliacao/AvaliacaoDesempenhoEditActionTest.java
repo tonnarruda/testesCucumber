@@ -215,7 +215,6 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		
 		assertEquals(1, action.getFaixaSalariais().size());
 		assertEquals(1, action.getAvaliadors().size());
-		assertEquals(false, action.isEditarCompetencias());
 	}
 	
 	public void testSaveCompetencias() throws Exception

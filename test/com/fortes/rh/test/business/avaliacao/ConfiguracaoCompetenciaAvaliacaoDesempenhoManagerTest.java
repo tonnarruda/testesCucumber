@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl;
@@ -18,14 +17,15 @@ import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 
-public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest extends MockObjectTestCase
+public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest extends MockObjectTestCaseManager<ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl> implements TesteAutomaticoManager
 {
-	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl configuracaoCompetenciaAvaliacaoDesempenhoManager = new ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl();
 	private Mock configuracaoCompetenciaAvaliacaoDesempenhoDao;
 	private Mock configuracaoNivelCompetenciaManager;
 	private Mock gerenciadorComunicacaoManager;
@@ -36,23 +36,24 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest extends MockO
 	protected void setUp() throws Exception
     {
         super.setUp();
+        manager = new ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl();
         configuracaoCompetenciaAvaliacaoDesempenhoDao = new Mock(ConfiguracaoCompetenciaAvaliacaoDesempenhoDao.class);
-        configuracaoCompetenciaAvaliacaoDesempenhoManager.setDao((ConfiguracaoCompetenciaAvaliacaoDesempenhoDao) configuracaoCompetenciaAvaliacaoDesempenhoDao.proxy());
+        manager.setDao((ConfiguracaoCompetenciaAvaliacaoDesempenhoDao) configuracaoCompetenciaAvaliacaoDesempenhoDao.proxy());
         
         gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
-        configuracaoCompetenciaAvaliacaoDesempenhoManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
+        manager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
         
         configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
-        configuracaoCompetenciaAvaliacaoDesempenhoManager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
+        manager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
         
         avaliacaoDesempenhoManager = new Mock(AvaliacaoDesempenhoManager.class);
-        configuracaoCompetenciaAvaliacaoDesempenhoManager.setAvaliacaoDesempenhoManager((AvaliacaoDesempenhoManager) avaliacaoDesempenhoManager.proxy());
+        manager.setAvaliacaoDesempenhoManager((AvaliacaoDesempenhoManager) avaliacaoDesempenhoManager.proxy());
         
         faixaSalarialManager = new Mock(FaixaSalarialManager.class);
-        configuracaoCompetenciaAvaliacaoDesempenhoManager.setFaixaSalarialManager((FaixaSalarialManager) faixaSalarialManager.proxy());
+        manager.setFaixaSalarialManager((FaixaSalarialManager) faixaSalarialManager.proxy());
         
         competenciaManager = new Mock(CompetenciaManager.class);
-        configuracaoCompetenciaAvaliacaoDesempenhoManager.setCompetenciaManager((CompetenciaManager) competenciaManager.proxy());
+        manager.setCompetenciaManager((CompetenciaManager) competenciaManager.proxy());
     }
 
 	public void testSave() 
@@ -64,7 +65,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest extends MockO
 		Exception exception = null;
 		try
 		{
-			configuracaoCompetenciaAvaliacaoDesempenhoManager.save(Arrays.asList(new ConfiguracaoCompetenciaAvaliacaoDesempenho()), avaliacaoDesempenho);
+			manager.save(Arrays.asList(new ConfiguracaoCompetenciaAvaliacaoDesempenho()), avaliacaoDesempenho);
 		}
 		catch(Exception e){
 			exception = e;
@@ -82,7 +83,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest extends MockO
 
 		try
 		{
-			configuracaoCompetenciaAvaliacaoDesempenhoManager.removeNotIn(Arrays.asList(new ConfiguracaoCompetenciaAvaliacaoDesempenho()), avaliacaoDesempenho.getId());
+			manager.removeNotIn(Arrays.asList(new ConfiguracaoCompetenciaAvaliacaoDesempenho()), avaliacaoDesempenho.getId());
 		}
 		catch(Exception e){
 			exception = e;
@@ -95,7 +96,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest extends MockO
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		configuracaoCompetenciaAvaliacaoDesempenhoDao.expects(once()).method("findByAvaliador").with(eq(avaliador.getId()), eq(faixaSalarial.getId()), eq(avaliacaoDesempenho.getId())).will(returnValue(Arrays.asList()));
-		assertNotNull(configuracaoCompetenciaAvaliacaoDesempenhoManager.findByAvaliador(avaliador.getId(), faixaSalarial.getId(), avaliacaoDesempenho.getId()));
+		assertNotNull(manager.findByAvaliador(avaliador.getId(), faixaSalarial.getId(), avaliacaoDesempenho.getId()));
 	}
 	
 	public void testfindFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho() {
@@ -105,13 +106,13 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest extends MockO
 		configuracaoCompetenciaAvaliacaoDesempenhoDao.expects(atLeastOnce()).method("findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId())).will(returnValue(faixaSalarials));
 		configuracaoNivelCompetenciaManager.expects(atLeastOnce()).method("findByConfiguracaoNivelCompetenciaFaixaSalarial").with(ANYTHING);
 		
-		assertNotNull(configuracaoCompetenciaAvaliacaoDesempenhoManager.findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(avaliacaoDesempenho.getId()));
+		assertNotNull(manager.findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(avaliacaoDesempenho.getId()));
 	}
 	
 	public void testExisteNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado() {
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
 		configuracaoCompetenciaAvaliacaoDesempenhoDao.expects(once()).method("existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado").with(eq(avaliacaoDesempenho.getId())).will(returnValue(true));
-		assertTrue(configuracaoCompetenciaAvaliacaoDesempenhoManager.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenho.getId()));
+		assertTrue(manager.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenho.getId()));
 	}
 	
 	public void testRemoveByAvaliacaoDesempenho() {
@@ -120,7 +121,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest extends MockO
 		Exception exception = null;
 		try
 		{
-			configuracaoCompetenciaAvaliacaoDesempenhoManager.removeByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
+			manager.removeByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
 		}
 		catch(Exception e){
 			exception = e;
@@ -133,6 +134,10 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest extends MockO
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
 		configuracaoCompetenciaAvaliacaoDesempenhoDao.expects(once()).method("existe").with(eq(configuracaoNivelCompetenciaFaixaSalarial.getId()), eq(avaliacaoDesempenho.getId())).will(returnValue(true));
 		
-		assertTrue(configuracaoCompetenciaAvaliacaoDesempenhoManager.existe(configuracaoNivelCompetenciaFaixaSalarial.getId(), avaliacaoDesempenho.getId()));
+		assertTrue(manager.existe(configuracaoNivelCompetenciaFaixaSalarial.getId(), avaliacaoDesempenho.getId()));
+	}
+
+	public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(configuracaoCompetenciaAvaliacaoDesempenhoDao);
 	}
 }

@@ -40,23 +40,6 @@
 			addChecks('avaliacoesCheck',data)
 		}
 		
-		function existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenhoId)
-		{
-			console.log(avaliacaoDesempenhoId);
-			
-			AvaliacaoDesempenhoDWR.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(function(data){notifyExclusaoConfiguracaoCompetenciaAvaliacaoDesempenho(data, avaliacaoDesempenhoId);}, avaliacaoDesempenhoId);
-		}
-
-		function notifyExclusaoConfiguracaoCompetenciaAvaliacaoDesempenho(data, avaliacaoDesempenhoId)
-		{
-			console.log(data);
-			if ( data ) {
-				newConfirm('Foi inserido um novo histórico de competências para alguma faixa salarial existente nessa avaliação. Ao bloquear a avaliação todas as configurações de competências serão desfeitas. Deseja prosseguir?', function(){window.location='bloquear.action?avaliacaoDesempenho.id='+avaliacaoDesempenhoId});
-			} else {
-				newConfirm('Deseja bloquear esta Avaliação?', function(){window.location='bloquear.action?avaliacaoDesempenho.id='+avaliacaoDesempenhoId});
-			}
-		}
-		
 		function submitLiberar(avaliacaoDesempenhoId)
 		{
 			AvaliacaoDesempenhoDWR.verificaAvaliadosSemCompetencia(avaliacaoDesempenhoId, function(msg) {
@@ -208,7 +191,7 @@
 			</#if>
 			
 			<#if avaliacaoDesempenho.liberada>
-				<a href="javascript:existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(${avaliacaoDesempenho.id});"><img border="0" title="Bloquear" src="<@ww.url includeParams="none" value="/imgs/bloquear.gif"/>"></a>
+				<a href="javascript:newConfirm('Deseja bloquear esta Avaliação?', function(){window.location='bloquear.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}'});"><img border="0" title="Bloquear" src="<@ww.url includeParams="none" value="/imgs/bloquear.gif"/>"></a>
 				<a href="javascript:newConfirm('Deseja enviar e-mail de lembrete para os colaboradores que ainda não respoderam esta avaliação desempenho?', function(){window.location='enviarLembrete.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}'});"><img border="0" title="Enviar e-mail de Lembrete" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>"></a>
 			<#else>
 				<a href="javascript:submitLiberar(${avaliacaoDesempenho.id});" id="btnLiberar"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>

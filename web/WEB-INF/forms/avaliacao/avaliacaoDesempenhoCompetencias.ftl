@@ -37,7 +37,7 @@
 		<script type="text/javascript">
 			var permiteAutoAvaliacao = ${avaliacaoDesempenho.permiteAutoAvaliacao.toString()};
 			var avaliacaoDesempenhoId = ${avaliacaoDesempenho.id};
-			var avaliacaoLiberada = ${(avaliacaoDesempenho.liberada || !editarCompetencias)?string};
+			var avaliacaoLiberada = ${avaliacaoDesempenho.liberada?string};
 			
 			$(function(){
 				if (!avaliacaoLiberada) {
@@ -187,7 +187,9 @@
 											      	<#list faixa.configuracaoCompetenciaAvaliacaoDesempenhos as ccad>
 											      		<li class="competencia_${ccad.competenciaId}_${ccad.tipoCompetencia}">
 											      			${ccad.competenciaDescricao}
-											      		
+					        								<#if ccad.possuiResposta>
+								        						<i class="fa fa-check possuiResposta" title="Possui Resposta"></i>
+								        					</#if>
 												      		<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].competenciaId" value="${ccad.competenciaId}"/>
 												      		<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].competenciaDescricao" value="${ccad.competenciaDescricao}"/>
 	    													<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].tipoCompetencia" value="${ccad.tipoCompetencia}"/>

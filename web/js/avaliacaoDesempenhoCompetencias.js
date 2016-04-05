@@ -111,11 +111,12 @@ $(function() {
 	});
 	
 	disableParentsRespondida();
+	disableParentPossuiResposta();
 });
 
 function conectCompetenciasAvaliadores() {
 	$( "#avaliadores ul.competencias" ).droppable({
-      activeClass: "ui-state-default",
+      activeClass: "",
       hoverClass: "ui-state-hover",
       accept: ":not(.ui-sortable-helper)",
       sort: function( event, ui ) {
@@ -251,4 +252,13 @@ function disableParentsRespondida(idAvaliado, idAvaliador) {
 	});
 	
 	$("#avaliadores .portlet.has-respondida").unbind();
+}
+
+function disableParentPossuiResposta() {
+		$("i.possuiResposta").each(function() {
+			$(this).parent("li").addClass("has-respondida");
+			$("#competencias #"+ $(this).parent("li").attr("class").replace(/(.*)(competencia_)([0-9]*)(.*)/g, "$3") ).addClass("has-respondida");
+		});
+		
+		$("#avaliadores .portlet.has-respondida").unbind();
 }

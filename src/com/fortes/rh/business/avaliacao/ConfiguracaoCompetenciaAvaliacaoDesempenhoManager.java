@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.security.spring.aop.callback.ConfiguracaoCompetenciaAvaliacaoDesempenhoAuditorCallbackImpl;
@@ -22,4 +23,5 @@ public interface ConfiguracaoCompetenciaAvaliacaoDesempenhoManager extends Gener
 	public boolean existe(Long configuracaoNivelCompetenciaFaixaSalarialId,Long avaliacaoDesempenhoId);
 	public Collection<Colaborador> findColabSemCompetenciaConfiguradaByAvalDesempenhoId(Long avaliacaoDesempenhoId);
 	public Collection<AvaliacaoDesempenho> findAvaliacoesComColabSemCompetenciaConfiguradaByAvalDesempenhoIds(Long[] avaliacaoDesempenhoIds);
+	public ConfiguracaoNivelCompetenciaFaixaSalarial getConfiguracaoNivelCompetenciaFaixaSalarial(Long avaliadorId, Long faixaSalarialId, Long avaliacaoDesempenhoId);
 }

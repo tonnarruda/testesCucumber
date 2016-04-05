@@ -145,6 +145,7 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernate extends GenericDaoHiber
 		hql.append("  ) ");
 		hql.append("and cq.avaliacaoDesempenho.id = :avaliacaoDesempenhoId ");
 		hql.append("and cq.avaliador.id = :avaliadorId ");
+		hql.append("order by ca.nome, fs.nome ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);

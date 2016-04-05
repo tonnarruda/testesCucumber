@@ -3,6 +3,7 @@ package com.fortes.rh.business.avaliacao;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -10,6 +11,7 @@ import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.dao.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.LongUtil;
@@ -70,6 +72,11 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl extends Gener
 	
 	public Collection<AvaliacaoDesempenho> findAvaliacoesComColabSemCompetenciaConfiguradaByAvalDesempenhoIds(Long[] avaliacaoDesempenhoIds) {
 		return getDao().findAvaliacoesComColabSemCompetenciaConfiguradaByAvalDesempenhoIds(avaliacaoDesempenhoIds);
+	}
+
+	@TesteAutomatico
+	public ConfiguracaoNivelCompetenciaFaixaSalarial getConfiguracaoNivelCompetenciaFaixaSalarial(Long avaliadorId, Long faixaSalarialId, Long avaliacaoDesempenhoId) {
+		return getDao().getConfiguracaoNivelCompetenciaFaixaSalarial(avaliadorId, faixaSalarialId, avaliacaoDesempenhoId);
 	}
 	
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {

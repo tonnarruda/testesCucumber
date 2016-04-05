@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -60,14 +61,17 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		p.add(Projections.property("ccad.avaliador.id"), "projectionAvaliadorId");
 		p.add(Projections.property("ccad.competenciaId"), "competenciaId");
 		p.add(Projections.sqlProjection("(select nome from competencia where id = {alias}.competencia_id and {alias}.tipoCompetencia = tipo) as competenciaDescricao", new String[] {"competenciaDescricao"}, new Type[] {Hibernate.STRING}), "competenciaDescricao");
+		p.add(Projections.sqlProjection(existeResposta(), new String[] {"possuiResposta"}, new Type[] {Hibernate.BOOLEAN}), "possuiResposta");
 		p.add(Projections.property("ccad.tipoCompetencia"), "tipoCompetencia");
 		//Nao aumentar a projection
-		
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("ccad.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
 		criteria.add(Expression.eq("ccad.avaliador.id", avaliadorId));
 		criteria.add(Expression.eq("ccncf.faixaSalarial.id", faixaSalarialId));
+		
+		criteria.addOrder(Order.asc("ccad.tipoCompetencia"));
+		criteria.addOrder(Order.asc("competenciaDescricao"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
@@ -75,20 +79,38 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		return criteria.list();
 	}
 	
-	public void replaceConfiguracaoNivelCompetenciaFaixaSalarial(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) {
-		String hql = "update ConfiguracaoCompetenciaAvaliacaoDesempenho ccad set ccad.configuracaoNivelCompetenciaFaixaSalarial.id = :configuracaoNivelCompetenciaFaixaSalarialId ";
-		hql += " where ccad.id in ( select ccad2.id from ConfiguracaoCompetenciaAvaliacaoDesempenho ccad2 ";
-		hql += " left join ccad2.configuracaoNivelCompetenciaFaixaSalarial cncf ";
-		hql += " left join ccad2.avaliacaoDesempenho av ";
-		hql += " where cncf.faixaSalarial.id = :faixaSalarialId and av.liberada = :liberada ) ";
-
-		Query query = getSession().createQuery(hql);
-
-		query.setLong("configuracaoNivelCompetenciaFaixaSalarialId", configuracaoNivelCompetenciaFaixaSalarial.getId());
-		query.setLong("faixaSalarialId", configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId());
-		query.setBoolean("liberada", false);
-
-		query.executeUpdate();
+	private String existeResposta(){
+		StringBuilder stringBuilder = new StringBuilder(); 
+		stringBuilder.append("exists (select cncc.id from ConfiguracaoNivelCompetenciaColaborador cncc");
+		stringBuilder.append("			inner join ColaboradorQuestionario cq on cq.id = cncc.colaboradorQuestionario_id");
+		stringBuilder.append("			inner join ConfiguracaoNivelCompetencia cnc on cnc.configuracaoNivelCompetenciaColaborador_id =  cncc.id ");
+		stringBuilder.append("			where cq.avaliacaoDesempenho_id = {alias}.avaliacaoDesempenho_id");
+		stringBuilder.append("			and cq.avaliador_id = {alias}.avaliador_id");
+		stringBuilder.append("			and cnc.competencia_id = {alias}.competencia_id");
+		stringBuilder.append("			and cnc.tipocompetencia = {alias}.tipocompetencia");
+		stringBuilder.append(") as possuiResposta");
+		return stringBuilder.toString();
+	}
+	
+	public ConfiguracaoNivelCompetenciaFaixaSalarial getConfiguracaoNivelCompetenciaFaixaSalarial(Long avaliadorId, Long faixaSalarialId, Long avaliacaoDesempenhoId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "ccad");
+		criteria.createCriteria("ccad.configuracaoNivelCompetenciaFaixaSalarial", "ccncf");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.distinct(Projections.property("ccncf.id")), "id");
+		p.add(Projections.property("ccncf.nivelCompetenciaHistorico.id"), "nivelCompetenciaHistoricoId");
+		p.add(Projections.property("ccncf.data"), "data");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("ccad.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+		criteria.add(Expression.eq("ccad.avaliador.id", avaliadorId));
+		criteria.add(Expression.eq("ccncf.faixaSalarial.id", faixaSalarialId));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaFaixaSalarial.class));
+		
+		return (ConfiguracaoNivelCompetenciaFaixaSalarial) criteria.uniqueResult();
 	}
 	
 	public void removeByAvaliacaoDesempenho(Long avaliacaoDesempenhoId) {

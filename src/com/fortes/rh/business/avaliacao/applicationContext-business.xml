@@ -112,9 +112,6 @@
     <property name="participanteAvaliacaoDesempenhoManager">
       <ref bean="participanteAvaliacaoDesempenhoManager" />
     </property>
-    <property name="configuracaoCompetenciaAvaliacaoDesempenhoManager">
-      <ref bean="configuracaoCompetenciaAvaliacaoDesempenhoManager" />
-    </property>
     <property name="configuracaoNivelCompetenciaManager">
       <ref bean="configuracaoNivelCompetenciaManager" />
     </property>
@@ -123,6 +120,12 @@
     </property>
     <property name="configuracaoNivelCompetenciaCriterioManager">
       <ref bean="configuracaoNivelCompetenciaCriterioManager" />
+    </property>
+     <property name="configuracaoNivelCompetenciaColaboradorManager">
+      <ref bean="configuracaoNivelCompetenciaColaboradorManager" />
+    </property>
+     <property name="configuracaoNivelCompetenciaFaixaSalarialManager">
+      <ref bean="configuracaoNivelCompetenciaFaixaSalarialManager" />
     </property>
   </bean>
   <bean id="participanteAvaliacaoDesempenhoManager" parent="parentManager">

@@ -37,6 +37,9 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenho extends AbstractModel im
 	@Transient
 	private String competenciaDescricao;
 	
+	@Transient
+	private boolean possuiResposta;
+	
 	public Colaborador getAvaliador() {
 		return avaliador;
 	}
@@ -123,5 +126,13 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenho extends AbstractModel im
 
 	public void setCompetenciaDescricao(String competenciaDescricao) {
 		this.competenciaDescricao = competenciaDescricao;
+	}
+
+	public boolean isPossuiResposta() {
+		return possuiResposta;
+	}
+
+	public void setPossuiResposta(boolean possuiResposta) {
+		this.possuiResposta = possuiResposta;
 	}
 }

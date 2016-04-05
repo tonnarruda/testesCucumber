@@ -8,7 +8,9 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaCriterioManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -22,11 +24,13 @@ import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.exception.AvaliacaoRespondidaException;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
@@ -52,10 +56,11 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private ColaboradorManager colaboradorManager;
 	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
-	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private NivelCompetenciaManager nivelCompetenciaManager;
 	private ConfiguracaoNivelCompetenciaCriterioManager configuracaoNivelCompetenciaCriterioManager;
+	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 	
 	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) 
 	{
@@ -136,14 +141,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 
 	public void liberarOrBloquear(AvaliacaoDesempenho avaliacaoDesempenho, boolean liberar) throws Exception
 	{
-		if (!liberar) {
-			Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
-			if (!colaboradorQuestionarios.isEmpty())
-				throw new AvaliacaoRespondidaException("Não foi possível bloquear, pois já existem respostas para essa avaliação.");
-			else if ( configuracaoCompetenciaAvaliacaoDesempenhoManager.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenho.getId()) )
-				configuracaoCompetenciaAvaliacaoDesempenhoManager.removeByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
-		}
-		
 		getDao().liberarOrBloquear(avaliacaoDesempenho.getId(), liberar);
 	}
 
@@ -373,6 +370,38 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		
 		return resultadoAvaliacaoDesempenho;
 	}
+
+	public void saveOrUpdateRespostaAvDesempenho(Usuario usuario, Empresa empresa, Colaborador colaborador, ColaboradorQuestionario colaboradorQuestionario, AvaliacaoDesempenho avaliacaoDesempenho, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Collection<Pergunta> perguntas, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais) {
+		Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = new ArrayList<ColaboradorResposta>();
+		if(colaboradorQuestionario.getAvaliacao()!=null)
+			colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);	
+
+		colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, usuario.getId(), empresa.getId(), niveisCompetenciaFaixaSalariais);
+		
+		if (colaboradorQuestionario.getAvaliacao()==null || colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
+		{
+			ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = null;
+			if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null)
+				configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findById(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId());
+			else{
+				configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+				configuracaoNivelCompetenciaColaborador.setData(new Date());
+				configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
+				configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(colaboradorQuestionario);
+				configuracaoNivelCompetenciaColaborador.setAvaliador(colaboradorQuestionario.getAvaliador());
+				configuracaoNivelCompetenciaColaborador.setFaixaSalarial(colaborador.getFaixaSalarial());
+
+				if(configuracaoNivelCompetenciaFaixaSalarial == null)
+					configuracaoNivelCompetenciaColaborador.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(colaborador.getFaixaSalarial().getId(), avaliacaoDesempenho.getInicio()));
+				else
+					configuracaoNivelCompetenciaColaborador.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
+			}
+			
+			configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
+			colaboradorQuestionario.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
+			colaboradorQuestionarioManager.update(colaboradorQuestionario);
+		}
+	}
 	
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
@@ -390,21 +419,23 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		this.participanteAvaliacaoDesempenhoManager = participanteAvaliacaoDesempenhoManager;
 	}
 
-	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
-		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(
-			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+	public void setConfiguracaoNivelCompetenciaManager( ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
-	public void setNivelCompetenciaManager(
-			NivelCompetenciaManager nivelCompetenciaManager) {
+	public void setNivelCompetenciaManager( NivelCompetenciaManager nivelCompetenciaManager) {
 		this.nivelCompetenciaManager = nivelCompetenciaManager;
 	}
 	
 	public void setConfiguracaoNivelCompetenciaCriterioManager( ConfiguracaoNivelCompetenciaCriterioManager configuracaoNivelCompetenciaCriterioManager ) {
 		this.configuracaoNivelCompetenciaCriterioManager = configuracaoNivelCompetenciaCriterioManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
+		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
+		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
 	}
 }

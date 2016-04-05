@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.avaliacao;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
@@ -8,17 +9,21 @@ import com.fortes.rh.dao.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoDao
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
+import com.fortes.rh.dao.captacao.NivelCompetenciaHistoricoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
@@ -26,7 +31,9 @@ import com.fortes.rh.test.factory.avaliacao.ConfiguracaoCompetenciaAvaliacaoDese
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
+import com.fortes.rh.test.factory.captacao.NivelCompetenciaHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
@@ -41,6 +48,8 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest extends 
 	private ConhecimentoDao conhecimentoDao;
 	private ColaboradorDao colaboradorDao;
 	private HabilidadeDao habilidadeDao;
+	private NivelCompetenciaHistoricoDao nivelCompetenciaHistoricoDao;
+	private EmpresaDao empresaDao;
 
 	public ConfiguracaoCompetenciaAvaliacaoDesempenho getEntity()
 	{
@@ -312,6 +321,56 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest extends 
 		
 		assertTrue(configuracaoCompetenciaAvaliacaoDesempenhoDao.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenho.getId()));
 	}
+	
+	public void testGetConfiguracaoNivelCompetenciaFaixaSalarial() 
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimentoDao.save(conhecimento);		
+		
+		Habilidade habilidade = HabilidadeFactory.getEntity(1L);
+		habilidadeDao.save(habilidade);
+		
+		Colaborador avaliador1 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(avaliador1);
+
+		Colaborador avaliador2 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(avaliador2);
+
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarialDao.save(faixaSalarial1);
+		
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarialDao.save(faixaSalarial2);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresaDao.save(empresa);
+		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(new Date(), empresa);
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial1 = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial1, DateUtil.criarDataMesAno(1, 1, 2015));
+		configuracaoNivelCompetenciaFaixaSalarial1.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial1);
+
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial2 = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial2, DateUtil.criarDataMesAno(2, 1, 2015));
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial2);
+
+		ConfiguracaoCompetenciaAvaliacaoDesempenho configuracaoCompetenciaAvaliacaoDesempenho1 = ConfiguracaoCompetenciaAvaliacaoDesempenhoFactory.getEntity(null, avaliador1, avaliacaoDesempenho, configuracaoNivelCompetenciaFaixaSalarial1, TipoCompetencia.CONHECIMENTO, conhecimento.getId());
+		configuracaoCompetenciaAvaliacaoDesempenhoDao.save(configuracaoCompetenciaAvaliacaoDesempenho1);
+		
+		ConfiguracaoCompetenciaAvaliacaoDesempenho configuracaoCompetenciaAvaliacaoDesempenho2 = ConfiguracaoCompetenciaAvaliacaoDesempenhoFactory.getEntity(null, avaliador1, avaliacaoDesempenho, configuracaoNivelCompetenciaFaixaSalarial2, TipoCompetencia.HABILIDADE, habilidade.getId());
+		configuracaoCompetenciaAvaliacaoDesempenhoDao.save(configuracaoCompetenciaAvaliacaoDesempenho2);
+		
+		configuracaoCompetenciaAvaliacaoDesempenhoDao.getHibernateTemplateByGenericDao().flush();
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = configuracaoCompetenciaAvaliacaoDesempenhoDao.getConfiguracaoNivelCompetenciaFaixaSalarial(avaliador1.getId(), faixaSalarial1.getId(), avaliacaoDesempenho.getId());
+		
+		assertEquals(configuracaoNivelCompetenciaFaixaSalarial1.getId(), configuracaoNivelCompetenciaFaixaSalarial.getId());
+		assertEquals(configuracaoNivelCompetenciaFaixaSalarial1.getNivelCompetenciaHistorico().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId());
+	}
 
 	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoDao(ConfiguracaoCompetenciaAvaliacaoDesempenhoDao configuracaoCompetenciaAvaliacaoDesempenhoDao) {
 		this.configuracaoCompetenciaAvaliacaoDesempenhoDao = configuracaoCompetenciaAvaliacaoDesempenhoDao;
@@ -344,5 +403,14 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest extends 
 
 	public void setHabilidadeDao(HabilidadeDao habilidadeDao) {
 		this.habilidadeDao = habilidadeDao;
+	}
+
+	public void setNivelCompetenciaHistoricoDao(
+			NivelCompetenciaHistoricoDao nivelCompetenciaHistoricoDao) {
+		this.nivelCompetenciaHistoricoDao = nivelCompetenciaHistoricoDao;
+	}
+
+	public void setEmpresaDao(EmpresaDao empresaDao) {
+		this.empresaDao = empresaDao;
 	}
 }

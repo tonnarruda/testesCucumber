@@ -108,6 +108,11 @@ i.respondida {
 	color: #67DA7F !important;
 }
 
+i.possuiResposta {
+	float: right;
+	color: #67DA7F !important;
+}
+
 i.fa {
 	color: #62AADA;
 } 
