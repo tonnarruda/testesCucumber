@@ -13,6 +13,7 @@ import org.jmock.cglib.MockObjectTestCase;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManagerImpl;
 import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaCriterioManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -24,6 +25,7 @@ import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
@@ -33,6 +35,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -41,6 +44,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -49,6 +53,7 @@ import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSala
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaHistoricoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.PerguntaFactory;
@@ -69,6 +74,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 	private Mock nivelCompetenciaManager;
 	private Mock participanteAvaliacaoDesempenhoManager;
 	private Mock configuracaoNivelCompetenciaCriterioManager;
+	private Mock configuracaoNivelCompetenciaFaixaSalarialManager;
 	
 	protected void setUp() throws Exception
     {
@@ -97,6 +103,8 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
         avaliacaoDesempenhoManager.setParticipanteAvaliacaoDesempenhoManager((ParticipanteAvaliacaoDesempenhoManager) participanteAvaliacaoDesempenhoManager.proxy());
         configuracaoNivelCompetenciaCriterioManager = mock(ConfiguracaoNivelCompetenciaCriterioManager.class);
         avaliacaoDesempenhoManager.setConfiguracaoNivelCompetenciaCriterioManager((ConfiguracaoNivelCompetenciaCriterioManager) configuracaoNivelCompetenciaCriterioManager.proxy());
+        configuracaoNivelCompetenciaFaixaSalarialManager = mock(ConfiguracaoNivelCompetenciaFaixaSalarialManager.class);
+        avaliacaoDesempenhoManager.setConfiguracaoNivelCompetenciaFaixaSalarialManager((ConfiguracaoNivelCompetenciaFaixaSalarialManager) configuracaoNivelCompetenciaFaixaSalarialManager.proxy());
     }
 
 	public void testFindAllSelect()
@@ -344,5 +352,98 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		Competencia competencia = ((Competencia) resultado.getCompetencias().toArray()[0]);
 		
 		assertEquals(80.0, competencia.getPerformance());
+	}
+	
+	public void testSaveOrUpdateRespostaAvDesempenhoSemModeloDeAvaliacao(){
+	
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setFaixaSalarial(faixaSalarial);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = null;
+		
+		colaboradorRespostaManager.expects(once()).method("update").withAnyArguments().isVoid();
+		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasColaborador").withAnyArguments();
+		colaboradorQuestionarioManager.expects(once()).method("update").withAnyArguments();
+		
+		configuracaoNivelCompetenciaFaixaSalarialManager.expects(once()).method("findByFaixaSalarialIdAndData").withAnyArguments();
+		
+		Exception exception = null;
+		try {
+			avaliacaoDesempenhoManager.saveOrUpdateRespostaAvDesempenho(usuario, empresa, colaborador, colaboradorQuestionario, avaliacaoDesempenho, configuracaoNivelCompetenciaFaixaSalarial, new ArrayList<Pergunta>(), new ArrayList<ConfiguracaoNivelCompetencia>());
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNull(exception);
+	}
+	
+	public void testSaveOrUpdateRespostaAvDesempenhoComModeloAvaliacao(){
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setFaixaSalarial(faixaSalarial);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionario.setAvaliacao(avaliacao);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = null;
+		
+		perguntaManager.expects(once()).method("getColaboradorRespostasDasPerguntas").withAnyArguments().will(returnValue(new ArrayList<Pergunta>()));
+		colaboradorRespostaManager.expects(once()).method("update").withAnyArguments().isVoid();
+		Exception exception = null;
+		try {
+			avaliacaoDesempenhoManager.saveOrUpdateRespostaAvDesempenho(usuario, empresa, colaborador, colaboradorQuestionario, avaliacaoDesempenho, configuracaoNivelCompetenciaFaixaSalarial, new ArrayList<Pergunta>(), new ArrayList<ConfiguracaoNivelCompetencia>());
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNull(exception);
+	}
+	
+	public void testSaveOrUpdateRespostaAvDesempenhoComModeloAvaliacaoEConfiguracaoAvaliarCompetenciasDoCargo(){
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setFaixaSalarial(faixaSalarial);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
+		avaliacao.setAvaliarCompetenciasCargo(true);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionario.setAvaliacao(avaliacao);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = null;
+		
+		perguntaManager.expects(once()).method("getColaboradorRespostasDasPerguntas").withAnyArguments().will(returnValue(new ArrayList<Pergunta>()));
+		colaboradorRespostaManager.expects(once()).method("update").withAnyArguments().isVoid();
+		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasColaborador").withAnyArguments();
+		colaboradorQuestionarioManager.expects(once()).method("update").withAnyArguments();
+		
+		configuracaoNivelCompetenciaFaixaSalarialManager.expects(once()).method("findByFaixaSalarialIdAndData").withAnyArguments();
+		
+		Exception exception = null;
+		try {
+			avaliacaoDesempenhoManager.saveOrUpdateRespostaAvDesempenho(usuario, empresa, colaborador, colaboradorQuestionario, avaliacaoDesempenho, configuracaoNivelCompetenciaFaixaSalarial, new ArrayList<Pergunta>(), new ArrayList<ConfiguracaoNivelCompetencia>());
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNull(exception);
 	}
 }

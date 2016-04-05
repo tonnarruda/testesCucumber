@@ -174,11 +174,11 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		configuracaoCompetenciaAvaliacaoDesempenhos.add(new ConfiguracaoCompetenciaAvaliacaoDesempenho());
 		
 		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacaoDesempenho));
-		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(faixasSalariais));
+		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId())).will(returnValue(faixasSalariais));									   
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING, ANYTHING}).will(returnValue(new ArrayList<FaixaSalarial>()));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findColaboradoresParticipantes").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(colaboradoresAvaliadores));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(faixasSalariais));
 		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("findByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING}).will(returnValue(configuracaoCompetenciaAvaliacaoDesempenhos));
-		colaboradorQuestionarioManager.expects(once()).method("findRespondidasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 		
 		action.prepareCompetencias();
 		
@@ -206,10 +206,10 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		
 		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacaoDesempenho));
 		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(faixasSalariais));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING, ANYTHING}).will(returnValue(new ArrayList<FaixaSalarial>()));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findColaboradoresParticipantes").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(colaboradoresAvaliadores));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(faixasSalariais));
 		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("findByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING}).will(returnValue(configuracaoCompetenciaAvaliacaoDesempenhos));
-		colaboradorQuestionarioManager.expects(once()).method("findRespondidasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(colaboradorQuestionarios));
 		
 		action.prepareCompetencias();
 		
@@ -228,10 +228,10 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("removeNotIn").with(ANYTHING, ANYTHING).isVoid();
 		
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
-		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(new ArrayList<FaixaSalarial>()));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING, ANYTHING}).will(returnValue(new ArrayList<FaixaSalarial>()));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findColaboradoresParticipantes").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
-		colaboradorQuestionarioManager.expects(once()).method("findRespondidasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
-
+		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(new ArrayList<FaixaSalarial>()));
+		
 		assertEquals("success", action.saveCompetencias());
 	}
 	

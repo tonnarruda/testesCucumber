@@ -55,7 +55,6 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		for (Pergunta pergunta : perguntas) {
 			perguntaManager.setAvaliadoNaPerguntaDeAvaliacaoDesempenho(pergunta, "AVALIADO");
 		}
-
         QuestionarioRelatorio questionarioRelatorio = new QuestionarioRelatorio();
         questionarioRelatorio.setAvaliacaoExperiencia(avaliacao);
         questionarioRelatorio.setPerguntas(perguntas);

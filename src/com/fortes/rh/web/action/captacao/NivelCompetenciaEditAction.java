@@ -253,8 +253,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	public String saveCompetenciasByFaixaSalarial() throws Exception
 	{
-		try
-		{
+		try{
 			if (niveisCompetenciaFaixaSalariais == null) 
 				niveisCompetenciaFaixaSalariais = new ArrayList<ConfiguracaoNivelCompetencia>();
 			
@@ -266,20 +265,17 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			
 			setActionMsg("Níveis de competência da faixa salarial salvos com sucesso.");
 		}
-		catch (DataIntegrityViolationException e)
-		{
+		catch (DataIntegrityViolationException e){
 			addActionWarning("Já existe uma configuração de competências nesta data.");
 			e.printStackTrace();
 			configuracaoNivelCompetenciaFaixaSalarial.setId(null);
 			prepareCompetenciasByFaixaSalarial();
 			return Action.INPUT;
 		}
-		catch (Exception e)
-		{
+		catch (Exception e){
 			addActionError(e.getMessage());
 			e.printStackTrace();
 		}
-
 		prepareCompetenciasByFaixaSalarial();
 		return Action.SUCCESS;
 	}

@@ -378,8 +378,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 
 		colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, usuario.getId(), empresa.getId(), niveisCompetenciaFaixaSalariais);
 		
-		if (colaboradorQuestionario.getAvaliacao()==null || colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
-		{
+		if (colaboradorQuestionario.getAvaliacao()==null || colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo()) {
 			ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = null;
 			if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null)
 				configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findById(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId());
@@ -396,7 +395,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 				else
 					configuracaoNivelCompetenciaColaborador.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
 			}
-			
 			configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
 			colaboradorQuestionario.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
 			colaboradorQuestionarioManager.update(colaboradorQuestionario);

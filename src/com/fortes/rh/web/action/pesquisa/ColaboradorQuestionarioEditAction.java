@@ -280,7 +280,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 	
-	public void calculoPontuacaoMaxQuestionario(){
+	private void calculoPontuacaoMaxQuestionario(){
 		if(colaboradorQuestionario.getAvaliacao().getId() != null){
 			Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
 			pontuacaoMaximaQuestionario = colaboradorRespostaManager.calculaPontuacaoMaximaQuestionario(colaboradorQuestionario, colaboradorRespostas, null);
