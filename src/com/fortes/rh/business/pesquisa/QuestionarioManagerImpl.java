@@ -317,8 +317,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     {
     	Collection<ResultadoQuestionario> resultadoQuestionarios = new ArrayList<ResultadoQuestionario>();
 		
-    	for (Pergunta pergunta: perguntas)
-    	{
+    	for (Pergunta pergunta: perguntas){
     		ResultadoQuestionario resultadoQuestionario = new ResultadoQuestionario();
     		resultadoQuestionario.setPergunta(calculaMedia(colaboradorRespostas, pergunta));
     		resultadoQuestionario.setColabRespostas(montaColaboradorReposta(colaboradorRespostas, pergunta));
@@ -326,19 +325,30 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     		resultadoQuestionarios.add(resultadoQuestionario);
     	}
 		
-    	for (ResultadoQuestionario resultadoQuestionario : resultadoQuestionarios)
-    	{
+    	for (ResultadoQuestionario resultadoQuestionario : resultadoQuestionarios){
     		if(!resultadoQuestionario.getPergunta().getTipo().equals(TipoPergunta.SUBJETIVA))
     			resultadoQuestionario.montaColabRespostasDistinct();
     	}
         
-        for (ResultadoQuestionario resultadoQuestionario : resultadoQuestionarios)
-        {
-        	if(!resultadoQuestionario.getPergunta().getTipo().equals(TipoPergunta.SUBJETIVA))
-        		resultadoQuestionario.montaComentarioPesquisaDistinct();
+        for (ResultadoQuestionario resultadoQuestionario : resultadoQuestionarios){
+        	if(!resultadoQuestionario.getPergunta().getTipo().equals(TipoPergunta.SUBJETIVA)){
+        		if(anonimo)
+        			resultadoQuestionario.montaComentarioPesquisaDistinct();
+        		else
+        			montaComentario(resultadoQuestionario);
+        	}
         }
         
         return resultadoQuestionarios;
+	}
+
+	private void montaComentario(ResultadoQuestionario resultadoQuestionario) {
+		Collection<ColaboradorResposta> colabComentariosDistinct = new ArrayList<ColaboradorResposta>();
+		for (ColaboradorResposta colabResposta : resultadoQuestionario.getColabRespostas()) 
+			if(colabResposta.getComentario() != null && !"".equals(colabResposta.getComentario()))
+				colabComentariosDistinct.add(colabResposta);
+		
+		resultadoQuestionario.setColabComentariosDistinct(colabComentariosDistinct);
 	}
     
     /**

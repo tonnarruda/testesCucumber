@@ -534,6 +534,75 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getColabRespostas().size());
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getRespostas().size());
     }
+
+	private Collection<ResultadoQuestionario> montaResultadoDadosBasicos(Boolean anonimo) throws Exception 
+	{
+		Pergunta pergunta1 = PerguntaFactory.getEntity(1L);
+    	pergunta1.setTipo(TipoPergunta.OBJETIVA);
+
+    	Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
+    	perguntas.add(pergunta1);
+
+    	Resposta resposta1 = RespostaFactory.getEntity(1L);
+    	resposta1.setPergunta(pergunta1);
+    	
+    	Resposta resposta2 = RespostaFactory.getEntity(2L);
+    	resposta2.setPergunta(pergunta1);
+    	
+    	Resposta resposta3 = RespostaFactory.getEntity(3L);
+    	resposta3.setPergunta(pergunta1);
+
+    	Collection<Resposta> respostas = new ArrayList<Resposta>();
+    	respostas.add(resposta1);
+    	respostas.add(resposta2);
+    	respostas.add(resposta3);
+
+    	ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(1L);
+    	
+    	ColaboradorResposta colaboradorResposta1 = ColaboradorRespostaFactory.getEntity(1L);
+    	colaboradorResposta1.setColaboradorQuestionario(colaboradorQuestionario1);
+    	colaboradorResposta1.setComentario("bla");
+    	colaboradorResposta1.setPergunta(pergunta1);
+
+    	ColaboradorResposta colaboradorResposta2 = ColaboradorRespostaFactory.getEntity(2L);
+    	colaboradorResposta2.setColaboradorQuestionario(colaboradorQuestionario1);
+    	colaboradorResposta2.setComentario("bla");
+    	colaboradorResposta2.setPergunta(pergunta1);
+
+    	Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
+    	colaboradorRespostas.add(colaboradorResposta1);
+    	colaboradorRespostas.add(colaboradorResposta2);
+
+    	Questionario questionario = QuestionarioFactory.getEntity(1L);
+    	questionario.setAnonimo(anonimo);
+
+    	respostaManager.expects(once()).method("findInPerguntaIds").with(ANYTHING).will(returnValue(respostas));
+    	colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaManager.expects(once()).method("existeRespostaSemCargo").with(eq( new Long[] { pergunta1.getId()} )).will(returnValue(false));
+    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
+    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
+
+    	Collection<ResultadoQuestionario> resultado = questionarioManager.montaResultado(perguntas, new Long[] { pergunta1.getId()}, null, null, null, null, null, true, null, questionario);
+		return resultado;
+	}
+    
+   public void testMontaResultadoObjetiva() throws Exception
+    {
+    	Collection<ResultadoQuestionario> resultado = montaResultadoDadosBasicos(false);
+    	assertEquals(1, resultado.size());
+    	assertEquals(2, ((ResultadoQuestionario)resultado.toArray()[0]).getColabRespostas().size());
+    	assertEquals(3, ((ResultadoQuestionario)resultado.toArray()[0]).getRespostas().size());
+    	assertEquals(2, ((ResultadoQuestionario)resultado.toArray()[0]).getColabComentariosDistinct().size());
+    }
+	
+    public void testMontaResultadoObjetivaAnonima() throws Exception
+    {
+    	Collection<ResultadoQuestionario> resultado = montaResultadoDadosBasicos(true);
+    	assertEquals(1, resultado.size());
+    	assertEquals(2, ((ResultadoQuestionario)resultado.toArray()[0]).getColabRespostas().size());
+    	assertEquals(3, ((ResultadoQuestionario)resultado.toArray()[0]).getRespostas().size());
+    	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getColabComentariosDistinct().size());
+    }
     
     public void testMontaResultadoQuandoQuestionarioAnonimo() throws Exception
     {

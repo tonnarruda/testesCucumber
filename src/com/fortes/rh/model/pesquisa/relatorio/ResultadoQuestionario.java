@@ -53,11 +53,6 @@ public class ResultadoQuestionario implements Serializable
 				if(this.pergunta.getTipo().equals(TipoPergunta.MULTIPLA_ESCOLHA) || this.pergunta.getTipo().equals(TipoPergunta.OBJETIVA) || this.pergunta.getTipo().equals(TipoPergunta.NOTA))
 					colaboradorResposta.setRespostasObjetivas(getRespostasObjetivas(colabRespostas, colaboradorResposta.getPergunta().getId(), colaboradorResposta.getColaboradorQuestionario().getId()));
 
-// Removido deste if e colocado no de cima pois nao estava trazendo os comentarios quando era por nota.				
-//				if(this.pergunta.getTipo().equals(TipoPergunta.NOTA))
-//					if(colaboradorResposta.getValor() != null)
-//						colaboradorResposta.setRespostasObjetivas("" + colaboradorResposta.getValor());
-				
 				this.colabRespostasDistinct.add(colaboradorResposta);
 			}
 			

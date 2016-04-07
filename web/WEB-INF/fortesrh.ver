@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.1xx.1xx" db="" data="xx/xx/2016">
+		<Item visivel="P" motivo="P16040000033"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Ajuste de inconsistência ao exibir comentários.]]></Item>
+	</Versao>
 	<Versao id="1.1.163.194" db="" data="29/03/2016">
 		<Item visivel="S" motivo="P16030000328"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Ajuste da inconsistência ao tentar inserir histórico de nível quando não existir nível de competência.]]></Item>
 		<Item visivel="S" motivo="S16030000141"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho: Nova opção para imprimir respostas da avaliação.]]></Item>
