@@ -136,13 +136,14 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		return criteria;
 	}
 	
-	public int getOrdemMaxima(Long empresaId, Date data) 
+	public int getOrdemMaxima(Long empresaId, Long nivelCompetenciaHistoricoId) 
 	{
-		Criteria criteria = criteriaNivelConfiguracao(data);
-		
-		criteria.setProjection(Projections.max("chn.ordem"));
+		Criteria criteria = getSession().createCriteria(ConfigHistoricoNivel.class, "chn");
+		criteria.createCriteria("chn.nivelCompetencia", "nc", Criteria.INNER_JOIN);
+		criteria.createCriteria("chn.nivelCompetenciaHistorico", "nch", Criteria.INNER_JOIN);
 		criteria.add(Expression.eq("nc.empresa.id", empresaId));
-		
+		criteria.add(Expression.eq("nch.id", nivelCompetenciaHistoricoId));
+		criteria.setProjection(Projections.max("chn.ordem"));
 		Integer result = (Integer) criteria.uniqueResult();
 		return (int) (result == null ? 0 : result);
 	}

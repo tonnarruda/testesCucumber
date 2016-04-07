@@ -33,6 +33,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	@ManyToOne
 	private Solicitacao solicitacao;
 	@ManyToOne
+	private ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato;
+	@ManyToOne
 	private ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador;
 	@ManyToOne
 	private ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial;
@@ -574,5 +576,14 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 
 	public void setAvaliadorPeso(Integer avaliadorPeso) {
 		this.avaliadorPeso = avaliadorPeso;
+	}
+
+	public ConfiguracaoNivelCompetenciaCandidato getConfiguracaoNivelCompetenciaCandidato() {
+		return configuracaoNivelCompetenciaCandidato;
+	}
+
+	public void setConfiguracaoNivelCompetenciaCandidato(
+			ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato) {
+		this.configuracaoNivelCompetenciaCandidato = configuracaoNivelCompetenciaCandidato;
 	}
 }

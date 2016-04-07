@@ -453,7 +453,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 			
 			pontuacaoNivelCompetenciaObtida = nivelCompetenciaManager.getPontuacaoObtidaByConfiguracoesNiveisCompetencia(niveisCompetenciaMarcados);
 			
-			int pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaxima(empresaId, configuracaoNivelCompetenciaFaixaSalarial.getData());
+			int pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaxima(empresaId, configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId());
 			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaMarcado : niveisCompetenciaMarcados) 
 				if(configuracaoNivelCompetenciaMarcado.getNivelCompetencia() != null && configuracaoNivelCompetenciaMarcado.getNivelCompetencia().getId() != null)
 					pontuacaoMaximaNivelcompetencia += configuracaoNivelCompetenciaMarcado.getPesoCompetencia() * pontuacaoMaximaNivelCompetencia;

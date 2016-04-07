@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Análise de Desempenho das Competência do Colaborador</title>
+	<title>Análise de Desempenho das Competências do Colaborador</title>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>

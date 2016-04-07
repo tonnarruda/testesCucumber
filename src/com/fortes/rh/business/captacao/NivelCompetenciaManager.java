@@ -19,7 +19,7 @@ public interface NivelCompetenciaManager extends GenericManager<NivelCompetencia
 
 	Double getPontuacaoObtidaByConfiguracoesNiveisCompetencia(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados);
 
-	int getOrdemMaxima(Long empresaId, Date data);
+	int getOrdemMaxima(Long empresaId, Long nivelCompetenciaHistoricoId);
 
 	boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual);
 

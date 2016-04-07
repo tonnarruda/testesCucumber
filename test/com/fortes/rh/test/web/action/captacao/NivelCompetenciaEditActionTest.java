@@ -13,7 +13,6 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
-import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
@@ -67,7 +66,6 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 	private Mock configuracaoNivelCompetenciaManager;
 	private Mock configuracaoNivelCompetenciaColaboradorManager;
 	private Mock configuracaoNivelCompetenciaFaixaSalarialManager;
-	private Mock configuracaoCompetenciaAvaliacaoDesempenhoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -81,7 +79,6 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
 		configuracaoNivelCompetenciaColaboradorManager = new Mock(ConfiguracaoNivelCompetenciaColaboradorManager.class);
 		configuracaoNivelCompetenciaFaixaSalarialManager = new Mock(ConfiguracaoNivelCompetenciaFaixaSalarialManager.class);
-		configuracaoCompetenciaAvaliacaoDesempenhoManager = new Mock(ConfiguracaoCompetenciaAvaliacaoDesempenhoManager.class);
 		
 		action = new NivelCompetenciaEditAction();
 		action.setNivelCompetencia(new NivelCompetencia());
@@ -95,7 +92,6 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		action.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
 		action.setConfiguracaoNivelCompetenciaColaboradorManager((ConfiguracaoNivelCompetenciaColaboradorManager) configuracaoNivelCompetenciaColaboradorManager.proxy());
 		action.setConfiguracaoNivelCompetenciaFaixaSalarialManager((ConfiguracaoNivelCompetenciaFaixaSalarialManager) configuracaoNivelCompetenciaFaixaSalarialManager.proxy());
-		action.setConfiguracaoCompetenciaAvaliacaoDesempenhoManager((ConfiguracaoCompetenciaAvaliacaoDesempenhoManager) configuracaoCompetenciaAvaliacaoDesempenhoManager.proxy());
 		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
 	}
 

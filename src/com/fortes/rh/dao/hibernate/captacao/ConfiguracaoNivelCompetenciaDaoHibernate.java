@@ -37,19 +37,19 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 {
 	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data) 
 	{
-		Criteria criteria = createCriteria(data);
+		Criteria criteria = createCriteria();
 		criteria.createCriteria("cnc.configuracaoNivelCompetenciaFaixaSalarial", "cncfs", Criteria.LEFT_JOIN);
-		
+		criteria.add(Expression.eqProperty("nch.id", "cncfs.nivelCompetenciaHistorico.id"));
 		criteria.add(Expression.eq("cncfs.faixaSalarial.id", faixaSalarialId));
 		criteria.add(Expression.isNull("cnc.candidato.id"));
 		criteria.add(Expression.isNull("cnc.configuracaoNivelCompetenciaColaborador.id"));
 
-		DetachedCriteria subQueryHc = DetachedCriteria.forClass(ConfiguracaoNivelCompetenciaFaixaSalarial.class, "cncfs2")
+		DetachedCriteria subQueryCNCF = DetachedCriteria.forClass(ConfiguracaoNivelCompetenciaFaixaSalarial.class, "cncfs2")
 				.setProjection(Projections.max("cncfs2.data"))
 				.add(Restrictions.eq("cncfs2.faixaSalarial.id", faixaSalarialId))
 				.add(Restrictions.le("cncfs2.data", (data == null ? new Date() : data)));
 
-		criteria.add(Subqueries.propertyEq("cncfs.data", subQueryHc));
+		criteria.add(Subqueries.propertyEq("cncfs.data", subQueryCNCF));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetencia.class));
@@ -59,7 +59,15 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 
 	public Collection<ConfiguracaoNivelCompetencia> findByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId) 
 	{
-		Criteria criteria = createCriteria(null);
+		DetachedCriteria subQueryCNCF = DetachedCriteria.forClass(ConfiguracaoNivelCompetenciaFaixaSalarial.class, "cncf2")
+				.setProjection(Projections.max("cncf2.data"))
+				.add(Restrictions.eqProperty("cncf2.faixaSalarial.id", "f.id"))
+				.add(Restrictions.leProperty("cncf2.data", "s.data"));
+
+		Criteria criteria = createCriteria();
+		criteria.createCriteria("nch.configuracaoNivelCompetenciaFaixaSalariais", "cncf");
+		criteria.add(Subqueries.propertyEq("cncf.data", subQueryCNCF));
+		criteria.add(Expression.eqProperty("nch.id", "cncf.nivelCompetenciaHistorico.id"));
 
 		if(candidatoId != null)
 			criteria.add(Expression.eq("cnc.candidato.id", candidatoId));
@@ -75,23 +83,17 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return criteria.list();
 	}
 
-	private Criteria createCriteria(Date data) 
+	private Criteria createCriteria() 
 	{
-		DetachedCriteria subQueryHc = DetachedCriteria.forClass(NivelCompetenciaHistorico.class, "nch2")
-				.setProjection(Projections.max("nch2.data"))
-				.add(Restrictions.eqProperty("nch2.empresa.id", "nc.empresa.id"))
-				.add(Restrictions.le("nch2.data", data == null ? new Date() : data ));
-		
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetencia.class,"cnc");
 		criteria.createCriteria("cnc.nivelCompetencia", "nc", Criteria.LEFT_JOIN);
 		criteria.createCriteria("nc.configHistoricoNiveis", "chn", Criteria.LEFT_JOIN);
-		criteria.createCriteria("chn.nivelCompetenciaHistorico", "nch", Criteria.LEFT_JOIN);
+		criteria.createCriteria("chn.nivelCompetenciaHistorico", "nch", Criteria.INNER_JOIN);
 		
 		criteria.createCriteria("cnc.solicitacao", "s", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cnc.candidato", "cand", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.faixaSalarial", "f", Criteria.LEFT_JOIN);
 		criteria.createCriteria("f.cargo", "c", Criteria.LEFT_JOIN);
-		criteria.add(Subqueries.propertyEq("nch.data", subQueryHc));
 
 		ProjectionList p = montaProjectionFindByConfiguracaoNivelCompetenciaFaixaSalarial();
 		p.add(Projections.property("s.id"), "solicitacaoId");
@@ -128,12 +130,16 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		getSession().createQuery(queryHQL).setLong("configuracaoNivelCompetenciaFaixaSalarialId", configuracaoNivelCompetenciaFaixaSalarialId).executeUpdate();		
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaColaborador(Long[] competenciasIds, Long configuracaoNivelCompetenciaColaboradorId, Date data) 
+	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaColaborador(Long[] competenciasIds, Long configuracaoNivelCompetenciaColaboradorId, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) 
 	{
-		Criteria criteria = createCriteria(data);
+		Criteria criteria = createCriteria();
 
 		criteria.addOrder(Order.asc("competenciaDescricao"));
+		criteria.createCriteria("cnc.configuracaoNivelCompetenciaColaborador", "cncc");
+		criteria.createCriteria("cncc.configuracaoNivelCompetenciaFaixaSalarial", "cncf");
 		criteria.add(Expression.eq("cnc.configuracaoNivelCompetenciaColaborador.id", configuracaoNivelCompetenciaColaboradorId));
+		criteria.add(Restrictions.eq("cncf.id", configuracaoNivelCompetenciaFaixaSalarial.getId()));
+		criteria.add(Restrictions.eqProperty("nch.id", "cncf.nivelCompetenciaHistorico.id"));
 		
 		if(competenciasIds != null && competenciasIds.length > 0)
 			criteria.add(Expression.in("cnc.competenciaId", competenciasIds));
@@ -743,10 +749,12 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		query.executeUpdate();
 	}
 	
-	public Collection<ConfiguracaoNivelCompetencia> findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico(Long solicitacaoId, Long candidatoId, Date dataNivelCompetenciaHistorico) {
-		Criteria criteria = createCriteria(dataNivelCompetenciaHistorico);
+	public Collection<ConfiguracaoNivelCompetencia> findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico(Long solicitacaoId, Long candidatoId, Long nivelCompetenciaHistoricoId) {
+		Criteria criteria = createCriteria();
+		
 		criteria.add(Expression.eq("cnc.solicitacao.id", solicitacaoId));
 		criteria.add(Expression.eq("cnc.candidato.id", candidatoId));
+		criteria.add(Expression.eq("nch.id", nivelCompetenciaHistoricoId));
 		criteria.addOrder(Order.asc("cand.nome"));
 		criteria.addOrder(Order.asc("cand.id"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

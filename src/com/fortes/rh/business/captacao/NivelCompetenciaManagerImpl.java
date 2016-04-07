@@ -61,9 +61,9 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 		return pontuacao;
 	}
 
-	public int getOrdemMaxima(Long empresaId, Date data) 
+	public int getOrdemMaxima(Long empresaId, Long nivelCompetenciaHistoricoId) 
 	{
-		return getDao().getOrdemMaxima(empresaId, data);
+		return getDao().getOrdemMaxima(empresaId, nivelCompetenciaHistoricoId);
 	}
 	
 	public Double getOrdemMaximaByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId) 
