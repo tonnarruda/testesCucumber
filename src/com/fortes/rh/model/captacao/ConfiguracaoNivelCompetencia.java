@@ -28,10 +28,10 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 {
 	@ManyToOne
 	private FaixaSalarial faixaSalarial;
-	@ManyToOne
-	private Candidato candidato;
-	@ManyToOne
-	private Solicitacao solicitacao;
+//	@ManyToOne
+//	private Candidato candidato;
+//	@ManyToOne
+//	private Solicitacao solicitacao;
 	@ManyToOne
 	private ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato;
 	@ManyToOne
@@ -199,12 +199,12 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		nivelCompetencia.setDescricao(nivel);
 		nivelCompetencia.setOrdem(ordem);
 		
-		if(candidatoId != null)
-		{
-			this.candidato = new Candidato();
-			candidato.setId(candidatoId.longValue());
-			candidato.setNome(candidatoNome);
-		}
+//		if(candidatoId != null)
+//		{
+//			this.candidato = new Candidato();
+//			candidato.setId(candidatoId.longValue());
+//			candidato.setNome(candidatoNome);
+//		}
 	}
 	
 	//findCompetenciasAndPesos
@@ -251,12 +251,12 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.faixaSalarial.setId(faixaSalarialId);
 	}
 	
-	public void setCandidatoIdProjection(Long candidatoId) 
-	{
-		inicializaCandidato();
-		
-		this.candidato.setId(candidatoId);
-	}
+//	public void setCandidatoIdProjection(Long candidatoId) 
+//	{
+//		inicializaCandidato();
+//		
+//		this.candidato.setId(candidatoId);
+//	}
 	
 	public NivelCompetencia getNivelCompetencia() 
 	{
@@ -365,13 +365,13 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.competenciaDescricao = competenciaDescricao;
 	}
 
-	public Candidato getCandidato() {
-		return candidato;
-	}
-
-	public void setCandidato(Candidato candidato) {
-		this.candidato = candidato;
-	}
+//	public Candidato getCandidato() {
+//		return candidato;
+//	}
+//
+//	public void setCandidato(Candidato candidato) {
+//		this.candidato = candidato;
+//	}
 
 	public ConfiguracaoNivelCompetenciaColaborador getConfiguracaoNivelCompetenciaColaborador() {
 		return configuracaoNivelCompetenciaColaborador;
@@ -391,10 +391,13 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	}
 	
 	public boolean isFaixaSalarial() {
-		return this.candidato == null 
-		&& (this.configuracaoNivelCompetenciaColaborador == null 
-				|| this.configuracaoNivelCompetenciaColaborador.getColaborador() == null 
-				|| this.configuracaoNivelCompetenciaColaborador.getColaborador().getId() == null); 
+//		return this.candidato == null 
+//		&& (this.configuracaoNivelCompetenciaColaborador == null 
+//				|| this.configuracaoNivelCompetenciaColaborador.getColaborador() == null 
+//				|| this.configuracaoNivelCompetenciaColaborador.getColaborador().getId() == null); 
+		return (this.configuracaoNivelCompetenciaColaborador == null 
+						|| this.configuracaoNivelCompetenciaColaborador.getColaborador() == null 
+						|| this.configuracaoNivelCompetenciaColaborador.getColaborador().getId() == null); 
 	}
 	
 	public boolean isColaborador() {
@@ -459,39 +462,39 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.configuracaoNivelCompetenciaFaixaSalarial.setData(ConfiguracaoNivelCompetenciaFaixaSalarialData);
 	}
 
-	public Solicitacao getSolicitacao()
-	{
-		return solicitacao;
-	}
-
-	public void setSolicitacao(Solicitacao solicitacao)
-	{
-		this.solicitacao = solicitacao;
-	}
-
-	public void setSolicitacaoId(Long solicitacaoId)
-	{
-		inicializaSolicitacao();
-		this.solicitacao.setId(solicitacaoId);
-	}
-	
-	public void setSolicitacaoDescricao(String solicitacaoDescricao)
-	{
-		inicializaSolicitacao();
-		this.solicitacao.setDescricao(solicitacaoDescricao);
-	}
-	
-	public void setSolicitacaoData(Date solicitacaoData)
-	{
-		inicializaSolicitacao();
-		this.solicitacao.setData(solicitacaoData);
-	}
-
-	private void inicializaSolicitacao() 
-	{
-		if(this.solicitacao == null) 
-			this.solicitacao = new Solicitacao();
-	}
+//	public Solicitacao getSolicitacao()
+//	{
+//		return solicitacao;
+//	}
+//
+//	public void setSolicitacao(Solicitacao solicitacao)
+//	{
+//		this.solicitacao = solicitacao;
+//	}
+//
+//	public void setSolicitacaoId(Long solicitacaoId)
+//	{
+//		inicializaSolicitacao();
+//		this.solicitacao.setId(solicitacaoId);
+//	}
+//	
+//	public void setSolicitacaoDescricao(String solicitacaoDescricao)
+//	{
+//		inicializaSolicitacao();
+//		this.solicitacao.setDescricao(solicitacaoDescricao);
+//	}
+//	
+//	public void setSolicitacaoData(Date solicitacaoData)
+//	{
+//		inicializaSolicitacao();
+//		this.solicitacao.setData(solicitacaoData);
+//	}
+//
+//	private void inicializaSolicitacao() 
+//	{
+//		if(this.solicitacao == null) 
+//			this.solicitacao = new Solicitacao();
+//	}
 	
 	public void setFaixaSalarialNome(String faixaSalarialNome)
 	{
@@ -544,23 +547,6 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	public void setPesoCompetencia(Integer pesoCompetencia) {
 		this.pesoCompetencia = pesoCompetencia;
 	}
-	
-	public void setCandidatoNome(String candidatoNome){
-		inicializaCandidato();
-		
-		this.candidato.setNome(candidatoNome);
-	}
-
-	public void setCandidatoId(Long candidatoId){
-		inicializaCandidato();
-	
-		this.candidato.setId(candidatoId);
-	}
-
-	private void inicializaCandidato() {
-		if(this.candidato == null)
-			this.candidato = new Candidato();
-	}
 
 	public Long getAvaliadorId() {
 		return avaliadorId;
@@ -582,8 +568,37 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		return configuracaoNivelCompetenciaCandidato;
 	}
 
-	public void setConfiguracaoNivelCompetenciaCandidato(
-			ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato) {
+	public void setConfiguracaoNivelCompetenciaCandidato(ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato) {
 		this.configuracaoNivelCompetenciaCandidato = configuracaoNivelCompetenciaCandidato;
+	}
+	
+	public void setConfiguracaoNivelCompetenciaCandidatoId(Long configuracaoNivelCompetenciaCandidatoId) {
+		inicializaConfiguracaoNivelCompetenciaCandidato();
+		this.configuracaoNivelCompetenciaCandidato.setId(configuracaoNivelCompetenciaCandidatoId);
+	}
+	
+	public void setConfiguracaoNivelCompetenciaCandidatoCNCFId(Long configuracaoNivelCompetenciaFaixaSalarialId) {
+		inicializaConfiguracaoNivelCompetenciaCandidato();
+		this.configuracaoNivelCompetenciaCandidato.setConfiguracaoNivelCompetenciaFaixaSalarialId(configuracaoNivelCompetenciaFaixaSalarialId);
+	}
+	
+	public void setConfiguracaoNivelCompetenciaCandidatoNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId) {
+		inicializaConfiguracaoNivelCompetenciaCandidato();
+		this.configuracaoNivelCompetenciaCandidato.setCNCFNivelCompetenciaHistoricoId(nivelCompetenciaHistoricoId);
+	}
+	
+	public void setConfiguracaoNivelCompetenciaCandidatoCandidatoNome(String candidatoNome){
+		inicializaConfiguracaoNivelCompetenciaCandidato();
+		this.configuracaoNivelCompetenciaCandidato.setCandidatoNome(candidatoNome);
+	}
+
+	public void setConfiguracaoNivelCompetenciaCandidatoCandidatoId(Long candidatoId){
+		inicializaConfiguracaoNivelCompetenciaCandidato();
+		this.configuracaoNivelCompetenciaCandidato.setCandidatoId(candidatoId);
+	}
+
+	private void inicializaConfiguracaoNivelCompetenciaCandidato(){
+		if(this.configuracaoNivelCompetenciaCandidato == null)
+			this.configuracaoNivelCompetenciaCandidato = new ConfiguracaoNivelCompetenciaCandidato();
 	}
 }

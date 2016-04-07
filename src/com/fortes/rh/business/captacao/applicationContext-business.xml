@@ -523,6 +523,19 @@
       <ref bean="configHistoricoNivelManagerTarget" />
     </property>
   </bean>
+  <bean id="configuracaoNivelCompetenciaCandidatoManagerTarget" class="com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaCandidatoManagerImpl">
+    <property name="dao">
+      <ref bean="configuracaoNivelCompetenciaCandidatoDao" />
+    </property>
+  </bean>
+  <bean id="configuracaoNivelCompetenciaCandidatoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaCandidatoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="configuracaoNivelCompetenciaCandidatoManagerTarget" />
+    </property>
+  </bean>
 </beans>
 
 

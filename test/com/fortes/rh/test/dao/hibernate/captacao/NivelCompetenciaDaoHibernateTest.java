@@ -179,7 +179,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato.getId(), solicitacao.getId());
 		assertEquals(1, configs.size());
 		
-		configuracaoNivelCompetenciaDao.deleteConfiguracaoByCandidatoFaixa(candidato.getId(), faixaSalarial.getId(), solicitacao.getId());
+		configuracaoNivelCompetenciaDao.deleteConfiguracaoByCandidatoFaixa(candidato.getId(), solicitacao.getId());
 		
 		configs = configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato.getId(), null);
 		assertEquals(0, configs.size());	
@@ -1182,7 +1182,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetencia1.setSolicitacao(solicitacao);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia1);
 	
-		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico(solicitacao.getId(), jose.getId(), nivelCompetenciaHistorico1.getId());
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico(a);
 		assertEquals(1, configs.size());
 		assertEquals(new Integer(4), configs.iterator().next().getNivelCompetencia().getOrdem());
 	}

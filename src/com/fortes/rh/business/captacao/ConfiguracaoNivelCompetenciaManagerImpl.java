@@ -14,6 +14,7 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCandidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
@@ -37,6 +38,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
 	private ConfiguracaoNivelCompetenciaCriterioManager configuracaoNivelCompetenciaCriterioManager;
 	private ConfigHistoricoNivelManager configHistoricoNivelManager;
+	private ConfiguracaoNivelCompetenciaCandidatoManager configuracaoNivelCompetenciaCandidatoManager;
 
 	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data) {
 		return getDao().findByFaixa(faixaSalarialId, data);
@@ -59,7 +61,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				if (cncCandidato.getCompetenciaId().equals(cncFaixaSalarial.getCompetenciaId()) && cncCandidato.getTipoCompetencia().equals(cncFaixaSalarial.getTipoCompetencia()))
 				{
 					cncCandidato.setId(null);
-					cncCandidato.setCandidato(null);
+//					cncCandidato.setCandidato(null);
 					cncCandidato.setFaixaSalarial(null);
 					cncCandidato.setConfiguracaoNivelCompetenciaFaixaSalarial(null);
 					cNCCandidatoVincuadasComCNCFaixaSalarial.add(cncCandidato);
@@ -80,17 +82,28 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 
 	public void saveCompetenciasCandidato(Collection<ConfiguracaoNivelCompetencia> configuracaoNiveisCompetencias, Long faixaSalarialId, Long candidatoId, Long solicitacaoId) 
 	{
-		getDao().deleteConfiguracaoByCandidatoFaixa(candidatoId, faixaSalarialId, solicitacaoId);
+		getDao().deleteConfiguracaoByCandidatoFaixa(candidatoId, solicitacaoId);
+		configuracaoNivelCompetenciaCandidatoManager.removeByCandidatoAndSolicitacao(candidatoId, solicitacaoId);
 
+		ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = null;
+		
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNiveisCompetencias) {
 			if (configuracaoNivelCompetencia.getCompetenciaId() != null) {
 				configuracaoNivelCompetencia.setFaixaSalarialIdProjection(faixaSalarialId);
-				configuracaoNivelCompetencia.setCandidatoIdProjection(candidatoId);
-				configuracaoNivelCompetencia.setSolicitacaoId(solicitacaoId);
-
+				if(configuracaoNivelCompetenciaCandidato == null)
+					criaConfiguracaoNivelCompetenciaCandidato(candidatoId, solicitacaoId, faixaSalarialId);
+				configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaCandidato(configuracaoNivelCompetenciaCandidato);
 				getDao().save(configuracaoNivelCompetencia);
 			}
 		}
+	}
+
+	private void criaConfiguracaoNivelCompetenciaCandidato(Long candidatoId, Long solicitacaoId, Long faixaSalarialId) {
+		ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = new ConfiguracaoNivelCompetenciaCandidato();
+		configuracaoNivelCompetenciaCandidato.setData(new Date());
+		configuracaoNivelCompetenciaCandidato.setCandidatoId(candidatoId);
+		configuracaoNivelCompetenciaCandidato.setSolicitacaoId(solicitacaoId);
+		configuracaoNivelCompetenciaCandidato.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarialManager.findBySolicitacao(solicitacaoId, faixaSalarialId));
 	}
 
 	public void saveCompetenciasColaborador(Collection<ConfiguracaoNivelCompetencia> configuracaoNiveisCompetencias, ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) 
@@ -199,10 +212,9 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 
 		if (!cncsCandidato.isEmpty()) 
 		{
-			Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaEmpresa = nivelCompetenciaManager.findByCargoOrEmpresa(null, empresaId);
-
 			for (ConfiguracaoNivelCompetencia cncCandidato : cncsCandidato) 
 			{
+				Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaEmpresa = nivelCompetenciaManager.findByCargoOrEmpresa(null, empresaId);
 				for (ConfiguracaoNivelCompetencia nivelCompetenciaEmpresa : niveisCompetenciaEmpresa) 
 				{
 					if (cncCandidato.getCompetenciaId().equals(nivelCompetenciaEmpresa.getCompetenciaId())
@@ -216,12 +228,12 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			Solicitacao solicitacao = new Solicitacao();
 			for (ConfiguracaoNivelCompetencia cncCandidato : cncsCandidato) 
 			{
-				if(!cncCandidato.getSolicitacao().getId().equals(solicitacao.getId())){
+				if(!cncCandidato.getConfiguracaoNivelCompetenciaCandidato().getSolicitacao().getId().equals(solicitacao.getId())){
 
 					if(solicitacao.getId() != null)
 						solicitacoesComConfigNiveisCompetenciaCandidato.add(solicitacao);
 
-					solicitacao = cncCandidato.getSolicitacao();
+					solicitacao = cncCandidato.getConfiguracaoNivelCompetenciaCandidato().getSolicitacao();
 					solicitacao.setNivelCompetencias(nivelCompetenciaManager.findAllSelect(empresaId, null, solicitacao.getData()));
 					solicitacao.setFaixaSalarial(cncCandidato.getFaixaSalarial());
 					solicitacao.setConfiguracaoNivelCompetencias(new ArrayList<ConfiguracaoNivelCompetencia>());
@@ -485,20 +497,23 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			return tabelasCandidatos;
 
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciaExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, solicitacao.getData(), null, null, null);
-		Collection<ConfigHistoricoNivel> configHistoricoNiveis = configHistoricoNivelManager.findByEmpresaAndDataNivelCompetenciaHistorico(empresaId, solicitacao.getData());
 
-		Collection<ConfiguracaoNivelCompetencia> configuracoesNivelCompetenciaCandidato = new ArrayList<ConfiguracaoNivelCompetencia>();
+		Collection<ConfiguracaoNivelCompetencia> configuracoesNivelCompetenciaRespostasCandidato = new ArrayList<ConfiguracaoNivelCompetencia>();
 		ConfiguracaoNivelCompetencia competenciaDoCandidatoIgualExigidaPelaFaixa = new ConfiguracaoNivelCompetencia();
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo;
 		ConfiguracaoNivelCompetenciaVO tabelaCandidato;
 		int totalPontosFaixa;
 		
 		for (Long candidatoId : candidatosDaSolicitacaoIds) {
-			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarialId, solicitacao.getData());
-			configuracoesNivelCompetenciaCandidato = getDao().findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico(solicitacao.getId(), candidatoId, configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId());
-			
-			if(configuracoesNivelCompetenciaCandidato.size() == 0)
+
+			ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = configuracaoNivelCompetenciaCandidatoManager.findByCandidatoAndSolicitacao(candidatoId, solicitacao.getId());
+
+			if(configuracaoNivelCompetenciaCandidato == null || configuracaoNivelCompetenciaCandidato.getId() == null)
 				break;
+
+			configuracoesNivelCompetenciaRespostasCandidato = getDao().findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico(configuracaoNivelCompetenciaCandidato.getId());
+			Collection<ConfigHistoricoNivel> configHistoricoNiveis = configHistoricoNivelManager.findByNivelCompetenciaHistoricoId(configuracaoNivelCompetenciaCandidato.getConfiguracaoNivelCompetenciaFaixaSalarial().getNivelCompetenciaHistorico().getId());
+			
 			
 			totalPontosFaixa = 0;
 			matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
@@ -506,10 +521,10 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			
 			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaExigidaPelaFaixa : configuracaoNivelCompetenciaExigidasPelaFaixa) 
 			{
-				for (ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaCandidato : configuracoesNivelCompetenciaCandidato) 
-					if(configuracaoNivelCompetenciaExigidaPelaFaixa.getCompetenciaDescricao().equals(configuracaoNivelCompetenciaCandidato.getCompetenciaDescricao()))
+				for (ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaRespostasCandidato : configuracoesNivelCompetenciaRespostasCandidato) 
+					if(configuracaoNivelCompetenciaExigidaPelaFaixa.getCompetenciaDescricao().equals(configuracaoNivelCompetenciaRespostasCandidato.getCompetenciaDescricao()))
 					{
-						competenciaDoCandidatoIgualExigidaPelaFaixa = configuracaoNivelCompetenciaCandidato;
+						competenciaDoCandidatoIgualExigidaPelaFaixa = configuracaoNivelCompetenciaRespostasCandidato;
 						break;
 					}
 				
@@ -524,10 +539,9 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(configuracaoNivelCompetenciaExigidaPelaFaixa.getNivelCompetencia().getOrdem(), configuracaoNivelCompetenciaExigidaPelaFaixa.getCompetenciaDescricao(), "GAP", false, false));
 	
 			}
-			tabelaCandidato = new ConfiguracaoNivelCompetenciaVO(configuracoesNivelCompetenciaCandidato.iterator().next().getCandidato().getNome(), clonaMatriz(matrizModelo), totalPontosFaixa);
-
-			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaCandidato : configuracoesNivelCompetenciaCandidato) 
-				tabelaCandidato.configuraNivelCandidato(configuracaoNivelCompetenciaCandidato.getCompetenciaDescricao(), configuracaoNivelCompetenciaCandidato.getNivelCompetencia());
+			tabelaCandidato = new ConfiguracaoNivelCompetenciaVO(configuracaoNivelCompetenciaCandidato.getCandidato().getNome(), clonaMatriz(matrizModelo), totalPontosFaixa);
+			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaRespostasCandidato : configuracoesNivelCompetenciaRespostasCandidato) 
+				tabelaCandidato.configuraNivelCandidato(configuracaoNivelCompetenciaRespostasCandidato.getCompetenciaDescricao(), configuracaoNivelCompetenciaRespostasCandidato.getNivelCompetencia());
 			
 			tabelasCandidatos.add(tabelaCandidato);
 		}
@@ -692,5 +706,10 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 
 	public ConfiguracaoNivelCompetenciaFaixaSalarialManager getConfiguracaoNivelCompetenciaFaixaSalarialManager() {
 		return this.configuracaoNivelCompetenciaFaixaSalarialManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaCandidatoManager(
+			ConfiguracaoNivelCompetenciaCandidatoManager configuracaoNivelCompetenciaCandidatoManager) {
+		this.configuracaoNivelCompetenciaCandidatoManager = configuracaoNivelCompetenciaCandidatoManager;
 	}
 }

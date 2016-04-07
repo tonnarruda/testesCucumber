@@ -14,4 +14,5 @@ public interface ConfiguracaoNivelCompetenciaFaixaSalarialManager extends Generi
 	boolean existByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId);
 	ConfiguracaoNivelCompetenciaFaixaSalarial findByFaixaSalarialIdAndData(Long faixaSalarialId, Date data);
 	ConfiguracaoNivelCompetenciaFaixaSalarial findByProjection(Long configuracaoNivelCompetenciaFaixaSalarialId);
+	ConfiguracaoNivelCompetenciaFaixaSalarial findBySolicitacao(Long solicitacaoId, Long faixaSalarialId);
 }

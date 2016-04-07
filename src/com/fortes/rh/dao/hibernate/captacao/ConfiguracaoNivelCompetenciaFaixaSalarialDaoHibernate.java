@@ -17,6 +17,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
+import com.fortes.rh.model.captacao.Solicitacao;
 
 public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetenciaFaixaSalarial> implements ConfiguracaoNivelCompetenciaFaixaSalarialDao
 {
@@ -98,6 +99,27 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate extends Gener
 		criteria.createCriteria("fs.cargo", "c", Criteria.INNER_JOIN);
 		
 		criteria.add(Expression.eq("cncf.id", configuracaoNivelCompetenciaFaixaSalarialId));
+		criteria.setProjection(p);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaFaixaSalarial.class));
+		return (ConfiguracaoNivelCompetenciaFaixaSalarial) criteria.uniqueResult();
+	}
+
+	public ConfiguracaoNivelCompetenciaFaixaSalarial findBySolicitacao(Long solicitacaoId, Long faixaSalarialId) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cncf.id"), "id");
+
+		DetachedCriteria subQuerySolicitacao = DetachedCriteria.forClass(Solicitacao.class, "s")
+				.setProjection(Projections.property("s.data"))
+				.add(Restrictions.eq("s.id", solicitacaoId));
+		
+		DetachedCriteria subQuery = DetachedCriteria.forClass(ConfiguracaoNivelCompetenciaFaixaSalarial.class, "cncf2")
+				.setProjection(Projections.max("cncf2.data"))
+				.add(Restrictions.eq("cncf2.faixaSalarial.id", faixaSalarialId))
+				.add(Subqueries.propertyLe("cncf.data", subQuerySolicitacao));
+		
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaFaixaSalarial.class, "cncf");
+		criteria.add(Expression.eq("cncf.faixaSalarial.id", faixaSalarialId));
+		criteria.add(Subqueries.eq("cncf.data", subQuery));
 		criteria.setProjection(p);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaFaixaSalarial.class));
 		return (ConfiguracaoNivelCompetenciaFaixaSalarial) criteria.uniqueResult();
