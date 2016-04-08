@@ -301,7 +301,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		try
 		{
-			configuracaoNivelCompetenciaManager.saveCompetenciasCandidato(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), candidato.getId(), solicitacao.getId());
+			configuracaoNivelCompetenciaManager.saveCompetenciasCandidato(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), candidato.getId(), solicitacao);
 			addActionSuccess("Níveis de competência do candidato salvos com sucesso");
 		}
 		catch (Exception e)

@@ -39,8 +39,4 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialManagerImpl extends Generi
 	public ConfiguracaoNivelCompetenciaFaixaSalarial findByProjection( Long configuracaoNivelCompetenciaFaixaSalarialId) {
 		return getDao().findByProjection(configuracaoNivelCompetenciaFaixaSalarialId);
 	}
-
-	public ConfiguracaoNivelCompetenciaFaixaSalarial findBySolicitacao(Long solicitacaoId, Long faixaSalarialId) {
-		return getDao().findBySolicitacao(solicitacaoId, faixaSalarialId);
-	}
 }

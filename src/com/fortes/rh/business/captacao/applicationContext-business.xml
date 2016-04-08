@@ -443,6 +443,9 @@
      <property name="configHistoricoNivelManager">
       <ref bean="configHistoricoNivelManager" />
     </property>
+    <property name="configuracaoNivelCompetenciaCandidatoManager">
+      <ref bean="configuracaoNivelCompetenciaCandidatoManager"/>
+    </property>
   </bean>
   <bean id="configuracaoNivelCompetenciaManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -1,7 +1,6 @@
 package com.fortes.rh.web.action.captacao;
 
 import java.util.Collection;
-import java.util.Date;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
@@ -97,7 +96,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 			setActionMessages(null);
 		}
 
-		existeCompetenciaParaFaixa = !configuracaoNivelCompetenciaManager.findByFaixa(solicitacao.getFaixaSalarial().getId(), new Date()).isEmpty();
+		existeCompetenciaParaFaixa = !configuracaoNivelCompetenciaManager.findByFaixa(solicitacao.getFaixaSalarial().getId(), solicitacao.getData()).isEmpty();
 		
 		return Action.SUCCESS;
 	}

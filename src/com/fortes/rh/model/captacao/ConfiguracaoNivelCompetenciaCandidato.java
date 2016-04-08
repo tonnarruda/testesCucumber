@@ -81,12 +81,22 @@ public class ConfiguracaoNivelCompetenciaCandidato extends AbstractModel impleme
 	
 	public void setCandidatoNome(String candidatoNome) {
 		inicializaCandidato();
-		this.setCandidatoNome(candidatoNome); 
+		this.candidato.setNome(candidatoNome); 
 	}
 	
 	public void setSolicitacaoId(Long solicitacaoId){
 		inicializaSolicitacao();
 		this.solicitacao.setId(solicitacaoId);
+	}
+	
+	public void setSolicitacaoDescricao(String solicitacaoDescricao) {
+		inicializaSolicitacao();
+		this.solicitacao.setDescricao(solicitacaoDescricao);
+	}
+
+	public void setSolicitacaoData(Date solicitacaoData) {
+		inicializaSolicitacao();
+		this.solicitacao.setData(solicitacaoData);
 	}
 
 	public void setConfiguracaoNivelCompetenciaFaixaSalarialId(Long configuracaoNivelCompetenciaFaixaSalarialId){

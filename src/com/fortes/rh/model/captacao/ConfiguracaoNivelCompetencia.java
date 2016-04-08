@@ -28,10 +28,6 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 {
 	@ManyToOne
 	private FaixaSalarial faixaSalarial;
-//	@ManyToOne
-//	private Candidato candidato;
-//	@ManyToOne
-//	private Solicitacao solicitacao;
 	@ManyToOne
 	private ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato;
 	@ManyToOne
@@ -365,14 +361,6 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.competenciaDescricao = competenciaDescricao;
 	}
 
-//	public Candidato getCandidato() {
-//		return candidato;
-//	}
-//
-//	public void setCandidato(Candidato candidato) {
-//		this.candidato = candidato;
-//	}
-
 	public ConfiguracaoNivelCompetenciaColaborador getConfiguracaoNivelCompetenciaColaborador() {
 		return configuracaoNivelCompetenciaColaborador;
 	}
@@ -391,11 +379,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	}
 	
 	public boolean isFaixaSalarial() {
-//		return this.candidato == null 
-//		&& (this.configuracaoNivelCompetenciaColaborador == null 
-//				|| this.configuracaoNivelCompetenciaColaborador.getColaborador() == null 
-//				|| this.configuracaoNivelCompetenciaColaborador.getColaborador().getId() == null); 
-		return (this.configuracaoNivelCompetenciaColaborador == null 
+		return (this.configuracaoNivelCompetenciaCandidato == null || this.configuracaoNivelCompetenciaCandidato.getId() == null) &&				
+				(this.configuracaoNivelCompetenciaColaborador == null 
 						|| this.configuracaoNivelCompetenciaColaborador.getColaborador() == null 
 						|| this.configuracaoNivelCompetenciaColaborador.getColaborador().getId() == null); 
 	}
@@ -462,40 +447,6 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.configuracaoNivelCompetenciaFaixaSalarial.setData(ConfiguracaoNivelCompetenciaFaixaSalarialData);
 	}
 
-//	public Solicitacao getSolicitacao()
-//	{
-//		return solicitacao;
-//	}
-//
-//	public void setSolicitacao(Solicitacao solicitacao)
-//	{
-//		this.solicitacao = solicitacao;
-//	}
-//
-//	public void setSolicitacaoId(Long solicitacaoId)
-//	{
-//		inicializaSolicitacao();
-//		this.solicitacao.setId(solicitacaoId);
-//	}
-//	
-//	public void setSolicitacaoDescricao(String solicitacaoDescricao)
-//	{
-//		inicializaSolicitacao();
-//		this.solicitacao.setDescricao(solicitacaoDescricao);
-//	}
-//	
-//	public void setSolicitacaoData(Date solicitacaoData)
-//	{
-//		inicializaSolicitacao();
-//		this.solicitacao.setData(solicitacaoData);
-//	}
-//
-//	private void inicializaSolicitacao() 
-//	{
-//		if(this.solicitacao == null) 
-//			this.solicitacao = new Solicitacao();
-//	}
-	
 	public void setFaixaSalarialNome(String faixaSalarialNome)
 	{
 		inicializaFaixaSalarial();
@@ -595,6 +546,21 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	public void setConfiguracaoNivelCompetenciaCandidatoCandidatoId(Long candidatoId){
 		inicializaConfiguracaoNivelCompetenciaCandidato();
 		this.configuracaoNivelCompetenciaCandidato.setCandidatoId(candidatoId);
+	}
+
+	public void setConfiguracaoNivelCompetenciaCandidatoSolicitacaoId(Long solicitacaoId){
+		inicializaConfiguracaoNivelCompetenciaCandidato();
+		this.configuracaoNivelCompetenciaCandidato.setSolicitacaoId(solicitacaoId);
+	}
+
+	public void setConfiguracaoNivelCompetenciaCandidatoSolicitacaoDescricao(String solicitacaoDescricao){
+		inicializaConfiguracaoNivelCompetenciaCandidato();
+		this.configuracaoNivelCompetenciaCandidato.setSolicitacaoDescricao(solicitacaoDescricao);
+	}
+	
+	public void setConfiguracaoNivelCompetenciaCandidatoSolicitacaoData(Date solicitacaoData){
+		inicializaConfiguracaoNivelCompetenciaCandidato();
+		this.configuracaoNivelCompetenciaCandidato.setSolicitacaoData(solicitacaoData);
 	}
 
 	private void inicializaConfiguracaoNivelCompetenciaCandidato(){

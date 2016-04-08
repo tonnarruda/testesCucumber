@@ -71,6 +71,7 @@
 		<@ww.hidden name="candidato.id"/>
 		<@ww.hidden name="faixaSalarial.id"/>
 		<@ww.hidden name="solicitacao.id"/>
+		<@ww.hidden name="solicitacao.data"/>
 				
 		<#assign i = 0/>
 		<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
