@@ -83,7 +83,7 @@ public class ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest extends Generi
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
 		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, conhecimento.getId(), configuracaoNivelCompetenciaColaborador, null, null, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, conhecimento.getId(), configuracaoNivelCompetenciaColaborador, null, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
 		
 		ConfiguracaoNivelCompetenciaCriterio configuracaoNivelCompetenciaCriterio = ConfiguracaoNivelCompetenciaCriterioFactory.getEntity(criterioAvaliacaoCompetencia1.getId(), criterioAvaliacaoCompetencia1.getDescricao());

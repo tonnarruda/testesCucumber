@@ -28,12 +28,16 @@ import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
+import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
@@ -210,30 +214,19 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		cargo.setNome("Cargo 1");
 		cargoDao.save(cargo);
 		
-		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
-		faixaSalarial1.setNome("I");
-		faixaSalarial1.setCargo(cargo);
-		faixaSalarialDao.save(faixaSalarial1);
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity("I", cargo);
+		faixaSalarialDao.save(faixaSalarial);
 		
-		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
-		faixaSalarial2.setNome("II");
-		faixaSalarial2.setCargo(cargo);
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity("II", cargo);
 		faixaSalarialDao.save(faixaSalarial2);
 		
-		NivelCompetencia nivelCompetencia = new NivelCompetencia();
-		nivelCompetencia.setDescricao("Bom");
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity("Bom");
 		nivelCompetenciaDao.save(nivelCompetencia);
 		
-		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
-		configuracaoNivelCompetenciaFaixaSalarial.setData(new Date());
-		configuracaoNivelCompetenciaFaixaSalarial.setFaixaSalarial(faixaSalarial1);
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial, new Date());
 		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = new ConfiguracaoNivelCompetencia();
-		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial1);
-		configuracaoNivelCompetencia.setCompetenciaId(habilidade.getId());
-		configuracaoNivelCompetencia.setTipoCompetencia('H');
-		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(faixaSalarial, nivelCompetencia, habilidade.getId(), TipoCompetencia.HABILIDADE);
 		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
 
@@ -245,7 +238,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		FaixaSalarial segundaFaixaSalarial = (FaixaSalarial) faixaSalarials.toArray()[1];
 		
 		assertEquals(2, faixaSalarials.size());
-		assertEquals(faixaSalarial1.getNome(), primeiraFaixaSalarial.getNome());
+		assertEquals(faixaSalarial.getNome(), primeiraFaixaSalarial.getNome());
 		assertEquals(nivelCompetencia.getDescricao(), ((Competencia)primeiraFaixaSalarial.getCompetencias().toArray()[0]).getNivelCompetencia().getDescricao());		
 		assertEquals(faixaSalarial2.getNome(), segundaFaixaSalarial.getNome());
 		assertEquals(0, segundaFaixaSalarial.getCompetencias().size());		

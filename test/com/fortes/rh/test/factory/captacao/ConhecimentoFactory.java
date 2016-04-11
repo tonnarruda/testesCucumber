@@ -33,4 +33,11 @@ public class ConhecimentoFactory
 		
 		return conhecimento;
 	}
+	
+	public static Conhecimento getConhecimento(Long id, String nome)
+	{
+		Conhecimento conhecimento = getConhecimento(id);
+		conhecimento.setNome(nome);
+		return conhecimento;
+	}
 }

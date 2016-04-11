@@ -382,7 +382,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		sql.append("   left join competencia comp on comp.id = cnc.competencia_id and comp.tipo = cnc.tipocompetencia "); 
 		sql.append("   left join nivelcompetencia nc on nc.id = cnc.nivelcompetencia_id "); 
 		sql.append("where  fs.cargo_id = :cargoId "); 
-		sql.append("   and cnc.candidato_id is null "); 
+		sql.append("   and cnc.configuracaonivelcompetenciacandidato_id is null "); 
 		sql.append("   and cnc.configuracaoNivelCompetenciaColaborador_id is null "); 
 		sql.append("order by fs.nome, comp.nome "); 
 		

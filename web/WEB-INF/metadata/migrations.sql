@@ -2,9 +2,9 @@
 CREATE TABLE configuracaoNivelCompetenciaCandidato (
 	id bigint NOT NULL,
 	data date NOT NULL,
-	candidato_id bigint NOT NULL,
-	solicitacao_id bigint NOT NULL,
-	configuracaoNivelCompetenciaFaixaSalarial_id bigint NOT NULL 
+	candidato_id bigint,
+	solicitacao_id bigint,
+	configuracaoNivelCompetenciaFaixaSalarial_id bigint 
 );--.go
     
 ALTER TABLE configuracaoNivelCompetenciaCandidato ADD CONSTRAINT configuracaoNivelCompetenciaCandidato_pkey PRIMARY KEY(id);--.go
@@ -21,7 +21,7 @@ DECLARE
     mviews RECORD;
 BEGIN
     FOR mviews IN 
-    select distinct candidato_id as candidatoId, solicitacao_id as solicitacaoId, faixaSalarial_id as faixaSalarialId from configuracaonivelcompetencia where candidato_id is not null order by solicitacao_id;
+    select distinct candidato_id as candidatoId, solicitacao_id as solicitacaoId, faixaSalarial_id as faixaSalarialId from configuracaonivelcompetencia where candidato_id is not null order by solicitacao_id
 	LOOP
 	     data_solicitacao := (select data from solicitacao where id = mviews.solicitacaoId); 		
 	     insert into configuracaoNivelCompetenciaCandidato(id, data, candidato_id, solicitacao_id, configuracaoNivelCompetenciaFaixaSalarial_id) 
@@ -55,7 +55,7 @@ SELECT inserir_configuracaoNivelCompetenciaCandidato_in_cnc();--.go
 DROP FUNCTION inserir_configuracaoNivelCompetenciaCandidato_in_cnc();--.go
 
 
-alter table configuracaonivelcompetencia drop column candidato_id, solicitacao_id;--.go    		
+alter table configuracaonivelcompetencia drop column candidato_id, drop column solicitacao_id;--.go    		
 
 --LEMBRAR DE REMOVER A MIGRATE JÁ CRIADA E CRIAR NOVAMENTE QUANDO FOR LEVAR PARA O BRANCH DEV 
 DELETE FROM gerenciadorcomunicacao WHERE operacao = 39;--.go

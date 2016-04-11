@@ -33,14 +33,6 @@ public class CandidatoFactory
 		candidato.setCursos(null);
 		candidato.setDisponivel(true);
 
-		//Estado estado = new Estado();
-		//estado.setSigla("CE");
-		//estado.setNome("Ceará");
-
-		//Cidade cidade = new Cidade();
-		//cidade.setUf(estado);
-		//cidade.setNome("Fortaleza");
-
 		Endereco endereco = new Endereco();
 		endereco.setLogradouro("logradouro");
 		endereco.setNumero("00");
@@ -85,9 +77,15 @@ public class CandidatoFactory
 		return candidato;
 	}
 
-	public static Candidato getCandidato(long id) {
+	public static Candidato getCandidato(Long id) {
 		Candidato candidato = getCandidato();
 		candidato.setId(id);
+		return candidato;
+	}
+	
+	public static Candidato getCandidato(Long id, String nome){
+		Candidato candidato = getCandidato(id);
+		candidato.setNome(nome);
 		return candidato;
 	}
 }

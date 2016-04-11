@@ -23,6 +23,13 @@ public class NivelCompetenciaFactory
 		return nivelCompetencia;
 	}
 	
+	public static NivelCompetencia getEntity(String descricao)
+	{
+		NivelCompetencia nivelCompetencia = getEntity();
+		nivelCompetencia.setDescricao(descricao);
+		return nivelCompetencia;
+	}
+	
 	public static NivelCompetencia getEntity(String descricao, Integer ordem)
 	{
 		NivelCompetencia nivelCompetencia = getEntity();

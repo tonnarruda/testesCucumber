@@ -1,11 +1,10 @@
 package com.fortes.rh.test.factory.captacao;
 
-import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCandidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.NivelCompetencia;
-import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 
 public class ConfiguracaoNivelCompetenciaFactory
@@ -24,27 +23,36 @@ public class ConfiguracaoNivelCompetenciaFactory
 		return configuracaoNivelCompetencia;
 	}
 
-	public static ConfiguracaoNivelCompetencia getEntity(NivelCompetencia nivelCompetencia, Long competenciaId, ConfiguracaoNivelCompetenciaColaborador cncColaborador, ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial, Candidato candidato, FaixaSalarial faixaSalarial)
+	public static ConfiguracaoNivelCompetencia getEntity(NivelCompetencia nivelCompetencia, Long competenciaId, ConfiguracaoNivelCompetenciaColaborador cncColaborador, ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial, FaixaSalarial faixaSalarial)
 	{
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
-		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
-		configuracaoNivelCompetencia.setCompetenciaId(competenciaId);
 		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(cncColaborador);
 		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaFaixaSalarial(cncFaixaSalarial);
-		configuracaoNivelCompetencia.setCandidato(candidato);
 		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
-		
+		setCompetenciaNivelTipo(competenciaId, null, nivelCompetencia, configuracaoNivelCompetencia);
 		return configuracaoNivelCompetencia;
 	}
 	
 	public static ConfiguracaoNivelCompetencia getEntityFaixaSalarial(ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial, NivelCompetencia nivelCompetencia, Long competenciaId, Character tipoCompetencia)
 	{
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
-		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
-		configuracaoNivelCompetencia.setCompetenciaId(competenciaId);
 		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaFaixaSalarial(cncFaixaSalarial);
-		configuracaoNivelCompetencia.setTipoCompetencia(tipoCompetencia);
+		setCompetenciaNivelTipo(competenciaId, tipoCompetencia, nivelCompetencia, configuracaoNivelCompetencia);
 		
+		return configuracaoNivelCompetencia;
+	}
+	
+	public static ConfiguracaoNivelCompetencia getEntityFaixaSalarial(ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial, NivelCompetencia nivelCompetencia, String competenciaDescricao, Long competenciaId, Character tipoCompetencia)
+	{
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntityFaixaSalarial(cncFaixaSalarial, nivelCompetencia, competenciaId, tipoCompetencia);
+		configuracaoNivelCompetencia.setCompetenciaDescricao(competenciaDescricao);
+		return configuracaoNivelCompetencia;
+	}
+	
+	public static ConfiguracaoNivelCompetencia getEntityFaixaSalarial(Long id, ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial, NivelCompetencia nivelCompetencia, String competenciaDescricao, Long competenciaId, Character tipoCompetencia)
+	{
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntityFaixaSalarial(cncFaixaSalarial, nivelCompetencia, competenciaDescricao, competenciaId, tipoCompetencia);
+		configuracaoNivelCompetencia.setId(id);
 		return configuracaoNivelCompetencia;
 	}
 	
@@ -58,24 +66,49 @@ public class ConfiguracaoNivelCompetenciaFactory
 	public static ConfiguracaoNivelCompetencia getEntityColaborador(ConfiguracaoNivelCompetenciaColaborador cncColaborador,	NivelCompetencia nivelCompetencia, Long competenciaId, Character tipoCompetencia) 
 	{
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
-		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
-		configuracaoNivelCompetencia.setCompetenciaId(competenciaId);
 		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(cncColaborador);
-		configuracaoNivelCompetencia.setTipoCompetencia(tipoCompetencia);
-		
+		setCompetenciaNivelTipo(competenciaId, tipoCompetencia,nivelCompetencia, configuracaoNivelCompetencia);
+		return configuracaoNivelCompetencia;
+	}
+	
+	public static ConfiguracaoNivelCompetencia getEntityColaborador(ConfiguracaoNivelCompetenciaColaborador cncColaborador,	NivelCompetencia nivelCompetencia,  Long competenciaId, String competenciaDescricao, Character tipoCompetencia) 
+	{
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
+		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(cncColaborador);
+		configuracaoNivelCompetencia.setCompetenciaDescricao(competenciaDescricao);
+		setCompetenciaNivelTipo(competenciaId, tipoCompetencia,nivelCompetencia, configuracaoNivelCompetencia);
+		return configuracaoNivelCompetencia;
+	}
+	
+	public static ConfiguracaoNivelCompetencia getEntityColaborador(Long id, ConfiguracaoNivelCompetenciaColaborador cncColaborador,	NivelCompetencia nivelCompetencia,  Long competenciaId, String competenciaDescricao, Character tipoCompetencia) 
+	{
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntityColaborador(cncColaborador, nivelCompetencia, competenciaId, competenciaDescricao, tipoCompetencia);
+		configuracaoNivelCompetencia.setId(id);
+		return configuracaoNivelCompetencia;
+	}
+	
+	public static ConfiguracaoNivelCompetencia getEntity(FaixaSalarial faixaSalarial, NivelCompetencia nivelCompetencia, Long competenciaId, Character tipoCompetencia) 
+	{
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
+		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
+		setCompetenciaNivelTipo(competenciaId, tipoCompetencia,nivelCompetencia, configuracaoNivelCompetencia);
 		return configuracaoNivelCompetencia;
 	}
 
-	public static ConfiguracaoNivelCompetencia getEntityCandidato(Candidato candidato, Solicitacao solicitacao, FaixaSalarial faixaSalarial, NivelCompetencia nivelCompetencia, Long competenciaId, Character tipoCompetencia) 
+
+	public static ConfiguracaoNivelCompetencia getEntityCandidato(ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato, FaixaSalarial faixaSalarial, NivelCompetencia nivelCompetencia, Long competenciaId, Character tipoCompetencia) 
 	{
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
-		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
-		configuracaoNivelCompetencia.setCompetenciaId(competenciaId);
 		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
-		configuracaoNivelCompetencia.setTipoCompetencia(tipoCompetencia);
-		configuracaoNivelCompetencia.setCandidato(candidato);
-		configuracaoNivelCompetencia.setSolicitacao(solicitacao);
-		
+		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaCandidato(configuracaoNivelCompetenciaCandidato);
+		setCompetenciaNivelTipo(competenciaId, tipoCompetencia,nivelCompetencia, configuracaoNivelCompetencia);
+
 		return configuracaoNivelCompetencia;
+	}
+
+	private static void setCompetenciaNivelTipo(Long competenciaId,Character tipoCompetencia, NivelCompetencia nivelCompetencia, ConfiguracaoNivelCompetencia configuracaoNivelCompetencia) {
+		configuracaoNivelCompetencia.setCompetenciaId(competenciaId);
+		configuracaoNivelCompetencia.setTipoCompetencia(tipoCompetencia);
+		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
 	}
 }

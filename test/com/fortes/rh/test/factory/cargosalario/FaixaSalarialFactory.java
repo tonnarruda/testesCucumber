@@ -30,13 +30,19 @@ public class FaixaSalarialFactory
 
 	public static FaixaSalarial getEntity(Long id, String nome, Cargo cargo)
 	{
-		FaixaSalarial faixaSalarial = getEntity(id);
-
-		faixaSalarial.setNome(nome);
-		faixaSalarial.setCargo(cargo);
-
+		FaixaSalarial faixaSalarial = getEntity(nome, cargo);
+		faixaSalarial.setId(id);
 		return faixaSalarial;
 	}
+	
+	public static FaixaSalarial getEntity(String nome, Cargo cargo)
+	{
+		FaixaSalarial faixaSalarial = getEntity();
+		faixaSalarial.setNome(nome);
+		faixaSalarial.setCargo(cargo);
+		return faixaSalarial;
+	}
+	
 	public static Collection<FaixaSalarial> getCollection()
 	{
 		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();

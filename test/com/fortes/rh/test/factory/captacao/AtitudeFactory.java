@@ -21,6 +21,14 @@ public class AtitudeFactory
 
 		return atitude;
 	}
+	
+	public static Atitude getEntity(Long id, String nome)
+	{
+		Atitude atitude = getEntity(id);
+		atitude.setNome(nome);
+
+		return atitude;
+	}
 
 	public static Collection<Atitude> getCollection()
 	{
