@@ -37,4 +37,12 @@ public class PerguntaFactory
 
 		return perguntas;
 	}
+	
+	public static Pergunta getEntity(Long id, Integer tipoPergunta, Integer peso)
+	{
+		Pergunta pergunta = getEntity(id);
+		pergunta.setTipo(tipoPergunta);
+		pergunta.setPeso(peso);
+		return pergunta;
+	}
 }

@@ -756,7 +756,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		query.executeUpdate();
 	}
 	
-	public Collection<ConfiguracaoNivelCompetencia> findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico(Long configuracaoNivelCompetenciaCandidatoId) {
+	public Collection<ConfiguracaoNivelCompetencia> findConfiguracaoNivelCompetenciaCandidato(Long configuracaoNivelCompetenciaCandidatoId) {
 		ProjectionList p = montaProjectionFindByConfiguracaoNivelCompetenciaFaixaSalarial();
 		p.add(Projections.property("cand.nome"), "configuracaoNivelCompetenciaCandidatoCandidatoNome");
 		p.add(Projections.property("cand.id"), "configuracaoNivelCompetenciaCandidatoCandidatoId");

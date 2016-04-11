@@ -469,7 +469,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = decideConfiguracaoNivelCompetenciaFaixaSalarial();
 		if(configuracaoNivelCompetenciaFaixaSalarial != null)
-			questionarioAvaliacaoVO.setMatrizes(configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(colaborador.getEmpresa().getId(), colaborador.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData()));
+			questionarioAvaliacaoVO.setMatrizes(configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(colaborador.getEmpresa().getId(), colaborador.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial));
 		
 		questionarioAvaliacaoVOs = new ArrayList<QuestionarioAvaliacaoVO>();
 		questionarioAvaliacaoVOs.add(questionarioAvaliacaoVO);

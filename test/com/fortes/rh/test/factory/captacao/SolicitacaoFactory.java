@@ -29,6 +29,14 @@ public class SolicitacaoFactory
 		return solicitacao;
 	}
 	
+	public static Solicitacao getSolicitacao(Long id, FaixaSalarial faixaSalarial, Date data)
+	{
+		Solicitacao solicitacao = getSolicitacao(faixaSalarial, data);
+		solicitacao.setId(id);
+		
+		return solicitacao;
+	}
+	
 	public static Solicitacao getSolicitacao()
 	{
 		Solicitacao solicitacao = new Solicitacao();

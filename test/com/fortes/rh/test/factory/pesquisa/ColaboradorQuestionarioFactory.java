@@ -27,6 +27,14 @@ public class ColaboradorQuestionarioFactory
 		return colaboradorQuestionario;
 	}
 	
+	public static ColaboradorQuestionario getEntity(Long id, Colaborador colaborador, Avaliacao avaliacao )
+	{
+		ColaboradorQuestionario colaboradorQuestionario = getEntity(id);
+		colaboradorQuestionario.setAvaliacao(avaliacao);
+    	colaboradorQuestionario.setColaborador(colaborador);
+		return colaboradorQuestionario;
+	}
+	
 	public static ColaboradorQuestionario getEntity(Colaborador colaborador, Colaborador avaliador, Avaliacao avaliacao, AvaliacaoDesempenho avaliacaoDesempenho, Boolean respondida)
 	{
 		ColaboradorQuestionario colaboradorQuestionario = getEntity();

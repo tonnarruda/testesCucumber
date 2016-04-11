@@ -1029,7 +1029,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetencia1.setConfiguracaoNivelCompetenciaCandidato(configuracaoNivelCompetenciaCandidato);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia1);
 	
-		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico(configuracaoNivelCompetenciaCandidato.getId());
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findConfiguracaoNivelCompetenciaCandidato(configuracaoNivelCompetenciaCandidato.getId());
 		assertEquals(1, configs.size());
 		assertEquals(new Integer(4), configs.iterator().next().getNivelCompetencia().getOrdem());
 	}

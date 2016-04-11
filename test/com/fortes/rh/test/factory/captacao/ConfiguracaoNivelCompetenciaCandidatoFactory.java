@@ -41,6 +41,13 @@ public class ConfiguracaoNivelCompetenciaCandidatoFactory
 		configuracaoNivelCompetenciaCandidato.setSolicitacao(solicitacao);
 		return configuracaoNivelCompetenciaCandidato;
 	}
+	
+	public static ConfiguracaoNivelCompetenciaCandidato getEntity(Long id, Candidato candidato, Solicitacao solicitacao, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Date data)
+	{
+		ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = getEntity(candidato, solicitacao, configuracaoNivelCompetenciaFaixaSalarial, data);
+		configuracaoNivelCompetenciaCandidato.setId(id);
+		return configuracaoNivelCompetenciaCandidato;
+	}
 
 	public static Collection<ConfiguracaoNivelCompetenciaCandidato> getCollection()
 	{

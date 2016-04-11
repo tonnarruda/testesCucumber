@@ -54,6 +54,7 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
+import com.fortes.rh.test.factory.captacao.NivelCompetenciaHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
@@ -626,48 +627,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(22L);
     	colaboradorQuestionario.setAvaliacao(avaliacao);
     	
-    	Pergunta perguntaObjetiva = PerguntaFactory.getEntity(1L);
-    	perguntaObjetiva.setTipo(TipoPergunta.OBJETIVA);
-    	perguntaObjetiva.setPeso(9);
-    	
-    	Resposta respostaObjetivaA = RespostaFactory.getEntity(1L);
-    	respostaObjetivaA.setPeso(1);
-    	
-    	Pergunta perguntaNota = PerguntaFactory.getEntity(2L);
-    	perguntaNota.setTipo(TipoPergunta.NOTA);
-    	perguntaNota.setPeso(2);
-    	
-    	Pergunta perguntaMultipla = PerguntaFactory.getEntity(3L);
-    	perguntaMultipla.setTipo(TipoPergunta.MULTIPLA_ESCOLHA);
-    	perguntaMultipla.setPeso(5);
-
-    	Resposta respostaMuliplaA = RespostaFactory.getEntity(2L);
-    	respostaMuliplaA.setPeso(2);
-    	
-    	Resposta respostaMuliplaB = RespostaFactory.getEntity(3L);
-    	respostaMuliplaB.setPeso(4);
-    	
-    	ColaboradorResposta colaboradorRespostaObjetiva = ColaboradorRespostaFactory.getEntity(1L);
-    	colaboradorRespostaObjetiva.setPergunta(perguntaObjetiva);
-    	colaboradorRespostaObjetiva.setResposta(respostaObjetivaA);
-    	
-    	ColaboradorResposta colaboradorRespostaNota = ColaboradorRespostaFactory.getEntity(2L);
-    	colaboradorRespostaNota.setValor(5);    	
-    	colaboradorRespostaNota.setPergunta(perguntaNota);
-    	
-    	ColaboradorResposta colaboradorRespostaMultiplaA = ColaboradorRespostaFactory.getEntity(3L);
-    	colaboradorRespostaMultiplaA.setPergunta(perguntaMultipla);
-    	colaboradorRespostaMultiplaA.setResposta(respostaMuliplaA);
-
-    	ColaboradorResposta colaboradorRespostaMultiplaB = ColaboradorRespostaFactory.getEntity(4L);
-    	colaboradorRespostaMultiplaB.setPergunta(perguntaMultipla);
-    	colaboradorRespostaMultiplaB.setResposta(respostaMuliplaB);
-    	
-    	Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
-    	colaboradorRespostas.add(colaboradorRespostaObjetiva);
-    	colaboradorRespostas.add(colaboradorRespostaNota);
-    	colaboradorRespostas.add(colaboradorRespostaMultiplaA);
-    	colaboradorRespostas.add(colaboradorRespostaMultiplaB);
+    	Collection<ColaboradorResposta> colaboradorRespostas = montaColaboradorResposta();
     	
     	Integer pontuacaoMaxima = 105;
     	
@@ -681,68 +641,18 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	assertEquals("46,67%", colaboradorQuestionario.getPerformanceFormatada());
     }
   
-    public void testSavePerformanceDaAvaliacaoExperienciaComNivelCompetencia()
-    {
-    	ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(1L);
-    	configuracaoNivelCompetenciaFaixaSalarial.setData(DateUtil.criarDataMesAno(1, 1, 2015));
-    	
+    public void testSavePerformanceDaAvaliacaoExperienciaComNivelCompetencia(){
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
-    	
+    	ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(1, 1, 2015), NivelCompetenciaHistoricoFactory.getEntity(1L));
+
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
     	colaborador.setFaixaSalarial(faixaSalarial);
     	
     	Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
     	
-    	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(22L);
-    	colaboradorQuestionario.setAvaliacao(avaliacao);
-    	colaboradorQuestionario.setColaborador(colaborador);
-    	
-    	Pergunta perguntaObjetiva = PerguntaFactory.getEntity(1L);
-    	perguntaObjetiva.setTipo(TipoPergunta.OBJETIVA);
-    	perguntaObjetiva.setPeso(9);
-    	
-    	Resposta respostaObjetivaA = RespostaFactory.getEntity(1L);
-    	respostaObjetivaA.setPeso(1);
-    	
-    	Pergunta perguntaNota = PerguntaFactory.getEntity(2L);
-    	perguntaNota.setTipo(TipoPergunta.NOTA);
-    	perguntaNota.setPeso(2);
-    	
-    	Pergunta perguntaMultipla = PerguntaFactory.getEntity(3L);
-    	perguntaMultipla.setTipo(TipoPergunta.MULTIPLA_ESCOLHA);
-    	perguntaMultipla.setPeso(5);
-    	
-    	Resposta respostaMuliplaA = RespostaFactory.getEntity(2L);
-    	respostaMuliplaA.setPeso(2);
-    	
-    	Resposta respostaMuliplaB = RespostaFactory.getEntity(3L);
-    	respostaMuliplaB.setPeso(4);
-    	
-    	ColaboradorResposta colaboradorRespostaObjetiva = ColaboradorRespostaFactory.getEntity(1L);
-    	colaboradorRespostaObjetiva.setPergunta(perguntaObjetiva);
-    	colaboradorRespostaObjetiva.setResposta(respostaObjetivaA);
-    	
-    	ColaboradorResposta colaboradorRespostaNota = ColaboradorRespostaFactory.getEntity(2L);
-    	colaboradorRespostaNota.setValor(5);    	
-    	colaboradorRespostaNota.setPergunta(perguntaNota);
-    	
-    	ColaboradorResposta colaboradorRespostaMultiplaA = ColaboradorRespostaFactory.getEntity(3L);
-    	colaboradorRespostaMultiplaA.setPergunta(perguntaMultipla);
-    	colaboradorRespostaMultiplaA.setResposta(respostaMuliplaA);
-    	
-    	ColaboradorResposta colaboradorRespostaMultiplaB = ColaboradorRespostaFactory.getEntity(4L);
-    	colaboradorRespostaMultiplaB.setPergunta(perguntaMultipla);
-    	colaboradorRespostaMultiplaB.setResposta(respostaMuliplaB);
-    	
-    	Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
-    	colaboradorRespostas.add(colaboradorRespostaObjetiva);
-    	colaboradorRespostas.add(colaboradorRespostaNota);
-    	colaboradorRespostas.add(colaboradorRespostaMultiplaA);
-    	colaboradorRespostas.add(colaboradorRespostaMultiplaB);
-    	
+    	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(22L, colaborador, avaliacao);
     	Integer pontuacaoMaxima = 105;
-    	
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	
     	NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity(1L);
 		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity(2L);
@@ -755,18 +665,17 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
 		Collection<ConfiguracaoNivelCompetencia> confgniveisCompetencia = Arrays.asList(configNivelCompetencia1, configNivelCompetencia2);
 		
-		configuracaoNivelCompetenciaFaixaSalarialManager.expects(once()).method("findByFaixaSalarialIdAndData").will(returnValue(configuracaoNivelCompetenciaFaixaSalarial));
-		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setColaborador(colaborador);
 		
+		configuracaoNivelCompetenciaFaixaSalarialManager.expects(once()).method("findByFaixaSalarialIdAndData").will(returnValue(configuracaoNivelCompetenciaFaixaSalarial));
 		colaboradorManager.expects(once()).method("findColaboradorByDataHistorico").will(returnValue(colaborador));
 		nivelCompetenciaManager.expects(once()).method("getPontuacaoObtidaByConfiguracoesNiveisCompetencia").with(eq(confgniveisCompetencia)).will(returnValue(20.0));
-		nivelCompetenciaManager.expects(once()).method("getOrdemMaxima").with(eq(empresa.getId()), eq(configuracaoNivelCompetenciaFaixaSalarial.getData())).will(returnValue(50));
+		nivelCompetenciaManager.expects(once()).method("getOrdemMaxima").with(eq(empresa.getId()), eq(configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId())).will(returnValue(50));
     	
 		historicoColaboradorManager.expects(once()).method("getHistoricoAtual").will(returnValue(historicoColaborador));
     	avaliacaoManager.expects(once()).method("getPontuacaoMaximaDaPerformance").will(returnValue(pontuacaoMaxima));
-    	colaboradorRespostaDao.expects(once()).method("findByColaboradorQuestionario").will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaDao.expects(once()).method("findByColaboradorQuestionario").will(returnValue(montaColaboradorResposta()));
     	colaboradorRespostaDao.expects(once()).method("removeByColaboradorQuestionario").isVoid();
     	colaboradorQuestionarioManager.expects(once()).method("update").with(eq(colaboradorQuestionario));
     	
@@ -775,6 +684,35 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	assertEquals("23,9%", colaboradorQuestionario.getPerformanceFormatada());
     	assertEquals("9,76%", colaboradorQuestionario.getPerformanceNivelCompetenciaFormatada());
     }
+
+	private Collection<ColaboradorResposta> montaColaboradorResposta() {
+    	ColaboradorResposta colaboradorRespostaObjetiva = criaColaboradorResposta(1L, TipoPergunta.OBJETIVA, 9, 1, 1L);
+    	ColaboradorResposta colaboradorRespostaNota = ColaboradorRespostaFactory.getEntity(2L);
+    	colaboradorRespostaNota.setPergunta(PerguntaFactory.getEntity(2L, TipoPergunta.NOTA, 2));
+    	colaboradorRespostaNota.setValor(5);    	
+    	
+    	ColaboradorResposta colaboradorRespostaMultiplaA = criaColaboradorResposta(3L, TipoPergunta.MULTIPLA_ESCOLHA, 5, 2, 3L);
+    	ColaboradorResposta colaboradorRespostaMultiplaB = criaColaboradorResposta(3L, TipoPergunta.MULTIPLA_ESCOLHA, 5, 4, 4L);
+    	
+    	Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
+    	colaboradorRespostas.add(colaboradorRespostaObjetiva);
+    	colaboradorRespostas.add(colaboradorRespostaNota);
+    	colaboradorRespostas.add(colaboradorRespostaMultiplaA);
+    	colaboradorRespostas.add(colaboradorRespostaMultiplaB);
+		return colaboradorRespostas;
+	}
+	
+	private ColaboradorResposta criaColaboradorResposta(Long idPergunta, Integer tipoPergunta, Integer pesoPergunta, Integer pesoResposta, Long idColaboradorResposta){
+		Pergunta pergunta = PerguntaFactory.getEntity(idPergunta, tipoPergunta, pesoPergunta);
+		
+		Resposta resposta = RespostaFactory.getEntity(1L);
+    	resposta.setPeso(pesoResposta);
+
+    	ColaboradorResposta colaboradorResposta = ColaboradorRespostaFactory.getEntity(idColaboradorResposta);
+    	colaboradorResposta.setPergunta(pergunta);
+    	colaboradorResposta.setResposta(resposta);
+    	return colaboradorResposta;
+	}
 
     public void testSavePerformanceDaAvaliacaoExperienciaNegativa()
     {

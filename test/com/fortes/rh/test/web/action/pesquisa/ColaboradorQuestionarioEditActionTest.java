@@ -14,6 +14,7 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
@@ -28,6 +29,7 @@ import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.MatrizCompetenciaNivelConfiguracao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -48,6 +50,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
@@ -79,6 +82,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 	private Mock respostaManager;
 	private Mock parametrosDoSistemaManager ;
 	private Mock configuracaoNivelCompetenciaManager;
+	private Mock configuracaoCompetenciaAvaliacaoDesempenhoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -126,6 +130,9 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
         
         configuracaoNivelCompetenciaManager = mock(ConfiguracaoNivelCompetenciaManager.class);
         action.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
+        
+        configuracaoCompetenciaAvaliacaoDesempenhoManager = mock(ConfiguracaoCompetenciaAvaliacaoDesempenhoManager.class);
+        action.setConfiguracaoCompetenciaAvaliacaoDesempenhoManager((ConfiguracaoCompetenciaAvaliacaoDesempenhoManager) configuracaoCompetenciaAvaliacaoDesempenhoManager.proxy());
         
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
@@ -624,6 +631,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
     	historicoColaborador.setFaixaSalarial(faixaSalarial);
     	
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setFaixaSalarial(faixaSalarial);
     	colaborador.setEmpresa(EmpresaFactory.getEmpresa(1L));
     	colaborador.setHistoricoColaborador(historicoColaborador);
     	colaborador.setNome("Avaliado");
@@ -636,6 +644,8 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
     	colaboradorQuestionario.setAvaliador(avaliador);
     	colaboradorQuestionario.setAvaliacao(avaliacao);
     	colaboradorQuestionario.setAvaliacaoDesempenho(AvaliacaoDesempenhoFactory.getEntity(1L));
+    	
+    	ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial, new Date());
 		
     	Map<String, Object> parametros = new HashMap<String, Object>();
     	parametros.put("test", new Object());
@@ -645,15 +655,13 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
     	
     	colaboradorQuestionarioManager.expects(once()).method("findByIdProjection").with(eq(colaboradorQuestionario.getId())).will(returnValue(colaboradorQuestionario));
     	avaliacaoManager.expects(once()).method("findById").with(eq(colaboradorQuestionario.getAvaliacao().getId())).will(returnValue(avaliacao));
+    	avaliacaoManager.expects(once()).method("getQuestionarioRelatorio").with(eq(avaliacao),ANYTHING).will(returnValue(new QuestionarioRelatorio()));
 		
-    	colaboradorManager.expects(once()).method("findByIdComHistorico").with(eq(colaboradorQuestionario.getColaborador().getId())).will(returnValue(colaborador));
+    	colaboradorManager.expects(once()).method("findColaboradorByDataHistorico").with(eq(colaboradorQuestionario.getColaborador().getId()), ANYTHING).will(returnValue(colaborador));
     	colaboradorManager.expects(once()).method("findByIdProjectionEmpresa").with(eq(colaboradorQuestionario.getAvaliador().getId())).will(returnValue(avaliador));
-		
-		avaliacaoManager.expects(once()).method("getQuestionarioRelatorio").with(eq(avaliacao),ANYTHING).will(returnValue(new QuestionarioRelatorio()));
-
-		Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetenciaNivelConfiguracoes = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
-		
-		configuracaoNivelCompetenciaManager.expects(once()).method("montaConfiguracaoNivelCompetenciaByFaixa").with(eq(colaborador.getEmpresa().getId()),eq(colaborador.getHistoricoColaborador().getFaixaSalarial().getId()), ANYTHING).will(returnValue(matrizCompetenciaNivelConfiguracoes));
+    	configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("verifyExists").with(eq(new String[]{"avaliacaoDesempenho.id"}), eq(new Object[]{colaboradorQuestionario.getAvaliacaoDesempenho().getId()})).will(returnValue(true));
+    	configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("getConfiguracaoNivelCompetenciaFaixaSalarial").with(eq(avaliador.getId()),eq(colaborador.getFaixaSalarial().getId()), eq(colaboradorQuestionario.getAvaliacaoDesempenho().getId())).will(returnValue(configuracaoNivelCompetenciaFaixaSalarial));
+    	configuracaoNivelCompetenciaManager.expects(once()).method("montaConfiguracaoNivelCompetenciaByFaixa").with(eq(colaborador.getEmpresa().getId()),eq(colaborador.getHistoricoColaborador().getFaixaSalarial().getId()), eq(configuracaoNivelCompetenciaFaixaSalarial)).will(returnValue(new ArrayList<MatrizCompetenciaNivelConfiguracao>()));
 		
 		assertEquals("success", action.imprimirQuestionario());
 		assertNotNull(action.getParametros());

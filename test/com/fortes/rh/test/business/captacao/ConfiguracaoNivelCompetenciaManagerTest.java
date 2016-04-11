@@ -439,7 +439,6 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 	}
 
 	public void testMontaMatrizCNCByQuestionario(){
-		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		
@@ -476,74 +475,32 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		configuracaoNivelCompetenciaCriterioManager.expects(atLeastOnce()).method("findByConfiguracaoNivelCompetencia").withAnyArguments().will(returnValue(new ArrayList<CriterioAvaliacaoCompetencia>()));
 		configuracaoNivelCompetenciaFaixaSalarialManager.expects(once()).method("findByProjection").withAnyArguments().will(returnValue(configuracaoNivelCompetenciaFaixaSalarial));
 		
-		Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetencias = configuracaoNivelCompetenciaManager.montaMatrizCNCByQuestionario(colaboradorQuestionario, empresa.getId()); 
-		
-		assertEquals(6, matrizCompetencias.size());
+		assertEquals(6, configuracaoNivelCompetenciaManager.montaMatrizCNCByQuestionario(colaboradorQuestionario, empresa.getId()).size());
 	}	
 
-	public void testMontaMatrizCompetenciaCandidato()
-	{
+	public void testMontaMatrizCompetenciaCandidato(){
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(999999999999L);
 
 		Date data = DateUtil.criarDataDiaMesAno("24/11/2015");
 		
-		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
-		solicitacao.setData(data);
-		solicitacao.setFaixaSalarial(faixaSalarial);
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L,faixaSalarial, data);
+		Candidato joao = CandidatoFactory.getCandidato(1L,  "João");
 		
-		Candidato joao = CandidatoFactory.getCandidato(1L);
-		joao.setNome("joao");
-
-		Collection<Long> candidatosIds= Arrays.asList(joao.getId());
-
-		candidatoSolicitacaoManager.expects(once()).method("getCandidatosBySolicitacao").with(eq(solicitacao.getId())).will(returnValue(candidatosIds));
-
-		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity();
-		nivelCompetenciaHistorico.setData(data);
-		nivelCompetenciaHistorico.setEmpresa(empresa);
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(data, empresa);
+		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity("Pessimo", 1);
+		ConfigHistoricoNivel configHistoricoNivelPessimo = ConfigHistoricoNivelFactory.getEntity(1L, 1, nivelCompetenciaHistorico, nivelPessimo, null);
 		
-		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity();
-		nivelPessimo.setDescricao("pessimo");
-		nivelPessimo.setOrdem(1);
+		NivelCompetencia nivelRuim = NivelCompetenciaFactory.getEntity("Ruim", 2);
+		ConfigHistoricoNivel configHistoricoNivelRuim = ConfigHistoricoNivelFactory.getEntity(2L, 2, nivelCompetenciaHistorico, nivelRuim, null);
 		
-		ConfigHistoricoNivel configHistoricoNivelPessimo = ConfigHistoricoNivelFactory.getEntity(1L);
-		configHistoricoNivelPessimo.setOrdem(1);
-		configHistoricoNivelPessimo.setNivelCompetencia(nivelPessimo);
-		configHistoricoNivelPessimo.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
-		nivelPessimo.setConfigHistoricoNiveis(Arrays.asList(configHistoricoNivelPessimo));
-		
-		NivelCompetencia nivelRuim = NivelCompetenciaFactory.getEntity();
-		nivelRuim.setDescricao("ruim");
-		nivelRuim.setOrdem(2);
-		
-		ConfigHistoricoNivel configHistoricoNivelRuim = ConfigHistoricoNivelFactory.getEntity(1L);
-		configHistoricoNivelRuim.setOrdem(2);
-		configHistoricoNivelRuim.setNivelCompetencia(nivelRuim);
-		configHistoricoNivelRuim.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
-		nivelRuim.setConfigHistoricoNiveis(Arrays.asList(configHistoricoNivelRuim));
-		
-		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity();
-		nivelBom.setDescricao("bom");
-		nivelBom.setOrdem(3);
-
-		ConfigHistoricoNivel configHistoricoNivelBom = ConfigHistoricoNivelFactory.getEntity(1L);
-		configHistoricoNivelBom.setOrdem(3);
-		configHistoricoNivelBom.setNivelCompetencia(nivelBom);
-		configHistoricoNivelBom.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
-		
-		nivelBom.setConfigHistoricoNiveis(Arrays.asList(configHistoricoNivelBom));
+		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity("Bom", 3);
+		ConfigHistoricoNivel configHistoricoNivelBom = ConfigHistoricoNivelFactory.getEntity(3L, 3, nivelCompetenciaHistorico, nivelBom, null);
 
 		Collection<ConfigHistoricoNivel> configHistoricoNiveis = Arrays.asList(configHistoricoNivelPessimo, configHistoricoNivelRuim, configHistoricoNivelBom);
 		
-		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
-		configuracaoNivelCompetenciaFaixaSalarial.setFaixaSalarial(faixaSalarial);
-		configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
-		configuracaoNivelCompetenciaFaixaSalarial.setData(data);
-
-		ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = ConfiguracaoNivelCompetenciaCandidatoFactory.getEntity();
-		configuracaoNivelCompetenciaCandidato.setCandidato(joao);
-		configuracaoNivelCompetenciaCandidato.setSolicitacao(solicitacao);
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial, data, nivelCompetenciaHistorico);
+		ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = ConfiguracaoNivelCompetenciaCandidatoFactory.getEntity(1L, joao, solicitacao, configuracaoNivelCompetenciaFaixaSalarial, data);
 		
 		ConfiguracaoNivelCompetencia configuracaoNivelFaixaCompetencia1 = criaConfigCompetencia("Comunicação", null, nivelBom, TipoCompetencia.ATITUDE, configuracaoNivelCompetenciaFaixaSalarial, null);
 		ConfiguracaoNivelCompetencia configuracaoNivelFaixaCompetencia2 = criaConfigCompetencia("Liderança", null, nivelBom, TipoCompetencia.CONHECIMENTO, configuracaoNivelCompetenciaFaixaSalarial, null);
@@ -554,23 +511,22 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasFaixaSalarial = Arrays.asList(configuracaoNivelFaixaCompetencia1, configuracaoNivelFaixaCompetencia2);
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasCandidato = Arrays.asList(configuracaoNivelCompetencia1CandidatoJoao, configuracaoNivelCompetencia2CandidatoJoao);
 
-		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(new Constraint[]{eq(faixaSalarial.getId()), eq(solicitacao.getData()), eq(null), ANYTHING, ANYTHING}).will(returnValue(configuracaoNivelCompetenciasFaixaSalarial));
-		configHistoricoNivelManager.expects(once()).method("findByEmpresaAndDataNivelCompetenciaHistorico").with(eq(empresa.getId()), eq(solicitacao.getData())).will(returnValue(configHistoricoNiveis));	
-		configuracaoNivelCompetenciaDao.expects(once()).method("findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico").with(eq(solicitacao.getId()), eq(joao.getId()), eq(solicitacao.getData())).will(returnValue(configuracaoNivelCompetenciasCandidato));
-
+		candidatoSolicitacaoManager.expects(once()).method("getCandidatosBySolicitacao").with(eq(solicitacao.getId())).will(returnValue(Arrays.asList(joao.getId())));
+		configuracaoNivelCompetenciaCandidatoManager.expects(once()).method("findByCandidatoAndSolicitacao").with(eq(joao.getId()), eq(solicitacao.getId())).will(returnValue(configuracaoNivelCompetenciaCandidato));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findByConfiguracaoNivelCompetenciaFaixaSalarial").with(eq(configuracaoNivelCompetenciaCandidato.getConfiguracaoNivelCompetenciaFaixaSalarial().getId())).will(returnValue(configuracaoNivelCompetenciasFaixaSalarial));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findConfiguracaoNivelCompetenciaCandidato").with(eq(configuracaoNivelCompetenciaCandidato.getId())).will(returnValue(configuracaoNivelCompetenciasCandidato));
+		configHistoricoNivelManager.expects(once()).method("findByNivelCompetenciaHistoricoId").with(eq(configuracaoNivelCompetenciaCandidato.getConfiguracaoNivelCompetenciaFaixaSalarial().getNivelCompetenciaHistorico().getId())).will(returnValue(configHistoricoNiveis));	
+		
 		Collection<ConfiguracaoNivelCompetenciaVO> matrizes = configuracaoNivelCompetenciaManager.montaMatrizCompetenciaCandidato(empresa.getId(), faixaSalarial.getId(), solicitacao);
 		assertEquals(1, matrizes.size());
 		
 		ConfiguracaoNivelCompetenciaVO matrizJoao = (ConfiguracaoNivelCompetenciaVO) matrizes.iterator().next();
-		
-		assertEquals("joao", matrizJoao.getNome());
-		
+		assertEquals(joao.getNome(), matrizJoao.getNome());
 		assertEquals("matriz Joao", 8, matrizJoao.getMatrizes().size());
 
 		List<MatrizCompetenciaNivelConfiguracao> matrizConfiguradaJoao = (List<MatrizCompetenciaNivelConfiguracao>) matrizJoao.getMatrizes();
 		assertEquals("configuracao candidato", Boolean.TRUE, matrizConfiguradaJoao.get(2).getConfiguracao());
 		assertEquals("configuracao faixa", Boolean.TRUE, matrizConfiguradaJoao.get(2).getConfiguracaoFaixa());
-
 		assertEquals("gap", new Integer(0), matrizConfiguradaJoao.get(3).getGap());
 	}
 
@@ -591,8 +547,8 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 	{
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
-		ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = ConfiguracaoNivelCompetenciaCandidatoFactory.getEntity();
-		configuracaoNivelCompetenciaCandidato.setSolicitacao(solicitacao);
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(1L,faixaSalarial, DateUtil.criarDataMesAno(1, 2, 2015), NivelCompetenciaHistoricoFactory.getEntity(1L));
+		ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = ConfiguracaoNivelCompetenciaCandidatoFactory.getEntity(null, solicitacao, configuracaoNivelCompetenciaFaixaSalarial, new Date());
 		
 		ConfiguracaoNivelCompetencia nivelConhecimento = new ConfiguracaoNivelCompetencia(TipoCompetencia.CONHECIMENTO, 1L, "", null, 1);
 		nivelConhecimento.setFaixaSalarial(faixaSalarial);
@@ -610,9 +566,9 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		
 		Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaEmpresa = Arrays.asList(nivelConhecimento, nivelHabilidade, nivelAtitude);
 
-		configuracaoNivelCompetenciaDao.expects(once()).method("findByCandidatoAndSolicitacao").withAnyArguments().will(returnValue(niveisCompetenciaCandidato));
-		configuracaoNivelCompetenciaDao.expects(once()).method("findByFaixa").withAnyArguments().will(returnValue(new ArrayList<ConfiguracaoNivelCompetencia>()));
-		nivelCompetenciaManager.expects(once()).method("findByCargoOrEmpresa").with(ANYTHING,ANYTHING).will(returnValue(niveisCompetenciaEmpresa));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findByConfiguracaoNivelCompetenciaFaixaSalarial").with(eq(1L)).will(returnValue(new ArrayList<ConfiguracaoNivelCompetencia>()));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findByCandidato").with(eq(1L)).will(returnValue(niveisCompetenciaCandidato));
+		nivelCompetenciaManager.expects(atLeastOnce()).method("findByCargoOrEmpresa").with(ANYTHING,ANYTHING).will(returnValue(niveisCompetenciaEmpresa));
 		nivelCompetenciaManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<NivelCompetencia>()));
 		
 		Collection<Solicitacao> solicitacaoCoimConhecimento = configuracaoNivelCompetenciaManager.getCompetenciasCandidato(1L, 1L); 
