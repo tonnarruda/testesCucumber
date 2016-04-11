@@ -431,9 +431,8 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(new Constraint[]{eq(faixaSalarial.getId()), eq(configuracaoNivelCompetenciaFaixaSalarial.getData()), eq(configuracaoNivelCompetenciaFaixaSalarial.getId()), ANYTHING, ANYTHING}).will(returnValue(configuracaoNivelCompetencias));
 		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId()), ANYTHING, eq(configuracaoNivelCompetenciaFaixaSalarial.getData())).will(returnValue(nivelCompetencias));
 		criterioAvaliacaoCompetenciaManager.expects(atLeastOnce()).method("findByCompetenciaAndCNCFId").withAnyArguments().will(returnValue(new ArrayList<CriterioAvaliacaoCompetencia>()));
-		configuracaoNivelCompetenciaFaixaSalarialManager.expects(atLeastOnce()).method("findByFaixaSalarialIdAndData").with(eq(faixaSalarial.getId()), ANYTHING).will(returnValue(configuracaoNivelCompetenciaFaixaSalarial));
 		
-		Collection<MatrizCompetenciaNivelConfiguracao> result = configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(empresa.getId(), faixaSalarial.getId(), null);
+		Collection<MatrizCompetenciaNivelConfiguracao> result = configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(empresa.getId(), faixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial);
 		
 		assertEquals(9, result.size());
 	}
