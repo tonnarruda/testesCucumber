@@ -1,12 +1,14 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
-import mockit.Mockit;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManagerImpl;
@@ -17,76 +19,79 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 
-public class CertificacaoManagerTest extends MockObjectTestCase
+
+public class CertificacaoManagerTest
 {
 	CertificacaoManagerImpl certificacaoManager = new CertificacaoManagerImpl();
-	private Mock certificacaoDao;
-	private Mock faixaSalarialManager;
+	CertificacaoDao certificacaoDao;
+	FaixaSalarialManager faixaSalarialManager; 
 	
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
-		certificacaoDao = new Mock(CertificacaoDao.class);
-		certificacaoManager.setDao((CertificacaoDao) certificacaoDao.proxy());
+		certificacaoDao = mock(CertificacaoDao.class);
+		certificacaoManager.setDao(certificacaoDao);
 		
-		faixaSalarialManager = new Mock(FaixaSalarialManager.class);
-		certificacaoManager.setFaixaSalarialManager((FaixaSalarialManager) faixaSalarialManager.proxy());
+		faixaSalarialManager = mock(FaixaSalarialManager.class);
+		certificacaoManager.setFaixaSalarialManager(faixaSalarialManager);
 	}
 
-	protected void tearDown() throws Exception
-	{
-		super.tearDown();
-
-		Mockit.restoreAllOriginalDefinitions();
-	}
-
-	public void testFindAllSelect()
+	@Test
+	public void findAllSelect()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		Collection<Certificacao> certificacaos = new ArrayList<Certificacao>();
-		certificacaoDao.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(certificacaos));
+		
+		when(certificacaoDao.findAllSelect(empresa.getId())).thenReturn(certificacaos);
 
 		assertEquals(certificacaos, certificacaoManager.findAllSelect(empresa.getId()));
 	}
+
+	@Test
 	public void testFindAllSelectNomeBusca()
 	{
 		String nomeBusca = "habilidades humanas";
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		Collection<Certificacao> certificacaos = new ArrayList<Certificacao>();
-		certificacaoDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, eq(empresa.getId()),eq(nomeBusca)).will(returnValue(certificacaos));
+		when(certificacaoDao.findAllSelect(null, null, empresa.getId(), nomeBusca)).thenReturn(certificacaos);
 		
 		assertEquals(certificacaos, certificacaoManager.findAllSelect(null, null, empresa.getId(), nomeBusca));
 	}
 	
+	@Test
 	public void testFindByIdProjection()
 	{
 		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
-		certificacaoDao.expects(once()).method("findByIdProjection").with(eq(certificacao.getId())).will(returnValue(certificacao));
+		when(certificacaoDao.findByIdProjection(certificacao.getId())).thenReturn(certificacao);
 		
 		assertEquals(certificacao, certificacaoManager.findByIdProjection(certificacao.getId()));
 	}
-
+	
+	@Test
 	public void testGetByFaixasOrCargos()
 	{
 		Collection<MatrizTreinamento> matrizs = new ArrayList<MatrizTreinamento>();
 		String[] faixaSalarialsCheck = new String[]{"1"};
 		String[] cargosCheck = new String[]{};
-		certificacaoDao.expects(once()).method("findMatrizTreinamento").with(ANYTHING).will(returnValue(matrizs));
+		when(certificacaoDao.findMatrizTreinamento(new ArrayList<Long>())).thenReturn(matrizs);
 		
 		assertEquals(matrizs, certificacaoManager.getByFaixasOrCargos(faixaSalarialsCheck, cargosCheck));
 	}
 	
+	@Test
 	public void testGetByFaixasOrCargosVazio()
 	{
 		Collection<MatrizTreinamento> matrizs = new ArrayList<MatrizTreinamento>();
 		String[] faixaSalarialsCheck = new String[]{};
 		String[] cargosCheck = new String[]{};
 		
-		faixaSalarialManager.expects(once()).method("findByCargos").with(ANYTHING).will(returnValue(null));
-		certificacaoDao.expects(once()).method("findMatrizTreinamento").with(ANYTHING).will(returnValue(matrizs));
+		when(faixaSalarialManager.findByCargos(null)).thenReturn(null);
+		when(certificacaoDao.findMatrizTreinamento(new ArrayList<Long>())).thenReturn(matrizs);
 		
 		assertEquals(matrizs, certificacaoManager.getByFaixasOrCargos(faixaSalarialsCheck, cargosCheck));
 	}
 	
+	@Test
 	public void testFindAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(){
 
 		Certificacao certificacao1 = CertificacaoFactory.getEntity(1L);
@@ -112,7 +117,7 @@ public class CertificacaoManagerTest extends MockObjectTestCase
 		certificacoes.add(certificacao5);
 		certificacoes.add(certificacao6);
 		
-		certificacaoDao.expects(once()).method("findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito").will(returnValue(certificacoes));
+		when(certificacaoDao.findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(1L, certificacao1.getId())).thenReturn(certificacoes);
 		
 		Collection<Certificacao> retorno = certificacaoManager.findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(1L, certificacao1.getId());
 		

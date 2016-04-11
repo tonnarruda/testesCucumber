@@ -1,8 +1,7 @@
 package com.fortes.rh.test;
 
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import junit.framework.TestSuite;
 
 import com.fortes.f2rh.test.F2rhFacadeTest;
 import com.fortes.rh.config.Log4jInitListenerTest;
@@ -64,7 +63,6 @@ import com.fortes.rh.test.business.cargosalario.IndiceManagerTest;
 import com.fortes.rh.test.business.cargosalario.ReajusteColaboradorManagerTest;
 import com.fortes.rh.test.business.cargosalario.TabelaReajusteColaboradorManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.AproveitamentoAvaliacaoCursoManagerTest;
-import com.fortes.rh.test.business.desenvolvimento.CertificacaoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorAvaliacaoPraticaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorCertificacaoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorPresencaManagerTest;
@@ -663,819 +661,829 @@ import com.fortes.rh.test.web.dwr.UtilDWRTest;
 import com.fortes.rh.web.action.exportacao.ExportacaoActionTest;
 import com.fortes.test.web.tags.LinkTagTest;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
-	CertificacaoManagerTest.class,
-	PapelManagerTest.class,
-
-	PapelDaoHibernateTest.class,
-	PerfilDaoHibernateTest.class,
-	PerfilManagerTest.class,
-	UsuarioDaoHibernateTest.class,
-	UsuarioManagerTest.class,
-	UsuarioEditActionTest.class,
-	UsuarioEmpresaDaoHibernateTest.class,
-	UsuarioEmpresaManagerTest.class,
-
-    //CAPTAÇÃO
-	ConfiguracaoImpressaoCurriculoDaoHibernateTest.class,
-	ConfiguracaoImpressaoCurriculoManagerTest.class,
-	AnuncioListActionTest.class,
-	AnuncioManagerTest.class,
-	AnuncioDaoHibernateTest.class,
-	CandidatoDaoHibernateTest.class,
-	CandidatoManagerTest.class,
-	CandidatoEditActionTest.class,
-	CandidatoListActionTest.class,
-	ConhecimentoEditActionTest.class,
-	ConhecimentoListActionTest.class,
-	ConhecimentoDaoHibernateTest.class,
-	ConhecimentoManagerTest.class,
-	        
-	AtitudeEditActionTest.class,
-	AtitudeDaoHibernateTest.class,
-	AtitudeManagerTest.class,
-	HabilidadeEditActionTest.class,
-	HabilidadeDaoHibernateTest.class,
-	HabilidadeManagerTest.class,
-	DuracaoPreenchimentoVagaManagerTest.class,
-	ExperienciaManagerTest.class,
-	ExperienciaDaoHibernateTest.class,
-	FormacaoDaoHibernateTest.class,
-	FormacaoManagerTest.class,
-	IdiomaDaoHibernateTest.class,
-	SolicitacaoDaoHibernateTest.class,
-	SolicitacaoAvaliacaoDaoHibernateTest.class,
-	SolicitacaoManagerTest.class,
-	SolicitacaoListActionTest.class,
-	SolicitacaoBDSDaoHibernateTest.class,
-	CandidatoIdiomaTest.class,
-	CandidatoIdiomaManagerTest.class,
-	CandidatoIdiomaDaoHibernateTest.class,
-	EtapaSeletivaDaoHibernateTest.class,
-	EtapaSeletivaManagerTest.class,
-	EtapaSeletivaListActionTest.class,
-	EtapaSeletivaEditActionTest.class,
-	EmpresaBdsListActionTest.class,
-	EmpresaBdsEditActionTest.class,
-	EmpresaBdsManagerTest.class,
-	EmpresaBdsDaoHibernateTest.class,
-	HistoricoCandidatoManagerTest.class,
-	HistoricoCandidatoDaoHibernateTest.class,
-	RelatorioPromocoesTest.class,
-	CandidatoSolicitacaoManagerTest.class,
-	CandidatoSolicitacaoDaoHibernateTest.class,
-	CandidatoSolicitacaoListActionTest.class,
-	MotivoSolicitacaoListActionTest.class,
-	MotivoSolicitacaoEditActionTest.class,
-	MotivoSolicitacaoDaoHibernateTest.class,
-	SolicitacaoBDSManagerTest.class,
-	CandidatoCurriculoDaoHibernateTest.class,
-	CandidatoCurriculoManagerTest.class,
-	ExperienciaTest.class,
-	FormacaoTest.class,
-	CandidatoSolicitacaoTest.class,
-	SolicitacaoEditActionTest.class,
-	NivelCompetenciaEditActionTest.class,
-	NivelCompetenciaManagerTest.class,
-	NivelCompetenciaDaoHibernateTest.class,
-	ConfiguracaoNivelCompetenciaManagerTest.class,
-	ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest.class,
-	CompetenciaDaoHibernateTest.class,
-	CompetenciaDWRTest.class,
-	CtpsTest.class,
-	ConfigHistoricoNivelDaoHibernateTest.class,
-	ConfigHistoricoNivelManagerTest.class,
-	ConfigHistoricoNivelEditActionTest.class,
-	NivelCompetenciaHistoricoDaoHibernateTest.class,
-	NivelCompetenciaHistoricoEditActionTest.class,
-	ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest.class,
-	CriterioAvaliacaoCompetenciaDaoHibernateTest.class,
-	ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest.class,
-	ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest.class,
-	ParticipanteAvaliacaoDesempenhoManagerTest.class,
-
-    //Indicadores
-	IndicadorTurnOverListActionTest.class,
-
-    //CARGOSALARIO
-	CargoManagerTest.class,
-	CargoDaoHibernateTest.class,
-	CargoEditActionTest.class,
-
-	FaixaSalarialDaoHibernateTest.class,
-	FaixaSalarialManagerTest.class,
-	FaixaSalarialHistoricoDaoHibernateTest.class,
-	FaixaSalarialHistoricoManagerTest.class,
-	FaixaSalarialHistoricoListActionTest.class,
-	FaixaSalarialHistoricoEditActionTest.class,
-
-	GrupoOcupacionalManagerTest.class,
-	GrupoOcupacionalDaoHibernateTest.class,
-
-	HistoricoColaboradorDaoHibernateTest.class,
-	HistoricoColaboradorManagerTest.class,
-	HistoricoColaboradorListActionTest.class,
-	HistoricoColaboradorEditActionTest.class,
-
-	RelatorioListaFrequenciaTest.class,
-
-	ColaboradorEditActionTest.class,
-	ColaboradorListActionTest.class,
-	ColaboradorDesligaActionTest.class,
-
-	ReajusteColaboradorDaoHibernateTest.class,
-	ReajusteColaboradorManagerTest.class,
-	ReajusteColaboradorEditActionTest.class,
-
-	ReajusteFaixaSalarialDaoHibernateTest.class,
-	ReajusteIndiceDaoHibernateTest.class,
-
-	TabelaReajusteColaboradorDaoHibernateTest.class,
-	TabelaReajusteColaboradorManagerTest.class,
-	IndiceEditActionTest.class,
-	IndiceListActionTest.class,
-	IndiceDaoHibernateTest.class,
-	IndiceManagerTest.class,
-	IndiceHistoricoDaoHibernateTest.class,
-	IndiceHistoricoManagerTest.class,
-	IndiceHistoricoEditActionTest.class,
-	IndiceHistoricoListActionTest.class,
-
-	ConfiguracaoLimiteColaboradorDaoHibernateTest.class,
-	QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest.class,
-	QuantidadeLimiteColaboradoresPorCargoManagerTest.class,
-	FaturamentoMensalEditActionTest.class,
-	FaturamentoMensalManagerTest.class,
-	FaturamentoMensalDaoHibernateTest.class,
-
-    //DESENVOLVIMENTO
-	CursoDaoHibernateTest.class,
-	CursoManagerTest.class,
-	CursoEditActionTest.class,
-	CursoListActionTest.class,
-
-	DiaTurmaDaoHibernateTest.class,
-	DiaTurmaEditActionTest.class,
-	DiaTurmaListActionTest.class,
-	DiaTurmaManagerTest.class,
-
-	TurmaTest.class,
-	TurmaDaoHibernateTest.class,
-	TurmaEditActionTest.class,
-	TurmaListActionTest.class,
-	TurmaManagerTest.class,
-	        
-	TurmaDocumentoAnexoDaoHibernateTest.class,
-	TurmaDocumentoAnexoManagerTest.class,
-
-	DNTDaoHibernateTest.class,
-	DNTManagerTest.class,
-	DNTEditActionTest.class,
-	DNTListActionTest.class,
-
-	ColaboradorTurmaEditActionTest.class,
-	ColaboradorTurmaListActionTest.class,
-	ColaboradorTurmaManagerTest.class,
-	ColaboradorTurmaDaoHibernateTest.class,
-
-	ColaboradorPresencaEditActionTest.class,
-	ColaboradorPresencaListActionTest.class,
-	ColaboradorPresencaDaoHibernateTest.class,
-	ColaboradorPresencaManagerTest.class,
-
-	PrioridadeTreinamentoEditActionTest.class,
-	PrioridadeTreinamentoListActionTest.class,
-
-	RelatorioPresencaActionTest.class,
-
-	AvaliacaoCursoDaoHibernateTest.class,
-	AvaliacaoCursoEditActionTest.class,
-	AvaliacaoCursoListActionTest.class,
-
-	AproveitamentoAvaliacaoCursoDaoHibernateTest.class,
-	AproveitamentoAvaliacaoCursoManagerTest.class,
-
-	CertificacaoDaoHibernateTest.class,
-	//CertificacaoManagerTest.class,
-	CertificacaoListActionTest.class,
-	CertificadoTest.class,
-	        
-	ColaboradorAvaliacaoPraticaDaoHibernateTest.class,
-	ColaboradorAvaliacaoPraticaManagerTest.class,
-	ColaboradorAvaliacaoPraticaEditActionTest.class,
-	        
-	ColaboradorCertificacaoDaoHibernateTest.class,
-	ColaboradorCertificacaoManagerTest.class,
-
-    // Backup
-	BackupActionTest.class,
-	        
-    //GERAL
-	ParametrosDoSistemaTest.class,
-	AreaFormacaoManagerTest.class,
-	AreaFormacaoDaoHibernateTest.class,
-	AreaFormacaoListActionTest.class,
-	AreaFormacaoEditActionTest.class,
-	AreaInteresseDaoHibernateTest.class,
-	AreaInteresseManagerTest.class,
-	AreaInteresseListActionTest.class,
-	AreaInteresseEditActionTest.class,
-	AreaOrganizacionalDaoHibernateTest.class,
-	AreaOrganizacionalManagerTest.class,
-	ColaboradorTest.class,
-	ColaboradorManagerTest.class,
-	ColaboradorDaoHibernateTest.class,
-	ColaboradorOcorrenciaDaoHibernateTest.class,
-	ColaboradorOcorrenciaManagerTest.class,
-	ColaboradorIdiomaManagerTest.class,
-	ColaboradorIdiomaDaoHibernateTest.class,
-	ImportadorGastosACTest.class,
-	EmpresaManagerTest.class,
-	EmpresaListActionTest.class,
-	EmpresaEditActionTest.class,
-	EstabelecimentoEditActionTest.class,
-	EstabelecimentoDaoHibernateTest.class,
-	EstabelecimentoListActionTest.class,
-	EstabelecimentoManagerTest.class,
-	BeneficioListActionTest.class,
-	BeneficioEditActionTest.class,
-	BeneficioDaoHibernateTest.class,
-	BeneficioManagerTest.class,
-	HistoricoBeneficioDaoHibernateTest.class,
-	HistoricoBeneficioManagerTest.class,
-	HistoricoBeneficioEditActionTest.class,
-	HistoricoBeneficioListActionTest.class,
-	BairroEditActionTest.class,
-	BairroListActionTest.class,
-	BairroManagerTest.class,
-	BairroDaoHibernateTest.class,
-	CidadeManagerTest.class,
-	CidadeDaoHibernateTest.class,
-	ColaboradorReportActionTest.class,
-	UsuarioMensagemDaoHibernateTest.class,
-	UsuarioMensagemManagerTest.class,
-	UsuarioMensagemEditActionTest.class,
-	UsuarioMensagemListActionTest.class,
-	UsuarioMensagemDWRTest.class,
-	MensagemManagerTest.class,
-	OcorrenciaEditActionTest.class,
-	OcorrenciaDaoHibernateTest.class,
-	OcorrenciaManagerTest.class,
-	EstadoDaoHibernateTest.class,
-	EstadoManagerTest.class,
-	CamposExtrasDaoHibernateTest.class,
-	CamposExtrasManagerTest.class,
-	ConfiguracaoPerformanceManagerTest.class,
-	ConfiguracaoPerformanceDaoHibernateTest.class,
-	ConfiguracaoPerformanceDWRTest.class,
-	ConfiguracaoRelatorioDinamicoDaoHibernateTest.class,
-	ConfiguracaoRelatorioDinamicoManagerTest.class,
-	ConfiguracaoRelatorioDinamicoEditActionTest.class,
-	GrupoACDaoHibernateTest.class,
-	GrupoACEditActionTest.class,
-	GrupoACManagerTest.class,
-	CodigoCBODaoHibernateTest.class,
-	CidDaoHibernateTest.class,
-	ConfiguracaoCampoExtraDaoHibernateTest.class,
-	CodigoCBOEditActionTest.class,
-	CidEditActionTest.class,
-	ComoFicouSabendoVagaDaoHibernateTest.class,
-	ComoFicouSabendoVagaManagerTest.class,
-	ComoFicouSabendoVagaEditActionTest.class,
-	ImportacaoColaboradorManagerTest.class,
-	AbsenteismoCollectionTest.class,
-	ColaboradorPeriodoExperienciaAvaliacaoManagerTest.class,
-	ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest.class,
-	TipoDocumentoEditActionTest.class,
-	TipoDocumentoManagerTest.class,
-	TipoDocumentoDaoHibernateTest.class,
-	TipoDespesaEditActionTest.class,
-	TipoDespesaManagerTest.class,
-	TipoDespesaDaoHibernateTest.class,
-	TurmaTipoDespesaDaoHibernateTest.class,
-	TurmaTipoDespesaManagerTest.class,
-	ProvidenciaDaoHibernateTest.class,
-	ProvidenciaManagerTest.class,
-	ProvidenciaEditActionTest.class,
-	GerenciadorComunicacaoDaoHibernateTest.class,
-	GerenciadorComunicacaoManagerTest.class,
-	GerenciadorComunicacaoEditActionTest.class,
-
-	        
-    //contatoTest embedded Colaborador
-	DependenteDaoHibernateTest.class,
-	EmpresaDaoHibernateTest.class,
-    //endereçoTest embedded Colaborador
-	GrupoGastoDaoHibernateTest.class,
-	GrupoGastoManagerTest.class,
-	ParametrosDoSistemaDaoHibernateTest.class,
-    //pessoalTest embedded Colaborador
-	MotivoDemissaoDaoHibernateTest.class,
-	MotivoDemissaoListActionTest.class,
-	MotivoDemissaoManagerTest.class,
-	DocumentoAnexoDaoHibernateTest.class,
-	DocumentoAnexoManagerTest.class,
-	DocumentoAnexoListActionTest.class,
-	DocumentoAnexoEditActionTest.class,
-	PerfilListActionTest.class,
-	PerfilEditActionTest.class,
-	MensagemDaoHibernateTest.class,
-	ParametrosDoSistemaManagerTest.class,
-	ParametrosDoSistemaEditActionTest.class,
-
-    // beneficios
-	HistoricoColaboradorBeneficioEditActionTest.class,
-	HistoricoColaboradorBeneficioListActionTest.class,
-	HistoricoColaboradorBeneficioDaoHibernateTest.class,
-	HistoricoColaboradorBeneficioManagerTest.class,
-
-    // gastos
-	GastoEmpresaManagerTest.class,
-	GastoManagerTest.class,
-	GastoDaoHibernateTest.class,
-	GastoEmpresaDaoHibernateTest.class,
-	GastoEmpresaItemDaoHibernateTest.class,
-
-    //PESQUISA
-	ColaboradorRespostaEditActionTest.class,
-	ColaboradorRespostaManagerTest.class,
-	ColaboradorRespostaDaoHibernateTest.class,
-	ColaboradorRespostaListActionTest.class,
-	PerguntaTest.class,
-	PerguntaDaoHibernateTest.class,
-	PerguntaManagerTest.class,
-	PerguntaListActionTest.class,
-	PerguntaEditActionTest.class,
-	RespostaDaoHibernateTest.class,
-	RespostaManagerTest.class,
-	AspectoDaoHibernateTest.class,
-	AspectoManagerTest.class,
-	AspectoEditActionTest.class,
-	AspectoListActionTest.class,
-	QuestionarioDaoHibernateTest.class,
-	QuestionarioManagerTest.class,
-	PesquisaDaoHibernateTest.class,
-	PesquisaManagerTest.class,
-	QuestionarioListActionTest.class,
-	PesquisaListActionTest.class,
-	PesquisaEditActionTest.class,
-	LembretePesquisaTest.class,
-	ColaboradorQuestionarioDaoHibernateTest.class,
-	ColaboradorQuestionarioManagerTest.class,
-	ColaboradorQuestionarioListActionTest.class,
-	ColaboradorQuestionarioEditActionTest.class,
-	EntrevistaDaoHibernateTest.class,
-	EntrevistaManagerTest.class,
-	EntrevistaListActionTest.class,
-	FichaMedicaDaoHibernateTest.class,
-	FichaMedicaManagerTest.class,
-	FichaMedicaListActionTest.class,
-	FichaMedicaEditActionTest.class,
-	ResultadoQuestionarioTest.class,
-
-    //SESMT
-	NaturezaLesaoDaoHibernateTest.class,
-	NaturezaLesaoEditActionTest.class,
-	NaturezaLesaoManagerTest.class,
-	        
-	ProntuarioDaoHibernateTest.class,
-	ProntuarioManagerTest.class,
-	ProntuarioEditActionTest.class,
-
-	AnexoDaoHibernateTest.class,
-	AnexoManagerTest.class,
-
-	CatDaoHibernateTest.class,
-	CatManagerTest.class,
-	CatEditActionTest.class,
-	TestemunhaManagerTest.class,
-	TestemunhaDaoHibernateTest.class,
-	FuncaoManagerTest.class,
-	FuncaoDaoHibernateTest.class,
-	FuncaoListActionTest.class,
-	FuncaoEditActionTest.class,
-
-	HistoricoFuncaoManagerTest.class,
-	HistoricoFuncaoDaoHibernateTest.class,
-	HistoricoFuncaoListActionTest.class,
-	HistoricoFuncaoEditActionTest.class,
-
-	AmbienteEditActionTest.class,
-	AmbienteDaoHibernateTest.class,
-	AmbienteManagerTest.class,
-
-	HistoricoAmbienteDaoHibernateTest.class,
-	HistoricoAmbienteManagerTest.class,
-	HistoricoAmbienteEditActionTest.class,
-
-	RiscoAmbienteDaoHibernateTest.class,
-	RiscoAmbienteManagerTest.class,
-	RiscoAmbienteDWRTest.class,
-
-	RiscoFuncaoManagerTest.class,
-	RiscoFuncaoDaoHibernateTest.class,
-
-	TipoEpiEditActionTest.class,
-	TipoEpiListActionTest.class,
-
-	EpiEditActionTest.class,
-	EpiListActionTest.class,
-	EpiManagerTest.class,
-	EpiDaoHibernateTest.class,
-
-	RiscoDaoHibernateTest.class,
-	RiscoManagerTest.class,
-	RiscoEditActionTest.class,
-
-	AnexoListActionTest.class,
-	AnexoEditActionTest.class,
-
-	PpraEditActionTest.class,
-
-	EpcListActionTest.class,
-	EpcEditActionTest.class,
-	EpcDaoHibernateTest.class,
-	EpcManagerTest.class,
-
-	SolicitacaoExameDaoHibernateTest.class,
-	SolicitacaoExameManagerTest.class,
-	SolicitacaoExameListActionTest.class,
-	SolicitacaoExameEditActionTest.class,
-	SolicitacaoExameDWRTest.class,
-
-	ExameSolicitacaoExameDaoHibernateTest.class,
-	ExameSolicitacaoExameManagerTest.class,
-
-	RealizacaoExameDaoHibernateTest.class,
-	RealizacaoExameManagerTest.class,
-
-	ExameListActionTest.class,
-	ExameEditActionTest.class,
-	ExameDaoHibernateTest.class,
-	ExameManagerTest.class,
-	ExamesPrevistosRelatorioTest.class,
-
-	EngenheiroResponsavelEditActionTest.class,
-	EngenheiroResponsavelListActionTest.class,
-	EngenheiroResponsavelDaoHibernateTest.class,
-	EngenheiroResponsavelManagerTest.class,
-
-	MedicoCoordenadorEditActionTest.class,
-	MedicoCoordenadorListActionTest.class,
-	MedicoCoordenadorDaoHibernateTest.class,
-	MedicoCoordenadorManagerTest.class,
-
-	PcmsoListActionTest.class,
-	PcmsoManagerTest.class,
-
-	PppEditActionTest.class,
-
-	EpiHistoricoEditActionTest.class,
-	EpiHistoricoManagerTest.class,
-	EpiHistoricoDaoHibernateTest.class,
-
-	ClinicaAutorizadaEditActionTest.class,
-	ClinicaAutorizadaListActionTest.class,
-	ClinicaAutorizadaManagerTest.class,
-	ClinicaAutorizadaDaoHibernateTest.class,
-
-	SolicitacaoEpiDaoHibernateTest.class,
-	SolicitacaoEpiManagerTest.class,
-	SolicitacaoEpiItemDaoHibernateTest.class,
-	SolicitacaoEpiItemManagerTest.class,
-	        
-	SolicitacaoEpiItemEntregaManagerTest.class,
-	SolicitacaoEpiItemEntregaDaoHibernateTest.class,
-
-	SolicitacaoEpiItemDevolucaoManagerTest.class,
-	SolicitacaoEpiItemDevolucaoDaoHibernateTest.class,
-	SolicitacaoEpiEditActionTest.class,
-	SolicitacaoEpiListActionTest.class,
-
-	EtapaProcessoEleitoralTest.class,
-	EtapaProcessoEleitoralDaoHibernateTest.class,
-	EtapaProcessoEleitoralManagerTest.class,
-	EtapaProcessoEleitoralEditActionTest.class,
-
-	EleicaoDaoHibernateTest.class,
-	EleicaoManagerTest.class,
-	EleicaoListActionTest.class,
-	EleicaoEditActionTest.class,
-
-	CandidatoEleicaoDaoHibernateTest.class,
-	CandidatoEleicaoManagerTest.class,
-	CandidatoEleicaoTest.class,
-	CandidatoEleicaoListActionTest.class,
-
-	ComissaoTest.class,
-	ComissaoEleicaoDaoHibernateTest.class,
-	ComissaoEleicaoManagerTest.class,
-	ComissaoEleicaoTest.class,
-	ComissaoEleicaoListActionTest.class,
-
-	ComissaoDaoHibernateTest.class,
-	ComissaoManagerTest.class,
-	ComissaoEditActionTest.class,
-
-	ComissaoPeriodoDaoHibernateTest.class,
-	ComissaoPeriodoManagerTest.class,
-	ComissaoPeriodoEditActionTest.class,
-	ComissaoPeriodoDWRTest.class,
-
-	ComissaoMembroDaoHibernateTest.class,
-	ComissaoMembroManagerTest.class,
-
-	ComissaoReuniaoDaoHibernateTest.class,
-	ComissaoReuniaoManagerTest.class,
-	ComissaoReuniaoEditActionTest.class,
-	ComissaoReuniaoDWRTest.class,
-
-	ComissaoReuniaoPresencaDaoHibernateTest.class,
-	ComissaoReuniaoPresencaManagerTest.class,
-
-	ComissaoPlanoTrabalhoDaoHibernateTest.class,
-	ComissaoPlanoTrabalhoManagerTest.class,
-	ComissaoPlanoTrabalhoEditActionTest.class,
-	ComissaoPlanoTrabalhoDWRTest.class,
-
-	AfastamentoDaoHibernateTest.class,
-	AfastamentoManagerTest.class,
-	AfastamentoEditActionTest.class,
-	AfastamentoDWRTest.class,
-
-	ColaboradorAfastamentoDaoHibernateTest.class,
-	ColaboradorAfastamentoManagerTest.class,
-	ColaboradorAfastamentoEditActionTest.class,
-	ColaboradorAfastamentoListActionTest.class,
-
-	ExtintorDaoHibernateTest.class,
-	ExtintorManagerTest.class,
-	ExtintorEditActionTest.class,
-	ExtintorDWRTest.class,
-
-	HistoricoExtintorDaoHibernateTest.class,
-	HistoricoExtintorManagerTest.class,
-
-	ExtintorInspecaoDaoHibernateTest.class,
-	ExtintorInspecaoManagerTest.class,
-	ExtintorInspecaoEditActionTest.class,
-
-	ExtintorManutencaoDaoHibernateTest.class,
-	ExtintorManutencaoManagerTest.class,
-	ExtintorManutencaoEditActionTest.class,
-	MotivoExtintorManutencaoTest.class,
-
-	MedicaoRiscoDaoHibernateTest.class,
-	MedicaoRiscoManagerTest.class,
-	MedicaoRiscoEditActionTest.class,
-
-	RiscoMedicaoRiscoDaoHibernateTest.class,
-	RiscoMedicaoRiscoManagerTest.class,
-
-	EventoDaoHibernateTest.class,
-	EventoEditActionTest.class,
-
-	AgendaTest.class,
-	AgendaDaoHibernateTest.class,
-	AgendaManagerTest.class,
-	AgendaEditActionTest.class,
-
-	PppRelatorioTest.class,
-
-	AsoRelatorioTest.class,
-	AnuncioEditActionTest.class,
-
-	IndicadorTreinamentosListActionTest.class,
-	AreaFormacaoManagerTest.class,
-	CertificacaoEditActionTest.class,
-	        
-	ObraDaoHibernateTest.class,
-	ObraManagerTest.class,
-	ObraEditActionTest.class,
-	        
-	FaseDaoHibernateTest.class,
-	FaseManagerTest.class,
-	FaseEditActionTest.class,
-	        
-	MedidaSegurancaDaoHibernateTest.class,
-	MedidaSegurancaManagerTest.class,
-	MedidaSegurancaEditActionTest.class,
-	        
-	AreaVivenciaDaoHibernateTest.class,
-	AreaVivenciaManagerTest.class,
-	AreaVivenciaEditActionTest.class,
-	        
-	PcmatDaoHibernateTest.class,
-	PcmatManagerTest.class,
-	PcmatEditActionTest.class,
-
-	AreaVivenciaPcmatDaoHibernateTest.class,
-	AreaVivenciaPcmatManagerTest.class,
-	AreaVivenciaPcmatEditActionTest.class,
-	        
-	AtividadeSegurancaPcmatDaoHibernateTest.class,
-	AtividadeSegurancaPcmatManagerTest.class,
-	AtividadeSegurancaPcmatEditActionTest.class,
-	        
-	EpiPcmatDaoHibernateTest.class,
-	EpiPcmatManagerTest.class,
-	EpiPcmatEditActionTest.class,
-	        
-	EpcPcmatDaoHibernateTest.class,
-	EpcPcmatManagerTest.class,
-	EpcPcmatEditActionTest.class,
-	        
-	MotivoSolicitacaoEpiDaoHibernateTest.class,
-	MotivoSolicitacaoEpiEditActionTest.class,
-	        
-	TamanhoEPIManagerTest.class,
-	TamanhoEpiEditActionTest.class,
-	TamanhoEPIListActionTest.class,
-
-	TipoTamanhoEPIDaoHibernateTest.class,
-	TipoEpiEditActionTest.class,
-	TipoEpiListActionTest.class,
-	        
-    // UTILITARIOS
-	AutenticadorTest.class,
-	AuthenticatorImplTest.class,
-	CheckListBoxUtilTest.class,
-	CnpjUtilTest.class,
-	CollectionUtilTest.class,
-	ComparatorStringTest.class,
-	ConverterUtilTest.class,
-	DateUtilTest.class,
-	HistoricoColaboradorUtilTest.class,
-	LongUtilTest.class,
-	IntegerUtilTest.class,
-	MailTest.class,
-	MathUtilTest.class,
-	MontaRelatorioItextTest.class,
-	SpringUtilTest.class,
-	StringUtilTest.class,
-	BooleanUtilTest.class,
-	ZipTest.class,
-	ArquivoUtilTest.class,
-	NoticiaDaoHibernateTest.class,
-
-    // Avaliacao
-	AvaliacaoDaoHibernateTest.class,
-	AvaliacaoManagerTest.class,
-	AvaliacaoEditActionTest.class,
-	AvaliacaoTurmaDaoHibernateTest.class,
-	        
-    // Avaliacao de Experiencia
-	PeriodoExperienciaDaoHibernateTest.class,
-	PeriodoExperienciaManagerTest.class,
-	PeriodoExperienciaEditActionTest.class,
-	AvaliacaoExperienciaEditActionTest.class,
-	PerguntaAvaliacaoEditActionTest.class,
-	AcompanhamentoExperienciaColaboradorTest.class,
-
-    // Avaliacao de Desempenho
-	AvaliacaoDesempenhoDaoHibernateTest.class,
-	AvaliacaoDesempenhoManagerTest.class,
-	AvaliacaoDesempenhoEditActionTest.class,
-	        
-	ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest.class,
-
-    //Avaliação Prática
-	AvaliacaoPraticaDaoHibernateTest.class,
-	AvaliacaoPraticaManagerTest.class,
-	AvaliacaoPraticaEditActionTest.class,
-	        
-    // DICIONARIO
-	StatusRetornoACTest.class,
-	TipoAplicacaoIndiceTest.class,
-	TipoPerguntaTest.class,
-	TipoQuestionarioTest.class,
-	AreasFormacaoTest.class,
-	DeficienciaTest.class,
-	EstadoTest.class,
-	FiltrosRelatorioTest.class,
-	MotivoHistoricoColaboradorTest.class,
-	NivelIdiomaTest.class,
-	OrigemCandidatoTest.class,
-	SexoTest.class,
-	SituacaoColaboradorTest.class,
-	SituacaoFormacaoTest.class,
-	SituacaoSolicitacaoTest.class,
-	TipoAvaliacaoTest.class,
-	TipoBuscaHistoricoColaboradorTest.class,
-	TipoDeExposicaoTest.class,
-	TipoFormacaoTest.class,
-	TipoReajusteTest.class,
-	TipoReajusteColaboradorTest.class,
-	TipoExtintorTest.class,
-	MotivoSolicitacaoExameTest.class,
-	AptoTest.class,
-	TipoAcidenteTest.class,
-	TipoAvaliacaoCursoTest.class,
-	StatusCandidatoSolicitacaoTest.class,
-	OperacaoTest.class,
-	MeioComunicacaoTest.class,
-	EnviarParaTest.class,
-	NivelIdiomaTest.class,
-	ReajusteTest.class,
-
-    //EXCEPTIONS
-	ColecaoVaziaExceptionTest.class,
-	FaixaJaCadastradaExceptionTest.class,
-	IntegraACExceptionTest.class,
-	AreaColaboradorExceptionTest.class,
-
-    //WEB ACTION
-	IndexTest.class,
-	MyActionSupportEditTest.class,
-	MyActionSupportListTest.class,
-
-    //DWR
-	AmbienteDWRTest.class,
-	AreaOrganizacionalDWRTest.class,
-	AspectoDWRTest.class,
-	BairroDWRTest.class,
-	CandidatoDWRTest.class,
-	CargoDWRTest.class,
-	CidadeDWRTest.class,
-	ColaboradorDWRTest.class,
-	ConhecimentoDWRTest.class,
-	DiaTurmaDWRTest.class,
-	DntDWRTest.class,
-	EstabelecimentoDWRTest.class,
-	GrupoOcupacionalDWRTest.class,
-	FuncaoDWRTest.class,
-	ReajusteDWRTest.class,
-	HistoricoCandidatoDWRTest.class,
-	ListaPresencaDWRTest.class,
-	PerguntaDWRTest.class,
-	RiscosDWRTest.class,
-	TurmaDWRTest.class,
-	UtilDWRTest.class,
-	FaixaSalarialDWRTest.class,
-	EnderecoDWRTest.class,
-	SolicitacaoDWRTest.class,
-	OcorrenciaDWRTest.class,
-	AvaliacaoDesempenhoDWRTest.class,
-	MorroDWRTest.class,
-
-    //MODEL
-	HistoricoColaboradorTest.class,
-	UsuarioTest.class,
-	ColaboradorRespostaTest.class,
-	AfastamentoTest.class,
-	CandidatoTest.class,
-	PendenciaACTest.class,
-	AreaOrganizacionalTest.class,
-	ReportColumnTest.class,
-	SolicitacaoExameTest.class,
-
-	ResultadoPesquisaTest.class,
-	ProgressaoColaboradorTest.class,
-
-	AuditorialDaoHibernateTest.class,
-	CoberturaGetSetTest.class,
-
-    //SECURITY
-	AuditoriaManagerTest.class,
-	MenuTest.class,
-	UserDetailsImplTest.class,
-
-    //crud de Clientes somente para uso interno na Fortes Informática
-	ClienteDaoHibernateTest.class,
-	ClienteManagerTest.class,
-	ClienteEditActionTest.class,
-	        
-    // Config e Listener
-	Log4jInitListenerTest.class,
-	LogCleanerJobTest.class,
-	ScriptReaderTest.class,
-
-    // BACKUP e Ant Script
-	BackupCleanerJobTest.class,
-	BackupJobTest.class,
-	BackupServiceImplTest.class,
-	RunAntScriptTest.class,
-
-    // AUDITORIA
-	AtributosDaAuditoriaTest.class,
-	AuditoriaGeralAdviceTest.class,
-	AuditoriaPointcutTest.class,
-	GeraDadosAuditadosTest.class,
-	ProcuraChaveNaEntidadeTest.class,
-	CrudAuditorCallbackImplTest.class,
-	InsertAuditorCallbackImplTest.class,
-	RemoveAuditorCallbackImplTest.class,
-	UpdateAuditorCallbackImplTest.class,
-	DateFormatJsonValueProcessorTest.class,
-	AbstractModelJsonValueProcessorTest.class,
-	        
-	LinkTagTest.class,
-	F2rhFacadeTest.class,
-	ExportacaoActionTest.class,
-
-    //SERVICES
-	RHServiceTest.class,
-	RHServiceIntranetTest.class
-})
-public class AllUnitTests { }
+public class AllUnitTestsJunit3 extends TestSuite
+{
+	public static TestSuite suite()
+    {
+        TestSuite suite = new TestSuite();
+
+        //ACESSO
+        suite.addTestSuite(PapelManagerTest.class);
+
+        suite.addTestSuite(PapelDaoHibernateTest.class);
+        suite.addTestSuite(PerfilDaoHibernateTest.class);
+        suite.addTestSuite(PerfilManagerTest.class);
+        suite.addTestSuite(UsuarioDaoHibernateTest.class);
+        suite.addTestSuite(UsuarioManagerTest.class);
+        suite.addTestSuite(UsuarioEditActionTest.class);
+        suite.addTestSuite(UsuarioEmpresaDaoHibernateTest.class);
+        suite.addTestSuite(UsuarioEmpresaManagerTest.class);
+
+        //CAPTAÇÃO
+        suite.addTestSuite(ConfiguracaoImpressaoCurriculoDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoImpressaoCurriculoManagerTest.class);
+        suite.addTestSuite(AnuncioListActionTest.class);
+        suite.addTestSuite(AnuncioManagerTest.class);
+        suite.addTestSuite(AnuncioDaoHibernateTest.class);
+        suite.addTestSuite(CandidatoDaoHibernateTest.class);
+        suite.addTestSuite(CandidatoManagerTest.class);
+        suite.addTestSuite(CandidatoEditActionTest.class);
+        suite.addTestSuite(CandidatoListActionTest.class);
+        suite.addTestSuite(ConhecimentoEditActionTest.class);
+        suite.addTestSuite(ConhecimentoListActionTest.class);
+        suite.addTestSuite(ConhecimentoDaoHibernateTest.class);
+        suite.addTestSuite(ConhecimentoManagerTest.class);
+        
+        suite.addTestSuite(AtitudeEditActionTest.class);
+        suite.addTestSuite(AtitudeDaoHibernateTest.class);
+        suite.addTestSuite(AtitudeManagerTest.class);
+        suite.addTestSuite(HabilidadeEditActionTest.class);
+        suite.addTestSuite(HabilidadeDaoHibernateTest.class);
+        suite.addTestSuite(HabilidadeManagerTest.class);
+        suite.addTestSuite(DuracaoPreenchimentoVagaManagerTest.class);
+        suite.addTestSuite(ExperienciaManagerTest.class);
+        suite.addTestSuite(ExperienciaDaoHibernateTest.class);
+        suite.addTestSuite(FormacaoDaoHibernateTest.class);
+        suite.addTestSuite(FormacaoManagerTest.class);
+        suite.addTestSuite(IdiomaDaoHibernateTest.class);
+        suite.addTestSuite(SolicitacaoDaoHibernateTest.class);
+        suite.addTestSuite(SolicitacaoAvaliacaoDaoHibernateTest.class);
+        suite.addTestSuite(SolicitacaoManagerTest.class);
+        suite.addTestSuite(SolicitacaoListActionTest.class);
+        suite.addTestSuite(SolicitacaoBDSDaoHibernateTest.class);
+        suite.addTestSuite(CandidatoIdiomaTest.class);
+        suite.addTestSuite(CandidatoIdiomaManagerTest.class);
+        suite.addTestSuite(CandidatoIdiomaDaoHibernateTest.class);
+        suite.addTestSuite(EtapaSeletivaDaoHibernateTest.class);
+        suite.addTestSuite(EtapaSeletivaManagerTest.class);
+        suite.addTestSuite(EtapaSeletivaListActionTest.class);
+        suite.addTestSuite(EtapaSeletivaEditActionTest.class);
+        suite.addTestSuite(EmpresaBdsListActionTest.class);
+        suite.addTestSuite(EmpresaBdsEditActionTest.class);
+        suite.addTestSuite(EmpresaBdsManagerTest.class);
+        suite.addTestSuite(EmpresaBdsDaoHibernateTest.class);
+        suite.addTestSuite(HistoricoCandidatoManagerTest.class);
+        suite.addTestSuite(HistoricoCandidatoDaoHibernateTest.class);
+        suite.addTestSuite(RelatorioPromocoesTest.class);
+        suite.addTestSuite(CandidatoSolicitacaoManagerTest.class);
+        suite.addTestSuite(CandidatoSolicitacaoDaoHibernateTest.class);
+        suite.addTestSuite(CandidatoSolicitacaoListActionTest.class);
+        suite.addTestSuite(MotivoSolicitacaoListActionTest.class);
+        suite.addTestSuite(MotivoSolicitacaoEditActionTest.class);
+        suite.addTestSuite(MotivoSolicitacaoDaoHibernateTest.class);
+        suite.addTestSuite(SolicitacaoBDSManagerTest.class);
+        suite.addTestSuite(CandidatoCurriculoDaoHibernateTest.class);
+        suite.addTestSuite(CandidatoCurriculoManagerTest.class);
+        suite.addTestSuite(ExperienciaTest.class);
+        suite.addTestSuite(FormacaoTest.class);
+        suite.addTestSuite(CandidatoSolicitacaoTest.class);
+        suite.addTestSuite(SolicitacaoEditActionTest.class);
+        suite.addTestSuite(NivelCompetenciaEditActionTest.class);
+        suite.addTestSuite(NivelCompetenciaManagerTest.class);
+        suite.addTestSuite(NivelCompetenciaDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoNivelCompetenciaManagerTest.class);
+        suite.addTestSuite(ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest.class);
+        suite.addTestSuite(CompetenciaDaoHibernateTest.class);
+        suite.addTestSuite(CompetenciaDWRTest.class);
+        suite.addTestSuite(CtpsTest.class);
+        suite.addTestSuite(ConfigHistoricoNivelDaoHibernateTest.class);
+        suite.addTestSuite(ConfigHistoricoNivelManagerTest.class);
+        suite.addTestSuite(ConfigHistoricoNivelEditActionTest.class);
+        suite.addTestSuite(NivelCompetenciaHistoricoDaoHibernateTest.class);
+        suite.addTestSuite(NivelCompetenciaHistoricoEditActionTest.class);
+        suite.addTestSuite(ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest.class);
+        suite.addTestSuite(CriterioAvaliacaoCompetenciaDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest.class);
+        suite.addTestSuite(ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest.class);
+        suite.addTestSuite(ParticipanteAvaliacaoDesempenhoManagerTest.class);
+
+        //Indicadores
+        suite.addTestSuite(IndicadorTurnOverListActionTest.class);
+
+        //CARGOSALARIO
+        suite.addTestSuite(CargoManagerTest.class);
+        suite.addTestSuite(CargoDaoHibernateTest.class);
+        suite.addTestSuite(CargoEditActionTest.class);
+
+        suite.addTestSuite(FaixaSalarialDaoHibernateTest.class);
+        suite.addTestSuite(FaixaSalarialManagerTest.class);
+        suite.addTestSuite(FaixaSalarialHistoricoDaoHibernateTest.class);
+        suite.addTestSuite(FaixaSalarialHistoricoManagerTest.class);
+        suite.addTestSuite(FaixaSalarialHistoricoListActionTest.class);
+        suite.addTestSuite(FaixaSalarialHistoricoEditActionTest.class);
+
+        suite.addTestSuite(GrupoOcupacionalManagerTest.class);
+        suite.addTestSuite(GrupoOcupacionalDaoHibernateTest.class);
+
+        suite.addTestSuite(HistoricoColaboradorDaoHibernateTest.class);
+        suite.addTestSuite(HistoricoColaboradorManagerTest.class);
+        suite.addTestSuite(HistoricoColaboradorListActionTest.class);
+        suite.addTestSuite(HistoricoColaboradorEditActionTest.class);
+
+        suite.addTestSuite(RelatorioListaFrequenciaTest.class);
+
+        suite.addTestSuite(ColaboradorEditActionTest.class);
+        suite.addTestSuite(ColaboradorListActionTest.class);
+        suite.addTestSuite(ColaboradorDesligaActionTest.class);
+
+        suite.addTestSuite(ReajusteColaboradorDaoHibernateTest.class);
+        suite.addTestSuite(ReajusteColaboradorManagerTest.class);
+        suite.addTestSuite(ReajusteColaboradorEditActionTest.class);
+
+        suite.addTestSuite(ReajusteFaixaSalarialDaoHibernateTest.class);
+        suite.addTestSuite(ReajusteIndiceDaoHibernateTest.class);
+
+        suite.addTestSuite(TabelaReajusteColaboradorDaoHibernateTest.class);
+        suite.addTestSuite(TabelaReajusteColaboradorManagerTest.class);
+        suite.addTestSuite(IndiceEditActionTest.class);
+        suite.addTestSuite(IndiceListActionTest.class);
+        suite.addTestSuite(IndiceDaoHibernateTest.class);
+        suite.addTestSuite(IndiceManagerTest.class);
+        suite.addTestSuite(IndiceHistoricoDaoHibernateTest.class);
+        suite.addTestSuite(IndiceHistoricoManagerTest.class);
+        suite.addTestSuite(IndiceHistoricoEditActionTest.class);
+        suite.addTestSuite(IndiceHistoricoListActionTest.class);
+
+        suite.addTestSuite(ConfiguracaoLimiteColaboradorDaoHibernateTest.class);
+        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest.class);
+        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoManagerTest.class);
+        suite.addTestSuite(FaturamentoMensalEditActionTest.class);
+        suite.addTestSuite(FaturamentoMensalManagerTest.class);
+        suite.addTestSuite(FaturamentoMensalDaoHibernateTest.class);
+
+        //DESENVOLVIMENTO
+        suite.addTestSuite(CursoDaoHibernateTest.class);
+        suite.addTestSuite(CursoManagerTest.class);
+        suite.addTestSuite(CursoEditActionTest.class);
+        suite.addTestSuite(CursoListActionTest.class);
+
+        suite.addTestSuite(DiaTurmaDaoHibernateTest.class);
+        suite.addTestSuite(DiaTurmaEditActionTest.class);
+        suite.addTestSuite(DiaTurmaListActionTest.class);
+        suite.addTestSuite(DiaTurmaManagerTest.class);
+
+        suite.addTestSuite(TurmaTest.class);
+        suite.addTestSuite(TurmaDaoHibernateTest.class);
+        suite.addTestSuite(TurmaEditActionTest.class);
+        suite.addTestSuite(TurmaListActionTest.class);
+        suite.addTestSuite(TurmaManagerTest.class);
+        
+        suite.addTestSuite(TurmaDocumentoAnexoDaoHibernateTest.class);
+        suite.addTestSuite(TurmaDocumentoAnexoManagerTest.class);
+
+        suite.addTestSuite(DNTDaoHibernateTest.class);
+        suite.addTestSuite(DNTManagerTest.class);
+        suite.addTestSuite(DNTEditActionTest.class);
+        suite.addTestSuite(DNTListActionTest.class);
+
+        suite.addTestSuite(ColaboradorTurmaEditActionTest.class);
+        suite.addTestSuite(ColaboradorTurmaListActionTest.class);
+        suite.addTestSuite(ColaboradorTurmaManagerTest.class);
+        suite.addTestSuite(ColaboradorTurmaDaoHibernateTest.class);
+
+        suite.addTestSuite(ColaboradorPresencaEditActionTest.class);
+        suite.addTestSuite(ColaboradorPresencaListActionTest.class);
+        suite.addTestSuite(ColaboradorPresencaDaoHibernateTest.class);
+        suite.addTestSuite(ColaboradorPresencaManagerTest.class);
+
+        suite.addTestSuite(PrioridadeTreinamentoEditActionTest.class);
+        suite.addTestSuite(PrioridadeTreinamentoListActionTest.class);
+
+        suite.addTestSuite(RelatorioPresencaActionTest.class);
+
+        suite.addTestSuite(AvaliacaoCursoDaoHibernateTest.class);
+        suite.addTestSuite(AvaliacaoCursoEditActionTest.class);
+        suite.addTestSuite(AvaliacaoCursoListActionTest.class);
+
+        suite.addTestSuite(AproveitamentoAvaliacaoCursoDaoHibernateTest.class);
+        suite.addTestSuite(AproveitamentoAvaliacaoCursoManagerTest.class);
+
+        suite.addTestSuite(CertificacaoDaoHibernateTest.class);
+//        suite.addTestSuite(CertificacaoManagerTest.class);
+        suite.addTestSuite(CertificacaoListActionTest.class);
+        suite.addTestSuite(CertificadoTest.class);
+        
+        suite.addTestSuite(ColaboradorAvaliacaoPraticaDaoHibernateTest.class);
+        suite.addTestSuite(ColaboradorAvaliacaoPraticaManagerTest.class);
+        suite.addTestSuite(ColaboradorAvaliacaoPraticaEditActionTest.class);
+        
+        suite.addTestSuite(ColaboradorCertificacaoDaoHibernateTest.class);
+        suite.addTestSuite(ColaboradorCertificacaoManagerTest.class);
+
+        // Backup
+        suite.addTestSuite(BackupActionTest.class);
+        
+        //GERAL
+        suite.addTestSuite(ParametrosDoSistemaTest.class);
+        suite.addTestSuite(AreaFormacaoManagerTest.class);
+        suite.addTestSuite(AreaFormacaoDaoHibernateTest.class);
+        suite.addTestSuite(AreaFormacaoListActionTest.class);
+        suite.addTestSuite(AreaFormacaoEditActionTest.class);
+        suite.addTestSuite(AreaInteresseDaoHibernateTest.class);
+        suite.addTestSuite(AreaInteresseManagerTest.class);
+        suite.addTestSuite(AreaInteresseListActionTest.class);
+        suite.addTestSuite(AreaInteresseEditActionTest.class);
+        suite.addTestSuite(AreaOrganizacionalDaoHibernateTest.class);
+        suite.addTestSuite(AreaOrganizacionalManagerTest.class);
+        suite.addTestSuite(ColaboradorTest.class);
+        suite.addTestSuite(ColaboradorManagerTest.class);
+        suite.addTestSuite(ColaboradorDaoHibernateTest.class);
+        suite.addTestSuite(ColaboradorOcorrenciaDaoHibernateTest.class);
+        suite.addTestSuite(ColaboradorOcorrenciaManagerTest.class);
+        suite.addTestSuite(ColaboradorIdiomaManagerTest.class);
+        suite.addTestSuite(ColaboradorIdiomaDaoHibernateTest.class);
+        suite.addTestSuite(ImportadorGastosACTest.class);
+        suite.addTestSuite(EmpresaManagerTest.class);
+        suite.addTestSuite(EmpresaListActionTest.class);
+        suite.addTestSuite(EmpresaEditActionTest.class);
+        suite.addTestSuite(EstabelecimentoEditActionTest.class);
+        suite.addTestSuite(EstabelecimentoDaoHibernateTest.class);
+        suite.addTestSuite(EstabelecimentoListActionTest.class);
+        suite.addTestSuite(EstabelecimentoManagerTest.class);
+        suite.addTestSuite(BeneficioListActionTest.class);
+        suite.addTestSuite(BeneficioEditActionTest.class);
+        suite.addTestSuite(BeneficioDaoHibernateTest.class);
+        suite.addTestSuite(BeneficioManagerTest.class);
+        suite.addTestSuite(HistoricoBeneficioDaoHibernateTest.class);
+        suite.addTestSuite(HistoricoBeneficioManagerTest.class);
+        suite.addTestSuite(HistoricoBeneficioEditActionTest.class);
+        suite.addTestSuite(HistoricoBeneficioListActionTest.class);
+        suite.addTestSuite(BairroEditActionTest.class);
+        suite.addTestSuite(BairroListActionTest.class);
+        suite.addTestSuite(BairroManagerTest.class);
+        suite.addTestSuite(BairroDaoHibernateTest.class);
+        suite.addTestSuite(CidadeManagerTest.class);
+        suite.addTestSuite(CidadeDaoHibernateTest.class);
+        suite.addTestSuite(ColaboradorReportActionTest.class);
+        suite.addTestSuite(UsuarioMensagemDaoHibernateTest.class);
+        suite.addTestSuite(UsuarioMensagemManagerTest.class);
+        suite.addTestSuite(UsuarioMensagemEditActionTest.class);
+        suite.addTestSuite(UsuarioMensagemListActionTest.class);
+        suite.addTestSuite(UsuarioMensagemDWRTest.class);
+        suite.addTestSuite(MensagemManagerTest.class);
+        suite.addTestSuite(OcorrenciaEditActionTest.class);
+        suite.addTestSuite(OcorrenciaDaoHibernateTest.class);
+        suite.addTestSuite(OcorrenciaManagerTest.class);
+        suite.addTestSuite(EstadoDaoHibernateTest.class);
+        suite.addTestSuite(EstadoManagerTest.class);
+        suite.addTestSuite(CamposExtrasDaoHibernateTest.class);
+        suite.addTestSuite(CamposExtrasManagerTest.class);
+        suite.addTestSuite(ConfiguracaoPerformanceManagerTest.class);
+        suite.addTestSuite(ConfiguracaoPerformanceDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoPerformanceDWRTest.class);
+        suite.addTestSuite(ConfiguracaoRelatorioDinamicoDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoRelatorioDinamicoManagerTest.class);
+        suite.addTestSuite(ConfiguracaoRelatorioDinamicoEditActionTest.class);
+        suite.addTestSuite(GrupoACDaoHibernateTest.class);
+        suite.addTestSuite(GrupoACEditActionTest.class);
+        suite.addTestSuite(GrupoACManagerTest.class);
+        suite.addTestSuite(CodigoCBODaoHibernateTest.class);
+        suite.addTestSuite(CidDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoCampoExtraDaoHibernateTest.class);
+        suite.addTestSuite(CodigoCBOEditActionTest.class);
+        suite.addTestSuite(CidEditActionTest.class);
+        suite.addTestSuite(ComoFicouSabendoVagaDaoHibernateTest.class);
+        suite.addTestSuite(ComoFicouSabendoVagaManagerTest.class);
+        suite.addTestSuite(ComoFicouSabendoVagaEditActionTest.class);
+        suite.addTestSuite(ImportacaoColaboradorManagerTest.class);
+        suite.addTestSuite(AbsenteismoCollectionTest.class);
+        suite.addTestSuite(ColaboradorPeriodoExperienciaAvaliacaoManagerTest.class);
+        suite.addTestSuite(ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest.class);
+        suite.addTestSuite(TipoDocumentoEditActionTest.class);
+        suite.addTestSuite(TipoDocumentoManagerTest.class);
+        suite.addTestSuite(TipoDocumentoDaoHibernateTest.class);
+        suite.addTestSuite(TipoDespesaEditActionTest.class);
+        suite.addTestSuite(TipoDespesaManagerTest.class);
+        suite.addTestSuite(TipoDespesaDaoHibernateTest.class);
+        suite.addTestSuite(TurmaTipoDespesaDaoHibernateTest.class);
+        suite.addTestSuite(TurmaTipoDespesaManagerTest.class);
+        suite.addTestSuite(ProvidenciaDaoHibernateTest.class);
+        suite.addTestSuite(ProvidenciaManagerTest.class);
+        suite.addTestSuite(ProvidenciaEditActionTest.class);
+        suite.addTestSuite(GerenciadorComunicacaoDaoHibernateTest.class);
+        suite.addTestSuite(GerenciadorComunicacaoManagerTest.class);
+        suite.addTestSuite(GerenciadorComunicacaoEditActionTest.class);
+
+        
+        //contatoTest embedded Colaborador
+        suite.addTestSuite(DependenteDaoHibernateTest.class);
+        suite.addTestSuite(EmpresaDaoHibernateTest.class);
+        //endereçoTest embedded Colaborador
+        suite.addTestSuite(GrupoGastoDaoHibernateTest.class);
+        suite.addTestSuite(GrupoGastoManagerTest.class);
+        suite.addTestSuite(ParametrosDoSistemaDaoHibernateTest.class);
+        //pessoalTest embedded Colaborador
+        suite.addTestSuite(MotivoDemissaoDaoHibernateTest.class);
+        suite.addTestSuite(MotivoDemissaoListActionTest.class);
+        suite.addTestSuite(MotivoDemissaoManagerTest.class);
+        suite.addTestSuite(DocumentoAnexoDaoHibernateTest.class);
+        suite.addTestSuite(DocumentoAnexoManagerTest.class);
+        suite.addTestSuite(DocumentoAnexoListActionTest.class);
+        suite.addTestSuite(DocumentoAnexoEditActionTest.class);
+        suite.addTestSuite(PerfilListActionTest.class);
+        suite.addTestSuite(PerfilEditActionTest.class);
+        suite.addTestSuite(MensagemDaoHibernateTest.class);
+        suite.addTestSuite(ParametrosDoSistemaManagerTest.class);
+        suite.addTestSuite(ParametrosDoSistemaEditActionTest.class);
+
+        // beneficios
+        suite.addTestSuite(HistoricoColaboradorBeneficioEditActionTest.class);
+        suite.addTestSuite(HistoricoColaboradorBeneficioListActionTest.class);
+        suite.addTestSuite(HistoricoColaboradorBeneficioDaoHibernateTest.class);
+        suite.addTestSuite(HistoricoColaboradorBeneficioManagerTest.class);
+
+        // gastos
+        suite.addTestSuite(GastoEmpresaManagerTest.class);
+        suite.addTestSuite(GastoManagerTest.class);
+        suite.addTestSuite(GastoDaoHibernateTest.class);
+        suite.addTestSuite(GastoEmpresaDaoHibernateTest.class);
+        suite.addTestSuite(GastoEmpresaItemDaoHibernateTest.class);
+
+        //PESQUISA
+        suite.addTestSuite(ColaboradorRespostaEditActionTest.class);
+        suite.addTestSuite(ColaboradorRespostaManagerTest.class);
+        suite.addTestSuite(ColaboradorRespostaDaoHibernateTest.class);
+        suite.addTestSuite(ColaboradorRespostaListActionTest.class);
+        suite.addTestSuite(PerguntaTest.class);
+        suite.addTestSuite(PerguntaDaoHibernateTest.class);
+        suite.addTestSuite(PerguntaManagerTest.class);
+        suite.addTestSuite(PerguntaListActionTest.class);
+        suite.addTestSuite(PerguntaEditActionTest.class);
+        suite.addTestSuite(RespostaDaoHibernateTest.class);
+        suite.addTestSuite(RespostaManagerTest.class);
+        suite.addTestSuite(AspectoDaoHibernateTest.class);
+        suite.addTestSuite(AspectoManagerTest.class);
+        suite.addTestSuite(AspectoEditActionTest.class);
+        suite.addTestSuite(AspectoListActionTest.class);
+        suite.addTestSuite(QuestionarioDaoHibernateTest.class);
+        suite.addTestSuite(QuestionarioManagerTest.class);
+        suite.addTestSuite(PesquisaDaoHibernateTest.class);
+        suite.addTestSuite(PesquisaManagerTest.class);
+        suite.addTestSuite(QuestionarioListActionTest.class);
+        suite.addTestSuite(PesquisaListActionTest.class);
+        suite.addTestSuite(PesquisaEditActionTest.class);
+        suite.addTestSuite(LembretePesquisaTest.class);
+        suite.addTestSuite(ColaboradorQuestionarioDaoHibernateTest.class);
+        suite.addTestSuite(ColaboradorQuestionarioManagerTest.class);
+        suite.addTestSuite(ColaboradorQuestionarioListActionTest.class);
+        suite.addTestSuite(ColaboradorQuestionarioEditActionTest.class);
+        suite.addTestSuite(EntrevistaDaoHibernateTest.class);
+        suite.addTestSuite(EntrevistaManagerTest.class);
+        suite.addTestSuite(EntrevistaListActionTest.class);
+        suite.addTestSuite(FichaMedicaDaoHibernateTest.class);
+        suite.addTestSuite(FichaMedicaManagerTest.class);
+        suite.addTestSuite(FichaMedicaListActionTest.class);
+        suite.addTestSuite(FichaMedicaEditActionTest.class);
+        suite.addTestSuite(ResultadoQuestionarioTest.class);
+
+        //SESMT
+        suite.addTestSuite(NaturezaLesaoDaoHibernateTest.class);
+        suite.addTestSuite(NaturezaLesaoEditActionTest.class);
+        suite.addTestSuite(NaturezaLesaoManagerTest.class);
+        
+        suite.addTestSuite(ProntuarioDaoHibernateTest.class);
+        suite.addTestSuite(ProntuarioManagerTest.class);
+        suite.addTestSuite(ProntuarioEditActionTest.class);
+
+        suite.addTestSuite(AnexoDaoHibernateTest.class);
+        suite.addTestSuite(AnexoManagerTest.class);
+
+        suite.addTestSuite(CatDaoHibernateTest.class);
+        suite.addTestSuite(CatManagerTest.class);
+        suite.addTestSuite(CatEditActionTest.class);
+        suite.addTestSuite(TestemunhaManagerTest.class);
+        suite.addTestSuite(TestemunhaDaoHibernateTest.class);
+        suite.addTestSuite(FuncaoManagerTest.class);
+        suite.addTestSuite(FuncaoDaoHibernateTest.class);
+        suite.addTestSuite(FuncaoListActionTest.class);
+        suite.addTestSuite(FuncaoEditActionTest.class);
+
+        suite.addTestSuite(HistoricoFuncaoManagerTest.class);
+        suite.addTestSuite(HistoricoFuncaoDaoHibernateTest.class);
+        suite.addTestSuite(HistoricoFuncaoListActionTest.class);
+        suite.addTestSuite(HistoricoFuncaoEditActionTest.class);
+
+        suite.addTestSuite(AmbienteEditActionTest.class);
+        suite.addTestSuite(AmbienteDaoHibernateTest.class);
+        suite.addTestSuite(AmbienteManagerTest.class);
+
+        suite.addTestSuite(HistoricoAmbienteDaoHibernateTest.class);
+        suite.addTestSuite(HistoricoAmbienteManagerTest.class);
+        suite.addTestSuite(HistoricoAmbienteEditActionTest.class);
+
+        suite.addTestSuite(RiscoAmbienteDaoHibernateTest.class);
+        suite.addTestSuite(RiscoAmbienteManagerTest.class);
+        suite.addTestSuite(RiscoAmbienteDWRTest.class);
+
+        suite.addTestSuite(RiscoFuncaoManagerTest.class);
+        suite.addTestSuite(RiscoFuncaoDaoHibernateTest.class);
+
+        suite.addTestSuite(TipoEpiEditActionTest.class);
+        suite.addTestSuite(TipoEpiListActionTest.class);
+
+        suite.addTestSuite(EpiEditActionTest.class);
+        suite.addTestSuite(EpiListActionTest.class);
+        suite.addTestSuite(EpiManagerTest.class);
+        suite.addTestSuite(EpiDaoHibernateTest.class);
+
+        suite.addTestSuite(RiscoDaoHibernateTest.class);
+        suite.addTestSuite(RiscoManagerTest.class);
+        suite.addTestSuite(RiscoEditActionTest.class);
+
+        suite.addTestSuite(AnexoListActionTest.class);
+        suite.addTestSuite(AnexoEditActionTest.class);
+
+        suite.addTestSuite(PpraEditActionTest.class);
+
+        suite.addTestSuite(EpcListActionTest.class);
+        suite.addTestSuite(EpcEditActionTest.class);
+        suite.addTestSuite(EpcDaoHibernateTest.class);
+        suite.addTestSuite(EpcManagerTest.class);
+
+        suite.addTestSuite(SolicitacaoExameDaoHibernateTest.class);
+        suite.addTestSuite(SolicitacaoExameManagerTest.class);
+        suite.addTestSuite(SolicitacaoExameListActionTest.class);
+        suite.addTestSuite(SolicitacaoExameEditActionTest.class);
+        suite.addTestSuite(SolicitacaoExameDWRTest.class);
+
+        suite.addTestSuite(ExameSolicitacaoExameDaoHibernateTest.class);
+        suite.addTestSuite(ExameSolicitacaoExameManagerTest.class);
+
+        suite.addTestSuite(RealizacaoExameDaoHibernateTest.class);
+        suite.addTestSuite(RealizacaoExameManagerTest.class);
+
+        suite.addTestSuite(ExameListActionTest.class);
+        suite.addTestSuite(ExameEditActionTest.class);
+        suite.addTestSuite(ExameDaoHibernateTest.class);
+        suite.addTestSuite(ExameManagerTest.class);
+        suite.addTestSuite(ExamesPrevistosRelatorioTest.class);
+
+        suite.addTestSuite(EngenheiroResponsavelEditActionTest.class);
+        suite.addTestSuite(EngenheiroResponsavelListActionTest.class);
+        suite.addTestSuite(EngenheiroResponsavelDaoHibernateTest.class);
+        suite.addTestSuite(EngenheiroResponsavelManagerTest.class);
+
+        suite.addTestSuite(MedicoCoordenadorEditActionTest.class);
+        suite.addTestSuite(MedicoCoordenadorListActionTest.class);
+        suite.addTestSuite(MedicoCoordenadorDaoHibernateTest.class);
+        suite.addTestSuite(MedicoCoordenadorManagerTest.class);
+
+        suite.addTestSuite(PcmsoListActionTest.class);
+        suite.addTestSuite(PcmsoManagerTest.class);
+
+        suite.addTestSuite(PppEditActionTest.class);
+
+        suite.addTestSuite(EpiHistoricoEditActionTest.class);
+        suite.addTestSuite(EpiHistoricoManagerTest.class);
+        suite.addTestSuite(EpiHistoricoDaoHibernateTest.class);
+
+        suite.addTestSuite(ClinicaAutorizadaEditActionTest.class);
+        suite.addTestSuite(ClinicaAutorizadaListActionTest.class);
+        suite.addTestSuite(ClinicaAutorizadaManagerTest.class);
+        suite.addTestSuite(ClinicaAutorizadaDaoHibernateTest.class);
+
+        suite.addTestSuite(SolicitacaoEpiDaoHibernateTest.class);
+        suite.addTestSuite(SolicitacaoEpiManagerTest.class);
+        suite.addTestSuite(SolicitacaoEpiItemDaoHibernateTest.class);
+        suite.addTestSuite(SolicitacaoEpiItemManagerTest.class);
+        
+        suite.addTestSuite(SolicitacaoEpiItemEntregaManagerTest.class);
+        suite.addTestSuite(SolicitacaoEpiItemEntregaDaoHibernateTest.class);
+
+        suite.addTestSuite(SolicitacaoEpiItemDevolucaoManagerTest.class);
+        suite.addTestSuite(SolicitacaoEpiItemDevolucaoDaoHibernateTest.class);
+        suite.addTestSuite(SolicitacaoEpiEditActionTest.class);
+        suite.addTestSuite(SolicitacaoEpiListActionTest.class);
+
+        suite.addTestSuite(EtapaProcessoEleitoralTest.class);
+        suite.addTestSuite(EtapaProcessoEleitoralDaoHibernateTest.class);
+        suite.addTestSuite(EtapaProcessoEleitoralManagerTest.class);
+        suite.addTestSuite(EtapaProcessoEleitoralEditActionTest.class);
+
+        suite.addTestSuite(EleicaoDaoHibernateTest.class);
+        suite.addTestSuite(EleicaoManagerTest.class);
+        suite.addTestSuite(EleicaoListActionTest.class);
+        suite.addTestSuite(EleicaoEditActionTest.class);
+
+        suite.addTestSuite(CandidatoEleicaoDaoHibernateTest.class);
+        suite.addTestSuite(CandidatoEleicaoManagerTest.class);
+        suite.addTestSuite(CandidatoEleicaoTest.class);
+        suite.addTestSuite(CandidatoEleicaoListActionTest.class);
+
+        suite.addTestSuite(ComissaoTest.class);
+        suite.addTestSuite(ComissaoEleicaoDaoHibernateTest.class);
+        suite.addTestSuite(ComissaoEleicaoManagerTest.class);
+        suite.addTestSuite(ComissaoEleicaoTest.class);
+        suite.addTestSuite(ComissaoEleicaoListActionTest.class);
+
+        suite.addTestSuite(ComissaoDaoHibernateTest.class);
+        suite.addTestSuite(ComissaoManagerTest.class);
+        suite.addTestSuite(ComissaoEditActionTest.class);
+
+        suite.addTestSuite(ComissaoPeriodoDaoHibernateTest.class);
+        suite.addTestSuite(ComissaoPeriodoManagerTest.class);
+        suite.addTestSuite(ComissaoPeriodoEditActionTest.class);
+        suite.addTestSuite(ComissaoPeriodoDWRTest.class);
+
+        suite.addTestSuite(ComissaoMembroDaoHibernateTest.class);
+        suite.addTestSuite(ComissaoMembroManagerTest.class);
+
+        suite.addTestSuite(ComissaoReuniaoDaoHibernateTest.class);
+        suite.addTestSuite(ComissaoReuniaoManagerTest.class);
+        suite.addTestSuite(ComissaoReuniaoEditActionTest.class);
+        suite.addTestSuite(ComissaoReuniaoDWRTest.class);
+
+        suite.addTestSuite(ComissaoReuniaoPresencaDaoHibernateTest.class);
+        suite.addTestSuite(ComissaoReuniaoPresencaManagerTest.class);
+
+        suite.addTestSuite(ComissaoPlanoTrabalhoDaoHibernateTest.class);
+        suite.addTestSuite(ComissaoPlanoTrabalhoManagerTest.class);
+        suite.addTestSuite(ComissaoPlanoTrabalhoEditActionTest.class);
+        suite.addTestSuite(ComissaoPlanoTrabalhoDWRTest.class);
+
+        suite.addTestSuite(AfastamentoDaoHibernateTest.class);
+        suite.addTestSuite(AfastamentoManagerTest.class);
+        suite.addTestSuite(AfastamentoEditActionTest.class);
+        suite.addTestSuite(AfastamentoDWRTest.class);
+
+        suite.addTestSuite(ColaboradorAfastamentoDaoHibernateTest.class);
+        suite.addTestSuite(ColaboradorAfastamentoManagerTest.class);
+        suite.addTestSuite(ColaboradorAfastamentoEditActionTest.class);
+        suite.addTestSuite(ColaboradorAfastamentoListActionTest.class);
+
+        suite.addTestSuite(ExtintorDaoHibernateTest.class);
+        suite.addTestSuite(ExtintorManagerTest.class);
+        suite.addTestSuite(ExtintorEditActionTest.class);
+        suite.addTestSuite(ExtintorDWRTest.class);
+
+        suite.addTestSuite(HistoricoExtintorDaoHibernateTest.class);
+        suite.addTestSuite(HistoricoExtintorManagerTest.class);
+
+        suite.addTestSuite(ExtintorInspecaoDaoHibernateTest.class);
+        suite.addTestSuite(ExtintorInspecaoManagerTest.class);
+        suite.addTestSuite(ExtintorInspecaoEditActionTest.class);
+
+        suite.addTestSuite(ExtintorManutencaoDaoHibernateTest.class);
+        suite.addTestSuite(ExtintorManutencaoManagerTest.class);
+        suite.addTestSuite(ExtintorManutencaoEditActionTest.class);
+        suite.addTestSuite(MotivoExtintorManutencaoTest.class);
+
+        suite.addTestSuite(MedicaoRiscoDaoHibernateTest.class);
+        suite.addTestSuite(MedicaoRiscoManagerTest.class);
+        suite.addTestSuite(MedicaoRiscoEditActionTest.class);
+
+        suite.addTestSuite(RiscoMedicaoRiscoDaoHibernateTest.class);
+        suite.addTestSuite(RiscoMedicaoRiscoManagerTest.class);
+
+        suite.addTestSuite(EventoDaoHibernateTest.class);
+        suite.addTestSuite(EventoEditActionTest.class);
+
+        suite.addTestSuite(AgendaTest.class);
+        suite.addTestSuite(AgendaDaoHibernateTest.class);
+        suite.addTestSuite(AgendaManagerTest.class);
+        suite.addTestSuite(AgendaEditActionTest.class);
+
+        suite.addTestSuite(PppRelatorioTest.class);
+
+        suite.addTestSuite(AsoRelatorioTest.class);
+        suite.addTestSuite(AnuncioEditActionTest.class);
+
+        suite.addTestSuite(IndicadorTreinamentosListActionTest.class);
+        suite.addTestSuite(AreaFormacaoManagerTest.class);
+        suite.addTestSuite(CertificacaoEditActionTest.class);
+        
+        suite.addTestSuite(ObraDaoHibernateTest.class);
+        suite.addTestSuite(ObraManagerTest.class);
+        suite.addTestSuite(ObraEditActionTest.class);
+        
+        suite.addTestSuite(FaseDaoHibernateTest.class);
+        suite.addTestSuite(FaseManagerTest.class);
+        suite.addTestSuite(FaseEditActionTest.class);
+        
+        suite.addTestSuite(MedidaSegurancaDaoHibernateTest.class);
+        suite.addTestSuite(MedidaSegurancaManagerTest.class);
+        suite.addTestSuite(MedidaSegurancaEditActionTest.class);
+        
+        suite.addTestSuite(AreaVivenciaDaoHibernateTest.class);
+        suite.addTestSuite(AreaVivenciaManagerTest.class);
+        suite.addTestSuite(AreaVivenciaEditActionTest.class);
+        
+        suite.addTestSuite(PcmatDaoHibernateTest.class);
+        suite.addTestSuite(PcmatManagerTest.class);
+        suite.addTestSuite(PcmatEditActionTest.class);
+
+        suite.addTestSuite(AreaVivenciaPcmatDaoHibernateTest.class);
+        suite.addTestSuite(AreaVivenciaPcmatManagerTest.class);
+        suite.addTestSuite(AreaVivenciaPcmatEditActionTest.class);
+        
+        suite.addTestSuite(AtividadeSegurancaPcmatDaoHibernateTest.class);
+        suite.addTestSuite(AtividadeSegurancaPcmatManagerTest.class);
+        suite.addTestSuite(AtividadeSegurancaPcmatEditActionTest.class);
+        
+        suite.addTestSuite(EpiPcmatDaoHibernateTest.class);
+        suite.addTestSuite(EpiPcmatManagerTest.class);
+        suite.addTestSuite(EpiPcmatEditActionTest.class);
+        
+        suite.addTestSuite(EpcPcmatDaoHibernateTest.class);
+        suite.addTestSuite(EpcPcmatManagerTest.class);
+        suite.addTestSuite(EpcPcmatEditActionTest.class);
+        
+        suite.addTestSuite(MotivoSolicitacaoEpiDaoHibernateTest.class);
+        suite.addTestSuite(MotivoSolicitacaoEpiEditActionTest.class);
+        
+        suite.addTestSuite(TamanhoEPIManagerTest.class);
+        suite.addTestSuite(TamanhoEpiEditActionTest.class);
+        suite.addTestSuite(TamanhoEPIListActionTest.class);
+
+        suite.addTestSuite(TipoTamanhoEPIDaoHibernateTest.class);
+        suite.addTestSuite(TipoEpiEditActionTest.class);
+        suite.addTestSuite(TipoEpiListActionTest.class);
+        
+        // UTILITARIOS
+        suite.addTestSuite(AutenticadorTest.class);
+        suite.addTestSuite(AuthenticatorImplTest.class);
+        suite.addTestSuite(CheckListBoxUtilTest.class);
+        suite.addTestSuite(CnpjUtilTest.class);
+        suite.addTestSuite(CollectionUtilTest.class);
+        suite.addTestSuite(ComparatorStringTest.class);
+        suite.addTestSuite(ConverterUtilTest.class);
+        suite.addTestSuite(DateUtilTest.class);
+        suite.addTestSuite(HistoricoColaboradorUtilTest.class);
+        suite.addTestSuite(LongUtilTest.class);
+        suite.addTestSuite(IntegerUtilTest.class);
+        suite.addTestSuite(MailTest.class);
+        suite.addTestSuite(MathUtilTest.class);
+        suite.addTestSuite(MontaRelatorioItextTest.class);
+        suite.addTestSuite(SpringUtilTest.class);
+        suite.addTestSuite(StringUtilTest.class);
+        suite.addTestSuite(BooleanUtilTest.class);
+        suite.addTestSuite(ZipTest.class);
+        suite.addTestSuite(ArquivoUtilTest.class);
+        suite.addTestSuite(NoticiaDaoHibernateTest.class);
+
+        // Avaliacao
+        suite.addTestSuite(AvaliacaoDaoHibernateTest.class);
+        suite.addTestSuite(AvaliacaoManagerTest.class);
+        suite.addTestSuite(AvaliacaoEditActionTest.class);
+        suite.addTestSuite(AvaliacaoTurmaDaoHibernateTest.class);
+        
+        // Avaliacao de Experiencia
+        suite.addTestSuite(PeriodoExperienciaDaoHibernateTest.class);
+        suite.addTestSuite(PeriodoExperienciaManagerTest.class);
+        suite.addTestSuite(PeriodoExperienciaEditActionTest.class);
+        suite.addTestSuite(AvaliacaoExperienciaEditActionTest.class);
+        suite.addTestSuite(PerguntaAvaliacaoEditActionTest.class);
+        suite.addTestSuite(AcompanhamentoExperienciaColaboradorTest.class);
+
+        // Avaliacao de Desempenho
+        suite.addTestSuite(AvaliacaoDesempenhoDaoHibernateTest.class);
+        suite.addTestSuite(AvaliacaoDesempenhoManagerTest.class);
+        suite.addTestSuite(AvaliacaoDesempenhoEditActionTest.class);
+        
+        suite.addTestSuite(ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest.class);
+
+        //Avaliação Prática
+        suite.addTestSuite(AvaliacaoPraticaDaoHibernateTest.class);
+        suite.addTestSuite(AvaliacaoPraticaManagerTest.class);
+        suite.addTestSuite(AvaliacaoPraticaEditActionTest.class);
+        
+        // DICIONARIO
+        suite.addTestSuite(StatusRetornoACTest.class);
+        suite.addTestSuite(TipoAplicacaoIndiceTest.class);
+        suite.addTestSuite(TipoPerguntaTest.class);
+        suite.addTestSuite(TipoQuestionarioTest.class);
+        suite.addTestSuite(AreasFormacaoTest.class);
+        suite.addTestSuite(DeficienciaTest.class);
+        suite.addTestSuite(EstadoTest.class);
+        suite.addTestSuite(FiltrosRelatorioTest.class);
+        suite.addTestSuite(MotivoHistoricoColaboradorTest.class);
+        suite.addTestSuite(NivelIdiomaTest.class);
+        suite.addTestSuite(OrigemCandidatoTest.class);
+        suite.addTestSuite(SexoTest.class);
+        suite.addTestSuite(SituacaoColaboradorTest.class);
+        suite.addTestSuite(SituacaoFormacaoTest.class);
+        suite.addTestSuite(SituacaoSolicitacaoTest.class);
+        suite.addTestSuite(TipoAvaliacaoTest.class);
+        suite.addTestSuite(TipoBuscaHistoricoColaboradorTest.class);
+        suite.addTestSuite(TipoDeExposicaoTest.class);
+        suite.addTestSuite(TipoFormacaoTest.class);
+        suite.addTestSuite(TipoReajusteTest.class);
+        suite.addTestSuite(TipoReajusteColaboradorTest.class);
+        suite.addTestSuite(TipoExtintorTest.class);
+        suite.addTestSuite(MotivoSolicitacaoExameTest.class);
+        suite.addTestSuite(AptoTest.class);
+        suite.addTestSuite(TipoAcidenteTest.class);
+        suite.addTestSuite(TipoAvaliacaoCursoTest.class);
+        suite.addTestSuite(StatusCandidatoSolicitacaoTest.class);
+        suite.addTestSuite(OperacaoTest.class);
+        suite.addTestSuite(MeioComunicacaoTest.class);
+        suite.addTestSuite(EnviarParaTest.class);
+        suite.addTestSuite(NivelIdiomaTest.class);
+        suite.addTestSuite(ReajusteTest.class);
+
+        //EXCEPTIONS
+        suite.addTestSuite(ColecaoVaziaExceptionTest.class);
+        suite.addTestSuite(FaixaJaCadastradaExceptionTest.class);
+        suite.addTestSuite(IntegraACExceptionTest.class);
+        suite.addTestSuite(AreaColaboradorExceptionTest.class);
+
+        //WEB ACTION
+        suite.addTestSuite(IndexTest.class);
+        suite.addTestSuite(MyActionSupportEditTest.class);
+        suite.addTestSuite(MyActionSupportListTest.class);
+
+        //DWR
+        suite.addTestSuite(AmbienteDWRTest.class);
+        suite.addTestSuite(AreaOrganizacionalDWRTest.class);
+        suite.addTestSuite(AspectoDWRTest.class);
+        suite.addTestSuite(BairroDWRTest.class);
+        suite.addTestSuite(CandidatoDWRTest.class);
+        suite.addTestSuite(CargoDWRTest.class);
+        suite.addTestSuite(CidadeDWRTest.class);
+        suite.addTestSuite(ColaboradorDWRTest.class);
+        suite.addTestSuite(ConhecimentoDWRTest.class);
+        suite.addTestSuite(DiaTurmaDWRTest.class);
+        suite.addTestSuite(DntDWRTest.class);
+        suite.addTestSuite(EstabelecimentoDWRTest.class);
+        suite.addTestSuite(GrupoOcupacionalDWRTest.class);
+        suite.addTestSuite(FuncaoDWRTest.class);
+        suite.addTestSuite(ReajusteDWRTest.class);
+        suite.addTestSuite(HistoricoCandidatoDWRTest.class);
+        suite.addTestSuite(ListaPresencaDWRTest.class);
+        suite.addTestSuite(PerguntaDWRTest.class);
+        suite.addTestSuite(RiscosDWRTest.class);
+        suite.addTestSuite(TurmaDWRTest.class);
+        suite.addTestSuite(UtilDWRTest.class);
+        suite.addTestSuite(FaixaSalarialDWRTest.class);
+        suite.addTestSuite(EnderecoDWRTest.class);
+        suite.addTestSuite(SolicitacaoDWRTest.class);
+        suite.addTestSuite(OcorrenciaDWRTest.class);
+        suite.addTestSuite(AvaliacaoDesempenhoDWRTest.class);
+        suite.addTestSuite(MorroDWRTest.class);
+
+        //MODEL
+        suite.addTestSuite(HistoricoColaboradorTest.class);
+        suite.addTestSuite(UsuarioTest.class);
+        suite.addTestSuite(ColaboradorRespostaTest.class);
+        suite.addTestSuite(AfastamentoTest.class);
+        suite.addTestSuite(CandidatoTest.class);
+        suite.addTestSuite(PendenciaACTest.class);
+        suite.addTestSuite(AreaOrganizacionalTest.class);
+        suite.addTestSuite(ReportColumnTest.class);
+        suite.addTestSuite(SolicitacaoExameTest.class);
+
+        suite.addTestSuite(ResultadoPesquisaTest.class);
+        suite.addTestSuite(ProgressaoColaboradorTest.class);
+
+        suite.addTestSuite(AuditorialDaoHibernateTest.class);
+        suite.addTestSuite(CoberturaGetSetTest.class);
+
+        //SECURITY
+        suite.addTestSuite(AuditoriaManagerTest.class);
+        suite.addTestSuite(MenuTest.class);
+        suite.addTestSuite(UserDetailsImplTest.class);
+
+        //crud de Clientes somente para uso interno na Fortes Informática
+        suite.addTestSuite(ClienteDaoHibernateTest.class);
+        suite.addTestSuite(ClienteManagerTest.class);
+        suite.addTestSuite(ClienteEditActionTest.class);
+        
+        // Config e Listener
+        suite.addTestSuite(Log4jInitListenerTest.class);
+        suite.addTestSuite(LogCleanerJobTest.class);
+        suite.addTestSuite(ScriptReaderTest.class);
+
+        // BACKUP e Ant Script
+        suite.addTestSuite(BackupCleanerJobTest.class);
+        suite.addTestSuite(BackupJobTest.class);
+        suite.addTestSuite(BackupServiceImplTest.class);
+        suite.addTestSuite(RunAntScriptTest.class);
+
+        // AUDITORIA
+        suite.addTestSuite(AtributosDaAuditoriaTest.class);
+        suite.addTestSuite(AuditoriaGeralAdviceTest.class);
+        suite.addTestSuite(AuditoriaPointcutTest.class);
+        suite.addTestSuite(GeraDadosAuditadosTest.class);
+        suite.addTestSuite(ProcuraChaveNaEntidadeTest.class);
+        suite.addTestSuite(CrudAuditorCallbackImplTest.class);
+        suite.addTestSuite(InsertAuditorCallbackImplTest.class);
+        suite.addTestSuite(RemoveAuditorCallbackImplTest.class);
+        suite.addTestSuite(UpdateAuditorCallbackImplTest.class);
+        suite.addTestSuite(DateFormatJsonValueProcessorTest.class);
+        suite.addTestSuite(AbstractModelJsonValueProcessorTest.class);
+        
+        suite.addTestSuite(LinkTagTest.class);
+        suite.addTestSuite(F2rhFacadeTest.class);
+        suite.addTestSuite(ExportacaoActionTest.class);
+
+        //SERVICES
+        suite.addTestSuite(RHServiceTest.class);
+        suite.addTestSuite(RHServiceIntranetTest.class);
+        
+        //NoAllUnitTests (Deixar comentado pois não funciona no jenkins é só para o coverage)
+//        suite.addTestSuite(ManagerAuditaTest.class);
+//        suite.addTestSuite(TestsNoIncludeAllUnitTest.class);
+        
+        return suite;
+    }
+}
