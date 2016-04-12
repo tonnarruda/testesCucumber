@@ -17,7 +17,7 @@ public class MockObjectTestCaseManager<M extends GenericManagerImpl> extends Moc
     public M manager;
 
     ArrayList<String> tiposPrimitivos = new ArrayList<String>(Arrays.asList("boolean","byte","char","double","float","int","long","short"));
-    Object[] valores = {true,0,0,0,0,0,0.0,0.0};
+    Object[] valores = {true,0,'0',0,0,0,0.0,0.0};
     
 	private Object[] geraParametros(Class<?>[] tipoParametros) 
     {
@@ -40,12 +40,15 @@ public class MockObjectTestCaseManager<M extends GenericManagerImpl> extends Moc
     				TesteAutomatico testeAutomatico = method.getAnnotation(TesteAutomatico.class);
     				String metodoMock = StringUtils.defaultIfEmpty((testeAutomatico).metodoMock(), method.getName());
     				
+    				if(method.getName().equals("findColaboradoresCompetenciasAbaixoDoNivel"))
+    					System.out.println(1);
     				if(tiposPrimitivos.contains(method.getReturnType().toString()))
     					dao.expects(once()).method(metodoMock).withAnyArguments().will(returnValue(valores[tiposPrimitivos.indexOf(method.getReturnType().toString())]));
     				else
     					dao.expects(once()).method(metodoMock).withAnyArguments();
 
     				Object[] parametros = geraParametros(method.getParameterTypes()) ;
+    				
     				method.invoke(manager, parametros);
     				
     				assertTrue("Método executado sem erro",true);

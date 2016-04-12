@@ -187,22 +187,6 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.tipoCompetencia = tipoCompetencia;
 	}
 	
-	public ConfiguracaoNivelCompetencia(BigInteger candidatoId, String candidatoNome, String competencia, String nivel, Integer ordem)
-	{
-		competenciaDescricao = competencia;
-		
-		nivelCompetencia = new NivelCompetencia();
-		nivelCompetencia.setDescricao(nivel);
-		nivelCompetencia.setOrdem(ordem);
-		
-//		if(candidatoId != null)
-//		{
-//			this.candidato = new Candidato();
-//			candidato.setId(candidatoId.longValue());
-//			candidato.setNome(candidatoNome);
-//		}
-	}
-	
 	//findCompetenciasAndPesos
 	public ConfiguracaoNivelCompetencia(Long id, Long competenciaId, Character tipoCompetencia, Integer ordem, Long avaliadorId, Integer avaliadorPeso, String nivelDescricao, Long cncfId, Long nivelcompetenciaHistoricoId)
 	{
@@ -246,13 +230,6 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		inicializaFaixaSalarial();
 		this.faixaSalarial.setId(faixaSalarialId);
 	}
-	
-//	public void setCandidatoIdProjection(Long candidatoId) 
-//	{
-//		inicializaCandidato();
-//		
-//		this.candidato.setId(candidatoId);
-//	}
 	
 	public NivelCompetencia getNivelCompetencia() 
 	{

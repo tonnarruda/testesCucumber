@@ -23,7 +23,7 @@ public class ConfiguracaoNivelCompetenciaCandidatoDaoHibernate extends GenericDa
 		p.add(Projections.property("cncf.nivelCompetenciaHistorico.id"), "CNCFNivelCompetenciaHistoricoId");
 
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaCandidato.class, "cncc");
-		criteria.createCriteria("cncc.configuracaoNivelCompetenciaFaixaSalarial", "cncf");
+		criteria.createCriteria("cncc.configuracaoNivelCompetenciaFaixaSalarial", "cncf", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cncc.candidato", "cand");
 		criteria.add(Expression.eq("cncc.candidato.id", candidatoId));
 		criteria.add(Expression.eq("cncc.solicitacao.id", solicitacaoId));

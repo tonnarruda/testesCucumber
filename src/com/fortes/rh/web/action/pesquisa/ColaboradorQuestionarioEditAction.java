@@ -291,13 +291,15 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
 		avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
 		
+		if(colaboradorQuestionario.getRespondida() || colaboradorQuestionario.isRespondidaParcialmente())
+			prepareResponderAvaliacaoDesempenhoUpdate();
+		else
+			prepareResponderAvaliacaoDesempenhoInsert();
+		
 		montaPerguntasRespostas();
 		calculoPontuacaoMaxQuestionario();
-
-		if(colaboradorQuestionario.getRespondida() || colaboradorQuestionario.isRespondidaParcialmente())
-			return prepareResponderAvaliacaoDesempenhoUpdate();
-		else
-			return prepareResponderAvaliacaoDesempenhoInsert();
+		
+		return Action.SUCCESS;
 	}
 	
 	private String prepareResponderAvaliacaoDesempenhoInsert()
@@ -468,7 +470,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
 		
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = decideConfiguracaoNivelCompetenciaFaixaSalarial();
-		if(configuracaoNivelCompetenciaFaixaSalarial != null)
+		if((configuracaoNivelCompetenciaFaixaSalarial != null && (questionarioAvaliacaoVO.isSomenteCompetencias()) || (avaliacao != null && avaliacao.isAvaliarCompetenciasCargo())) )
 			questionarioAvaliacaoVO.setMatrizes(configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(colaborador.getEmpresa().getId(), colaborador.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial));
 		
 		questionarioAvaliacaoVOs = new ArrayList<QuestionarioAvaliacaoVO>();

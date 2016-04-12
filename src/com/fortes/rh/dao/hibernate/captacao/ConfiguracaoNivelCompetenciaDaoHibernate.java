@@ -326,50 +326,6 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return lista;				
 	}
 	
-//	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaCandidato(Long faixaSalarialId, Collection<Long> candidatosIds) 
-//	{
-//		StringBuilder sql = new StringBuilder();
-//		
-//		sql.append("select c.id as candidatoId, c.nome as candidatoNome, COALESCE(a.nome, conhe.nome, h.nome) as competencia, nc.descricao as nivelFaixaDescricao, chn.ordem as nivelFaixaOrdem ");       
-//		sql.append("from configuracaonivelcompetencia cnc ");
-//		sql.append("left join Atitude a on a.id = cnc.competencia_id and :tipoAtitude = cnc.tipocompetencia ");
-//		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and :tipoConhecimento = cnc.tipocompetencia ");
-//		sql.append("left join Habilidade h on h.id = cnc.competencia_id and :tipoHabilidade = cnc.tipocompetencia ");
-//		sql.append("left join ConfiguracaoNivelCompetenciaCandidato cncc on cncc.id = cnc.configuracaoNivelCompetenciaCandidato_id ");
-//		sql.append("left join ConfiguracaoNivelCompetenciaFaixaSalarial cncf on cncf.id = cncc.configuracaoNivelCompetenciaFaixaSalarial_id ");
-//		sql.append("left join Candidato c on c.id = cncc.candidato_id ");
-//		sql.append("left join ConfigHistoricoNivel chn on chn.nivelCompetencia_id = cnc.nivelCompetencia_id ");
-//		sql.append("left join NivelCompetencia nc on nc.id = chn.nivelCompetencia_id ");
-//		sql.append("left join NivelCompetenciaHistorico nch on nch.id=chn.nivelCompetenciaHistorico_id and nch.id = cncf.nivelCompetenciaHistorico_id ") ;
-//		sql.append("where cnc.faixasalarial_id = :faixaSalarialId ");
-//		sql.append("and cnc.configuracaonivelcompetenciacolaborador_id is null ");
-//		
-//		if(!candidatosIds.isEmpty())
-//			sql.append("and (c.id in (:candidatosIds) or c.id is null) ");		
-//		
-//		sql.append("order by c.id nulls first, c.nome ");
-//		
-//		Query query = getSession().createSQLQuery(sql.toString());
-//		query.setCharacter("tipoAtitude", TipoCompetencia.ATITUDE);
-//		query.setCharacter("tipoConhecimento", TipoCompetencia.CONHECIMENTO);
-//		query.setCharacter("tipoHabilidade", TipoCompetencia.HABILIDADE);
-//		query.setLong("faixaSalarialId", faixaSalarialId);
-//		
-//		if(!candidatosIds.isEmpty())
-//			query.setParameterList("candidatosIds", candidatosIds, Hibernate.LONG);
-//		
-//		Collection<Object[]> resultado = query.list();
-//		
-//		Collection<ConfiguracaoNivelCompetencia> lista = new ArrayList<ConfiguracaoNivelCompetencia>();
-//		
-//		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
-//		{
-//			Object[] res = it.next();
-//			lista.add(new ConfiguracaoNivelCompetencia((BigInteger)res[0], (String)res[1], (String)res[2], (String)res[3], (Integer)res[4] ));
-//		}
-//		
-//		return lista;				
-//	}
 
 	public void removeByFaixas(Long[] faixaSalarialIds) 
 	{
@@ -476,31 +432,6 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return (Integer) criteria.uniqueResult();
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId) 
-	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new ConfiguracaoNivelCompetencia(cnc.tipoCompetencia, cnc.competenciaId, cnc.nivelCompetencia.id, chn.ordem) "); 
-		hql.append("from ConfiguracaoNivelCompetencia cnc "); 
-		hql.append("left join cnc.configuracaoNivelCompetenciaColaborador cncc ");
-		hql.append("left join cncc.configuracaoNivelCompetenciaFaixaSalarial cncf ");
-		hql.append("left join cnc.nivelCompetencia nc ");
-		hql.append("left join nc.configHistoricoNiveis chn ");
-		hql.append("left join chn.nivelCompetenciaHistorico nch ");
-		hql.append("where cncc.colaborador.id = :colaboradorId ");
-		hql.append("and cncc.data = (select max(data) from ConfiguracaoNivelCompetenciaColaborador where colaborador.id = cncc.colaborador.id) ");
-		hql.append("and (cncc.colaboradorQuestionario.id = :colaboradorQuestionarioId or cncc.colaboradorQuestionario.id is null) ");
-		hql.append("and (cncc.avaliador.id = :avaliadorId or cncc.avaliador.id is null) ");
-		hql.append("and nch.data = (select data from NivelCompetenciaHistorico where id = cncf.nivelCompetenciaHistorico.id) ");
-		hql.append("order by cnc.competenciaId");
-		
-		Query query = getSession().createQuery(hql.toString());
-		query.setLong("colaboradorId", colaboradorId);
-		query.setLong("colaboradorQuestionarioId", colaboradorQuestionarioId);
-		query.setLong("avaliadorId", avaliadorId);
-		
-		return query.list();
-	}
-	
 	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Boolean colaboradoresAvaliados, char agruparPor) 
 	{
 		getSession().flush();

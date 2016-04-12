@@ -41,6 +41,8 @@ import com.fortes.rh.test.business.captacao.CandidatoManagerTest;
 import com.fortes.rh.test.business.captacao.CandidatoSolicitacaoManagerTest;
 import com.fortes.rh.test.business.captacao.ConfigHistoricoNivelManagerTest;
 import com.fortes.rh.test.business.captacao.ConfiguracaoImpressaoCurriculoManagerTest;
+import com.fortes.rh.test.business.captacao.ConfiguracaoNivelCompetenciaCandidatoManagerTest;
+import com.fortes.rh.test.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManagerTest;
 import com.fortes.rh.test.business.captacao.ConfiguracaoNivelCompetenciaManagerTest;
 import com.fortes.rh.test.business.captacao.ConhecimentoManagerTest;
 import com.fortes.rh.test.business.captacao.DuracaoPreenchimentoVagaManagerTest;
@@ -199,6 +201,7 @@ import com.fortes.rh.test.dao.hibernate.captacao.CandidatoSolicitacaoDaoHibernat
 import com.fortes.rh.test.dao.hibernate.captacao.CompetenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfigHistoricoNivelDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoImpressaoCurriculoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaCandidatoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConhecimentoDaoHibernateTest;
@@ -754,6 +757,9 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest.class,
 	ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest.class,
 	ParticipanteAvaliacaoDesempenhoManagerTest.class,
+	ConfiguracaoNivelCompetenciaCandidatoManagerTest.class,
+	ConfiguracaoNivelCompetenciaCandidatoDaoHibernateTest.class,
+	ConfiguracaoNivelCompetenciaColaboradorManagerTest.class,
 
     //Indicadores
 	IndicadorTurnOverListActionTest.class,
@@ -1479,3 +1485,5 @@ import com.fortes.test.web.tags.LinkTagTest;
 	RHServiceIntranetTest.class
 })
 public class AllUnitTests { }
+
+

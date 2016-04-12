@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -40,10 +41,12 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	private ConfigHistoricoNivelManager configHistoricoNivelManager;
 	private ConfiguracaoNivelCompetenciaCandidatoManager configuracaoNivelCompetenciaCandidatoManager;
 
+	@TesteAutomatico
 	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data) {
 		return getDao().findByFaixa(faixaSalarialId, data);
 	}
 
+	@TesteAutomatico
 	public Collection<ConfiguracaoNivelCompetencia> findByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId) {
 		return getDao().findByCandidatoAndSolicitacao(candidatoId, solicitacaoId);
 	}
@@ -264,14 +267,6 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return solicitacoesComConfigNiveisCompetenciaCandidato;
 	}
 
-	public void setNivelCompetenciaManager(NivelCompetenciaManager nivelCompetenciaManager) {
-		this.nivelCompetenciaManager = nivelCompetenciaManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
-		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
-	}
-
 	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelCompetenciaColaboradorId, Long configuracaoNivelCompetenciaFaixaSalarialId) {
 		Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencia = getDao().findByConfiguracaoNivelCompetenciaColaborador(null, configuracaoNivelCompetenciaColaboradorId, configuracaoNivelCompetenciaFaixaSalarialId);
 		
@@ -282,6 +277,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return configuracoesNiveisCompetencia;
 	}
 	
+	@TesteAutomatico
 	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelCompetenciaFaixaSalarialId)
 	{
 		return getDao().findByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarialId);
@@ -393,7 +389,6 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	public Collection<MatrizCompetenciaNivelConfiguracao> montaConfiguracaoNivelCompetenciaByFaixa(Long empresaId, Long faixaSalarialId, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) 
 	{
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
-//		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial =  configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarialId, configuracaoNivelCompetenciaFaixaSalarial);
 		if(configuracaoNivelCompetenciaFaixaSalarial != null){
 			Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), null, null);
 	
@@ -559,17 +554,15 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return matriz;
 	}
 
+	@TesteAutomatico
 	public void removeByFaixas(Long[] faixaSalarialIds) 
 	{
 		getDao().removeByFaixas(faixaSalarialIds);
 	}
 
+	@TesteAutomatico
 	public void removeColaborador(Colaborador colaborador) {
 		getDao().removeColaborador(colaborador);
-	}
-
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
 	public void removeConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelColaboradorId) throws Exception, FortesException
@@ -617,77 +610,96 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().existeDependenciaComCompetenciasDoCandidato(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial);
 	}
 	
+	@TesteAutomatico
 	public void removeByCandidato(Long candidatoId) {
 		getDao().removeByCandidato(candidatoId);		
 	}
 
+	@TesteAutomatico
 	public Long[] findCompetenciasIdsConfiguradasByFaixaSolicitacao(Long faixaSalarialId) {
 		return getDao().findCompetenciasIdsConfiguradasByFaixaSolicitacao(faixaSalarialId);
 	}
 
+	@TesteAutomatico
 	public Integer somaConfiguracoesByFaixa(Long faixaSalarialId) {
 		return getDao().somaConfiguracoesByFaixa(faixaSalarialId);
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId) 
-	{
-		return getDao().findByColaborador(colaboradorId, avaliadorId, colaboradorQuestionarioId);
-	}
-
+	@TesteAutomatico
 	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Boolean colaboradoresAvaliados, char agruparPor) 
 	{
 		return getDao().findColaboradoresCompetenciasAbaixoDoNivel(	empresaId, estabelecimentoIds, areaIds, colaboradoresAvaliados, agruparPor);
 	}
 	
+	@TesteAutomatico
 	public Collection<Competencia> findCompetenciasColaboradorByFaixaSalarialAndPeriodo(Long faixaId, Date dataIni, Date dataFim) 
 	{
 		return getDao().findCompetenciasColaboradorByFaixaSalarialAndPeriodo(faixaId, dataIni, dataFim);
 	}
 	
+	@TesteAutomatico(metodoMock="removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixasSalariais")
 	public void removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixaSalarial(Long[] faixaIds)
 	{
 		getDao().removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixasSalariais(faixaIds);
 	}
 	
+	@TesteAutomatico(metodoMock="removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixasSalariais")
 	public void removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixaSalarial(Long[] faixaIds)
 	{
 		getDao().removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixasSalariais(faixaIds);
 	}
 
+	@TesteAutomatico
 	public Collection<Colaborador> findDependenciaComColaborador(Long faixaSalarialId, Date data) 
 	{
 		return getDao().findDependenciaComColaborador(faixaSalarialId, data);
 	}
 	
+	@TesteAutomatico
 	public Collection<Candidato> findDependenciaComCandidato(Long faixaSalarialId, Date data)
 	{
 		return getDao().findDependenciaComCandidato(faixaSalarialId, data);
 	}
 
+	@TesteAutomatico
 	public void removeByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId) 
 	{
 		getDao().removeByCandidatoAndSolicitacao(candidatoId, solicitacaoId);
+	}
+	
+	public boolean existeConfiguracaoNivelCompetencia(Long competenciaId, char tipoCompetencia) {
+		return getDao().verifyExists(new String[]{"competenciaId", "tipoCompetencia"}, new Object[]{competenciaId, tipoCompetencia});
+	}
+
+	@TesteAutomatico
+	public void removeBySolicitacaoId(Long solicitacaoId) 
+	{
+		getDao().removeBySolicitacaoId(solicitacaoId);
+	}
+
+	@TesteAutomatico
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciasAndPesos(Long avaliacaoDesempenhoId, Long avaliadoId) 
+	{
+		return getDao().findCompetenciasAndPesos(avaliacaoDesempenhoId, avaliadoId);
+	}
+
+	public void setNivelCompetenciaManager(NivelCompetenciaManager nivelCompetenciaManager) {
+		this.nivelCompetenciaManager = nivelCompetenciaManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
+		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
+	}
+	
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 	
 	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager)
 	{
 		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
 	}
-
-	public boolean existeConfiguracaoNivelCompetencia(Long competenciaId, char tipoCompetencia) {
-		return getDao().verifyExists(new String[]{"competenciaId", "tipoCompetencia"}, new Object[]{competenciaId, tipoCompetencia});
-	}
-
-	public void removeBySolicitacaoId(Long solicitacaoId) 
-	{
-		getDao().removeBySolicitacaoId(solicitacaoId);
-	}
-
-	public Collection<ConfiguracaoNivelCompetencia> findCompetenciasAndPesos(Long avaliacaoDesempenhoId, Long avaliadoId) 
-	{
-		return getDao().findCompetenciasAndPesos(avaliacaoDesempenhoId, avaliadoId);
-	}
-	
+		
 	public CriterioAvaliacaoCompetenciaManager getCriterioAvaliacaoCompetenciaManager() {
 		return criterioAvaliacaoCompetenciaManager;
 	}
