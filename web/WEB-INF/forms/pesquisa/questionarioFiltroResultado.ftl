@@ -178,8 +178,11 @@
 		
 			<#if questionario.tipo == tipoQuestionario.getENTREVISTA()>
 				<@ww.select label="Modelo de Entrevista" required="true" name="questionario.id" id="entrevista" list="entrevistas" listKey="questionario.id" listValue="questionario.titulo" headerKey="" headerValue="Selecione..." onchange="populaPesquisaAspecto(this.value);"/>
-				<@ww.datepicker label="Período" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
-				<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
+				<label>Período que ocorreu o desligamento:</label>
+				<div style="margin-top: -14px;">
+					<@ww.datepicker label="" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
+					<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
+				</div>
 			<#else>
 				<@ww.hidden name="questionario.id"/>
 			</#if>
