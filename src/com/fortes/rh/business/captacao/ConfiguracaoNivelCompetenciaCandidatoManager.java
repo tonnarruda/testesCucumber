@@ -8,4 +8,6 @@ public interface ConfiguracaoNivelCompetenciaCandidatoManager extends GenericMan
 	public ConfiguracaoNivelCompetenciaCandidato findByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId);
 
 	public void removeByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId);
+	
+	public void removeByCandidato(Long candidatoId);
 }

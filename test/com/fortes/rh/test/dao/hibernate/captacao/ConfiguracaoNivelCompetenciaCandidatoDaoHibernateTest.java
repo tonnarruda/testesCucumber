@@ -55,6 +55,19 @@ public class ConfiguracaoNivelCompetenciaCandidatoDaoHibernateTest extends Gener
 		assertNull(configuracaoNivelCompetenciaCandidatoDao.findByCandidatoAndSolicitacao(candidato.getId(), solicitacao.getId()));
 	}
 	
+	public void testRemoveByCandidato() {
+		Candidato candidato = getCandidato("Isabel");
+		Solicitacao solicitacao = getSolicitacao();
+		
+		ConfiguracaoNivelCompetenciaCandidato cncCandidato = ConfiguracaoNivelCompetenciaCandidatoFactory.getEntity(candidato, solicitacao, null, new Date());
+		configuracaoNivelCompetenciaCandidatoDao.save(cncCandidato);
+		assertEquals(cncCandidato.getId(), configuracaoNivelCompetenciaCandidatoDao.findByCandidatoAndSolicitacao(candidato.getId(), solicitacao.getId()).getId());
+		
+		configuracaoNivelCompetenciaCandidatoDao.removeByCandidato(candidato.getId());
+		
+		assertNull(configuracaoNivelCompetenciaCandidatoDao.findByCandidatoAndSolicitacao(candidato.getId(), solicitacao.getId()));
+	}
+
 	private Candidato getCandidato(String nome){
 		Candidato candidato = CandidatoFactory.getCandidato();
 		candidato.setNome(nome);

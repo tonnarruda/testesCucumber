@@ -9,4 +9,6 @@ public interface ConfiguracaoNivelCompetenciaCandidatoDao extends GenericDao<Con
 
 	public void removeByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId);
 	
+	public void removeByCandidato(Long candidatoId);
+	
 }

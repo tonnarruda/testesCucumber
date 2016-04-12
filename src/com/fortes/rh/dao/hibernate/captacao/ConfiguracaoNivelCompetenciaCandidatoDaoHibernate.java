@@ -38,4 +38,9 @@ public class ConfiguracaoNivelCompetenciaCandidatoDaoHibernate extends GenericDa
 		String queryHQL = "delete from ConfiguracaoNivelCompetenciaCandidato cncc where cncc.candidato.id = :candidatoId and cncc.solicitacao.id = :solicitacaoId";
 		getSession().createQuery(queryHQL).setLong("candidatoId", candidatoId).setLong("solicitacaoId", solicitacaoId).executeUpdate();		
 	}
+	
+	public void removeByCandidato(Long candidatoId) {
+		String queryHQL = "delete from ConfiguracaoNivelCompetenciaCandidato cncc where cncc.candidato.id = :candidatoId ";
+		getSession().createQuery(queryHQL).setLong("candidatoId", candidatoId).executeUpdate();		
+	}
 }

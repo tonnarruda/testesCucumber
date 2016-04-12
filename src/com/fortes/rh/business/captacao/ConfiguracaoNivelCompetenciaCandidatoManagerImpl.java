@@ -16,4 +16,9 @@ public class ConfiguracaoNivelCompetenciaCandidatoManagerImpl extends GenericMan
 	public void removeByCandidatoAndSolicitacao(Long candidatoId,Long solicitacaoId) {
 		getDao().removeByCandidatoAndSolicitacao(candidatoId, solicitacaoId);
 	}
+	
+	@TesteAutomatico
+	public void removeByCandidato(Long candidatoId) {
+		getDao().removeByCandidato(candidatoId);
+	}
 }

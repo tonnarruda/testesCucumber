@@ -19,7 +19,6 @@ public class ConfiguracaoNivelCompetenciaCandidatoManagerTest extends MockObject
         manager.setDao((ConfiguracaoNivelCompetenciaCandidatoDao) configuracaoNivelCompetenciaCandidatoDao.proxy());
     }
 
-	@Override
 	public void testExecutaTesteAutomaticoDoManager() {
 		testeAutomatico(configuracaoNivelCompetenciaCandidatoDao);
 	}

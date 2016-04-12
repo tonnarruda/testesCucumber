@@ -616,38 +616,24 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCaseM
 		assertEquals(1, manager.findColaboradorAbaixoNivel(new Long[]{1L, 2L}, faixaSalarial.getId(), null).size());
 	}
 	
-	public void testCriaCNCColaboradorByCNCCnadidato()
-	{
+	public void testCriaCNCColaboradorByCNCCnadidato(){
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		Candidato candidato = CandidatoFactory.getCandidato(2L);
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(3L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(22L);
 		
-		HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity(33L);
-		historico.setFaixaSalarial(faixaSalarial);
-		historico.setData(DateUtil.criarDataDiaMesAno("01/06/2015"));
+		HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity(1L, colaborador, faixaSalarial, DateUtil.criarDataDiaMesAno("01/06/2015"));
 		
-		Atitude atitude = AtitudeFactory.getEntity(1L);
-		atitude.setNome("Prestativo");
+		Atitude atitude = AtitudeFactory.getEntity(1L, "Prestativo");
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(1L, "Java");
+		Habilidade habilidade= HabilidadeFactory.getEntity(6L, "Magica");
 		
-		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(1L);
-		conhecimento.setNome("Java");
+		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity("Pessimo", 1);
+		NivelCompetencia nivelRuim = NivelCompetenciaFactory.getEntity("Ruim", 2);
 		
-		Habilidade habilidade= HabilidadeFactory.getEntity(6L);
-		habilidade.setNome("Magica");
-		
-		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity(4L);
-		nivelBom.setDescricao("pessimo");
-		nivelBom.setOrdem(1);
-		
-		NivelCompetencia nivelRuim = NivelCompetenciaFactory.getEntity(5L);
-		nivelRuim.setDescricao("ruim");
-		nivelRuim.setOrdem(2);
-		
-		ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = ConfiguracaoNivelCompetenciaCandidatoFactory.getEntity();
-		configuracaoNivelCompetenciaCandidato.setSolicitacao(solicitacao);
-		configuracaoNivelCompetenciaCandidato.setCandidato(candidato);
-		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(1L);
+		ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = ConfiguracaoNivelCompetenciaCandidatoFactory.getEntity(1L, candidato, solicitacao, configuracaoNivelCompetenciaFaixaSalarial, new Date());
+
 		ConfiguracaoNivelCompetencia cncCandidato1 = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(configuracaoNivelCompetenciaCandidato, faixaSalarial, nivelBom, conhecimento.getId(), TipoCompetencia.CONHECIMENTO);
 		ConfiguracaoNivelCompetencia cncCandidato2 = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(configuracaoNivelCompetenciaCandidato, faixaSalarial, nivelBom, atitude.getId(), TipoCompetencia.ATITUDE);
 		Collection<ConfiguracaoNivelCompetencia> cncscandidato = Arrays.asList(cncCandidato1, cncCandidato2);
@@ -657,25 +643,49 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCaseM
 		ConfiguracaoNivelCompetencia cncFaixaSalarial2 = ConfiguracaoNivelCompetenciaFactory.getEntityFaixaSalarial(cncFaixa, nivelRuim, habilidade.getId(), TipoCompetencia.HABILIDADE);
 		Collection<ConfiguracaoNivelCompetencia> cncsFaixaSalarial = Arrays.asList(cncFaixaSalarial1, cncFaixaSalarial2);
 		
-		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(1L);
-		configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(null);
-		configuracaoNivelCompetenciaColaborador.setAvaliador(null);
-		
+		configuracaoNivelCompetenciaCandidatoManager.expects(once()).method("findByCandidatoAndSolicitacao").with(eq(candidato.getId()), eq(solicitacao.getId())).will(returnValue(configuracaoNivelCompetenciaCandidato));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findByCandidatoAndSolicitacao").with(eq(candidato.getId()), eq(solicitacao.getId())).will(returnValue(cncscandidato));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findByConfiguracaoNivelCompetenciaFaixaSalarial").with(eq(configuracaoNivelCompetenciaCandidato.getConfiguracaoNivelCompetenciaFaixaSalarial().getId())).will(returnValue(cncsFaixaSalarial));
 		configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("save").withAnyArguments().isVoid();
 		configuracaoNivelCompetenciaDao.expects(once()).method("save").with(ANYTHING).isVoid();
-		configuracaoNivelCompetenciaDao.expects(once()).method("findByCandidatoAndSolicitacao").with(eq(candidato.getId()), eq(solicitacao.getId())).will(returnValue(cncscandidato));
-		configuracaoNivelCompetenciaDao.expects(once()).method("findByFaixa").with(eq(faixaSalarial.getId()), ANYTHING).will(returnValue(cncsFaixaSalarial));
-		
-		Exception ex = null;
+		Exception exception = null;
 		try {
 			manager.criaCNCColaboradorByCNCCnadidato(colaborador, candidato.getId(), solicitacao, historico);
 		} catch (Exception e) {
-			ex = e;
+			exception = e;
 		}
 		
-		assertNull(ex);
+		assertNull(exception);
+	}
+	
+	public void testRemoveByCandidatoAndSolicitacao() 
+	{
+		Long candidatoId = 1L;
+		Long solicitacaoId = 2L;
+		Exception exception = null;
+		try {
+			configuracaoNivelCompetenciaDao.expects(once()).method("removeByCandidatoAndSolicitacao").with(eq(candidatoId), eq(solicitacaoId)).isVoid();
+			configuracaoNivelCompetenciaCandidatoManager.expects(once()).method("removeByCandidatoAndSolicitacao").with(eq(candidatoId), eq(solicitacaoId)).isVoid();
+			manager.removeByCandidatoAndSolicitacao(candidatoId, solicitacaoId);
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNull(exception);
 	}
 
+	public void testRemoveByCandidato() 
+	{
+		Long candidatoId = 1L;
+		Exception exception = null;
+		try {
+			configuracaoNivelCompetenciaDao.expects(once()).method("removeByCandidato").with(eq(candidatoId)).isVoid();
+			configuracaoNivelCompetenciaCandidatoManager.expects(once()).method("removeByCandidato").with(eq(candidatoId)).isVoid();
+			manager.removeByCandidato(candidatoId);
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNull(exception);
+	}
 	public void testExecutaTesteAutomaticoDoManager() {
 		testeAutomatico(configuracaoNivelCompetenciaDao);
 	}

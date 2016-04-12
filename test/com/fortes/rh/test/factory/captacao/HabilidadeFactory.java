@@ -22,6 +22,12 @@ public class HabilidadeFactory
 		return habilidade;
 	}
 
+	public static Habilidade getEntity(Long id, String nome)
+	{
+		Habilidade habilidade = getEntity(1L);
+		habilidade.setNome(nome);
+		return habilidade;
+	}
 	public static Collection<Habilidade> getCollection()
 	{
 		Collection<Habilidade> habilidades = new ArrayList<Habilidade>();

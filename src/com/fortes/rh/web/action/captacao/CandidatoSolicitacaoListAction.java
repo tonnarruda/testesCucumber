@@ -122,7 +122,6 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		candidatoSolicitacao = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());
-		
 		historicoColaboradorManager.removeCandidatoSolicitacao(candidatoSolicitacao.getId());
 		historicoCandidatoManager.removeByCandidatoSolicitacao(candidatoSolicitacao.getId());
 		configuracaoNivelCompetenciaManager.removeByCandidatoAndSolicitacao(candidatoSolicitacao.getCandidato().getId(), candidatoSolicitacao.getSolicitacao().getId());

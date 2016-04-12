@@ -8,13 +8,11 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
-import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
-import com.fortes.rh.util.DateUtil;
 
 public class HistoricoColaboradorFactory
 {
@@ -74,6 +72,15 @@ public class HistoricoColaboradorFactory
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 		historicoColaboradors.add(getEntity());
 		return historicoColaboradors;
+	}
+	
+	public static HistoricoColaborador getEntity(Long id, Colaborador colaborador, FaixaSalarial faixaSalarial, Date data)
+	{
+		HistoricoColaborador historicoColaborador = getEntity(1L);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setData(data);
+		return historicoColaborador;
 	}
 
 }
