@@ -81,13 +81,14 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 	
 	private String existeResposta(){
 		StringBuilder stringBuilder = new StringBuilder(); 
-		stringBuilder.append("exists (select cncc.id from ConfiguracaoNivelCompetenciaColaborador cncc");
-		stringBuilder.append("			inner join ColaboradorQuestionario cq on cq.id = cncc.colaboradorQuestionario_id");
-		stringBuilder.append("			inner join ConfiguracaoNivelCompetencia cnc on cnc.configuracaoNivelCompetenciaColaborador_id =  cncc.id ");
-		stringBuilder.append("			where cq.avaliacaoDesempenho_id = {alias}.avaliacaoDesempenho_id");
-		stringBuilder.append("			and cq.avaliador_id = {alias}.avaliador_id");
-		stringBuilder.append("			and cnc.competencia_id = {alias}.competencia_id");
-		stringBuilder.append("			and cnc.tipocompetencia = {alias}.tipocompetencia");
+		stringBuilder.append("exists (select cncc.id from ConfiguracaoNivelCompetenciaColaborador cncc ");
+		stringBuilder.append("			inner join ConfiguracaoNivelCompetencia cnc on cnc.configuracaoNivelCompetenciaColaborador_id = cncc.id ");
+		stringBuilder.append("			inner join ConfiguracaoCompetenciaAvaliacaoDesempenho ccad on  ccad.configuracaoNivelCompetenciaFaixaSalarial_id = ccncf1_.id ");
+		stringBuilder.append("			where ccad.avaliacaoDesempenho_id= {alias}.avaliacaoDesempenho_id ");
+		stringBuilder.append("			and cncc.avaliador_id = {alias}.avaliador_id ");
+		stringBuilder.append("			and cncc.faixasalarial_id = ccncf1_.faixasalarial_id ");
+		stringBuilder.append("			and cnc.competencia_id = {alias}.competencia_id ");
+		stringBuilder.append("			and cnc.tipocompetencia = {alias}.tipocompetencia ");
 		stringBuilder.append(") as possuiResposta");
 		return stringBuilder.toString();
 	}

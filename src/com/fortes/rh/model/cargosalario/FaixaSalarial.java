@@ -546,8 +546,7 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		return configuracaoCompetenciaAvaliacaoDesempenhos;
 	}
 
-	public void setConfiguracaoCompetenciaAvaliacaoDesempenhos(
-			Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> configuracaoCompetenciaAvaliacaoDesempenhos) {
+	public void setConfiguracaoCompetenciaAvaliacaoDesempenhos(Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> configuracaoCompetenciaAvaliacaoDesempenhos) {
 		this.configuracaoCompetenciaAvaliacaoDesempenhos = configuracaoCompetenciaAvaliacaoDesempenhos;
 	}
 
