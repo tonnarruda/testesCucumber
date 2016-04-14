@@ -82,5 +82,4 @@ public class HistoricoColaboradorFactory
 		historicoColaborador.setData(data);
 		return historicoColaborador;
 	}
-
 }

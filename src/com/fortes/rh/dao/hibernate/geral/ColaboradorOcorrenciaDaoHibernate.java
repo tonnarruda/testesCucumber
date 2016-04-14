@@ -329,8 +329,8 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		if(!ocorrenciaIds.isEmpty())
 			hql.append("and co.ocorrencia.id in (:ocorrenciaIds) ");
 		
-		hql.append("and co.dataIni >= :dataIni ");
 		hql.append("and co.dataIni <= :dataFim ");
+		hql.append("and co.dataFim >= :dataIni ");
 		
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			hql.append("and o.empresa.id in (:empresaIds) ");

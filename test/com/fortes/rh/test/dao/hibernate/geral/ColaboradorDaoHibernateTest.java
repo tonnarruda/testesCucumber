@@ -156,6 +156,7 @@ import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.test.util.mockObjects.MockCandidato;
 import com.fortes.rh.test.util.mockObjects.MockColaborador;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 
 public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colaborador> 
 {
@@ -5825,10 +5826,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoJoao.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoJoao);
 		
-		Colaborador jose = ColaboradorFactory.getEntity();
-		jose.setDataAdmissao(hoje);
-		jose.setEmpresa(empresa);
-		colaboradorDao.save(jose);
+		Colaborador jose = saveColaborador(empresa, hoje, false, null);
 		
 		HistoricoColaborador historicoJose = new HistoricoColaborador();
 		historicoJose.setData(hoje);
@@ -6281,58 +6279,101 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = getColaborador();
-		colaborador.setNome("Xica ");
-		colaborador.setDesligado(false);
-		colaborador.setDataDesligamento(null);
-		colaborador.setDataAdmissao(hoje);
-		colaborador.setEmpresa(empresa);
-		colaboradorDao.save(colaborador);
+		Colaborador colaborador = saveColaborador(empresa, hoje, false, null);
 		
-		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
-		estabelecimentoDao.save(estabelecimento1);
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		AreaOrganizacional area = saveAreaOrganizacional();
+		Cargo cargo = saveCargo();
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
 		
-		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(area);
+		saveHistoricoColaborador(colaborador, estabelecimento, area, faixaSalarial, DateUtil.criarDataMesAno(1, 1, 2008), StatusRetornoAC.CONFIRMADO);
 		
-		Cargo cargo = CargoFactory.getEntity();
-		cargoDao.save(cargo);
+		Ocorrencia ocorrencia1 = saveOcorrencia("Falta");
+		Ocorrencia ocorrencia2 = saveOcorrencia("Matou");
+
+		saveColaboradorOcorrencia(colaborador, ocorrencia1, hoje, dataFim);
+		saveColaboradorOcorrencia(colaborador, ocorrencia2, hoje, dataFim);
 		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarialDao.save(faixaSalarial);
+		Long[] estabelecimentosIds = {estabelecimento.getId()};
+		Long[] areasIds = {area.getId()};
+		Long[] cargosIds = {cargo.getId()};
 		
-		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorAtual.setAreaOrganizacional(area);
-		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2008));
-		historicoColaboradorAtual.setColaborador(colaborador);
-		historicoColaboradorAtual.setFaixaSalarial(faixaSalarial);
-		historicoColaboradorAtual.setEstabelecimento(estabelecimento1);
-		historicoColaboradorDao.save(historicoColaboradorAtual);
+		assertEquals(1, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), estabelecimentosIds, areasIds, cargosIds, new Long[]{ocorrencia1.getId()}, 2).size());
+		assertEquals(2, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), new Long[]{estabelecimento.getId()}, areasIds, cargosIds, new Long[]{}, 2).size());
+	}
+	
+	public void testCountOcorrenciaComColaboradorDesligado() 
+	{
+		Date hoje = new Date();
+		Date dataFim = DateUtil.incrementaMes(hoje, 1);
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
 		
-		Ocorrencia ocorrencia1 = OcorrenciaFactory.getEntity();
-		ocorrencia1.setDescricao("falta");
-		ocorrenciaDao.save(ocorrencia1);
+		Colaborador colaborador = saveColaborador(empresa, hoje, true, DateUtil.incrementaMes(hoje, 2));
 		
-		Ocorrencia ocorrencia2 = OcorrenciaFactory.getEntity();
-		ocorrencia2.setDescricao("matou");
-		ocorrenciaDao.save(ocorrencia2);
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		AreaOrganizacional area = saveAreaOrganizacional();
+		Cargo cargo = saveCargo();
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
 		
-		ColaboradorOcorrencia colaboradorOcorrencia1 = ColaboradorOcorrenciaFactory.getEntity();
-		colaboradorOcorrencia1.setOcorrencia(ocorrencia1);
-		colaboradorOcorrencia1.setColaborador(colaborador);
-		colaboradorOcorrencia1.setDataIni(hoje);
-		colaboradorOcorrencia1.setDataFim(dataFim);
-		colaboradorOcorrenciaDao.save(colaboradorOcorrencia1);
+		saveHistoricoColaborador(colaborador, estabelecimento, area, faixaSalarial, DateUtil.criarDataMesAno(1, 1, 2008), StatusRetornoAC.CONFIRMADO);
 		
-		ColaboradorOcorrencia colaboradorOcorrencia2 = ColaboradorOcorrenciaFactory.getEntity();
-		colaboradorOcorrencia2.setOcorrencia(ocorrencia2);
-		colaboradorOcorrencia2.setColaborador(colaborador);
-		colaboradorOcorrencia2.setDataIni(hoje);
-		colaboradorOcorrencia2.setDataFim(dataFim);
-		colaboradorOcorrenciaDao.save(colaboradorOcorrencia2);
+		Ocorrencia ocorrencia1 = saveOcorrencia("Falta");
+		Ocorrencia ocorrencia2 = saveOcorrencia("Matou");
+
+		saveColaboradorOcorrencia(colaborador, ocorrencia1, hoje, dataFim);
+		saveColaboradorOcorrencia(colaborador, ocorrencia2, hoje, dataFim);
 		
-		assertEquals(1, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId()}, null, null, new Long[]{ocorrencia1.getId()}, 2).size());
-		assertEquals(2, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId()}, null, null, new Long[]{}, 2).size());
+		Long[] estabelecimentosIds = {estabelecimento.getId()};
+		Long[] areasIds = {area.getId()};
+		Long[] cargosIds = {cargo.getId()};
+		
+		assertEquals(1, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), estabelecimentosIds, areasIds, cargosIds, new Long[]{ocorrencia1.getId()}, 2).size());
+		assertEquals(2, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), new Long[]{estabelecimento.getId()}, areasIds, cargosIds, new Long[]{}, 2).size());
+	}
+	
+	public void testCountOcorrenciaComDataInicioAntesDoPeriodoFiltrado() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = saveColaborador(empresa, DateUtil.criarDataMesAno(1, 1, 2014), false, null);
+		
+		FaixaSalarial faixaSalarial = saveFaixaSalarial();
+		
+		saveHistoricoColaborador(colaborador, faixaSalarial, DateUtil.criarDataMesAno(1, 1, 2014), StatusRetornoAC.CONFIRMADO);
+		
+		Ocorrencia ocorrencia1 = saveOcorrencia("Falta");
+
+		saveColaboradorOcorrencia(colaborador, ocorrencia1, DateUtil.criarDataMesAno(1, 1, 2015), DateUtil.criarDataMesAno(03,01,2015));
+		saveColaboradorOcorrencia(colaborador, ocorrencia1, DateUtil.criarDataMesAno(03, 1, 2015), DateUtil.criarDataMesAno(03, 1, 2015) );
+		
+		Collection<DataGrafico> graficoOcorrencias = colaboradorDao.countOcorrencia(DateUtil.criarDataMesAno(03, 1, 2015), DateUtil.criarDataMesAno(03, 1, 2015), Arrays.asList(empresa.getId()), null, null, null, null, 2);
+		assertEquals("Quantidade da mesma ocorrência no período filtrado", 2.0, ((DataGrafico) graficoOcorrencias.toArray()[0]).getData());
+	}
+	
+	public void testCountOcorrenciaComDataInicioAntesEDataFimDespoisDoPeriodoFiltrado() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = saveColaborador(empresa, DateUtil.criarDataMesAno(1, 1, 2014), false, null);
+		
+		FaixaSalarial faixaSalarial = saveFaixaSalarial();
+		
+		saveHistoricoColaborador(colaborador, faixaSalarial, DateUtil.criarDataMesAno(1, 1, 2014), StatusRetornoAC.CONFIRMADO);
+		
+		Ocorrencia ocorrencia1 = saveOcorrencia("Faltou Reunião");
+		Ocorrencia ocorrencia2 = saveOcorrencia("Atraso");
+
+		saveColaboradorOcorrencia(colaborador, ocorrencia1, DateUtil.criarDataMesAno(03, 01, 2015), DateUtil.criarDataMesAno(05, 01, 2015) );
+		saveColaboradorOcorrencia(colaborador, ocorrencia2, DateUtil.criarDataMesAno(01, 01, 2015), DateUtil.criarDataMesAno(01,01,2015));
+		saveColaboradorOcorrencia(colaborador, ocorrencia2, DateUtil.criarDataMesAno(04, 01, 2015), DateUtil.criarDataMesAno(04,01,2015));
+		
+		Collection<DataGrafico> graficoOcorrencias = colaboradorDao.countOcorrencia(DateUtil.criarDataMesAno(04, 1, 2015), DateUtil.criarDataMesAno(04, 1, 2015), Arrays.asList(empresa.getId()), null, null, null, null, 2);
+		assertEquals("Quantidade de ocorrências diferentes no período filtrado", 2, graficoOcorrencias.size());
+		assertEquals("Quantidade de ocorrências do tipo 'Atraso' no período filtrado", 1.0, ((DataGrafico) graficoOcorrencias.toArray()[0]).getData());
+		assertEquals("Quantidade de ocorrências do tipo 'Faltou Reunião' no período filtrado", 1.0, ((DataGrafico) graficoOcorrencias.toArray()[1]).getData());
 	}
 	
 	public void testCountProvidencia() 
@@ -6343,67 +6384,55 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = getColaborador();
-		colaborador.setNome("Xica ");
-		colaborador.setDesligado(false);
-		colaborador.setDataAdmissao(hoje);
-		colaborador.setEmpresa(empresa);
-		colaboradorDao.save(colaborador);
+		Colaborador colaborador = saveColaborador(empresa, hoje, false, null);
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		AreaOrganizacional area = saveAreaOrganizacional();
+		Cargo cargo = saveCargo();
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
 		
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimentoDao.save(estabelecimento);
+		saveHistoricoColaborador(colaborador, estabelecimento, area, faixaSalarial, DateUtil.criarDataMesAno(1, 1, 2008), StatusRetornoAC.CONFIRMADO);
 		
-		Cargo cargo = CargoFactory.getEntity();
-		cargoDao.save(cargo);
+		Ocorrencia ocorrencia1 = saveOcorrencia("Falta");
+		Ocorrencia ocorrencia2 = saveOcorrencia("Briga");
 		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarialDao.save(faixaSalarial);
+		Providencia providencia1 = saveProvidencia("Não faltar");
+		Providencia providencia2 = saveProvidencia("Não brigar");
 		
-		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(area);
+		saveColaboradorOcorrencia(colaborador, ocorrencia1, providencia1, hoje, dataFim);
+		saveColaboradorOcorrencia(colaborador, ocorrencia2, providencia2, hoje, dataFim);
 		
-		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorAtual.setAreaOrganizacional(area);
-		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2008));
-		historicoColaboradorAtual.setColaborador(colaborador);
-		historicoColaboradorAtual.setFaixaSalarial(faixaSalarial);
-		historicoColaboradorAtual.setEstabelecimento(estabelecimento);
-		historicoColaboradorDao.save(historicoColaboradorAtual);
-		
-		Ocorrencia ocorrencia1 = OcorrenciaFactory.getEntity();
-		ocorrencia1.setDescricao("falta");
-		ocorrenciaDao.save(ocorrencia1);
-		
-		Ocorrencia ocorrencia2 = OcorrenciaFactory.getEntity();
-		ocorrencia2.setDescricao("briga");
-		ocorrenciaDao.save(ocorrencia2);
-		
-		Providencia providencia1 = ProvidenciaFactory.getEntity();
-		providencia1.setDescricao("não faltar");
-		providenciaDao.save(providencia1);
-		
-		Providencia providencia2 = ProvidenciaFactory.getEntity();
-		providencia2.setDescricao("não brigar");
-		providenciaDao.save(providencia2);
-		
-		ColaboradorOcorrencia colaboradorOcorrencia1 = ColaboradorOcorrenciaFactory.getEntity();
-		colaboradorOcorrencia1.setOcorrencia(ocorrencia1);
-		colaboradorOcorrencia1.setColaborador(colaborador);
-		colaboradorOcorrencia1.setProvidencia(providencia1);
-		colaboradorOcorrencia1.setDataIni(hoje);
-		colaboradorOcorrencia1.setDataFim(dataFim);
-		colaboradorOcorrenciaDao.save(colaboradorOcorrencia1);
-		
-		ColaboradorOcorrencia colaboradorOcorrencia2 = ColaboradorOcorrenciaFactory.getEntity();
-		colaboradorOcorrencia2.setOcorrencia(ocorrencia2);
-		colaboradorOcorrencia2.setColaborador(colaborador);
-		colaboradorOcorrencia2.setProvidencia(providencia2);
-		colaboradorOcorrencia2.setDataIni(hoje);
-		colaboradorOcorrencia2.setDataFim(dataFim);
-		colaboradorOcorrenciaDao.save(colaboradorOcorrencia2);
-		
-		assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  new Long[]{estabelecimento.getId()}, null, null, null, 2).size());
+		assertEquals(1, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, new Long[]{cargo.getId()}, new Long[]{ocorrencia1.getId()}, 2).size());
 		assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  null, null, null, null, 2).size());
+	}
+	
+	public void testCountProvidencia1() 
+	{
+		Date dataAdmissao = DateUtil.criarDataMesAno(01, 01, 2016);
+		Date dataDesligamento = DateUtil.criarDataMesAno(01, 04, 2016);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = saveColaborador(empresa, dataAdmissao, true, dataDesligamento);
+		FaixaSalarial faixaSalarial = saveFaixaSalarial();
+		saveHistoricoColaborador(colaborador, faixaSalarial, DateUtil.criarDataMesAno(1, 1, 2008), StatusRetornoAC.CONFIRMADO);
+		
+		Ocorrencia ocorrencia1 = saveOcorrencia("Atestado");
+		Ocorrencia ocorrencia2 = saveOcorrencia("Briga");
+		
+		Providencia providencia1 = saveProvidencia("Abonar Hora");
+		Providencia providencia2 = saveProvidencia("Desligamento");
+		
+		saveColaboradorOcorrencia(colaborador, ocorrencia1, providencia1, DateUtil.criarDataMesAno(24, 02, 2016), DateUtil.criarDataMesAno(9, 03, 2016));
+		saveColaboradorOcorrencia(colaborador, ocorrencia2, providencia2, DateUtil.criarDataMesAno(31, 03, 2016), DateUtil.criarDataMesAno(31, 03, 2016));
+		
+		Collection<DataGrafico> graficoProvidencias = colaboradorDao.countProvidencia(DateUtil.criarDataMesAno(01, 03, 2016), DateUtil.criarDataMesAno(31, 03, 2016), Arrays.asList(empresa.getId()), null, null, null, null, 2);
+		
+		assertEquals("Quantidade de providencias diferentes para o período filtrado", 2, graficoProvidencias.size());
+		assertEquals("Quantidade de providencias do tipo 'Abonar Hora' para o período filtrado", 1.0, ((DataGrafico) graficoProvidencias.toArray()[0]).getData());
+		assertEquals("Abonar Hora", ((DataGrafico) graficoProvidencias.toArray()[0]).getLabel());
+		assertEquals("Quantidade de providencias do tipo 'Desligamento' para o período filtrado", 1.0, ((DataGrafico) graficoProvidencias.toArray()[1]).getData());
+		assertEquals("Desligamento", ((DataGrafico) graficoProvidencias.toArray()[1]).getLabel());
 	}
 	
 	
@@ -6936,7 +6965,193 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals("Os dois Vinculos", new Integer(3), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento1.getId(), estabelecimento2.getId()), Arrays.asList(area.getId()), null, Arrays.asList(colaborador1.getVinculo(), colaborador2.getVinculo() ), false));
 		assertEquals("Vinculos nulos e um único estabelecimento", new Integer(1), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento1.getId()), Arrays.asList(area.getId()), null, null, false));
 		assertEquals("Colaborador com Motivo de desligamento de Redução de quadro", new Integer(1), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), null, null, null, null, true));
+	}
+	
+	public void testGetOcorrenciasByPeriodo(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		Date dataAdmissao = DateUtil.criarDataMesAno(1, 01, 2015);
+		Date dataHistorico = DateUtil.criarDataMesAno(1, 01, 2015);
 		
+		FaixaSalarial faixaSalarial = saveFaixaSalarial();
+		Colaborador colaborador = saveColaborador(empresa, dataAdmissao, true, new Date());
+		saveHistoricoColaborador(colaborador, faixaSalarial, dataHistorico, StatusRetornoAC.CONFIRMADO);
+
+		Ocorrencia ocorrenciaAtestadoMedico = saveOcorrencia("Atestado médico");
+		Ocorrencia ocorrenciaFalta = saveOcorrencia("Falta");
+		
+		saveColaboradorOcorrencia(colaborador, ocorrenciaAtestadoMedico, DateUtil.criarDataMesAno(1, 01, 2016), DateUtil.criarDataMesAno(1, 02, 2016));
+		saveColaboradorOcorrencia(colaborador, ocorrenciaFalta, DateUtil.criarDataMesAno(10, 01, 2016), DateUtil.criarDataMesAno(1, 03, 2016));
+		
+		Collection<Ocorrencia> ocorrencias = colaboradorDao.getOcorrenciasByPeriodo(DateUtil.criarDataMesAno(1, 01, 2016), DateUtil.criarDataMesAno(01, 02, 2016),  LongUtil.arrayLongToCollectionLong(new Long[]{empresa.getId()}), null, null, null, 20);
+		
+		assertEquals(2, ocorrencias.size());
+		assertEquals("Atestado médico", ((Ocorrencia)ocorrencias.toArray()[0]).getDescricao());
+	}
+	
+	public void testGetOcorrenciasByPeriodoComOcorrenciaIniciandoAntesEFinalizandoDepoisDoPeriodoFiltrado(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		Date dataAdmissao = DateUtil.criarDataMesAno(1, 01, 2014);
+		Date dataHistorico = DateUtil.criarDataMesAno(1, 01, 2014);
+		
+		FaixaSalarial faixaSalarial = saveFaixaSalarial();
+		Colaborador colaborador = saveColaborador(empresa, dataAdmissao,false, null);
+		
+		saveHistoricoColaborador(colaborador, faixaSalarial, dataHistorico, StatusRetornoAC.CONFIRMADO);
+		
+		Ocorrencia ocorrenciaAtestadoMedico = saveOcorrencia("Afastamento");
+		
+		saveColaboradorOcorrencia(colaborador, ocorrenciaAtestadoMedico, DateUtil.criarDataMesAno(1, 01, 2016), DateUtil.criarDataMesAno(1, 02, 2016));
+		
+		Collection<Ocorrencia> ocorrencias = colaboradorDao.getOcorrenciasByPeriodo(DateUtil.criarDataMesAno(15, 01, 2016), DateUtil.criarDataMesAno(31, 01, 2016),  LongUtil.arrayLongToCollectionLong(new Long[]{empresa.getId()}), null, null, null, 20);
+		
+		assertEquals(1, ocorrencias.size());
+		assertEquals("Afastamento", ((Ocorrencia)ocorrencias.toArray()[0]).getDescricao());
+	}
+	
+	public void testGetOcorrenciasByPeriodoComOcorrenciaIniciandoAntesDoPeriodoFiltrado(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Date dataAdmissao = DateUtil.criarDataMesAno(1, 01, 2014);
+		Date dataHistorico = DateUtil.criarDataMesAno(1, 01, 2014);
+		
+		FaixaSalarial faixaSalarial = saveFaixaSalarial();
+		Colaborador colaborador = saveColaborador(empresa, dataAdmissao, false, null);
+		
+		saveHistoricoColaborador(colaborador, faixaSalarial, dataHistorico, StatusRetornoAC.CONFIRMADO);
+		
+		Ocorrencia ocorrenciaAtestadoMedico = saveOcorrencia("Falta");
+		
+		saveColaboradorOcorrencia(colaborador, ocorrenciaAtestadoMedico, DateUtil.criarDataMesAno(1, 01, 2016), DateUtil.criarDataMesAno(1, 02, 2016));
+		
+		Collection<Ocorrencia> ocorrencias = colaboradorDao.getOcorrenciasByPeriodo(DateUtil.criarDataMesAno(15, 01, 2016), DateUtil.criarDataMesAno(01, 02, 2016),  LongUtil.arrayLongToCollectionLong(new Long[]{empresa.getId()}), null, null, null, 20);
+		
+		assertEquals(1, ocorrencias.size());
+		assertEquals("Falta", ((Ocorrencia)ocorrencias.toArray()[0]).getDescricao());
+	}
+	
+	public void testGetOcorrenciasByPeriodoComTodosOsFiltros(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		Date dataAdmissao = DateUtil.criarDataMesAno(1, 01, 2015);
+		Date dataHistorico = DateUtil.criarDataMesAno(1, 01, 2015);
+		
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
+		Cargo cargo = saveCargo();
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
+		
+		Colaborador colaborador = saveColaborador(empresa, dataAdmissao, true, DateUtil.criarDataMesAno(1, 04, 2016));
+		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, dataHistorico, StatusRetornoAC.CONFIRMADO);
+
+		Ocorrencia ocorrenciaAtestadoMedico = saveOcorrencia("Atestado médico");
+		Ocorrencia ocorrenciaFalta = saveOcorrencia("Falta");
+		
+		saveColaboradorOcorrencia(colaborador, ocorrenciaAtestadoMedico, DateUtil.criarDataMesAno(1, 01, 2016), DateUtil.criarDataMesAno(1, 02, 2016));
+		saveColaboradorOcorrencia(colaborador, ocorrenciaFalta, DateUtil.criarDataMesAno(10, 01, 2016), DateUtil.criarDataMesAno(1, 03, 2016));
+		
+		Long[] estabelecimentosId = {estabelecimento.getId()};
+		Long[] areaOrganizacionaisId = {areaOrganizacional.getId()};
+		Long[] cargosId = {cargo.getId()};
+		
+		Collection<Ocorrencia> ocorrencias = colaboradorDao.getOcorrenciasByPeriodo(DateUtil.criarDataMesAno(1, 01, 2016), DateUtil.criarDataMesAno(01, 02, 2016),  LongUtil.arrayLongToCollectionLong(new Long[]{empresa.getId()}), estabelecimentosId, areaOrganizacionaisId, cargosId, 20);
+		
+		assertEquals(2, ocorrencias.size());
+		assertEquals("Atestado médico", ((Ocorrencia)ocorrencias.toArray()[0]).getDescricao());
+		assertEquals("Falta", ((Ocorrencia)ocorrencias.toArray()[1]).getDescricao());
+	}
+	
+	private FaixaSalarial saveFaixaSalarial(Cargo cargo){
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		return faixaSalarial;
+	}
+	
+	private FaixaSalarial saveFaixaSalarial(){
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		return faixaSalarial;
+	}
+
+	private  Estabelecimento saveEstabelecimento(){
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		return estabelecimento;
+	}
+	
+	private AreaOrganizacional saveAreaOrganizacional(){
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		return areaOrganizacional;
+	}
+	
+	private Cargo saveCargo(){
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		return cargo;
+	}
+	
+	private void saveHistoricoColaborador(Colaborador colaborador, FaixaSalarial faixaSalarial, Date dataHistorico, Integer status){
+		HistoricoColaborador historicoColaborador = inicializaHistorico(dataHistorico, colaborador, faixaSalarial);
+		historicoColaborador.setStatus(status);
+		historicoColaboradorDao.save(historicoColaborador);
+	}
+	
+	private void saveHistoricoColaborador(Colaborador colaborador, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, FaixaSalarial faixaSalarial, Date dataHistorico, Integer status){
+		HistoricoColaborador historicoColaborador = inicializaHistorico(dataHistorico, colaborador, faixaSalarial);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setStatus(status);
+		historicoColaboradorDao.save(historicoColaborador);
+	}
+
+	private Colaborador saveColaborador(Empresa empresa, Date dataAdmissao, boolean desligado, Date dataDesligamento) {
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setDataAdmissao(dataAdmissao);
+		colaborador.setEmpresa(empresa);
+		colaborador.setDesligado(desligado);
+		colaborador.setDataDesligamento(dataDesligamento);
+		colaboradorDao.save(colaborador);
+		return colaborador;
+	}
+	
+	private Ocorrencia saveOcorrencia(String descricao){
+		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
+		ocorrencia.setDescricao(descricao);
+		ocorrenciaDao.save(ocorrencia);
+		return ocorrencia;
+	}
+	
+	private ColaboradorOcorrencia saveColaboradorOcorrencia(Colaborador colaborador, Ocorrencia ocorrencia, Date dataInicio, Date dataFim){
+		ColaboradorOcorrencia colaboradorOcorrencia = setColaboradorOcorrencia(colaborador, ocorrencia, dataInicio, dataFim);
+		colaboradorOcorrenciaDao.save(colaboradorOcorrencia);
+		return colaboradorOcorrencia;
+	}
+	
+	private ColaboradorOcorrencia saveColaboradorOcorrencia(Colaborador colaborador, Ocorrencia ocorrencia, Providencia providencia, Date dataInicio, Date dataFim){
+		ColaboradorOcorrencia colaboradorOcorrencia = setColaboradorOcorrencia(colaborador, ocorrencia, dataInicio, dataFim);
+		colaboradorOcorrencia.setProvidencia(providencia);
+		colaboradorOcorrenciaDao.save(colaboradorOcorrencia);
+		return colaboradorOcorrencia;
+	}
+	
+	private ColaboradorOcorrencia setColaboradorOcorrencia(Colaborador colaborador, Ocorrencia ocorrencia, Date dataInicio, Date dataFim){
+		ColaboradorOcorrencia colaboradorOcorrencia = ColaboradorOcorrenciaFactory.getEntity();
+		colaboradorOcorrencia.setColaborador(colaborador);
+		colaboradorOcorrencia.setOcorrencia(ocorrencia);
+		colaboradorOcorrencia.setDataIni(dataInicio);
+		colaboradorOcorrencia.setDataFim(dataFim);
+		return colaboradorOcorrencia;
+	}
+	
+	private Providencia saveProvidencia(String descricao){
+		Providencia providencia = ProvidenciaFactory.getEntity();
+		providencia.setDescricao(descricao);
+		providenciaDao.save(providencia);
+		return providencia;
 	}
 	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
@@ -7108,19 +7323,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	{
 		this.usuarioEmpresaDao = usuarioEmpresaDao;
 	}
-
 	
 	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao)
 	{
 		this.historicoFuncaoDao = historicoFuncaoDao;
 	}
 
-	
 	public void setEpiDao(EpiDao epiDao)
 	{
 		this.epiDao = epiDao;
 	}
-
 	
 	public void setSolicitacaoEpiDao(SolicitacaoEpiDao solicitacaoEpiDao)
 	{

@@ -1,5 +1,6 @@
 package com.fortes.rh.test.factory.geral;
 
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 
 public class OcorrenciaFactory
@@ -20,4 +21,14 @@ public class OcorrenciaFactory
 		ocorrencia.setId(id);
 		return ocorrencia;
 	}
+	
+	public static Ocorrencia getEntity(Empresa empresa, String descricao, int pontuacao)
+	{
+		Ocorrencia ocorrencia = getEntity();
+		ocorrencia.setEmpresa(empresa);
+		ocorrencia.setDescricao(descricao);
+		ocorrencia.setPontuacao(pontuacao);
+		return ocorrencia;
+	}
+	
 }

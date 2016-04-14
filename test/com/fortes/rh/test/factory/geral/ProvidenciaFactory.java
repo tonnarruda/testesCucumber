@@ -21,6 +21,13 @@ public class ProvidenciaFactory
 
 		return providencia;
 	}
+	
+	public static Providencia getEntity(String descricao)
+	{
+		Providencia providencia = getEntity();
+		providencia.setDescricao(descricao);;
+		return providencia;
+	}
 
 	public static Collection<Providencia> getCollection()
 	{
