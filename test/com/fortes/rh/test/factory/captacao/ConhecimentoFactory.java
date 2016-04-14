@@ -40,4 +40,11 @@ public class ConhecimentoFactory
 		conhecimento.setNome(nome);
 		return conhecimento;
 	}
+	
+	public static Conhecimento getConhecimento(String nome)
+	{
+		Conhecimento conhecimento = getConhecimento();
+		conhecimento.setNome(nome);
+		return conhecimento;
+	}
 }

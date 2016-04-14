@@ -18,6 +18,14 @@ public class ConfiguracaoNivelCompetenciaColaboradorFactory
 		configuracaoNivelCompetenciaColaborador.setId(null);
 		return configuracaoNivelCompetenciaColaborador;
 	}
+	
+	public static ConfiguracaoNivelCompetenciaColaborador getEntity(Colaborador colaborador, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial)
+	{
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = getEntity();
+		configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
+		configuracaoNivelCompetenciaColaborador.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
+		return configuracaoNivelCompetenciaColaborador;
+	}
 
 	public static ConfiguracaoNivelCompetenciaColaborador getEntity(Long id)
 	{

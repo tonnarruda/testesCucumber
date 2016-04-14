@@ -45,4 +45,11 @@ public class AtitudeFactory
 		
 		return atitudes;
 	}
+
+	public static Atitude getEntity(String nome) {
+		Atitude atitude = getEntity();
+		atitude.setNome(nome);
+
+		return atitude;
+	}
 }

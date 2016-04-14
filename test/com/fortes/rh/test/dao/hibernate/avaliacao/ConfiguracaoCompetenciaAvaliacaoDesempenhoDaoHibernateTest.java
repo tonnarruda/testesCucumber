@@ -322,8 +322,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest extends 
 		assertTrue(configuracaoCompetenciaAvaliacaoDesempenhoDao.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenho.getId()));
 	}
 	
-	public void testGetConfiguracaoNivelCompetenciaFaixaSalarial() 
-	{
+	public void testGetConfiguracaoNivelCompetenciaFaixaSalarial(){
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
@@ -363,8 +362,6 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest extends 
 		
 		ConfiguracaoCompetenciaAvaliacaoDesempenho configuracaoCompetenciaAvaliacaoDesempenho2 = ConfiguracaoCompetenciaAvaliacaoDesempenhoFactory.getEntity(null, avaliador1, avaliacaoDesempenho, configuracaoNivelCompetenciaFaixaSalarial2, TipoCompetencia.HABILIDADE, habilidade.getId());
 		configuracaoCompetenciaAvaliacaoDesempenhoDao.save(configuracaoCompetenciaAvaliacaoDesempenho2);
-		
-		configuracaoCompetenciaAvaliacaoDesempenhoDao.getHibernateTemplateByGenericDao().flush();
 		
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = configuracaoCompetenciaAvaliacaoDesempenhoDao.getConfiguracaoNivelCompetenciaFaixaSalarial(avaliador1.getId(), faixaSalarial1.getId(), avaliacaoDesempenho.getId());
 		
