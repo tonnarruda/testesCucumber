@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.1xx.1xx" db="" data="xx/xx/2016">
+	<Versao id="1.1.164.195" db="" data="14/04/2016">
 		<Item visivel="S" motivo="S16030000415"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho: Permitir bloquear avaliação de desempenho mesmo contendo avaliações respondidas.]]></Item>
 		<Item visivel="S" motivo="P16040000033"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Ajuste de inconsistência ao exibir comentários.]]></Item>
 	</Versao>
@@ -8,6 +8,7 @@
 		<Item visivel="S" motivo="P16030000328"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Ajuste da inconsistência ao tentar inserir histórico de nível quando não existir nível de competência.]]></Item>
 		<Item visivel="S" motivo="S16030000141"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho: Nova opção para imprimir respostas da avaliação.]]></Item>
 		<Item visivel="S" motivo="P16030000303"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliação de Desempenho: Ajuste na inconsistência ao exibir comportamentos observados.]]></Item>
+		<Item visivel="S" motivo="P16030000269"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliação de Desempenho: Ajuste na inconsistência do cálculo da performance quando o nível de competência possui percentual igual a zero.]]></Item>
 		<Item visivel="S" motivo="P16030000032"><![CDATA[T&D > Painel de Indicadores: Ajuste no cálculo dos indicadores.]]></Item>
 		<Item visivel="S" motivo="S16010000266"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Nova opção para agrupar relatório detalhado por ocorrência.]]></Item>
 		<Item visivel="S" motivo="S16030000346"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Nova opção para exibir o botão gravar parcialmente em "Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho".]]></Item>

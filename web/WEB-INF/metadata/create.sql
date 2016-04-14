@@ -2916,12 +2916,11 @@ CREATE TABLE configuracaonivelcompetencia (
     faixasalarial_id bigint,
     nivelcompetencia_id bigint NOT NULL,
     competencia_id bigint,
-    candidato_id bigint,
     tipocompetencia character(1),
     configuracaonivelcompetenciacolaborador_id bigint,
     configuracaonivelcompetenciafaixasalarial_id bigint,
-    solicitacao_id bigint,
-    pesocompetencia smallint
+    pesocompetencia smallint,
+    configuracaonivelcompetenciacandidato_id bigint
 );
 
 
@@ -2946,6 +2945,42 @@ ALTER TABLE public.configuracaonivelcompetencia_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('configuracaonivelcompetencia_sequence', 1, false);
+
+
+--
+-- Name: configuracaonivelcompetenciacandidato; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE configuracaonivelcompetenciacandidato (
+    id bigint NOT NULL,
+    data date NOT NULL,
+    candidato_id bigint,
+    solicitacao_id bigint,
+    configuracaonivelcompetenciafaixasalarial_id bigint
+);
+
+
+ALTER TABLE public.configuracaonivelcompetenciacandidato OWNER TO postgres;
+
+--
+-- Name: configuracaonivelcompetenciacandidato_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE configuracaonivelcompetenciacandidato_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.configuracaonivelcompetenciacandidato_sequence OWNER TO postgres;
+
+--
+-- Name: configuracaonivelcompetenciacandidato_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaonivelcompetenciacandidato_sequence', 1, false);
 
 
 --
@@ -30586,6 +30621,12 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Data for Name: configuracaonivelcompetenciacandidato; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: configuracaonivelcompetenciacolaborador; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -31602,6 +31643,7 @@ INSERT INTO migrations (name) VALUES ('20160308153817');
 INSERT INTO migrations (name) VALUES ('20160315133931');
 INSERT INTO migrations (name) VALUES ('20160328151531');
 INSERT INTO migrations (name) VALUES ('20160328171712');
+INSERT INTO migrations (name) VALUES ('20160413131904');
 
 
 --
@@ -32019,7 +32061,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.163.194', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.60.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.164.195', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.60.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
 
 
 --
@@ -33147,6 +33189,14 @@ ALTER TABLE ONLY configuracaolimitecolaborador
 
 ALTER TABLE ONLY configuracaonivelcompetencia
     ADD CONSTRAINT configuracaonivelcompetencia_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: configuracaonivelcompetenciacandidato_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY configuracaonivelcompetenciacandidato
+    ADD CONSTRAINT configuracaonivelcompetenciacandidato_pkey PRIMARY KEY (id);
 
 
 --
@@ -34636,6 +34686,14 @@ ALTER TABLE ONLY candidato
 
 
 --
+-- Name: candidato_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaonivelcompetenciacandidato
+    ADD CONSTRAINT candidato_id_fk FOREIGN KEY (candidato_id) REFERENCES candidato(id);
+
+
+--
 -- Name: candidatocurriculo_candidato_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -35556,11 +35614,11 @@ ALTER TABLE ONLY configuracaolimitecolaborador
 
 
 --
--- Name: configuracaonivelcompetencia_candidato_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: configuracaonivelcompetencia_cnccandidato_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaonivelcompetencia
-    ADD CONSTRAINT configuracaonivelcompetencia_candidato_fk FOREIGN KEY (candidato_id) REFERENCES candidato(id);
+    ADD CONSTRAINT configuracaonivelcompetencia_cnccandidato_id_fk FOREIGN KEY (configuracaonivelcompetenciacandidato_id) REFERENCES configuracaonivelcompetenciacandidato(id);
 
 
 --
@@ -35577,14 +35635,6 @@ ALTER TABLE ONLY configuracaonivelcompetencia
 
 ALTER TABLE ONLY configuracaonivelcompetencia
     ADD CONSTRAINT configuracaonivelcompetencia_nivelcompetencia_fk FOREIGN KEY (nivelcompetencia_id) REFERENCES nivelcompetencia(id);
-
-
---
--- Name: configuracaonivelcompetencia_solicitacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY configuracaonivelcompetencia
-    ADD CONSTRAINT configuracaonivelcompetencia_solicitacao_fk FOREIGN KEY (solicitacao_id) REFERENCES solicitacao(id);
 
 
 --
@@ -37169,6 +37219,14 @@ ALTER TABLE ONLY solicitacao
 
 ALTER TABLE ONLY solicitacao
     ADD CONSTRAINT solicitacao_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);
+
+
+--
+-- Name: solicitacao_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaonivelcompetenciacandidato
+    ADD CONSTRAINT solicitacao_id_fk FOREIGN KEY (solicitacao_id) REFERENCES solicitacao(id);
 
 
 --

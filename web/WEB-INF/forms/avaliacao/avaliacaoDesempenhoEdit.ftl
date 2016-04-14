@@ -69,7 +69,13 @@
 		<@ww.form name="form" action="${formAction}" method="POST">
 			<@ww.textfield label="Título" name="avaliacaoDesempenho.titulo" id="titulo" cssClass="inputNome" maxLength="100" required="true" />
 			
-			<@ww.datepicker label="Período" required="true" value="${inicio}" name="avaliacaoDesempenho.inicio" id="inicio" disabled="${temAvaliacoesRespondidas?string}" cssClass="mascaraData validaDataIni" after="a" liClass="liLeft"/>
+			<#if temAvaliacoesRespondidas>			
+				<@ww.textfield label="Período" value="${inicio}" disabled="true" cssClass="mascaraData" after="a" liClass="liLeft"/>
+				<@ww.hidden id="inicio" name="avaliacaoDesempenho.inicio" />
+			<#else>
+				<@ww.datepicker label="Período" required="true" value="${inicio}" name="avaliacaoDesempenho.inicio" id="inicio" cssClass="mascaraData validaDataIni" after="a" liClass="liLeft"/>
+			</#if>
+			
 			<@ww.datepicker label="" value="${fim}" name="avaliacaoDesempenho.fim" id="fim" cssClass="mascaraData validaDataFim"/>
 			
 			<#if temAvaliacoesRespondidas>

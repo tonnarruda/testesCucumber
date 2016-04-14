@@ -59,30 +59,47 @@ public class AcPessoalClientCargo
         	StringBuilder token = new StringBuilder();
         	GrupoAC grupoAC = new GrupoAC();
         	Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SetCargoComSituacao");
-            QName xmlstring = new QName("xs:string");
-       	   	montaParametrosCall(call);
-    		call.addParameter("Nome",xmlstring,ParameterMode.IN);
-    		call.addParameter("NomeACPessoal",xmlstring,ParameterMode.IN);
+            montaParametrosCallCriarCargo(call);
         	acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
         	DateFormat formata = new SimpleDateFormat("dd/MM/yyyy");
 
-        	Double valor = 0.0;
         	String indiceCodicoAC = "";
         	if(faixaSalarialHistorico.getIndice() != null && faixaSalarialHistorico.getIndice().getCodigoAC() != null)
         		indiceCodicoAC = faixaSalarialHistorico.getIndice().getCodigoAC();
         	if(faixaSalarialHistorico.getQuantidade() == null)
         		faixaSalarialHistorico.setQuantidade(0.0);
+        	Double valor = 0.0;
         	if(faixaSalarialHistorico.getTipo() == TipoAplicacaoIndice.VALOR)
         		valor = faixaSalarialHistorico.getValor();
-
-        	Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), "", faixaSalarial.getNome(), formata.format(faixaSalarialHistorico.getData()),indiceCodicoAC, TipoAplicacaoIndice.getCodigoAC(faixaSalarialHistorico.getTipo()), faixaSalarial.getNomeACPessoal(), valor, faixaSalarialHistorico.getQuantidade(), faixaSalarialHistorico.getId()};
+        	Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), "", faixaSalarial.getNome(),formata.format(faixaSalarialHistorico.getData()),indiceCodicoAC, TipoAplicacaoIndice.getCodigoAC(faixaSalarialHistorico.getTipo()), faixaSalarial.getNomeACPessoal(), valor,	faixaSalarialHistorico.getQuantidade(), faixaSalarialHistorico.getId()};
+      
         	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
         	result.getSucesso("SetCargoComSituacao", param, this.getClass());
+
             return result.getCodigoretorno();
         }catch(Exception e){
             e.printStackTrace();
             throw e;
         }
+	}
+
+	private void montaParametrosCallCriarCargo(Call call) {
+		QName xmlstring = new QName("xs:string");
+		QName xmldouble = new QName("xs:double");
+		QName xmlint = new QName("xs:int");
+
+		//Seta os parâmetros com os tipos e modos
+		call.addParameter("Token",xmlstring,ParameterMode.IN);
+		call.addParameter("Empresa",xmlstring,ParameterMode.IN);
+		call.addParameter("Codigo",xmlstring,ParameterMode.IN);
+		call.addParameter("Nome",xmlstring,ParameterMode.IN);
+		call.addParameter("Data",xmlstring,ParameterMode.IN);
+		call.addParameter("Indice",xmlstring,ParameterMode.IN);
+		call.addParameter("Tipo",xmlstring,ParameterMode.IN);
+		call.addParameter("NomeACPessoal",xmlstring,ParameterMode.IN);
+		call.addParameter("Valor",xmldouble,ParameterMode.IN);
+		call.addParameter("IndiceQuantidade",xmldouble,ParameterMode.IN);
+		call.addParameter("rh_sca_id",xmlint,ParameterMode.IN);
 	}
 
 	public String updateCargo(FaixaSalarial faixaSalarial, Empresa empresa) throws Exception{

@@ -431,6 +431,13 @@ SELECT pg_catalog.setval('configuracaonivelcompetencia_sequence', 1, false);
 
 
 --
+-- Name: configuracaonivelcompetenciacandidato_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaonivelcompetenciacandidato_sequence', 1, false);
+
+
+--
 -- Name: configuracaonivelcompetenciacolaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -24765,6 +24772,16 @@ ALTER TABLE configuracaolimitecolaborador DISABLE TRIGGER ALL;
 ALTER TABLE configuracaolimitecolaborador ENABLE TRIGGER ALL;
 
 --
+-- Data for Name: configuracaonivelcompetenciacandidato; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE configuracaonivelcompetenciacandidato DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE configuracaonivelcompetenciacandidato ENABLE TRIGGER ALL;
+
+--
 -- Data for Name: configuracaonivelcompetenciacolaborador; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -25976,6 +25993,7 @@ INSERT INTO migrations (name) VALUES ('20160308153817');
 INSERT INTO migrations (name) VALUES ('20160315133931');
 INSERT INTO migrations (name) VALUES ('20160328151531');
 INSERT INTO migrations (name) VALUES ('20160328171712');
+INSERT INTO migrations (name) VALUES ('20160413131904');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -26379,7 +26397,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.163.194', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.60.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.164.195', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.60.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;
