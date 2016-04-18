@@ -160,7 +160,7 @@ public class ColaboradorDWR
         Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 
         if(areaOrganizacionalIds != null && areaOrganizacionalIds.length > 0)
-        	colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), null, SituacaoColaborador.ATIVO);        	
+        	colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), null, SituacaoColaborador.ATIVO, null);        	
         else
             colaboradores = colaboradorManager.findAllSelect(empresaId, "nomeComercial");
 
@@ -176,11 +176,11 @@ public class ColaboradorDWR
     		if(empresaId != null && empresaId != 0)
     			empresaIds = new Long[]{empresaId};
     			
-    		colaboradores = colaboradorManager.findAllSelect(situacao, empresaIds);
+    		colaboradores = colaboradorManager.findAllSelect(situacao, null, empresaIds);
     	}
     	else
     	{
-    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao);        	
+    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao, null);        	
     	}
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", (exibirNomeEmpresa ? "getNomeComercialEmpresa" : "getNomeEOuNomeComercial"), Colaborador.class);
@@ -190,31 +190,45 @@ public class ColaboradorDWR
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	
+    	Long notUsuarioId = null;
+    	if(restrigirVisualizacaoGestor(usuarioLogadoId))
+    		notUsuarioId = usuarioLogadoId;
+    		
     	if((areaOrganizacionalIds == null || areaOrganizacionalIds.length == 0) && (estabelecimentoIds == null || estabelecimentoIds.length == 0))
     	{
     		if(empresaId != null && empresaId != 0)
     			empresaIds = new Long[]{empresaId};
-
-    		setColaboradoresPermitidos(usuarioLogadoId, empresaIds, situacao, estabelecimentoIds, colaboradores);
+    		setColaboradoresPermitidos(usuarioLogadoId, empresaIds, situacao, estabelecimentoIds, colaboradores, notUsuarioId);
     	}else
     	{
-    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao);        	
+    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao, notUsuarioId);        	
     	}
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", (exibirNomeEmpresa ? "getNomeComercialEmpresa" : "getNomeEOuNomeComercial"), Colaborador.class);
     }
     
-    private void setColaboradoresPermitidos(Long usuarioId, Long[] empresaIds, String situacao, String[] estabelecimentoIds,  Collection<Colaborador> colaboradores) throws Exception {
+    private void setColaboradoresPermitidos(Long usuarioId, Long[] empresaIds, String situacao, String[] estabelecimentoIds,  Collection<Colaborador> colaboradores, Long notUsuarioId) throws Exception {
     	Usuario usuario = new Usuario();
 		usuario.setId(usuarioId);
     	for (Long empresaId : empresaIds) {
 			if ( usuarioEmpresaManager.containsRole(usuario.getId(), empresaId, "ROLE_VER_AREAS") ) {
-				colaboradores.addAll(colaboradorManager.findAllSelect(situacao, empresaId));
+				colaboradores.addAll(colaboradorManager.findAllSelect(situacao, notUsuarioId, empresaId));
 			} else {
 				Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuario, empresaId);
-				colaboradores.addAll(colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.collectionToCollectionLong(areaOrganizacionals), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao));        	
+				colaboradores.addAll(colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.collectionToCollectionLong(areaOrganizacionals), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao, notUsuarioId));        	
 			}
 		}
+	}
+    
+    private boolean restrigirVisualizacaoGestor(Long usuarioLogadoId){
+		boolean restrigirVizualizacao = false;
+		boolean isreponsavel = usuarioManager.isResponsavelOrCoResponsavel(usuarioLogadoId);
+		boolean naoPossuiRole = !usuarioEmpresaManager.containsRole(usuarioLogadoId, null, "ROLE_MOV_GESTOR_VISUALIZAR_OCORRENCIA_PROVIDENCIA");
+		
+		if(isreponsavel && naoPossuiRole && !usuarioLogadoId.equals(1L)){
+			restrigirVizualizacao = true;
+		}
+		return restrigirVizualizacao;
 	}
 
     public Map<Long, String> getColaboradoresByEstabelecimentoDataAdmissao(Long estabelecimentoId, String dataAdmissao, Long empresaId)

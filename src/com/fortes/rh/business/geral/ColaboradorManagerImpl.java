@@ -227,9 +227,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 
 	@TesteAutomatico(metodoMock="findByAreaOrganizacionalIds")
-	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Long[] cargosIds, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo, boolean somenteDesligados)
+	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Long[] cargosIds, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo, boolean somenteDesligados, Long notUsuarioId)
 	{
-		return getDao().findByAreaOrganizacionalIds(page, pagingSize, areasIds, cargosIds, estabelecimentosIds, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, comHistColaboradorFuturo, somenteDesligados);
+		return getDao().findByAreaOrganizacionalIds(page, pagingSize, areasIds, cargosIds, estabelecimentosIds, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, comHistColaboradorFuturo, somenteDesligados, notUsuarioId);
 	}
 
 	@TesteAutomatico
@@ -1333,9 +1333,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 
 	@TesteAutomatico
-	public Collection<Colaborador> findAllSelect(String situacao, Long... empresaIds)
+	public Collection<Colaborador> findAllSelect(String situacao, Long notUsuarioId, Long... empresaIds)
 	{
-		return getDao().findAllSelect(situacao, empresaIds);
+		return getDao().findAllSelect(situacao, notUsuarioId, empresaIds);
 	}
 
 	@TesteAutomatico
@@ -1776,7 +1776,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	@TesteAutomatico(metodoMock="findByAreaOrganizacionalIds")
 	public Collection<Colaborador> findByAreaOrganizacionalIdsNome(Collection<Long> areasIds, Colaborador colaborador)
 	{
-		return getDao().findByAreaOrganizacionalIds(areasIds, null, null, null, null, colaborador, null, null, null, false, false);
+		return getDao().findByAreaOrganizacionalIds(areasIds, null, null, null, null, colaborador, null, null, null, false, false, null);
 	}
 
 	@TesteAutomatico
@@ -1802,9 +1802,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().migrarBairro(bairro, bairroDestino);
 	}
 
-	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao)
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao, Long notUsuarioId)
 	{
-		return getDao().findByAreaOrganizacionalEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, situacao);
+		return getDao().findByAreaOrganizacionalEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, situacao, notUsuarioId);
 	}
 
 	public void validaQtdCadastros() throws Exception

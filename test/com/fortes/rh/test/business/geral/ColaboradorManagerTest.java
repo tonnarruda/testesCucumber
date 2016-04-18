@@ -1437,8 +1437,8 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     public void testFindByAreaOrganizacionalEstabelecimento()
     {
     	Collection<AreaOrganizacional> areas = Arrays.asList(new AreaOrganizacional[]{AreaOrganizacionalFactory.getEntity(1L)});
-    	colaboradorDao.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
-    	assertNotNull(manager.findByAreaOrganizacionalEstabelecimento(new ArrayList<Long>(), null, SituacaoColaborador.ATIVO));
+    	colaboradorDao.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
+    	assertNotNull(manager.findByAreaOrganizacionalEstabelecimento(new ArrayList<Long>(), null, SituacaoColaborador.ATIVO, null));
     }
     
     public void testFindEmailsDeColaboradoresByPerfis()

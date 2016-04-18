@@ -80,7 +80,7 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		colaboradors.add(colaborador);
-		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(null), ANYTHING).will(returnValue(colaboradors));
 		
 		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(null, null, empresa.getId(), new Long[]{}, null, true);
 		
@@ -97,7 +97,7 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		colaboradors.add(colaborador);
-		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING, eq(null)).will(returnValue(colaboradors));
 		
 		String [] areaIds = {areaOrganizacional.getId().toString()};
 		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(areaIds, null, empresa.getId(), new Long[]{}, null, true);
@@ -115,7 +115,7 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		colaboradors.add(colaborador);
-		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING, eq(null)).will(returnValue(colaboradors));
 		
 		String [] estabelecimentoIds = {estabelecimento.getId().toString()};
 		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(null, estabelecimentoIds, empresa.getId(), new Long[]{}, null, true);
@@ -226,7 +226,7 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		colaboradors.add(colaborador1);
 
-		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING, eq(null)).will(returnValue(colaboradors));
 
 		String [] areaOrganizacionalIds = {areaOrganizacional.getId().toString()};
 

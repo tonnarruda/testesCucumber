@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.acesso.UsuarioManagerImpl;
@@ -22,15 +21,16 @@ import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.util.StringUtil;
 
-public class UsuarioManagerTest extends MockObjectTestCase
+public class UsuarioManagerTest extends MockObjectTestCaseManager<UsuarioManagerImpl> implements TesteAutomaticoManager
 {
-	UsuarioManagerImpl usuarioManager = new UsuarioManagerImpl();
 	Mock usuarioDao;
 	Mock colaboradorManager;
 	Mock usuarioEmpresaManager;
@@ -39,22 +39,22 @@ public class UsuarioManagerTest extends MockObjectTestCase
 
     protected void setUp() throws Exception
     {
-        usuarioManager = new UsuarioManagerImpl();
+        manager = new UsuarioManagerImpl();
 
         usuarioDao = new Mock(UsuarioDao.class);
-        usuarioManager.setDao((UsuarioDao) usuarioDao.proxy());
+        manager.setDao((UsuarioDao) usuarioDao.proxy());
 
         colaboradorManager = new Mock(ColaboradorManager.class);
-        usuarioManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+        manager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
 
         usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
-        usuarioManager.setUsuarioEmpresaManager((UsuarioEmpresaManager) usuarioEmpresaManager.proxy());
+        manager.setUsuarioEmpresaManager((UsuarioEmpresaManager) usuarioEmpresaManager.proxy());
 
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
-        usuarioManager.setAreaOrganizacionalManager((AreaOrganizacionalManager)areaOrganizacionalManager.proxy());
+        manager.setAreaOrganizacionalManager((AreaOrganizacionalManager)areaOrganizacionalManager.proxy());
         
         gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
-        usuarioManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
+        manager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
     }
 
     public void testFindByLogin()
@@ -64,7 +64,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	usuario.setId(1L);
 
 		usuarioDao.expects(once()).method("findByLogin").with(eq(login)).will(returnValue(usuario));
-    	assertEquals(usuario, usuarioManager.findByLogin(login));
+    	assertEquals(usuario, manager.findByLogin(login));
     }
 
     public void testSave()
@@ -74,7 +74,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	usuario.setSenha("senha");
 
     	usuarioDao.expects(once()).method("save").with(eq(usuario)).will(returnValue(usuario));
-    	assertEquals(usuario, usuarioManager.save(usuario));
+    	assertEquals(usuario, manager.save(usuario));
     }
 
     public void testUpdate()
@@ -85,7 +85,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
 
     	usuarioDao.expects(once()).method("update").with(eq(usuario));
 
-    	usuarioManager.update(usuario);
+    	manager.update(usuario);
     }
 
     public void testUpdateMantendoSenha()
@@ -96,7 +96,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	usuarioDao.expects(once()).method("update").with(eq(usuario));
     	usuarioDao.expects(once()).method("findById").with(eq(usuario.getId())).will(returnValue(usuario));
 
-    	usuarioManager.update(usuario);
+    	manager.update(usuario);
     }
 
     public void testPrepareCriarUsuario()
@@ -106,7 +106,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
 
     	colaboradorManager.expects(once()).method("findByIdProjectionUsuario").with(eq(colaborador.getId())).will(returnValue(colaborador));
 
-    	assertEquals(colaborador, usuarioManager.prepareCriarUsuario(colaborador));
+    	assertEquals(colaborador, manager.prepareCriarUsuario(colaborador));
     }
 
     public void testUpdateSenha()
@@ -125,7 +125,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	usuarioDao.expects(atLeastOnce()).method("findById").with(eq(usuario.getId())).will(returnValue(usuarioOriginal));
     	usuarioDao.expects(once()).method("update").with(eq(usuario));
 
-    	usuarioManager.updateSenha(usuario);
+    	manager.updateSenha(usuario);
     }
 
     public void testFindUsuarios()
@@ -141,7 +141,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
 
     	usuarioDao.expects(once()).method("findUsuarios").with(eq(page), eq(pagingSize), eq(nomeBusca), eq(empresa)).will(returnValue(col));
 
-    	assertEquals(col, usuarioManager.findUsuarios(page, pagingSize, nomeBusca, empresa));
+    	assertEquals(col, manager.findUsuarios(page, pagingSize, nomeBusca, empresa));
     }
 
     public void testGetCountUsuario()
@@ -155,7 +155,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
 
     	usuarioDao.expects(once()).method("getCountUsuario").with(eq(nomeBusca), eq(empresa)).will(returnValue(i));
 
-    	assertEquals(i, usuarioManager.getCountUsuario(nomeBusca, empresa));
+    	assertEquals(i, manager.getCountUsuario(nomeBusca, empresa));
     }
 
     public void testFindAllSelect()
@@ -164,7 +164,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
 
     	usuarioDao.expects(once()).method("findAllSelect").will(returnValue(usuarios));
 
-    	assertEquals(usuarios, usuarioManager.findAllSelect());
+    	assertEquals(usuarios, manager.findAllSelect());
     }
 
     public void testFindAllBySelectUsuarioEmpresa()
@@ -186,7 +186,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
 
     	usuarioEmpresaManager.expects(once()).method("findAllBySelectUsuarioEmpresa").will(returnValue(usuarioEmpresas));
 
-    	assertEquals(3, usuarioManager.findAllBySelectUsuarioEmpresa(1L).size());
+    	assertEquals(3, manager.findAllBySelectUsuarioEmpresa(1L).size());
 
     }
 
@@ -217,15 +217,15 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	usuarioEmpresaManager.expects(atLeastOnce()).method("remove").with(ANYTHING);
     	usuarioDao.expects(atLeastOnce()).method("remove").with(ANYTHING);
 
-    	usuarioManager.removeUsuario(usuario);
+    	manager.removeUsuario(usuario);
 
-    	usuarioManager.setUsuarioEmpresaManager(null);
+    	manager.setUsuarioEmpresaManager(null);
 
     	Exception exp = null;
 
     	try
 		{
-    		usuarioManager.removeUsuario(usuario);
+    		manager.removeUsuario(usuario);
 		}
 		catch (Exception e)
 		{
@@ -241,26 +241,26 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	usuario.setLogin("log");
 
     	usuarioDao.expects(once()).method("findByLogin").with(eq(usuario)).will(returnValue(null));
-    	assertEquals(false, usuarioManager.existeLogin(usuario));
+    	assertEquals(false, manager.existeLogin(usuario));
 
     	Usuario usuarioRetorno = UsuarioFactory.getEntity(1L);
     	usuarioRetorno.setLogin("log");
 
     	usuarioDao.expects(once()).method("findByLogin").with(eq(usuario)).will(returnValue(usuarioRetorno));
-    	assertEquals(false, usuarioManager.existeLogin(usuario));
+    	assertEquals(false, manager.existeLogin(usuario));
 
     	usuarioRetorno = UsuarioFactory.getEntity(2L);
     	usuarioRetorno.setLogin("log");
 
     	usuarioDao.expects(once()).method("findByLogin").with(eq(usuario)).will(returnValue(usuarioRetorno));
-    	assertEquals(true, usuarioManager.existeLogin(usuario));
+    	assertEquals(true, manager.existeLogin(usuario));
     }
 
     public void testDesativaAcessoSistema()
     {
     	usuarioDao.expects(once()).method("desativaAcessoSistema").with(ANYTHING, ANYTHING);
 
-    	usuarioManager.removeAcessoSistema(null);
+    	manager.removeAcessoSistema(null);
     }
 
     public void testPopulaCheckOrderNome()
@@ -279,7 +279,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
 
     	usuarioEmpresaManager.expects(once()).method("findAllBySelectUsuarioEmpresa").with(eq(empresa.getId())).will(returnValue(usuarioEmpresas));
 
-    	assertEquals(1, usuarioManager.populaCheckOrderNome(empresa.getId()).size());
+    	assertEquals(1, manager.populaCheckOrderNome(empresa.getId()).size());
     }
 
     public void testPopulaCheckOrderNomeException()
@@ -289,7 +289,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
     	usuarioEmpresaManager.expects(once()).method("findAllBySelectUsuarioEmpresa").with(eq(empresa.getId())).will(returnValue(usuarioEmpresas));
 
-    	assertEquals(0, usuarioManager.populaCheckOrderNome(empresa.getId()).size());
+    	assertEquals(0, manager.populaCheckOrderNome(empresa.getId()).size());
     }
 
     public void testLoginExiste()
@@ -303,7 +303,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	try
 		{
     		usuarioDao.expects(once()).method("findByLogin").with(eq(usuario)).will(returnValue(usuarioRetorno));
-			usuarioManager.save(usuario, null, null, null);
+			manager.save(usuario, null, null, null);
 		}
 		catch (LoginExisteException e)
 		{
@@ -331,7 +331,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	try
     	{
     		usuarioDao.expects(once()).method("findByLogin").with(eq(usuario)).will(returnValue(usuario));
-    		usuarioManager.save(usuario, null, null, null);
+    		manager.save(usuario, null, null, null);
     	}
     	catch (LoginExisteException e)
     	{
@@ -368,7 +368,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
 //    		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaboradorId), ANYTHING);
     		usuarioEmpresaManager.expects(once()).method("save").with(eq(usuario), eq(empresasIds), eq(perfils));
 
-    		usuarioRetorno = usuarioManager.save(usuario, colaboradorId, empresasIds, perfils);
+    		usuarioRetorno = manager.save(usuario, colaboradorId, empresasIds, perfils);
     	}
     	catch (LoginExisteException e)
     	{
@@ -405,7 +405,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
 //    		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaboradorId), ANYTHING);
     		usuarioEmpresaManager.expects(once()).method("save").with(eq(usuario), eq(empresasIds), eq(perfils));
 
-    		usuarioManager.update(usuario, colaboradorId, empresasIds, perfils);
+    		manager.update(usuario, colaboradorId, empresasIds, perfils);
     	}
     	catch (LoginExisteException e)
     	{
@@ -431,7 +431,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	Exception ex = null;
     	try
 		{
-			usuarioManager.createAuto(empresa, null, null);
+			manager.createAuto(empresa, null, null);
 		}
 		catch (Exception e)
 		{
@@ -461,7 +461,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	Exception ex = null;
     	try
     	{
-    		usuarioManager.createAuto(empresa, perfil, "");
+    		manager.createAuto(empresa, perfil, "");
     	}
     	catch (Exception e)
     	{
@@ -487,7 +487,10 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	areaOrganizacionalManager.expects(once()).method("getAncestrais").with(eq(areaOrganizacionals), eq(areaOrganizacional.getId())).will(returnValue(areaOrganizacionals));
     	usuarioDao.expects(once()).method("findEmailsByPerfilAndGestor").with(new Constraint[]{eq(role), eq(empresa.getId()), eq(areasIds), eq(isVerTodosColaboradores), eq(emailDesconsiderado)}).will(returnValue(emails));
     	
-    	assertEquals(emails, usuarioManager.findEmailByPerfilAndGestor(role, empresa.getId(), areaOrganizacional.getId(), isVerTodosColaboradores, emailDesconsiderado));
+    	assertEquals(emails, manager.findEmailByPerfilAndGestor(role, empresa.getId(), areaOrganizacional.getId(), isVerTodosColaboradores, emailDesconsiderado));
     }
 
+	public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(usuarioDao);
+	}
 }

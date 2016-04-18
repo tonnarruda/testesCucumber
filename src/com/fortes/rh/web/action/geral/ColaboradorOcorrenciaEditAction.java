@@ -194,9 +194,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 				colaboradorOcorrencias = colaboradorOcorrenciaManager.findProjection(getPage(), getPagingSize(), colaborador.getId());
 			}
 		}
-		
 		return Action.SUCCESS;
-	
 	}
 
 	public String delete() throws Exception

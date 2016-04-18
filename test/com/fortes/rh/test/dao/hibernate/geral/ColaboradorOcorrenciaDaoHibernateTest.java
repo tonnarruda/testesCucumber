@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -17,6 +18,7 @@ import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.dao.geral.ProvidenciaDao;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -30,6 +32,7 @@ import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Providencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -51,6 +54,7 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 	private AreaOrganizacionalDao areaOrganizacionalDao;
 	private GrupoACDao grupoACDao;
 	private ProvidenciaDao providenciaDao;
+	private UsuarioDao usuarioDao;
 
 	public ColaboradorOcorrencia getEntity()
 	{
@@ -153,7 +157,7 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		saveColaboradorOcorrencia(joao, falta, providencia, DateUtil.criarDataMesAno(17, 12, 2011), DateUtil.criarDataMesAno(19, 12, 2011));
 		saveColaboradorOcorrencia(joao, acidente, DateUtil.criarDataMesAno(20, 12, 2011), DateUtil.criarDataMesAno(22, 12, 2011));
 		
-		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaDao.findColaboradorOcorrencia(Arrays.asList(falta.getId(), acidente.getId()), Arrays.asList(joao.getId()), data1, data2, Arrays.asList(empresa.getId()), null, null, false, 'C', SituacaoColaborador.ATIVO);
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaDao.findColaboradorOcorrencia(Arrays.asList(falta.getId(), acidente.getId()), Arrays.asList(joao.getId()), data1, data2, Arrays.asList(empresa.getId()), null, null, false, 'C', SituacaoColaborador.ATIVO, null);
 		assertEquals(1, colaboradorOcorrencias.size());
 		assertEquals(12, ((ColaboradorOcorrencia)colaboradorOcorrencias.toArray()[0]).getOcorrencia().getPontuacao());
 	}
@@ -185,9 +189,48 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		
 		saveColaboradorOcorrencia(joao, falta, providencia, DateUtil.criarDataMesAno(24, 02, 2015), DateUtil.criarDataMesAno(9, 03, 2015));
 		
-		Collection<ColaboradorOcorrencia> colaboradorOcorrenciasDetalhados = colaboradorOcorrenciaDao.findColaboradorOcorrencia(new ArrayList<Long>() , Arrays.asList(joao.getId()), dataFiltroInicio, dataFiltroFim, Arrays.asList(empresa.getId()), null, null, true, 'C', SituacaoColaborador.TODOS);
+		Collection<ColaboradorOcorrencia> colaboradorOcorrenciasDetalhados = colaboradorOcorrenciaDao.findColaboradorOcorrencia(new ArrayList<Long>() , Arrays.asList(joao.getId()), dataFiltroInicio, dataFiltroFim, Arrays.asList(empresa.getId()), null, null, true, 'C', SituacaoColaborador.TODOS, null);
 		assertEquals(1, colaboradorOcorrenciasDetalhados.size());
 		assertEquals("Não faltar mais", ((ColaboradorOcorrencia)colaboradorOcorrenciasDetalhados.toArray()[0]).getProvidencia().getDescricao());
+	}
+	
+	public void testFindColaboradorOcorrenciaNotUsuarioId(){
+		Date data1 = DateUtil.criarDataMesAno(1, 1, 2011);
+		Date data2 = DateUtil.criarDataMesAno(1, 1, 2012);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Ocorrencia falta = OcorrenciaFactory.getEntity(empresa, "Falta", 5);
+		ocorrenciaDao.save(falta);
+		
+		Ocorrencia acidente = OcorrenciaFactory.getEntity(empresa, "Acidente", 7);
+		ocorrenciaDao.save(acidente);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador joao = ColaboradorFactory.getEntity(null, "João");
+		joao.setUsuario(usuario);
+		colaboradorDao.save(joao);
+		
+		HistoricoColaborador historicoJoao = HistoricoColaboradorFactory.getEntity(joao, DateUtil.criarDataMesAno(15, 12, 2011), null, estabelecimento, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoJoao);
+		
+		Providencia providencia = ProvidenciaFactory.getEntity("Não faltar mais");
+		providenciaDao.save(providencia);
+		
+		saveColaboradorOcorrencia(joao, falta, providencia, DateUtil.criarDataMesAno(17, 12, 2011), DateUtil.criarDataMesAno(19, 12, 2011));
+		saveColaboradorOcorrencia(joao, acidente, DateUtil.criarDataMesAno(20, 12, 2011), DateUtil.criarDataMesAno(22, 12, 2011));
+		
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaDao.findColaboradorOcorrencia(Arrays.asList(falta.getId(), acidente.getId()), Arrays.asList(joao.getId()), data1, data2, Arrays.asList(empresa.getId()), null, null, false, 'C', SituacaoColaborador.ATIVO, usuario.getId());
+		assertEquals(0, colaboradorOcorrencias.size());
 	}
 
 	private ColaboradorOcorrencia saveColaboradorOcorrencia(Colaborador colaborador, Ocorrencia ocorrencia, Date dataInicio, Date dataFim) {
@@ -424,6 +467,10 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 
 	public void setProvidenciaDao(ProvidenciaDao providenciaDao) {
 		this.providenciaDao = providenciaDao;
+	}
+
+	public void setUsuarioDao(UsuarioDao usuarioDao) {
+		this.usuarioDao = usuarioDao;
 	}
 
 }

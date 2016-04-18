@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -35,11 +36,13 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 
+	@TesteAutomatico
 	public Usuario findByLogin(String login)
 	{
 		return getDao().findByLogin(login);
 	}
 	
+	@TesteAutomatico
 	public Usuario findByIdProjection(Long usuarioId)
 	{
 		return getDao().findByIdProjection(usuarioId);
@@ -83,16 +86,19 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		}
 	}
 
+	@TesteAutomatico
 	public Collection findUsuarios(int page, int pagingSize,String nomeBusca,Empresa empresa)
 	{
 		return getDao().findUsuarios(page,pagingSize,nomeBusca,empresa);
 	}
 
+	@TesteAutomatico
 	public Integer getCountUsuario(String nomeBusca, Empresa empresa)
 	{
 		return getDao().getCountUsuario(nomeBusca, empresa);
 	}
 
+	@TesteAutomatico
 	public Collection<Usuario> findAllSelect()
 	{
 		return getDao().findAllSelect();
@@ -156,16 +162,19 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		return checks;
 	}
 
+	@TesteAutomatico(metodoMock="desativaAcessoSistema")
 	public void removeAcessoSistema(Long... colaboradoresIds)
 	{
 		getDao().desativaAcessoSistema(true, colaboradoresIds);
 	}
 	
+	@TesteAutomatico
 	public void reativaAcessoSistema(Long colaboradorId)
 	{
 		getDao().reativaAcessoSistema(colaboradorId);
 	}
 
+	@TesteAutomatico
 	public void desativaAcessoSistema(Long... colaboradoresIds)
 	{
 		getDao().desativaAcessoSistema(false, colaboradoresIds);
@@ -246,32 +255,37 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		}
 	}
 	
-
+	@TesteAutomatico
 	public Collection<Empresa> findEmpresas(String usuarioNome) 
 	{
 		return getDao().findEmpresas(usuarioNome);
 	}
 	
+	@TesteAutomatico
 	public String[] findEmailsByUsuario(Long[] usuariosIds, String notEmail)
 	{
 		return getDao().findEmailsByUsuario(usuariosIds, notEmail);
 	}
 
+	@TesteAutomatico
 	public void setUltimoLogin(Long id) 
 	{
 		getDao().setUltimoLogin(id);
 	}
 
+	@TesteAutomatico
 	public Collection<Usuario> findAllSelect(Long empresaId) 
 	{
 		return getDao().findAllSelect(empresaId);
 	}
 	
+	@TesteAutomatico
 	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagens) 
 	{
 		getDao().updateConfiguracoesMensagens(usuarioId, caixasMensagens);
 	}
 
+	@TesteAutomatico
 	public String[] findEmailsByPerfil(String role, Long empresaId) 
 	{
 		return getDao().findEmailsByPerfil(role, empresaId);
@@ -291,6 +305,11 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		return getDao().findEmailsByPerfilAndGestor(role, empresaId, areasIds, isVerTodosColaboradores, emailDesconsiderado);
 	}
 	
+	@TesteAutomatico
+	public boolean isResponsavelOrCoResponsavel(Long usuarioId){
+		return getDao().isResponsavelOrCoResponsavel(usuarioId);
+	}
+	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;
@@ -305,8 +324,7 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
+	public void setAreaOrganizacionalManager( AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

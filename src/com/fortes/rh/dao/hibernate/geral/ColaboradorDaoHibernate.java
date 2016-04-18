@@ -73,7 +73,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	private static final int MOTIVODEMISSAO = 1;
 	private static final int MOTIVODEMISSAOQUANTIDADE = 2;
 
-	public Collection<Colaborador> findByAreaOrganizacionalIds(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentosIds, Collection<Long> cargosIds, Integer page, Integer pagingSize, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo, boolean somenteDesligados){
+	public Collection<Colaborador> findByAreaOrganizacionalIds(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentosIds, Collection<Long> cargosIds, Integer page, Integer pagingSize, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo, boolean somenteDesligados, Long notUsuarioId){
 		String whereNome = "";
 		String whereMatricula = "";
 		String whereAreaIds = "";
@@ -120,6 +120,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if(dataAdmissaoFim != null)
 			hql.append("and co.dataAdmissao <= :dataAdmissaoFim ");
+		
+		if(notUsuarioId != null)
+			hql.append("and ( co.usuario.id <> :notUsuarioId or co.usuario.id is null ) ");
 		
 		hql.append("and hc.status = :status ");
 		hql.append(whereAreaIds);
@@ -170,6 +173,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(!whereMatricula.equals(""))
 			query.setString("matricula", "%" + colaborador.getMatricula().toLowerCase() + "%");
 		
+		if(notUsuarioId != null)
+			query.setLong("notUsuarioId", notUsuarioId);
+		
 		if(page != null && pagingSize != null)
 		{
 			query.setFirstResult(((page - 1) * pagingSize));
@@ -179,7 +185,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByAreaOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Long[] cargosIds, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo, boolean somenteDesligados)
+	public Collection<Colaborador> findByAreaOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Long[] cargosIds, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo, boolean somenteDesligados, Long notUsuarioId)
 	{
 		Collection<Long> param = new HashSet<Long>();
 		if(areasIds != null && areasIds.length > 0){
@@ -199,7 +205,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				param3.add(cargosIds[i]);
 		}
 		
-		return findByAreaOrganizacionalIds(param, param2, param3, page, pagingSize, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, comHistColaboradorFuturo, somenteDesligados);
+		return findByAreaOrganizacionalIds(param, param2, param3, page, pagingSize, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, comHistColaboradorFuturo, somenteDesligados, notUsuarioId);
 	}
 
 	public Collection<Colaborador> findByAreaOrganizacionalIds(Long[] ids)
@@ -207,14 +213,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Collection<Long> param = new HashSet<Long>();
 		for (int i = 0; i < ids.length; i++)
 			param.add(ids[i]);
-		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null, null, null, false, false);
+		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null, null, null, false, false, null);
 	}
 
 	public Collection<Colaborador> findByArea(AreaOrganizacional area)
 	{
 		Collection<Long> param = new HashSet<Long>();
 		param.add(area.getId());
-		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null, null, null, false, false);
+		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null, null, null, false, false, null);
 	}
 
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario){
@@ -1295,7 +1301,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setInteger(numeroValue + "Fim", numeroFim);
 	}
 
-	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao)
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao, Long notUsuarioId)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.nome, co.nomeComercial, co.id, e.id, e.nome) ");
@@ -1322,7 +1328,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			hql.append(" and es.id in (:estabelecimentoIds) ");
-		
+		if (notUsuarioId != null)
+			hql.append(" and ( co.usuario.id <> :notUsuarioId or co.usuario.id is null )");
+			
 		hql.append(" order by e.nome, co.nomeComercial, co.nome ");
 		
 		Query query = getSession().createQuery(hql.toString());
@@ -1331,7 +1339,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setBoolean("desligado", false);
 		else if(situacao.equals(SituacaoColaborador.DESLIGADO))
 			query.setBoolean("desligado", true);
-		
+		if (notUsuarioId != null) 
+			query.setLong("notUsuarioId", notUsuarioId);
+			
 		query.setDate("hoje", new Date());
 		
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
@@ -2267,7 +2277,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 	
 	//a ordenação tem que ser empresa nome e colaborador nome, usado no DWR 
-	public Collection<Colaborador> findAllSelect(String situacao, Long... empresaIds)
+	public Collection<Colaborador> findAllSelect(String situacao, Long notUsuarioId, Long... empresaIds)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("empresa", "e");
@@ -2288,6 +2298,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		else if(situacao.equals(SituacaoColaborador.DESLIGADO))
 			criteria.add(Expression.eq("c.desligado", true));
 		
+		if(notUsuarioId != null)
+			criteria.add(Expression.or(Expression.ne("c.usuario.id", notUsuarioId), Expression.isNull("c.usuario.id")));
+			
 		criteria.addOrder(Order.asc("e.nome"));
 		criteria.addOrder(Order.asc("c.nomeComercial"));
 		criteria.addOrder(Order.asc("c.nome"));

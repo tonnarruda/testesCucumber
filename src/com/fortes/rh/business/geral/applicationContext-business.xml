@@ -514,6 +514,12 @@
     <property name="areaOrganizacionalManager">
       <ref bean="areaOrganizacionalManager" />
     </property>
+    <property name="usuarioManager">
+      <ref bean="usuarioManager" />
+    </property>
+    <property name="usuarioEmpresaManager">
+      <ref bean="usuarioEmpresaManager" />
+    </property>
   </bean>
   <bean id="colaboradorOcorrenciaManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -187,7 +187,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 				areaIds = LongUtil.collectionToCollectionLong(areas);
 			}
 			
-			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento, agruparPor, situacao);
+			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento, agruparPor, situacao, getUsuarioLogado().getId());
 
 			if(colaboradoresOcorrencias == null || colaboradoresOcorrencias.isEmpty())
 				throw new ColecaoVaziaException("Não existem dados para o filtro informado.");

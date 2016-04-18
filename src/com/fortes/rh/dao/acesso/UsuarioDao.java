@@ -44,4 +44,6 @@ public interface UsuarioDao extends GenericDao<Usuario>
 	public String[] findEmailsByPerfilAndGestor(String role, Long empresaId, Collection<Long> areaOrganizacionalIds, boolean isVerTodosColaboradores, String notEmail);
 	
 	void removeAcessoSistema(Long... colaboradoresIds);
+
+	boolean isResponsavelOrCoResponsavel(Long usuarioId);
 }

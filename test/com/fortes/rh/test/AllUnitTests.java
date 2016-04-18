@@ -537,6 +537,7 @@ import com.fortes.rh.test.web.action.geral.HistoricoColaboradorEditActionTest;
 import com.fortes.rh.test.web.action.geral.HistoricoColaboradorListActionTest;
 import com.fortes.rh.test.web.action.geral.MotivoDemissaoListActionTest;
 import com.fortes.rh.test.web.action.geral.OcorrenciaEditActionTest;
+import com.fortes.rh.test.web.action.geral.OcorrenciaProvidenciaEditActionTest;
 import com.fortes.rh.test.web.action.geral.ParametrosDoSistemaEditActionTest;
 import com.fortes.rh.test.web.action.geral.ProvidenciaEditActionTest;
 import com.fortes.rh.test.web.action.geral.TipoDespesaEditActionTest;
@@ -967,6 +968,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	GerenciadorComunicacaoDaoHibernateTest.class,
 	GerenciadorComunicacaoManagerTest.class,
 	GerenciadorComunicacaoEditActionTest.class,
+	OcorrenciaProvidenciaEditActionTest.class,
 
 	        
     //contatoTest embedded Colaborador

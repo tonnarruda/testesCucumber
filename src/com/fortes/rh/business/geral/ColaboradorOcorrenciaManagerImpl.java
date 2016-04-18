@@ -13,11 +13,13 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
@@ -36,6 +38,8 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 	private AcPessoalClientColaboradorOcorrencia acPessoalClientColaboradorOcorrencia;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private UsuarioManager usuarioManager;
+	private UsuarioEmpresaManager usuarioEmpresaManager;
 
 	public Collection<ColaboradorOcorrencia> findByColaborador(Long id)
 	{
@@ -331,7 +335,10 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 				areasIds = new Long[]{-1L};//não vai achar nenhum colaborador
 		}
 			
-		return colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, null, colaborador, null, null, empresaId, false, somenteDesligados);
+		if(restrigirVisualizacaoGestor(usuarioLogado.getId(), empresaId))
+			return colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, null, colaborador, null, null, empresaId, false, somenteDesligados, usuarioLogado.getId());
+		else 
+			return colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, null, colaborador, null, null, empresaId, false, somenteDesligados, null);
 	}
 	
 	@TesteAutomatico
@@ -346,10 +353,23 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return getDao().findByFiltros(page, pagingSize, colaboradorNome, ocorrenciaNome, comProvidencia, colaboradoresIds, empresaId);
 	}
 
-	@TesteAutomatico(metodoMock="findColaboradorOcorrencia")
-	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Collection<Long> empresaIds, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento, Character agruparPor, String situacao)
+	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Collection<Long> empresaIds, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento, Character agruparPor, String situacao, Long usuarioLogadoId)
 	{
-		return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaIds, areaIds, estabelecimentoIds, detalhamento, agruparPor, situacao);
+		if(restrigirVisualizacaoGestor(usuarioLogadoId, null))
+			return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaIds, areaIds, estabelecimentoIds, detalhamento, agruparPor, situacao, usuarioLogadoId);
+		else
+			return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaIds, areaIds, estabelecimentoIds, detalhamento, agruparPor, situacao, null);
+	}
+
+	private boolean restrigirVisualizacaoGestor(Long usuarioLogadoId, Long empresaId){
+		boolean restrigirVizualizacao = false;
+		boolean isreponsavel = usuarioManager.isResponsavelOrCoResponsavel(usuarioLogadoId);
+		boolean naoPossuiRole = !usuarioEmpresaManager.containsRole(usuarioLogadoId, empresaId, "ROLE_MOV_GESTOR_VISUALIZAR_OCORRENCIA_PROVIDENCIA");
+		
+		if(isreponsavel && naoPossuiRole && !usuarioLogadoId.equals(1L)){
+			restrigirVizualizacao = true;
+		}
+		return restrigirVizualizacao;
 	}
 
 	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
@@ -364,4 +384,11 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
+	public void setUsuarioManager(UsuarioManager usuarioManager) {
+		this.usuarioManager = usuarioManager;
+	}
+
+	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
+		this.usuarioEmpresaManager = usuarioEmpresaManager;
+	}
 }

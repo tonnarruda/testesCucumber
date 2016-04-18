@@ -9,7 +9,6 @@ import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
-import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -35,7 +34,6 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 	private UsuarioDao usuarioDao;
 	private EmpresaDao empresaDao;
 	private AreaOrganizacionalDao areaOrganizacionalDao;
-	private HistoricoColaboradorDao historicoColaboradorDao;
 	private UsuarioEmpresaDao usuarioEmpresaDao;
 	private ColaboradorDao colaboradorDao;
 	private PerfilDao perfilDao;
@@ -588,6 +586,35 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(colab2.getContato().getEmail(), ((String) retorno[0]));
 	}
 	
+	public void testIsResponsavelOrCoResponsavelReturnFalse() {
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setUsuario(usuario);
+		colaboradorDao.save(colaborador);
+		
+		assertFalse(usuarioDao.isResponsavelOrCoResponsavel(usuario.getId()));
+	}
+	
+	public void testIsResponsavelOrCoResponsavelReturnTrue() {
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setUsuario(usuario);
+		colaboradorDao.save(colaborador);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setResponsavel(colaborador);
+		areaOrganizacional.setCoResponsavel(colaborador);
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		areaOrganizacionalDao.getHibernateTemplateByGenericDao().flush();
+		
+		assertTrue(usuarioDao.isResponsavelOrCoResponsavel(usuario.getId()));
+	}
+
 	public GenericDao<Usuario> getGenericDao()
 	{
 		return usuarioDao;
@@ -605,10 +632,6 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
-	}
-
-	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
-		this.historicoColaboradorDao = historicoColaboradorDao;
 	}
 
 	public void setUsuarioEmpresaDao(UsuarioEmpresaDao usuarioEmpresaDao)

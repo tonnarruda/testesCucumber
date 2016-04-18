@@ -290,7 +290,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		}
 	}
 
-	public Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, boolean detalhamento, Character agruparPor, String situacao) 
+	public Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, boolean detalhamento, Character agruparPor, String situacao, Long notUsuarioId) 
 	{
 		StringBuilder hql = new StringBuilder();
 
@@ -335,6 +335,9 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			hql.append("and o.empresa.id in (:empresaIds) ");
 		
+		if(notUsuarioId != null)
+			hql.append("and ( c.usuario.id <> :notUsuarioId or c.usuario.id is null ) ");
+			
 		if (detalhamento)
 		{
 			hql.append("order by ");
@@ -373,6 +376,9 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 			query.setParameterList("ocorrenciaIds", ocorrenciaIds, Hibernate.LONG);
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		
+		if(notUsuarioId != null)
+			query.setLong("notUsuarioId", notUsuarioId);
 		
 		query.setInteger("statusHistColab", StatusRetornoAC.CONFIRMADO);
 		query.setDate("dataIni", dataIni);
@@ -425,6 +431,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		}
 		
 		criteria.add(Expression.eq("o.empresa.id", empresaId));
+
 		criteria.addOrder(Order.desc("co.dataIni"));
 		criteria.addOrder(Order.asc("c.nome"));
 

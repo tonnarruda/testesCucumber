@@ -371,5 +371,17 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 			
 		return new CollectionUtil<String>().convertCollectionToArrayString(q.list());
 	}
-	
+
+	public boolean isResponsavelOrCoResponsavel(Long usuarioId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select exists "); 
+		hql.append("	(select a.id from AreaOrganizacional a ");
+		hql.append("		inner join Colaborador c on ( c.id = a.responsavel_id or c.id = a.coResponsavel_id ) "); 
+		hql.append("		where c.usuario_id = :usuarioId ");
+		hql.append("	) ");
+		
+		Query query = getSession().createSQLQuery(hql.toString());
+		query.setLong("usuarioId", usuarioId);
+		return (Boolean) query.uniqueResult();
+	}
 }

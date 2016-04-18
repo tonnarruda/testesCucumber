@@ -128,7 +128,10 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("ue.usuario.id", usuarioId));
-		criteria.add(Expression.eq("ue.empresa.id", empresaId));
+		
+		if(empresaId != null)
+			criteria.add(Expression.eq("ue.empresa.id", empresaId));
+		
 		criteria.add(Expression.eq("p.codigo", role));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

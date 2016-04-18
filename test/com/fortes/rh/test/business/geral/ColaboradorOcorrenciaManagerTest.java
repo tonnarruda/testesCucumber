@@ -11,6 +11,7 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManagerImpl;
@@ -20,6 +21,8 @@ import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
@@ -47,6 +50,8 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<
 	Mock acPessoalClientColaboradorOcorrencia;
 	Mock gerenciadorComunicacaoManager;
 	Mock areaOrganizacionalManager;
+	Mock usuarioManager;
+	Mock usuarioEmpresaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -70,6 +75,10 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<
 		manager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager)gerenciadorComunicacaoManager.proxy());
 		areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
 		manager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+		usuarioManager = mock(UsuarioManager.class);
+		manager.setUsuarioManager((UsuarioManager) usuarioManager.proxy());
+		usuarioEmpresaManager = mock(UsuarioEmpresaManager.class);
+		manager.setUsuarioEmpresaManager((UsuarioEmpresaManager) usuarioEmpresaManager.proxy());
 	}
 
 	public void testFindByColaborador()
@@ -574,14 +583,33 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		
+		usuarioManager.expects(once()).method("isResponsavelOrCoResponsavel").with(eq(usuario.getId())).will(returnValue(true));
+		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(usuario.getId()), eq(empresaId), eq("ROLE_MOV_GESTOR_VISUALIZAR_OCORRENCIA_PROVIDENCIA")).will(returnValue(true));
 		areaOrganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").with(ANYTHING, ANYTHING).will(returnValue(areasIds));
+		
 		colaboradorManager.expects(once()).method("findByAreasOrganizacionalIds").with(new Constraint[]{eq(null), eq(null), 
-				eq(areasIds), eq(null), eq(null), eq(colaborador), eq(null), eq(null), eq(empresaId), eq(false), ANYTHING}).will(returnValue(colaboradores));
+				eq(areasIds), eq(null), eq(null), eq(colaborador), eq(null), eq(null), eq(empresaId), eq(false), ANYTHING, eq(null)}).will(returnValue(colaboradores));
 		
 		assertEquals(colaboradores, manager.findColaboraesPermitidosByUsuario(usuario, colaborador, empresaId, false, true));
 	}
 	
-
+	public void testFindColaboraesPermitidosByUsuarioRestringindoVisualizacaoDoGestor(){
+		Long[] areasIds = new Long[] {1L, 2L};
+		Long empresaId = 2L;
+		Usuario usuario = UsuarioFactory.getEntity(2L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		
+		usuarioManager.expects(once()).method("isResponsavelOrCoResponsavel").with(eq(usuario.getId())).will(returnValue(true));
+		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(usuario.getId()), eq(empresaId), eq("ROLE_MOV_GESTOR_VISUALIZAR_OCORRENCIA_PROVIDENCIA")).will(returnValue(false));
+		areaOrganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").with(ANYTHING, ANYTHING).will(returnValue(areasIds));
+		
+		colaboradorManager.expects(once()).method("findByAreasOrganizacionalIds").with(new Constraint[]{eq(null), eq(null), 
+				eq(areasIds), eq(null), eq(null), eq(colaborador), eq(null), eq(null), eq(empresaId), eq(false), ANYTHING, eq(usuario.getId())}).will(returnValue(colaboradores));
+		
+		assertEquals(colaboradores, manager.findColaboraesPermitidosByUsuario(usuario, colaborador, empresaId, false, true));
+	}
+	
 	public void testMontaAbsenteismoConsiderandoQtdComoZero() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -627,6 +655,36 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<
 		}
 		
 		assertNotNull(exception);
+	}
+
+	public void testFiltrarOcorrenciasSemRestrigirVisualizacaoGestor(){
+		Long usuarioId = 2l;
+		usuarioManager.expects(once()).method("isResponsavelOrCoResponsavel").with(eq(usuarioId)).will(returnValue(true));
+		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(usuarioId), eq(null), eq("ROLE_MOV_GESTOR_VISUALIZAR_OCORRENCIA_PROVIDENCIA")).will(returnValue(true));
+		colaboradorOcorrenciaDao.expects(once()).method("findColaboradorOcorrencia").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(null)}).will(returnValue(new ArrayList<ColaboradorOcorrencia>()));
+
+		Exception exception = null;
+		try {
+			manager.filtrarOcorrencias(null, null, null, null, null, null, null, false, 'O', SituacaoColaborador.TODOS, usuarioId);
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNull(exception);
+	}
+	
+	public void testFiltrarOcorrenciasRestringindoVisualizacaoDoGestor(){
+		Long usuarioId = 2l;
+		usuarioManager.expects(once()).method("isResponsavelOrCoResponsavel").with(eq(usuarioId)).will(returnValue(true));
+		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(usuarioId), eq(null), eq("ROLE_MOV_GESTOR_VISUALIZAR_OCORRENCIA_PROVIDENCIA")).will(returnValue(false));
+		colaboradorOcorrenciaDao.expects(once()).method("findColaboradorOcorrencia").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(usuarioId)}).will(returnValue(new ArrayList<ColaboradorOcorrencia>()));
+
+		Exception exception = null;
+		try {
+			manager.filtrarOcorrencias(null, null, null, null, null, null, null, false, 'O', SituacaoColaborador.TODOS, usuarioId);
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNull(exception);
 	}
 
 	private void setDadosOcorrenciaAC(Empresa empresa, Ocorrencia ocorrencia, Colaborador colaborador, ColaboradorOcorrencia colaboradorOcorrencia)
