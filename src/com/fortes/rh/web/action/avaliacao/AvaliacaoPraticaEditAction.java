@@ -68,13 +68,13 @@ public class AvaliacaoPraticaEditAction extends MyActionSupportList
 		avaliacaoPraticas = avaliacaoPraticaManager.find(getPage(), getPagingSize(), new String[] {"empresa.id"}, new Object[] { getEmpresaSistema().getId() }, new String[] { "titulo" });
 		return Action.SUCCESS;
 	}
-
+	
 	public String delete() throws Exception
 	{
 		try
 		{
 			avaliacaoPraticaManager.remove(avaliacaoPratica.getId());
-			addActionMessage("Avaliação prática excluída com sucesso.");
+			addActionSuccess("Avaliação prática excluída com sucesso.");
 		}
 		catch (Exception e)
 		{

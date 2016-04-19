@@ -1,3 +1,4 @@
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"]/>
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 <head>
@@ -20,6 +21,9 @@
 		<@display.column title="Avaliação Prática" property="titulo"/>
 		<@display.column title="Nota Mínima para Aprovação" property="notaMinima" style="width:100px; text-align:right;"/>
 	</@display.table>
+	
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="list.action?" page='${page}'/>
 	
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
