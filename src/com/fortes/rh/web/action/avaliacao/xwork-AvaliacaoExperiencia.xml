@@ -34,14 +34,18 @@
 	    </action>
 	    
 		<action name="insertAvaliacaoExperiencia" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="insertAvaliacaoExperiencia">
+			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">periodoExperienciaQuestionarioList.action?colaborador.id=${colaboradorQuestionario.colaborador.id}</result>
 			<result name="sucessoIndex" type="redirect">../../index.action</result>
+			<result name="invalid.token" type="redirect">../../index.action</result>
 		</action>
 	    <action name="updateAvaliacaoExperiencia" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="updateAvaliacaoExperiencia">
 	    	<interceptor-ref name="defaultUpdateStack"/>
+	    	<interceptor-ref name="tokenWebStack" />
             <result name="success" type="redirect">periodoExperienciaQuestionarioList.action?colaborador.id=${colaboradorQuestionario.colaborador.id}</result>
 			<result name="sucessoIndex" type="redirect">../../index.action</result>
 			<result name="sucessoRespostas" type="redirect">../modelo/minhasAvaliacoesList.action</result>
+			<result name="invalid.token" type="redirect">../../index.action</result>
 	    </action>
 		
 		<action name="deleteAvaliacaoExperiencia" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioListAction" method="delete">
