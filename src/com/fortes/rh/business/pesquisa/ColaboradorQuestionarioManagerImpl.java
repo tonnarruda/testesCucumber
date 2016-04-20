@@ -293,16 +293,7 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		
 		getDao().removeByParticipante(avaliacaoDesempenhoId, participanteIds, isAvaliado);
 	}
-	
-	public void removeNotIn(Collection<ColaboradorQuestionario> colaboradorQuestionarios, Long avaliacaoDesempenhoId) throws Exception
-	{
-		Collection<ColaboradorQuestionario> colaboradorQuestionariosOld = getDao().findByAvaliacaoDesempenho(avaliacaoDesempenhoId, null);
-		
-		colaboradorQuestionariosOld.removeAll(colaboradorQuestionarios);
-		
-		getDao().remove( LongUtil.collectionToArrayLong(colaboradorQuestionariosOld) );
-	}
-	
+
 	public boolean verifyTemParticipantesAssociados(Long avaliacaoDesempenhoId)
 	{
 		return (getDao().getCountParticipantesAssociados(avaliacaoDesempenhoId) > 0);
@@ -531,5 +522,27 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 			return getDao().verifyExists(new String[]{"avaliacaoDesempenho.id", "avaliador.id", "respondidaParcialmente"}, new Object[]{avaliacaoDesepenhoId, avaliadorId, true});
 		else
 			return getDao().verifyExists(new String[]{"avaliacaoDesempenho.id", "respondidaParcialmente"}, new Object[]{avaliacaoDesepenhoId, true});
-	}	
+	}
+	
+	public void ajustaColaboradorQuestionarioByAvDesempenho(Long avaliacaoDesempenhoId, Collection<ColaboradorQuestionario> colaboradorQuestionarios) {
+		Collection<ColaboradorQuestionario> colaboradorQuestionariosExistentesAvDesempenho = findByAvaliacaoDesempenho(avaliacaoDesempenhoId, null);
+		colaboradorQuestionarios.removeAll(Collections.singleton(null));
+		
+		for (ColaboradorQuestionario colaboradorQuestionarioExistenteAvDesempenho : colaboradorQuestionariosExistentesAvDesempenho){
+			boolean existe = false;
+			for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios) {
+				if(colaboradorQuestionario.getId() != null && colaboradorQuestionario.getId().equals(colaboradorQuestionarioExistenteAvDesempenho.getId())){
+					existe = true;
+					break;
+				}
+			}
+			if(!existe){
+				getDao().remove(colaboradorQuestionarioExistenteAvDesempenho);
+				colaboradorQuestionarios.remove(colaboradorQuestionariosExistentesAvDesempenho);
+			}
+		}
+		
+		colaboradorQuestionarios.removeAll(colaboradorQuestionariosExistentesAvDesempenho);
+		getDao().saveOrUpdate(colaboradorQuestionarios);
+	}
 }

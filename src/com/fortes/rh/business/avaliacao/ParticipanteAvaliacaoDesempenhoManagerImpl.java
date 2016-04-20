@@ -64,7 +64,6 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 	@SuppressWarnings("deprecation")
 	public void save(AvaliacaoDesempenho avaliacaoDesempenho,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliados,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores,Collection<ColaboradorQuestionario> colaboradorQuestionarios) throws Exception {
 		participantesAvaliados.removeAll(Collections.singleton(null));
-		
 		this.saveOrUpdate(participantesAvaliados);
 		
 		if ( !avaliacaoDesempenho.isLiberada() ) {
@@ -74,10 +73,8 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 			this.saveOrUpdate(participantesAvaliadores);
 			this.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliadores), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
 			
-			colaboradorQuestionarios.removeAll(Collections.singleton(null));
 			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBeanOld("colaboradorQuestionarioManager");
-			colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
-			colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
+			colaboradorQuestionarioManager.ajustaColaboradorQuestionarioByAvDesempenho(avaliacaoDesempenho.getId(),	colaboradorQuestionarios);
 		}
 	}
 

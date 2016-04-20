@@ -78,9 +78,8 @@ public class ParticipanteAvaliacaoDesempenhoManagerTest extends MockObjectTestCa
 		particapanteAvaliacaoDesempenhoDao.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
 		
 		particapanteAvaliacaoDesempenhoDao.expects(once()).method("removeNotIn").with(eq(LongUtil.collectionToArrayLong(participantesAvaliadores)), eq(avaliacaoDesempenho.getId()), eq(TipoParticipanteAvaliacao.AVALIADOR)).isVoid();
+		colaboradorQuestionarioManager.expects(once()).method("ajustaColaboradorQuestionarioByAvDesempenho").withAnyArguments();
 		particapanteAvaliacaoDesempenhoDao.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
-		colaboradorQuestionarioManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
-		colaboradorQuestionarioManager.expects(once()).method("removeNotIn").with(ANYTHING, ANYTHING).isVoid();
 		Exception exception=null;
 		try {
 			participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, participantesAvaliados, participantesAvaliadores, new ArrayList<ColaboradorQuestionario>());

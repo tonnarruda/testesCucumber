@@ -498,6 +498,37 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
     	assertTrue(colaboradorQuestionarioManager.existeColaboradorQuestionarioRespondidoParcialmente(1L, 1L));
     }
     
+    public void testajustaColaboradorQuestionarioByAvDesempenho()
+    {
+    	ColaboradorQuestionario colaboradorQuestionarioAv1 = ColaboradorQuestionarioFactory.getEntity(1L);
+    	ColaboradorQuestionario colaboradorQuestionarioAv2 = ColaboradorQuestionarioFactory.getEntity(2L);
+    	Collection<ColaboradorQuestionario> colaboradorQuestionariosExistentesAvDesempenho = new ArrayList<ColaboradorQuestionario>();
+    	colaboradorQuestionariosExistentesAvDesempenho.add(colaboradorQuestionarioAv1);
+    	colaboradorQuestionariosExistentesAvDesempenho.add(colaboradorQuestionarioAv2);
+    	
+    	ColaboradorQuestionario colaboradorQuestionarioA = ColaboradorQuestionarioFactory.getEntity(1L);
+    	ColaboradorQuestionario colaboradorQuestionarioB = ColaboradorQuestionarioFactory.getEntity(4L);
+    	Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
+    	colaboradorQuestionarios.add(colaboradorQuestionarioA);
+    	colaboradorQuestionarios.add(colaboradorQuestionarioB);
+    	
+    	Collection<ColaboradorQuestionario> colaboradorQuestionariosASalvar = new ArrayList<ColaboradorQuestionario>();
+    	colaboradorQuestionariosASalvar.add(colaboradorQuestionarioB);
+    	
+    	colaboradorQuestionarioDao.expects(once()).method("findByAvaliacaoDesempenho").withAnyArguments().will(returnValue(colaboradorQuestionariosExistentesAvDesempenho));
+    	colaboradorQuestionarioDao.expects(once()).method("remove").with(eq(colaboradorQuestionarioAv2)).isVoid();
+    	colaboradorQuestionarioDao.expects(once()).method("saveOrUpdate").with(eq(colaboradorQuestionariosASalvar)).isVoid();
+
+    	Exception re = null;
+    	try {
+    		colaboradorQuestionarioManager.ajustaColaboradorQuestionarioByAvDesempenho(1L, colaboradorQuestionarios);
+		} catch (Exception e) {
+			re = e;
+		}
+    	
+    	assertNull(re);
+    }
+    
 	private ColaboradorQuestionario criaColaboradorQuestionarioParatestExisteMesmoModeloAvaliacaoEmDesempnhoEPeriodoExperiencia(Integer qtdAvaliacaoDesempenho, Integer qtdPeriodoExperiencia)
 	{
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
