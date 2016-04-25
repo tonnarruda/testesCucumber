@@ -7038,6 +7038,49 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		return providencia;
 	}
 	
+	public void testExisteColaboradorAtivoTrue(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setPessoalCpf("12345678912");
+		colaboradorDao.save(colaborador);
+		
+		assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
+	}
+	
+	public void testExisteColaboradorAtivoCPFNaoConfere(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setPessoalCpf("12345678912");
+		colaboradorDao.save(colaborador);
+		
+		assertFalse(colaboradorDao.existeColaboradorAtivo("1234567892", new Date()));
+	}
+	
+	public void testExisteColaboradorAtivoComDataDesligamentoFuturaTrue(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setPessoalCpf("12345678912");
+		colaborador.setDataDesligamento(DateUtil.incrementaDias(new Date(), 2));
+		colaboradorDao.save(colaborador);
+		
+		assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
+	}
+	
+	public void testExisteColaboradorAtivoComDataDesligamentoIgualAInformadaTrue(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setPessoalCpf("12345678912");
+		colaborador.setDataDesligamento(new Date());
+		colaboradorDao.save(colaborador);
+		
+		assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
+	}
+	
+	public void testExisteColaboradorAtivoCoboradorDesligado(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setPessoalCpf("12345678912");
+		colaborador.setDataDesligamento(DateUtil.criarDataMesAno(1, 04, 2016));
+		colaboradorDao.save(colaborador);
+		
+		assertFalse(colaboradorDao.existeColaboradorAtivo("12345678912", DateUtil.criarDataMesAno(02, 04, 2016)));
+	}
+	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
 	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;

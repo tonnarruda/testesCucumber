@@ -104,6 +104,9 @@ public interface RHService
 	TAula[] getTreinamentosPrevistos(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim);
 	TAula[] getTreinamentosCursados(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim);
 	boolean existePesquisaParaSerRespondida(String empregadoCodigo, String empresaCodigo, String empresaGrupo);
+
+	//Leitor10
+	public boolean existeColaboradorAtivo(String cpf);
 	
 	String versaoDoSistema();
 }

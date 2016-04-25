@@ -2912,6 +2912,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaboradores, empresa);
 	}
 
+	@TesteAutomatico
+	public boolean existeColaboradorAtivo(String cpf, Date data) {
+		return getDao().existeColaboradorAtivo(cpf, data);
+	}
+	
 	public void confirmaReenvios(TFeedbackPessoalWebService tFeedbackPessoalWebService, Empresa empresa) throws Exception 
 	{
 		acPessoalClientColaborador.confirmarReenvio(tFeedbackPessoalWebService, empresa);

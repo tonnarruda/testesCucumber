@@ -1579,6 +1579,10 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
+	public boolean existeColaboradorAtivo(String cpf){
+		return colaboradorManager.existeColaboradorAtivo(cpf, new Date());
+	}
+	
 	public String versaoDoSistema()
 	{
 		return parametrosDoSistemaManager.findById(1L).getAppVersao();

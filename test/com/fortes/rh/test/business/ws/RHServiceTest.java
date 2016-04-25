@@ -525,4 +525,18 @@ public class RHServiceTest extends MockObjectTestCase
 		FeedbackWebService feedbackWebService = rHServiceImpl.atualizarMovimentacaoEmLote(empregadoCodigos, MovimentacaoAC.AREA, codPessoalEstabOuArea, false, empresa.getCodigoAC(), empresa.getGrupoAC());
 		assertEquals("Não foi possível realizar a atualização em lote. A lotação é mãe de outras lotações.", feedbackWebService.getMensagem());
 	}
+	
+	public void testExisteColaboradorAtivoTrue()
+	{
+		String cpf = "01345678912";
+		colaboradorManager.expects(once()).method("existeColaboradorAtivo").with(eq(cpf), ANYTHING).will(returnValue(true));
+		assertTrue("Existe Colaborador Ativo", rHServiceImpl.existeColaboradorAtivo(cpf));
+	}
+	
+	public void testExisteColaboradorAtivoFalse()
+	{
+		String cpf = "01345678912";
+		colaboradorManager.expects(once()).method("existeColaboradorAtivo").with(eq(cpf), ANYTHING).will(returnValue(false));
+		assertFalse("Não existe Colaborador Ativo", rHServiceImpl.existeColaboradorAtivo(cpf));
+	}
 }

@@ -5118,4 +5118,21 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		return (Integer) criteria.uniqueResult();
 	}
+
+	public boolean existeColaboradorAtivo(String cpf, Date data) {
+		
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"),"id");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("c.pessoal.cpf", cpf));
+		criteria.add(Expression.or(Expression.ge("c.dataDesligamento", data), Expression.isNull("c.dataDesligamento")));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return criteria.list().size() > 0;
+	}
 }

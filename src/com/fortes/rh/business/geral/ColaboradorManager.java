@@ -234,4 +234,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId);
 	public void getRemuneracaoVariavelFromAcPessoalByColaboradores(Collection<Colaborador> colaboradores) throws Exception;
 	public Collection<Colaborador> findComAnoDeEmpresa(Long empresaId, Date data);
+	public boolean existeColaboradorAtivo(String cpf, Date data);
 }
