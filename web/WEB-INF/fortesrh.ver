@@ -6,12 +6,12 @@
 		<Item visivel="S" motivo="P16030000253"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência: Impossibilitando salvar respostas duplicadas, ao gravar as respostas com duplo clique.]]></Item>
 		<Item visivel="S" motivo="P16040000031"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores + Nota: Correção de inconsistência ao inserir colaborador.]]></Item>
 		<Item visivel="S" motivo="P16040000149"><![CDATA[T&D > Cadastros > Avaliação Prática: Paginação da listagem de avaliações práticas.]]></Item>
+		<Item visivel="S" motivo="P16040000095"><![CDATA[Info. Funcionais > Painel de Indicadores: Ajuste no gráfico de ocorrências para possibilitar a visualização de ocorrências que tenham pelo menos um dia de sua vigência contigo no período informado.]]></Item>
+		<Item visivel="S" motivo="S16010000294"><![CDATA[Novo perfil para permitir que o gestor visualize suas próprias ocorrências e providências nas movimentações e relatórios.]]></Item>
 	</Versao>
 	<Versao id="1.1.164.195" db="" data="14/04/2016">
 		<Item visivel="S" motivo="S16030000415"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho: Permitir bloquear avaliação de desempenho mesmo contendo avaliações respondidas.]]></Item>
 		<Item visivel="S" motivo="P16040000033"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Ajuste de inconsistência ao exibir comentários.]]></Item>
-		<Item visivel="S" motivo="P16040000095"><![CDATA[Info. Funcionais > Painel de Indicadores: Ajuste no gráfico de ocorrências para possibilitar a visualização de ocorrências que tenham pelo menos um dia de sua vigência contigo no período informado.]]></Item>
-		<Item visivel="S" motivo="S16010000294"><![CDATA[Novo perfil para permitir que o gestor visualize suas próprias ocorrências e providências nas movimentações e relatórios.]]></Item>
 	</Versao>
 	<Versao id="1.1.163.194" db="" data="29/03/2016">
 		<Item visivel="S" motivo="P16030000328"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Ajuste da inconsistência ao tentar inserir histórico de nível quando não existir nível de competência.]]></Item>
