@@ -112,7 +112,8 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 			if(getEmpresaSistema().getId().equals(areaOrganizacional.getEmpresa().getId()))
 			{
 				if (getUsuarioLogado().getId().equals(1L))
-					areaOrganizacionalManager.removeComDependencias(areaOrganizacional.getId());
+//					areaOrganizacionalManager.removeComDependencias(areaOrganizacional.getId());
+				areaOrganizacionalManager.deleteLotacaoAC(areaOrganizacional, getEmpresaSistema());
 				else
 					areaOrganizacionalManager.deleteLotacaoAC(areaOrganizacional, getEmpresaSistema());
 				
@@ -122,12 +123,10 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 				addActionWarning("A área organizacional solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
 			
 		} catch (Exception e) {
-			if (e.getCause() instanceof FortesException)
-				addActionWarning(e.getCause().getMessage());
-			else if (e.getCause() instanceof IntegraACException)
+			if (e.getCause() instanceof IntegraACException)
 				addActionError(e.getCause().getMessage());
 			else 		
-				ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir a Área Organizacional.");
+				ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta Área Organizacional.");
 
 			e.printStackTrace();
 		}

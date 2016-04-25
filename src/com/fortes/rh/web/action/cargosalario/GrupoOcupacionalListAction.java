@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -28,8 +29,13 @@ public class GrupoOcupacionalListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		grupoOcupacionalManager.remove(grupoOcupacional.getId());
-		addActionMessage("Grupo Ocupacional excluído com sucesso.");
+		try {
+			grupoOcupacionalManager.remove(grupoOcupacional.getId());
+			addActionSuccess("Grupo Ocupacional excluído com sucesso.");
+		} catch (Exception e) {
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este Grupo Ocupacional.");
+			e.printStackTrace();
+		}
 
 		return Action.SUCCESS;
 	}

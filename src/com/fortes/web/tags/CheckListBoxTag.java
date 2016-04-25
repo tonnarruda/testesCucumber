@@ -99,7 +99,7 @@ public class CheckListBoxTag extends TagSupport
 			
 			if(selectAtivoInativo)
 			{
-				checkGroup.append("<select class='listCheckBoxActive' id=\"listCheckBoxActive" + name + "\" onchange=\"checkListBoxSearch('" + name + "')\" />");
+				checkGroup.append("<select class='listCheckBoxActive' id=\"listCheckBoxActive" + name + "\" onchange=\"checkListBoxSearch('" + name + "')\" >");
 				checkGroup.append("   <option value=\"\">Todos</option>");
 				checkGroup.append("   <option value=\"(ATIV\">Ativos</option>");
 				checkGroup.append("   <option value=\"(INATIV\">Inativos</option>");

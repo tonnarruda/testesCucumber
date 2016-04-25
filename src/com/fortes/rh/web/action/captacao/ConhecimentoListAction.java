@@ -45,10 +45,10 @@ public class ConhecimentoListAction extends MyActionSupportList
 				criterioAvaliacaoCompetenciaManager.removeByCompetencia(conhecimento.getId(), TipoCompetencia.CONHECIMENTO, null);
 				conhecimentoManager.remove(conhecimento.getId());
 				
-				addActionMessage("Conhecimento excluído com sucesso.");
+				addActionSuccess("Conhecimento excluído com sucesso.");
 				return Action.SUCCESS;
 			} catch (Exception e) {
-				addActionMessage("Não foi possível excluir o conhecimento.");
+				addActionError("Não foi possível excluir o conhecimento.");
 				return Action.INPUT;
 			}
 		}

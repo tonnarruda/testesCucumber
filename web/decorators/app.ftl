@@ -11,7 +11,17 @@
 	<meta http-equiv="Expires" content="0" />
 	<title>${title}</title>
 
-	<script type="text/javascript">
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.alerts.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.numberformatter-1.1.0.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.dateFormat-1.0.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/init.js?version=${versao}"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
+
+	<script type="text/javascript">>
 		var baseUrl = '<@ww.url includeParams="none" value="/"/>';
 		var sessionMaxInactiveInterval = ${session.maxInactiveInterval * 1000};
 		
@@ -25,18 +35,6 @@
 			pgInicial = true;
 		</#if>
 	</script>
-
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.alerts.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.numberformatter-1.1.0.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.dateFormat-1.0.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/init.js?version=${versao}"/>'></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
-	
-
 	<style type="text/css">
 		<#if pgInicial?exists && pgInicial>
 			@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
@@ -72,6 +70,7 @@
 
 </head>
 <body>
+	<@ww.token/>
 	<div id="topDiv">
 		<div id="userDiv">
 			<span class="saudacao">
@@ -153,9 +152,9 @@
 		<br /><br />
 	</div>
 </body>
-<#if msgHelp?exists>
 	<script>
 		$(document).ready(function($){
+		<#if msgHelp?exists>
 			$('#tooltipHelp').qtip({
 				content: '${msgHelp}',
 				position: {
@@ -176,7 +175,10 @@
 					name: 'light'
 				}
 			});
+		</#if>	
+			
+			$("input[name='webwork.token']").appendTo($('form'));
+			$("input[name='webwork.token.name']").appendTo($('form'));
 		});
 	</script>
-</#if>	
 </html>

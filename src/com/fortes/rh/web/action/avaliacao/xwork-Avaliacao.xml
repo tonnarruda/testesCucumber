@@ -9,6 +9,8 @@
 		</action>
 		
 		<action name="clonar" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="clonar">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="invalid.token" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>
 			<result name="success" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="list">
@@ -20,6 +22,7 @@
 		
 		<action name="delete" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="invalid.token" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>
 			<result name="success" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>
 			<result name="error" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>
 		</action>
@@ -33,16 +36,14 @@
 		</action>
 		
 		<action name="insert" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action?modeloAvaliacao=${avaliacao.tipoModeloAvaliacao}</result>
+			<result name="invalid.token" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>
 			<result name="success" type="redirect"><![CDATA[/avaliacao/perguntaAvaliacao/prepareInsert.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoEdit.ftl</result>
 		</action>
 		
 		<action name="update" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action?modeloAvaliacao=${avaliacao.tipoModeloAvaliacao}</result>
-			<result name="success" type="redirect">list.action?modeloAvaliacao=${avaliacao.tipoModeloAvaliacao}</result>
+			<result name="invalid.token" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>
+			<result name="success" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>
 			<result name="TELA_INICIAL" type="redirect">../../index.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoEdit.ftl</result>
 		</action>

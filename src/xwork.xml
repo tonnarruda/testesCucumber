@@ -71,7 +71,9 @@
 
       <interceptor-stack name="tokenWebStack">
         <interceptor-ref name="myDefaultWebStack" />
-        <interceptor-ref name="token" />
+        <interceptor-ref name="token" >
+        	<param name="excludeMethods">login,logout,index</param>
+        </interceptor-ref>
       </interceptor-stack>
 
       <interceptor-stack name="showFilterStack">
@@ -113,6 +115,7 @@
         <interceptor-ref name="store">
             <param name="operationMode">STORE</param>
         </interceptor-ref>
+        <interceptor-ref name="tokenWebStack" />
 	  </interceptor-stack>  
 
       <!-- Usado quando se precisa dar um redirect apos o update passando uma mensagem -->
@@ -124,18 +127,20 @@
         <interceptor-ref name="store">
             <param name="operationMode">STORE</param>
         </interceptor-ref>
+        <interceptor-ref name="tokenWebStack" />
     </interceptor-stack>  
 
 	  <!-- ########################################################### -->
 		
     </interceptors>
     
-    <default-interceptor-ref name="myDefaultWebStack" />
+    <default-interceptor-ref name="tokenWebStack" />
     
     <global-results>
       <result name="error">/error.jsp</result>
       <result name="message">/message.jsp</result>
       <result name="exceptionError">/exception.jsp</result>
+      <result name="invalid.token" type="redirect">list.action</result>
     </global-results>
     
     <global-exception-mappings>
@@ -220,7 +225,7 @@
       <result name="success" type="freemarker">/WEB-INF/pages/bdError.ftl</result>
       <result name="input" type="freemarker">/WEB-INF/pages/bdError.ftl</result>
     </action>
-    <action name="logout" class="com.opensymphony.xwork.ActionSupport">
+    <action name="logout" class="com.opensymphony.xwork.ActionSupport" method="logout">
       <result name="success" type="redirect">/j_acegi_logout</result>
     </action>
     <action name="jobs" class="com.fortes.rh.web.action.JobsAction" method="index">

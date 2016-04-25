@@ -68,10 +68,10 @@
 	<@display.table name="areaOrganizacionals" id="areaOrganizacional" class="dados" >
 		<@display.column title="Ações" style="text-align:center; width: 80px;" media="html">
 			<@authz.authorize ifAllGranted="ROLE_CAD_AREA_EDITAR">
-				<a href="prepareUpdate.action?areaOrganizacional.id=${areaOrganizacional.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+				<a href="javascript:;" onclick="javascript: executeLink('prepareUpdate.action?areaOrganizacional.id=${areaOrganizacional.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 			</@authz.authorize>
 			<@authz.authorize ifAllGranted="ROLE_CAD_AREA_EXCLUIR">
-				<a href="#" onclick="newConfirm('${avisoExclusao?js_string}', function(){window.location='delete.action?areaOrganizacional.id=${areaOrganizacional.id}&areaOrganizacional.empresa.id=${areaOrganizacional.empresa.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+				<a href="javascript:;" onclick="newConfirm('${avisoExclusao?js_string}', function(){executeLink('delete.action?areaOrganizacional.id=${areaOrganizacional.id}&areaOrganizacional.empresa.id=${areaOrganizacional.empresa.id}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			</@authz.authorize>
 		</@display.column>
 		<#if integradoAC?exists && integradoAC>
@@ -85,10 +85,10 @@
 
 	<div class="buttonGroup">
 		<@authz.authorize ifAllGranted="ROLE_CAD_AREA_INSERIR">
-			<button type="button" class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
+			<button type="button" class="btnInserir" onclick="javascript: executeLink('prepareInsert.action')" accesskey="I"></button>
 		</@authz.authorize>
 		<button class="btnImprimir" onclick="imprimir();" accesskey="P"></button>
-		<button type="button"class="btnOrganograma" onclick="window.location='organograma.action'" accesskey="O"></button>
+		<button type="button"class="btnOrganograma" onclick="javascript: executeLink('organograma.action')" accesskey="O"></button>
 	</div>
 </body>
 </html>

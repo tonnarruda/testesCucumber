@@ -78,9 +78,8 @@ public class AvaliacaoPraticaEditAction extends MyActionSupportList
 		}
 		catch (Exception e)
 		{
-			ExceptionUtil.traduzirMensagem(this, e, null);
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta avaliação prática.");
 			e.printStackTrace();
-			addActionError("Não foi possível excluir esta avaliação prática.");
 		}
 
 		return list();

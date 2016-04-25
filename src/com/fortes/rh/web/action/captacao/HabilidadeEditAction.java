@@ -134,10 +134,10 @@ public class HabilidadeEditAction extends MyActionSupportList
 				criterioAvaliacaoCompetenciaManager.removeByCompetencia(habilidade.getId(), TipoCompetencia.HABILIDADE, null);
 				habilidadeManager.remove(habilidade.getId());
 				
-				addActionMessage("Habilidade excluída com sucesso.");
+				addActionSuccess("Habilidade excluída com sucesso.");
 				return Action.SUCCESS;
 			} catch (Exception e) {
-				addActionMessage("Não foi possível excluir a habilidade.");
+				addActionError("Não foi possível excluir a habilidade.");
 				return Action.INPUT;
 			}
 		}

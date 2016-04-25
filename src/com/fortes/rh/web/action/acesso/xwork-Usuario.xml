@@ -46,6 +46,7 @@
 			<result name="usuarioColaborador" type="redirect">../../geral/colaborador/list.action</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.acesso.UsuarioEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
 		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/acesso/usuarioEdit.ftl</result>
@@ -58,6 +59,8 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/acesso/updateSenhaEdit.ftl</result>
 		</action>
 		<action name="updateSenhaUsuario" class="com.fortes.rh.web.action.acesso.UsuarioEditAction" method="updateSenhaUsuario">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="invalid.token" type="freemarker">/WEB-INF/forms/acesso/updateSenhaEdit.ftl</result>
 			<result name="success" type="freemarker">/WEB-INF/forms/acesso/updateSenhaEdit.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/acesso/updateSenhaEdit.ftl</result>
 		</action>
@@ -65,6 +68,8 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/acesso/recuperaSenhaLogin.ftl</result>
 		</action>
 		<action name="recuperaSenha" class="com.fortes.rh.web.action.acesso.UsuarioEditAction" method="recuperaSenha">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="invalid.token" type="freemarker">/WEB-INF/forms/acesso/recuperaSenhaLogin.ftl</result>
 			<result name="success" type="freemarker">/WEB-INF/forms/acesso/recuperaSenhaLogin.ftl</result>
 		</action>
 		<action name="prepareAutoInsert" class="com.fortes.rh.web.action.acesso.UsuarioEditAction" method="prepareAutoInsert">

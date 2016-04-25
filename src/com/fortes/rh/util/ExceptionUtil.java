@@ -16,16 +16,28 @@ public class ExceptionUtil
 {
 	private static Logger logger = Logger.getLogger(ExceptionUtil.class);
 	
-	public static void traduzirMensagem(MyActionSupport action, Exception exception, String mensagemDefault)
+	public static void traduzirMensagem(MyActionSupport action, Exception exception, String mensagemErroDefault)
 	{
 		try {
 			
-			if (exception.getCause() instanceof ConstraintViolationException) {
+			if (exception instanceof ConstraintViolationException) {
+				ConstraintViolationException constraintViolationException = (ConstraintViolationException) exception;
+				action.addActionWarning(verificaEntidades(constraintViolationException.getSQLException().getMessage().trim())); 
+			} else if (exception.getCause() instanceof ConstraintViolationException) {
 				ConstraintViolationException constraintViolationException = (ConstraintViolationException) exception.getCause();
 				action.addActionWarning(verificaEntidades(constraintViolationException.getSQLException().getMessage().trim())); 
+			} else if (exception.getCause() instanceof FortesException) {
+				FortesException fortesException = (FortesException) exception.getCause();
+				action.addActionWarning(fortesException.getMessage()); 
 			} else if (exception instanceof DataIntegrityViolationException) {
 				BatchUpdateException batchUpdateException = (BatchUpdateException) exception.getCause();
 				action.addActionWarning(verificaEntidades(batchUpdateException.getNextException().getMessage().trim())); 
+			} else if (exception.getCause() instanceof InvocationTargetException) {
+				InvocationTargetException invocationTargetException = (InvocationTargetException) exception.getCause();
+				if (invocationTargetException.getCause() instanceof FortesException){
+					FortesException fortesException = (FortesException) invocationTargetException.getCause();
+					action.addActionWarning(fortesException.getMessage()); 
+				}
 			} else if (exception instanceof InvocationTargetException) {
 				if (exception.getCause() instanceof DataIntegrityViolationException){
 					DataIntegrityViolationException dataIntegrityViolationException = (DataIntegrityViolationException) exception.getCause();
@@ -37,8 +49,8 @@ public class ExceptionUtil
 				}
 			}
 			
-			if(mensagemDefault != null && action.getActionWarnings().size() == 0)
-				action.addActionError(mensagemDefault); 
+			if(mensagemErroDefault != null && action.getActionWarnings().size() == 0)
+				action.addActionError(mensagemErroDefault); 
 			
 		} catch (Exception e) {
 			logger.error("Houve um erro ao tentar traduzir a mensagem de erro.");

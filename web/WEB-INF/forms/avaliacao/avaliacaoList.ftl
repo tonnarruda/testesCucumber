@@ -37,7 +37,6 @@
 			$('#tipoAgrupamentoDialog form').attr("action","imprimir.action");
 			$('#tipoAgrupamentoDialog').dialog({ title: avaliacaoNome, modal: true, width: 550, height: 150 });
 		}
-		
 	</script>
 </head>
 <body>
@@ -66,10 +65,13 @@
 		</#if>
 
 		<@display.column title="Ações" style = "width:160px;">
-			<a href="visualizar.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="Visualizar" src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>"></a>
+			<a href="javascript: executeLink('visualizar.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}');"><img border="0" title="Visualizar" src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>"></a>
 			<a href="../perguntaAvaliacao/list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="Perguntas" src="<@ww.url includeParams="none" value="/imgs/question.gif"/>"></a>
+			
+			ver erro nestes links
+			
 			<a href="../../pesquisa/aspecto/listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="Aspectos" src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>"></a>
-			<a href="prepareUpdate.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="javascript:;" onclick="javascript:clonar(${avaliacao.id},'${modeloAvaliacao}','${avaliacao.titulo}');"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
 			<#if modeloAvaliacao?exists && (modeloAvaliacao = tipoModeloAvaliacao.getSolicitacao() || modeloAvaliacao = tipoModeloAvaliacao.getAvaliacaoAluno()) >
 				<a href="imprimir.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="Imprimir Modelo da Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
@@ -78,8 +80,7 @@
 				<a href="#" onclick="escolheTipoAgrupamento('${avaliacao.id}', '${avaliacao.titulo}','${modeloAvaliacao}', false)"><img border="0" title="Imprimir Modelo da Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 				<a href="#" onclick="escolheTipoAgrupamento('${avaliacao.id}', '${avaliacao.titulo}','${modeloAvaliacao}', true)"><img border="0" title="Imprimir Modelo da Avaliação em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>
 			</#if>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-			
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		
 		<@display.column title="Avaliação" property="titulo" class="${classe}"/>
@@ -91,7 +92,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 	
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action?modeloAvaliacao=${modeloAvaliacao}'"></button>
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action?modeloAvaliacao=${modeloAvaliacao}');"></button>
 	</div>
 	
 	<div id="formDialog">

@@ -39,6 +39,7 @@ import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -270,9 +271,14 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		avaliacaoManager.remove(avaliacao.getId());
-		addActionSuccess("Modelo de avaliação excluído com sucesso.");
-
+		try {
+			avaliacaoManager.remove(avaliacao.getId());
+			addActionSuccess("Modelo de avaliação excluído com sucesso.");
+			
+		} catch (Exception e) {
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este modelo de avaliação.");
+			e.printStackTrace();
+		}
 		return Action.SUCCESS;
 	}
 	

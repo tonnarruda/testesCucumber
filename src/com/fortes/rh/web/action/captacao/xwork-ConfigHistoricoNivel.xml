@@ -3,6 +3,7 @@
 
 <xwork>
 	<package name="configHistoricoNivel" extends="default" namespace="/captacao/configHistoricoNivel">
+			<default-interceptor-ref name="defaultUpdateStack" />
 		<action name="prepareInsert" class="com.fortes.rh.web.action.captacao.ConfigHistoricoNivelEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/configHistoricoNivelEdit.ftl</result>
 		</action>
@@ -10,15 +11,13 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/configHistoricoNivelEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.captacao.ConfigHistoricoNivelEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="invalid.token" type="redirect">prepareInsert.action?nivelCompetenciaHistorico.id=${nivelCompetenciaHistorico.id}</result>
-			<result name="success" type="redirect"><![CDATA[/captacao/nivelCompetenciaHistorico/list.action?actionSuccess=${actionMsg}]]></result>
+			<result name="success" type="redirect">/captacao/nivelCompetenciaHistorico/list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/configHistoricoNivelEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.captacao.ConfigHistoricoNivelEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="invalid.token" type="redirect">prepareUpdate.action?nivelCompetenciaHistorico.id=${nivelCompetenciaHistorico.id}</result>
-			<result name="success" type="redirect"><![CDATA[/captacao/nivelCompetenciaHistorico/list.action?actionSuccess=${actionMsg}]]></result>
+			<result name="success" type="redirect">/captacao/nivelCompetenciaHistorico/list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/configHistoricoNivelEdit.ftl</result>
 		</action>
 	</package>

@@ -64,7 +64,7 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 		
 		try {
 			nivelCompetenciaHistoricoManager.save(nivelCompetenciaHistorico);
-			setActionMsg("Histórico de níveis de competência salvo com sucesso.");
+			addActionSuccess("Histórico de níveis de competência salvo com sucesso.");
 		}
 		catch (DataIntegrityViolationException e)
 		{
@@ -88,7 +88,7 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 		try {
 			nivelCompetenciaHistorico.setConfigHistoricoNiveis(montaConfigHistoricoNivel());
 			nivelCompetenciaHistoricoManager.updateNivelConfiguracaoHistorico(nivelCompetenciaHistorico);
-			setActionMsg("Histórico de níveis de competência atualizado com sucesso.");
+			addActionSuccess("Histórico de níveis de competência atualizado com sucesso.");
 		} catch (Exception e) {
 			e.printStackTrace();
 			addActionError("Ocorreu um erro ao atualizar o histórico de níveis de competência.");

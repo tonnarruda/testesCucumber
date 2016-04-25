@@ -41,11 +41,5 @@
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/acesso/perfilEdit.ftl</result>
 		</action>
-		<action name="prepareModulos" class="com.fortes.rh.web.action.acesso.PerfilEditAction" method="prepareModulos">
-			<result name="success" type="freemarker">/WEB-INF/forms/acesso/modulos.ftl</result>
-		</action>
-		<action name="updateModulos" class="com.fortes.rh.web.action.acesso.PerfilEditAction" method="updateModulos">
-			<result name="success" type="freemarker">/WEB-INF/forms/acesso/modulos.ftl</result>
-		</action>
 	</package>
 </xwork>

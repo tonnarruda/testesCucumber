@@ -28,7 +28,6 @@
 			<result name="error.area" type="redirect">list.action</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.AreaOrganizacionalEditAction" method="insert">
-		    <interceptor-ref name="tokenWebStack" />
 			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalEdit.ftl</result>

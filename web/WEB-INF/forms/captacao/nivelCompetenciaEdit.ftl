@@ -18,7 +18,6 @@
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true"  method="POST">
 			<@ww.hidden name="nivelCompetencia.id" id = "nivelCompetenciaId"/>
 			<@ww.hidden name="nivelCompetencia.empresa.id" />
-			<@ww.token/>
 			<@ww.textfield label="Descrição" name="nivelCompetencia.descricao" id="descricao" maxLength="60" cssStyle="width:300px;" required="true"/>
 		</@ww.form>
 	

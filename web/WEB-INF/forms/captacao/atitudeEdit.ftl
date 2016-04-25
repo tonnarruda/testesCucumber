@@ -54,7 +54,6 @@
 	<@ww.textarea label="Observação" name="atitude.observacao" id="observacao" cssStyle="width:500px;"/>
 	<@ww.hidden label="Id" name="atitude.id" />
 
-<@ww.token/>
 </@ww.form>
 
 
