@@ -56,29 +56,11 @@
 	  		});
 		}
 		
-		function verificaSelecao()
+		function inserir()
 		{
-			if($('#colaborador').val())
-			{
-				colaboradoresIds = new Array($('#colaborador').val());
-				DWRUtil.useLoadingMessage('Carregando...');
-				ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma(function(data){
-																				colabNaOutraTurma(data, 180, 430, 'Colaborador já inscrito no curso<br />Deseja realmente incluí-lo nesta turma?', false);
-																			}, ${turma.id}, ${turma.curso.id}, colaboradoresIds);
-																																						
-																																						
-				ColaboradorTurmaDWR.verificaColaboradorCertificadoNaCertificacaoPreRequisito(function(data){
-																				colabNaOutraTurma(data, 400, 575, 'Este curso está em uma certificação com pré-requisito.<br/> Existem colaboradores que não estão certificados. Deseja realmente incluí-los neste curso?', true);
-																			},$("input[name='turma.curso.id']").val(), new Array($("#colaborador").val()), false);
-				
-			}
-			else
-			{
-				jAlert('Selecione um colaborador!');
-				return false;
-			}
+			colaboradoresIds = new Array($('#colaborador').val());
+			verificaSelecao(${turma.id}, ${turma.curso.id}, colaboradoresIds, ${empresaSistema.controlarVencimentoPorCertificacao?string});
 		}
-		
 	</script>
 </head>
 <body>
@@ -114,7 +96,7 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="javascript: verificaSelecao();" class="btnInserir"></button>
+		<button onclick="javascript: inserir();" class="btnInserir"></button>
 		<button onclick="window.location='list.action?turma.id=${turma.id}&curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}'" class="btnVoltar"></button>
 	</div>
 </body>

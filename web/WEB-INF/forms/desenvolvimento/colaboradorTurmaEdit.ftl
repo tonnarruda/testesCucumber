@@ -17,7 +17,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/populaEstabAreaCargo.js?version=${versao}"/>"></script>
-
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/colaboradorTurma.js?version=${versao}"/>'></script>
+	
 	<script type='text/javascript'>
 		var empresaIds = new Array();
 		<#if empresaIds?exists>
@@ -45,63 +46,13 @@
 			$("input[name='colaboradoresId']").attr('checked', marcar);
 		}
 
-		var colabsIds = [];
-		function verificaSelecao()
+		function inserir()
 		{
-			colabsIds = $("input[name='colaboradoresId']:checked").map(function(){
-			    return parseInt($(this).val());
-			});
-			
-			if(colabsIds.length > 0)
-			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma($("input[name='turma.id']").val(), $("input[name='turma.curso.id']").val(), colabsIds.toArray(),
-					function(data){
-						montaDialog(data, 400, 700, 'Os seguintes colaboradores já estão inscritos neste curso.<br />Deseja realmente incluí-los nesta turma?', true);
-				});
-			}
-			else
-			{
-				jAlert('Selecione ao menos um colaborador!');
-				return false;
-			}
+			colaboradoresIds = $("input[name='colaboradoresId']:checked").map(function(){
+			    return $(this).val();
+			}).get();
+			verificaSelecao($("input[name='turma.id']").val(), $("input[name='turma.curso.id']").val(), colaboradoresIds, ${empresaSistema.controlarVencimentoPorCertificacao?string});
 		}
-		
-		function verificaSeParticipaDeUmaCertificacao()
-		{
-			ColaboradorTurmaDWR.verificaColaboradorCertificadoNaCertificacaoPreRequisito($("input[name='turma.curso.id']").val(), colabsIds.toArray(),
-					function(data){
-						montaDialog(data, 400, 575, 'Este curso está em uma certificação com pré-requisito.<br/> Existem colaboradores que não estão certificados. Deseja realmente incluí-los neste curso?', false);
-			});
-		}
-		
-		function montaDialog(msg, altura, largura, titulo, incluirNaturma)
-		{
-			if (msg != ""){
-				$('<div>' + msg + '</div>').dialog({title: titulo,
-													modal: true, 
-													height: altura,
-													width: largura,
-													buttons: [
-													    {
-													        text: "Sim",
-													        click: function() { $(this).dialog("close"); if(incluirNaturma){ verificaSeParticipaDeUmaCertificacao();} else {document.formColab.submit();} }
-													    },
-													    {
-													        text: "Não",
-													        click: function() { $(this).dialog("close"); if(incluirNaturma){ verificaSeParticipaDeUmaCertificacao();} }
-													    }
-													] 
-													});
-			}else{ 
-				if(incluirNaturma){
-					verificaSeParticipaDeUmaCertificacao();
-				}else{
-					document.formColab.submit();
-				}
-			}
-		}
-		
 	</script>
 
 <#include "../ftl/showFilterImports.ftl" />
@@ -182,7 +133,7 @@
 
 	<div class="buttonGroup">
 		<#if colaboradorTurmas?exists && colaboradorTurmas?size != 0>
-			<button onclick="javascript: verificaSelecao();" class="btnInserirSelecionados"></button>
+			<button onclick="javascript: inserir();" class="btnInserirSelecionados"></button>
 		</#if>
 		<button onclick="window.location='list.action?turma.id=${turma.id}&curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}'" class="btnVoltar"></button>
 	</div>

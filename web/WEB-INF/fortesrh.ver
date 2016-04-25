@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="P16040000229"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho: Ajuste na inconsistência ao liberar avaliação contendo respostas.]]></Item>
 		<Item visivel="N" motivo="P16040000229"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Ajuste na inconsistência ao editar avaliação de desempenho que esta configurado para avaliar as competências dos avaliados e o avaliado não possui a configuração de nível competência em sua faixa salarial.]]></Item>
 		<Item visivel="S" motivo="P16030000253"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência: Impossibilitando salvar respostas duplicadas, ao gravar as respostas com duplo clique.]]></Item>
+		<Item visivel="S" motivo="P16040000031"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores + Nota: Correção de inconsistência ao inserir colaborador.]]></Item>
 		<Item visivel="S" motivo="P16040000149"><![CDATA[T&D > Cadastros > Avaliação Prática: Paginação da listagem de avaliações práticas.]]></Item>
 	</Versao>
 	<Versao id="1.1.164.195" db="" data="14/04/2016">

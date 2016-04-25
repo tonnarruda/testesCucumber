@@ -282,10 +282,11 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		{
 			colaboradorTurma.setTurma(turma);
 			colaboradorTurmaManager.remove(colaboradorTurma);
+			addActionSuccess("Colaborador retirado da turma com sucesso.");
 		}
 		catch (Exception e)
 		{
-			addActionError("Não é possível remover o colaborador da turma, pois este já possui presença(s) registrada(s).");
+			addActionWarning("Não é possível remover o colaborador da turma, pois este já possui presença(s) registrada(s).");
 			list();
 			return Action.INPUT;
 		}
