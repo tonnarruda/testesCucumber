@@ -10,6 +10,7 @@
 	<Versao id="1.1.164.195" db="" data="14/04/2016">
 		<Item visivel="S" motivo="S16030000415"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho: Permitir bloquear avaliação de desempenho mesmo contendo avaliações respondidas.]]></Item>
 		<Item visivel="S" motivo="P16040000033"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Ajuste de inconsistência ao exibir comentários.]]></Item>
+		<Item visivel="S" motivo="S16010000294"><![CDATA[Novo perfil para permitir que o gestor visualize suas próprias ocorrências e providências nas movimentações e relatórios.]]></Item>
 	</Versao>
 	<Versao id="1.1.163.194" db="" data="29/03/2016">
 		<Item visivel="S" motivo="P16030000328"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Ajuste da inconsistência ao tentar inserir histórico de nível quando não existir nível de competência.]]></Item>

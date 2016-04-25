@@ -191,7 +191,7 @@ public class ColaboradorDWR
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	
     	Long notUsuarioId = null;
-    	if(restrigirVisualizacaoGestor(usuarioLogadoId))
+    	if(restrigirVisualizacaoParaUsuarioGestor(usuarioLogadoId))
     		notUsuarioId = usuarioLogadoId;
     		
     	if((areaOrganizacionalIds == null || areaOrganizacionalIds.length == 0) && (estabelecimentoIds == null || estabelecimentoIds.length == 0))
@@ -220,15 +220,15 @@ public class ColaboradorDWR
 		}
 	}
     
-    private boolean restrigirVisualizacaoGestor(Long usuarioLogadoId){
-		boolean restrigirVizualizacao = false;
-		boolean isreponsavel = usuarioManager.isResponsavelOrCoResponsavel(usuarioLogadoId);
-		boolean naoPossuiRole = !usuarioEmpresaManager.containsRole(usuarioLogadoId, null, "ROLE_MOV_GESTOR_VISUALIZAR_OCORRENCIA_PROVIDENCIA");
+    private boolean restrigirVisualizacaoParaUsuarioGestor(Long usuarioLogadoId){
+		boolean restringirVisualizacaoParaGestor = false;
+		boolean usuarioIsResponsavel = usuarioManager.isResponsavelOrCoResponsavel(usuarioLogadoId);
+		boolean naoPossuiRoleDeVisualizarPropriaOcorrenciaProvidencia = !usuarioEmpresaManager.containsRole(usuarioLogadoId, null, "ROLE_MOV_GESTOR_VISUALIZAR_PROPRIA_OCORRENCIA_PROVIDENCIA");
 		
-		if(isreponsavel && naoPossuiRole && !usuarioLogadoId.equals(1L)){
-			restrigirVizualizacao = true;
+		if(usuarioIsResponsavel && naoPossuiRoleDeVisualizarPropriaOcorrenciaProvidencia && !usuarioLogadoId.equals(1L)){
+			restringirVisualizacaoParaGestor = true;
 		}
-		return restrigirVizualizacao;
+		return restringirVisualizacaoParaGestor;
 	}
 
     public Map<Long, String> getColaboradoresByEstabelecimentoDataAdmissao(Long estabelecimentoId, String dataAdmissao, Long empresaId)

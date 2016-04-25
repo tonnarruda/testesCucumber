@@ -584,7 +584,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		
 		usuarioManager.expects(once()).method("isResponsavelOrCoResponsavel").with(eq(usuario.getId())).will(returnValue(true));
-		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(usuario.getId()), eq(empresaId), eq("ROLE_MOV_GESTOR_VISUALIZAR_OCORRENCIA_PROVIDENCIA")).will(returnValue(true));
+		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(usuario.getId()), eq(empresaId), eq("ROLE_MOV_GESTOR_VISUALIZAR_PROPRIA_OCORRENCIA_PROVIDENCIA")).will(returnValue(true));
 		areaOrganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").with(ANYTHING, ANYTHING).will(returnValue(areasIds));
 		
 		colaboradorManager.expects(once()).method("findByAreasOrganizacionalIds").with(new Constraint[]{eq(null), eq(null), 
@@ -601,7 +601,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		
 		usuarioManager.expects(once()).method("isResponsavelOrCoResponsavel").with(eq(usuario.getId())).will(returnValue(true));
-		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(usuario.getId()), eq(empresaId), eq("ROLE_MOV_GESTOR_VISUALIZAR_OCORRENCIA_PROVIDENCIA")).will(returnValue(false));
+		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(usuario.getId()), eq(empresaId), eq("ROLE_MOV_GESTOR_VISUALIZAR_PROPRIA_OCORRENCIA_PROVIDENCIA")).will(returnValue(false));
 		areaOrganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").with(ANYTHING, ANYTHING).will(returnValue(areasIds));
 		
 		colaboradorManager.expects(once()).method("findByAreasOrganizacionalIds").with(new Constraint[]{eq(null), eq(null), 
@@ -660,7 +660,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<
 	public void testFiltrarOcorrenciasSemRestrigirVisualizacaoGestor(){
 		Long usuarioId = 2l;
 		usuarioManager.expects(once()).method("isResponsavelOrCoResponsavel").with(eq(usuarioId)).will(returnValue(true));
-		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(usuarioId), eq(null), eq("ROLE_MOV_GESTOR_VISUALIZAR_OCORRENCIA_PROVIDENCIA")).will(returnValue(true));
+		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(usuarioId), eq(null), eq("ROLE_MOV_GESTOR_VISUALIZAR_PROPRIA_OCORRENCIA_PROVIDENCIA")).will(returnValue(true));
 		colaboradorOcorrenciaDao.expects(once()).method("findColaboradorOcorrencia").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(null)}).will(returnValue(new ArrayList<ColaboradorOcorrencia>()));
 
 		Exception exception = null;
@@ -675,7 +675,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<
 	public void testFiltrarOcorrenciasRestringindoVisualizacaoDoGestor(){
 		Long usuarioId = 2l;
 		usuarioManager.expects(once()).method("isResponsavelOrCoResponsavel").with(eq(usuarioId)).will(returnValue(true));
-		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(usuarioId), eq(null), eq("ROLE_MOV_GESTOR_VISUALIZAR_OCORRENCIA_PROVIDENCIA")).will(returnValue(false));
+		usuarioEmpresaManager.expects(once()).method("containsRole").with(eq(usuarioId), eq(null), eq("ROLE_MOV_GESTOR_VISUALIZAR_PROPRIA_OCORRENCIA_PROVIDENCIA")).will(returnValue(false));
 		colaboradorOcorrenciaDao.expects(once()).method("findColaboradorOcorrencia").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(usuarioId)}).will(returnValue(new ArrayList<ColaboradorOcorrencia>()));
 
 		Exception exception = null;

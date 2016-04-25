@@ -335,7 +335,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 				areasIds = new Long[]{-1L};//não vai achar nenhum colaborador
 		}
 			
-		if(restrigirVisualizacaoGestor(usuarioLogado.getId(), empresaId))
+		if(restringirVisualizacaoParaUsuarioGestor(usuarioLogado.getId(), empresaId))
 			return colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, null, colaborador, null, null, empresaId, false, somenteDesligados, usuarioLogado.getId());
 		else 
 			return colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, null, colaborador, null, null, empresaId, false, somenteDesligados, null);
@@ -355,21 +355,21 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 
 	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Collection<Long> empresaIds, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento, Character agruparPor, String situacao, Long usuarioLogadoId)
 	{
-		if(restrigirVisualizacaoGestor(usuarioLogadoId, null))
+		if(restringirVisualizacaoParaUsuarioGestor(usuarioLogadoId, null))
 			return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaIds, areaIds, estabelecimentoIds, detalhamento, agruparPor, situacao, usuarioLogadoId);
 		else
 			return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaIds, areaIds, estabelecimentoIds, detalhamento, agruparPor, situacao, null);
 	}
 
-	private boolean restrigirVisualizacaoGestor(Long usuarioLogadoId, Long empresaId){
-		boolean restrigirVizualizacao = false;
-		boolean isreponsavel = usuarioManager.isResponsavelOrCoResponsavel(usuarioLogadoId);
-		boolean naoPossuiRole = !usuarioEmpresaManager.containsRole(usuarioLogadoId, empresaId, "ROLE_MOV_GESTOR_VISUALIZAR_OCORRENCIA_PROVIDENCIA");
+	private boolean restringirVisualizacaoParaUsuarioGestor(Long usuarioLogadoId, Long empresaId){
+		boolean restringirVisualizacaoParaGestor = false;
+		boolean usuarioIsResponsavel = usuarioManager.isResponsavelOrCoResponsavel(usuarioLogadoId);
+		boolean naoPossuiRoleDeVisualizarPropriaOcorrenciaProvidencia = !usuarioEmpresaManager.containsRole(usuarioLogadoId, empresaId, "ROLE_MOV_GESTOR_VISUALIZAR_PROPRIA_OCORRENCIA_PROVIDENCIA");
 		
-		if(isreponsavel && naoPossuiRole && !usuarioLogadoId.equals(1L)){
-			restrigirVizualizacao = true;
+		if(usuarioIsResponsavel && naoPossuiRoleDeVisualizarPropriaOcorrenciaProvidencia && !usuarioLogadoId.equals(1L)){
+			restringirVisualizacaoParaGestor = true;
 		}
-		return restrigirVizualizacao;
+		return restringirVisualizacaoParaGestor;
 	}
 
 	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
