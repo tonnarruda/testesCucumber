@@ -371,7 +371,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = null;
 		
 		colaboradorRespostaManager.expects(once()).method("update").withAnyArguments().isVoid();
-		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasColaborador").withAnyArguments();
+//		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasColaborador").withAnyArguments();
 		colaboradorQuestionarioManager.expects(once()).method("update").withAnyArguments();
 		
 		configuracaoNivelCompetenciaFaixaSalarialManager.expects(once()).method("findByFaixaSalarialIdAndData").withAnyArguments();
@@ -433,7 +433,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		
 		perguntaManager.expects(once()).method("getColaboradorRespostasDasPerguntas").withAnyArguments().will(returnValue(new ArrayList<Pergunta>()));
 		colaboradorRespostaManager.expects(once()).method("update").withAnyArguments().isVoid();
-		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasColaborador").withAnyArguments();
+//		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasColaborador").withAnyArguments();
 		colaboradorQuestionarioManager.expects(once()).method("update").withAnyArguments();
 		
 		configuracaoNivelCompetenciaFaixaSalarialManager.expects(once()).method("findByFaixaSalarialIdAndData").withAnyArguments();

@@ -338,11 +338,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		if (colaboradorQuestionario.getAvaliacao().getId() == null || colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo()){
 			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByProjection(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getConfiguracaoNivelCompetenciaFaixaSalarial().getId());
-			nivelCompetencias = nivelCompetenciaManager.findAllSelect(colaborador.getEmpresa().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
-			existConfigCompetenciaAvaliacaoDesempenho = configuracaoCompetenciaAvaliacaoDesempenhoManager.existe(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getConfiguracaoNivelCompetenciaFaixaSalarial().getId(),colaboradorQuestionario.getAvaliacaoDesempenho().getId());
-			niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId(), configuracaoNivelCompetenciaFaixaSalarial.getId());
-			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), colaboradorQuestionario.getAvaliador().getId(), colaboradorQuestionario.getAvaliacaoDesempenho().getId());
-			pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaximaByNivelCompetenciaHistoricoId(configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId()).intValue();
+			if(configuracaoNivelCompetenciaFaixaSalarial != null){
+				nivelCompetencias = nivelCompetenciaManager.findAllSelect(colaborador.getEmpresa().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
+				existConfigCompetenciaAvaliacaoDesempenho = configuracaoCompetenciaAvaliacaoDesempenhoManager.existe(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getConfiguracaoNivelCompetenciaFaixaSalarial().getId(),colaboradorQuestionario.getAvaliacaoDesempenho().getId());
+				niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId(), configuracaoNivelCompetenciaFaixaSalarial.getId());
+				niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), colaboradorQuestionario.getAvaliador().getId(), colaboradorQuestionario.getAvaliacaoDesempenho().getId());
+				pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaximaByNivelCompetenciaHistoricoId(configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId()).intValue();
+			}
 		}
 		
 		return Action.SUCCESS;

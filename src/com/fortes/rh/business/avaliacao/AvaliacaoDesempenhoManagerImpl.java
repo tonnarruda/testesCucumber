@@ -377,7 +377,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);	
 
 		colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, usuario.getId(), empresa.getId(), niveisCompetenciaFaixaSalariais);
-		
 		if (colaboradorQuestionario.getAvaliacao()==null || colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo()) {
 			ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = null;
 			if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null)
@@ -395,8 +394,11 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 				else
 					configuracaoNivelCompetenciaColaborador.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
 			}
-			configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
-			colaboradorQuestionario.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
+			
+			if(configuracaoNivelCompetenciaColaborador.getConfiguracaoNivelCompetenciaFaixaSalarial() != null && configuracaoNivelCompetenciaColaborador.getConfiguracaoNivelCompetenciaFaixaSalarial().getId() != null){
+				configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
+				colaboradorQuestionario.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
+			}
 			colaboradorQuestionarioManager.update(colaboradorQuestionario);
 		}
 	}
