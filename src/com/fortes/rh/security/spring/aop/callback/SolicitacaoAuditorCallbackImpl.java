@@ -83,6 +83,28 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), solicitacaoAnterior.getDescricaoFormatada(), dados);
 	}
 	
+	public Auditavel encerraSolicitacao(MetodoInterceptado metodo) throws Throwable {
+		return montaDadosEncerrarSolicitacao(metodo);
+	}
+	
+	public Auditavel encerrarSolicitacaoAoPreencherTotalVagas(MetodoInterceptado metodo) throws Throwable {
+		return montaDadosEncerrarSolicitacao(metodo);
+	}
+	
+	private Auditavel montaDadosEncerrarSolicitacao(MetodoInterceptado metodo) throws Throwable {
+		Solicitacao solicitacao = (Solicitacao) metodo.getParametros()[0];
+		Solicitacao solicitacaoAnterior = (Solicitacao) carregaEntidade(metodo, solicitacao);
+		metodo.processa();
+		
+		Map<String, String> dadosAtualizados = new LinkedHashMap<String, String>();
+		dadosAtualizados.put("dataEncerramento", String.valueOf(solicitacao.getDataEncerramentoFormatada()));
+		dadosAtualizados.put("observacao", String.valueOf(solicitacao.getObservacaoLiberador()));
+		
+		String dados = new GeraDadosAuditados(new Object[]{}, dadosAtualizados).gera();
+		
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), solicitacaoAnterior.getDescricaoFormatada(), dados);
+	}
+	
 	public Auditavel updateSolicitacao(MetodoInterceptado metodo) throws Throwable {
 
 		Solicitacao solicitacao = (Solicitacao) metodo.getParametros()[0];

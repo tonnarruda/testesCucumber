@@ -30,10 +30,15 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	@Audita(operacao="Atualização", auditor=SolicitacaoAuditorCallbackImpl.class)
 	void updateSolicitacao(Solicitacao solicitacao, Long[] avaliacaoIds, Empresa empresa, Usuario usuario) throws Exception;
 
+	@Audita(operacao="Encerramento", auditor=SolicitacaoAuditorCallbackImpl.class)
+	void encerraSolicitacao(Solicitacao solicitacao, Empresa empresa) throws Exception;
+
+	@Audita(operacao="Encerramento", auditor=SolicitacaoAuditorCallbackImpl.class)
+	void encerrarSolicitacaoAoPreencherTotalVagas(Solicitacao solicitacao, Empresa empresa) throws Exception;
+	
 	boolean removeCascade(Long id);
 	Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa);
 	Solicitacao getValor(Long id);
-	void encerraSolicitacao(Solicitacao solicitacao, Empresa empresa) throws Exception;
 	Solicitacao findByIdProjection(Long solicitacaoId);
 	Solicitacao findByIdProjectionForUpdate(Long solicitacaoId);
 	void updateEncerraSolicitacao(boolean encerrar, Date dataEncerramento, Long solicitacaoId);
@@ -52,7 +57,6 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
-	void encerrarSolicitacaoAoPreencherTotalVagas(Solicitacao solicitacao, Empresa empresa) throws Exception;
 	Collection<Solicitacao> findByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds);
 	Collection<String> getNomesColabSubstituidosSolicitacaoEncerrada(Long empresaId);
 	void atualizaStatusSolicitacaoByColaborador(Colaborador colaborador, char status, boolean disponibilizarCandidato);
