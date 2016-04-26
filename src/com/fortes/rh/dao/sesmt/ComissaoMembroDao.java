@@ -15,7 +15,7 @@ public interface ComissaoMembroDao extends GenericDao<ComissaoMembro>
 	void updateFuncaoETipo(Long id, String funcao, String tipo);
 	void removeByComissaoPeriodo(Long[] comissaoPeriodoIds);
 	Collection<Colaborador> findColaboradorByComissao(Long comissaoId);
-	Collection<ComissaoMembro> findDistinctByComissaoPeriodo(Long comissaoPeriodoId);
+	Collection<ComissaoMembro> findDistinctByComissaoPeriodo(Long comissaoPeriodoId, Date dataLimiteParaDesligados);
 	Collection<ComissaoMembro> findByComissao(Long comissaoId, String tipoMembroComissao);
 	Collection<ComissaoMembro> findByColaborador(Long colaboradorId);
 	Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId);

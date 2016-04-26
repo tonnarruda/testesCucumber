@@ -110,6 +110,7 @@ public class ComissaoDaoHibernate extends GenericDaoHibernate<Comissao> implemen
 		hql.append("left join c.comissaoPeriodos cp2 with cp2.aPartirDe = (select min(aPartirDe) from ComissaoPeriodo where comissao.id = c.id and aPartirDe > cp.aPartirDe) ");
 		hql.append("where c.id = :comissaoId ");
 		hql.append("and :dataReuniao >= cp.aPartirDe and :dataReuniao < coalesce(cp2.aPartirDe, c.dataFim + 1) ");
+		hql.append("and (co.dataDesligamento is null or co.dataDesligamento > :dataReuniao) ");
 		hql.append("order by co.nome");
 		
 		Query query = getSession().createQuery(hql.toString());

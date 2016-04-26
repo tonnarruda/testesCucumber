@@ -138,7 +138,7 @@ public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuni
 					comissaoPeriodoId = periodo.getId();
 		}
 		
-		Collection<ComissaoMembro> comissaoMembros = comissaoMembroManager.findDistinctByComissaoPeriodo(comissaoPeriodoId);
+		Collection<ComissaoMembro> comissaoMembros = comissaoMembroManager.findDistinctByComissaoPeriodo(comissaoPeriodoId, dataDaReuniao);
 		
 		return comissaoMembros;
 	}

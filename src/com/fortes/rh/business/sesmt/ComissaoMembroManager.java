@@ -18,7 +18,7 @@ public interface ComissaoMembroManager extends GenericManager<ComissaoMembro>
 	void removeByComissaoPeriodo(Long[] comissaoPeriodoIds);
 	void save(String[] colaboradorsCheck, ComissaoPeriodo comissaoPeriodo) throws Exception;
 	Collection<Colaborador> findColaboradorByComissao(Long comissaoId);
-	Collection<ComissaoMembro> findDistinctByComissaoPeriodo(Long comissaoPeriodoId);
+	Collection<ComissaoMembro> findDistinctByComissaoPeriodo(Long comissaoPeriodoId, Date dataLimiteParaDesligados);
 	Collection<ComissaoMembro> findByComissao(Long comissaoId, String tipoMembroComissao);
 	Collection<ComissaoMembro> findByColaborador(Long colaboradorId);
 	Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId);

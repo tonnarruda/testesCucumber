@@ -158,7 +158,7 @@ public class ComissaoReuniaoManagerTest extends MockObjectTestCase
 		
 		comissaoReuniaoPresencaManager.expects(once()).method("findByReuniao").with(eq(comissaoReuniao.getId())).will(returnValue(comissaoReuniaoPresencas));
 		
-		comissaoMembroManager.expects(once()).method("findDistinctByComissaoPeriodo").with(eq(periodo2DentroDaDataDaReuniao.getId())).will(returnValue(comissaoMembros));
+		comissaoMembroManager.expects(once()).method("findDistinctByComissaoPeriodo").with(eq(periodo2DentroDaDataDaReuniao.getId()), eq(comissaoReuniao.getData())).will(returnValue(comissaoMembros));
 
 		comissaoMembros = comissaoReuniaoManager.findImprimirAta(comissaoReuniao, comissaoId);
 	}

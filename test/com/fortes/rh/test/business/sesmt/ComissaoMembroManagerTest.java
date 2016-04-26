@@ -97,8 +97,8 @@ public class ComissaoMembroManagerTest extends MockObjectTestCase
 
     public void testFindDistinctByComissaoPeriodo() throws Exception
     {
-    	comissaoMembroDao.expects(once()).method("findDistinctByComissaoPeriodo").with(ANYTHING).will(returnValue(new ArrayList<ComissaoMembro>()));
-    	assertEquals(0, comissaoMembroManager.findDistinctByComissaoPeriodo(1L).size());
+    	comissaoMembroDao.expects(once()).method("findDistinctByComissaoPeriodo").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<ComissaoMembro>()));
+    	assertEquals(0, comissaoMembroManager.findDistinctByComissaoPeriodo(1L, null).size());
     }
 
     public void testFindByComissao() throws Exception

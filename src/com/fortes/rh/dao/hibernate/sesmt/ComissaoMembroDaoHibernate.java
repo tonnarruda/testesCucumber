@@ -16,6 +16,7 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -95,7 +96,7 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 		return criteria.list();
 	}
 
-	public Collection<ComissaoMembro> findDistinctByComissaoPeriodo(Long comissaoPeriodoId)
+	public Collection<ComissaoMembro> findDistinctByComissaoPeriodo(Long comissaoPeriodoId, Date dataLimiteParaDesligados)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cm");
 		criteria.createCriteria("cm.colaborador", "co");
@@ -113,6 +114,9 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("cp.id", comissaoPeriodoId));
+		
+		if(dataLimiteParaDesligados != null)
+			criteria.add(Restrictions.or(Expression.isNull("co.dataDesligamento"), Expression.gt("co.dataDesligamento", dataLimiteParaDesligados)));
 		
 		criteria.addOrder(Order.asc("co.nome"));
 

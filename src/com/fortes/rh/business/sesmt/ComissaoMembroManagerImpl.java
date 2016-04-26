@@ -75,9 +75,9 @@ public class ComissaoMembroManagerImpl extends GenericManagerImpl<ComissaoMembro
 		return getDao().findColaboradorByComissao(comissaoId);
 	}
 
-	public Collection<ComissaoMembro> findDistinctByComissaoPeriodo(Long comissaoPeriodoId)
+	public Collection<ComissaoMembro> findDistinctByComissaoPeriodo(Long comissaoPeriodoId, Date dataLimiteParaDesligados)
 	{
-		return getDao().findDistinctByComissaoPeriodo(comissaoPeriodoId);
+		return getDao().findDistinctByComissaoPeriodo(comissaoPeriodoId, dataLimiteParaDesligados);
 	}
 
 	public Collection<ComissaoMembro> findByComissao(Long comissaoId, String tipoMembroComissao)

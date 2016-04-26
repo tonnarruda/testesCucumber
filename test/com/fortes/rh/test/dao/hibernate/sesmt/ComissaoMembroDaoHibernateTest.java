@@ -129,8 +129,13 @@ public class ComissaoMembroDaoHibernateTest extends GenericDaoHibernateTest<Comi
 	{
 		Comissao comissao = ComissaoFactory.getEntity();
 		comissaoDao.save(comissao);
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setDataDesligamento(DateUtil.criarDataMesAno(20, 12, 2009));
+		colaboradorDao.save(colaborador2);
 		
 		Date dataPeriodo1 = DateUtil.criarDataMesAno(10, 12, 2009);
 		Date dataPeriodo2 = DateUtil.criarDataMesAno(9, 3, 2010);
@@ -145,14 +150,13 @@ public class ComissaoMembroDaoHibernateTest extends GenericDaoHibernateTest<Comi
 		comissaoPeriodo2Fora.setaPartirDe(dataPeriodo2);
 		comissaoPeriodoDao.save(comissaoPeriodo2Fora);
 		
-		ComissaoMembro comissaoMembro = ComissaoMembroFactory.getEntity();
-		comissaoMembro.setComissaoPeriodo(comissaoPeriodo);
-		comissaoMembro.setColaborador(colaborador);
-		comissaoMembro.setFuncao(FuncaoComissao.SECRETARIO);
-		comissaoMembro.setTipo(TipoMembroComissao.ELEITO);
-		comissaoMembroDao.save(comissaoMembro);
+		ComissaoMembro comissaoMembro1 = ComissaoMembroFactory.getEntity(comissaoPeriodo, colaborador1, FuncaoComissao.SECRETARIO, TipoMembroComissao.ELEITO);
+		comissaoMembroDao.save(comissaoMembro1);
+		
+		ComissaoMembro comissaoMembro2 = ComissaoMembroFactory.getEntity(comissaoPeriodo, colaborador2, FuncaoComissao.MEMBRO_TITULAR, TipoMembroComissao.ELEITO);
+		comissaoMembroDao.save(comissaoMembro2);
 
-		Collection<ComissaoMembro> resultado = comissaoMembroDao.findDistinctByComissaoPeriodo(comissaoPeriodo.getId());
+		Collection<ComissaoMembro> resultado = comissaoMembroDao.findDistinctByComissaoPeriodo(comissaoPeriodo.getId(), DateUtil.criarDataMesAno(21, 12, 2009));
 		assertEquals(1, resultado.size());
 	}
 	
