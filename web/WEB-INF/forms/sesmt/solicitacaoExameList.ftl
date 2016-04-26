@@ -21,11 +21,83 @@
 	{
 		color: #EF030F !important;
 	}
+	
+	#previews {
+		height: 150px;
+   		width: 295px;
+   		margin: 10px auto;
+	}
+	
+	#previews .box-type {
+		height: 170px;
+		text-align: center;
+		float: left;
+		margin-right: 15px;
+		margin-bottom: 10px;
+	}
+	
+	#previews input {
+		margin-bottom: 10px;
+	}
+	
+	#previews .box-type:hover, #previews .box-type.selected {
+		color: #5292C0;
+		cursor: pointer;
+	}
+	
+	#previews .box-type:hover .paper, #previews .box-type.selected .paper {
+		border: 1px solid #5292C0;
+	}
+	
+	#previews .paper {
+		width: 70px;
+	    height: 99px;
+	    border: 1px solid #e7e7e7;
+	    padding: 5px;
+	    box-shadow: 1px 1px 0px #e7e7e7;
+	    margin-bottom: 10px;
+	}
+	
+	#previews .paper .x1 {
+		width: 68px;
+    	height: 97px;
+    	border: 1px solid #C3C3C3;
+	}
+	#previews .paper .x2 {
+		width: 66px;
+	    height: 46px;
+	    margin: 1px;
+	    margin-bottom: 2px;
+	    border: 1px solid #C3C3C3;
+	}
+	#previews .paper .x4 {
+		width: 31px;
+	    height: 46px;
+	    float: left;
+	    margin: 1px;
+	    border: 1px solid #C3C3C3;
+	}
+	
+	.buttons {
+		width: 205px;
+		margin: 0 auto;
+	}
 	</style>
 	
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<script>
+		$(function(){
+			$(".box-type").click(function(){
+				selectPrintType(this);
+			});
+		})
+		
+		function selectPrintType(box) {
+			$(".box-type").removeClass("selected");
+			$(box).addClass("selected");
+			$(box).find("input").attr("checked", "checked");
+		}
 	
 		function filtrarOpcao()
 		{
@@ -59,6 +131,13 @@
 		function selecionarRiscoPor(solicitacaoExameId){
 			$('#solicitacaoExameId').val(solicitacaoExameId);
 			$('#considerarRiscoPorDialog').dialog({ title: 'Imprimir ASO', modal: true, width: 550, height: 150 });
+		}
+		
+		function imprimirSolicitacaoExame(solicitacaoExameId) {
+			$('#printSolicitacaoExameId').val(solicitacaoExameId);
+			selectPrintType( $('input[name=tipoDeImpressao]:eq(0)').parent() );
+			$('#printSolicitacaoExame form').attr("action", "imprimirSolicitacaoExames.action");
+			$('#printSolicitacaoExame').dialog({ title: 'Imprimir Solicitação de Exames', modal: true, width: 400, height: 270 });
 		}
 		
 	</script>
@@ -143,7 +222,7 @@
 				<img border="0" title="Não há exames para esta solicitação/atendimento" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				<img border="0" title="Não há exames para esta solicitação/atendimento" src="<@ww.url includeParams="none" value="/imgs/check.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			<#else>
-				<a href="imprimirSolicitacaoExames.action?solicitacaoExame.id=${solicitacaoExame.id}"><img border="0" title="Imprimir Solicitação de Exames" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="#" onclick="imprimirSolicitacaoExame(${solicitacaoExame.id});"><img border="0" title="Imprimir Solicitação de Exames" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 				<a><img onclick="marcarComoNormal('${solicitacaoExame.id}');" border="0" title="Marcar o resultado de todos os exames não informados como normal" src="<@ww.url includeParams="none" value="/imgs/check.gif"/>" style="cursor:pointer;"></a>
 			</#if>
 			
@@ -203,6 +282,44 @@
 			
 			<button type="submit" class="btnImprimir grayBG" onclick="$('#considerarRiscoPorDialog').dialog('close');"></button>
 			<button type="button" onclick="$('#considerarRiscoPorDialog').dialog('close'); $('#considerarRiscoPorDialog input').val(''); $('#considerarRiscoPorDialog select').val('');" class="btnCancelar grayBG">	</button>
+		</@ww.form>
+	</div>
+	
+	<div id="printSolicitacaoExame" style="display: none;">
+		<@ww.form name="printSolicitacaoExame" id="formPrintSolicitacaoExame" action="" method="" >
+			<@ww.hidden name="solicitacaoExame.id" id="printSolicitacaoExameId"/>
+			<div id="previews">
+				<div id="x1" class="box-type">
+					<input type="radio" value="inteira" name="tipoDeImpressao"/>
+					<div class="paper">
+						<div class="x1"></div>
+					</div>
+					<div>Inteira</div>
+				</div>
+				<div id="x2" class="box-type">
+					<input type="radio" value="dividida" name="tipoDeImpressao" />
+					<div class="paper">
+						<div class="x2"></div>
+						<div class="x2"></div>
+					</div>
+					<div>Dividida</div>
+				</div>
+				<div id="x4" class="box-type">
+					<input type="radio" value="economica" name="tipoDeImpressao" />
+					<div class="paper">
+						<div class="x4"></div>
+						<div class="x4"></div>
+						<div class="x4"></div>
+						<div class="x4"></div>
+					</div>
+					<div>Econômica</div>
+				</div>
+			</div>
+
+			<div class="buttons">
+				<button type="submit" class="btnImprimir grayBG" onclick="$('#printSolicitacaoExame').dialog('close');"></button>
+				<button type="button" onclick="$('#printSolicitacaoExame').dialog('close'); $('#printSolicitacao input').val(''); $('#printSolicitacaoExame select').val('');" class="btnCancelar grayBG">	</button>
+			</div>
 		</@ww.form>
 	</div>
 	

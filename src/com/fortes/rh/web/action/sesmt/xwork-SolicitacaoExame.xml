@@ -43,11 +43,23 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoExameEdit.ftl</result>
 		</action>
 		<action name="imprimirSolicitacaoExames" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="imprimirSolicitacaoExames">
-			<result name="success" type="jasper">
+			<result name="success_inteira" type="jasper">
 				<param name="dataSource">dataSource</param>
 				<param name="location">WEB-INF/report/solicitacao_exame_agrupador.jasper</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">solicitacaoExame.pdf</param>
+			</result>
+			<result name="success_dividida" type="jasper">
+				<param name="dataSource">dataSource</param>
+				<param name="location">WEB-INF/report/solicitacao_exame_agrupador_dividida.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">solicitacaoExameDividida.pdf</param>
+			</result>
+			<result name="success_economica" type="jasper">
+				<param name="dataSource">dataSource</param>
+				<param name="location">WEB-INF/report/solicitacao_exame_agrupador_economica.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">solicitacaoExameEconomica.pdf</param>
 			</result>
 			<interceptor-ref name="defaultUpdateStack"/>
 			<result name="input" type="redirect">list.action</result>

@@ -65,6 +65,8 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	private boolean primeiraExecucao;
 	
 	private String matriculaBusca;
+	
+	private String tipoDeImpressao;
 
 	//Selecionar exames e clinicas
 	private Object[][] listaExames;
@@ -283,7 +285,8 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 			parametros = RelatorioUtil.getParametrosRelatorio("SERVIÇO DE MEDICINA OCUPACIONAL", getEmpresaSistema(), "SOLICITAÇÃO DE EXAMES");
 			parametros.put("CIDADE", getEmpresaSistema().getCidade().getNome());
 			parametros.put("COLECAO_MATRIZ", solicitacaoExameManager.imprimirSolicitacaoExames(solicitacaoExame.getId()));
-			return SUCCESS;
+			
+			return SUCCESS + "_" + tipoDeImpressao;
 		}
 		catch (ColecaoVaziaException e)
 		{
@@ -712,5 +715,8 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	}
 	public void setSituacao(char situacao) {
 		this.situacao = situacao;
+	}
+	public void setTipoDeImpressao(String tipoDeImpressao) {
+		this.tipoDeImpressao = tipoDeImpressao;
 	}
 }

@@ -44,9 +44,9 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="822" splitType="Stretch">
+		<band height="378" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="19" y="1" width="558" height="784" uuid="a5cb9802-5db9-4b95-a830-100c7547778e"/>
+				<reportElement key="subreport-1" x="19" y="1" width="558" height="377" uuid="a5cb9802-5db9-4b95-a830-100c7547778e"/>
 				<subreportParameter name="CABECALHO">
 					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -56,7 +56,7 @@
 				<subreportParameter name="CIDADE">
 					<subreportParameterExpression><![CDATA[$P{CIDADE}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "solicitacao_exames.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "solicitacao_exames_dividida.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

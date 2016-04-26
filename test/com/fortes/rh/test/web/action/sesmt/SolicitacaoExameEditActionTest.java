@@ -112,12 +112,13 @@ public class SolicitacaoExameEditActionTest extends MockObjectTestCase
 		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(1L);
 		action.setSolicitacaoExame(solicitacaoExame);
 		action.setGravarEImprimir(false);
+		action.setTipoDeImpressao("inteira");
 		Collection<SolicitacaoExameRelatorio> relatorios = new ArrayList<SolicitacaoExameRelatorio>();
 		relatorios.add(new SolicitacaoExameRelatorio());
 		
 		manager.expects(once()).method("imprimirSolicitacaoExames").with(eq(solicitacaoExame.getId())).will(returnValue(relatorios));
 		
-		assertEquals("success",action.imprimirSolicitacaoExames());
+		assertEquals("success_inteira",action.imprimirSolicitacaoExames());
 		assertNotNull(action.getParametros().get("COLECAO_MATRIZ"));
 	}
 	
