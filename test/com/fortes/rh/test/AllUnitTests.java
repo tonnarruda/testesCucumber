@@ -70,6 +70,7 @@ import com.fortes.rh.test.business.desenvolvimento.ColaboradorAvaliacaoPraticaMa
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorCertificacaoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorPresencaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorTurmaManagerTest;
+import com.fortes.rh.test.business.desenvolvimento.ColaboradorTurmaManagerTestJunit5;
 import com.fortes.rh.test.business.desenvolvimento.CursoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.DNTManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.DiaTurmaManagerTest;
@@ -847,6 +848,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ColaboradorTurmaEditActionTest.class,
 	ColaboradorTurmaListActionTest.class,
 	ColaboradorTurmaManagerTest.class,
+	ColaboradorTurmaManagerTestJunit5.class,
 	ColaboradorTurmaDaoHibernateTest.class,
 
 	ColaboradorPresencaEditActionTest.class,

@@ -1720,19 +1720,8 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorCursoAVencer.setEmpresa(empresa);
 		colaboradorDao.save(colaboradorCursoAVencer);
 		
-		Turma turmaVencida = TurmaFactory.getEntity();
-		turmaVencida.setCurso(curso);
-		turmaVencida.setDescricao("Turma vencida");
-		turmaVencida.setDataPrevIni(dataInicioVencida);
-		turmaVencida.setDataPrevFim(dataFimVencida);
-		turmaVencida.setRealizada(true);
-		turmaDao.save(turmaVencida);
-		
-		ColaboradorTurma colaboradorTurmaVencida = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurmaVencida.setTurma(turmaVencida);
-		colaboradorTurmaVencida.setCurso(curso);
-		colaboradorTurmaVencida.setColaborador(colaboradorCursoVencido);
-		colaboradorTurmaDao.save(colaboradorTurmaVencida);
+		Turma turmaVencida = saveTurma(curso, dataInicioVencida, dataFimVencida, true);
+		ColaboradorTurma colaboradorTurmaVencida = saveColaboradorTurma(curso, turmaVencida, colaboradorCursoVencido, true);
 		
 		ColaboradorPresenca colaboradorPresencaPresenteCursoVencido = ColaboradorPresencaFactory.getEntity();
 		colaboradorPresencaPresenteCursoVencido.setColaboradorTurma(colaboradorTurmaVencida);
@@ -1744,19 +1733,8 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorPresencaAusenteCursoVencido.setPresenca(false);
 		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoVencido);
 		
-		Turma turmaAVencer = TurmaFactory.getEntity();
-		turmaAVencer.setCurso(curso);
-		turmaAVencer.setDescricao("Turma a vencer");
-		turmaAVencer.setDataPrevIni(DateUtil.criarDataMesAno(1, 5, 2015));
-		turmaAVencer.setDataPrevFim(DateUtil.criarDataMesAno(15, 5, 2015));
-		turmaAVencer.setRealizada(true);
-		turmaDao.save(turmaAVencer);
-		
-		ColaboradorTurma colaboradorTurmaAVencer = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurmaAVencer.setTurma(turmaAVencer);
-		colaboradorTurmaAVencer.setCurso(curso);
-		colaboradorTurmaAVencer.setColaborador(colaboradorCursoAVencer);
-		colaboradorTurmaDao.save(colaboradorTurmaAVencer);
+		Turma turmaAVencer = saveTurma(curso, DateUtil.criarDataMesAno(1, 5, 2015), DateUtil.criarDataMesAno(15, 5, 2015), true);
+		ColaboradorTurma colaboradorTurmaAVencer = saveColaboradorTurma(curso, turmaAVencer, colaboradorCursoAVencer, true);
 		
 		ColaboradorPresenca colaboradorPresencaPresenteCursoAVencer = ColaboradorPresencaFactory.getEntity();
 		colaboradorPresencaPresenteCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
@@ -1804,14 +1782,8 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorCursoAVencer.setEmpresa(empresa);
 		colaboradorDao.save(colaboradorCursoAVencer);
 		
-		Turma turmaVencida = TurmaFactory.getEntity();
-		turmaVencida.setCurso(curso);
-		turmaVencida.setDescricao("Turma vencida");
-		turmaVencida.setDataPrevIni(dataInicioVencida);
-		turmaVencida.setDataPrevFim(dataFimVencida);
-		turmaVencida.setRealizada(true);
-		turmaDao.save(turmaVencida);
-		
+		Turma turmaVencida = saveTurma(curso, dataInicioVencida, dataFimVencida, true);
+
 		DiaTurma diaTurmaInicioVencida = DiaTurmaFactory.getEntity();
 		diaTurmaInicioVencida.setTurma(turmaVencida);
 		diaTurmaInicioVencida.setDia(dataInicioVencida);
@@ -1822,11 +1794,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		diaTurmaFimVencida.setDia(dataFimVencida);
 		diaTurmaDao.save(diaTurmaFimVencida);
 		
-		ColaboradorTurma colaboradorTurmaVencida = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurmaVencida.setTurma(turmaVencida);
-		colaboradorTurmaVencida.setCurso(curso);
-		colaboradorTurmaVencida.setColaborador(colaboradorCursoVencido);
-		colaboradorTurmaDao.save(colaboradorTurmaVencida);
+		ColaboradorTurma colaboradorTurmaVencida = saveColaboradorTurma(curso, turmaVencida, colaboradorCursoVencido, true);
 		
 		ColaboradorPresenca colaboradorPresencaPresenteCursoVencido = ColaboradorPresencaFactory.getEntity();
 		colaboradorPresencaPresenteCursoVencido.setColaboradorTurma(colaboradorTurmaVencida);
@@ -1840,13 +1808,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorPresencaAusenteCursoVencido.setPresenca(false);
 		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoVencido);
 		
-		Turma turmaAVencer = TurmaFactory.getEntity();
-		turmaAVencer.setCurso(curso);
-		turmaAVencer.setDescricao("Turma a vencer");
-		turmaAVencer.setDataPrevIni(dataInicioAVencer);
-		turmaAVencer.setDataPrevFim(dataFimAVencer);
-		turmaAVencer.setRealizada(true);
-		turmaDao.save(turmaAVencer);
+		Turma turmaAVencer = saveTurma(curso, dataInicioAVencer, dataFimAVencer, true);
 		
 		DiaTurma diaTurmaInicioAVencer = DiaTurmaFactory.getEntity();
 		diaTurmaInicioAVencer.setTurma(turmaAVencer);
@@ -1858,11 +1820,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		diaTurmaFimAVencer.setDia(dataFimAVencer);
 		diaTurmaDao.save(diaTurmaFimAVencer);
 		
-		ColaboradorTurma colaboradorTurmaAVencer = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurmaAVencer.setTurma(turmaAVencer);
-		colaboradorTurmaAVencer.setCurso(curso);
-		colaboradorTurmaAVencer.setColaborador(colaboradorCursoAVencer);
-		colaboradorTurmaDao.save(colaboradorTurmaAVencer);
+		ColaboradorTurma colaboradorTurmaAVencer = saveColaboradorTurma(curso, turmaAVencer, colaboradorCursoAVencer, true);
 		
 		ColaboradorPresenca colaboradorPresencaPresenteCursoAVencer = ColaboradorPresencaFactory.getEntity();
 		colaboradorPresencaPresenteCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
@@ -1939,19 +1897,8 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorQuestionarioCursoAVencer.setAvaliacaoCurso(avaliacaoCurso);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioCursoAVencer);
 		
-		Turma turmaVencida = TurmaFactory.getEntity();
-		turmaVencida.setCurso(curso);
-		turmaVencida.setDescricao("Turma vencida");
-		turmaVencida.setDataPrevIni(dataInicioVencida);
-		turmaVencida.setDataPrevFim(dataFimVencida);
-		turmaVencida.setRealizada(true);
-		turmaDao.save(turmaVencida);
-		
-		ColaboradorTurma colaboradorTurmaVencida = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurmaVencida.setTurma(turmaVencida);
-		colaboradorTurmaVencida.setCurso(curso);
-		colaboradorTurmaVencida.setColaborador(colaboradorCursoVencido);
-		colaboradorTurmaDao.save(colaboradorTurmaVencida);
+		Turma turmaVencida = saveTurma(curso, dataInicioVencida, dataFimVencida, true);
+		ColaboradorTurma colaboradorTurmaVencida = saveColaboradorTurma(curso, turmaVencida, colaboradorCursoVencido, true);
 		
 		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCursoVencido = new AproveitamentoAvaliacaoCurso();
 		aproveitamentoAvaliacaoCursoVencido.setAvaliacaoCurso(avaliacaoCurso);
@@ -1969,19 +1916,10 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorPresencaAusenteCursoVencido.setPresenca(false);
 		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoVencido);
 		
-		Turma turmaAVencer = TurmaFactory.getEntity();
-		turmaAVencer.setCurso(curso);
-		turmaAVencer.setDescricao("Turma a vencer");
-		turmaAVencer.setDataPrevIni(dataInicioAVencer);
-		turmaAVencer.setDataPrevFim(dataFimAVencer);
-		turmaAVencer.setRealizada(true);
+		Turma turmaAVencer = saveTurma(curso, dataInicioAVencer, dataFimAVencer, true);
 		turmaDao.save(turmaAVencer);
 		
-		ColaboradorTurma colaboradorTurmaAVencer = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurmaAVencer.setTurma(turmaAVencer);
-		colaboradorTurmaAVencer.setCurso(curso);
-		colaboradorTurmaAVencer.setColaborador(colaboradorCursoAVencer);
-		colaboradorTurmaDao.save(colaboradorTurmaAVencer);
+		ColaboradorTurma colaboradorTurmaAVencer = saveColaboradorTurma(curso, turmaAVencer, colaboradorCursoAVencer, true);
 		
 		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCursoAVencer = new AproveitamentoAvaliacaoCurso();
 		aproveitamentoAvaliacaoCursoAVencer.setAvaliacaoCurso(avaliacaoCurso);
@@ -2062,13 +2000,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorQuestionarioCursoAVencer.setAvaliacaoCurso(avaliacaoCurso);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioCursoAVencer);
 		
-		Turma turmaVencida = TurmaFactory.getEntity();
-		turmaVencida.setCurso(curso);
-		turmaVencida.setDescricao("Turma vencida");
-		turmaVencida.setDataPrevIni(dataInicioVencida);
-		turmaVencida.setDataPrevFim(dataFimVencida);
-		turmaVencida.setRealizada(true);
-		turmaDao.save(turmaVencida);
+		Turma turmaVencida = saveTurma(curso, dataInicioVencida, dataFimVencida, true);
 		
 		DiaTurma diaTurmaInicio = DiaTurmaFactory.getEntity();
 		diaTurmaInicio.setTurma(turmaVencida);
@@ -2080,11 +2012,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		diaTurmaFim.setDia(dataFimVencida);
 		diaTurmaDao.save(diaTurmaFim);
 		
-		ColaboradorTurma colaboradorTurmaVencida = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurmaVencida.setTurma(turmaVencida);
-		colaboradorTurmaVencida.setCurso(curso);
-		colaboradorTurmaVencida.setColaborador(colaboradorCursoVencido);
-		colaboradorTurmaDao.save(colaboradorTurmaVencida);
+		ColaboradorTurma colaboradorTurmaVencida = saveColaboradorTurma(curso, turmaVencida, colaboradorCursoVencido, true);
 		
 		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCursoVencido = new AproveitamentoAvaliacaoCurso();
 		aproveitamentoAvaliacaoCursoVencido.setAvaliacaoCurso(avaliacaoCurso);
@@ -2102,14 +2030,8 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorPresencaAusenteCursoVencido.setPresenca(false);
 		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoVencido);
 		
-		Turma turmaAVencer = TurmaFactory.getEntity();
-		turmaAVencer.setCurso(curso);
-		turmaAVencer.setDescricao("Turma a vencer");
-		turmaAVencer.setDataPrevIni(DateUtil.criarDataMesAno(1, 5, 2015));
-		turmaAVencer.setDataPrevFim(DateUtil.criarDataMesAno(15, 5, 2015));
-		turmaAVencer.setRealizada(true);
-		turmaDao.save(turmaAVencer);
-		
+		Turma turmaAVencer = saveTurma(curso, DateUtil.criarDataMesAno(1, 5, 2015), DateUtil.criarDataMesAno(15, 5, 2015), true);
+
 		DiaTurma diaTurmaInicioAVencer = DiaTurmaFactory.getEntity();
 		diaTurmaInicioAVencer.setTurma(turmaAVencer);
 		diaTurmaInicioAVencer.setDia(dataInicioAVencer);
@@ -2120,11 +2042,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		diaTurmaFimAVencer.setDia(dataFimAVencer);
 		diaTurmaDao.save(diaTurmaFimAVencer);
 		
-		ColaboradorTurma colaboradorTurmaAVencer = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurmaAVencer.setTurma(turmaAVencer);
-		colaboradorTurmaAVencer.setCurso(curso);
-		colaboradorTurmaAVencer.setColaborador(colaboradorCursoAVencer);
-		colaboradorTurmaDao.save(colaboradorTurmaAVencer);
+		ColaboradorTurma colaboradorTurmaAVencer = saveColaboradorTurma(curso, turmaAVencer, colaboradorCursoAVencer, true);
 		
 		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCursoAVencer = new AproveitamentoAvaliacaoCurso();
 		aproveitamentoAvaliacaoCursoAVencer.setAvaliacaoCurso(avaliacaoCurso);
@@ -2186,19 +2104,8 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador);
 		
-		Turma turmaAVencer = TurmaFactory.getEntity();
-		turmaAVencer.setCurso(curso);
-		turmaAVencer.setDescricao("Turma a vencer");
-		turmaAVencer.setDataPrevIni(DateUtil.criarDataMesAno(1, 1, 2015));
-		turmaAVencer.setDataPrevFim(DateUtil.criarDataMesAno(15, 1, 2015));
-		turmaAVencer.setRealizada(true);
-		turmaDao.save(turmaAVencer);
-		
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurma.setTurma(turmaAVencer);
-		colaboradorTurma.setCurso(curso);
-		colaboradorTurma.setColaborador(colaboradorAntonio);
-		colaboradorTurmaDao.save(colaboradorTurma);
+		Turma turmaAVencer = saveTurma(curso, DateUtil.criarDataMesAno(1, 1, 2015), DateUtil.criarDataMesAno(15, 1, 2015), true);
+		ColaboradorTurma colaboradorTurma = saveColaboradorTurma(curso, turmaAVencer, colaboradorAntonio, true);
 		
 		ColaboradorPresenca colaboradorPresencaPresente = ColaboradorPresencaFactory.getEntity();
 		colaboradorPresencaPresente.setColaboradorTurma(colaboradorTurma);
@@ -2481,42 +2388,6 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		assertEquals(colaborador.getId(), colaborador.getId());
 	}
     
-	public void testVerificaAprovacao() {
-		Date dataInicio = DateUtil.criarDataMesAno(1, 1, 2015);
-		Date dataFim = DateUtil.criarDataMesAno(15, 1, 2015);
-		
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		Curso curso = CursoFactory.getEntity();
-		curso.setNome("Curso de Introdução a Java");
-		curso.setEmpresa(empresa);
-		curso.setPeriodicidade(5);
-		curso.setPercentualMinimoFrequencia(50.0);
-		cursoDao.save(curso);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setNome("Antônio ");
-		colaborador.setEmpresa(empresa);
-		colaboradorDao.save(colaborador);
-		
-		Turma turma = TurmaFactory.getEntity();
-		turma.setCurso(curso);
-		turma.setDescricao("Turma");
-		turma.setDataPrevIni(dataInicio);
-		turma.setDataPrevFim(dataFim);
-		turma.setRealizada(true);
-		turmaDao.save(turma);
-		
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurma.setTurma(turma);
-		colaboradorTurma.setCurso(curso);
-		colaboradorTurma.setColaborador(colaborador);
-		colaboradorTurmaDao.save(colaboradorTurma);
-		
-		assertTrue(colaboradorTurmaDao.verificaAprovacao(curso.getId(), turma.getId(), colaboradorTurma.getId(), curso.getPercentualMinimoFrequencia()));
-	}
-	
 	public void testFindByTurmaPresenteNoDiaTurmaId(){
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador);
@@ -2606,6 +2477,135 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	assertEquals(2, colaboradorTurmas.size());
     	assertEquals(colaborador1.getId(), ((ColaboradorTurma)colaboradorTurmas.toArray()[0]).getColaborador().getId());
     	assertEquals(colaborador2.getId(), ((ColaboradorTurma)colaboradorTurmas.toArray()[1]).getColaborador().getId());
+	}
+	
+	public void testFindColaboradorTurmaByCertificacaoControleVencimentoPorCertificacaoTurmaNaoRealizada(){
+		Colaborador colaborador1 = saveColaborador("João");
+		Colaborador colaborador2 = saveColaborador("Maria");
+		Curso curso = saveCurso("Básico");
+		
+		Turma turma1 = saveTurma(curso, DateUtil.criarDataMesAno(1, 1, 2016), DateUtil.criarDataMesAno(1, 1, 2016), true);
+		Turma turma2 = saveTurma(curso, DateUtil.criarDataMesAno(1, 3, 2016), DateUtil.criarDataMesAno(1, 4, 2016), false);
+		
+		saveColaboradorTurma(curso, turma1, colaborador1, true);
+		saveColaboradorTurma(curso, turma2, colaborador2, true);
+		
+    	Certificacao certificacao = CertificacaoFactory.getEntity();
+    	certificacao.setCursos(Arrays.asList(curso));
+    	certificacaoDao.save(certificacao);
+
+    	ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador1, certificacao, DateUtil.criarDataMesAno(1, 1, 2016));
+    	colaboradorCertificacaoDao.save(colaboradorCertificacao);
+    	
+    	Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaDao.findColaboradorTurmaByCertificacaoControleVencimentoPorCertificacao(certificacao.getId());
+    	assertEquals(1, colaboradorTurmas.size());
+    	assertEquals(colaborador1.getId(), ((ColaboradorTurma)colaboradorTurmas.toArray()[0]).getColaborador().getId());
+	}
+	
+	public void testFindColaboradorTurmaByCertificacaoControleVencimentoPorCertificacaoColaboradorReprovado(){
+		Colaborador colaborador1 = saveColaborador("João");
+		Colaborador colaborador2 = saveColaborador("Maria");
+		Curso curso = saveCurso("Básico");
+		
+		Turma turma1 = saveTurma(curso, DateUtil.criarDataMesAno(1, 1, 2016), DateUtil.criarDataMesAno(1, 1, 2016), true);
+		Turma turma2 = saveTurma(curso, DateUtil.criarDataMesAno(1, 3, 2016), DateUtil.criarDataMesAno(1, 4, 2016), true);
+		
+		saveColaboradorTurma(curso, turma1, colaborador1, false);
+		saveColaboradorTurma(curso, turma2, colaborador2, true);
+		
+    	Certificacao certificacao = CertificacaoFactory.getEntity();
+    	certificacao.setCursos(Arrays.asList(curso));
+    	certificacaoDao.save(certificacao);
+
+    	ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador2, certificacao, DateUtil.criarDataMesAno(1, 4, 2016));
+    	colaboradorCertificacaoDao.save(colaboradorCertificacao);
+    	
+    	Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaDao.findColaboradorTurmaByCertificacaoControleVencimentoPorCertificacao(certificacao.getId());
+    	assertEquals(2, colaboradorTurmas.size());
+    	assertEquals(colaborador1.getId(), ((ColaboradorTurma)colaboradorTurmas.toArray()[0]).getColaborador().getId());
+    	assertEquals(colaborador2.getId(), ((ColaboradorTurma)colaboradorTurmas.toArray()[1]).getColaborador().getId());
+	}
+	
+	public void testFindColaboradorTurmaByCertificacaoControleVencimentoPorCurso(){
+		Colaborador colaborador1 = saveColaborador("João");
+		Colaborador colaborador2 = saveColaborador("Maria");
+		Curso curso = saveCurso("Básico");
+		
+		Turma turma1 = saveTurma(curso, DateUtil.criarDataMesAno(1, 1, 2016), DateUtil.criarDataMesAno(1, 1, 2016), true);
+		Turma turma2 = saveTurma(curso, DateUtil.criarDataMesAno(1, 3, 2016), DateUtil.criarDataMesAno(1, 4, 2016), true);
+		
+		saveColaboradorTurma(curso, turma1, colaborador1, false);
+		saveColaboradorTurma(curso, turma2, colaborador2, true);
+		
+    	Certificacao certificacao = CertificacaoFactory.getEntity();
+    	certificacao.setCursos(Arrays.asList(curso));
+    	certificacaoDao.save(certificacao);
+    	
+    	colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+    	
+    	Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaDao.findColaboradorTurmaByCertificacaoControleVencimentoPorCurso(certificacao.getId(), 1);
+    	assertEquals(2, colaboradorTurmas.size());
+    	assertEquals(colaborador1.getId(), ((ColaboradorTurma)colaboradorTurmas.toArray()[0]).getColaborador().getId());
+    	assertFalse(((ColaboradorTurma)colaboradorTurmas.toArray()[0]).isCertificado());
+    	assertEquals(colaborador2.getId(), ((ColaboradorTurma)colaboradorTurmas.toArray()[1]).getColaborador().getId());
+    	assertTrue(((ColaboradorTurma)colaboradorTurmas.toArray()[1]).isCertificado());
+	}
+	
+	public void testFindColaboradorTurmaByCertificacaoControleVencimentoPorCursoReprovadoEmTodosOsCursos(){
+		Colaborador colaborador1 = saveColaborador("João");
+		Curso cursoBasico = saveCurso("Básico");
+		Curso cursoAvancado = saveCurso("Avancado");
+		
+		Turma turmaCursoBasico = saveTurma(cursoBasico, DateUtil.criarDataMesAno(1, 1, 2016), DateUtil.criarDataMesAno(1, 1, 2016), true);
+		Turma turmaAvancado = saveTurma(cursoAvancado, DateUtil.criarDataMesAno(1, 3, 2016), DateUtil.criarDataMesAno(1, 4, 2016), true);
+		
+		saveColaboradorTurma(cursoBasico, turmaCursoBasico, colaborador1, false);
+		saveColaboradorTurma(cursoBasico, turmaAvancado, colaborador1, false);
+		
+    	Certificacao certificacao = CertificacaoFactory.getEntity();
+    	certificacao.setCursos(Arrays.asList(cursoBasico, cursoAvancado));
+    	certificacaoDao.save(certificacao);
+    	
+    	colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+    	
+    	Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaDao.findColaboradorTurmaByCertificacaoControleVencimentoPorCurso(certificacao.getId(), 2);
+    	assertEquals(1, colaboradorTurmas.size());
+    	assertEquals(colaborador1.getId(), ((ColaboradorTurma)colaboradorTurmas.toArray()[0]).getColaborador().getId());
+    	assertFalse(((ColaboradorTurma)colaboradorTurmas.toArray()[0]).isCertificado());
+	}
+	
+	private Colaborador saveColaborador(String nome){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome(nome);
+		colaboradorDao.save(colaborador);
+		return colaborador;
+	}
+	
+	private Turma saveTurma(Curso curso, Date dataInicio, Date dataFim, boolean realizada){
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turma.setDataPrevIni(dataInicio);
+		turma.setDataPrevFim(dataFim);
+		turma.setRealizada(realizada);
+		turmaDao.save(turma);
+		return turma;
+	}
+	
+	private Curso saveCurso(String nomeCurso){
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome(nomeCurso);
+		cursoDao.save(curso);
+		return curso;
+	}
+	
+	private ColaboradorTurma saveColaboradorTurma(Curso curso, Turma turma, Colaborador colaborador, boolean aprovado){
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurma.setAprovado(aprovado);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		return colaboradorTurma;
 	}
 	
     public GenericDao<ColaboradorTurma> getGenericDao()

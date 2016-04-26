@@ -93,6 +93,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
     private boolean certificadoEmTurmaPosterior;
 	@Transient
 	private Long colaboradorCertificacaoId;
+	@Transient
+	private boolean certificado;
 
 	public ColaboradorTurma() {	}
 
@@ -101,11 +103,10 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		setId(id);
 		setColaboradorId(colaboradorId);
 	}
-	public ColaboradorTurma(Long id, Long cursoId, Double percentualMinimoFrequencia, Long colaboradorId)
+	public ColaboradorTurma(Long id, Boolean aprovado, Long colaboradorId)
 	{
 		setId(id);
-		setCursoId(cursoId);
-		setCursoPercentualMinimoFrequencia(percentualMinimoFrequencia);
+		setAprovado(aprovado);
 		setColaboradorId(colaboradorId);
 	}
 	
@@ -946,5 +947,13 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	public void setColaboradorCertificacaoId(Long colaboradorCertificacaoId) {
 		this.colaboradorCertificacaoId = colaboradorCertificacaoId;
+	}
+	
+	public boolean isCertificado() {
+		return certificado;
+	}
+
+	public void setCertificado(boolean certificado) {
+		this.certificado = certificado;
 	}
 }

@@ -145,7 +145,6 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Collection<OrdemDeServico> ordensDeServico;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<ColaboradorCertificacao> colaboradorCertificacaos;
-
 	@OneToOne(optional=true)
 	private Candidato candidato;
 	@OneToOne(optional=true)

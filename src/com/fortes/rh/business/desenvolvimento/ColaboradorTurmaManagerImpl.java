@@ -723,68 +723,33 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return certificados;
 	}
 
-	public Collection<Colaborador> findAprovadosByCertificacao(Certificacao certificacao, int qtdCursos, boolean controlarVencimentoPorCertificacao)
-	{
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, certificacao, null, null, null, null, null, " co.id ", true, SituacaoColaborador.ATIVO);
-		
+	public Collection<Colaborador> findAprovadosByCertificacao(Certificacao certificacao, int qtdCursos, boolean controlarVencimentoPorCertificacao) {
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		Collection<Colaborador> aprovados = new ArrayList<Colaborador>();
 		Collection<Colaborador> reprovados = new ArrayList<Colaborador>();
 		
+		if(controlarVencimentoPorCertificacao)
+			colaboradorTurmas = getDao().findColaboradorTurmaByCertificacaoControleVencimentoPorCertificacao(certificacao.getId());
+		else
+			colaboradorTurmas = getDao().findColaboradorTurmaByCertificacaoControleVencimentoPorCurso(certificacao.getId(), qtdCursos);
 		
-		HashMap<Long, Integer> qtdColabCursos = new HashMap<Long, Integer>();
-		
-		for (ColaboradorTurma ct : colaboradorTurmas) 
-		{
-			Long colabId = ct.getColaborador().getId();
-			if(qtdColabCursos.get(colabId) != null)
-				qtdColabCursos.put(colabId, qtdColabCursos.get(colabId) + 1);
-			else
-				qtdColabCursos.put(colabId, 1);
-		}
-		
-		for (ColaboradorTurma ct : colaboradorTurmas) 
-		{
-			if(controlarVencimentoPorCertificacao)
-			{
-				if(colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(ct.getColaborador().getId(), certificacao.getId()).size()>0)
-				{
-					aprovados.add(ct.getColaborador());
-				} else
-				{
-					ct.getColaborador().setNome("<span style='color: red;'>" + ct.getColaborador().getNome() + " (Não certificado)</span>");
-					reprovados.add(ct.getColaborador());
-				}
-			} else 
-			{
-			
-				if(verificaAprovacao(ct) && qtdColabCursos.get(ct.getColaborador().getId()) == qtdCursos)
-				{
-					aprovados.add(ct.getColaborador());
-				} else
-				{
-					ct.getColaborador().setNome("<span style='color: red;'>" + ct.getColaborador().getNome() + " (Não certificado)</span>");
-					reprovados.add(ct.getColaborador());
-				}
+		for (ColaboradorTurma ct : colaboradorTurmas){
+			if(ct.isCertificado())
+				aprovados.add(ct.getColaborador());
+			else {
+				ct.getColaborador().setNome("<span style='color: red;'>" + ct.getColaborador().getNome() + " (Não certificado)</span>");
+				reprovados.add(ct.getColaborador());
 			}
 		}
-				
+
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		
 		CollectionUtil<Colaborador> util = new CollectionUtil<Colaborador>();
 		aprovados = util.distinctCollection(aprovados);
 		aprovados = util.sortCollectionStringIgnoreCase(aprovados, "nome");
 		reprovados = util.distinctCollection(reprovados);
 		reprovados = util.sortCollectionStringIgnoreCase(reprovados, "nome");
-		
 		colaboradores.addAll(aprovados);
-		for (Colaborador aprovado : aprovados) 
-		{
-			if(reprovados.contains(aprovado))
-				colaboradores.remove(aprovado);
-		}
-		
 		colaboradores.addAll(reprovados);
-		
 		return colaboradores;
 	}
 	
@@ -1236,10 +1201,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId) {
 		return getDao().findByTurmaId(turmaId);
-	}
-
-	public boolean verificaAprovacao(Long cursoId, Long turmaId, Long colaboradorTurmaId, Double percentualMinimoFrequencia) {
-		return getDao().verificaAprovacao(cursoId, turmaId, colaboradorTurmaId, percentualMinimoFrequencia);
 	}
 
 	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {

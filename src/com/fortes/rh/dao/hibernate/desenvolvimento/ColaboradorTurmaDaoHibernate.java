@@ -1095,8 +1095,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findByTurmaPresenteNoDiaTurmaId(Long turmaId, Long diaTurmaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id, c.id, c.percentualMinimoFrequencia, ct.colaborador.id) from ColaboradorTurma ct ");
-		hql.append("inner join ct.curso as c ");
+		hql.append("select new ColaboradorTurma(ct.id, ct.aprovado, ct.colaborador.id) from ColaboradorTurma ct ");
 		hql.append("where ct.turma.id = :turmaId ");
 		hql.append("and ct.id in (select cp.colaboradorTurma.id from ColaboradorPresenca cp where cp.diaTurma.id = :diaTurmaId)");
 
@@ -1574,7 +1573,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("t.dataPrevFim"), "turmaDataPrevFim");
 		p.add(Projections.property("t.realizada"), "turmaRealizada");
 		p.add(Projections.property("ct.id"), "id");
-		p.add(Projections.sqlProjection("verifica_aprovacao(c3_.id, t4_.id, this_.id, c3_.percentualMinimoFrequencia) as aprovacao", new String[] {"aprovacao"}, new Type[] {Hibernate.BOOLEAN}), "aprovado");
+		p.add(Projections.property("ct.aprovado"), "aprovado");
 		p.add(Projections.sqlProjection("( t4_.dataprevfim + (c3_.periodicidade || ' month')::interval) as vencimento", new String[] {"vencimento"}, new Type[] {Hibernate.DATE}), "vencimento");
 				
 		if(filtroSituacao ==FiltroSituacaoCurso.TODOS.getOpcao())
@@ -1678,9 +1677,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		str.append("(select max(tr.dataprevfim) + (c3_.periodicidade || ' month')::interval from colaboradorturma ct2 join turma tr on ct2.turma_id = tr.id where ct2.id = this_.id and tr.realizada = true ");
 				
 		if(StatusAprovacao.APROVADO == filtroAprovado)
-			str.append("and verifica_aprovacao(c3_.id, tr.id, this_.id, c3_.percentualMinimoFrequencia) ");
+			str.append("and ct2.aprovado ");
 		else if(StatusAprovacao.REPROVADO == filtroAprovado)
-			str.append("and not verifica_aprovacao(c3_.id, tr.id, this_.id, c3_.percentualMinimoFrequencia) ");
+			str.append("and not ct2.aprovado ");
 		
 		str.append(" ) " + operador + " ?");
 		return Expression.sqlRestriction(str.toString(), dataReferencia, Hibernate.DATE);
@@ -1689,11 +1688,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	private Criterion criterionCursosVencidos(Date dataReferencia){
 		StringBuilder sql = new StringBuilder("(select max(tr.dataprevfim) + (c3_.periodicidade || ' month')::interval ");
 		sql.append("			                           from colaboradorturma ct2 join turma tr on ct2.turma_id = tr.id ");
-		sql.append("		                            		where ct2.id = this_.id and tr.curso_id = c3_.id  and tr.realizada = true and verifica_aprovacao(c3_.id, tr.id, this_.id, c3_.percentualMinimoFrequencia) ) < ? " );
+		sql.append("		                            		where ct2.id = this_.id and tr.curso_id = c3_.id  and tr.realizada = true and ct2.aprovado ) < ? " );
 		sql.append(" 						and cb1_.id not in (");
 		sql.append("                               				 select distinct(ct.colaborador_id) ");
 		sql.append("                                      			from turma t join colaboradorturma ct on ct.turma_id = t.id ");
-		sql.append("                                           			where (t.dataprevfim + (c3_.periodicidade || ' month')::interval) >= ? and t.realizada = true and t.curso_id = c3_.id and verifica_aprovacao(c3_.id, t.id, ct.id, c3_.percentualMinimoFrequencia)");
+		sql.append("                                           			where (t.dataprevfim + (c3_.periodicidade || ' month')::interval) >= ? and t.realizada = true and t.curso_id = c3_.id and ct.aprovado ");
 		sql.append("                               				) ");
 		return Expression.sqlRestriction(sql.toString(), new Date[] {dataReferencia, dataReferencia}, new Type[]{Hibernate.DATE, Hibernate.DATE});
 	}
@@ -1701,7 +1700,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long certificacaoId, Long colaboradorCertificacaoId, Long... colaboradoresId) 
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("select ct.id as ctId, c.id as cursoId, c.nome, t.id as turmaId, t.descricao, t.dataPrevIni, t.dataPrevFim, t.realizada, verifica_aprovacao(c.id, t.id, ct.id, c.percentualMinimoFrequencia) as aprovacao, ct.colaborador_id as colaboradorId ");
+		sql.append("select ct.id as ctId, c.id as cursoId, c.nome, t.id as turmaId, t.descricao, t.dataPrevIni, t.dataPrevFim, t.realizada, ct.aprovado, ct.colaborador_id as colaboradorId ");
 		sql.append("from ColaboradorTurma as ct ");
 		sql.append("inner join turma as t on ct.turma_id = t.id ");
 		sql.append("inner join curso as c on t.curso_id = c.id ");
@@ -1766,7 +1765,6 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			
 			colaboradorTurmas.add(colaboradorTurma);
 		}
-		
 		return colaboradorTurmas;	
 	}
 
@@ -1805,6 +1803,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId) {
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ct.id"), "id");
+		p.add(Projections.property("ct.curso.id"), "cursoId");
+		p.add(Projections.property("ct.turma.id"), "turmaId");
 
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
 		criteria.add(Expression.eq("ct.turma.id", turmaId));
@@ -1815,33 +1815,71 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	    return criteria.list();
 	}
 	
-	public Boolean verificaAprovacao(Long cursoId, Long turmaId, Long colaboradorTurmaId, Double percentualMinimoFrequencia) {
+	public Collection<ColaboradorTurma> findColaboradorTurmaByCertificacaoControleVencimentoPorCertificacao(Long certificacaoId) {
+		ProjectionList p  = Projections.projectionList().create();
+		p.add(Projections.property("co.id"), "colaboradorId");
+		p.add(Projections.property("co.nome"), "colaboradorNome");
+		p.add(Projections.sqlProjection("case when colabCert5_.id is not null then true else false end as certificado", new String[] {"certificado"}, new Type[] {Hibernate.BOOLEAN}), "certificado");
+		
+		DetachedCriteria subSelect = DetachedCriteria.forClass(ColaboradorCertificacao.class, "cc2")
+	    		.setProjection(Projections.max("cc2.data"))
+	    		.add(Restrictions.eqProperty("cc2.colaborador.id", "co.id"))
+	    		.add(Restrictions.eq("cc2.certificacao.id", certificacaoId));
+	    
+		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
+		criteria.createCriteria("ct.colaborador", "co", Criteria.INNER_JOIN);
+		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
+		criteria.createCriteria("ct.curso", "c", Criteria.INNER_JOIN);
+		criteria.createAlias("c.certificacaos", "cc", Criteria.INNER_JOIN);
+		criteria.createAlias("co.colaboradorCertificacaos", "colabCert", Criteria.LEFT_JOIN);
+		
+		criteria.add(Expression.eq("cc.id", certificacaoId));
+		criteria.add(Expression.eq("t.realizada", true));
+		criteria.add(Expression.isNull("co.dataDesligamento"));
+		criteria.add(Expression.or(Subqueries.propertyEq("colabCert.data", subSelect), Expression.isNull("colabCert.data")));
+		criteria.addOrder(Order.asc("co.nome"));
+
+		criteria.setProjection(Projections.distinct(p));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
+		return criteria.list();
+	}
+
+	public Collection<ColaboradorTurma> findColaboradorTurmaByCertificacaoControleVencimentoPorCurso(Long certificacaoId, int qtdCursos) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("select verifica_aprovacao(:cursoId, :turmaId, :colaboradorTurmaId, ");
-		
-		if(percentualMinimoFrequencia != null)
-			sql.append(":percentualMinimoFrequencia ");
-		else
-			sql.append(" 0 ");
-		
-		sql.append(") as aprovacao ");
-		
+		sql.append("SELECT distinct co.id, co.nome, CASE WHEN :qtdCursos = 1 THEN ct.aprovado ELSE count(c.id) OVER(PARTITION BY co.id, ct.aprovado) = :qtdCursos END as certificado  ");
+		sql.append("	FROM ColaboradorTurma ct ");
+		sql.append("		INNER JOIN Colaborador co ON co.id = ct.colaborador_id ");
+		sql.append("		INNER JOIN Turma t ON t.id = ct.turma_id ");
+		sql.append("		INNER JOIN Curso c ON c.id = ct.curso_id ");
+		sql.append("		INNER JOIN Certificacao_Curso certif_curso ON  certif_curso.cursos_id = c.id ");
+		sql.append("		INNER JOIN Certificacao cc ON cc.id = certif_curso.certificacaos_id");
+		sql.append("	WHERE cc.id = :certificacaoId AND t.realizada = true  AND co.dataDesligamento is null ");
+		sql.append("	AND t.dataPrevIni = (SELECT MAX(t2.dataPrevIni) FROM Turma t2  INNER JOIN ColaboradorTurma ct2 ON ct2.turma_id = t2.id WHERE t2.curso_id = ct.curso_id AND ct2.colaborador_id = ct.colaborador_id )");
+		sql.append("ORDER BY co.nome ASC");
+												
 		Query query = getSession().createSQLQuery(sql.toString());
-		query.setLong("cursoId", cursoId);
-		query.setLong("turmaId", turmaId);
-		query.setLong("colaboradorTurmaId", colaboradorTurmaId);
+		query.setLong("certificacaoId", certificacaoId);
+		query.setInteger("qtdCursos", qtdCursos);
 		
-		if(percentualMinimoFrequencia != null)
-			query.setDouble("percentualMinimoFrequencia", percentualMinimoFrequencia);
+		List resultado = query.list();
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		
-		return (Boolean) query.uniqueResult();
+		for(Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
+			colaboradorTurma.setColaboradorId(((BigInteger)res[0]).longValue());
+			colaboradorTurma.setColaboradorNome((String)res[1]);
+			colaboradorTurma.setCertificado((Boolean)res[2]);
+			colaboradorTurmas.add(colaboradorTurma);
+		}
+		return colaboradorTurmas;	
 	}
 	
 	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoId(Long certificacaoId, Long... colaboradoresIds) 
 	{
 		DetachedCriteria ultimoColaboradorCertificacao = DetachedCriteria.forClass(ColaboradorCertificacao.class, "cc2").setProjection(Projections.max("cc2.data"))
 				.add(Restrictions.eqProperty("cc2.colaborador.id", "cc.colaborador.id")).add(Restrictions.eqProperty("cc2.certificacao.id", "cc.certificacao.id"));
-//				if(data != null) ultimoColaboradorCertificacao.add(Restrictions.le("cc2.data", data));
 		
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
 		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
@@ -1861,7 +1899,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("t.dataPrevIni"), "turmaDataPrevIni");
 		p.add(Projections.property("t.dataPrevFim"), "turmaDataPrevFim");
 		p.add(Projections.property("t.realizada"), "turmaRealizada");
-		p.add(Projections.sqlProjection("verifica_aprovacao(c2_.id, t1_.id, this_.id, c2_.percentualMinimoFrequencia) as aprovado", new String[] {"aprovado"}, new Type[] {Hibernate.BOOLEAN}), "aprovado");
+		p.add(Projections.property("ct.aprovado"), "aprovado");
 		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.add(Expression.sqlRestriction("t1_.dataPrevFim = (select max(t2.dataPrevFim) from colaboradorTurma ct2 inner join turma t2 on t2.id = ct2.turma_id where ct2.colaborador_id = this_.colaborador_id and t2.curso_id = c2_.id) ", new String[]{}, new Type[]{}));

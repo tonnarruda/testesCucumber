@@ -120,10 +120,20 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
 			turmaDocumentoAnexoManager.salvarDocumentoAnexos(turma.getId(), documentoAnexoIds);
 		}
+		
+		verificaAprovacaoByTurma(turma.getId());
+		
 		if(validarCertificacao && colaboradorTurma == null)
 			verificaCertificacaoByColaboradorTurmaId(turma);
 	}
 	
+	private void verificaAprovacaoByTurma(Long turmaId) {
+		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findByTurmaId(turmaId);
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
+			
+		}
+	}
+
 	private void verificaCertificacaoByColaboradorTurmaId(Turma turma){
 		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaId(turma.getId());
 		if(turma.getRealizada()){

@@ -339,5 +339,4 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
 		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
 	}
-
 }

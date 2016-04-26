@@ -78,6 +78,5 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long certificacaoId, Long colaboradorCertificacaoId, Long... colaboradoresId);
 	public String verificaColaboradorCertificado(Long[] colaboradoresId, Long cursoId);
 	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId);
-	public boolean verificaAprovacao(Long cursoId, Long turmaId, Long colaboradorTurmaId, Double percentualMinimoFrequencia);
 	public Map<Long, Collection<ColaboradorTurma>> findMapByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long certificacaoId, Long... colaboradoresId);
 }

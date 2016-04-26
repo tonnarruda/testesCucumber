@@ -155,6 +155,7 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		colaboradorTurma.setCurso(curso);
 		colaboradorTurma.setColaborador(colaborador);
 		colaboradorTurma.setTurma(turma);
+		colaboradorTurma.setAprovado(true);
 		colaboradorTurmaDao.save(colaboradorTurma);
 		
 		Collection<Curso> cursos = new ArrayList<Curso>();
@@ -207,12 +208,14 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		colaboradorTurma.setCurso(curso);
 		colaboradorTurma.setColaborador(colaborador);
 		colaboradorTurma.setTurma(turma);
+		colaboradorTurma.setAprovado(true);
 		colaboradorTurmaDao.save(colaboradorTurma);
 		
 		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity();
 		colaboradorTurma2.setCurso(curso2);
 		colaboradorTurma2.setColaborador(colaborador);
 		colaboradorTurma2.setTurma(turma2);
+		colaboradorTurma2.setAprovado(true);
 		colaboradorTurmaDao.save(colaboradorTurma2);
 		
 		Collection<Curso> cursos = new ArrayList<Curso>();

@@ -28,6 +28,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
+import com.fortes.rh.model.geral.Colaborador;
 
 public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<ColaboradorCertificacao> implements ColaboradorCertificacaoDao
 {
@@ -199,7 +200,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		sql.append("INNER JOIN turma t ON t.id = ct.turma_id AND t.dataprevfim = ( (SELECT MAX(dataprevfim) FROM turma t2 WHERE t2.curso_id = t.curso_id AND t2.realizada ) ) ");
 		sql.append("INNER JOIN curso c ON c.id = t.curso_id ");
 		sql.append("WHERE ct.colaborador_id = :colaboradorId AND t.realizada AND c.id IN ((SELECT cursos_id FROM certificacao_curso WHERE certificacaos_id = :certificacaoId)) ");
-		sql.append("AND verifica_aprovacao(c.id, t.id, ct.id, c.percentualminimofrequencia) ");
+		sql.append("AND ct.aprovado ");
 		sql.append("order by t.dataprevfim desc");//Não remover importante
 		
 		Query query = getSession().createSQLQuery(sql.toString());
@@ -385,6 +386,29 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
+
+		return criteria.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Colaborador> findColaboradoresByCertificacaoId(Long certificacaoId) {
+		DetachedCriteria subQuery = DetachedCriteria.forClass(ColaboradorCertificacao.class, "cc2")
+				.setProjection(Projections.max("cc2.data"))
+				.add(Restrictions.eqProperty("cc2.colaborador.id", "cc.colaborador.id"))
+				.add(Restrictions.eqProperty("cc2.certificacao.id", "cc.certificacao.id"));
+		
+		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
+		criteria.createCriteria("cc.certificacao", "ct", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cc.colaborador.id"), "id");
+		
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("cc.certificacao.id" , certificacaoId));
+
+		criteria.add(Subqueries.propertyEq("cc.data", subQuery));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 
 		return criteria.list();
 	}

@@ -84,7 +84,7 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
 				if(!colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turmaId, colaboradorTurma.getColaborador().getId())){
 					getDao().remove(diaTurmaId, colaboradorTurma.getId());
-					if(!colaboradorTurmaManager.verificaAprovacao(colaboradorTurma.getCurso().getId(), turmaId, colaboradorTurma.getId(),colaboradorTurma.getCurso().getPercentualMinimoFrequencia()))
+					if(!colaboradorTurma.isAprovado())
 						colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), false);
 				}
 			}
