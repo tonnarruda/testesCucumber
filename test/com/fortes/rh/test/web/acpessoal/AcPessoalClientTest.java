@@ -27,7 +27,7 @@ public abstract class AcPessoalClientTest extends MockObjectTestCase
 	public Connection getConexaoAC() throws ClassNotFoundException, SQLException 
 	{
 		Class.forName("org.firebirdsql.jdbc.FBDriver");
-		Connection conexao = DriverManager.getConnection("jdbc:firebirdsql:127.0.0.1/3052:C:\\Fortes\\AC\\AC.FDB?user=SYSDBA&password=masterkey");
+		Connection conexao = DriverManager.getConnection("jdbc:firebirdsql:127.0.0.1/53052:C:\\Fortes\\AC\\AC.FDB?user=SYSDBA&password=masterkey");
 		conexao.setAutoCommit(true);
 		
 		return conexao;

@@ -221,8 +221,8 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		execute("insert into fol(emp_codigo, seq, folha, dtcalculo, encerrada, acalcular, calculando, calculados) values('0006', 500, 1, '2011-02-01', 'S', 0, 0, 1)");
 		execute("insert into fpg(emp_codigo, fol_seq, anomes, sequencial, dtinicial, dtfinal, tipo) values('0006', 500, '201101','01', '2011-01-01', '2011-01-31', 4)");
 		execute("insert into efo(emp_codigo, fol_seq, epg_codigo, sep_data, HORASTRAB, STATUS ) values('0006', 500, '000014', '2000-01-01', 80, '1')");
-		execute("insert into efp(emp_codigo, efo_fol_seq, efo_epg_codigo, eve_codigo, referencia, valor, parametro, atributo, demonstracao) values ('0006', 500, '000014', '011', '00', 99, '00', null, null)");
-		execute("insert into erh(emp_codigo, eve_codigo, buscaremfolha) values ('0006', '011', 1)");
+		execute("insert into efp(emp_codigo, efo_fol_seq, efo_epg_codigo, eve_codigo, referencia, valor, parametro, atributo, demonstracao) values ('0006', 500, '000014', '111', '00', 99, '00', null, null)");
+		execute("insert into erh(emp_codigo, eve_codigo, buscaremfolha) values ('0006', '111', 1)");
 		
 		String[] codigoACs = new String[]{"000015", "000014", "000013"};
 		TRemuneracaoVariavel[] remuneracaos = acPessoalClientColaboradorImpl.getRemuneracoesVariaveis(empresa, codigoACs, "201001", "202001");
@@ -231,8 +231,8 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		{
 			TRemuneracaoVariavel remuneracaoVariavel = remuneracaos[0];
 			assertEquals("201101", remuneracaoVariavel.getAnoMes());
-			assertEquals("000013", remuneracaoVariavel.getCodigoEmpregado());
-			assertEquals(350.0, remuneracaoVariavel.getValor());
+			assertEquals("000014", remuneracaoVariavel.getCodigoEmpregado());
+			assertEquals(99.0, remuneracaoVariavel.getValor());
 		}else
 			assertTrue("Consulta no AC Retornou nulo no testRemuneracaoVariavel (Banco de dados do AC pode ter novos campos com not null)", false);
 	}
