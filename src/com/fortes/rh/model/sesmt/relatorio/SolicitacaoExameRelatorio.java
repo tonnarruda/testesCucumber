@@ -23,6 +23,7 @@ public class SolicitacaoExameRelatorio
 	private String colaboradorNome;
 	private String colaboradorMatricula;
 	private String colaboradorFuncao;
+	private String colaboradorAmbiente;
 	private String candidatoFuncao;
 	private String candidatoNome;
 	private Date colaboradorDataNascimento;
@@ -61,7 +62,7 @@ public class SolicitacaoExameRelatorio
 	{
 	}
 
-	public SolicitacaoExameRelatorio(String medicoNome, String medicoCrm, File medicoAssinatura, String clinicaNome, String clinicaTipo, String clinicaOutro, String clinicaTelefone, String clinicaHorario, String clinicaEndereco, String exameNome, String colaboradorNome, String candidatoNome, Date colaboradorDataNascimento, Date candidatoDataNascimento, String exameMotivo, String colaboradorMatricula, String colaboradorFuncao, String candidatoFuncao, String solicitacaoExameObs)
+	public SolicitacaoExameRelatorio(String medicoNome, String medicoCrm, File medicoAssinatura, String clinicaNome, String clinicaTipo, String clinicaOutro, String clinicaTelefone, String clinicaHorario, String clinicaEndereco, String exameNome, String colaboradorNome, String candidatoNome, Date colaboradorDataNascimento, Date candidatoDataNascimento, String exameMotivo, String colaboradorMatricula, String colaboradorFuncao, String colaboradorAmbiente, String candidatoFuncao, String solicitacaoExameObs)
 	{
 		this.medicoNome = medicoNome;
 		this.medicoCrm = medicoCrm;
@@ -85,6 +86,7 @@ public class SolicitacaoExameRelatorio
 		this.medicoAssinatura = medicoAssinatura;
 		this.colaboradorMatricula = colaboradorMatricula;
 		this.colaboradorFuncao = colaboradorFuncao;
+		this.colaboradorAmbiente = colaboradorAmbiente;
 		this.candidatoFuncao = candidatoFuncao;
 		this.solicitacaoExameObs = solicitacaoExameObs;
 	}
@@ -237,5 +239,16 @@ public class SolicitacaoExameRelatorio
 
 	public void setSolicitacaoExameObs(String solicitacaoExameObs) {
 		this.solicitacaoExameObs = solicitacaoExameObs;
+	}
+
+	public String getColaboradorAmbiente() {
+		return colaboradorAmbiente;
+	}
+	
+	public String getAmbiente() {
+		if (StringUtils.isNotBlank(colaboradorAmbiente))
+			return colaboradorAmbiente;
+
+		return "";
 	}
 }
