@@ -136,6 +136,37 @@ public class ColaboradorAvaliacaoPraticaDaoHibernateTest extends GenericDaoHiber
 		colaboradorAvaliacaoPraticaDao.removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(colaboradorCertificacao.getId());
 	}
 	
+	
+	public void testFindByCertificacaoIdAndColaboradoresIds(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacaoDao.save(certificacao);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, DateUtil.criarDataMesAno(1, 12, 2015));
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+		ColaboradorCertificacao colaboradorCertificacao2 = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, DateUtil.criarDataMesAno(1, 1, 2016));
+		colaboradorCertificacaoDao.save(colaboradorCertificacao2);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
+		avaliacaoPraticaDao.save(avaliacaoPratica);
+		
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity(colaboradorCertificacao, colaborador, certificacao, avaliacaoPratica, 90.0);
+		colaboradorAvaliacaoPratica.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica);
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica2 = ColaboradorAvaliacaoPraticaFactory.getEntity(colaboradorCertificacao2, colaborador, certificacao, avaliacaoPratica, 40.0);
+		colaboradorAvaliacaoPratica2.setData(DateUtil.criarDataMesAno(1, 1, 2016));
+		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica2);
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica3 = ColaboradorAvaliacaoPraticaFactory.getEntity(colaboradorCertificacao2, colaborador, certificacao, avaliacaoPratica, 90.0);
+		colaboradorAvaliacaoPratica3.setData(DateUtil.criarDataMesAno(1, 2, 2016));
+		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica3);
+
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaDao.findByCertificacaoIdAndColaboradoresIds(certificacao.getId(), new Long[]{colaborador.getId()});
+		assertEquals(1, colaboradorAvaliacoesPraticas.size());
+		assertEquals(colaboradorCertificacao2.getId(), ((ColaboradorAvaliacaoPratica) colaboradorAvaliacoesPraticas.toArray()[0]).getColaboradorCertificacao().getId());
+	}
+	
 	public void setColaboradorAvaliacaoPraticaDao(ColaboradorAvaliacaoPraticaDao colaboradorAvaliacaoPraticaDao)
 	{
 		this.colaboradorAvaliacaoPraticaDao = colaboradorAvaliacaoPraticaDao;

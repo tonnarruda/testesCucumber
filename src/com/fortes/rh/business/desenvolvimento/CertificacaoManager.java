@@ -29,4 +29,6 @@ public interface CertificacaoManager extends GenericManager<Certificacao>
 	Collection<CheckBox> populaCheckBoxSemPeriodicidade(Long empresaId);
 	Collection<Certificacao> findDependentes(Long certificacaoId);
 	Collection<Certificacao> findOsQuePossuemAvaliacaoPratica(Long empresaId);
+	Collection<Curso> findCursosByCertificacaoId(Long id);
+	Collection<Certificacao> findCollectionByIdProjection(Long[] certificacoesIds);
 }

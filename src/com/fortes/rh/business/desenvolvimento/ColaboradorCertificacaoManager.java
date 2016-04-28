@@ -10,15 +10,16 @@ public interface ColaboradorCertificacaoManager extends GenericManager<Colaborad
 {
 	Collection<ColaboradorCertificacao> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
 	ColaboradorCertificacao findUltimaCertificacaoByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
-	Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Integer mesesCertificacoesAVencer, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] colaboradoresIds);
+	Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] colaboradoresIds) throws CloneNotSupportedException;
 	Collection<ColaboradorCertificacao> certificaColaborador(Long colaboradorTurmaId, Long colaboradorId, Long certificacaoId, CertificacaoManager certificacaoManager);
 	Collection<ColaboradorCertificacao> getCertificacoesAVencer(Date data, Long empresaId);
 	void descertificarColaborador(Long colaboradorCertificacaoId);
 	void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId, boolean removerColaboradorAvaliacaoPratica);
 	void saveColaboradorCertificacao(ColaboradorCertificacao colaboradorCertificacao);
-	public ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId);
-	public ColaboradorCertificacao findColaboradorCertificadoInfomandoSeEUltimaCertificacao(Long colaboradorCertificacaoId, Long colaboradorId, Long certificacaoId);
+	ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId);
+	ColaboradorCertificacao findColaboradorCertificadoInfomandoSeEUltimaCertificacao(Long colaboradorCertificacaoId, Long colaboradorId, Long certificacaoId);
 	Date getMaiorDataDasTurmasDaCertificacao(Long colaboradorCertificacaoId);
 	boolean existeColaboradorCertificadoEmUmaTurmaPosterior(Long turmaId, Long colaboradorCertificacaoId);
-	public Collection<ColaboradorCertificacao> colaboradoresQueParticipaDoCertificado(Long certificacaoId);
+	Collection<ColaboradorCertificacao> colaboradoresParticipamCertificacao(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds);
+	Collection<ColaboradorCertificacao> colaboradoresQueParticipaDoCertificado(Long certificacaoId);
 }

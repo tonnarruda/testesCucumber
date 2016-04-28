@@ -76,7 +76,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
  			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null)
 			{
 				colaboradorCertificacaos = colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
-				colaboradorTurmas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId());
+				colaboradorTurmas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao.getId(), colaboradorCertificacao.getId(), colaborador.getId());
 				populaColaboradorAvaliacaoPratica();
 			}
 		}
@@ -234,7 +234,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 			Collection<ColaboradorAvaliacaoPratica> colaboradoresAvaliacoesPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
 			
 			for (ColaboradorCertificacao colaboradorCertificacaoTemp : colaboradorCertificacaos){
-				colaboradoresAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorCertificacaoTemp.getColaborador().getId(), colaboradorCertificacaoTemp.getCertificacao().getId(), null, avaliacaoPratica.getId(), false, false);
+				colaboradoresAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorCertificacaoTemp.getColaborador().getId(), certificacao.getId(), null, avaliacaoPratica.getId(), false, false);
 				
 				if(colaboradoresAvaliacoesPraticas != null && colaboradoresAvaliacoesPraticas.size() > 0){
 					colaboradorCertificacaoTemp.setColaboradoresAvaliacoesPraticas(colaboradoresAvaliacoesPraticas);

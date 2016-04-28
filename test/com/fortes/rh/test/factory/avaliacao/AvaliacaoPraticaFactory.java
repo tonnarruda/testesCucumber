@@ -23,6 +23,15 @@ public class AvaliacaoPraticaFactory
 
 		return avaliacaoPratica;
 	}
+	
+	public static AvaliacaoPratica getEntity(Long id, Long certificacaoId)
+	{
+		AvaliacaoPratica avaliacaoPratica = getEntity();
+		avaliacaoPratica.setId(id);
+		avaliacaoPratica.setCertificacaoId(certificacaoId);
+
+		return avaliacaoPratica;
+	}
 
 	public static Collection<AvaliacaoPratica> getCollection()
 	{

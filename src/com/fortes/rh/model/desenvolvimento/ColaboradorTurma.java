@@ -91,6 +91,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private Collection<MatrizTreinamento> matrizTreinamentos;
 	@Transient
     private boolean certificadoEmTurmaPosterior;
+	@Transient
+	private Long colaboradorCertificacaoId;
 
 	public ColaboradorTurma() {	}
 
@@ -374,23 +376,25 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	
 	public void setTurmaRealizada(Boolean turmaRealizada)
 	{
-		if (this.turma == null)
-			this.turma = new Turma();
+		iniciaTurma();
 		this.turma.setRealizada(turmaRealizada);
 	}
 
 	public void setTurmaDataPrevIni(Date turmaDataPrevIni)
 	{
-		if (this.turma == null)
-			this.turma = new Turma();
+		iniciaTurma();
 		this.turma.setDataPrevIni(turmaDataPrevIni);
 	}
 
 	public void setTurmaDataPrevFim(Date turmaDataPrevFim)
 	{
+		iniciaTurma();
+		this.turma.setDataPrevFim(turmaDataPrevFim);
+	}
+
+	private void iniciaTurma() {
 		if (this.turma == null)
 			this.turma = new Turma();
-		this.turma.setDataPrevFim(turmaDataPrevFim);
 	}
 
 	//Projection
@@ -537,15 +541,13 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	}
 	
 	public void setVencimento(Date vencimento){
-		if(this.turma == null)
-			this.turma = new Turma();
+		iniciaTurma();
 		
 		turma.setVencimento(vencimento);
 	}
 
 	public void setVencido(boolean vencido){
-		if(this.turma == null)
-			this.turma = new Turma();
+		iniciaTurma();
 		
 		turma.setVencido(vencido);
 	}
@@ -936,5 +938,13 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	public void setCertificadoEmTurmaPosterior(boolean certificadoEmTurmaPosterior) {
 		this.certificadoEmTurmaPosterior = certificadoEmTurmaPosterior;
+	}
+
+	public Long getColaboradorCertificacaoId() {
+		return colaboradorCertificacaoId;
+	}
+
+	public void setColaboradorCertificacaoId(Long colaboradorCertificacaoId) {
+		this.colaboradorCertificacaoId = colaboradorCertificacaoId;
 	}
 }

@@ -84,6 +84,11 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	public Colaborador getColaborador() {
 		return colaborador;
 	}
+	
+	//Usado em montaMapColaboradorTurma
+	public Long getColaboradorId() {
+		return colaborador.getId();
+	}
 
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;

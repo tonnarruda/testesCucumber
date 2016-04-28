@@ -1698,16 +1698,16 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return Expression.sqlRestriction(sql.toString(), new Date[] {dataReferencia, dataReferencia}, new Type[]{Hibernate.DATE, Hibernate.DATE});
 	}
 	
-	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId) 
+	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long certificacaoId, Long colaboradorCertificacaoId, Long... colaboradoresId) 
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("select ct.id as ctId, c.id as cursoId, c.nome, t.id as turmaId, t.descricao, t.dataPrevIni, t.dataPrevFim, t.realizada, verifica_aprovacao(c.id, t.id, ct.id, c.percentualMinimoFrequencia) as aprovacao ");
+		sql.append("select ct.id as ctId, c.id as cursoId, c.nome, t.id as turmaId, t.descricao, t.dataPrevIni, t.dataPrevFim, t.realizada, verifica_aprovacao(c.id, t.id, ct.id, c.percentualMinimoFrequencia) as aprovacao, ct.colaborador_id as colaboradorId ");
 		sql.append("from ColaboradorTurma as ct ");
 		sql.append("inner join turma as t on ct.turma_id = t.id ");
 		sql.append("inner join curso as c on t.curso_id = c.id ");
 		sql.append("inner join certificacao_curso as cec on cec.cursos_id = c.id ");
 		sql.append("inner join certificacao as ce on cec.certificacaos_id = ce.id ");
-		sql.append("where ct.colaborador_id = :colaboradorId ");
+		sql.append("where ct.colaborador_id in (:colaboradorId) ");
 		sql.append("and ce.id = :certificacaoId ");
 		sql.append("and t.dataPrevFim = ( ");
 		sql.append("                       select max(t2.dataPrevFim) ");
@@ -1723,8 +1723,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			sql.append("			coalesce( ");
 			sql.append("						(select data from colaboradorcertificacao where data = (select max(data) from colaboradorcertificacao ");
 			sql.append("								where data < (select data from colaboradorcertificacao where id = :colaboradorCertificacaoId) ");
-			sql.append("								and certificacao_id = :certificacaoId and colaborador_id = :colaboradorId ");
-			sql.append("						) and certificacao_id = :certificacaoId and colaborador_id = :colaboradorId) ");
+			sql.append("								and certificacao_id = :certificacaoId and colaborador_id = ct.colaborador_id ");
+			sql.append("						) and certificacao_id = :certificacaoId and colaborador_id = ct.colaborador_id) ");
 			sql.append("					, '01/01/2000' ");
 			sql.append("					) ");
 			sql.append("	and (select data from colaboradorcertificacao where id = :colaboradorCertificacaoId) ");
@@ -1732,14 +1732,14 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		}else
 		{
 			sql.append("and ");
-			sql.append("t2.dataPrevFim  >= coalesce((select max(data) from colaboradorcertificacao where certificacao_id = :certificacaoId and colaborador_id = :colaboradorId),'01/01/2000') ");
+			sql.append("t2.dataPrevFim  >= coalesce((select max(data) from colaboradorcertificacao where certificacao_id = :certificacaoId and colaborador_id = ct.colaborador_id),'01/01/2000') ");
 		}	
 		
 		sql.append("                     ) ");
 		sql.append("order by c.nome, t.descricao ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
-		query.setLong("colaboradorId", colaboradorId);
+		query.setParameterList("colaboradorId", colaboradoresId, Hibernate.LONG);
 		query.setLong("certificacaoId", certificacaoId);
 		
 		if(colaboradorCertificacaoId != null)
@@ -1762,6 +1762,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			colaboradorTurma.setTurmaDataPrevFim((Date)res[6]);
 			colaboradorTurma.setTurmaRealizada((Boolean)res[7]);
 			colaboradorTurma.setAprovado((Boolean)res[8]);
+			colaboradorTurma.setColaboradorId(((BigInteger)res[9]).longValue());
 			
 			colaboradorTurmas.add(colaboradorTurma);
 		}
@@ -1834,5 +1835,45 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			query.setDouble("percentualMinimoFrequencia", percentualMinimoFrequencia);
 		
 		return (Boolean) query.uniqueResult();
+	}
+	
+	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoId(Long certificacaoId, Long... colaboradoresIds) 
+	{
+		DetachedCriteria ultimoColaboradorCertificacao = DetachedCriteria.forClass(ColaboradorCertificacao.class, "cc2").setProjection(Projections.max("cc2.data"))
+				.add(Restrictions.eqProperty("cc2.colaborador.id", "cc.colaborador.id")).add(Restrictions.eqProperty("cc2.certificacao.id", "cc.certificacao.id"));
+//				if(data != null) ultimoColaboradorCertificacao.add(Restrictions.le("cc2.data", data));
+		
+		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
+		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
+		criteria.createCriteria("t.curso", "c", Criteria.INNER_JOIN);
+		criteria.createCriteria("c.certificacaos", "ce", Criteria.INNER_JOIN);
+		criteria.createCriteria("ct.colaborador", "co", Criteria.INNER_JOIN);
+		criteria.createCriteria("co.colaboradorCertificacaos", "cc", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ct.id"), "id");
+		p.add(Projections.property("cc.id"), "colaboradorCertificacaoId");
+		p.add(Projections.property("ct.colaborador.id"), "colaboradorId");
+		p.add(Projections.property("c.id"), "cursoId");
+		p.add(Projections.property("c.nome"), "cursoNome");
+		p.add(Projections.property("t.id"), "turmaId");
+		p.add(Projections.property("t.descricao"), "turmaDescricao");
+		p.add(Projections.property("t.dataPrevIni"), "turmaDataPrevIni");
+		p.add(Projections.property("t.dataPrevFim"), "turmaDataPrevFim");
+		p.add(Projections.property("t.realizada"), "turmaRealizada");
+		p.add(Projections.sqlProjection("verifica_aprovacao(c2_.id, t1_.id, this_.id, c2_.percentualMinimoFrequencia) as aprovado", new String[] {"aprovado"}, new Type[] {Hibernate.BOOLEAN}), "aprovado");
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.add(Expression.sqlRestriction("t1_.dataPrevFim = (select max(t2.dataPrevFim) from colaboradorTurma ct2 inner join turma t2 on t2.id = ct2.turma_id where ct2.colaborador_id = this_.colaborador_id and t2.curso_id = c2_.id) ", new String[]{}, new Type[]{}));
+	    criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", ultimoColaboradorCertificacao))));
+	    
+		criteria.add(Expression.eq("ce.id",certificacaoId));
+		criteria.add(Expression.in("ct.colaborador.id", colaboradoresIds));
+
+	    criteria.addOrder(Order.asc("ct.colaborador.id"));
+	    criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+	    criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
+
+		return criteria.list();
 	}
 }

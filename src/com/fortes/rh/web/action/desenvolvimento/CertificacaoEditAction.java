@@ -168,6 +168,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), roles);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String imprimirCertificadosVencidosAVencer()
 	{
 		try {
@@ -176,13 +177,15 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			Long[] certificacoesIds = LongUtil.arrayStringToArrayLong(certificacoesCheck);
 			Long[] colaboradoresIds = LongUtil.arrayStringToArrayLong(colaboradoresCheck);
 			
-			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, colaboradorCertificado, colaboradorNaoCertificado, mesesCertificacoesAVencer, areaIds, estabelecimentoIds, certificacoesIds, colaboradoresIds);
+			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areaIds, estabelecimentoIds, certificacoesIds, colaboradoresIds);
 			
 			if(colaboradorCertificacoes.size() == 0){
 				addActionMessage("Não existem dados para o filtro informado.");
 				prepareImprimirCertificadosVencidosAVencer();
 				return Action.INPUT;	
 			}
+
+			colaboradorCertificacoes = new CollectionUtil().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "colaborador.nome");
 			
 			if(agruparPor != null && agruparPor == 'T')
 				agruparPorCertificacao();

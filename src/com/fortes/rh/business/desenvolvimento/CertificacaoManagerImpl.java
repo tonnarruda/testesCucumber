@@ -211,6 +211,14 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 	public Collection<Certificacao> findOsQuePossuemAvaliacaoPratica(Long empresaId) {
 		return getDao().findOsQuePossuemAvaliacaoPratica(empresaId);
 	}
+	
+	public Collection<Curso> findCursosByCertificacaoId(Long id) {
+		return getDao().findCursosByCertificacaoId(id);
+	}
+	
+	public Collection<Certificacao> findCollectionByIdProjection(Long[] certificacoesIds) {
+		return getDao().findCollectionByIdProjection(certificacoesIds);
+	}
 
 	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
@@ -219,4 +227,5 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
 		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
 	}
+
 }

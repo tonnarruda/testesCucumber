@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
@@ -20,6 +21,9 @@ public class AvaliacaoPratica extends AbstractModel implements Serializable
 	
 	@ManyToOne
 	private Empresa empresa;
+	
+	@Transient
+	private Long certificacaoId;
 	
 	public String getTitulo() {
 		return titulo;
@@ -38,5 +42,11 @@ public class AvaliacaoPratica extends AbstractModel implements Serializable
 	}
 	public void setNotaMinima(Double notaMinima) {
 		this.notaMinima = notaMinima;
+	}
+	public Long getCertificacaoId() {
+		return certificacaoId;
+	}
+	public void setCertificacaoId(Long certificacaoId) {
+		this.certificacaoId = certificacaoId;
 	}
 }

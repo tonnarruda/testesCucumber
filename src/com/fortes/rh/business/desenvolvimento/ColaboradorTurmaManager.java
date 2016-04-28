@@ -75,8 +75,9 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public TAula[] getTreinamentosRealizadosParaTRU(String colaboradorCodigoAC, Empresa empresa, String periodoIni, String periodoFim);
 	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds, char filtroAgrupamento, char filtroSituacao, char filtroAprovado);
 	public Collection<ColaboradorTurma> findCursosCertificacoesAVencer(Date dataReferencia, Long empresaId);
-	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId);
+	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long certificacaoId, Long colaboradorCertificacaoId, Long... colaboradoresId);
 	public String verificaColaboradorCertificado(Long[] colaboradoresId, Long cursoId);
 	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId);
 	public boolean verificaAprovacao(Long cursoId, Long turmaId, Long colaboradorTurmaId, Double percentualMinimoFrequencia);
+	public Map<Long, Collection<ColaboradorTurma>> findMapByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long certificacaoId, Long... colaboradoresId);
 }

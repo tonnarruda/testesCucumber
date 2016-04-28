@@ -44,6 +44,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
@@ -142,6 +143,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Collection<ComissaoMembro> comissaoMembros;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<OrdemDeServico> ordensDeServico;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
+	private Collection<ColaboradorCertificacao> colaboradorCertificacaos;
 
 	@OneToOne(optional=true)
 	private Candidato candidato;
@@ -3194,5 +3197,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setOrdensDeServico(Collection<OrdemDeServico> ordensDeServico) {
 		this.ordensDeServico = ordensDeServico;
+	}
+
+	public Collection<ColaboradorCertificacao> getColaboradorCertificacaos() {
+		return colaboradorCertificacaos;
+	}
+
+	public void setColaboradorCertificacaos(Collection<ColaboradorCertificacao> colaboradorCertificacaos) {
+		this.colaboradorCertificacaos = colaboradorCertificacaos;
 	}
 }

@@ -17,7 +17,7 @@ public class AvaliacaoPraticaDaoHibernate extends GenericDaoHibernate<AvaliacaoP
 {
 
 	@SuppressWarnings("unchecked")
-	public Collection<AvaliacaoPratica> findByCertificacaoId(Long certificacaoId) 
+	public Collection<AvaliacaoPratica> findByCertificacaoId(Long... certificacaoId) 
 	{
 		Criteria criteria = getSession().createCriteria(Certificacao.class, "ce");
 		criteria.createCriteria("ce.avaliacoesPraticas", "ap", Criteria.LEFT_JOIN);
@@ -26,9 +26,10 @@ public class AvaliacaoPraticaDaoHibernate extends GenericDaoHibernate<AvaliacaoP
 		p.add(Projections.property("ap.id"), "id");
 		p.add(Projections.property("ap.titulo"), "titulo");
 		p.add(Projections.property("ap.notaMinima"), "notaMinima");
+		p.add(Projections.property("ce.id"), "certificacaoId");
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("ce.id", certificacaoId));
+		criteria.add(Expression.in("ce.id", certificacaoId));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(AvaliacaoPratica.class));
 		

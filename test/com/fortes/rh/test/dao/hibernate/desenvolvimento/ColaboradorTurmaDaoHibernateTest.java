@@ -2444,7 +2444,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 
 		colaboradorDao.getHibernateTemplateByGenericDao().flush();
 		
-		Collection<ColaboradorTurma> resultado = colaboradorTurmaDao.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(adamastor.getId(), certificacao.getId(), null);
+		Collection<ColaboradorTurma> resultado = colaboradorTurmaDao.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao.getId(), null, adamastor.getId());
 		
 		assertEquals(1, resultado.size());
 		assertEquals(turma1.getDataPrevFim(), ((ColaboradorTurma) resultado.toArray()[0]).getTurma().getDataPrevFim());
@@ -2556,6 +2556,56 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	
     	assertEquals(1, colaboradorTurmas.size());
     	assertEquals(colaboradorTurmaPresente.getId(), ((ColaboradorTurma) colaboradorTurmas.toArray()[0]).getId());
+	}
+	
+	public void testFindByColaboradorIdAndCertificacaoId(){
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador2);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setDataPrevIni(DateUtil.criarDataMesAno(1, 1, 2016));
+		turma1.setDataPrevFim(DateUtil.criarDataMesAno(1, 2, 2016));
+		turma1.setCurso(curso);
+		turmaDao.save(turma1);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setDataPrevIni(DateUtil.criarDataMesAno(1, 3, 2016));
+		turma2.setDataPrevFim(DateUtil.criarDataMesAno(1, 4, 2016));
+		turma2.setCurso(curso);
+		turmaDao.save(turma2);
+		
+		ColaboradorTurma colaboradorTurma1Colab1 = ColaboradorTurmaFactory.getEntity(colaborador1, curso, turma1);
+		colaboradorTurmaDao.save(colaboradorTurma1Colab1);
+		
+		ColaboradorTurma colaboradorTurma2Colab1 = ColaboradorTurmaFactory.getEntity(colaborador1, curso, turma2);
+    	colaboradorTurmaDao.save(colaboradorTurma2Colab1);
+    	
+    	ColaboradorTurma colaboradorTurma1Colab2 = ColaboradorTurmaFactory.getEntity(colaborador2, curso, turma1);
+		colaboradorTurmaDao.save(colaboradorTurma1Colab2);
+    	
+		Collection<Curso> cursos = new ArrayList<Curso>();
+		cursos.add(curso);
+		
+    	Certificacao certificacao = CertificacaoFactory.getEntity();
+    	certificacao.setCursos(cursos);
+    	certificacaoDao.save(certificacao);
+
+    	ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador1, certificacao, DateUtil.criarDataMesAno(1, 4, 2016));
+    	colaboradorCertificacaoDao.save(colaboradorCertificacao);
+    	
+    	ColaboradorCertificacao colaboradorCertificacao2 = ColaboradorCertificacaoFactory.getEntity(colaborador1, certificacao, DateUtil.criarDataMesAno(1, 5, 2016));
+    	colaboradorCertificacaoDao.save(colaboradorCertificacao2);
+    	
+    	Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaDao.findByColaboradorIdAndCertificacaoId(certificacao.getId(), new Long[]{colaborador1.getId(), colaborador2.getId()});
+    	assertEquals(2, colaboradorTurmas.size());
+    	assertEquals(colaborador1.getId(), ((ColaboradorTurma)colaboradorTurmas.toArray()[0]).getColaborador().getId());
+    	assertEquals(colaborador2.getId(), ((ColaboradorTurma)colaboradorTurmas.toArray()[1]).getColaborador().getId());
 	}
 	
     public GenericDao<ColaboradorTurma> getGenericDao()

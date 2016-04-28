@@ -3,8 +3,6 @@ package com.fortes.rh.web.dwr;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
@@ -24,28 +22,17 @@ public class CertificacaoDWR
 		Long [] estabelecimentoIdsLong = StringUtil.stringToLong(estabelecimentoIds);
 		Long [] certificacoesIdsLong = StringUtil.stringToLong(certificacoesIds);
 		
-		Date dataInicial = null;
-		if(dataIni != null && !dataIni.equals("") && !dataIni.equals("  /  /    "))
-			dataInicial = DateUtil.criarDataDiaMesAno(dataIni);
-		
 		Date dataFinal = null;
 		if(dataFim != null && !dataFim.equals("") && !dataFim.equals("  /  /    "))
 			dataFinal = DateUtil.criarDataDiaMesAno(dataFim);
 		
-    	Collection<ColaboradorCertificacao> colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataInicial, dataFinal, colaboradorCertificado, colaboradorNaoCertificado, (mesesCertificacoesAVencer == 0 ? null : mesesCertificacoesAVencer), areasIdsLong, estabelecimentoIdsLong, certificacoesIdsLong, null);
+    	Collection<ColaboradorCertificacao> colaboradoresCertificacao = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(null, dataFinal, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areasIdsLong, estabelecimentoIdsLong, certificacoesIdsLong);
     	
-    	CheckBox checkBox = null;
-    	Map<Long, String> colaboradoresmaps = new HashMap<Long, String>();
-    	for (ColaboradorCertificacao colaboradorCertificacao : colaboradorCertificacoes) 
-    		if(!colaboradoresmaps.containsKey(colaboradorCertificacao.getColaborador().getId()))
-    			colaboradoresmaps.put(colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getColaborador().getNome());
-    	
-    	
-    	for (Long colaboradorId : colaboradoresmaps.keySet())
-    	{
+    	CheckBox checkBox;
+    	for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificacao) {
     		checkBox = new CheckBox();
-			checkBox.setId(colaboradorId);
-			checkBox.setNome(colaboradoresmaps.get(colaboradorId));
+			checkBox.setId(colaboradorCertificacao.getColaborador().getId());
+			checkBox.setNome(colaboradorCertificacao.getColaborador().getNome());
 			checkboxes.add(checkBox);
     	}
     	

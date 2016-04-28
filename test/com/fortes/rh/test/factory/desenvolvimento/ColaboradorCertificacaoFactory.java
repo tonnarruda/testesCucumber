@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
+import com.fortes.rh.model.geral.Colaborador;
 
 public class ColaboradorCertificacaoFactory
 {
@@ -38,5 +40,15 @@ public class ColaboradorCertificacaoFactory
 		colaboradorCertificacaos.add(getEntity(id));
 		
 		return colaboradorCertificacaos;
+	}
+	
+	public static ColaboradorCertificacao getEntity(Colaborador colaborador, Certificacao certificacao, Date data)
+	{
+		ColaboradorCertificacao colaboradorCertificacao = getEntity();
+		colaboradorCertificacao.setColaborador(colaborador);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setData(data);
+
+		return colaboradorCertificacao;
 	}
 }

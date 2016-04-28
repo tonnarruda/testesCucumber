@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
 import com.fortes.rh.model.geral.Colaborador;
 
@@ -21,4 +22,6 @@ public interface CertificacaoDao extends GenericDao<Certificacao>
 	public Collection<Certificacao> findByCursoId(Long cursoId);
 	Collection<Certificacao> findDependentes(Long certificacaoId);
 	Collection<Certificacao> findOsQuePossuemAvaliacaoPratica(Long empresaId);
+	Collection<Curso> findCursosByCertificacaoId(Long id);
+	Collection<Certificacao> findCollectionByIdProjection(Long[] certificacoesIds);
 }

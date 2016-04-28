@@ -1214,8 +1214,24 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findCursosCertificacoesAVencer(dataReferencia, empresaId);
 	}
 	
-	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId){
-		return getDao().findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacaoId);
+	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long certificacaoId, Long colaboradorCertificacaoId, Long... colaboradoresId){
+		return getDao().findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacaoId, colaboradorCertificacaoId, colaboradoresId);
+	}
+	
+	public Map<Long, Collection<ColaboradorTurma>> findMapByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long certificacaoId, Long... colaboradoresId){
+		Map<Long, Collection<ColaboradorTurma>> mapColaboradorTurma = new HashMap<Long, Collection<ColaboradorTurma>>();
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findByColaboradorIdAndCertificacaoId(certificacaoId, colaboradoresId);
+		
+		Long colaboradorId = null;
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
+			colaboradorId = colaboradorTurma.getColaborador().getId();
+			if(!mapColaboradorTurma.containsKey(colaboradorId))
+				mapColaboradorTurma.put(colaboradorId, new ArrayList<ColaboradorTurma>());
+			
+			mapColaboradorTurma.get(colaboradorId).add(colaboradorTurma);
+		}
+		
+		return mapColaboradorTurma;
 	}
 
 	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId) {

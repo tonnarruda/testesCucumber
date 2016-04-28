@@ -20,6 +20,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
 import com.fortes.rh.model.geral.Colaborador;
 
@@ -231,6 +232,41 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		Criteria criteria = createCriteria(empresaId);
 		criteria.add(Expression.isNotEmpty("c.avaliacoesPraticas"));
 		
+		return criteria.list();
+	}
+
+	public Collection<Curso> findCursosByCertificacaoId(Long id) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+		criteria.createCriteria("c.cursos", "cu");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cu.id"), "id");
+		p.add(Projections.property("cu.nome"), "nome");
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.add(Expression.eq("c.id", id));
+		criteria.addOrder(Order.asc("cu.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
+		
+		return criteria.list();
+	}
+
+	public Collection<Certificacao> findCollectionByIdProjection(Long[] certificacoesIds)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.periodicidade"), "periodicidade");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.in("c.id", certificacoesIds));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
 		return criteria.list();
 	}
 }

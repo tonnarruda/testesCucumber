@@ -7,5 +7,5 @@ import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 
 public interface AvaliacaoPraticaDao extends GenericDao<AvaliacaoPratica> 
 {
-	Collection<AvaliacaoPratica> findByCertificacaoId(Long certificacaoId);
+	Collection<AvaliacaoPratica> findByCertificacaoId(Long... certificacaoId);
 }
