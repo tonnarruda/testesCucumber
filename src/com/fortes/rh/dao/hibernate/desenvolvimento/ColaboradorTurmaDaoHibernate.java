@@ -1914,4 +1914,15 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		return criteria.list();
 	}
+
+	public void aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId) {
+		String queryHQL = "update ColaboradorTurma ct set ct.aprovado = (select verifica_aprovacao(:cursoId, :turmaId, :colaboradorTurmaId) where ct.id = :colaboradorTurmaId ";
+
+		Session session = getSession();
+		Query query = session.createQuery(queryHQL);
+		query.setLong("cursoId", cursoId);
+		query.setLong("turmaId", turmaId);
+		query.setLong("colaboradorTurmaId", colaboradorTurmaId);
+		query.executeUpdate();
+	}
 }

@@ -1123,46 +1123,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findColaboradorTreinamentosParaTRU(colaboradorCodigoAC, empresa.getId(), periodoIni, periodoFim, true);
 	}
 	
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-	}
-	
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
-	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-	
-	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
-	{
-		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
-	}
-
-	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager)
-	{
-		this.avaliacaoCursoManager = avaliacaoCursoManager;
-	}
-	
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager) 
-	{
-		this.certificacaoManager = certificacaoManager;
-	}
-	
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-	
-	public void setEmpresaManager(EmpresaManager empresaManager) 
-	{
-		this.empresaManager = empresaManager;
-	}
-
 	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds, char filtroAgrupamento, char filtroSituacao, char filtroAprovado) 
 	{
 		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findCursosVencidosAVencer(dataIni, empresasIds, cursosIds, filtroAgrupamento, filtroSituacao, filtroAprovado);
@@ -1202,8 +1162,52 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId) {
 		return getDao().findByTurmaId(turmaId);
 	}
+	
+	public void aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId) {
+		getDao().aprovarOrReprovarColaboradorTurma(colaboradorTurmaId, turmaId, cursoId);
+	}
 
 	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
+	}
+	
+	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
+	{
+		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
+	}
+	
+	public void setCursoManager(CursoManager cursoManager)
+	{
+		this.cursoManager = cursoManager;
+	}
+	
+	public void setColaboradorManager(ColaboradorManager colaboradorManager)
+	{
+		this.colaboradorManager = colaboradorManager;
+	}
+	
+	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
+	{
+		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
+	}
+
+	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager)
+	{
+		this.avaliacaoCursoManager = avaliacaoCursoManager;
+	}
+	
+	public void setCertificacaoManager(CertificacaoManager certificacaoManager) 
+	{
+		this.certificacaoManager = certificacaoManager;
+	}
+	
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
+	{
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+	
+	public void setEmpresaManager(EmpresaManager empresaManager) 
+	{
+		this.empresaManager = empresaManager;
 	}
 }
