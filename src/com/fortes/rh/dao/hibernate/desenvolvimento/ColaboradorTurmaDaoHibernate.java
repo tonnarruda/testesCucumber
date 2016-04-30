@@ -1081,7 +1081,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id, ct.colaborador.id) from ColaboradorTurma ct ");
+		hql.append("select new ColaboradorTurma(ct.id, ct.aprovado, ct.colaborador.id, ct.turma.id, ct.curso.id) from ColaboradorTurma ct ");
 		hql.append("where ct.turma.id = :turmaId ");
 		hql.append("and ct.id not in (select cp.colaboradorTurma.id from ColaboradorPresenca cp where cp.diaTurma.id = :diaTurmaId)");
 
@@ -1095,7 +1095,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findByTurmaPresenteNoDiaTurmaId(Long turmaId, Long diaTurmaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id, ct.aprovado, ct.colaborador.id) from ColaboradorTurma ct ");
+		hql.append("select new ColaboradorTurma(ct.id, ct.aprovado, ct.colaborador.id, ct.turma.id, ct.curso.id) from ColaboradorTurma ct ");
 		hql.append("where ct.turma.id = :turmaId ");
 		hql.append("and ct.id in (select cp.colaboradorTurma.id from ColaboradorPresenca cp where cp.diaTurma.id = :diaTurmaId)");
 
@@ -1916,13 +1916,39 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	}
 
 	public void aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId) {
-		String queryHQL = "update ColaboradorTurma ct set ct.aprovado = (select verifica_aprovacao(:cursoId, :turmaId, :colaboradorTurmaId) where ct.id = :colaboradorTurmaId ";
+		boolean aprovado = verificaAprovacao(colaboradorTurmaId, turmaId, cursoId);
+		String queryHQL = "update ColaboradorTurma ct set ct.aprovado = :aprovado where ct.id = :colaboradorTurmaId";
 
-		Session session = getSession();
-		Query query = session.createQuery(queryHQL);
+		Query query = getSession().createQuery(queryHQL);
+		query.setBoolean("aprovado", aprovado);
+		query.setLong("colaboradorTurmaId", colaboradorTurmaId);
+		query.executeUpdate();
+	}
+	
+	private boolean verificaAprovacao(Long colaboradorTurmaId, Long turmaId, Long cursoId){
+		StringBuilder sql = new StringBuilder();
+		sql.append("select verifica_aprovacao(:cursoId, :turmaId, :colaboradorTurmaId ) as aprovacao ");
+		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("cursoId", cursoId);
 		query.setLong("turmaId", turmaId);
 		query.setLong("colaboradorTurmaId", colaboradorTurmaId);
-		query.executeUpdate();
+		
+		return (Boolean) query.uniqueResult();
+	}
+
+	public ColaboradorTurma findByProjection(Long colaboradorTurmaId) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ct.id"), "id");
+		p.add(Projections.property("ct.curso.id"), "cursoId");
+		p.add(Projections.property("ct.turma.id"), "turmaId");
+		p.add(Projections.property("ct.aprovado"), "aprovado");
+
+		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
+		criteria.add(Expression.eq("ct.id", colaboradorTurmaId));
+		criteria.setProjection(p);
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
+		
+	    return (ColaboradorTurma) criteria.uniqueResult();
 	}
 }

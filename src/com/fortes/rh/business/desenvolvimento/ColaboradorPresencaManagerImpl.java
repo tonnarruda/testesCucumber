@@ -35,22 +35,24 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 
 	public void updateFrequencia(Long diaTurmaId, Long colaboradorTurmaId, boolean presenca, boolean validarCertificacao) throws Exception
 	{
+		ColaboradorTurma colaboradorTurma = colaboradorTurmaManager.findByProjection(colaboradorTurmaId);
+		
 		if (presenca)
 		{
 			DiaTurma diaTurma = new DiaTurma();
 			diaTurma.setId(diaTurmaId);
-			ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
-			colaboradorTurma.setId(colaboradorTurmaId);
-			
 			ColaboradorPresenca colaboradorPresenca = new ColaboradorPresenca(colaboradorTurma, diaTurma, true);
 			getDao().save(colaboradorPresenca);
 			getDao().getHibernateTemplateByGenericDao().flush();
+			
+			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 			
 			if(validarCertificacao)
 				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
 		}
 		else{
 			getDao().remove(diaTurmaId, colaboradorTurmaId);
+			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 			colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurmaId, false);
 		}
 		
@@ -68,8 +70,9 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			{
 				if(!colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turmaId, colaboradorTurma.getColaborador().getId())){
 					getDao().save(new ColaboradorPresenca(colaboradorTurma, diaTurma, true));
+					colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 					getDao().getHibernateTemplateByGenericDao().flush();
-				
+						
 					if(validarCertificacao)
 						new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
 				}
@@ -84,13 +87,16 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
 				if(!colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turmaId, colaboradorTurma.getColaborador().getId())){
 					getDao().remove(diaTurmaId, colaboradorTurma.getId());
+					colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
+					colaboradorTurma = colaboradorTurmaManager.findByProjection(colaboradorTurma.getId());
 					if(!colaboradorTurma.isAprovado())
 						colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), false);
 				}
 			}
 		}
-		else
+		else{
 			getDao().remove(diaTurmaId, null);
+		}
 	}
 
 	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds)

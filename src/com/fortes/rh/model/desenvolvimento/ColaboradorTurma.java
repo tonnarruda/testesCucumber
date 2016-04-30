@@ -103,6 +103,17 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		setId(id);
 		setColaboradorId(colaboradorId);
 	}
+	
+	public ColaboradorTurma(Long id, Boolean aprovado, Long colaboradorId, Long turmaId, Long cursoId )
+	{
+		setId(id);
+		setAprovado(aprovado);
+		setColaboradorId(colaboradorId);
+		setTurmaId(turmaId);
+		setCursoId(cursoId);
+	}
+	
+	
 	public ColaboradorTurma(Long id, Boolean aprovado, Long colaboradorId)
 	{
 		setId(id);

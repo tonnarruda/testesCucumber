@@ -130,10 +130,10 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	private void verificaAprovacaoByTurma(Long turmaId) {
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findByTurmaId(turmaId);
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
-			
+			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), turmaId, colaboradorTurma.getCurso().getId());
 		}
 	}
-
+	
 	private void verificaCertificacaoByColaboradorTurmaId(Turma turma){
 		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaId(turma.getId());
 		if(turma.getRealizada()){

@@ -1210,4 +1210,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		this.empresaManager = empresaManager;
 	}
+
+	public ColaboradorTurma findByProjection(Long colaboradorTurmaId) {
+		return getDao().findByProjection(colaboradorTurmaId);
+	}
 }

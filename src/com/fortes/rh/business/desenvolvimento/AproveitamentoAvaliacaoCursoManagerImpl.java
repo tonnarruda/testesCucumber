@@ -14,6 +14,7 @@ import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.thread.certificaColaboradorThread;
+import com.fortes.rh.util.SpringUtil;
 
 public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<AproveitamentoAvaliacaoCurso, AproveitamentoAvaliacaoCursoDao> implements AproveitamentoAvaliacaoCursoManager
 {
@@ -26,7 +27,7 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
-
+		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
 		try
 		{
 			for (int i=0; i<colaboradorTurmaIds.length; i++)
@@ -41,8 +42,10 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 				AproveitamentoAvaliacaoCurso aproveitamento = new AproveitamentoAvaliacaoCurso(colabTurma, avaliacaoCurso, valor);
 				
 				saveOrUpdate(aproveitamento);
+				colabTurma = colaboradorTurmaManager.findByProjection(colaboradorTurmaIds[i]);
+				colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colabTurma.getId(), colabTurma.getTurma().getId(), colabTurma.getCurso().getId());
 				getDao().getHibernateTemplateByGenericDao().flush();
-				
+
 				if(validarCertificacao)
 					new certificaColaboradorThread(colaboradorCertificacaoManager, colabTurma.getId(), certificacaoManager).start();
 			}
@@ -57,17 +60,20 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 		}
 	}
 
-	public void saveOrUpdate(AproveitamentoAvaliacaoCurso aproveitamento)
-	{
+	public void saveOrUpdate(AproveitamentoAvaliacaoCurso aproveitamento){
+		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
+		ColaboradorTurma colaboradorTurma = colaboradorTurmaManager.findByProjection(aproveitamento.getColaboradorTurma().getId());
+
 		AproveitamentoAvaliacaoCurso resultado = getDao().findByColaboradorTurmaAvaliacaoId(aproveitamento.getColaboradorTurma().getId(), aproveitamento.getAvaliacaoCurso().getId());
-		if (resultado == null)
+		
+		if (resultado == null){
 			getDao().save(aproveitamento);
-		else
-		{
+			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
+		}else{
 			aproveitamento.setId(resultado.getId());
 			getDao().update(aproveitamento);
-
 			if(aproveitamento.getValor() < resultado.getAvaliacaoCurso().getMinimoAprovacao() )
+				colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(aproveitamento.getColaboradorTurma().getId(), false);
 		}
 	}

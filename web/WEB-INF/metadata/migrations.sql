@@ -17,6 +17,8 @@ CREATE OR REPLACE FUNCTION verifica_aprovacao(id_curso BIGINT, id_turma BIGINT, 
 	DECLARE aprovado BOOLEAN; 
 	BEGIN 
 	select (
+			(select realizada from turma where id = id_turma)
+			and
 			(
 				coalesce(cast( (select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id) as Integer ), 0) = 0 
 			 	or coalesce(( select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id), 0)  =
