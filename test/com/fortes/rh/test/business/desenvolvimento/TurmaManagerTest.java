@@ -2,6 +2,7 @@ package com.fortes.rh.test.business.desenvolvimento;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -344,6 +345,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 	
 	public void testAtualizar()
 	{
+		Curso curso = CursoFactory.getEntity(1L);
 		Turma turma = TurmaFactory.getEntity(1L);
 		String[] diasCheck = new String[]{"1"};
 		String[] selectPrioridades = null;
@@ -351,6 +353,9 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Long[] documentoAnexosIds = {1L};
 		
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setTurma(turma);
+		
 		String[] colaboradorTurmas = {colaboradorTurma.getId().toString()};
 		
 		colaboradorTurmaManager.expects(once()).method("saveUpdate").with(eq(colaboradorTurmas),eq(selectPrioridades), eq(false)).isVoid();
@@ -361,6 +366,8 @@ public class TurmaManagerTest extends MockObjectTestCase
 		
 		turmaAvaliacaoTurmaManager.expects(once()).method("salvarAvaliacaoTurmas").with(eq(turma.getId()),eq(avaliacaoTurmaIds)).isVoid();
 		turmaDocumentoAnexoManager.expects(once()).method("salvarDocumentoAnexos").with(eq(turma.getId()),eq(documentoAnexosIds)).isVoid();
+		colaboradorTurmaManager.expects(once()).method("findByTurmaId").with(eq(turma.getId())).will(returnValue(Arrays.asList(colaboradorTurma)));
+		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
 		
 		Exception ex = null;
 		try
@@ -373,7 +380,6 @@ public class TurmaManagerTest extends MockObjectTestCase
 		}
 		
 		assertNull(ex);
-		
 	}
 	
 	public void testSalvarTudo()
