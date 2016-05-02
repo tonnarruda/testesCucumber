@@ -1,14 +1,21 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import mockit.Mockit;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
@@ -34,65 +41,63 @@ import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
-import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 
-public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
+public class ColaboradorCertificacaoManagerTest
 {
 	private ColaboradorCertificacaoManagerImpl colaboradorCertificacaoManager = new ColaboradorCertificacaoManagerImpl();
-	private Mock colaboradorCertificacaoDao;
-	private Mock colaboradorAvaliacaoPraticaManager;
-	private Mock colaboradorTurmaManager;
-	private Mock certificacaoManager;
-	private Mock avaliacaoPraticaManager;
+	private ColaboradorCertificacaoDao colaboradorCertificacaoDao;
+	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;
+	private ColaboradorTurmaManager colaboradorTurmaManager;
+	private CertificacaoManager certificacaoManager;
+	private AvaliacaoPraticaManager avaliacaoPraticaManager;
 	
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
     {
-        super.setUp();
-        colaboradorCertificacaoDao = new Mock(ColaboradorCertificacaoDao.class);
-        colaboradorCertificacaoManager.setDao((ColaboradorCertificacaoDao) colaboradorCertificacaoDao.proxy());
+        colaboradorCertificacaoDao = mock(ColaboradorCertificacaoDao.class);
+        colaboradorCertificacaoManager.setDao(colaboradorCertificacaoDao);
         
-        colaboradorAvaliacaoPraticaManager = new Mock(ColaboradorAvaliacaoPraticaManager.class);
-        colaboradorCertificacaoManager.setColaboradorAvaliacaoPraticaManager((ColaboradorAvaliacaoPraticaManager) colaboradorAvaliacaoPraticaManager.proxy());
+        colaboradorAvaliacaoPraticaManager = mock(ColaboradorAvaliacaoPraticaManager.class);
+        colaboradorCertificacaoManager.setColaboradorAvaliacaoPraticaManager(colaboradorAvaliacaoPraticaManager);
         
-        avaliacaoPraticaManager = new Mock(AvaliacaoPraticaManager.class);
-        colaboradorCertificacaoManager.setAvaliacaoPraticaManager((AvaliacaoPraticaManager) avaliacaoPraticaManager.proxy());
+        avaliacaoPraticaManager = mock(AvaliacaoPraticaManager.class);
+        colaboradorCertificacaoManager.setAvaliacaoPraticaManager(avaliacaoPraticaManager);
         
-        colaboradorTurmaManager = new Mock(ColaboradorTurmaManager.class);
-        MockSpringUtil.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
+        colaboradorTurmaManager = mock(ColaboradorTurmaManager.class);
+        MockSpringUtilJUnit4.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
 
-        certificacaoManager = new Mock(CertificacaoManager.class);
-        MockSpringUtil.mocks.put("certificacaoManager", certificacaoManager);
+        certificacaoManager = mock(CertificacaoManager.class);
+        MockSpringUtilJUnit4.mocks.put("certificacaoManager", certificacaoManager);
         
-        Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
+        Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
         Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
     }
 
+	@Test
 	public void testFindAllSelect()
 	{
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = ColaboradorCertificacaoFactory.getCollection(1L);
 
-		colaboradorCertificacaoDao.expects(once()).method("findAll").will(returnValue(colaboradorCertificacaos));
+		when(colaboradorCertificacaoDao.findAll()).thenReturn(colaboradorCertificacaos);
 		assertEquals(colaboradorCertificacaos, colaboradorCertificacaoManager.findAll());
 	}
-	
-	public void testMontaRelatorioColaboradoresNasCertificacoes()
+
+	@Test
+	public void testMontaRelatorioColaboradoresNasCertificacoes() throws CloneNotSupportedException
 	{
-		
 		Certificacao certificacao1 = CertificacaoFactory.getEntity(1L);
 		certificacao1.setNome("cert. admin");
-		
 		Certificacao certificacao2 = CertificacaoFactory.getEntity(1L);
 		certificacao2.setNome("cert. Dev");
-
 		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
 		certificacoes.add(certificacao1);
 		
 		Colaborador colab1 = ColaboradorFactory.getEntity(1L);
 		colab1.setNome("Astrogildis");
-		
-		Colaborador colab2 = ColaboradorFactory.getEntity(1L);
+		Colaborador colab2 = ColaboradorFactory.getEntity(2L);
 		colab2.setNome("Margnoris");
 		
 		ColaboradorCertificacao colaboradorCertificacao1 = ColaboradorCertificacaoFactory.getEntity(1L);
@@ -110,6 +115,8 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		colaboradorCertificacaos.add(colaboradorCertificacao2);
 		
 		Curso curso = CursoFactory.getEntity(1L);
+		Collection<Curso> cursos = new ArrayList<Curso>();
+		cursos.add(curso);
 		
 		Turma turma = TurmaFactory.getEntity(1L);
 		turma.setDataPrevIni(DateUtil.criarDataMesAno(1, 3, 2015));
@@ -153,41 +160,56 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = new ArrayList<ColaboradorAvaliacaoPratica>();
 		avaliacoesPraticasDoColaboradorRealizadas.add(colaboradorAvaliacaoPratica1);
 		avaliacoesPraticasDoColaboradorRealizadas.add(colaboradorAvaliacaoPratica2);
+
+		Map<Long, Collection<AvaliacaoPratica>> mapAvaliacoesPraticas = new HashMap<Long, Collection<AvaliacaoPratica>>();
+		mapAvaliacoesPraticas.put(certificacao1.getId(), avaliacoesPraticas);
+		mapAvaliacoesPraticas.put(certificacao2.getId(), avaliacoesPraticas);
+
+		Map<Long, Collection<ColaboradorTurma>> mapColaboradoresTurmas = new HashMap<Long, Collection<ColaboradorTurma>>();
+		mapColaboradoresTurmas.put(colab1.getId(),colaboradorTurmas2);
+		mapColaboradoresTurmas.put(colab2.getId(),colaboradorTurmas2);
 		
-		colaboradorCertificacaoDao.expects(once()).method("colaboradoresQueParticipaDoCertificado").will(returnValue(colaboradorCertificacaos));
-		colaboradorTurmaManager.expects(once()).method("findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId").will(returnValue(colaboradorTurmas1));
-		colaboradorTurmaManager.expects(once()).method("findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId").will(returnValue(colaboradorTurmas2));
-		avaliacaoPraticaManager.expects(atLeastOnce()).method("findByCertificacaoId").will(returnValue(avaliacoesPraticas));
-		colaboradorAvaliacaoPraticaManager.expects(atLeastOnce()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(avaliacoesPraticasDoColaboradorRealizadas));
-		certificacaoManager.expects(once()).method("findById").will(returnValue(certificacoes));
+		Map<Long, Collection<ColaboradorAvaliacaoPratica>> mapColaboradorAvaliacoesPraticas = new HashMap<Long, Collection<ColaboradorAvaliacaoPratica>>();
+		mapColaboradorAvaliacoesPraticas.put(colab1.getId(), avaliacoesPraticasDoColaboradorRealizadas);
 		
+		Long[] certificacaoesIds = new Long[]{certificacao1.getId()};
+		Long[] colaboradoresIds = new Long[]{colab1.getId()};
 		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
 		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2016);
 		
-		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, null, true, true, null, null, new Long[]{colaboradorCertificacao1.getId()}, null);
-		
+		when(avaliacaoPraticaManager.findMapByCertificacaoId(certificacaoesIds)).thenReturn(mapAvaliacoesPraticas);
+		when(certificacaoManager.findCollectionByIdProjection(certificacaoesIds)).thenReturn(certificacoes);
+		when(certificacaoManager.findCursosByCertificacaoId(certificacao1.getId())).thenReturn(cursos);
+		when(colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, null, certificacaoesIds, null, null, false)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorTurmaManager.findMapByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao1.getId(), new Long[]{colab1.getId(), colab2.getId()})).thenReturn(mapColaboradoresTurmas);
+		when(colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacao1.getId(), colaboradoresIds)).thenReturn(mapColaboradorAvaliacoesPraticas);
+
+		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, null, true, true, null, null, certificacaoesIds, new Long[]{colaboradorCertificacao1.getId()});
 		assertEquals(4, colaboradoresNasCertificacoes.size());
 		
 		ColaboradorCertificacao result2 = (ColaboradorCertificacao) colaboradoresNasCertificacoes.toArray()[1];
-		
 		assertEquals("Avaliação Prática: Beber Cachaça", result2.getNomeCurso());
 	}
 	
+	@Test
 	public void testFindColaboradorCertificadoInfomandoSeEUltimaCertificacao() {
 		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
 		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		colaboradorCertificacaoDao.expects(once()).method("findColaboradorCertificadoInfomandoSeEUltimaCertificacao").with(eq(colaboradorCertificacao.getId()), eq(colaborador.getId()), eq(certificacao.getId())).will(returnValue(colaboradorCertificacao));
+		when(colaboradorCertificacaoDao.findColaboradorCertificadoInfomandoSeEUltimaCertificacao(colaboradorCertificacao.getId(), colaborador.getId(), certificacao.getId())).thenReturn(colaboradorCertificacao);
 		assertEquals(colaboradorCertificacao, colaboradorCertificacaoManager.findColaboradorCertificadoInfomandoSeEUltimaCertificacao(colaboradorCertificacao.getId(), colaborador.getId(), certificacao.getId()));
 	}
-	
+
+	@Test
 	public void testExisteColaboradorCertificadoEmUmaTurmaPosterior() {
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(2L);
-		Collection<ColaboradorTurma> colaboradorTurmas = Arrays.asList(colaboradorTurma);
-		colaboradorCertificacaoDao.expects(once()).method("findColaboradorCertificadoEmUmaTurmaPosterior").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity();
+		Collection<ColaboradorCertificacao> colaboradoresCertificacoes = new ArrayList<ColaboradorCertificacao>();
+		colaboradoresCertificacoes.add(colaboradorCertificacao);
+		when(colaboradorCertificacaoDao.findColaboradorCertificadoEmUmaTurmaPosterior(1L, 1L)).thenReturn(colaboradoresCertificacoes);
 		assertTrue(colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(1L, 1L));
 	}
 	
+	@Test
 	public void testverificaCertificacaoByColaboradorTurmaIdNaoCertificado()
 	{
 		Certificacao certificacaoBasica = CertificacaoFactory.getEntity(1L);
@@ -208,12 +230,13 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
 		colaboradorCertificacaos.add(colaboradorCertificacao2);
 		
-		colaboradorCertificacaoDao.expects(once()).method("colaboradoresCertificadosByColaboradorTurmaId").will(returnValue(colaboradorCertificacaos));
-		colaboradorCertificacaoDao.expects(once()).method("findUltimaCertificacaoByColaboradorIdAndCertificacaoId").will(returnValue(null));
+		when(colaboradorCertificacaoDao.colaboradoresCertificadosByColaboradorTurmaId(1L)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoDao.findUltimaCertificacaoByColaboradorIdAndCertificacaoId(null, null)).thenReturn(null);
 			
 		assertEquals(0, colaboradorCertificacaoManager.certificaColaborador(1L, null, null, null).size());
 	}
-	
+
+	@Test
 	public void testverificaCertificacaoByColaboradorTurmaIdCertificado()
 	{
 		Certificacao certificacaoBasica = CertificacaoFactory.getEntity(1L);
@@ -254,17 +277,17 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		colaboradorTurmas.add(colaboradorTurma1);
 		
-		colaboradorCertificacaoDao.expects(once()).method("colaboradoresCertificadosByColaboradorTurmaId").will(returnValue(colaboradorCertificacaos));
-		colaboradorCertificacaoDao.expects(once()).method("findUltimaCertificacaoByColaboradorIdAndCertificacaoId").will(returnValue(colaboradorCertificacao1));
-		colaboradorCertificacaoDao.expects(once()).method("colaboradoresTurmaCertificados").will(returnValue(colaboradorTurmas));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(new ArrayList<ColaboradorAvaliacaoPratica>()));
-		colaboradorCertificacaoDao.expects(once()).method("save");
-		colaboradorCertificacaoDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
-		certificacaoManager.expects(once()).method("findDependentes").will(returnValue(new ArrayList<Certificacao>()));
+		when(colaboradorCertificacaoDao.colaboradoresCertificadosByColaboradorTurmaId(1L)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoDao.colaboradoresTurmaCertificados(colabZeRuela.getId(), certificacaoDev.getId())).thenReturn(colaboradorTurmas);
+		when(colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colabZeRuela.getId(), certificacaoDev.getId(), null, null, true, true)).thenReturn(new ArrayList<ColaboradorAvaliacaoPratica>());
+		when(colaboradorCertificacaoDao.getHibernateTemplateByGenericDao()).thenReturn(new HibernateTemplate());
+		when(certificacaoManager.findDependentes(certificacaoDev.getId())).thenReturn(new ArrayList<Certificacao>());
+		when(colaboradorCertificacaoDao.findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colabZeRuela.getId(), certificacaoBasica.getId())).thenReturn(colaboradorCertificacao1);
 		
-		assertEquals(1, colaboradorCertificacaoManager.certificaColaborador(1L, null, null, null).size());
+		assertEquals(1, colaboradorCertificacaoManager.certificaColaborador(1L, null, null, certificacaoManager).size());
 	}
 	
+	@Test
 	public void testverificaCertificacaoByColaboradorTurmaIdTresNiveisNaoCertificadoNaBasica()
 	{
 		Certificacao certificacaoBasica = CertificacaoFactory.getEntity(1L);
@@ -294,13 +317,14 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
 		colaboradorCertificacaos.add(colaboradorCertificacaoSuperDev);
 		
-		colaboradorCertificacaoDao.expects(once()).method("colaboradoresCertificadosByColaboradorTurmaId").will(returnValue(colaboradorCertificacaos));
-		colaboradorCertificacaoDao.expects(once()).method("findUltimaCertificacaoByColaboradorIdAndCertificacaoId").with(eq(1L), eq(2L)).will(returnValue(colaboradorCertificacaoDev));
-		colaboradorCertificacaoDao.expects(once()).method("findUltimaCertificacaoByColaboradorIdAndCertificacaoId").with(eq(1L), eq(1L)).will(returnValue(null));
+		when(colaboradorCertificacaoDao.colaboradoresCertificadosByColaboradorTurmaId(1L)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoDao.findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colabZeRuela.getId(), certificacaoDev.getId())).thenReturn(colaboradorCertificacaoSuperDev);
+		when(colaboradorCertificacaoDao.findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colabZeRuela.getId(), certificacaoDev.getId())).thenReturn(null);
 		
 		assertEquals(0, colaboradorCertificacaoManager.certificaColaborador(1L, null, null, null).size());
 	}
 	
+	@Test
 	public void testverificaCertificacaoByColaboradorTurmaIdDependentes()
 	{
 		Certificacao certificacaoBasica = CertificacaoFactory.getEntity(1L);
@@ -348,24 +372,21 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		Collection<Certificacao> certificacaoesDependentes = new ArrayList<Certificacao>();
 		certificacaoesDependentes.add(certificacaoDev);
 		
-		colaboradorCertificacaoDao.expects(once()).method("colaboradoresCertificadosByColaboradorTurmaId").will(returnValue(colaboradorCertificacaos));
-		colaboradorCertificacaoDao.expects(once()).method("colaboradoresTurmaCertificados").will(returnValue(colaboradorTurmas));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(new ArrayList<ColaboradorAvaliacaoPratica>()));
-		colaboradorCertificacaoDao.expects(once()).method("save");
-		colaboradorCertificacaoDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
+		when(colaboradorCertificacaoDao.colaboradoresCertificadosByColaboradorTurmaId(1L)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoDao.colaboradoresTurmaCertificados(colabZeRuela.getId(), certificacaoBasica.getId())).thenReturn(colaboradorTurmas);
+		when(colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colabZeRuela.getId(), certificacaoBasica.getId(), null, null, true, true)).thenReturn(new ArrayList<ColaboradorAvaliacaoPratica>());
+		when(colaboradorCertificacaoDao.getHibernateTemplateByGenericDao()).thenReturn(new HibernateTemplate());
+		when(certificacaoManager.findDependentes(certificacaoBasica.getId())).thenReturn(certificacaoesDependentes);
+		when(colaboradorCertificacaoDao.verificaCertificacao(colabZeRuela.getId(), certificacaoDev.getId())).thenReturn(colabCertificacaoRetornoDependenteCertificado);
+		when(colaboradorCertificacaoDao.colaboradoresTurmaCertificados(colabZeRuela.getId(), certificacaoDev.getId())).thenReturn(colaboradorTurmas);
+		when(colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colabZeRuela.getId(), certificacaoBasica.getId(), null, null, true, true)).thenReturn(new ArrayList<ColaboradorAvaliacaoPratica>());
+		when(colaboradorCertificacaoDao.getHibernateTemplateByGenericDao()).thenReturn(new HibernateTemplate());
+		when(certificacaoManager.findDependentes(certificacaoDev.getId())).thenReturn(new ArrayList<Certificacao>());
 		
-		certificacaoManager.expects(once()).method("findDependentes").with(eq(1L)).will(returnValue(certificacaoesDependentes));
-		colaboradorCertificacaoDao.expects(once()).method("verificaCertificacao").with(eq(1L), eq(2L)).will(returnValue(colabCertificacaoRetornoDependenteCertificado));
-		colaboradorCertificacaoDao.expects(once()).method("colaboradoresTurmaCertificados").will(returnValue(colaboradorTurmas));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(new ArrayList<ColaboradorAvaliacaoPratica>()));
-		colaboradorCertificacaoDao.expects(once()).method("save");
-		colaboradorCertificacaoDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
-		
-		certificacaoManager.expects(once()).method("findDependentes").with(eq(2L)).will(returnValue(new ArrayList<Certificacao>()));
-		
-		assertEquals(1, colaboradorCertificacaoManager.certificaColaborador(1L, null, null, null).size());
+		assertEquals(1, colaboradorCertificacaoManager.certificaColaborador(1L, null, null, certificacaoManager).size());
 	}
 	
+	@Test
 	public void testDescertificarColaborador()
 	{
 		ColaboradorCertificacao colaboradorCertificacaoPreRequisito = ColaboradorCertificacaoFactory.getEntity(1L);
@@ -376,14 +397,8 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(2L);
 		colaboradorCertificacao.setColaboradorCertificacaoPreRequisito(colaboradorCertificacaoPreRequisito);
 		
-		colaboradorCertificacaoDao.expects(once()).method("removeDependenciaDaAvPratica").with(eq(colaboradorCertificacao.getId())).isVoid();
-		colaboradorCertificacaoDao.expects(once()).method("findColaboradorCertificacaoPreRequisito").with(eq(colaboradorCertificacao.getId())).will(returnValue(colaboradorCertificacaosPreRequisitos));
-
-		colaboradorCertificacaoDao.expects(once()).method("removeDependenciaDaAvPratica").with(eq(colaboradorCertificacaoPreRequisito.getId())).isVoid();
-		colaboradorCertificacaoDao.expects(once()).method("findColaboradorCertificacaoPreRequisito").with(eq(colaboradorCertificacaoPreRequisito.getId())).will(returnValue(new ArrayList<ColaboradorCertificacao>()));
-		
-		colaboradorCertificacaoDao.expects(once()).method("remove").with(eq(colaboradorCertificacaoPreRequisito.getId()));
-		colaboradorCertificacaoDao.expects(once()).method("remove").with(eq(colaboradorCertificacao.getId()));
+		when(colaboradorCertificacaoDao.findColaboradorCertificacaoPreRequisito(colaboradorCertificacao.getId())).thenReturn(colaboradorCertificacaosPreRequisitos);
+		when(colaboradorCertificacaoDao.findColaboradorCertificacaoPreRequisito(colaboradorCertificacaoPreRequisito.getId())).thenReturn(new ArrayList<ColaboradorCertificacao>());
 		
 		Exception ex = null;
 		

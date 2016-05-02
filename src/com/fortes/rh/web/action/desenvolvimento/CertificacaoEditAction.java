@@ -169,8 +169,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String imprimirCertificadosVencidosAVencer()
-	{
+	public String imprimirCertificadosVencidosAVencer(){
 		try {
 			Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
 			Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
@@ -178,7 +177,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			Long[] colaboradoresIds = LongUtil.arrayStringToArrayLong(colaboradoresCheck);
 			
 			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areaIds, estabelecimentoIds, certificacoesIds, colaboradoresIds);
-			
 			if(colaboradorCertificacoes.size() == 0){
 				addActionMessage("Não existem dados para o filtro informado.");
 				prepareImprimirCertificadosVencidosAVencer();
@@ -186,17 +184,15 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			}
 
 			colaboradorCertificacoes = new CollectionUtil().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "colaborador.nome");
-			
 			if(agruparPor != null && agruparPor == 'T')
 				agruparPorCertificacao();
 			
 			montaReportTitleAndFilter();
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 			
-			if(agruparPor != null && agruparPor == 'T')
-				return "sucessoAgrupadoPorCertificacao";
-			else
-				return Action.SUCCESS;
+			if(agruparPor != null && agruparPor == 'T') return "sucessoAgrupadoPorCertificacao";
+
+			return Action.SUCCESS;
 			
 		} catch (Exception e) {
 			e.printStackTrace();

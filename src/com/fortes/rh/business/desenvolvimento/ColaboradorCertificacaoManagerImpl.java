@@ -32,11 +32,28 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
 	}
 	
-	public Collection<ColaboradorCertificacao> colaboradoresQueParticipaDoCertificado(Long certificacaoId) {
-		return getDao().colaboradoresQueParticipamDaCertificacao(null, null, null, new Long[]{certificacaoId}, null, null, false);
-//		return getDao().colaboradoresQueParticipaDoCertificado(null, certificacaoId, null, null, null);
+	public Collection<ColaboradorCertificacao> populaAvaliaçõesPraticasRealizadas(Long certificacaoId) {
+		Collection<ColaboradorAvaliacaoPratica> colabAvaliacoesPraticasTemp = new ArrayList<ColaboradorAvaliacaoPratica>();
+		CollectionUtil<ColaboradorAvaliacaoPratica> colectionUtil = new CollectionUtil<ColaboradorAvaliacaoPratica>();
+		
+		Collection<ColaboradorCertificacao> colaboradoresCertificacoes = getDao().colaboradoresQueParticipamDaCertificacao(null, null, null, new Long[]{certificacaoId}, null, null, false);
+		Long[] colaboradoresIds = new CollectionUtil<ColaboradorCertificacao>().convertCollectionToArrayIds(colaboradoresCertificacoes, "getColaboradorId");
+		Map<Long, Collection<ColaboradorAvaliacaoPratica>> mapColaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacaoId, colaboradoresIds);
+		
+		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificacoes) {
+			Long colaboradorId = colaboradorCertificacao.getColaborador().getId();
+			if(mapColaboradorAvaliacoesPraticas.containsKey(colaboradorId)){
+				colabAvaliacoesPraticasTemp = colectionUtil.sortCollectionDesc(mapColaboradorAvaliacoesPraticas.get(colaboradorId), "data");
+				if(colabAvaliacoesPraticasTemp != null && colabAvaliacoesPraticasTemp.size() > 0){
+					colaboradorCertificacao.setColaboradoresAvaliacoesPraticas(new ArrayList<ColaboradorAvaliacaoPratica>());
+					colaboradorCertificacao.getColaboradoresAvaliacoesPraticas().addAll(colabAvaliacoesPraticasTemp);
+					colaboradorCertificacao.setColaboradorAvaliacaoPraticaAtual((ColaboradorAvaliacaoPratica)colabAvaliacoesPraticasTemp.toArray()[0]);
+				}
+			}
+		}
+		
+		return colaboradoresCertificacoes;
 	}
-	
 
 	public Collection<ColaboradorCertificacao> colaboradoresParticipamCertificacao(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds)
 	{
@@ -57,14 +74,14 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	}
 	
 	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] colaboradoresIds) throws CloneNotSupportedException{
-		Map<Long, ColaboradorCertificacao> mapColaboradorTurma = montaMapColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areaIds, estabelecimentoIds, certificacoesIds);
+		Map<Long, ColaboradorCertificacao> mapColaboradoresCertificacaoes = montaMapColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areaIds, estabelecimentoIds, certificacoesIds);
 		Map<Long, Collection<AvaliacaoPratica>> mapAvaliacoesPraticas = avaliacaoPraticaManager.findMapByCertificacaoId(certificacoesIds);
 
 		Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno = new ArrayList<ColaboradorCertificacao>();
-		for (Long colaboradorId : mapColaboradorTurma.keySet()){
-			for (ColaboradorTurma colaboradorTurma : mapColaboradorTurma.get(colaboradorId).getColaboradoresTurmas())
+		for (Long colaboradorId : mapColaboradoresCertificacaoes.keySet()){
+			for (ColaboradorTurma colaboradorTurma : mapColaboradoresCertificacaoes.get(colaboradorId).getColaboradoresTurmas())
 			{
-				ColaboradorCertificacao colabCertificacao = (ColaboradorCertificacao) mapColaboradorTurma.get(colaboradorId).clone();
+				ColaboradorCertificacao colabCertificacao = (ColaboradorCertificacao) mapColaboradoresCertificacaoes.get(colaboradorId).clone();
 				colabCertificacao.setNomeCurso(colaboradorTurma.getCurso().getNome());
 				colabCertificacao.setCertificacao((Certificacao) colabCertificacao.getCertificacao().clone());
 				
@@ -79,7 +96,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 				colaboradorCertificacaosRetorno.add(colabCertificacao);
 			}
 
-			ColaboradorCertificacao colaboradorCertificacao = mapColaboradorTurma.get(colaboradorId);
+			ColaboradorCertificacao colaboradorCertificacao = mapColaboradoresCertificacaoes.get(colaboradorId);
 			colaboradorCertificacaosRetorno.addAll(populaAvaliacoesPraticas(colaboradorCertificacao, mapAvaliacoesPraticas.get(colaboradorCertificacao.getCertificacao().getId())));
 		}
 		
@@ -171,103 +188,6 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 
 		return colabTurmasRetorno;
 	}
-	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-//		
-//		
-//		Collection<ColaboradorCertificacao> colaboradoresQueParticipamDaCerttificacao = new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradoresQueParticipamDaCerttificacao, "colaborador.nome");
-//
-//		Date hoje = new Date();
-//		Date dataDoVencimento = null;
-//		ColaboradorCertificacao	colabCertificacao;
-//		
-//		
-//		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresQueParticipamDaCerttificacao){
-//			if( colaboradorCertificacao.getData() != null && colaboradorCertificacao.getCertificacao() != null && colaboradorCertificacao.getCertificacao().getPeriodicidade() != null)
-//				dataDoVencimento = DateUtil.incrementaMes(colaboradorCertificacao.getData(), colaboradorCertificacao.getCertificacao().getPeriodicidade());
-//
-//			if(colaboradorCertificado && !colaboradorNaoCertificado){//Marca apenas Colaboradores Certificados
-//				if(colaboradorCertificacao.getId() == null)
-//					continue;
-//				else if(dataDoVencimento != null && dataDoVencimento.getTime() < hoje.getTime())
-//					continue;
-//			}
-//			
-//			if(!colaboradorCertificado && colaboradorNaoCertificado){//Marca apenas Colaboradores NÃO Certificados
-//				if(colaboradorCertificacao.getId() != null && dataDoVencimento != null && dataDoVencimento.getTime() >= hoje.getTime())
-//					continue;
-//			}
-//			
-//			if(colaboradorCertificado && colaboradorCertificacao.getId() != null){
-//				if(dataIni != null && colaboradorCertificacao.getData().getTime() < dataIni.getTime())
-//					continue;
-//				if(dataFim != null && colaboradorCertificacao.getData().getTime() > dataFim.getTime())
-//					continue;
-//				if(mesesCertificacoesAVencer != null && mesesCertificacoesAVencer != 0 && dataDoVencimento != null && dataDoVencimento.getTime() >= hoje.getTime())
-//				{
-//					Date dataDeAntecendenciaDoVencimento = DateUtil.incrementaMes(dataDoVencimento, (-1*mesesCertificacoesAVencer));
-//					if(dataDeAntecendenciaDoVencimento.getTime() < hoje.getTime())
-//						continue;
-//				}
-//			}
-//			
-//			colaboradorTurmas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(colaboradorCertificacao.getCertificacao().getId(), colaboradorCertificacao.getId(), colaboradorCertificacao.getColaborador().getId());
-//		
-//			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
-//			{
-//				colabCertificacao = (ColaboradorCertificacao) colaboradorCertificacao.clone();
-//				colabCertificacao.setPeriodoTurma(formataPeriodo(colaboradorTurma.getTurma().getDataPrevIni(), colaboradorTurma.getTurma().getDataPrevFim()));
-//				colabCertificacao.setNomeCurso(colaboradorTurma.getCurso().getNome());
-//				colabCertificacao.setCertificacao((Certificacao)colaboradorCertificacao.getCertificacao().clone());
-//				colabCertificacao.getCertificacao().setAprovadoNaTurma(colaboradorTurma.isAprovado() && colaboradorTurma.getTurma().getRealizada());
-//				colaboradorCertificacaosRetorno.add(colabCertificacao);
-//			}
-//			
-//			populaAvaliacoesPraticas(colaboradorCertificacaosRetorno,colaboradorCertificacao);
-//		}	
-			
-
-//	private void populaAvaliacoesPraticas(Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno, ColaboradorCertificacao colaboradorCertificacao) 
-//	{
-//		
-//		Collection<AvaliacaoPratica> avaliacoesPraticas = avaliacaoPraticaManager.findByCertificacaoId(colaboradorCertificacao.getCertificacao().getId());
-//		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(
-//				colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getCertificacao().getId(), colaboradorCertificacao.getId(), null, true, true);
-//		
-//		for (AvaliacaoPratica avaliacaoPratica : avaliacoesPraticas) 
-//		{
-//			if(avaliacaoPratica.getId() == null)
-//				continue;
-//			
-//			ColaboradorCertificacao colabCertificacao = new ColaboradorCertificacao();
-//			colabCertificacao.setPeriodoTurma("-");
-//			colabCertificacao.setNomeCurso("Avaliação Prática: " + avaliacaoPratica.getTitulo());
-//			colabCertificacao.setCertificacao((Certificacao)colaboradorCertificacao.getCertificacao().clone());
-//			colabCertificacao.getCertificacao().setAprovadoNaTurma(false);
-//			
-//			for (ColaboradorAvaliacaoPratica avaliacaoPraticaDoColaboradorRealizada : avaliacoesPraticasDoColaboradorRealizadas){
-//				if(avaliacaoPraticaDoColaboradorRealizada.getAvaliacaoPratica().getId().equals(avaliacaoPratica.getId())){
-//					colabCertificacao.getCertificacao().setAprovadoNaTurma(avaliacaoPraticaDoColaboradorRealizada.getNota() >= avaliacaoPratica.getNotaMinima());
-//					colabCertificacao.setPeriodoTurma("Data da Avaliação: " + avaliacaoPraticaDoColaboradorRealizada.getDataFormatada());
-//					break;
-//				}
-//			}
-//			
-//			colaboradorCertificacaosRetorno.add(colabCertificacao);
-//		}
-//	}
 
 	private String formataPeriodo(Date dataPrevIni, Date dataPrevFim)
 	{

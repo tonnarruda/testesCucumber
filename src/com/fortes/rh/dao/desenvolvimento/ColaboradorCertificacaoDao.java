@@ -22,5 +22,4 @@ public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertif
 	Date getMaiorDataDasTurmasDaCertificacao(Long colaboradorCertificacaoId);
 	Collection<ColaboradorCertificacao> findColaboradorCertificadoEmUmaTurmaPosterior(Long turmaId, Long colaboradorId);
 	Collection<ColaboradorCertificacao> findColaboradorCertificacaoPreRequisito(Long colaboradorCertificacaoId);
-	public Collection<ColaboradorCertificacao> colaboradoresQueParticipaDoCertificado(Date dataFim, Long certificadoId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds);//para remover futuramente
 }

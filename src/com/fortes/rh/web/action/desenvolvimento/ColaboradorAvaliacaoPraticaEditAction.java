@@ -222,26 +222,9 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		if(certificacao == null || certificacao.getId() == null)
 			return Action.SUCCESS;
 
-		colaboradorCertificacaos = colaboradorCertificacaoManager.colaboradoresQueParticipaDoCertificado(certificacao.getId());
-		populaColaboradorAvaliacaoPraticaLote();
+		colaboradorCertificacaos = colaboradorCertificacaoManager.populaAvaliaçõesPraticasRealizadas(certificacao.getId());
 
 		return Action.SUCCESS;
-	}
-
-	private void populaColaboradorAvaliacaoPraticaLote() {
-		if(avaliacaoPratica != null && avaliacaoPratica.getId() != null)
-		{
-			Collection<ColaboradorAvaliacaoPratica> colaboradoresAvaliacoesPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
-			
-			for (ColaboradorCertificacao colaboradorCertificacaoTemp : colaboradorCertificacaos){
-				colaboradoresAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorCertificacaoTemp.getColaborador().getId(), certificacao.getId(), null, avaliacaoPratica.getId(), false, false);
-				
-				if(colaboradoresAvaliacoesPraticas != null && colaboradoresAvaliacoesPraticas.size() > 0){
-					colaboradorCertificacaoTemp.setColaboradoresAvaliacoesPraticas(colaboradoresAvaliacoesPraticas);
-					colaboradorCertificacaoTemp.setColaboradorAvaliacaoPraticaAtual((ColaboradorAvaliacaoPratica)colaboradoresAvaliacoesPraticas.toArray()[0]);
-				}
-			}
-		}
 	}
 	
 	public String insertOrUpdateLote() throws Exception

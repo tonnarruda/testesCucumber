@@ -98,6 +98,7 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 	    criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cap.data"), Subqueries.propertyEq("cap.data", ultimoColaboradorAvPratica))));
 
 	    criteria.addOrder(Order.asc("cap.colaborador.id"));
+	    criteria.addOrder(Order.asc("cap.data"));
 	    criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	    criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorAvaliacaoPratica.class));
 

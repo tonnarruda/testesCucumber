@@ -330,8 +330,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 	{
 		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(certificacoes));
 		avaliacaoPraticaManager.expects(once()).method("findByCertificacaoId").will(returnValue(avaliacaoPraticas));
-		colaboradorCertificacaoManager.expects(once()).method("colaboradoresQueParticipaDoCertificado").will(returnValue(colaboradorCertificacoes));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(colaboradorAvaliacaoPraticas));
+		colaboradorCertificacaoManager.expects(once()).method("populaAvaliaçõesPraticasRealizadas").will(returnValue(colaboradorCertificacoes));
 	}
 	
 	public void testBuscaColaboradoresLote() throws Exception
