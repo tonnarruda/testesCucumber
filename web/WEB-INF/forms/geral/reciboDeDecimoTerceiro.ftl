@@ -5,7 +5,7 @@
 		
 		<#include "../ftl/mascarasImports.ftl" />
 	
-		<#assign validarCampos="return validaFormulario('form', new Array('mesAno'), new Array('mesAno') )"/>
+		<#assign validarCampos="return validaFormulario('form', new Array('dataCalculo'), new Array('dataCalculo') )"/>
 	</head>
 	<body>
 		<@ww.actionerror />
@@ -13,7 +13,7 @@
 		
 		<#if colaborador.id?exists && empresaSistema.acIntegra>
 			<@ww.form name="form" action="reciboDeDecimoTerceiro.action" onsubmit="${validarCampos}" method="POST">
-				<@ww.select label="Data" name="dataCalculo" list="dataCalculos"/>
+				<@ww.select label="Data" name="dataCalculo" id="dataCalculo" list="dataCalculos"/>
 				<div class="buttonGroup">
 					<button onclick="${validarCampos};" class="btnDownload"></button>
 				</div>

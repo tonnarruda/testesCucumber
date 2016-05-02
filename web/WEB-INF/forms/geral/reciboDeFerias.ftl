@@ -9,9 +9,9 @@
 			function validaForm() {
 				var intervaloDeDatas = $("select[name=dataCalculo]").val().split(" ");
 				console.log(intervaloDeDatas);
-				$("input[name=dataInicioGozo").val(intervaloDeDatas[0]);
-				$("input[name=dataFimGozo").val(intervaloDeDatas[2]);
-				return validaFormulario('form', new Array('mesAno'), new Array('mesAno') );
+				$("input[name=dataInicioGozo]").val(intervaloDeDatas[0]);
+				$("input[name=dataFimGozo]").val(intervaloDeDatas[2]);
+				return validaFormulario('form', new Array('dataCalculo'), new Array('dataCalculo') );
 			}
 		</script>
 	
@@ -25,7 +25,7 @@
 			<@ww.form name="form" action="reciboDeFerias.action" onsubmit="${validarCampos}" method="POST">
 				<input type="hidden" name="dataInicioGozo"/>
 				<input type="hidden" name="dataFimGozo"/>
-				<@ww.select label="Data" name="dataCalculo" list="dataCalculos"/>
+				<@ww.select label="Data" name="dataCalculo" id="dataCalculo" list="dataCalculos"/>
 				<div class="buttonGroup">
 					<button onclick="${validarCampos};" class="btnDownload"></button>
 				</div>

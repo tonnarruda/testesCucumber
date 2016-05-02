@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.16x.19x" db="" data="xx/05/2016">
+		<Item visivel="S" motivo="P16050000011"><![CDATA[Info. Funcionais > Relatórios > Recibos de Pagamentos > Férias: Ajuste na inconsistência ao emitir o recibo de férias.]]></Item>
+	</Versao>
 	<Versao id="1.1.165.196" db="" data="27/04/2016">
 		<Item visivel="S" motivo="P16040000229"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho: Ajuste na inconsistência ao liberar avaliação contendo respostas.]]></Item>
 		<Item visivel="N" motivo="P16040000229"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Ajuste na inconsistência ao editar avaliação de desempenho que esta configurado para avaliar as competências dos avaliados e o avaliado não possui a configuração de nível competência em sua faixa salarial.]]></Item>
