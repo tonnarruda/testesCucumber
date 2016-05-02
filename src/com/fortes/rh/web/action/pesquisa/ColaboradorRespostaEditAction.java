@@ -141,8 +141,14 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         			colaboradorRespostas = colaboradorRespostaManager.findByQuestionarioCandidato(questionario.getId(), candidato.getId(), null);
         	}
         }
-        else
-        	colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
+        else {
+        	if (getUsuarioLogado().getColaborador() != null && colaborador.getId().equals(getUsuarioLogado().getColaborador().getId()))
+        		colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
+        	else {
+        		addActionError("Permissão negada. Não foi possível acessar a avaliação do colaborador.");
+        		return Action.ERROR;
+        	}
+        }
 
         if(questionario.getPerguntas().isEmpty())
         	addActionMessage("Não existe pergunta neste questionario.");
