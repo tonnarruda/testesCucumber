@@ -65,6 +65,7 @@
 		#parentesDialog table { width: 100%; }
 		#parentesDialog td { width: 50%; vertical-align: top; }
 		#wwgrp_dt_encerramentoContrato { margin-top: 5px; }
+		input[disabled] { background: #EFEFEF; }
 	</style>
 
 	<#include "../cargosalario/calculaSalarioInclude.ftl" />
@@ -242,6 +243,11 @@
 					populaFuncao(${historicoColaborador.faixaSalarial.id});
 				</#if>
 			</@authz.authorize>
+			
+			$("#naoIntegraAc").change(function(){
+				$('#matricula').toggleDisabled();
+				$('#wwgrp_obsACPessoal').toggle(!this.checked);
+			})
 			
 			habilitaDtEncerramentoContrato();
 			checkNaoIntegraAC();
@@ -489,7 +495,7 @@
 
 			<#if integraAc>
 				<#if !colaborador.id?exists>
-					<@ww.checkbox label="Não enviar este colaborador para o Fortes Pessoal" id="naoIntegraAc" name="colaborador.naoIntegraAc" liClass="liLeft" labelPosition="left" onchange="$('#wwgrp_obsACPessoal').toggle(!this.checked)"/>
+					<@ww.checkbox label="Não enviar este colaborador para o Fortes Pessoal" id="naoIntegraAc" name="colaborador.naoIntegraAc" liClass="liLeft" labelPosition="left" onchange=""/>
 					<@ww.checkbox label="Este colaborador não será enviado para o Fortes Pessoal" id="naoIntegraACSocio" name="naoIntegra" liClass="liLeft" disabled="true" labelPosition="left"/>				
 				<#else>
 					<@ww.hidden id="naoIntegraAc" name="colaborador.naoIntegraAc"/>
@@ -564,7 +570,7 @@
 			<#if integraAc && !colaborador.naoIntegraAc>
 				<@ww.textfield label="Código no Fortes Pessoal" name="colaborador.codigoAC" id="codigoAC" disabled="true" cssStyle="width: 80px;"/>
 			</#if>
-			<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matricula" disabled= "${somenteLeituraIntegraAC}" cssStyle="width:150px;" liClass="liLeft" maxLength="20"/>
+			<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matricula" disabled= "${(integraAc && !colaborador.naoIntegraAc)?string}" cssStyle="width:150px;" liClass="liLeft" maxLength="20"/>
 
 			<#if somenteLeituraIntegraAC=="true" && edicao=="true">
 				<label for="dt_admissao">Admissão:</label><br />
@@ -668,7 +674,7 @@
 				</@ww.div>
 			</li>
 
-			<#if somenteLeituraIntegraAC== "true">
+			<#if integraAc && !colaborador.naoIntegraAc>
 				<@ww.hidden name="colaborador.matricula" />
 			</#if>
 
