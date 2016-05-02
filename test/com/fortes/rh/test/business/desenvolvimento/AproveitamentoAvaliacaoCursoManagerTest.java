@@ -15,13 +15,22 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManagerImpl;
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
 import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
+import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.SpringUtil;
 
 public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 {
@@ -29,6 +38,7 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 	Mock aproveitamentoAvaliacaoCursoDao = null;
 	Mock transactionManager;
 	Mock colaboradorCertificacaoManager;
+	Mock colaboradorTurmaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -38,12 +48,20 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		aproveitamentoAvaliacaoCursoManager.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
 		transactionManager = new Mock(PlatformTransactionManager.class);
 		aproveitamentoAvaliacaoCursoManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
-
+		colaboradorTurmaManager = new Mock(ColaboradorTurmaManager.class);
+		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 		Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
 	}
 	
-	public void testUpdateNotas() throws Exception
-	{
+	public void testUpdateNotas() throws Exception {
+		MockSpringUtil.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		Curso curso = CursoFactory.getEntity(1L);
+		Turma turma = TurmaFactory.getEntity(1L);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, curso, turma);
+		colaboradorTurma.setId(123L);
+		
 		Long[] colaboradorTurmaIds = new Long[]{1L,2L};
 		String[] notas = new String[]{"4.0","5.0"};
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(1);
@@ -59,41 +77,64 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(aproveitamento));
 		colaboradorCertificacaoManager.expects(atLeastOnce()).method("descertificarColaboradorByColaboradorTurma").with(ANYTHING, ANYTHING);
 		
+		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
+		colaboradorTurmaManager.expects(atLeastOnce()).method("findByProjection").with(ANYTHING).will(returnValue(colaboradorTurma));
+
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
 	}
 
 	public void testSaveNotas() throws Exception
 	{
+		MockSpringUtil.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
 		Long[] colaboradorTurmaIds = new Long[]{1L,2L,3L};
 		String[] notas = new String[]{"4.0","5.0",""};
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(10L);
 		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		Curso curso = CursoFactory.getEntity(1L);
+		Turma turma = TurmaFactory.getEntity(1L);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, curso, turma);
+		colaboradorTurma.setId(123L);
+
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("save");
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(null));
-
+		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").withAnyArguments().isVoid();
+		colaboradorTurmaManager.expects(atLeastOnce()).method("findByProjection").with(ANYTHING).will(returnValue(colaboradorTurma));
+		
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
 	}
 	
 	public void testSaveNotasComConfiguracaoPeriodicidadePorCertificacao() throws Exception
 	{
+		MockSpringUtil.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
 		Long[] colaboradorTurmaIds = new Long[]{1L,2L,3L};
 		String[] notas = new String[]{"4.0","5.0",""};
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(10L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		Curso curso = CursoFactory.getEntity(1L);
+		Turma turma = TurmaFactory.getEntity(1L);
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, curso, turma);
+		colaboradorTurma.setId(123L);
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("save");
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(null));
-		
+		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").withAnyArguments().isVoid();
+		colaboradorTurmaManager.expects(atLeastOnce()).method("findByProjection").with(ANYTHING).will(returnValue(colaboradorTurma));
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, true);
 	}
 	
 	public void testSaveNotas2()
 	{
+		MockSpringUtil.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
+		
 		AvaliacaoCurso avaliacaoCurso1 = AvaliacaoCursoFactory.getEntity(1L);
 		AvaliacaoCurso avaliacaoCurso2 = AvaliacaoCursoFactory.getEntity(2L);
 		AvaliacaoCurso avaliacaoCurso3 = AvaliacaoCursoFactory.getEntity(3L);
@@ -102,16 +143,26 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		
 		String[] notas = new String[]{"","3.1","5,5"};
 		
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		Curso curso = CursoFactory.getEntity(1L);
+		Turma turma = TurmaFactory.getEntity(1L);
 		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, curso, turma);
+		colaboradorTurma.setId(123L);
+		
+		colaboradorTurmaManager.expects(atLeastOnce()).method("findByProjection").with(eq(colaboradorTurma.getId())).will(returnValue(colaboradorTurma));
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(null));
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("save").with(ANYTHING);
+		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurma, notas, avaliacaoCursoIds);
 	}
 
 	
 	public void testSaveNotasException() throws Exception
 	{
+		MockSpringUtil.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
+		
 		Long[] colaboradorTurmaIds = new Long[]{1L};
 		String[] notas = new String[]{"4.0"};
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(1);
@@ -119,6 +170,8 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		aproveitamentoAvaliacaoCursoDao.expects(once()).method("save").withAnyArguments().will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));;
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(null));
+		colaboradorTurmaManager.expects(once()).method("findByProjection").with(ANYTHING);
+
 		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
 		Exception exc = null;

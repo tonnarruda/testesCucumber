@@ -120,7 +120,6 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
 			turmaDocumentoAnexoManager.salvarDocumentoAnexos(turma.getId(), documentoAnexoIds);
 		}
-		
 		verificaAprovacaoByTurma(turma.getId());
 		
 		if(validarCertificacao && colaboradorTurma == null)

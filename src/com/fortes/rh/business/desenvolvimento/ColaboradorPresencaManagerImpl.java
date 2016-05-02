@@ -43,10 +43,8 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			diaTurma.setId(diaTurmaId);
 			ColaboradorPresenca colaboradorPresenca = new ColaboradorPresenca(colaboradorTurma, diaTurma, true);
 			getDao().save(colaboradorPresenca);
-			getDao().getHibernateTemplateByGenericDao().flush();
-			
 			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
-			
+			getDao().getHibernateTemplateByGenericDao().flush();
 			if(validarCertificacao)
 				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
 		}
