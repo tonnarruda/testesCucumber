@@ -14,11 +14,13 @@
             width: 240px;
 		}
 		
+		.icoImprimir { float: right; cursor: pointer; }
+		
 		.legendColorBox { width: 20px; border: none; }
 		.legendColorBox > div { border: 1px solid #fff !important; }
 		
-		#custo { width: 220px !important; }
-		#custoLegenda { float: right; width: 220px; height: 195px; overflow-y: auto; }
+		#custo, #desempenho, #treinamento { width: 220px !important; }
+		#custoLegenda, #desempenhoLegenda, #treinamentoLegenda { float: right; width: 220px; height: 195px; overflow-y: auto; }
 		
 		#custoPorCursoLegenda { float: right; width: 500px; height: 400px; overflow-y: auto; }
 		#custoPorCurso { width: 400px !important;   height: 400px !important;}
@@ -80,36 +82,7 @@
 		$(function () {
 			$("#box").dialog({autoOpen: false});
 		
-	        var participantes = ${grfFrequenciaParticipantes};
-	        var inscritos = ${grfFrequenciaInscritos};
-	        var presentes = ${grfFrequenciaPresentes};
-		    
-		    $.plot($("#frequencia"), 
-		    		[
-				        {label: 'Qtd. Prev. de Participantes (' + participantes[0][1] + ')', data: participantes},
-				        {label: 'Inscritos (' + inscritos[0][1] + ')', data: inscritos},
-				        {label: 'Presentes (' + presentes[0][1] + ')', data: presentes}
-				    ], 
-		    		{
-		    			series: {
-			                bars: {
-			                	show: true, 
-			                 	align: 'left',
-			                 	barWidth: 0.5
-			                }
-				        },
-				        grid: { hoverable: true },
-				        legend: {
-		                    position: "nw", // position of default legend container within plot
-		                    backgroundColor: null, // null means auto-detect
-		                    backgroundOpacity: 0 // set to 0 to avoid background
-		                },
-				        xaxis: {
-				        	ticks: [],
-				        	autoscaleMargin: 0.6
-				        }
-			    	});
-	    
+	        montaGraficoFrequencia();
 	    			    
 		    $("#frequencia").bind("plothover", function (event, pos, item) {
 	            if (item) 
@@ -145,10 +118,10 @@
 					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
 				});
 			
-			montaPie(${grfTreinamento}, "#treinamento", {combinePercentMin: -1, percentMin: 0} );
-			montaPie(${grfDesempenho}, "#desempenho", {combinePercentMin: -1, percentMin: 0} );
-			montaPie(${grfCusto}, "#custo", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, container:'#custoLegenda' });
-			montaPie(cursosOrdered, "#custoPorCurso", {radius: 0.9, radiusLabel: 1, combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, clickable: true, hoverable: true, container:'#custoPorCursoLegenda' });
+			montaGrafico("#treinamento", ${grfTreinamento}, 'Cumprimento do Plano de Treinamento', {combinePercentMin: -1, percentMin: 0, container:'#treinamentoLegenda'});
+			montaGrafico("#desempenho", ${grfDesempenho}, 'Aproveitamento dos Treinamentos', {combinePercentMin: -1, percentMin: 0, container:'#desempenhoLegenda'});
+			montaGrafico("#custo", ${grfCusto}, 'Custo por Tipo de Despesa', { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, container:'#custoLegenda' });
+			montaGrafico("#custoPorCurso", cursosOrdered, 'Custo por Curso', {radius: 0.9, radiusLabel: 1, combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, clickable: true, hoverable: true, container:'#custoPorCursoLegenda' });
 			
 			$("#custoPorCurso").bind("plothover", plotPieHover).bind("plotclick", pieClick);
 			
@@ -198,6 +171,83 @@
 			});
 		});
 		
+		function montaGrafico(obj, dados, titulo, config)
+		{
+			montaPie(dados, obj, config);
+			
+			$(obj + "Imprimir")
+					.unbind()
+					.bind('click', 
+						function(event) 
+						{ 
+							popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
+							popup.window.onload = function() 
+							{
+								popup.focus();
+								popup.document.getElementById('popupTitulo').innerHTML = titulo;
+								
+								popup.window.opener.montaPie(dados, popup.document.getElementById('popupGrafico'),  { container: popup.document.getElementById('popupGraficoLegenda'), combinePercentMin: -1, percentMin: 0.03} );
+								popup.window.print();
+								popup.window.close();
+							}
+						}
+					);
+		}
+		
+		function mountPlotFrequencia(e) {
+				var participantes = ${grfFrequenciaParticipantes};
+	        	var inscritos = ${grfFrequenciaInscritos};
+	        	var presentes = ${grfFrequenciaPresentes};
+	        
+			   $.plot($(e), 
+		    		[
+				        {label: 'Qtd. Prev. de Participantes (' + participantes[0][1] + ')', data: participantes},
+				        {label: 'Inscritos (' + inscritos[0][1] + ')', data: inscritos},
+				        {label: 'Presentes (' + presentes[0][1] + ')', data: presentes}
+				    ], 
+		    		{
+		    			series: {
+			                bars: {
+			                	show: true, 
+			                 	align: 'left',
+			                 	barWidth: 0.5
+			                }
+				        },
+				        grid: { hoverable: true },
+				        legend: {
+		                    position: "nw", // position of default legend container within plot
+		                    backgroundColor: null, // null means auto-detect
+		                    backgroundOpacity: 0 // set to 0 to avoid background
+		                },
+				        xaxis: {
+				        	ticks: [],
+				        	autoscaleMargin: 0.6
+				        }
+			    	});
+		};
+		
+		function montaGraficoFrequencia() {
+			mountPlotFrequencia("#frequencia");
+ 	
+		   	$("#frequenciaImprimir")
+				.unbind()
+				.bind('click', 
+					function(event) 
+					{ 
+						popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
+						popup.window.onload = function() 
+						{
+							popup.focus();
+							popup.document.getElementById('popupTitulo').innerHTML = 'Qtd. Prevista de Participantes x Inscritos x Presentes';
+							
+							popup.window.opener.mountPlotFrequencia(popup.document.getElementById('popupGrafico'));
+							popup.window.print();
+							popup.window.close();
+						}
+					}
+				);
+		}
+		
 		function plotPieHover(event, pos, item) {
             if (item) 
             {
@@ -238,11 +288,29 @@
 					});
 					
 					montaPie(tipoDespesaPorCurso, "#pieBox", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, container:'#pieLegendBox' });
-					
+					 
 					var percent = parseFloat(obj.series.percent).toFixed(2);
 					var descricaoArea = tipoDespesaPorCurso[0].descricao;
 					var titleSubArea = descricaoArea + ' &#x2013; '+ percent + '% (R$' + formataNumero(obj.series.datapoints.points[1]) + ')';
 					
+					$("#boxImprimir")
+					.unbind()
+					.bind('click', 
+						function(event) 
+						{ 
+							popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
+							popup.window.onload = function() 
+							{
+								popup.focus();
+								popup.document.getElementById('popupTitulo').innerHTML = titleSubArea;
+								
+								popup.window.opener.mountPlotFrequencia(popup.document.getElementById('popupGrafico'));
+								popup.window.opener.montaPie(tipoDespesaPorCurso, popup.document.getElementById('popupGrafico'), { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, container: popup.document.getElementById('popupGraficoLegenda') });
+								popup.window.print();
+								popup.window.close();
+							}
+						}
+					);
 					$("#box").dialog("option", { zIndex: 9999, title: titleSubArea, width: 700, height: 350 });
 					$("#box").dialog("open");
 				},
@@ -352,13 +420,17 @@
 					<td class="grid-cell">
 						<div class="cell-title">
 							Qtd. Prevista de Participantes x Inscritos x Presentes
+							<img id="frequenciaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 						</div>
+						<div id="frequenciaLegenda"></div>
 						<div id="frequencia" class="graph" ></div>
 					</td>
 					<td class="grid-cell">
 						<div class="cell-title">
 							Cumprimento do Plano de Treinamento
+							<img id="treinamentoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 						</div>
+						<div id="treinamentoLegenda"></div>
 						<div id="treinamento" class="graph"></div>
 					</td>
 				</tr>
@@ -366,12 +438,15 @@
 					<td class="grid-cell">
 						<div class="cell-title">
 							Aproveitamento dos Treinamentos
+							<img id="desempenhoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 						</div>
+						<div id="desempenhoLegenda"></div>
 						<div id="desempenho" class="graph" ></div>
 					</td>
 					<td class="grid-cell">
 						<div class="cell-title">
 							Custo por Tipo de Despesa
+							<img id="custoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 						</div>
 						<div id="custoLegenda"></div>
 						<div id="custo" class="graph"></div>
@@ -381,6 +456,7 @@
 					<td class="grid-cell" colspan="2">
 						<div class="cell-title">
 							Custo por Curso
+							<img id="custoPorCursoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 						</div>
 						<div id="custoPorCursoLegenda"></div>
 						<div id="custoPorCurso" class="graph"></div>
@@ -395,6 +471,7 @@
 		<div id="pieLegendBox"></div>
 
 		<div style="clear: both"></div>
+		<img id="boxImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 	</div>
 </body>
 </html>
