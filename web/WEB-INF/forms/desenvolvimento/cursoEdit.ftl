@@ -32,6 +32,7 @@
 		$('#avaliacaoCursoCheckToolTipHelp').qtip({
 			content: 'Não será possível desmarcar nenhuma das avaliações dos alunos quando houver resposta para pelo menos uma das avaliações.'
 		});
+		$('#percentualMinimoFrequenciaTooltipHelp').qtip({content: 'Não é possível realizar a edição deste campo, existem turmas realizadas e colaboradores com presenças registradas.'});
 	});
 	
 </script>
@@ -62,7 +63,14 @@
 		</#if>
 	
 		<@ww.textfield label="Carga Horária" name="curso.cargaHorariaMinutos" cssStyle="width:55px;text-align:right" maxLength="7" cssClass="hora"/>
-		<@ww.textfield label="Percentual mínimo de frequência para aprovação (%)" id ="percentualMinimoFrequencia" name="curso.percentualMinimoFrequencia" maxLength="6" cssStyle="width:50px;text-align: right;" onblur="validaPercentual()"/>
+		
+		<#if existeFrequencia>
+			<@ww.textfield readonly="true" label="Percentual mínimo de frequência para aprovação (%)" id ="percentualMinimoFrequencia" name="curso.percentualMinimoFrequencia" maxLength="6" cssStyle="width:50px;text-align: right; background: #EBEBEB;" onblur="validaPercentual()"/>
+			<img id="percentualMinimoFrequenciaTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin:-40px 0 35px 313px;"/>
+			<@ww.hidden name="curso.percentualMinimoFrequencia" />
+		<#else>
+			<@ww.textfield label="Percentual mínimo de frequência para aprovação (%)" id ="percentualMinimoFrequencia" name="curso.percentualMinimoFrequencia" maxLength="6" cssStyle="width:50px;text-align: right;" onblur="validaPercentual()"/>
+		</#if>
 		
 		<#if empresaSistema.controlarVencimentoPorCurso>
 			<@ww.textfield label="Periodicidade em meses" name="curso.periodicidade" id="periodicidade" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/>

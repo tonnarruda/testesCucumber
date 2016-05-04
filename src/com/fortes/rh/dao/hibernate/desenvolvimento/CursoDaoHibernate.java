@@ -21,6 +21,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
+import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
@@ -517,6 +518,20 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 			criteria.add(Expression.not(Expression.eq("a.valor", 0.0)));
 		}
 		
+		return ((Integer) criteria.uniqueResult()) > 0;
+	}
+	
+	public boolean existePresenca(Long cursoId)
+	{
+		Criteria criteria = getSession().createCriteria(ColaboradorPresenca.class,"cp");
+		criteria.createCriteria("cp.colaboradorTurma", "ct");
+		criteria.createCriteria("ct.turma", "t");
+		criteria.add(Expression.eq("ct.curso.id", cursoId));
+		criteria.add(Expression.eq("t.realizada", true));
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.count("cp.id"));
+		criteria.setProjection(p);
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 

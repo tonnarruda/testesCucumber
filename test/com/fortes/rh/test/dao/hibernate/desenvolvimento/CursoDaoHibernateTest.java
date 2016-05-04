@@ -6,6 +6,11 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
@@ -14,6 +19,7 @@ import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
+import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
@@ -30,6 +36,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
+import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
@@ -53,6 +60,7 @@ import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
@@ -79,6 +87,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao; 
 	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao; 
 	private EstabelecimentoDao estabelecimentoDao;
+	private ColaboradorPresencaDao colaboradorPresencaDao;
 
 	private Curso curso;
 	private Empresa empresa;
@@ -243,14 +252,14 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Curso curso1 = getCurso("curso 1", empresa, 10*60);
-		getTurma(curso1, dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), true, 200.0); 
+		Curso curso1 = saveCurso("curso 1", empresa, 10*60);
+		saveTurma(curso1, dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), true, 200.0); 
 		
-		Curso curso2 = getCurso("curso 2", empresa, 30*60); 
-		getTurma(curso2, dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), true, 3512.69);
+		Curso curso2 = saveCurso("curso 2", empresa, 30*60); 
+		saveTurma(curso2, dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), true, 3512.69);
 		
 		/** Esta turma está fora da consulta devido o período que a mesma foi realizada*/
-		getTurma(curso2, dataQuatroMesesDepois.getTime(), dataQuatroMesesDepois.getTime(), true, 9582.00);
+		saveTurma(curso2, dataQuatroMesesDepois.getTime(), dataQuatroMesesDepois.getTime(), true, 9582.00);
 		
 		Double custoTotal = cursoDao.somaCustosTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), new Long[]{empresa.getId()}, null);
 		assertEquals("Custo das turmas", 3712.69, custoTotal);
@@ -280,19 +289,19 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Colaborador colaborador3 = getColaboradorComHistorico(empresa, estabelecimento, area, dataHistorico, StatusRetornoAC.CONFIRMADO);
 		Colaborador colaborador4 = getColaboradorComHistorico(empresa, estabelecimento2, area2, dataHistorico, StatusRetornoAC.CONFIRMADO);
 
-		Curso curso1 = getCurso("curso 1", empresa, 10*60);
-		Turma turma1 = getTurma(curso1, dataDoisMesesDepois, dataTresMesesDepois, true, 200.0);
+		Curso curso1 = saveCurso("curso 1", empresa, 10*60);
+		Turma turma1 = saveTurma(curso1, dataDoisMesesDepois, dataTresMesesDepois, true, 200.0);
 		
-		Curso curso2 = getCurso("curso 2", empresa, 30*60);
-		Turma turma2 = getTurma(curso2, dataDoisMesesDepois, dataQuatroMesesDepois, true, 500.50);
+		Curso curso2 = saveCurso("curso 2", empresa, 30*60);
+		Turma turma2 = saveTurma(curso2, dataDoisMesesDepois, dataQuatroMesesDepois, true, 500.50);
 		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014)); 
 		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014));
 		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014));		
 
-		getColaboradorTurma(curso1, turma1, colaborador1); 
-		getColaboradorTurma(curso1, turma1, colaborador2);
-		getColaboradorTurma(curso2, turma2, colaborador3); 
-		getColaboradorTurma(curso1, turma1, colaborador4);
+		saveColaboradorTurma(curso1, turma1, colaborador1); 
+		saveColaboradorTurma(curso1, turma1, colaborador2);
+		saveColaboradorTurma(curso2, turma2, colaborador3); 
+		saveColaboradorTurma(curso1, turma1, colaborador4);
 				
 		IndicadorTreinamento result = cursoDao.findIndicadorHorasTreinamentos(dataDoisMesesDepois, dataTresMesesDepois, new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, null);
 		
@@ -317,14 +326,14 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Colaborador colaborador1 = getColaboradorComHistorico(empresa, estabelecimento, area, DateUtil.criarDataMesAno(1, 2, 2014) , StatusRetornoAC.CONFIRMADO);
 		Colaborador colaborador2 = getColaboradorComHistorico(empresa, estabelecimento2, area2, DateUtil.criarDataMesAno(1, 2, 2014), StatusRetornoAC.CONFIRMADO);
 
-		Curso curso1 = getCurso("curso 1", empresa, 10*60);
-		Turma turma1 = getTurma(curso1, DateUtil.criarDataMesAno(1, 4, 2014), DateUtil.criarDataMesAno(1, 5, 2014), true, 200.0);
+		Curso curso1 = saveCurso("curso 1", empresa, 10*60);
+		Turma turma1 = saveTurma(curso1, DateUtil.criarDataMesAno(1, 4, 2014), DateUtil.criarDataMesAno(1, 5, 2014), true, 200.0);
 
-		Curso curso2 = getCurso("curso 2", empresa, 30*60);
-		Turma turma2 = getTurma(curso2, DateUtil.criarDataMesAno(1, 4, 2014), DateUtil.criarDataMesAno(1, 6, 2014), true, 500.0);
+		Curso curso2 = saveCurso("curso 2", empresa, 30*60);
+		Turma turma2 = saveTurma(curso2, DateUtil.criarDataMesAno(1, 4, 2014), DateUtil.criarDataMesAno(1, 6, 2014), true, 500.0);
 
-		getColaboradorTurma(curso1, turma1, colaborador1); 
-		getColaboradorTurma(curso2, turma2, colaborador2);
+		saveColaboradorTurma(curso1, turma1, colaborador1); 
+		saveColaboradorTurma(curso2, turma2, colaborador2);
 				
 		IndicadorTreinamento result = cursoDao.findIndicadorHorasTreinamentos(DateUtil.criarDataMesAno(1, 4, 2014), DateUtil.criarDataMesAno(1, 5, 2014), new Long[]{empresa.getId()}, null, null, new Long[]{curso1.getId(), curso2.getId()});
 		
@@ -350,11 +359,11 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		
 		Colaborador colaborador2 = getColaboradorComHistorico(empresa, estabelecimento, area2, DateUtil.criarDataMesAno(1, 2, 2014) , StatusRetornoAC.CONFIRMADO);
 		
-		Curso curso1 = getCurso("curso 1", empresa, 10*60);
-		Turma turma1 = getTurma(curso1, DateUtil.criarDataMesAno(1, 4, 2014), DateUtil.criarDataMesAno(1, 5, 2014), true, 200.0);
+		Curso curso1 = saveCurso("curso 1", empresa, 10*60);
+		Turma turma1 = saveTurma(curso1, DateUtil.criarDataMesAno(1, 4, 2014), DateUtil.criarDataMesAno(1, 5, 2014), true, 200.0);
 
-		getColaboradorTurma(curso1, turma1, colaborador1);
-		getColaboradorTurma(curso1, turma1, colaborador2);
+		saveColaboradorTurma(curso1, turma1, colaborador1);
+		saveColaboradorTurma(curso1, turma1, colaborador2);
 				
 		IndicadorTreinamento result = cursoDao.findIndicadorHorasTreinamentos(DateUtil.criarDataMesAno(1, 4, 2014), DateUtil.criarDataMesAno(1, 5, 2014), new Long[]{empresa.getId()}, null, new Long[]{area2.getId()}, new Long[]{curso1.getId()});
 		
@@ -378,16 +387,16 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Curso curso = getCurso("curso", empresa, 0); 
-		Turma turma1 = getTurma(curso, dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), false, 200.0); 
+		Curso curso = saveCurso("curso", empresa, 0); 
+		Turma turma1 = saveTurma(curso, dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), false, 200.0); 
 		turma1.setEmpresa(empresa);
 		turmaDao.update(turma1);
 		
-		ColaboradorTurma colaboradorInscrito1 = getColaboradorTurma(curso, turma1, null); 
-		ColaboradorTurma colaboradorInscrito2 = getColaboradorTurma(curso, turma1, null);
+		ColaboradorTurma colaboradorInscrito1 = saveColaboradorTurma(curso, turma1, null); 
+		ColaboradorTurma colaboradorInscrito2 = saveColaboradorTurma(curso, turma1, null);
 		
-		Turma turmaForaDaConsulta =  getTurma(curso, dataQuatroMesesDepois.getTime(), dataQuatroMesesDepois.getTime(), false, 0.0);
-		ColaboradorTurma colaboradorForaDoPeriodo = getColaboradorTurma(curso, turmaForaDaConsulta, null); 
+		Turma turmaForaDaConsulta =  saveTurma(curso, dataQuatroMesesDepois.getTime(), dataQuatroMesesDepois.getTime(), false, 0.0);
+		ColaboradorTurma colaboradorForaDoPeriodo = saveColaboradorTurma(curso, turmaForaDaConsulta, null); 
 
 		Integer qtd = cursoDao.findQtdColaboradoresInscritosTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), new Long[]{empresa.getId()}, null);
 		assertNotNull(qtd);
@@ -406,18 +415,18 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Empresa outraEmpresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(outraEmpresa);
 
-		Curso curso1 = getCurso("curso 1", empresa, 20); 
-		Curso cursoOutraEmpresa = getCurso("curso 2", outraEmpresa, 20); 
+		Curso curso1 = saveCurso("curso 1", empresa, 20); 
+		Curso cursoOutraEmpresa = saveCurso("curso 2", outraEmpresa, 20); 
 
-		Turma turma1 = getTurma(curso1, hoje, dataDoisMesesDepois.getTime(), true, 0.0);
+		Turma turma1 = saveTurma(curso1, hoje, dataDoisMesesDepois.getTime(), true, 0.0);
 		turma1.setQtdParticipantesPrevistos(30);
 		turmaDao.update(turma1);
 
-		Turma turma2 = getTurma(curso1, hoje, dataDoisMesesDepois.getTime(), true, 0.0);
+		Turma turma2 = saveTurma(curso1, hoje, dataDoisMesesDepois.getTime(), true, 0.0);
 		turma2.setQtdParticipantesPrevistos(170);
 		turmaDao.update(turma2);
 
-		Turma turmaOutraEmpresa = getTurma(cursoOutraEmpresa, hoje, dataDoisMesesDepois.getTime(), true, 0.0); 
+		Turma turmaOutraEmpresa = saveTurma(cursoOutraEmpresa, hoje, dataDoisMesesDepois.getTime(), true, 0.0); 
 		turmaOutraEmpresa.setQtdParticipantesPrevistos(195);
 		turmaDao.update(turmaOutraEmpresa);
 
@@ -443,13 +452,13 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
-		Curso curso1 = getCurso("curso 1", empresa, 0); 
-		Curso curso2 = getCurso("curso 2", empresa, 0); 
+		Curso curso1 = saveCurso("curso 1", empresa, 0); 
+		Curso curso2 = saveCurso("curso 2", empresa, 0); 
 
-		Turma turmaRealizada1 = getTurma(curso1, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), true, 0.0); 
-		Turma turmaRealizada2 = getTurma(curso2, dataEntreTresEDoisMesesAtras.getTime(), dataEntreTresEDoisMesesAtras.getTime(), true, 0.0);
-		Turma turmaNaoRealizada = getTurma(curso1, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), false, 0.0); 
-		Turma turmaRealizadaForaDoPeriodo = getTurma(curso1, hoje, dataDoisMesesDepois.getTime(), true, 0.0); 
+		Turma turmaRealizada1 = saveTurma(curso1, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), true, 0.0); 
+		Turma turmaRealizada2 = saveTurma(curso2, dataEntreTresEDoisMesesAtras.getTime(), dataEntreTresEDoisMesesAtras.getTime(), true, 0.0);
+		Turma turmaNaoRealizada = saveTurma(curso1, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), false, 0.0); 
+		Turma turmaRealizadaForaDoPeriodo = saveTurma(curso1, hoje, dataDoisMesesDepois.getTime(), true, 0.0); 
 		
 		assertEquals(new Integer(2), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}, null, true));
 	}
@@ -468,12 +477,12 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Empresa empresa2 = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa2);
 		
-		Curso curso1 = getCurso("curso 1", empresa1, 0); 
-		Curso curso2 = getCurso("curso 2", empresa2, 0); 
+		Curso curso1 = saveCurso("curso 1", empresa1, 0); 
+		Curso curso2 = saveCurso("curso 2", empresa2, 0); 
 		
-		Turma turmaRealizada = getTurma(curso1, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), true, 0.0);
-		Turma turmaNaoRealizada1 = getTurma(curso1, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), false, 0.0); 
-		Turma turmaNaoRealizada2 = getTurma(curso2, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), false, 0.0); 
+		Turma turmaRealizada = saveTurma(curso1, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), true, 0.0);
+		Turma turmaNaoRealizada1 = saveTurma(curso1, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), false, 0.0); 
+		Turma turmaNaoRealizada2 = saveTurma(curso2, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), false, 0.0); 
 		
 		assertEquals("Treinamentos não realizados da empresa1", new Integer(1), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa1.getId()}, null, false));
 		assertEquals("Treinamentos realizados da empresa1", new Integer(1), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa1.getId()}, null, true));
@@ -564,16 +573,16 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 
 		this.colaborador = getColaboradorComHistorico(empresa, estabelecimento, areaOrganizacional, dataHistorico, StatusRetornoAC.CONFIRMADO); 
 
-		this.curso = getCurso("curso", empresa, cargaHorariaCurso);
+		this.curso = saveCurso("curso", empresa, cargaHorariaCurso);
 		this.setName(nomeCurso);
 		cursoDao.update(this.curso);
 				
-		Turma turma = getTurma(this.curso, dataInicioTurma, dataFimTurma, turmaRealizada, 0.0);
+		Turma turma = saveTurma(this.curso, dataInicioTurma, dataFimTurma, turmaRealizada, 0.0);
 		turma.setEmpresa(this.empresa);
 		turma.setDescricao("Turma 1");
 		turmaDao.update(turma);
 		
-		ColaboradorTurma colaboradorTurmaTurmaRealizada = getColaboradorTurma(this.curso, turma, this.colaborador); 
+		ColaboradorTurma colaboradorTurmaTurmaRealizada = saveColaboradorTurma(this.curso, turma, this.colaborador); 
 		turmaDao.getHibernateTemplateByGenericDao().flush();
 	}
 	
@@ -592,16 +601,16 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
 		avaliacaoCursoDao.save(avaliacaoCurso);
 
-		Curso cursoComAvaliacao = getCurso("curso com avaliação", empresa, 0);
+		Curso cursoComAvaliacao = saveCurso("curso com avaliação", empresa, 0);
 		cursoComAvaliacao.setAvaliacaoCursos(new ArrayList<AvaliacaoCurso>());
 		cursoComAvaliacao.getAvaliacaoCursos().add(avaliacaoCurso);
 		cursoDao.update(cursoComAvaliacao);
 
-		Curso cursoSemAvaliacao = getCurso("curso sem avaliação", empresa, 0); 
+		Curso cursoSemAvaliacao = saveCurso("curso sem avaliação", empresa, 0); 
 
-		Turma turmaForaDoPeriodo = getTurma(cursoComAvaliacao, dataTresMesesAtras.getTime(), hoje, false, 0.0); 
-		Turma turmaComAvaliacao1 = getTurma(cursoComAvaliacao, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), false, 0.0); 
-		Turma turmaSemAvaliacao = getTurma(cursoSemAvaliacao, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), false, 0.0); 
+		Turma turmaForaDoPeriodo = saveTurma(cursoComAvaliacao, dataTresMesesAtras.getTime(), hoje, false, 0.0); 
+		Turma turmaComAvaliacao1 = saveTurma(cursoComAvaliacao, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), false, 0.0); 
+		Turma turmaSemAvaliacao = saveTurma(cursoSemAvaliacao, dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), false, 0.0); 
 
 		assertEquals(1, cursoDao.findComAvaliacao(empresa.getId(), dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime()).size());
 	}
@@ -892,8 +901,8 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Empresa emp2 = EmpresaFactory.getEmpresa();
 		empresaDao.save(emp2);
 
-		Curso curso1 = getCurso("Curso de direção", emp1, 0);
-		Curso curso2 = getCurso("Direção", emp2, 0); 
+		Curso curso1 = saveCurso("Curso de direção", emp1, 0);
+		Curso curso2 = saveCurso("Direção", emp2, 0); 
 		
 		Collection<Curso> cursos = cursoDao.findByEmpresaIdAndCursosId(emp1.getId(), new Long[]{});
 		assertEquals(1, cursos.size());
@@ -926,12 +935,12 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Empresa empresa2 = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa2);
 		
-		Curso curso1 = getCurso("Curso 1", empresa1, null); 
-		Turma turma1 = getTurma(curso1, dataIni, dataFim, true, 150.0); 
-		Turma turma2 = getTurma(curso1, dataIni, dataFim, true, 250.0); 
+		Curso curso1 = saveCurso("Curso 1", empresa1, null); 
+		Turma turma1 = saveTurma(curso1, dataIni, dataFim, true, 150.0); 
+		Turma turma2 = saveTurma(curso1, dataIni, dataFim, true, 250.0); 
 
-		Curso curso2 = getCurso("Curso 2", empresa2, null); 
-		Turma turma3 = getTurma(curso2, dataIni, dataFim, true, 300.0); 
+		Curso curso2 = saveCurso("Curso 2", empresa2, null); 
+		Turma turma3 = saveTurma(curso2, dataIni, dataFim, true, 300.0); 
 		
 		Collection<Curso> cursos = cursoDao.somaDespesasPorCurso(dataIni, dataFim, new Long[]{empresa1.getId(), empresa2.getId()},  null);
 		Collection<Curso> cursosOutraEmpresa = cursoDao.somaDespesasPorCurso(dataIni, dataFim, new Long[]{1111111111111L}, null);
@@ -942,7 +951,53 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		assertEquals(0, cursosOutraEmpresa.size());
 	}
 	
-	private Colaborador getColaborador(Empresa empresa){
+	public void testExistePresenca(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = saveColaborador(empresa);
+		Curso curso = saveCurso("Curso Básico", empresa, 20);
+		Turma turma = saveTurma(curso, new Date(), new Date(), true, 0.0);
+		DiaTurma diaTurma = getDiaTurma(turma, new Date());
+		
+		ColaboradorTurma colaboradorTurma = saveColaboradorTurma(curso, turma, colaborador);
+		ColaboradorPresenca colaboradorPresenca = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresenca.setColaboradorTurma(colaboradorTurma);
+		colaboradorPresenca.setDiaTurma(diaTurma);
+		colaboradorPresenca.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresenca);
+		assertTrue(cursoDao.existePresenca(curso.getId()));
+	}
+	
+	public void testExistePresencaFalse(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = saveColaborador(empresa);
+		Curso curso1 = saveCurso("Curso Básico", empresa, 20);
+		Turma turma1 = saveTurma(curso1, new Date(), new Date(), true, 0.0);
+		DiaTurma diaTurma = getDiaTurma(turma1, new Date());
+
+		Curso curso2 = saveCurso("Curso Avançado", empresa, 20);
+		Turma turma2 = saveTurma(curso2, new Date(), new Date(), false, 0.0);
+		
+		ColaboradorTurma colaboradorTurma = saveColaboradorTurma(curso1, turma1, colaborador);
+		ColaboradorPresenca colaboradorPresenca = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresenca.setColaboradorTurma(colaboradorTurma);
+		colaboradorPresenca.setDiaTurma(diaTurma);
+		colaboradorPresenca.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresenca);
+		
+		ColaboradorTurma colaboradorTurma2 = saveColaboradorTurma(curso2, turma2, colaborador);
+		ColaboradorPresenca colaboradorPresenca2 = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresenca2.setColaboradorTurma(colaboradorTurma2);
+		colaboradorPresenca2.setDiaTurma(diaTurma);
+		colaboradorPresenca2.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresenca2);
+		assertFalse(cursoDao.existePresenca(curso2.getId()));
+	}
+
+	private Colaborador saveColaborador(Empresa empresa){
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setEmpresa(empresa);
 		colaboradorDao.save(colaborador);
@@ -950,7 +1005,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 	}
 	
 	private Colaborador getColaboradorComHistorico(Empresa empresa, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Date dataHistorico, int statusRetornoAC){
-		Colaborador colaborador = getColaborador(empresa);
+		Colaborador colaborador = saveColaborador(empresa);
 		getHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, dataHistorico, statusRetornoAC);
 		return colaborador;
 	}
@@ -986,7 +1041,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		return diaTurma1;
 	}
 
-	private Turma getTurma(Curso curso, Date dataInicio, Date dataFim, boolean realizada, Double custo){
+	private Turma saveTurma(Curso curso, Date dataInicio, Date dataFim, boolean realizada, Double custo){
 		Turma turma = TurmaFactory.getEntity();
 		turma.setCurso(curso);
 		turma.setCusto(custo);
@@ -997,7 +1052,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		return turma;
 	}
 	
-	private Curso getCurso(String nomeCurso, Empresa empresa, Integer cargaHoraria){
+	private Curso saveCurso(String nomeCurso, Empresa empresa, Integer cargaHoraria){
 		Curso curso = CursoFactory.getEntity();
 		curso.setNome(nomeCurso);
 		curso.setEmpresa(empresa);
@@ -1006,7 +1061,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		return curso;
 	}
 	
-	private ColaboradorTurma getColaboradorTurma(Curso curso, Turma turma, Colaborador colaborador){
+	private ColaboradorTurma saveColaboradorTurma(Curso curso, Turma turma, Colaborador colaborador){
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
 		colaboradorTurma.setColaborador(colaborador);
 		colaboradorTurma.setCurso(curso);
@@ -1076,5 +1131,10 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 
 	public void setAtitudeDao(AtitudeDao atitudeDao) {
 		this.atitudeDao = atitudeDao;
+	}
+
+	public void setColaboradorPresencaDao(
+			ColaboradorPresencaDao colaboradorPresencaDao) {
+		this.colaboradorPresencaDao = colaboradorPresencaDao;
 	}
 }

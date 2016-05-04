@@ -284,6 +284,10 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().findByEmpresaIdAndCursosId( empresaId, cursosIds);
 	}
 	
+	public boolean existePresenca(Long cursoId) {
+		return getDao().existePresenca(cursoId);
+	}
+	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;

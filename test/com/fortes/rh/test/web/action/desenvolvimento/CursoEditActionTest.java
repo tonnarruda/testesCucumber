@@ -86,6 +86,7 @@ public class CursoEditActionTest extends MockObjectTestCase
     	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida").with(eq(curso.getId())).will(returnValue(false));
     	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoAvaliacaoRespondida").with(eq(curso.getId())).will(returnValue(false));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(true),eq(empresa.getId()),eq(usuario.getId()),ANYTHING).will(returnValue(new ArrayList<Empresa>()));
+    	cursoManager.expects(once()).method("existePresenca").with(eq(curso.getId())).will(returnValue(true));
     	
     	ParametrosDoSistema params = new ParametrosDoSistema();
     	params.setId(1L);
@@ -114,6 +115,7 @@ public class CursoEditActionTest extends MockObjectTestCase
     	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida").with(eq(curso.getId())).will(returnValue(false));
     	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoAvaliacaoRespondida").with(eq(curso.getId())).will(returnValue(false));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(true),eq(empresaSistema.getId()),eq(usuario.getId()),ANYTHING).will(returnValue(new ArrayList<Empresa>()));
+    	cursoManager.expects(once()).method("existePresenca").with(eq(curso.getId())).will(returnValue(false));
     	
     	ParametrosDoSistema params = new ParametrosDoSistema();
     	params.setId(1L);
@@ -184,6 +186,7 @@ public class CursoEditActionTest extends MockObjectTestCase
     	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida").with(eq(curso.getId())).will(returnValue(false));
     	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoAvaliacaoRespondida").with(eq(curso.getId())).will(returnValue(false));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(true),eq(empresa.getId()),eq(usuario.getId()),ANYTHING).will(returnValue(new ArrayList<Empresa>()));
+    	cursoManager.expects(once()).method("existePresenca").with(eq(curso.getId())).will(returnValue(true));
     	
     	ParametrosDoSistema params = new ParametrosDoSistema();
     	params.setId(1L);
@@ -192,18 +195,6 @@ public class CursoEditActionTest extends MockObjectTestCase
     	
     	assertEquals("input", action.update());
     }
-    
-//    public void testUpdateEmpresaErrada() throws Exception
-//    {
-//    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-//    	Curso curso = CursoFactory.getEntity(1L);
-//    	curso.setEmpresa(empresa);
-//    	action.setCurso(curso);
-//    	
-//    	cursoManager.expects(once()).method("update").with(eq(curso), ANYTHING, ANYTHING).will(throwException(new Exception()));;
-//    	
-//    	assertEquals("input", action.update());
-//    }
 
     public void testGets() throws Exception
     {

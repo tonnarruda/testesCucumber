@@ -41,4 +41,5 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<Curso> somaDespesasPorCurso(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public Collection<Curso> findByHistoricoFuncaoId(Long historicoFuncaoId);
 	public Collection<CheckBox> populaCheckListCurso(Long empresaId);
+	public boolean existePresenca(Long cursoId);
 }
