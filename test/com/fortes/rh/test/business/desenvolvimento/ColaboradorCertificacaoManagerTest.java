@@ -115,8 +115,10 @@ public class ColaboradorCertificacaoManagerTest
 		colaboradorCertificacaos.add(colaboradorCertificacao2);
 		
 		Curso curso = CursoFactory.getEntity(1L);
+		Curso curso2 = CursoFactory.getEntity(2L);
 		Collection<Curso> cursos = new ArrayList<Curso>();
 		cursos.add(curso);
+		cursos.add(curso2);
 		
 		Turma turma = TurmaFactory.getEntity(1L);
 		turma.setDataPrevIni(DateUtil.criarDataMesAno(1, 3, 2015));
@@ -154,8 +156,8 @@ public class ColaboradorCertificacaoManagerTest
 		
 		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica2 = ColaboradorAvaliacaoPraticaFactory.getEntity(2L);
 		colaboradorAvaliacaoPratica2.setColaborador(colab2);
-		colaboradorAvaliacaoPratica1.setAvaliacaoPratica(avaliacaoPratica);
-		colaboradorAvaliacaoPratica1.setNota(90.0);
+		colaboradorAvaliacaoPratica2.setAvaliacaoPratica(avaliacaoPratica);
+		colaboradorAvaliacaoPratica2.setNota(90.0);
 		
 		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = new ArrayList<ColaboradorAvaliacaoPratica>();
 		avaliacoesPraticasDoColaboradorRealizadas.add(colaboradorAvaliacaoPratica1);
@@ -172,22 +174,22 @@ public class ColaboradorCertificacaoManagerTest
 		Map<Long, Collection<ColaboradorAvaliacaoPratica>> mapColaboradorAvaliacoesPraticas = new HashMap<Long, Collection<ColaboradorAvaliacaoPratica>>();
 		mapColaboradorAvaliacoesPraticas.put(colab1.getId(), avaliacoesPraticasDoColaboradorRealizadas);
 		
-		Long[] certificacaoesIds = new Long[]{certificacao1.getId()};
-		Long[] colaboradoresIds = new Long[]{colab1.getId()};
+		Long[] certificacoesIds = new Long[]{certificacao1.getId()};
+		Long[] colaboradoresIds = new Long[]{colab1.getId(), colab2.getId()};
 		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
 		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2016);
 		
-		when(avaliacaoPraticaManager.findMapByCertificacaoId(certificacaoesIds)).thenReturn(mapAvaliacoesPraticas);
-		when(certificacaoManager.findCollectionByIdProjection(certificacaoesIds)).thenReturn(certificacoes);
+		when(avaliacaoPraticaManager.findMapByCertificacaoId(certificacoesIds)).thenReturn(mapAvaliacoesPraticas);
+		when(certificacaoManager.findCollectionByIdProjection(certificacoesIds)).thenReturn(certificacoes);
 		when(certificacaoManager.findCursosByCertificacaoId(certificacao1.getId())).thenReturn(cursos);
-		when(colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, null, certificacaoesIds, null, null, false)).thenReturn(colaboradorCertificacaos);
-		when(colaboradorTurmaManager.findMapByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao1.getId(), new Long[]{colab1.getId(), colab2.getId()})).thenReturn(mapColaboradoresTurmas);
+		when(colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, null, certificacoesIds, null, null, null, false)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorTurmaManager.findMapByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao1.getId(), colaboradoresIds)).thenReturn(mapColaboradoresTurmas);
 		when(colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacao1.getId(), colaboradoresIds)).thenReturn(mapColaboradorAvaliacoesPraticas);
 
-		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, null, true, true, null, null, certificacaoesIds, new Long[]{colaboradorCertificacao1.getId()});
-		assertEquals(4, colaboradoresNasCertificacoes.size());
+		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, null, true, true, null, null, certificacoesIds, new Long[]{colaboradorCertificacao1.getId()});
+		assertEquals(6, colaboradoresNasCertificacoes.size());
 		
-		ColaboradorCertificacao result2 = (ColaboradorCertificacao) colaboradoresNasCertificacoes.toArray()[1];
+		ColaboradorCertificacao result2 = (ColaboradorCertificacao) colaboradoresNasCertificacoes.toArray()[2];
 		assertEquals("Avaliação Prática: Beber Cachaça", result2.getNomeCurso());
 	}
 	
@@ -409,5 +411,94 @@ public class ColaboradorCertificacaoManagerTest
 		}
 		
 		assertNull(ex);
+	}
+	
+	@Test
+	public void populaAvaliaçõesPraticasRealizadas()
+	{
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, DateUtil.criarDataMesAno(1, 1, 2016));
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
+		colaboradorCertificacaos.add(colaboradorCertificacao);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
+		avaliacaoPratica.setNotaMinima(90.0);
+		avaliacaoPratica.setTitulo("Beber Cachaça");
+		
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica1 = ColaboradorAvaliacaoPraticaFactory.getEntity(colaboradorCertificacao, colaborador, certificacao, avaliacaoPratica, 90.0);
+		colaboradorAvaliacaoPratica1.setData(DateUtil.criarDataMesAno(1, 1, 2016));
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica2 = ColaboradorAvaliacaoPraticaFactory.getEntity(colaboradorCertificacao, colaborador, certificacao, avaliacaoPratica, 90.0);
+		colaboradorAvaliacaoPratica2.setData(DateUtil.criarDataMesAno(1, 2, 2016));
+		
+		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = new ArrayList<ColaboradorAvaliacaoPratica>();
+		avaliacoesPraticasDoColaboradorRealizadas.add(colaboradorAvaliacaoPratica1);
+		avaliacoesPraticasDoColaboradorRealizadas.add(colaboradorAvaliacaoPratica2);
+		
+		Map<Long, Collection<ColaboradorAvaliacaoPratica>> mapColaboradorAvaliacoesPraticas = new HashMap<Long, Collection<ColaboradorAvaliacaoPratica>>();
+		mapColaboradorAvaliacoesPraticas.put(colaborador.getId(), avaliacoesPraticasDoColaboradorRealizadas);
+		
+		Long[] certificacoesIds = new Long[]{certificacao.getId()};
+		Long[] colaboradoresIds = new Long[]{colaborador.getId()};
+
+		when(colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, null, null, certificacoesIds, null, null, null, false)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacao.getId(), colaboradoresIds)).thenReturn(mapColaboradorAvaliacoesPraticas);
+		
+		Collection<ColaboradorCertificacao> colaboradorescertificacoes = colaboradorCertificacaoManager.populaAvaliaçõesPraticasRealizadas(null, certificacao.getId());
+		ColaboradorCertificacao colabCertificacao = (ColaboradorCertificacao) colaboradorescertificacoes.toArray()[0];
+
+		assertEquals(1, colaboradorescertificacoes.size());
+		assertEquals(2, colabCertificacao.getColaboradoresAvaliacoesPraticas().size());
+		assertEquals(colaboradorAvaliacaoPratica2.getId(), colabCertificacao.getColaboradorAvaliacaoPraticaAtual().getId());
+	}
+	
+	@Test
+	public void colaboradoresParticipamCertificacao()
+	{
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, DateUtil.criarDataMesAno(1, 1, 2016));
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
+		colaboradorCertificacaos.add(colaboradorCertificacao);
+		
+		Long[] certificacoesIds = new Long[]{certificacao.getId()};
+		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
+		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2016);
+
+		when(colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, null, certificacoesIds, null, null, null, false)).thenReturn(colaboradorCertificacaos);
+		
+		Collection<ColaboradorCertificacao> colaboradorescertificacoes = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(dataIni, dataFim, null, true, true, null, null, certificacoesIds);
+		assertEquals(1, colaboradorescertificacoes.size());
+	}
+	
+	@Test
+	public void colaboradoresParticipamCertificacaoNaoCertificados()
+	{
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, DateUtil.criarDataMesAno(1, 1, 2016));
+		
+		ColaboradorCertificacao colaboradorNaoCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, null);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
+		colaboradorCertificacaos.add(colaboradorCertificacao);
+		
+		Collection<ColaboradorCertificacao> colaboradorNaoCertificacaos = new ArrayList<ColaboradorCertificacao>();
+		colaboradorNaoCertificacaos.add(colaboradorNaoCertificacao);
+		
+		Long[] certificacoesIds = new Long[]{certificacao.getId()};
+		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
+		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2016);
+
+		when(colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, null, certificacoesIds, null, null, null, true)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, null, certificacoesIds, null, null, null, false)).thenReturn(colaboradorNaoCertificacaos);
+		
+		Collection<ColaboradorCertificacao> colaboradorescertificacoes = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(dataIni, dataFim, null, false, true, null, null, certificacoesIds);
+		ColaboradorCertificacao colaboradorNaoCertificacaoResultado = ((ColaboradorCertificacao) colaboradorescertificacoes.toArray()[0]); 
+		
+		assertEquals(1, colaboradorescertificacoes.size());
+		assertNull(colaboradorNaoCertificacaoResultado.getData());
 	}
 }

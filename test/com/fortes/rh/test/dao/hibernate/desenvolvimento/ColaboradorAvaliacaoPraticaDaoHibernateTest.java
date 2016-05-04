@@ -163,8 +163,8 @@ public class ColaboradorAvaliacaoPraticaDaoHibernateTest extends GenericDaoHiber
 		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica3);
 
 		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaDao.findByCertificacaoIdAndColaboradoresIds(certificacao.getId(), new Long[]{colaborador.getId()});
-		assertEquals(1, colaboradorAvaliacoesPraticas.size());
-		assertEquals(colaboradorCertificacao2.getId(), ((ColaboradorAvaliacaoPratica) colaboradorAvaliacoesPraticas.toArray()[0]).getColaboradorCertificacao().getId());
+		assertEquals(3, colaboradorAvaliacoesPraticas.size());
+		assertEquals(colaboradorCertificacao.getId(), ((ColaboradorAvaliacaoPratica) colaboradorAvaliacoesPraticas.toArray()[0]).getColaboradorCertificacao().getId());
 	}
 	
 	public void setColaboradorAvaliacaoPraticaDao(ColaboradorAvaliacaoPraticaDao colaboradorAvaliacaoPraticaDao)

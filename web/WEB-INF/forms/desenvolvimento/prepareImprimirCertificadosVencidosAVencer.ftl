@@ -12,7 +12,7 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#tooltipHelp').qtip({
-				content: 'Abaixo só serão exibidas as certificações que possuirem periodicidade configurada em seu cadastro.'
+				content: 'Abaixo só serão exibidas as certificações que possuirem periodicidade configurada em seu cadastro. Só é permitido selecionar no máximo 3 certificações.'
 			});
 			
 			$('#tooltipHelpPeriodo').qtip({
@@ -71,6 +71,14 @@
 			else
 				$('#listCheckBoxcolaboradoresCheck').append('<tbody> <tr> <td colspan="7"> <div class="info">  <ul> <li>Não existem colaboradores para o filtro informado acima.</li> </ul> </div> </tr></td> </tbody>');
 		}
+		
+		function validaQtd()
+		{
+		    if($("input[name='certificacoesCheck']:checked").size() >= 3)
+		        $("input[name='certificacoesCheck']").not(':checked').attr('disabled','disabled').parent().css('color', '#DEDEDE');
+		    else
+		        $("input[name='certificacoesCheck']").removeAttr('disabled').parent().css('color', '#5C5C5A');
+		}
 	</script>
 	
 	<style type="text/css">
@@ -120,9 +128,9 @@
 			</@ww.div>
 		</fieldset>
 		
-		Certificações*:
+		Certificações (máx. 3 opções)*:
 		<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
-		<@frt.checkListBox name="certificacoesCheck" id="certificacoesCheck" list="certificacoesCheckList" filtro="true" onClick="populaColaborador();"/>
+		<@frt.checkListBox name="certificacoesCheck" id="certificacoesCheck" list="certificacoesCheckList" filtro="true" onClick="populaColaborador();validaQtd();"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true" onClick="populaColaborador();"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true" onClick="populaColaborador();"/>
 		<@frt.checkListBox name="colaboradoresCheck" id="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" filtro="true"/>

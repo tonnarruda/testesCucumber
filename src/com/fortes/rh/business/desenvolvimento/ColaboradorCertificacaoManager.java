@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
+import com.fortes.rh.model.geral.Colaborador;
 
 public interface ColaboradorCertificacaoManager extends GenericManager<ColaboradorCertificacao>
 {
@@ -21,5 +22,6 @@ public interface ColaboradorCertificacaoManager extends GenericManager<Colaborad
 	Date getMaiorDataDasTurmasDaCertificacao(Long colaboradorCertificacaoId);
 	boolean existeColaboradorCertificadoEmUmaTurmaPosterior(Long turmaId, Long colaboradorCertificacaoId);
 	Collection<ColaboradorCertificacao> colaboradoresParticipamCertificacao(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds);
-	Collection<ColaboradorCertificacao> populaAvaliaçõesPraticasRealizadas(Long certificacaoId);
+	Collection<ColaboradorCertificacao> populaAvaliaçõesPraticasRealizadas(Long[] colaboradoresIds, Long certificacaoId);
+	Collection<Colaborador> colaboradoresQueParticipamDaCertificacao(Long[] colaboradoresIds, Long... certificadosId);
 }

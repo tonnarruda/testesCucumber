@@ -185,43 +185,6 @@ public class CertificacaoDaoHibernateTest extends GenericDaoHibernateTest<Certif
 		assertEquals(2, retorno.size());
 	}
 	
-	public void testFindColaboradoresNaCertificacoa()
-	{
-		Curso curso = CursoFactory.getEntity();
-		cursoDao.save(curso);
-		
-		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
-		avaliacaoPraticaDao.save(avaliacaoPratica);
-		
-		Certificacao certificacao1 = CertificacaoFactory.getEntity();
-		certificacao1.setCursos(Arrays.asList(curso));
-		certificacao1.setAvaliacoesPraticas(Arrays.asList(avaliacaoPratica));
-		certificacaoDao.save(certificacao1);
-		
-		Certificacao certificacao2 = CertificacaoFactory.getEntity();
-		certificacao2.setCursos(Arrays.asList(curso));
-		certificacao2.setAvaliacoesPraticas(Arrays.asList(avaliacaoPratica));
-		certificacaoDao.save(certificacao2);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador);
-		
-		Turma turma = TurmaFactory.getEntity();
-		turma.setCurso(curso);
-		turmaDao.save(turma);
-		
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurma.setColaborador(colaborador);
-		colaboradorTurma.setTurma(turma);
-		colaboradorTurma.setCurso(curso);
-		colaboradorTurmaDao.save(colaboradorTurma);
-		
-		certificacaoDao.getHibernateTemplateByGenericDao().flush();
-		
-		Collection<Colaborador> retorno = certificacaoDao.findColaboradoresNaCertificacao(certificacao1.getId());
-		assertEquals(1, retorno.size());
-	}
-	
 	public void testFindDependentesByPreRequisitoId()
 	{
 		Curso curso = CursoFactory.getEntity();

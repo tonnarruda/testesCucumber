@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -218,12 +219,9 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         return criteria.list();
 	}
 
-	public Collection<Turma> findTurmas(Integer page, Integer pagingSize, Long cursoId)
-	{
+	public Collection<Turma> findTurmas(Integer page, Integer pagingSize, Long cursoId, String descricao){
 		getSession().flush();
-		
-		StringBuffer sql = new StringBuffer();
-		sql.append("select t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.empresa_id, count(a.id) as qtdAvaliacoes, t.instrutor, t.realizada, sat.status ");
+		StringBuffer sql = new StringBuffer("select t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.empresa_id, count(a.id) as qtdAvaliacoes, t.instrutor, t.realizada, sat.status ");
 		sql.append("from turma t ");
 		sql.append("inner join curso c on t.curso_id = c.id "); 
 		sql.append("left join turma_avaliacaoturma tat on tat.turma_id = t.id "); 
@@ -231,23 +229,27 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		sql.append("left join questionario q on a.questionario_id = q.id ");
 		sql.append("left join situacaoavaliacaoturma sat on sat.turma_id = t.id "); 
 		sql.append("where c.id = :cursoId ");
+		if (StringUtils.isNotBlank(descricao))
+			sql.append("and t.descricao ilike :descricao ");
+		
 		sql.append("group by t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.empresa_id, t.instrutor, t.realizada, sat.status ");
 		sql.append("order by t.dataPrevIni desc, t.descricao ");
-		
-		if (pagingSize != 0)
+		if (pagingSize != null && pagingSize != 0)
 			sql.append("offset :offset limit :limit ");
 		
 		SQLQuery query = getSession().createSQLQuery(sql.toString());
 		query.setLong("cursoId", cursoId);
-
-		if (pagingSize != 0)
-		{
+		if (StringUtils.isNotBlank(descricao))
+			query.setString("descricao", "%" + descricao + "%");
+		if (pagingSize != null && pagingSize != 0){
 			query.setInteger("offset", ((page - 1) * pagingSize));
 			query.setInteger("limit", pagingSize);
 		}
 		
-		List<Object[]> result = query.list();
+		return montaTurma(query.list());
+	}
 
+	private Collection<Turma> montaTurma(List<Object[]> result)	throws NumberFormatException {
 		SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM-dd");
 		Collection<Turma> turmas = new ArrayList<Turma>();
 		Turma turma;
@@ -255,7 +257,6 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		
 		for (Object[] obj : result) {
 			i = 0;
-			
 			turma = new Turma();
 			turma.setId(((BigInteger)obj[i++]).longValue());
 			turma.setDescricao(((String)obj[i++]));
@@ -276,7 +277,6 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 			
 			turmas.add(turma);
 		}
-		
 		return turmas;
 	}
 

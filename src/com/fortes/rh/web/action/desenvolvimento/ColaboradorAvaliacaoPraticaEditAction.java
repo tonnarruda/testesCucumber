@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.desenvolvimento;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
@@ -66,15 +67,11 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		if(certificacao == null || certificacao.getId() == null)
 			return Action.SUCCESS;
 
-		Collection<Colaborador> colaboradoresNaCertificacao = certificacaoManager.findColaboradoresNaCertificacao(certificacao.getId());
+		colaboradores = colaboradorCertificacaoManager.colaboradoresQueParticipamDaCertificacao(findColaboradoresIdsPermitidosNaCertificacao(), certificacao.getId());
 
-		if(colaborador != null)
-		{
-			findColaboradoresPermitidosNaCertificacao(colaboradoresNaCertificacao);	
-			
+		if(colaborador != null){
 			colaboradorTurmas = new ArrayList<ColaboradorTurma>();
- 			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null)
-			{
+ 			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null)	{
 				colaboradorCertificacaos = colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
 				colaboradorTurmas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao.getId(), colaboradorCertificacao.getId(), colaborador.getId());
 				populaColaboradorAvaliacaoPratica();
@@ -87,17 +84,14 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	private void findColaboradoresPermitidosNaCertificacao(Collection<Colaborador> colaboradoresNaCertificacao) throws Exception 
-	{
+	private Long[] findColaboradoresIdsPermitidosNaCertificacao() throws Exception{
 		Colaborador colaboradorLogado = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
 		Collection<Colaborador> colaboradoresPermitidos = new ArrayList<Colaborador>();
 
-		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
-		{
+		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"})){
 			colaboradoresPermitidos = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, getEmpresaSistema().getId(), null);
 		}
-		else if (colaboradorLogado != null && colaboradorLogado.getId() != null)
-		{
+		else if (colaboradorLogado != null && colaboradorLogado.getId() != null){
 			Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
 			Long[] areasIds = new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areas);
 			if (areasIds.length == 0)
@@ -105,14 +99,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 			colaboradoresPermitidos = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, getEmpresaSistema().getId(), areasIds);
 		}
 
-		for (Colaborador colaboradorCertificado : colaboradoresNaCertificacao) 
-		{
-			for (Colaborador colaboradorPermitido : colaboradoresPermitidos) 
-			{
-				if(colaboradorCertificado.getId().equals(colaboradorPermitido.getId()))
-					colaboradores.add(colaboradorPermitido);
-			}
-		}
+		return new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradoresPermitidos);
 	}
 
 	private void populaColaboradorAvaliacaoPratica() 
@@ -219,10 +206,10 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	public String buscaColaboradoresLote() throws Exception
 	{
 		prepareLote();
-		if(certificacao == null || certificacao.getId() == null)
+		if((certificacao == null || certificacao.getId() == null) || (avaliacaoPratica ==null || avaliacaoPratica.getId()==null))
 			return Action.SUCCESS;
 
-		colaboradorCertificacaos = colaboradorCertificacaoManager.populaAvaliaçõesPraticasRealizadas(certificacao.getId());
+		colaboradorCertificacaos = colaboradorCertificacaoManager.populaAvaliaçõesPraticasRealizadas(findColaboradoresIdsPermitidosNaCertificacao(), certificacao.getId());
 
 		return Action.SUCCESS;
 	}
@@ -230,6 +217,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	public String insertOrUpdateLote() throws Exception
 	{
 		avaliacaoPratica = avaliacaoPraticaManager.findById(avaliacaoPratica.getId());
+		colaboradorCertificacaos.removeAll(Collections.singleton(null));
 		
 		for (ColaboradorCertificacao colabCertificacao : colaboradorCertificacaos) 
 		{

@@ -147,8 +147,8 @@ public class TurmaListActionTest extends MockObjectTestCase
     	Curso curso = CursoFactory.getEntity(1L);
     	action.setCurso(curso);
 
-    	turmaManager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(0));
-    	turmaManager.expects(once()).method("findTurmas").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Turma>()));
+    	turmaManager.expects(once()).method("findTurmas").withAnyArguments().will(returnValue(new ArrayList<Turma>()));
+    	turmaManager.expects(once()).method("findTurmas").withAnyArguments().will(returnValue(new ArrayList<Turma>()));
     	cursoManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(new Curso()));
     	avaliacaoCursoManager.expects(once()).method("findByCurso");
 
@@ -161,9 +161,8 @@ public class TurmaListActionTest extends MockObjectTestCase
     	action.setCurso(curso);
     	action.setPage(1);
 
-    	//turmaManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Turma>()));
-    	turmaManager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(0));
-    	turmaManager.expects(once()).method("findTurmas").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Turma>()));
+    	turmaManager.expects(once()).method("findTurmas").withAnyArguments().will(returnValue(new ArrayList<Turma>()));
+    	turmaManager.expects(once()).method("findTurmas").withAnyArguments().will(returnValue(new ArrayList<Turma>()));
     	cursoManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(new Curso()));
     	avaliacaoCursoManager.expects(once()).method("findByCurso");
     	action.setMsgAlert("teste");

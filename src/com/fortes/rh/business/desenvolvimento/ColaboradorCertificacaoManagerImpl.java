@@ -15,6 +15,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -32,18 +33,29 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
 	}
 	
-	public Collection<ColaboradorCertificacao> populaAvaliaçõesPraticasRealizadas(Long certificacaoId) {
+	public Collection<Colaborador> colaboradoresQueParticipamDaCertificacao(Long[] colaboradoresIds, Long... certificadosId){
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		
+		Collection<ColaboradorCertificacao> colaboradoresCertificacoes = getDao().colaboradoresQueParticipamDaCertificacao(null, null, null, certificadosId, null, null, colaboradoresIds, false);
+		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificacoes) {
+			colaboradores.add(colaboradorCertificacao.getColaborador());
+		}
+		
+		return colaboradores;
+	}
+	
+	public Collection<ColaboradorCertificacao> populaAvaliaçõesPraticasRealizadas(Long[] colaboradoresIds, Long certificacaoId) {
 		Collection<ColaboradorAvaliacaoPratica> colabAvaliacoesPraticasTemp = new ArrayList<ColaboradorAvaliacaoPratica>();
 		CollectionUtil<ColaboradorAvaliacaoPratica> colectionUtil = new CollectionUtil<ColaboradorAvaliacaoPratica>();
 		
-		Collection<ColaboradorCertificacao> colaboradoresCertificacoes = getDao().colaboradoresQueParticipamDaCertificacao(null, null, null, new Long[]{certificacaoId}, null, null, false);
-		Long[] colaboradoresIds = new CollectionUtil<ColaboradorCertificacao>().convertCollectionToArrayIds(colaboradoresCertificacoes, "getColaboradorId");
-		Map<Long, Collection<ColaboradorAvaliacaoPratica>> mapColaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacaoId, colaboradoresIds);
+		Collection<ColaboradorCertificacao> colaboradoresCertificacoes = getDao().colaboradoresQueParticipamDaCertificacao(null, null, null, new Long[]{certificacaoId}, null, null, colaboradoresIds, false);
+		Long[] colaboradoresIdsParticipantes = new CollectionUtil<ColaboradorCertificacao>().convertCollectionToArrayIds(colaboradoresCertificacoes, "getColaboradorId");
+		Map<Long, Collection<ColaboradorAvaliacaoPratica>> mapColaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacaoId, colaboradoresIdsParticipantes);
 		
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificacoes) {
 			Long colaboradorId = colaboradorCertificacao.getColaborador().getId();
 			if(mapColaboradorAvaliacoesPraticas.containsKey(colaboradorId)){
-				colabAvaliacoesPraticasTemp = colectionUtil.sortCollectionDesc(mapColaboradorAvaliacoesPraticas.get(colaboradorId), "data");
+				colabAvaliacoesPraticasTemp = colectionUtil.sortCollectionDate(mapColaboradorAvaliacoesPraticas.get(colaboradorId), "data");
 				if(colabAvaliacoesPraticasTemp != null && colabAvaliacoesPraticasTemp.size() > 0){
 					colaboradorCertificacao.setColaboradoresAvaliacoesPraticas(new ArrayList<ColaboradorAvaliacaoPratica>());
 					colaboradorCertificacao.getColaboradoresAvaliacoesPraticas().addAll(colabAvaliacoesPraticasTemp);
@@ -59,13 +71,13 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	{
 		Collection<ColaboradorCertificacao> colaboradoresCertificacao = new ArrayList<ColaboradorCertificacao>();
 		if(colaboradorCertificado  && colaboradorNaoCertificado)
-			colaboradoresCertificacao = getDao().colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, certificacoesIds, areaIds, estabelecimentoIds, false);
+			colaboradoresCertificacao = getDao().colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, certificacoesIds, areaIds, estabelecimentoIds, null, false);
 		else{
-			Collection<ColaboradorCertificacao> colaboradoresCertificados = getDao().colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, certificacoesIds, areaIds, estabelecimentoIds, true);
+			Collection<ColaboradorCertificacao> colaboradoresCertificados = getDao().colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, certificacoesIds, areaIds, estabelecimentoIds, null, true);
 			if(colaboradorCertificado)
 				colaboradoresCertificacao = colaboradoresCertificados;
 			else if(colaboradorNaoCertificado){
-				colaboradoresCertificacao = getDao().colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, certificacoesIds, areaIds, estabelecimentoIds, false);
+				colaboradoresCertificacao = getDao().colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, certificacoesIds, areaIds, estabelecimentoIds, null, false);
 				colaboradoresCertificacao.removeAll(colaboradoresCertificados);
 			}
 		}

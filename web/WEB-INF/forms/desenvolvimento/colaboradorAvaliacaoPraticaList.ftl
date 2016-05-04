@@ -23,9 +23,8 @@
 				document.formBusca.action = action; 
 				document.formBusca.submit();
 			}else{ 			
-				document.form.action = action;
+				document.formSubmit.action = action;
 				var arrayDataValida = [];
-				
 				$('.mascaraData').each(function(){
 					if ($(this).val() == '  /  /    ')
 			    		$(this).val('');
@@ -34,7 +33,7 @@
 				});
 
 				if(validaFormulario('form', new Array(), arrayDataValida, true))
-					return document.form.submit();
+					return document.formSubmit.submit();
 			}
 		}
 		
@@ -133,11 +132,25 @@
 			$('#nota-' + i).val('');
 			$('#data-' + i).val('  /  /    ');
 		}
+		
+		function ajustaFormSubmit(i){
+			setTimeout(function() { 
+				if($('#colaboradorIdSubmit-' + i).val() != "undefined")
+					$(".submit-" + i).remove();							
+			
+				if($("#ultimaCertificacao-" + i).val() == 'true'){
+					$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" name="colaboradorCertificacaos[' + i + '].colaboradorAvaliacaoPraticaAtual.data" value="' +  $("#data-" + i).val() + '" />');
+					$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" name="colaboradorCertificacaos[' + i + '].id" value="' +  $("#colaboradorCertificacaoId-" + i).val() + '" />');
+					$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" id="colaboradorIdSubmit-' + i + '" name="colaboradorCertificacaos[' + i + '].colaborador.id" value="' +  $("#colaboradorId-" + i).val() + '" />');
+					$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" name="colaboradorCertificacaos[' + i + '].colaboradorAvaliacaoPraticaAtual.id" value="' +  $("#avPraticas-" + i).val() + '" />');
+					$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" name="colaboradorCertificacaos[' + i + '].colaboradorAvaliacaoPraticaAtual.nota" value="' +  $("#nota-" + i).val() + '" />')
+				} 
+			}, 800);
+		}
 	</script>
 </head>
 <body>
 	<#include "../ftl/mascarasImports.ftl" />
-
 	<@ww.actionmessage />
 	<@ww.actionerror />
 
@@ -154,7 +167,12 @@
 	</@ww.form>
 	</br>
 	<#if avaliacaoPratica?exists && avaliacaoPratica.id?exists && certificacao?exists && certificacao.id?exists>
-		<@ww.form name="form" action="insertOrUpdateLote.action" method="POST">
+		<@ww.form name="formSubmit" id="formSubmit" action="" method="POST">
+			<@ww.hidden name="certificacao.id" value="${certificacao.id}"/>
+			<@ww.hidden name="avaliacaoPratica.id" value="${avaliacaoPratica.id}"/>
+		</@ww.form>
+		
+		<@ww.form name="form" id="form" action="insertOrUpdateLote.action" method="POST">
 			<@ww.hidden name="certificacao.id" value="${certificacao.id}"/>
 			<@ww.hidden name="avaliacaoPratica.id" value="${avaliacaoPratica.id}"/>
 			
@@ -191,9 +209,9 @@
 					
 				<@display.column title="Avaliações Certificadas Respondidas em" style="width: 180px;text-align: center;height: 30px !important">
 					<#if (!colabCertificacao.colaboradoresAvaliacoesPraticas?exists) || (colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao.id?exists)>
-						<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" cssStyle="width: 100px;" headerKey="" headerValue="Nova nota" onchange="verificaCertificacao(${i}, this.value);"/>
+						<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" cssStyle="width: 100px;" headerKey="" headerValue="Nova nota" onchange="verificaCertificacao(${i}, this.value);ajustaFormSubmit(${i});"/>
 					<#else>
-						<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" cssStyle="width: 100px;" onchange="verificaCertificacao(${i}, this.value);"/>
+						<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" cssStyle="width: 100px;" onchange="verificaCertificacao(${i}, this.value);ajustaFormSubmit(${i});"/>
 					</#if>
 				</@display.column>
 					
@@ -207,13 +225,13 @@
 					</@display.column>
 				<#else>						
 					<@display.column title="Realizada em" style="width: 180px;text-align: center;height: 30px !important">
-						<@ww.datepicker id="data-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple" onchange="onKeyPressData(${i});" onblur="onKeyPressData(${i});" /> 
+						<@ww.datepicker id="data-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple" onchange="onKeyPressData(${i});ajustaFormSubmit(${i});" onblur="onKeyPressData(${i});ajustaFormSubmit(${i});" /> 
 						<@ww.hidden name="colaboradorCertificacaos[${i}].id" id="colaboradorCertificacaoId-${i}" value="${colaboradorCertificacaoId}"/>
 						<@ww.hidden name="colaboradorCertificacaos[${i}].ultimaCertificacao" id="ultimaCertificacao-${i}" value="true"/>
 						<@ww.hidden name="colaboradorCertificacaos[${i}].colaborador.id" id="colaboradorId-${i}" value="${colaboradorId}"/>
 					</@display.column>
 					<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
-						<@ww.textfield id="nota-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" liClass="liLeft"/>
+						<@ww.textfield id="nota-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "ajustaFormSubmit(${i});return(somenteNumeros(event,'.,,'));" liClass="liLeft"/>
 						<a href="#" onclick="apagarNota(${i})"><img id="excluir-${i}" border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 					</@display.column>
 				</#if>

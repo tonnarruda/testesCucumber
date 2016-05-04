@@ -3004,27 +3004,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByNomeCpfMatriculaComHistoricoComfirmado(Colaborador colaborador, Long empresaId, Long[] areasIds)
-	{
+	public Collection<Colaborador> findByNomeCpfMatriculaComHistoricoComfirmado(Colaborador colaborador, Long empresaId, Long[] areasIds){
 		DetachedCriteria subQuery = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
-
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "c");
 
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("c.id"), "id");
-		p.add(Projections.property("c.nome"), "nome");
-		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
-		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
-		p.add(Projections.property("c.matricula"), "matricula");
-		p.add(Projections.property("c.desligado"), "desligado");
-		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
-		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
-		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
-		p.add(Projections.property("c.contato.foneFixo"), "contatoFoneFixo");
-
-		criteria.setProjection(p);
-
+		criteria.setProjection(projectionfindByNomeCpfMatriculaComHistoricoComfirmado());
 		criteria.add(Subqueries.propertyEq("hc.data", subQuery));
 		criteria.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
@@ -3032,15 +3017,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if(areasIds != null && areasIds.length > 0)
 			criteria.add(Expression.in("hc.areaOrganizacional.id", areasIds));
-
-		if(colaborador != null)
-		{
+		if(colaborador != null){
 			if(StringUtils.isNotBlank(colaborador.getNome()))
 				criteria.add(Expression.like("c.nome", "%" + colaborador.getNome() + "%").ignoreCase());
-
 			if(StringUtils.isNotBlank(colaborador.getMatricula()))
 				criteria.add(Expression.like("c.matricula", "%" + colaborador.getMatricula() + "%").ignoreCase());
-
 			if(colaborador.getPessoal() != null && StringUtils.isNotBlank(colaborador.getPessoal().getCpf()))
 				criteria.add(Expression.like("c.pessoal.cpf", "%" + colaborador.getPessoal().getCpf() + "%").ignoreCase());
 		}
@@ -3052,10 +3033,24 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
+	private ProjectionList projectionfindByNomeCpfMatriculaComHistoricoComfirmado() {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
+		p.add(Projections.property("c.matricula"), "matricula");
+		p.add(Projections.property("c.desligado"), "desligado");
+		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
+		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
+		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
+		p.add(Projections.property("c.contato.foneFixo"), "contatoFoneFixo");
+		return p;
+	}
+
 	public Collection<Colaborador> findColaboradorDeAvaliacaoDesempenhoNaoRespondida()
 	{
 		Date hoje = new Date();
-		
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
 		criteria.createCriteria("cq.avaliador", "colab");
 		criteria.createCriteria("colab.empresa", "e");
@@ -3082,19 +3077,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 	
-	public Collection<Colaborador> findParticipantesDistinctByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliado, Boolean respondida)
-	{
+	public Collection<Colaborador> findParticipantesDistinctByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliado, Boolean respondida){
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
+		criteria.createCriteria("cq.avaliacaoDesempenho", "avDesempenho");// não pode ser LEFT_JOIN
 
 		if(isAvaliado)
 			criteria.createCriteria("cq.colaborador", "colab");
 		else
 			criteria.createCriteria("cq.avaliador", "colab");
 
-		criteria.createCriteria("cq.avaliacaoDesempenho", "avDesempenho");// não pode ser LEFT_JOIN
-
 		ProjectionList p = Projections.projectionList().create();
-
 		p.add(Projections.distinct(Projections.property("colab.id")), "id");
 		p.add(Projections.property("colab.nome"), "nome");
 		p.add(Projections.property("colab.nomeComercial"), "nomeComercial");

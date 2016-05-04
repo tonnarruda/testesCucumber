@@ -78,18 +78,26 @@
 							}).load('<@ww.url includeParams="none" value="/desenvolvimento/turma/popUpTurmaAvaliacaoAcao.action"/>', { 'turma.id': turmaId });
 		}
 	</script>
+	
+	<#include "../ftl/showFilterImports.ftl" />
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	
 <title>Turmas do curso ${curso.nome}</title>
 </head>
 <body>
-
-	<#-- form utilizado pela paginação -->
-	<@ww.form name="form" id="form" action="list.action" validate="true" method="POST">
-		<@ww.hidden name="curso.id" />
-		<@ww.hidden id="pagina" name="page"/>
-	</@ww.form>
-
 	<@ww.actionmessage />
 	<@ww.actionerror />
+	
+	<#include "../util/topFiltro.ftl" />
+	<@ww.form name="form" id="form" action="list.action" method="POST">
+		<@ww.textfield label="Descrição" name="descricao" id="descricao" cssClass="inputNome" maxLength="100" cssStyle="width: 340px;"/>
+		<@ww.hidden name="curso.id" />
+		<@ww.hidden id="pagina" name="page"/>
+		<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
+	</@ww.form>
+	<#include "../util/bottomFiltro.ftl" />
+	<br>
+	
 	<@display.table name="turmas" id="turma" class="dados" >
 		<@display.column title="Ações" style="width:170px">
 		

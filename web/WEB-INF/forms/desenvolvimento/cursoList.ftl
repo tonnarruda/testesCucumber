@@ -7,7 +7,6 @@
 	<@ww.head/>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
-	
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 		#formDialog { display: none; width: 600px; }
@@ -20,13 +19,11 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 	<script type='text/javascript'>
-		function clonar(cursoId, titulo)
-		{
+		function clonar(cursoId, titulo){
 			$('#cursoId').val(cursoId);
 			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar: ' + titulo });
 		}
 	</script>
-
 
 </head>
 <body>

@@ -117,6 +117,7 @@ public class TurmaListAction extends MyActionSupportList
 	private char filtroAgrupamento;
 	private char filtroSituacao;
 	private char filtroAprovado;
+	private String descricao;
 
 	public String filtroPlanoTreinamento() throws Exception
 	{
@@ -347,16 +348,14 @@ public class TurmaListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		setTotalSize(turmaManager.getCount(new String[]{"curso.id"}, new Object[]{curso.getId()}));
-		turmas = turmaManager.findTurmas(getPage(), getPagingSize(), curso.getId());
+		setTotalSize(turmaManager.findTurmas(null, null, curso.getId(), descricao).size());
+		turmas = turmaManager.findTurmas(getPage(), getPagingSize(), curso.getId(), descricao);
 
 		// Se não houver resultados na página, refaz a consulta com a página anterior
-		if (turmas == null || turmas.isEmpty())
-		{
-			if (getPage() > 1)
-			{
+		if (turmas == null || turmas.isEmpty()){
+			if (getPage() > 1){
 				setPage(getPage()-1);
-				turmas = turmaManager.findTurmas(getPage(), getPagingSize(), curso.getId());
+				turmas = turmaManager.findTurmas(getPage(), getPagingSize(), curso.getId(), descricao);
 			}
 			else
 				addActionMessage("Não existem turmas para o filtro informado.");
@@ -384,14 +383,11 @@ public class TurmaListAction extends MyActionSupportList
 
 	public String imprimirConfirmacaoCertificado() throws Exception
 	{
-		try
-		{
+		try{
 			dataSource = colaboradorTurmaManager.findAprovadosByTurma(turma.getId());
 			parametros = colaboradorTurmaManager.getDadosTurma(dataSource, parametros);
 			parametros = turmaManager.getParametrosRelatorio(getEmpresaSistema(), parametros);
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			addActionMessage(e.getMessage());
 			e.printStackTrace();
 			list();
@@ -897,5 +893,13 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setFiltroAprovado(char filtroAprovado) {
 		this.filtroAprovado = filtroAprovado;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 }

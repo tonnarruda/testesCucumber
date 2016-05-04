@@ -15,7 +15,7 @@ public interface TurmaDao extends GenericDao<Turma>
 	public List filtroRelatorioByAreas(LinkedHashMap parametros);
 	public List filtroRelatorioByColaborador(LinkedHashMap parametros);
 	public Collection<Turma> findAllSelect(Long cursoId);
-	public Collection<Turma> findTurmas(Integer page, Integer pagingSize, Long cursoId);
+	public Collection<Turma> findTurmas(Integer page, Integer pagingSize, Long cursoId, String descricao);
 	public Collection<Turma> findPlanosDeTreinamento(int page, int pagingSize, Long cursoId, Date dataIni, Date dataFim, Boolean realizada, Long empresaId);
 	public Integer countPlanosDeTreinamento(Long cursoId, Date dataIni, Date dataFim, Boolean realizada);
 	public void updateRealizada(Long turmaId, boolean realizada)throws Exception;

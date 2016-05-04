@@ -15,7 +15,6 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.relatorio.CertificacaoTreinamentosRelatorio;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.web.tags.CheckBox;
 
@@ -171,11 +170,6 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 
 	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception {
 		getDao().deleteByFaixaSalarial(faixaIds);
-	}
-
-	public Collection<Colaborador> findColaboradoresNaCertificacao(Long certificacaoId) 
-	{
-		return getDao().findColaboradoresNaCertificacao(certificacaoId);
 	}
 
 	public Collection<Certificacao> findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(Long empresaId, Long certificacaoId) {

@@ -270,9 +270,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().findAllSelect(cursoId);
 	}
 
-	public Collection<Turma> findTurmas(Integer page, Integer pagingSize, Long cursoId)
+	public Collection<Turma> findTurmas(Integer page, Integer pagingSize, Long cursoId, String descricao)
 	{
-		return getDao().findTurmas(page, pagingSize, cursoId);
+		return getDao().findTurmas(page, pagingSize, cursoId, descricao);
 	}
 
 	public Collection<Turma> findPlanosDeTreinamento(int page, int pagingSize, Long cursoId, Date dataIni, Date dataFim, char realizada, Long empresaId)

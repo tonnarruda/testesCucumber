@@ -147,7 +147,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma3.setEmpresa(empresa);
 		turmaDao.save(turma3);
 		
-		Collection<Turma> turmas = turmaDao.findTurmas(1, 2, curso.getId());
+		Collection<Turma> turmas = turmaDao.findTurmas(1, 2, curso.getId(), null);
 		
 		assertEquals(2, turmas.size());
 	}

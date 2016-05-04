@@ -70,12 +70,6 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 	}
 
 	public Collection<ColaboradorAvaliacaoPratica> findByCertificacaoIdAndColaboradoresIds(Long certificacaoId, Long[] colaboradoresIds) {
-		DetachedCriteria ultimoColaboradorCertificacao = DetachedCriteria.forClass(ColaboradorCertificacao.class, "cc2").setProjection(Projections.max("cc2.data"))
-				.add(Restrictions.eqProperty("cc2.colaborador.id", "cc.colaborador.id")).add(Restrictions.eqProperty("cc2.certificacao.id", "cc.certificacao.id"));
-		
-		DetachedCriteria ultimoColaboradorAvPratica = DetachedCriteria.forClass(ColaboradorAvaliacaoPratica.class, "cap2").setProjection(Projections.max("cap2.data"))
-				.add(Restrictions.eqProperty("cap2.colaborador.id", "cap.colaborador.id")).add(Restrictions.eqProperty("cap2.certificacao.id", "cap.certificacao.id"));
-		
 		Criteria criteria = getSession().createCriteria(ColaboradorAvaliacaoPratica.class, "cap");
 		criteria.createCriteria("cap.avaliacaoPratica", "ap", Criteria.INNER_JOIN);
 		criteria.createCriteria("cap.colaboradorCertificacao", "cc", Criteria.LEFT_JOIN);
@@ -94,8 +88,6 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 		
 		criteria.add(Expression.eq("cap.certificacao.id",certificacaoId));
 		criteria.add(Expression.in("cap.colaborador.id", colaboradoresIds));
-	    criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", ultimoColaboradorCertificacao))));
-	    criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cap.data"), Subqueries.propertyEq("cap.data", ultimoColaboradorAvPratica))));
 
 	    criteria.addOrder(Order.asc("cap.colaborador.id"));
 	    criteria.addOrder(Order.asc("cap.data"));

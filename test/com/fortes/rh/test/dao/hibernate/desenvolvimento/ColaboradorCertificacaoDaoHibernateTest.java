@@ -390,10 +390,10 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity(colaborador2, curso, turma);
 		colaboradorTurmaDao.save(colaboradorTurma2);
 		
-		assertEquals(2, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, false).size());
-		assertEquals(1, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, false).size());
-		assertEquals(2, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao2.getId()}, new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, false).size());
-		assertEquals(0, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, true).size());
+		assertEquals(2, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, null, false).size());
+		assertEquals(1, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, null, false).size());
+		assertEquals(2, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao2.getId()}, new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, null, false).size());
+		assertEquals(0, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, null, true).size());
 	}
 	
 	
@@ -454,8 +454,8 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador1, certificacao1 , DateUtil.criarDataMesAno(1, 1, 2016));
 		colaboradorCertificacaoDao.save(colaboradorCertificacao);
 		
-		assertEquals(1, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, true).size());
-		assertEquals(0, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, true).size());
+		assertEquals(1, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, null, true).size());
+		assertEquals(0, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, null, true).size());
 	}
 	
 	public void testFindColaboradorCertificadoInfomandoSeEUltimaCertificacao() {
