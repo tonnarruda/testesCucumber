@@ -94,7 +94,7 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		colaboradorTurmaManager.expects(once()).method("findByTurmaSemPresenca").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
 		colaboradorCertificacaoManager.expects(once()).method("existeColaboradorCertificadoEmUmaTurmaPosterior").with(ANYTHING, eq(colaboradorTurma.getColaborador().getId())).will(returnValue(false));
 		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
-		colaboradorPresencaDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
+		colaboradorPresencaDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
 
 		colaboradorPresencaManager.marcarTodos(null, null, true);
@@ -117,7 +117,18 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 	
 	public void testRemoveByDiaTurma() throws Exception
 	{
+		Curso curso = CursoFactory.getEntity(1L);
+		Turma turma = TurmaFactory.getEntity(1L);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(null, curso, turma);
+		colaboradorTurma.setId(1L);
+		Collection<ColaboradorTurma> colaboradoresTurma = new ArrayList<ColaboradorTurma>();
+		colaboradoresTurma.add(colaboradorTurma);
+		
+		colaboradorTurmaManager.expects(once()).method("findByTurmaPresenteNoDiaTurmaId").with(ANYTHING, ANYTHING).will(returnValue(colaboradoresTurma));
+		
 		colaboradorPresencaDao.expects(once()).method("remove").with(ANYTHING, ANYTHING).isVoid();
+		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
 		colaboradorPresencaManager.removeByDiaTurma(null, null, false);
 	}
 	
@@ -131,7 +142,7 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		colaboradorTurma.setId(123L);
 		
 		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
-		colaboradorPresencaDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
+		colaboradorPresencaDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
 		colaboradorTurmaManager.expects(once()).method("findByProjection").with(ANYTHING).will(returnValue(colaboradorTurma));
 		colaboradorPresencaManager.updateFrequencia(null, null, true, false);

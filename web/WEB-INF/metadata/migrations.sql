@@ -42,8 +42,6 @@ drop index if exists index_colaboradorturma_curso_id;--.go
 CREATE INDEX index_colaboradorturma_curso_id ON colaboradorturma (curso_id);--.go
 
 
-
-
 drop function verifica_aprovacao(id_curso BIGINT, id_turma BIGINT, id_colaboradorturma BIGINT, percentualMinimoFrequencia DOUBLE PRECISION);
 
 CREATE OR REPLACE FUNCTION verifica_aprovacao(id_curso BIGINT, id_turma BIGINT, id_colaboradorturma BIGINT) RETURNS BOOLEAN AS $$  

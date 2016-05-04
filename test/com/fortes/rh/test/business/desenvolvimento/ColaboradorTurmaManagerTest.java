@@ -817,12 +817,8 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	public void testFindRelatorioComTreinamento() throws Exception
 	{
 		Collection<ColaboradorTurma> colaboradorTurmas = montaAprovadosReprovados();
-		
-		colaboradorTurmaDao.expects(atLeastOnce()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colaboradorTurmas));
-		
-		assertEquals(7, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'T', SituacaoColaborador.ATIVO).size());		
-		assertEquals(4, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'A', SituacaoColaborador.ATIVO).size());		
-		assertEquals(3, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'R', SituacaoColaborador.ATIVO).size());		
+		colaboradorTurmaDao.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(returnValue(colaboradorTurmas));
+		assertEquals(7, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'T', SituacaoColaborador.ATIVO).size());
 	}
 	
 	public void testFindRelatorioSemTreinamento() throws Exception
@@ -1065,10 +1061,8 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		Collection<ColaboradorTurma> colabTurmas =  new ArrayList<ColaboradorTurma>();
 		colabTurmas.add(aprovado);
-		colabTurmas.add(reprovadoFalta);
-		colabTurmas.add(reprovadoNota);
 		
-		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colabTurmas));
+		colaboradorTurmaDao.expects(once()).method("findAprovadosByTurma").withAnyArguments().will(returnValue(colabTurmas));
 		
 		assertEquals(1, colaboradorTurmaManager.findAprovadosByTurma(turma.getId()).size() );
 	}

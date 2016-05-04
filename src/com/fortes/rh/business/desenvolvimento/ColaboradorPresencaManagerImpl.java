@@ -43,6 +43,7 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			diaTurma.setId(diaTurmaId);
 			ColaboradorPresenca colaboradorPresenca = new ColaboradorPresenca(colaboradorTurma, diaTurma, true);
 			getDao().save(colaboradorPresenca);
+			getDao().getHibernateTemplateByGenericDao().flush();
 			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 			getDao().getHibernateTemplateByGenericDao().flush();
 			if(validarCertificacao)
@@ -50,7 +51,9 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		}
 		else{
 			getDao().remove(diaTurmaId, colaboradorTurmaId);
+			getDao().getHibernateTemplateByGenericDao().flush();
 			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
+			getDao().getHibernateTemplateByGenericDao().flush();
 			colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurmaId, false);
 		}
 		
@@ -68,6 +71,7 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			{
 				if(!colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turmaId, colaboradorTurma.getColaborador().getId())){
 					getDao().save(new ColaboradorPresenca(colaboradorTurma, diaTurma, true));
+					getDao().getHibernateTemplateByGenericDao().flush();
 					colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 					getDao().getHibernateTemplateByGenericDao().flush();
 						
@@ -93,7 +97,11 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			}
 		}
 		else{
+			Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findByTurmaPresenteNoDiaTurmaId(turmaId, diaTurmaId);
 			getDao().remove(diaTurmaId, null);
+			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
+				colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
+			}
 		}
 	}
 

@@ -65,10 +65,12 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 		
 		if (resultado == null){
 			getDao().save(aproveitamento);
+			getDao().getHibernateTemplateByGenericDao().flush();
 			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 		}else{
 			aproveitamento.setId(resultado.getId());
 			getDao().update(aproveitamento);
+			getDao().getHibernateTemplateByGenericDao().flush();
 			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 			if(aproveitamento.getValor() < resultado.getAvaliacaoCurso().getMinimoAprovacao() )
 				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(aproveitamento.getColaboradorTurma().getId(), false);
