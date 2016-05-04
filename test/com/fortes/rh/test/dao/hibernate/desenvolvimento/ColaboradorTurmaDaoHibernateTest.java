@@ -48,6 +48,7 @@ import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.FiltroAgrupamentoCursoColaborador;
 import com.fortes.rh.model.dicionario.FiltroSituacaoCurso;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusAprovacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusTAula;
@@ -1241,46 +1242,71 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         assertTrue(colaboradorTurmaDao.findByColaboradorAndTurma(0, 100, colaboradoresIds, curso.getId(), null).isEmpty());
     }
 
-    public void testFindRelatorioComTreinamento()
-    {
+    public void testFindRelatorioComTreinamento() {
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
-
-    	Colaborador colaboradorInscritoCurso = ColaboradorFactory.getEntity();
-    	colaboradorInscritoCurso.setEmpresa(empresa);
-    	colaboradorDao.save(colaboradorInscritoCurso);
 
     	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
     	estabelecimentoDao.save(estabelecimento);
 
     	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-    	areaOrganizacional.setNome("Area 1");
     	areaOrganizacionalDao.save(areaOrganizacional);
 
-    	HistoricoColaborador historicoColaboradorAtualDoInscrito = HistoricoColaboradorFactory.getEntity();
-    	historicoColaboradorAtualDoInscrito.setColaborador(colaboradorInscritoCurso);
-    	historicoColaboradorAtualDoInscrito.setData(DateUtil.criarDataMesAno(1, 1, 1999));
-    	historicoColaboradorAtualDoInscrito.setAreaOrganizacional(areaOrganizacional);
-    	historicoColaboradorAtualDoInscrito.setEstabelecimento(estabelecimento);
-    	historicoColaboradorDao.save(historicoColaboradorAtualDoInscrito);
+    	Cargo cargo = CargoFactory.getEntity();
+    	cargoDao.save(cargo);
+    	
+    	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity("Faixa", cargo);
+    	faixaSalarialDao.save(faixaSalarial);
+    	
+    	Curso curso = saveCurso("Curso");
+    	Turma turmaIniciaAntesDoPeriodoPesquisado = saveTurma(curso, DateUtil.criarDataMesAno(1, 1, 2016), DateUtil.criarDataMesAno(11, 1, 2016), true);
+    	Turma turmaContidaNoPeriodoFiltradoPesquisado = saveTurma(curso, DateUtil.criarDataMesAno(05, 1, 2016), DateUtil.criarDataMesAno(9, 1, 2016), true);
+    	Turma turmaIniciaDuranteOPeriodoFiltradoPesquisado = saveTurma(curso, DateUtil.criarDataMesAno(06, 1, 2016), DateUtil.criarDataMesAno(10, 1, 2016), true);
+    	Turma turmaForaDoPeriodoFiltradoPesquisado = saveTurma(curso, DateUtil.criarDataMesAno(1, 1, 2016), DateUtil.criarDataMesAno(4, 1, 2016), true);
 
-    	Curso curso = CursoFactory.getEntity();
-    	cursoDao.save(curso);
-
-    	Turma turma = TurmaFactory.getEntity();
-    	turmaDao.save(turma);
-
-    	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
-    	colaboradorTurma.setColaborador(colaboradorInscritoCurso);
-    	colaboradorTurma.setCurso(curso);
-    	colaboradorTurma.setTurma(turma);
-    	colaboradorTurmaDao.save(colaboradorTurma);
+    	Colaborador colaborador1 = saveColaboradorComHistorico("Colaborador 1", empresa, estabelecimento, areaOrganizacional, faixaSalarial, new Date(), StatusRetornoAC.CONFIRMADO);
+    	Colaborador colaborador2 = saveColaboradorComHistorico("Colaborador 2", empresa, estabelecimento, areaOrganizacional, faixaSalarial, new Date(), StatusRetornoAC.CONFIRMADO);
+    	Colaborador colaborador3 = saveColaboradorComHistorico("Colaborador 3", empresa, estabelecimento, areaOrganizacional, faixaSalarial, new Date(), StatusRetornoAC.CONFIRMADO);
+    	Colaborador colaborador4 = saveColaboradorComHistorico("Colaborador 4", empresa, estabelecimento, areaOrganizacional, faixaSalarial, new Date(), StatusRetornoAC.CONFIRMADO);
+ 
+    	saveColaboradorTurma(curso, turmaIniciaAntesDoPeriodoPesquisado, colaborador1, true);
+    	saveColaboradorTurma(curso, turmaContidaNoPeriodoFiltradoPesquisado, colaborador2, true);
+    	saveColaboradorTurma(curso, turmaIniciaDuranteOPeriodoFiltradoPesquisado, colaborador3, true);
+    	saveColaboradorTurma(curso, turmaForaDoPeriodoFiltradoPesquisado, colaborador4, true);
 
     	Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
     	Long[] areaIds = new Long[]{areaOrganizacional.getId()};
-    	Long[] colaboradorTurmaIds = new Long[]{colaboradorTurma.getId()};
 
-    	Collection<ColaboradorTurma> colaboradoresComTreinamento = colaboradorTurmaDao.findRelatorioComTreinamento(empresa.getId(), curso, areaIds, estabelecimentoIds, colaboradorTurmaIds);
+    	Collection<ColaboradorTurma> colaboradoresComTreinamento = colaboradorTurmaDao.findRelatorioComTreinamento(empresa.getId(), new Long[]{curso.getId()}, areaIds, estabelecimentoIds, DateUtil.criarDataMesAno(05, 1, 2016), DateUtil.criarDataMesAno(9, 1, 2016), SituacaoColaborador.TODOS, StatusAprovacao.TODOS);
+    	assertEquals(3, colaboradoresComTreinamento.size());
+    }
+    
+    public void testFindRelatorioComTreinamentoComFiltroDePeriodo() {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
+
+    	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+    	estabelecimentoDao.save(estabelecimento);
+
+    	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+    	areaOrganizacionalDao.save(areaOrganizacional);
+
+    	Cargo cargo = CargoFactory.getEntity();
+    	cargoDao.save(cargo);
+    	
+    	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity("Faixa", cargo);
+    	faixaSalarialDao.save(faixaSalarial);
+    	
+    	Colaborador colaborador = saveColaboradorComHistorico("Colaborador", empresa, estabelecimento, areaOrganizacional, faixaSalarial, new Date(), StatusRetornoAC.CONFIRMADO);
+    	Curso curso = saveCurso("Curso");
+    	Turma turma = saveTurma(curso, new Date(), new Date(), true);
+ 
+    	saveColaboradorTurma(curso, turma, colaborador, true);
+
+    	Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
+    	Long[] areaIds = new Long[]{areaOrganizacional.getId()};
+
+    	Collection<ColaboradorTurma> colaboradoresComTreinamento = colaboradorTurmaDao.findRelatorioComTreinamento(empresa.getId(), new Long[]{curso.getId()}, areaIds, estabelecimentoIds, null, null, SituacaoColaborador.TODOS, StatusAprovacao.TODOS);
     	assertEquals(1, colaboradoresComTreinamento.size());
     }
    
@@ -2654,10 +2680,40 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		assertTrue(colaboradorTurmaDao.findByProjection(colaboradorTurma.getId()).isAprovado());
 	}
 	
+	public void testFindAprovadosByTurma(){
+		Colaborador colaboradoraMaria = saveColaborador("Maria");
+		Colaborador colaboradoraLeticia = saveColaborador("Letícia");
+		
+		Curso curso = saveCurso("Curso Avançado");
+		Turma turma = saveTurma(curso, new Date(), new Date(), true);
+		
+		saveColaboradorTurma(curso, turma, colaboradoraMaria, true);
+		saveColaboradorTurma(curso, turma, colaboradoraLeticia, false);
+		
+		Collection<ColaboradorTurma> colaboradoresTurma = colaboradorTurmaDao.findAprovadosByTurma(turma.getId());
+		assertEquals(1, colaboradoresTurma.size());
+		assertEquals("Maria", colaboradoresTurma.iterator().next().getColaboradorNome());
+	}
+	
+	private Colaborador setColaborador(String nome, Empresa empresa){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome(nome);
+		colaborador.setEmpresa(empresa);
+		return colaborador;
+	}
+	
 	private Colaborador saveColaborador(String nome){
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNome(nome);
 		colaboradorDao.save(colaborador);
+		return colaborador;
+	}
+	
+	private Colaborador saveColaboradorComHistorico(String nome, Empresa empresa, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, FaixaSalarial faixaSalarial, Date data, int status){
+		Colaborador colaborador = setColaborador(nome, empresa);
+		colaboradorDao.save(colaborador);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, data, faixaSalarial, estabelecimento, areaOrganizacional, null, null, status);
+		historicoColaboradorDao.save(historicoColaborador);
 		return colaborador;
 	}
 	
@@ -2774,7 +2830,6 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     {
         this.colaboradorDao = colaboradorDao;
     }
-
 
     public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
     {

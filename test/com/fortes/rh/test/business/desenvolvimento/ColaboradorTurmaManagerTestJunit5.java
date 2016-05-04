@@ -1,10 +1,12 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Before;
@@ -14,6 +16,8 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
+import com.fortes.rh.model.dicionario.StatusAprovacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
@@ -89,6 +93,31 @@ public class ColaboradorTurmaManagerTestJunit5
 		assertEquals("<span style='color: red;'>Pedro (Não certificado)</span>", colabs[2].getNome());
 	}
 		
+	@Test
+	public void findRelatorioComTreinamento(){
+		Collection<ColaboradorTurma> colaboradorTurmas = Arrays.asList(ColaboradorTurmaFactory.getEntity());
+		when(colaboradorTurmaDao.findRelatorioComTreinamento(1L, new Long[]{1L}, new Long[]{1L}, new Long[]{1L}, null, null, SituacaoColaborador.ATIVO,StatusAprovacao.APROVADO)).thenReturn(colaboradorTurmas);
+		Exception exception = null;
+		try {
+			colaboradorTurmaManager.findRelatorioComTreinamento(1L, new Long[]{1L}, new Long[]{1L}, new Long[]{1L}, null, null, StatusAprovacao.APROVADO, SituacaoColaborador.ATIVO);
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNull(exception);
+	}
+
+	@Test
+	public void findRelatorioComTreinamentoExceptionColecaoVaziaException(){
+		when(colaboradorTurmaDao.findRelatorioComTreinamento(1L, new Long[]{1L}, new Long[]{1L}, new Long[]{1L}, null, null, SituacaoColaborador.ATIVO,StatusAprovacao.APROVADO)).thenReturn(new ArrayList<ColaboradorTurma>());
+		Exception exception = null;
+		try {
+			colaboradorTurmaManager.findRelatorioComTreinamento(1L, new Long[]{1L}, new Long[]{1L}, new Long[]{1L}, null, null, StatusAprovacao.APROVADO, SituacaoColaborador.ATIVO);
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertEquals("Não existem dados para o filtro informado.", exception.getMessage());
+	}
+	
 	private ColaboradorTurma montaColaboradorTurma(Colaborador colaborador, boolean certificado){
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
 		colaboradorTurma.setColaborador(colaborador);

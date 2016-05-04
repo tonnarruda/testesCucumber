@@ -623,8 +623,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return (Integer)query.list().size();
 	}
 
-	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date data, String situacaoColaborador)
-	{
+	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date data, String situacaoColaborador){
 		StringBuilder sql = new StringBuilder();
 		sql.append(" select c.id as colaboradorId, c.nome as colaboradorNome, c.matricula as matricula, ao.id as areaId, monta_familia_area(ao.id) as areaNome, ");
 		sql.append(" es.nome as estabelecimentoNome, emp.nome as empresaNome, max(colabTurmaRealizadaPeriodo.dataPrevFim) as dataPrevFim, ");
@@ -805,52 +804,83 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 
-	
-	//ARrancar
-	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, Long[] colaboradorTurmaIds)
-	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(c.id, c.nome, c.matricula, ao.id, es.nome, t.descricao, t.dataPrevIni, t.dataPrevFim, ct.id, ct.aprovado) " );
+	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Long[] cursoIds, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String situacao, char aprovacaoFiltro){
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("co.id"), "colaboradorId");
+		p.add(Projections.property("co.nome"), "colaboradorNome");
+		p.add(Projections.property("co.matricula"), "colaboradorMatricula");
+		p.add(Projections.property("es.id"), "estabelecimentoId");
+		p.add(Projections.property("es.nome"), "estabelecimentoNome");
+		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
+		p.add(Projections.alias(Projections.sqlProjection("monta_familia_area(ao4_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome"));
+		p.add(Projections.property("t.id"), "turmaId");
+		p.add(Projections.property("t.descricao"), "turmaDescricao");
+		p.add(Projections.property("t.dataPrevIni"), "projectionDataPrevIni");
+		p.add(Projections.property("t.dataPrevFim"), "projectionDataPrevFim");
+		p.add(Projections.property("ct.id"), "id");
+		p.add(Projections.property("ct.aprovado"), "aprovado");
+		p.add(Projections.property("c.id"), "cursoId");
+		p.add(Projections.property("c.nome"), "cursoNome");
+		p.add(Projections.property("emp.nome"), "empresaNome");
+		p.add(Projections.property("fs.nome"), "faixaSalarialNome");
+		p.add(Projections.property("ca.nome"), "cargoNome");
+		
+		DetachedCriteria subSelect = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+	    		.setProjection(Projections.max("hc2.data"))
+	    		.add(Restrictions.eqProperty("hc2.colaborador.id", "co.id"))
+	    		.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+		
+		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
+		criteria.createCriteria("ct.colaborador", "co", Criteria.INNER_JOIN);
+		criteria.createCriteria("co.empresa", "emp", Criteria.INNER_JOIN);
+		criteria.createCriteria("co.historicoColaboradors", "hc", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.estabelecimento", "es", Criteria.INNER_JOIN);
+		criteria.createCriteria("ct.curso", "c", Criteria.INNER_JOIN);
+		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.INNER_JOIN);
+		criteria.createCriteria("fs.cargo", "ca", Criteria.INNER_JOIN);
+		
+		criteria.add(Expression.eq("t.realizada", true));
+		criteria.add(Expression.in("c.id", cursoIds));
+		criteria.add(Subqueries.propertyEq("hc.data", subSelect));
 
-		hql.append("from Colaborador as c ");
-		hql.append("join c.historicoColaboradors as hc ");
-		hql.append("join c.colaboradorTurmas as ct ");
-		hql.append("join ct.turma as t ");
-		hql.append("join hc.areaOrganizacional as ao ");
-		hql.append("join hc.estabelecimento as es ");
-		hql.append("where c.desligado = false and c.empresa.id = :empresaId ");
+		if (empresaId != null)
+			criteria.add(Expression.eq("emp.id", empresaId));
+		
+		if(areaIds != null && areaIds.length > 0)
+			criteria.add(Expression.in("ao.id", areaIds));
+		
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			criteria.add(Expression.in("es.id", estabelecimentoIds));
+		
+		
+		if (situacao != null){
+			if (situacao.equalsIgnoreCase(SituacaoColaborador.ATIVO)){
+				if (dataFim != null)
+					criteria.add(Expression.or(Expression.isNull("co.dataDesligamento"),Expression.le("co.dataDesligamento", dataFim)));
+				else
+					criteria.add(Expression.isNull("co.dataDesligamento"));
+			} else if (situacao.equalsIgnoreCase(SituacaoColaborador.DESLIGADO)){
+				criteria.add(Expression.isNotNull("co.dataDesligamento")); 
+				if(dataFim != null)
+					criteria.add(Expression.le("co.dataDesligamento", dataFim));
+			}
+		}
+		
+		if(aprovacaoFiltro == StatusAprovacao.APROVADO)
+			criteria.add(Expression.eq("ct.aprovado", true));
+		else if(aprovacaoFiltro == StatusAprovacao.REPROVADO)
+			criteria.add(Expression.eq("ct.aprovado", false));
 
-		if (areaIds != null && areaIds.length > 0)
-			hql.append("and ao.id in (:areasId) ");
-
-		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			hql.append("and es.id in (:estabelecimentosId) ");
-
-		if (colaboradorTurmaIds != null && colaboradorTurmaIds.length > 0)
-			hql.append("and ct.id in (:colaboradorTurmaIds) ");
-
-		hql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id=c.id and hc2.data <= :hoje and hc2.status = :status ) ");
-		hql.append("and ct.curso.id = :cursoId ");
-
-		hql.append(" order by es.nome, ao.nome, c.nome ");
-
-		Query query = getSession().createQuery(hql.toString());
-
-		query.setDate("hoje", new Date());
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		query.setLong("empresaId", empresaId);
-		query.setLong("cursoId", curso.getId());
-
-		if (areaIds != null && areaIds.length > 0)
-			query.setParameterList("areasId", areaIds, Hibernate.LONG);
-
-		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentosId", estabelecimentoIds, Hibernate.LONG);
-
-		if (colaboradorTurmaIds != null && colaboradorTurmaIds.length > 0)
-			query.setParameterList("colaboradorTurmaIds", colaboradorTurmaIds, Hibernate.LONG);
-
-		return query.list();
+		if (dataIni != null && dataFim != null){
+			criteria.add(Expression.le("t.dataPrevIni", dataFim));
+			criteria.add(Expression.ge("t.dataPrevFim", dataIni));
+		}
+		criteria.setProjection(Projections.distinct(p));
+		criteria.addOrder(Order.asc("c.nome")).addOrder(Order.asc("emp.nome")).addOrder(Order.asc("es.nome")).addOrder(Order.asc("areaOrganizacionalNome")).addOrder(Order.asc("co.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
+	    return criteria.list();
 	}
 	
 	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String orderBy, boolean comHistColaboradorFuturo, String situacao, Long... turmaIds)
@@ -1951,4 +1981,38 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 	    return (ColaboradorTurma) criteria.uniqueResult();
 	}
+
+	public Collection<ColaboradorTurma> findAprovadosByTurma(Long turmaId) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ct.id"), "id");
+		p.add(Projections.property("ct.curso.id"), "cursoId");
+		p.add(Projections.property("ct.turma.id"), "turmaId");
+		p.add(Projections.property("ct.aprovado"), "aprovado");
+		p.add(Projections.property("t.descricao"), "turmaDescricao");
+		p.add(Projections.property("t.dataPrevIni"), "projectionDataPrevIni");
+		p.add(Projections.property("t.dataPrevFim"), "projectionDataPrevFim");
+		p.add(Projections.property("t.horario"), "turmaHorario");
+		p.add(Projections.property("t.instrutor"), "instrutor");
+		p.add(Projections.property("c.nome"), "cursoNome");
+		p.add(Projections.property("c.cargaHoraria"), "projectionCursoCargaHoraria");
+		p.add(Projections.property("c.conteudoProgramatico"), "projectionCursoConteudoProgramatico");
+		p.add(Projections.property("co.id"), "colaboradorId");
+		p.add(Projections.property("co.nome"), "colaboradorNome");
+		
+		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
+		criteria.createCriteria("ct.colaborador", "co", Criteria.INNER_JOIN);
+		criteria.createCriteria("ct.curso", "c", Criteria.INNER_JOIN);
+		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
+		
+		criteria.add(Expression.eq("t.id", turmaId));
+		criteria.add(Expression.eq("t.realizada", true));
+		criteria.add(Expression.eq("ct.aprovado", true));
+		criteria.setProjection(Projections.distinct(p));
+		criteria.addOrder(Order.asc("co.nome"));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
+		
+	    return criteria.list();
+		
+	}		
 }

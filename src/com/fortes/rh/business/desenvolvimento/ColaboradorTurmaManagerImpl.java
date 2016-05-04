@@ -410,9 +410,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, char aprovadoFiltro, String situacao) throws Exception
 	{
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, cursosIds, areaIds, estabelecimentoIds, dataIni, dataFim, " c.nome, emp.nome, e.nome, areaNome, co.nome ", true, situacao);
-		colaboradorTurmas = filtraColaboradorTurmaAprovadosOuReprovadosByFiltroAprovado(aprovadoFiltro, colaboradorTurmas);
-		
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findRelatorioComTreinamento(empresaId, cursosIds, areaIds, estabelecimentoIds, dataIni, dataFim, situacao, aprovadoFiltro);
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
 		
@@ -1020,16 +1018,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	public Collection<ColaboradorTurma> findAprovadosByTurma(Long turmaId) 
 	{
-		Collection<ColaboradorTurma> aprovados = new ArrayList<ColaboradorTurma>();
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, null, null, null, null, null, null, " co.nome ", false, "T", turmaId);
-
-		for (ColaboradorTurma ct : colaboradorTurmas) 
-		{
-			if(verificaAprovacao(ct))
-				aprovados.add(ct);
-		}
-		
-		return aprovados;
+		return getDao().findAprovadosByTurma(turmaId);
 	}
 
 	public Collection<ColaboradorTurma> filtraAprovadoReprovado(Collection<ColaboradorTurma> colaboradorTurmas, char aprovado) 

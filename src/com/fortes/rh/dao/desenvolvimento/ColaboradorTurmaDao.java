@@ -8,7 +8,6 @@ import java.util.List;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
-import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -32,7 +31,7 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	List findCustoRateado();
 	Integer getCount(Long turmaId, Long empresaId, String colaboradorNome, Long[] estabelecimentoIds, Long[] cargoIds);
 	Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date data, String situacaoColaborador);
-	Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, Long[] colaboradorTurmaIds);
+	Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Long[] cursoIds, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String situacao, char aprovacaoFiltro);
 	Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId);
 	public Collection<ColaboradorTurma> findByTurmaPresenteNoDiaTurmaId(Long turmaId, Long diaTurmaId);
 	Collection<ColaboradorTurma> findRelatorioSemIndicacaoDeTreinamento(Long empresaId, Long[] areas, Long[] estabelecimentos, Date data);
@@ -59,4 +58,5 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	Collection<ColaboradorTurma> findColaboradorTurmaByCertificacaoControleVencimentoPorCurso(Long certificacaoId, int qtdCursos);
 	void aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId);
 	ColaboradorTurma findByProjection(Long colaboradorTurmaId);
+	Collection<ColaboradorTurma> findAprovadosByTurma(Long turmaId);
 }

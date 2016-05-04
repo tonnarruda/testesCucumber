@@ -715,6 +715,18 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.colaborador.getHistoricoColaborador().setEstabelecimento(new Estabelecimento());
 		this.colaborador.getHistoricoColaborador().getEstabelecimento().setId(estabelecimentoId);
 	}
+
+	public void setEstabelecimentoId(Long estabelecimentoId) 
+	{
+		inicializaColaborador();
+		this.colaborador.setEstabelecimentoIdProjection(estabelecimentoId);
+	}
+
+	public void setEstabelecimentoNome(String estabelecimentoNome) 
+	{
+		inicializaColaborador();
+		this.colaborador.setEstabelecimentoNomeProjection(estabelecimentoNome);
+	}
 	
 	public Collection<AproveitamentoAvaliacaoCurso> getAproveitamentoAvaliacaoCursos()
 	{

@@ -11,6 +11,39 @@ create index index_colaboradorpresenca on colaboradorpresenca (presenca, colabor
 drop index if exists index_colaboradorturma;--.go
 CREATE INDEX index_colaboradorturma ON colaboradorturma (curso_id, colaborador_id);--.go
 
+drop index if exists index_colaborador_id;--.go
+create index index_colaborador_id on colaborador (id);--.go
+
+drop index if exists index_turma_id;--.go
+create index index_turma_id on turma (id);--.go
+
+drop index if exists index_turma_id_realizada;--.go
+create index index_turma_id_realizada on turma (id, realizada);--.go
+
+drop index if exists index_curso_id;--.go
+create index index_curso_id on curso (id);--.go
+
+drop index if exists index_hc_colaboradorId;--.go
+create index index_hc_colaboradorId on historicoColaborador (colaborador_id);--.go
+
+drop index if exists index_hc_colaboradorId_status;--.go
+create index index_hc_colaboradorId_status on historicoColaborador (colaborador_id, status);--.go
+
+drop index if exists index_area_organizacional_id;--.go
+create index index_area_organizacional_id on areaOrganizacional (id);--.go
+
+drop index if exists index_colaboradorturma_colaborador_id;--.go
+CREATE INDEX index_colaboradorturma_colaborador_id ON colaboradorturma (colaborador_id);--.go
+
+drop index if exists index_colaboradorturma_turma_id;--.go
+CREATE INDEX index_colaboradorturma_turma_id ON colaboradorturma (turma_id);--.go
+
+drop index if exists index_colaboradorturma_curso_id;--.go
+CREATE INDEX index_colaboradorturma_curso_id ON colaboradorturma (curso_id);--.go
+
+
+
+
 drop function verifica_aprovacao(id_curso BIGINT, id_turma BIGINT, id_colaboradorturma BIGINT, percentualMinimoFrequencia DOUBLE PRECISION);
 
 CREATE OR REPLACE FUNCTION verifica_aprovacao(id_curso BIGINT, id_turma BIGINT, id_colaboradorturma BIGINT) RETURNS BOOLEAN AS $$  
