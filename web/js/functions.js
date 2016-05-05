@@ -433,9 +433,12 @@ function resetFormulario(campos)
 	}
 }
 
-function validaFormulario(formulario, camposObrigatorios, camposValidos, noSubmit)
+function validaFormulario(formulario, camposObrigatorios, camposValidos, noSubmit, urlImg)
 {
 	var validacao = true;
+	
+	if(urlImg)
+		processando(urlImg);
 
 	if(camposObrigatorios != null && camposObrigatorios.length > 0)
 		validacao = validaCamposObrigatorios(camposObrigatorios, formulario);
@@ -1346,6 +1349,21 @@ function checkListBoxSearch(name)
 		$( this ).parent().toggle( ( typeof filtroTexto == "undefined" || nomeTeste.indexOf(removerAcento(filtroTexto.toUpperCase())) > -1)
 				&& ( typeof filtroAtivo == "undefined" || nomeTeste.indexOf( filtroAtivo ) > -1 ));
 	});
+}
+
+function processando(urlImg){
+	var background = document.createElement('div');
+	background.style.cssText = 'position: fixed; z-index: 4000; background-color: black; opacity: 0.1; bottom: 0; right: 0; top: 0; left: 0;'
+	
+	var div = document.createElement('div');
+	var img = document.createElement('img');
+	img.src = urlImg + '/loadingGeral.gif';
+	div.innerHTML = "<h3 style='z-index: 5000;'>Processando...</h3><br />";
+	div.style.cssText = 'position: fixed; top: 30%; left: 40%; z-index: 5000; width: 300px; text-align: center;';
+	div.appendChild(img);
+	
+	document.body.appendChild(div);
+	document.body.appendChild(background);
 }
 
 (function($) {

@@ -55,7 +55,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificacoes) {
 			Long colaboradorId = colaboradorCertificacao.getColaborador().getId();
 			if(mapColaboradorAvaliacoesPraticas.containsKey(colaboradorId)){
-				colabAvaliacoesPraticasTemp = colectionUtil.sortCollectionDate(mapColaboradorAvaliacoesPraticas.get(colaboradorId), "data");
+				colabAvaliacoesPraticasTemp = colectionUtil.sortCollectionDate(mapColaboradorAvaliacoesPraticas.get(colaboradorId), "data", "desc");
 				if(colabAvaliacoesPraticasTemp != null && colabAvaliacoesPraticasTemp.size() > 0){
 					colaboradorCertificacao.setColaboradoresAvaliacoesPraticas(new ArrayList<ColaboradorAvaliacaoPratica>());
 					colaboradorCertificacao.getColaboradoresAvaliacoesPraticas().addAll(colabAvaliacoesPraticasTemp);
@@ -86,14 +86,14 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	}
 	
 	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] colaboradoresIds) throws CloneNotSupportedException{
-		Map<Long, ColaboradorCertificacao> mapColaboradoresCertificacaoes = montaMapColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areaIds, estabelecimentoIds, certificacoesIds);
+		Map<String, ColaboradorCertificacao> mapColaboradoresCertificacaoes = montaMapColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areaIds, estabelecimentoIds, certificacoesIds);
 		Map<Long, Collection<AvaliacaoPratica>> mapAvaliacoesPraticas = avaliacaoPraticaManager.findMapByCertificacaoId(certificacoesIds);
 
 		Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno = new ArrayList<ColaboradorCertificacao>();
-		for (Long colaboradorId : mapColaboradoresCertificacaoes.keySet()){
-			for (ColaboradorTurma colaboradorTurma : mapColaboradoresCertificacaoes.get(colaboradorId).getColaboradoresTurmas())
+		for (String colaboradorCertificacaoMap : mapColaboradoresCertificacaoes.keySet()){
+			for (ColaboradorTurma colaboradorTurma : mapColaboradoresCertificacaoes.get(colaboradorCertificacaoMap).getColaboradoresTurmas())
 			{
-				ColaboradorCertificacao colabCertificacao = (ColaboradorCertificacao) mapColaboradoresCertificacaoes.get(colaboradorId).clone();
+				ColaboradorCertificacao colabCertificacao = (ColaboradorCertificacao) mapColaboradoresCertificacaoes.get(colaboradorCertificacaoMap).clone();
 				colabCertificacao.setNomeCurso(colaboradorTurma.getCurso().getNome());
 				colabCertificacao.setCertificacao((Certificacao) colabCertificacao.getCertificacao().clone());
 				
@@ -108,7 +108,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 				colaboradorCertificacaosRetorno.add(colabCertificacao);
 			}
 
-			ColaboradorCertificacao colaboradorCertificacao = mapColaboradoresCertificacaoes.get(colaboradorId);
+			ColaboradorCertificacao colaboradorCertificacao = mapColaboradoresCertificacaoes.get(colaboradorCertificacaoMap);
 			colaboradorCertificacaosRetorno.addAll(populaAvaliacoesPraticas(colaboradorCertificacao, mapAvaliacoesPraticas.get(colaboradorCertificacao.getCertificacao().getId())));
 		}
 		
@@ -130,7 +130,15 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			colabCertificacao.getCertificacao().setAprovadoNaTurma(false);
 			
 			for (ColaboradorAvaliacaoPratica avaliacaoPraticaDoColaboradorRealizada : avaliacoesPraticasDoColaboradorRealizadas){
-				if(avaliacaoPraticaDoColaboradorRealizada.getAvaliacaoPratica().getId().equals(avaliacaoPratica.getId())){
+				if(colaboradorCertificacao.getId() != null){
+					if(avaliacaoPraticaDoColaboradorRealizada.getColaboradorCertificacao() != null && avaliacaoPraticaDoColaboradorRealizada.getColaboradorCertificacao().getId() != null 
+							&& colaboradorCertificacao.getId().equals(avaliacaoPraticaDoColaboradorRealizada.getColaboradorCertificacao().getId())
+							&& avaliacaoPraticaDoColaboradorRealizada.getAvaliacaoPratica().getId().equals(avaliacaoPratica.getId())){
+						colabCertificacao.getCertificacao().setAprovadoNaTurma(avaliacaoPraticaDoColaboradorRealizada.getNota() >= avaliacaoPratica.getNotaMinima());
+						colabCertificacao.setPeriodoTurma("Data da Avaliação: " + avaliacaoPraticaDoColaboradorRealizada.getDataFormatada());
+						break;
+					}
+				}else if(avaliacaoPraticaDoColaboradorRealizada.getAvaliacaoPratica().getId().equals(avaliacaoPratica.getId())){
 					colabCertificacao.getCertificacao().setAprovadoNaTurma(avaliacaoPraticaDoColaboradorRealizada.getNota() >= avaliacaoPratica.getNotaMinima());
 					colabCertificacao.setPeriodoTurma("Data da Avaliação: " + avaliacaoPraticaDoColaboradorRealizada.getDataFormatada());
 					break;
@@ -142,10 +150,10 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	}	
 	
 	@SuppressWarnings("deprecation")
-	private Map<Long, ColaboradorCertificacao> montaMapColaboradorCertificacao(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds) {
+	private Map<String, ColaboradorCertificacao> montaMapColaboradorCertificacao(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds) {
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
 		CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBeanOld("certificacaoManager");
-		Map<Long, ColaboradorCertificacao> mapColaboradorCertificacao = new HashMap<Long, ColaboradorCertificacao>();
+		Map<String, ColaboradorCertificacao> mapColaboradorCertificacao = new HashMap<String, ColaboradorCertificacao>();
 		Collection<Certificacao> certificacoes = certificacaoManager.findCollectionByIdProjection(certificacoesIds);
 
 		for (Certificacao certificacao : certificacoes) {
@@ -157,18 +165,19 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 
 			for (ColaboradorCertificacao colaboradorCert : colaboradoresCertificacao) {
 				Long colaboradorId = colaboradorCert.getColaborador().getId();
+				String colaboradorCertificacaoMap = colaboradorId + "_" + certificacao.getId(); 
 				ColaboradorCertificacao colaboradorCertificacao = (ColaboradorCertificacao) colaboradorCert.clone();
 				colaboradorCertificacao.setCertificacao((Certificacao) certificacao.clone());
-				if(!mapColaboradorCertificacao.containsKey(colaboradorId)){
+				if(!mapColaboradorCertificacao.containsKey(colaboradorCertificacaoMap)){
 					colaboradorCertificacao.setColaboradoresTurmas(new ArrayList<ColaboradorTurma>());
 					colaboradorCertificacao.setColaboradoresAvaliacoesPraticas(new ArrayList<ColaboradorAvaliacaoPratica>());
-					mapColaboradorCertificacao.put(colaboradorId, colaboradorCertificacao);
+					mapColaboradorCertificacao.put(colaboradorCertificacaoMap, colaboradorCertificacao);
 				}
 				
 				if(mapColaboradoresTurmas.containsKey(colaboradorId))
-					mapColaboradorCertificacao.get(colaboradorId).getColaboradoresTurmas().addAll(montaColaboradorTurma(cursos, mapColaboradoresTurmas.get(colaboradorId), colaboradorCert));
+					mapColaboradorCertificacao.get(colaboradorCertificacaoMap).getColaboradoresTurmas().addAll(montaColaboradorTurma(cursos, mapColaboradoresTurmas.get(colaboradorId), colaboradorCert));
 				if(mapColaboradorAvaliacoesPraticas.containsKey(colaboradorId))
-					mapColaboradorCertificacao.get(colaboradorId).getColaboradoresAvaliacoesPraticas().addAll(mapColaboradorAvaliacoesPraticas.get(colaboradorId));
+					mapColaboradorCertificacao.get(colaboradorCertificacaoMap).getColaboradoresAvaliacoesPraticas().addAll(mapColaboradorAvaliacoesPraticas.get(colaboradorId));
 			}
 		}
 		return mapColaboradorCertificacao;

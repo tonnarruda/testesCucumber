@@ -4,19 +4,15 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorAvaliacaoPraticaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
-import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate<ColaboradorAvaliacaoPratica> implements ColaboradorAvaliacaoPraticaDao
@@ -84,13 +80,14 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 		p.add(Projections.property("ap.id"), "avaliacaoPraticaId");
 		p.add(Projections.property("ap.notaMinima"), "avaliacaoPraticaNotaMinima");
 		p.add(Projections.property("ap.titulo"), "avaliacaoPraticaTitulo");
+		p.add(Projections.property("cc.id"), "colaboradorCertificacaoId");
 		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.add(Expression.eq("cap.certificacao.id",certificacaoId));
 		criteria.add(Expression.in("cap.colaborador.id", colaboradoresIds));
 
 	    criteria.addOrder(Order.asc("cap.colaborador.id"));
-	    criteria.addOrder(Order.asc("cap.data"));
+	    criteria.addOrder(Order.desc("cap.data"));
 	    criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	    criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorAvaliacaoPratica.class));
 

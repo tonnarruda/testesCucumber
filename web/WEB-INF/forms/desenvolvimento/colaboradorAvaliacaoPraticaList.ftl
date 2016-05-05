@@ -4,6 +4,15 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+		
+		#preloader {
+		    position: absolute;
+		    left: 0px;
+		    right: 0px;
+		    bottom: 0px;
+		    top: 0px;
+		    background: #ccc;
+		}
 	</style>
 
 	<title>Avaliação Prática - Notas em Lote</title>
@@ -11,6 +20,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorAvaliacaoPraticaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
 	<script type="text/javascript">
 		$(function(){
@@ -20,6 +31,7 @@
 		function submeter(action)
 		{
 			if(action == 'buscaColaboradoresLote.action'){
+				processando('${urlImgs}');
 				document.formBusca.action = action; 
 				document.formBusca.submit();
 			}else{ 			
@@ -32,7 +44,7 @@
 			    		arrayDataValida.push($(this).attr('id'));
 				});
 
-				if(validaFormulario('form', new Array(), arrayDataValida, true))
+				if(validaFormulario('form', new Array(), arrayDataValida, true, '${urlImgs}'))
 					return document.formSubmit.submit();
 			}
 		}
@@ -244,6 +256,8 @@
 					<button type="button" class="btnGravar" onclick="submeter('insertOrUpdateLote.action');"></button>
 				</div>
 			</#if>
+			
+
 		</@ww.form>
 	</#if>	
 </body>
