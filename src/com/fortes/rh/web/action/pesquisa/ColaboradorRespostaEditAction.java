@@ -142,7 +142,8 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         	}
         }
         else {
-        	if (getUsuarioLogado().getColaborador() != null && colaborador.getId().equals(getUsuarioLogado().getColaborador().getId()))
+        	Colaborador colaboradorLogado = colaboradorManager.findByUsuario(getUsuarioLogado(), getEmpresaSistema().getId());
+        	if (respondePorOutroUsuario || (colaboradorLogado != null && colaborador.getId().equals(colaboradorLogado.getId())))
         		colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
         	else {
         		addActionError("Permissão negada. Não foi possível acessar a avaliação do colaborador.");
