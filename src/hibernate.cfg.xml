@@ -211,5 +211,7 @@
     <mapping class="com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho" />
 	<mapping class="com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho" />
     <mapping class="com.fortes.rh.model.avaliacao.AvaliacaoPratica" />
+    
+    <mapping class="com.fortes.rh.model.ws.Token" />
   </session-factory>
 </hibernate-configuration>

@@ -10,5 +10,14 @@
       <ref bean="auditoriaDaoTarget" />
     </property>
   </bean>
+  
+  <bean id="tokenDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.security.TokenDao</value>
+    </property>
+    <property name="target">
+      <ref bean="tokenDaoTarget" />
+    </property>
+  </bean>
 </beans>
 

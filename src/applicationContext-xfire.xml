@@ -4,6 +4,7 @@
   <import resource="classpath:org/codehaus/xfire/spring/xfire.xml"/>
 
   <bean id="rhService" class="com.fortes.rh.business.ws.RHServiceImpl">
+    <property name="tokenManager" ref="tokenManager" />
     <property name="colaboradorManager" ref="colaboradorManager" />
     <property name="estabelecimentoManager" ref="estabelecimentoManager" />
     <property name="empresaManager" ref="empresaManager" />

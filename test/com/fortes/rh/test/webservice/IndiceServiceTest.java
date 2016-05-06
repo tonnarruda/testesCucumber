@@ -1,7 +1,5 @@
 package com.fortes.rh.test.webservice;
 
-import java.net.MalformedURLException;
-
 import org.codehaus.xfire.XFire;
 import org.codehaus.xfire.XFireFactory;
 import org.codehaus.xfire.client.XFireProxyFactory;
@@ -13,7 +11,7 @@ import com.fortes.rh.model.ws.TIndiceHistorico;
 
 public class IndiceServiceTest
 {
-	public static void main(String[] args) throws MalformedURLException
+	public static void main(String[] args) throws Exception
 	{
 		// Determina qual o tipo de objeto que vamos querer criar
 		Service serviceModel = new ObjectServiceFactory().create(RHService.class);
@@ -36,8 +34,11 @@ public class IndiceServiceTest
 		tindiceHistorico.setValor(1458.65);
 		tindiceHistorico.setIndiceCodigo("001");
 		
+		// Criando Token
+		String token = client.getToken("FORTESPESSOAL", "@FortesPessoal");
+		
 //		System.out.println(client.criarIndiceHistorico(tindiceHistorico));
-		System.out.println(client.removerIndiceHistorico("01/01/2000", "001", "XXX"));
+		System.out.println(client.removerIndiceHistorico(token, "01/01/2000", "001", "XXX"));
 		
 		
 //		

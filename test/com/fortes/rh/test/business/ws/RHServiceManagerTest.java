@@ -30,7 +30,9 @@ import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.security.AuditoriaManager;
+import com.fortes.rh.business.security.TokenManager;
 import com.fortes.rh.business.ws.RHServiceImpl;
+import com.fortes.rh.exception.TokenException;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.captacao.Candidato;
@@ -61,6 +63,7 @@ import com.fortes.rh.model.ws.TOcorrencia;
 import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.model.ws.TSituacaoCargo;
+import com.fortes.rh.model.ws.Token;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -100,6 +103,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	private Mock gerenciadorComunicacaoManager;
 	private Mock transactionManager;
 	private Mock auditoriaManager;
+	private Mock tokenManager;
 
 	protected void setUp() throws Exception
 	{
@@ -149,6 +153,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		rHServiceManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 		auditoriaManager = new Mock(AuditoriaManager.class);
 		rHServiceManager.setAuditoriaManager((AuditoriaManager) auditoriaManager.proxy());
+		tokenManager = new Mock(TokenManager.class);
+		rHServiceManager.setTokenManager((TokenManager) tokenManager.proxy());
 	}
 	
 	public void testBindIndice() throws Exception
@@ -177,7 +183,10 @@ public class RHServiceManagerTest extends MockObjectTestCase
     	TEmpregado tEmpregado = new TEmpregado();
     	tEmpregado.setCodigoAC("1");
     	
-    	FeedbackWebService feedback = rHServiceManager.removerEmpregado(tEmpregado);
+    	tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+    	tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
+    	
+    	FeedbackWebService feedback = rHServiceManager.removerEmpregado("TOKEN", tEmpregado);
     	
     	assertEquals(false, feedback.isSucesso());
     	assertEquals("Dados do empregado invalidos", feedback.getMensagem());
@@ -191,8 +200,11 @@ public class RHServiceManagerTest extends MockObjectTestCase
     	tEmpregado.setEmpresaCodigoAC("12");
     	tEmpregado.setGrupoAC("004");
     	
+    	tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+    	tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
     	colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
-    	FeedbackWebService feedback = rHServiceManager.removerEmpregado(tEmpregado);
+    	
+    	FeedbackWebService feedback = rHServiceManager.removerEmpregado("TOKEN", tEmpregado);
     	
     	assertEquals(true, feedback.isSucesso());
 //    	assertEquals("Empregado não localizado no RH.", feedback.getMensagem());
@@ -206,8 +218,10 @@ public class RHServiceManagerTest extends MockObjectTestCase
     	tEmpregado.setEmpresaCodigoAC("12");
     	tEmpregado.setGrupoAC("004");
     	
+    	tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+    	tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
     	colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-    	FeedbackWebService feedback = rHServiceManager.removerEmpregado(tEmpregado);
+    	FeedbackWebService feedback = rHServiceManager.removerEmpregado("TOKEN", tEmpregado);
     	
     	assertEquals(false, feedback.isSucesso());
     	assertEquals("Erro ao excluir empregado.", feedback.getMensagem());
@@ -220,9 +234,11 @@ public class RHServiceManagerTest extends MockObjectTestCase
     	tEmpregado.setEmpresaCodigoAC("12");
     	tEmpregado.setGrupoAC("004");
     	
+    	tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+    	tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
     	colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Colaborador()));
     	colaboradorManager.expects(once()).method("removeColaboradorDependencias").with(ANYTHING);
-    	FeedbackWebService feedback = rHServiceManager.removerEmpregado(tEmpregado);
+    	FeedbackWebService feedback = rHServiceManager.removerEmpregado("TOKEN", tEmpregado);
     	
     	assertEquals(true, feedback.isSucesso());
 //    	assertEquals("colaborador deletado com sucesso.", feedback.getMensagem());
@@ -238,12 +254,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setNomeComercial("nomeComercial");
-
+		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC), ANYTHING).will(returnValue(empresa));
 		colaboradorManager.expects(once()).method("desligaColaboradorAC").withAnyArguments().will(returnValue(true));
 		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDesligamentoColaboradorAC").withAnyArguments().isVoid();
 
-		assertEquals(true, rHServiceManager.desligarEmpregado(colaboradorCodigoAC, empresaCodigoAC, dataDesligamento, "XXX").isSucesso());
+		assertEquals(true, rHServiceManager.desligarEmpregado("TOKEN", colaboradorCodigoAC, empresaCodigoAC, dataDesligamento, "XXX").isSucesso());
 	}
 	
 	public void testDesligarEmpregadosEmLote() throws Exception
@@ -256,12 +274,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setNomeComercial("nomeComercial");
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC), ANYTHING).will(returnValue(empresa));
 		
 		colaboradorManager.expects(once()).method("desligaColaboradorAC").withAnyArguments().will(returnValue(true));
 		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDesligamentoColaboradorAC").withAnyArguments().isVoid();
 		
-		assertEquals(true, rHServiceManager.desligarEmpregadosEmLote(colaboradoresCodigosAC, empresaCodigoAC, dataDesligamento, "XXX").isSucesso());
+		assertEquals(true, rHServiceManager.desligarEmpregadosEmLote("TOKEN", colaboradoresCodigosAC, empresaCodigoAC, dataDesligamento, "XXX").isSucesso());
 	}
 
 	public void testReligarColaborador() throws Exception
@@ -269,9 +289,11 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		String empresaCodigoAC = "123456";
 		String colaboradorCodigoAC = "123123";
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorManager.expects(once()).method("religaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), eq("XXX")).will(returnValue(1L));
 		usuarioManager.expects(once()).method("reativaAcessoSistema").withAnyArguments();
-		assertEquals(true, rHServiceManager.religarEmpregado(colaboradorCodigoAC, empresaCodigoAC, "XXX").isSucesso());
+		assertEquals(true, rHServiceManager.religarEmpregado("TOKEN", colaboradorCodigoAC, empresaCodigoAC, "XXX").isSucesso());
 	}
 	
 	public void testAtualizarCodigoEmpregado_naoEncontrado() throws Exception
@@ -284,9 +306,11 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		colaborador.setId(null);
 		colaborador.setCodigoAC(colaboradorCodigoAC);
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), eq(grupoAC)).will(returnValue(colaborador));
 	
-		FeedbackWebService retorno = rHServiceManager.atualizarCodigoEmpregado(grupoAC, empresaCodigoAC, colaboradorCodigoAC, "455878");
+		FeedbackWebService retorno = rHServiceManager.atualizarCodigoEmpregado("TOKEN", grupoAC, empresaCodigoAC, colaboradorCodigoAC, "455878");
 		assertEquals(false, retorno.isSucesso());
 		assertEquals(   "Colaborador não encontrado no RH.\n"+
 						"empCodigo: 123456\n"+
@@ -308,11 +332,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		colaborador.setNomeComercial("nomeComercial");
 		colaborador.setCodigoAC(colaboradorCodigoAC);
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), eq(grupoAC)).will(returnValue(colaborador));
 		colaboradorManager.expects(once()).method("setCodigoColaboradorAC").with(eq(codigoNovo), eq(colaborador.getId()), eq(empresa)).will(returnValue(true));
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC), eq(grupoAC)).will(returnValue(empresa));
 	
-		assertEquals(true, rHServiceManager.atualizarCodigoEmpregado(grupoAC, empresaCodigoAC, colaboradorCodigoAC, codigoNovo).isSucesso());
+		assertEquals(true, rHServiceManager.atualizarCodigoEmpregado("TOKEN", grupoAC, empresaCodigoAC, colaboradorCodigoAC, codigoNovo).isSucesso());
 	}
 	
 	public void testAtualizarEmpregadoAndSituacao() throws Exception
@@ -323,12 +349,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpresaCodigoAC(empresaCodigoAC);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(empregado)).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao));
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 
-		assertEquals(true, rHServiceManager.atualizarEmpregadoAndSituacao(empregado, situacao).isSucesso());
+		assertEquals(true, rHServiceManager.atualizarEmpregadoAndSituacao("TOKEN", empregado, situacao).isSucesso());
 	}
 
 	public void testAtualizarEmpregadoAndSituacaoEmpregadoException() throws Exception
@@ -338,11 +366,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TEmpregado colaborador = new TEmpregado();
 		situacao.setEmpresaCodigoAC(empresaCodigoAC);
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(colaborador)).will(throwException(new Exception()));
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
-		assertEquals(false, rHServiceManager.atualizarEmpregadoAndSituacao(colaborador, situacao).isSucesso());
+		assertEquals(false, rHServiceManager.atualizarEmpregadoAndSituacao("TOKEN", colaborador, situacao).isSucesso());
 	}
 
 	public void testAtualizarEmpregadoAndSituacaoSituacaoException() throws Exception
@@ -353,12 +383,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpresaCodigoAC(empresaCodigoAC);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(empregado)).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao)).will(throwException(new Exception()));;
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
-		assertEquals(false, rHServiceManager.atualizarEmpregadoAndSituacao(empregado, situacao).isSucesso());
+		assertEquals(false, rHServiceManager.atualizarEmpregadoAndSituacao("TOKEN", empregado, situacao).isSucesso());
 	}
 	
 	public void testCancelarContratacao() throws Exception
@@ -380,11 +412,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorManager.expects(once()).method("findByIdComHistorico").withAnyArguments().will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("findById").withAnyArguments().will(returnValue(historicoColaborador));;
 		colaboradorManager.expects(once()).method("cancelarContratacaoNoAC").withAnyArguments().isVoid();
 
-		assertEquals(true, rHServiceManager.cancelarContratacao(empregado, situacao, "").isSucesso());
+		assertEquals(true, rHServiceManager.cancelarContratacao("TOKEN", empregado, situacao, "").isSucesso());
 	}
 	
 	public void testCancelarContratacaoColaboradorNaoEncontrado() throws Exception
@@ -395,9 +429,11 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		empregado.setGrupoAC("001");
 		empregado.setId(2);
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorManager.expects(once()).method("findByIdComHistorico").withAnyArguments().will(returnValue(null));
 		
-		assertEquals(true, rHServiceManager.cancelarContratacao(empregado, null, "").isSucesso());
+		assertEquals(true, rHServiceManager.cancelarContratacao("TOKEN", empregado, null, "").isSucesso());
 	}
 
 	public void testCancelarSolicitacaoDesligamentoAC() throws Exception
@@ -415,32 +451,40 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpresaCodigoAC("0001");
 		situacao.setGrupoAC("001");
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").withAnyArguments().will(returnValue(colaborador));
 		colaboradorManager.expects(once()).method("cancelarSolicitacaoDesligamentoAC").withAnyArguments().isVoid();
 		
-		assertEquals(true, rHServiceManager.cancelarSolicitacaoDesligamentoAC(empregado, "").isSucesso());
+		assertEquals(true, rHServiceManager.cancelarSolicitacaoDesligamentoAC("TOKEN", empregado, "").isSucesso());
 	}
 	
 	public void testAtualizarColaborador() throws Exception
 	{
 		TEmpregado colaborador = new TEmpregado();
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(colaborador));
-		assertEquals(true, rHServiceManager.atualizarEmpregado(colaborador).isSucesso());
+		assertEquals(true, rHServiceManager.atualizarEmpregado("TOKEN", colaborador).isSucesso());
 	}
 	
 	public void testGetFaixas() throws Exception
 	{
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		faixaSalarialManager.expects(once()).method("getFaixasAC").will(returnValue(new TCargo[]{new TCargo()}));
-		assertTrue(rHServiceManager.getFaixas().length > 0);
+		assertTrue(rHServiceManager.getFaixas("TOKEN").length > 0);
 	}
 
 	public void testAtualizarColaboradorException() throws Exception
 	{
 		TEmpregado colaborador = new TEmpregado();
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(colaborador)).will(throwException(new Exception()));
-		assertEquals(false, rHServiceManager.atualizarEmpregado(colaborador).isSucesso());
+		assertEquals(false, rHServiceManager.atualizarEmpregado("TOKEN", colaborador).isSucesso());
 	}
 
 	public void testCriarSituacao() throws Exception
@@ -460,13 +504,15 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		historicoColaboradorManager.expects(once()).method("prepareSituacao").with(eq(situacao)).will(returnValue(historicoColaborador));
 		colaboradorManager.expects(once()).method("getVinculo").with(eq(empregado.getTipoAdmissao()), eq(empregado.getVinculo()), eq(empregado.getCategoria()));
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("save").with(eq(historicoColaborador));
 		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCadastroSituacaoAC").with(eq(empregado.getNome()), eq(situacao));
 
-		assertEquals(true, rHServiceManager.criarSituacao(empregado, situacao).isSucesso());
+		assertEquals(true, rHServiceManager.criarSituacao("TOKEN", empregado, situacao).isSucesso());
 	}
 
 	public void testCriarSituacaoException() throws Exception
@@ -475,8 +521,10 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpresaCodigoAC("12345");
 		situacao.setEmpregadoCodigoAC("54321");
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		historicoColaboradorManager.expects(once()).method("prepareSituacao").with(eq(situacao)).will(throwException(new Exception()));
-		assertEquals(false, rHServiceManager.criarSituacao(null, situacao).isSucesso());
+		assertEquals(false, rHServiceManager.criarSituacao("TOKEN", null, situacao).isSucesso());
 	}
 
 	public void testAtualizarSituacao() throws Exception
@@ -485,8 +533,10 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		String empresaCodigoAC = "12345";
 		situacao.setEmpresaCodigoAC(empresaCodigoAC);
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao));
-		assertEquals(true, rHServiceManager.atualizarSituacao(situacao).isSucesso());
+		assertEquals(true, rHServiceManager.atualizarSituacao("TOKEN", situacao).isSucesso());
 	}
 
 	public void testAtualizarSituacaoException() throws Exception
@@ -495,8 +545,10 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		String empresaCodigoAC = "12345";
 		situacao.setEmpresaCodigoAC(empresaCodigoAC);
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao)).will(throwException(new Exception()));
-		assertEquals(false, rHServiceManager.atualizarSituacao(situacao).isSucesso());
+		assertEquals(false, rHServiceManager.atualizarSituacao("TOKEN", situacao).isSucesso());
 	}
 
 	public void testRemoverSituacao() throws Exception
@@ -508,9 +560,11 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpregadoCodigoAC("55");
 		situacao.setEmpresaCodigoAC("77");
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		historicoColaboradorManager.expects(once()).method("findByAC").with(ANYTHING, eq(situacao.getEmpregadoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), ANYTHING).will(returnValue(historicoColaborador));
 		historicoColaboradorManager.expects(once()).method("removeHistoricoAndReajusteAC").with(eq(historicoColaborador));
-		assertEquals(true, rHServiceManager.removerSituacao(situacao).isSucesso());
+		assertEquals(true, rHServiceManager.removerSituacao("TOKEN", situacao).isSucesso());
 	}
 
 	public void testRemoverSituacaoException() throws Exception
@@ -522,9 +576,11 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpregadoCodigoAC("fadf622");
 		situacao.setEmpresaCodigoAC("8674dsfaf");
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		historicoColaboradorManager.expects(once()).method("findByAC").with(ANYTHING, eq(situacao.getEmpregadoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), ANYTHING).will(returnValue(historicoColaborador));
 		historicoColaboradorManager.expects(once()).method("removeHistoricoAndReajusteAC").with(eq(historicoColaborador)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		assertEquals(false, rHServiceManager.removerSituacao(situacao).isSucesso());
+		assertEquals(false, rHServiceManager.removerSituacao("TOKEN", situacao).isSucesso());
 	}
 	
 	public void testCriarCargo() throws Exception
@@ -534,11 +590,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TCargo tCargo = new TCargo();
 		tCargo.setDescricao("Nome da Faixa");
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		faixaSalarialManager.expects(once()).method("montaFaixa").with(eq(tCargo)).will(returnValue(faixaSalarial));
 		cargoManager.expects(once()).method("preparaCargoDoAC").with(eq(tCargo)).will(returnValue(cargo));
 		faixaSalarialManager.expects(once()).method("save").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.criarCargo(tCargo).isSucesso());
+		assertEquals(true, rHServiceManager.criarCargo("TOKEN", tCargo).isSucesso());
 	}
 	
 	public void testAtualizarCargo() throws Exception
@@ -550,11 +608,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TCargo tCargo = new TCargo();
 		tCargo.setDescricao("Nome da Faixa");
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialManager.expects(once()).method("updateAC").with(eq(tCargo));
 		cargoManager.expects(once()).method("updateCBO").with(ANYTHING, ANYTHING);
 		
-		assertEquals(true, rHServiceManager.atualizarCargo(tCargo).isSucesso());
+		assertEquals(true, rHServiceManager.atualizarCargo("TOKEN", tCargo).isSucesso());
 	}
 	
 	public void testAtualizarCargoSemNomeFaixa() throws Exception
@@ -566,7 +626,9 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		
 		TCargo tCargo = new TCargo();
 		
-		assertEquals("Faixa sem nome",false, rHServiceManager.atualizarCargo(tCargo).isSucesso());
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
+		assertEquals("Faixa sem nome",false, rHServiceManager.atualizarCargo("TOKEN", tCargo).isSucesso());
 	}
 	
 	public void testRemoverCargo() throws Exception
@@ -577,12 +639,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		
 		TCargo tCargo = new TCargo();
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialManager.expects(once()).method("remove").with(ANYTHING);
 		faixaSalarialManager.expects(once()).method("findByCargo").with(ANYTHING).will(returnValue(new ArrayList<FaixaSalarial>()));
 		cargoManager.expects(once()).method("remove").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.removerCargo(tCargo).isSucesso());
+		assertEquals(true, rHServiceManager.removerCargo("TOKEN", tCargo).isSucesso());
 	}
 	
 	public void testCriarSituacaoCargo() throws Exception
@@ -590,12 +654,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		TSituacaoCargo tSituacaoCargo = new TSituacaoCargo();
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialHistoricoManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		faixaSalarialHistoricoManager.expects(once()).method("findIdByDataFaixa").with(ANYTHING).will(returnValue(null));
 		faixaSalarialHistoricoManager.expects(once()).method("save").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.criarSituacaoCargo(tSituacaoCargo).isSucesso());
+		assertEquals(true, rHServiceManager.criarSituacaoCargo("TOKEN", tSituacaoCargo).isSucesso());
 	}
 	
 	public void testAtualizarSituacaoCargo() throws Exception
@@ -603,12 +669,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		TSituacaoCargo tSituacaoCargo = new TSituacaoCargo();
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialHistoricoManager.expects(once()).method("bind").with(ANYTHING, ANYTHING).will(returnValue(new FaixaSalarialHistorico()));
 		faixaSalarialHistoricoManager.expects(once()).method("findIdByDataFaixa").with(ANYTHING).will(returnValue(1L));
 		faixaSalarialHistoricoManager.expects(once()).method("update").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.atualizarSituacaoCargo(tSituacaoCargo).isSucesso());
+		assertEquals(true, rHServiceManager.atualizarSituacaoCargo("TOKEN", tSituacaoCargo).isSucesso());
 	}
 	
 	public void testRemoverSituacaoCargo() throws Exception
@@ -616,11 +684,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		TSituacaoCargo tSituacaoCargo = new TSituacaoCargo();
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialHistoricoManager.expects(once()).method("findIdByDataFaixa").with(ANYTHING).will(returnValue(1L));
 		faixaSalarialHistoricoManager.expects(once()).method("remove").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.removerSituacaoCargo(tSituacaoCargo).isSucesso());
+		assertEquals(true, rHServiceManager.removerSituacaoCargo("TOKEN", tSituacaoCargo).isSucesso());
 	}
 	
 	public void testCriarAreaOrganizacional() throws Exception
@@ -631,13 +701,15 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TAreaOrganizacional area = new TAreaOrganizacional();
 		area.setEmpresaCodigo(empresa.getCodigoAC());
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").withAnyArguments().will(returnValue(null));
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("save").with(ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("transferirColabDaAreaMaeParaAreaFilha").withAnyArguments();
 		
-		assertEquals(true, rHServiceManager.criarAreaOrganizacional(area).isSucesso());
+		assertEquals(true, rHServiceManager.criarAreaOrganizacional("TOKEN", area).isSucesso());
 	}
 	
 	public void testCriarAreaOrganizacionalException() throws Exception
@@ -648,12 +720,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TAreaOrganizacional area = new TAreaOrganizacional();
 		area.setEmpresaCodigo(empresa.getCodigoAC());
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").withAnyArguments().will(returnValue(null));
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		
-		assertEquals(false, rHServiceManager.criarAreaOrganizacional(area).isSucesso());
+		assertEquals(false, rHServiceManager.criarAreaOrganizacional("TOKEN", area).isSucesso());
 	}
 	
 	public void testAtualizarAreaOrganizacional() throws Exception
@@ -664,12 +738,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TAreaOrganizacional area = new TAreaOrganizacional();
 		area.setEmpresaCodigo(empresa.getCodigoAC());
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(AreaOrganizacionalFactory.getEntity(1L)));
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("update").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.atualizarAreaOrganizacional(area).isSucesso());
+		assertEquals(true, rHServiceManager.atualizarAreaOrganizacional("TOKEN", area).isSucesso());
 	}
 	
 	public void testAtualizarAreaOrganizacionalException() throws Exception
@@ -680,32 +756,38 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TAreaOrganizacional area = new TAreaOrganizacional();
 		area.setEmpresaCodigo(empresa.getCodigoAC());
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(AreaOrganizacionalFactory.getEntity(1L)));
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		
-		assertEquals(false, rHServiceManager.atualizarAreaOrganizacional(area).isSucesso());
+		assertEquals(false, rHServiceManager.atualizarAreaOrganizacional("TOKEN", area).isSucesso());
 	}
 	
 	public void testRemoverAreaOrganizacional() throws Exception
 	{
 		TAreaOrganizacional area = new TAreaOrganizacional();
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("remove").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.removerAreaOrganizacional(area).isSucesso());
+		assertEquals(true, rHServiceManager.removerAreaOrganizacional("TOKEN", area).isSucesso());
 	}
 	
 	public void testRemoverAreaOrganizacionalException() throws Exception
 	{
 		TAreaOrganizacional area = new TAreaOrganizacional();
 		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		
-		assertEquals(false, rHServiceManager.removerAreaOrganizacional(area).isSucesso());
+		assertEquals(false, rHServiceManager.removerAreaOrganizacional("TOKEN", area).isSucesso());
 	}
 
 	public void testCriarEstabelecimento() throws Exception
@@ -720,11 +802,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		tEstabelecimento.setCodigoCidade("1");
 		tEstabelecimento.setUf("uf");
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		cidadeManager.expects(once()).method("findByCodigoAC").with(eq(tEstabelecimento.getCodigoCidade()), eq(tEstabelecimento.getUf())).will(returnValue(cidade));
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		estabelecimentoManager.expects(once()).method("save").with(ANYTHING);
 
-		assertEquals(true, rHServiceManager.criarEstabelecimento(tEstabelecimento).isSucesso());
+		assertEquals(true, rHServiceManager.criarEstabelecimento("TOKEN", tEstabelecimento).isSucesso());
 	}
 
 	public void testCriarEstabelecimentoException() throws Exception
@@ -739,11 +823,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		tEstabelecimento.setCodigoCidade("1");
 		tEstabelecimento.setUf("uf");
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		cidadeManager.expects(once()).method("findByCodigoAC").with(eq(tEstabelecimento.getCodigoCidade()), eq(tEstabelecimento.getUf())).will(returnValue(cidade));
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		estabelecimentoManager.expects(once()).method("save").with(ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 
-		assertEquals(false, rHServiceManager.criarEstabelecimento(tEstabelecimento).isSucesso());
+		assertEquals(false, rHServiceManager.criarEstabelecimento("TOKEN", tEstabelecimento).isSucesso());
 	}
 
 	public void testAtualizarEstabelecimento() throws Exception
@@ -761,11 +847,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		estabelecimentoManager.expects(once()).method("findByCodigo").with(eq(tEstabelecimento.getCodigo()), eq(tEstabelecimento.getCodigoEmpresa()), ANYTHING).will(returnValue(estabelecimento));
 		cidadeManager.expects(once()).method("findByCodigoAC").with(eq(tEstabelecimento.getCodigoCidade()), eq(tEstabelecimento.getUf())).will(returnValue(cidade));
 		estabelecimentoManager.expects(once()).method("update").with(eq(estabelecimento));
 
-		assertEquals(true, rHServiceManager.atualizarEstabelecimento(tEstabelecimento).isSucesso());
+		assertEquals(true, rHServiceManager.atualizarEstabelecimento("TOKEN", tEstabelecimento).isSucesso());
 	}
 
 	public void testAtualizarEstabelecimentoException() throws Exception
@@ -783,11 +871,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		estabelecimentoManager.expects(once()).method("findByCodigo").with(eq(tEstabelecimento.getCodigo()), eq(tEstabelecimento.getCodigoEmpresa()), ANYTHING).will(returnValue(estabelecimento));
 		cidadeManager.expects(once()).method("findByCodigoAC").with(eq(tEstabelecimento.getCodigoCidade()), eq(tEstabelecimento.getUf())).will(returnValue(cidade));
 		estabelecimentoManager.expects(once()).method("update").with(eq(estabelecimento)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 
-		assertEquals(false, rHServiceManager.atualizarEstabelecimento(tEstabelecimento).isSucesso());
+		assertEquals(false, rHServiceManager.atualizarEstabelecimento("TOKEN", tEstabelecimento).isSucesso());
 	}
 
 	public void testRemoverEstabelecimento() throws Exception
@@ -796,26 +886,32 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		empresa.setCodigoAC("123123");
 
 		String codigoEstabelecimento = "12";
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		estabelecimentoManager.expects(once()).method("remove").with(eq(codigoEstabelecimento), eq(empresa.getId())).will(returnValue(true));
 
-		assertEquals(true, rHServiceManager.removerEstabelecimento(codigoEstabelecimento, empresa.getCodigoAC(), "XXX").isSucesso());
+		assertEquals(true, rHServiceManager.removerEstabelecimento("TOKEN", codigoEstabelecimento, empresa.getCodigoAC(), "XXX").isSucesso());
 	}
 
 	public void testCriarIndice() throws Exception
 	{
 		TIndice tIndice = new TIndice();
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		indiceManager.expects(once()).method("save");
-		assertEquals(true, rHServiceManager.criarIndice(tIndice).isSucesso());
+		assertEquals(true, rHServiceManager.criarIndice("TOKEN", tIndice).isSucesso());
 	}
 
 	public void testCriarIndiceException() throws Exception
 	{
 		TIndice tIndice = new TIndice();
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		indiceManager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		assertEquals(false, rHServiceManager.criarIndice(tIndice).isSucesso());
+		assertEquals(false, rHServiceManager.criarIndice("TOKEN", tIndice).isSucesso());
 	}
 
 	public void testAtualizarIndice() throws Exception
@@ -824,9 +920,11 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		tIndice.setCodigo("123");
 		Indice indice = IndiceFactory.getEntity(1L);
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndice.getCodigo()), ANYTHING).will(returnValue(indice));
 		indiceManager.expects(once()).method("update");
-		assertEquals(true, rHServiceManager.atualizarIndice(tIndice).isSucesso());
+		assertEquals(true, rHServiceManager.atualizarIndice("TOKEN", tIndice).isSucesso());
 	}
 
 	public void testAtualizarIndiceException() throws Exception
@@ -835,16 +933,20 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		tIndice.setCodigo("123");
 		Indice indice = IndiceFactory.getEntity(1L);
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndice.getCodigo()), ANYTHING).will(returnValue(indice));
 		indiceManager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		assertEquals(false, rHServiceManager.atualizarIndice(tIndice).isSucesso());
+		assertEquals(false, rHServiceManager.atualizarIndice("TOKEN", tIndice).isSucesso());
 	}
 
 	public void testRemoverIndice() throws Exception
 	{
 		String codigoIndice = "123";
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		indiceManager.expects(once()).method("remove").with(eq(codigoIndice), eq("XXX")).will(returnValue(true));
-		assertEquals(true, rHServiceManager.removerIndice(codigoIndice, "XXX").isSucesso());
+		assertEquals(true, rHServiceManager.removerIndice("TOKEN", codigoIndice, "XXX").isSucesso());
 	}
 
 	public void testCriarIndiceHistorico() throws Exception
@@ -854,11 +956,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TIndiceHistorico tIndiceHistorico = new TIndiceHistorico();
 		tIndiceHistorico.setIndiceCodigo("123");
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(indice));
 		indiceHistoricoManager.expects(once()).method("verifyExists").with(ANYTHING, ANYTHING).will(returnValue(false));
 		indiceHistoricoManager.expects(once()).method("save").with(ANYTHING);
 
-		assertEquals(true, rHServiceManager.criarIndiceHistorico(tIndiceHistorico).isSucesso());
+		assertEquals(true, rHServiceManager.criarIndiceHistorico("TOKEN", tIndiceHistorico).isSucesso());
 	}
 
 	public void testCriarIndiceHistoricoIndiceNull() throws Exception
@@ -866,9 +970,11 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TIndiceHistorico tIndiceHistorico = new TIndiceHistorico();
 		tIndiceHistorico.setIndiceCodigo("123");
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(null));
 
-		assertEquals(false, rHServiceManager.criarIndiceHistorico(tIndiceHistorico).isSucesso());
+		assertEquals(false, rHServiceManager.criarIndiceHistorico("TOKEN", tIndiceHistorico).isSucesso());
 	}
 
 	public void testCriarIndiceHistoricoVerifyTrue() throws Exception
@@ -878,11 +984,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TIndiceHistorico tIndiceHistorico = new TIndiceHistorico();
 		tIndiceHistorico.setIndiceCodigo("123");
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(indice));
 		indiceHistoricoManager.expects(once()).method("verifyExists").with(ANYTHING, ANYTHING).will(returnValue(true));
 		indiceHistoricoManager.expects(once()).method("updateValor").with(ANYTHING, ANYTHING, ANYTHING);
 
-		assertEquals(true, rHServiceManager.criarIndiceHistorico(tIndiceHistorico).isSucesso());
+		assertEquals(true, rHServiceManager.criarIndiceHistorico("TOKEN", tIndiceHistorico).isSucesso());
 	}
 
 	public void testRemoverIndiceHistorico() throws Exception
@@ -893,10 +1001,12 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TIndiceHistorico tIndiceHistorico = new TIndiceHistorico();
 		tIndiceHistorico.setIndiceCodigo("123");
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(indice));
 		indiceHistoricoManager.expects(once()).method("remove").with(ANYTHING, eq(indice.getId())).will(returnValue(true));
 
-		assertEquals(true, rHServiceManager.removerIndiceHistorico("01/01/2000", tIndiceHistorico.getIndiceCodigo(), "XXX").isSucesso());
+		assertEquals(true, rHServiceManager.removerIndiceHistorico("TOKEN", "01/01/2000", tIndiceHistorico.getIndiceCodigo(), "XXX").isSucesso());
 	}
 
 	public void testRemoverIndiceHistoricoSemIndice() throws Exception
@@ -906,15 +1016,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(null));
 
-		assertEquals(true, rHServiceManager.removerIndiceHistorico("01/01/2000", tIndiceHistorico.getIndiceCodigo(), "XXX").isSucesso());
+		assertEquals(true, rHServiceManager.removerIndiceHistorico("TOKEN", "01/01/2000", tIndiceHistorico.getIndiceCodigo(), "XXX").isSucesso());
 	}
-
-//	public void testCancelaHistoricoColaborador() throws Exception
-//	{
-//		historicoColaboradorManager.expects(once()).method("cancelaHistoricoColaboradorAC").with(ANYTHING, ANYTHING, ANYTHING);
-//		TSituacao situacao = new TSituacao();
-//		assertEquals(true, rHServiceManager.cancelarSituacao(situacao, ""));
-//	}
 
 	public void testSetStatusFaixaSalarialHistorico() throws Exception
 	{
@@ -929,38 +1032,46 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		faixaSalarialHistoricoManager.expects(once()).method("findByIdProjection").with(eq(faixaSalarialHistorico.getId())).will(returnValue(faixaSalarialHistorico));
 		mensagemManager.expects(once()).method("formataMensagemCancelamentoFaixaSalarialHistorico").with(eq(mensagem), eq(faixaSalarialHistorico)).will(returnValue(mensagemFinal));
 		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(empresaCodigoAC), eq("XXX"), eq(null)).will(returnValue(usuarioEmpresas));
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();
 		faixaSalarialHistoricoManager.expects(once()).method("setStatus").with(eq(faixaSalarialHistoricoId), eq(aprovado)).will(returnValue(true));
 
-		assertEquals(true, rHServiceManager.setStatusFaixaSalarialHistorico(faixaSalarialHistoricoId, aprovado, mensagem, empresaCodigoAC, "XXX").isSucesso());
+		assertEquals(true, rHServiceManager.setStatusFaixaSalarialHistorico("TOKEN", faixaSalarialHistoricoId, aprovado, mensagem, empresaCodigoAC, "XXX").isSucesso());
 	}
 
 	public void testCriarEmpresa() throws Exception
 	{
 		TEmpresa empresaAC = new TEmpresa();
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("criarEmpresa").with(eq(empresaAC)).will(returnValue(true));
 
-		assertEquals(true, rHServiceManager.criarEmpresa(empresaAC));
+		assertEquals(true, rHServiceManager.criarEmpresa("TOKEN", empresaAC));
 	}
 
 	public void testCriarOcorrencia()
 	{
 		TOcorrencia ocorrenciaAC = new TOcorrencia();
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("findByCodigoAC");
 		ocorrenciaManager.expects(once()).method("saveFromAC");
 
-		assertTrue(rHServiceManager.criarOcorrencia(ocorrenciaAC).isSucesso());
+		assertTrue(rHServiceManager.criarOcorrencia("TOKEN", ocorrenciaAC).isSucesso());
 	}
 
 	public void testCriarOcorrenciaException()
 	{
 		TOcorrencia ocorrenciaAC = new TOcorrencia();
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("findByCodigoAC");
 		ocorrenciaManager.expects(once()).method("saveFromAC").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		assertFalse(rHServiceManager.criarOcorrencia(ocorrenciaAC).isSucesso());
+		assertFalse(rHServiceManager.criarOcorrencia("TOKEN", ocorrenciaAC).isSucesso());
 	}
 
 	public void testRemoverOcorrencia()
@@ -972,10 +1083,12 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		ocorrencia.setEmpresa("005");
 		ocorrencia.setCodigo("123");
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("findByCodigoAC").will(returnValue(empresa));
 		ocorrenciaManager.expects(once()).method("removeByCodigoAC").with(eq(codigoAC), eq(empresa.getId())).will(returnValue(true));
 
-		assertTrue(rHServiceManager.removerOcorrencia(ocorrencia).isSucesso());
+		assertTrue(rHServiceManager.removerOcorrencia("TOKEN", ocorrencia).isSucesso());
 	}
 
 	public void testRemoverOcorrenciaException()
@@ -986,10 +1099,12 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		ocorrencia.setEmpresa("005");
 		ocorrencia.setCodigo("123");
 
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("findByCodigoAC").will(returnValue(empresa));
 		ocorrenciaManager.expects(once()).method("removeByCodigoAC").with(eq(codigoAC), eq(empresa.getId())).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 
-		assertFalse(rHServiceManager.removerOcorrencia(ocorrencia).isSucesso());
+		assertFalse(rHServiceManager.removerOcorrencia("TOKEN", ocorrencia).isSucesso());
 	}
 
 	public void testCriarOcorrenciaEmpregado()
@@ -1025,16 +1140,21 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		
 		ocorrenciaManager.expects(atLeastOnce()).method("findByCodigoAC").withAnyArguments().will(returnValue(ocorrencia));
 		colaboradorOcorrenciaManager.expects(once()).method("bindColaboradorOcorrencias").will(returnValue(colaboradorOcorrencias));
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorOcorrenciaManager.expects(once()).method("saveOcorrenciasFromAC");
 
-		assertTrue(rHServiceManager.criarOcorrenciaEmpregado(tcolaboradorOcorrencias).isSucesso());
+		assertTrue(rHServiceManager.criarOcorrenciaEmpregado("TOKEN", tcolaboradorOcorrencias).isSucesso());
 	}
 
 	public void testCriarOcorrenciaEmpregadoException()
 	{
 		TOcorrenciaEmpregado[] ocorrenciaEmpregados = new TOcorrenciaEmpregado[0];
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorOcorrenciaManager.expects(once()).method("bindColaboradorOcorrencias").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		assertFalse(rHServiceManager.criarOcorrenciaEmpregado(ocorrenciaEmpregados).isSucesso());
+		
+		assertFalse(rHServiceManager.criarOcorrenciaEmpregado("TOKEN", ocorrenciaEmpregados).isSucesso());
 	}
 
 	public void testRemoverOcorrenciaEmpregado()
@@ -1065,41 +1185,54 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		colaboradorOcorrencias.add(colaboradorOcorrencia);
 		
 		colaboradorOcorrenciaManager.expects(once()).method("bindColaboradorOcorrencias").will(returnValue(colaboradorOcorrencias));
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorOcorrenciaManager.expects(once()).method("removeFromAC");
 
-		assertTrue(rHServiceManager.removerOcorrenciaEmpregado(ocorrenciaEmpregados).isSucesso());
+		assertTrue(rHServiceManager.removerOcorrenciaEmpregado("TOKEN", ocorrenciaEmpregados).isSucesso());
 	}
 
 	public void testRemoverOcorrenciaEmpregadoException()
 	{
 		TOcorrenciaEmpregado[] ocorrenciaEmpregados = new TOcorrenciaEmpregado[0];
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorOcorrenciaManager.expects(once()).method("bindColaboradorOcorrencias").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		assertFalse(rHServiceManager.removerOcorrenciaEmpregado(ocorrenciaEmpregados).isSucesso());
+
+		assertFalse(rHServiceManager.removerOcorrenciaEmpregado("TOKEN", ocorrenciaEmpregados).isSucesso());
 	}
 
-	public void testGetEmpresas()
+	public void testGetEmpresas() throws TokenException
 	{
 		Collection<Empresa> colecao = Arrays.asList(new Empresa[]{EmpresaFactory.getEmpresa(1L)});
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		empresaManager.expects(once()).method("findToList").will(returnValue(colecao));
-		assertEquals(1, rHServiceManager.getEmpresas().length);
+		assertEquals(1, rHServiceManager.getEmpresas("TOKEN").length);
 	}
-	public void testGetGrupos()
+	public void testGetGrupos() throws TokenException
 	{
 		TGrupo[] tgrupos = new TGrupo[]{new TGrupo("aaa", "descricao")};
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		grupoACManager.expects(once()).method("findTGrupos").will(returnValue(tgrupos));
-		assertEquals(1, rHServiceManager.getGrupos().length);
+		assertEquals(1, rHServiceManager.getGrupos("TOKEN").length);
 	}
-	public void testGetCidades()
+	public void testGetCidades() throws TokenException
 	{
 		Collection<Cidade> colecao = Arrays.asList(new Cidade[]{CidadeFactory.getEntity(1L)});
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		cidadeManager.expects(once()).method("findAllByUf").will(returnValue(colecao));
-		assertEquals(1, rHServiceManager.getCidades("CE").length);
+		assertEquals(1, rHServiceManager.getCidades("TOKEN", "CE").length);
 	}
-	public void testGetCargos()
+	public void testGetCargos() throws TokenException
 	{
 		Collection<Cargo> colecao = Arrays.asList(new Cargo[]{CargoFactory.getEntity(1L)});
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		cargoManager.expects(once()).method("findAllSelect").will(returnValue(colecao));
-		assertEquals(1, rHServiceManager.getCargos(1L).length);
+		assertEquals(1, rHServiceManager.getCargos("TOKEN", 1L).length);
 	}
 	
 	public void testCadastrarCandidatos()  throws Exception
@@ -1116,31 +1249,10 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		Cidade cidade = CidadeFactory.getEntity(1L);
 		cidade.setUf(new Estado());
 
-//		candidatoManager.expects(once()).method("findByCPF").will(returnValue(null));
 		cidadeManager.expects(once()).method("findById").will(returnValue(cidade));
-
 		cargoManager.expects(once()).method("populaCargos");
-
 		candidatoManager.expects(once()).method("save");
-
 		assertTrue(rHServiceManager.cadastrarCandidato(cand));
-
-		// Exception: candidato já cadastrado
-//		empresaManager.expects(once()).method("findById").will(returnValue(EmpresaFactory.getEmpresa(1L)));
-//		Candidato candTmp = CandidatoFactory.getCandidato();
-//		candTmp.setId(1L);
-//		candidatoManager.expects(once()).method("findByCPF").will(returnValue(candTmp));
-//
-//		Exception exception = null;
-//		try
-//		{
-//			rHServiceManager.cadastrarCandidato(cand);
-//		}
-//		catch (Exception e)
-//		{
-//			exception = e;
-//		}
-//		assertNotNull(exception);
 	}
 	
 	String TODOS_OS_NOMES_ENCONTRADOS = "JOAO BATISTA (CPF 630.673.232-12) - VEGA\n" +
@@ -1149,12 +1261,15 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	
 	Collection<Candidato> candidatosHomonimos = new ArrayList<Candidato>();
 	
-	public void testGetNomesHomologos() {
+	public void testGetNomesHomologos() throws TokenException {
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
+		
 		// dado que
 		dadoQueExisteHomonimosPara("joao batista");
 		
 		// quando
-		String nomes = rHServiceManager.getNomesHomologos("joao batista");
+		String nomes = rHServiceManager.getNomesHomologos("TOKEN", "joao batista");
 		
 		// entao
 		String[] cadaNome = nomes.split("\n");
@@ -1190,16 +1305,20 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	{
 		TSituacao situacao = new TSituacao();
 		String mensagem = "";
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		historicoColaboradorManager.expects(once()).method("cancelarSituacao");
-		assertTrue(rHServiceManager.cancelarSituacao(situacao, mensagem).isSucesso());
+		assertTrue(rHServiceManager.cancelarSituacao("TOKEN", situacao, mensagem).isSucesso());
 	}
 
 	public void testCancelarSituacaoException()
 	{
 		TSituacao situacao = new TSituacao();
 		String mensagem = "";
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		historicoColaboradorManager.expects(once()).method("cancelarSituacao").will(throwException(new Exception()));
-		assertFalse(rHServiceManager.cancelarSituacao(situacao, mensagem).isSucesso());
+		assertFalse(rHServiceManager.cancelarSituacao("TOKEN", situacao, mensagem).isSucesso());
 	}
 	
     public void testRemoverEmpregadoComDependenciaException() throws Exception
@@ -1214,8 +1333,10 @@ public class RHServiceManagerTest extends MockObjectTestCase
     	tEmpregado.setEmpresaCodigoAC("12");
     	tEmpregado.setGrupoAC("004");
     	
+    	tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+    	tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
     	colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-    	FeedbackWebService feedback = rHServiceManager.removerEmpregadoComDependencia(tEmpregado, tAuditoria);
+    	FeedbackWebService feedback = rHServiceManager.removerEmpregadoComDependencia("TOKEN", tEmpregado, tAuditoria);
     	
     	assertEquals(false, feedback.isSucesso());
     	assertEquals("Erro ao excluir empregado.", feedback.getMensagem());
@@ -1235,12 +1356,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
     	
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
     	
+    	tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+    	tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
     	colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaborador));
     	colaboradorManager.expects(once()).method("removeComDependencias").with(eq(colaborador.getId())).isVoid();
     	empresaManager.expects(once()).method("findByCodigoAC").withAnyArguments().will(returnValue(EmpresaFactory.getEmpresa()));
     	auditoriaManager.expects(once()).method("auditaRemoverEnpregadoFortesPessoal").withAnyArguments().isVoid();
     	
-    	FeedbackWebService feedback = rHServiceManager.removerEmpregadoComDependencia(tEmpregado, tAuditoria);
+    	FeedbackWebService feedback = rHServiceManager.removerEmpregadoComDependencia("TOKEN", tEmpregado, tAuditoria);
     	
     	assertEquals(true, feedback.isSucesso());
     }

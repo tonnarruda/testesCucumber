@@ -29,6 +29,20 @@
     </property>
   </bean>
   
+  <bean id="tokenManagerTarget" class="com.fortes.rh.business.security.TokenManagerImpl">
+    <property name="dao">
+      <ref bean="tokenDao" />
+    </property>
+  </bean>
+  <bean id="tokenManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.security.TokenManager</value>
+    </property>
+    <property name="target">
+      <ref bean="tokenManagerTarget" />
+    </property>
+  </bean>
+  
   <!-- Security Manager -->
   <bean id="securityManagerTarget" class="com.fortes.rh.business.security.SecurityManagerImpl">
   </bean>
