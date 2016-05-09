@@ -23,9 +23,6 @@ create index index_turma_id_realizada on turma (id, realizada);--.go
 drop index if exists index_curso_id;--.go
 create index index_curso_id on curso (id);--.go
 
-drop index if exists index_hc_colaboradorId;--.go
-create index index_hc_colaboradorId on historicoColaborador (colaborador_id);--.go
-
 drop index if exists index_hc_colaboradorId_status;--.go
 create index index_hc_colaboradorId_status on historicoColaborador (colaborador_id, status);--.go
 
@@ -118,3 +115,21 @@ return (
 	);
 END; 
 $$ LANGUAGE plpgsql; --.go 
+
+CREATE INDEX index_avaliacaoPratica_id ON avaliacaoPratica (id);--.go
+CREATE INDEX index_colabAvPratica_id ON ColaboradorAvaliacaoPratica (id);--.go
+CREATE INDEX index_colabAvPratica_certificacao_id ON ColaboradorAvaliacaoPratica (certificacao_id);--.go
+CREATE INDEX index_colabAvPratica_colaborador_id ON ColaboradorAvaliacaoPratica (colaborador_id);--.go
+CREATE INDEX index_colabCertificacao_id ON colaboradorcertificacao (id);--.go
+CREATE INDEX index_colabCertificacao_data ON colaboradorcertificacao (data);--.go
+CREATE INDEX index_colabCertificacao_colaborador_certificacao ON colaboradorcertificacao (colaborador_id, certificacao_id);--.go
+CREATE INDEX index_colabCertificacao_colaborador ON colaboradorcertificacao (colaborador_id);--.go
+CREATE INDEX index_colabCertificacao_certificacao ON colaboradorcertificacao (certificacao_id);--.go
+CREATE INDEX index_turma_curso on turma (curso_id);--.go
+CREATE INDEX index_turma_dataPrevFim on turma (dataPrevFim);--.go
+CREATE INDEX index_certificacao_curso on certificacao_curso (certificacaos_id, cursos_id);--.go
+CREATE INDEX index_hc_area on historicocolaborador (areaorganizacional_id);--.go
+CREATE INDEX index_hc_faixa on historicocolaborador (faixasalarial_id);--.go
+CREATE INDEX index_hc_estabelecimento on historicocolaborador (estabelecimento_id);--.go
+CREATE INDEX index_faixasalarial_cargo on faixasalarial (cargo_id);--.go
+CREATE INDEX index_faixasalarial on faixasalarial (id);--.go

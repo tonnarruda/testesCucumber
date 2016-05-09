@@ -1,14 +1,16 @@
 package com.fortes.rh.test.web.action.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import mockit.Mockit;
 
-import org.hibernate.ObjectNotFoundException;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
@@ -38,51 +40,52 @@ import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction;
 import com.fortes.web.tags.CheckBox;
 
-public class CertificacaoEditActionTest extends MockObjectTestCase
+public class CertificacaoEditActionTest
 {
 	private CertificacaoEditAction action;
-	private Mock certificacaoManager;
-	private Mock cursoManager;
-	private Mock avaliacaoPraticaManager;
-	private Mock colaboradorCertificacaoManager;
-	private Mock areaOrganizacionalManager;
-	private Mock estabelecimentoManager;
-	private Mock empresaManager;
-	private Mock parametrosDoSistemaManager;
+	private CertificacaoManager certificacaoManager;
+	private CursoManager cursoManager;
+	private AvaliacaoPraticaManager avaliacaoPraticaManager;
+	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private EmpresaManager empresaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
-		super.setUp();
 		action = new CertificacaoEditAction();
 
 		certificacaoManager = mock(CertificacaoManager.class);
-        action.setCertificacaoManager((CertificacaoManager) certificacaoManager.proxy());
+        action.setCertificacaoManager(certificacaoManager);
         
         cursoManager = mock(CursoManager.class);
-        action.setCursoManager((CursoManager) cursoManager.proxy());
+        action.setCursoManager(cursoManager);
 
         avaliacaoPraticaManager = mock(AvaliacaoPraticaManager.class);
-        action.setAvaliacaoPraticaManager((AvaliacaoPraticaManager) avaliacaoPraticaManager.proxy());
+        action.setAvaliacaoPraticaManager(avaliacaoPraticaManager);
 
         colaboradorCertificacaoManager = mock(ColaboradorCertificacaoManager.class);
-        action.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
+        action.setColaboradorCertificacaoManager(colaboradorCertificacaoManager);
         
         areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
-        action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+        action.setAreaOrganizacionalManager(areaOrganizacionalManager);
 
         estabelecimentoManager = mock(EstabelecimentoManager.class);
-        action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
+        action.setEstabelecimentoManager(estabelecimentoManager);
 
         empresaManager = mock(EmpresaManager.class);
-        action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
+        action.setEmpresaManager(empresaManager);
 
         parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
-        action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
+        action.setParametrosDoSistemaManager(parametrosDoSistemaManager);
         
         Mockit.redefineMethods(CheckListBoxUtil.class, MockCheckListBoxUtil.class);
         Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
 	}
 	
+	@Test
 	public void testPrepareInsert() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -92,14 +95,14 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		certificacao.setNome("certifica");
 		action.setCertificacao(certificacao);
 		
-		certificacaoManager.expects(once()).method("findById").with(eq(certificacao.getId())).will(returnValue(certificacao));
-		cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[] {empresa.getId()})).will(returnValue(new ArrayList<Curso>()));
-		avaliacaoPraticaManager.expects(once()).method("find").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoPratica>()));
-		
+		when(certificacaoManager.findById(certificacao.getId())).thenReturn(certificacao);
+		when(cursoManager.findAllByEmpresasParticipantes(new Long[] {empresa.getId()})).thenReturn(new ArrayList<Curso>());
+		when(avaliacaoPraticaManager.find(null)).thenReturn(new ArrayList<AvaliacaoPratica>());
 		
 		assertEquals("success", action.prepareInsert());
 	}
 
+	@Test
 	public void testPrepareUpdate() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -121,16 +124,17 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		certificacao.setCursos(cursos);
 		action.setCertificacao(certificacao);
 		
-		certificacaoManager.expects(once()).method("verificaEmpresa").with(eq(certificacao.getId()), eq(empresa.getId())).will(returnValue(true));
-		certificacaoManager.expects(once()).method("findById").with(eq(certificacao.getId())).will(returnValue(certificacao));
-		cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[] {empresa.getId()})).will(returnValue(new ArrayList<Curso>()));
-		certificacaoManager.expects(once()).method("findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito").withAnyArguments().will(returnValue(new ArrayList<Certificacao>()));
-		avaliacaoPraticaManager.expects(once()).method("find").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoPratica>()));
-		colaboradorCertificacaoManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoPratica>()));
+		when(certificacaoManager.verificaEmpresa(certificacao.getId(), empresa.getId())).thenReturn(true);
+		when(certificacaoManager.findById(certificacao.getId())).thenReturn(certificacao);
+		when(cursoManager.findAllByEmpresasParticipantes(new Long[] {empresa.getId()})).thenReturn(new ArrayList<Curso>());
+		when(certificacaoManager.findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(empresa.getId(), certificacao.getId())).thenReturn(new ArrayList<Certificacao>());
+		when(avaliacaoPraticaManager.find(null)).thenReturn(new ArrayList<AvaliacaoPratica>());
+		when(colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(null, certificacao.getId())).thenReturn(new ArrayList<ColaboradorCertificacao>());
 		
 		assertEquals("success", action.prepareUpdate());
 	}
 
+	@Test
 	public void testPrepareUpdateSemCertificacao() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -139,6 +143,7 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		assertEquals("success", action.prepareUpdate());
 	}
 	
+	@Test
 	public void testInsert() throws Exception
 	{
 		String[] cursosCheck = new String[]{"1", "2"};
@@ -151,11 +156,10 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		certificacao.setNome("certifica");
 		action.setCertificacao(certificacao);
 		
-		certificacaoManager.expects(once()).method("save").with(eq(certificacao));
-		
 		assertEquals("success", action.insert());
 	}
 	
+	@Test
 	public void testUpdate() throws Exception
 	{
 		String[] cursosCheck = new String[]{"1", "2"};
@@ -168,11 +172,10 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		certificacao.setNome("certifica");
 		action.setCertificacao(certificacao);
 		
-		certificacaoManager.expects(once()).method("update").with(eq(certificacao));
-		
 		assertEquals("success", action.update());
 	}
 	
+	@Test
 	public void testPrepareImprimirCertificadosVencidosAVencer() throws Exception
 	{
 		mocksPrepareImprimir();
@@ -187,46 +190,52 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
 		parametrosDoSistema.setCompartilharColaboradores(true);
 		
-		certificacaoManager.expects(once()).method("populaCheckBoxSemPeriodicidade").with(eq(empresa.getId())).will(returnValue(new ArrayList<CheckBox>()));
-		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(empresa.getId())).will(returnValue(new ArrayList<CheckBox>()));
-		estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(empresa.getId())).will(returnValue(new ArrayList<CheckBox>()));
-		empresaManager.expects(once()).method("ajustaCombo").with(ANYTHING,eq(empresa.getId())).will(returnValue(empresa.getId()));
-		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
-		empresaManager.expects(once()).method("findEmpresasPermitidas").withAnyArguments().will(returnValue(new ArrayList<Empresa>()));
+		when(certificacaoManager.populaCheckBoxSemPeriodicidade(empresa.getId())).thenReturn(new ArrayList<CheckBox>());
+		when(areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId())).thenReturn(new ArrayList<CheckBox>());
+		when(estabelecimentoManager.populaCheckBox(empresa.getId())).thenReturn(new ArrayList<CheckBox>());
+		when(empresaManager.ajustaCombo(empresa.getId(), empresa.getId())).thenReturn(empresa.getId());
+		when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+		when(empresaManager.findEmpresasPermitidas(true, empresa.getId(), 1L, "")).thenReturn(new ArrayList<Empresa>());
 	}
 	
+	@Test
 	public void testImprimirCertificadosVencidosAVencer() throws Exception
 	{
 		action.setColaboradorNaoCertificado(true);
 		action.setColaboradorCertificado(true);
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		
 		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
 		
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
 		colaboradorCertificacaos.add(colaboradorCertificacao);
 		
-		colaboradorCertificacaoManager.expects(once()).method("montaRelatorioColaboradoresNasCertificacoes").withAnyArguments().will(returnValue(colaboradorCertificacaos));
+		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, true, true, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{})).thenReturn(colaboradorCertificacaos);
 		
 		assertEquals("success", action.imprimirCertificadosVencidosAVencer());
 	}
 	
+	@Test
 	public void testImprimirCertificadosVencidosAVencerVazio() throws Exception
 	{
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
-		colaboradorCertificacaoManager.expects(once()).method("montaRelatorioColaboradoresNasCertificacoes").withAnyArguments().will(returnValue(colaboradorCertificacaos));
+		
+		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, true, true, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{})).thenReturn(colaboradorCertificacaos);
 		mocksPrepareImprimir();
 		
 		assertEquals("input", action.imprimirCertificadosVencidosAVencer());
 	}
 	
+	@Test
 	public void testImprimirCertificadosVencidosAVencerException() throws Exception
 	{
-		colaboradorCertificacaoManager.expects(once()).method("montaRelatorioColaboradoresNasCertificacoes").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, true, true, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{})).thenReturn(null);
 		mocksPrepareImprimir();
 		
 		assertEquals("input", action.imprimirCertificadosVencidosAVencer());
 	}
 	
+	@Test
 	public void testImprimirCertificadosVencidosAVencerAgrupadoPorCertificacao() throws Exception
 	{
 		action.setColaboradorNaoCertificado(true);
@@ -249,7 +258,7 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		colaboradorCertificacaos.add(colaboradorAprovadoCertificacao);
 		colaboradorCertificacaos.add(colaboradorNaoAprovadoCertificacao);
 		
-		colaboradorCertificacaoManager.expects(once()).method("montaRelatorioColaboradoresNasCertificacoes").withAnyArguments().will(returnValue(colaboradorCertificacaos));
+		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, true, true, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{})).thenReturn(colaboradorCertificacaos);
 		
 		assertEquals("sucessoAgrupadoPorCertificacao", action.imprimirCertificadosVencidosAVencer());
 	}
