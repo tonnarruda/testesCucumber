@@ -36,7 +36,7 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	@ManyToMany
 	private Collection<ColaboradorTurma> colaboradoresTurmas; 
 
-	@OneToMany(fetch=FetchType.LAZY,  mappedBy="colaboradorCertificacao", cascade = {CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY,  mappedBy="colaboradorCertificacao", cascade = {CascadeType.REMOVE, CascadeType.MERGE})
 	private Collection<ColaboradorAvaliacaoPratica> colaboradoresAvaliacoesPraticas;
 	
 	@ManyToOne

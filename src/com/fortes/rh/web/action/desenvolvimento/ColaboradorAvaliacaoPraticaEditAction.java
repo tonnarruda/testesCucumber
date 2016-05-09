@@ -67,7 +67,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		if(certificacao == null || certificacao.getId() == null)
 			return Action.SUCCESS;
 
-		colaboradores = colaboradorCertificacaoManager.colaboradoresQueParticipamDaCertificacao(findColaboradoresIdsPermitidosNaCertificacao(), certificacao.getId());
+		colaboradores = colaboradorCertificacaoManager.colaboradoresQueParticipamDaCertificacao(null, certificacao.getId());
 
 		if(colaborador != null){
 			colaboradorTurmas = new ArrayList<ColaboradorTurma>();
@@ -158,7 +158,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 					if(colaboradorCertificacoes.size() > 0){
 						ColaboradorCertificacao colaboradorCertificacaoTemp = (ColaboradorCertificacao) colaboradorCertificacoes.toArray()[0];
 						colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacaoTemp);
-						colaboradorAvaliacaoPraticaManager.saveOrUpdate(colaboradorAvaliacaoPratica);
+						colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
 					}
 				}
 			}else if(colaboradorAvaliacaoPratica.getId() != null){

@@ -3,6 +3,7 @@ package com.fortes.rh.model.desenvolvimento;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -27,7 +28,7 @@ public class ColaboradorAvaliacaoPratica extends AbstractModel implements Serial
 	private Certificacao certificacao;
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Colaborador colaborador;
-	@ManyToOne
+	@ManyToOne 
 	private ColaboradorCertificacao colaboradorCertificacao;
 
 	@Temporal(TemporalType.DATE)

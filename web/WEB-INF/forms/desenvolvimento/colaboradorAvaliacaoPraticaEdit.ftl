@@ -95,12 +95,13 @@
 	    			}
 				});
 	
-				maiorData.setDate(maiorData.getDate() + 1);
-				
-				$('.mascaraData').each(function(){
-					if($(this).val() == '  /  /    ')
-						$(this).val($.datepicker.formatDate('dd/mm/yy',maiorData));
-				});
+				if(maiorData != undefined){
+					maiorData.setDate(maiorData.getDate() + 1);
+					$('.mascaraData').each(function(){
+						if($(this).val() == '  /  /    ')
+							$(this).val($.datepicker.formatDate('dd/mm/yy',maiorData));
+					});
+				}
 			}
 		}
 		
