@@ -26,7 +26,7 @@ public class CertificacaoDWR
 		if(dataFim != null && !dataFim.equals("") && !dataFim.equals("  /  /    "))
 			dataFinal = DateUtil.criarDataDiaMesAno(dataFim);
 		
-    	Collection<ColaboradorCertificacao> colaboradoresCertificacao = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(null, dataFinal, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areasIdsLong, estabelecimentoIdsLong, certificacoesIdsLong);
+    	Collection<ColaboradorCertificacao> colaboradoresCertificacao = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(null, dataFinal, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areasIdsLong, estabelecimentoIdsLong, certificacoesIdsLong, x);
     	
     	CheckBox checkBox;
     	for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificacao) {

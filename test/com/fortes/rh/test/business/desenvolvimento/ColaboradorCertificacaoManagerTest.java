@@ -469,7 +469,7 @@ public class ColaboradorCertificacaoManagerTest
 
 		when(colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, null, certificacoesIds, null, null, null, false)).thenReturn(colaboradorCertificacaos);
 		
-		Collection<ColaboradorCertificacao> colaboradorescertificacoes = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(dataIni, dataFim, null, true, true, null, null, certificacoesIds);
+		Collection<ColaboradorCertificacao> colaboradorescertificacoes = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(dataIni, dataFim, null, true, true, null, null, certificacoesIds, x);
 		assertEquals(1, colaboradorescertificacoes.size());
 	}
 	
@@ -495,7 +495,7 @@ public class ColaboradorCertificacaoManagerTest
 		when(colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, null, certificacoesIds, null, null, null, true)).thenReturn(colaboradorCertificacaos);
 		when(colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, null, certificacoesIds, null, null, null, false)).thenReturn(colaboradorNaoCertificacaos);
 		
-		Collection<ColaboradorCertificacao> colaboradorescertificacoes = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(dataIni, dataFim, null, false, true, null, null, certificacoesIds);
+		Collection<ColaboradorCertificacao> colaboradorescertificacoes = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(dataIni, dataFim, null, false, true, null, null, certificacoesIds, x);
 		ColaboradorCertificacao colaboradorNaoCertificacaoResultado = ((ColaboradorCertificacao) colaboradorescertificacoes.toArray()[0]); 
 		
 		assertEquals(1, colaboradorescertificacoes.size());
