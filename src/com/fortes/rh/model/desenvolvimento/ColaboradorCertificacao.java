@@ -51,9 +51,9 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	@Transient
 	private Boolean ultimaCertificacao;
 	@Transient
-	private Integer qtdColaboradorAprovado = 0;
+	private String qtdColaboradorAprovado = "-";
 	@Transient
-	private Integer qtdColaboradorNaoAprovado = 0;
+	private String qtdColaboradorNaoAprovado = "-";
 	@Transient
 	private ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaAtual;
 
@@ -332,19 +332,19 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		this.ultimaCertificacao = ultimaCertificacao;
 	}
 	
-	public Integer getQtdColaboradorAprovado() {
+	public String getQtdColaboradorAprovado() {
 		return qtdColaboradorAprovado;
 	}
 
-	public void setQtdColaboradorAprovado(Integer qtdColaboradorAprovado) {
+	public void setQtdColaboradorAprovado(String qtdColaboradorAprovado) {
 		this.qtdColaboradorAprovado = qtdColaboradorAprovado;
 	}
 
-	public Integer getQtdColaboradorNaoAprovado() {
+	public String getQtdColaboradorNaoAprovado() {
 		return qtdColaboradorNaoAprovado;
 	}
 
-	public void setQtdColaboradorNaoAprovado(Integer qtdColaboradorNaoAprovado) {
+	public void setQtdColaboradorNaoAprovado(String qtdColaboradorNaoAprovado) {
 		this.qtdColaboradorNaoAprovado = qtdColaboradorNaoAprovado;
 	}
 

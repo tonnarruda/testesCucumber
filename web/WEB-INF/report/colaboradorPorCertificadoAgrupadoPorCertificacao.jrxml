@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.357947691000037"/>
 	<property name="ireport.x" value="8"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="82"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -27,8 +27,8 @@
 	<field name="colaborador.estabelecimento.nome" class="java.lang.String"/>
 	<field name="colaborador.areaOrganizacional.nome" class="java.lang.String"/>
 	<field name="aprovadoNaCertificacaoString" class="java.lang.String"/>
-	<field name="qtdColaboradorAprovado" class="java.lang.Integer"/>
-	<field name="qtdColaboradorNaoAprovado" class="java.lang.Integer"/>
+	<field name="qtdColaboradorAprovado" class="java.lang.String"/>
+	<field name="qtdColaboradorNaoAprovado" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{nomeCurso}]]></variableExpression>
 	</variable>

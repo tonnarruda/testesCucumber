@@ -13,7 +13,7 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#tooltipHelp').qtip({
-				content: 'Abaixo só serão exibidas as certificações que possuirem periodicidade configurada em seu cadastro. Só é permitido selecionar no máximo 3 certificações.'
+				content: 'Abaixo só serão exibidas as certificações que possuirem periodicidade configurada em seus cadastros. Só é permitido selecionar no máximo 3 certificações.'
 			});
 			
 			$('#tooltipHelpPeriodo').qtip({
@@ -120,7 +120,7 @@
 			<@ww.checkbox label="Certificados" id="colaboradorCertificado" name="colaboradorCertificado" liClass="liLeft" labelPosition="left" cssStyle="margin-left: 15px;" onclick="habilitaCampos()" onchange="populaColaborador()"/>
 			
 			<@ww.div cssStyle="margin-left: 50px;">
-				Período Certificado:<br>
+				Período em que os colaboradores foram certificados:<br>
 				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 				<@ww.label value="a" liClass="liLeft" />
 				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim"/>

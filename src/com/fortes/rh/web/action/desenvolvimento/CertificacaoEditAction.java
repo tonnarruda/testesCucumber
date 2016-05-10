@@ -225,19 +225,27 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		}
 		
 		for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
-			if(qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()) != null)
-				colabcertificacao.setQtdColaboradorAprovado(qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()).size());
-			if(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()) != null)
-				colabcertificacao.setQtdColaboradorNaoAprovado(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).size());
+			if(qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()) != null){
+				if(colaboradorCertificado)
+					colabcertificacao.setQtdColaboradorAprovado(String.valueOf(qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()).size()));
+			}
+			if(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()) != null){
+				if(colaboradorNaoCertificado)
+					colabcertificacao.setQtdColaboradorNaoAprovado(String.valueOf(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).size()));
+			}
 		}
 		
 		qtdTotalColaboradoresCertificados = 0;
-		for(Long certificacaoId : qtdcolabsCertificado.keySet()) 
-			qtdTotalColaboradoresCertificados += qtdcolabsCertificado.get(certificacaoId).size();
+		if(colaboradorCertificado){
+			for(Long certificacaoId : qtdcolabsCertificado.keySet()) 
+				qtdTotalColaboradoresCertificados += qtdcolabsCertificado.get(certificacaoId).size();
+		}
 		
 		qtdTotalColaboradoresNaoCertificados = 0;
-		for(Long certificacaoId : qtdcolabsNaoCertificado.keySet()) 
-			qtdTotalColaboradoresNaoCertificados += qtdcolabsNaoCertificado.get(certificacaoId).size();
+		if(colaboradorNaoCertificado){
+			for(Long certificacaoId : qtdcolabsNaoCertificado.keySet()) 
+				qtdTotalColaboradoresNaoCertificados += qtdcolabsNaoCertificado.get(certificacaoId).size();
+		}
 		
 	}
 
@@ -289,14 +297,20 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			reportFilter += " não certificados";
 
 		if (dataIni != null && dataFim != null)
-			reportFilter += "\nPeríodo Certificado: " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
+			reportFilter += "\nPeríodo certificado: " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
 		
 		if (mesesCertificacoesAVencer != null && mesesCertificacoesAVencer != 0)
 			reportFilter += "\nColaboradores com certificação a vencer em até " + mesesCertificacoesAVencer + " meses.";
 		
-		if (qtdTotalColaboradoresCertificados != null && qtdTotalColaboradoresNaoCertificados != 0){
-			reportFilter += "\nQuantidade de colaboradores Certificados: " + qtdTotalColaboradoresCertificados;
-			reportFilter += "\nQuantidade de colaboradores Não Certificados: " + qtdTotalColaboradoresNaoCertificados;
+		if(agruparPor != null && agruparPor == 'T'){
+			if(colaboradorCertificado && colaboradorNaoCertificado){
+				reportFilter += "\nQuantidade de colaboradores certificados: " + qtdTotalColaboradoresCertificados;
+				reportFilter += "\nQuantidade de colaboradores não certificados: " + qtdTotalColaboradoresNaoCertificados;
+			}else if(colaboradorCertificado && !colaboradorNaoCertificado){
+				reportFilter += "\nQuantidade de colaboradores certificados: " + qtdTotalColaboradoresCertificados;
+			}else{
+				reportFilter += "\nQuantidade de colaboradores não certificados: " + qtdTotalColaboradoresNaoCertificados;
+			}
 		}
 	}
 	
