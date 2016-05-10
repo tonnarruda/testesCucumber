@@ -77,7 +77,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			if(colaboradorCertificado)
 				colaboradoresCertificacao = colaboradoresCertificados;
 			else if(colaboradorNaoCertificado){
-				colaboradoresCertificacao = getDao().findColaboradoresQueParticipamDaCertificacao(certificacoesIds, areaIds, estabelecimentoIds, null);
+				colaboradoresCertificacao = getDao().findColaboradoresQueParticipamDaCertificacao(certificacoesIds, areaIds, estabelecimentoIds, filtroColaboradoresIds);
 				colaboradoresCertificacao.removeAll(colaboradoresCertificados);
 			}
 		}

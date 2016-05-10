@@ -110,8 +110,6 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
 		colaboradorCertificacaoManager.expects(once()).method("colaboradoresQueParticipamDaCertificacao").will(returnValue(new ArrayList<Colaborador>()));
-		areaOrganizacionalManager.expects(once()).method("findAreasByUsuarioResponsavel").will(returnValue(new ArrayList<AreaOrganizacional>()));
-		colaboradorManager.expects(once()).method("findByNomeCpfMatriculaComHistoricoComfirmado").will(returnValue(new ArrayList<Colaborador>()));
 		
 		assertEquals("success", action.buscaColaboradores());
 	}
@@ -159,8 +157,6 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
 		colaboradorCertificacaoManager.expects(once()).method("colaboradoresQueParticipamDaCertificacao").will(returnValue(colaboradoresNaCertificacao));
-		areaOrganizacionalManager.expects(once()).method("findAreasByUsuarioResponsavel").will(returnValue(new ArrayList<AreaOrganizacional>()));
-		colaboradorManager.expects(once()).method("findByNomeCpfMatriculaComHistoricoComfirmado").will(returnValue(colaboradoresPermitidos));
 		colaboradorCertificacaoManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(new ArrayList<ColaboradorCertificacao>()));
 		avaliacaoPraticaManager.expects(once()).method("findByCertificacaoId").will(returnValue(avaliacaoPraticas));
 		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(colaboradorAvaliacaoPraticas));
@@ -284,8 +280,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		assertEquals("success", action.insertOrUpdate());
 	}
 	
-	public void testInsertOrUpdateComColaboradorCertificacaoNull() throws Exception
-	{
+	public void testInsertOrUpdateComColaboradorCertificacaoNull() throws Exception {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		action.setEmpresaSistema(empresa);
 		
@@ -321,7 +316,6 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
 		
 		colaboradorAvaliacaoPraticaManager.expects(atLeastOnce()).method("update");
-		colaboradorAvaliacaoPraticaManager.expects(atLeastOnce()).method("saveOrUpdate");
 		colaboradorCertificacaoManager.expects(once()).method("certificaColaborador").withAnyArguments().will(returnValue(colaboradorCertificacoes));
 		colaboradorCertificacaoManager.expects(once()).method("certificaColaborador").withAnyArguments().will(returnValue(colaboradorCertificacoes));
 		
