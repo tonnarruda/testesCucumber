@@ -222,30 +222,22 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		return prepareFiltroHistoricoTreinamentos();
 	}
 
-	public String relatorioHistoricoTreinamentos()
-	{
-		try
-		{
+	public String relatorioHistoricoTreinamentos() {
+		try {
 			colaboradorTurmas = colaboradorTurmaManager.findRelatorioHistoricoTreinamentos(getEmpresaSistema().getId(), colaboradoresCheck, dataIni, dataFim);
 			parametros = RelatorioUtil.getParametrosRelatorio("Histórico de Treinamentos", getEmpresaSistema(), null);
 			
 			String[] faixaSalarialId;
 			if(colaboradorTurmas != null && !colaboradorTurmas.isEmpty()){
 				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
-					
 					faixaSalarialId = new String[]{colaboradorTurma.getColaborador().getFaixaSalarial().getId().toString()};
-					
 					Collection<MatrizTreinamento> matrizTreinamentos = certificacaoManager.montaMatriz(imprimirMatriz, faixaSalarialId, colaboradorTurmas);
-					
 					colaboradorTurma.setMatrizTreinamentos(matrizTreinamentos);
 				}
 			} else {
-				
 				for (Long colaboradorId : colaboradoresCheck) {
-
 					colaborador = colaboradorManager.findByIdComHistorico(colaboradorId);
 					colaborador.setFaixaSalarial(colaborador.getHistoricoColaborador().getFaixaSalarial());
-					
 					ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
 					colaboradorTurma.setColaborador(colaborador);
 					colaboradorTurma.setMatrizTreinamentos(null);
@@ -255,9 +247,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			parametros.put("IMPRIMIR_MATRIZ", imprimirMatriz);
 
 			return SUCCESS;
-		}
-		catch (ColecaoVaziaException e)
-		{
+		} catch (ColecaoVaziaException e) {
 			addActionMessage(e.getMessage());
 			prepareRelatorioColaborador();
 			areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
@@ -265,9 +255,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 
 			return INPUT;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			addActionError("Erro ao gerar relatório");
 			e.printStackTrace();
 			prepareRelatorioColaborador();
@@ -336,10 +324,8 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		}
 	}
 
-	public String relatorioColaboradorComTreinamento()
-	{
-		try
-		{
+	public String relatorioColaboradorComTreinamento(){
+		try{
 			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 			
 			colaboradorTurmas = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, LongUtil.arrayStringToArrayLong(cursosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim, aprovado, situacao);
@@ -350,21 +336,16 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			reportTitle = "Colaboradores que fizeram um treinamento ";
 
 			String retorno = Action.SUCCESS;
-			if (exibeCargo) {
+			if (exibeCargo) 
 				retorno += "ExibirCargos";
-			}
 			
 			return retorno;
-		}
-		catch (ColecaoVaziaException e)
-		{
+		}catch (ColecaoVaziaException e){
 			addActionMessage(e.getMessage());
 			prepareRelatorioColaborador();
 
 			return Action.INPUT;
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			addActionError("Erro ao gerar relatório.");
 			e.printStackTrace();
 			prepareRelatorioColaborador();
@@ -383,16 +364,14 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		if (estabelecimentosCheck != null)
 			estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
 
-		try
-		{
+		try{
 			colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 			colaboradorTurmas = colaboradorTurmaManager.findRelatorioSemIndicacaoTreinamento(getEmpresaSistema().getId(), areaIds, estabelecimentoIds, qtdMesesSemCurso);
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores Sem Indicação de Treinamento", getEmpresaSistema(), "Não fazem turmas/treinamentos há mais de " + qtdMesesSemCurso + " mês(es)");
 
 			return Action.SUCCESS;
 
-		} catch (ColecaoVaziaException e)
-		{
+		} catch (ColecaoVaziaException e) {
 			addActionMessage(e.getMessage());
 			prepareRelatorioColaboradorSemIndicacao();
 

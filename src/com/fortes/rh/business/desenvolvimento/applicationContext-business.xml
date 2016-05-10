@@ -254,6 +254,9 @@
     <property name="colaboradorAvaliacaoPraticaManager">
       <ref bean="colaboradorAvaliacaoPraticaManager" />
     </property>
+    <property name="avaliacaoPraticaManager">
+      <ref bean="avaliacaoPraticaManager" />
+    </property>
   </bean>
   <bean id="certificacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

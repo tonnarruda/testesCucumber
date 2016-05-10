@@ -23,14 +23,6 @@
 			habilitaCampos();
 			
 			$('#listCheckBoxcolaboradoresCheck').append('<tbody> <tr> <td colspan="7"> <div class="info">  <ul> <li>Utilize os filtros acima para popular os colaboradores. </br> Filtro obrigatório: "Certificações".</li> </ul> </div> </tr></td> </tbody>');
-			
-			$(".btnRelatorio").click(function(evento){
-		      evento.preventDefault();
-		      $("#carregando").css("display", "inline");
-		      $("#destino").load("pagina-lenta.php", function(){
-		         $("#carregando").css("display", "none");
-		      });
-		   });			
 		});
 		
 		function habilitaCampos()
@@ -54,7 +46,6 @@
 				$('#wwgrp_colaboradorCertificado,#wwgrp_colaboradorNaoCertificado').css("background-color", "rgb(255, 238, 194)");
 				jAlert("Preencha os campos indicados.");
 			}else if(submit){
-				//processando('${urlImgs}');
 				document.form.submit();
 			}
 		}
@@ -147,11 +138,6 @@
 		<@frt.checkListBox name="colaboradoresCheck" id="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" filtro="true"/>
 		<@ww.select label="Agrupar por" name="agruparPor" id="agruparPor" list=r"#{'C':'Colaborador','T':'Certificação'}" cssStyle="width: 500px;"/>
 	</@ww.form>
-	
-	<div id="carregando" style="display:none; color: green;">Carregando...</div>
-<br>
-<div id="destino"></div>
-	
 	<div class="buttonGroup">
 		<button onclick="$('form[name=form]').attr('action', 'imprimirCertificadosVencidosAVencer.action');submit();" class="btnRelatorio" ></button>
 		<button onclick="$('form[name=form]').attr('action', 'imprimirCertificadosVencidosAVencerXlS.action');submit();" class="btnRelatorioExportar" ></button>

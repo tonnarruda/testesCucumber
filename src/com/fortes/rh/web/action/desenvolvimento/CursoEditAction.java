@@ -90,7 +90,6 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 
 	public String insert() throws Exception
 	{
-		
 		CollectionUtil<AvaliacaoCurso> collectionUtil = new CollectionUtil<AvaliacaoCurso>();
 		curso.setAvaliacaoCursos(collectionUtil.convertArrayStringToCollection(AvaliacaoCurso.class, avaliacaoCursoCheck));
 
@@ -106,10 +105,8 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		return Action.SUCCESS;
 	}
 
-	public String update() throws Exception
-	{
-		try
-		{
+	public String update() throws Exception{
+		try{
 			Collection<Empresa> empresasParticipantes = new CollectionUtil<Empresa>().convertArrayLongToCollection(Empresa.class, empresasCheck);
 			
 			if(!curso.getEmpresa().equals(getEmpresaSistema())){
@@ -121,9 +118,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 				curso.setPeriodicidade(0);
 			}
 			cursoManager.update(curso, getEmpresaSistema(), avaliacaoCursoCheck);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			addActionError("Erro ao editar curso");
 			e.printStackTrace();
 			prepareUpdate();

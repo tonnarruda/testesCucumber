@@ -27,6 +27,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.Type;
+import org.springframework.dao.DataAccessResourceFailureException;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
@@ -805,6 +806,70 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	}
 
 	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Long[] cursoIds, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String situacao, char aprovacaoFiltro){
+		Criteria criteria = criteriaFindRelatorioComTreinamento();
+		criteria.setProjection(Projections.distinct(projectionFindRelatorioComTreinamento()));
+		
+		criteria.add(Expression.eq("t.realizada", true));
+		criteria.add(Expression.in("c.id", cursoIds));
+		criteria.add(Subqueries.propertyEq("hc.data", maxDataHistoricoColaborador()));
+		
+		if (empresaId != null)
+			criteria.add(Expression.eq("emp.id", empresaId));
+		
+		if(areaIds != null && areaIds.length > 0)
+			criteria.add(Expression.in("ao.id", areaIds));
+		
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			criteria.add(Expression.in("es.id", estabelecimentoIds));
+		
+		if (situacao != null){
+			if (situacao.equalsIgnoreCase(SituacaoColaborador.ATIVO)){
+				if (dataFim != null)
+					criteria.add(Expression.or(Expression.isNull("co.dataDesligamento"),Expression.le("co.dataDesligamento", dataFim)));
+				else
+					criteria.add(Expression.isNull("co.dataDesligamento"));
+			} else if (situacao.equalsIgnoreCase(SituacaoColaborador.DESLIGADO)){
+				criteria.add(Expression.isNotNull("co.dataDesligamento")); 
+				if(dataFim != null)
+					criteria.add(Expression.le("co.dataDesligamento", dataFim));
+			}
+		}
+		
+		if(aprovacaoFiltro == StatusAprovacao.APROVADO)
+			criteria.add(Expression.eq("ct.aprovado", true));
+		else if(aprovacaoFiltro == StatusAprovacao.REPROVADO)
+			criteria.add(Expression.eq("ct.aprovado", false));
+		
+		if (dataIni != null && dataFim != null){
+			criteria.add(Expression.le("t.dataPrevIni", dataFim));
+			criteria.add(Expression.ge("t.dataPrevFim", dataIni));
+		}
+		
+		criteria.addOrder(Order.asc("c.nome")).addOrder(Order.asc("emp.nome")).addOrder(Order.asc("es.nome")).addOrder(Order.asc("areaOrganizacionalNome")).addOrder(Order.asc("co.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
+	    return criteria.list();
+	}
+
+	private DetachedCriteria maxDataHistoricoColaborador() {
+		DetachedCriteria maxHistorico = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2").setProjection(Projections.max("hc2.data")).add(Restrictions.eqProperty("hc2.colaborador.id", "co.id")).add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+		return maxHistorico;
+	}
+
+	private Criteria criteriaFindRelatorioComTreinamento() throws DataAccessResourceFailureException, IllegalStateException, HibernateException {
+		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
+		criteria.createCriteria("ct.colaborador", "co", Criteria.INNER_JOIN);
+		criteria.createCriteria("co.empresa", "emp", Criteria.INNER_JOIN);
+		criteria.createCriteria("co.historicoColaboradors", "hc", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.estabelecimento", "es", Criteria.INNER_JOIN);
+		criteria.createCriteria("ct.curso", "c", Criteria.INNER_JOIN);
+		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.INNER_JOIN);
+		criteria.createCriteria("fs.cargo", "ca", Criteria.INNER_JOIN);
+		return criteria;
+	}
+
+	private ProjectionList projectionFindRelatorioComTreinamento() {
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("co.id"), "colaboradorId");
 		p.add(Projections.property("co.nome"), "colaboradorNome");
@@ -824,63 +889,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("emp.nome"), "empresaNome");
 		p.add(Projections.property("fs.nome"), "faixaSalarialNome");
 		p.add(Projections.property("ca.nome"), "cargoNome");
-		
-		DetachedCriteria subSelect = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
-	    		.setProjection(Projections.max("hc2.data"))
-	    		.add(Restrictions.eqProperty("hc2.colaborador.id", "co.id"))
-	    		.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
-		
-		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
-		criteria.createCriteria("ct.colaborador", "co", Criteria.INNER_JOIN);
-		criteria.createCriteria("co.empresa", "emp", Criteria.INNER_JOIN);
-		criteria.createCriteria("co.historicoColaboradors", "hc", Criteria.INNER_JOIN);
-		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.INNER_JOIN);
-		criteria.createCriteria("hc.estabelecimento", "es", Criteria.INNER_JOIN);
-		criteria.createCriteria("ct.curso", "c", Criteria.INNER_JOIN);
-		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
-		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.INNER_JOIN);
-		criteria.createCriteria("fs.cargo", "ca", Criteria.INNER_JOIN);
-		
-		criteria.add(Expression.eq("t.realizada", true));
-		criteria.add(Expression.in("c.id", cursoIds));
-		criteria.add(Subqueries.propertyEq("hc.data", subSelect));
-
-		if (empresaId != null)
-			criteria.add(Expression.eq("emp.id", empresaId));
-		
-		if(areaIds != null && areaIds.length > 0)
-			criteria.add(Expression.in("ao.id", areaIds));
-		
-		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			criteria.add(Expression.in("es.id", estabelecimentoIds));
-		
-		
-		if (situacao != null){
-			if (situacao.equalsIgnoreCase(SituacaoColaborador.ATIVO)){
-				if (dataFim != null)
-					criteria.add(Expression.or(Expression.isNull("co.dataDesligamento"),Expression.le("co.dataDesligamento", dataFim)));
-				else
-					criteria.add(Expression.isNull("co.dataDesligamento"));
-			} else if (situacao.equalsIgnoreCase(SituacaoColaborador.DESLIGADO)){
-				criteria.add(Expression.isNotNull("co.dataDesligamento")); 
-				if(dataFim != null)
-					criteria.add(Expression.le("co.dataDesligamento", dataFim));
-			}
-		}
-		
-		if(aprovacaoFiltro == StatusAprovacao.APROVADO)
-			criteria.add(Expression.eq("ct.aprovado", true));
-		else if(aprovacaoFiltro == StatusAprovacao.REPROVADO)
-			criteria.add(Expression.eq("ct.aprovado", false));
-
-		if (dataIni != null && dataFim != null){
-			criteria.add(Expression.le("t.dataPrevIni", dataFim));
-			criteria.add(Expression.ge("t.dataPrevFim", dataIni));
-		}
-		criteria.setProjection(Projections.distinct(p));
-		criteria.addOrder(Order.asc("c.nome")).addOrder(Order.asc("emp.nome")).addOrder(Order.asc("es.nome")).addOrder(Order.asc("areaOrganizacionalNome")).addOrder(Order.asc("co.nome"));
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
-	    return criteria.list();
+		return p;
 	}
 	
 	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String orderBy, boolean comHistColaboradorFuturo, String situacao, Long... turmaIds)

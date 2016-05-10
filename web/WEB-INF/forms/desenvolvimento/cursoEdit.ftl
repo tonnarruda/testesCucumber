@@ -20,21 +20,15 @@
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script><!-- Usado para o function.js cssClass=hora-->
 
 <script>
-	$(document).ready(function($){
+	$(function() {
 		<#if curso?exists && curso.periodicidade?exists >
 			if( ${curso.periodicidade} != null && ${curso.periodicidade} == 0){
 				$("#periodicidade").val("");
-			} 
-		</#if>			
-	});
-
-	$(function() {
-		$('#avaliacaoCursoCheckToolTipHelp').qtip({
-			content: 'Não será possível desmarcar nenhuma das avaliações dos alunos quando houver resposta para pelo menos uma das avaliações.'
-		});
+			}
+		</#if>
+					
 		$('#percentualMinimoFrequenciaTooltipHelp').qtip({content: 'Não é possível realizar a edição deste campo, existem turmas realizadas e colaboradores com presenças registradas.'});
 	});
-	
 </script>
 
 <style>
@@ -66,8 +60,10 @@
 		
 		<#if existeFrequencia>
 			<@ww.textfield readonly="true" label="Percentual mínimo de frequência para aprovação (%)" id ="percentualMinimoFrequencia" name="curso.percentualMinimoFrequencia" maxLength="6" cssStyle="width:50px;text-align: right; background: #EBEBEB;" onblur="validaPercentual()"/>
-			<img id="percentualMinimoFrequenciaTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin:-40px 0 35px 313px;"/>
-			<@ww.hidden name="curso.percentualMinimoFrequencia" />
+			<img id="percentualMinimoFrequenciaTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin:-20px 0 35px 60px;"/>
+			<#if curso?exists && curso.percentualMinimoFrequencia?exists >
+				<@ww.hidden name="curso.percentualMinimoFrequencia"/>
+			</#if>
 		<#else>
 			<@ww.textfield label="Percentual mínimo de frequência para aprovação (%)" id ="percentualMinimoFrequencia" name="curso.percentualMinimoFrequencia" maxLength="6" cssStyle="width:50px;text-align: right;" onblur="validaPercentual()"/>
 		</#if>

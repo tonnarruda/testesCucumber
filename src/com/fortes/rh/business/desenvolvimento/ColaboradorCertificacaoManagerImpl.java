@@ -90,8 +90,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 
 		Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno = new ArrayList<ColaboradorCertificacao>();
 		for (String colaboradorCertificacaoMap : mapColaboradoresCertificacaoes.keySet()){
-			for (ColaboradorTurma colaboradorTurma : mapColaboradoresCertificacaoes.get(colaboradorCertificacaoMap).getColaboradoresTurmas())
-			{
+			for (ColaboradorTurma colaboradorTurma : mapColaboradoresCertificacaoes.get(colaboradorCertificacaoMap).getColaboradoresTurmas()){
 				ColaboradorCertificacao colabCertificacao = (ColaboradorCertificacao) mapColaboradoresCertificacaoes.get(colaboradorCertificacaoMap).clone();
 				colabCertificacao.setNomeCurso(colaboradorTurma.getCurso().getNome());
 				colabCertificacao.setCertificacao((Certificacao) colabCertificacao.getCertificacao().clone());
@@ -103,23 +102,20 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 					colabCertificacao.setPeriodoTurma("Não realizou o curso");
 					colabCertificacao.getCertificacao().setAprovadoNaTurma(false);
 				}
-
 				colaboradorCertificacaosRetorno.add(colabCertificacao);
 			}
 
 			ColaboradorCertificacao colaboradorCertificacao = mapColaboradoresCertificacaoes.get(colaboradorCertificacaoMap);
 			colaboradorCertificacaosRetorno.addAll(populaAvaliacoesPraticas(colaboradorCertificacao, mapAvaliacoesPraticas.get(colaboradorCertificacao.getCertificacao().getId())));
 		}
-		
 		return colaboradorCertificacaosRetorno;
 	}
 	
 	private Collection<ColaboradorCertificacao> populaAvaliacoesPraticas(ColaboradorCertificacao colaboradorCertificacao, Collection<AvaliacaoPratica> avaliacoesPraticas){
 		Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno = new ArrayList<ColaboradorCertificacao>();
 		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorCertificacao.getColaboradoresAvaliacoesPraticas();
-		
 		for (AvaliacaoPratica avaliacaoPratica : avaliacoesPraticas){
-			if(avaliacaoPratica.getId() == null)
+			if(avaliacaoPratica.getId() == null) 
 				continue;
 			
 			ColaboradorCertificacao colabCertificacao = (ColaboradorCertificacao) colaboradorCertificacao.clone();
@@ -131,8 +127,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			for (ColaboradorAvaliacaoPratica avaliacaoPraticaDoColaboradorRealizada : avaliacoesPraticasDoColaboradorRealizadas){
 				if(colaboradorCertificacao.getId() != null){
 					if(avaliacaoPraticaDoColaboradorRealizada.getColaboradorCertificacao() != null && avaliacaoPraticaDoColaboradorRealizada.getColaboradorCertificacao().getId() != null 
-							&& colaboradorCertificacao.getId().equals(avaliacaoPraticaDoColaboradorRealizada.getColaboradorCertificacao().getId())
-							&& avaliacaoPraticaDoColaboradorRealizada.getAvaliacaoPratica().getId().equals(avaliacaoPratica.getId())){
+							&& colaboradorCertificacao.getId().equals(avaliacaoPraticaDoColaboradorRealizada.getColaboradorCertificacao().getId()) && avaliacaoPraticaDoColaboradorRealizada.getAvaliacaoPratica().getId().equals(avaliacaoPratica.getId())){
 						colabCertificacao.getCertificacao().setAprovadoNaTurma(avaliacaoPraticaDoColaboradorRealizada.getNota() >= avaliacaoPratica.getNotaMinima());
 						colabCertificacao.setPeriodoTurma("Data da Avaliação: " + avaliacaoPraticaDoColaboradorRealizada.getDataFormatada());
 						break;
@@ -154,7 +149,6 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBeanOld("certificacaoManager");
 		Map<String, ColaboradorCertificacao> mapColaboradorCertificacao = new HashMap<String, ColaboradorCertificacao>();
 		Collection<Certificacao> certificacoes = certificacaoManager.findCollectionByIdProjection(certificacoesIds);
-
 		for (Certificacao certificacao : certificacoes) {
 			Collection<Curso> cursos = certificacaoManager.findCursosByCertificacaoId(certificacao.getId());
 			Collection<ColaboradorCertificacao> colaboradoresCertificacao = colaboradoresParticipamCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areaIds, estabelecimentoIds, new Long[]{certificacao.getId()}, filtroColaboradoresIds);
@@ -199,7 +193,6 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 					}
 				}
 			}
-
 			if(!possuiCurso){
 				ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
 				colaboradorTurma.setColaborador(colaboradorCert.getColaborador());
@@ -295,8 +288,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 
 	public void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId, boolean removerColaboradorAvaliacaoPratica) {
 		ColaboradorCertificacao colaboradorCertificacao = getDao().findByColaboradorTurma(colaboradorTurmaId);
-		if(colaboradorCertificacao != null && colaboradorCertificacao.getId() != null)
-		{
+		if(colaboradorCertificacao != null && colaboradorCertificacao.getId() != null){
 			if(removerColaboradorAvaliacaoPratica)
 				colaboradorAvaliacaoPraticaManager.removeByColaboradorCertificacaoId(colaboradorCertificacao.getId());
 			

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
+import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
@@ -23,6 +25,7 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 	private FaixaSalarialManager faixaSalarialManager;
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager; 
+	private AvaliacaoPraticaManager avaliacaoPraticaManager;
 	
 	public Collection<Certificacao> findAllSelect(Long empresaId)
 	{
@@ -83,52 +86,56 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 		this.faixaSalarialManager = faixaSalarialManager;
 	}
 
-	public Collection<CertificacaoTreinamentosRelatorio> montaCertificacao(Long certificacaoId, String[] colaboradoresCheck, Certificado certificado, Collection<Curso> cursos, boolean vencimentoPorCertificacao)
-	{
-		ColaboradorCertificacao colaboradorCertificacao;
-		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacoesPraticas;
-		
-		if(vencimentoPorCertificacao){
-			for (Curso curso : cursos) {
-				curso.setNome("Treinamento: " + curso.getNome());
-				curso.setInformacao("Carga Horária: " + curso.getCargaHorariaMinutos());
-			}
+	public Collection<CertificacaoTreinamentosRelatorio> montaCertificacao(Long certificacaoId, String[] colaboradoresCheck, Certificado certificado, Collection<Curso> cursos, boolean vencimentoPorCertificacao){
+		for (Curso curso : cursos) {
+			curso.setNome("Treinamento: " + curso.getNome());
+			curso.setInformacao("Carga Horária: " + curso.getCargaHorariaMinutos());
 		}
+
+		Collection<AvaliacaoPratica> avaliacoesPraticas = new ArrayList<AvaliacaoPratica>();
+		if(vencimentoPorCertificacao)
+			avaliacoesPraticas = avaliacaoPraticaManager.findByCertificacaoId(certificacaoId);
 		
 		Collection<CertificacaoTreinamentosRelatorio> certificacaoTreinamentos = new ArrayList<CertificacaoTreinamentosRelatorio>(colaboradoresCheck.length);
-		for (String id: colaboradoresCheck)
-		{
-			Certificado certificadoTmp = new Certificado();
-			certificadoTmp.setImprimirMoldura(certificado.isImprimirMoldura());
-			
+		for (String colabId: colaboradoresCheck){
 			CertificacaoTreinamentosRelatorio certificacaoTreinamentosRelatorio = new CertificacaoTreinamentosRelatorio();
 			certificacaoTreinamentosRelatorio.setCertificado(certificado);
-			certificacaoTreinamentos.add(certificacaoTreinamentosRelatorio);
 			certificacaoTreinamentosRelatorio.setCursos(new ArrayList<Curso>());
 			certificacaoTreinamentosRelatorio.getCursos().addAll(cursos);
-			
+			certificacaoTreinamentos.add(certificacaoTreinamentosRelatorio);
+
 			if(vencimentoPorCertificacao)
-			{
-				Long colaboradorId = new Long(id);
-				
-				colaboradorCertificacao = colaboradorCertificacaoManager.findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
-				colaboradorAvaliacoesPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
-				
-				if(colaboradorCertificacao != null && colaboradorCertificacao.getId() != null)
-					colaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacao.getId(), null, true, true);
-				
-				Curso curso = null;
-				for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica : colaboradorAvaliacoesPraticas) {
-					curso = new Curso();
-					curso.setNome("Avaliação Prática: " + colaboradorAvaliacaoPratica.getAvaliacaoPratica().getTitulo());
-					curso.setInformacao("Nota: " + colaboradorAvaliacaoPratica.getNota());
-					certificacaoTreinamentosRelatorio.getCursos().add(curso);
+				montaAvaliacoesPraticas(colabId, certificacaoId, avaliacoesPraticas, certificacaoTreinamentosRelatorio);
+		}
+		return certificacaoTreinamentos;
+	}
+
+	private void montaAvaliacoesPraticas(String colabId, Long certificacaoId, Collection<AvaliacaoPratica> avaliacoesPraticas, CertificacaoTreinamentosRelatorio certificacaoTreinamentosRelatorio) throws NumberFormatException {
+		Curso curso = null;
+		Long colaboradorId = new Long(colabId);
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacoesPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
+
+		Long colaboradorCertificacaoId = null;
+		ColaboradorCertificacao colaboradorCertificacao = colaboradorCertificacaoManager.findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
+		if(colaboradorCertificacao != null && colaboradorCertificacao.getId() != null)
+			colaboradorCertificacaoId = colaboradorCertificacao.getId();
+		
+		String notaAvPatica;
+		colaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacaoId, null, true, true);
+		for (AvaliacaoPratica avaliacaoPratica : avaliacoesPraticas) {
+			notaAvPatica = "-";
+			for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica : colaboradorAvaliacoesPraticas) {
+				if(colaboradorAvaliacaoPratica.getAvaliacaoPratica() != null && colaboradorAvaliacaoPratica.getAvaliacaoPratica().getId() != null 
+						&& colaboradorAvaliacaoPratica.getNota() != null && avaliacaoPratica.getId().equals(colaboradorAvaliacaoPratica.getAvaliacaoPratica().getId())){
+					notaAvPatica = colaboradorAvaliacaoPratica.getNota().toString();
+					break;
 				}
 			}
-
+			curso = new Curso();
+			curso.setNome("Avaliação Prática: " + avaliacaoPratica.getTitulo());
+			curso.setInformacao("Nota: " + notaAvPatica);
+			certificacaoTreinamentosRelatorio.getCursos().add(curso);
 		}
-
-		return certificacaoTreinamentos;
 	}
 	
 	public Certificacao findByIdProjection(Long id)
@@ -220,6 +227,11 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 
 	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
 		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
+	}
+
+	public void setAvaliacaoPraticaManager(
+			AvaliacaoPraticaManager avaliacaoPraticaManager) {
+		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
 	}
 
 }
