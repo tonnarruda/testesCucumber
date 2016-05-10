@@ -26,7 +26,6 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -387,29 +386,6 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
-
-		return criteria.list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public Collection<Colaborador> findColaboradoresByCertificacaoId(Long certificacaoId) {
-		DetachedCriteria subQuery = DetachedCriteria.forClass(ColaboradorCertificacao.class, "cc2")
-				.setProjection(Projections.max("cc2.data"))
-				.add(Restrictions.eqProperty("cc2.colaborador.id", "cc.colaborador.id"))
-				.add(Restrictions.eqProperty("cc2.certificacao.id", "cc.certificacao.id"));
-		
-		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
-		criteria.createCriteria("cc.certificacao", "ct", Criteria.LEFT_JOIN);
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("cc.colaborador.id"), "id");
-		
-		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("cc.certificacao.id" , certificacaoId));
-
-		criteria.add(Subqueries.propertyEq("cc.data", subQuery));
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 
 		return criteria.list();
 	}

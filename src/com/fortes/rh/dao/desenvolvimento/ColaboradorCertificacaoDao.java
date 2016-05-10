@@ -6,7 +6,6 @@ import java.util.Date;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
-import com.fortes.rh.model.geral.Colaborador;
 
 public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertificacao> 
 {
@@ -23,7 +22,6 @@ public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertif
 	Date getMaiorDataDasTurmasDaCertificacao(Long colaboradorCertificacaoId);
 	Collection<ColaboradorCertificacao> findColaboradorCertificadoEmUmaTurmaPosterior(Long turmaId, Long colaboradorId);
 	Collection<ColaboradorCertificacao> findColaboradorCertificacaoPreRequisito(Long colaboradorCertificacaoId);
-	Collection<Colaborador> findColaboradoresByCertificacaoId(Long certificacaoId);
 	Collection<ColaboradorCertificacao> findColaboradoresCertificados(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, Long[] certificacoesIds, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds);
 	Collection<ColaboradorCertificacao> findColaboradoresQueParticipamDaCertificacao(Long[] certificacoesId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds);
 }
