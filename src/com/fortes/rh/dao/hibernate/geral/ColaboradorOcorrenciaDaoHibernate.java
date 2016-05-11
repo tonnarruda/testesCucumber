@@ -183,7 +183,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		return (ColaboradorOcorrencia) criteria.uniqueResult();
 	}
 
-	public boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni)
+	public boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni, Date dataFim)
 	{
 
 		Criteria criteria = getSession().createCriteria(ColaboradorOcorrencia.class, "co");
@@ -202,6 +202,38 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 
 		boolean exists = ((Integer)criteria.uniqueResult()) > 0;
 		return exists;
+	}
+	
+	public Collection<ColaboradorOcorrencia> verifyOcorrenciasMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni, Date dataFim) {
+		Criteria criteria = getSession().createCriteria(ColaboradorOcorrencia.class, "co");
+		criteria.createCriteria("co.ocorrencia","oco");
+		criteria.createCriteria("oco.empresa","e");
+		
+		if (colaboradorOcorrenciaId != null)
+			criteria.add(Expression.ne("co.id", colaboradorOcorrenciaId));
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("co.id"), "id");
+		p.add(Projections.property("co.dataIni"), "dataIni");
+		p.add(Projections.property("co.dataFim"), "dataFim");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("co.ocorrencia.id", ocorrenciaId));
+		criteria.add(Expression.eq("co.colaborador.id", colaboradorId));
+		criteria.add(Expression.eq("e.id", empresaId));
+		
+		if (dataFim != null)
+			criteria.add(Expression.le("co.dataIni", dataFim));
+		else
+			criteria.add(Expression.le("co.dataIni", dataIni));
+			
+		criteria.add(Expression.ge("co.dataFim", dataIni));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorOcorrencia.class));
+		
+		return criteria.list();
 	}
 
 	public Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasIds) 

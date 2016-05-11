@@ -77,11 +77,12 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	public String prepare() throws Exception
 	{
 		if(colaboradorOcorrencia != null && colaboradorOcorrencia.getId() != null)
-		{
 			colaboradorOcorrencia = (ColaboradorOcorrencia) colaboradorOcorrenciaManager.findById(colaboradorOcorrencia.getId());
+		
+		if (colaboradorOcorrencia != null)
 			colaborador = colaboradorOcorrencia.getColaborador();
-		}
-		else if (colaborador != null && colaborador.getId() != null)
+		
+		if (colaborador != null && colaborador.getId() != null && colaborador.getNome() == null)
 			colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
 
 		ocorrencias = ocorrenciaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao asc"});
@@ -125,11 +126,19 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			}
 			
 			colaboradorOcorrencia.setColaborador(colaborador);
-			boolean jaExisteOcorrenciaNoMesmoDia = colaboradorOcorrenciaManager.verifyExistsMesmaData(colaboradorOcorrencia.getId(), colaboradorOcorrencia.getColaborador().getId(), colaboradorOcorrencia.getOcorrencia().getId(), getEmpresaSistema().getId(), colaboradorOcorrencia.getDataIni());
+			//boolean jaExisteOcorrenciaNoMesmoDia = colaboradorOcorrenciaManager.verifyExistsMesmaData(colaboradorOcorrencia.getId(), colaboradorOcorrencia.getColaborador().getId(), colaboradorOcorrencia.getOcorrencia().getId(), getEmpresaSistema().getId(), colaboradorOcorrencia.getDataIni(), null);
+			Collection<ColaboradorOcorrencia> ocorrenciasNaMesmaData = colaboradorOcorrenciaManager.verifyOcorrenciasMesmaData(colaboradorOcorrencia.getId(), colaboradorOcorrencia.getColaborador().getId(), colaboradorOcorrencia.getOcorrencia().getId(), getEmpresaSistema().getId(), colaboradorOcorrencia.getDataIni(), colaboradorOcorrencia.getDataFim());
 
-			if (jaExisteOcorrenciaNoMesmoDia)
+			if (ocorrenciasNaMesmaData.size() > 0)
 			{
-				msg = "Já existe uma ocorrência na mesma data para esse colaborador.";
+				msg = "A ocorrência não pôde ser gravada com as datas informadas. <br/>"
+					+ "A mesma ocorrência já foi cadastrada para esse colaborador nas seguintes datas: <br/>";
+				for (ColaboradorOcorrencia colaboradorOcorrencia : ocorrenciasNaMesmaData) {
+					msg += " - " + colaboradorOcorrencia.getDataIniString();
+					if ( colaboradorOcorrencia.getDataFim() != null)
+						msg += " a " + colaboradorOcorrencia.getDataFimString();
+					msg += "<br/>";
+				}
 				throw new Exception();
 			}
 

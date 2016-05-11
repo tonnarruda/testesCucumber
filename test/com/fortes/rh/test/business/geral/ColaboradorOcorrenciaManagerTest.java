@@ -242,7 +242,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<
 	public void testVerifyExistsMesmaData()
 	{
 		colaboradorOcorrenciaDao.expects(once()).method("verifyExistsMesmaData").will(returnValue(true));
-		assertTrue(manager.verifyExistsMesmaData(1L, 1L, 1L, 1L, new Date()));
+		assertTrue(manager.verifyExistsMesmaData(1L, 1L, 1L, 1L, new Date(), null));
 	}
 
 	public void testSaveColaboradorOcorrencia()
@@ -330,6 +330,9 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<
 		colaboradorOcorrencia.setDataIni(new Date());
 		setDadosOcorrenciaAC(empresa, ocorrencia, colaborador, colaboradorOcorrencia);
 
+		colaboradorOcorrenciaDao.expects(once()).method("save");
+		colaboradorManager.expects(once()).method("findById").will(returnValue(colaborador));
+		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoOcorrenciaCadastrada");
 		acPessoalClientColaboradorOcorrencia.expects(once()).method("criarColaboradorOcorrencia").will(throwException(new IntegraACException("")));
 
 		Exception exception = null;
@@ -424,7 +427,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<
 		
 		Colaborador colaborador = new Colaborador();
 		colaborador.setCodigoAC("00002");
-		ColaboradorOcorrencia colaboradorOcorrencia = new ColaboradorOcorrencia();
+		ColaboradorOcorrencia colaboradorOcorrencia = ColaboradorOcorrenciaFactory.getEntity(1L);
 		colaboradorOcorrencia.setDataIni(new Date());
 		setDadosOcorrenciaAC(empresa, ocorrencia, colaborador, colaboradorOcorrencia);
 

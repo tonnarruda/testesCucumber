@@ -170,30 +170,48 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 	 */
 	public void saveColaboradorOcorrencia(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa) throws Exception, IntegraACException
 	{
-		if (empresa.isAcIntegra() && colaboradorOcorrencia.getOcorrencia().getIntegraAC())
-		{
-			try
-			{
-				boolean sucesso = acPessoalClientColaboradorOcorrencia.criarColaboradorOcorrencia(bindColaboradorOcorrencia(colaboradorOcorrencia,empresa), empresa);
-
-				if (!sucesso)
-					throw new IntegraACException("Método: AcPessoalClientColaboradorOcorrencia.criarColaboradorOcorrencia retornou false");
+		try {
+			ColaboradorOcorrencia colaboradorOcorrenciaAntiga = null;
+			Long colaboradorOcorrenciaId = colaboradorOcorrencia.getId();
+			if (colaboradorOcorrenciaId == null) {
+				getDao().save(colaboradorOcorrencia);
+				colaboradorOcorrencia.setColaborador(colaboradorManager.findById(colaboradorOcorrencia.getColaborador().getId()));
+				gerenciadorComunicacaoManager.enviaAvisoOcorrenciaCadastrada(colaboradorOcorrencia, empresa.getId());
 			}
-			catch (Exception e)
+			else {
+				colaboradorOcorrenciaAntiga = getDao().findByIdProjection(colaboradorOcorrencia.getId());
+				
+				getDao().update(colaboradorOcorrencia);
+			}
+			
+			if (empresa.isAcIntegra() && colaboradorOcorrencia.getOcorrencia().getIntegraAC())
 			{
-				e.printStackTrace();
-				throw new IntegraACException(e.getMessage());
+				try
+				{
+					boolean sucesso;
+					
+					if (colaboradorOcorrenciaId == null)
+						sucesso = acPessoalClientColaboradorOcorrencia.criarColaboradorOcorrencia(bindColaboradorOcorrencia(colaboradorOcorrencia,empresa), empresa);
+					else 
+						sucesso = acPessoalClientColaboradorOcorrencia.atualizarColaboradorOcorrencia(bindColaboradorOcorrencia(colaboradorOcorrenciaAntiga, empresa), bindColaboradorOcorrencia(colaboradorOcorrencia,empresa), empresa);
+	
+					if (!sucesso)
+						throw new IntegraACException("Método: AcPessoalClientColaboradorOcorrencia.criarColaboradorOcorrencia retornou false");
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					throw new IntegraACException(e.getMessage());
+				}
 			}
 		}
-
-		if (colaboradorOcorrencia.getId() == null)
-		{
-			getDao().save(colaboradorOcorrencia);
-			colaboradorOcorrencia.setColaborador(colaboradorManager.findById(colaboradorOcorrencia.getColaborador().getId()));
-			gerenciadorComunicacaoManager.enviaAvisoOcorrenciaCadastrada(colaboradorOcorrencia, empresa.getId());
+		catch (IntegraACException e) {
+			e.printStackTrace();
+			throw new IntegraACException(e.getMessage());
 		}
-		else
-			getDao().update(colaboradorOcorrencia);
+		catch (Exception e) {
+			throw new Exception();
+		}
 	}
 
 	public void remove(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa) throws Exception
@@ -225,14 +243,26 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		tColaboradorOcorrencia.setEmpresa(empresa.getCodigoAC());
 		tColaboradorOcorrencia.setCodigo(colaboradorOcorrencia.getOcorrencia().getCodigoAC());
 		tColaboradorOcorrencia.setData(DateUtil.formataDiaMesAno(colaboradorOcorrencia.getDataIni()));
+		if (colaboradorOcorrencia.getDataFim() != null)
+			tColaboradorOcorrencia.setDataFim(DateUtil.formataDiaMesAno(colaboradorOcorrencia.getDataFim()));
+		else
+			tColaboradorOcorrencia.setDataFim(DateUtil.formataDiaMesAno(colaboradorOcorrencia.getDataIni()));
 		tColaboradorOcorrencia.setObs(colaboradorOcorrencia.getObservacao());
+		if ( colaboradorOcorrencia.getId() != null )
+			tColaboradorOcorrencia.setId(colaboradorOcorrencia.getId().intValue());
 		return tColaboradorOcorrencia;
 	}
 
 	@TesteAutomatico
-	public boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni)
+	public boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni, Date dataFim)
 	{
-		return getDao().verifyExistsMesmaData(colaboradorOcorrenciaId, colaboradorId, ocorrenciaId, empresaId, dataIni);
+		return getDao().verifyExistsMesmaData(colaboradorOcorrenciaId, colaboradorId, ocorrenciaId, empresaId, dataIni, dataFim);
+	}
+	
+	@TesteAutomatico
+	public Collection<ColaboradorOcorrencia> verifyOcorrenciasMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni, Date dataFim)
+	{
+		return getDao().verifyOcorrenciasMesmaData(colaboradorOcorrenciaId, colaboradorId, ocorrenciaId, empresaId, dataIni, dataFim);
 	}
 
 	public Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds, Collection<Long> afastamentosIds, Collection<Long> cargosIds, Empresa empresaLogada) throws Exception 

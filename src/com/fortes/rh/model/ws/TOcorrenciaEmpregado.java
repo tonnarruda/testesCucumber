@@ -12,8 +12,10 @@ public class TOcorrenciaEmpregado implements Serializable
 	private String empresa;
 	private String codigoEmpregado;
 	private String data;
+	private String dataFim;
 	private String obs;
 	private String grupoAC;
+	private int id;
 
 	public String getGrupoAC() {
 		return grupoAC;
@@ -68,5 +70,26 @@ public class TOcorrenciaEmpregado implements Serializable
 	public Date getDataFormatada()
 	{
 		return DateUtil.montaDataByString(this.data);
+	}
+
+	public String getDataFim() {
+		return dataFim;
+	}
+
+	public void setDataFim(String dataFim) {
+		this.dataFim = dataFim;
+	}
+	
+	public Date getDataFimFormatada()
+	{
+		return DateUtil.montaDataByString(this.dataFim);
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
