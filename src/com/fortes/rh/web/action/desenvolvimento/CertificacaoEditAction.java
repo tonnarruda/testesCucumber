@@ -225,13 +225,17 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		}
 		
 		for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
-			if(qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()) != null){
-				if(colaboradorCertificado)
+			if(colaboradorCertificado){
+				if(qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()) != null)
 					colabcertificacao.setQtdColaboradorAprovado(String.valueOf(qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()).size()));
+				else
+					colabcertificacao.setQtdColaboradorAprovado("0");
 			}
-			if(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()) != null){
-				if(colaboradorNaoCertificado)
-					colabcertificacao.setQtdColaboradorNaoAprovado(String.valueOf(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).size()));
+			if(colaboradorNaoCertificado){
+				if(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()) != null)
+						colabcertificacao.setQtdColaboradorNaoAprovado(String.valueOf(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).size()));
+				else
+					colabcertificacao.setQtdColaboradorNaoAprovado("0");
 			}
 		}
 		

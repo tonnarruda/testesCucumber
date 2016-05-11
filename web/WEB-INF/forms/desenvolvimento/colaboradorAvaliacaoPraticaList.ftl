@@ -143,6 +143,9 @@
 		function apagarNota(i){
 			$('#nota-' + i).val('');
 			$('#data-' + i).val('  /  /    ');
+			
+			$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" name="colaboradorCertificacaos[' + i + '].id" value="' +  $("#colaboradorCertificacaoId-" + i).val() + '" />');
+			$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" name="colaboradorCertificacaos[' + i + '].ultimaCertificacao" value="' +  $("#ultimaCertificacao-" + i).val() + '" />');
 		}
 		
 		function ajustaFormSubmit(i){
@@ -156,6 +159,7 @@
 					$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" id="colaboradorIdSubmit-' + i + '" name="colaboradorCertificacaos[' + i + '].colaborador.id" value="' +  $("#colaboradorId-" + i).val() + '" />');
 					$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" name="colaboradorCertificacaos[' + i + '].colaboradorAvaliacaoPraticaAtual.id" value="' +  $("#avPraticas-" + i).val() + '" />');
 					$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" name="colaboradorCertificacaos[' + i + '].colaboradorAvaliacaoPraticaAtual.nota" value="' +  $("#nota-" + i).val() + '" />')
+					$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" name="colaboradorCertificacaos[' + i + '].ultimaCertificacao" value="' +  $("#ultimaCertificacao-" + i).val() + '" />')
 				} 
 			}, 800);
 		}
@@ -243,7 +247,7 @@
 						<@ww.hidden name="colaboradorCertificacaos[${i}].colaborador.id" id="colaboradorId-${i}" value="${colaboradorId}"/>
 					</@display.column>
 					<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
-						<@ww.textfield id="nota-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "ajustaFormSubmit(${i});return(somenteNumeros(event,'.,,'));" liClass="liLeft"/>
+						<@ww.textfield id="nota-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeyup = "ajustaFormSubmit(${i});return(somenteNumeros(event,'.,,'));" liClass="liLeft"/>
 						<a href="#" onclick="apagarNota(${i})"><img id="excluir-${i}" border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 					</@display.column>
 				</#if>
