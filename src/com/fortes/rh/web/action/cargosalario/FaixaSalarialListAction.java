@@ -7,6 +7,7 @@ import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -49,7 +50,9 @@ public class FaixaSalarialListAction extends MyActionSupportList
 			addActionSuccess("Faixa salarial excluída com sucesso.");
 			
 		} catch (Exception e) {
-			addActionWarning("Essa faixa salarial não pode ser removida pois possui dependências no sistema. <br/> Detalhes: " + e.getMessage());
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta Faixa Salarial.");
+			e.printStackTrace();
+//			addActionWarning("Essa faixa salarial não pode ser removida pois possui dependências no sistema. <br/> Detalhes: " + e.getMessage());
 		}
 
 		return Action.SUCCESS;

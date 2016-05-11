@@ -138,7 +138,6 @@
 		</fieldset>
 	</li>
 
-<@ww.token/>
 </@ww.form>
 
 

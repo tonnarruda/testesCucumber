@@ -446,7 +446,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	{
 		if(cargoManager.verifyExistCargoNome(cargo.getNome(), getEmpresaSistema().getId()))
 		{
-			addActionError("Já existe um cargo com este nome: " + cargo.getNome());
+			addActionWarning("Já existe um cargo com este nome: " + cargo.getNome());
 			prepareInsert();
 			return Action.INPUT;
 		}

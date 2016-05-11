@@ -47,26 +47,26 @@
 	<@display.table name="cargos" id="cargo" class="dados" >
 		<@display.column title="Ações" class="acao" style="width: 120px;">
 			<@authz.authorize ifAllGranted="ROLE_TRANSFERIR_FAIXAS_AC">
-				<a href="prepareTransferirFaixasCargo.action?cargo.id=${cargo.id}"><img border="0" title="Transferir Faixas para este cargo" src="<@ww.url includeParams="none" value="/imgs/faixas.gif"/>"></a>
+				<a href="javascript:;" onclick="javascript: executeLink('prepareTransferirFaixasCargo.action?cargo.id=${cargo.id}');"><img border="0" title="Transferir Faixas para este cargo" src="<@ww.url includeParams="none" value="/imgs/faixas.gif"/>"></a>
 			</@authz.authorize>
 		
 			<#if possuiSESMT>
 				<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_FUNCOES">
-					<a href="../../sesmt/funcao/list.action?cargoTmp.id=${cargo.id}"><img border="0" title="Funções" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
+					<a href="javascript:;" onclick="javascript: executeLink('../../sesmt/funcao/list.action?cargoTmp.id=${cargo.id}');"><img border="0" title="Funções" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
 				</@authz.authorize>
 			</#if>
 		
 			<@authz.authorize ifAllGranted="ROLE_CAD_FAIXA_SALARIAL">
-				<a href="../faixaSalarial/list.action?cargo.id=${cargo.id}"><img border="0" title="Faixas Salariais" src="<@ww.url includeParams="none" value="/imgs/insertCell.gif"/>"></a>
+				<a href="javascript:;" onclick="javascript: executeLink('../faixaSalarial/list.action?cargo.id=${cargo.id}');"><img border="0" title="Faixas Salariais" src="<@ww.url includeParams="none" value="/imgs/insertCell.gif"/>"></a>
 			</@authz.authorize>
 			<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_EDITAR">
-				<a href="prepareUpdate.action?cargo.id=${cargo.id}&page=${page}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+				<a href="javascript:;" onclick="javascript: executeLink('prepareUpdate.action?cargo.id=${cargo.id}&page=${page}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 			</@authz.authorize>
 			<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_EXCLUIR">
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?cargo.id=${cargo.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?cargo.id=${cargo.id}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			</@authz.authorize>
 			<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_IMPRIMIR">
-				<a href="imprimir.action?cargo.id=${cargo.id}"><img border="0" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="javascript:;" onclick="javascript: executeLink('imprimir.action?cargo.id=${cargo.id}');"><img border="0" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 			</@authz.authorize>
 		</@display.column>
 		<@display.column property="nome" title="Nomenclatura"/>
@@ -78,7 +78,7 @@
 
 	<div class="buttonGroup">
 		<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_INSERIR">
-			<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
+			<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');" accesskey="I"></button>
 		</@authz.authorize>
 		<button class="btnImprimir" onclick="imprimir();" accesskey="P"></button>
 	</div>
