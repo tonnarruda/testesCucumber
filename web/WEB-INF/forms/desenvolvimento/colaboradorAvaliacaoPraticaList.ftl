@@ -146,6 +146,7 @@
 			
 			$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" name="colaboradorCertificacaos[' + i + '].id" value="' +  $("#colaboradorCertificacaoId-" + i).val() + '" />');
 			$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" name="colaboradorCertificacaos[' + i + '].ultimaCertificacao" value="' +  $("#ultimaCertificacao-" + i).val() + '" />');
+			$('#formSubmit ul').append('<input type="hidden" class="submit-' + i + '" name="colaboradorCertificacaos[' + i + '].colaboradorAvaliacaoPraticaAtual.id" value="' +  $("#avPraticas-" + i).val() + '" />');
 		}
 		
 		function ajustaFormSubmit(i){
