@@ -3,7 +3,7 @@
 
 <xwork>
 	<package name="configHistoricoNivel" extends="default" namespace="/captacao/configHistoricoNivel">
-			<default-interceptor-ref name="defaultUpdateStack" />
+		<default-interceptor-ref name="defaultUpdateStack" />
 		<action name="prepareInsert" class="com.fortes.rh.web.action.captacao.ConfigHistoricoNivelEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/configHistoricoNivelEdit.ftl</result>
 		</action>

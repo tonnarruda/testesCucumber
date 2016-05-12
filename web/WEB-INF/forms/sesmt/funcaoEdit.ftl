@@ -71,27 +71,26 @@
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};"  class="btnGravar"></button>
 
-	<#if funcao.id?exists && historicoFuncaos?exists>
-		</div>
-		<br>
-		<@display.table name="historicoFuncaos" id="historicoFuncao" pagesize=10 class="dados">
-			<@display.column title="Ações" class="acao">
-				<a href="../historicoFuncao/prepareUpdate.action?historicoFuncao.id=${historicoFuncao.id}&funcao.id=${funcao.id}&funcao.nome=${funcao.nome}&cargoTmp.id=${cargoTmp.id}&cargoTmp.nome=${cargoTmp.nome}&veioDoSESMT=${veioDoSESMT?string}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-				<#if 1 < historicoFuncaos?size>
-					<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='../historicoFuncao/delete.action?historicoFuncao.id=${historicoFuncao.id}&funcao.id=${funcao.id}&cargoTmp.id=${cargoTmp.id}&veioDoSESMT=${veioDoSESMT?string}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-				<#else>
-					<a href="javascript:;"><img border="0" title="Não é possível remover o único histórico da função" src="<@ww.url value="/imgs/delete.gif"/>"  style="opacity:0.2;filter:alpha(opacity=20);"></a>
-				</#if>
-			</@display.column>
-			<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="text-align: center;width:80px;"/>
-			<@display.column property="descricao" title="Histórico - Descrição"/>
-		</@display.table>
-
-
-		<div class="buttonGroup">
-			<button onclick="window.location='../historicoFuncao/prepareInsert.action?funcao.id=${funcao.id}&funcao.nome=${funcao.nome}&cargoTmp.id=${cargoTmp.id}&cargoTmp.nome=${cargoTmp.nome}&veioDoSESMT=${veioDoSESMT?string}'" class="btnInserir"></button>
-	</#if>
-
+		<#if funcao.id?exists && historicoFuncaos?exists>
+			</div>
+			<br>
+			<@display.table name="historicoFuncaos" id="historicoFuncao" pagesize=10 class="dados">
+				<@display.column title="Ações" class="acao">
+					<a href="javascript:;" onclick="javascript: executeLink('../historicoFuncao/prepareUpdate.action?historicoFuncao.id=${historicoFuncao.id}&funcao.id=${funcao.id}&funcao.nome=${funcao.nome}&cargoTmp.id=${cargoTmp.id}&cargoTmp.nome=${cargoTmp.nome}&veioDoSESMT=${veioDoSESMT?string}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+					<#if 1 < historicoFuncaos?size>
+						<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){executeLink('../historicoFuncao/delete.action?historicoFuncao.id=${historicoFuncao.id}&funcao.id=${funcao.id}&cargoTmp.id=${cargoTmp.id}&veioDoSESMT=${veioDoSESMT?string}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<#else>
+						<a href="javascript:;"><img border="0" title="Não é possível remover o único histórico da função" src="<@ww.url value="/imgs/delete.gif"/>"  style="opacity:0.2;filter:alpha(opacity=20);"></a>
+					</#if>
+				</@display.column>
+				<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="text-align: center;width:80px;"/>
+				<@display.column property="descricao" title="Histórico - Descrição"/>
+			</@display.table>
+	
+			<div class="buttonGroup">
+				<button onclick="executeLink('../historicoFuncao/prepareInsert.action?funcao.id=${funcao.id}&funcao.nome=${funcao.nome}&cargoTmp.id=${cargoTmp.id}&cargoTmp.nome=${cargoTmp.nome}&veioDoSESMT=${veioDoSESMT?string}');" class="btnInserir"></button>
+		</#if>
+	
 		<#if veioDoSESMT?exists && veioDoSESMT>
 			<button onclick="window.location='listFiltro.action?cargoTmp.id=${cargoTmp.id}'" class="btnVoltar"></button>
 		<#else>

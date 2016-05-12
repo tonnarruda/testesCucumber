@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -20,7 +21,6 @@ public class IndiceListAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		setTotalSize(indiceManager.getCount(indiceAux.getNome()));
-//		indices = indiceManager.find(getPage(),getPagingSize(), new String[]{"nome"});
 		indices = indiceManager.findIndices(getPage(), getPagingSize(), indiceAux.getNome());
 		
 		integradoAC = getEmpresaSistema().isAcIntegra();
@@ -33,11 +33,16 @@ public class IndiceListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		integradoAC = getEmpresaSistema().isAcIntegra();
-		if(!integradoAC)
-		{
-			indiceManager.removeIndice(indiceAux.getId());
-			addActionMessage("Índice excluído com sucesso.");
+		try {
+			integradoAC = getEmpresaSistema().isAcIntegra();
+			if(!integradoAC)
+			{
+				indiceManager.removeIndice(indiceAux.getId());
+				addActionSuccess("Índice excluído com sucesso.");
+			}
+			
+		} catch (Exception e) {
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este índice.");
 		}
 
 		return Action.SUCCESS;

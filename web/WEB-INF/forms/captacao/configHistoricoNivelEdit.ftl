@@ -9,10 +9,10 @@
 		
 		<#if nivelCompetenciaHistorico?exists && nivelCompetenciaHistorico.id?exists>
 			<title>Editar Histórico do Nível de Competência</title>
-			<#assign formAction="../configHistoricoNivel/update.action"/>
+			<#assign formAction="update.action"/>
 		<#else>
 			<title>Inserir Histórico do Nível de Competência</title>
-			<#assign formAction="../configHistoricoNivel/insert.action"/>
+			<#assign formAction="insert.action"/>
 		</#if>
 	
 	<#assign validarCampos=""/>

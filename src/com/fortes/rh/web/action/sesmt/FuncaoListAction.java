@@ -6,9 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.dao.DataIntegrityViolationException;
-
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -24,6 +21,7 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.relatorio.QtdPorFuncaoRelatorio;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -122,18 +120,9 @@ public class FuncaoListAction extends MyActionSupportList
 	{
 		try {
 			funcaoManager.removeFuncao(funcao);
-			addActionMessage("Função excluída com sucesso.");
-
-		} catch (DataIntegrityViolationException e) {
-			addActionError("Não é possível excluir a Função, pois esta possui dependências.");
-			e.printStackTrace();
-
-		} catch (ConstraintViolationException e) {
-			addActionError("Não é possível excluir a Função, pois esta possui dependências.");
-			e.printStackTrace();
-		
+			addActionSuccess("Função excluída com sucesso.");
 		} catch (Exception e) {
-			addActionError(e.getMessage());
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta função.");
 			e.printStackTrace();
 		}
 

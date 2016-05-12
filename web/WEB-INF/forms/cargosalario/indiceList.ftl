@@ -39,9 +39,9 @@
 
 	<@display.table name="indices" id="indice" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?indiceAux.id=${indice.id}"><img title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="javascript:;" onclick="javascript: executeLink('prepareUpdate.action?indiceAux.id=${indice.id}');"><img title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<#if !integradoAC>
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?indiceAux.id=${indice.id}'});"><img title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?indiceAux.id=${indice.id}');});"><img title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</#if>
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>	
@@ -53,7 +53,7 @@
 	
 	<#if !integradoAC>
 		<div class="buttonGroup">
-			<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
+			<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');" accesskey="I">
 			</button>
 		</div>
 	</#if>

@@ -47,6 +47,10 @@ public class ValidationExceptionInterceptor implements Interceptor
 		String result = null;
 		
 		final Object action = invocation.getAction();
+		
+		invocation.getInvocationContext().getParameters();
+		invocation.getInvocationContext().getName();
+		
 		MyActionSupport actionSuport = null;
 
 		if (action instanceof MyActionSupport)

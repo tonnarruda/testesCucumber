@@ -4,10 +4,10 @@
 <@ww.head/>
 	<#if indiceHistorico.id?exists>
 		<title>Editar Histórico do Índice</title>
-		<#assign formAction="update.action"/>
+		<#assign formAction="../indiceHistorico/update.action"/>
 	<#else>
 		<title>Novo Histórico do Índice</title>
-		<#assign formAction="insert.action"/>
+		<#assign formAction="../indiceHistorico/insert.action"/>
 	</#if>
 
 	<#assign validarCampos="return validaFormulario('form', new Array('dataHist','valor'), new Array('dataHist'))"/>
@@ -26,14 +26,13 @@
 			<@ww.hidden name="indiceHistorico.indice.id"/>
 			<@ww.hidden name="indiceHistorico.id"/>
 			<@ww.hidden name="indiceAux.id"/>
-			<@ww.token/>
 		</@ww.form>
 	
 		<div class="buttonGroup">
 			<button onclick="${validarCampos};" class="btnGravar">
 			</button>
 	
-			<button onclick="window.location='../indice/prepareUpdate.action?indiceAux.id=${indiceAux.id}'" class="btnCancelar">
+			<button onclick="javascript: executeLink('../indice/prepareUpdate.action?indiceAux.id=${indiceAux.id}');" class="btnCancelar">
 			</button>
 		</div>
 	</#if>

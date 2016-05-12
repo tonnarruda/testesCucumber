@@ -36,13 +36,12 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/cargoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="insert">
-		    <result name="invalid.token" type="redirect">list.action</result>
+			<interceptor-ref name="myDefaultWebStack" />
 			<result name="success" type="redirect">../faixaSalarial/prepareInsert.action?cargoAux.id=${cargo.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/cargoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="update">
 			<interceptor-ref name="defaultUpdateStack"></interceptor-ref>
-		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action?page=${page}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/cargoEdit.ftl</result>
 		</action>

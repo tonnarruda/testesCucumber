@@ -4,7 +4,7 @@
 <xwork>
 	<package name="indiceHistorico" extends="default" namespace="/cargosalario/indiceHistorico">
 		<action name="delete" class="com.fortes.rh.web.action.cargosalario.IndiceHistoricoListAction" method="delete">
-			<result name="success" type="redirect">../indice/prepareUpdate.action?indiceAux.id=${indiceAux.id}</result>
+			<result name="success" type="redirect">../indice/prepareUpdateFromHistorico.action?indiceAux.id=${indiceAux.id}</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.cargosalario.IndiceHistoricoEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/indiceHistoricoEdit.ftl</result>
@@ -13,13 +13,11 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/indiceHistoricoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.IndiceHistoricoEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect">../indice/prepareUpdate.action?indiceAux.id=${indiceAux.id}</result>
+			<result name="success" type="redirect">../indice/prepareUpdateFromHistorico.action?indiceAux.id=${indiceAux.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/indiceHistoricoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.cargosalario.IndiceHistoricoEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect">../indice/prepareUpdate.action?indiceAux.id=${indiceAux.id}</result>
+			<result name="success" type="redirect">../indice/prepareUpdateFromHistorico.action?indiceAux.id=${indiceAux.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/indiceHistoricoEdit.ftl</result>
 		</action>
 	</package>

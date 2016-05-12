@@ -37,7 +37,6 @@
 
 		<@ww.hidden name="indiceAux.id" />
 		<@ww.hidden name="indiceAux.codigoAC" />
-		<@ww.token/>
 	</@ww.form>
 
 	<div class="buttonGroup">
@@ -52,9 +51,9 @@
 		<@display.table name="indicesHistoricos" id="indiceHistorico" class="dados" style="width: 300px;">
 			<#if !integradoAC>
 				<@display.column title="Ações" class="acao">
-					<a href="../indiceHistorico/prepareUpdate.action?indiceHistorico.id=${indiceHistorico.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+					<a href="javascript:;" onclick="javascript: executeLink('../indiceHistorico/prepareUpdate.action?indiceHistorico.id=${indiceHistorico.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 					<#if 1 < indicesHistoricos?size>
-						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../indiceHistorico/delete.action?indiceHistorico.id=${indiceHistorico.id}&indiceAux.id=${indiceHistorico.indice.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+						<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){executeLink('../indiceHistorico/delete.action?indiceHistorico.id=${indiceHistorico.id}&indiceAux.id=${indiceHistorico.indice.id}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 					<#else>
 						<img border="0" title="Não é possível excluir, um índice deve possuir pelo menos um histórico." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					</#if>
@@ -68,7 +67,7 @@
 	</#if>
 	
 		<#if indiceAux.id?exists && !integradoAC>
-			<button onclick="window.location='../indiceHistorico/prepareInsert.action?indiceAux.id=${indiceAux.id}'" class="btnInserir"></button>
+			<button onclick="javascript: executeLink('../indiceHistorico/prepareInsert.action?indiceAux.id=${indiceAux.id}');" class="btnInserir"></button>
 		</#if>
 		<button onclick="window.location='list.action'" class="btnCancelar"></button>
 	</div>

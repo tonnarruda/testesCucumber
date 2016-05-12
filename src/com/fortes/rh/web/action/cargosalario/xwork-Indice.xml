@@ -19,13 +19,16 @@
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.cargosalario.IndiceEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/indiceEdit.ftl</result>
 		</action>
+		<action name="prepareUpdateFromHistorico" class="com.fortes.rh.web.action.cargosalario.IndiceEditAction" method="prepareUpdate">
+			<interceptor-ref name="myDefaultWebStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/indiceEdit.ftl</result>
+		</action>
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.IndiceEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/indiceEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.cargosalario.IndiceEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack"/>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/indiceEdit.ftl</result>
 		</action>
