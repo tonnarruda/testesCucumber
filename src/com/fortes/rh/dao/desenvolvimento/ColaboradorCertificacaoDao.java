@@ -24,4 +24,5 @@ public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertif
 	Collection<ColaboradorCertificacao> findColaboradorCertificacaoPreRequisito(Long colaboradorCertificacaoId);
 	Collection<ColaboradorCertificacao> findColaboradoresCertificados(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, Long[] certificacoesIds, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds);
 	Collection<ColaboradorCertificacao> findColaboradoresQueParticipamDaCertificacao(Long[] certificacoesId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds);
+	Collection<ColaboradorCertificacao> findColaboradoresCertificadosENaoCertificados(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, Long certificacaoId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds, Long[] cursosIds);
 }

@@ -56,6 +56,8 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	private String qtdColaboradorNaoAprovado = "-";
 	@Transient
 	private ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaAtual;
+	@Transient
+	private ColaboradorTurma colaboradorTurma;
 
 	public ColaboradorCertificacao() {
 	}
@@ -364,5 +366,63 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	public void setColaboradorAvaliacaoPraticaAtual(
 			ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaAtual) {
 		this.colaboradorAvaliacaoPraticaAtual = colaboradorAvaliacaoPraticaAtual;
+	}
+
+	public ColaboradorTurma getColaboradorTurma() {
+		return colaboradorTurma;
+	}
+
+	public void setColaboradorTurma(ColaboradorTurma colaboradorTurma) {
+		this.colaboradorTurma = colaboradorTurma;
+	}
+	
+	private void inicializaColaboradorTurma(){
+		if(this.colaboradorTurma == null)
+			this.colaboradorTurma = new ColaboradorTurma();
+	}
+	
+	public void setColaboradorTurmaId(Long colaboradorTurmaId){
+		inicializaColaboradorTurma();
+		this.colaboradorTurma.setId(colaboradorTurmaId);
+	}
+	
+	public void setColaboradorTurmaAprovado(boolean colaboradorTurmaAprovado){
+		inicializaColaboradorTurma();
+		this.colaboradorTurma.setAprovado(colaboradorTurmaAprovado);
+	}
+	
+	public void setColaboradorTurmaCursoId(Long colaboradorTurmaCursoId){
+		inicializaColaboradorTurma();
+		this.colaboradorTurma.setCursoId(colaboradorTurmaCursoId);
+	}
+
+	public void setColaboradorTurmaCursoNome(String colaboradorTurmaCursoNome){
+		inicializaColaboradorTurma();
+		this.colaboradorTurma.setCursoNome(colaboradorTurmaCursoNome);
+	}
+
+	public void setColaboradorTurmaTurmaId(Long colaboradorTurmaTurmaId){
+		inicializaColaboradorTurma();
+		this.colaboradorTurma.setTurmaId(colaboradorTurmaTurmaId);
+	}
+	
+	public void setColaboradorTurmaTurmaDescricao(String colaboradorTurmaTurmaDescricao){
+		inicializaColaboradorTurma();
+		this.colaboradorTurma.setTurmaDescricao(colaboradorTurmaTurmaDescricao);
+	}
+
+	public void setColaboradorTurmaTurmaDataPrevIni(Date colaboradorTurmaTurmaDataPrevIni){
+		inicializaColaboradorTurma();
+		this.colaboradorTurma.setTurmaDataPrevIni(colaboradorTurmaTurmaDataPrevIni);
+	}
+
+	public void setColaboradorTurmaTurmaDataPrevFim(Date colaboradorTurmaTurmaDataPrevFim){
+		inicializaColaboradorTurma();
+		this.colaboradorTurma.setTurmaDataPrevFim(colaboradorTurmaTurmaDataPrevFim);
+	}
+	
+	public void setColaboradorTurmaTurmaRealizada(Boolean colaboradorTurmaTurmaRealizada){
+		inicializaColaboradorTurma();
+		this.colaboradorTurma.setTurmaRealizada(colaboradorTurmaTurmaRealizada);
 	}
 }

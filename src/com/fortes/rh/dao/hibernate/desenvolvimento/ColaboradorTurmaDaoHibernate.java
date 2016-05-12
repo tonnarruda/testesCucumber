@@ -1914,46 +1914,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		}
 		return colaboradorTurmas;	
 	}
+
 	
-	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoId(Long certificacaoId, Long... colaboradoresIds) 
-	{
-		DetachedCriteria ultimoColaboradorCertificacao = DetachedCriteria.forClass(ColaboradorCertificacao.class, "cc2").setProjection(Projections.max("cc2.data"))
-				.add(Restrictions.eqProperty("cc2.colaborador.id", "cc.colaborador.id")).add(Restrictions.eqProperty("cc2.certificacao.id", "cc.certificacao.id"));
-		
-		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
-		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
-		criteria.createCriteria("t.curso", "c", Criteria.INNER_JOIN);
-		criteria.createCriteria("c.certificacaos", "ce", Criteria.INNER_JOIN);
-		criteria.createCriteria("ct.colaborador", "co", Criteria.INNER_JOIN);
-		criteria.createCriteria("co.colaboradorCertificacaos", "cc", Criteria.LEFT_JOIN);
-		
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("ct.id"), "id");
-		p.add(Projections.property("cc.id"), "colaboradorCertificacaoId");
-		p.add(Projections.property("ct.colaborador.id"), "colaboradorId");
-		p.add(Projections.property("c.id"), "cursoId");
-		p.add(Projections.property("c.nome"), "cursoNome");
-		p.add(Projections.property("t.id"), "turmaId");
-		p.add(Projections.property("t.descricao"), "turmaDescricao");
-		p.add(Projections.property("t.dataPrevIni"), "turmaDataPrevIni");
-		p.add(Projections.property("t.dataPrevFim"), "turmaDataPrevFim");
-		p.add(Projections.property("t.realizada"), "turmaRealizada");
-		p.add(Projections.property("ct.aprovado"), "aprovado");
-		criteria.setProjection(Projections.distinct(p));
-		
-		criteria.add(Expression.sqlRestriction("t1_.dataPrevFim = (select max(t2.dataPrevFim) from colaboradorTurma ct2 inner join turma t2 on t2.id = ct2.turma_id where ct2.colaborador_id = this_.colaborador_id and t2.curso_id = c2_.id) ", new String[]{}, new Type[]{}));
-	    criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", ultimoColaboradorCertificacao))));
-	    
-		criteria.add(Expression.eq("ce.id",certificacaoId));
-		criteria.add(Expression.in("ct.colaborador.id", colaboradoresIds));
-
-	    criteria.addOrder(Order.asc("ct.colaborador.id"));
-	    criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-	    criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
-
-		return criteria.list();
-	}
-
 	public void aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId) {
 		boolean aprovado = verificaAprovacao(colaboradorTurmaId, turmaId, cursoId);
 		String queryHQL = "update ColaboradorTurma ct set ct.aprovado = :aprovado where ct.id = :colaboradorTurmaId";

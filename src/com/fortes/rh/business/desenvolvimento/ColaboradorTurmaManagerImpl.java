@@ -1132,22 +1132,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacaoId, colaboradorCertificacaoId, colaboradoresId);
 	}
 	
-	public Map<Long, Collection<ColaboradorTurma>> findMapByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long certificacaoId, Long... colaboradoresId){
-		Map<Long, Collection<ColaboradorTurma>> mapColaboradorTurma = new HashMap<Long, Collection<ColaboradorTurma>>();
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findByColaboradorIdAndCertificacaoId(certificacaoId, colaboradoresId);
-		
-		Long colaboradorId = null;
-		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
-			colaboradorId = colaboradorTurma.getColaborador().getId();
-			if(!mapColaboradorTurma.containsKey(colaboradorId))
-				mapColaboradorTurma.put(colaboradorId, new ArrayList<ColaboradorTurma>());
-			
-			mapColaboradorTurma.get(colaboradorId).add(colaboradorTurma);
-		}
-		
-		return mapColaboradorTurma;
-	}
-
 	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId) {
 		return getDao().findByTurmaId(turmaId);
 	}

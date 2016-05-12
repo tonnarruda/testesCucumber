@@ -53,7 +53,6 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long certificacaoId, Long colaboradorCertificacaoId, Long... colaboradoresId);
 	Colaborador verificaColaboradorCertificado(Long colaboradorId, Long certificacaoId);
 	Collection<ColaboradorTurma> findByTurmaId(Long turmaId);
-	Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoId(Long certificacaoId, Long... colaboradoresIds);
 	Collection<ColaboradorTurma> findColaboradorTurmaByCertificacaoControleVencimentoPorCertificacao(Long certificacaoId);
 	Collection<ColaboradorTurma> findColaboradorTurmaByCertificacaoControleVencimentoPorCurso(Long certificacaoId, int qtdCursos);
 	void aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId);
