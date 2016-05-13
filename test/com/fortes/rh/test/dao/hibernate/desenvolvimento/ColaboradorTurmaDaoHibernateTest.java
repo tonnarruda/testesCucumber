@@ -2444,37 +2444,6 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	assertEquals(colaboradorTurmaPresente.getId(), ((ColaboradorTurma) colaboradorTurmas.toArray()[0]).getId());
 	}
 	
-	public void testFindByColaboradorIdAndCertificacaoId(){
-		Colaborador colaborador1 = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador1);
-		
-		Colaborador colaborador2 = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador2);
-		
-		Curso curso = saveCurso("Curso");
-		Turma turma1 = saveTurma(curso, DateUtil.criarDataMesAno(1, 1, 2016), DateUtil.criarDataMesAno(1, 2, 2016), true);
-		Turma turma2 = saveTurma(curso, DateUtil.criarDataMesAno(1, 3, 2016), DateUtil.criarDataMesAno(1, 4, 2016), true);
-		
-		saveColaboradorTurma(curso, turma1, colaborador1, true); 
-		saveColaboradorTurma(curso, turma2, colaborador1, true); 
-    	saveColaboradorTurma(curso, turma1, colaborador2, true); 
-
-		Certificacao certificacao = CertificacaoFactory.getEntity();
-    	certificacao.setCursos(Arrays.asList(curso));
-    	certificacaoDao.save(certificacao);
-
-    	ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador1, certificacao, DateUtil.criarDataMesAno(1, 4, 2016));
-    	colaboradorCertificacaoDao.save(colaboradorCertificacao);
-    	
-    	ColaboradorCertificacao colaboradorCertificacao2 = ColaboradorCertificacaoFactory.getEntity(colaborador1, certificacao, DateUtil.criarDataMesAno(1, 5, 2016));
-    	colaboradorCertificacaoDao.save(colaboradorCertificacao2);
-    	
-    	Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaDao.findByColaboradorIdAndCertificacaoId(certificacao.getId(), new Long[]{colaborador1.getId(), colaborador2.getId()});
-    	assertEquals(2, colaboradorTurmas.size());
-    	assertEquals(colaborador1.getId(), ((ColaboradorTurma)colaboradorTurmas.toArray()[0]).getColaborador().getId());
-    	assertEquals(colaborador2.getId(), ((ColaboradorTurma)colaboradorTurmas.toArray()[1]).getColaborador().getId());
-	}
-	
 	public void testFindColaboradorTurmaByCertificacaoControleVencimentoPorCertificacaoTurmaNaoRealizada(){
 		Colaborador colaborador1 = saveColaborador("João");
 		Colaborador colaborador2 = saveColaborador("Maria");

@@ -189,13 +189,13 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 	{
 		Usuario usuario1 = UsuarioFactory.getEntity();
 		usuario1.setAcessoSistema(true);
-		usuario1.setLogin("teste1");
+		usuario1.setLogin("teste1ddssfr3322");
 		usuario1.setSenha("1234");
 		usuarioDao.save(usuario1);
 
 		Usuario usuario2 = UsuarioFactory.getEntity();
 		usuario2.setAcessoSistema(true);
-		usuario2.setLogin("teste2");
+		usuario2.setLogin("teste2qqwweerr444");
 		usuario2.setSenha("1234");
 		usuarioDao.save(usuario2);
 		

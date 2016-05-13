@@ -183,7 +183,7 @@ public class ColaboradorCertificacaoManagerTest
 		when(certificacaoManager.findCollectionByIdProjection(certificacoesIds)).thenReturn(certificacoes);
 		when(certificacaoManager.findCursosByCertificacaoId(certificacao1.getId())).thenReturn(cursos);
 		when(colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, null, certificacoesIds, null, null,  new Long[]{colab1.getId()}, false)).thenReturn(colaboradorCertificacaos);
-		when(colaboradorTurmaManager.findByCertificacaoId(certificacao1.getId(), colaboradoresIds)).thenReturn(mapColaboradoresTurmas);
+//		when(colaboradorTurmaManager.findByCertificacaoId(certificacao1.getId(), colaboradoresIds)).thenReturn(mapColaboradoresTurmas);
 		when(colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacao1.getId(), colaboradoresIds)).thenReturn(mapColaboradorAvaliacoesPraticas);
 
 		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, null, true, true, null, null, certificacoesIds, new Long[]{colab1.getId()});

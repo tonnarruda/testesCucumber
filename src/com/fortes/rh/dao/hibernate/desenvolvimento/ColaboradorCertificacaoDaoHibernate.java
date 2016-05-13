@@ -485,7 +485,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		criteria.add(Expression.sqlRestriction("t1_.dataPrevFim = (select max(t2.dataPrevFim) from colaboradorTurma ct2 inner join turma t2 on t2.id = ct2.turma_id where ct2.colaborador_id = this_.colaborador_id and t2.curso_id = c2_.id) ", new String[]{}, new Type[]{}));
 		criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert5_")))));
 
-	    criteria.addOrder(Order.asc("co.nome")).addOrder(Order.asc("co.id")).addOrder(Order.asc("t.dataPrevFim"));
+	    criteria.addOrder(Order.asc("co.nome")).addOrder(Order.asc("co.id")).addOrder(Order.asc("c.nome"));
 	    criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	    criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
 
