@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -19,6 +20,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.Type;
+import org.springframework.dao.DataAccessResourceFailureException;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
@@ -456,10 +458,45 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list();
 	}
 	
-	public Collection<ColaboradorCertificacao> findColaboradoresCertificadosENaoCertificados(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, Long certificacaoId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds, Long[] cursosIds){
+	public Collection<ColaboradorCertificacao> findColaboradoresCertificadosENaoCertificados(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, Boolean certificado, Long certificacaoId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds, Long[] cursosIds){
 		DetachedCriteria ultimoHistoricoColaborador = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2").setProjection(Projections.max("hc2.data"))
 				.add(Restrictions.eqProperty("hc2.colaborador.id", "hc.colaborador.id")).add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
 		
+		Criteria criteria = criteriaFindColaboradoresCertificadosENaoCertificados();
+		criteria.setProjection(montaProjectionColaboradoresCertificadosENaoCertificados());
+		
+		if(areasIds != null && areasIds.length > 0)
+			criteria.add(Expression.in("hc.areaOrganizacional.id",areasIds));
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			criteria.add(Expression.in("hc.estabelecimento.id" , estabelecimentosIds));
+		if(colaboradoresIds != null && colaboradoresIds.length > 0)
+			criteria.add(Expression.in("ct.colaborador.id" , colaboradoresIds));
+
+		criteria.add(Expression.in("c.id", cursosIds));
+		criteria.add(Subqueries.propertyEq("hc.data", ultimoHistoricoColaborador));
+		
+		criteria.add(Expression.sqlRestriction("t1_.dataPrevFim = (select max(t2.dataPrevFim) from colaboradorTurma ct2 inner join turma t2 on t2.id = ct2.turma_id where ct2.colaborador_id = this_.colaborador_id and t2.curso_id = c2_.id "
+				+ "and ((cc4_.id is not null and t2.dataPrevFim <= cc4_.data) or cc4_.id is null)) ", new String[]{}, new Type[]{}));
+
+		if(certificado == null){
+			criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.certificacao.id"), Expression.eq("cc.certificacao.id",certificacaoId))));
+			criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert5_")))));
+		}else{
+			if(certificado){
+				criteria.add(Expression.eq("cc.certificacao.id",certificacaoId));
+				criteria.add(Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert5_")));
+			}else
+				criteria.add(Expression.isNull("cc.certificacao.id"));
+		}
+
+	    criteria.addOrder(Order.asc("co.nome")).addOrder(Order.asc("co.id")).addOrder(Order.asc("c.nome"));
+	    criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+	    criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
+
+		return criteria.list();
+	}
+
+	private Criteria criteriaFindColaboradoresCertificadosENaoCertificados() throws DataAccessResourceFailureException, IllegalStateException, HibernateException {
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
 		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
 		criteria.createCriteria("t.curso", "c", Criteria.INNER_JOIN);
@@ -471,25 +508,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.INNER_JOIN);
 		criteria.createCriteria("fs.cargo", "cg", Criteria.INNER_JOIN);
 		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.INNER_JOIN);
-		criteria.setProjection(montaProjectionColaboradoresCertificadosENaoCertificados());
-		
-		if(areasIds != null && areasIds.length > 0)
-			criteria.add(Expression.in("hc.areaOrganizacional.id",areasIds));
-		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			criteria.add(Expression.in("hc.estabelecimento.id" , estabelecimentosIds));
-		if(colaboradoresIds != null && colaboradoresIds.length > 0)
-			criteria.add(Expression.in("ct.colaborador.id" , colaboradoresIds));
-	    criteria.add(Expression.in("c.id", cursosIds));
-		criteria.add(Subqueries.propertyEq("hc.data", ultimoHistoricoColaborador));
-		criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.certificacao.id"), Expression.eq("cc.certificacao.id",certificacaoId))));
-		criteria.add(Expression.sqlRestriction("t1_.dataPrevFim = (select max(t2.dataPrevFim) from colaboradorTurma ct2 inner join turma t2 on t2.id = ct2.turma_id where ct2.colaborador_id = this_.colaborador_id and t2.curso_id = c2_.id) ", new String[]{}, new Type[]{}));
-		criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert5_")))));
-
-	    criteria.addOrder(Order.asc("co.nome")).addOrder(Order.asc("co.id")).addOrder(Order.asc("c.nome"));
-	    criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-	    criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
-
-		return criteria.list();
+		return criteria;
 	}
 
 	private ProjectionList montaProjectionColaboradoresCertificadosENaoCertificados() {

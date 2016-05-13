@@ -120,7 +120,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	}	
 	
 	@SuppressWarnings("deprecation")
-	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] filtroColaboradoresIds) {
+	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, Boolean certificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] filtroColaboradoresIds) {
 		CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBeanOld("certificacaoManager");
 		Collection<Certificacao> certificacoes = certificacaoManager.findCollectionByIdProjection(certificacoesIds);
 		Map<Long, Collection<AvaliacaoPratica>> mapAvaliacoesPraticas = avaliacaoPraticaManager.findMapByCertificacaoId(certificacoesIds);
@@ -130,7 +130,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		for (Certificacao certificacao : certificacoes) {
 			Collection<Curso> cursos = certificacaoManager.findCursosByCertificacaoId(certificacao.getId());
 			Long[] cursosIds = new CollectionUtil<Curso>().convertCollectionToArrayIds(cursos, "getId");
-			Collection<ColaboradorCertificacao> colaboradoresCertificacaoes = getDao().findColaboradoresCertificadosENaoCertificados(dataIni, dataFim, mesesCertificacoesAVencer, certificacao.getId(), areaIds, estabelecimentoIds, filtroColaboradoresIds, cursosIds);
+			Collection<ColaboradorCertificacao> colaboradoresCertificacaoes = getDao().findColaboradoresCertificadosENaoCertificados(dataIni, dataFim, mesesCertificacoesAVencer, certificado, certificacao.getId(), areaIds, estabelecimentoIds, filtroColaboradoresIds, cursosIds);
 			Long[] colaboradoresIds = new CollectionUtil<ColaboradorCertificacao>().convertCollectionToArrayIds(colaboradoresCertificacaoes, "getColaboradorId");
 			Map<Long, Collection<ColaboradorAvaliacaoPratica>> mapColaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacao.getId(), colaboradoresIds);
 			ColaboradorCertificacao colaboradorCertificacaoAnterior = null;
@@ -162,23 +162,26 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 				colaboradorCertificacaosRetorno.add(colabCertificacao);
 				arrayCursosIds.add(colabCertificacao.getColaboradorTurma().getCurso().getId());
 			}
-			
-			if( arrayCursosIds.size() < cursosIds.length ){
-				for (Curso curso : cursos) {
-					if(!arrayCursosIds.contains(curso.getId())){
-						ColaboradorCertificacao colaboradorCertificacao = (ColaboradorCertificacao) colaboradorCertificacaoAnterior.clone();
-						colaboradorCertificacao.setCertificacao((Certificacao) certificacao.clone());
-						colaboradorCertificacao.setNomeCurso(curso.getNome());
-						colaboradorCertificacao.setPeriodoTurma("Não realizou o curso");
-						colaboradorCertificacao.getCertificacao().setAprovadoNaTurma(false);
-						colaboradorCertificacaosRetorno.add(colaboradorCertificacao);
+
+			if(colaboradorCertificacaoAnterior != null){ 
+				if( arrayCursosIds.size() < cursosIds.length ){
+					for (Curso curso : cursos) {
+						if(!arrayCursosIds.contains(curso.getId())){
+							ColaboradorCertificacao colaboradorCertificacao = (ColaboradorCertificacao) colaboradorCertificacaoAnterior.clone();
+							colaboradorCertificacao.setCertificacao((Certificacao) certificacao.clone());
+							colaboradorCertificacao.setNomeCurso(curso.getNome());
+							colaboradorCertificacao.setPeriodoTurma("Não realizou o curso");
+							colaboradorCertificacao.getCertificacao().setAprovadoNaTurma(false);
+							colaboradorCertificacaosRetorno.add(colaboradorCertificacao);
+						}
 					}
 				}
+				colaboradorCertificacaosRetorno.addAll(populaAvaliacoesPraticas(colaboradorCertificacaoAnterior, certificacao.getId(), mapColaboradorAvaliacoesPraticas, mapAvaliacoesPraticas));
 			}
 
-			colaboradorCertificacaosRetorno.addAll(populaAvaliacoesPraticas(colaboradorCertificacaoAnterior, certificacao.getId(), mapColaboradorAvaliacoesPraticas, mapAvaliacoesPraticas));
-			
+			arrayCursosIds.clear();
 		}
+		
 		return colaboradorCertificacaosRetorno;
 	}
 

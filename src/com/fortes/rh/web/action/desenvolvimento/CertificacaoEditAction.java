@@ -176,7 +176,13 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			Long[] certificacoesIds = LongUtil.arrayStringToArrayLong(certificacoesCheck);
 			Long[] colaboradoresIds = LongUtil.arrayStringToArrayLong(colaboradoresCheck);
 			
-			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areaIds, estabelecimentoIds, certificacoesIds, colaboradoresIds);
+			Boolean certificado = null;
+			if(colaboradorCertificado && !colaboradorNaoCertificado)
+				certificado = true;
+			else if(!colaboradorCertificado && colaboradorNaoCertificado)
+				certificado = false;
+			
+			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, mesesCertificacoesAVencer, certificado, areaIds, estabelecimentoIds, certificacoesIds, colaboradoresIds);
 			if(colaboradorCertificacoes.size() == 0){
 				addActionMessage("Não existem dados para o filtro informado.");
 				prepareImprimirCertificadosVencidosAVencer();
