@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.16x.19x" db="" data="xx/05/2016">
 		<Item visivel="S" motivo="P16040000333"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Avaliação da Turma: Correção de inconsistência ao acessar avaliação de curso de outros colaboradores através da URL.]]></Item>
+		<Item visivel="S" motivo="S16040000266"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Habilitando campo matrícula quando colaborador está desintegrado com Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="P16050000011"><![CDATA[Info. Funcionais > Relatórios > Recibos de Pagamentos > Férias: Ajuste na inconsistência ao emitir o recibo de férias.]]></Item>
 		<Item visivel="S" motivo="S16040000151"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Reuniões: Novo comportamento para não considerar membros da comissão que foram desligados.]]></Item>
 		<Item visivel="S" motivo="S16040000110"><![CDATA[Utilitários > Auditoria: Nova opção para auditar encerramento das solicitações de pessoal.]]></Item>

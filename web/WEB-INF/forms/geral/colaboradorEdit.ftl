@@ -247,6 +247,7 @@
 			$("#naoIntegraAc").change(function(){
 				$('#matricula').toggleDisabled();
 				$('#wwgrp_obsACPessoal').toggle(!this.checked);
+				$('#matricula').val("");
 			})
 			
 			habilitaDtEncerramentoContrato();
