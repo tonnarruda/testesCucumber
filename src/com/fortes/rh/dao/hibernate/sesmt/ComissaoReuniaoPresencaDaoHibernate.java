@@ -1,18 +1,23 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ComissaoReuniaoPresencaDao;
+import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 
 /**
@@ -72,6 +77,7 @@ public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<Com
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("cr.comissao.id", comissaoId));
+		criteria.add(Expression.or(Restrictions.isNull("co.dataDesligamento"), Restrictions.gtProperty("co.dataDesligamento", "cr.data")));
 
 		if (ordenarPorDataNome)
 			criteria.addOrder(Order.asc("cr.data"));
@@ -95,7 +101,7 @@ public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<Com
 		return criteria.list().size() > 0;
 	}
 
-	public List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId) 
+	public List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId, Date dataReuniao) 
 	{
 		StringBuffer hql = new StringBuffer();
 		hql.append("select new ComissaoReuniaoPresenca(co.id, co.nome, crp.presente, crp.justificativaFalta) "); 
@@ -108,32 +114,39 @@ public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<Com
 		hql.append("left join c.comissaoPeriodos cp2 with cp2.aPartirDe = (select min(aPartirDe) from ComissaoPeriodo where comissao.id = c.id and aPartirDe > cp.aPartirDe) ");
 		hql.append("where cr.id = :comissaoReuniaoId ");
 		hql.append("and cr.data >= cp.aPartirDe and cr.data < coalesce(cp2.aPartirDe, c.dataFim + 1) ");
+		hql.append("and (co.dataDesligamento is null or co.dataDesligamento >= :dataReuniao)");
 		hql.append("order by co.nome");
 		
 		Query query = getSession().createQuery(hql.toString());
-
 		query.setLong("comissaoReuniaoId", comissaoReuniaoId);
+		query.setDate("dataReuniao", dataReuniao);
 		
 		return query.list();
 	}
 	
-	public Collection<ComissaoReuniaoPresenca> findPresencasByComissao(Long comissaoId) 
+	public Collection<ComissaoReuniaoPresenca> findPresencasByComissao(Long comissaoId)
 	{
-		StringBuffer hql = new StringBuffer();
-		hql.append("select distinct new ComissaoReuniaoPresenca(co.id, co.nome, cr.id, cr.tipo, cr.data, crp.presente, crp.justificativaFalta) ");
-		hql.append("from Comissao c ");
-		hql.append("inner join c.comissaoPeriodos cp ");
-		hql.append("inner join cp.comissaoMembros cm "); 
-		hql.append("inner join cm.colaborador co ");
-		hql.append("left join c.comissaoReunioes cr ");
-		hql.append("left join cr.comissaoReuniaoPresencas crp with crp.colaborador.id = co.id ");
-		hql.append("where c.id = :comissaoId ");
-		hql.append("order by co.nome, cr.data ");
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("co.id"), "projectionColaboradorId");
+		p.add(Projections.property("co.nome"), "projectionColaboradorNome");
+		p.add(Projections.property("cr.id"), "projectionComissaoReuniaoId");
+		p.add(Projections.property("cr.tipo"), "projectionComissaoReuniaoTipo");
+		p.add(Projections.property("cr.data"), "projectionComissaoReuniaoData");
+		p.add(Projections.property("crp.presente"), "presente");
+		p.add(Projections.property("crp.justificativaFalta"), "justificativaFalta");
+		p.add(Projections.sqlProjection("case when co3_.dataDesligamento is not null and co3_.dataDesligamento < cr4_.data then true else false end as desligado", new String[] {"desligado"}, new Type[] {Hibernate.BOOLEAN}), "desligado");
 		
-		Query query = getSession().createQuery(hql.toString());
-
-		query.setLong("comissaoId", comissaoId);
-		
-		return query.list();
+		Criteria criteria = getSession().createCriteria(Comissao.class,"c");
+		criteria.createCriteria("c.comissaoPeriodos", "cp", Criteria.INNER_JOIN);
+		criteria.createCriteria("cp.comissaoMembros", "cm", Criteria.INNER_JOIN);
+		criteria.createCriteria("cm.colaborador", "co", Criteria.INNER_JOIN);
+		criteria.createCriteria("c.comissaoReunioes", "cr", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cr.comissaoReuniaoPresencas", "crp", Criteria.LEFT_JOIN);
+		criteria.setProjection(Projections.distinct(p));
+		criteria.add(Expression.eq("c.id", comissaoId));
+		criteria.addOrder(Order.asc("co.nome"));
+		criteria.addOrder(Order.asc("cr.data"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ComissaoReuniaoPresenca.class));
+		return criteria.list();
 	}
 }

@@ -54,7 +54,7 @@
 						<#assign colaboradorAtualId = presenca.colaborador.id/>
 					</#if>
 					<td class="pontuacao">
-						<#if !(presenca.presente?exists)>
+						<#if !(presenca.presente) && presenca.desligado>
 							<img border="0" title="Não é membro da comissão desta reunião" src="<@ww.url value="/imgs/user_out.png"/>"/>
 						<#elseif presenca.presente>
 							<img border="0" title="Presente" src="<@ww.url value="/imgs/check_ok.gif"/>"/>

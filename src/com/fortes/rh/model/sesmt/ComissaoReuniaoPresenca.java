@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Colaborador;
@@ -27,6 +28,9 @@ public class ComissaoReuniaoPresenca extends AbstractModel implements Serializab
 	@ManyToOne
 	private Colaborador colaborador;
 
+	@Transient
+	private Boolean desligado = false;
+	
 	public ComissaoReuniaoPresenca()
 	{
 	}
@@ -158,5 +162,13 @@ public class ComissaoReuniaoPresenca extends AbstractModel implements Serializab
 			return false;
 
 		return this.colaborador.equals(colaborador);
+	}
+
+	public Boolean getDesligado() {
+		return desligado;
+	}
+
+	public void setDesligado(Boolean desligado) {
+		this.desligado = desligado;
 	}
 }

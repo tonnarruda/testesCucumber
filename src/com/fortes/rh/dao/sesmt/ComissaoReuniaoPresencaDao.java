@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import com.fortes.dao.GenericDao;
@@ -16,5 +17,5 @@ public interface ComissaoReuniaoPresencaDao extends GenericDao<ComissaoReuniaoPr
 	Collection<ComissaoReuniaoPresenca> findByComissao(Long comissaoId, boolean ordenarPorDataNome);
 	boolean existeReuniaoPresenca(Long comissaoId, Collection<Long> colaboradorIds);
 	Collection<ComissaoReuniaoPresenca> findPresencasByComissao(Long comissaoId);
-	List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId);
+	List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId, Date dataReuniao);
 }

@@ -1,6 +1,7 @@
 package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import com.fortes.business.GenericManager;
@@ -14,5 +15,5 @@ public interface ComissaoReuniaoPresencaManager extends GenericManager<ComissaoR
 	Collection<ComissaoReuniaoPresenca> findByComissao(Long comissaoId, boolean ordenarPorDataNome);
 	boolean existeReuniaoPresenca(Long comissaoId, Collection<Long> colaboradorIds);
 	Collection<ComissaoReuniaoPresenca> findPresencasByComissao(Long comissaoId);
-	List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId);
+	List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId, Date dataReuniao);
 }

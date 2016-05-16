@@ -148,5 +148,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public void setDataSolicitacaoDesligamentoACByDataDesligamento(Long empresaId);
 	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId);
 	public Integer countDemitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean reducaoDeQuadro);
-	public boolean existeColaboradorAtivo(String cpf, Date data);	
+	public boolean existeColaboradorAtivo(String cpf, Date data);
 }

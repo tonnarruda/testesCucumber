@@ -99,7 +99,7 @@
 			document.form.action="update.action";
 
 			if (validaDate(document.getElementById('reuniaoData')))
-				ComissaoReuniaoDWR.findPresencaColaboradoresByReuniao( populaColaboradores, data.comissaoReuniaoId ); 
+				ComissaoReuniaoDWR.findPresencaColaboradoresByReuniao( populaColaboradores, data.comissaoReuniaoId, $('#reuniaoData').val() ); 
 
 			openbox('Editar Reunião', 'reuniaoHorario');
 		}

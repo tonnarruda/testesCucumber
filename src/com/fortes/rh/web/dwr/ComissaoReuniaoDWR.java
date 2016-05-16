@@ -87,11 +87,11 @@ public class ComissaoReuniaoDWR
 		return retorno;
 	}
 	
-	public Object findPresencaColaboradoresByReuniao(Long comissaoReuniaoId)
+	public Object findPresencaColaboradoresByReuniao(Long comissaoReuniaoId, String dataReuniao)
 	{
 		List<Object> retorno = new ArrayList<Object>();
 		Map<String, String> colaborador;
-		List<ComissaoReuniaoPresenca> presencas = comissaoReuniaoPresencaManager.findPresencaColaboradoresByReuniao(comissaoReuniaoId);
+		List<ComissaoReuniaoPresenca> presencas = comissaoReuniaoPresencaManager.findPresencaColaboradoresByReuniao(comissaoReuniaoId, DateUtil.montaDataByString(dataReuniao));
 		
 		for (ComissaoReuniaoPresenca presenca : presencas) 
 		{

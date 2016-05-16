@@ -235,7 +235,7 @@ public class ComissaoReuniaoPresencaDaoHibernateTest extends GenericDaoHibernate
 		crp1.setJustificativaFalta("doença");
 		comissaoReuniaoPresencaDao.save(crp1);
 		
-		Collection<ComissaoReuniaoPresenca> presencas = comissaoReuniaoPresencaDao.findPresencaColaboradoresByReuniao(r1.getId());
+		Collection<ComissaoReuniaoPresenca> presencas = comissaoReuniaoPresencaDao.findPresencaColaboradoresByReuniao(r1.getId(), r1.getData());
 		assertEquals(2, presencas.size());
 		
 		ComissaoReuniaoPresenca presenca1 = (ComissaoReuniaoPresenca) presencas.toArray()[0];
@@ -330,11 +330,11 @@ public class ComissaoReuniaoPresencaDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(joao.getId(), ((ComissaoReuniaoPresenca)presencas.toArray()[2]).getColaborador().getId());
 		assertEquals(maria.getId(), ((ComissaoReuniaoPresenca)presencas.toArray()[4]).getColaborador().getId());
 		
-		assertNull(((ComissaoReuniaoPresenca)presencas.toArray()[0]).getPresente());
-		assertNull(((ComissaoReuniaoPresenca)presencas.toArray()[1]).getPresente());
+		assertFalse(((ComissaoReuniaoPresenca)presencas.toArray()[0]).getPresente());
+		assertTrue(((ComissaoReuniaoPresenca)presencas.toArray()[1]).getPresente());
 		assertFalse(((ComissaoReuniaoPresenca)presencas.toArray()[2]).getPresente());
-		assertNull(((ComissaoReuniaoPresenca)presencas.toArray()[3]).getPresente());
-		assertNull(((ComissaoReuniaoPresenca)presencas.toArray()[4]).getPresente());
+		assertTrue(((ComissaoReuniaoPresenca)presencas.toArray()[3]).getPresente());
+		assertFalse(((ComissaoReuniaoPresenca)presencas.toArray()[4]).getPresente());
 		assertTrue(((ComissaoReuniaoPresenca)presencas.toArray()[5]).getPresente());
 	}
 
