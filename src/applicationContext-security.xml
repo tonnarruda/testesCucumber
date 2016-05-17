@@ -684,7 +684,7 @@
 				/avaliacao/avaliacaoExperiencia/*AvaliacaoExperiencia.action*=ROLE_MOV_PERIODOEXPERIENCIA
 				/avaliacao/avaliacaoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA
 
-				/avaliacao/perguntaAvaliacao/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_MOV_SOLICITACAO, ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO
+				/avaliacao/perguntaAvaliacao/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO,ROLE_CAD_MOD_AVALIACAO_ALUNO
 				
 				/avaliacao/desempenho/prepareResponderAvaliacaoDesempenho*=ROLE_USER
 				/avaliacao/desempenho/responderAvaliacaoDesempenho*=ROLE_USER
@@ -693,8 +693,8 @@
 				/avaliacao/desempenho/*/**=ROLE_MOV_AVALIACAO
 				
 				/avaliacao/modelo/minhasAvaliacoesList* = ROLE_MOV_MINHASAVALIACOES
-				/avaliacao/modelo/imprimir*/** = ROLE_MOV_AVALIACAO
-				/avaliacao/modelo/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
+				/avaliacao/modelo/imprimir*/** = ROLE_MOV_AVALIACAO,ROLE_CAD_MOD_AVALIACAO_ALUNO
+				/avaliacao/modelo/list.action*=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_CAD_MOD_AVALIACAO_ALUNO
 				/avaliacao/modeloCandidato/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO
 				
 				/avaliacao/avaliacaoPratica/*/**=ROLE_AVALIACAO_PRATICA
