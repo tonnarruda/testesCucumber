@@ -58,6 +58,19 @@
 	    margin-bottom: 10px;
 	}
 	
+	#previews .box-type-disabled:hover {
+		color: #000 !important;
+	}
+	
+	#previews .box-type-disabled:hover .paper {
+		border: 1px solid #e7e7e7 !important;
+		cursor: default !important;
+	}
+	
+	#previews .box-type-disabled .paper {
+		background-color: #EEEEEE !important;
+	}
+	
 	#previews .paper .x1 {
 		width: 68px;
     	height: 97px;
@@ -81,6 +94,10 @@
 	.buttons {
 		width: 205px;
 		margin: 0 auto;
+	}
+	
+	.ui-dialog{
+		position: fixed !important;
 	}
 	</style>
 	
@@ -130,14 +147,76 @@
 		
 		function selecionarRiscoPor(solicitacaoExameId){
 			$('#solicitacaoExameId').val(solicitacaoExameId);
-			$('#considerarRiscoPorDialog').dialog({ title: 'Imprimir ASO', modal: true, width: 550, height: 150 });
+			$('#considerarRiscoPorDialog').dialog({ title: 'Imprimir ASO</br>' + $("#colab_" + solicitacaoExameId).text(), modal: true, width: 550, height: 165 });
+		}
+		
+		function addPequenosModelos(){
+			$('#previews').append('' +
+				'<div id="x2" class="box-type">' +
+					'<input type="radio" value="dividida" name="tipoDeImpressao" />' +
+					'<div class="paper">' +
+						'<div class="x2"></div>' +
+						'<div class="x2"></div>' +
+					'</div>' +
+					'<div>Dividida</div>' +
+				'</div>' +
+				'<div id="x4" class="box-type">' +
+					'<input type="radio" value="economica" name="tipoDeImpressao" />' +
+					'<div class="paper">' +
+						'<div class="x4"></div>' +
+						'<div class="x4"></div>' +
+						'<div class="x4"></div>' +
+						'<div class="x4"></div>' +
+					'</div>' +
+					'<div>Econômica</div>' +
+				'</div>' +
+			'');
+			
+			$(".box-type").click(function(){
+				selectPrintType(this);
+			});
+		}
+		
+		function addPequenosModelosBlock(){
+			$('#previews').append('' +
+				'<div id="x2" class="box-type box-type-disabled">' +
+					'<input type="radio" value="dividida" name="tipoDeImpressao" disabled="disabled"/>' +
+					'<div class="paper" >' +
+						'<div class="x2"></div>' +
+						'<div class="x2"></div>' +
+					'</div>' +
+					'<div>Dividida</div>' +
+				'</div>' +
+				'<div id="x4" class="box-type box-type-disabled">' +
+					'<input type="radio" value="economica" name="tipoDeImpressao" disabled="disabled" />' +
+					'<div class="paper" >' +
+						'<div class="x4"></div>' +
+						'<div class="x4"></div>' +
+						'<div class="x4"></div>' +
+						'<div class="x4"></div>' +
+					'</div>' +
+					'<div>Econômica</div>' +
+				'</div>' +
+			'');
 		}
 		
 		function imprimirSolicitacaoExame(solicitacaoExameId) {
 			$('#printSolicitacaoExameId').val(solicitacaoExameId);
-			selectPrintType( $('input[name=tipoDeImpressao]:eq(0)').parent() );
+
+			$('#x2,#x4').remove();
+			$('#span').remove();
+			if($('#muitasClinicas_' + solicitacaoExameId).val() == 'true'){
+				addPequenosModelosBlock()
+				heightSize = 335;
+				$('#printSolicitacaoExame').append('<span id="span">OBS: Alguns modelos de impressão estão bloqueados, pois existe pelo menos uma clinica com mais de 8 exames.</span>');
+			}else{
+				addPequenosModelos();
+				heightSize = 285;
+			}
+
+			selectPrintType($('input[name=tipoDeImpressao]:eq(0)').parent() );
 			$('#printSolicitacaoExame form').attr("action", "imprimirSolicitacaoExames.action");
-			$('#printSolicitacaoExame').dialog({ title: 'Imprimir Solicitação de Exames', modal: true, width: 400, height: 270 });
+			$('#printSolicitacaoExame').dialog({ title: 'Imprimir Solicitação de Exames</br>' + $("#colab_" + solicitacaoExameId).text(), modal: true, width: 410, height: heightSize });
 		}
 		
 	</script>
@@ -209,7 +288,9 @@
 			<#assign nomeColaborador = solicitacaoExame.candidato.nome />
 		</#if>
 	
-		<@display.column title="Ações" class="acao" style="vertical-align: top;width: 120px;">
+		<@display.column title="Ações" class="acao" style="vertical-align: top;width: 140px;">
+			
+			<@ww.hidden id="muitasClinicas_${solicitacaoExame.id}" value="${solicitacaoExame.muitasClinicas?string}"/>
 			<#if solicitacaoExame.semExames>
 				<img border="0" title="Não há exames para esta solicitação/atendimento" src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			<#else>
@@ -237,8 +318,8 @@
 		
 		<@display.column property="ordem" style="width: 30px; vertical-align: top; text-align: right;" title="Ordem"/>
 
-		<@display.column style="width: 330px;" title="Nome" style="vertical-align: top;">
-			${nomeColaborador}
+		<@display.column style="width: 300px;vertical-align: top;" title="Nome">
+			<span id="colab_${solicitacaoExame.id}">${nomeColaborador}</span>
 		</@display.column>
 
 		<@display.column title="Vínculo/Cargo" style="vertical-align: top;">
@@ -252,12 +333,10 @@
 
 		<@display.column property="motivoDic" title="Motivo" style="width: 140px;vertical-align: top;"/>
 		<@display.column title="Exames" style="width: 200px;vertical-align: top;">
-			<#list exameSolicitacaoExames as exameSolicitacaoExame>
-				<#if exameSolicitacaoExame.solicitacaoExame.id == solicitacaoExame.id>
-					<span id="${solicitacaoExame.id}_${exameSolicitacaoExame.exame.id}" class="${exameSolicitacaoExame.resultado}">
-						${exameSolicitacaoExame.exame.nome}<br/>
-					</span>
-				</#if>
+			<#list solicitacaoExame.exameSolicitacaoExames as exameSolicitacaoExame>
+				<span id="${solicitacaoExame.id}_${exameSolicitacaoExame.exame.id}" class="${exameSolicitacaoExame.resultado}">
+					${exameSolicitacaoExame.exame.nome}<br/>
+				</span>
 			</#list>
 		</@display.column>
 		
@@ -297,7 +376,7 @@
 					<div>Inteira</div>
 				</div>
 				<div id="x2" class="box-type">
-					<input type="radio" value="dividida" name="tipoDeImpressao" />
+					<input type="radio" value="dividida" name="tipoDeImpressao"/>
 					<div class="paper">
 						<div class="x2"></div>
 						<div class="x2"></div>
@@ -305,7 +384,7 @@
 					<div>Dividida</div>
 				</div>
 				<div id="x4" class="box-type">
-					<input type="radio" value="economica" name="tipoDeImpressao" />
+					<input type="radio" value="economica" name="tipoDeImpressao"/>
 					<div class="paper">
 						<div class="x4"></div>
 						<div class="x4"></div>

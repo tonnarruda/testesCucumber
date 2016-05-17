@@ -119,7 +119,6 @@ public class SolicitacaoExameEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("imprimirSolicitacaoExames").with(eq(solicitacaoExame.getId())).will(returnValue(relatorios));
 		
 		assertEquals("success_inteira",action.imprimirSolicitacaoExames());
-		assertNotNull(action.getParametros().get("COLECAO_MATRIZ"));
 	}
 	
 	public void testRelatorioAtendimentosMedicos()

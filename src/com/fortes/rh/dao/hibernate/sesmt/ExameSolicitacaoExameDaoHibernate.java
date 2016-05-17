@@ -71,6 +71,7 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 		criteria.createCriteria("ese.solicitacaoExame", "se");
 		criteria.createCriteria("ese.exame", "e");
 		criteria.createCriteria("ese.realizacaoExame", "re", Criteria.LEFT_JOIN);
+		criteria.createCriteria("ese.clinicaAutorizada", "ca", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ese.id"), "id");
@@ -79,6 +80,7 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 		p.add(Projections.property("e.nome"), "projectionExameNome");
 		p.add(Projections.property("re.id"), "projectionRealizacaoExameId");
 		p.add(Projections.property("re.resultado"), "projectionRealizacaoExameResultado");
+		p.add(Projections.property("ca.id"), "projectionClinicaId");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.in("se.id", solicitacaoExameIds));

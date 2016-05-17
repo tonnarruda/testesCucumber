@@ -22,6 +22,7 @@ import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.dicionario.TipoRiscoSistema;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
@@ -129,14 +130,17 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		Collection<SolicitacaoExameRelatorio> solicitacaoExameRelatorios = collectionUtil.distinctCollection(collection);
 
 		// agrupar por clinica
+		Long i = 0L;
 		for (SolicitacaoExameRelatorio solicitacaoExameRelatorio : solicitacaoExameRelatorios )
 		{
+			solicitacaoExameRelatorio.setExamesCollection(new ArrayList<Exame>());
 			for (SolicitacaoExameRelatorio solicitacaoExameRelatorio2 : collection)
 			{
 				if (solicitacaoExameRelatorio.getClinicaNome().equals(solicitacaoExameRelatorio2.getClinicaNome()))
 				{
 					solicitacaoExameRelatorio.addExame(solicitacaoExameRelatorio2.getExameNome());
 					solicitacaoExameRelatorio.contaExames();
+					solicitacaoExameRelatorio.getExamesCollection().add(new Exame(i++, solicitacaoExameRelatorio2.getExameNome()));
 				}
 			}
 		}

@@ -11,7 +11,6 @@ import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
-import com.fortes.rh.dao.desenvolvimento.ColaboradorAvaliacaoPraticaDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
@@ -61,7 +60,6 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private TurmaDao turmaDao;
 	private AvaliacaoPraticaDao avaliacaoPraticaDao;
-	private ColaboradorAvaliacaoPraticaDao  colaboradorAvaliacaoPraticaDao;
 
 	@Override
 	public ColaboradorCertificacao getEntity()
@@ -608,9 +606,5 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 
 	public void setAvaliacaoPraticaDao(AvaliacaoPraticaDao avaliacaoPraticaDao) {
 		this.avaliacaoPraticaDao = avaliacaoPraticaDao;
-	}
-
-	public void setColaboradorAvaliacaoPraticaDao(ColaboradorAvaliacaoPraticaDao colaboradorAvaliacaoPraticaDao) {
-		this.colaboradorAvaliacaoPraticaDao = colaboradorAvaliacaoPraticaDao;
 	}
 }

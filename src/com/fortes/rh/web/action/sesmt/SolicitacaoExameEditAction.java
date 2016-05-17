@@ -277,14 +277,17 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 
 	public String imprimirSolicitacaoExames() throws Exception
 	{
-		try
-		{
-			dataSource = new ArrayList<SolicitacaoExameRelatorio>();
-			dataSource.add(new SolicitacaoExameRelatorio());//Francisco Barroso, precisa para o details funcionar
-			
+		try{
 			parametros = RelatorioUtil.getParametrosRelatorio("SERVIÇO DE MEDICINA OCUPACIONAL", getEmpresaSistema(), "SOLICITAÇÃO DE EXAMES");
 			parametros.put("CIDADE", getEmpresaSistema().getCidade().getNome());
-			parametros.put("COLECAO_MATRIZ", solicitacaoExameManager.imprimirSolicitacaoExames(solicitacaoExame.getId()));
+
+			if(tipoDeImpressao.equals("inteira")){
+				dataSource = solicitacaoExameManager.imprimirSolicitacaoExames(solicitacaoExame.getId());
+			}else{
+				dataSource = new ArrayList<SolicitacaoExameRelatorio>();
+				dataSource.add(new SolicitacaoExameRelatorio());
+				parametros.put("COLECAO_MATRIZ", solicitacaoExameManager.imprimirSolicitacaoExames(solicitacaoExame.getId()));
+			}
 			
 			return SUCCESS + "_" + tipoDeImpressao;
 		}

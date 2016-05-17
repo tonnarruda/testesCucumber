@@ -55,6 +55,8 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
     @Transient
     private boolean semExames=true;
     @Transient
+    private boolean muitasClinicas;
+    @Transient
     private String cargoNome;
     
     public SolicitacaoExame()	{ }
@@ -348,5 +350,13 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
 
 	public void setOrdem(Integer ordem) {
 		this.ordem = ordem;
+	}
+
+	public boolean isMuitasClinicas() {
+		return muitasClinicas;
+	}
+
+	public void setMuitasClinicas(boolean muitasClinicas) {
+		this.muitasClinicas = muitasClinicas;
 	}
 }

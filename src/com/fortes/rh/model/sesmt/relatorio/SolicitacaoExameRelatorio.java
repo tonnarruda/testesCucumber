@@ -1,12 +1,14 @@
 package com.fortes.rh.model.sesmt.relatorio;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.model.type.File;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.dicionario.TipoClinica;
+import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.util.DateUtil;
 
 public class SolicitacaoExameRelatorio
@@ -33,6 +35,7 @@ public class SolicitacaoExameRelatorio
 	private File medicoAssinatura;
 	private int contExames = 0;
 	private String solicitacaoExameObs;
+	private List<Exame> examesCollection;
 
 	public int getContExames()
 	{
@@ -250,5 +253,13 @@ public class SolicitacaoExameRelatorio
 			return colaboradorAmbiente;
 
 		return "";
+	}
+
+	public List<Exame> getExamesCollection() {
+		return examesCollection;
+	}
+
+	public void setExamesCollection(List<Exame> examesCollection) {
+		this.examesCollection = examesCollection;
 	}
 }

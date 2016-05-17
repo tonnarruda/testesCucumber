@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="21"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -23,13 +23,20 @@
 	<field name="pessoaNome" class="java.lang.String"/>
 	<field name="pessoaIdade" class="java.lang.Integer"/>
 	<field name="motivoDic" class="java.lang.String"/>
-	<field name="exames" class="java.lang.String"/>
+	<field name="exames" class="java.lang.Object"/>
 	<field name="medicoNome" class="java.lang.String"/>
 	<field name="medicoCrm" class="java.lang.String"/>
 	<field name="medicoAssinaturaArquivo" class="java.io.File"/>
 	<field name="clinicaEndereco" class="java.lang.String"/>
 	<field name="clinicaTelefone" class="java.lang.String"/>
 	<field name="clinicaHorario" class="java.lang.String"/>
+	<field name="contExames" class="java.lang.Integer"/>
+	<field name="clinicaTipoDescricao" class="java.lang.String"/>
+	<field name="funcao" class="java.lang.String"/>
+	<field name="colaboradorMatricula" class="java.lang.String"/>
+	<field name="solicitacaoExameObs" class="java.lang.String"/>
+	<field name="ambiente" class="java.lang.String"/>
+	<field name="examesCollection" class="java.lang.Object"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count"/>
 	<background>
 		<band splitType="Stretch"/>
@@ -44,18 +51,67 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="822" splitType="Stretch">
+		<band height="822">
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="19" y="1" width="558" height="784" uuid="a5cb9802-5db9-4b95-a830-100c7547778e"/>
+				<reportElement key="subreport-1" positionType="Float" stretchType="RelativeToBandHeight" x="19" y="1" width="558" height="784" uuid="a5cb9802-5db9-4b95-a830-100c7547778e"/>
+				<subreportParameter name="MOTIVODIC">
+					<subreportParameterExpression><![CDATA[$F{motivoDic}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CLINICANOME">
+					<subreportParameterExpression><![CDATA[$F{clinicaNome}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CONTEXAMES">
+					<subreportParameterExpression><![CDATA[$F{contExames}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CLINICAENDERECO">
+					<subreportParameterExpression><![CDATA[$F{clinicaEndereco}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PESSOAIDADE">
+					<subreportParameterExpression><![CDATA[$F{pessoaIdade}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="CABECALHO">
 					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="REPORT_DATA_SOURCE">
-					<subreportParameterExpression><![CDATA[new JRBeanCollectionDataSource($P{COLECAO_MATRIZ})]]></subreportParameterExpression>
+				<subreportParameter name="AMBIENTE">
+					<subreportParameterExpression><![CDATA[$F{ambiente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COLABORADORMATRICULA">
+					<subreportParameterExpression><![CDATA[$F{colaboradorMatricula}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="FUNCAO">
+					<subreportParameterExpression><![CDATA[$F{funcao}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PESSOANOME">
+					<subreportParameterExpression><![CDATA[$F{pessoaNome}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MEDICONOME">
+					<subreportParameterExpression><![CDATA[$F{medicoNome}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MEDICOCRM">
+					<subreportParameterExpression><![CDATA[$F{medicoCrm}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CLINICATELEFONE">
+					<subreportParameterExpression><![CDATA[$F{clinicaTelefone}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CLINICAHORARIO">
+					<subreportParameterExpression><![CDATA[$F{clinicaHorario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MEDICOASSINATURAARQUIVO">
+					<subreportParameterExpression><![CDATA[$F{medicoAssinaturaArquivo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="EXAMENOME">
+					<subreportParameterExpression><![CDATA[$F{exameNome}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CLINICATIPODESCRICAO">
+					<subreportParameterExpression><![CDATA[$F{clinicaTipoDescricao}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="CIDADE">
 					<subreportParameterExpression><![CDATA[$P{CIDADE}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="SOLICITACAOEXAMESOBS">
+					<subreportParameterExpression><![CDATA[$F{solicitacaoExameObs}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[$F{examesCollection}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "solicitacao_exames.jasper"]]></subreportExpression>
 			</subreport>
 		</band>

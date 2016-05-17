@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +52,8 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 	private Map<String, String> motivos;
 	private String[] examesCheck = new String[]{};
 	private Collection<CheckBox> examesCheckList = new ArrayList<CheckBox>();
+	
+	private static Integer QTD_MAX_EXAMES_POR_CLINICA_PARA_RELATORIOS_PEQUENOS = 8;
 
 	public List<TipoPessoa> getVinculos()
 	{
@@ -97,18 +100,34 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 
-	private void setSolicitacoesSemExames()
-	{
-		for (SolicitacaoExame solicitacaoExame : solicitacaoExames) {
-			
-			for (ExameSolicitacaoExame exameSolicitacaoExame : exameSolicitacaoExames) {
-			
-				if (exameSolicitacaoExame.getSolicitacaoExame().equals(solicitacaoExame))
-				{
-					solicitacaoExame.setSemExames(false);
-					break;
+	private void setSolicitacoesSemExames(){
+		for(SolicitacaoExame solicitacaoExame : solicitacaoExames) {
+			solicitacaoExame.setExameSolicitacaoExames(new ArrayList<ExameSolicitacaoExame>());
+			for(ExameSolicitacaoExame exameSolicitacaoExame : exameSolicitacaoExames) {
+				if (exameSolicitacaoExame.getSolicitacaoExame().getId().equals(solicitacaoExame.getId())){
+					solicitacaoExame.getExameSolicitacaoExames().add(exameSolicitacaoExame);
 				}
 			}
+		}
+
+		for(SolicitacaoExame solicitacaoExame : solicitacaoExames){
+			if(solicitacaoExame.getExameSolicitacaoExames().size() > 0)
+				solicitacaoExame.setSemExames(false);
+			
+			Map<Long, Integer> quantidadeDeExamesPorClinica = new HashMap<Long, Integer>(); 
+			for(ExameSolicitacaoExame exameSolicitacaoExame : solicitacaoExame.getExameSolicitacaoExames()) {
+				if(exameSolicitacaoExame.getClinicaAutorizada() != null && exameSolicitacaoExame.getClinicaAutorizada().getId() != null ){
+					Long clinicaId = exameSolicitacaoExame.getClinicaAutorizada().getId();
+					if(!quantidadeDeExamesPorClinica.containsKey(clinicaId))
+						quantidadeDeExamesPorClinica.put(clinicaId, 0);
+
+					quantidadeDeExamesPorClinica.put(clinicaId, quantidadeDeExamesPorClinica.get(clinicaId) + 1);
+				}
+			}
+			
+			for(Integer qtd : quantidadeDeExamesPorClinica.values())
+				if(qtd > QTD_MAX_EXAMES_POR_CLINICA_PARA_RELATORIOS_PEQUENOS)
+					solicitacaoExame.setMuitasClinicas(true);
 		}
 	}
 
