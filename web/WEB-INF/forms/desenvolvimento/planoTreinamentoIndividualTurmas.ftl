@@ -347,9 +347,10 @@
 		<#assign i = 0/>
 		
 		<#list cursosColaboradores?keys as curso>
+			<#assign cursoNome = "${curso.nome}">
 			<fieldset id="fset_${i}" class="fset_${curso.id}" indice="${i}">
 				<legend class="legend">
-					<a href="javascript:;" onclick="newConfirm('Deseja realmente cancelar a criação da turma para o curso<br /> ${curso.nome}?', function(){ $('#fset_${i}').remove(); });"><img border="0" title="Cancelar criação de turma para este curso" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<a href="javascript:;" onclick="newConfirm('Deseja realmente cancelar a criação da turma para o curso<br /> ${curso.nome?html?replace("'","\\'")}', function(){ $('#fset_${i}').remove(); });"><img border="0" title="Cancelar criação de turma para este curso" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 					Curso: ${curso.nome}
 				</legend>
 				

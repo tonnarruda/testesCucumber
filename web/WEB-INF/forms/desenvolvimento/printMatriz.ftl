@@ -63,7 +63,7 @@
 		</td>
 		<#list cursos as curso>
 			<td class="nomedoCurso">
-				<script type="text/javascript">vertical("${curso.nome}");</script>
+				<script type="text/javascript">vertical("${curso.nome?html?replace("'","\\'")}");</script>
 			</td>
 		</#list>
 	</tr>

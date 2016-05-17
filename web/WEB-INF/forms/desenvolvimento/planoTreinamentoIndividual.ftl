@@ -182,7 +182,7 @@
 					</#if>
 					
 					<label>
-						<input type="checkbox" name="colaboradoresCursos" value="${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id},${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome},${configNivel.cursoId},${configNivel.cursoNome}" class="check check${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id}"/> 
+						<input type="checkbox" name="colaboradoresCursos" value="${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id},${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome},${configNivel.cursoId},${configNivel.cursoNome?html?replace("'","\'")}" class="check check${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id}"/> 
 						${configNivel.cursoNome}
 					</label>
 					<br />
