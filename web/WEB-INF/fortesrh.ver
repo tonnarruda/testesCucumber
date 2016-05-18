@@ -6,6 +6,7 @@
 		<Item visivel="S" motivo="P16050000012"><![CDATA[T&D > Cadastros > Modelos de Avaliação do Aluno: Ajuste da inconsistência na permissão de acesso a esta funcionalidade.]]></Item>
 		<Item visivel="S" motivo="S16040000211"><![CDATA[T&D > Painel de Indicadores: Nova opção para imprimir gráficos do painel.]]></Item>
 		<Item visivel="S" motivo="S16040000266"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Habilitando campo matrícula quando colaborador está desintegrado com Fortes Pessoal.]]></Item>
+		<Item visivel="S" motivo="P16050000067"><![CDATA[Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamentos: Ajuste de inconsistência ao aprovar solicitação de desligamento.]]></Item>
 		<Item visivel="S" motivo="P16050000011"><![CDATA[Info. Funcionais > Relatórios > Recibos de Pagamentos > Férias: Ajuste na inconsistência ao emitir o recibo de férias.]]></Item>
 		<Item visivel="S" motivo="S16040000151"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Reuniões: Novo comportamento para não considerar membros da comissão que foram desligados.]]></Item>
 		<Item visivel="S" motivo="S16040000133"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitação de Exames: Novo tipo de impressão por folha inteira.]]></Item>

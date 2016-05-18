@@ -241,8 +241,11 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			observacaoDemissao = colaborador.getObservacaoDemissao();
 			gerouSubstituicao = colaborador.getDemissaoGerouSubstituicao();
 			
-			if (getEmpresaSistema().isAcIntegra() && !colaborador.isNaoIntegraAc())
-				return solicitacaoDesligamento();
+			if (getEmpresaSistema().isAcIntegra() && !colaborador.isNaoIntegraAc()){
+				String retorno = solicitacaoDesligamento();
+				transactionManager.commit(status);
+				return retorno;
+			}
 
 			boolean integraAC = colaborador.isNaoIntegraAc() ? false : getEmpresaSistema().isAcIntegra();
 			colaboradorManager.desligaColaborador(true, dataDesligamento, observacaoDemissao, motDemissao.getId(), gerouSubstituicao, false, integraAC, colaborador.getId());
