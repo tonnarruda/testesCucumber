@@ -44,13 +44,11 @@
 			<result name="error" type="redirect">list.action?msgAlert=${msgAlert}</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
 		    <result name="invalid.token" type="redirect"><![CDATA[list.action?msgAlert=${msgAlert}]]></result>
 			<result name="success" type="redirect"><![CDATA[sucesso.action?candidato.id=${candidato.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
 		    <result name="invalid.token" type="redirect"><![CDATA[list.action?msgAlert=${msgAlert}]]></result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoEdit.ftl</result>
@@ -117,6 +115,7 @@
 		</action>
 
 		<action name="infoCandidato" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="infoCandidato">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoInfo.ftl</result>
 		</action>
 
@@ -176,7 +175,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/curriculoEdit.ftl</result>
 		</action>
 		<action name="insertCurriculoPlus" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="insertCurriculo">
-			<result name="success" type="redirect">prepareUpdateCurriculo.action?candidato.id=${candidato.id}</result>
+			<result name="success" type="redirect">prepareUpdateCurriculoBack.action?candidato.id=${candidato.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/curriculoPlusEdit.ftl</result>
 		</action>
 		<action name="insertCurriculoTexto" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="insertCurriculoTexto">
@@ -186,8 +185,12 @@
 		<action name="prepareUpdateCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="prepareUpdateCurriculo">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/curriculoView.ftl</result>
 		</action>
+		<action name="prepareUpdateCurriculoBack" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="prepareUpdateCurriculo">
+			<interceptor-ref name="myDefaultWebStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/curriculoView.ftl</result>
+		</action>
 		<action name="updateCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="updateCurriculo">
-			<result name="success" type="redirect">prepareUpdateCurriculo.action?candidato.id=${candidato.id}</result>
+			<result name="success" type="redirect">prepareUpdateCurriculoBack.action?candidato.id=${candidato.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/curriculoView.ftl</result>
 		</action>
 		<action name="verCurriculoEscaneado" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="verCurriculoEscaneado">
@@ -199,11 +202,12 @@
 		<action name="verExamePalografico" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="verExamePalografico">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/examePalograficoView.ftl</result>
 		</action>
-
-		<action name="showCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="showCurriculo" />
-
-		<action name="showImagensCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="showImagensCurriculo" />
-		
+		<action name="showCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="showCurriculo">
+			<interceptor-ref name="myDefaultWebStack"/>
+		</action>
+		<action name="showImagensCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="showImagensCurriculo">
+			<interceptor-ref name="myDefaultWebStack"/>
+		</action>
 		<action name="prepareExamePalografico" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="prepareExamePalografico">
 			<interceptor-ref name="defaultListStack">
 	    		<param name="scope.session">nomeBusca,cpfBusca</param>

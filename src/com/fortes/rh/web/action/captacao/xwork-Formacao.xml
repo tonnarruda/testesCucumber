@@ -3,6 +3,7 @@
 
 <xwork>
 	<package name="Formacao" extends="default" namespace="/captacao/formacao">
+		<default-interceptor-ref name="myDefaultWebStack"/>
 		<action name="list" class="com.fortes.rh.web.action.captacao.FormacaoListAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/formacaoList.ftl</result>
 		</action>

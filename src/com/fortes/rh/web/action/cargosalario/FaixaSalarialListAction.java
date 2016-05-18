@@ -52,7 +52,6 @@ public class FaixaSalarialListAction extends MyActionSupportList
 		} catch (Exception e) {
 			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta Faixa Salarial.");
 			e.printStackTrace();
-//			addActionWarning("Essa faixa salarial não pode ser removida pois possui dependências no sistema. <br/> Detalhes: " + e.getMessage());
 		}
 
 		return Action.SUCCESS;

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.model.geral.AreaFormacao;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -35,8 +36,13 @@ public class AreaFormacaoListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		areaFormacaoManager.remove(areaFormacao.getId());
-		addActionMessage("Área de Formação excluída com sucesso.");
+		try {
+			areaFormacaoManager.remove(areaFormacao.getId());
+			addActionSuccess("Área de Formação excluída com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível escluir esta Área de Formação.");
+		}
 
 		return Action.SUCCESS;
 	}

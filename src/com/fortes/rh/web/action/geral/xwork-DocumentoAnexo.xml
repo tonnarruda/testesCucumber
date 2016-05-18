@@ -3,13 +3,19 @@
 
 <xwork>
 	<package name="documentoAnexo" extends="default" namespace="/geral/documentoAnexo">
+	    <global-results>
+			<result name="invalid.token" type="redirect">/index.action</result>
+		</global-results>
 		<action name="listCandidato" class="com.fortes.rh.web.action.geral.DocumentoAnexoListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/documentoAnexoList.ftl</result>
 		</action>
 		<action name="listColaborador" class="com.fortes.rh.web.action.geral.DocumentoAnexoListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/documentoAnexoList.ftl</result>
 		</action>
 		<action name="listCurso" class="com.fortes.rh.web.action.geral.DocumentoAnexoListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/cursoAnexoList.ftl</result>
 		</action>
 		<action name="deleteCandidato" class="com.fortes.rh.web.action.geral.DocumentoAnexoListAction" method="deleteCandidato">
@@ -64,6 +70,8 @@
 			<result name="success" type="redirect"><![CDATA[listCurso.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/cursoAnexoEdit.ftl</result>
 		</action>
-		<action name="showDocumento" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="showDocumento" />
+		<action name="showDocumento" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="showDocumento">
+			<interceptor-ref name="myDefaultWebStack"/>
+		</action>
 	</package>
 </xwork>

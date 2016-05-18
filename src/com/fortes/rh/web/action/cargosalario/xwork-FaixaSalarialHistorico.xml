@@ -4,7 +4,7 @@
 <xwork>
 	<package name="faixaSalarialHistorico" extends="default" namespace="/cargosalario/faixaSalarialHistorico">
 		<action name="delete" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoListAction" method="delete">
-			<result name="success" type="redirect"><![CDATA[../faixaSalarial/prepareUpdate.action?faixaSalarialAux.id=${faixaSalarialAux.id}&actionMsg=${actionMsg}]]></result>
+			<result name="success" type="redirect"><![CDATA[../faixaSalarial/prepareUpdateBack.action?faixaSalarialAux.id=${faixaSalarialAux.id}&actionMsg=${actionMsg}]]></result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/faixaSalarialHistoricoEdit.ftl</result>
@@ -28,13 +28,11 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/analiseTabelaSalarialFiltro.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect">../faixaSalarial/prepareUpdate.action?faixaSalarialAux.id=${faixaSalarialAux.id}</result>
+			<result name="success" type="redirect">../faixaSalarial/prepareUpdateBack.action?faixaSalarialAux.id=${faixaSalarialAux.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/faixaSalarialHistoricoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect">../faixaSalarial/prepareUpdate.action?faixaSalarialAux.id=${faixaSalarialAux.id}</result>
+			<result name="success" type="redirect">../faixaSalarial/prepareUpdateBack.action?faixaSalarialAux.id=${faixaSalarialAux.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/faixaSalarialHistoricoEdit.ftl</result>
 		</action>
 		<action name="prepareRelatorioHistoricoFaixaSalarial" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="prepareRelatorioHistoricoFaixaSalarial">

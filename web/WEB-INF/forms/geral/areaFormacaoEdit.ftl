@@ -7,7 +7,7 @@
 	<#assign buttonLabel="<u>A</u>tualizar"/>
 	<#assign accessKey="A"/>
 <#else>
-	<title>Nova Área de Formação</title>
+	<title>Inserir Área de Formação</title>
 	<#assign formAction="insert.action"/>
 	<#assign buttonLabel="<u>I</u>nserir"/>
 	<#assign accessKey="I"/>

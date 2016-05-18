@@ -61,7 +61,7 @@
 		
 		function excluir(candidatoId, empresaId)
 		{
-			window.location='delete.action?candidato.id=' + candidatoId + '&candidato.empresa.id=' + empresaId; 
+			executeLink('delete.action?candidato.id=' + candidatoId + '&candidato.empresa.id=' + empresaId); 
 		}
 	</script>
 	
@@ -137,19 +137,19 @@
 		<@display.column title="Ações" media="html" style="text-align:center; width: 140px;" >
 	    	<#if candidato.disponivel = true>
 				<#assign nomeFormatado=stringUtil.removeApostrofo(candidato.nome)>
-				<a href="javascript:newConfirm('Deseja realmente contratar o candidato ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="/geral/colaborador/prepareContrata.action?candidato.id=${candidato.id}"/>'});"><img border="0" title="Contratar Candidato" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
+				<a href="javascript:newConfirm('Deseja realmente contratar o candidato ${nomeFormatado}?', function(){executeLink('<@ww.url includeParams="none" value="/geral/colaborador/prepareContrata.action?candidato.id=${candidato.id}"/>');});"><img border="0" title="Contratar Candidato" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
 			<#else>
 				<img border="0" title="Candidato já contratado" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
 			<a href="javascript:popup('infoCandidato.action?candidato.id=${candidato.id}&origemList=CA', 580, 750)"><img border="0" title="Visualizar Currículo" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>"></a>
-			<a href="prepareUpdate.action?candidato.id=${candidato.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+			<a href="javascript:executeLink('prepareUpdate.action?candidato.id=${candidato.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 			<a href="javascript:checaDependenciasExclusao(${candidato.id}, ${candidato.empresa.id}, '${candidato.nome}');"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
-			<a href="prepareUpdateCurriculo.action?candidato.id=${candidato.id}"><img border="0" title="Currículo Escaneado" src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>"></a>
-			<#if visualizarDocumentos = true>
-				<a href="../../geral/documentoAnexo/listCandidato.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidato.id}"><img border="0" title="Documentos do Candidato" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
+			<a href="javascript:executeLink('prepareUpdateCurriculo.action?candidato.id=${candidato.id}');"><img border="0" title="Currículo Escaneado" src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>"></a>
+			<#if visualizarDocumentos=true>
+				<a href="javascript:executeLink('../../geral/documentoAnexo/listCandidato.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidato.id}');"><img border="0" title="Documentos do Candidato" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
 			</#if>
 			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO">
-				<a href="../../captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}&statusCandSol=I"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
+				<a href="javascript:executeLink('../../captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}&statusCandSol=I');"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			</@authz.authorize>
 			
 		</@display.column>
@@ -180,10 +180,10 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
-		<button class="btnInserirCurriculoEscaneado" onclick="window.location='prepareInsertCurriculoPlus.action'" accesskey="P"></button>
-		<button class="btnInserirCurriculoDigitado" onclick="window.location='prepareInsertCurriculoTexto.action'" ></button>
-		<button class="btnTriagem" onclick="window.location='prepareBusca.action'"></button>
+		<button class="btnInserir" onclick="executeLink('prepareInsert.action');" accesskey="I"></button>
+		<button class="btnInserirCurriculoEscaneado" onclick="executeLink('prepareInsertCurriculoPlus.action');" accesskey="P"></button>
+		<button class="btnInserirCurriculoDigitado" onclick="executeLink('prepareInsertCurriculoTexto.action');" ></button>
+		<button class="btnTriagem" onclick="executeLink('prepareBusca.action');"></button>
 	</div>
 	
 	<div id="deleteDialog" title="Confirmar exclusão"></div>

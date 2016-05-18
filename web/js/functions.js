@@ -1412,14 +1412,17 @@ function getCookieProcessando() {
 
 function executeLink(link) 
 {
+	window.location.href = getLinkToken(link);
+}
+
+function getLinkToken(link) 
+{
 	var _token_ = $("input[name='webwork.token']").val();
 	var _tokenName_ = $("input[name='webwork.token.name']").val();
 	
 	var _joinCharacter_ = (link.indexOf("?") > 0 ? "&" : "?");
 	
-	$.post(link+_joinCharacter_+"webwork.token.name="+_tokenName_+"&webwork.token="+_token_, function(data){
-		$('body').empty().append(data);
-	});
+	return link+_joinCharacter_+"webwork.token.name="+_tokenName_+"&webwork.token="+_token_;
 }
 
 (function($) {

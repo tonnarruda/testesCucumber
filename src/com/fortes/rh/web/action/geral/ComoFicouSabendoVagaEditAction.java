@@ -9,6 +9,7 @@ import java.util.Map;
 import com.fortes.rh.business.geral.ComoFicouSabendoVagaManager;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -80,12 +81,12 @@ public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
 		try
 		{
 			comoFicouSabendoVagaManager.remove(comoFicouSabendoVaga.getId());
-			addActionMessage("Item excluído com sucesso.");
+			addActionSuccess("Item excluído com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir este item.");
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este item.");
 		}
 
 		return list();

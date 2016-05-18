@@ -4,10 +4,10 @@
 <@ww.head/>
 	<#if indiceHistorico.id?exists>
 		<title>Editar Histórico do Índice</title>
-		<#assign formAction="../indiceHistorico/update.action"/>
+		<#assign formAction="update.action"/>
 	<#else>
 		<title>Novo Histórico do Índice</title>
-		<#assign formAction="../indiceHistorico/insert.action"/>
+		<#assign formAction="insert.action"/>
 	</#if>
 
 	<#assign validarCampos="return validaFormulario('form', new Array('dataHist','valor'), new Array('dataHist'))"/>

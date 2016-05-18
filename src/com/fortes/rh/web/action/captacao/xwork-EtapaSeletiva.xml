@@ -10,7 +10,7 @@
 		<action name="delete" class="com.fortes.rh.web.action.captacao.EtapaSeletivaListAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="redirect">list.action</result>
-			<result name="error" type="redirect">list.action</result>
+			<result name="input" type="redirect">list.action</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.captacao.EtapaSeletivaEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/etapaSeletivaEdit.ftl</result>
@@ -19,14 +19,10 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/etapaSeletivaEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.captacao.EtapaSeletivaEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
-		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/etapaSeletivaEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.captacao.EtapaSeletivaEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/etapaSeletivaEdit.ftl</result>
 		</action>

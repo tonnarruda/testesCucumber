@@ -275,8 +275,6 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/transferirFaixasEntreCargos.ftl</result>
 		</action>
 		<action name="transferirFaixasCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="transferirFaixasCargo">
-			<interceptor-ref name="tokenWebStack" />
-		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/transferirFaixasEntreCargos.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/transferirFaixasEntreCargos.ftl</result>
 		</action>

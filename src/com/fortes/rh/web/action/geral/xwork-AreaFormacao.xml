@@ -19,12 +19,10 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/areaFormacaoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.AreaFormacaoEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/areaFormacaoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.geral.AreaFormacaoEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/areaFormacaoEdit.ftl</result>
 		</action>

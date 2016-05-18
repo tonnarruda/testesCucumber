@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.geral.AreaInteresseManager;
 import com.fortes.rh.model.geral.AreaInteresse;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -36,8 +37,13 @@ public class AreaInteresseListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		areaInteresseManager.remove(areaInteresse.getId());
-		addActionMessage("Área de Interesse excluída com sucesso.");
+		try {
+			areaInteresseManager.remove(areaInteresse.getId());
+			addActionSuccess("Área de Interesse excluída com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta Área de Interesse.");
+		}
 
 		return Action.SUCCESS;
 	}

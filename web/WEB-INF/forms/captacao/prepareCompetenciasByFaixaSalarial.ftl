@@ -297,7 +297,7 @@
 	
 	<div class="buttonGroup">
 		<button class="btnGravar" onclick="enviarForm();"></button>
-		<button class="btnVoltar" onclick="window.location='../../captacao/nivelCompetencia/listCompetenciasFaixaSalarial.action?faixaSalarial.id=${faixaSalarial.id}'"></button>
+		<button class="btnVoltar" onclick="window.location='../../captacao/nivelCompetencia/listCompetenciasFaixaSalarialBack.action?faixaSalarial.id=${faixaSalarial.id}'"></button>
 	</div>
 </body>
 </html>

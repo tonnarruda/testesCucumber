@@ -4,9 +4,11 @@
 <xwork>
 	<package name="comoFicouSabendoVaga" extends="default" namespace="/geral/comoFicouSabendoVaga">
 		<action name="list" class="com.fortes.rh.web.action.geral.ComoFicouSabendoVagaEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/comoFicouSabendoVagaList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.geral.ComoFicouSabendoVagaEditAction" method="delete">
+			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/comoFicouSabendoVagaList.ftl</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.ComoFicouSabendoVagaEditAction" method="prepareInsert">
@@ -16,14 +18,10 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/comoFicouSabendoVagaEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.ComoFicouSabendoVagaEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/comoFicouSabendoVagaEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.geral.ComoFicouSabendoVagaEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/comoFicouSabendoVagaEdit.ftl</result>
 		</action>

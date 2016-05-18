@@ -83,7 +83,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnGravar"></button>
-		<button onclick="window.location='../funcao/prepareUpdate.action?funcao.id=${funcao.id}&cargoTmp.id=${cargoTmp.id}&veioDoSESMT=${veioDoSESMT?string}'" class="btnCancelar"></button>
+		<button onclick="window.location='../funcao/prepareUpdateFromHistorico.action?funcao.id=${funcao.id}&cargoTmp.id=${cargoTmp.id}&veioDoSESMT=${veioDoSESMT?string}'" class="btnCancelar"></button>
 	</div>
 </body>
 </html>

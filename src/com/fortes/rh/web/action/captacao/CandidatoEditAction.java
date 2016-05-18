@@ -584,8 +584,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 				prepareCandidato();
 
 			candidato.setCargos(cargoManager.populaCargos(cargosCheck));
-			candidato = candidatoManager.saveCandidatoCurriculo(candidato,
-					imagens, ocrTexto);
+			candidato = candidatoManager.saveCandidatoCurriculo(candidato, imagens, ocrTexto);
 			return Action.SUCCESS;
 		} catch (NonUniqueResultException notUniqueResultException) {
 			addActionError(CPF_JA_CADASTRADO);

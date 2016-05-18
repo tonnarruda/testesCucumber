@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -33,8 +34,13 @@ public class MotivoSolicitacaoListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		motivoSolicitacaoManager.remove(motivoSolicitacao.getId());
-		addActionSuccess("Motivo de solicitação excluído com sucesso.");
+		try {
+			motivoSolicitacaoManager.remove(motivoSolicitacao.getId());
+			addActionSuccess("Motivo de solicitação excluído com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este Motivo de Solicitação.");
+		}
 
 		return Action.SUCCESS;
 	}

@@ -76,7 +76,7 @@
 		<@ww.hidden id="aba" name="aba" value="1"/>
 
 	<div class="buttonGroup">
-		<button onclick="window.location='prepareInsertCurriculoPlus.action?candidato.id=${candidato.id}'" class="btnInserirEditar"></button>		
+		<button onclick="executeLink('prepareInsertCurriculoPlus.action?candidato.id=${candidato.id}');" class="btnInserirEditar"></button>		
 		<button onclick="window.location='list.action'" class="btnConcluir"></button>
 	</div>
 

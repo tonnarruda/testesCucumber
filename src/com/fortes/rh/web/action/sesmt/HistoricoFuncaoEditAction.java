@@ -16,6 +16,7 @@ import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -118,12 +119,12 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 				return Action.SUCCESS;
 
 		} catch (FortesException e) {
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 			prepareInsert(); 
 			return Action.INPUT;
 		
 		} catch (Exception e) {
-			addActionError("Ocorreu um erro ao gravar o histórico da função");
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível gravar este histórico da função.");
 			prepareInsert(); 
 			return Action.INPUT;
 		}

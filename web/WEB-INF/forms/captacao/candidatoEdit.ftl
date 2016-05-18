@@ -788,7 +788,6 @@
       
       <@ww.hidden name="solicitacao.id" />
 
-	  <@ww.token/>
     </@ww.form>
 
     <#-- Campo para controle das abas -->
@@ -811,7 +810,7 @@
         	</button>
         </#if>
 		
-        <button class="btnCancelar" onclick="newConfirm('Tem certeza que deseja cancelar?', function(){window.location='${actionCancelar}'});" class="btnCancelar" accesskey="C">
+        <button class="btnCancelar" onclick="newConfirm('Tem certeza que deseja cancelar?', function(){executeLink('${actionCancelar}');});" class="btnCancelar" accesskey="C">
         </button>
     </div>
     

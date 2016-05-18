@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -31,8 +32,13 @@ public class EtapaSeletivaListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		etapaSeletivaManager.remove(etapaSeletiva, getEmpresaSistema());
-		addActionMessage("Etapa Seletiva excluída com sucesso.");
+		try {
+			etapaSeletivaManager.remove(etapaSeletiva, getEmpresaSistema());
+			addActionSuccess("Etapa Seletiva excluída com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta Etapa Seletiva.");			
+		}
 		return Action.SUCCESS;
 	}
 

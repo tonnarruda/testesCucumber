@@ -44,6 +44,10 @@
 		<action name="listCompetenciasFaixaSalarial" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="listCompetenciasFaixaSalarial">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/listCompetenciasFaixaSalarial.ftl</result>
 		</action>
+		<action name="listCompetenciasFaixaSalarialBack" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="listCompetenciasFaixaSalarial">
+			<interceptor-ref name="myDefaultWebStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/listCompetenciasFaixaSalarial.ftl</result>
+		</action>
 		<action name="prepareInsertCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareInsertCompetenciasColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
 		</action>
@@ -61,7 +65,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
 		</action>
 		<action name="saveCompetenciasByFaixaSalarial" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasByFaixaSalarial">
-			<result name="success" type="redirect"><![CDATA[listCompetenciasFaixaSalarial.action?faixaSalarial.id=${faixaSalarial.id}&actionSuccess=${actionMsg}]]></result>
+			<result name="success" type="redirect"><![CDATA[listCompetenciasFaixaSalarialBack.action?faixaSalarial.id=${faixaSalarial.id}&actionSuccess=${actionMsg}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByFaixaSalarial.ftl</result>
 		</action>
 		<action name="deleteCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="deleteCompetenciasColaborador">

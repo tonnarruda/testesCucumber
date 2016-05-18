@@ -13,8 +13,8 @@
 <@ww.actionmessage />
 	<@display.table name="areaInteresses" id="areaInteresse" class="dados">
 		<@display.column title="Ações" style="text-align:center; width: 80px" media="html">
-			<a href="prepareUpdate.action?areaInteresse.id=${areaInteresse.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?areaInteresse.id=${areaInteresse.id}&page=${page}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?areaInteresse.id=${areaInteresse.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?areaInteresse.id=${areaInteresse.id}&page=${page}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>
 		<@display.column property="observacao" title="Observações"/>
@@ -24,7 +24,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="list.action?" page='${page}'/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
+		<button class="btnInserir" onclick="executeLink('prepareInsert.action');" accesskey="I">
 		</button>
 	</div>
 </body>

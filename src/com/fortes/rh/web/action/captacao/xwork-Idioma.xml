@@ -8,6 +8,7 @@
 
 <xwork>
 	<package name="Idioma" extends="default" namespace="/captacao/idioma">
+		<default-interceptor-ref name="myDefaultWebStack"/>
 		<action name="list" class="com.fortes.rh.web.action.captacao.IdiomaListAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/idiomaList.ftl</result>
 		</action>
