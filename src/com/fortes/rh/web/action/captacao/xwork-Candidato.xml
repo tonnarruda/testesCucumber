@@ -58,10 +58,12 @@
 		<action name="showFoto" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="showFoto" />
 
 		<action name="verCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="verCurriculo">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoCurriculo.ftl</result>
 		</action>
 
 		<action name="imprimirCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="imprimirCurriculo">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/curriculo_candidato.jasper</param>
 				<param name="dataSource">dataSource</param>
@@ -194,9 +196,11 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/curriculoView.ftl</result>
 		</action>
 		<action name="verCurriculoEscaneado" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="verCurriculoEscaneado">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/curriculoImagens.ftl</result>
 		</action>
 		<action name="verCurriculoTextoOcr" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="verCurriculoTextoOcr">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/curriculoTextoOcr.ftl</result>
 		</action>
 		<action name="verExamePalografico" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="verExamePalografico">
