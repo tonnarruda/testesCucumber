@@ -190,8 +190,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			}
 
 			colaboradorCertificacoes = new CollectionUtil().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "colaborador.nome");
-			if(agruparPor != null && agruparPor == 'T')
-				agruparPorCertificacao();
+			calculoCertificadoENaocertificados(certificacoesIds, (agruparPor != null && agruparPor == 'T'));
 			
 			montaReportTitleAndFilter();
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
@@ -209,85 +208,67 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		
 	}
 
-	private void agruparPorCertificacao() 
-	{
-		ordenarColaboradoresCertificacao();
-		Map<Long, Collection<Long>> qtdcolabsCertificado = new HashMap<Long, Collection<Long>>();
-		Map<Long, Collection<Long>> qtdcolabsNaoCertificado = new HashMap<Long, Collection<Long>>();
-		for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
-			if(colabcertificacao.getData() != null){
-				if(!qtdcolabsCertificado.containsKey(colabcertificacao.getCertificacao().getId()))
-					qtdcolabsCertificado.put(colabcertificacao.getCertificacao().getId(), new ArrayList<Long>());
-				
-				if(!qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()).contains(colabcertificacao.getColaborador().getId()))
-					qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()).add(colabcertificacao.getColaborador().getId());
-			}else{
-				if(!qtdcolabsNaoCertificado.containsKey(colabcertificacao.getCertificacao().getId()))
-					qtdcolabsNaoCertificado.put(colabcertificacao.getCertificacao().getId(), new ArrayList<Long>());
-				
-				if(!qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).contains(colabcertificacao.getColaborador().getId()))
-					qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).add(colabcertificacao.getColaborador().getId());
-			}
-		}
-		
-		for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
-			if(colaboradorCertificado){
-				if(qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()) != null)
-					colabcertificacao.setQtdColaboradorAprovado(String.valueOf(qtdcolabsCertificado.get(colabcertificacao.getCertificacao().getId()).size()));
-				else
-					colabcertificacao.setQtdColaboradorAprovado("0");
-			}
-			if(colaboradorNaoCertificado){
-				if(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()) != null)
-						colabcertificacao.setQtdColaboradorNaoAprovado(String.valueOf(qtdcolabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).size()));
-				else
-					colabcertificacao.setQtdColaboradorNaoAprovado("0");
-			}
-		}
-		
+	private void calculoCertificadoENaocertificados(Long[] certificacoesIds, boolean agruparPorCertificacao){
 		qtdTotalColaboradoresCertificados = 0;
-		if(colaboradorCertificado){
-			for(Long certificacaoId : qtdcolabsCertificado.keySet()) 
-				qtdTotalColaboradoresCertificados += qtdcolabsCertificado.get(certificacaoId).size();
-		}
-		
 		qtdTotalColaboradoresNaoCertificados = 0;
-		if(colaboradorNaoCertificado){
-			for(Long certificacaoId : qtdcolabsNaoCertificado.keySet()) 
-				qtdTotalColaboradoresNaoCertificados += qtdcolabsNaoCertificado.get(certificacaoId).size();
-		}
-		
-	}
+		Collection<ColaboradorCertificacao> colabsCertiticacaoOrdenados = new ArrayList<ColaboradorCertificacao>(); 
 
-	private void ordenarColaboradoresCertificacao() 
-	{
-		colaboradorCertificacoes = new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "certificacao.nome");
+		if(agruparPorCertificacao)
+			colaboradorCertificacoes = new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "certificacao.nome");
 		
-		Map<Long, Collection<ColaboradorCertificacao>> colabsCertificado = new HashMap<Long, Collection<ColaboradorCertificacao>>();
-		Map<Long, Collection<ColaboradorCertificacao>> colabsNaoCertificado = new HashMap<Long, Collection<ColaboradorCertificacao>>();
-		
-		for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
+		for (Long certificacaoId : certificacoesIds) {
+			Map <Long, Collection<ColaboradorCertificacao>> colabsCertificado = new HashMap<Long, Collection<ColaboradorCertificacao>>();
+			Map <Long, Collection<ColaboradorCertificacao>> colabsCertificadoVencido = new HashMap<Long, Collection<ColaboradorCertificacao>>();
+			Map <Long, Collection<ColaboradorCertificacao>> colabsNaoCertificado = new HashMap<Long, Collection<ColaboradorCertificacao>>();
+			Collection<ColaboradorCertificacao> colabsCertiticacoes = new ArrayList<ColaboradorCertificacao>();
 			
-			if(!colabsCertificado.containsKey(colabcertificacao.getCertificacao().getId()))
-				colabsCertificado.put(colabcertificacao.getCertificacao().getId(), new ArrayList<ColaboradorCertificacao>());
+			for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
+				if(colabcertificacao.getCertificacao().getId().equals(certificacaoId)){
+					Long colaboradorId = colabcertificacao.getColaborador().getId();
+					
+					if(colabcertificacao.getData() != null){
+						if(DateUtil.incrementaMes(colabcertificacao.getData(), colabcertificacao.getCertificacao().getPeriodicidade()).getTime() >= (new Date()).getTime()){
+							if(!colabsCertificado.containsKey(colaboradorId))
+								colabsCertificado.put(colaboradorId, new ArrayList<ColaboradorCertificacao>());
+							
+							colabsCertificado.get(colaboradorId).add(colabcertificacao);
+						}else{
+							if(!colabsCertificadoVencido.containsKey(colaboradorId))
+								colabsCertificadoVencido.put(colaboradorId, new ArrayList<ColaboradorCertificacao>());
+								
+							colabsCertificadoVencido.get(colaboradorId).add(colabcertificacao);
+						}
+					}else{
+						if(!colabsNaoCertificado.containsKey(colaboradorId))
+							colabsNaoCertificado.put(colaboradorId, new ArrayList<ColaboradorCertificacao>());
+						
+						colabsNaoCertificado.get(colaboradorId).add(colabcertificacao);
+					}
+				}
+			}
 
-			if(!colabsNaoCertificado.containsKey(colabcertificacao.getCertificacao().getId()))
-				colabsNaoCertificado.put(colabcertificacao.getCertificacao().getId(), new ArrayList<ColaboradorCertificacao>());
+			if(agruparPorCertificacao){
+				for(Long colaboradorId : colabsCertificado.keySet())
+					colabsCertiticacoes.addAll(colabsCertificado.get(colaboradorId));
+				for(Long colaboradorId : colabsCertificadoVencido.keySet())
+					colabsCertiticacoes.addAll(colabsCertificadoVencido.get(colaboradorId));
+				for(Long colaboradorId : colabsNaoCertificado.keySet())
+					colabsCertiticacoes.addAll(colabsNaoCertificado.get(colaboradorId));
 
-			if(colabcertificacao.getData() != null)
-				colabsCertificado.get(colabcertificacao.getCertificacao().getId()).add(colabcertificacao);
-			else
-				colabsNaoCertificado.get(colabcertificacao.getCertificacao().getId()).add(colabcertificacao);
+				for (ColaboradorCertificacao colaboradorCertificacao : colabsCertiticacoes) {
+					colaboradorCertificacao.setQtdColaboradorAprovado(((Integer)colabsCertificado.size()).toString());
+					colaboradorCertificacao.setQtdColaboradorNaoAprovado(((Integer)(colabsCertificadoVencido.size() + colabsNaoCertificado.size())).toString());
+				}
+
+				colabsCertiticacaoOrdenados.addAll(colabsCertiticacoes);
+			}
+
+			qtdTotalColaboradoresCertificados = qtdTotalColaboradoresCertificados + colabsCertificado.size();
+			qtdTotalColaboradoresNaoCertificados = qtdTotalColaboradoresNaoCertificados + colabsCertificadoVencido.size() + colabsNaoCertificado.size();
 		}
 		
-		Collection<ColaboradorCertificacao> colabscertiticacaoOrdenados = new ArrayList<ColaboradorCertificacao>();
-		
-		for(Long certificacaoId : colabsCertificado.keySet()) {
-			colabscertiticacaoOrdenados.addAll(colabsCertificado.get(certificacaoId));
-			colabscertiticacaoOrdenados.addAll(colabsNaoCertificado.get(certificacaoId));
-		}
-		
-		colaboradorCertificacoes = colabscertiticacaoOrdenados;
+		if(agruparPorCertificacao)
+			colaboradorCertificacoes = colabsCertiticacaoOrdenados;
 	}
 
 	private void montaReportTitleAndFilter() 
@@ -312,16 +293,11 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		if (mesesCertificacoesAVencer != null && mesesCertificacoesAVencer != 0)
 			reportFilter += "\nColaboradores com certificação a vencer em até " + mesesCertificacoesAVencer + " meses.";
 		
-		if(agruparPor != null && agruparPor == 'T'){
-			if(colaboradorCertificado && colaboradorNaoCertificado){
-				reportFilter += "\nQuantidade de colaboradores certificados: " + qtdTotalColaboradoresCertificados;
-				reportFilter += "\nQuantidade de colaboradores não certificados: " + qtdTotalColaboradoresNaoCertificados;
-			}else if(colaboradorCertificado && !colaboradorNaoCertificado){
-				reportFilter += "\nQuantidade de colaboradores certificados: " + qtdTotalColaboradoresCertificados;
-			}else{
-				reportFilter += "\nQuantidade de colaboradores não certificados: " + qtdTotalColaboradoresNaoCertificados;
-			}
-		}
+		if(colaboradorCertificado)
+			reportFilter += "\nQuantidade total de colaboradores certificados: " + qtdTotalColaboradoresCertificados;
+		
+		if(colaboradorNaoCertificado)
+			reportFilter += "\nQuantidade total de colaboradores não certificados: " + qtdTotalColaboradoresNaoCertificados;
 	}
 	
 	public Object getModel()

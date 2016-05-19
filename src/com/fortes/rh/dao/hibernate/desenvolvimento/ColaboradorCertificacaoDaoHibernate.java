@@ -267,7 +267,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 			criteria.add(Expression.in("ct.colaborador.id" , colaboradoresIds));
 	    criteria.add(Expression.sqlRestriction("this_.curso_id in (select cursos_id from certificacao_curso where certificacaos_id in ("+ StringUtil.converteArrayToString(StringUtil.LongToString(certificadosId)) + ")) ", new String[]{}, new Type[]{}));
 	    criteria.add(Subqueries.propertyEq("hc.data", ultimoHistoricoColaborador));
-	    criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert8_")))));
+	    criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert8_", null)))));
 	    criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.certificacao.id"), Expression.in("cc.certificacao.id",certificadosId))));
 	    criteria.addOrder(Order.asc("c.nome"));
 	    criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -294,7 +294,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		return p;
 	}
 
-	private DetachedCriteria dataChedUltimoColaboradorCertificacao(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, String alias) {
+	private DetachedCriteria dataChedUltimoColaboradorCertificacao(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, String alias, Boolean cetificadosVencidos) {
 		DetachedCriteria ultimoColaboradorCertificacao = DetachedCriteria.forClass(ColaboradorCertificacao.class, "cc2").setProjection(Projections.max("cc2.data"))
 				.add(Restrictions.eqProperty("cc2.colaborador.id", "cc.colaborador.id")).add(Restrictions.eqProperty("cc2.certificacao.id", "cc.certificacao.id"));
 				if(dataIni != null) 
@@ -304,7 +304,13 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 				if(mesesCertificacoesAVencer != null && mesesCertificacoesAVencer != 0){
 					String dataVencimento = DateUtil.formataDiaMesAno(DateUtil.incrementaMes(new Date(), mesesCertificacoesAVencer));
 					ultimoColaboradorCertificacao.add(Expression.sqlRestriction("(this0__.data + ("+alias+".periodicidade || ' month')::interval) <= '" + dataVencimento + "' ", new String[]{}, new Type[]{}));
+				}else if (cetificadosVencidos != null){
+					if(cetificadosVencidos )
+						ultimoColaboradorCertificacao.add(Expression.sqlRestriction("(this0__.data + ("+alias+".periodicidade || ' month')::interval) <= '" + DateUtil.formataDiaMesAno(new Date()) + "' ", new String[]{}, new Type[]{}));
+					else
+						ultimoColaboradorCertificacao.add(Expression.sqlRestriction("(this0__.data + ("+alias+".periodicidade || ' month')::interval) >= '" + DateUtil.formataDiaMesAno(new Date()) + "' ", new String[]{}, new Type[]{}));
 				}
+				
 		
 		return ultimoColaboradorCertificacao;
 	}
@@ -417,7 +423,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		criteria.add(Expression.in("cc.certificacao.id" , certificacoesIds));
 	    criteria.add(Subqueries.propertyEq("hc.data", ultimoHistoricoColaborador));
 
-	    criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert7_")))));
+	    criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert7_", null)))));
 	    criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.certificacao.id"), Expression.in("cc.certificacao.id",certificacoesIds))));
 	    criteria.addOrder(Order.asc("c.nome"));
 	    
@@ -480,16 +486,18 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 
 		if(certificado == null){
 			criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.certificacao.id"), Expression.eq("cc.certificacao.id",certificacaoId))));
-			criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert5_")))));
+			criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert5_", null)))));
 		}else{
 			if(certificado){
 				criteria.add(Expression.eq("cc.certificacao.id",certificacaoId));
-				criteria.add(Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert5_")));
-			}else
-				criteria.add(Expression.isNull("cc.certificacao.id"));
+				criteria.add(Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert5_", false)));
+			}else{
+				criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.certificacao.id"), Expression.eq("cc.certificacao.id",certificacaoId))));
+				criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull("cc.data"), Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert5_", true)))));
+			}
 		}
 
-	    criteria.addOrder(Order.asc("co.nome")).addOrder(Order.asc("co.id")).addOrder(Order.asc("c.nome"));
+	    criteria.addOrder(Order.asc("co.nome")).addOrder(Order.asc("co.id")).addOrder(Order.asc("c.nome")).addOrder(Order.asc("cc.data"));
 	    criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	    criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
 

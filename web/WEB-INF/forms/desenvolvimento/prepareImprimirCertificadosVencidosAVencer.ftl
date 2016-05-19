@@ -21,6 +21,7 @@
 			});
 
 			habilitaCampos();
+			populaColaborador();
 			
 			$('#listCheckBoxcolaboradoresCheck').append('<tbody> <tr> <td colspan="7"> <div class="info">  <ul> <li>Utilize os filtros acima para popular os colaboradores. </br> Filtro obrigatório: "Certificações".</li> </ul> </div> </tr></td> </tbody>');
 		});

@@ -1,5 +1,8 @@
 package com.fortes.rh.test.factory.desenvolvimento;
 
+import java.util.Date;
+
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 
 public class TurmaFactory
@@ -22,4 +25,14 @@ public class TurmaFactory
 		turma.setId(id);
 		return turma;
 	}
+	
+	public static Turma getEntity(Date dataPrevIni, Date dataPrevFim, Curso curso)
+	{
+		Turma turma = getEntity();
+		turma.setDataPrevIni(dataPrevIni);
+		turma.setDataPrevFim(dataPrevFim);
+		turma.setCurso(curso);
+		return turma;
+	}
+
 }

@@ -2,6 +2,7 @@ package com.fortes.rh.test.factory.avaliacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 
@@ -47,5 +48,13 @@ public class AvaliacaoPraticaFactory
 		avaliacaoPraticas.add(getEntity(id));
 		
 		return avaliacaoPraticas;
+	}
+	
+	public static AvaliacaoPratica getEntity(Double nota)
+	{
+		AvaliacaoPratica avaliacaoPratica = getEntity();
+		avaliacaoPratica.setNotaMinima(nota);
+
+		return avaliacaoPratica;
 	}
 }

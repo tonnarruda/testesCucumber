@@ -38,8 +38,58 @@ CREATE INDEX index_colaboradorturma_turma_id ON colaboradorturma (turma_id);--.g
 drop index if exists index_colaboradorturma_curso_id;--.go
 CREATE INDEX index_colaboradorturma_curso_id ON colaboradorturma (curso_id);--.go
 
+drop index if exists index_avaliacaoPratica_id;--.go
+CREATE INDEX index_avaliacaoPratica_id ON avaliacaoPratica (id);--.go
 
-drop function verifica_aprovacao(id_curso BIGINT, id_turma BIGINT, id_colaboradorturma BIGINT, percentualMinimoFrequencia DOUBLE PRECISION);
+drop index if exists index_colabAvPratica_id;--.go
+CREATE INDEX index_colabAvPratica_id ON ColaboradorAvaliacaoPratica (id);--.go
+
+drop index if exists index_colabAvPratica_certificacao_id;--.go
+CREATE INDEX index_colabAvPratica_certificacao_id ON ColaboradorAvaliacaoPratica (certificacao_id);--.go
+
+drop index if exists index_colabAvPratica_colaborador_id;--.go
+CREATE INDEX index_colabAvPratica_colaborador_id ON ColaboradorAvaliacaoPratica (colaborador_id);--.go
+
+drop index if exists index_colabCertificacao_id;--.go
+CREATE INDEX index_colabCertificacao_id ON colaboradorcertificacao (id);--.go
+
+drop index if exists index_colabCertificacao_data;--.go
+CREATE INDEX index_colabCertificacao_data ON colaboradorcertificacao (data);--.go
+
+drop index if exists index_colabCertificacao_colaborador_certificacao;--.go
+CREATE INDEX index_colabCertificacao_colaborador_certificacao ON colaboradorcertificacao (colaborador_id, certificacao_id);--.go
+
+drop index if exists index_colabCertificacao_colaborador;--.go
+CREATE INDEX index_colabCertificacao_colaborador ON colaboradorcertificacao (colaborador_id);--.go
+
+drop index if exists index_colabCertificacao_certificacao;--.go
+CREATE INDEX index_colabCertificacao_certificacao ON colaboradorcertificacao (certificacao_id);--.go
+
+drop index if exists index_turma_curso;--.go
+CREATE INDEX index_turma_curso on turma (curso_id);--.go
+
+drop index if exists index_turma_dataPrevFim;--.go
+CREATE INDEX index_turma_dataPrevFim on turma (dataPrevFim);--.go
+
+drop index if exists index_certificacao_curso;--.go
+CREATE INDEX index_certificacao_curso on certificacao_curso (certificacaos_id, cursos_id);--.go
+
+drop index if exists index_hc_area;--.go
+CREATE INDEX index_hc_area on historicocolaborador (areaorganizacional_id);--.go
+
+drop index if exists index_hc_faixa;--.go
+CREATE INDEX index_hc_faixa on historicocolaborador (faixasalarial_id);--.go
+
+drop index if exists index_hc_estabelecimento;--.go
+CREATE INDEX index_hc_estabelecimento on historicocolaborador (estabelecimento_id);--.go
+
+drop index if exists index_faixasalarial_cargo;--.go
+CREATE INDEX index_faixasalarial_cargo on faixasalarial (cargo_id);--.go
+
+drop index if exists index_faixasalarial;--.go
+CREATE INDEX index_faixasalarial on faixasalarial (id);--.go
+
+drop function if exists verifica_aprovacao(id_curso BIGINT, id_turma BIGINT, id_colaboradorturma BIGINT, percentualMinimoFrequencia DOUBLE PRECISION);--.go
 
 CREATE OR REPLACE FUNCTION verifica_aprovacao(id_curso BIGINT, id_turma BIGINT, id_colaboradorturma BIGINT) RETURNS BOOLEAN AS $$  
 	DECLARE aprovado BOOLEAN; 
@@ -68,6 +118,8 @@ CREATE OR REPLACE FUNCTION verifica_aprovacao(id_curso BIGINT, id_turma BIGINT, 
 END; 
 $$ LANGUAGE plpgsql; --.go
 
+drop function if exists update_aprovacao_colaboradorTurma();--.go
+
 CREATE FUNCTION update_aprovacao_colaboradorTurma() RETURNS integer AS $$
 DECLARE
 	mviews RECORD;
@@ -81,6 +133,8 @@ END;
 $$ LANGUAGE plpgsql;--.go
 SELECT update_aprovacao_colaboradorTurma();--.go
 DROP FUNCTION update_aprovacao_colaboradorTurma();--.go
+
+drop function if exists verifica_certificacao(id_certificado BIGINT, id_colaborador BIGINT);--.go
 
 CREATE OR REPLACE FUNCTION verifica_certificacao(id_certificado BIGINT, id_colaborador BIGINT) RETURNS BOOLEAN AS $$  
 BEGIN 
@@ -115,21 +169,3 @@ return (
 	);
 END; 
 $$ LANGUAGE plpgsql; --.go 
-
-CREATE INDEX index_avaliacaoPratica_id ON avaliacaoPratica (id);--.go
-CREATE INDEX index_colabAvPratica_id ON ColaboradorAvaliacaoPratica (id);--.go
-CREATE INDEX index_colabAvPratica_certificacao_id ON ColaboradorAvaliacaoPratica (certificacao_id);--.go
-CREATE INDEX index_colabAvPratica_colaborador_id ON ColaboradorAvaliacaoPratica (colaborador_id);--.go
-CREATE INDEX index_colabCertificacao_id ON colaboradorcertificacao (id);--.go
-CREATE INDEX index_colabCertificacao_data ON colaboradorcertificacao (data);--.go
-CREATE INDEX index_colabCertificacao_colaborador_certificacao ON colaboradorcertificacao (colaborador_id, certificacao_id);--.go
-CREATE INDEX index_colabCertificacao_colaborador ON colaboradorcertificacao (colaborador_id);--.go
-CREATE INDEX index_colabCertificacao_certificacao ON colaboradorcertificacao (certificacao_id);--.go
-CREATE INDEX index_turma_curso on turma (curso_id);--.go
-CREATE INDEX index_turma_dataPrevFim on turma (dataPrevFim);--.go
-CREATE INDEX index_certificacao_curso on certificacao_curso (certificacaos_id, cursos_id);--.go
-CREATE INDEX index_hc_area on historicocolaborador (areaorganizacional_id);--.go
-CREATE INDEX index_hc_faixa on historicocolaborador (faixasalarial_id);--.go
-CREATE INDEX index_hc_estabelecimento on historicocolaborador (estabelecimento_id);--.go
-CREATE INDEX index_faixasalarial_cargo on faixasalarial (cargo_id);--.go
-CREATE INDEX index_faixasalarial on faixasalarial (id);--.go

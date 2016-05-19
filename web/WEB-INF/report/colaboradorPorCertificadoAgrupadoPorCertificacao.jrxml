@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.357947691000037"/>
 	<property name="ireport.x" value="8"/>
-	<property name="ireport.y" value="82"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -74,7 +74,7 @@
 						<font size="9"/>
 						<paragraph leftIndent="3"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Qtd Aprovado: " + $F{qtdColaboradorAprovado}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Qtd Certificado: " + $F{qtdColaboradorAprovado}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement stretchType="RelativeToBandHeight" x="2" y="39" width="532" height="13" uuid="286d15a9-2b2b-4479-850f-f38663afe5b8"/>
@@ -87,7 +87,7 @@
 						<font size="9"/>
 						<paragraph leftIndent="3"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Qtd Não Aprovado: " + $F{qtdColaboradorNaoAprovado}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Qtd Não Certificado: " + $F{qtdColaboradorNaoAprovado}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement stretchType="RelativeToBandHeight" x="2" y="52" width="532" height="13" uuid="43c2bf39-8f90-43d3-9443-12147dcda608"/>
