@@ -1,0 +1,2 @@
+
+update areaorganizacional set emailsnotificacoes = 'rh@casebras.com.br;lucivania@grupocasebras.com.br;fernandoperdigao@grupocasebras.com.br;mariotuffi@grupocasebras.com.br;fabiola@padraodevida.com.br' where id = 2940;--.go

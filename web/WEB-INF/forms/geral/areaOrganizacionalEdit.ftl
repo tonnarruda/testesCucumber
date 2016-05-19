@@ -34,7 +34,9 @@
 <script type="text/javascript">
 	function validarCampos(areaMaeSemColaboradores)
 	{
-		if (validaFormulario('form', new Array('nome'), null, true) && areaMaeSemColaboradores)
+		emailsValidos = validaEmail();
+		
+		if (validaFormulario('form', new Array('nome'), null, true) && areaMaeSemColaboradores && emailsValidos)
 		{
 			$('.emailsNotificacoes').each(function() {
 				if ($(this).val() == '')
@@ -45,6 +47,25 @@
 		
 		} else { return false; }
 	}
+	
+	$('.emailsNotificacoes').live('keyup', function(){
+		validaEmail();
+	})
+	
+    function validaEmail(){
+    	var regexEmail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    	var emails = $('.emailsNotificacoes');
+    	submit = true;
+    	$('.emailInvalido').remove();
+    	for (i = 0; i<emails.size(); i++) {
+	    	if($(emails[i]).val()!= "" && !regexEmail.test($(emails[i]).val())){
+	    		$(emails[i]).parent().append("<span class='emailInvalido' style='color:#D8000C;margin-left: 3px;'>Digite um e-mail válido.</span>")
+	    		submit = false;
+	    	}
+		}
+		return submit;
+    }
+	
 	
 	function adicionarCampoEmail(email) 
 	{
