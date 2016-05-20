@@ -58,6 +58,8 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	private ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaAtual;
 	@Transient
 	private ColaboradorTurma colaboradorTurma;
+	@Transient
+	private String dataString;//Usado no DWR
 
 	public ColaboradorCertificacao() {
 	}
@@ -424,5 +426,9 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	public void setColaboradorTurmaTurmaRealizada(Boolean colaboradorTurmaTurmaRealizada){
 		inicializaColaboradorTurma();
 		this.colaboradorTurma.setTurmaRealizada(colaboradorTurmaTurmaRealizada);
+	}
+
+	public String getDataString() {
+		return DateUtil.formataDiaMesAno(data);
 	}
 }

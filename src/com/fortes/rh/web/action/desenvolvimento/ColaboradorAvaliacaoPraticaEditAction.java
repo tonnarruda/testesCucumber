@@ -67,7 +67,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		if(certificacao == null || certificacao.getId() == null)
 			return Action.SUCCESS;
 
-		colaboradores = colaboradorCertificacaoManager.colaboradoresQueParticipamDaCertificacao(null, certificacao.getId());
+		colaboradores = colaboradorCertificacaoManager.colaboradoresQueParticipamDaCertificacao(certificacao.getId());
 
 		if(colaborador != null){
 			colaboradorTurmas = new ArrayList<ColaboradorTurma>();

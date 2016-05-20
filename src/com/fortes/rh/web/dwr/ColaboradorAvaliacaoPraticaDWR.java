@@ -1,8 +1,11 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.Collection;
+
 import com.fortes.rh.business.desenvolvimento.ColaboradorAvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
+import com.fortes.rh.model.geral.Colaborador;
 
 public class ColaboradorAvaliacaoPraticaDWR
 {
@@ -18,8 +21,12 @@ public class ColaboradorAvaliacaoPraticaDWR
     	
     	return colaboradorAvaliacaoPratica;
     }
+    
+    public Collection<Colaborador> findColaboradoresQueParticipamDaCertificacao(Long certificacaoId){
+    	return colaboradorCertificacaoManager.colaboradoresQueParticipamDaCertificacao(certificacaoId);
+    }
 
-	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+    public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
 

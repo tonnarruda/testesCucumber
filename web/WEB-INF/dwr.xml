@@ -184,7 +184,9 @@
 		
 		<!-- GERAL -->
 		<convert converter="bean" match="com.fortes.rh.model.geral.Pessoa"/>
-		<convert converter="bean" match="com.fortes.rh.model.geral.Colaborador"/>
+		<convert converter="bean" match="com.fortes.rh.model.geral.Colaborador">
+			<param name="include" value="id, nome"/>
+		</convert>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TipoDespesa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TurmaTipoDespesa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.AreaOrganizacional">
@@ -219,7 +221,7 @@
 		</convert>
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.AvaliacaoCurso"/>
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao">
-			<param name="include" value="id, ultimaCertificacao"/>
+			<param name="include" value="id, dataString, ultimaCertificacao"/>
 		</convert>
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica">
 			<param name="include" value="dataString, nota, colaboradorCertificacao"/>

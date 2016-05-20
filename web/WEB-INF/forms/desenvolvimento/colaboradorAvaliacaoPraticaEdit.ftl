@@ -8,6 +8,11 @@
 
 	<title>Avaliação Prática - Notas Individuais</title>
 	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorAvaliacaoPraticaDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	
 	<script type="text/javascript">
 		$(function(){
 			$('.mascaraData').css("border","1px solid #BEBEBE");
@@ -18,6 +23,7 @@
 		
 		function submeter(action)
 		{
+			processando('${urlImgs}');
 			if(action == 'buscaColaboradores.action'){
 				document.formBusca.action = action; 
 				document.formBusca.submit();
@@ -105,6 +111,17 @@
 			}
 		}
 		
+		function getColaboradores(certificacaoId){
+			$('#colaboradorAvaliacaoPratica').remove();
+			$('#colaboradorTurma').remove();
+			DWRUtil.useLoadingMessage('Carregando...');
+			ColaboradorAvaliacaoPraticaDWR.findColaboradoresQueParticipamDaCertificacao(certificacaoId, populaColaboradores);	
+		}
+		
+		function populaColaboradores(data){
+			addOptionsByCollection('colaboradorId', data, 'Selecione...');
+		}
+		
 	</script>
 </head>
 <body>
@@ -117,8 +134,8 @@
 		<li>
 			<@ww.div cssClass="divInfo" cssStyle="width: 950px;">
 				<ul>
-					<@ww.select label="Certificações com avaliações práticas" name="certificacao.id" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;" />
-					<@ww.select label="Colaborador" name="colaborador.id" list="colaboradores" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
+					<@ww.select label="Certificações com avaliações práticas" name="certificacao.id" id="certificacaoId" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="getColaboradores(this.value);" cssStyle="width: 800px;" />
+					<@ww.select label="Colaborador" name="colaborador.id" id="colaboradorId" list="colaboradores" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
 					<@ww.select label="Certificações em que o colaborador foi aprovado" id="colaboradorCertificacaoId" name="colaboradorCertificacao.id" list="colaboradorCertificacaos" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
 					<br><br>
 				</ul>

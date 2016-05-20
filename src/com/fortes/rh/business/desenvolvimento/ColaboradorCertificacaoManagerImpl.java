@@ -33,10 +33,10 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
 	}
 	
-	public Collection<Colaborador> colaboradoresQueParticipamDaCertificacao(Long[] colaboradoresIds, Long... certificadosId){
+	public Collection<Colaborador> colaboradoresQueParticipamDaCertificacao(Long certificacaoId){
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		
-		Collection<ColaboradorCertificacao> colaboradoresCertificacoes = getDao().colaboradoresQueParticipamDaCertificacao(null, null, null, certificadosId, null, null, colaboradoresIds, false);
+		Collection<ColaboradorCertificacao> colaboradoresCertificacoes = getDao().colaboradoresQueParticipamDaCertificacao(null, null, null, new Long[]{certificacaoId}, null, null, null, false);
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificacoes) {
 			colaboradores.add(colaboradorCertificacao.getColaborador());
 		}
@@ -118,6 +118,10 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		}
 		return colaboradorCertificacaosRetorno;
 	}	
+	
+	public Collection<ColaboradorCertificacao> findColaboradoresCertificadosENaoCertificados(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, Boolean certificado, Long certificacaoId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds, Long[] cursosIds){
+		return getDao().findColaboradoresCertificadosENaoCertificados(dataIni, dataFim, mesesCertificacoesAVencer, certificado, certificacaoId, areasIds, estabelecimentosIds, colaboradoresIds, cursosIds);
+	}
 	
 	@SuppressWarnings("deprecation")
 	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, Boolean certificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] filtroColaboradoresIds) {
