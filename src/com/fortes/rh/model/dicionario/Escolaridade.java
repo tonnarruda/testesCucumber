@@ -38,38 +38,7 @@ public class Escolaridade extends LinkedHashMap<String, String> {
 		put(DOUTORADO, "Doutorado completo");
 	}
 
-	public static String bindF2rh(String chave) 
-	{
-		if(chave == null || chave.isEmpty())
-			return ANALFABETO;
-		
-		try {
-			HashMap<String, String> convert = new HashMap<String, String>();
-			convert.put("Não Alfabetizado", ANALFABETO);
-			convert.put("Ensino Fundamental (1º Grau) Incompleto", GINASIO_EM_ANDAMENTO);
-			convert.put("Ensino Fundamental (1º Grau) Completo", GINASIO_COMPLETO);
-			convert.put("Ensino Médio (2º Grau) Incompleto", COLEGIAL_EM_ANDAMENTO);
-			convert.put("Ensino Médio (2º Grau) Completo", COLEGIAL_COMPLETO);
-			convert.put("Ensino Médio Técnico (2º Grau) Incompleto", TECNICO_EM_ANDAMENTO);
-			convert.put("Ensino Médio Técnico (2º Grau) Completo", TECNICO_COMPLETO);
-			convert.put("Superior Incompleto", SUPERIOR_EM_ANDAMENTO);
-			convert.put("Superior Completo", SUPERIOR_COMPLETO);
-			convert.put("Pós-graduação Incompleta", ESPECIALIZACAO);
-			convert.put("Pós-graduação Completa", ESPECIALIZACAO);
-			convert.put("Mestrado Incompleto", MESTRADO);
-			convert.put("Mestrado Completo", MESTRADO);
-			convert.put("Doutorado Incompleto", DOUTORADO);
-			convert.put("Doutorado Completo", DOUTORADO);
-			
-			return convert.get(chave);
-			
-		} catch (Exception e) {
-			return "";
-		}
-		
-	}
-
-	public static String getEscolaridadeF2rh(String chave) {
+	public static String getEscolaridade(String chave) {
 		try {
 			HashMap<String, String> convert = new HashMap<String, String>();
 			convert.put(ANALFABETO, "Não Alfabetizado");

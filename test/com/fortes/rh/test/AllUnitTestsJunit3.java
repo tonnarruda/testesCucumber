@@ -3,7 +3,6 @@ package com.fortes.rh.test;
 
 import junit.framework.TestSuite;
 
-import com.fortes.f2rh.test.F2rhFacadeTest;
 import com.fortes.rh.config.Log4jInitListenerTest;
 import com.fortes.rh.config.LogCleanerJobTest;
 import com.fortes.rh.config.ScriptReaderTest;
@@ -454,7 +453,6 @@ import com.fortes.rh.test.web.action.backup.BackupActionTest;
 import com.fortes.rh.test.web.action.captacao.AnuncioListActionTest;
 import com.fortes.rh.test.web.action.captacao.AtitudeEditActionTest;
 import com.fortes.rh.test.web.action.captacao.CandidatoEditActionTest;
-import com.fortes.rh.test.web.action.captacao.CandidatoListActionTest;
 import com.fortes.rh.test.web.action.captacao.CandidatoSolicitacaoListActionTest;
 import com.fortes.rh.test.web.action.captacao.ConfigHistoricoNivelEditActionTest;
 import com.fortes.rh.test.web.action.captacao.ConhecimentoEditActionTest;
@@ -688,7 +686,6 @@ public class AllUnitTestsJunit3 extends TestSuite
         suite.addTestSuite(CandidatoDaoHibernateTest.class);
         suite.addTestSuite(CandidatoManagerTest.class);
         suite.addTestSuite(CandidatoEditActionTest.class);
-        suite.addTestSuite(CandidatoListActionTest.class);
         suite.addTestSuite(ConhecimentoEditActionTest.class);
         suite.addTestSuite(ConhecimentoListActionTest.class);
         suite.addTestSuite(ConhecimentoDaoHibernateTest.class);
@@ -1473,7 +1470,6 @@ public class AllUnitTestsJunit3 extends TestSuite
         suite.addTestSuite(AbstractModelJsonValueProcessorTest.class);
         
         suite.addTestSuite(LinkTagTest.class);
-        suite.addTestSuite(F2rhFacadeTest.class);
         suite.addTestSuite(ExportacaoActionTest.class);
 
         //SERVICES

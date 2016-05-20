@@ -120,8 +120,6 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	@Lob
 	private String examePalografico;
 	
-	private Integer idF2RH;
-	
 	@Transient
 	private int qtdCurriculosCadastrados;
 	@Transient
@@ -165,12 +163,6 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 		this.empresa = empresa;
 	}
 
-	//F2RH, listagem de candidato na solicitacao
-	@NaoAudita
-	public String getS() {
-		return StringUtil.montaTokenF2rh(this.nome);
-	}
-	
 	//Usado no iReport
 	@NaoAudita
 	public String getColocacaoDic()
@@ -1130,14 +1122,6 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	public int getQtdCurriculosCadastrados() {
 		return qtdCurriculosCadastrados;
-	}
-
-	public Integer getIdF2RH() {
-		return idF2RH;
-	}
-
-	public void setIdF2RH(Integer idF2RH) {
-		this.idF2RH = idF2RH;
 	}
 
 	public String getColocacao() {

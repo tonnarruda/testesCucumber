@@ -167,11 +167,6 @@
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/favourites.gif"/>">
 				</span>
 			</#if>
-			<#if candidato.idF2RH?exists>
-				<a title="Visualizar Currículo F2RH" href="javascript:popup('http://www.f2rh.com.br/curriculos/${candidato.idF2RH?string}?s=${candidato.s}', 780, 750)">
-					<img border="0" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>">
-				</a>
-			</#if>
 			<#if candidato.contratado>
 				<span href=# style="cursor: hand;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Este candidato é colaborador');return false">
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/colaborador.png"/>">

@@ -152,7 +152,6 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         p.add(Projections.property("c.contato.foneCelular"), "candidatoFoneCelular");
         p.add(Projections.property("c.contato.ddd"), "candidatoDdd");
         p.add(Projections.property("c.contato.email"), "candidatoEmail");
-        p.add(Projections.property("c.idF2RH"), "candidatoIdF2RH");
         p.add(Projections.property("c.contratado"), "candidatoContratado");
         p.add(Projections.property("c.pessoal.indicadoPor"), "candidatoIndicadoPor");
         p.add(Projections.property("h.responsavel"), "responsavel");
@@ -502,22 +501,6 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(CandidatoSolicitacao.class));
 
 		return criteria.list();
-	}
-
-	public Collection<Integer> getIdF2RhCandidato(Long solicitacaoId) 
-	{
-        Criteria criteria = getSession().createCriteria(CandidatoSolicitacao.class, "cs");
-        criteria.createCriteria("cs.candidato", "c");
-        criteria.createCriteria("cs.solicitacao", "s");
-
-        ProjectionList p = Projections.projectionList().create();
-
-        p.add(Projections.property("c.idF2RH"), "idF2RH");
-
-        criteria.setProjection(p);
-        criteria.add(Expression.eq("s.id", solicitacaoId));
-
-        return criteria.list();
 	}
 
 	public void setStatusByColaborador(char status, Long... colaboradoresIds) 

@@ -89,10 +89,6 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoInfo.ftl</result>
 		</action>
 
-		<!-- BUSCA DO BANCO DE DADOS DE CANDIDATOS PARA INCLUSÃO NA SOLICITAÇÃO -->
-		<action name="prepareBuscaF2rh" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="prepareBuscaF2rh">
-			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoBuscaF2rh.ftl</result>
-		</action>
 		<action name="prepareBusca" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="prepareBusca">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoBusca.ftl</result>
 		</action>
@@ -108,10 +104,6 @@
 		<action name="busca" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="busca">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoBusca.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoBusca.ftl</result>
-		</action>
-		<action name="buscaF2rh" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="buscaF2rh">
-			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoBuscaF2rh.ftl</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoBuscaF2rh.ftl</result>
 		</action>
 		<action name="buscaSimples" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="buscaSimples">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoBuscaSimples.ftl</result>
@@ -129,10 +121,6 @@
 			<result name="success" type="redirect"><![CDATA[../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}]]></result>
 		</action>
 		<action name="insertCandidatos" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="insertCandidatos">
-			<result name="success" type="redirect"><![CDATA[../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}]]></result>
-		</action>
-
-		<action name="insertCandidatosByF2rh" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="insertCandidatosByF2rh">
 			<result name="success" type="redirect"><![CDATA[../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}]]></result>
 		</action>
 

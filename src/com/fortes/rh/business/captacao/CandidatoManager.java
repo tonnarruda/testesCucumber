@@ -5,13 +5,11 @@ import java.util.Date;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
-import com.fortes.f2rh.Curriculo;
 import com.fortes.model.type.File;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
-import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -30,7 +28,6 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public void removeCandidato(Candidato candidato) throws Exception;
 
 	public Candidato findByCPF(String cpf, Long empresaId);
-    //public void importa(File xmlFile);
 	public Collection<Candidato> list(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds);
 	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds);
 	public Collection<Candidato> busca(Map<String, Object> parametros, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar, Long... empresaIds) throws Exception;
@@ -65,8 +62,6 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public Candidato verifyCPF(String cpf, Long empresId, Long candidatoId, Boolean contratado) throws Exception;
 	public void ajustaSenha(Candidato candidato);
 	public void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId);
-	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long[] cidade, String escolaridade, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Long idioma, Map ufs, Collection<Idioma> idiomas, Integer page);
-	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId, Empresa empresa);
 	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long... colaboradoresIds);
 	public void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas);
 	public String getComoFicouSabendoVagas();

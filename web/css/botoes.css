@@ -585,12 +585,6 @@
 	width: 190px !important;
 }
 
-.btnTriagemF2RH
-{
-	background-image:url(../imgs/btnTriagemF2RH.gif);
-	width: 195px !important;
-}
-
 .btnSugerirReunioesOrdinarias{
 	background-image:url(../imgs/btnSugerirReunioesOrdinarias.gif);
 	width: 214px !important;
@@ -765,7 +759,6 @@
 .btnListaDeManutencaoExtintores,
 .btnListaFrequenciaVotacao,
 .btnResultadoAvaliacao,
-.btnTriagemF2RH,
 .btnListagemColaborador,
 .btnCarregar,
 .btnAutoAvaliacoesEmLote,

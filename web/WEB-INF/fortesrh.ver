@@ -12,6 +12,7 @@
 		<Item visivel="S" motivo="S16040000133"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitação de Exames: Novo tipo de impressão por folha inteira.]]></Item>
 		<Item visivel="S" motivo="S16040000135"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitação de Exames: Novo campo de ambiente no relatório.]]></Item>
 		<Item visivel="S" motivo="S16040000110"><![CDATA[Utilitários > Auditoria: Nova opção para auditar encerramento das solicitações de pessoal.]]></Item>
+		<Item visivel="S" motivo="S16050000033"><![CDATA[Remoção da integração com o F2rh.]]></Item>
 	</Versao>
 	<Versao id="1.1.165.196" db="" data="27/04/2016">
 		<Item visivel="S" motivo="P16040000229"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho: Ajuste na inconsistência ao liberar avaliação contendo respostas.]]></Item>

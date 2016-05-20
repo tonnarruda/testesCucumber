@@ -1,6 +1,5 @@
 package com.fortes.rh.web.action.captacao;
 
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -11,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.fortes.f2rh.Curriculo;
-import com.fortes.f2rh.F2rhFacade;
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoCurriculoManager;
@@ -121,7 +118,6 @@ public class CandidatoListAction extends MyActionSupportList
 	private GrupoOcupacionalManager grupoOcupacionalManager;
 	private ConfiguracaoImpressaoCurriculoManager configuracaoImpressaoCurriculoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private F2rhFacade f2rhFacade;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private CamposExtrasManager camposExtrasManager;
 		
@@ -240,9 +236,6 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	private boolean somenteCandidatosSemSolicitacao;
 	
-	private Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
-	private Curriculo curriculo;
-
 	private Integer qtdRegistros = 100;
 	private Integer percentualMinimo;
 	private char statusSolicitacao;
@@ -495,16 +488,6 @@ public class CandidatoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	private void montaFiltroF2rh() throws Exception 
-	{
-		escolaridades = new Escolaridade();
-		sexos = new Sexo();
-		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
-		idiomas = idiomaManager.findAll(new String[]{"nome"});
-		populaCheckListCidadeMarcados();
-		setShowFilter(true);
-	}
-
 	private void populaCheckListCidadeMarcados() throws Exception 
 	{
 		if (uf == null && solicitacao != null && solicitacao.getCidade() != null && solicitacao.getCidade().getUf() != null)
@@ -523,65 +506,7 @@ public class CandidatoListAction extends MyActionSupportList
 		cidadesCheckList = CheckListBoxUtil.marcaCheckListBox(cidadesCheckList, StringUtil.LongToString(cidadesCheck));
 	}
 	
-	public String prepareBuscaF2rh() throws Exception
-	{
-		montaFiltroF2rh();
-		
-		return Action.SUCCESS;
-	}
-
-	public String buscaF2rh() throws Exception
-	{
-		if(candidatosId != null && candidatosId.length > 0)
-			insertCandidatosByF2rh();
-		
-		montaFiltroF2rh();
-		
-		try {
-			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidadesCheck, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma, ufs, idiomas, getPage());
-			curriculos = f2rhFacade.buscarCurriculos(consulta_basica);
-			
-			if(curriculos != null && curriculos.size() > 0){
-				setTotalSize(curriculos.size());
-				curriculos = f2rhFacade.removeCandidatoInseridoSolicitacao(solicitacao.getId(), curriculos);
-				setShowFilter(false);
-			}else{
-				addActionMessage("Não existem candidatos para o filtro informado.");
-			}
-
-		} catch (ConnectException e) {
-			addActionError("Erro ao tentar se conectar ao F2rh. verifique se o site do F2rh está no ar, clicando <a href=\"http://www.f2rh.com.br/\" target=\"_blank\">aqui</a>.");
-			e.printStackTrace();
-		} catch (Exception e) {
-			addActionError("Erro ao buscar candidatos no F2rh.");
-			e.printStackTrace();
-		}
-		
-		return Action.SUCCESS;
-	}
-
-	public String insertCandidatosByF2rh() throws Exception
-	{
-		try {
-			if(candidatosId != null && candidatosId.length > 0)
-			{
-				Collection<Candidato> candidatosParaSolicitacao = candidatoManager.getCurriculosF2rh(candidatosId, getEmpresaSistema());
-	
-				int cont = 0;
-				String[] candidatosParaSolicitacaoIds = new String[candidatosParaSolicitacao.size()];
-				for (Candidato candidato : candidatosParaSolicitacao)
-					candidatosParaSolicitacaoIds[cont++] = Long.toString(candidato.getId());
-				
-				if(candidatosParaSolicitacaoIds != null && candidatosParaSolicitacaoIds.length > 0)
-					candidatoSolicitacaoManager.insertCandidatos(candidatosParaSolicitacaoIds, solicitacao, StatusCandidatoSolicitacao.INDIFERENTE);
-			}
-		} catch (Exception e) {
-			addActionError("Não foi possível importar os candidatos.");
-		}
-		
-		return Action.SUCCESS;
-	}
-
+	//TODO: SEM TESTE
 	public String busca() throws Exception
 	{
 		cpfBusca = StringUtil.removeMascara(cpfBusca);
@@ -739,6 +664,7 @@ public class CandidatoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
+	//TODO: SEM TESTE
 	public String showImagensCurriculo() throws Exception
 	{
 		java.io.File file = ArquivoUtil.getArquivo(nomeImg,"curriculos");
@@ -1720,22 +1646,6 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setExibeExterno(boolean exibeExterno) {
 		this.exibeExterno = exibeExterno;
-	}
-
-	public Collection<Curriculo> getCurriculos() {
-		return curriculos;
-	}
-
-	public Curriculo getCurriculo() {
-		return curriculo;
-	}
-
-	public void setCurriculo(Curriculo curriculo) {
-		this.curriculo = curriculo;
-	}
-
-	public void setF2rhFacade(F2rhFacade f2rhFacade) {
-		this.f2rhFacade = f2rhFacade;
 	}
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {

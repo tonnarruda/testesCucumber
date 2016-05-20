@@ -1,9 +1,7 @@
 package com.fortes.rh.test.util;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
 
@@ -126,12 +124,6 @@ public class StringUtilTest extends TestCase
 	
 	public void test() {
 		
-	}
-	
-	public void testMontaTokenF2rh()
-	{
-		Calendar calendar = new GregorianCalendar();
-		assertEquals("42H"+ (calendar.get(GregorianCalendar.MONTH) + 1) +"0t3" + calendar.get(GregorianCalendar.DAY_OF_MONTH), StringUtil.montaTokenF2rh("Henriqué de Albuquerque Vasconcelos Soares"));
 	}
 	
 	public void testStringToLong()

@@ -2,9 +2,7 @@ package com.fortes.rh.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,18 +74,6 @@ public final class StringUtil
 		if(value != null && value.length() > max)
 			value = value.substring(0, max) + suffix;
 		return value;
-	}
-	
-	public static String montaTokenF2rh(String nome)
-	{
-		try {
-			Calendar calendar = new GregorianCalendar();
-			
-			return nome.length() + nome.substring(0, 1)+ (calendar.get(GregorianCalendar.MONTH) + 1) + "0t3" + calendar.get(GregorianCalendar.DAY_OF_MONTH);
-		} catch (Exception e) {
-			return "";
-		}
-
 	}
 	
 	public static String decodeString(String str)

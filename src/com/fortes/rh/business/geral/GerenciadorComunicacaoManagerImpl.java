@@ -372,7 +372,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	    			} 		
 	    		}
 			}
-		} catch (Exception e){e.printStackTrace();}
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo(Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradores){

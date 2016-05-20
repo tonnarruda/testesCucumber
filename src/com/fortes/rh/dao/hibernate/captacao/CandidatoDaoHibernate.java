@@ -148,7 +148,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 	public Collection<Candidato> find(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds)
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("select can.id, can.nome, can.idF2RH, can.disponivel, can.contratado, can.dataCadastro, can.dataAtualizacao, can.indicadoPor, can.cpf, emp.id, exists(select cpf from colaborador where cpf=can.cpf and can.cpf is not null and can.cpf <> '') as jaFoiColaborador "); 
+		sql.append("select can.id, can.nome, can.disponivel, can.contratado, can.dataCadastro, can.dataAtualizacao, can.indicadoPor, can.cpf, emp.id, exists(select cpf from colaborador where cpf=can.cpf and can.cpf is not null and can.cpf <> '') as jaFoiColaborador "); 
 		Query query = montaListaCandidato(page, pagingSize, nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, sql, empresasIds);
 		
 		List resultado = query.list();
@@ -163,24 +163,21 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			cand.setId(((BigInteger)res[0]).longValue());
 			cand.setNome((String)res[1]);
 			
-			if((Integer)res[2] != null)
-				cand.setIdF2RH(((Integer)res[2]).intValue());
+			if((Boolean) res[2] != null)
+				cand.setDisponivel((Boolean) res[2]);
 			
 			if((Boolean) res[3] != null)
-				cand.setDisponivel((Boolean) res[3]);
+				cand.setContratado((Boolean) res[3]);
 			
-			if((Boolean) res[4] != null)
-				cand.setContratado((Boolean) res[4]);
+			cand.setDataCadastro((Date) res[4]);
+			cand.setDataAtualizacao((Date) res[5]);
+			cand.setPessoalIndicadoPor((String) res[6]);
+			cand.setPessoalCpf((String) res[7]);
 			
-			cand.setDataCadastro((Date) res[5]);
-			cand.setDataAtualizacao((Date) res[6]);
-			cand.setPessoalIndicadoPor((String) res[7]);
-			cand.setPessoalCpf((String) res[8]);
+			if((BigInteger)res[8] != null)
+				cand.setEmpresaId(((BigInteger)res[8]).longValue());
 			
-			if((BigInteger)res[9] != null)
-				cand.setEmpresaId(((BigInteger)res[9]).longValue());
-			
-			cand.setJaFoiColaborador((Boolean) res[10]);
+			cand.setJaFoiColaborador((Boolean) res[9]);
 
 			candidatos.add(cand);
 		}

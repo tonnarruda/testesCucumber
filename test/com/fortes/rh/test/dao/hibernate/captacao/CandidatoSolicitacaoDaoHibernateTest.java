@@ -498,36 +498,6 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(2, retorno.size());
 	}
 
-	public void testGetIdF2RhCandidato()
-	{
-		Candidato candidato1 = CandidatoFactory.getCandidato();
-		candidato1.setIdF2RH(1);
-		candidato1 = candidatoDao.save(candidato1);
-		
-		Candidato candidato2 = CandidatoFactory.getCandidato();
-		candidato2.setIdF2RH(2);
-		candidato2 = candidatoDao.save(candidato2);
-		
-		Solicitacao solicitacao = new Solicitacao();
-		solicitacao = solicitacaoDao.save(solicitacao);
-		
-		CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity();
-		candidatoSolicitacao1.setCandidato(candidato1);
-		candidatoSolicitacao1.setSolicitacaoId(solicitacao.getId());
-		
-		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
-		candidatoSolicitacao2.setCandidato(candidato2);
-		candidatoSolicitacao2.setSolicitacaoId(solicitacao.getId());
-		
-		candidatoSolicitacao1 = candidatoSolicitacaoDao.save(candidatoSolicitacao1);
-		
-		candidatoSolicitacao2 = candidatoSolicitacaoDao.save(candidatoSolicitacao2);
-		
-		Collection<Integer> retorno = candidatoSolicitacaoDao.getIdF2RhCandidato(solicitacao.getId());
-		
-		assertEquals(2, retorno.size());
-	}
-
 	public void testSetStatusByColaborador()
 	{
 		candidatoSolicitacao = prepareFindCandidatoSolicitacao();

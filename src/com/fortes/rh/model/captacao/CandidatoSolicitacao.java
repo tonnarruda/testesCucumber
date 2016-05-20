@@ -161,13 +161,6 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 		candidato.setFoneCelular(candidatoFoneCelular);
 	}
 	
-	public void setCandidatoIdF2RH(Integer candidatoIdF2RH)
-	{
-		inicializaCandidato();
-		
-		candidato.setIdF2RH(candidatoIdF2RH);
-	}
-
 	public void setCandidatoContratado(boolean candidatoContratado)
 	{
 		inicializaCandidato();
@@ -188,7 +181,6 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 	public void setProjectionCandidatoDataAtualizacao(Date projectionCandidatoDataAtualizacao)
 	{
 		inicializaCandidato();
-
 		candidato.setDataAtualizacao(projectionCandidatoDataAtualizacao);
 	}
 

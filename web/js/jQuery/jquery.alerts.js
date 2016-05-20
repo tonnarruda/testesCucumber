@@ -127,7 +127,7 @@
 					$("#popup_ok").focus();
 
 					if(retiraFocus)
-						$("#popup_ok").blur();//tem zig no IE e tela de Busca F2RH. Francisco/Rubens 07/07/2011
+						$("#popup_ok").blur();//tem zig no IE. Francisco/Rubens 07/07/2011
 					
 					$("#popup_ok, #popup_cancel").keypress( function(e) {
 						if( e.keyCode == 13 ) $("#popup_ok").trigger('click');

@@ -58,7 +58,7 @@ public class ColaboradorJsonVO
     	this.phone = phone;
     	this.uf = uf;
     	this.rg = rg;
-    	this.education = Escolaridade.getEscolaridadeF2rh(education);
+    	this.education = Escolaridade.getEscolaridade(education);
     	this.motherName = motherName;
     	this.PIS = PIS;
     	this.registration = registration;

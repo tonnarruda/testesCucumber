@@ -13,18 +13,11 @@ import java.util.zip.ZipOutputStream;
 
 import mockit.Mockit;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethodBase;
-import org.apache.commons.io.FileUtils;
 import org.hibernate.NonUniqueResultException;
 import org.jmock.Mock;
 import org.jmock.core.Constraint;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.fortes.f2rh.Curriculo;
-import com.fortes.f2rh.User;
-import com.fortes.f2rh.test.MockHttpClient;
-import com.fortes.f2rh.test.MockHttpMethod;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoCurriculoManager;
@@ -79,7 +72,6 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.model.relatorio.DataGrafico;
-import com.fortes.rh.test.MockFileUtils;
 import com.fortes.rh.test.business.MockObjectTestCaseManager;
 import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -1571,106 +1563,6 @@ public class CandidatoManagerTest extends MockObjectTestCaseManager<CandidatoMan
 
 		gerenciadorComunicacaoManager.expects(once()).method("enviaEmailResponsavelRh").with(ANYTHING, ANYTHING).isVoid();
 		manager.enviaEmailResponsavelRh(nomeCandidato, empresa.getId());
-	}
-	
-	public void testMontaStringBuscaF2rh() throws Exception
-	{
-		Date hoje = new Date();
-		String hojeFormatado = DateUtil.formataDate(hoje, "yyyy-MM-dd");
-		
-		User user = new User();
-		user.setLogin("34964858170");
-		
-		Curriculo curriculo = new Curriculo();
-		curriculo.setUser(user);
-		curriculo.setNome("Joao da Silva");
-		curriculo.setIdioma("1");
-		
-		Long uf = 1L;
-		Long cidadeValue = 2L;
-		String escolaridadeValue = "11";
-		Date dataCadIni = hoje;
-		Date dataCadFim = hoje;
-		String idadeMin = "15";
-		String idadeMax = "35";
-		Map ufs = new HashMap();
-		Map cidades = new HashMap();
-		
-		Idioma idioma = new Idioma();
-		idioma.setNome("Italiano");
-		idioma.setId(1L);
-		
-		Collection<Idioma> idiomas = new ArrayList<Idioma>();
-		idiomas.add(idioma);
-		
-		cidadeManager.expects(once()).method("find").withAnyArguments();
-		String[] retorno = manager.montaStringBuscaF2rh(curriculo, uf, new Long[]{cidadeValue}, escolaridadeValue, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma.getId(), ufs, idiomas, 1);
-		
-		String[] camposInformados = new String[]{"",
-				"",
-				"escolaridade=Superior Completo",
-				"idioma=Italiano",
-				"data_cad_ini=" + hojeFormatado + "",
-				"data_cad_fim=" + hojeFormatado + "",
-				"",
-				"",
-				"idade_ini=15",
-				"idade_fim=35",
-				"",
-				"",
-				"",
-				"page=1",
-				"cidade="				
-		};
-		
-		assertEquals(15, camposInformados.length);
-		assertEquals(15, retorno.length);
-		
-		assertEquals("nome", camposInformados[0], retorno[0]);
-		assertEquals("cpf", camposInformados[1], retorno[1]);
-		assertEquals("escolaridade", camposInformados[2], retorno[2]);
-		assertEquals("idioma", camposInformados[3], retorno[3]);
-		assertEquals("data_cad_ini", camposInformados[4], retorno[4]);
-		assertEquals("data_cad_fim", camposInformados[5], retorno[5]);
-		assertEquals("cargo", camposInformados[6], retorno[6]);
-		assertEquals("sexo", camposInformados[7], retorno[7]);
-		assertEquals("idade_ini", camposInformados[8], retorno[8]);
-		assertEquals("idade_fim", camposInformados[9], retorno[9]);
-		assertEquals("estado", camposInformados[10], retorno[10]);
-		assertEquals("bairro", camposInformados[12], retorno[12]);
-		assertEquals("palavra_chave", camposInformados[13], retorno[13]);
-		assertEquals("page", camposInformados[14], retorno[14]);
-		assertEquals("cidade", camposInformados[11], retorno[11]);
-	}
-		
-	public void testGetCurriculosF2rhSave() throws Exception
-	{
-		String[] curriculoIds = new String[]{"15"};
-		
-		Mockit.redefineMethods(FileUtils.class, MockFileUtils.class);
-		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
-		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
-		
-		candidatoDao.expects(once()).method("findByCPF").withAnyArguments().will(returnValue(null));
-		candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(new Candidato()));
-		Collection<Candidato> candidatos = manager.getCurriculosF2rh(curriculoIds, null);
-		assertEquals(1, candidatos.size());
-	}
-	
-	public void testGetCurriculosF2rhJaGravado() throws Exception
-	{
-		String[] curriculoIds = new String[]{"15"};
-		
-		Mockit.redefineMethods(FileUtils.class, MockFileUtils.class);
-		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
-		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
-		
-		Collection<Candidato> candidatos = new ArrayList<Candidato>();
-		candidatos.add(new Candidato());
-		
-		candidatoDao.expects(once()).method("findByCPF").withAnyArguments().will(returnValue(candidatos));
-		Collection<Candidato> candidatosRetorno = manager.getCurriculosF2rh(curriculoIds, null);
-		assertEquals(1, candidatosRetorno.size());
 	}
 	
 	public void testCountComoFicouSabendoVagas(){

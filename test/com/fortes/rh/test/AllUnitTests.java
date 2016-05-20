@@ -4,7 +4,6 @@ package com.fortes.rh.test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import com.fortes.f2rh.test.F2rhFacadeTest;
 import com.fortes.rh.config.Log4jInitListenerTest;
 import com.fortes.rh.config.LogCleanerJobTest;
 import com.fortes.rh.config.ScriptReaderTest;
@@ -1479,7 +1478,6 @@ import com.fortes.test.web.tags.LinkTagTest;
 	AbstractModelJsonValueProcessorTest.class,
 	        
 	LinkTagTest.class,
-	F2rhFacadeTest.class,
 	ExportacaoActionTest.class,
 
     //SERVICES
