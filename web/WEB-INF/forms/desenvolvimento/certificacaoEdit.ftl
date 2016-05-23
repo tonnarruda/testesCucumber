@@ -9,7 +9,7 @@
 			<title>Inserir Certificação</title>
 			<#assign formAction="insert.action"/>
 		</#if>
-		<#assign validarCampos="return validaFormulario('form', new Array('nome'), null)"/>
+		<#assign validarCampos="return validaFormulario('form', new Array('nome', '@cursosCheck'), null)"/>
 	
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
@@ -42,7 +42,7 @@
 				<@ww.hidden name="certificacao.certificacaoPreRequisito.id" />	
 			</#if>
 			
-			Cursos:
+			Cursos:*
 			<#if bloquearEdicao><img id="tooltipHelpMult" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  /></#if>
         	<@frt.checkListBox name="cursosCheck" list="cursosCheckList" filtro="true" readonly =bloquearEdicao/>
 	        

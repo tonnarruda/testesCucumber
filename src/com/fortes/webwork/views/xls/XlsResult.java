@@ -3,12 +3,14 @@ package com.fortes.webwork.views.xls;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
@@ -282,12 +284,20 @@ public class XlsResult extends WebWorkResultSupport {
 		response.addHeader("Content-Transfer-Encoding", "binary");
 		response.addHeader("Content-Disposition", "attachment; filename=\"" + documentName + "\"");
 		
+		criaCookieProcessando(response);
+		
 		ServletOutputStream outputStream = response.getOutputStream();
 
 		wb.write(outputStream);
 	    
 	    outputStream.flush();
 		outputStream.close();
+	}
+	
+	private void criaCookieProcessando(HttpServletResponse response) {
+		Long time = new Date().getTime();
+		Cookie myCookie = new Cookie("processando", time.toString());
+		response.addCookie(myCookie);
 	}
 
 	private int insereTotalizadorCelulaMescalda(int rowIndex, String groupName) 

@@ -47,6 +47,7 @@
 				$('#wwgrp_colaboradorCertificado,#wwgrp_colaboradorNaoCertificado').css("background-color", "rgb(255, 238, 194)");
 				jAlert("Preencha os campos indicados.");
 			}else if(submit){
+				processando('${urlImgs}');
 				document.form.submit();
 			}
 		}
@@ -143,6 +144,5 @@
 		<button onclick="$('form[name=form]').attr('action', 'imprimirCertificadosVencidosAVencer.action');submit();" class="btnRelatorio" ></button>
 		<button onclick="$('form[name=form]').attr('action', 'imprimirCertificadosVencidosAVencerXlS.action');submit();" class="btnRelatorioExportar" ></button>
 	</div>
-	</br><span>*A informação de quantidade de colaboradores certificados e não certificados </br>sairá apenas no relatório agrupado por certificação.</span>
 </body>
 </html>

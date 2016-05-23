@@ -22,6 +22,7 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -33,6 +34,7 @@ import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorAvaliacaoPraticaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorCertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction;
@@ -152,9 +154,16 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
 		colaboradorAvaliacaoPraticas.add(colaboradorAvaliacaoPratica);
 		
+		Curso curso = CursoFactory.getEntity(1L);
+		
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma.setCurso(curso);
 		Collection<ColaboradorTurma> colaboradorTurmas = Arrays.asList(colaboradorTurma);
 		
+		Collection<Curso> cursos =  new ArrayList<Curso>();
+		cursos.add(curso);
+		
+		certificacaoManager.expects(once()).method("findCursosByCertificacaoId").will(returnValue(cursos));
 		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
 		colaboradorCertificacaoManager.expects(once()).method("colaboradoresQueParticipamDaCertificacao").will(returnValue(colaboradoresNaCertificacao));
 		colaboradorCertificacaoManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(new ArrayList<ColaboradorCertificacao>()));

@@ -17,6 +17,7 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.security.SecurityUtil;
@@ -68,14 +69,12 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 			return Action.SUCCESS;
 
 		colaboradores = colaboradorCertificacaoManager.colaboradoresQueParticipamDaCertificacao(certificacao.getId());
+		colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 
-		if(colaborador != null){
-			colaboradorTurmas = new ArrayList<ColaboradorTurma>();
- 			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null)	{
-				colaboradorCertificacaos = colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
-				colaboradorTurmas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao.getId(), colaboradorCertificacao.getId(), colaborador.getId());
-				populaColaboradorAvaliacaoPratica();
-			}
+		if(colaborador != null && colaborador.getId() != null && certificacao != null && certificacao.getId() != null)	{
+			colaboradorCertificacaos = colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
+			populaColaboradorTurma();
+			populaColaboradorAvaliacaoPratica();
 		}
 		
 		if(colaboradorCertificacao!= null && colaboradorCertificacao.getId() != null && colaborador != null  && colaborador.getId() != null  && certificacao != null && certificacao.getId() != null)
@@ -84,6 +83,28 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
+	private void populaColaboradorTurma(){
+		Collection<Curso> cursos = certificacaoManager.findCursosByCertificacaoId(certificacao.getId());
+		Collection<ColaboradorTurma> colaboradorTurmasRealizadas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao.getId(), colaboradorCertificacao.getId(), colaborador.getId());
+		for (Curso curso : cursos) {
+			boolean realizouTurma = false;
+			for (ColaboradorTurma colaboradorTurma : colaboradorTurmasRealizadas) {
+				if(colaboradorTurma.getCurso().getId().equals(curso.getId())){
+					colaboradorTurmas.add(colaboradorTurma);
+					realizouTurma = true;
+					continue;
+				}
+			}
+			
+			if(!realizouTurma){
+				ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
+				colaboradorTurma.setCurso(curso);
+				colaboradorTurma.setTurmaDescricao("Não realizou o curso");
+				colaboradorTurmas.add(colaboradorTurma);
+			}
+		}
+	}
+	
 	private Long[] findColaboradoresIdsPermitidosNaCertificacao() throws Exception{
 		Colaborador colaboradorLogado = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
 		Collection<Colaborador> colaboradoresPermitidos = new ArrayList<Colaborador>();

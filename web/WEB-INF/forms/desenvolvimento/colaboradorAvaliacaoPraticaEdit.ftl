@@ -215,11 +215,15 @@
 				
 				<br/>
 				<@display.table name="colaboradorTurmas" id="colaboradorTurma" class="dados">
-					<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;">Cursos Realizados Para a Certificação</div> </@display.caption>
+					<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;">Cursos da certificação</div> </@display.caption>
 					<@display.column property="curso.nome" title="Curso" style="width: 300px;"/>
 					<@display.column property="turma.descricao" title="Turma" />
 					<@display.column title="Período" style="text-align:center; width:180px">
-						${colaboradorTurma.turma.dataPrevIni?string("dd'/'MM'/'yyyy")} - ${colaboradorTurma.turma.dataPrevFim?string("dd'/'MM'/'yyyy")}
+						<#if colaboradorTurma.turma.dataPrevIni?exists && colaboradorTurma.turma.dataPrevFim?exists>
+							${colaboradorTurma.turma.dataPrevIni?string("dd'/'MM'/'yyyy")} - ${colaboradorTurma.turma.dataPrevFim?string("dd'/'MM'/'yyyy")}
+						<#else>
+							-
+						</#if>
 					</@display.column>
 					<@display.column property="turma.realizadaFormatada" title="Realizada" style="width: 50px;" />
 					<@display.column property="aprovadoMaisNota" title="Aprovado" style="width: 50px;" />

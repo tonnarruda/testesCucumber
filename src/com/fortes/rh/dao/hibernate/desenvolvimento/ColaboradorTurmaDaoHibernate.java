@@ -1754,8 +1754,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("                       where t2.curso_id = c.id ");
 		sql.append("                       and ct2.colaborador_id = ct.colaborador_id ");
 		
-		if(colaboradorCertificacaoId != null)
-		{
+		if(colaboradorCertificacaoId != null){
 			sql.append("and ");
 			sql.append("(t2.dataPrevFim between ");
 			sql.append("			coalesce( ");
@@ -1767,8 +1766,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			sql.append("					) ");
 			sql.append("	and (select data from colaboradorcertificacao where id = :colaboradorCertificacaoId) ");
 			sql.append(") ");
-		}else
-		{
+		}else{
 			sql.append("and ");
 			sql.append("t2.dataPrevFim  > coalesce((select max(data) from colaboradorcertificacao where certificacao_id = :certificacaoId and colaborador_id = ct.colaborador_id),'01/01/2000') ");
 		}	

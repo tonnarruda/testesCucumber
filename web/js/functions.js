@@ -1351,12 +1351,18 @@ function checkListBoxSearch(name)
 	});
 }
 
+var processandoTime = "";
 function processando(urlImg){
+	processandoTime = getCookieProcessando();
+	
 	var background = document.createElement('div');
 	background.style.cssText = 'position: fixed; z-index: 4000; background-color: black; opacity: 0.1; bottom: 0; right: 0; top: 0; left: 0;'
-	
-	var div = document.createElement('div');
+	background.setAttribute("class", "processando");
+		
 	var img = document.createElement('img');
+	img.setAttribute("class", "processando");
+	var div = document.createElement('div');
+	div.setAttribute("class", "processando");
 	img.src = urlImg + '/loadingGeral.gif';
 	div.innerHTML = "<h3 style='z-index: 5000;'>Processando...</h3><br />";
 	div.style.cssText = 'position: fixed; top: 30%; left: 40%; z-index: 5000; width: 300px; text-align: center;';
@@ -1364,6 +1370,28 @@ function processando(urlImg){
 	
 	document.body.appendChild(div);
 	document.body.appendChild(background);
+	
+	setTimeout("checkProcessandoTime()",500);
+}
+
+function checkProcessandoTime(){
+	if(processandoTime != getCookieProcessando())
+		$('.processando').remove();
+	else
+		setTimeout("checkProcessandoTime()",500);
+}
+
+function getCookieProcessando() {
+    var nameEQ = "processando=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+		while (c.charAt(0)==' ') 
+			c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) 
+			return c.substring(nameEQ.length,c.length);
+    }
+    return
 }
 
 (function($) {
