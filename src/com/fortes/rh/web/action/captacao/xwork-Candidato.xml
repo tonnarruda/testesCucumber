@@ -73,9 +73,11 @@
 		</action>
 
 		<action name="prepareRelatorioAvaliacaoCandidatos" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="prepareRelatorioAvaliacaoCandidatos">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/relatorioAvaliacaoCandidatos.ftl</result>
 		</action>
 		<action name="relatorioAvaliacaoCandidatos" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="relatorioAvaliacaoCandidatos">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/avaliacao_candidatos.jasper</param>
 				<param name="dataSource">avaliacaoCandidatos</param>
@@ -204,6 +206,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/curriculoTextoOcr.ftl</result>
 		</action>
 		<action name="verExamePalografico" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="verExamePalografico">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/examePalograficoView.ftl</result>
 		</action>
 		<action name="showCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="showCurriculo">
@@ -222,8 +225,9 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/examePalograficoEdit.ftl</result>
 		</action>
 		<action name="updateExamePalografico" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="updateExamePalografico">
+			<interceptor-ref name="defaultUpdateStack"/>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/examePalograficoEdit.ftl</result>
-			<result name="success" type="redirect"><![CDATA[prepareExamePalografico.action?msgAlert=${msgAlert}]]></result>
+			<result name="success" type="redirect">prepareExamePalografico.action?msgAlert=${msgAlert}</result>
 		</action>
 		<action name="candidatosParticipantesEtapaSeletivaJSon" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="candidatosParticipantesEtapaSeletivaJSon">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>

@@ -57,12 +57,12 @@
 													buttons: [
 													    {
 													        text: acao,
-													        click: function() { window.location=link+'&encerrarSolicitacao=N'; }
+													        click: function() { executeLink(link+'&encerrarSolicitacao=N'); }
 													    },
 														<#if solicitacao.qtdVagasPreenchidas?exists && solicitacao.quantidade?exists && solicitacao.quantidade <= solicitacao.qtdVagasPreenchidas+1>
 														    {
 														        text: acao+" e encerrar solicitação",
-														        click: function() { window.location=link+'&encerrarSolicitacao=S'; }
+														        click: function() { executeLink(link+'&encerrarSolicitacao=S'); }
 														    },
 													    </#if>
 													    {
@@ -214,10 +214,9 @@
 		</@authz.authorize>
 		
 		<@display.column title="Ações" media="html" class="acao" style="width: 140px;">
-			
-			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_HISTORICO" href="../historicoCandidato/list.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}" imgTitle="Histórico" imgName="page_user.gif" imgTitleDisabled=titleDisabled disabled=solicitacao.encerrada || !autorizadoPeloGestor/>
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_HISTORICO" href="javascript: executeLink('../historicoCandidato/list.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}');" imgTitle="Histórico" imgName="page_user.gif" imgTitleDisabled=titleDisabled disabled=solicitacao.encerrada || !autorizadoPeloGestor/>
 	
-			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_COMPETENCIAS" href="../nivelCompetencia/prepareCompetenciasByCandidato.action?&candidato.id=${candidatoSolicitacao.candidato.id}&faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}" imgTitle="Competências" imgName="competencias.gif" imgTitleDisabled=titleDisabled disabled=!autorizadoPeloGestor/>
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_COMPETENCIAS" href="javascript: executeLink('../nivelCompetencia/prepareCompetenciasByCandidato.action?&candidato.id=${candidatoSolicitacao.candidato.id}&faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}');" imgTitle="Competências" imgName="competencias.gif" imgTitleDisabled=titleDisabled disabled=!autorizadoPeloGestor/>
 	
 			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_VISUALIZARCURRICULO" href="javascript:popup('../candidato/infoCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&origemList=CA', 580, 750)" imgTitle="Visualizar Currículo" imgName="page_curriculo.gif" />
 	
@@ -241,12 +240,11 @@
 				</#if>
 			</@authz.authorize>
 			
-			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_EXCLUIR" href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}'});" imgTitle="Excluir" imgName="delete.gif" imgTitleDisabled=msgDisabledExcluir disabled=disabledExcluir/>
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_EXCLUIR" href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){javascript: executeLink('delete.action?solicitacao.id=${solicitacao.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}');});" imgTitle="Excluir" imgName="delete.gif" disabled=disabledExcluir imgTitleDisabled=msgDisabledExcluir/>
 			
-			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO" href="../../geral/documentoAnexo/listCandidato.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidatoSolicitacao.candidato.id}&solicitacaoId=${solicitacao.id}" imgTitle="Documentos Anexos" imgName="anexos.gif" imgTitleDisabled=titleDisabled disabled=solicitacao.encerrada || !autorizadoPeloGestor/>
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO" href="javascript: executeLink('../../geral/documentoAnexo/listCandidato.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidatoSolicitacao.candidato.id}&solicitacaoId=${solicitacao.id}');" imgTitle="Documentos Anexos" imgName="anexos.gif" imgTitleDisabled=titleDisabled disabled=solicitacao.encerrada || !autorizadoPeloGestor/>
 			
 			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_AVALIACOES" href="javascript:;" onclick="getMenuAvaliacoes(event, ${solicitacao.id}, ${candidatoSolicitacao.candidato.id})" imgTitle="Avaliações da Solicitação" imgName="form.gif" imgTitleDisabled=titleDisabledAnexo disabled=!(solicitacaoAvaliacaos?exists && (solicitacaoAvaliacaos?size > 0)) || !autorizadoPeloGestor/>
-		
 		</@display.column>
 
 		<@display.column title="Nome" class="${classe}">
@@ -323,17 +321,17 @@
 		</#if>
 		
 		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_IMPRIMIR">
-			<button onclick="window.location='../candidatoSolicitacao/imprimirListagemCandidatoSolicitacao.action?solicitacao.id=${solicitacao.id}&etapaSeletivaId=${_etapaSeletivaId}&visualizar=${visualizar}&nomeBusca=${_nomeBusca}&indicadoPor=${_indicadoPor}&observacaoRH=${_observacaoRH}'" class="btnImprimir"></button>
+			<button onclick="javascript: executeLink('../candidatoSolicitacao/imprimirListagemCandidatoSolicitacao.action?solicitacao.id=${solicitacao.id}&etapaSeletivaId=${_etapaSeletivaId}&visualizar=${visualizar}&nomeBusca=${_nomeBusca}&indicadoPor=${_indicadoPor}&observacaoRH=${_observacaoRH}');" class="btnImprimir"></button>
 		</@authz.authorize>
 		
 		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_TRIAGEM">
 			<#if !solicitacao.encerrada>
-				<button class="btnTriagem" onclick="window.location='../candidato/prepareBusca.action?solicitacao.id=${solicitacao.id}'"></button>
+				<button class="btnTriagem" onclick="javascript: executeLink('../candidato/prepareBusca.action?solicitacao.id=${solicitacao.id}');"></button>
 			</#if>
 		</@authz.authorize>
 		
 		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_INSERIRETAPAGRUPO">
-			<button onclick="window.location='../historicoCandidato/prepareInsert.action?solicitacao.id=${solicitacao.id}'" class="btnInserirEtapasEmGrupo" accesskey="M"></button>
+			<button onclick="javascript: executeLink('../historicoCandidato/prepareInsert.action?solicitacao.id=${solicitacao.id}');" class="btnInserirEtapasEmGrupo" accesskey="M"></button>
 		</@authz.authorize>
 		
 		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_RESULTADOAVALIACAO">
@@ -341,18 +339,18 @@
 		</@authz.authorize>
 
 		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_TRANSFCANDIDATO">
-			<button onclick="window.location='prepareMover.action?solicitacao.id=${solicitacao.id}'" class="btnTransferirCandidatos" accesskey="M"></button>
+			<button onclick="javascript: executeLink('prepareMover.action?solicitacao.id=${solicitacao.id}');" class="btnTransferirCandidatos" accesskey="M"></button>
 		</@authz.authorize>
 		
 		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_TRIAGEMMODULOEXTERNO">
 			<#if !solicitacao.encerrada>
-				<button onclick="window.location='listTriagem.action?solicitacao.id=${solicitacao.id}'" class="btnTriagemModuloExterno" accesskey="T"></button>
+				<button onclick="javascript: executeLink('listTriagem.action?solicitacao.id=${solicitacao.id}');" class="btnTriagemModuloExterno" accesskey="T"></button>
 			</#if>
 		</@authz.authorize>
 
 		<@authz.authorize ifAllGranted="ROLE_CAND_SOL_MATRIZ_COMPETENCIA_SOLICITACAO">
 			<#if existeCompetenciaParaFaixa>
-				<button onclick="window.location='../nivelCompetencia/imprimirMatrizCompetenciasCandidatos.action?faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}'" class="btnMatrizCompetencia"></button>
+				<button onclick="javascript: executeLink('../nivelCompetencia/imprimirMatrizCompetenciasCandidatos.action?faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}');" class="btnMatrizCompetencia"></button>
 			<#else>
 				<img border="0" title="Não existe Competência configurada para a Faixa Salarial" style="opacity:0.2;filter:alpha(opacity=20);" src="<@ww.url includeParams="none" value="/imgs/btnMatrizCompetencia.gif"/>">
 			</#if>

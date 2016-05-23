@@ -116,6 +116,21 @@
             <param name="operationMode">STORE</param>
         </interceptor-ref>
         <interceptor-ref name="tokenWebStack" />
+	  </interceptor-stack> 
+	   
+      <interceptor-stack name="defaultDeleteSemTokenStack">
+        <interceptor-ref name="store">
+            <param name="operationMode">STORE</param>
+        </interceptor-ref>
+        <interceptor-ref name="myDefaultWebStackPart1" />     
+        <interceptor-ref name="defaultListDeleteScope"/>
+        <interceptor-ref name="scope">
+            <param name="session">__TO_BE_OVERWRITTEN_IN_THE_ACTION__</param>
+        </interceptor-ref>
+        <interceptor-ref name="myDefaultWebStackPart2" />
+        <interceptor-ref name="store">
+            <param name="operationMode">STORE</param>
+        </interceptor-ref>
 	  </interceptor-stack>  
 
       <!-- Usado quando se precisa dar um redirect apos o update passando uma mensagem -->
@@ -128,6 +143,16 @@
             <param name="operationMode">STORE</param>
         </interceptor-ref>
         <interceptor-ref name="tokenWebStack" />
+      </interceptor-stack>  
+
+      <interceptor-stack name="defaultUpdateSemTokenStack">
+        <interceptor-ref name="store">
+            <param name="operationMode">STORE</param>
+        </interceptor-ref>
+        <interceptor-ref name="myDefaultWebStack" />     
+        <interceptor-ref name="store">
+            <param name="operationMode">STORE</param>
+        </interceptor-ref>
     </interceptor-stack>  
 
 	  <!-- ########################################################### -->

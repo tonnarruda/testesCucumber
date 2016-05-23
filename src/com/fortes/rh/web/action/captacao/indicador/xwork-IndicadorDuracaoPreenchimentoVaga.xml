@@ -11,12 +11,15 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/indicador/painelRecrutamento.ftl</result>
 		</action>
 		<action name="prepare" class="com.fortes.rh.web.action.captacao.indicador.IndicadorDuracaoPreenchimentoVagaListAction" method="prepare">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorDuracaoPreechimentoVagas.ftl</result>
 		</action>
 		<action name="prepareMotivo" class="com.fortes.rh.web.action.captacao.indicador.IndicadorDuracaoPreenchimentoVagaListAction" method="prepareMotivo">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorMotivoPreechimentoVagas.ftl</result>
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.captacao.indicador.IndicadorDuracaoPreenchimentoVagaListAction" method="list">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">/WEB-INF/report/indicadorDuracaoPreenchimentoVagas.jasper</param>
 				<param name="dataSource">indicador</param>
@@ -27,6 +30,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorDuracaoPreechimentoVagas.ftl</result>
 		</action>
 		<action name="listXLS" class="com.fortes.rh.web.action.captacao.indicador.IndicadorDuracaoPreenchimentoVagaListAction" method="list">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="xls">
 				<param name="dataSource">indicador</param>
 				<param name="documentName">indicador_duracao_preenchimento_vagas.xls</param>
@@ -43,6 +47,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorDuracaoPreechimentoVagas.ftl</result>
 		</action>
 		<action name="listMotivos" class="com.fortes.rh.web.action.captacao.indicador.IndicadorDuracaoPreenchimentoVagaListAction" method="listMotivos">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">/WEB-INF/report/indicadorMotivosPreenchimentoVagas.jasper</param>
 				<param name="dataSource">indicador</param>

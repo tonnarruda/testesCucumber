@@ -178,7 +178,6 @@
 		<@ww.hidden name="turmaId"  />
 		<@ww.hidden name="empresaCodigo"  />
 		<@ww.hidden name="matricula"  />
-	<@ww.token />
 	</@ww.form>
 
 
@@ -243,7 +242,7 @@
 			</#if>
 		</#if>
 		
-		<button onclick="window.location='${retorno}'" class="btnVoltar"></button>
+		<button onclick="javascript: executeLink('${retorno}');" class="btnVoltar"></button>
 		
 		<#if exibirImprimir>
 			<button onclick="javascript:window.location='imprimirEntrevistaDesligamento.action?colaborador.id=${colaborador.id}&questionario.id=${questionario.id}'" class="btnImprimir"></button>

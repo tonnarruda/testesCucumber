@@ -36,6 +36,7 @@ import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -220,14 +221,20 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 			addActionSuccess("Exclusão realizada com sucesso.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			addActionError("Ocorreu um erro ao realizar a exclusão");
+			ExceptionUtil.traduzirMensagem(this, e, "Ocorreu um erro ao realizar a exclusão");
 		}
 		return Action.SUCCESS;
 	}
 	
 	public String deleteColaboradores() throws Exception
 	{
-		colaboradorRespostaManager.removeFichas(colaboradorQuestionarioIds);
+		try {
+			colaboradorRespostaManager.removeFichas(colaboradorQuestionarioIds);
+			addActionSuccess("Exclusão realizada com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Ocorreu um erro ao realizar a exclusão");
+		}
 		
 		return Action.SUCCESS;
 	}

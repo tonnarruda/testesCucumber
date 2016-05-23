@@ -84,9 +84,11 @@
 
 		<!-- RELATÓRIO -->
 		<action name="prepareRelatorioProcessoSeletivo" class="com.fortes.rh.web.action.captacao.SolicitacaoEditAction" method="prepareRelatorioProcessoSeletivo">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioProcessoSeletivo.ftl</result>
 		</action>
 		<action name="imprimirRelatorioProcessoSeletivo" class="com.fortes.rh.web.action.captacao.SolicitacaoEditAction"  method="imprimirRelatorioProcessoSeletivo">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/processo_seletivo.jasper</param>
 				<param name="dataSource">processoSeletivoRelatorios</param>
@@ -97,10 +99,12 @@
 		</action>
 
 		<action name="prepareRelatorio" class="com.fortes.rh.web.action.captacao.SolicitacaoEditAction" method="prepareRelatorio">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioSolicitacao.ftl</result>
 		</action>
 
 		<action name="imprimirRelatorio" class="com.fortes.rh.web.action.captacao.SolicitacaoEditAction"  method="imprimirRelatorio">
+		<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/etapas_solicitacoes_abertas.jasper</param>
 				<param name="dataSource">dataSource</param>
@@ -117,6 +121,7 @@
 		</action>
 
 		<action name="imprimirSolicitacaoPessoal" class="com.fortes.rh.web.action.captacao.SolicitacaoEditAction"  method="imprimirSolicitacaoPessoal">
+		<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/solicitacaoPessoal.jasper</param>
 				<param name="dataSource">dataSource</param>
@@ -137,9 +142,11 @@
 		</action>
 
 		<action name="agenda" class="com.fortes.rh.web.action.captacao.SolicitacaoListAction" method="agenda">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/agenda.ftl</result>
 		</action>
 		<action name="imprimirAgenda" class="com.fortes.rh.web.action.captacao.SolicitacaoListAction"  method="imprimirAgenda">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/agenda.jasper</param>
 				<param name="dataSource">historicoCandidatos</param>

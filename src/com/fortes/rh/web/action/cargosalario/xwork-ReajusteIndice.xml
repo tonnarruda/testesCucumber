@@ -17,6 +17,7 @@
 			<result name="success" type="redirect">../tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}</result>
 		</action>
 		<action name="prepareDissidio" class="com.fortes.rh.web.action.cargosalario.ReajusteIndiceEditAction" method="prepareDissidio">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/dissidioIndice.ftl</result>
 		</action>
 		<action name="insertColetivo" class="com.fortes.rh.web.action.cargosalario.ReajusteIndiceEditAction" method="insertColetivo">

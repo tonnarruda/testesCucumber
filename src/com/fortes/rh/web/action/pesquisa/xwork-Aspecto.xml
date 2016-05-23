@@ -4,6 +4,7 @@
 <xwork>
 	<package name="aspecto" extends="default" namespace="/pesquisa/aspecto">
 		<action name="list" class="com.fortes.rh.web.action.pesquisa.AspectoListAction" method="list">
+		    <interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/aspectoList.ftl</result>
 		</action>
 		<action name="listAvaliacao" class="com.fortes.rh.web.action.pesquisa.AspectoListAction" method="listAvaliacao">
@@ -23,12 +24,12 @@
 			<result name="input" type="redirect">list.action?actionErr=${actionErr}</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="myDefaultWebStack" />
 			<result name="success" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/aspectoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="myDefaultWebStack" />
 			<result name="success" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}]]></result>
 			<result name="input" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}&actionErr=${actionErr}]]></result>
 		</action>

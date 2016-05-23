@@ -4,6 +4,7 @@
 <xwork>
 	<package name="faturamentoMensal" extends="default" namespace="/cargosalario/faturamentoMensal">
 		<action name="list" class="com.fortes.rh.web.action.cargosalario.FaturamentoMensalEditAction" method="list">
+		    <interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/faturamentoMensalList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.cargosalario.FaturamentoMensalEditAction" method="delete">
@@ -16,14 +17,10 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/faturamentoMensalEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.FaturamentoMensalEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/faturamentoMensalEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.cargosalario.FaturamentoMensalEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/faturamentoMensalEdit.ftl</result>
 		</action>

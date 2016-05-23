@@ -4,9 +4,11 @@
 <xwork>
 	<package name="areaOrganizacionalRelatorio" extends="default" namespace="/geral/areaOrganizacionalRelatorio">
 		<action name="formFiltro" class="com.fortes.rh.web.action.geral.AreaOrganizacionalRelatorioAction" method="formFiltro">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalRelatorioFiltro.ftl</result>
 		</action>
 		<action name="gerarRelatorio" class="com.fortes.rh.web.action.geral.AreaOrganizacionalRelatorioAction" method="gerarRelatorio">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/areaOrganizacional_filtro.jasper</param>
 				<param name="dataSource">dataSource</param>

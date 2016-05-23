@@ -272,7 +272,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	{
 		if(areaOrganizacionalManager.verificaMaternidade(reajusteColaborador.getAreaOrganizacionalProposta().getId(), null))
 		{
-			addActionError("Não é possível fazer solicitações para áreas que possuem sub-áreas.");
+			addActionWarning("Não é possível fazer solicitações para áreas que possuem sub-áreas.");
 			prepareUpdate();
 			return Action.INPUT;
 		}

@@ -26,8 +26,8 @@
 	<br/>
 	<@display.table name="historicoCandidatos" id="historicoCandidato" class="dados">
 		<@display.column title="Ações" media="html" class="acao" style="width: 60px;">
-			<a href="prepareUpdate.action?historicoCandidato.id=${historicoCandidato.id}&candidatoSol.id=${candidatoSolicitacao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?historicoCandidato.id=${historicoCandidato.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?historicoCandidato.id=${historicoCandidato.id}&candidatoSol.id=${candidatoSolicitacao.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?historicoCandidato.id=${historicoCandidato.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="etapaSeletiva.nome" title="Etapa" />
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="text-align: center;width: 90px;"/>
@@ -41,7 +41,7 @@
 	</@display.table>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action?candidatoSol.id=${candidatoSolicitacao.id}'" accesskey="I"></button>
+		<button class="btnInserir" onclick="executeLink('prepareInsert.action?candidatoSol.id=${candidatoSolicitacao.id}');" accesskey="I"></button>
 		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${candidatoSolicitacao.solicitacao.id}'" class="btnVoltar" accesskey="V"></button>
 		<button class="btnImprimirPdf" onclick="window.location='imprimirHistorico.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}'">
 	</div>

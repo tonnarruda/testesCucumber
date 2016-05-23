@@ -79,7 +79,7 @@
 
 	<#list perguntas as pergunta>
 		<div class="novaPergunta">
-			<a href="prepareInsert.action?questionario.id=${questionario.id}&ordemSugerida=${pergunta.ordem}"><img src="<@ww.url value="/imgs/mais.gif"/>"> Inserir pergunta aqui</a>
+			<a href="javascript: executeLink('prepareInsert.action?questionario.id=${questionario.id}&ordemSugerida=${pergunta.ordem}');"><img src="<@ww.url value="/imgs/mais.gif"/>"> Inserir pergunta aqui</a>
 		</div>
 
 		<div class="pergunta">
@@ -88,7 +88,7 @@
 			</#if>
 
 			<div class="acaoPerguntas">
-				<a href="prepareUpdate.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+				<a href="javascript: executeLink('prepareUpdate.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../pergunta/delete.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<#if 1 < pergunta.ordem>
 					<a href="reordenar.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}&sinal=-"><img src="<@ww.url value="/imgs/up.gif"/>" title="Mover para cima"/></a>
@@ -143,13 +143,13 @@
 	</#list>
 
 	<div>
-		<a href="prepareInsert.action?questionario.id=${questionario.id}"><img src="<@ww.url value="/imgs/mais.gif"/>"> Inserir pergunta aqui</a>
+		<a href="javascript: executeLink('prepareInsert.action?questionario.id=${questionario.id}');"><img src="<@ww.url value="/imgs/mais.gif"/>"> Inserir pergunta aqui</a>
 	</div>
 
 	<#if 0 < perguntas?size >
-		<button class="btnAplicarNaOrdemAtual" onclick="window.location='../questionario/prepareAplicar.action?questionario.id=${questionario.id}'"></button>
-		<button class="btnAplicarOrdenadoPorAspectos" onclick="window.location='../questionario/prepareAplicarByAspecto.action?questionario.id=${questionario.id}'"></button>
-		<button class="btnEmbaralhar" onclick="window.location='embaralharPerguntas.action?questionario.id=${questionario.id}'"></button>
+		<button class="btnAplicarNaOrdemAtual" onclick="javascript: executeLink('../questionario/prepareAplicar.action?questionario.id=${questionario.id}');"></button>
+		<button class="btnAplicarOrdenadoPorAspectos" onclick="javascript: executeLink('../questionario/prepareAplicarByAspecto.action?questionario.id=${questionario.id}');"></button>
+		<button class="btnEmbaralhar" onclick="javascript: executeLink('embaralharPerguntas.action?questionario.id=${questionario.id}');"></button>
 	</#if>
 
 	<#-- Monta o botão de acordo com o destino pesquisa, avaliação, entrevista-->

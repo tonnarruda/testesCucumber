@@ -3,6 +3,7 @@
 
 <xwork>
 	<package name="anuncio" extends="default" namespace="/captacao/anuncio">
+		<default-interceptor-ref name="myDefaultWebStack"/>
 		<action name="list" class="com.fortes.rh.web.action.captacao.AnuncioListAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/anuncioList.ftl</result>
 		</action>

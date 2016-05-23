@@ -41,17 +41,17 @@
 				return false;
 			}
 			
-			newConfirm('Deseja realmente aplicar o reajuste?', function(){ window.location='aplicarPorColaborador.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.data=${tabelaReajusteColaborador.data}&tabelaReajusteColaborador.dissidio=${tabelaReajusteColaborador.dissidio?string}' });
+			newConfirm('Deseja realmente aplicar o reajuste?', function(){ executeLink('aplicarPorColaborador.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.data=${tabelaReajusteColaborador.data}&tabelaReajusteColaborador.dissidio=${tabelaReajusteColaborador.dissidio?string}'); });
 		}
 		
 		function aplicarPorFaixaSalarial()
 		{
-			newConfirm('Deseja realmente aplicar o reajuste?', function(){ window.location='aplicarPorFaixaSalarial.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.data=${tabelaReajusteColaborador.data}' });
+			newConfirm('Deseja realmente aplicar o reajuste?', function(){ executeLink('aplicarPorFaixaSalarial.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.data=${tabelaReajusteColaborador.data}'); });
 		}
 		
 		function aplicarPorIndice()
 		{
-			newConfirm('Deseja realmente aplicar o reajuste?', function(){ window.location='aplicarPorIndice.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.data=${tabelaReajusteColaborador.data}' });
+			newConfirm('Deseja realmente aplicar o reajuste?', function(){ executeLink('aplicarPorIndice.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.data=${tabelaReajusteColaborador.data}'); });
 		}
 	</script>
 

@@ -4,9 +4,11 @@
 <xwork>
 	<package name="reajusteRelatorio" extends="default" namespace="/cargosalario/reajusteRelatorio">
 		<action name="formFiltro" class="com.fortes.rh.web.action.cargosalario.ReajusteRelatorioAction" method="formFiltro">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/reajusteRelatorioFiltro.ftl</result>
 		</action>
 		<action name="gerarRelatorio" class="com.fortes.rh.web.action.cargosalario.ReajusteRelatorioAction" method="gerarRelatorio">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/simula_reajuste.jasper</param>
 				<param name="dataSource">dataSource</param>
@@ -34,6 +36,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/reajusteRelatorioFiltro.ftl</result>
 		</action>
 		<action name="gerarRelatorioXls" class="com.fortes.rh.web.action.cargosalario.ReajusteRelatorioAction" method="gerarRelatorioXls">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="xls">
 				<param name="dataSource">dataSource</param>
 				<param name="documentName">simula_reajuste.xls</param>

@@ -26,9 +26,11 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/comoFicouSabendoVagaEdit.ftl</result>
 		</action>
 		<action name="prepareRelatorioComoFicouSabendoVaga" class="com.fortes.rh.web.action.geral.ComoFicouSabendoVagaEditAction" method="prepareRelatorioComoFicouSabendoVaga">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/relatorioComoFicouSabendoVaga.ftl</result>
 		</action>
 		<action name="imprimirRelatorioComoFicouSabendoVaga" class="com.fortes.rh.web.action.geral.ComoFicouSabendoVagaEditAction" method="imprimirRelatorioComoFicouSabendoVaga">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>

@@ -19,8 +19,8 @@
 				<tr class="<#if i%2==0>odd<#else>even</#if>">
 					<td align="center" width="60">
 						<@authz.authorize ifAllGranted="ROLE_DISSIDIO_INDICE">
-							<a href="../reajusteIndice/prepareUpdate.action?reajusteIndice.id=${reajusteIndice.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}" ><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif" border="0"/>"></a>
-							<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='../reajusteIndice/delete.action?reajusteIndice.id=${reajusteIndice.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url includeParams="none" value="/imgs/delete.gif" border="0"/>"></a>
+							<a href="javascript: executeLink('../reajusteIndice/prepareUpdate.action?reajusteIndice.id=${reajusteIndice.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}');" ><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif" border="0"/>"></a>
+							<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){executeLink('../reajusteIndice/delete.action?reajusteIndice.id=${reajusteIndice.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}');});"><img border="0" title="Excluir" src="<@ww.url includeParams="none" value="/imgs/delete.gif" border="0"/>"></a>
 						</@authz.authorize>
 				  		<@authz.authorize ifNotGranted="ROLE_DISSIDIO_INDICE">
 							<a><img border="0" src="<@ww.url includeParams="none" value="/imgs/edit.gif" border="0"/>" style="opacity:0.2;filter:alpha(opacity=20);"></a>
@@ -61,7 +61,7 @@
 <div class="buttonGroup">
 	<button onclick="window.location='list.action'" class="btnVoltar"></button>
 	
-	<button onclick="window.location='../reajusteIndice/prepareInsert.action'" class="btnInserir" style="margin-right:80px;"></button>
+	<button onclick="executeLink('../reajusteIndice/prepareInsert.action');" class="btnInserir" style="margin-right:80px;"></button>
 	
 	<@authz.authorize ifAllGranted="ROLE_MOV_APLICARREALINHAMENTO">
 		<#if tabelaReajusteColaborador.id?exists && reajustesIndice?exists && 0 < reajustesIndice?size>

@@ -189,8 +189,8 @@
 		</#if>
 		<@display.column title="Ações" media="html" class="acao" style="width: 170px; text-align:left;">
 			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_IMPRIMIR" href="imprimirSolicitacaoPessoal.action?solicitacao.id=${solicitacao.id}" imgTitle="Imprimir" imgName="printer.gif"/>
-			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EDITAR" href="prepareUpdate.action?solicitacao.id=${solicitacao.id}" imgTitleDisabled="Não é possível editar a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Editar" imgName="edit.gif" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
-			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});" imgTitleDisabled="Não é possível excluir a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Excluir" imgName="delete.gif" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EDITAR" href="javascript: executeLink('prepareUpdate.action?solicitacao.id=${solicitacao.id}');" imgTitleDisabled="Não é possível editar a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Editar" imgName="edit.gif" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?solicitacao.id=${solicitacao.id}');});" imgTitleDisabled="Não é possível excluir a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Excluir" imgName="delete.gif" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
 			
 			<#if solicitacao.anuncio?exists && solicitacao.anuncio.exibirModuloExterno>
 				<#assign titleAnuncio = "Anunciado"/>
@@ -200,15 +200,15 @@
 				<#assign imgAnuncio = "cliper.gif"/>
 			</#if>
 			
-			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_ANUNCIAR" href="../anuncio/anunciar.action?solicitacao.id=${solicitacao.id}" imgTitleDisabled="Não é possível anunciar a solicitação. Esta já foi encerrada." imgTitle="${titleAnuncio}" imgName="${imgAnuncio}" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_ANUNCIAR" href="javascript: executeLink('../anuncio/anunciar.action?solicitacao.id=${solicitacao.id}');" imgTitleDisabled="Não é possível anunciar a solicitação. Esta já foi encerrada." imgTitle="${titleAnuncio}" imgName="${imgAnuncio}" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
 
 			<#if !solicitacao.encerrada>
-			 	<#assign onclickEcerrar = "encerraSolicitacao('${solicitacao.id}', '${observacaoLiberador?js_string?replace('\"', '$#-')}');"/>
+			 	<#assign onclickEncerrar = "encerraSolicitacao('${solicitacao.id}', '${observacaoLiberador?js_string?replace('\"', '$#-')}');"/>
 			<#else>
-			 	<#assign onclickEcerrar = "newConfirm('${fraseConfirma}', function(){window.location='${actionEncerra}?solicitacao.id=${solicitacao.id}'});"/>
+			 	<#assign onclickEncerrar = "newConfirm('${fraseConfirma}', function(){executeLink('${actionEncerra}?solicitacao.id=${solicitacao.id}');});"/>
 			</#if>
 			
-			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_ENCERRAR" href="#" onclick="${onclickEcerrar}" imgTitle="${titleEncerra}" imgName="${imgEncerra}"/>
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_ENCERRAR" href="#" onclick="${onclickEncerrar}" imgTitle="${titleEncerra}" imgName="${imgEncerra}"/>
 				
 			<#if !solicitacao.suspensa>
 				<#assign hrefSuspender = "#"/>
@@ -216,7 +216,7 @@
 				<#assign titelSuspender = "Suspender solicitação"/>
 				<#assign imgSuspender = "control_pause.gif"/>
 			<#else>
-				<#assign hrefSuspender = "liberarSolicitacao.action?solicitacao.id=${solicitacao.id}"/>
+				<#assign hrefSuspender = "javascript: executeLink('liberarSolicitacao.action?solicitacao.id=${solicitacao.id}');"/>
 				<#assign onclickSuspender = ""/>
 				<#assign titelSuspender = "Liberar solicitação. Observação: ${obsSuspensao}"/>
 				<#assign imgSuspender = "control_play.gif"/>
@@ -224,9 +224,9 @@
 		
 			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_SUSPENDER" href="${hrefSuspender}" onclick="${onclickSuspender}" imgTitleDisabled="Não é possível suspender ou liberar a solicitação. Esta já foi encerrada." imgTitle="${titelSuspender}" imgName="${imgSuspender}" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
 		
-			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_CLONAR" href="prepareClonar.action?solicitacao.id=${solicitacao.id}" imgTitle="Clonar" imgName="clonar.gif"/>
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_CLONAR" href="javascript: executeLink('prepareClonar.action?solicitacao.id=${solicitacao.id}');" imgTitle="Clonar" imgName="clonar.gif"/>
 			
-			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_CANDIDATO" href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}" imgTitle="Candidatos da Seleção" imgName="usuarios.gif"/>
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_CANDIDATO" href="javascript: executeLink('../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}');" imgTitle="Candidatos da Seleção" imgName="usuarios.gif"/>
 		
 			<#if solicitacao.status == 'A'>
 				<#assign imgStatus = "status_green.png"/>
@@ -316,7 +316,7 @@
 	</div>
 	<div class="buttonGroup">
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_INSERIR">
-			<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
+			<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');" accesskey="I"></button>
 		</@authz.authorize>
 	</div>
 </body>

@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
 import com.fortes.rh.model.cargosalario.FaturamentoMensal;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -72,12 +73,12 @@ public class FaturamentoMensalEditAction extends MyActionSupportList
 		try
 		{
 			faturamentoMensalManager.remove(faturamentoMensal.getId());
-			addActionMessage("Faturamento excluído com sucesso.");
+			addActionSuccess("Faturamento excluído com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir este Faturamento.");
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este Faturamento.");
 		}
 
 		return list();

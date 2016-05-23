@@ -76,9 +76,11 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/listCompetenciasFaixaSalarial.ftl</result>
 		</action>
 		<action name="prepareRelatorioCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareRelatorioCompetenciasColaborador">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioCompetenciasColaborador.ftl</result>
 		</action>
 		<action name="imprimirRelatorioCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="imprimirRelatorioCompetenciasColaborador">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/competencias_colaborador.jasper</param>
 				<param name="dataSource">niveisCompetenciaFaixaSalariais</param>
@@ -88,9 +90,11 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioCompetenciasColaborador.ftl</result>
 		</action>
 		<action name="prepareRelatorioMatrizCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareRelatorioCompetenciasColaborador">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioMatrizCompetenciasColaborador.ftl</result>
 		</action>
 		<action name="imprimirMatrizCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="imprimirMatrizCompetenciasColaborador">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/matriz_colaboradores_competencias.jasper</param>
 				<param name="dataSource">configuracaoNivelCompetenciaVOs</param>
@@ -100,7 +104,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioMatrizCompetenciasColaborador.ftl</result>
 		</action>
 		<action name="imprimirMatrizCompetenciasCandidatos" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="imprimirMatrizCompetenciasCandidatos">
-			<interceptor-ref name="defaultUpdateStack"/>
+			<interceptor-ref name="defaultUpdateSemTokenStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/matriz_colaboradores_competencias.jasper</param>
 				<param name="dataSource">configuracaoNivelCompetenciaVOs</param>

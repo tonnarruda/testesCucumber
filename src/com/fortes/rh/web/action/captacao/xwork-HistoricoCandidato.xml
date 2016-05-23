@@ -4,9 +4,11 @@
 <xwork>
 	<package name="HistoricoCandidato" extends="default" namespace="/captacao/historicoCandidato">
 		<action name="list" class="com.fortes.rh.web.action.captacao.HistoricoCandidatoListAction" method="list">
+		    <interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/historicoCandidatoList.ftl</result>
 		</action>
 		<action name="imprimirHistorico" class="com.fortes.rh.web.action.captacao.HistoricoCandidatoListAction" method="imprimirHistorico">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/historicoCandidatoSolicitacao.jasper</param>
 				<param name="dataSource">historicoCandidatos</param>

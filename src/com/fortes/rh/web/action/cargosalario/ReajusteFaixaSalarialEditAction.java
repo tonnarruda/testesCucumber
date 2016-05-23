@@ -11,6 +11,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.TipoReajuste;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
@@ -58,7 +59,7 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Ocorreu um erro ao gravar a proposta de reajuste.");
+			ExceptionUtil.traduzirMensagem(this, e, "Ocorreu um erro ao gravar a proposta de reajuste.");
 		}
 		finally
 		{
@@ -80,12 +81,12 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 		try
 		{
 			reajusteFaixaSalarialManager.updateValorProposto(reajusteFaixaSalarial.getId(), reajusteFaixaSalarial.getValorAtual(), dissidioPor, valorDissidio);
-			addActionMessage("Proposta de reajuste alterada com sucesso");
+			addActionSuccess("Proposta de reajuste alterada com sucesso");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Ocorreu um erro ao alterar a proposta de reajuste");
+			ExceptionUtil.traduzirMensagem(this, e, "Ocorreu um erro ao alterar a proposta de reajuste");
 		}
 		finally
 		{

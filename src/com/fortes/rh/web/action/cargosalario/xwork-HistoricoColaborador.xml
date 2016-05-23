@@ -29,9 +29,11 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorList.ftl</result>
 		</action>
 		<action name="prepareRelatorioPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareRelatorioPromocoes">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioPromocoes.ftl</result>
 		</action>
 		<action name="imprimirRelatorioPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="imprimirRelatorioPromocoes">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/promocoes.jasper</param>
 				<param name="dataSource">dataSource</param>
@@ -40,9 +42,11 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioPromocoes.ftl</result>
 		</action>
 		<action name="prepareRelatorioUltimasPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareRelatorioUltimasPromocoes">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioUltimasPromocoes.ftl</result>
 		</action>
 		<action name="imprimirRelatorioUltimasPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="imprimirRelatorioUltimasPromocoes">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/ultimaspromocoes.jasper</param>
 				<param name="dataSource">dataSourceSituacoesColaborador</param>
@@ -72,10 +76,12 @@
 		</action>
 		
 		<action name="prepareRelatorioSituacoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareRelatorioSituacoes">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioSituacoes.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioSituacoes.ftl</result>
 		</action>
 		<action name="relatorioSituacoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="relatorioSituacoes">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="successAgruparPorArea" type="jasper">
 				<param name="location">WEB-INF/report/situacoes_agrupaArea.jasper</param>
 				<param name="dataSource">historicoColaboradors</param>
@@ -97,6 +103,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioSituacoes.ftl</result>
 		</action>
 		<action name="relatorioSituacoesXLS" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="relatorioSituacoes">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="successAgruparPorArea" type="xls">
 				<param name="dataSource">historicoColaboradors</param>
 				<param name="documentName">situacoes.xls</param>
@@ -157,6 +164,7 @@
 		     <param name="contentType">application/json</param>
 		</action>
 		<action name="prepareAjusteDissidio" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareAjusteDissidio">
+		     <interceptor-ref name="myDefaultWebStack"/>
 		     <result name="success" type="freemarker">/WEB-INF/forms/cargosalario/ajusteDissidio.ftl</result>
 		</action>
 	</package>

@@ -34,7 +34,7 @@
 
 	<@display.table name="candidatos" id="candidato" class="dados">
 		<@display.column title="Ações" media="html" style="text-align:center; width: 140px;" >
-			<a href="prepareUpdateExamePalografico.action?candidato.id=${candidato.id}"><img border="0" title="Editar Exame Palográfico" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdateExamePalografico.action?candidato.id=${candidato.id}');"><img border="0" title="Editar Exame Palográfico" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 		</@display.column>
 
 		<@display.column property="nome" title="Nome"/>

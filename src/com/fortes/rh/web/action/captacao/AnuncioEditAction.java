@@ -177,7 +177,7 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 			String[] emails = anuncioManager.montaEmails(emailAvulso, null);
 			mail.send(SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()), anuncio.getTitulo(), geraCorpoAnuncioHtml(corpoAnuncio), new File[]{arquivo}, emails);
 			
-			addActionMessage("Anúncio enviado com sucesso.");
+			addActionSuccess("Anúncio enviado com sucesso.");
 	
 			//deletar pdf criado para envio do email
 			arquivo.delete();
@@ -186,7 +186,7 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 		} catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Erro ao enviar email");
+			addActionError("Não foi possível enviar o email.");
 			email();
 			return Action.INPUT;
 		}
@@ -304,7 +304,6 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 		Map corpo = new HashMap<String, String>();
 
 		anuncioAux = anuncioManager.findById(anuncioAux.getId());
-//		anuncioAux.getSolicitacao().setBeneficios(new CollectionUtil().distinctCollection(anuncioAux.getSolicitacao().getBeneficios()));
 
 		corpo.put("titulo", anuncioAux.getTitulo());
 		corpo.put("cabecalho", anuncioAux.getCabecalho());
@@ -323,20 +322,6 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 
 			corpo.put("conhecimento", conhecimento);
 		}
-		
-//		if(anuncioAux.isMostraBeneficio())
-//		{
-//			String beneficio = "";
-//			if(anuncioAux.getSolicitacao().getBeneficios() != null)
-//			{
-//				for(Beneficio b : anuncioAux.getSolicitacao().getBeneficios())
-//				{
-//					beneficio += "\n" + b.getNome();
-//				}
-//			}
-//
-//			corpo.put("beneficio", beneficio);
-//		}
 		
 		if(anuncioAux.isMostraSalario())
 		{

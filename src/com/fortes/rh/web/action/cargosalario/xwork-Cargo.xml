@@ -4,6 +4,22 @@
 <xwork>
 
 	<package name="cargo" extends="default" namespace="/cargosalario/cargo">
+    	<interceptors>
+          <interceptor-stack name="defaultRelatorioCargoSalarioStack">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="myDefaultWebStackPart1" />     
+            <interceptor-ref name="defaultListDeleteScope"/>
+            <interceptor-ref name="scope">
+                <param name="session">__TO_BE_OVERWRITTEN_IN_THE_ACTION__</param>
+            </interceptor-ref>
+            <interceptor-ref name="myDefaultWebStackPart2" />
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+    	  </interceptor-stack>  
+    	</interceptors>
     <!-- ###### LIST/DELETE ###### -->    
 		<action name="list" class="com.fortes.rh.web.action.cargosalario.CargoListAction" method="list">
 	    	<interceptor-ref name="defaultListStack">
@@ -52,10 +68,12 @@
 			<result name="success" type="redirect">list.action</result>
 		</action>
 		<action name="prepareRelatorioCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="prepareRelatorioCargo">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioCargo.ftl</result>
 		</action>
 	
 		<action name="imprimir" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="imprimir">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="input" type="redirect">list.action</result>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/cargo.jasper</param>
@@ -66,6 +84,7 @@
 		</action>
 		
 		<action name="relatorioCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="relatorioCargo">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/cargo.jasper</param>
 				<param name="dataSource">cargos</param>
@@ -76,6 +95,7 @@
 		</action>
 		
 		<action name="imprimirLista" class="com.fortes.rh.web.action.cargosalario.CargoListAction" method="imprimirLista">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/cargo_resumido.jasper</param>
 				<param name="dataSource">cargos</param>
@@ -90,7 +110,7 @@
 			<result name="semPermissaoDeVerAreaOrganizacional" type="freemarker">/WEB-INF/pages/mensagemInfoWarnError.ftl</result>
 		</action>
 		<action name="relatorioColaboradorCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="relatorioColaboradorCargo">
-			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultDeleteSemTokenStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/colaboradorCargo.jasper</param>
 				<param name="dataSource">historicoColaboradors</param>
@@ -137,7 +157,7 @@
 			<result name="error" type="redirect">prepareRelatorioColaboradorCargo.action</result>
 		</action>
 		<action name="relatorioColaboradorCargoXLS" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="relatorioColaboradorCargoXLS">
-			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultDeleteSemTokenStack"/>
 			<result name="success" type="xls">
 				<param name="dataSource">historicoColaboradors</param>
 				<param name="documentName">colaboradoresPorCargos.xls</param>
@@ -285,7 +305,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioColaboradorGrupoOcupacional.ftl</result>
 		</action>
 		<action name="relatorioColaboradorGrupoOcupacional" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="relatorioColaboradorGrupoOcupacional">
-			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultDeleteSemTokenStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/colaboradorGrupoOcupacional.jasper</param>
 				<param name="dataSource">historicoColaboradors</param>

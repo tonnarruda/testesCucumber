@@ -179,6 +179,8 @@
 			
 			$("input[name='webwork.token']").appendTo($('form'));
 			$("input[name='webwork.token.name']").appendTo($('form'));
+			
+			window.history.forward(1);
 		});
 	</script>
 </html>

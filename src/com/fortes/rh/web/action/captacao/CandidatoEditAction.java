@@ -64,6 +64,7 @@ import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -850,11 +851,12 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		try
 		{
 			candidatoManager.updateExamePalografico(candidato);
-			msgAlert = "Exame Palográfico do candidato \"" + candidato.getNome() + "\" editado com sucesso.";
+			addActionSuccess("Exame Palográfico do candidato \"" + candidato.getNome() + "\" gravado com sucesso.");
 		}
 		catch (Exception e)
 		{
-			addActionMessage("Erro ao editar o Exame Palográfico");
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível editar o exame palográfico de \"" + candidato.getNome() + "\".");
 			return prepareUpdateExamePalografico();
 		}
 		return Action.SUCCESS;

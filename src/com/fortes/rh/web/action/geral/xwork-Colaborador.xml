@@ -15,9 +15,11 @@
 		    <param name="contentType">application/json</param>
 		</action>
 		<action name="prepareReciboPagamento" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareReciboPagamento">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/reciboPagamento.ftl</result>
 		</action>
 		<action name="reciboPagamento" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="reciboPagamento">
+		    <interceptor-ref name="myDefaultWebStack"/>
 		    <result name="success" type="stream">
 			    <param name="contentDisposition">filename=reciboPagamento.pdf</param>
 			    <param name="contentType">application/pdf;charset=UTF-8</param>
@@ -27,6 +29,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboPagamento.ftl</result>
 		</action>
 		<action name="prepareReciboDeFerias" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareReciboDeFerias">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/reciboDeFerias.ftl</result>
 		</action>
 		<action name="reciboDeFerias" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="reciboDeFerias">
@@ -39,9 +42,11 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboDeFerias.ftl</result>
 		</action>
 		<action name="prepareReciboDeDecimoTerceiro" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareReciboDeDecimoTerceiro">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/reciboDeDecimoTerceiro.ftl</result>
 		</action>
 		<action name="reciboDeDecimoTerceiro" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="reciboDeDecimoTerceiro">
+		    <interceptor-ref name="myDefaultWebStack"/>
 		    <result name="success" type="stream">
 			    <param name="contentDisposition">filename=reciboDecimoTerceiro.pdf</param>
 			    <param name="contentType">application/PDF;charset=UTF-8</param>
@@ -51,9 +56,11 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboDeDecimoTerceiro.ftl</result>
 		</action>
 		<action name="prepareDeclaracaoRendimentos" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareDeclaracaoRendimentos">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/declaracaoRendimentos.ftl</result>
 		</action>
 		<action name="declaracaoRendimentos" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="declaracaoRendimentos">
+		    <interceptor-ref name="myDefaultWebStack"/>
 		    <result name="success" type="stream">
 			    <param name="contentDisposition">filename=declaracaoRendimentos.pdf</param>
 			    <param name="contentType">application/PDF;charset=UTF-8</param>
@@ -63,9 +70,11 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/declaracaoRendimentos.ftl</result>
 		</action>
 		<action name="prepareReciboPagamentoComplementar" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareReciboPagamentoComplementar">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/reciboComplementoDeFolhaComEncargos.ftl</result>
 		</action>
 		<action name="reciboPagamentoComplementar" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="reciboPagamentoComplementar">
+		    <interceptor-ref name="myDefaultWebStack"/>
 		    <result name="success" type="stream">
 			    <param name="contentDisposition">filename=reciboComplementoDeFolhaComEncargos.pdf</param>
 			    <param name="contentType">application/pdf;charset=UTF-8</param>
@@ -75,9 +84,11 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboComplementoDeFolhaComEncargos.ftl</result>
 		</action>
 		<action name="prepareReciboPagamentoAdiantamentoDeFolha" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareReciboPagamentoAdiantamentoDeFolha">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/reciboPagamentoAdiantamentoDeFolha.ftl</result>
 		</action>
 		<action name="reciboPagamentoAdiantamentoDeFolha" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="reciboPagamentoAdiantamentoDeFolha">
+		    <interceptor-ref name="myDefaultWebStack"/>
 		    <result name="success" type="stream">
 			    <param name="contentDisposition">filename=reciboPagamentoAdiantamentoDeFolha.pdf</param>
 			    <param name="contentType">application/pdf;charset=UTF-8</param>
@@ -137,6 +148,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/relatorioAniversariantes.ftl</result>
 		</action>
 		<action name="relatorioAniversariantesXls" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="relatorioAniversariantesXls">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="sucessoAreaNomeComercial" type="xls">
 				<param name="dataSource">colaboradors</param>
 				<param name="documentName">aniversariantes.xls</param>
@@ -239,10 +251,24 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorDesligaAc.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="insert">
-			<interceptor-ref name="defaultDeleteStack"/>
-			<interceptor-ref name="defaultUpdateStack"/>
-		    <interceptor-ref name="tokenWebStack" />
-		    <result name="invalid.token" type="redirect">list.action</result>
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="myDefaultWebStackPart1" />     
+            <interceptor-ref name="defaultListDeleteScope"/>
+            <interceptor-ref name="scope">
+                <param name="session">__TO_BE_OVERWRITTEN_IN_THE_ACTION__</param>
+            </interceptor-ref>
+            <interceptor-ref name="myDefaultWebStackPart2" />
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+
+            <interceptor-ref name="myDefaultWebStack" />     
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            
 			<result name="success" type="redirect">list.action</result>
 			<result name="successSolicitacao" type="redirect">../../captacao/candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}</result>
 			<result name="dependente" type="redirect">/geral/dependente/list.action</result>
@@ -252,8 +278,6 @@
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="update">
 		    <interceptor-ref name="defaultDeleteStack"/>
-		    <interceptor-ref name="tokenWebStack" />
-		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="dependente" type="redirect">/geral/dependente/list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorEdit.ftl</result>
@@ -292,9 +316,11 @@
 			</result>
 		</action>
 		<action name="prepareProjecaoSalarialFiltro" class="com.fortes.rh.web.action.geral.ColaboradorReportAction" method="prepareProjecaoSalarialFiltro">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/projecaoSalarialRelatorioFiltro.ftl</result>
 		</action>
 		<action name="gerarRelatorioProjecaoSalarial" class="com.fortes.rh.web.action.geral.ColaboradorReportAction" method="gerarRelatorioProjecaoSalarial">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="dataSource">dataSource</param>
 				<param name="location">WEB-INF/report/projecao_salarial.jasper</param>
@@ -303,6 +329,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/projecaoSalarialRelatorioFiltro.ftl</result>
 		</action>
 		<action name="gerarRelatorioProjecaoSalarialXLS" class="com.fortes.rh.web.action.geral.ColaboradorReportAction" method="gerarRelatorioProjecaoSalarial">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="xls">
 				<param name="dataSource">dataSource</param>
 				<param name="documentName">projecao_salarial.xls</param>

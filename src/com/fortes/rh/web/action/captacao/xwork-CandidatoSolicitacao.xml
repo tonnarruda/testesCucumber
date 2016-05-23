@@ -28,10 +28,12 @@
 		
 		<action name="removerCandidatosDaSolicitacao" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="removerCandidatosDaSolicitacao">
 			<interceptor-ref name="candidatoSolicitacaoListDeleteStack" />
+			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect"><![CDATA[list.action?solicitacao.id=${solicitacao.id}]]></result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="delete">
 			<interceptor-ref name="candidatoSolicitacaoListDeleteStack" />
+			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect"><![CDATA[list.action?solicitacao.id=${solicitacao.id}]]></result>
 		</action>
 		<action name="removerTriagem" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="removerTriagem">
@@ -70,10 +72,12 @@
 		</action>
 
 	    <action name="popupAvaliacoesCandidatoSolicitacao" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="popupAvaliacoesCandidatoSolicitacao">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/popupAvaliacoesCandidatoSolicitacao.ftl</result>
 	    </action>
 	    
 		<action name="imprimeRankingAvaliacao" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="imprimeRankingAvaliacao">
+			<interceptor-ref name="myDefaultWebStack"/>
 		  	<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/rankingPerformaceDaSolicitacao.jasper</param>
 				<param name="dataSource">colaboradores</param>

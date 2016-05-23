@@ -13,6 +13,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/faixaSalarialHistoricoEdit.ftl</result>
 		</action>
 		<action name="analiseTabelaSalarialFiltro" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="analiseTabelaSalarialFiltro">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/analiseTabelaSalarialFiltro.ftl</result>
 		</action>
 		<action name="analiseTabelaSalarialList" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="analiseTabelaSalarialList">
@@ -20,6 +21,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/analiseTabelaSalarialFiltro.ftl</result>
 		</action>
 		<action name="relatorioAnaliseTabelaSalarial" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="relatorioAnaliseTabelaSalarial">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/analise_tabela_salarial.jasper</param>
 				<param name="dataSource">faixaSalarialHistoricos</param>
@@ -36,9 +38,11 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/faixaSalarialHistoricoEdit.ftl</result>
 		</action>
 		<action name="prepareRelatorioHistoricoFaixaSalarial" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="prepareRelatorioHistoricoFaixaSalarial">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/relatorioHistoricoFaixaSalarial.ftl</result>
 		</action>		
 		<action name="relatorioHistoricoFaixaSalarial" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="relatorioHistoricoFaixaSalarial">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/historico_faixa_salarial.jasper</param>
 				<param name="dataSource">faixaSalarialHistoricos</param>

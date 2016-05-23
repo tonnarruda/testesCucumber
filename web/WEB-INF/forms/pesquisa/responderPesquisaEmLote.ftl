@@ -22,8 +22,7 @@
 			var colaboradorId = $('#colaborador').val();
 			
 			if (colaboradorId != '') {
-				var link = "prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=${questionario.id}&colaborador.id=" + colaboradorId + "&validarFormulario=true&voltarPara=../colaboradorResposta/prepareResponderQuestionarioEmLote.action?questionario.id=${questionario.id}&tela=lote";
-				window.location.href = link;
+				executeLink("prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=${questionario.id}&colaborador.id=" + colaboradorId + "&validarFormulario=true&voltarPara=../colaboradorResposta/prepareResponderQuestionarioEmLote.action?questionario.id=${questionario.id}&tela=lote");
 			
 			} else {
 				jAlert('Selecione um colaborador');

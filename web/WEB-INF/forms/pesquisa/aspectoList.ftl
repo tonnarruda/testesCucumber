@@ -14,11 +14,11 @@
 <@display.table name="aspectos" id="aspecto" class="dados">
 	<@display.column title="Ações" class="acao">
 		<#if pergunta?exists && pergunta.id?exists>
-			<a href="prepareUpdate.action?aspecto.id=${aspecto.id}&pergunta.id=${pergunta.id}&questionario.id=${questionario.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?aspecto.id=${aspecto.id}&pergunta.id=${pergunta.id}&questionario.id=${questionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?aspecto.id=${aspecto.id}&pergunta.id=${pergunta.id}&questionario.id=${questionario.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?aspecto.id=${aspecto.id}&pergunta.id=${pergunta.id}&questionario.id=${questionario.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		<#else>
-			<a href="prepareUpdate.action?aspecto.id=${aspecto.id}&questionario.id=${questionario.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?aspecto.id=${aspecto.id}&questionario.id=${questionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?aspecto.id=${aspecto.id}&questionario.id=${questionario.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?aspecto.id=${aspecto.id}&questionario.id=${questionario.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</#if>
 	</@display.column>
 	<@display.column property="nome" title="Nome"/>
@@ -29,16 +29,16 @@
 
 <div class="buttonGroup">
 	<#if pergunta?exists && pergunta.id?exists>
-		<button class="btnInserir" onclick="window.location='prepareInsert.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}'" accesskey="I">
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}');" accesskey="I">
 		</button>
-		<button onclick="window.location='../pergunta/prepareUpdate.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}'" class="btnVoltar" accesskey="V">
+		<button onclick="javascript: executeLink('../pergunta/prepareUpdate.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}');" class="btnVoltar" accesskey="V">
 		</button>
 	<#else>
-		<button class="btnInserir" onclick="window.location='prepareInsert.action?questionario.id=${questionario.id}'" accesskey="I">
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action?questionario.id=${questionario.id}');" accesskey="I">
 		</button>
 		<#-- Monta o botão de acordo com o destino pesquisa, avaliação, entrevista-->
 		<#if urlVoltar?exists>
-			<button class="btnVoltar" onclick="window.location='${urlVoltar}'"></button>
+			<button class="btnVoltar" onclick="javascript: executeLink('${urlVoltar}');"></button>
 		</#if>
 	</#if>
 </div>

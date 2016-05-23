@@ -89,7 +89,7 @@
 	
 						<img border="0" title="Responder a pesquisa por este colaborador (a Pesquisa precisa ser liberada antes)" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 	
-						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&questionario.id=${questionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&questionario.id=${questionario.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 	
 					<#else>
 						<#if colaboradorQuestionario.respondida>
@@ -97,7 +97,7 @@
 							<#if questionario.anonimo?exists && questionario.anonimo>
 								<img border="0" title="Pesquisa Anônima." src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 							<#else>
-								<a href="visualizarRespostasPorColaborador.action?questionario.id=${questionario.id}&colaboradorId=${colaboradorQuestionario.colaborador.id}"><img border="0" title="Visualizar respostas do colaborador" src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>"></a>
+								<a href="javascript: executeLink('visualizarRespostasPorColaborador.action?questionario.id=${questionario.id}&colaboradorId=${colaboradorQuestionario.colaborador.id}');"><img border="0" title="Visualizar respostas do colaborador" src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>"></a>
 							</#if>
 	
 							<img border="0" title="Pesquisa já respondida. Não é possível editar esta pesquisa." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
@@ -112,10 +112,10 @@
 							</@authz.authorize>
 	
 							<@authz.authorize ifAllGranted="ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO">
-								<a href="../colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=${questionario.id}&colaborador.id=${colaboradorQuestionario.colaborador.id}&validarFormulario=true&voltarPara=../colaboradorQuestionario/list.action?questionario.id=${questionario.id}&tela=colaboradorQuestionarioList"><img border="0" title="Responder a pesquisa por este colaborador" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+								<a href="javascript: executeLink('../colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=${questionario.id}&colaborador.id=${colaboradorQuestionario.colaborador.id}&validarFormulario=true&voltarPara=../colaboradorQuestionario/list.action?questionario.id=${questionario.id}&tela=colaboradorQuestionarioList');"><img border="0" title="Responder a pesquisa por este colaborador" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 							</@authz.authorize>
 	
-							<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&questionario.id=${questionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+							<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&questionario.id=${questionario.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 						</#if>
 					</#if>
 				</@display.column>
@@ -133,7 +133,7 @@
 	</#if>
 
 	<div class="buttonGroup">
-		<button onclick="window.location='prepareInsert.action?questionario.id=${questionario.id}'" id="btnInserir" class="btnInserir" ></button>
+		<button onclick="javascript: executeLink('prepareInsert.action?questionario.id=${questionario.id}');" id="btnInserir" class="btnInserir" ></button>
 		<button onclick="javascript: newConfirm('Confirma exclusão dos colaboradores selecionados?', function(){document.form.submit();});" class="btnExcluir"></button>
 		
 		<button onclick="window.location='imprimirColaboradores.action?questionario.id=${questionario.id}&empresaId=' + $('#empresaId').val() + '&respondida=' + $('#respondida').val()" class="btnImprimirPdf" ></button>
@@ -148,7 +148,7 @@
 		</#if>
 		
 		<#if questionario.liberado>
-			<button onclick="window.location='../colaboradorResposta/prepareResponderQuestionarioEmLote.action?questionario.id=${questionario.id}'" id="btnAvancar" class="btnResponderPorColaboradores"></button>
+			<button onclick="javascript: executeLink('../colaboradorResposta/prepareResponderQuestionarioEmLote.action?questionario.id=${questionario.id}');" id="btnAvancar" class="btnResponderPorColaboradores"></button>
 		<#else>
 			<img border="0" title="Pesquisa não liberada." src="<@ww.url includeParams="none" value="/imgs/btnResponderPorColaboradores.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);" align="absMiddle"/>
 		</#if>

@@ -6,6 +6,7 @@ import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -36,12 +37,12 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 		try
 		{
 			tabelaReajusteColaboradorManager.remove(tabelaReajusteColaborador);
-			addActionMessage("Planejamento de Realinhamento excluído com sucesso.");
+			addActionSuccess("Planejamento de Realinhamento excluído com sucesso.");
 		}
 		catch (Exception e)
 		{
-			addActionError("Não foi possível excluir este Planejamento de Realinhamento.");
 			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este Planejamento de Realinhamento.");
 		}
 
 		return list();
