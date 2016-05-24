@@ -14,8 +14,8 @@
 	
 	<@display.table name="periodoExperiencias" id="periodoExperiencia" class="dados" style="width:430px;">
 		<@display.column title="Ações" class="acao" style="width:50px;">
-			<a href="prepareUpdate.action?periodoExperiencia.id=${periodoExperiencia.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?periodoExperiencia.id=${periodoExperiencia.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?periodoExperiencia.id=${periodoExperiencia.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?periodoExperiencia.id=${periodoExperiencia.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column title="Dias" property="dias" style="width:80px;" />
 		<@display.column title="Descrição" property="descricao" style="width:250px;" />
@@ -30,7 +30,7 @@
 	</@display.table>
 	
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');"></button>
 	</div>
 </body>
 </html>

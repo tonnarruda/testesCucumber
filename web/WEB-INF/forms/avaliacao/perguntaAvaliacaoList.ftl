@@ -20,10 +20,10 @@
 			<#else>
 				<#assign editarOuVisualizar = "Visualizar" />
 			</#if>
-			<a href="prepareUpdate.action?pergunta.id=${pergunta.id}&avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="${editarOuVisualizar}" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?pergunta.id=${pergunta.id}&avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}');"><img border="0" title="${editarOuVisualizar}" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			
 			<#if !temCriterioRespondido>
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?pergunta.id=${pergunta.id}&avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?pergunta.id=${pergunta.id}&avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</#if>
 			
 		</@display.column>
@@ -34,7 +34,7 @@
 	
 	<div class="buttonGroup">
 		<#if !temCriterioRespondido>
-			<button class="btnInserir" onclick="window.location='prepareInsert.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}'"></button>
+			<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}');"></button>
 		</#if>
 		<#if modeloAvaliacao = tipoModeloAvaliacao.getSolicitacao()>
 			<#assign urlVoltar = "../../avaliacao/modeloCandidato/list.action" />

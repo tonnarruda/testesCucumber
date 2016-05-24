@@ -31,6 +31,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.EmpresaUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -140,8 +141,13 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		periodoExperienciaManager.remove(periodoExperiencia.getId());
-		addActionMessage("Período de Acompanhamento de Experiência excluído com sucesso.");
+		try {
+			periodoExperienciaManager.remove(periodoExperiencia.getId());
+			addActionSuccess("Período de Acompanhamento de Experiência excluído com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este Período de Acompanhamento de Experiência.");
+		}
 
 		return Action.SUCCESS;
 	}

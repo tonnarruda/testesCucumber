@@ -8,6 +8,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/aspectoList.ftl</result>
 		</action>
 		<action name="listAvaliacao" class="com.fortes.rh.web.action.pesquisa.AspectoListAction" method="listAvaliacao">
+		    <interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/aspectoAvaliacaoList.ftl</result>
 		</action>
 		<action name="deleteAvaliacao" class="com.fortes.rh.web.action.pesquisa.AspectoListAction" method="deleteAvaliacao">
@@ -24,22 +25,18 @@
 			<result name="input" type="redirect">list.action?actionErr=${actionErr}</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="insert">
-			<interceptor-ref name="myDefaultWebStack" />
 			<result name="success" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/aspectoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="update">
-			<interceptor-ref name="myDefaultWebStack" />
 			<result name="success" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}]]></result>
 			<result name="input" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}&actionErr=${actionErr}]]></result>
 		</action>
 		<action name="insertAvaliacao" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="insertAvaliacao">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect"><![CDATA[listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/aspectoEdit.ftl</result>
 		</action>
 		<action name="updateAvaliacao" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="updateAvaliacao">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect"><![CDATA[listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
 			<result name="input" type="redirect"><![CDATA[listAvaliacao.action?avaliacao.id=${avaliacao.id}&actionErr=${actionErr}]]></result>
 		</action>

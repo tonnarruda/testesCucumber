@@ -9,7 +9,6 @@
 		</action>
 		
 		<action name="clonar" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="clonar">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="invalid.token" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>
 			<result name="success" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>
 		</action>
@@ -53,6 +52,7 @@
 		</action>
 		
 		<action name="imprimir" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="imprimir">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/avaliacao.jasper</param>
 				<param name="dataSource">dataSource</param>

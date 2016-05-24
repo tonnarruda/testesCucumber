@@ -83,7 +83,6 @@
 			<@ww.hidden name="avaliacao.tipoModeloAvaliacao" />
 			<@ww.hidden name="avaliacao.empresa.id" />
 			<@ww.hidden name="modeloAvaliacao" />
-			<@ww.token/>
 		</@ww.form>
 	
 		<div class="buttonGroup">
