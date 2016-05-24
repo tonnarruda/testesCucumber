@@ -2523,6 +2523,20 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 				this.getHistoricoColaborador().getQuantidadeIndice(), 
 				this.getHistoricoColaborador().getSalario());
 	}
+	
+	@NaoAudita
+	public String getSalarioCalculadoString()
+	{
+		Double salario = SalarioUtil.getValor(this.getHistoricoColaborador().getTipoSalario(), 
+				this.getHistoricoColaborador().getFaixaSalarial(), 
+				this.getHistoricoColaborador().getIndice(), 
+				this.getHistoricoColaborador().getQuantidadeIndice(), 
+				this.getHistoricoColaborador().getSalario());
+		
+		DecimalFormat df = new DecimalFormat("0.00");
+		return df.format(salario);
+	}
+	
 	@NaoAudita
 	public String getFuncaoNome()
 	{

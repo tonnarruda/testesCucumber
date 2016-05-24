@@ -11,7 +11,9 @@
 		<Item visivel="S" motivo="S16040000151"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Reuniões: Novo comportamento para não considerar membros da comissão que foram desligados.]]></Item>
 		<Item visivel="S" motivo="S16040000133"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitação de Exames: Novo tipo de impressão por folha inteira.]]></Item>
 		<Item visivel="S" motivo="S16040000135"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitação de Exames: Novo campo de ambiente no relatório.]]></Item>
+		<Item visivel="S" motivo="S16050000008"><![CDATA[Utilitários > Cadastos > Empresas > Inserir/Editar: Nova configuração para notificar somente os períodos de acompanhamento de experiência configurados no cadastro do colaborador na aba "Modelos de Avaliação".]]></Item>
 		<Item visivel="S" motivo="S16040000110"><![CDATA[Utilitários > Auditoria: Nova opção para auditar encerramento das solicitações de pessoal.]]></Item>
+		<Item visivel="S" motivo="S16010000273"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção para exibir salário no relatório.]]></Item>
 		<Item visivel="S" motivo="S16050000033"><![CDATA[Remoção da integração com o F2rh.]]></Item>
 	</Versao>
 	<Versao id="1.1.165.196" db="" data="27/04/2016">
