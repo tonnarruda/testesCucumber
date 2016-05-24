@@ -87,8 +87,7 @@ public class ColaboradorCertificacaoManagerTest
 	}
 
 	@Test
-	public void testMontaRelatorioColaboradoresNasCertificacoes() throws CloneNotSupportedException
-	{
+	public void testMontaRelatorioColaboradoresNasCertificacoes() throws CloneNotSupportedException{
 		Certificacao certificacao1 = CertificacaoFactory.getEntity(1L);
 		certificacao1.setNome("cert. admin");
 		Certificacao certificacao2 = CertificacaoFactory.getEntity(1L);
@@ -191,7 +190,7 @@ public class ColaboradorCertificacaoManagerTest
 		when(colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacao1.getId(), colaboradoresIds)).thenReturn(mapColaboradorAvaliacoesPraticas);
 
 		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, null, null, null, null, certificacoesIds, new Long[]{colab1.getId()});
-		assertEquals(6, colaboradoresNasCertificacoes.size());
+		assertEquals(3, colaboradoresNasCertificacoes.size());
 		
 		ColaboradorCertificacao result2 = (ColaboradorCertificacao) colaboradoresNasCertificacoes.toArray()[2];
 		assertEquals("Avaliação Prática: Beber Cachaça", result2.getNomeCurso());

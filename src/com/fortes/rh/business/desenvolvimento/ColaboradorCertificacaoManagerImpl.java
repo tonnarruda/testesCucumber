@@ -138,6 +138,10 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			
 			Long[] cursosIds = new CollectionUtil<Curso>().convertCollectionToArrayIds(cursos, "getId");
 			Collection<ColaboradorCertificacao> colaboradoresCertificacaoes = getDao().findColaboradoresCertificadosENaoCertificados(dataIni, dataFim, mesesCertificacoesAVencer, certificado, certificacao.getId(), areaIds, estabelecimentoIds, filtroColaboradoresIds, cursosIds);
+			if(colaboradoresCertificacaoes.size() == 0)
+				continue;
+			
+			colaboradoresCertificacaoes = new  CollectionUtil<ColaboradorCertificacao>().distinctCollection(colaboradoresCertificacaoes);
 			Long[] colaboradoresIds = new CollectionUtil<ColaboradorCertificacao>().convertCollectionToArrayIds(colaboradoresCertificacaoes, "getColaboradorId");
 			Map<Long, Collection<ColaboradorAvaliacaoPratica>> mapColaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacao.getId(), colaboradoresIds);
 			ColaboradorCertificacao colaboradorCertificacaoAnterior = null;
@@ -206,9 +210,9 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		Collection<ColaboradorCertificacao> colaboradorCertificadosRetorno = new ArrayList<ColaboradorCertificacao>();
 		Collection<ColaboradorCertificacao> colaboradorCertificados = new ArrayList<ColaboradorCertificacao>();
 		
-		if(colaboradorTurmaId != null)
+		if(colaboradorTurmaId != null){
 			colaboradorCertificados  = getDao().colaboradoresCertificadosByColaboradorTurmaId(colaboradorTurmaId);
-		else if(colaboradorId != null && certificacaoId != null){
+		}else if(colaboradorId != null && certificacaoId != null){
 			ColaboradorCertificacao colaboradorCertificacao = getDao().verificaCertificacao(colaboradorId, certificacaoId);
 			if(colaboradorCertificacao != null)
 				colaboradorCertificados.add(colaboradorCertificacao);
@@ -296,6 +300,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	public void saveColaboradorCertificacao(ColaboradorCertificacao colaboradorCertificacao) {
 		Collection<ColaboradorTurma> colaboradoresTurmas = getDao().colaboradoresTurmaCertificados(colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getCertificacao().getId());
 		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getCertificacao().getId(), null, null, true, true);
+		ColaboradorCertificacao colaboradorCertificadoExistente = getDao().findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getCertificacao().getId());
 		
 		Date dataColaboradorCertificacao = null;
 		
@@ -305,14 +310,16 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		if(colaboradorAvaliacoesPraticas != null && colaboradorAvaliacoesPraticas.size() > 0)
 			dataColaboradorCertificacao = ((ColaboradorAvaliacaoPratica)colaboradorAvaliacoesPraticas.toArray()[0]).getData().after(dataColaboradorCertificacao) ? ((ColaboradorAvaliacaoPratica)colaboradorAvaliacoesPraticas.toArray()[0]).getData() : dataColaboradorCertificacao;
 		
-		colaboradorCertificacao.setColaboradoresTurmas(colaboradoresTurmas);
-		colaboradorCertificacao.setData(dataColaboradorCertificacao);
-		getDao().save(colaboradorCertificacao);
-		getDao().getHibernateTemplateByGenericDao().flush();
-
-		for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica : colaboradorAvaliacoesPraticas) {
-			colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
-			colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
+		if(colaboradorCertificadoExistente == null || colaboradorCertificadoExistente.getData().getTime() < dataColaboradorCertificacao.getTime()){	
+			colaboradorCertificacao.setColaboradoresTurmas(colaboradoresTurmas);
+			colaboradorCertificacao.setData(dataColaboradorCertificacao);
+			getDao().save(colaboradorCertificacao);
+			getDao().getHibernateTemplateByGenericDao().flush();
+	
+			for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica : colaboradorAvaliacoesPraticas) {
+				colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
+				colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
+			}
 		}
 	}
 

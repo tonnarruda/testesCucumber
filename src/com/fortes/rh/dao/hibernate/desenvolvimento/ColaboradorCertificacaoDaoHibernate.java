@@ -308,9 +308,8 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 					if(cetificadosVencidos )
 						ultimoColaboradorCertificacao.add(Expression.sqlRestriction("(this0__.data + ("+alias+".periodicidade || ' month')::interval) <= '" + DateUtil.formataDiaMesAno(new Date()) + "' ", new String[]{}, new Type[]{}));
 					else
-						ultimoColaboradorCertificacao.add(Expression.sqlRestriction("(this0__.data + ("+alias+".periodicidade || ' month')::interval) >= '" + DateUtil.formataDiaMesAno(new Date()) + "' ", new String[]{}, new Type[]{}));
+						ultimoColaboradorCertificacao.add(Expression.sqlRestriction(alias+".periodicidade is null or (this0__.data + ("+alias+".periodicidade || ' month')::interval) >= '" + DateUtil.formataDiaMesAno(new Date()) + "' ", new String[]{}, new Type[]{}));
 				}
-				
 		
 		return ultimoColaboradorCertificacao;
 	}

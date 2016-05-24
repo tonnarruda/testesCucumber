@@ -12,10 +12,8 @@
 	
 	<script type="text/javascript">
 		$(function() {
-			$('#tooltipHelp').qtip({
-				content: 'Abaixo só serão exibidas as certificações que possuirem periodicidade configurada em seus cadastros. Só é permitido selecionar no máximo 3 certificações.'
-			});
-			
+			$('#wwctrl_certificacoesCheck * span').eq(0).removeAttr('onclick').css('color', '#6E7B8B').css('cursor', 'default');
+
 			$('#tooltipHelpPeriodo').qtip({
 				content: 'Os campos "Período Certificado" e "Com certificação a vencer em até" só serão habilitados ao marcar a opção "Certificados".'
 			});
@@ -23,6 +21,7 @@
 			habilitaCampos();
 			populaColaborador();
 			
+			$('#listCheckBoxcolaboradoresCheck tbody').remove();
 			$('#listCheckBoxcolaboradoresCheck').append('<tbody> <tr> <td colspan="7"> <div class="info">  <ul> <li>Utilize os filtros acima para popular os colaboradores. </br> Filtro obrigatório: "Certificações".</li> </ul> </div> </tr></td> </tbody>');
 		});
 		
@@ -54,6 +53,8 @@
 		
 		function populaColaborador()
 		{
+			$('#listCheckBoxcolaboradoresCheck tbody').remove();
+			$('#listCheckBoxcolaboradoresCheck label').remove();
 			DWRUtil.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0], 'areasCheck');
 			var estabelecimentosIds = getArrayCheckeds(document.forms[0], 'estabelecimentosCheck');
@@ -67,9 +68,8 @@
 		
 		function createListColaborador(data)
 		{
-			 $('#listCheckBoxcolaboradoresCheck tbody').remove();
-			 $('#listCheckBoxcolaboradoresCheck label').remove();
-		
+			$('#listCheckBoxcolaboradoresCheck tbody').remove();
+			$('#listCheckBoxcolaboradoresCheck label').remove();
 			if(data.length > 0)
 				addChecksByCollection("colaboradoresCheck", data);
 			else
@@ -123,18 +123,16 @@
 			
 			<@ww.div cssStyle="margin-left: 50px;">
 				Período em que os colaboradores foram certificados:<br>
-				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
+				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni" onchange="populaColaborador();"/>
 				<@ww.label value="a" liClass="liLeft" />
-				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim"/>
+				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" onchange="populaColaborador();"/>
 				Com certificação a vencer em até 
-				<@ww.textfield id="meses" theme="simple" name="mesesCertificacoesAVencer" onkeypress="somenteNumeros(event,'');" maxLength="3" cssStyle="width:30px; text-align:right; margin-top: 8px;"/>
+				<@ww.textfield id="meses" theme="simple" name="mesesCertificacoesAVencer" onkeypress="somenteNumeros(event,'');" maxLength="3" cssStyle="width:30px; text-align:right; margin-top: 8px;" onchange="populaColaborador();"/>
 				meses.
 			</@ww.div>
 		</fieldset>
-		
-		Certificações (máx. 3 opções)*:
-		<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
-		<@frt.checkListBox name="certificacoesCheck" id="certificacoesCheck" list="certificacoesCheckList" filtro="true" onClick="populaColaborador();validaQtd();"/>
+		</br>
+		<@frt.checkListBox name="certificacoesCheck" label="Certificações (máx. 3 opções)" id="certificacoesCheck" list="certificacoesCheckList" filtro="true" onClick="populaColaborador();validaQtd();" required="true"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true" onClick="populaColaborador();"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true" onClick="populaColaborador();"/>
 		<@frt.checkListBox name="colaboradoresCheck" id="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" filtro="true"/>

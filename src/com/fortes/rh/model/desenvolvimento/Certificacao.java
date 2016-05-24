@@ -93,7 +93,7 @@ public class Certificacao extends AbstractModel implements Serializable, Cloneab
 	public String getPeriodicidadeFormatada() 
 	{
 		if(periodicidade == null)
-			return "Sem peridicidade";
+			return "Sem periodicidade";
 		else if(periodicidade == 1)
 			return periodicidade + " mês";
 		else

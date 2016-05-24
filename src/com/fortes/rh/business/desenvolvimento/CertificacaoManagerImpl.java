@@ -52,28 +52,21 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 		return getDao().findMatrizTreinamento(faixaIds);
 	}
 	
-	public Collection<CheckBox> populaCheckBoxSemPeriodicidade(Long empresaId)
-	{
-		try
-		{
+	public Collection<CheckBox> populaCheckBox(Long empresaId){
+		try	{
 			Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
 			Collection<Certificacao> certificacoesTemp = getDao().findAllSelect(empresaId);
 			CheckBox checkBox = null;
 			
-			for (Certificacao certificacao : certificacoesTemp)
-			{
+			for (Certificacao certificacao : certificacoesTemp)	{
 				checkBox = new CheckBox();
 				checkBox.setId(certificacao.getId());
 				checkBox.setNome(certificacao.getNome());
-				
-				if (certificacao.getPeriodicidade() != null)
-					checkboxes.add(checkBox);
+				checkboxes.add(checkBox);
 			}
 			
 			return checkboxes;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

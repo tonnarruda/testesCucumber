@@ -146,7 +146,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	
 	public String prepareImprimirCertificadosVencidosAVencer()
 	{
-		certificacoesCheckList = certificacaoManager.populaCheckBoxSemPeriodicidade(getEmpresaSistema().getId());
+		certificacoesCheckList = certificacaoManager.populaCheckBox(getEmpresaSistema().getId());
 		certificacoesCheckList = CheckListBoxUtil.marcaCheckListBox(certificacoesCheckList, certificacoesCheck);
 
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
@@ -168,7 +168,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), roles);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String imprimirCertificadosVencidosAVencer(){
 		try {
 			Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
@@ -189,13 +188,12 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 				return Action.INPUT;	
 			}
 
-			colaboradorCertificacoes = new CollectionUtil().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "colaborador.nome");
 			calculoCertificadoENaocertificados(certificacoesIds, (agruparPor != null && agruparPor == 'T'));
-			
 			montaReportTitleAndFilter();
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 			
-			if(agruparPor != null && agruparPor == 'T') return "sucessoAgrupadoPorCertificacao";
+			if(agruparPor != null && agruparPor == 'T') 
+				return "sucessoAgrupadoPorCertificacao";
 
 			return Action.SUCCESS;
 			
@@ -205,9 +203,9 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			prepareImprimirCertificadosVencidosAVencer();
 			return Action.INPUT;
 		}
-		
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void calculoCertificadoENaocertificados(Long[] certificacoesIds, boolean agruparPorCertificacao){
 		qtdTotalColaboradoresCertificados = 0;
 		qtdTotalColaboradoresNaoCertificados = 0;
@@ -215,11 +213,16 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 		if(agruparPorCertificacao)
 			colaboradorCertificacoes = new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "certificacao.nome");
+		else
+			colaboradorCertificacoes = new CollectionUtil().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "colaborador.nome");
 		
 		for (Long certificacaoId : certificacoesIds) {
 			Map <Long, Collection<ColaboradorCertificacao>> colabsCertificado = new HashMap<Long, Collection<ColaboradorCertificacao>>();
 			Map <Long, Collection<ColaboradorCertificacao>> colabsCertificadoVencido = new HashMap<Long, Collection<ColaboradorCertificacao>>();
 			Map <Long, Collection<ColaboradorCertificacao>> colabsNaoCertificado = new HashMap<Long, Collection<ColaboradorCertificacao>>();
+			Collection<ColaboradorCertificacao> colabsCertiticados = new ArrayList<ColaboradorCertificacao>();
+			Collection<ColaboradorCertificacao> colabsCertiticadosVencidos = new ArrayList<ColaboradorCertificacao>();
+			Collection<ColaboradorCertificacao> colabsNãoCertiticados = new ArrayList<ColaboradorCertificacao>();
 			Collection<ColaboradorCertificacao> colabsCertiticacoes = new ArrayList<ColaboradorCertificacao>();
 			
 			for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
@@ -227,7 +230,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 					Long colaboradorId = colabcertificacao.getColaborador().getId();
 					
 					if(colabcertificacao.getData() != null){
-						if(DateUtil.incrementaMes(colabcertificacao.getData(), colabcertificacao.getCertificacao().getPeriodicidade()).getTime() >= (new Date()).getTime()){
+						if(colabcertificacao.getCertificacao().getPeriodicidade() == null || DateUtil.incrementaMes(colabcertificacao.getData(), colabcertificacao.getCertificacao().getPeriodicidade()).getTime() >= (new Date()).getTime()){
 							if(!colabsCertificado.containsKey(colaboradorId))
 								colabsCertificado.put(colaboradorId, new ArrayList<ColaboradorCertificacao>());
 							
@@ -249,17 +252,22 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 			if(agruparPorCertificacao){
 				for(Long colaboradorId : colabsCertificado.keySet())
-					colabsCertiticacoes.addAll(colabsCertificado.get(colaboradorId));
+					colabsCertiticados.addAll(colabsCertificado.get(colaboradorId));
+				colabsCertiticacoes.addAll(new CollectionUtil().sortCollectionStringIgnoreCase(colabsCertiticados, "colaborador.nome"));
+				
 				for(Long colaboradorId : colabsCertificadoVencido.keySet())
-					colabsCertiticacoes.addAll(colabsCertificadoVencido.get(colaboradorId));
+					colabsCertiticadosVencidos.addAll(colabsCertificadoVencido.get(colaboradorId));
+				colabsCertiticacoes.addAll(new CollectionUtil().sortCollectionStringIgnoreCase(colabsCertiticadosVencidos, "colaborador.nome"));
+				
 				for(Long colaboradorId : colabsNaoCertificado.keySet())
-					colabsCertiticacoes.addAll(colabsNaoCertificado.get(colaboradorId));
+					colabsNãoCertiticados.addAll(colabsNaoCertificado.get(colaboradorId));
+				colabsCertiticacoes.addAll(new CollectionUtil().sortCollectionStringIgnoreCase(colabsNãoCertiticados, "colaborador.nome"));
 
 				for (ColaboradorCertificacao colaboradorCertificacao : colabsCertiticacoes) {
 					colaboradorCertificacao.setQtdColaboradorAprovado(((Integer)colabsCertificado.size()).toString());
 					colaboradorCertificacao.setQtdColaboradorNaoAprovado(((Integer)(colabsCertificadoVencido.size() + colabsNaoCertificado.size())).toString());
 				}
-
+				
 				colabsCertiticacaoOrdenados.addAll(colabsCertiticacoes);
 			}
 

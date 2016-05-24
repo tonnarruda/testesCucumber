@@ -190,7 +190,7 @@ public class CertificacaoEditActionTest
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
 		parametrosDoSistema.setCompartilharColaboradores(true);
 		
-		when(certificacaoManager.populaCheckBoxSemPeriodicidade(empresa.getId())).thenReturn(new ArrayList<CheckBox>());
+		when(certificacaoManager.populaCheckBox(empresa.getId())).thenReturn(new ArrayList<CheckBox>());
 		when(areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId())).thenReturn(new ArrayList<CheckBox>());
 		when(estabelecimentoManager.populaCheckBox(empresa.getId())).thenReturn(new ArrayList<CheckBox>());
 		when(empresaManager.ajustaCombo(empresa.getId(), empresa.getId())).thenReturn(empresa.getId());

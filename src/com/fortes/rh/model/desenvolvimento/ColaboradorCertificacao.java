@@ -311,7 +311,7 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	
 	public String getAprovadoNaCertificacaoString() {
 		if(this.data != null){
-			if (DateUtil.incrementaMes(this.data, this.certificacao.getPeriodicidade()).getTime() < (new Date()).getTime())
+			if (this.certificacao.getPeriodicidade()!=null && DateUtil.incrementaMes(this.data, this.certificacao.getPeriodicidade()).getTime() < (new Date()).getTime())
 				return "Certificado vencido";
 
 			return "Certificado";

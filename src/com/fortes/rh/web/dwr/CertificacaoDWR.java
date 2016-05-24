@@ -14,10 +14,8 @@ public class CertificacaoDWR
 {
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 
-    public  Collection<CheckBox> getColaboradores(String dataIni, String dataFim, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Integer mesesCertificacoesAVencer, String[] areaOrganizacionalIds, String[] estabelecimentoIds, String[] certificacoesIds)
-    {
+    public  Collection<CheckBox> getColaboradores(String dataIni, String dataFim, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Integer mesesCertificacoesAVencer, String[] areaOrganizacionalIds, String[] estabelecimentoIds, String[] certificacoesIds) {
     	Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
-
 		Long [] areasIdsLong = StringUtil.stringToLong(areaOrganizacionalIds);
 		Long [] estabelecimentoIdsLong = StringUtil.stringToLong(estabelecimentoIds);
 		Long [] certificacoesIdsLong = StringUtil.stringToLong(certificacoesIds);
@@ -27,13 +25,16 @@ public class CertificacaoDWR
 			dataFinal = DateUtil.criarDataDiaMesAno(dataFim);
 		
     	Collection<ColaboradorCertificacao> colaboradoresCertificacao = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(null, dataFinal, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areasIdsLong, estabelecimentoIdsLong, certificacoesIdsLong, null);
-    	
-    	CheckBox checkBox;
+    	Collection<Long> colaboradoresIdsAdicionados = new ArrayList<Long>();
     	for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificacao) {
-    		checkBox = new CheckBox();
+    		CheckBox checkBox = new CheckBox();
 			checkBox.setId(colaboradorCertificacao.getColaborador().getId());
 			checkBox.setNome(colaboradorCertificacao.getColaborador().getNome());
-			checkboxes.add(checkBox);
+			
+			if(!colaboradoresIdsAdicionados.contains(colaboradorCertificacao.getColaborador().getId())){
+				colaboradoresIdsAdicionados.add(colaboradorCertificacao.getColaborador().getId());
+				checkboxes.add(checkBox);
+			}
     	}
     	
     	return checkboxes;

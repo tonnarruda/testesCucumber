@@ -24,7 +24,7 @@ public interface CertificacaoManager extends GenericManager<Certificacao>
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 	Collection<Certificacao> findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(Long empresaId, Long certificacaoId);
 	Collection<Certificacao> findByCursoId(Long cursoId);
-	Collection<CheckBox> populaCheckBoxSemPeriodicidade(Long empresaId);
+	Collection<CheckBox> populaCheckBox(Long empresaId);
 	Collection<Certificacao> findDependentes(Long certificacaoId);
 	Collection<Certificacao> findOsQuePossuemAvaliacaoPratica(Long empresaId);
 	Collection<Curso> findCursosByCertificacaoId(Long id);
