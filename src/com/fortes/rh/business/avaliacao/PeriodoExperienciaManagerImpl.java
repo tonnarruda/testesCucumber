@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
@@ -137,5 +138,10 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 		}
 		
 		return periodoExperienciaClone;
+	}
+
+	@TesteAutomatico
+	public Collection<PeriodoExperiencia> findAllAtivos() {
+		return getDao().findAllAtivos();
 	}
 }

@@ -4086,86 +4086,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(colaboradorTmp.getEndereco().getBairro(), bairroDestino.getNome());
 	}
 
-	//
-	// public void testFindSemCurso()
-	// {
-	// Empresa empresa = EmpresaFactory.getEmpresa();
-	// empresa = empresaDao.save(empresa);
-	// Colaborador colaboradorSemCurso = ColaboradorFactory.getEntity();
-	// colaboradorSemCurso.setEmpresa(empresa);
-	// colaboradorSemCurso = colaboradorDao.save(colaboradorSemCurso);
-	//
-	// HistoricoColaborador historicoColaborador1 =
-	// HistoricoColaboradorFactory.getEntity();
-	// historicoColaborador1.setColaborador(colaboradorSemCurso);
-	// HistoricoColaborador historicoColaborador2 =
-	// HistoricoColaboradorFactory.getEntity();
-	// historicoColaborador2.setColaborador(colaboradorSemCurso);
-	//
-	// AreaOrganizacional areaOrganizacionalAntiga =
-	// AreaOrganizacionalFactory.getEntity();
-	// areaOrganizacionalAntiga =
-	// areaOrganizacionalDao.save(areaOrganizacionalAntiga);
-	// AreaOrganizacional areaOrganizacionalAtual =
-	// AreaOrganizacionalFactory.getEntity();
-	// areaOrganizacionalAtual =
-	// areaOrganizacionalDao.save(areaOrganizacionalAtual);
-	//
-	// Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-	// estabelecimento = estabelecimentoDao.save(estabelecimento);
-	//
-	// historicoColaborador1.setAreaOrganizacional(areaOrganizacionalAntiga);
-	// historicoColaborador1.setEstabelecimento(estabelecimento);
-	// historicoColaborador1.setData(DateUtil.criarDataMesAno(03, 02, 2005));
-	//
-	// historicoColaborador2.setAreaOrganizacional(areaOrganizacionalAtual);
-	// historicoColaborador2.setEstabelecimento(estabelecimento);
-	// historicoColaborador2.setData(DateUtil.criarDataMesAno(05, 02, 2009));
-	//
-	// historicoColaboradorDao.save(historicoColaborador1);
-	// historicoColaboradorDao.save(historicoColaborador2);
-	//
-	// Collection<Colaborador> colaboradores = colaboradorDao.findSemCurso();
-	// }
-	// select ct.id, c.id, hc.areaorganizacional_id, hc.estabelecimento_id,
-	// c.empresa_id, colab.nome, colab.matricula, t.descricao, t.dataprevini ,
-	// t.dataprevfim, ct.aprovado
-	// from colaboradorturma as ct
-	// join turma as t on t.id = ct.turma_id
-	// join curso as c on c.id = ct.curso_id
-	// join colaborador as colab on colab.id = ct.colaborador_id
-	// join historicocolaborador as hc on ct.colaborador_id=hc.colaborador_id
-	// where hc.data = (select max(hc2.data) from historicocolaborador hc2 where
-	// hc2.colaborador_id = ct.colaborador_id and hc2.data <= '2009-05-05')
-	// and hc.areaorganizacional_id = 41
-	// and hc.estabelecimento_id = 2
-	// and c.empresa_id = 4
-	// order by colab.nome
-	//
-	//
-	// select colab.id, colab.nome from colaborador as colab
-	// join historicocolaborador as hc on colab.id=hc.colaborador_id
-	// where hc.data = (select max(hc2.data) from historicocolaborador hc2 where
-	// hc2.colaborador_id = colab.id and hc2.data <= '2009-05-05')
-	// and hc.areaorganizacional_id = 41
-	// and hc.estabelecimento_id = 2
-	// and colab.empresa_id = 4
-	// order by colab.nome
-	//
-	//
-	// select colab.id, colab.nome, colab.matricula, hc.areaorganizacional_id
-	// from colaborador as colab
-	// join historicocolaborador as hc on colab.id=hc.colaborador_id
-	// left join colaboradorturma as ct on colab.id=ct.colaborador_id
-	// left join curso as c on c.id = ct.curso_id
-	// where hc.data = (select max(hc2.data) from historicocolaborador hc2 where
-	// hc2.colaborador_id = colab.id and hc2.data <= '2009-05-05')
-	// and hc.areaorganizacional_id = 41
-	// and hc.estabelecimento_id = 2
-	// and colab.empresa_id = 4
-	// and (c.id != 15 or ct.id is null)
-	// order by colab.nome
-
 	public void testFindEmailsDeColaboradoresByPerfis() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -4182,68 +4102,28 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(0, colaboradorDao.findEmailsDeColaboradoresByPerfis(new Long[] { perfil.getId() }, empresa.getId()).size());
 	}
 
-	public void testFindAdmitidosHaDiasPeriodoExperiencia() 
-	{
+	public void testFindAdmitidosHaDiasPeriodoExperiencia() {
 		Calendar trintaNoveDiasAtras = Calendar.getInstance();
 		trintaNoveDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("Estabelecimento");
-		estabelecimentoDao.save(estabelecimento);
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
 		
-		Colaborador joseAvaliado = ColaboradorFactory.getEntity();
-		joseAvaliado.setEmpresa(empresa);
-		joseAvaliado.setNome("José");
-		joseAvaliado.setDataAdmissao(trintaNoveDiasAtras.getTime());
-		colaboradorDao.save(joseAvaliado);
-
-		Colaborador maria = ColaboradorFactory.getEntity();
-		maria.setNome("Maria");
-		maria.setEmpresa(empresa);
-		maria.setDataAdmissao(trintaNoveDiasAtras.getTime());
-		colaboradorDao.save(maria);
+		Colaborador joseAvaliado = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null);
+		Colaborador maria = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null);
+		Colaborador colabDesligado = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), true, DateUtil.incrementaDias(new Date(), -1));
 		
-		Colaborador colabDesligado = ColaboradorFactory.getEntity();
-		colabDesligado.setNome("ColabDesligadoFuturo");
-		colabDesligado.setEmpresa(empresa);
-		colabDesligado.setDataAdmissao(trintaNoveDiasAtras.getTime());
-		colabDesligado.setDataDesligamento(DateUtil.incrementaDias(new Date(), -1));
-		colaboradorDao.save(colabDesligado);
+		saveHistoricoColaborador(joseAvaliado, estabelecimento, areaOrganizacional, null, DateUtil.criarDataMesAno(01, 01, 2005), StatusRetornoAC.CONFIRMADO);
+		saveHistoricoColaborador(maria, estabelecimento, areaOrganizacional, null, DateUtil.criarDataMesAno(01, 01, 2005), StatusRetornoAC.CONFIRMADO);
+		saveHistoricoColaborador(colabDesligado, estabelecimento, areaOrganizacional, null, DateUtil.criarDataMesAno(01, 01, 2005), StatusRetornoAC.CONFIRMADO);
 		
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(areaOrganizacional);
-		
-		HistoricoColaborador historicoJoseAvaliado = HistoricoColaboradorFactory.getEntity();
-		historicoJoseAvaliado.setColaborador(joseAvaliado);
-		historicoJoseAvaliado.setData(DateUtil.criarDataMesAno(01, 01, 2005));
-		historicoJoseAvaliado.setEstabelecimento(estabelecimento);
-		historicoJoseAvaliado.setAreaOrganizacional(areaOrganizacional);
-		historicoColaboradorDao.save(historicoJoseAvaliado);
-		
-		HistoricoColaborador historicoMariaJaRespondido = HistoricoColaboradorFactory.getEntity();
-		historicoMariaJaRespondido.setColaborador(maria);
-		historicoMariaJaRespondido.setData(DateUtil.criarDataMesAno(01, 01, 2005));
-		historicoMariaJaRespondido.setEstabelecimento(estabelecimento);
-		historicoMariaJaRespondido.setAreaOrganizacional(areaOrganizacional);
-		historicoColaboradorDao.save(historicoMariaJaRespondido);
-
-		HistoricoColaborador historicoColabDesligado = HistoricoColaboradorFactory.getEntity();
-		historicoColabDesligado.setColaborador(colabDesligado);
-		historicoColabDesligado.setData(DateUtil.criarDataMesAno(01, 01, 2005));
-		historicoColabDesligado.setEstabelecimento(estabelecimento);
-		historicoColabDesligado.setAreaOrganizacional(areaOrganizacional);
-		historicoColaboradorDao.save(historicoColabDesligado);
-
-		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity();
-		periodoExperiencia.setDias(30);
+		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity(empresa, 30, true);
 		periodoExperienciaDao.save(periodoExperiencia);
 		
-		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
-		avaliacao.setTipoModeloAvaliacao('A');
-		avaliacao.setPeriodoExperiencia(periodoExperiencia);
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity('A', periodoExperiencia);
 		avaliacaoDao.save(avaliacao);
 		
 		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacaoJoseAvaliado = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(joseAvaliado, periodoExperiencia, avaliacao, ColaboradorPeriodoExperienciaAvaliacao.TIPO_GESTOR);
@@ -4316,7 +4196,73 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		assertEquals(avaliacao.getId(), colabRetorno.getAvaliacaoId());
 		assertEquals(1, colabs.size());
-		assertEquals("Estabelecimento", colabRetorno.getEstabelecimento().getNome());
+		assertEquals(estabelecimento.getNome(), colabRetorno.getEstabelecimento().getNome());
+	}
+	
+	public void testFindAdmitidosHaDiasPeriodoExperienciaEmpresaComConfiguracaoNotificarSomentePeriodosConfigurados() {
+		Calendar trintaNoveDiasAtras = Calendar.getInstance();
+		trintaNoveDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setNotificarSomentePeriodosConfigurados(true);
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
+		
+		Colaborador joseAvaliado = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null);
+		saveHistoricoColaborador(joseAvaliado, estabelecimento, areaOrganizacional, null, trintaNoveDiasAtras.getTime(), StatusRetornoAC.CONFIRMADO);
+		
+		Colaborador maria = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null);
+		saveHistoricoColaborador(maria, estabelecimento, areaOrganizacional, null, trintaNoveDiasAtras.getTime(), StatusRetornoAC.CONFIRMADO);
+		
+		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity(empresa, 40, true);
+		periodoExperienciaDao.save(periodoExperiencia);
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity('A', periodoExperiencia);
+		avaliacaoDao.save(avaliacao);
+		
+		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacaoJoseAvaliado = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(joseAvaliado, periodoExperiencia, avaliacao, ColaboradorPeriodoExperienciaAvaliacao.TIPO_GESTOR);
+		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabPeriodoExperienciaAvaliacaoJoseAvaliado);
+		
+		colaboradorDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection <Colaborador> colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
+		Colaborador colabRetorno = (Colaborador) colabsRetorno.toArray()[0];
+		Collection<Colaborador> colabs = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
+		
+		assertEquals(avaliacao.getId(), colabRetorno.getAvaliacaoId());
+		assertEquals(1, colabs.size());
+	}
+	
+	public void testFindAdmitidosHaDiasPeriodoExperienciaEmpresaSemConfiguracaoNotificarSomentePeriodosConfigurados() {
+		Calendar trintaNoveDiasAtras = Calendar.getInstance();
+		trintaNoveDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setNotificarSomentePeriodosConfigurados(false);
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
+		
+		Colaborador joseAvaliado = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null);
+		saveHistoricoColaborador(joseAvaliado, estabelecimento, areaOrganizacional, null, trintaNoveDiasAtras.getTime(), StatusRetornoAC.CONFIRMADO);
+		
+		Colaborador maria = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null);
+		saveHistoricoColaborador(maria, estabelecimento, areaOrganizacional, null, trintaNoveDiasAtras.getTime(), StatusRetornoAC.CONFIRMADO);
+		
+		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity(empresa, 40, true);
+		periodoExperienciaDao.save(periodoExperiencia);
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity('A', periodoExperiencia);
+		avaliacaoDao.save(avaliacao);
+		
+		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacaoJoseAvaliado = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(joseAvaliado, periodoExperiencia, avaliacao, ColaboradorPeriodoExperienciaAvaliacao.TIPO_GESTOR);
+		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabPeriodoExperienciaAvaliacaoJoseAvaliado);
+		
+		colaboradorDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection <Colaborador> colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
+		assertEquals(2, colabsRetorno.size());
 	}
 
 	public void testFindAdmitidosNoPeriodo() {
@@ -6937,6 +6883,49 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals("Falta", ((Ocorrencia)ocorrencias.toArray()[1]).getDescricao());
 	}
 	
+	public void testExisteColaboradorAtivoTrue(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setPessoalCpf("12345678912");
+		colaboradorDao.save(colaborador);
+		
+		assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
+	}
+	
+	public void testExisteColaboradorAtivoCPFNaoConfere(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setPessoalCpf("12345678912");
+		colaboradorDao.save(colaborador);
+		
+		assertFalse(colaboradorDao.existeColaboradorAtivo("1234567892", new Date()));
+	}
+	
+	public void testExisteColaboradorAtivoComDataDesligamentoFuturaTrue(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setPessoalCpf("12345678912");
+		colaborador.setDataDesligamento(DateUtil.incrementaDias(new Date(), 2));
+		colaboradorDao.save(colaborador);
+		
+		assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
+	}
+	
+	public void testExisteColaboradorAtivoComDataDesligamentoIgualAInformadaTrue(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setPessoalCpf("12345678912");
+		colaborador.setDataDesligamento(new Date());
+		colaboradorDao.save(colaborador);
+		
+		assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
+	}
+	
+	public void testExisteColaboradorAtivoCoboradorDesligado(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setPessoalCpf("12345678912");
+		colaborador.setDataDesligamento(DateUtil.criarDataMesAno(1, 04, 2016));
+		colaboradorDao.save(colaborador);
+		
+		assertFalse(colaboradorDao.existeColaboradorAtivo("12345678912", DateUtil.criarDataMesAno(02, 04, 2016)));
+	}
+	
 	private FaixaSalarial saveFaixaSalarial(Cargo cargo){
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarial.setCargo(cargo);
@@ -7036,49 +7025,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		providencia.setDescricao(descricao);
 		providenciaDao.save(providencia);
 		return providencia;
-	}
-	
-	public void testExisteColaboradorAtivoTrue(){
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setPessoalCpf("12345678912");
-		colaboradorDao.save(colaborador);
-		
-		assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
-	}
-	
-	public void testExisteColaboradorAtivoCPFNaoConfere(){
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setPessoalCpf("12345678912");
-		colaboradorDao.save(colaborador);
-		
-		assertFalse(colaboradorDao.existeColaboradorAtivo("1234567892", new Date()));
-	}
-	
-	public void testExisteColaboradorAtivoComDataDesligamentoFuturaTrue(){
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setPessoalCpf("12345678912");
-		colaborador.setDataDesligamento(DateUtil.incrementaDias(new Date(), 2));
-		colaboradorDao.save(colaborador);
-		
-		assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
-	}
-	
-	public void testExisteColaboradorAtivoComDataDesligamentoIgualAInformadaTrue(){
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setPessoalCpf("12345678912");
-		colaborador.setDataDesligamento(new Date());
-		colaboradorDao.save(colaborador);
-		
-		assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
-	}
-	
-	public void testExisteColaboradorAtivoCoboradorDesligado(){
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setPessoalCpf("12345678912");
-		colaborador.setDataDesligamento(DateUtil.criarDataMesAno(1, 04, 2016));
-		colaboradorDao.save(colaborador);
-		
-		assertFalse(colaboradorDao.existeColaboradorAtivo("12345678912", DateUtil.criarDataMesAno(02, 04, 2016)));
 	}
 	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)

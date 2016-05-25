@@ -2893,7 +2893,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("left join estabelecimento as es on hc.estabelecimento_id = es.id ");
 		sql.append("left join areaorganizacional as am on ao.areaMae_id = am.id ");
 		sql.append("left join cargo as cg on fs.cargo_id = cg.id ");
-		sql.append("left join colaboradorPeriodoExperienciaAvaliacao as cpea on cpea.colaborador_id = co.id ");
+		
+		if(empresa.isNotificarSomentePeriodosConfigurados())
+			sql.append("inner join colaboradorPeriodoExperienciaAvaliacao as cpea on cpea.colaborador_id = co.id ");
+		else
+			sql.append("left join colaboradorPeriodoExperienciaAvaliacao as cpea on cpea.colaborador_id = co.id ");
+		
 		sql.append("and cpea.periodoExperiencia_id = :periodoExperienciaId and cpea.tipo = 'G' ");
 		sql.append(" where ");
 		sql.append("		hc.status = :status ");

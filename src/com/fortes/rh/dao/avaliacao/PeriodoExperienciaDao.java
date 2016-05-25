@@ -10,4 +10,5 @@ public interface PeriodoExperienciaDao extends GenericDao<PeriodoExperiencia>
 	Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean ordenarDiasDesc, Boolean ativo);
 	Collection<PeriodoExperiencia> findAllSelectDistinctDias(Long empresaId);
 	Collection<PeriodoExperiencia> findByIdsOrderDias(Long[] periodoExperienciaIds);
+	Collection<PeriodoExperiencia> findAllAtivos();
 }

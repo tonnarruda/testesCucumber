@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManagerImpl;
 import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
@@ -13,19 +12,21 @@ import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.FaixaPerformanceAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 
-public class PeriodoExperienciaManagerTest extends MockObjectTestCase
+public class PeriodoExperienciaManagerTest extends MockObjectTestCaseManager<PeriodoExperienciaManagerImpl> implements TesteAutomaticoManager
 {
-	private PeriodoExperienciaManagerImpl periodoExperienciaManager = new PeriodoExperienciaManagerImpl();
 	private Mock periodoExperienciaDao;
 	
 	protected void setUp() throws Exception
     {
         super.setUp();
+        manager = new PeriodoExperienciaManagerImpl();
         periodoExperienciaDao = new Mock(PeriodoExperienciaDao.class);
-        periodoExperienciaManager.setDao((PeriodoExperienciaDao) periodoExperienciaDao.proxy());
+        manager.setDao((PeriodoExperienciaDao) periodoExperienciaDao.proxy());
     }
 
 	public void testFindAllSelect()
@@ -35,7 +36,7 @@ public class PeriodoExperienciaManagerTest extends MockObjectTestCase
 		Collection<PeriodoExperiencia> periodoExperiencias = PeriodoExperienciaFactory.getCollection(1L);
 
 		periodoExperienciaDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(false), eq(null)).will(returnValue(periodoExperiencias));
-		assertEquals(periodoExperiencias, periodoExperienciaManager.findAllSelect(empresaId, false));
+		assertEquals(periodoExperiencias, manager.findAllSelect(empresaId, false));
 	}
 	
 	public void testAgrupaFaixaAvaliacao() throws Exception
@@ -52,7 +53,7 @@ public class PeriodoExperienciaManagerTest extends MockObjectTestCase
 		String[] percentualInicial = new String[]{"10", "31", null, "51",  "", null, "11"};
 		String[] percentualFinal = new String[]  {"30", "50", "",   "100", "", "",   "2", null};
 		
-		Collection<FaixaPerformanceAvaliacaoDesempenho> faixas = periodoExperienciaManager.agrupaFaixaAvaliacao(colaboradores, percentualInicial, percentualFinal);
+		Collection<FaixaPerformanceAvaliacaoDesempenho> faixas = manager.agrupaFaixaAvaliacao(colaboradores, percentualInicial, percentualFinal);
 		assertEquals(3, faixas.size());
 		
 		FaixaPerformanceAvaliacaoDesempenho faixa_10_30 = (FaixaPerformanceAvaliacaoDesempenho)faixas.toArray()[0];
@@ -89,7 +90,7 @@ public class PeriodoExperienciaManagerTest extends MockObjectTestCase
 		periodoExperienciaDao.expects(once()).method("findAllSelect").with(eq(empresa.getId()), eq(false), eq(true)).will(returnValue(periodoExperiencias));
 		periodoExperienciaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(periodoExperienciaClone));
 		
-		long empresaId = periodoExperienciaManager.clonarPeriodoExperiencia(periodoExperienciaClone.getId(), empresa).getEmpresa().getId();
+		long empresaId = manager.clonarPeriodoExperiencia(periodoExperienciaClone.getId(), empresa).getEmpresa().getId();
 		assertEquals(empresaId, 1L);
 	}
 	
@@ -111,8 +112,12 @@ public class PeriodoExperienciaManagerTest extends MockObjectTestCase
 		periodoExperienciaDao.expects(once()).method("findById").with(eq(periodoExperienciaClone.getId())).will(returnValue(periodoExperienciaClone));
 		periodoExperienciaDao.expects(once()).method("findAllSelect").with(eq(empresaDeDestinoDoClone.getId()), eq(false), eq(true)).will(returnValue(periodoExperienciasExistentes));
 		
-		PeriodoExperiencia experienciaRetonada =  periodoExperienciaManager.clonarPeriodoExperiencia(periodoExperienciaClone.getId(), empresaDeDestinoDoClone);
+		PeriodoExperiencia experienciaRetonada =  manager.clonarPeriodoExperiencia(periodoExperienciaClone.getId(), empresaDeDestinoDoClone);
 		assertEquals(periodoExperiencia1.getId(), experienciaRetonada.getId());
 		assertEquals(empresaDeDestinoDoClone.getId(), experienciaRetonada.getEmpresa().getId());
+	}
+
+	public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(periodoExperienciaDao);
 	}
 }

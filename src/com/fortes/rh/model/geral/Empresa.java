@@ -122,6 +122,7 @@ public class Empresa extends AbstractModel implements Serializable
     private boolean considerarDomingoNoAbsenteismo;
     private boolean processoExportacaoAC;
     private boolean mostrarPerformanceAvalDesempenho;
+    private boolean notificarSomentePeriodosConfigurados;
     
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
@@ -664,5 +665,14 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setMostrarPerformanceAvalDesempenho(boolean mostrarPerformanceAvalDesempenho) {
 		this.mostrarPerformanceAvalDesempenho = mostrarPerformanceAvalDesempenho;
+	}
+
+	public boolean isNotificarSomentePeriodosConfigurados() {
+		return notificarSomentePeriodosConfigurados;
+	}
+
+	public void setNotificarSomentePeriodosConfigurados(
+			boolean notificarSomentePeriodosConfigurados) {
+		this.notificarSomentePeriodosConfigurados = notificarSomentePeriodosConfigurados;
 	}
 }

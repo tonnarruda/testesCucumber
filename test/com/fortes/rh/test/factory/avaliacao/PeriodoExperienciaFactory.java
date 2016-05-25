@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.geral.Empresa;
 
 public class PeriodoExperienciaFactory
 {
@@ -38,5 +39,13 @@ public class PeriodoExperienciaFactory
 		periodoExperiencias.add(getEntity(id));
 		
 		return periodoExperiencias;
+	}
+	
+	public static PeriodoExperiencia getEntity (Empresa empresa, Integer dias, boolean ativo ) {
+		PeriodoExperiencia periodoExperiencia = getEntity();
+		periodoExperiencia.setEmpresa(empresa);
+		periodoExperiencia.setDias(dias);
+		periodoExperiencia.setAtivo(ativo);
+		return periodoExperiencia;
 	}
 }

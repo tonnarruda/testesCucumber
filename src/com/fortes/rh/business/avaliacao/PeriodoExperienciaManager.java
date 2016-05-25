@@ -18,4 +18,5 @@ public interface PeriodoExperienciaManager extends GenericManager<PeriodoExperie
 	Collection<FaixaPerformanceAvaliacaoDesempenho> agrupaFaixaAvaliacao(Collection<Colaborador> colaboradores, String[] percentualInicial, String[] percentualFinal) throws Exception;
 	Collection<PeriodoExperiencia> findByIdsOrderDias(Long[] PeriodoExperienciaIds);
 	PeriodoExperiencia clonarPeriodoExperiencia(Long id, Empresa empresa);
+	Collection<PeriodoExperiencia> findAllAtivos();
 }

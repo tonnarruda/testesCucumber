@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 
 public class AvaliacaoFactory
 {
@@ -36,5 +37,13 @@ public class AvaliacaoFactory
 		avaliacaos.add(getEntity(id));
 		
 		return avaliacaos;
+	}
+	
+	public static Avaliacao getEntity(char tipoModeloAvaliacao, PeriodoExperiencia periodoExperiencia)
+	{
+		Avaliacao avaliacao = new Avaliacao();
+		avaliacao.setPeriodoExperiencia(periodoExperiencia);
+		avaliacao.setTipoModeloAvaliacao(tipoModeloAvaliacao);
+		return avaliacao;
 	}
 }

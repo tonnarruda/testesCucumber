@@ -665,7 +665,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 String[] emails = new String[] {"email1@teste.com"};
 		 
-		 periodoExperienciaManager.expects(once()).method("findToList").will(returnValue(periodoExperiencias));
+		 periodoExperienciaManager.expects(once()).method("findAllAtivos").will(returnValue(periodoExperiencias));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
 		 colaboradorManager.expects(atLeastOnce()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
@@ -1726,9 +1726,6 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(2L);
 		areaOrganizacional.setResponsavel(gestor);
 		areaOrganizacional.setAreaMae(areaOrganizacionalMae);
-		
-		Collection<AreaOrganizacional> areas = Arrays.asList(areaOrganizacionalMae, areaOrganizacional);
-		Collection<Long> areasId = Arrays.asList(areaOrganizacionalMae.getId(), areaOrganizacional.getId());
 		
 		MotivoSolicitacao motivoSolicitacao = MotivoSolicitacaoFactory.getEntity();
 		motivoSolicitacao.setId(1L);

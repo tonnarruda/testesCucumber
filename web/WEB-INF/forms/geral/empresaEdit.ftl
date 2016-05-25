@@ -202,10 +202,6 @@
 			<br />
 		<li>
 		<li>
-			<@ww.checkbox label="Solicitar confirmação de gestores ao desligar colaboradores. (Ao marcar esta opção, o usuário deverá sair e realizar novo login no sistema)" id="solicitarConfirmacaoDesligamento" name="empresa.solicitarConfirmacaoDesligamento" liClass="liLeft" labelPosition="left"/>
-			<br />
-		<li>
-		<li>
 			<label>Busca de possíveis parentes nos cadastros de candidatos e colaboradores:</label>
 			<img id="verificaParentescoHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
 			<br />
@@ -272,6 +268,18 @@
 				<h2>T&D</h2>
 				<ul>
 					<@ww.select label="Controlar vencimento da certificação por" name="empresa.controlarVencimentoCertificacaoPor" id="controlaPeriodicidadePor" list=r"#{1:'Periodicidade do curso', 2:'Periodicidade da certificação'}" cssStyle="width: 410px;"/>
+				</ul>
+			</@ww.div>
+		</li>
+		
+		<li>&nbsp;</li>
+		
+		<li>
+			<@ww.div cssClass="divInfo">
+				<h2>Info. Funcionais</h2>
+				<ul>
+					<@ww.checkbox label="Solicitar confirmação de gestores ao desligar colaboradores. (Ao marcar esta opção, o usuário deverá sair e realizar novo login no sistema)" id="solicitarConfirmacaoDesligamento" name="empresa.solicitarConfirmacaoDesligamento" liClass="liLeft" labelPosition="left"/>
+					<@ww.checkbox label="Notificar somente os períodos de acompanhamento de experiência configurados no cadastro do colaborador na aba 'Modelos de Avaliação'." id="notificarSomentePeriodosConfigurados" name="empresa.notificarSomenteDiasConfigurados" liClass="liLeft" labelPosition="left"/>
 				</ul>
 			</@ww.div>
 		</li>

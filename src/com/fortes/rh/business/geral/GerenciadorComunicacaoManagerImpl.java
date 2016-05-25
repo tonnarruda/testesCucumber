@@ -475,7 +475,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 	public void enviaMensagemLembretePeriodoExperiencia(){
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
-		Collection<PeriodoExperiencia> periodoExperiencias = periodoExperienciaManager.findToList(new String[]{"id","dias","empresa.id"}, new String[]{"id","dias","empresaId"}, new String[]{"ativo"}, new Boolean[]{true}, new String[]{"dias"});
+		Collection<PeriodoExperiencia> periodoExperiencias = periodoExperienciaManager.findAllAtivos();
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId(), null);
 		
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos){

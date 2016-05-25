@@ -81,4 +81,22 @@ public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoE
 
 		return criteria.list();
 	 }
+
+	@SuppressWarnings("unchecked")
+	public Collection<PeriodoExperiencia> findAllAtivos() {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("p.id"), "id");
+		p.add(Projections.property("p.dias"), "dias");
+		p.add(Projections.property("e.id"), "empresaId");
+		p.add(Projections.property("e.notificarSomentePeriodosConfigurados"), "empresaNotificarSomentePeriodosConfigurados");
+		
+		Criteria criteria = getSession().createCriteria(PeriodoExperiencia.class, "p");
+		criteria.createCriteria("p.empresa", "e", Criteria.INNER_JOIN);
+		criteria.add(Expression.eq("p.ativo", true));
+		criteria.setProjection(p);
+		
+		criteria.addOrder(Order.asc("p.dias"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(PeriodoExperiencia.class));
+		return criteria.list();
+	}
 }

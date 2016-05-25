@@ -2,7 +2,6 @@ package com.fortes.rh.business.sesmt;
 
 import com.fortes.rh.business.geral.EmpresaManager;
 
-@SuppressWarnings("deprecation")
 public class LembreteExamesPrevistos
 {
 	private ExameManager exameManager;
