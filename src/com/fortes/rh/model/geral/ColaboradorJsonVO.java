@@ -37,6 +37,7 @@ public class ColaboradorJsonVO
     private String registration;
     private String hiringEnd;
     private String hiringStart;
+    private String status;
 
     public ColaboradorJsonVO()
     {
@@ -44,7 +45,7 @@ public class ColaboradorJsonVO
     
     public ColaboradorJsonVO(String address, String burgh, String cep, String city, String cpf, String email, Character genre,
      String name, String phone, String uf, String rg, String education, String motherName, String PIS, String registration, String vinculo,
-     Date birth, Integer coren, Date hiringEnd, Date hiringStart, String function)
+     Date birth, Integer coren, Date hiringEnd, Date hiringStart, String function, boolean desligado)
     {
     	this.address = address;
     	this.burgh = burgh;
@@ -67,6 +68,7 @@ public class ColaboradorJsonVO
     	this.coren = coren == null ? "" : coren.toString();
     	this.hiringEnd = DateUtil.formataDiaMesAno(hiringEnd);
     	this.hiringStart = DateUtil.formataDiaMesAno(hiringStart);
+    	this.status = desligado ? "Inativo" : "Ativo";
     }
 
 	public String getId() {
@@ -243,5 +245,13 @@ public class ColaboradorJsonVO
 
 	public void setHiringStart(String hiringStart) {
 		this.hiringStart = hiringStart;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

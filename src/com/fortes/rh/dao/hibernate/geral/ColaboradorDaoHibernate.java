@@ -4095,7 +4095,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new ColaboradorJsonVO(c.endereco.logradouro || ', ' || c.endereco.numero, c.endereco.bairro, c.endereco.cep, cid.nome, ");
 		hql.append("c.pessoal.cpf, c.contato.email, c.pessoal.sexo, c.nome, '(' || c.contato.ddd || ') ' || c.contato.foneFixo, uf.sigla, c.pessoal.rg, c.pessoal.escolaridade, c.pessoal.mae, c.pessoal.pis, ce.texto1, c.vinculo,  ");
-		hql.append("c.pessoal.dataNascimento, ce.numero1, c.dataEncerramentoContrato, c.dataAdmissao, ca.nome) ");
+		hql.append("c.pessoal.dataNascimento, ce.numero1, c.dataEncerramentoContrato, c.dataAdmissao, ca.nome, c.desligado) ");
 		hql.append("from Colaborador as c ");
 		hql.append("left join c.historicoColaboradors hc ");
 		hql.append("left join hc.faixaSalarial fs ");
