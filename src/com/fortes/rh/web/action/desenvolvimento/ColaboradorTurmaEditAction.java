@@ -244,21 +244,16 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		return Action.SUCCESS;
 	}
 
-	public String insert() throws Exception
-	{
-		if(colaboradoresId != null && colaboradoresId.length > 0)
-		{
+	public String insert() throws Exception{
+		if(colaboradoresId != null && colaboradoresId.length > 0){
 			turma = turmaManager.findByIdProjection(turma.getId());
 
 			Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaCurso(turma.getCurso().getId());
 			DNT dnt = dNTManager.getUltimaDNT(getEmpresaSistema().getId());
 
-			try
-			{
-				msgAlert = colaboradorTurmaManager.insereColaboradorTurmas(colaboradoresId, colaboradoresTurmas, turma, dnt, filtrarPor, selectPrioridades);
-			}
-			catch (Exception e)
-			{
+			try{
+				msgAlert = colaboradorTurmaManager.insereColaboradorTurmas(colaboradoresId, colaboradoresTurmas, turma, dnt, filtrarPor, selectPrioridades, getEmpresaSistema().isControlarVencimentoPorCertificacao());
+			}catch (Exception e){
 				msgAlert = "Erro ao inserir colaborador.";
 			}
 		}
@@ -269,10 +264,8 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		return Action.SUCCESS;
 	}
 
-	public String update() throws Exception
-	{
-		try
-		{
+	public String update() throws Exception{
+		try{
 			if(colaboradorTurmaHidden != null && colaboradorTurmaHidden.length > 0)
 				colaboradorTurmaManager.saveUpdate(colaboradorTurmaHidden, selectPrioridades, getEmpresaSistema().isControlarVencimentoPorCertificacao());
 
@@ -286,14 +279,11 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 			if(colaboradoresTurmaId!= null && colaboradoresTurmaId.length > 0)
 				marcados = new CollectionUtil<Long>().convertArrayToCollection(colaboradoresTurmaId);
 
-				for (String idTmp : geral)
-				{
-					if(marcados.contains(Long.parseLong(idTmp)))
-					{
+				for (String idTmp : geral){
+					if(marcados.contains(Long.parseLong(idTmp))){
 						aprovados.add(Long.parseLong(idTmp));
 						continue;
 					}
-
 					reprovados.add(Long.parseLong(idTmp));
 				}
 

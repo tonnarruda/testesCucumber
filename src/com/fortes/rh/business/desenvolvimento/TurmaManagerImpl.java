@@ -123,7 +123,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		verificaAprovacaoByTurma(turma.getId());
 		
 		if(validarCertificacao && colaboradorTurma == null)
-			verificaCertificacaoByColaboradorTurmaId(turma);
+			verificaCertificacaoByColaboradorTurma(turma);
 	}
 	
 	private void verificaAprovacaoByTurma(Long turmaId) {
@@ -133,7 +133,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		}
 	}
 	
-	private void verificaCertificacaoByColaboradorTurmaId(Turma turma){
+	public void verificaCertificacaoByColaboradorTurma(Turma turma){
 		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaId(turma.getId());
 		if(turma.getRealizada()){
 			CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBean("certificacaoManager");

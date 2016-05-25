@@ -190,7 +190,7 @@ public class ColaboradorCertificacaoManagerTest
 		when(colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacao1.getId(), colaboradoresIds)).thenReturn(mapColaboradorAvaliacoesPraticas);
 
 		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, null, null, null, null, certificacoesIds, new Long[]{colab1.getId()});
-		assertEquals(3, colaboradoresNasCertificacoes.size());
+		assertEquals(6, colaboradoresNasCertificacoes.size());
 		
 		ColaboradorCertificacao result2 = (ColaboradorCertificacao) colaboradoresNasCertificacoes.toArray()[2];
 		assertEquals("Avaliação Prática: Beber Cachaça", result2.getNomeCurso());

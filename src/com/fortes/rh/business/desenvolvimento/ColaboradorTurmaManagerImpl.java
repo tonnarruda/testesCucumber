@@ -463,40 +463,36 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findByTurmaPresenteNoDiaTurmaId(turmaId, diaTurmaId);
 	}
 
-	public String insereColaboradorTurmas(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Turma turma, DNT dnt, int filtrarPor, String[] selectPrioridades)
-	{
+	public String insereColaboradorTurmas(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Turma turma, DNT dnt, int filtrarPor, String[] selectPrioridades, boolean validarCertificacao){
 		ColaboradorTurma colaboradorTurma = null;
 		String msgAlert = "";
 		boolean jaInscrito;
 
-		for(int i = 0; i < colaboradoresId.length; i++)
-		{
+		for(int i = 0; i < colaboradoresId.length; i++){
 			jaInscrito = false;
 			for (ColaboradorTurma ccTemp : colaboradoresTurmas)
 				if(ccTemp.getColaborador().getId().equals(colaboradoresId[i]) && turma.getId().equals(ccTemp.getTurma().getId()))
 					jaInscrito = true;
 
-			if(!jaInscrito)
-			{
-				//update nos colaboradores que ja estao pre inscritos, esse 4 vem no botão(listFiltro.action?filtrarPor=4&..) Francisco Barroso
-				if(filtrarPor == 4)
-				{
-					//colaboradoresId[i] na verdade é o id do colaboradorTurma
+			if(!jaInscrito){
+				if(filtrarPor == 4)	{
 					updateTurmaEPrioridade(colaboradoresId[i], turma.getId(), Long.parseLong(selectPrioridades[i]));
-				}
-				else
-				{
+				}else{
 					colaboradorTurma = new ColaboradorTurma();
 					Colaborador colaborador = new Colaborador();
 					colaborador.setId(colaboradoresId[i]);
 					colaboradorTurma.setColaborador(colaborador);
 					colaboradorTurma.setTurma(turma);
-
 					colaboradorTurma.setDnt(dnt);
 					colaboradorTurma.setCurso(turma.getCurso());
-
 					save(colaboradorTurma);
 				}
+			}
+			aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
+
+			if(validarCertificacao && colaboradorTurma.getId() != null){
+				getDao().getHibernateTemplateByGenericDao().flush();
+				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
 			}
 		}
 

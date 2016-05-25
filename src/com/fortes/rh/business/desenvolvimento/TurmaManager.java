@@ -39,11 +39,11 @@ public interface TurmaManager extends GenericManager<Turma>
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
 	public Collection<Turma> findByCursos(Long[] cursoIds);
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmasCheck, Date dataIni, Date dataFim, Boolean realizada);
-	//	public Collection<Colaborador> enviarEmailParticipantes(Long turmaId);
 	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public Double getPercentualInvestimento(Double somaCustos, Date dataIni, Date dataFim, Long[] empresaIds);
 	public void salvarTurmaDiasCustosColaboradoresAvaliacoes(Turma turma, String[] dias, String custos, Collection<ColaboradorTurma> colaboradorTurmas, Long[] avaliacaoTurmasCheck, String[] horasIni, String[] horasFim) throws Exception;
 	public void inserir(Turma turma, String[] dias, String custos, Long[] avaliacaoTurmaIds, Long[] documentoAnexoIds, String[] horasIni, String[] horasFim) throws Exception;
 	public void atualizar(Turma turma, String[] dias, String[] horasIni, String[] horasFim, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, Long[] documentoAnexoIds, boolean atualizaAvaliacao, boolean validarCertificacao) throws Exception;
 	public Turma setAssinaturaDigital(boolean manterAssinaturaDigital, Turma turma, File assinaturaDigital, String local);
+	public void verificaCertificacaoByColaboradorTurma(Turma turma);
 }
