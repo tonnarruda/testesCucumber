@@ -34,7 +34,7 @@
 	</listener>
 	
 	<listener>
-		<listener-class>com.fortes.rh.config.UsuarioListener</listener-class>
+		<listener-class>com.fortes.rh.config.SessionListener</listener-class>
 	</listener>
 
 	<listener>

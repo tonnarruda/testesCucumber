@@ -32,7 +32,7 @@ public class LoginAction extends MyActionSupport
 	public String login() throws Exception
 	{
 		try {
-			if (SecurityUtil.hasLoggedUser())
+			if (SecurityUtil.isAuthenticatedUser())
 				return "index";
 
 			if(!verificaCompatibilidadeDoJava())

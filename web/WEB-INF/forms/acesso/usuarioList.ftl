@@ -56,8 +56,8 @@
 	<br>
 	<@display.table name="usuarios" id="usuario" class="dados" defaultsort=2 >
 		<@display.column title="Ações" media="html" class="acao">
-			<a href="prepareUpdate.action?usuario.id=${usuario.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?usuario.id=${usuario.id}&page=${page}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?usuario.id=${usuario.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?usuario.id=${usuario.id}&page=${page}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>
 		<@display.column property="login" title="Login"/>
@@ -74,8 +74,8 @@
 
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
-		<button class="btnCriarUsuariosAuto" onclick="window.location='prepareAutoInsert.action'" accesskey="I"></button>
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');" accesskey="I"></button>
+		<button class="btnCriarUsuariosAuto" onclick="javascript: executeLink('prepareAutoInsert.action');" accesskey="I"></button>
 		<button class="btnImprimirPdf" onclick="window.location='imprimirUsuariosPerfis.action'">
 	</div>
 </body>

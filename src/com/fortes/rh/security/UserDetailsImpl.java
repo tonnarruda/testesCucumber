@@ -30,7 +30,10 @@ public class UserDetailsImpl implements UserDetails
 	private Colaborador colaborador;
 	private String versao = "";
 	private ParametrosDoSistema parametrosDoSistema;
+	private boolean hasAcessoRestrito;
 
+	public UserDetailsImpl(){}
+	
 	public UserDetailsImpl(Long id, String nome, String username, String password, boolean superAdmin, Date ultimoLogin, 
 			GrantedAuthority[] authorities, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, 
 			String menuFormatado, Empresa empresa, Colaborador colaborador, ParametrosDoSistema parametrosDoSistema)
@@ -190,5 +193,15 @@ public class UserDetailsImpl implements UserDetails
 
 	public void setParametrosDoSistema(ParametrosDoSistema parametrosDoSistema) {
 		this.parametrosDoSistema = parametrosDoSistema;
+	}
+	
+	public boolean getHasAcessoRestrito()
+	{
+		return hasAcessoRestrito;
+	}
+
+	public void setHasAcessoRestrito(boolean hasAcessoRestrito)
+	{
+		this.hasAcessoRestrito = hasAcessoRestrito;
 	}
 }

@@ -96,6 +96,11 @@
     <property name="acPessoalClient" ref="acPessoalClient" />
   </bean>
 
+  <!-- Controle de Usuarios -->
+  <bean id="sessionManager" singleton="true" class="com.fortes.rh.config.SessionManager"/>
+  
+  <bean id="userDetails"  class="com.fortes.rh.security.UserDetailsImpl" />
+  
   <!-- Tarefas agendadas -->
   
   <bean name="lembretePesquisaJob" class="com.fortes.rh.business.pesquisa.LembretePesquisa">

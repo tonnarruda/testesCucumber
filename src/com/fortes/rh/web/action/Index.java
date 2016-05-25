@@ -28,6 +28,7 @@ import com.fortes.rh.business.geral.NoticiaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.geral.UsuarioNoticiaManager;
+import com.fortes.rh.exception.LoginInvalidoException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
@@ -118,26 +119,28 @@ public class Index extends MyActionSupport
 		response.setHeader("Cache-Control", "no-cache");
 		response.setDateHeader("Expires", 0);
 
-		parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
-		ServletActionContext.getRequest().getSession().setMaxInactiveInterval(parametrosDoSistema.getSessionTimeout());
-		if(ActionContext.getContext().getSession().get("primeiraExecucao") == null)
-		{
-			ActionContext.getContext().getSession().put("primeiraExecucao", "sim");
-			primeiraExecucao = true;
-		}
-		
-		//bancoConsistente = parametrosDoSistema.isBancoConsistente();
-
 		try
 		{
-			usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
+			parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+			ServletActionContext.getRequest().getSession().setMaxInactiveInterval(parametrosDoSistema.getSessionTimeout());
+			if(ActionContext.getContext().getSession().get("primeiraExecucao") == null)
+			{
+				ActionContext.getContext().getSession().put("primeiraExecucao", "sim");
+				primeiraExecucao = true;
+			}
 			
+			//bancoConsistente = parametrosDoSistema.isBancoConsistente();
+
 			if (empresaId != null)
 			{
 				SecurityUtil.removeSessaoFiltrosConfiguracoes();
 				SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresaManager.findById(empresaId));
 				((MyDaoAuthenticationProvider)authenticationProvider).configuraPapeis(SecurityUtil.getUserDetails(ActionContext.getContext().getSession()), empresaId);
 			}
+
+			SecurityUtil.autenticaLogin(ActionContext.getContext().getSession());
+
+			usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 			
 			configuracaoCaixasMensagens = (ConfiguracaoCaixasMensagens) StringUtil.simpleJSONObjecttoArrayJava(usuario.getCaixasMensagens(), ConfiguracaoCaixasMensagens.class);
 			
@@ -173,6 +176,10 @@ public class Index extends MyActionSupport
 			
 			if (StringUtils.isNotBlank(actionMsg))
 				addActionMessage(actionMsg);
+		}
+		catch (LoginInvalidoException e)
+		{
+			return e.getRetorno();
 		}
 		catch (Exception e)
 		{

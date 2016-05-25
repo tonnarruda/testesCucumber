@@ -52,7 +52,7 @@ public class PerfilListAction extends MyActionSupportList {
 	
 	public String delete() throws Exception {
 		perfilManager.remove(new Long[] { perfil.getId() });
-		addActionMessage("Perfil excluído com sucesso.");
+		addActionSuccess("Perfil excluído com sucesso.");
 
 		return Action.SUCCESS;
 	}

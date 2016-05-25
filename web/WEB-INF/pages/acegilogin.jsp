@@ -61,13 +61,17 @@
 <body>
 <form name="form" action="<ww:url value='j_acegi_security_check'/>" onsubmit="validaCampos();" method="POST">
 	<br><br><br>
-	<% if("1".equals(request.getParameter("login_error"))) { %>
+	<% if("1".equals(request.getParameter("login_error")) || "2".equals(request.getParameter("login_error"))) { %>
 	<table width="344px" align="center">
 		<tr>
 			<td valign="top" width="40"><img src='<ww:url includeParams="none" value="/imgs/erro_msg.gif"/>'></td>
 			<td class="msgErro" valign="top">
 				<span class="txtErro">
-				<%= ((AuthenticationException) session.getAttribute(AbstractProcessingFilter.ACEGI_SECURITY_LAST_EXCEPTION_KEY)).getMessage() %>
+				<% if("1".equals(request.getParameter("login_error"))) { %>
+					<%= ((AuthenticationException) session.getAttribute(AbstractProcessingFilter.ACEGI_SECURITY_LAST_EXCEPTION_KEY)).getMessage() %>
+				<% } else if("2".equals(request.getParameter("login_error"))) { %>
+					A quantidade de usuários logados foi excedida!
+				<% } %>
 				</span>
 			</td>
 		</tr>

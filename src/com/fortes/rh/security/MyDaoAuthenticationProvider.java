@@ -127,6 +127,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 			((UserDetailsImpl)userDetails).setMenuFormatado(menu);
 			((UserDetailsImpl)userDetails).setVersao(versao);
 			((UserDetailsImpl)userDetails).setParametrosDoSistema(parametrosDoSistemaManager.findByIdProjectionSession(1L));
+			((UserDetailsImpl)userDetails).setHasAcessoRestrito(usuarioEmpresa.getPerfil().getAcessoRestrito());
 		}
 		else{
 			throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);

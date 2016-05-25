@@ -155,8 +155,6 @@
         </interceptor-ref>
     </interceptor-stack>  
 
-	  <!-- ########################################################### -->
-		
     </interceptors>
     
     <default-interceptor-ref name="tokenWebStack" />
@@ -191,6 +189,7 @@
     </action>
     <action name="index" class="com.fortes.rh.web.action.Index" method="index">
       <result name="success" type="freemarker">/WEB-INF/pages/index.ftl</result>
+      <result name="limiteLoginExcedido" type="redirect">login.action?login_error=2</result>
     </action>
     <action name="removePendenciaACHistoricoColaborador" class="com.fortes.rh.web.action.Index" method="removePendenciaACHistoricoColaborador">
       <result name="success" type="freemarker">/WEB-INF/pages/index.ftl</result>
@@ -252,6 +251,7 @@
     </action>
     <action name="logout" class="com.opensymphony.xwork.ActionSupport" method="logout">
       <result name="success" type="redirect">/j_acegi_logout</result>
+      <result name="exceptionError" type="redirect">/j_acegi_logout</result>
     </action>
     <action name="jobs" class="com.fortes.rh.web.action.JobsAction" method="index">
       <result name="success" type="freemarker">/WEB-INF/pages/jobs.ftl</result>

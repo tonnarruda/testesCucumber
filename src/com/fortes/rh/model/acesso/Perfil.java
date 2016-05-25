@@ -25,6 +25,7 @@ public class Perfil extends AbstractModel implements Serializable, Cloneable
 	@ManyToMany(fetch=FetchType.EAGER, targetEntity=Papel.class)
 	@OrderBy("ordem")
 	private Collection<Papel> papeis;
+	private boolean acessoRestrito;
 	@Transient
 	private String arvorePapeis;
 	
@@ -86,5 +87,15 @@ public class Perfil extends AbstractModel implements Serializable, Cloneable
 
 	public void setArvorePapeis(String arvorePapeis) {
 		this.arvorePapeis = arvorePapeis;
+	}
+
+	public boolean getAcessoRestrito()
+	{
+		return acessoRestrito;
+	}
+
+	public void setAcessoRestrito(boolean acessoRestrito)
+	{
+		this.acessoRestrito = acessoRestrito;
 	}
 }

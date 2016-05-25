@@ -9,11 +9,14 @@ import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.userdetails.UserDetails;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
+import com.fortes.rh.config.SessionManager;
+import com.fortes.rh.exception.LoginInvalidoException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.SpringUtil;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionContext;
 
 public class SecurityUtil
@@ -33,7 +36,7 @@ public class SecurityUtil
 
 		return false;
 	}
-
+	
 	public static Usuario getUsuarioLoged(Map session)
 	{
 		SecurityContext sc = getSecurityContext(session);
@@ -41,8 +44,30 @@ public class SecurityUtil
 			return null;
 		
 		Long id = ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getId();
-
+		
 		return ((UsuarioManager) SpringUtil.getBean("usuarioManager")).findById(id);
+	}
+	
+	public static void registraLogin(Map session)
+	{
+		SessionManager sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
+		
+		UserDetailsImpl userDetailsImpl = (UserDetailsImpl) getUserDetails(session);
+		sessionManager.registerLogin(ServletActionContext.getRequest().getSession().getId(),userDetailsImpl);
+	}
+	
+	public static void registraLogout()
+	{
+		SessionManager sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
+		
+		sessionManager.registerLogout(ServletActionContext.getRequest().getSession().getId());
+	}
+	
+	public static Integer getQuantidadeUsuariosLogados()
+	{
+		SessionManager sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
+		
+		return sessionManager.getNumeroDeUsuariosAutenticadosComAcessoNormal();
 	}
 	
 	public static Long getIdUsuarioLoged(Map session)
@@ -133,6 +158,12 @@ public class SecurityUtil
 		Usuario user = getUsuarioLoged(ActionContext.getContext().getSession());
 		return user != null;
 	}
+	
+	public static boolean isAuthenticatedUser() {
+		SessionManager sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
+		
+		return sessionManager.isUserLogged(ServletActionContext.getRequest().getSession().getId());
+	}
 
 	public static String getNomeUsuarioLogedByDWR(HttpSession session) {
 		SecurityContext sc = (SecurityContext) session.getAttribute("ACEGI_SECURITY_CONTEXT");
@@ -190,5 +221,18 @@ public class SecurityUtil
 			}
 		}
 	}
-	
+
+	public static void autenticaLogin(Map session) throws LoginInvalidoException
+	{
+		SessionManager sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
+
+		if(!isAuthenticatedUser()){
+			boolean temAcessoRestrito = ((UserDetailsImpl)getUserDetails(session)).getHasAcessoRestrito();
+			
+			if(!temAcessoRestrito && sessionManager.getNumeroDeUsuariosAutenticadosComAcessoNormal() > 1)
+				throw new LoginInvalidoException("Limite de login execedido.", "limiteLoginExcedido");
+
+			SecurityUtil.registraLogin(ActionContext.getContext().getSession());
+		}
+	}
 }
