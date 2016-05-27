@@ -1451,8 +1451,12 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos){
 				if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_DESLIGAMENTO.getId())){
+					try {
 					String[] emailsByUsuario = usuarioManager.findEmailByPerfilAndGestor("ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO", empresaId, colaborador.getAreaOrganizacional().getId(), true, email);
 					mail.send(empresa, parametrosDoSistema, subject, body.toString(), true, emailsByUsuario);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
 					CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
 					String[] emails = usuarioManager.findEmailsByUsuario(collUtil.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios()), email);
@@ -1460,6 +1464,12 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				}else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
 					String[] emails = gerenciadorComunicacao.getEmpresa().getArrayEmailRespRH();
 					emails = (String[]) ArrayUtils.removeElement(emails, email);
+					mail.send(gerenciadorComunicacao.getEmpresa(), parametrosDoSistema, subject, body.toString(), true, emails);
+				}else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
+					String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaborador.getAreaOrganizacional().getId(), gerenciadorComunicacao.getEmpresa().getId(), AreaOrganizacional.RESPONSAVEL, null);
+					mail.send(gerenciadorComunicacao.getEmpresa(), parametrosDoSistema, subject, body.toString(), true, emails);
+				}else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) {
+					String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaborador.getAreaOrganizacional().getId(), gerenciadorComunicacao.getEmpresa().getId(), AreaOrganizacional.CORRESPONSAVEL, null);
 					mail.send(gerenciadorComunicacao.getEmpresa(), parametrosDoSistema, subject, body.toString(), true, emails);
 				}
 			}

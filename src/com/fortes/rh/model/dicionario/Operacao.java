@@ -257,6 +257,8 @@ public enum Operacao
 			MeioComunicacao.EMAIL.add(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_DESLIGAMENTO);
 			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
 			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
+			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.COGESTOR_AREA);
 			
 			return this.getListMeioComunicacao();
 		}
