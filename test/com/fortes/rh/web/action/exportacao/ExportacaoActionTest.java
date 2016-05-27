@@ -84,6 +84,7 @@ public class ExportacaoActionTest extends MockObjectTestCase
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
     	colaboradorTurmas.add(colaboradorTurma);
     	
+    	empresaManager.expects(once()).method("findEmpresasIntegradas").will(returnValue(null));
     	cursoManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(Arrays.asList(curso)));
     	colaboradorTurmaManager.expects(once()).method("findColaboradorByCurso").with(ANYTHING, ANYTHING).will(returnValue(Arrays.asList(colaborador)));
     	colaboradorTurmaManager.expects(once()).method("findColabTreinamentos").will(returnValue(colaboradorTurmas));
