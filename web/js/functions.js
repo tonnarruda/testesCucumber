@@ -436,6 +436,9 @@ function resetFormulario(campos)
 
 function validaFormulario(formulario, camposObrigatorios, camposValidos, noSubmit, urlImg)
 {
+	if(!validaCaracteresDosCampos())
+		return false;
+	
 	var validacao = true;
 
 	if(camposObrigatorios != null && camposObrigatorios.length > 0)
@@ -1425,8 +1428,25 @@ function getLinkToken(link)
 	return link+_joinCharacter_+"webwork.token.name="+_tokenName_+"&webwork.token="+_token_;
 }
 
-function validaCaracteresDosCampos(formulario) {
+function validaCaracteresDosCampos() {
+	var existeCaracterinvalido = false;
+	$("input:text,textarea").not('.listCheckBoxFilter').map(function() {
+		var resultado = $(this).val().match(/[><]/g);
+		if(resultado != null && resultado.length > 0){
+			$(this).css('background-color', '#FFEEC2');
+			existeCaracterinvalido = true;
+		} else {
+			$(this).css('background-color', '#FFF');
+		} 
+			
+	}).get();
 	
+	if(existeCaracterinvalido){
+		jAlert('Existe um ou mais caracteres inválidos nos campos marcados.');
+		return false;
+	}
+	
+	return true;
 }
 
 (function($) {
