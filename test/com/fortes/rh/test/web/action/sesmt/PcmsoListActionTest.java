@@ -17,9 +17,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.relatorio.PCMSO;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
-import com.fortes.rh.test.util.mockObjects.MockAutenticador;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
-import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.sesmt.PcmsoListAction;
@@ -41,7 +39,6 @@ public class PcmsoListActionTest extends MockObjectTestCase
 		action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
 		
         Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
-    	Mockit.redefineMethods(Autenticador.class, MockAutenticador.class);
     }
 
     protected void tearDown() throws Exception

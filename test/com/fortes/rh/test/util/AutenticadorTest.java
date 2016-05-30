@@ -4,13 +4,13 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import com.fortes.rh.util.Autenticador;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 
 public class AutenticadorTest extends TestCase
 {
 
 	protected void setUp(){
-		Autenticador autenticador = new Autenticador();
+		AutenticadorJarvis autenticador = new AutenticadorJarvis();
 	}
 
 	/* O teste foi simplicado e apenas cobre as linhas do código, já que trata-se de uma classe externa
@@ -18,33 +18,33 @@ public class AutenticadorTest extends TestCase
 	 * o método.
 	*/
 	public void testGetQtdCadastrosVersaoDemo(){
-		assertEquals(10, Autenticador.getQtdCadastrosVersaoDemo());
+		assertEquals(10, AutenticadorJarvis.getQtdCadastrosVersaoDemo());
 	}
 
 	public void testGetModulos()
 	{
 		//utilizado para pega o id dos modulos do RH - REMPROT
-		assertFalse(Autenticador.getModulosNaoConfigurados(1).contains(357L));
-		assertFalse(Autenticador.getModulosNaoConfigurados(2).contains(361L));
-		assertFalse(Autenticador.getModulosNaoConfigurados(4).contains(353L));
-		assertFalse(Autenticador.getModulosNaoConfigurados(8).contains(365L));
-		assertFalse(Autenticador.getModulosNaoConfigurados(16).contains(382L));
-		assertFalse(Autenticador.getModulosNaoConfigurados(32).contains(75L));
+		assertFalse(AutenticadorJarvis.getModulosNaoConfigurados(1).contains(357L));
+		assertFalse(AutenticadorJarvis.getModulosNaoConfigurados(2).contains(361L));
+		assertFalse(AutenticadorJarvis.getModulosNaoConfigurados(4).contains(353L));
+		assertFalse(AutenticadorJarvis.getModulosNaoConfigurados(8).contains(365L));
+		assertFalse(AutenticadorJarvis.getModulosNaoConfigurados(16).contains(382L));
+		assertFalse(AutenticadorJarvis.getModulosNaoConfigurados(32).contains(75L));
 		
-		Collection<Long> ids = Autenticador.getModulosNaoConfigurados(3);
+		Collection<Long> ids = AutenticadorJarvis.getModulosNaoConfigurados(3);
 		assertFalse(ids.contains(357L));
 		assertFalse(ids.contains(361L));
 		
-		ids = Autenticador.getModulosNaoConfigurados(5);
+		ids = AutenticadorJarvis.getModulosNaoConfigurados(5);
 		assertFalse(ids.contains(357L));
 		assertFalse(ids.contains(353L));
 		
-		ids = Autenticador.getModulosNaoConfigurados(44);
+		ids = AutenticadorJarvis.getModulosNaoConfigurados(44);
 		assertFalse(ids.contains(353L));
 		assertFalse(ids.contains(365L));
 		assertFalse(ids.contains(75L));
 
-		ids = Autenticador.getModulosNaoConfigurados(63);
+		ids = AutenticadorJarvis.getModulosNaoConfigurados(63);
 		assertFalse(ids.contains(357L));
 		assertFalse(ids.contains(361L));
 		assertFalse(ids.contains(353L));

@@ -46,7 +46,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.Autenticador;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -183,7 +183,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		}else{
 			parametrosDoSistema.setModulosPermitidosSomatorio(calculaModulosSitema());
 			if(parametrosDoSistema.getProximaVersao() !=  null && DateUtil.diferencaEntreDatas(new Date(), parametrosDoSistema.getProximaVersao(), true) >= 0) 
-				Autenticador.setDemo(false);
+				AutenticadorJarvis.setDemo(false);
 		}
 
 		parametrosDoSistema.setHorariosBackup(StringUtil.converteCollectionToString(horariosBackup));

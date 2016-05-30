@@ -1,4 +1,4 @@
-package com.fortes.rh.util;
+package com.fortes.rh.security.licenca;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -16,14 +16,14 @@ import com.fortes.rh.model.dicionario.ErroFeedBackRemprot;
 public class Autenticador
 {
 	public static final int appId = 47;
-	private static int qtdCadastrosVersaoDemo = 10;
-	private static String appNome = "RH";
-	private static final Logger logger = Logger.getLogger(Autenticador.class);
-	private static RPClient clientRemprot = null;
-	private static String urlServidorRemprot;
-	private static boolean verificaLicensa;
-	private static boolean demo;
-	private static Integer modulosPermitidos = 0;
+	protected static int qtdCadastrosVersaoDemo = 10;
+	protected static String appNome = "RH";
+	protected static final Logger logger = Logger.getLogger(Autenticador.class);
+	protected static RPClient clientRemprot = null;
+	protected static String urlConexao;
+	protected static boolean verificaLicensa;
+	protected static boolean demo;
+	protected static Integer modulosPermitidos = 0;
 	
 	public static final Collection<Long> modulos = new ArrayList<Long>(8);
 	static {
@@ -37,7 +37,7 @@ public class Autenticador
 		modulos.add(37L);
 	}
 
-	public static boolean isRegistrado() throws NotConectAutenticationException, NotRegistredException
+	public static boolean isRegistrado() throws Exception
 	{
 		return (!verificaLicensa || getRemprot().getRegistered());
 	}
@@ -51,7 +51,7 @@ public class Autenticador
 		da licenca.
 		*/
 		//TODO remprot
-		urlServidorRemprot = url;
+		urlConexao = url;
 		verificaLicensa = verificaLicensaRemprot;
 		modulosPermitidos = modulosPermitidoSemLicensa;
 		
@@ -89,8 +89,8 @@ public class Autenticador
 			    // somatorio dos modulos do RH: 1  - Recrut. e Seleção ,2  - Cargos e Salários ,4  - Pesquisa ,
 				//8  - Treina. e Desenvolvimento ,16 - Avaliação de Desempenho ,32 - SESMT
 			modulosNaoConfigurados = getModulosNaoConfigurados(c.getEnabledModules());
-		} else if(!Autenticador.isDemo()){
-			modulosNaoConfigurados = getModulosNaoConfigurados(Autenticador.getModulosPermitidos());
+		} else if(!isDemo()){
+			modulosNaoConfigurados = getModulosNaoConfigurados(getModulosPermitidos());
 		}
 		
 		return modulosNaoConfigurados;
@@ -140,14 +140,14 @@ public class Autenticador
 		if(clientRemprot != null)
 			return clientRemprot;
 
-		if(!Autenticador.isDemo())
-			verificaConexaoComServidorRemprot(urlServidorRemprot);
+		if(!isDemo())
+			verificaConexaoComServidorRemprot(urlConexao);
 		
 		clientRemprot = new RPClient(appId, appNome);// Aqui eu indico que o servidor de licencas está rodando no endereço IP 10.1.254.2 
-		clientRemprot.setServerAddress(urlServidorRemprot);	// Aqui eu carrego os dados da licenca 
+		clientRemprot.setServerAddress(urlConexao);	// Aqui eu carrego os dados da licenca 
 
-		if(!Autenticador.isDemo() && !clientRemprot.testConnection())
-			throw new NotConectAutenticationException("Para que seja efetuado a validação do sistema, o servidor remprot (" + urlServidorRemprot + ") deverá ter acesso a internet.<br/>"
+		if(!isDemo() && !clientRemprot.testConnection())
+			throw new NotConectAutenticationException("Para que seja efetuado a validação do sistema, o servidor remprot (" + urlConexao + ") deverá ter acesso a internet.<br/>"
 					+ "Por gentileza teste a url abaixo no servidor remprot para verificar o acesso ou entre em contato com o suporte caso o problema persista.<br/>"
 					+ "Url: <a href=\"http://www.fortesinformatica.com.br/remprot\">http://www.fortesinformatica.com.br/remprot</a>");
 		
@@ -161,17 +161,17 @@ public class Autenticador
 			clientRemprot.loadLicense();
 		} catch (Exception e) {
 			e.printStackTrace();
-			msgRetornoRemprotErro();
+			msgRetornoErro();
 		}
 	}
 
 	public static void verificaRegistro() throws NotRegistredException 
 	{
 		if (!clientRemprot.getRegistered())
-			msgRetornoRemprotErro();
+			msgRetornoErro();
 	}
 	
-	public static void msgRetornoRemprotErro() throws NotRegistredException 
+	public static void msgRetornoErro() throws NotRegistredException 
 	{
 		ErroFeedBackRemprot erroFeedBackRemprot = new ErroFeedBackRemprot();
 		logger.info("Erro do Remprot ao liberar licença: " + String.valueOf(clientRemprot.getErrors()));
@@ -194,7 +194,7 @@ public class Autenticador
 
 	public static boolean isDemo() throws NotConectAutenticationException
 	{
-		return Autenticador.demo;
+		return demo;
 	}
 
 	public static void setDemo(boolean demo) 
@@ -208,7 +208,7 @@ public class Autenticador
 		return "Versão Demonstração";
 	}
 	
-	public static String getMsgAutenticado(String url) throws NotConectAutenticationException
+	public static String getMsgAutenticado() throws NotConectAutenticationException
 	{
 		return isDemo() ? getMsgPadrao() : "";
 	}

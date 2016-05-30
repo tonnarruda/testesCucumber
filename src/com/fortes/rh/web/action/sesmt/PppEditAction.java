@@ -16,7 +16,7 @@ import com.fortes.rh.exception.PppRelatorioException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.relatorio.PppRelatorio;
-import com.fortes.rh.util.Autenticador;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -66,7 +66,7 @@ public class PppEditAction extends MyActionSupportList
 
 	public String prepareRelatorio() throws Exception
 	{
-		if(Autenticador.isDemo())
+		if(AutenticadorJarvis.isDemo())
     		addActionMessage("Este relatório não pode ser impresso na Versão Demonstração.");
 		data = new Date();
 		
@@ -89,7 +89,7 @@ public class PppEditAction extends MyActionSupportList
 	
 	public String gerarRelatorio() throws Exception
 	{
-		if(Autenticador.isDemo())
+		if(AutenticadorJarvis.isDemo())
 		{
 			prepareRelatorio();
 			return Action.INPUT;

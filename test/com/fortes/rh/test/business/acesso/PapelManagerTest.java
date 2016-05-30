@@ -39,7 +39,6 @@ public class PapelManagerTest
 		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
 		papelManager.setParametrosDoSistemaManager(parametrosDoSistemaManager);
 		
-		Mockit.redefineMethods(Autenticador.class, MockAutenticador.class);
 	}
 
 	@Test

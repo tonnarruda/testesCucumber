@@ -19,11 +19,9 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.util.mockObjects.MockAutenticador;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.test.util.mockObjects.MockStringUtil;
-import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.sesmt.PppEditAction;
@@ -53,7 +51,6 @@ public class PppEditActionTest extends MockObjectTestCase
 		
 		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
-		Mockit.redefineMethods(Autenticador.class, MockAutenticador.class);
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}

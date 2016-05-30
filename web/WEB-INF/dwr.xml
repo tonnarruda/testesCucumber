@@ -145,9 +145,6 @@
 	    <create creator="spring" javascript="GerenciadorComunicacaoDWR">
 			<param name="beanName" value="gerenciadorComunicacaoDWR"/>
 		</create>
-	    <create creator="spring" javascript="MorroDWR">
-			<param name="beanName" value="morroDWR"/>
-		</create>
 	    <create creator="spring" javascript="EmpresaDWR">
 			<param name="beanName" value="empresaDWR"/>
 		</create>

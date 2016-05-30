@@ -27,8 +27,6 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import remprot.RPClient;
-
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.annotations.TesteAutomatico;
@@ -114,7 +112,7 @@ import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
-import com.fortes.rh.util.Autenticador;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -1834,38 +1832,34 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void validaQtdCadastros(Long empresaId) throws Exception
 	{
 		//TODO remprot
-		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-		if ( parametrosDoSistema.isVersaoAcademica() ) {
-			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos(empresaId);
-			if ( qtdColaboradorNoBanco >= 10 ) {
-				throw new FortesException("Versão acadêmica, só é permitido 10 colaboradores ativos por empresa.");
-			}
-		} else if (parametrosDoSistema.verificaRemprot()) {
-			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos(null);
-
-			RPClient remprot = Autenticador.getRemprot();
-			if (Autenticador.isRegistrado())
-			{
-				if (remprot.getUserCount() > 0 && qtdColaboradorNoBanco >= remprot.getUserCount())
-					throw new FortesException("Sua licença só permite manter " + remprot.getUserCount() + " colaboradores ativos.<br>Atualmente o sistema possui " + qtdColaboradorNoBanco +" colaboradores ativos.");			
-			}	
-			else
-				if (qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
-					throw new FortesException("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
-		}
+//		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+//		if (parametrosDoSistema.verificaRemprot()) {
+//
+//			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos();
+//
+//			RPClient remprot = Autenticador.getRemprot();
+//			if (Autenticador.isRegistrado())
+//			{
+//				if (remprot.getUserCount() > 0 && qtdColaboradorNoBanco >= remprot.getUserCount())
+//					throw new FortesException("Sua licença só permite manter " + remprot.getUserCount() + " colaboradores ativos.<br>Atualmente o sistema possui " + qtdColaboradorNoBanco +" colaboradores ativos.");			
+//			}	
+//			else
+//				if (qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
+//					throw new FortesException("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
+//		}
 	}
 
 	public String avisoQtdCadastros() throws Exception
 	{
 //		TODO remprot
-		int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
-		
-		RPClient remprot = Autenticador.getRemprot();
-		if(Autenticador.isRegistrado()) {
-			if (remprot.getUserCount() > 0 && (remprot.getUserCount() - (remprot.getUserCount() * 0.05)) <= qtdColaboradorNoBanco)
-				return "Atualmente existem " + qtdColaboradorNoBanco + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + remprot.getUserCount() + " colaboradores.";			
-		}	
-		
+//		int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
+//		
+//		RPClient remprot = Autenticador.getRemprot();
+//		if(Autenticador.isRegistrado()) {
+//			if (remprot.getUserCount() > 0 && (remprot.getUserCount() - (remprot.getUserCount() * 0.05)) <= qtdColaboradorNoBanco)
+//				return "Atualmente existem " + qtdColaboradorNoBanco + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + remprot.getUserCount() + " colaboradores.";			
+//		}	
+//		
 		return null;
 	}
 

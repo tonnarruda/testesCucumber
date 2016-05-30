@@ -17,7 +17,7 @@ import com.fortes.rh.dao.geral.NoticiaDao;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.geral.Noticia;
 import com.fortes.rh.model.geral.NoticiaComparator;
-import com.fortes.rh.util.Autenticador;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.fortes.rh.util.IntegerUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
@@ -83,7 +83,7 @@ public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> 
 					noticiaElement = (Element) noticiasElementsIterator.next();
 					Integer[] produtos = IntegerUtil.arrayStringToArrayInteger(noticiaElement.getChild("produtos").getValue().split(","));
 					
-					if (ArrayUtils.contains(produtos, Autenticador.appId))
+					if (ArrayUtils.contains(produtos, AutenticadorJarvis.getClient().getCodigoProduto()))
 					{
 						noticia = new Noticia(	noticiaElement.getChild("texto").getValue(), 
 												noticiaElement.getChild("link").getValue(), 

@@ -16,9 +16,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.relatorio.PpraLtcatRelatorio;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
-import com.fortes.rh.test.util.mockObjects.MockAutenticador;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
-import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.sesmt.PpraEditAction;
 import com.fortes.web.tags.CheckBox;
@@ -42,7 +40,6 @@ public class PpraEditActionTest extends MockObjectTestCase
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		
 		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
-		Mockit.redefineMethods(Autenticador.class, MockAutenticador.class);
 	}
 	
 	@Override

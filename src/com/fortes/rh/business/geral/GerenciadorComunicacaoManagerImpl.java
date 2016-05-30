@@ -73,8 +73,8 @@ import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.ws.TSituacao;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.fortes.rh.util.ArquivoUtil;
-import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
@@ -475,7 +475,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	private void montaPrametrosEnviaLembreteExamesPrevistos(Map<String, Object> parametros, Empresa empresa, Date ultimoDiaDoMesPosterior) throws NotConectAutenticationException {
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-		String msgRegistro = Autenticador.getMsgAutenticado("");
+		String msgRegistro = AutenticadorJarvis.getMsgAutenticado();
 		String logo = ArquivoUtil.getPathLogoEmpresa() + empresa.getLogoUrl();
 		
 		Cabecalho cabecalho = new Cabecalho("Exames Previstos até " + DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior), empresa.getNome(), "", "[Envio Automático]", parametrosDoSistema.getAppVersao(), logo, msgRegistro, parametrosDoSistema.isVersaoAcademica());

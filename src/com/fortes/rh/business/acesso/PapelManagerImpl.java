@@ -11,7 +11,7 @@ import com.fortes.rh.exception.NotRegistredException;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.Autenticador;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.fortes.rh.util.StringUtil;
 import com.opensymphony.xwork.ActionContext;
 
@@ -23,7 +23,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 	
 	public String getPerfilOrganizado(String[] marcados, Collection<Papel> papeisComHelp, Long idDoUsuario) throws NotConectAutenticationException, NotRegistredException
 	{
-		Collection<Long> modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados();
+		Collection<Long> modulosNaoConfigurados = AutenticadorJarvis.getModulosNaoConfigurados();
 		Collection<Papel> papeisSemModulosNaoConfigurados = getDao().findNotIn(modulosNaoConfigurados);
 		parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 		return montarOpcoes(papeisSemModulosNaoConfigurados, marcados, papeisComHelp, idDoUsuario);
@@ -153,9 +153,9 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 	public Collection<Long> getPapeisPermitidos() throws Exception
 	{
 		Collection<Long> modulosConfigurados = new ArrayList<Long>();
-		Collection<Long> modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados();
+		Collection<Long> modulosNaoConfigurados = AutenticadorJarvis.getModulosNaoConfigurados();
 		
-		for (Long modulo : Autenticador.modulos) {
+		for (Long modulo : AutenticadorJarvis.modulos) {
 			if (!modulosNaoConfigurados.contains(modulo))
 				modulosConfigurados.add(modulo);
 		}
@@ -204,7 +204,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 	{
 		return SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()).equals(1L) 
 				|| !parametrosDoSistemaManager.findById(1L).verificaRemprot() 
-				|| !Autenticador.getModulosNaoConfigurados().contains(75L);
+				|| !AutenticadorJarvis.getModulosNaoConfigurados().contains(75L);
 	}
 	
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {

@@ -12,7 +12,7 @@ import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.relatorio.PpraLtcatRelatorio;
-import com.fortes.rh.util.Autenticador;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
@@ -42,7 +42,7 @@ public class PpraEditAction extends MyActionSupportEdit
 
 	public String prepareRelatorio() throws Exception
 	{
-    	if(Autenticador.isDemo())
+    	if(AutenticadorJarvis.isDemo())
     		addActionMessage("Este relatório não pode ser impresso na Versão Demonstração.");
     	
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
@@ -55,7 +55,7 @@ public class PpraEditAction extends MyActionSupportEdit
 	
 	public String gerarRelatorio() throws Exception
 	{
-		if(Autenticador.isDemo()){
+		if(AutenticadorJarvis.isDemo()){
 			prepareRelatorio();
 			return INPUT;
 		}

@@ -23,7 +23,7 @@ public class Autenticador extends MyActionSupport
 	public String codigoOperacional()
 	{
 		try {
-			RPClient client = com.fortes.rh.util.Autenticador.getRemprot();  
+			RPClient client = null; //com.fortes.rh.util.Autenticador.getRemprot();  
 			codigoOperacional = client.requestKey(cnpj, nome, true);
 			ultimoReset = DateUtil.formataDiaMesAno(client.getLastResetDate());
 			return ActionSupport.SUCCESS;
@@ -57,7 +57,7 @@ public class Autenticador extends MyActionSupport
 	public String geraTicket()
 	{
 		try {
-			RPClient client = com.fortes.rh.util.Autenticador.getRemprot();  
+			RPClient client = null; //com.fortes.rh.util.Autenticador.getRemprot();  
 			codigoOperacional = client.requestKey(cnpj, nome, true);
 			RPWebClient rpWebClient = new RPWebClient();
 			RPWebPacket rpWebPacket = rpWebClient.WebStoreOperational(nome, cnpj, codigoOperacional);
@@ -102,9 +102,9 @@ public class Autenticador extends MyActionSupport
 	
 	private void clientRemprot(String codigoResposta) throws NotConectAutenticationException, NotRegistredException
 	{
-		com.fortes.rh.util.Autenticador.getRemprot().applyResponse(cnpj, nome, codigoResposta);
-		com.fortes.rh.util.Autenticador.loadLicense();
-		com.fortes.rh.util.Autenticador.verificaRegistro();
+//		com.fortes.rh.util.Autenticador.getRemprot().applyResponse(cnpj, nome, codigoResposta);
+//		com.fortes.rh.util.Autenticador.loadLicense();
+//		com.fortes.rh.util.Autenticador.verificaRegistro();
 	}
 	
 	public String registraNovaLicenca() 

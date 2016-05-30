@@ -1425,6 +1425,10 @@ function getLinkToken(link)
 	return link+_joinCharacter_+"webwork.token.name="+_tokenName_+"&webwork.token="+_token_;
 }
 
+function validaCaracteresDosCampos(formulario) {
+	
+}
+
 (function($) {
     $.fn.toggleDisabled = function(disabled){
         return this.each(function(){

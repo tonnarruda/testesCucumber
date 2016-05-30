@@ -10,6 +10,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionContext;
 
@@ -36,10 +37,10 @@ public class RelatorioUtil
 		if (parametrosDoSistema.verificaRemprot())
 		{
 			try {
-				if(Autenticador.isDemo())
-					msgRegistro = Autenticador.getMsgPadrao();
-				else
-					msgRegistro = Autenticador.getMsgAutenticado(parametrosDoSistema.getServidorRemprot());			
+				if(AutenticadorJarvis.isDemo())
+					msgRegistro = AutenticadorJarvis.getMsgPadrao();
+			else
+				msgRegistro = AutenticadorJarvis.getMsgAutenticado();			
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

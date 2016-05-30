@@ -11,8 +11,8 @@ import com.fortes.rh.exception.NotRegistredException;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.fortes.rh.util.ArquivoUtil;
-import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -39,8 +39,8 @@ public class LoginAction extends MyActionSupport
 				return "javasCompativeis";
 
 			if(demonstracao){
-				ActionContext.getContext().getSession().put("REG_MSG", Autenticador.getMsgPadrao());
-				Autenticador.setDemo(true);
+				ActionContext.getContext().getSession().put("REG_MSG", AutenticadorJarvis.getMsgPadrao());
+				AutenticadorJarvis.setDemo(true);
 				return Action.SUCCESS;
 			}
 
@@ -50,17 +50,17 @@ public class LoginAction extends MyActionSupport
 			if(servidorRemprot == null || "".equals(servidorRemprot)) 
 				return "not_conect";
 			
-			Autenticador.verificaCopia(servidorRemprot, parametrosDoSistema.verificaRemprot(), parametrosDoSistema.getModulosPermitidosSomatorio());
+			AutenticadorJarvis.verificaCopia("http://jarvisws.azurewebsites.net/licenseinfo?cnpj=63542443000124&location=ESCRITORIO&area=BDD5C8EC-942B-4EF0-8AB2-A059820B1B42&productcode=47", parametrosDoSistema.verificaRemprot(), parametrosDoSistema.getModulosPermitidosSomatorio());
 			
 		} catch (NotRegistredException e) {
 			msgRemprot = e.getMessage();
 			addActionWarning(msgRemprot);
-			Autenticador.setDemo(false);
+			AutenticadorJarvis.setDemo(false);
 			return "not_registered";
 		} catch (NotConectAutenticationException e) {
 			msgRemprot = e.getMessage();
 			addActionWarning(msgRemprot);
-			Autenticador.setDemo(false);
+			AutenticadorJarvis.setDemo(false);
 			return "not_conect"; 
 		} catch (Exception e) {
 			addActionError("Erro ao iniciar o RH (Entre em contato com o suporte)<br>" + e.getMessage());

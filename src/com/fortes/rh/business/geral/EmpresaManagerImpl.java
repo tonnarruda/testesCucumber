@@ -39,8 +39,8 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.ws.TEmpresa;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.fortes.rh.util.ArquivoUtil;
-import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
@@ -512,7 +512,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 				String subject = "Integração com o Fortes Pessoal desmarcada pelo usuário.";
 				StringBuffer body = new StringBuffer();
 				
-				body.append("<strong>Cliente:</strong> " + Autenticador.getRazaoSocial());
+				body.append("<strong>Cliente:</strong> " + AutenticadorJarvis.getClient().getRazaoSocial());
 				body.append("<br /><br />");
 				body.append("<strong>Usuário:</strong> " + usuario + "<br />");
 				body.append("<strong>Empresa:</strong> " + empresa.getCodigoAC() + " - " + empresa.getNome() + "<br />");
