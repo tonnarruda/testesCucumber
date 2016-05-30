@@ -1431,7 +1431,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}catch (Exception e){e.printStackTrace();}
 	}
 	
-	public void enviaAvisoSolicitacaoDesligamento(Long colaboradorId, Long empresaId){
+	public void enviaAvisoSolicitacaoDesligamento(Long colaboradorId, Long usuarioId, Long empresaId){
 		try {
 			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 			Colaborador colaborador = colaboradorManager.findByIdComHistorico(colaboradorId);
@@ -1445,15 +1445,17 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			String link = parametrosDoSistema.getAppUrl() + "/geral/colaborador/visualizarSolicitacaoDesligamento.action?colaborador.id=" + colaborador.getId();
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 			
+			Usuario usuario = usuarioManager.findByIdProjection(usuarioId);
+			
 			String subject = "[RH] - Solicitação de desligamento de colaborador";
-			StringBuilder body = montaBodyEnviaAvisoSolicitacaoDesligamento(colaborador, empresa, link);
+			StringBuilder body = montaBodyEnviaAvisoSolicitacaoDesligamento(colaborador, empresa, usuario, link);
 			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.SOLICITAR_DESLIGAMENTO.getId(), empresaId);
 
 			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos){
 				if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_DESLIGAMENTO.getId())){
 					try {
-					String[] emailsByUsuario = usuarioManager.findEmailByPerfilAndGestor("ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO", empresaId, colaborador.getAreaOrganizacional().getId(), true, email);
-					mail.send(empresa, parametrosDoSistema, subject, body.toString(), true, emailsByUsuario);
+						String[] emailsByUsuario = usuarioManager.findEmailByPerfilAndGestor("ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO", empresaId, colaborador.getAreaOrganizacional().getId(), true, email);
+						mail.send(empresa, parametrosDoSistema, subject, body.toString(), true, emailsByUsuario);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -1476,11 +1478,13 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		} catch (Exception e) {e.printStackTrace();}
 	}
 
-	private StringBuilder montaBodyEnviaAvisoSolicitacaoDesligamento(Colaborador colaborador, Empresa empresa, String link){
+	private StringBuilder montaBodyEnviaAvisoSolicitacaoDesligamento(Colaborador colaborador, Empresa empresa, Usuario usuario, String link){
 		StringBuilder body = new StringBuilder(); 
 		body.append("Existe uma solicitação de desligamento para o colaborador <b>");
 		body.append(colaborador.getNome());
 		body.append("</b> da empresa <b>"+empresa.getNome()+"</b> pendente. Para aprovar ou reprovar essa solicitação, acesse o sistema <a href='"+link+"'>RH</a>.<br/><br />");
+		body.append("<b>Usuário solicitante:</b><br />");
+		body.append(usuario.getNome() + "<br /><br />");
 		body.append("<b>Data da Solicitação:</b><br />");
 		body.append(DateUtil.formataDate(colaborador.getDataSolicitacaoDesligamento(), "dd/MM/yyyy") + "<br /><br />");
 		body.append("<b>Motivo:</b><br />");

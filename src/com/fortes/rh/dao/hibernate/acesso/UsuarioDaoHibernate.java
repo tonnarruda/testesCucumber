@@ -34,6 +34,7 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		p.add(Projections.property("u.id"), "id");
 		p.add(Projections.property("u.login"), "login");
 		p.add(Projections.property("u.senha"), "senha");
+		p.add(Projections.property("u.nome"), "nome");
 		p.add(Projections.property("u.acessoSistema"), "acessoSistema");
 		p.add(Projections.property("u.caixasMensagens"), "caixasMensagens");
 

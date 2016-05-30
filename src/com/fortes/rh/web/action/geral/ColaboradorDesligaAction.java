@@ -97,7 +97,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 				colaboradorManager.solicitacaoDesligamento(dataDesligamento, observacaoDemissao, motDemissao.getId(), gerouSubstituicao, solicitanteId, colaborador.getId());
 				addActionSuccess("Solicitação de desligamento cadastrada com sucesso.");
 		
-				gerenciadorComunicacaoManager.enviaAvisoSolicitacaoDesligamento(colaborador.getId(), getEmpresaSistema().getId());
+				gerenciadorComunicacaoManager.enviaAvisoSolicitacaoDesligamento(colaborador.getId(), getUsuarioLogado().getId(), getEmpresaSistema().getId());
 			} 
 			else 
 			{

@@ -1789,6 +1789,8 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Empresa empresa = criaEmpresa();
 		String[] emailsByUsuario = new String[]{empresa.getEmailRespRH()};
 		
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Colaborador", "colab@gmail.com", DateUtil.criarDataMesAno(1, 1, 2016), "pq sim", "obs: demissão", null, AreaOrganizacionalFactory.getEntity(1L));
 		
 		ParametrosDoSistema parametroSistema = new ParametrosDoSistema();
@@ -1801,10 +1803,11 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2, gerenciadorComunicacao3);
 		
 		String subject = "[RH] - Solicitação de desligamento de colaborador";
-		String body = "Existe uma solicitação de desligamento para o colaborador <b>Colaborador</b> da empresa <b>Empresa I</b> pendente. Para aprovar ou reprovar essa solicitação, acesse o sistema <a href='url/geral/colaborador/visualizarSolicitacaoDesligamento.action?colaborador.id=1'>RH</a>.<br/><br /><b>Data da Solicitação:</b><br />01/01/2016<br /><br /><b>Motivo:</b><br />pq sim<br /><br /><b>Observação:</b><br />obs: demissão";
-
+		String body = "Existe uma solicitação de desligamento para o colaborador <b>Colaborador</b> da empresa <b>Empresa I</b> pendente. Para aprovar ou reprovar essa solicitação, acesse o sistema <a href='url/geral/colaborador/visualizarSolicitacaoDesligamento.action?colaborador.id=1'>RH</a>.<br/><br /><b>Usuário solicitante:</b><br />nome do usuario<br /><br /><b>Data da Solicitação:</b><br />01/01/2016<br /><br /><b>Motivo:</b><br />pq sim<br /><br /><b>Observação:</b><br />obs: demissão";
+		
 		colaboradorManager.expects(atLeastOnce()).method("findByIdComHistorico").withAnyArguments().will(returnValue(colaborador));
 		empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
+		usuarioManager.expects(once()).method("findByIdProjection").with(eq(usuario.getId())).will(returnValue(usuario));
 		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));
 		usuarioManager.expects(once()).method("findEmailByPerfilAndGestor").withAnyArguments().will(returnValue(emailsByUsuario));
 		usuarioManager.expects(once()).method("findEmailsByUsuario").withAnyArguments().will(returnValue(emailsByUsuario));
@@ -1813,7 +1816,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		Exception e = null;
 		try {
-			gerenciadorComunicacaoManager.enviaAvisoSolicitacaoDesligamento(colaborador.getId(), empresa.getId());
+			gerenciadorComunicacaoManager.enviaAvisoSolicitacaoDesligamento(colaborador.getId(), usuario.getId(), empresa.getId());
 		} catch (Exception ex) {
 			e = ex;
 		}

@@ -52,7 +52,7 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi();
 	void insereGerenciadorComunicacaoDefault(Empresa empresa);
 	void enviaMensagemCancelamentoSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC);
-	void enviaAvisoSolicitacaoDesligamento(Long colaboradorId, Long empresaId);
+	void enviaAvisoSolicitacaoDesligamento(Long colaboradorId, Long empresaId, Long usuarioId);
 	void enviaAvisoOcorrenciaCadastrada(ColaboradorOcorrencia colaboradorOcorrencia, Long empresaId);
 	void enviaAvisoDeAfastamento(Long colaboradorAfastamentoId, Empresa empresa);
 	void enviaAvisoContratacao(HistoricoColaborador historicoColaborador);
