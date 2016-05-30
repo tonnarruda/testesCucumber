@@ -48,18 +48,21 @@
 		} else { return false; }
 	}
 	
+	var timeoutId = 0;
 	$('.emailsNotificacoes').live('keyup', function(){
-		validaEmail();
+		clearTimeout(timeoutId); // doesn't matter if it's 0
+    	timeoutId = setTimeout(validaEmail, 1000);
 	})
 	
     function validaEmail(){
     	var regexEmail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     	var emails = $('.emailsNotificacoes');
     	submit = true;
+    	
     	$('.emailInvalido').remove();
     	for (i = 0; i<emails.size(); i++) {
 	    	if($(emails[i]).val()!= "" && !regexEmail.test($(emails[i]).val())){
-	    		$(emails[i]).parent().append("<span class='emailInvalido' style='color:#D8000C;margin-left: 3px;'>Digite um e-mail válido.</span>")
+	    		$(emails[i]).parent().append("<span class='emailInvalido' style='color: #D8000C;padding: 3px 10px;padding-top: 2px;margin-left:2px;font-size: 11px;background: #FFD8DA;'>Digite um e-mail válido.</span>")
 	    		submit = false;
 	    	}
 		}
@@ -70,9 +73,9 @@
 	function adicionarCampoEmail(email) 
 	{
 		if (!email) email = '';
-		var campo = "<li>";
+		var campo = "<li style='margin-top: 3px;'>";
 		campo += "<input type='text' name='emailsNotificacoes' class='emailsNotificacoes' size='40' value='" + email + "'/>";
-		campo += "<img title='Remover' src='<@ww.url includeParams="none" value="/imgs/delete.gif"/>' onclick='javascript:$(this).parent().remove();' style='cursor:pointer;'/>";
+		campo += "<img title='Remover' src='<@ww.url includeParams="none" value="/imgs/remove.png"/>' onclick='javascript:$(this).parent().remove();' border='0' align='absMiddle' style='cursor:pointer; float: left; margin: 4px 4px 4px 0;'/>";
 		campo += "</li>";
 		$('ul#camposEmails').append(campo);
 	}
@@ -187,7 +190,7 @@
 		<label>Emails extras para notificações: <img id="tooltipEmailsExtras" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -4px" /></label>
 		<ul id="camposEmails"></ul>
 		<a href="javascript:;" onclick="javascript:adicionarCampoEmail();" style="text-decoration: none;">
-			<img src='<@ww.url includeParams="none" value="/imgs/mais.gif"/>'/> 
+			<img src='<@ww.url includeParams="none" value="/imgs/add.png"/>'/> 
 			Inserir mais um email
 		</a>
 	<@ww.token/>

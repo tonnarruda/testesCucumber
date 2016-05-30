@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.16x.19x" db="" data="xx/05/2016">
+		<Item visivel="S" motivo="P16040000251"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Inserir/Editar: Criação de validação dos emails extras para notificações.]]></Item>
 		<Item visivel="S" motivo="P16050000071"><![CDATA[T&D > Cadastros > Cursos/Treinamemntos > Turmas > Excluir: Ajuste da inconsistência ao remover a turma de um curso cujo o nome contenha caracteres especiais.]]></Item>
 		<Item visivel="S" motivo="P16040000333"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Avaliação da Turma: Correção de inconsistência ao acessar avaliação de curso de outros colaboradores através da URL.]]></Item>
 		<Item visivel="S" motivo="P16050000012"><![CDATA[T&D > Cadastros > Modelos de Avaliação do Aluno: Ajuste da inconsistência na permissão de acesso a esta funcionalidade.]]></Item>
