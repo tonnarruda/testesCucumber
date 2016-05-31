@@ -24139,3 +24139,8 @@ insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (672,
 alter sequence papel_sequence restart with 673;--.go
 insert into migrations values('20160425135101');--.go
 update parametrosdosistema set appversao = '1.1.165.196';--.go
+-- versao 1.1.166.197
+
+alter table empresa add column notificarSomentePeriodosConfigurados boolean NOT NULL DEFAULT false; --.go
+insert into migrations values('20160527112025');--.go
+update parametrosdosistema set appversao = '1.1.166.197';--.go

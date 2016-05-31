@@ -28,7 +28,7 @@ Funcionalidade: Solicitações/Atendimentos Médicos
     E eu clico no botão "Gravar"
     E eu devo ver o título "Solicitações/Atendimentos Médicos"
 
-    Então eu clico na linha "geraldo" da imagem "Resultados"
+    Então eu clico na linha "28/07/2011" da imagem "Resultados"
     E eu devo ver o título "Resultados dos Exames de geraldo (geraldo)"
     E eu devo ver "Avaliação Clínica e Anaminese Ocupacional"
     E eu preencho o campo (JS) "datasRealizacaoExames" com "01/08/2011"
@@ -40,7 +40,7 @@ Funcionalidade: Solicitações/Atendimentos Médicos
     E eu clico no botão "Voltar"
     Então eu devo ver o título "Solicitações/Atendimentos Médicos"
 
-    Então eu clico na linha "geraldo" da imagem "Marcar o resultado de todos os exames não informados como normal"
+    Então eu clico na linha "28/07/2011" da imagem "Marcar o resultado de todos os exames não informados como normal"
     E eu devo ver o alert "Marcar o resultado de todos os exames não informados como normal?" e clico no ok
 
     Entao eu clico em editar "28/07/2011"
