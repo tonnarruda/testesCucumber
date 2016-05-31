@@ -3,7 +3,8 @@
 
 <xwork>
 	<package name="avaliacao" extends="default" namespace="/avaliacao/modelo">
-	
+		<default-interceptor-ref name="myDefaultWebStack"/>
+		
 		<action name="updateFilter" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="updateFilter">
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>
@@ -20,7 +21,7 @@
 		</action>
 		
 		<action name="delete" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="delete">
-			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultDeleteSemTokenStack"/>
 			<result name="invalid.token" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>
 			<result name="success" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>
 			<result name="error" type="redirect">list.action?modeloAvaliacao=${modeloAvaliacao}</result>

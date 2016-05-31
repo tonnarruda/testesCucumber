@@ -3,6 +3,8 @@
 
 <xwork>
 	<package name="avaliacaoDesempenho" extends="default" namespace="/avaliacao/desempenho">
+		<default-interceptor-ref name="myDefaultWebStack"/>
+		
 		<!-- Used to keep the state (open/closed) of the filter box -->
 		<action name="updateFilter" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="updateFilter">
 	      	<interceptor-ref name="showFilterStack" />			
@@ -14,16 +16,16 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoDesempenhoList.ftl</result>
 		</action>
 		<action name="liberarEmLote" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="liberarEmLote">
-			<interceptor-ref name="defaultUpdateStack"/>
+			<interceptor-ref name="defaultUpdateSemTokenStack"/>
 			<result name="success" type="redirect">list.action</result>
 			<result name="error" type="redirect">list.action</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="delete">
-			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultDeleteSemTokenStack"/>
 			<result name="success" type="redirect">list.action</result>
 		</action>
 		<action name="clonar" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="clonar">
-			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultDeleteSemTokenStack"/>
 			<result name="success" type="redirect">list.action</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="prepareInsert">
@@ -46,11 +48,11 @@
 		</action>
 		
 		<action name="liberar" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="liberar">
-			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultDeleteSemTokenStack"/>
 			<result name="success" type="redirect">list.action</result>
 		</action>
 		<action name="bloquear" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="bloquear">
-			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultDeleteSemTokenStack"/>
 			<result name="success" type="redirect">list.action</result>
 		</action>
 		
@@ -61,7 +63,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoDesempenhoParticipantes.ftl</result>
 		</action>
 		<action name="saveParticipantes" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="saveParticipantes">
-			<interceptor-ref name="defaultUpdateStack"/>
+			<interceptor-ref name="defaultUpdateSemTokenStack"/>
 			<result name="success" type="redirect">prepareParticipantes.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
 		</action>
 		<action name="prepareCompetencias" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="prepareCompetencias">
@@ -72,7 +74,7 @@
 			<result name="success" type="redirect">prepareCompetencias.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
 		</action>
 		<action name="deleteAvaliacao" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="deleteAvaliacao">
-			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultDeleteSemTokenStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoDesempenhoQuestionarioList.ftl</result>
 		</action>
 		
@@ -83,7 +85,7 @@
 		</action>
 
 		<action name="responderAvaliacaoDesempenho" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="responderAvaliacaoDesempenho">
-			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultDeleteSemTokenStack"/>
 			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect"><![CDATA[avaliacaoDesempenhoQuestionarioList.action?colaboradorQuestionarioId=${colaboradorQuestionario.id}&exibeResultadoAutoAvaliacao=${exibeResultadoAutoAvaliacao}]]></result>
 			<result name="invalid.token" type="redirect"><![CDATA[avaliacaoDesempenhoQuestionarioList.action?colaboradorQuestionarioId=${colaboradorQuestionario.id}&exibeResultadoAutoAvaliacao=${exibeResultadoAutoAvaliacao}]]></result>
@@ -125,7 +127,7 @@
 		</action>
 
 		<action name="enviarLembrete" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="enviarLembrete">
-      		<interceptor-ref name="defaultDeleteStack"/>
+      		<interceptor-ref name="defaultDeleteSemTokenStack"/>
 			<result name="success" type="redirect">list.action</result>
 		</action>
 
@@ -134,7 +136,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/prepareResultado.ftl</result>
 		</action>
 		<action name="resultado" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="resultado">
-			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultDeleteSemTokenStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/resultadoAvaliacaoDesempenho.jasper</param>
 				<param name="dataSource">colaboradorQuestionarios</param>

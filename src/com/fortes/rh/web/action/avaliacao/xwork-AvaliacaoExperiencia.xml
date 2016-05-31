@@ -3,6 +3,7 @@
 
 <xwork>
 	<package name="avaliacaoExperiencia" extends="default" namespace="/avaliacao/avaliacaoExperiencia">
+		<default-interceptor-ref name="myDefaultWebStack"/>
 		
 		<action name="prepareResultado" class="com.fortes.rh.web.action.avaliacao.AvaliacaoExperienciaEditAction" method="prepareResultado">
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoExperienciaFiltroResultado.ftl</result>
@@ -40,7 +41,7 @@
 			<result name="invalid.token" type="redirect">../../index.action</result>
 		</action>
 	    <action name="updateAvaliacaoExperiencia" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="updateAvaliacaoExperiencia">
-	    	<interceptor-ref name="defaultUpdateStack"/>
+	    	<interceptor-ref name="defaultUpdateSemTokenStack"/>
 	    	<interceptor-ref name="tokenWebStack" />
             <result name="success" type="redirect">periodoExperienciaQuestionarioList.action?colaborador.id=${colaboradorQuestionario.colaborador.id}</result>
 			<result name="sucessoIndex" type="redirect">../../index.action</result>
@@ -49,7 +50,7 @@
 	    </action>
 		
 		<action name="deleteAvaliacaoExperiencia" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioListAction" method="delete">
-			<interceptor-ref name="defaultDeleteStack">
+			<interceptor-ref name="defaultDeleteSemTokenStack">
         		<param name="scope.session">colaborador</param>
 	      	</interceptor-ref>
       		<result name="success" type="redirect">periodoExperienciaQuestionarioList.action</result>
