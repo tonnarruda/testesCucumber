@@ -184,7 +184,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 				getDao().update(colaboradorOcorrencia);
 			}
 			
-			if (empresa.isAcIntegra() && colaboradorOcorrencia.getOcorrencia().getIntegraAC())
+			if (empresa.isAcIntegra() && colaboradorOcorrencia.getOcorrencia().getIntegraAC() && !colaboradorOcorrencia.getColaborador().isNaoIntegraAc())
 			{
 				try
 				{
