@@ -203,47 +203,20 @@
     <action name="removePendenciaACSolicitacaoDesligamento" class="com.fortes.rh.web.action.Index" method="removePendenciaACSolicitacaoDesligamento">
       <result name="success" type="freemarker">/WEB-INF/pages/index.ftl</result>
     </action>
-    <action name="removerMultiplasPendenciasAC" class="com.fortes.rh.web.action.Index" method="removerMultiplasPendenciasAC">
-      <result name="success" type="freemarker">/WEB-INF/pages/index.ftl</result>
-    </action>
-    <action name="registraNovaLicenca" class="com.fortes.rh.web.action.security.Autenticador" method="registraNovaLicenca">
-      <result name="success" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
-      <result name="input" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
-    </action>
-    <action name="codigoOperacional" class="com.fortes.rh.web.action.security.Autenticador" method="codigoOperacional">
-      <result name="success" type="freemarker">/WEB-INF/pages/codigoResposta.ftl</result>
-      <result name="input" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
-    </action>
-    <action name="geraTicket" class="com.fortes.rh.web.action.security.Autenticador" method="geraTicket">
-      <result name="success" type="freemarker">/WEB-INF/pages/mensagemTicket.ftl</result>
-      <result name="input" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
-    </action>
-    <action name="validaTicket" class="com.fortes.rh.web.action.security.Autenticador" method="validaTicket">
-      <result name="success" type="redirect">/logout.action</result>
-      <result name="input" type="freemarker">/WEB-INF/pages/mensagemTicket.ftl</result>
-    </action>
-    <action name="validaCodigoResposta" class="com.fortes.rh.web.action.security.Autenticador" method="validaCodigoResposta">
-      <result name="success" type="redirect">/index.action</result>
-      <result name="input" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
-    </action>
     <action name="javasCompativeis" class="com.fortes.rh.web.action.security.LoginAction" method="javasCompativeis">
       <result name="success" type="freemarker">/WEB-INF/pages/javasCompativeis.ftl</result>
     </action>
     <action name="login" class="com.fortes.rh.web.action.security.LoginAction" method="login">
       <result name="success">/WEB-INF/pages/acegilogin.jsp</result>
       <result name="input" type="freemarker">/WEB-INF/pages/bdError.ftl</result>
-      <result name="not_registered" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
-      <result name="not_conect" type="freemarker">/WEB-INF/pages/configuracaoAutenticador.ftl</result>
+      <result name="not_registered" type="freemarker">/WEB-INF/pages/mensagemInfoWarnError.ftl</result>
+      <result name="not_conect" type="freemarker">/WEB-INF/pages/mensagemInfoWarnError.ftl</result>
       <result name="index" type="redirect">index.action</result>
       <result name="javasCompativeis" type="redirect">javasCompativeis.action</result>
     </action>
     <action name="updateConf" class="com.fortes.rh.web.action.security.LoginAction" method="updateConf">
       <result name="success" type="freemarker">/WEB-INF/pages/bdError.ftl</result>
       <result name="input" type="freemarker">/WEB-INF/pages/bdError.ftl</result>
-    </action>
-    <action name="configAutenticador" class="com.fortes.rh.web.action.security.LoginAction" method="configAutenticador">
-      <result name="success" type="redirect">/login.action</result>
-      <result name="input" type="freemarker">/WEB-INF/pages/configuracaoAutenticador.ftl</result>
     </action>
     <action name="gerarBD" class="com.fortes.rh.web.action.security.LoginAction" method="gerarBD">
       <result name="success" type="freemarker">/WEB-INF/pages/bdError.ftl</result>

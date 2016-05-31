@@ -221,4 +221,9 @@ public class Autenticador
 	public static Integer getModulosPermitidos() {
 		return modulosPermitidos;
 	}
+
+	public static boolean isVerificaLicensa()
+	{
+		return verificaLicensa;
+	}
 }

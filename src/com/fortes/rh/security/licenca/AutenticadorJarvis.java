@@ -5,17 +5,14 @@ import java.util.Collection;
 
 import org.json.JSONObject;
 
-import remprot.RPClient;
-
 import com.fortes.rh.exception.NotConectAutenticationException;
 import com.fortes.rh.exception.NotRegistredException;
-import com.fortes.rh.model.dicionario.ErroFeedBackRemprot;
 import com.fortes.rh.util.JSONUtil;
 
 
 public class AutenticadorJarvis extends Autenticador
 {
-	private static JClient jClient = null;
+	private static JClient clientJarvis = null;
 	
 	public static boolean isRegistrado() throws Exception
 	{
@@ -24,12 +21,12 @@ public class AutenticadorJarvis extends Autenticador
 	
 	public static JClient getClient() throws Exception
 	{
-		JSONObject jsonObject = JSONUtil.getObject(urlConexao);
-
-		if(jClient == null)
-			jClient = new JClient(jsonObject);
+		if(clientJarvis == null || clientJarvis.getCodigoProduto().equals("null")) {
+			JSONObject jsonObject = JSONUtil.getObject(urlConexao);
+			clientJarvis = new JClient(jsonObject);
+		}
 		
-		return jClient;
+		return clientJarvis;
 	}
 	
 	public static Collection<Long> getModulosNaoConfigurados() throws NotConectAutenticationException, NotRegistredException
@@ -45,16 +42,16 @@ public class AutenticadorJarvis extends Autenticador
 		return modulosNaoConfigurados;
 	}
 	
-	public static void verificaCopia(String url, boolean verificaLicensaRemprot, Integer modulosPermitidoSemLicensa) throws Exception, NotConectAutenticationException
+	public static void verificaCopia(String cnpj, boolean verificaLicensaAutenticador, Integer modulosPermitidoSemLicensa) throws Exception
 	{
-		urlConexao = url;
-		verificaLicensa = verificaLicensaRemprot;
+		urlConexao = "http://jarvisws.azurewebsites.net/licenseinfo?cnpj="+cnpj+"&location=ESCRITORIO&area=BDD5C8EC-942B-4EF0-8AB2-A059820B1B42&productcode=47";
+		verificaLicensa = verificaLicensaAutenticador;
 		modulosPermitidos = modulosPermitidoSemLicensa;
 		
 		if (verificaLicensa) {
-			jClient = getClient();
+			clientJarvis = getClient();
 
-			System.out.println("applicationId: " + jClient.getCodigoProduto());	// codigo de reset do produto (numero fixo para cada produto: AC=1, AG=16, Nettion=22 etc)
+			System.out.println("applicationId: " + clientJarvis.getCodigoProduto());	// codigo de reset do produto (numero fixo para cada produto: AC=1, AG=16, Nettion=22 etc)
 //			System.out.println("installationId: " + clientRemprot.getInstallationId());	// numero de serie recebido atraves de codigo de resposta (unico por cliente, sequencial independente de produto)
 //			System.out.println("resetCounter: " + clientRemprot.getResetCounter());	    // quantas vezes esta licenca já recebeu resets (ajuda a detectar fraudes)
 //			System.out.println("customerId: " + clientRemprot.getCustomerId());		    // CPF ou CNPJ do cliente
@@ -71,15 +68,15 @@ public class AutenticadorJarvis extends Autenticador
 
 	public static void verificaRegistro() throws NotRegistredException 
 	{
-		if (!jClient.getRegistrado())
+		if (!clientJarvis.getRegistrado())
 			msgRetornoErro();
 	}
 	
 	public static void msgRetornoErro() throws NotRegistredException 
 	{
-		logger.info("Erro ao liberar licença: " + jClient.getMensagemDeErro());
+		logger.info("Erro ao liberar licença: " + clientJarvis.getMensagemDeErro());
 		throw new NotRegistredException("Problema na validação da licença de uso. <br/>" +
-				                        jClient.getMensagemDeErro() + "<br/>" +
+				                        clientJarvis.getMensagemDeErro() + "<br/>" +
 										"Favor entrar em contato com o suporte.");
 	}
 

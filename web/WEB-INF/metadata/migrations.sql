@@ -15,3 +15,5 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (currval('perfil_sequence
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (currval('perfil_sequence'), 656); --.go
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (currval('perfil_sequence'), 37 ); --.go
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (currval('perfil_sequence'), 38 ); --.go
+
+ALTER TABLE parametrosdosistema ADD COLUMN cnpjempresalicenca CHARACTER VARYING(14); --.go

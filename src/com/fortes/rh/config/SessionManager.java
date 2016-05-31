@@ -4,13 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.acegisecurity.userdetails.UserDetails;
-
 import com.fortes.rh.security.UserDetailsImpl;
 
 public class SessionManager {
 	
-	public static Integer loggedUsersNum = 0;
 	private Map<String, UserDetailsImpl> usersMap = new HashMap<String, UserDetailsImpl>();
 
 	public synchronized void registerLogout(String sessionId)

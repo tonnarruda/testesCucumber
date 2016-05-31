@@ -56,6 +56,8 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String horariosBackup;
     @Temporal(TemporalType.DATE)
     private Date proximaVersao;
+    @Column(length=11)
+    private String cnpjEmpresaLicenca;
     
     private Boolean enviarEmail = true;
     private Boolean atualizadoSucesso;
@@ -484,5 +486,13 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public void setAutorizacaoGestorNaSolicitacaoPessoal(boolean autorizacaoGestorNaSolicitacaoPessoal) {
 		this.autorizacaoGestorNaSolicitacaoPessoal = autorizacaoGestorNaSolicitacaoPessoal;
+	}
+	public String getCnpjEmpresaLicenca()
+	{
+		return cnpjEmpresaLicenca;
+	}
+	public void setCnpjEmpresaLicenca(String cnpjEmpresaLicenca)
+	{
+		this.cnpjEmpresaLicenca = cnpjEmpresaLicenca;
 	}
 }

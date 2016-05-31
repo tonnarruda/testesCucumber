@@ -50,7 +50,8 @@ public class LoginAction extends MyActionSupport
 			if(servidorRemprot == null || "".equals(servidorRemprot)) 
 				return "not_conect";
 			
-			AutenticadorJarvis.verificaCopia("http://jarvisws.azurewebsites.net/licenseinfo?cnpj=63542443000124&location=ESCRITORIO&area=BDD5C8EC-942B-4EF0-8AB2-A059820B1B42&productcode=47", parametrosDoSistema.verificaRemprot(), parametrosDoSistema.getModulosPermitidosSomatorio());
+			AutenticadorJarvis.verificaCopia(parametrosDoSistema.getCnpjEmpresaLicenca(), parametrosDoSistema.verificaRemprot(), parametrosDoSistema.getModulosPermitidosSomatorio());
+//			AutenticadorJarvis.verificaCopia("63542443000123", true, parametrosDoSistema.getModulosPermitidosSomatorio());
 			
 		} catch (NotRegistredException e) {
 			msgRemprot = e.getMessage();

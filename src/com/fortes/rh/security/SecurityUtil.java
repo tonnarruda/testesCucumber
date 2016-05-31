@@ -15,6 +15,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionContext;
@@ -210,6 +211,7 @@ public class SecurityUtil
 		return ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getParametrosDoSistema();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void removeSessaoFiltrosConfiguracoes() 
 	{
 		Map<Object, Object> session = ActionContext.getContext().getSession();
@@ -222,17 +224,18 @@ public class SecurityUtil
 		}
 	}
 
-	public static void autenticaLogin(Map session) throws LoginInvalidoException
+	@SuppressWarnings("rawtypes")
+	public static void autenticaLogin(Map session) throws Exception
 	{
-		SessionManager sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
-
-		if(!isAuthenticatedUser()){
+		if(AutenticadorJarvis.isVerificaLicensa() && !isAuthenticatedUser()){
+			SessionManager sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
+			
 			boolean temAcessoRestrito = ((UserDetailsImpl)getUserDetails(session)).getHasAcessoRestrito();
 			
-			if(!temAcessoRestrito && sessionManager.getNumeroDeUsuariosAutenticadosComAcessoNormal() > 1)
+			if(!temAcessoRestrito && sessionManager.getNumeroDeUsuariosAutenticadosComAcessoNormal() >= AutenticadorJarvis.getClient().getQtdAcessosSimultaneos())
 				throw new LoginInvalidoException("Limite de login execedido.", "limiteLoginExcedido");
 
-			SecurityUtil.registraLogin(ActionContext.getContext().getSession());
+			registraLogin(ActionContext.getContext().getSession());
 		}
 	}
 }
