@@ -279,7 +279,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	{
 		try{
 			parametros = RelatorioUtil.getParametrosRelatorio("SERVIÇO DE MEDICINA OCUPACIONAL", getEmpresaSistema(), "SOLICITAÇÃO DE EXAMES");
-			parametros.put("CIDADE", getEmpresaSistema().getCidade().getNome());
+			parametros.put("CIDADE", getEmpresaSistema().getCidade() == null ? "" : getEmpresaSistema().getCidade().getNome());
 
 			if(tipoDeImpressao.equals("inteira")){
 				dataSource = solicitacaoExameManager.imprimirSolicitacaoExames(solicitacaoExame.getId());
