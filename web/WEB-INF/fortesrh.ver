@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.166.198" db="" data="01/06/2016">
+		<Item visivel="S" motivo="P16050000167"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Ajuste de inconsistência ao responder entrevista de desligamento.]]></Item>
+	</Versao>
 	<Versao id="1.1.166.197" db="" data="31/05/2016">
 		<Item visivel="S" motivo="P16040000251"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Inserir/Editar: Criação de validação dos emails extras para notificações.]]></Item>
 		<Item visivel="S" motivo="P16050000071"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Excluir: Ajuste da inconsistência ao remover a turma de um curso cujo o nome contenha caracteres especiais.]]></Item>

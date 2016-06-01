@@ -24144,3 +24144,6 @@ update parametrosdosistema set appversao = '1.1.165.196';--.go
 alter table empresa add column notificarSomentePeriodosConfigurados boolean NOT NULL DEFAULT false; --.go
 insert into migrations values('20160527112025');--.go
 update parametrosdosistema set appversao = '1.1.166.197';--.go
+-- versao 1.1.166.198
+
+update parametrosdosistema set appversao = '1.1.166.198';--.go
