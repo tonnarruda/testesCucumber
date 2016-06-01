@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.16x.199" db="" data="xx/xx/2016">
+		<Item visivel="S" motivo="P16050000186"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Organograma > imprimir: Ajuste de inconsistência ao imprimir o organograma.]]></Item>
+	</Versao>
 	<Versao id="1.1.166.198" db="" data="01/06/2016">
 		<Item visivel="S" motivo="P16050000167"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Ajuste de inconsistência ao responder entrevista de desligamento.]]></Item>
 	</Versao>
