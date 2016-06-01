@@ -13,14 +13,12 @@
 			<result name="error" type="redirect">list.action?cargo.id=${cargo.id}</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialEditAction" method="prepareInsert">
-			<interceptor-ref name="myDefaultWebStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/faixaSalarialEdit.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/faixaSalarialEdit.ftl</result>
 		</action>
 		<action name="prepareUpdateBack" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialEditAction" method="prepareUpdate">
-			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/faixaSalarialEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialEditAction" method="insert">

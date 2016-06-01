@@ -8,6 +8,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -42,17 +43,22 @@ public class EmpresaListAction extends MyActionSupportList
 			addActionWarning("Não é possível excluir a empresa cujo você esta logado.");
 			return Action.SUCCESS;			
 		}
+		
+		try {
+			if(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId().equals(1L) || empresa.getId().equals(1L))
+				empresaManager.removeEmpresa(empresaManager.findByIdProjection(empresa.getId()));
+			else
+				empresaManager.remove(new Long[]{empresa.getId()});
 			
-		if(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId().equals(1L) || empresa.getId().equals(1L))
-			empresaManager.removeEmpresa(empresaManager.findByIdProjection(empresa.getId()));
-		else
-			empresaManager.remove(new Long[]{empresa.getId()});
-		
-		addActionSuccess("Empresa excluída com sucesso.");
-		
-		java.io.File pastaExterna = new java.io.File(ArquivoUtil.getPathExternoEmpresa(empresa.getId()));
-		if (pastaExterna.exists())
-			FileUtils.deleteDirectory(pastaExterna);
+			addActionSuccess("Empresa excluída com sucesso.");
+			
+			java.io.File pastaExterna = new java.io.File(ArquivoUtil.getPathExternoEmpresa(empresa.getId()));
+			if (pastaExterna.exists())
+				FileUtils.deleteDirectory(pastaExterna);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta empresa.");
+		}
 
 		return Action.SUCCESS;
 	}

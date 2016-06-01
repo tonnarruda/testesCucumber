@@ -55,7 +55,6 @@
 
 	<@ww.hidden label="Id" name="conhecimento.id" />
 
-<@ww.token/>
 </@ww.form>
 
 

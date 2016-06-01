@@ -14,6 +14,7 @@
       <interceptor name="reference-resolver" class="com.opensymphony.xwork.interceptor.ExternalReferencesInterceptor" />
       <interceptor name="fileUploadToProperty" class="com.fortes.webwork.interceptor.FileUploadToPropertyInterceptor" />
       <interceptor name="validationException" class="com.fortes.webwork.interceptor.ValidationExceptionInterceptor" />
+      <interceptor name="myToken" class="com.fortes.webwork.interceptor.MyTokenInterceptor" />
       <interceptor name="store" class="com.fortes.webwork.interceptor.MyMessageStoreInterceptor"/>
       <interceptor name="exception" class="com.opensymphony.xwork.interceptor.ExceptionMappingInterceptor"/>
       <interceptor-stack name="showFileStack">
@@ -71,7 +72,7 @@
 
       <interceptor-stack name="tokenWebStack">
         <interceptor-ref name="myDefaultWebStack" />
-        <interceptor-ref name="token" >
+        <interceptor-ref name="myToken" >
         	<param name="excludeMethods">login,logout,index</param>
         </interceptor-ref>
       </interceptor-stack>
@@ -115,7 +116,7 @@
         <interceptor-ref name="store">
             <param name="operationMode">STORE</param>
         </interceptor-ref>
-        <interceptor-ref name="tokenWebStack" />
+        <interceptor-ref name="myToken" />
 	  </interceptor-stack> 
 	   
       <interceptor-stack name="defaultDeleteSemTokenStack">
@@ -142,7 +143,7 @@
         <interceptor-ref name="store">
             <param name="operationMode">STORE</param>
         </interceptor-ref>
-        <interceptor-ref name="tokenWebStack" />
+        <interceptor-ref name="myToken" />
       </interceptor-stack>  
 
       <interceptor-stack name="defaultUpdateSemTokenStack">

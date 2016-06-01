@@ -41,7 +41,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="validaForm(${tipoAplicacaoIndice.getIndice()});" class="btnGravar"></button>
-		<button onclick="window.location='../faixaSalarial/prepareUpdateBack.action?faixaSalarialAux.id=${faixaSalarialAux.id}'" class="btnCancelar"></button>
+		<button onclick="javascript: executeLink('../faixaSalarial/prepareUpdateBack.action?faixaSalarialAux.id=${faixaSalarialAux.id}');" class="btnCancelar"></button>
 	</div>
 	
 	<#if faixaSalarialHistorico.id?exists>
