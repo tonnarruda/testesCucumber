@@ -9,19 +9,23 @@ import mockit.Mockit;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PesquisaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
@@ -39,6 +43,7 @@ public class ColaboradorRespostaEditActionTest extends MockObjectTestCase
 	private Mock pesquisaManager;
 	private Mock colaboradorManager;
 	private Mock colaboradorQuestionarioManager;
+	private Mock candidatoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -58,6 +63,9 @@ public class ColaboradorRespostaEditActionTest extends MockObjectTestCase
         
         colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
         colaboradorRespostaEditAction.setColaboradorQuestionarioManager((ColaboradorQuestionarioManager) colaboradorQuestionarioManager.proxy());
+        
+        candidatoManager = new Mock(CandidatoManager.class);
+        colaboradorRespostaEditAction.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
 
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
@@ -100,7 +108,137 @@ public class ColaboradorRespostaEditActionTest extends MockObjectTestCase
 		colaboradorRespostaEditAction.setRetorno("ewew");
 	}
 	
-	public void testPrepareResponderQuestionarioColaboradorLogadoIgualAoColaboradorIdDaURL() throws Exception{
+	public void testPrepareResponderQuestionarioFichaMedicaCandidatoInserir() throws Exception{
+		Questionario questionario = QuestionarioFactory.getEntity(1L);
+		questionario.setTipo(TipoQuestionario.getFICHAMEDICA());
+		Collection<Pergunta> perguntas = Arrays.asList(PerguntaFactory.getEntity(1L));
+		questionario.setPerguntas(perguntas);
+
+		colaboradorRespostaEditAction.setVinculo('A');
+		Candidato candidato = CandidatoFactory.getCandidato(1L);
+		colaboradorRespostaEditAction.setCandidato(candidato);
+		colaboradorRespostaEditAction.setInserirFichaMedica(true);
+		
+		candidatoManager.expects(once()).method("findByCandidatoId").with(eq(candidato.getId())).will(returnValue(candidato));
+		questionarioManager.expects(once()).method("findResponderQuestionario").with(ANYTHING).will(returnValue(questionario));
+		
+		assertEquals("success",colaboradorRespostaEditAction.prepareResponderQuestionario());
+    }
+	
+	public void testPrepareResponderQuestionarioFichaMedicaCandidatoEditar() throws Exception{
+		Questionario questionario = QuestionarioFactory.getEntity(1L);
+		questionario.setTipo(TipoQuestionario.getFICHAMEDICA());
+		Collection<Pergunta> perguntas = Arrays.asList(PerguntaFactory.getEntity(1L));
+		questionario.setPerguntas(perguntas);
+
+		colaboradorRespostaEditAction.setVinculo('A');
+		Candidato candidato = CandidatoFactory.getCandidato(1L);
+		colaboradorRespostaEditAction.setCandidato(candidato);
+		colaboradorRespostaEditAction.setInserirFichaMedica(false);
+		
+		candidatoManager.expects(once()).method("findByCandidatoId").with(eq(candidato.getId())).will(returnValue(candidato));
+		questionarioManager.expects(once()).method("findResponderQuestionario").with(ANYTHING).will(returnValue(questionario));
+		colaboradorRespostaManager.expects(once()).method("findByQuestionarioCandidato").with(eq(questionario.getId()),eq(candidato.getId()), eq(null)).will(returnValue(new ArrayList<ColaboradorResposta>()));
+		
+		assertEquals("success",colaboradorRespostaEditAction.prepareResponderQuestionario());
+    }
+	
+	public void testPrepareResponderQuestionarioFichaMedicaColaboradorEditar() throws Exception{
+		Questionario questionario = QuestionarioFactory.getEntity(1L);
+		questionario.setTipo(TipoQuestionario.getFICHAMEDICA());
+		Collection<Pergunta> perguntas = Arrays.asList(PerguntaFactory.getEntity(1L));
+		questionario.setPerguntas(perguntas);
+
+		colaboradorRespostaEditAction.setVinculo('C');
+		colaboradorRespostaEditAction.setColaborador(ColaboradorFactory.getEntity(1L));
+		
+		questionarioManager.expects(once()).method("findResponderQuestionario").with(ANYTHING).will(returnValue(questionario));
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(colaboradorRespostaEditAction.getColaborador().getId())).will(returnValue(colaboradorRespostaEditAction.getColaborador()));
+		colaboradorRespostaManager.expects(once()).method("findByQuestionarioColaborador").with(eq(questionario.getId()), eq(colaboradorRespostaEditAction.getColaborador().getId()), eq(null), eq(null)).will(returnValue(new ArrayList<ColaboradorResposta>()));
+		colaboradorQuestionarioManager.expects(once()).method("findByQuestionario").with(eq(questionario.getId()), eq(colaboradorRespostaEditAction.getColaborador().getId()), eq(null)).will(returnValue(new ColaboradorQuestionario()));
+				
+		assertEquals("success",colaboradorRespostaEditAction.prepareResponderQuestionario());
+    }
+	
+	public void testPrepareResponderEntrevistaDesligamento() throws Exception{
+		Questionario questionario = QuestionarioFactory.getEntity(1L);
+		questionario.setTipo(TipoQuestionario.getENTREVISTA());
+		Collection<Pergunta> perguntas = Arrays.asList(PerguntaFactory.getEntity(1L));
+		questionario.setPerguntas(perguntas);
+
+		colaboradorRespostaEditAction.setColaborador(ColaboradorFactory.getEntity(1L));
+		
+		questionarioManager.expects(once()).method("findResponderQuestionario").with(ANYTHING).will(returnValue(questionario));
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(colaboradorRespostaEditAction.getColaborador().getId())).will(returnValue(colaboradorRespostaEditAction.getColaborador()));
+		colaboradorRespostaManager.expects(once()).method("findByQuestionarioColaborador").with(eq(questionario.getId()), eq(colaboradorRespostaEditAction.getColaborador().getId()), eq(null), eq(null)).will(returnValue(new ArrayList<ColaboradorResposta>()));
+		colaboradorQuestionarioManager.expects(once()).method("findByQuestionario").with(eq(questionario.getId()), eq(colaboradorRespostaEditAction.getColaborador().getId()), eq(null)).will(returnValue(new ColaboradorQuestionario()));
+				
+		assertEquals("success",colaboradorRespostaEditAction.prepareResponderQuestionario());
+    }
+	
+	public void testPrepareResponderPesquisaPorOutroUsuario() throws Exception{
+		Questionario questionario = QuestionarioFactory.getEntity(1L);
+		questionario.setTipo(TipoQuestionario.getPESQUISA());
+		Collection<Pergunta> perguntas = Arrays.asList(PerguntaFactory.getEntity(1L));
+		questionario.setPerguntas(perguntas);
+		
+			  
+		Colaborador colaboradorLogado = ColaboradorFactory.getEntity(121L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(122L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+			  
+		colaboradorRespostaEditAction.setUsuarioLogado(usuario);
+		colaboradorRespostaEditAction.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		colaboradorRespostaEditAction.setColaborador(colaborador);
+			  
+		colaboradorManager.expects(once()).method("findByUsuario").with(eq(usuario), eq(colaboradorRespostaEditAction.getEmpresaSistema().getId())).will(returnValue(colaboradorLogado));
+		questionarioManager.expects(once()).method("findResponderQuestionario").with(ANYTHING).will(returnValue(questionario));
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		
+		assertEquals("success",colaboradorRespostaEditAction.prepareResponderQuestionarioPorOutroUsuario());
+    }
+	
+	public void testPrepareResponderQuestionariooPesquisaColaboradorLogadoIgualAoColaboradorIdDaURL() throws Exception{
+		Questionario questionario = QuestionarioFactory.getEntity(1L);
+		questionario.setTipo(TipoQuestionario.getPESQUISA());
+		Collection<Pergunta> perguntas = Arrays.asList(PerguntaFactory.getEntity(1L));
+		questionario.setPerguntas(perguntas);
+			  
+		Colaborador colaboradorLogado = ColaboradorFactory.getEntity(121L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+			  
+		colaboradorRespostaEditAction.setUsuarioLogado(usuario);
+		colaboradorRespostaEditAction.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		colaboradorRespostaEditAction.setColaborador(colaboradorLogado);
+			  
+		colaboradorManager.expects(once()).method("findByUsuario").with(eq(usuario), eq(colaboradorRespostaEditAction.getEmpresaSistema().getId())).will(returnValue(colaboradorLogado));
+		questionarioManager.expects(once()).method("findResponderQuestionario").with(ANYTHING).will(returnValue(questionario));
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(colaboradorLogado.getId())).will(returnValue(colaboradorLogado));
+		
+		assertEquals("success",colaboradorRespostaEditAction.prepareResponderQuestionario());
+    }
+	
+	public void testPrepareResponderQuestionariooPesquisaColaboradorLogadoDiferenteAoColaboradorIdDaURL() throws Exception{
+		Questionario questionario = QuestionarioFactory.getEntity(1L);
+		questionario.setTipo(TipoQuestionario.getPESQUISA());
+		Collection<Pergunta> perguntas = Arrays.asList(PerguntaFactory.getEntity(1L));
+		questionario.setPerguntas(perguntas);
+			  
+		Colaborador colaboradorLogado = ColaboradorFactory.getEntity(121L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(122L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+			  
+		colaboradorRespostaEditAction.setUsuarioLogado(usuario);
+		colaboradorRespostaEditAction.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		colaboradorRespostaEditAction.setColaborador(colaborador);
+			  
+		colaboradorManager.expects(once()).method("findByUsuario").with(eq(usuario), eq(colaboradorRespostaEditAction.getEmpresaSistema().getId())).will(returnValue(colaboradorLogado));
+		questionarioManager.expects(once()).method("findResponderQuestionario").with(ANYTHING).will(returnValue(questionario));
+		assertEquals("error",colaboradorRespostaEditAction.prepareResponderQuestionario());
+		assertEquals("Permissão negada. Não foi possível acessar a avaliação do colaborador.", colaboradorRespostaEditAction.getActionErrors().iterator().next());
+    }
+	
+	public void testPrepareResponderQuestionariooAvaliacaoTurmaColaboradorLogadoIgualAoColaboradorIdDaURL() throws Exception{
 		Questionario questionario = QuestionarioFactory.getEntity(1L);
 		questionario.setTipo(TipoQuestionario.getAVALIACAOTURMA());
 		Collection<Pergunta> perguntas = Arrays.asList(PerguntaFactory.getEntity(1L));
@@ -124,7 +262,7 @@ public class ColaboradorRespostaEditActionTest extends MockObjectTestCase
 		assertEquals("success",colaboradorRespostaEditAction.prepareResponderQuestionario());
     }
 	
-	public void testPrepareResponderQuestionarioColaboradorLogadoDiferenteAoColaboradorIdDaURL() throws Exception{
+	public void testPrepareResponderQuestionariooAvaliacaoTurmaColaboradorLogadoDiferenteAoColaboradorIdDaURL() throws Exception{
 		Questionario questionario = QuestionarioFactory.getEntity(1L);
 		questionario.setTipo(TipoQuestionario.getAVALIACAOTURMA());
 		Collection<Pergunta> perguntas = Arrays.asList(PerguntaFactory.getEntity(1L));
@@ -143,9 +281,10 @@ public class ColaboradorRespostaEditActionTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findByUsuario").with(eq(usuario), eq(colaboradorRespostaEditAction.getEmpresaSistema().getId())).will(returnValue(colaboradorLogado));
 		questionarioManager.expects(once()).method("findResponderQuestionario").with(ANYTHING).will(returnValue(questionario));
 		assertEquals("error",colaboradorRespostaEditAction.prepareResponderQuestionario());
+		assertEquals("Permissão negada. Não foi possível acessar a avaliação do colaborador.", colaboradorRespostaEditAction.getActionErrors().iterator().next());
     }
 	
-	public void testPrepareResponderQuestionarioPorOutroUsuario() throws Exception{
+	public void testPrepareResponderQuestionarioAvaliacaoTurmaPorOutroUsuario() throws Exception{
 		Questionario questionario = QuestionarioFactory.getEntity(1L);
 		questionario.setTipo(TipoQuestionario.getAVALIACAOTURMA());
 		Collection<Pergunta> perguntas = Arrays.asList(PerguntaFactory.getEntity(1L));

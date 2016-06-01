@@ -142,12 +142,17 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         	}
         }
         else {
-        	Colaborador colaboradorLogado = colaboradorManager.findByUsuario(getUsuarioLogado(), getEmpresaSistema().getId());
-        	if (respondePorOutroUsuario || (colaboradorLogado != null && colaborador.getId().equals(colaboradorLogado.getId())))
+        	if(questionario.verificaTipo(TipoQuestionario.PESQUISA) || questionario.verificaTipo(TipoQuestionario.AVALIACAOTURMA)){
+	        	Colaborador colaboradorLogado = colaboradorManager.findByUsuario(getUsuarioLogado(), getEmpresaSistema().getId());
+	        	if (respondePorOutroUsuario || (colaboradorLogado != null && colaborador.getId().equals(colaboradorLogado.getId())))
+	        		colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
+	        	else {
+	        		addActionError("Permissão negada. Não foi possível acessar a avaliação do colaborador.");
+	        		return Action.ERROR;
+	        	}
+        	}
+        	else{
         		colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
-        	else {
-        		addActionError("Permissão negada. Não foi possível acessar a avaliação do colaborador.");
-        		return Action.ERROR;
         	}
         }
 
