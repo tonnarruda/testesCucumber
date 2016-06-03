@@ -70,7 +70,7 @@
 
 </head>
 <body>
-	<@ww.token/>
+	<@ww.hidden  name="internalToken" />
 	<div id="topDiv">
 		<div id="userDiv">
 			<span class="saudacao">
@@ -177,10 +177,7 @@
 			});
 		</#if>	
 			
-			$("input[name='webwork.token']").appendTo($('form'));
-			$("input[name='webwork.token.name']").appendTo($('form'));
-			
-			window.history.forward(1);
+			$("input[name='internalToken']").appendTo($('form'));
 		});
 	</script>
 </html>

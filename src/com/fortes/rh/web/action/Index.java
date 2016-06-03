@@ -118,7 +118,7 @@ public class Index extends MyActionSupport
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache");
 		response.setDateHeader("Expires", 0);
-
+        response.setHeader("SET-COOKIE", "JSESSIONID=" + ServletActionContext.getRequest().getSession().getId()+ "; HttpOnly");
 		try
 		{
 			parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
@@ -138,7 +138,7 @@ public class Index extends MyActionSupport
 				((MyDaoAuthenticationProvider)authenticationProvider).configuraPapeis(SecurityUtil.getUserDetails(ActionContext.getContext().getSession()), empresaId);
 			}
 
-			SecurityUtil.autenticaLogin(ActionContext.getContext().getSession());
+			SecurityUtil.autenticaLogin();
 
 			usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 			
@@ -451,6 +451,14 @@ public class Index extends MyActionSupport
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String acessoNegado()
+	{
+		System.out.println("Acesso negado.");
+		addActionError("ACESSO NEGADO");
 		
 		return Action.SUCCESS;
 	}

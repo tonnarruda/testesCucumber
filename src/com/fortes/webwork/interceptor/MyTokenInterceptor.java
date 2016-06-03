@@ -1,40 +1,22 @@
 package com.fortes.webwork.interceptor;
 
-import java.util.Map;
-
+import com.fortes.rh.security.SecurityUtil;
 import com.opensymphony.webwork.interceptor.TokenInterceptor;
-import com.opensymphony.webwork.util.TokenHelper;
-import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ActionInvocation;
 
 public class MyTokenInterceptor extends TokenInterceptor
 {
 	private static final long serialVersionUID = -6003499432798881081L;
 
-	protected String doIntercept(ActionInvocation invocation) throws Exception {
+	protected String doIntercept(ActionInvocation invocation) throws Exception
+	{
+		String token = null;
+		if (invocation.getInvocationContext().getParameters().get("internalToken") != null)
+			token = ((String[]) invocation.getInvocationContext().getParameters().get("internalToken"))[0];
 
-		Map session = ActionContext.getContext().getSession();
-		System.out.println(session.get("webwork.token"));
-		System.out.println(TokenHelper.getToken());
-
-		synchronized (session) {
-			if (!TokenHelper.validToken()) {
-				return handleInvalidToken(invocation);
-			}
-
+		if (SecurityUtil.isTokenValido(token))
 			return handleValidToken(invocation);
-		}
-	}
-	    
-	protected String handleInvalidToken(ActionInvocation invocation) throws Exception 
-	{
-		invocation.invoke();
-
-		return INVALID_TOKEN_CODE;
-	}
-	
-	protected String handleValidToken(ActionInvocation invocation) throws Exception
-	{
-		return invocation.invoke();
+		else
+			return handleInvalidToken(invocation);
 	}
 }

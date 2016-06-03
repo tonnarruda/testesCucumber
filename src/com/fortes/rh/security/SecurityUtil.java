@@ -7,9 +7,12 @@ import javax.servlet.http.HttpSession;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.userdetails.UserDetails;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.config.SessionManager;
+import com.fortes.rh.config.TokenManager;
 import com.fortes.rh.exception.LoginInvalidoException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
@@ -22,6 +25,8 @@ import com.opensymphony.xwork.ActionContext;
 
 public class SecurityUtil
 {
+	private static TokenManager tokenManager = null;
+	private static SessionManager sessionManager = null;
 	
 	public static boolean verifyRole(Map session, String[] rolesVerify)
 	{
@@ -49,26 +54,25 @@ public class SecurityUtil
 		return ((UsuarioManager) SpringUtil.getBean("usuarioManager")).findById(id);
 	}
 	
-	public static void registraLogin(Map session)
+	public static void registraLogin(UserDetailsImpl userDetailsImpl)
 	{
-		SessionManager sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
-		
-		UserDetailsImpl userDetailsImpl = (UserDetailsImpl) getUserDetails(session);
-		sessionManager.registerLogin(ServletActionContext.getRequest().getSession().getId(),userDetailsImpl);
+		getSessionManager().registerLogin(ServletActionContext.getRequest().getSession().getId(),userDetailsImpl);
 	}
 	
-	public static void registraLogout()
+	public static void registraLogout(WebApplicationContext webApplicationContext, String sessionId)
 	{
-		SessionManager sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
+		// Estes beans não devem ser recuperados pelo SpringUtil, pois meste momento a sessão foi invalidada e o SpringUtil recupera a partir da sessão.
+		// Não devem ser colocados nas variáveis de instância(sessionManager e tokenManager), pois estas devem ser recuperadas pelo SpringUtil.
+		SessionManager sessionManager = (SessionManager) webApplicationContext.getBean("sessionManager");
+		TokenManager tokenManager = (TokenManager) webApplicationContext.getBean("tokenManager");
 		
-		sessionManager.registerLogout(ServletActionContext.getRequest().getSession().getId());
+		sessionManager.registerLogout(sessionId);
+		tokenManager.remove(sessionId);
 	}
 	
 	public static Integer getQuantidadeUsuariosLogados()
 	{
-		SessionManager sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
-		
-		return sessionManager.getNumeroDeUsuariosAutenticadosComAcessoNormal();
+		return getSessionManager().getNumeroDeUsuariosAutenticadosComAcessoNormal();
 	}
 	
 	public static Long getIdUsuarioLoged(Map session)
@@ -161,9 +165,7 @@ public class SecurityUtil
 	}
 	
 	public static boolean isAuthenticatedUser() {
-		SessionManager sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
-		
-		return sessionManager.isUserLogged(ServletActionContext.getRequest().getSession().getId());
+		return getSessionManager().isUserLogged(ServletActionContext.getRequest().getSession().getId());
 	}
 
 	public static String getNomeUsuarioLogedByDWR(HttpSession session) {
@@ -224,18 +226,54 @@ public class SecurityUtil
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	public static void autenticaLogin(Map session) throws Exception
+	public static void autenticaLogin() throws Exception
 	{
 		if(AutenticadorJarvis.isVerificaLicensa() && !isAuthenticatedUser()){
-			SessionManager sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
 			
-			boolean temAcessoRestrito = ((UserDetailsImpl)getUserDetails(session)).getHasAcessoRestrito();
+			boolean temAcessoRestrito = ((UserDetailsImpl)getUserDetails(ActionContext.getContext().getSession())).getHasAcessoRestrito();
 			
-			if(!temAcessoRestrito && sessionManager.getNumeroDeUsuariosAutenticadosComAcessoNormal() >= AutenticadorJarvis.getClient().getQtdAcessosSimultaneos())
+			if(!temAcessoRestrito && getSessionManager().getNumeroDeUsuariosAutenticadosComAcessoNormal() >= AutenticadorJarvis.getClient().getQtdAcessosSimultaneos())
 				throw new LoginInvalidoException("Limite de login execedido.", "limiteLoginExcedido");
 
-			registraLogin(ActionContext.getContext().getSession());
+			UserDetailsImpl userDetailsImpl = (UserDetailsImpl) getUserDetails(ActionContext.getContext().getSession());
+			registraLogin(userDetailsImpl);
 		}
+		
+		registraToken(ServletActionContext.getRequest().getSession().getId(), false);		
+	}
+	
+	public static void registraToken(String sessionId, boolean geraNovoToken)
+	{
+		if(!getTokenManager().isRegistrado(sessionId) || geraNovoToken)
+			getTokenManager().registra(sessionId);
+	}
+	
+	public static boolean isTokenValido(String token)
+	{
+		if(StringUtils.isEmpty(token))
+			return false;
+		
+		return getTokenManager().isValido(ServletActionContext.getRequest().getSession().getId(), token);
+	}
+	
+	public static String getInternalToken()
+	{
+		return getTokenManager().getToken(ServletActionContext.getRequest().getSession().getId());
+	}
+	
+	private static TokenManager getTokenManager()
+	{
+		if(tokenManager == null)
+			tokenManager = (TokenManager) SpringUtil.getBean("tokenManager");
+		
+		return tokenManager;
+	}
+	
+	private static SessionManager getSessionManager()
+	{
+		if(sessionManager == null)
+			sessionManager = (SessionManager) SpringUtil.getBean("sessionManager");
+		
+		return sessionManager;
 	}
 }

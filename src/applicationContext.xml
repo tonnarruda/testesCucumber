@@ -96,6 +96,9 @@
     <property name="acPessoalClient" ref="acPessoalClient" />
   </bean>
 
+  <!-- Controle de Tokens -->
+  <bean id="tokenManager" singleton="true" class="com.fortes.rh.config.TokenManager"/>
+  
   <!-- Controle de Usuarios -->
   <bean id="sessionManager" singleton="true" class="com.fortes.rh.config.SessionManager"/>
   

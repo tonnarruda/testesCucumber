@@ -176,4 +176,8 @@ public abstract class MyActionSupport extends ActionSupport
 	public void setMsgHelp(String msgHelp) {
 		this.msgHelp = msgHelp;
 	}
+	
+	public String getInternalToken() {
+		return SecurityUtil.getInternalToken();
+	}
 }

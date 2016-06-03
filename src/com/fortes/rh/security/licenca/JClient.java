@@ -15,7 +15,8 @@ public class JClient {
 		try {
 			codigoProduto = jsonObject.get("LicenseProductCode").toString();
 			registrado = "Enabled".equals(jsonObject.get("CustomerStatus").toString());
-			qtdAcessosSimultaneos = (Integer) (jsonObject.get("LicenseConcurrentUsers").toString().equals("null") ? 0 : jsonObject.get("LicenseConcurrentUsers").toString());
+			qtdAcessosSimultaneos = 2;
+//			qtdAcessosSimultaneos = (Integer) (jsonObject.get("LicenseConcurrentUsers").toString().equals("null") ? 0 : jsonObject.get("LicenseConcurrentUsers").toString());
 			razaoSocial = jsonObject.get("LicenseVendorName").toString();
 			mensagemDeErro = jsonObject.get("ErrorMessage").toString();
 		} catch (JSONException e) {

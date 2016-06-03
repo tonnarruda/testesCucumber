@@ -1420,12 +1420,11 @@ function executeLink(link)
 
 function getLinkToken(link) 
 {
-	var _token_ = $("input[name='webwork.token']").val();
-	var _tokenName_ = $("input[name='webwork.token.name']").val();
+	var _token_ = $("input[name='internalToken']").val();
 	
 	var _joinCharacter_ = (link.indexOf("?") > 0 ? "&" : "?");
 	
-	return link+_joinCharacter_+"webwork.token.name="+_tokenName_+"&webwork.token="+_token_;
+	return link+_joinCharacter_+"internalToken="+_token_;
 }
 
 function validaCaracteresDosCampos() {
