@@ -14,7 +14,7 @@ public class CertificacaoDWR
 {
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 
-    public  Collection<CheckBox> getColaboradores(String dataIni, String dataFim, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Integer mesesCertificacoesAVencer, String[] areaOrganizacionalIds, String[] estabelecimentoIds, String[] certificacoesIds) {
+    public  Collection<CheckBox> getColaboradores(String dataIni, String dataFim, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Integer mesesCertificacoesAVencer, String[] areaOrganizacionalIds, String[] estabelecimentoIds, String[] certificacoesIds, String situacaoColaborador) {
     	Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
 		Long [] areasIdsLong = StringUtil.stringToLong(areaOrganizacionalIds);
 		Long [] estabelecimentoIdsLong = StringUtil.stringToLong(estabelecimentoIds);
@@ -24,7 +24,7 @@ public class CertificacaoDWR
 		if(dataFim != null && !dataFim.equals("") && !dataFim.equals("  /  /    "))
 			dataFinal = DateUtil.criarDataDiaMesAno(dataFim);
 		
-    	Collection<ColaboradorCertificacao> colaboradoresCertificacao = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(null, dataFinal, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areasIdsLong, estabelecimentoIdsLong, certificacoesIdsLong, null);
+    	Collection<ColaboradorCertificacao> colaboradoresCertificacao = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(null, dataFinal, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areasIdsLong, estabelecimentoIdsLong, certificacoesIdsLong, null, situacaoColaborador);
     	Collection<Long> colaboradoresIdsAdicionados = new ArrayList<Long>();
     	for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificacao) {
     		CheckBox checkBox = new CheckBox();

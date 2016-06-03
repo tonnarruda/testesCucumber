@@ -210,7 +210,7 @@ public class CertificacaoEditActionTest
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
 		colaboradorCertificacaos.add(colaboradorCertificacao);
 		
-		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{})).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null)).thenReturn(colaboradorCertificacaos);
 		
 		assertEquals("success", action.imprimirCertificadosVencidosAVencer());
 	}
@@ -220,7 +220,7 @@ public class CertificacaoEditActionTest
 	{
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
 		
-		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{})).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null)).thenReturn(colaboradorCertificacaos);
 		mocksPrepareImprimir();
 		
 		assertEquals("input", action.imprimirCertificadosVencidosAVencer());
@@ -229,7 +229,7 @@ public class CertificacaoEditActionTest
 	@Test
 	public void testImprimirCertificadosVencidosAVencerException() throws Exception
 	{
-		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, true, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{})).thenReturn(null);
+		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, true, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null)).thenReturn(null);
 		mocksPrepareImprimir();
 		
 		assertEquals("input", action.imprimirCertificadosVencidosAVencer());
@@ -258,7 +258,7 @@ public class CertificacaoEditActionTest
 		colaboradorCertificacaos.add(colaboradorAprovadoCertificacao);
 		colaboradorCertificacaos.add(colaboradorNaoAprovadoCertificacao);
 		
-		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{})).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null)).thenReturn(colaboradorCertificacaos);
 		
 		assertEquals("sucessoAgrupadoPorCertificacao", action.imprimirCertificadosVencidosAVencer());
 	}

@@ -35,4 +35,8 @@ public class ColaboradorAvaliacaoPraticaManagerImpl extends GenericManagerImpl<C
 		
 		return mapColaboradorAvaliacoesPraticas;
 	}
+
+	public void setColaboradorCertificacoNull(Long[] colaboradorCertificacoesIds) {
+		getDao().setColaboradorCertificacoNull(colaboradorCertificacoesIds);
+	}
 }

@@ -15,15 +15,12 @@ import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorAvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
-import com.fortes.rh.business.geral.AreaOrganizacionalManager;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
@@ -44,8 +41,6 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 	private ColaboradorAvaliacaoPraticaEditAction action;
 	private Mock certificacaoManager;
 	private Mock manager;
-	private Mock areaOrganizacionalManager;
-	private Mock colaboradorManager;
 	private Mock colaboradorTurmaManager;
 	private Mock avaliacaoPraticaManager;
 	private Mock colaboradorAvaliacaoPraticaManager;
@@ -62,13 +57,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		certificacaoManager = new Mock(CertificacaoManager.class);
 		action.setCertificacaoManager((CertificacaoManager) certificacaoManager.proxy());
-		
-		areaOrganizacionalManager  = new Mock(AreaOrganizacionalManager.class);
-		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 
-		colaboradorManager = new Mock(ColaboradorManager.class);
-		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
-		
 		colaboradorTurmaManager = new Mock(ColaboradorTurmaManager.class);
 		action.setColaboradorTurmaManager((ColaboradorTurmaManager) colaboradorTurmaManager.proxy());
 		
@@ -335,7 +324,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 	{
 		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(certificacoes));
 		avaliacaoPraticaManager.expects(once()).method("findByCertificacaoId").will(returnValue(avaliacaoPraticas));
-		colaboradorCertificacaoManager.expects(once()).method("populaAvaliaçõesPraticasRealizadas").will(returnValue(colaboradorCertificacoes));
+		colaboradorCertificacaoManager.expects(once()).method("possuemAvaliaçõesPraticasRealizadas").will(returnValue(colaboradorCertificacoes));
 	}
 	
 	public void testBuscaColaboradoresLote() throws Exception
@@ -370,7 +359,6 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
 		colaboradorAvaliacaoPraticas.add(colaboradorAvaliacaoPratica);
-		mockFindColaboradoresIdsPermitidosNaCertificacao();
 		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes,	colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
 		
 		assertEquals("success", action.buscaColaboradoresLote());
@@ -426,7 +414,6 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		colaboradorCertificacaoManager.expects(once()).method("update");
 		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(colaboradorAvaliacaoPraticas));
 		colaboradorAvaliacaoPraticaManager.expects(once()).method("save");
-		mockFindColaboradoresIdsPermitidosNaCertificacao();
 		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes,	colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
 		
 		assertEquals("success", action.insertOrUpdateLote());
@@ -473,7 +460,6 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
 		colaboradorCertificacaoManager.expects(once()).method("certificaColaborador").will(returnValue(colaboradorCertificacoes));
 		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
-		mockFindColaboradoresIdsPermitidosNaCertificacao();
 		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes,	colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
 		
 		assertEquals("success", action.insertOrUpdateLote());
@@ -519,7 +505,6 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
 		colaboradorCertificacaoManager.expects(once()).method("descertificarColaborador");
 		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
-		mockFindColaboradoresIdsPermitidosNaCertificacao();
 		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
 		
 		assertEquals("success", action.insertOrUpdateLote());
@@ -561,7 +546,6 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
 		colaboradorAvaliacaoPraticaManager.expects(once()).method("removeByColaboradorCertificacaoId");
 		colaboradorCertificacaoManager.expects(once()).method("descertificarColaborador");
-		mockFindColaboradoresIdsPermitidosNaCertificacao();
 		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
 		
 		assertEquals("success", action.insertOrUpdateLote());
@@ -602,15 +586,9 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
 		colaboradorAvaliacaoPraticaManager.expects(once()).method("remove");
-		mockFindColaboradoresIdsPermitidosNaCertificacao();
 		
 		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
 		
 		assertEquals("success", action.insertOrUpdateLote());
-	}
-	
-	private void mockFindColaboradoresIdsPermitidosNaCertificacao(){
-		areaOrganizacionalManager.expects(once()).method("findAreasByUsuarioResponsavel").will(returnValue(new ArrayList<AreaOrganizacional>()));
-		colaboradorManager.expects(once()).method("findByNomeCpfMatriculaComHistoricoComfirmado").will(returnValue(new ArrayList<Colaborador>()));
 	}
 }

@@ -18,6 +18,7 @@ import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -62,6 +63,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private Collection<CheckBox> certificacoesCheckList = new ArrayList<CheckBox>();
 	private String[] colaboradoresCheck;
 	private Collection<CheckBox> colaboradoresCheckList = new ArrayList<CheckBox>();
+	private Map situacaos = new SituacaoColaborador();
+	private String situacao;
 	
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private String reportFilter;
@@ -70,13 +73,13 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private String nomeBusca;//filtro listagem
 	private Date dataIni;
 	private Date dataFim;
-	private Boolean bloquearEdicao = false;
 	private boolean colaboradorCertificado;
 	private boolean colaboradorNaoCertificado;
 	private Integer mesesCertificacoesAVencer;
 	private Character agruparPor;
 	private Integer qtdTotalColaboradoresCertificados;
 	private Integer qtdTotalColaboradoresNaoCertificados;
+	private boolean alterouCertificacao;
 
 	private void prepare() throws Exception
 	{
@@ -106,7 +109,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			prepare();
 			cursosCheckList = CheckListBoxUtil.marcaCheckListBox(cursosCheckList, certificacao.getCursos(), "getId");
 			avaliacoesPraticasCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacoesPraticasCheckList, certificacao.getAvaliacoesPraticas(), "getId");
-			bloquearEdicao = getEmpresaSistema().isControlarVencimentoPorCertificacao() && (colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(null, certificacao.getId()).size() > 0);
 		}
 		else
 			addActionError("A Certificação solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
@@ -122,10 +124,12 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		return Action.SUCCESS;
 	}
 
-	public String update() throws Exception
-	{
+	public String update() throws Exception	{
 		populaCertificacao();
 		certificacaoManager.update(certificacao);
+
+		if(alterouCertificacao && getEmpresaSistema().isControlarVencimentoPorCertificacao())
+			colaboradorCertificacaoManager.reprocessaCertificacao(certificacao.getId(), certificacaoManager);
 		
 		return Action.SUCCESS;
 	}
@@ -159,6 +163,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		populaEmpresa(new String[]{"ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER"});	
 		empresaId = getEmpresaSistema().getId();
 
+		
+		
 		return Action.SUCCESS;
 	}
 	
@@ -181,7 +187,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			else if(!colaboradorCertificado && colaboradorNaoCertificado)
 				certificado = false;
 			
-			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, mesesCertificacoesAVencer, certificado, areaIds, estabelecimentoIds, certificacoesIds, colaboradoresIds);
+			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, mesesCertificacoesAVencer, certificado, areaIds, estabelecimentoIds, certificacoesIds, colaboradoresIds, situacao);
 			if(colaboradorCertificacoes.size() == 0){
 				addActionMessage("Não existem dados para o filtro informado.");
 				prepareImprimirCertificadosVencidosAVencer();
@@ -306,6 +312,39 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		
 		if(colaboradorNaoCertificado)
 			reportFilter += "\nQuantidade total de colaboradores não certificados: " + qtdTotalColaboradoresNaoCertificados;
+	}
+	
+	public String prepareReprocessaCertificacao(){
+		certificacoesCheckList = certificacaoManager.populaCheckBox(getEmpresaSistema().getId());
+		certificacoesCheckList = CheckListBoxUtil.marcaCheckListBox(certificacoesCheckList, certificacoesCheck);
+		return Action.SUCCESS;
+	}
+	
+	public String reprocessaCertificacao(){
+		try {
+			Date inicio = new Date();
+
+			Long[] certificacoesIds = new Long[]{};
+
+			if (certificacoesCheck == null || certificacoesCheck.length == 0)
+				certificacoesIds = new CollectionUtil<Certificacao>().convertCollectionToArrayIds(certificacaoManager.findAllSelect(getEmpresaSistema().getId()));
+			else
+				certificacoesIds = LongUtil.arrayStringToArrayLong(certificacoesCheck);
+
+			for (Long certificacaoId : certificacoesIds) 
+				colaboradorCertificacaoManager.reprocessaCertificacao(certificacaoId, certificacaoManager);
+
+			addActionSuccess("Reprocessamento das certificações realizadas com sucesso.");
+			prepareReprocessaCertificacao();
+			
+			System.out.println(inicio + "  -   " + new Date());
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Ocorreu um problema no reprocessamento das certificações.");
+			prepareReprocessaCertificacao();
+			return Action.INPUT;
+		}
 	}
 	
 	public Object getModel()
@@ -467,14 +506,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		return reportTitle;
 	}
 
-	public Boolean getBloquearEdicao() {
-		return bloquearEdicao;
-	}
-
-	public void setBloquearEdicao(Boolean bloquearEdicao) {
-		this.bloquearEdicao = bloquearEdicao;
-	}
-
 	public boolean isColaboradorCertificado() {
 		return colaboradorCertificado;
 	}
@@ -513,5 +544,25 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public void setAgruparPor(Character agruparPor) {
 		this.agruparPor = agruparPor;
+	}
+
+	public boolean isAlterouCertificacao() {
+		return alterouCertificacao;
+	}
+
+	public void setAlterouCertificacao(boolean alterouCertificacao) {
+		this.alterouCertificacao = alterouCertificacao;
+	}
+
+	public Map getSituacaos() {
+		return situacaos;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
+	}
+
+	public String getSituacao() {
+		return situacao;
 	}
 }

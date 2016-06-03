@@ -28,7 +28,7 @@ public abstract class Menu
 		papeisParaEmpresasIntegradas.add("ROLE_REL_PAGAMENTO_COMPLEMENTAR");
 	}
 	
-	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto, ParametrosDoSistema parametros, Collection<Empresa> empresasDoUsuario, Empresa empresaLogada)
+	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto, ParametrosDoSistema parametros, Collection<Empresa> empresasDoUsuario, Empresa empresaLogada, Long idDoUsuario)
 	{
 		roles = new ArrayList<Papel>();
         for (Papel papel : rolesPapel)
@@ -72,7 +72,7 @@ public abstract class Menu
 						menu.append("</ul>\n");
 					}
 
-					menu.append(getFilhos(papel.getId(), contexto, empresaLogada));
+					menu.append(getFilhos(papel.getId(), contexto, empresaLogada, idDoUsuario));
 
 					if (exibeMenuTru)
 						menu.append("<li><a href='" + contexto + "/exportacao/prepareExportacaoTreinamentos.action'>Exportar Curso/Turma como ocorrência para o TRU</a>");
@@ -120,7 +120,7 @@ public abstract class Menu
 		return menu.toString();
 	}
 
-	private static String getFilhos(Long id, String contexto, Empresa empresaLogada)
+	private static String getFilhos(Long id, String contexto, Empresa empresaLogada, Long idDoUsuario)
 	{
 		StringBuilder menuFilho = new StringBuilder();
 		String maisFilhos = "";
@@ -139,12 +139,13 @@ public abstract class Menu
 					
 					menuFilho.append("<li>");
 					
-					if (verificaPapeisParaEmpresasIntegradas(papel, empresaLogada) && verificaEmpresaComSolicitacaoDesligamento(papel, empresaLogada) && verificaPapeisParaCursosOuCertificacaoVencidasAVencer(papel, empresaLogada)) 
+					if (verificaPapeisParaEmpresasIntegradas(papel, empresaLogada) && verificaEmpresaComSolicitacaoDesligamento(papel, empresaLogada) 
+							&& verificaPapeisParaCursosOuCertificacaoVencidasAVencer(papel, empresaLogada) && verificaPapeisUsuarioFortes(papel, idDoUsuario)) 
 					{
 						menuFilho.append("<a href='" + url + "'>" + papel.getNome() + "</a>");
 					}
 					
-					maisFilhos = getFilhos(papel.getId(), contexto, empresaLogada);
+					maisFilhos = getFilhos(papel.getId(), contexto, empresaLogada, idDoUsuario);
 	
 					if (!maisFilhos.equals(""))
 					{
@@ -180,5 +181,10 @@ public abstract class Menu
 	private static boolean verificaEmpresaComSolicitacaoDesligamento(Papel papel, Empresa empresa) 
 	{
 		return !papel.getCodigo().equalsIgnoreCase("ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO") || empresa.isSolicitarConfirmacaoDesligamento();
+	}
+	
+	private static boolean verificaPapeisUsuarioFortes(Papel papel, Long idDoUsuario) 
+	{
+		return !papel.getCodigo().equalsIgnoreCase("USUARIO_FORTES") || idDoUsuario.equals(1L);
 	}
 }

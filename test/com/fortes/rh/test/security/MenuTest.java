@@ -48,7 +48,7 @@ public class MenuTest extends TestCase
 		parametros.setCodClienteSuporte("000006");
 		parametros.setCodEmpresaSuporte("0002");
 		
-		assertEquals(menu.toString(), Menu.getMenuFormatado(papels, "localhost", parametros, new ArrayList<Empresa>(), EmpresaFactory.getEmpresa()));
+		assertEquals(menu.toString(), Menu.getMenuFormatado(papels, "localhost", parametros, new ArrayList<Empresa>(), EmpresaFactory.getEmpresa(), null));
 	}
 
 	public void testGetMenuFormatadoComFilho()
@@ -105,6 +105,6 @@ public class MenuTest extends TestCase
 		parametros.setCodClienteSuporte("000006");
 		parametros.setCodEmpresaSuporte("0002");
 		
-		assertEquals(menu.toString(), Menu.getMenuFormatado(papels, "localhost", parametros, new ArrayList<Empresa>(), EmpresaFactory.getEmpresa()));
+		assertEquals(menu.toString(), Menu.getMenuFormatado(papels, "localhost", parametros, new ArrayList<Empresa>(), EmpresaFactory.getEmpresa(), null));
 	}
 }

@@ -19,14 +19,14 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 	private static Long ROLE_CX_MENSAGEM = 495L;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
-	public String getPerfilOrganizado(String[] marcados, Collection<Papel> papeisComHelp) throws NotConectAutenticationException, NotRegistredException
+	public String getPerfilOrganizado(String[] marcados, Collection<Papel> papeisComHelp, Long idDoUsuario) throws NotConectAutenticationException, NotRegistredException
 	{
 		Collection<Long> modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados();
 		Collection<Papel> papeisSemModulosNaoConfigurados = getDao().findNotIn(modulosNaoConfigurados);
-		return montarOpcoes(papeisSemModulosNaoConfigurados, marcados, papeisComHelp);
+		return montarOpcoes(papeisSemModulosNaoConfigurados, marcados, papeisComHelp, idDoUsuario);
 	}
 	
-	private String montarOpcoes(Collection<Papel> papeisSemModulosNaoConfigurados, String[] marcados, Collection<Papel> papeisComHelp)
+	private String montarOpcoes(Collection<Papel> papeisSemModulosNaoConfigurados, String[] marcados, Collection<Papel> papeisComHelp, Long idDoUsuario)
 	{
 		StringBuilder perfilOrganizado = new StringBuilder();
 		String marcar = "";
@@ -49,7 +49,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 
 				papel.setIdExibir("idCheck" + papel.getId());
 				perfilOrganizado.append("<li><input type='checkbox' " + marcar + " onchange='checkSystem(this)' onclick='checkSystem(this)' onfocus='blur()' name='permissoes' value='" + papel.getId() + "' id='" + papel.getIdExibir() + "' /><label for='" + papel.getIdExibir() + "'>" + papel.getNome() + "</label>");
-				perfilOrganizado.append("\n<ul class='padding'>\n" + getFilhos(papel.getId(), papeisSemModulosNaoConfigurados, papel.getIdExibir(), marcados, papeisComHelp) + "</ul>\n</li>\n");
+				perfilOrganizado.append("\n<ul class='padding'>\n" + getFilhos(papel.getId(), papeisSemModulosNaoConfigurados, papel.getIdExibir(), marcados, papeisComHelp, idDoUsuario) + "</ul>\n</li>\n");
 			}
 		}
 
@@ -92,7 +92,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 		return filhos.toString();
 	}
 
-	private String getFilhos(Long id, Collection<Papel> papeis, String idExibir, String[] marcados, Collection<Papel> papeisComHelp)
+	private String getFilhos(Long id, Collection<Papel> papeis, String idExibir, String[] marcados, Collection<Papel> papeisComHelp, Long idDoUsuario)
 	{
 		StringBuilder filhos = new StringBuilder();
 		String maisFilhos = "";
@@ -102,6 +102,9 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 
 		for (Papel papel : papeis)
 		{
+			if(idDoUsuario != null && !idDoUsuario.equals(1L) && papel.getId().equals(673L))
+				continue;
+			
 			if(papel.getPapelMae() != null && papel.getPapelMae().getId() == id)
 			{
 				if (marcados != null)
@@ -128,7 +131,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 
 				filhoNumero++;
 
-				maisFilhos = getFilhos(papel.getId(), papeis, papel.getIdExibir(), marcados, papeisComHelp);
+				maisFilhos = getFilhos(papel.getId(), papeis, papel.getIdExibir(), marcados, papeisComHelp, idDoUsuario);
 				if(maisFilhos != "")
 				{
 					filhos.append("\n<ul class='padding'>\n" + maisFilhos + "</ul>\n");

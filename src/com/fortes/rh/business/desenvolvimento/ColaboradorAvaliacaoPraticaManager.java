@@ -11,4 +11,5 @@ public interface ColaboradorAvaliacaoPraticaManager extends GenericManager<Colab
 	Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId, Long avaliacaoPraticaId, Boolean ordenarPorDataAscOuDesc, Boolean colabCertificacaoIsNull);
 	void removeByColaboradorCertificacaoId(Long colaboradorCertificacaoId);
 	Map<Long, Collection<ColaboradorAvaliacaoPratica>> findMapByCertificacaoIdAndColaboradoresIds(Long certificacaoId, Long[] colaboradoresIds);
+	void setColaboradorCertificacoNull(Long[] colaboradorCertificacoesIds);
 }

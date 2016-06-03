@@ -58,7 +58,7 @@ public class PapelManagerTest extends MockObjectTestCase
 		
 		String[] permissoes = new String[]{"1","2","3"};
 
-		assertNotNull(papelManager.getPerfilOrganizado(permissoes, null));
+		assertNotNull(papelManager.getPerfilOrganizado(permissoes, null, null));
 	}
 	
 	public void testGetPapeisPermitidos()

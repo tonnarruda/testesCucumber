@@ -10,30 +10,23 @@ import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorAvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
-import com.fortes.rh.business.geral.AreaOrganizacionalManager;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionContext;
 
 public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;
 	private CertificacaoManager certificacaoManager;
-	private ColaboradorManager colaboradorManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private AvaliacaoPraticaManager avaliacaoPraticaManager;
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 
@@ -105,24 +98,6 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		}
 	}
 	
-	private Long[] findColaboradoresIdsPermitidosNaCertificacao() throws Exception{
-		Colaborador colaboradorLogado = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
-		Collection<Colaborador> colaboradoresPermitidos = new ArrayList<Colaborador>();
-
-		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"})){
-			colaboradoresPermitidos = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, getEmpresaSistema().getId(), null);
-		}
-		else if (colaboradorLogado != null && colaboradorLogado.getId() != null){
-			Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
-			Long[] areasIds = new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areas);
-			if (areasIds.length == 0)
-				areasIds = new Long[]{-1L};
-			colaboradoresPermitidos = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, getEmpresaSistema().getId(), areasIds);
-		}
-
-		return new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradoresPermitidos);
-	}
-
 	private void populaColaboradorAvaliacaoPratica() 
 	{
 		Collection<AvaliacaoPratica> avaliacoesPraticasDoCertificado = avaliacaoPraticaManager.findByCertificacaoId(certificacao.getId());
@@ -230,7 +205,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		if((certificacao == null || certificacao.getId() == null) || (avaliacaoPratica ==null || avaliacaoPratica.getId()==null))
 			return Action.SUCCESS;
 
-		colaboradorCertificacaos = colaboradorCertificacaoManager.populaAvaliaçõesPraticasRealizadas(findColaboradoresIdsPermitidosNaCertificacao(), certificacao.getId());
+		colaboradorCertificacaos = colaboradorCertificacaoManager.possuemAvaliaçõesPraticasRealizadas(certificacao.getId());
 
 		return Action.SUCCESS;
 	}
@@ -360,10 +335,6 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		return colaboradores;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Certificacao getCertificacao() {
 		return certificacao;
 	}
@@ -374,10 +345,6 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 
 	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public void setColaboradorAvaliacaoPraticas(Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas) {

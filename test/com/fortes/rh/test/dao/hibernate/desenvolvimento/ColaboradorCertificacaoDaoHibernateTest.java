@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+import org.junit.Test;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoPraticaDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
@@ -391,10 +393,10 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity(colaborador2, curso, turma);
 		colaboradorTurmaDao.save(colaboradorTurma2);
 		
-		assertEquals(2, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, null, false).size());
-		assertEquals(1, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, null, false).size());
-		assertEquals(2, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao2.getId()}, new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, null, false).size());
-		assertEquals(0, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, null, true).size());
+		assertEquals(2, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, null, false, null).size());
+		assertEquals(1, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, null, false, null).size());
+		assertEquals(2, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao2.getId()}, new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, null, false, null).size());
+		assertEquals(0, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, null, true, null).size());
 	}
 	
 	
@@ -455,8 +457,8 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador1, certificacao1 , DateUtil.criarDataMesAno(1, 1, 2016));
 		colaboradorCertificacaoDao.save(colaboradorCertificacao);
 		
-		assertEquals(1, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, null, true).size());
-		assertEquals(0, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, null, true).size());
+		assertEquals(1, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, null, true, null).size());
+		assertEquals(0, colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(null, new Date(), null, new Long[]{certificacao1.getId(), certificacao2.getId()}, new Long[]{areaOrganizacional2.getId()}, new Long[]{estabelecimento.getId()}, null, true, null).size());
 	}
 	
 	public void testFindColaboradorCertificadoInfomandoSeEUltimaCertificacao() {
@@ -614,75 +616,86 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(2, colaboradorCertificacaos.size());
 	}
 	
-	public void testMontaRelatorioColaboradoresNasCertificacoes() throws CloneNotSupportedException
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
+	@Test
+	public void testExisteColaboradorCertificacaoDependente(){
+		Certificacao certificacaoPre = CertificacaoFactory.getEntity();
+		certificacaoDao.save(certificacaoPre);
 		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacaoDao.save(certificacao);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorCertificacao colaboradorCertificacaoPreRequisito = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacaoPre, DateUtil.criarDataMesAno(1, 1, 2016));
+		colaboradorCertificacaoDao.save(colaboradorCertificacaoPreRequisito);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, DateUtil.criarDataMesAno(1, 1, 2016));
+		colaboradorCertificacao.setColaboradorCertificacaoPreRequisito(colaboradorCertificacaoPreRequisito);
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+		
+		Collection<Long> certificacaoesIdsPre = colaboradorCertificacaoDao.findCertificacoesIdsDependentes(new Long[]{colaboradorCertificacaoPreRequisito.getId()});
+		Collection<Long> certificacaoesIds = colaboradorCertificacaoDao.findCertificacoesIdsDependentes(new Long[]{colaboradorCertificacao.getId()});
+		assertEquals(1, certificacaoesIdsPre.size());
+		assertEquals(certificacao.getId(), ((Long) certificacaoesIdsPre.toArray()[0]));
+		assertEquals(0, certificacaoesIds.size());
+	}
+	
+	@Test
+	public void testPossiveisColaboradoresCertificados(){
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador2);
+		
+		Colaborador colaborador3 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador3);
+
 		Curso curso = CursoFactory.getEntity();
 		cursoDao.save(curso);
 		Collection<Curso> cursos = new ArrayList<Curso>();
 		cursos.add(curso);
-
-		Certificacao certificacao = CertificacaoFactory.getEntity(empresa, 2, cursos);
-		certificacaoDao.save(certificacao);
 		
-		Colaborador colab1 = ColaboradorFactory.getEntity(null, "Certificado");
-		colaboradorDao.save(colab1);
-		Colaborador colab2 = ColaboradorFactory.getEntity(null, "Certificado Vencido");
-		colaboradorDao.save(colab2);
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setDataPrevFim(DateUtil.criarDataMesAno(1, 1, 2016));
+		turma1.setCurso(curso);
+		turma1.setRealizada(true);
+		turmaDao.save(turma1);
 		
-		Cargo cargo = CargoFactory.getEntity();
-		cargoDao.save(cargo);
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setDataPrevFim(DateUtil.criarDataMesAno(1, 2, 2016));
+		turma2.setCurso(curso);
+		turma2.setRealizada(false);
+		turmaDao.save(turma2);
 		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity("Faixa I", cargo);
-		faixaSalarialDao.save(faixaSalarial);
-		
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(areaOrganizacional);
-		
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimentoDao.save(estabelecimento);
-		
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colab1, DateUtil.criarDataMesAno(1, 1, 2000), faixaSalarial, estabelecimento, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(historicoColaborador1);
-		
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(colab2, DateUtil.criarDataMesAno(1, 1, 2000), faixaSalarial, estabelecimento, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(historicoColaborador2);
-		
-		Turma turma = TurmaFactory.getEntity(DateUtil.criarDataMesAno(1, 3, 2015), DateUtil.criarDataMesAno(1, 4, 2015), curso);
-		turmaDao.save(turma);
-		
-		ColaboradorTurma colaboradorTurma1 = ColaboradorTurmaFactory.getEntity(colab1, curso, turma);
+		ColaboradorTurma colaboradorTurma1 = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma1.setTurma(turma1);
+		colaboradorTurma1.setCurso(curso);
+		colaboradorTurma1.setColaborador(colaborador1);
 		colaboradorTurma1.setAprovado(true);
 		colaboradorTurmaDao.save(colaboradorTurma1);
 		
-		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity(colab2, curso, turma);
+		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma2.setTurma(turma2);
+		colaboradorTurma2.setCurso(curso);
+		colaboradorTurma2.setColaborador(colaborador2);
 		colaboradorTurma2.setAprovado(true);
 		colaboradorTurmaDao.save(colaboradorTurma2);
 		
-		ColaboradorCertificacao colaboradorCertificacao1 = ColaboradorCertificacaoFactory.getEntity(colab1, certificacao, new Date());
-		colaboradorCertificacao1.setColaboradorTurma(colaboradorTurma1);
-		colaboradorCertificacaoDao.save(colaboradorCertificacao1);
+		ColaboradorTurma colaboradorTurma3 = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma3.setTurma(turma1);
+		colaboradorTurma3.setCurso(curso);
+		colaboradorTurma3.setColaborador(colaborador3);
+		colaboradorTurma3.setAprovado(false);
+		colaboradorTurmaDao.save(colaboradorTurma3);
 		
-		ColaboradorCertificacao colaboradorCertificacao2 = ColaboradorCertificacaoFactory.getEntity(colab2, certificacao, DateUtil.criarDataMesAno(1, 1, 2016));
-		colaboradorCertificacao2.setColaboradorTurma(colaboradorTurma2);
-		colaboradorCertificacaoDao.save(colaboradorCertificacao2);
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setCursos(cursos);
+		certificacaoDao.save(certificacao);
 		
-		Collection<ColaboradorCertificacao> colabCertificadosENaoCertificados = colaboradorCertificacaoDao.findColaboradoresCertificadosENaoCertificados(DateUtil.criarDataMesAno(1, 1, 2015), new Date(), null, null, certificacao.getId(), new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, new Long[]{colab1.getId(), colab2.getId()}, new CollectionUtil<Curso>().convertCollectionToArrayIds(cursos));
-		assertEquals(2, colabCertificadosENaoCertificados.size());
-		
-		Collection<ColaboradorCertificacao> colabCertificadosENaoCertificadosComUmForaPeriodo = colaboradorCertificacaoDao.findColaboradoresCertificadosENaoCertificados(DateUtil.criarDataMesAno(1, 1, 2015), DateUtil.criarDataMesAno(5, 1, 2016), null, null, certificacao.getId(), new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, new Long[]{colab1.getId(), colab2.getId()}, new CollectionUtil<Curso>().convertCollectionToArrayIds(cursos));
-		assertEquals(1, colabCertificadosENaoCertificadosComUmForaPeriodo.size());
-		
-		Collection<ColaboradorCertificacao> colabCertificado = colaboradorCertificacaoDao.findColaboradoresCertificadosENaoCertificados(null, null, null, true, certificacao.getId(), new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, new Long[]{colab1.getId(), colab2.getId()}, new CollectionUtil<Curso>().convertCollectionToArrayIds(cursos));
-		assertEquals(1, colabCertificado.size());
-		assertEquals("Certificado", ((ColaboradorCertificacao) colabCertificado.toArray()[0]).getColaborador().getNome());
-		
-		Collection<ColaboradorCertificacao> colabNaoCertificado = colaboradorCertificacaoDao.findColaboradoresCertificadosENaoCertificados(null, null, null, false, certificacao.getId(), new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, new Long[]{colab1.getId(), colab2.getId()}, new CollectionUtil<Curso>().convertCollectionToArrayIds(cursos));
-		assertEquals(1, colabNaoCertificado.size());
-		assertEquals("Certificado Vencido", ((ColaboradorCertificacao) colabNaoCertificado.toArray()[0]).getColaborador().getNome());
-		
+		assertEquals(1, colaboradorCertificacaoDao.possiveisColaboradoresCertificados(certificacao.getId()).size());
+		assertEquals(colaborador1.getId(), ((Long) colaboradorCertificacaoDao.possiveisColaboradoresCertificados(certificacao.getId()).toArray()[0]));
 	}
 	
 	public void setColaboradorCertificacaoDao(ColaboradorCertificacaoDao colaboradorCertificacaoDao)

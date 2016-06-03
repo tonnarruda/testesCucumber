@@ -14,7 +14,7 @@ import com.fortes.rh.model.acesso.Papel;
 
 public interface PapelManager extends GenericManager<Papel>
 {
-	String getPerfilOrganizado(String[] marcados, Collection<Papel> papeisComHelp) throws NotConectAutenticationException, NotRegistredException;
+	String getPerfilOrganizado(String[] marcados, Collection<Papel> papeisComHelp, Long idDoUsuario) throws NotConectAutenticationException, NotRegistredException;
 	boolean possuiModuloSESMT() throws NotConectAutenticationException, NotRegistredException;
 	Collection<Long> getPapeisPermitidos() throws Exception;
 	Collection<Papel> findByPerfil(Long perfilId);

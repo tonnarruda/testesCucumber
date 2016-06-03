@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.desenvolvimento;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -92,5 +93,11 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 	    criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorAvaliacaoPratica.class));
 
 		return criteria.list();
+	}
+
+	public void setColaboradorCertificacoNull(Long[] colaboradorCertificacoesIds) {
+		Query query = getSession().createQuery("update ColaboradorAvaliacaoPratica set colaboradorCertificacao_id = null where colaboradorcertificacao_id in (:colaboradorCertificacoesIds) ");
+		query.setParameterList("colaboradorCertificacoesIds", colaboradorCertificacoesIds, Hibernate.LONG);
+		query.executeUpdate();
 	}
 }

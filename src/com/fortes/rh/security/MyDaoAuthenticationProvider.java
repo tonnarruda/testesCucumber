@@ -107,7 +107,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 			
 			Empresa empresa = empresaManager.findById(empresaId);
 			
-			String menu = Menu.getMenuFormatado(roles, contexto, parametrosDoSistema, empresasDoUsuario, empresa);
+			String menu = Menu.getMenuFormatado(roles, contexto, parametrosDoSistema, empresasDoUsuario, empresa, idDoUsuario);
 			
 			((UserDetailsImpl)userDetails).setEmpresa(empresa);
 			((UserDetailsImpl)userDetails).setAuthorities(arrayAuths);

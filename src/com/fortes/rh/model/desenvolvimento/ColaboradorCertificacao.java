@@ -356,9 +356,15 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		return colaboradorCertificacaoPreRequisito;
 	}
 
-	public void setColaboradorCertificacaoPreRequisito(
-			ColaboradorCertificacao colaboradorCertificacaoPreRequisito) {
+	public void setColaboradorCertificacaoPreRequisito(ColaboradorCertificacao colaboradorCertificacaoPreRequisito) {
 		this.colaboradorCertificacaoPreRequisito = colaboradorCertificacaoPreRequisito;
+	}
+	
+	public void setColaboradorCertificacaoPreRequisitoId(Long colaboradorCertificacaoPreRequisitoId) {
+		if(this.colaboradorCertificacaoPreRequisito == null)
+			this.colaboradorCertificacaoPreRequisito = new ColaboradorCertificacao();
+		
+		this.colaboradorCertificacaoPreRequisito.setId(colaboradorCertificacaoPreRequisitoId);
 	}
 
 	public ColaboradorAvaliacaoPratica getColaboradorAvaliacaoPraticaAtual() {

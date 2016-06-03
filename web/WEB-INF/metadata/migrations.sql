@@ -143,15 +143,18 @@ return (
 		select (
 				(select (select Array(select distinct cursos_id from certificacao_curso where certificacaos_id = id_certificado order by cursos_id)) =
 		  		(select Array(
-			  				select distinct cu.id from colaboradorturma ct inner join turma t on t.id = ct.turma_id 
-			  				and t.dataprevfim = (select max(dataprevfim) from turma t2 where t2.curso_id = t.curso_id and t2.realizada 
-							and dataprevfim >= (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000')))
-							inner join curso cu on cu.id = t.curso_id
-							where ct.colaborador_id = id_colaborador
-							and t.realizada
-							and cu.id in (select cursos_id from certificacao_curso where certificacaos_id = id_certificado)
-							and ct.aprovado
-							order by cu.id 
+								select distinct t.curso_id from colaboradorturma ct 
+								inner join turma t on t.id = ct.turma_id 
+								and t.dataprevfim = (select max(dataprevfim)  from colaboradorturma ct2 inner join turma t2 on t2.id = ct2.turma_id 
+								where t2.curso_id = t.curso_id and t2.realizada and ct2.colaborador_id = id_colaborador
+								and dataprevfim >= (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) 
+								from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador 
+								and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000')))
+								where ct.colaborador_id = id_colaborador
+								and t.realizada
+								and t.curso_id in (select cursos_id from certificacao_curso where certificacaos_id = id_certificado)
+								and ct.aprovado
+								order by t.curso_id
 							) 
 				) 
 			) 
@@ -170,3 +173,10 @@ return (
 END; 
 $$ LANGUAGE plpgsql; --.go 
 
+delete from perfil_papel where papeis_id = 463;--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (673, 'USUARIO_FORTES', 'Usuário Fortes', '#', 17, true, 37);--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (674, 'REPROCESSA_CERTIFICACAO', 'Reprocessar Certificações', '/desenvolvimento/certificacao/prepareReprocessaCertificacao.action', 4, true, 673);--.go
+update papel set papelmae_id = 673 where id in (463, 529, 618, 634);--.go
+update papel set ordem = 1 where id = 529;--.go
+update papel set ordem = 2 where id = 618;--.go
+update papel set ordem = 3 where id = 634;--.go

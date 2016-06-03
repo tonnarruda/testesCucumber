@@ -185,7 +185,7 @@
 		<!-- GERAL -->
 		<convert converter="bean" match="com.fortes.rh.model.geral.Pessoa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.Colaborador">
-			<param name="include" value="id, nome"/>
+			<param name="include" value="id, nome, nomeComercial"/>
 		</convert>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TipoDespesa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TurmaTipoDespesa"/>

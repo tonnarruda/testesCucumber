@@ -195,7 +195,7 @@
 			<#assign i = 0/>		
 			
 			<@display.table name="colaboradorCertificacaos" id="colabCertificacao" class="dados">
-				<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;" id="tituloTabelaAP" >Colaboradores na Certificação</div> </@display.caption>
+				<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;" id="tituloTabelaAP" >Colaboradores que participam da certificação e estão aprovados em seus cursos</div> </@display.caption>
 			
 				<#if colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao.id?exists>
 					<#assign colaboradorCertificacaoId = "${colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao.id}"/>

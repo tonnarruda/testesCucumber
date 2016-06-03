@@ -63,7 +63,7 @@
 			if(certificacoesIds.length > 0)
 				CertificacaoDWR.getColaboradores(createListColaborador, $('#dataIni').val(), $('#dataFim').val(),   
 												$('#colaboradorCertificado').is(':checked'), $('#colaboradorNaoCertificado').is(':checked'),  
-												$('#meses').val(), areasIds, estabelecimentosIds, certificacoesIds);
+												$('#meses').val(), areasIds, estabelecimentosIds, certificacoesIds, $('#situacao').val());
 		}
 		
 		function createListColaborador(data)
@@ -136,6 +136,7 @@
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true" onClick="populaColaborador();"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true" onClick="populaColaborador();"/>
 		<@frt.checkListBox name="colaboradoresCheck" id="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" filtro="true"/>
+		<@ww.select label="Situação do colaborador" name="situacao" id="situacao" list="situacaos" onchange="populaColaborador();" cssStyle="width: 500px;"/>
 		<@ww.select label="Agrupar por" name="agruparPor" id="agruparPor" list=r"#{'C':'Colaborador','T':'Certificação'}" cssStyle="width: 500px;"/>
 	</@ww.form>
 	<div class="buttonGroup">

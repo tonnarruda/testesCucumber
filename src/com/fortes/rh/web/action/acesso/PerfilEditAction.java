@@ -38,7 +38,7 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	{
 		try {
 			prepare();
-			exibirPerfil = papelManager.getPerfilOrganizado(null, papeisComHelp);
+			exibirPerfil = papelManager.getPerfilOrganizado(null, papeisComHelp, getUsuarioLogado().getId());
 		} catch (NotConectAutenticationException e) {
 			e.printStackTrace();
 			addActionMessage(e.getMessage());
@@ -57,7 +57,7 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 		try {
 			prepare();
 			permissoes = perfilManager.montaPermissoes(perfil);
-			exibirPerfil = papelManager.getPerfilOrganizado(permissoes, papeisComHelp);
+			exibirPerfil = papelManager.getPerfilOrganizado(permissoes, papeisComHelp, getUsuarioLogado().getId());
 		} catch (NotConectAutenticationException e) {
 			e.printStackTrace();
 			addActionMessage(e.getMessage());
