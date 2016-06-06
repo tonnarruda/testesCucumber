@@ -21,6 +21,7 @@ import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.ColaboradorAfastamentoFactory;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoEditAction;
 
 public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
@@ -79,8 +80,15 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 
 	public void testInsert() throws Exception
 	{
-		ColaboradorAfastamento afastamento = ColaboradorAfastamentoFactory.getEntity(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(10, 1, 2016));
+		
+		ColaboradorAfastamento afastamento = ColaboradorAfastamentoFactory.getEntity();
+		afastamento.setColaborador(colaborador);
+		afastamento.setInicio(DateUtil.criarDataMesAno(10, 1, 2016));
 		action.setColaboradorAfastamento(afastamento);
+		
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(afastamento.getColaborador().getId())).will(returnValue(colaborador));
 		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDeAfastamento").withAnyArguments().isVoid();
 		manager.expects(once()).method("save").with(eq(afastamento)).will(returnValue(afastamento));
 		manager.expects(once()).method("possuiAfastamentoNestePeriodo").with(eq(afastamento), eq(false)).will(returnValue(true));
@@ -89,39 +97,87 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 	}
 	public void testInsertException() throws Exception
 	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(10, 1, 2016));
+		
 		ColaboradorAfastamento afastamento = ColaboradorAfastamentoFactory.getEntity();
+		afastamento.setColaborador(colaborador);
+		afastamento.setInicio(DateUtil.criarDataMesAno(11, 1, 2016));
 		action.setColaboradorAfastamento(afastamento);
-
+		
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(afastamento.getColaborador().getId())).will(returnValue(colaborador));
 		manager.expects(once()).method("save").with(eq(afastamento)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		colaboradorManager.expects(once()).method("findByNomeCpfMatricula");
 		manager.expects(once()).method("possuiAfastamentoNestePeriodo").with(eq(afastamento), eq(false)).will(returnValue(true));
 
 		assertEquals("input", action.insert());
 	}
+	
+	public void testInsertExceptionDataAdmissao() throws Exception
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(10, 1, 2016));
+		
+		ColaboradorAfastamento afastamento = ColaboradorAfastamentoFactory.getEntity();
+		afastamento.setColaborador(colaborador);
+		afastamento.setInicio(DateUtil.criarDataMesAno(1, 1, 2016));
+		action.setColaboradorAfastamento(afastamento);
+		
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(afastamento.getColaborador().getId())).will(returnValue(colaborador));
+		assertEquals("input", action.insert());
+		assertEquals("Data do afastamento não pode ser inferior à data de admissão (Data Admissão: " + colaborador.getDataAdmissaoFormatada() + ").", action.getActionMessages().iterator().next());
+	}
 
 	public void testUpdate() throws Exception
 	{
-		ColaboradorAfastamento afastamento = ColaboradorAfastamentoFactory.getEntity(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(11, 1, 2016));
+		
+		ColaboradorAfastamento afastamento = ColaboradorAfastamentoFactory.getEntity();
+		afastamento.setColaborador(colaborador);
+		afastamento.setInicio(DateUtil.criarDataMesAno(11, 1, 2016));
 		action.setColaboradorAfastamento(afastamento);
+
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(afastamento.getColaborador().getId())).will(returnValue(colaborador));
 
 		manager.expects(once()).method("update").with(eq(afastamento)).isVoid();
 		manager.expects(once()).method("possuiAfastamentoNestePeriodo").with(eq(afastamento), eq(true)).will(returnValue(true));
 
 		assertEquals("success", action.update());
 	}
+	
 	public void testUpdateException() throws Exception
 	{
-		ColaboradorAfastamento afastamento = ColaboradorAfastamentoFactory.getEntity(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(1, 1, 2016));
+		
+		ColaboradorAfastamento afastamento = ColaboradorAfastamentoFactory.getEntity();
+		afastamento.setColaborador(colaborador);
+		afastamento.setInicio(DateUtil.criarDataMesAno(02, 1, 2016));
 		action.setColaboradorAfastamento(afastamento);
 
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(afastamento.getColaborador().getId())).will(returnValue(colaborador));
 		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		manager.expects(once()).method("possuiAfastamentoNestePeriodo").with(eq(afastamento), eq(true)).will(returnValue(true));
-
-		manager.expects(once()).method("findById").with(ANYTHING).will(returnValue(afastamento));
 		afastamentoManager.expects(once()).method("findAll");
-		cidManager.expects(once()).method("findDescricaoByCodigo");
 
 		assertEquals("input", action.update());
+	}
+	
+	public void testUpdateExceptionDataAdmissao() throws Exception
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(11, 1, 2016));
+		
+		ColaboradorAfastamento afastamento = ColaboradorAfastamentoFactory.getEntity();
+		afastamento.setColaborador(colaborador);
+		afastamento.setInicio(DateUtil.criarDataMesAno(01, 1, 2016));
+		action.setColaboradorAfastamento(afastamento);
+
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(afastamento.getColaborador().getId())).will(returnValue(colaborador));
+		afastamentoManager.expects(once()).method("findAll");
+		assertEquals("input", action.update());
+		assertEquals("Data do afastamento não pode ser inferior à data de admissão (Data Admissão: " + colaborador.getDataAdmissaoFormatada() + ").", action.getActionMessages().iterator().next());
 	}
 
 	public void testFiltrarColaboradores() throws Exception
