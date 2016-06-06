@@ -1,4 +1,7 @@
 package com.fortes.rh.test.web.action.desenvolvimento;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,8 +10,8 @@ import java.util.Date;
 
 import mockit.Mockit;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
@@ -36,61 +39,55 @@ import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction;
 
-public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCase
+public class ColaboradorAvaliacaoPraticaEditActionTest
 {
 	private ColaboradorAvaliacaoPraticaEditAction action;
-	private Mock certificacaoManager;
-	private Mock manager;
-	private Mock colaboradorTurmaManager;
-	private Mock avaliacaoPraticaManager;
-	private Mock colaboradorAvaliacaoPraticaManager;
-	private Mock colaboradorCertificacaoManager;
+	private CertificacaoManager certificacaoManager;
+	private ColaboradorAvaliacaoPraticaManager manager;
+	private ColaboradorTurmaManager colaboradorTurmaManager;
+	private AvaliacaoPraticaManager avaliacaoPraticaManager;
+	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;
+	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
-		super.setUp();
 		action = new ColaboradorAvaliacaoPraticaEditAction();
 		action.setColaboradorAvaliacaoPratica(new ColaboradorAvaliacaoPratica());
 		
-		manager = new Mock(ColaboradorAvaliacaoPraticaManager.class);
-		action.setColaboradorAvaliacaoPraticaManager((ColaboradorAvaliacaoPraticaManager) manager.proxy());
+		manager = mock(ColaboradorAvaliacaoPraticaManager.class);
+		action.setColaboradorAvaliacaoPraticaManager(manager);
 		
-		certificacaoManager = new Mock(CertificacaoManager.class);
-		action.setCertificacaoManager((CertificacaoManager) certificacaoManager.proxy());
+		certificacaoManager = mock(CertificacaoManager.class);
+		action.setCertificacaoManager(certificacaoManager);
 
-		colaboradorTurmaManager = new Mock(ColaboradorTurmaManager.class);
-		action.setColaboradorTurmaManager((ColaboradorTurmaManager) colaboradorTurmaManager.proxy());
+		colaboradorTurmaManager = mock(ColaboradorTurmaManager.class);
+		action.setColaboradorTurmaManager(colaboradorTurmaManager);
 		
-		avaliacaoPraticaManager = new Mock(AvaliacaoPraticaManager.class);
-		action.setAvaliacaoPraticaManager((AvaliacaoPraticaManager) avaliacaoPraticaManager.proxy());
+		avaliacaoPraticaManager = mock(AvaliacaoPraticaManager.class);
+		action.setAvaliacaoPraticaManager(avaliacaoPraticaManager);
 		
-		colaboradorAvaliacaoPraticaManager = new Mock(ColaboradorAvaliacaoPraticaManager.class);
-		action.setColaboradorAvaliacaoPraticaManager((ColaboradorAvaliacaoPraticaManager) colaboradorAvaliacaoPraticaManager.proxy());
+		colaboradorAvaliacaoPraticaManager = mock(ColaboradorAvaliacaoPraticaManager.class);
+		action.setColaboradorAvaliacaoPraticaManager(colaboradorAvaliacaoPraticaManager);
 		
-		colaboradorCertificacaoManager = new Mock(ColaboradorCertificacaoManager.class);
-		action.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
+		colaboradorCertificacaoManager = mock(ColaboradorCertificacaoManager.class);
+		action.setColaboradorCertificacaoManager(colaboradorCertificacaoManager);
 		
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
 
-	protected void tearDown() throws Exception
-	{
-		manager = null;
-		action = null;
-		MockSecurityUtil.verifyRole = false;
-		super.tearDown();
-	}
-
+	@Test
 	public void testBuscaColaboradores() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		action.setEmpresaSistema(empresa);
 		
-		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
+		when(certificacaoManager.findOsQuePossuemAvaliacaoPratica(empresa.getId())).thenReturn(new ArrayList<Certificacao>());		
 		
 		assertEquals("success", action.buscaColaboradores());
 	}
 	
+	@Test
 	public void testBuscaColaboradoresComCertificado() throws Exception
 	{
 		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
@@ -99,24 +96,21 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		action.setEmpresaSistema(empresa);
 		
-		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
-		colaboradorCertificacaoManager.expects(once()).method("colaboradoresQueParticipamDaCertificacao").will(returnValue(new ArrayList<Colaborador>()));
+		when(certificacaoManager.findOsQuePossuemAvaliacaoPratica(empresa.getId())).thenReturn(new ArrayList<Certificacao>());
+		when(colaboradorCertificacaoManager.colaboradoresQueParticipamDaCertificacao(empresa.getId())).thenReturn(new ArrayList<Colaborador>());
 		
 		assertEquals("success", action.buscaColaboradores());
 	}
 	
+	@Test
 	public void testBuscaColaboradoresComCertificadoEColaborador() throws Exception
 	{
 		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
 		action.setColaboradorCertificacao(colaboradorCertificacao);
 		
-		Colaborador colaboradoraMaria = ColaboradorFactory.getEntity(1L);
-		colaboradoraMaria.setNome("Maria");
-		action.setColaborador(colaboradoraMaria);
-		
-		Colaborador colaboradorJoao = ColaboradorFactory.getEntity(1L);
-		colaboradorJoao.setNome("João");
-		action.setColaborador(colaboradorJoao);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("João");
+		action.setColaborador(colaborador);
 		
 		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
 		action.setCertificacao(certificacao);
@@ -125,11 +119,13 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		action.setEmpresaSistema(empresa);
 		
 		Collection<Colaborador> colaboradoresPermitidos = new ArrayList<Colaborador>();
-		colaboradoresPermitidos.add(colaboradorJoao);
+		colaboradoresPermitidos.add(colaborador);
 		
 		Collection<Colaborador> colaboradoresNaCertificacao = new ArrayList<Colaborador>();
-		colaboradoresNaCertificacao.add(colaboradorJoao);
-		colaboradoresNaCertificacao.add(colaboradoraMaria);
+		colaboradoresNaCertificacao.add(colaborador);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacoes = new ArrayList<ColaboradorCertificacao>();
+		colaboradorCertificacoes.add(colaboradorCertificacao);
 		
 		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(2L);
 		avaliacaoPratica.setTitulo("Mega avaliação");
@@ -151,31 +147,24 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		Collection<Curso> cursos =  new ArrayList<Curso>();
 		cursos.add(curso);
-		
-		certificacaoManager.expects(once()).method("findCursosByCertificacaoId").will(returnValue(cursos));
-		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
-		colaboradorCertificacaoManager.expects(once()).method("colaboradoresQueParticipamDaCertificacao").will(returnValue(colaboradoresNaCertificacao));
-		colaboradorCertificacaoManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(new ArrayList<ColaboradorCertificacao>()));
-		avaliacaoPraticaManager.expects(once()).method("findByCertificacaoId").will(returnValue(avaliacaoPraticas));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(colaboradorAvaliacaoPraticas));
-		colaboradorTurmaManager.expects(once()).method("findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId").will(returnValue(colaboradorTurmas));
-		colaboradorCertificacaoManager.expects(once()).method("findColaboradorCertificadoInfomandoSeEUltimaCertificacao").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorCertificacao));
+
+		when(certificacaoManager.findOsQuePossuemAvaliacaoPratica(empresa.getId())).thenReturn(new ArrayList<Certificacao>());
+		when(colaboradorCertificacaoManager.colaboradoresQueParticipamDaCertificacao(certificacao.getId())).thenReturn(colaboradoresNaCertificacao);
+		when(colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId())).thenReturn(colaboradorCertificacoes);
+		when(certificacaoManager.findCursosByCertificacaoId(certificacao.getId())).thenReturn(cursos);
+		when(colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao.getId(), colaboradorCertificacao.getId(), colaborador.getId())).thenReturn(colaboradorTurmas);
+		when(avaliacaoPraticaManager.findByCertificacaoId(certificacao.getId())).thenReturn(avaliacaoPraticas);
+		when(colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId(), null, true, true)).thenReturn(colaboradorAvaliacaoPraticas);
+		when(colaboradorCertificacaoManager.findColaboradorCertificadoInfomandoSeEUltimaCertificacao(colaboradorCertificacao.getId(), colaborador.getId(), certificacao.getId())).thenReturn(colaboradorCertificacao);
 		
 		assertEquals("success", action.buscaColaboradores());
-		assertEquals(2, action.getColaboradores().size());
+		assertEquals(1, action.getColaboradores().size());
 		assertEquals("João", ((Colaborador) action.getColaboradores().toArray()[0]).getNome());
 		assertEquals(1, action.getColaboradorAvaliacaoPraticas().size());
 		assertEquals("Mega avaliação", ((ColaboradorAvaliacaoPratica)action.getColaboradorAvaliacaoPraticas().toArray()[0]).getAvaliacaoPratica().getTitulo());
 	}
 
-	public void testGetSet() throws Exception
-	{
-		action.setColaboradorAvaliacaoPratica(null);
-
-		assertNotNull(action.getColaboradorAvaliacaoPratica());
-		assertTrue(action.getColaboradorAvaliacaoPratica() instanceof ColaboradorAvaliacaoPratica);
-	}
-	
+	@Test
 	public void testInsertOrUpdateSemDataENota() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -188,11 +177,12 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		action.setColaboradorAvaliacaoPraticas(colaboradorAvaliacoesPratica);
 		
-		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
+		when(certificacaoManager.findOsQuePossuemAvaliacaoPratica(empresa.getId())).thenReturn(new ArrayList<Certificacao>());
 		
 		assertEquals("success", action.insertOrUpdate());
 	}
 	
+	@Test
 	public void testInsertOrUpdateSemDataENotaComColabAvPraticaId() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -210,15 +200,12 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		action.setColaboradorAvaliacaoPraticas(colaboradorAvaliacoesPratica);
 		
-		colaboradorCertificacaoManager.expects(once()).method("descertificarColaborador");
-		colaboradorCertificacaoManager.expects(once()).method("descertificarColaborador");
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("removeByColaboradorCertificacaoId");
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("removeByColaboradorCertificacaoId");
-		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
+		when(certificacaoManager.findOsQuePossuemAvaliacaoPratica(empresa.getId())).thenReturn(new ArrayList<Certificacao>());
 		
 		assertEquals("success", action.insertOrUpdate());
 	}
 	
+	@Test
 	public void testInsertOrUpdateComDataENotaAprovado() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -240,16 +227,14 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		action.setColaboradorAvaliacaoPraticas(colaboradorAvaliacoesPratica);
 		
-		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
-		colaboradorCertificacaoManager.expects(once()).method("getMaiorDataDasTurmasDaCertificacao").with(eq(colaboradorCertificacao.getId())).will(returnValue(DateUtil.criarDataMesAno(1, 2, 2015)));
-		colaboradorCertificacaoManager.expects(once()).method("findById").with(eq(colaboradorCertificacao.getId())).will(returnValue(colaboradorCertificacao));
-		colaboradorCertificacaoManager.expects(once()).method("update").with(eq(colaboradorCertificacao));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
+		when(certificacaoManager.findOsQuePossuemAvaliacaoPratica(empresa.getId())).thenReturn(new ArrayList<Certificacao>());
+		when(colaboradorCertificacaoManager.getMaiorDataDasTurmasDaCertificacao(colaboradorCertificacao.getId())).thenReturn(DateUtil.criarDataMesAno(1, 2, 2015));
+		when(colaboradorCertificacaoManager.findById(colaboradorCertificacao.getId())).thenReturn(colaboradorCertificacao);
 		
 		assertEquals("success", action.insertOrUpdate());
 	}
 	
-	
+	@Test
 	public void testInsertOrUpdateComDataENotaReprovado() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -271,13 +256,12 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		action.setColaboradorAvaliacaoPraticas(colaboradorAvaliacoesPratica);
 		
-		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
-		colaboradorCertificacaoManager.expects(once()).method("descertificarColaborador").with(eq(colaboradorCertificacao.getId()));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
+		when(certificacaoManager.findOsQuePossuemAvaliacaoPratica(empresa.getId())).thenReturn(new ArrayList<Certificacao>());
 		
 		assertEquals("success", action.insertOrUpdate());
 	}
 	
+	@Test
 	public void testInsertOrUpdateComColaboradorCertificacaoNull() throws Exception {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		action.setEmpresaSistema(empresa);
@@ -311,22 +295,20 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		action.setColaboradorAvaliacaoPraticas(colaboradorAvaliacoesPratica);
 		
-		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(new ArrayList<Certificacao>()));
-		
-		colaboradorAvaliacaoPraticaManager.expects(atLeastOnce()).method("update");
-		colaboradorCertificacaoManager.expects(once()).method("certificaColaborador").withAnyArguments().will(returnValue(colaboradorCertificacoes));
-		colaboradorCertificacaoManager.expects(once()).method("certificaColaborador").withAnyArguments().will(returnValue(colaboradorCertificacoes));
+		when(certificacaoManager.findOsQuePossuemAvaliacaoPratica(empresa.getId())).thenReturn(new ArrayList<Certificacao>());
+		when(colaboradorCertificacaoManager.certificaColaborador(null, colaboradorJoao.getId(), certificacao.getId(), certificacaoManager)).thenReturn(colaboradorCertificacoes);
 		
 		assertEquals("success", action.insertOrUpdate());
 	}
 	
-	private void mocksBuscaColaboradoresLote(Collection<AvaliacaoPratica> avaliacaoPraticas,Collection<Certificacao> certificacoes,Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas,Collection<ColaboradorCertificacao> colaboradorCertificacoes) 
+	private void mocksBuscaColaboradoresLote(Collection<AvaliacaoPratica> avaliacaoPraticas,Collection<Certificacao> certificacoes,Collection<ColaboradorCertificacao> colaboradorCertificacoes) 
 	{
-		certificacaoManager.expects(once()).method("findOsQuePossuemAvaliacaoPratica").will(returnValue(certificacoes));
-		avaliacaoPraticaManager.expects(once()).method("findByCertificacaoId").will(returnValue(avaliacaoPraticas));
-		colaboradorCertificacaoManager.expects(once()).method("possuemAvaliaçõesPraticasRealizadas").will(returnValue(colaboradorCertificacoes));
+		when(certificacaoManager.findOsQuePossuemAvaliacaoPratica(action.getEmpresaSistema().getId())).thenReturn(certificacoes);
+		when(avaliacaoPraticaManager.findByCertificacaoId(action.getCertificacao().getId())).thenReturn(avaliacaoPraticas);
+		when(colaboradorCertificacaoManager.possuemAvaliaçõesPraticasRealizadas(action.getCertificacao().getId())).thenReturn(colaboradorCertificacoes);
 	}
 	
+	@Test
 	public void testBuscaColaboradoresLote() throws Exception
 	{
 		Colaborador colaboradoraMaria = ColaboradorFactory.getEntity(1L);
@@ -359,12 +341,13 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
 		colaboradorAvaliacaoPraticas.add(colaboradorAvaliacaoPratica);
-		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes,	colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
+		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorCertificacoes);
 		
 		assertEquals("success", action.buscaColaboradoresLote());
 		assertEquals(1, action.getColaboradorCertificacaos().size());
 	}
 	
+	@Test
 	public void testInsertOrUpdateLote() throws Exception
 	{
 		Date data1 = DateUtil.criarDataMesAno(1, 1, 2000);
@@ -408,17 +391,16 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		colaboradorCertificacoes.add(colaboradorCertificacao);
 		action.setColaboradorCertificacaos(colaboradorCertificacoes);
 		
-		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
-		colaboradorCertificacaoManager.expects(once()).method("getMaiorDataDasTurmasDaCertificacao").will(returnValue(data2));
-		colaboradorCertificacaoManager.expects(once()).method("findById").will(returnValue(colaboradorCertificacao));
-		colaboradorCertificacaoManager.expects(once()).method("update");
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(colaboradorAvaliacaoPraticas));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("save");
-		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes,	colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
+		when(avaliacaoPraticaManager.findById(avaliacaoPratica.getId())).thenReturn(avaliacaoPratica);
+		when(colaboradorCertificacaoManager.getMaiorDataDasTurmasDaCertificacao(colaboradorCertificacao.getId())).thenReturn(data2);
+		when(colaboradorCertificacaoManager.findById(colaboradorCertificacao.getId())).thenReturn(colaboradorCertificacao);
+		when(colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradoraMaria.getId(), certificacao.getId(), colaboradorCertificacao.getId(), null, true, true)).thenReturn(colaboradorAvaliacaoPraticas);
+		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorCertificacoes);
 		
 		assertEquals("success", action.insertOrUpdateLote());
 	}
 
+	@Test
 	public void testInsertOrUpdateLoteAprovadoCertificar() throws Exception
 	{
 		Date data1 = DateUtil.criarDataMesAno(1, 1, 2000);
@@ -456,11 +438,8 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		colaboradorCertificacoes.add(colaboradorCertificacao);
 		action.setColaboradorCertificacaos(colaboradorCertificacoes);
 		
-		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
-		colaboradorCertificacaoManager.expects(once()).method("certificaColaborador").will(returnValue(colaboradorCertificacoes));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
-		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes,	colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
+		when(avaliacaoPraticaManager.findById(avaliacaoPratica.getId())).thenReturn(avaliacaoPratica);
+		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes,	colaboradorCertificacoes);
 		
 		assertEquals("success", action.insertOrUpdateLote());
 	}
@@ -502,10 +481,8 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		colaboradorCertificacoes.add(colaboradorCertificacao);
 		action.setColaboradorCertificacaos(colaboradorCertificacoes);
 		
-		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
-		colaboradorCertificacaoManager.expects(once()).method("descertificarColaborador");
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("update");
-		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
+		when(avaliacaoPraticaManager.findById(avaliacaoPratica.getId())).thenReturn(avaliacaoPratica);
+		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorCertificacoes);
 		
 		assertEquals("success", action.insertOrUpdateLote());
 	}
@@ -543,10 +520,8 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
 		certificacoes.add(certificacao);
 		
-		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("removeByColaboradorCertificacaoId");
-		colaboradorCertificacaoManager.expects(once()).method("descertificarColaborador");
-		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
+		when(avaliacaoPraticaManager.findById(avaliacaoPratica.getId())).thenReturn(avaliacaoPratica);
+		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorCertificacoes);
 		
 		assertEquals("success", action.insertOrUpdateLote());
 	}
@@ -584,10 +559,8 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
 		certificacoes.add(certificacao);
 		
-		avaliacaoPraticaManager.expects(once()).method("findById").will(returnValue(avaliacaoPratica));
-		colaboradorAvaliacaoPraticaManager.expects(once()).method("remove");
-		
-		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorAvaliacaoPraticas, colaboradorCertificacoes);
+		when(avaliacaoPraticaManager.findById(avaliacaoPratica.getId())).thenReturn(avaliacaoPratica);
+		mocksBuscaColaboradoresLote(avaliacaoPraticas, certificacoes, colaboradorCertificacoes);
 		
 		assertEquals("success", action.insertOrUpdateLote());
 	}
