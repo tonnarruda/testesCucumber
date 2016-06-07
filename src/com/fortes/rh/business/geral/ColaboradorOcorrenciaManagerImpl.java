@@ -402,6 +402,36 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return restringirVisualizacaoParaGestor;
 	}
 
+	public Collection<ColaboradorOcorrencia> bindColaboradorOcorrencias(TOcorrenciaEmpregado[] tcolaboradorOcorrencias)
+	{
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = new ArrayList<ColaboradorOcorrencia>(tcolaboradorOcorrencias.length);
+		
+		for (TOcorrenciaEmpregado tcolaboradorOcorrencia : tcolaboradorOcorrencias)
+		{
+			Ocorrencia ocorrencia = new Ocorrencia();
+			ocorrencia.setCodigoAC(tcolaboradorOcorrencia.getCodigo());
+			
+			Empresa empresa = new Empresa();
+			empresa.setCodigoAC(tcolaboradorOcorrencia.getEmpresa());
+			empresa.setGrupoAC(tcolaboradorOcorrencia.getGrupoAC());
+			
+			ocorrencia.setEmpresa(empresa);
+			Colaborador colaborador = new Colaborador();
+			colaborador.setCodigoAC(tcolaboradorOcorrencia.getCodigoEmpregado());
+
+			ColaboradorOcorrencia colaboradorOcorrenciaTemp = new ColaboradorOcorrencia();
+			colaboradorOcorrenciaTemp.setColaborador(colaborador);
+			colaboradorOcorrenciaTemp.setOcorrencia(ocorrencia);
+			colaboradorOcorrenciaTemp.setDataIni(tcolaboradorOcorrencia.getDataFormatada());
+			colaboradorOcorrenciaTemp.setDataFim(tcolaboradorOcorrencia.getDataFormatada());
+			colaboradorOcorrenciaTemp.setObservacao(tcolaboradorOcorrencia.getObs());
+
+			colaboradorOcorrencias.add(colaboradorOcorrenciaTemp);
+		}
+		
+		return colaboradorOcorrencias;
+	}
+	
 	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
 		this.colaboradorAfastamentoManager = colaboradorAfastamentoManager;
 	}

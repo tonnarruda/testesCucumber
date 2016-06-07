@@ -11,6 +11,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
+import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 import com.fortes.rh.security.spring.aop.callback.ColaboradorOcorrenciaAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
 
@@ -34,5 +35,6 @@ public interface ColaboradorOcorrenciaManager extends GenericManager<Colaborador
 	Collection<ColaboradorOcorrencia> filtrarOcorrencias(Collection<Long> empresaIds, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento, Character agruparPor, String situacao, Long usuarioLogadoId);
 	Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaNome, Boolean comProvidencia, Long[] colaboradoresIds, Long empresaId);
 	Collection<Colaborador> findColaboraesPermitidosByUsuario(Usuario usuarioLogado, Colaborador colaborador, Long empresaId, boolean roleVerAreas, boolean somenteDesligados);
-	Collection<ColaboradorOcorrencia> findByEmpresaId(Long empresaId); 
+	Collection<ColaboradorOcorrencia> findByEmpresaId(Long empresaId);
+	Collection<ColaboradorOcorrencia> bindColaboradorOcorrencias(TOcorrenciaEmpregado[] tcolaboradorOcorrencias);
 }

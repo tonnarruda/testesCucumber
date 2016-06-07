@@ -45,6 +45,7 @@ import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TAreaOrganizacional;
 import com.fortes.rh.model.ws.TAuditoria;
@@ -69,7 +70,9 @@ import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
+import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class RHServiceManagerTest extends MockObjectTestCase
@@ -146,32 +149,6 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		rHServiceManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 		auditoriaManager = new Mock(AuditoriaManager.class);
 		rHServiceManager.setAuditoriaManager((AuditoriaManager) auditoriaManager.proxy());
-	}
-	
-	public void testBindColaboradorOcorrencias() throws Exception
-	{
-		TOcorrenciaEmpregado tOcorrenciaEmpregado = new TOcorrenciaEmpregado();
-		tOcorrenciaEmpregado.setCodigo("33333");
-		tOcorrenciaEmpregado.setEmpresa("11111");
-		tOcorrenciaEmpregado.setCodigoEmpregado("22222");
-		tOcorrenciaEmpregado.setData("01/01/2000");
-		tOcorrenciaEmpregado.setObs("obs");
-		tOcorrenciaEmpregado.setGrupoAC("XXX");
-		
-		TOcorrenciaEmpregado[] tcolaboradorOcorrencias = new TOcorrenciaEmpregado[]{tOcorrenciaEmpregado};
-		
-		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = rHServiceManager.bindColaboradorOcorrencias(tcolaboradorOcorrencias);
-		assertEquals(1, colaboradorOcorrencias.size());
-		
-		for (ColaboradorOcorrencia colaboradorOcorrencia : colaboradorOcorrencias) 
-		{
-			assertEquals("11111", colaboradorOcorrencia.getOcorrencia().getEmpresa().getCodigoAC());
-			assertEquals("XXX", colaboradorOcorrencia.getOcorrencia().getEmpresa().getGrupoAC());
-			assertEquals("22222", colaboradorOcorrencia.getColaborador().getCodigoAC());
-			assertEquals("01/01/2000", DateUtil.formataDate(colaboradorOcorrencia.getDataIni(), "dd/MM/yyyy"));
-			assertEquals("01/01/2000", DateUtil.formataDate(colaboradorOcorrencia.getDataFim(), "dd/MM/yyyy"));
-			assertEquals("obs", colaboradorOcorrencia.getObservacao());
-		}
 	}
 	
 	public void testBindIndice() throws Exception
@@ -1026,6 +1003,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		tColaboradorOcorrencia0.setCodigoEmpregado("123");
 		tColaboradorOcorrencia0.setCodigo("333");
 		tColaboradorOcorrencia0.setObs("obs");
+		tColaboradorOcorrencia0.setGrupoAC("001");
 
 		TOcorrenciaEmpregado tColaboradorOcorrencia1 = new TOcorrenciaEmpregado();
 		tColaboradorOcorrencia1.setData(data);
@@ -1033,11 +1011,20 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		tColaboradorOcorrencia1.setCodigoEmpregado("123");
 		tColaboradorOcorrencia1.setCodigo("311");
 		tColaboradorOcorrencia1.setObs("obs1");
+		tColaboradorOcorrencia1.setGrupoAC("001");
 
 		TOcorrenciaEmpregado[] tcolaboradorOcorrencias = new TOcorrenciaEmpregado[2];
 		tcolaboradorOcorrencias[0] = tColaboradorOcorrencia0;
 		tcolaboradorOcorrencias[1] = tColaboradorOcorrencia1;
 
+		ColaboradorOcorrencia colaboradorOcorrencia = ColaboradorOcorrenciaFactory.getEntity();
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = new ArrayList<ColaboradorOcorrencia>();
+		colaboradorOcorrencias.add(colaboradorOcorrencia);
+		
+		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
+		
+		ocorrenciaManager.expects(atLeastOnce()).method("findByCodigoAC").withAnyArguments().will(returnValue(ocorrencia));
+		colaboradorOcorrenciaManager.expects(once()).method("bindColaboradorOcorrencias").will(returnValue(colaboradorOcorrencias));
 		colaboradorOcorrenciaManager.expects(once()).method("saveOcorrenciasFromAC");
 
 		assertTrue(rHServiceManager.criarOcorrenciaEmpregado(tcolaboradorOcorrencias).isSucesso());
@@ -1046,7 +1033,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	public void testCriarOcorrenciaEmpregadoException()
 	{
 		TOcorrenciaEmpregado[] ocorrenciaEmpregados = new TOcorrenciaEmpregado[0];
-		colaboradorOcorrenciaManager.expects(once()).method("saveOcorrenciasFromAC").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
+		colaboradorOcorrenciaManager.expects(once()).method("bindColaboradorOcorrencias").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		assertFalse(rHServiceManager.criarOcorrenciaEmpregado(ocorrenciaEmpregados).isSucesso());
 	}
 
@@ -1073,6 +1060,11 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		ocorrenciaEmpregados[0] = tColaboradorOcorrencia0;
 		ocorrenciaEmpregados[1] = tColaboradorOcorrencia1;
 
+		ColaboradorOcorrencia colaboradorOcorrencia = ColaboradorOcorrenciaFactory.getEntity();
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = new ArrayList<ColaboradorOcorrencia>();
+		colaboradorOcorrencias.add(colaboradorOcorrencia);
+		
+		colaboradorOcorrenciaManager.expects(once()).method("bindColaboradorOcorrencias").will(returnValue(colaboradorOcorrencias));
 		colaboradorOcorrenciaManager.expects(once()).method("removeFromAC");
 
 		assertTrue(rHServiceManager.removerOcorrenciaEmpregado(ocorrenciaEmpregados).isSucesso());
@@ -1081,7 +1073,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	public void testRemoverOcorrenciaEmpregadoException()
 	{
 		TOcorrenciaEmpregado[] ocorrenciaEmpregados = new TOcorrenciaEmpregado[0];
-		colaboradorOcorrenciaManager.expects(once()).method("removeFromAC").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
+		colaboradorOcorrenciaManager.expects(once()).method("bindColaboradorOcorrencias").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		assertFalse(rHServiceManager.removerOcorrenciaEmpregado(ocorrenciaEmpregados).isSucesso());
 	}
 

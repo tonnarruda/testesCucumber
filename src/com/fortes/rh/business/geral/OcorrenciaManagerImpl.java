@@ -51,7 +51,7 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 		{
 			ocorrencia = findById(ocorrencia.getId());
 			if (!acPessoalClientOcorrencia.removerTipoOcorrencia(bindOcorrencia(ocorrencia,empresa), empresa))
-				throw new IntegraACException("Não foi possível excluir esta Ocorrência no Fortes Pessoal.");
+				throw new IntegraACException("Não foi possível excluir esta ocorrência no Fortes Pessoal.");
 		}
 
 		remove(ocorrencia.getId());

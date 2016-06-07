@@ -15,6 +15,7 @@
 			</interceptor-ref>
 			<result name="success" type="redirect">list.action</result>
 			<result name="error" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/ocorrenciaList.ftl</result>
 		</action>
 		
 		<action name="updateFilter" class="com.fortes.rh.web.action.cargosalario.CargoListAction" method="updateFilter">

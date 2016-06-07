@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.geral;
 import java.util.Collection;
 
 import com.fortes.rh.business.geral.OcorrenciaManager;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -30,10 +31,20 @@ public class OcorrenciaListAction extends MyActionSupportList
 
 	public String delete() throws Exception 
 	{
-		ocorrenciaManager.remove(ocorrencia, getEmpresaSistema());
-		addActionSuccess("Ocorrência excluída com sucesso.");
-
-		return Action.SUCCESS;
+		try {
+			ocorrenciaManager.remove(ocorrencia, getEmpresaSistema());
+			addActionSuccess("Ocorrência excluída com sucesso.");
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			if (e.getCause() instanceof IntegraACException){ 
+				IntegraACException integraACException = (IntegraACException) e.getCause();
+				addActionMessage(integraACException.getMessage().trim());
+			}else
+				addActionMessage("A ocorreu não pode ser excluída pois possui dependência.");
+			e.printStackTrace();
+			list();
+			return Action.INPUT;
+		}
 	}
 
 	public Collection<Ocorrencia> getOcorrencias() {

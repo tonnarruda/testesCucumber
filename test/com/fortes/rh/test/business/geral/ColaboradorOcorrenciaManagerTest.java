@@ -29,6 +29,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
+import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 import com.fortes.rh.test.business.MockObjectTestCaseManager;
 import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
@@ -594,6 +595,32 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCaseManager<
 				eq(areasIds), eq(null), eq(null), eq(colaborador), eq(null), eq(null), eq(empresaId), eq(false), ANYTHING, eq(null)}).will(returnValue(colaboradores));
 		
 		assertEquals(colaboradores, manager.findColaboraesPermitidosByUsuario(usuario, colaborador, empresaId, false, true));
+	}
+	
+	public void testBindColaboradorOcorrencias() throws Exception
+	{
+		TOcorrenciaEmpregado tOcorrenciaEmpregado = new TOcorrenciaEmpregado();
+		tOcorrenciaEmpregado.setCodigo("33333");
+		tOcorrenciaEmpregado.setEmpresa("11111");
+		tOcorrenciaEmpregado.setCodigoEmpregado("22222");
+		tOcorrenciaEmpregado.setData("01/01/2000");
+		tOcorrenciaEmpregado.setObs("obs");
+		tOcorrenciaEmpregado.setGrupoAC("XXX");
+		
+		TOcorrenciaEmpregado[] tcolaboradorOcorrencias = new TOcorrenciaEmpregado[]{tOcorrenciaEmpregado};
+		
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = manager.bindColaboradorOcorrencias(tcolaboradorOcorrencias);
+		assertEquals(1, colaboradorOcorrencias.size());
+		
+		for (ColaboradorOcorrencia colaboradorOcorrencia : colaboradorOcorrencias) 
+		{
+			assertEquals("11111", colaboradorOcorrencia.getOcorrencia().getEmpresa().getCodigoAC());
+			assertEquals("XXX", colaboradorOcorrencia.getOcorrencia().getEmpresa().getGrupoAC());
+			assertEquals("22222", colaboradorOcorrencia.getColaborador().getCodigoAC());
+			assertEquals("01/01/2000", DateUtil.formataDate(colaboradorOcorrencia.getDataIni(), "dd/MM/yyyy"));
+			assertEquals("01/01/2000", DateUtil.formataDate(colaboradorOcorrencia.getDataFim(), "dd/MM/yyyy"));
+			assertEquals("obs", colaboradorOcorrencia.getObservacao());
+		}
 	}
 	
 	public void testFindColaboraesPermitidosByUsuarioRestringindoVisualizacaoDoGestor(){
