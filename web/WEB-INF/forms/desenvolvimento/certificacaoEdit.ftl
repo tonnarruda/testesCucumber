@@ -49,7 +49,7 @@
 			}
 			
 			function processaSubmit(){
-				<#if empresaSistema.controlarVencimentoPorCertificacao>
+				<#if empresaSistema.controlarVencimentoPorCertificacao && certificacao.id?exists>
 					if($('#alterouCertificacao').val() == 'true'){
 						msg = 'Essa operação irá descertificar todos os colaboradores e certificá-los novamente, removendo todos os históricos dos colaboradores ' +
 								'existentes dessa certificação até o momento.</br></br>Obs: Essa operação pode demorar, dependendo da quantidades de dados em seu sistema.' +

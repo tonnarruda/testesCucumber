@@ -162,8 +162,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 		populaEmpresa(new String[]{"ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER"});	
 		empresaId = getEmpresaSistema().getId();
-
-		
 		
 		return Action.SUCCESS;
 	}
