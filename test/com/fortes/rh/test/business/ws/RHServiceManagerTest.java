@@ -41,6 +41,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
@@ -769,10 +770,11 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	public void testRemoverAreaOrganizacional() throws Exception
 	{
 		TAreaOrganizacional area = new TAreaOrganizacional();
+		AreaOrganizacional areaOrganizacionalTmp = AreaOrganizacionalFactory.getEntity();
 		
 		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
 		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING);
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areaOrganizacionalTmp));
 		areaOrganizacionalManager.expects(once()).method("remove").with(ANYTHING);
 		
 		assertEquals(true, rHServiceManager.removerAreaOrganizacional("TOKEN", area).isSucesso());
@@ -784,8 +786,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		
 		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
 		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING);
-		areaOrganizacionalManager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		
 		assertEquals(false, rHServiceManager.removerAreaOrganizacional("TOKEN", area).isSucesso());
 	}

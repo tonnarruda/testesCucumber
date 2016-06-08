@@ -24147,3 +24147,15 @@ update parametrosdosistema set appversao = '1.1.166.197';--.go
 -- versao 1.1.166.198
 
 update parametrosdosistema set appversao = '1.1.166.198';--.go
+-- versao 1.1.167.199
+
+delete from colaboradorocorrencia where ocorrencia_id is null;--.go
+insert into migrations values('20160607092816');--.go
+create table token(id bigint, hash character varying(32)); --.go
+CREATE SEQUENCE token_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20160608112718');--.go
+insert into usuario(id, nome, login, senha, acessosistema, caixasmensagens) values(nextval('usuario_sequence'), 'FORTES PESSOAL', 'FORTESPESSOAL', 'QEZvcnRlc1Blc3NvYWw=', true, '');--.go
+insert into migrations values('20160608112840');--.go
+update parametrosdosistema set acversaowebservicecompativel='1.1.61.1';--.go
+insert into migrations values('20160608155341');--.go
+update parametrosdosistema set appversao = '1.1.167.199';--.go

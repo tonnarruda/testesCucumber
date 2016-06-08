@@ -59,13 +59,16 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends AcPessoalClientTes
 		
 		tOcorrenciaEmpregado.setCodigo("001");
 		tOcorrenciaEmpregado.setGrupoAC("001");
+		tOcorrenciaEmpregado.setData("01/02/2016");
+		tOcorrenciaEmpregado.setDataFim(tOcorrenciaEmpregado.getData());
 		assertEquals(true, acPessoalClientColaboradorOcorrenciaImpl.criarColaboradorOcorrencia(tOcorrenciaEmpregado, empresa));
 
 		ResultSet result = query("select ocr_codigo, data from oce where emp_codigo = '" + empCodigo + "' and epg_codigo ='" + epgCodigo + "'");
 		if (result.next())
 		{
 			assertEquals("001", result.getString("ocr_codigo"));
-			assertEquals("2010-02-01 00:00:00.0", result.getString("data"));			
+			assertEquals("2016-02-01 00:00:00.0", result.getString("data"));			
+			execute("delete from oce where emp_codigo = '" + empCodigo + "' and epg_codigo ='" + epgCodigo + "'");
 		}
 		else
 			fail("Consulta não retornou nada...");		
@@ -76,6 +79,9 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends AcPessoalClientTes
 		montaMockGrupoAC();
 		
 		tOcorrenciaEmpregado.setCodigo("001");
+		tOcorrenciaEmpregado.setGrupoAC("001");
+		tOcorrenciaEmpregado.setData("01/02/2016");
+		tOcorrenciaEmpregado.setDataFim(tOcorrenciaEmpregado.getData());
 		acPessoalClientColaboradorOcorrenciaImpl.criarColaboradorOcorrencia(tOcorrenciaEmpregado, empresa);
 		
 		String sql = "select ocr_codigo, data from oce where emp_codigo = '" + empCodigo + "' and epg_codigo ='" + epgCodigo + "'"; 
@@ -84,9 +90,10 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends AcPessoalClientTes
 			fail("Consulta não retornou nada...");		
 		
 		assertEquals(true, acPessoalClientColaboradorOcorrenciaImpl.removerColaboradorOcorrencia(tOcorrenciaEmpregado, empresa));
-		
 		result = query(sql);
 		if (result.next())
 			fail("Consulta retornou algo...");
+
+		execute("delete from oce where emp_codigo = '" + empCodigo + "' and epg_codigo ='" + epgCodigo + "'");
 	}
 }

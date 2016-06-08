@@ -1243,6 +1243,13 @@ SELECT pg_catalog.setval('tipoepi_sequence', 1, false);
 
 
 --
+-- Name: token_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('token_sequence', 1, false);
+
+
+--
 -- Name: turma_avaliacaoturma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1274,7 +1281,7 @@ SELECT pg_catalog.setval('turmatipodespesa_sequence', 1, false);
 -- Name: usuario_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('usuario_sequence', 2, false);
+SELECT pg_catalog.setval('usuario_sequence', 2, true);
 
 
 --
@@ -7004,6 +7011,7 @@ ALTER TABLE motivosolicitacao ENABLE TRIGGER ALL;
 ALTER TABLE usuario DISABLE TRIGGER ALL;
 
 INSERT INTO usuario (id, nome, login, senha, acessosistema, ultimologin, superadmin, caixasmensagens) VALUES (1, 'Fortes', 'fortes', 'MTIzNA==', true, NULL, false, '{"caixasDireita":["T","C","F","U"],"caixasEsquerda":["P","R","A","S"],"caixasMinimizadas":[]}');
+INSERT INTO usuario (id, nome, login, senha, acessosistema, ultimologin, superadmin, caixasmensagens) VALUES (2, 'FORTES PESSOAL', 'FORTESPESSOAL', 'QEZvcnRlc1Blc3NvYWw=', true, NULL, false, '');
 
 
 ALTER TABLE usuario ENABLE TRIGGER ALL;
@@ -25996,6 +26004,10 @@ INSERT INTO migrations (name) VALUES ('20160328171712');
 INSERT INTO migrations (name) VALUES ('20160413131904');
 INSERT INTO migrations (name) VALUES ('20160425135101');
 INSERT INTO migrations (name) VALUES ('20160527112025');
+INSERT INTO migrations (name) VALUES ('20160607092816');
+INSERT INTO migrations (name) VALUES ('20160608112718');
+INSERT INTO migrations (name) VALUES ('20160608112840');
+INSERT INTO migrations (name) VALUES ('20160608155341');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -26400,7 +26412,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.166.198', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.60.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.167.199', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.61.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;
@@ -26920,6 +26932,16 @@ ALTER TABLE tipodespesa DISABLE TRIGGER ALL;
 
 
 ALTER TABLE tipodespesa ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: token; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE token DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE token ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: turma_avaliacaoturma; Type: TABLE DATA; Schema: public; Owner: postgres

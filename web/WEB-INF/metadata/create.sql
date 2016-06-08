@@ -7610,6 +7610,39 @@ SELECT pg_catalog.setval('tipoepi_sequence', 1, false);
 
 
 --
+-- Name: token; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE token (
+    id bigint,
+    hash character varying(32)
+);
+
+
+ALTER TABLE public.token OWNER TO postgres;
+
+--
+-- Name: token_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE token_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.token_sequence OWNER TO postgres;
+
+--
+-- Name: token_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('token_sequence', 1, false);
+
+
+--
 -- Name: turma_avaliacaoturma_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -7756,7 +7789,7 @@ ALTER TABLE public.usuario_sequence OWNER TO postgres;
 -- Name: usuario_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('usuario_sequence', 2, false);
+SELECT pg_catalog.setval('usuario_sequence', 2, true);
 
 
 --
@@ -31647,6 +31680,10 @@ INSERT INTO migrations (name) VALUES ('20160328171712');
 INSERT INTO migrations (name) VALUES ('20160413131904');
 INSERT INTO migrations (name) VALUES ('20160425135101');
 INSERT INTO migrations (name) VALUES ('20160527112025');
+INSERT INTO migrations (name) VALUES ('20160607092816');
+INSERT INTO migrations (name) VALUES ('20160608112718');
+INSERT INTO migrations (name) VALUES ('20160608112840');
+INSERT INTO migrations (name) VALUES ('20160608155341');
 
 
 --
@@ -32065,7 +32102,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.166.198', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.60.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.167.199', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.61.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
 
 
 --
@@ -32619,6 +32656,12 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 671);
 
 
 --
+-- Data for Name: token; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: turma; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -32647,6 +32690,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 671);
 --
 
 INSERT INTO usuario (id, nome, login, senha, acessosistema, ultimologin, superadmin, caixasmensagens) VALUES (1, 'Fortes', 'fortes', 'MTIzNA==', true, NULL, false, '{"caixasDireita":["T","C","F","U"],"caixasEsquerda":["P","R","A","S"],"caixasMinimizadas":[]}');
+INSERT INTO usuario (id, nome, login, senha, acessosistema, ultimologin, superadmin, caixasmensagens) VALUES (2, 'FORTES PESSOAL', 'FORTESPESSOAL', 'QEZvcnRlc1Blc3NvYWw=', true, NULL, false, '');
 
 
 --
