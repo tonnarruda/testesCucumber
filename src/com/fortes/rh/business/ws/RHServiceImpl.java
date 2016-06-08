@@ -163,8 +163,7 @@ public class RHServiceImpl implements RHService
 		return texto;
 	}
 
-	public TEmpresa[] getEmpresas(String token) throws TokenException
-	{
+	public TEmpresa[] getEmpresas(String token) throws TokenException{
 		verifyToken(token, true);
 		Collection<Empresa> empresas = empresaManager.findToList(new String[]{"id","nome","razaoSocial","codigoAC","grupoAC"}, new String[]{"id","nome","razaoSocial","codigoAC","grupoAC"}, new String[]{"nome"});
 		return empresasToArray(empresas);
@@ -175,8 +174,7 @@ public class RHServiceImpl implements RHService
 		TEmpresa[] resultado = new TEmpresa[empresas.size()];
 		int pos = 0;
 
-		for (Empresa empresa : empresas)
-		{
+		for (Empresa empresa : empresas){
 			TEmpresa emp = new TEmpresa(empresa.getId(), empresa.getNome(), empresa.getRazaoSocial(), empresa.getCodigoAC(), empresa.getGrupoAC());
 			resultado[pos++] = emp;
 		}
@@ -196,8 +194,7 @@ public class RHServiceImpl implements RHService
 		TCidade[] resultado = new TCidade[cidades.size()];
 		int pos = 0;
 
-		for (Cidade cidade : cidades)
-		{
+		for (Cidade cidade : cidades){
 			TCidade cid = new TCidade(cidade.getId(), cidade.getNome());
 			resultado[pos++] = cid;
 		}
@@ -224,8 +221,7 @@ public class RHServiceImpl implements RHService
 		TCargo[] resultado = new TCargo[cargos.size()];
 		int pos = 0;
 
-		for (Cargo cargo : cargos)
-		{
+		for (Cargo cargo : cargos){
 			TCargo car = null;
 			if(setaDescricao)
 				car = new TCargo(cargo.getId(), "", cargo.getNome());
@@ -244,14 +240,12 @@ public class RHServiceImpl implements RHService
 		return faixaSalarialManager.getFaixasAC();
 	}
 
-	public String getNomesHomologos(String token, String nomeCandidato) throws TokenException
-	{
+	public String getNomesHomologos(String token, String nomeCandidato) throws TokenException{
 		verifyToken(token, true);
 		Collection<Candidato> candidatos = candidatoManager.getCandidatosByNome(nomeCandidato);
 		String nomeHomonimos = "";
 		
-		for (Candidato candidato : candidatos) 
-		{
+		for (Candidato candidato : candidatos){
 			nomeHomonimos += candidato.getNome();
 			
 			if (!candidato.getPessoal().getCpfFormatado().equals("") )
@@ -264,10 +258,8 @@ public class RHServiceImpl implements RHService
 		return nomeHomonimos;
 	}
 
-	public boolean cadastrarCandidato(TCandidato cand) throws Exception
-	{
+	public boolean cadastrarCandidato(TCandidato cand) throws Exception{
 		prepareDataNascimento(cand);
-
 		Candidato candidato = new Candidato();
 		
 		Empresa empresa = new Empresa();
@@ -284,13 +276,10 @@ public class RHServiceImpl implements RHService
 		candidato.setEndereco(new Endereco());
 		candidato.getEndereco().setBairro(cand.getBairro());
 
-		if (cand.getCidadeId() != null)
-		{
+		if (cand.getCidadeId() != null){
 			candidato.getEndereco().setCidade(cidadeManager.findById(cand.getCidadeId()));
 			candidato.getEndereco().setUf(candidato.getEndereco().getCidade().getUf());
-		}
-		else
-		{
+		}else{
 			candidato.getEndereco().setCidade(null);
 			candidato.getEndereco().setUf(null);
 		}
@@ -326,15 +315,12 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public FeedbackWebService desligarEmpregado(String token, String codigoColaborador, String codigoEmpresa, String dataDesligamento, String grupoAC)
-	{
+	public FeedbackWebService desligarEmpregado(String token, String codigoColaborador, String codigoEmpresa, String dataDesligamento, String grupoAC){
 		String parametros = "codigo: " + codigoColaborador + " \nempCodigo:" + codigoEmpresa + " \ndataDesligamento: " + dataDesligamento;
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			Empresa empresa = empresaManager.findByCodigoAC(codigoEmpresa, grupoAC);
-			if(colaboradorManager.desligaColaboradorAC(empresa, DateUtil.montaDataByString(dataDesligamento), codigoColaborador))
-			{	
+			if(colaboradorManager.desligaColaboradorAC(empresa, DateUtil.montaDataByString(dataDesligamento), codigoColaborador)){	
 				try{
 					gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigoEmpresa, grupoAC, empresa, codigoColaborador);
 				} catch (Exception e) {
@@ -342,25 +328,19 @@ public class RHServiceImpl implements RHService
 				}
 				
 				return new FeedbackWebService(true);
-			}
-			else
+			}else
 				return new FeedbackWebService(false, "Erro: Empregado não encontrado no RH", formataException(parametros, null));
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao desligar empregado.", formataException(parametros, e));
 		}
 	}
 	
-	public FeedbackWebService desligarEmpregadosEmLote(String token, String[] codigosACColaboradores, String codigoACEmpresa, String dataDesligamento, String grupoAC)
-	{
+	public FeedbackWebService desligarEmpregadosEmLote(String token, String[] codigosACColaboradores, String codigoACEmpresa, String dataDesligamento, String grupoAC){
 		String parametros = "codigo: " + codigosACColaboradores + " \nempCodigo:" + codigoACEmpresa + " \ndataDesligamento: " + dataDesligamento;
-		try
-		{
+		try{
 			if (!realizandoOperacaoEmLote)
 				verifyToken(token, true);
 			Empresa empresa = empresaManager.findByCodigoAC(codigoACEmpresa, grupoAC);
@@ -376,17 +356,12 @@ public class RHServiceImpl implements RHService
 			}
 			else
 				return new FeedbackWebService(false, "Existem empregados que não foram encontrados no sistema RH", formataException(parametros, null));
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (FortesException e)
-		{
+		}catch (FortesException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, e.getMessage(), formataException(parametros, e));
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao desligar empregado em lote.", formataException(parametros, e));
 		}
@@ -395,8 +370,7 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService religarEmpregado(String token, String codigo, String empCodigo, String grupoAC)
 	{
 		String parametros = "codigo: " + codigo + " \nempCodigo: " + empCodigo + " \ngrupoAC: " + grupoAC;
-		try
-		{
+		try{
 			verifyToken(token, true);
 			Long colaboradorId = colaboradorManager.religaColaboradorAC(codigo, empCodigo, grupoAC);
 			usuarioManager.reativaAcessoSistema(colaboradorId);
@@ -406,8 +380,7 @@ public class RHServiceImpl implements RHService
 		catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
 		}
-		catch (Exception e)
-		{
+		catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao religar empregado.", formataException(parametros, e));
 		}
@@ -426,18 +399,15 @@ public class RHServiceImpl implements RHService
 			colaboradorManager.setCodigoColaboradorAC(codigoNovo, colaborador.getId(), empresa);
 			
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao alterar código do empregado.", formataException(parametros, e));
 		}
 	}
 	
-	public FeedbackWebService transferir(String token, TEmpresa tEmpresaOrigin, TEmpresa tEmpresaDestino, TEmpregado[] tEmpregados, TSituacao[] tSituacoes, String dataDesligamento)
-	{
+	public FeedbackWebService transferir(String token, TEmpresa tEmpresaOrigin, TEmpresa tEmpresaDestino, TEmpregado[] tEmpregados, TSituacao[] tSituacoes, String dataDesligamento){
 		try {
 			realizandoOperacaoEmLote = true;
 			verifyToken(token, true);
@@ -450,16 +420,14 @@ public class RHServiceImpl implements RHService
 			if(tEmpregados.length != tSituacoes.length)
 				return new FeedbackWebService(false, "Existe uma inconsistência entre a quantidade de empregados e situações.", null);
 	
-			if(tEmpresaOrigin != null && tEmpresaOrigin.getGrupoAC() != null && !"".equals(tEmpresaOrigin.getGrupoAC()))
-			{
+			if(tEmpresaOrigin != null && tEmpresaOrigin.getGrupoAC() != null && !"".equals(tEmpresaOrigin.getGrupoAC())){
 				empresaOrigin = empresaManager.findByCodigoAC(tEmpresaOrigin.getCodigoAC(), tEmpresaOrigin.getGrupoAC());
 				
 				if(empresaOrigin == null)
 					return new FeedbackWebService(false, "Empresa origem não encontrada no sistema RH", formataException( "empCodigo: " + tEmpresaOrigin.getCodigoAC() + "\ngrupoAC: " + tEmpresaOrigin.getGrupoAC(), null));
 			}
 			
-			if(tEmpresaDestino != null && tEmpresaDestino.getGrupoAC() != null && !"".equals(tEmpresaDestino.getGrupoAC()))
-			{
+			if(tEmpresaDestino != null && tEmpresaDestino.getGrupoAC() != null && !"".equals(tEmpresaDestino.getGrupoAC()))	{
 				empresaDestino = empresaManager.findByCodigoAC(tEmpresaDestino.getCodigoAC(), tEmpresaDestino.getGrupoAC());
 	
 				if(empresaDestino == null)
@@ -477,8 +445,7 @@ public class RHServiceImpl implements RHService
 			
 			else
 				return new FeedbackWebService(false, "Nenhuma empresa esta integrada com o sistena RH.", "");
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
 		}
 	}
@@ -503,11 +470,9 @@ public class RHServiceImpl implements RHService
 			for (String empregadoCodigo : empregadoCodigos) 
 				historicoColaboradorManager.updateSituacaoByMovimentacao(empregadoCodigo, (String) new MovimentacaoAC().get(movimentacao), codPessoalEstabOuArea, atualizarTodasSituacoes, empresa.getId());
 			
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Não foi possível realizar a atualização em lote.", "");
 		}
@@ -527,16 +492,13 @@ public class RHServiceImpl implements RHService
 		try {
 			FeedbackWebService feedbackWebService = desligarEmpregadosEmLote(token, tEmpregadoToArrayCodigoAC(tEmpregados), empresaOrigin.getCodigoAC(), dataTransferencia, empresaOrigin.getGrupoAC());
 
-			if(!feedbackWebService.isSucesso())
-			{
+			if(!feedbackWebService.isSucesso())	{
 				transactionManager.rollback(status);
 				return feedbackWebService;
 			}
 			
 			feedbackWebService = inserirEmpregados(tEmpregados, tSituacoes, empresaDestino);
-
-			if(!feedbackWebService.isSucesso())
-			{
+			if(!feedbackWebService.isSucesso())	{
 				transactionManager.rollback(status);
 				return feedbackWebService;
 			}
@@ -544,8 +506,7 @@ public class RHServiceImpl implements RHService
 			transactionManager.commit(status);
 			return feedbackWebService; 
 
-		}
-		catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 			transactionManager.rollback(status);
 			return new FeedbackWebService(false, "Erro ao transferir empregado.", formataException(parametros, e));
@@ -566,8 +527,7 @@ public class RHServiceImpl implements RHService
 	{
 		String parametros = "empCodigo: " + tSituacoes[0].getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacoes[0].getGrupoAC() + "\ncodigo estabelecimento: " + tSituacoes[0].getEstabelecimentoCodigoAC() +
 				"\ncodigo lotação: " + tSituacoes[0].getLotacaoCodigoAC() + "\ncodigo cargo: " + tSituacoes[0].getCargoCodigoAC();
-		try
-		{
+		try{
 			Estabelecimento estabelecimento = estabelecimentoManager.findEstabelecimentoByCodigoAc(tSituacoes[0].getEstabelecimentoCodigoAC(),  empresaDestino.getCodigoAC(), empresaDestino.getGrupoAC());
 			AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tSituacoes[0].getLotacaoCodigoAC(), empresaDestino.getCodigoAC(), empresaDestino.getGrupoAC());
 			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacoes[0].getCargoCodigoAC(), empresaDestino.getCodigoAC(), empresaDestino.getGrupoAC());
@@ -589,14 +549,10 @@ public class RHServiceImpl implements RHService
 			colaboradorManager.saveEmpregadosESituacoes(tEmpregados, tSituacoes, empresaDestino);
 			
 			return new FeedbackWebService(true);
-		}
-		catch (ConstraintViolationException e)
-		{
+		}catch (ConstraintViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Empregado existente na empresa destino com mesmo código AC.\nFavor verificar integração dos sistemas", formataException(parametros, e));
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao transferir empregado.", formataException(parametros, e));
 		}
@@ -605,74 +561,56 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService atualizarEmpregado(String token, TEmpregado empregado)
 	{
 		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupo AC: " + empregado.getGrupoAC();
-		try
-		{
+		try{
 			verifyToken(token, true);
 			colaboradorManager.updateEmpregado(empregado);
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao atualizar empregado.", formataException(parametros, e));
 		}
 	}
 
-	public FeedbackWebService atualizarEmpregadoAndSituacao(String token, TEmpregado empregado, TSituacao situacao)
-	{
+	public FeedbackWebService atualizarEmpregadoAndSituacao(String token, TEmpregado empregado, TSituacao situacao){
 		String parametros = "empregado: " + empregado.getCodigoAC() + " \nsituacao: " + situacao.getData();
-		
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
 		
-		try
-		{
+		try{
 			verifyToken(token, true);
-			try
-			{
+			try	{
 				Colaborador colaborador = colaboradorManager.updateEmpregado(empregado);
 				if(colaborador == null)
 					throw new Exception("Empregado não encontrado.");
-			}
-			catch (Exception e)
-			{
+			}catch (Exception e){
 				e.printStackTrace();
 				throw new Exception("Erro ao atualizar colaborador.");
 			}
 
-			try
-			{
+			try	{
 				historicoColaboradorManager.updateSituacao(situacao);
-			}
-			catch (Exception e)
-			{
+			}catch (Exception e){
 				e.printStackTrace();
 				throw new Exception("Erro ao atualizar situação do colaborador.");
 			}
 
 			transactionManager.commit(status);
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			transactionManager.rollback(status);
 			return new FeedbackWebService(false, "Erro ao atualizar empregado e situação.",  formataException(parametros, e));
 		}
 	}
 	
-	public FeedbackWebService cancelarContratacao(String token, TEmpregado empregado, TSituacao situacao,  String mensagem)
-	{
+	public FeedbackWebService cancelarContratacao(String token, TEmpregado empregado, TSituacao situacao,  String mensagem){
 		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupo AC: " + empregado.getGrupoAC();
-		try
-		{
+		try{
 			verifyToken(token, true);
 			Colaborador colaborador = colaboradorManager.findByIdComHistorico(new Long (empregado.getId()));
 			
@@ -687,26 +625,20 @@ public class RHServiceImpl implements RHService
 			colaboradorManager.cancelarContratacaoNoAC(colaborador, historico, mensagem);
 			
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (FortesException e) {
+		}catch (FortesException e) {
 			e.printStackTrace();
 			return new FeedbackWebService(false, e.getMessage(), formataException(parametros, e));
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao cancelar contratação do empregado.", formataException(parametros, e));
 		}
 	}
 
-	public FeedbackWebService cancelarSolicitacaoDesligamentoAC(String token, TEmpregado empregado, String mensagem)
-	{
+	public FeedbackWebService cancelarSolicitacaoDesligamentoAC(String token, TEmpregado empregado, String mensagem){
 		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupo AC: " + empregado.getGrupoAC();
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			Colaborador colaborador = colaboradorManager.findByCodigoACEmpresaCodigoAC(empregado.getCodigoAC(), empregado.getEmpresaCodigoAC(), empregado.getGrupoAC());		
 			
@@ -716,22 +648,17 @@ public class RHServiceImpl implements RHService
 			colaboradorManager.cancelarSolicitacaoDesligamentoAC(colaborador, mensagem, empregado.getEmpresaCodigoAC(), empregado.getGrupoAC());
 			
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao cancelar solicitação de desligamento do empregado.", formataException(parametros, e));
 		}
 	}
 	
-	public FeedbackWebService criarSituacaoEmLote(String token, TSituacao[] situacaos)
-	{
+	public FeedbackWebService criarSituacaoEmLote(String token, TSituacao[] situacaos){
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
-		try
-		{
+		try{
 			verifyToken(token, true);
 			for (TSituacao tSituacao : situacaos)
 			{
@@ -740,22 +667,16 @@ public class RHServiceImpl implements RHService
 			
 			historicoColaboradorManager.saveOrUpdate(historicoColaboradors);
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao inserir situações em lote.", formataException(null, e));
 		}
-		
 	}
 	
-	public FeedbackWebService atualizarSituacaoEmLote(String token, TSituacao[] situacaos)
-	{
-		try
-		{
+	public FeedbackWebService atualizarSituacaoEmLote(String token, TSituacao[] situacaos){
+		try	{
 			realizandoOperacaoEmLote = true;
 			verifyToken(token, true);
 			for (TSituacao tSituacao : situacaos)
@@ -765,19 +686,15 @@ public class RHServiceImpl implements RHService
 		}
 		catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao atualizar situações em lote.", formataException(null, e));
 		}
 	}
 	
-	public FeedbackWebService criarSituacao(String token, TEmpregado empregado, TSituacao situacao)
-	{
+	public FeedbackWebService criarSituacao(String token, TEmpregado empregado, TSituacao situacao){
 		String parametros = "Situacao data: " + situacao.getData() + "\nempregado: " + situacao.getEmpregadoCodigoAC() + "\nempresa: " + situacao.getEmpresaCodigoAC() + "\ngrupoAC: " + situacao.getGrupoAC(); 
-		try
-		{
+		try{
 			verifyToken(token, true);
 			HistoricoColaborador historicoColaborador = montaSituacao(empregado, situacao);
 			historicoColaboradorManager.save(historicoColaborador);
@@ -785,12 +702,9 @@ public class RHServiceImpl implements RHService
 			gerenciadorComunicacaoManager.enviaMensagemCadastroSituacaoAC(empregado.getNome(), situacao);
 
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao inserir situação.", formataException(parametros, e));
 		}
@@ -809,26 +723,21 @@ public class RHServiceImpl implements RHService
 		return historicoColaborador;
 	}
 
-	public FeedbackWebService atualizarSituacao(String token, TSituacao situacao)
-	{
+	public FeedbackWebService atualizarSituacao(String token, TSituacao situacao){
 		String parametros = "";
 		if(situacao.getId() != null && situacao.getId() != 0)
 			parametros = "Situacao ID: " + situacao.getId();
 		else
 			parametros = "Situacao data: " + situacao.getData() + "\nempregado: " + situacao.getEmpregadoCodigoAC() + "\nempresa: " + situacao.getEmpresaCodigoAC() + "\ngrupoAC: " + situacao.getGrupoAC();
-		
-		try
-		{
+
+		try	{
 			if (!realizandoOperacaoEmLote)
 				verifyToken(token, true);
 			historicoColaboradorManager.updateSituacao(situacao);
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao atualizar situação.", formataException(parametros, e));
 		}
@@ -837,8 +746,7 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService removerSituacaoEmLote(String token, Integer movimentoSalarialId, String empCodigo, String grupoAC)
 	{
 		String parametros = "movimentoSalarialId: " + movimentoSalarialId + "\nempCodigo: " + empCodigo + "\ngrupoAC: " + grupoAC;
-		try
-		{
+		try{
 			verifyToken(token, true);
 			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
 			if(empresa == null || empresa.getId() == null)
@@ -846,76 +754,54 @@ public class RHServiceImpl implements RHService
 			
 			historicoColaboradorManager.deleteSituacaoByMovimentoSalarial(movimentoSalarialId.longValue(), empresa.getId());
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (ConstraintViolationException e)
-		{
+		}catch (ConstraintViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_SITUACAO_LOTE, formataException(parametros, e));
-		}
-		catch (DataIntegrityViolationException e)
-		{
+		}catch (DataIntegrityViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_SITUACAO_LOTE, formataException(parametros, e));
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao excluir situação em lote.", formataException(parametros, e));
 		}
-		
 	}
 
-	public FeedbackWebService removerSituacao(String token, TSituacao situacao)
-	{
+	public FeedbackWebService removerSituacao(String token, TSituacao situacao){
 		String parametros = "situacao data: " + situacao.getDataFormatada() + "\nempregado: " + situacao.getEmpregadoCodigoAC() + "\nempresa: " + situacao.getEmpresaCodigoAC() + "\ngrupoAC: " + situacao.getGrupoAC();
-		try
-		{
+		try{
 			verifyToken(token, true);
 			HistoricoColaborador historico = historicoColaboradorManager.findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(),  situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
 			if(historico != null)
 				historicoColaboradorManager.removeHistoricoAndReajusteAC(historico);
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (ConstraintViolationException e)
-		{
+		}catch (ConstraintViolationException e)	{
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_SITUACAO, formataException(parametros, e));
-		}
-		catch (DataIntegrityViolationException e)
-		{
+		}catch (DataIntegrityViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_SITUACAO, formataException(parametros, e));
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao remover situação.", formataException(parametros, e));
 		}
 	}
 
-	public FeedbackWebService criarEstabelecimento(String token, TEstabelecimento testabelecimento)
-	{
+	public FeedbackWebService criarEstabelecimento(String token, TEstabelecimento testabelecimento){
 		String parametros = "estabelecimento: " + testabelecimento.getCodigo();
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			Estabelecimento estabelecimento = new Estabelecimento();
 			bindEstabelecimento(testabelecimento, estabelecimento);
 			estabelecimento.setEmpresa(empresaManager.findByCodigoAC(testabelecimento.getCodigoEmpresa(), testabelecimento.getGrupoAC()));
 			estabelecimentoManager.save(estabelecimento);
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao inserir estabelecimento.", formataException(parametros, e));
 		}
@@ -924,19 +810,15 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService atualizarEstabelecimento(String token, TEstabelecimento testabelecimento)
 	{
 		String parametros = "estabelecimento: " + testabelecimento.getCodigo() + "\nempresa: " + testabelecimento.getCodigoEmpresa() + "\ngrupoAC: " + testabelecimento.getGrupoAC();
-		try
-		{
+		try{
 			verifyToken(token, true);
 			Estabelecimento estabelecimento = estabelecimentoManager.findByCodigo(testabelecimento.getCodigo(), testabelecimento.getCodigoEmpresa(), testabelecimento.getGrupoAC());
 			bindEstabelecimento(testabelecimento, estabelecimento);
 			estabelecimentoManager.update(estabelecimento);
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao atualizar estabelecimento.", formataException(parametros, e));
 		}
@@ -945,8 +827,7 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService removerEstabelecimento(String token, String codigo, String empCodigo, String grupoAC)
 	{
 		String parametros = "estabelecimento: " + codigo + "\nempresa: " + empCodigo + "\ngrupoAC: " + grupoAC;
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
 
@@ -954,22 +835,15 @@ public class RHServiceImpl implements RHService
 				return new FeedbackWebService(true);
 			else
 				return new FeedbackWebService(false, "Erro: Estabelecimento não encontrado no RH.", formataException(parametros, null));
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (ConstraintViolationException e)
-		{
+		}catch (ConstraintViolationException e)	{
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_ESTABELECIMENTO, formataException(parametros, e));
-		}
-		catch (DataIntegrityViolationException e)
-		{
+		}catch (DataIntegrityViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_ESTABELECIMENTO, formataException(parametros, e));
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao excluir estabelecimento.", formataException(parametros, e));
 		}
@@ -978,20 +852,16 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService criarIndice(String token, TIndice tindice)
 	{
 		String parametros = "indice: " + tindice.getCodigo() + "\ngrupoAC: " + tindice.getGrupoAC();
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			Indice indice = new Indice();
 			bindIndice(tindice, indice);
 			indiceManager.save(indice);
 
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao inserir índice.", formataException(parametros, e));
 		}
@@ -1000,20 +870,16 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService atualizarIndice(String token, TIndice tindice)
 	{
 		String parametros = "indice: " + tindice.getCodigo() + "\ngrupoAC: " + tindice.getGrupoAC();
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			Indice indice = indiceManager.findByCodigo(tindice.getCodigo(), tindice.getGrupoAC());
 			bindIndice(tindice, indice);
 			indiceManager.update(indice);
 
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao atualizar índice.", formataException(parametros, e));
 		}
@@ -1022,29 +888,21 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService removerIndice(String token, String codigo, String grupoAC)
 	{
 		String parametros = "indice: " + codigo + "\ngrupoAC: " + grupoAC;
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			if(indiceManager.remove(codigo, grupoAC))
 				return new FeedbackWebService(true);
 			else
 				return new FeedbackWebService(false, "Erro: Índice não encontrado no RH.", formataException(parametros, null));
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (ConstraintViolationException e)
-		{
+		}catch (ConstraintViolationException e)	{
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_INDICE, formataException(parametros, e));
-		}
-		catch (DataIntegrityViolationException e)
-		{
+		}catch (DataIntegrityViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_INDICE, formataException(parametros, e));
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao excluir índice.", formataException(parametros, e));
 		}
@@ -1053,8 +911,7 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService criarIndiceHistorico(String token, TIndiceHistorico tindiceHistorico)
 	{
 		String parametros = "indiceHistorico: " + tindiceHistorico.getIndiceCodigo() + "\ndata: " + tindiceHistorico.getDataFormatada() + "\ngrupoAC: " + tindiceHistorico.getGrupoAC();
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			IndiceHistorico indiceHistorico = new IndiceHistorico();
 			bindIndiceHistorico(tindiceHistorico, indiceHistorico);
@@ -1077,19 +934,13 @@ public class RHServiceImpl implements RHService
 		}
 		catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (ConstraintViolationException e)
-		{
+		}catch (ConstraintViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_INDICE_HISTORICO, formataException(parametros, e));
-		}
-		catch (DataIntegrityViolationException e)
-		{
+		}catch (DataIntegrityViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_INDICE_HISTORICO, formataException(parametros, e));
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao excluir o histórico do índice.", formataException(parametros, e));
 		}
@@ -1100,8 +951,7 @@ public class RHServiceImpl implements RHService
 		String parametros = "indice: " + indiceCodigo + "\ndata: " + data + "\ngrupoAC: " + grupoAC;
 		Indice indice = indiceManager.findByCodigo(indiceCodigo, grupoAC);
 
-		if (indice != null && indice.getId() != null)
-		{
+		if (indice != null && indice.getId() != null){
 			try {
 				verifyToken(token, true);
 				if(indiceHistoricoManager.remove(DateUtil.montaDataByString(data), indice.getId()))
@@ -1115,8 +965,7 @@ public class RHServiceImpl implements RHService
 			catch (FortesException e) {
 				return new FeedbackWebService(false, e.getMessage(), formataException(parametros, null));
 			}
-		}
-		else
+		}else
 			return new FeedbackWebService(true);
 	}
 
@@ -1162,8 +1011,7 @@ public class RHServiceImpl implements RHService
 		try {
 			verifyToken(token, true);
 			String parametros = "faixaSalarialHistoricoId: " + faixaSalarialHistoricoId + "\nempresa: " + empresaCodigoAC + "\ngrupoAC: " + grupoAC;
-			if (!aprovado)
-			{
+			if (!aprovado){
 				FaixaSalarialHistorico faixaSalarialHistorico = faixaSalarialHistoricoManager.findByIdProjection(faixaSalarialHistoricoId);
 				if(faixaSalarialHistorico != null)
 				{
@@ -1177,8 +1025,7 @@ public class RHServiceImpl implements RHService
 				return new FeedbackWebService(true);
 			else
 				return new FeedbackWebService(false, "Erro: Histórico da faixa salarial não encontrada.", formataException(parametros, null));
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
 		}
 	}
@@ -1186,23 +1033,18 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService cancelarSituacao(String token, TSituacao situacao, String mensagem)
 	{
 		String parametros = "";
-		
 		if(situacao.getId() != null && situacao.getId() != 0)
 			parametros = "Situacao ID: " + situacao.getId();
 		else
 			parametros = "Situacao data: " + situacao.getData() + "\nempregado: " + situacao.getEmpregadoCodigoAC() + "\nempresa: " + situacao.getEmpresaCodigoAC() + "\ngrupoAC: " + situacao.getGrupoAC();
 		
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			historicoColaboradorManager.cancelarSituacao(situacao, mensagem);
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao cancelar situação.", formataException(parametros, e));
 		}
@@ -1211,8 +1053,7 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService criarOcorrencia(String token, TOcorrencia tocorrencia)
 	{
 		String parametros = "ocorrencia: " + tocorrencia.getCodigo() + "\nempresa: " + tocorrencia.getEmpresa() + "\ngrupoAC: " + tocorrencia.getGrupoAC();
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			Ocorrencia ocorrencia = new Ocorrencia();
 			Empresa empresa = empresaManager.findByCodigoAC(tocorrencia.getEmpresa(), tocorrencia.getGrupoAC());
@@ -1224,44 +1065,32 @@ public class RHServiceImpl implements RHService
 			ocorrenciaManager.saveFromAC(ocorrencia);
 
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao inserir ocorrência.", formataException(parametros, e));
 		}
 	}
 
-	public FeedbackWebService removerOcorrencia(String token, TOcorrencia tocorrencia)
-	{
+	public FeedbackWebService removerOcorrencia(String token, TOcorrencia tocorrencia){
 		String parametros = "ocorrencia: " + tocorrencia.getCodigo() + "\nempresa: " + tocorrencia.getEmpresa() + "\ngrupoAC: " + tocorrencia.getGrupoAC();
-		try
-		{
+		try{
 			verifyToken(token, true);
 			Empresa empresa = empresaManager.findByCodigoAC(tocorrencia.getEmpresa(), tocorrencia.getGrupoAC());
 			if(ocorrenciaManager.removeByCodigoAC(tocorrencia.getCodigo(), empresa.getId()))
 				return new FeedbackWebService(true);
 			else
 				return new FeedbackWebService(false, "Erro: Ocorrência não encontrada.", formataException(parametros, null));
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (ConstraintViolationException e)
-		{
+		}catch (ConstraintViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_OCORRENCIA, formataException(parametros, e));
-		}
-		catch (DataIntegrityViolationException e)
-		{
+		}catch (DataIntegrityViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_OCORRENCIA, formataException(parametros, e));
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e)	{
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao excluir ocorrência.", formataException(parametros, e));
 		}
@@ -1279,19 +1108,15 @@ public class RHServiceImpl implements RHService
 			Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaManager.bindColaboradorOcorrencias(ocorrenciaEmpregados);
 			colaboradorOcorrenciaManager.saveOcorrenciasFromAC(colaboradorOcorrencias);
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao inserir ocorrências do empregado.", formataException(null, e));
 		}
 	}
 
-	public FeedbackWebService removerOcorrenciaEmpregado(String token, TOcorrenciaEmpregado[] ocorrenciaEmpregados)
-	{
+	public FeedbackWebService removerOcorrenciaEmpregado(String token, TOcorrenciaEmpregado[] ocorrenciaEmpregados){
 		try{
 			verifyToken(token, true);
 			Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaManager.bindColaboradorOcorrencias(ocorrenciaEmpregados);
@@ -1311,18 +1136,15 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	private void bindOcorrencia(TOcorrencia tocorrencia, Ocorrencia ocorrencia)
-	{
+	private void bindOcorrencia(TOcorrencia tocorrencia, Ocorrencia ocorrencia){
 		//TODO: codigoac vazio
 		ocorrencia.setCodigoAC(tocorrencia.getCodigo());
 		ocorrencia.setDescricao(tocorrencia.getDescricao());
 	}
 	
-	public FeedbackWebService criarAreaOrganizacional(String token, TAreaOrganizacional areaOrganizacional)
-	{
+	public FeedbackWebService criarAreaOrganizacional(String token, TAreaOrganizacional areaOrganizacional){
 		String parametros = "areaOrganizacional: " + areaOrganizacional.getCodigo() + "\nempresa: " + areaOrganizacional.getEmpresaCodigo() + "\ngrupoAC: " + areaOrganizacional.getGrupoAC();
-		try
-		{
+		try{
 			verifyToken(token, true);
 			Empresa empresa = empresaManager.findByCodigoAC(areaOrganizacional.getEmpresaCodigo(), areaOrganizacional.getGrupoAC());
 			AreaOrganizacional area = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(areaOrganizacional.getCodigo(), areaOrganizacional.getEmpresaCodigo(), areaOrganizacional.getGrupoAC());
@@ -1338,22 +1160,17 @@ public class RHServiceImpl implements RHService
 			areaOrganizacionalManager.transferirColabDaAreaMaeParaAreaFilha(areaOrganizacionalTmp);
 
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao inserir lotação.", formataException(parametros, e));
 		}
 	}
 
-	public FeedbackWebService atualizarAreaOrganizacional(String token, TAreaOrganizacional tAreaOrganizacional)
-	{
+	public FeedbackWebService atualizarAreaOrganizacional(String token, TAreaOrganizacional tAreaOrganizacional){
 		String parametros = "areaOrganizacional: " + tAreaOrganizacional.getCodigo() + "\nempresa: " + tAreaOrganizacional.getEmpresaCodigo() + "\ngrupoAC: " + tAreaOrganizacional.getGrupoAC();
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			Empresa empresa = empresaManager.findByCodigoAC(tAreaOrganizacional.getEmpresaCodigo(), tAreaOrganizacional.getGrupoAC());
 			AreaOrganizacional areaOrganizacionalTmp = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tAreaOrganizacional.getCodigo(), tAreaOrganizacional.getEmpresaCodigo(), tAreaOrganizacional.getGrupoAC());
@@ -1362,12 +1179,9 @@ public class RHServiceImpl implements RHService
 			
 			areaOrganizacionalManager.update(areaOrganizacionalTmp);
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao atualizar lotação.", formataException(parametros, e));
 		}
@@ -1376,28 +1190,21 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService removerAreaOrganizacional(String token, TAreaOrganizacional tAreaOrganizacional)
 	{
 		String parametros = "areaOrganizacional: " + tAreaOrganizacional.getCodigo() + "\nempresa: " + tAreaOrganizacional.getEmpresaCodigo() + "\ngrupoAC: " + tAreaOrganizacional.getGrupoAC();
-		try
-		{
+		try{
 			verifyToken(token, true);
 			AreaOrganizacional areaOrganizacionalTmp = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tAreaOrganizacional.getCodigo(), tAreaOrganizacional.getEmpresaCodigo(), tAreaOrganizacional.getGrupoAC());
-			areaOrganizacionalManager.remove(areaOrganizacionalTmp);
+			if(areaOrganizacionalTmp != null)
+				areaOrganizacionalManager.remove(areaOrganizacionalTmp);
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (ConstraintViolationException e)
-		{
+		}catch (ConstraintViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_LOTACAO, formataException(parametros, e));
-		}
-		catch (DataIntegrityViolationException e)
-		{
+		}catch (DataIntegrityViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_LOTACAO, formataException(parametros, e));
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao excluir lotação.", formataException(parametros, e));
 		}
@@ -1406,28 +1213,22 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService criarSituacaoCargo(String token, TSituacaoCargo tSituacaoCargo)
 	{
 		String parametros = "situacaoCargo: " + tSituacaoCargo.getCodigo() + "\nempresa: " + tSituacaoCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacaoCargo.getGrupoAC();
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacaoCargo.getCodigo(), tSituacaoCargo.getEmpresaCodigoAC(), tSituacaoCargo.getGrupoAC());
 			FaixaSalarialHistorico faixaSalarialHistorico =  faixaSalarialHistoricoManager.bind(tSituacaoCargo, faixaSalarial);
 			
 			Long id = faixaSalarialHistoricoManager.findIdByDataFaixa(faixaSalarialHistorico);
-			if(id != null)
-			{
+			if(id != null){
 				faixaSalarialHistorico.setId(id);
 				faixaSalarialHistoricoManager.update(faixaSalarialHistorico);				
-			}
-			else
+			}else
 				faixaSalarialHistoricoManager.save(faixaSalarialHistorico);
 			
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao excluir a situação do cargo.", formataException(parametros, e));
 		}
@@ -1436,8 +1237,7 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService atualizarSituacaoCargo(String token, TSituacaoCargo tSituacaoCargo)
 	{
 		String parametros = "situacaoCargo: " + tSituacaoCargo.getCodigo() + "\nempresa: " + tSituacaoCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacaoCargo.getGrupoAC();
-		try
-		{
+		try{
 			verifyToken(token, true);
 			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacaoCargo.getCodigo(), tSituacaoCargo.getEmpresaCodigoAC(), tSituacaoCargo.getGrupoAC());
 			FaixaSalarialHistorico faixaSalarialHistorico =  faixaSalarialHistoricoManager.bind(tSituacaoCargo, faixaSalarial);
@@ -1446,12 +1246,9 @@ public class RHServiceImpl implements RHService
 			faixaSalarialHistoricoManager.update(faixaSalarialHistorico);
 			
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao atualizar situação do cargo.", formataException(parametros, e));
 		}
@@ -1460,8 +1257,7 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService removerSituacaoCargo(String token, TSituacaoCargo tSituacaoCargo)
 	{
 		String parametros = "situacaoCargo: " + tSituacaoCargo.getCodigo() + "\nempresa: " + tSituacaoCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacaoCargo.getGrupoAC();
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacaoCargo.getCodigo(), tSituacaoCargo.getEmpresaCodigoAC(), tSituacaoCargo.getGrupoAC());
 			
@@ -1473,22 +1269,15 @@ public class RHServiceImpl implements RHService
 			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico);
 			
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (ConstraintViolationException e)
-		{
+		}catch (ConstraintViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_SITUACAO_CARGO, formataException(parametros, e));
-		}
-		catch (DataIntegrityViolationException e)
-		{
+		}catch (DataIntegrityViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_SITUACAO_CARGO, formataException(parametros, e));
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao excluir situação do cargo.", formataException(parametros, e));
 		}
@@ -1509,8 +1298,7 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService criarCargo(String token, TCargo tCargo)
 	{
 		String parametros = "cargo: " + tCargo.getCodigo() + "\nempresa: " + tCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tCargo.getGrupoAC();
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			if (StringUtils.defaultString(tCargo.getDescricao()).equals("")) 
 				throw new Exception("Descrição da faixa está vazia.");
@@ -1523,12 +1311,9 @@ public class RHServiceImpl implements RHService
 			faixaSalarialManager.save(faixaSalarial);
 			
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao inserir cargo.", formataException(parametros, e));
 		}
@@ -1537,8 +1322,7 @@ public class RHServiceImpl implements RHService
 	public FeedbackWebService atualizarCargo(String token, TCargo tCargo)
 	{
 		String parametros = "cargo: " + tCargo.getCodigo() + "\nempresa: " + tCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tCargo.getGrupoAC();
-		try
-		{
+		try	{
 			verifyToken(token, true);
 			if (StringUtils.defaultString(tCargo.getDescricao()).equals("")) 
 				throw new Exception("Descrição da faixa está vazia.");
@@ -1550,12 +1334,9 @@ public class RHServiceImpl implements RHService
 			cargoManager.updateCBO(faixaSalarial.getCargo().getId(), tCargo);
 			
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao atualizar cargo.", formataException(parametros, e));
 		}
@@ -1604,28 +1385,20 @@ public class RHServiceImpl implements RHService
 			
 			colaboradorManager.removeColaboradorDependencias(colaborador);
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (ConstraintViolationException e)
-		{
+		}catch (ConstraintViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_EMPREGADO, formataException(parametros, e));
-		}
-		catch (DataIntegrityViolationException e)
-		{
+		}catch (DataIntegrityViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_EMPREGADO, formataException(parametros, e));
-		}
-		catch (Exception e) 
-		{
+		}catch (Exception e){
 			return new FeedbackWebService(false, "Erro ao excluir empregado.", formataException(parametros, e));
 		}
 	}
 	
-	public FeedbackWebService removerEmpregadoComDependencia(String token, TEmpregado empregado, TAuditoria tAuditoria)
-	{
+	public FeedbackWebService removerEmpregadoComDependencia(String token, TEmpregado empregado, TAuditoria tAuditoria){
 		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupoAC: " + empregado.getGrupoAC();
 		
 		if(StringUtils.isEmpty(empregado.getCodigoAC()) || StringUtils.isEmpty(empregado.getEmpresaCodigoAC()) ||  StringUtils.isEmpty(empregado.getGrupoAC()))
@@ -1649,17 +1422,12 @@ public class RHServiceImpl implements RHService
 			}
 			
 			return new FeedbackWebService(true);
-		}
-		catch (TokenException e) {
+		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
-		}
-		catch (ConstraintViolationException e)
-		{
+		}catch (ConstraintViolationException e){
 			e.printStackTrace();
 			return new FeedbackWebService(false, MSG_ERRO_REMOVER_EMPREGADO, formataException(parametros, e));
-		}
-		catch (Exception e) 
-		{
+		}catch (Exception e){
 			return new FeedbackWebService(false, "Erro ao excluir empregado.", formataException(parametros, e));
 		}
 	}
@@ -1734,12 +1502,11 @@ public class RHServiceImpl implements RHService
 	
 	public void reSincronizarTabelaTemporariaAC (String token, String gruposAC) throws Exception
 	{
-		if(!realizandoReenvioPendencias)	{	
+		if(!realizandoReenvioPendencias){	
 			verifyToken(token, true);
 			realizandoReenvioPendencias = true;
 			Collection<Empresa> empresas = empresaManager.findByGruposAC(gruposAC);
-			for (Empresa empresa : empresas) 
-			{
+			for (Empresa empresa : empresas) {
 				try {
 					colaboradorManager.reenviaAguardandoContratacao(empresa);
 					colaboradorManager.confirmaReenvios(new TFeedbackPessoalWebService(true, "Reenvio das pendências realizada com sucesso", null), empresa);

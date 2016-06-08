@@ -1,0 +1,1 @@
+insert into usuario(id, nome, login, senha, acessosistema, caixasmensagens) values(nextval('usuario_sequence'), 'FORTES PESSOAL', 'FORTESPESSOAL', 'QEZvcnRlc1Blc3NvYWw=', true, '');--.go
