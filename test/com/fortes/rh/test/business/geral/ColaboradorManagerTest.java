@@ -933,7 +933,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
         candidatoManager.expects(once()).method("updateDisponivelAndContratadoByColaborador").with(eq(true),eq(false),eq(new Long[]{colaborador.getId()})).isVoid();
     	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
         transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
-        usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(new Long[]{colaborador.getId()}));
+        usuarioManager.expects(once()).method("removeAcessoSistema").with(eq(new Long[]{colaborador.getId()}));
         historicoColaboradorManager.expects(once()).method("deleteHistoricosAguardandoConfirmacaoByColaborador").with(eq(new Long[]{colaborador.getId()}));
         transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
 

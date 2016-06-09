@@ -1044,9 +1044,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			@SuppressWarnings("deprecation")
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
-			if(integradoAC)
-				usuarioManager.desativaAcessoSistema(colaboradoresIds);
-			else
+			if(!integradoAC || desligaByAC)
 				usuarioManager.removeAcessoSistema(colaboradoresIds);
 			
 			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradoresIds);
@@ -1916,15 +1914,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 
 	@SuppressWarnings("rawtypes")
-	public Integer getCountComHistoricoFuturoSQL(Map parametros)
+	public Integer getCountComHistoricoFuturoSQL(Map parametros, Long usuarioLogadoId)
 	{
-		return getDao().findComHistoricoFuturoSQL(parametros, 0, 0).size();
+		return getDao().findComHistoricoFuturoSQL(parametros, 0, 0, usuarioLogadoId).size();
 	}
 
 	@SuppressWarnings("rawtypes")
-	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros) throws Exception{
+	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros, Long usuarioLogadoId) throws Exception{
 		Collection<Colaborador> result = new LinkedList<Colaborador>();
-		Collection lista = getDao().findComHistoricoFuturoSQL(parametros, pagingSize, page);
+		Collection lista = getDao().findComHistoricoFuturoSQL(parametros, pagingSize, page, usuarioLogadoId);
 		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();){
 			Object[] array = it.next();
 			Colaborador colaborador = new Colaborador((String) array[1]);
@@ -1949,6 +1947,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.setAreaOrganizacionalId(array[15] != null ? ((BigInteger)array[15]).longValue() : null);
 			colaborador.setStatusAcPessoal(array[16] != null ? ((Integer)array[16]).intValue() : null);
 			colaborador.setCodigoAC((String)array[17]);
+			colaborador.setSolicitanteDemissaoId(array[18] != null ? ((BigInteger)array[18]).longValue(): null);
 			result.add(colaborador);
 		}
 		return result;

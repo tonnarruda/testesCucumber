@@ -41,6 +41,7 @@ import ar.com.fdvs.dj.domain.entities.DJGroup;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
 import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
 
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -96,6 +97,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
+	private UsuarioManager usuarioManager;
 	
 	private Collection<Colaborador> colaboradors = null;
 	private Colaborador colaborador;
@@ -191,6 +193,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private String mesAno;
 	private String dataInicioGozo;
 	private String dataFimGozo;
+	private Long colaboradorLogadoId;
 
 	private enum Nomenclatura {
 		ENVIADO_FP("Enviado Fortes Pessoal"),
@@ -230,6 +233,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	}
 	
 	public String list() throws Exception{
+		colaboradorLogadoId = colaboradorManager.findByUsuario(getUsuarioLogado().getId()); 
+				
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, getEmpresaSistema().getId());
 		areasList = areaOrganizacionalManager.montaFamilia(areaOrganizacionalsTmp);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
@@ -249,8 +254,9 @@ public class ColaboradorListAction extends MyActionSupportList
 		}
 		
 		Map<String, Object> parametros = montaParametros(areasIdsPorResponsavel);
-		setTotalSize(colaboradorManager.getCountComHistoricoFuturoSQL(parametros));
-		colaboradors = colaboradorManager.findComHistoricoFuturoSQL(getPage(), getPagingSize(), parametros);
+		setTotalSize(colaboradorManager.getCountComHistoricoFuturoSQL(parametros, getUsuarioLogado().getId()));
+		
+		colaboradors = colaboradorManager.findComHistoricoFuturoSQL(getPage(), getPagingSize(), parametros, getUsuarioLogado().getId());
 		if (colaboradors == null || colaboradors.size() == 0)
 			addActionMessage("Não existem colaboradores a serem listados.");
 		integraAc = getEmpresaSistema().isAcIntegra();
@@ -1614,5 +1620,16 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setDataFimGozo(String dataFimGozo) {
 		this.dataFimGozo = dataFimGozo;
+	}
+
+	public Long getColaboradorLogadoId(){
+		if (colaboradorLogadoId == null)
+			colaboradorLogadoId = 0L;
+		
+		return colaboradorLogadoId;
+	}
+	
+	public void setUsuarioManager(UsuarioManager usuarioManager) {
+		this.usuarioManager = usuarioManager;
 	}
 }

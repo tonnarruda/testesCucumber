@@ -3260,7 +3260,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) query.uniqueResult();
 	}
 
-	public Collection<Object> findComHistoricoFuturoSQL(Map parametros, Integer pagingSize, Integer page)
+	public Collection<Object> findComHistoricoFuturoSQL(Map parametros, Integer pagingSize, Integer page, Long usuarioLogadoId)
 	{
 		String codigoACBusca = (String) parametros.get("codigoACBusca");
 		String nomeBusca = (String) parametros.get("nomeBusca");
@@ -3280,7 +3280,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select colab_.id as colabId, colab_.nome as name, colab_.nomeComercial, colab_.matricula, colab_.desligado, colab_.dataAdmissao, colab_.cpf, colab_.usuario_id, colab_.dataDesligamento, md.motivo, colab_.respondeuEntrevista, colab_.candidato_id as candId, colab_.naoIntegraAc, colab_.dataSolicitacaoDesligamento, colab_.dataSolicitacaoDesligamentoAc, a.id, hc.status, colab_.codigoAC ");
+		sql.append("select colab_.id as colabId, colab_.nome as name, colab_.nomeComercial, colab_.matricula, colab_.desligado, colab_.dataAdmissao, colab_.cpf, colab_.usuario_id, colab_.dataDesligamento, md.motivo, colab_.respondeuEntrevista, colab_.candidato_id as candId, colab_.naoIntegraAc, colab_.dataSolicitacaoDesligamento, colab_.dataSolicitacaoDesligamentoAc, a.id, hc.status, colab_.codigoAC, colab_.solicitanteDemissao_id as solicitanteId ");
 		sql.append("from historicoColaborador hc ");
 		sql.append("inner join ");
 		sql.append("( ");
@@ -3382,8 +3382,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(cpfBusca != null && !cpfBusca.trim().equals(""))
 			sql.append("and colab_.cpf like :cpfBusca ");
 
-		if(situacao != null && !situacao.trim().equals("") && situacao.equals("U"))
+		if(situacao != null && !situacao.trim().equals("") && situacao.equals("U")){
 			sql.append("and colab_.dataSolicitacaoDesligamentoAc is not null ");
+			if(usuarioLogadoId != null && !usuarioLogadoId.equals(1L)){
+				sql.append("and ( colab_.usuario_id <> :usuarioLogadoId or colab_.usuario_id is null and (colab_.solicitanteDemissao_id = colab_.id or colab_.solicitanteDemissao_id is null)) ");
+			}
+		}
 		else if(situacao != null && !situacao.trim().equals("") && !situacao.trim().equals("T"))
 			sql.append("and colab_.desligado = :situacao ");
 
@@ -3457,6 +3461,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		{
 				Integer[] todosStatus = {StatusRetornoAC.CONFIRMADO,StatusRetornoAC.AGUARDANDO,StatusRetornoAC.CANCELADO};
 				query.setParameterList("status", todosStatus);
+		}
+		
+		if(situacao != null && !situacao.trim().equals("") && situacao.trim().equals("U") && usuarioLogadoId != null && !usuarioLogadoId.equals(1L)){
+			query.setLong("usuarioLogadoId", usuarioLogadoId);
 		}
 
 		return query.list();

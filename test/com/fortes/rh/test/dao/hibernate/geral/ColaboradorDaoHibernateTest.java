@@ -5413,7 +5413,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		parametros.put("cpfBusca", "1232136239");
 		parametros.put("empresaId", ((Empresa)objetos.get("empresa")).getId());
 
-		assertEquals(4, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0).size());
+		assertEquals(4, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0, null).size());
 	 }
 	
 	public void testFindCotmHistoricoFuturoSQLCpfEmpresaFaixaSalarial()
@@ -5427,7 +5427,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		parametros.put("empresaId", ((Empresa)objetos.get("empresa")).getId());
 		parametros.put("faixaSalarialId", ((FaixaSalarial)objetos.get("faixaSalarial")).getId());
 		
-		assertEquals(3, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0).size());
+		assertEquals(3, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0, 1L).size());
 	}
 	
 	public void testFindCotmHistoricoFuturoSQLCodigoAC()
@@ -5440,7 +5440,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		parametros.put("codigoACBusca", ((Colaborador)objetos.get("maria")).getCodigoAC());
 		parametros.put("empresaId", ((Empresa)objetos.get("empresa")).getId());
 		
-		Collection<Object> colaboradores = colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0);
+		Collection<Object> colaboradores = colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0, null);
 		
 		Object[] colab = (Object[]) colaboradores.iterator().next();
 		

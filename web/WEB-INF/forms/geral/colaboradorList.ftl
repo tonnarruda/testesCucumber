@@ -238,23 +238,29 @@
 			
 			<#if !colaborador.desligado>
 				<#assign statusSolicitacao="A"/>
-				<#if integraAc && !colaborador.naoIntegraAc>
+				<#assign linkDesligamento="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}', ${colaborador.naoIntegraAc?string}, ${colaborador.desligado?string})"/>
+				
+				<#if colaborador.id == colaboradorLogadoId>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Não é possível realizar sua própria solicitação de desligamento." imgName="desliga_colab.gif" opacity=true />
+				<#elseif integraAc && !colaborador.naoIntegraAc>
 					<#if colaborador.dataSolicitacaoDesligamentoAc?exists>
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Solicitação de desligamento aguardando confirmação no Fortes Pessoal" imgName="desliga_colab.gif" opacity=true />
 					<#elseif colaborador.dataSolicitacaoDesligamento?exists>
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Aguardando confirmação de desligamento" imgName="desliga_colab.gif" opacity=true />
 					<#elseif empresaSistema.solicitarConfirmacaoDesligamento>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}', ${colaborador.naoIntegraAc?string}, ${colaborador.desligado?string})" imgTitle="Solicitar desligamento" imgName="desliga_colab.gif" />
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="${linkDesligamento}" imgTitle="Solicitar desligamento" imgName="desliga_colab.gif" />
 					<#else>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}', ${colaborador.naoIntegraAc?string}, ${colaborador.desligado?string})" imgTitle="Solicitação de desligamento no Fortes Pessoal" imgName="desliga_colab.gif" />
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="${linkDesligamento}" imgTitle="Solicitação de desligamento no Fortes Pessoal" imgName="desliga_colab.gif" />
 					</#if>
 				<#else>
 					<#if empresaSistema.solicitarConfirmacaoDesligamento && !colaborador.dataSolicitacaoDesligamento?exists>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}', ${colaborador.naoIntegraAc?string}, ${colaborador.desligado?string})" imgTitle="Solicitar desligamento" imgName="desliga_colab.gif"/>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="${linkDesligamento}" imgTitle="Solicitar desligamento" imgName="desliga_colab.gif"/>
 					<#elseif empresaSistema.solicitarConfirmacaoDesligamento && colaborador.dataSolicitacaoDesligamento?exists>
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Aguardando confirmação de desligamento" imgName="desliga_colab.gif" opacity=true/>
+					<#elseif empresaSistema.solicitarConfirmacaoDesligamento && colaborador.dataSolicitacaoDesligamento?exists>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="${linkDesligamento}" imgTitle="Solicitar desligamento" imgName="desliga_colab.gif"/>
 					<#else>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}', ${colaborador.naoIntegraAc?string}, ${colaborador.desligado?string})" imgTitle="Desligar colaborador" imgName="desliga_colab.gif"/>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="${linkDesligamento}" imgTitle="Desligar colaborador" imgName="desliga_colab.gif"/>
 					</#if>
 				</#if>
 				

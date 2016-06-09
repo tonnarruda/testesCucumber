@@ -243,6 +243,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			
 			if (getEmpresaSistema().isAcIntegra() && !colaborador.isNaoIntegraAc()){
 				String retorno = solicitacaoDesligamento();
+				gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getId(), colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), true);
 				transactionManager.commit(status);
 				return retorno;
 			}

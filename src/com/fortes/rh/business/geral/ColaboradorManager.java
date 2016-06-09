@@ -151,8 +151,8 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findColaboradoresByArea(Long[] areaIds, String nome, String matricula, Long empresaId, String nomeComercial);
 	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados, Long empresaId, Long[] areaId, Long[] cargoId);
 	public Integer qtdTotalDiasDaTurmaVezesColaboradoresInscritos(Date dataPrevIni, Date dataPrevFim, Long[] EmpresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds);
-	public Integer getCountComHistoricoFuturoSQL(Map parametros);
-	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros) throws Exception;
+	public Integer getCountComHistoricoFuturoSQL(Map parametros, Long usuarioLogadoId);
+	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros, Long usuarioLogadoId) throws Exception;
 	public Collection<Colaborador> getAvaliacoesExperienciaPendentes(Date periodoIni, Date periodoFim, Empresa empresaSistema, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, Integer diasDeAcompanhamento, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception;
 	public List<AcompanhamentoExperienciaColaborador> getAvaliacoesExperienciaPendentesPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception;
 	public Collection<Colaborador> findColabPeriodoExperiencia(Date periodoIni, Date periodoFim, String[] avaliacaoCheck, String[] areasCheck, String[] estabelecimentoCheck, String[] colaboradorsCheck, boolean agruparPorArea, Long... empresasIds) throws Exception;
