@@ -19,9 +19,9 @@
 	<@display.table name="colaboradorQuestionarios" id="colaboradorQuestionario" class="dados">
 		<@display.column title="Ações" class="acao">
 			<#if colaboradorQuestionario.avaliacao.tipoModeloAvaliacao == 'A'>
-				<a href="../avaliacaoExperiencia/prepareUpdateAvaliacaoExperiencia.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&autoAvaliacao=true"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+				<a href="javascript: executeLink('../avaliacaoExperiencia/prepareUpdateAvaliacaoExperiencia.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&autoAvaliacao=true');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<#else>
-				<a href="../desempenho/prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&autoAvaliacao=true"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+				<a href="javascript: executeLink('../desempenho/prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&autoAvaliacao=true');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			</#if>
 		</@display.column>
 		<@display.column property="respondidaEm" title="Data" format="{0,date,dd/MM/yyyy}" style="width: 100px; text-align: center;"/>

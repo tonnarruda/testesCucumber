@@ -97,7 +97,7 @@
   </bean>
 
   <!-- Controle de Tokens -->
-  <bean id="tokenManager" singleton="true" class="com.fortes.rh.config.TokenManager"/>
+  <bean id="securityTokenManager" singleton="true" class="com.fortes.rh.config.SecurityTokenManager"/>
   
   <!-- Controle de Usuarios -->
   <bean id="sessionManager" singleton="true" class="com.fortes.rh.config.SessionManager"/>

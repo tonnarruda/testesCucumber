@@ -98,9 +98,9 @@
 				width: 300,
 				buttons: [ 	{ text: "Ok", click: function() {
 				            if ( $('#analisarResultado').val() == 'RESULTADO' ) {
-				            	window.location='prepareResultado.action?avaliacaoDesempenho.id='+avaliacaoDesempenhoId;
+				            	executeLink('prepareResultado.action?avaliacaoDesempenho.id='+avaliacaoDesempenhoId);
 				            } else {
-				            	window.location='avaliacaoDesempenhoRespostasList.action?avaliacaoDesempenho.id='+avaliacaoDesempenhoId;
+				            	executeLink('avaliacaoDesempenhoRespostasList.action?avaliacaoDesempenho.id='+avaliacaoDesempenhoId);
 				            }
 							$(this).dialog("close");
 						} },
@@ -182,8 +182,8 @@
 	<@display.table name="avaliacaoDesempenhos" id="avaliacaoDesempenho" class="dados">
 		<@display.column title="Ações" class="acao" style="width:191px;">
 		
-			<a href="prepareUpdate.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="prepareParticipantes.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Participantes" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}');"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="javascript: executeLink('prepareParticipantes.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}');"><img border="0" title="Participantes" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			
 			<#assign avaliacaoId = "0"/>
 			<#if avaliacaoDesempenho.avaliacao?exists && avaliacaoDesempenho.avaliacao.id?exists>
@@ -191,8 +191,8 @@
 			</#if>
 			
 			<#if avaliacaoDesempenho.liberada>
-				<a href="javascript:newConfirm('Deseja bloquear esta Avaliação?', function(){window.location='bloquear.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}'});"><img border="0" title="Bloquear" src="<@ww.url includeParams="none" value="/imgs/bloquear.gif"/>"></a>
-				<a href="javascript:newConfirm('Deseja enviar e-mail de lembrete para os colaboradores que ainda não respoderam esta avaliação desempenho?', function(){window.location='enviarLembrete.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}'});"><img border="0" title="Enviar e-mail de Lembrete" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>"></a>
+				<a href="javascript:newConfirm('Deseja bloquear esta Avaliação?', function(){executeLink('bloquear.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}');});"><img border="0" title="Bloquear" src="<@ww.url includeParams="none" value="/imgs/bloquear.gif"/>"></a>
+				<a href="javascript:newConfirm('Deseja enviar e-mail de lembrete para os colaboradores que ainda não respoderam esta avaliação desempenho?', function(){executeLink('enviarLembrete.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}');});"><img border="0" title="Enviar e-mail de Lembrete" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>"></a>
 			<#else>
 				<a href="javascript:submitLiberar(${avaliacaoDesempenho.id});" id="btnLiberar"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
 				<img border="0" title="Avaliação bloqueada" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
@@ -205,20 +205,20 @@
 			</#if>
 				
 			<#if !avaliacaoDesempenho.avaliacao?exists || (avaliacaoDesempenho.avaliacao?exists && avaliacaoDesempenho.avaliacao.avaliarCompetenciasCargo) >
-				<a href="prepareCompetencias.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Competências" src="<@ww.url includeParams="none" value="/imgs/competencias.gif"/>"></a>
+				<a href="javascript: executeLink('prepareCompetencias.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}');"><img border="0" title="Competências" src="<@ww.url includeParams="none" value="/imgs/competencias.gif"/>"></a>
 			<#else>
 				<img border="0" title="Competências" src="<@ww.url includeParams="none" value="/imgs/competencias.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
 				
 			<a href="javascript:;" onclick="javascript:clonar(${avaliacaoDesempenho.id}, '${avaliacaoDesempenho.titulo}')"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
 			<#if avaliacaoDesempenho.avaliacao?exists && avaliacaoDesempenho.avaliacao.id?exists>
-				<a href="../modelo/imprimir.action?avaliacao.id=${avaliacaoDesempenho.avaliacao.id}"><img border="0" title="Imprimir Modelo da Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
-				<a href="../modelo/imprimir.action?avaliacao.id=${avaliacaoDesempenho.avaliacao.id}&imprimirFormaEconomica=true"><img border="0" title="Imprimir Modelo da Avaliação em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>
+				<a href="javascript: executeLink('../modelo/imprimir.action?avaliacao.id=${avaliacaoDesempenho.avaliacao.id}');"><img border="0" title="Imprimir Modelo da Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="javascript: executeLink('../modelo/imprimir.action?avaliacao.id=${avaliacaoDesempenho.avaliacao.id}&imprimirFormaEconomica=true');"><img border="0" title="Imprimir Modelo da Avaliação em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>
 			<#else>
 				<img border="0" title="Imprimir Modelo da Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"style="opacity:0.2;filter:alpha(opacity=20);">
 				<img border="0" title="Imprimir Modelo da Avaliação em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column title="Título" property="titulo" />
 		<@display.column title="Período" property="periodoFormatado" />
@@ -228,7 +228,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 	
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+		<button class="btnInserir" onclick="executeLink('prepareInsert.action');"></button>
 		<button class="btnLiberarAvalEmLote" onclick="$('#liberarEmLoteDialog').dialog({ modal: true, width: 530 });">
 	</div>
 	

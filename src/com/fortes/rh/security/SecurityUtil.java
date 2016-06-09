@@ -11,8 +11,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
+import com.fortes.rh.config.SecurityTokenManager;
 import com.fortes.rh.config.SessionManager;
-import com.fortes.rh.config.TokenManager;
 import com.fortes.rh.exception.LoginInvalidoException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
@@ -25,7 +25,7 @@ import com.opensymphony.xwork.ActionContext;
 
 public class SecurityUtil
 {
-	private static TokenManager tokenManager = null;
+	private static SecurityTokenManager securityTokenManager = null;
 	private static SessionManager sessionManager = null;
 	
 	public static boolean verifyRole(Map session, String[] rolesVerify)
@@ -64,7 +64,7 @@ public class SecurityUtil
 		// Estes beans não devem ser recuperados pelo SpringUtil, pois meste momento a sessão foi invalidada e o SpringUtil recupera a partir da sessão.
 		// Não devem ser colocados nas variáveis de instância(sessionManager e tokenManager), pois estas devem ser recuperadas pelo SpringUtil.
 		SessionManager sessionManager = (SessionManager) webApplicationContext.getBean("sessionManager");
-		TokenManager tokenManager = (TokenManager) webApplicationContext.getBean("tokenManager");
+		SecurityTokenManager tokenManager = (SecurityTokenManager) webApplicationContext.getBean("securityTokenManager");
 		
 		sessionManager.registerLogout(sessionId);
 		tokenManager.remove(sessionId);
@@ -244,8 +244,8 @@ public class SecurityUtil
 	
 	public static void registraToken(String sessionId, boolean geraNovoToken)
 	{
-		if(!getTokenManager().isRegistrado(sessionId) || geraNovoToken)
-			getTokenManager().registra(sessionId);
+		if(!getSecurityTokenManager().isRegistrado(sessionId) || geraNovoToken)
+			getSecurityTokenManager().registra(sessionId);
 	}
 	
 	public static boolean isTokenValido(String token)
@@ -253,20 +253,20 @@ public class SecurityUtil
 		if(StringUtils.isEmpty(token))
 			return false;
 		
-		return getTokenManager().isValido(ServletActionContext.getRequest().getSession().getId(), token);
+		return getSecurityTokenManager().isValido(ServletActionContext.getRequest().getSession().getId(), token);
 	}
 	
 	public static String getInternalToken()
 	{
-		return getTokenManager().getToken(ServletActionContext.getRequest().getSession().getId());
+		return getSecurityTokenManager().getToken(ServletActionContext.getRequest().getSession().getId());
 	}
 	
-	private static TokenManager getTokenManager()
+	private static SecurityTokenManager getSecurityTokenManager()
 	{
-		if(tokenManager == null)
-			tokenManager = (TokenManager) SpringUtil.getBean("tokenManager");
+		if(securityTokenManager == null)
+			securityTokenManager = (SecurityTokenManager) SpringUtil.getBean("securityTokenManager");
 		
-		return tokenManager;
+		return securityTokenManager;
 	}
 	
 	private static SessionManager getSessionManager()

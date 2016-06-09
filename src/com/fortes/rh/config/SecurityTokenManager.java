@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.RandomStringUtils;
 
-public class TokenManager {
+public class SecurityTokenManager {
 	
 	private Map<String, String> usersTokenMap = new HashMap<String, String>();
 
