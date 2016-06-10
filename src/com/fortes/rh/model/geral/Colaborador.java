@@ -258,6 +258,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private ColaboradorQuestionario colaboradorQuestionario;
 	@Transient
 	private Double produtividade;
+	@Transient
+	private ColaboradorCertificacao colaboradorCertificacao;
 
 	public Colaborador()
 	{
@@ -3205,4 +3207,28 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setColaboradorCertificacaos(Collection<ColaboradorCertificacao> colaboradorCertificacaos) {
 		this.colaboradorCertificacaos = colaboradorCertificacaos;
 	}
+
+	public ColaboradorCertificacao getColaboradorCertificacao() {
+		return colaboradorCertificacao;
+	}
+
+	public void setColaboradorCertificacao(	ColaboradorCertificacao colaboradorCertificacao) {
+		this.colaboradorCertificacao = colaboradorCertificacao;
+	}
+
+	private void iniciaColaboradorCertificacao() {
+		if(this.colaboradorCertificacao == null)
+			this.colaboradorCertificacao = new ColaboradorCertificacao();
+	}
+	
+	public void setColaboradorCertificacaoId(Long colaboradorCertificacaoId){
+		iniciaColaboradorCertificacao();
+		this.colaboradorCertificacao.setId(colaboradorCertificacaoId);
+	}
+	
+	public void setColaboradorCertificacaoData(Date colaboradorCertificacaoData){
+		iniciaColaboradorCertificacao();
+		this.colaboradorCertificacao.setData(colaboradorCertificacaoData);
+	}
+
 }

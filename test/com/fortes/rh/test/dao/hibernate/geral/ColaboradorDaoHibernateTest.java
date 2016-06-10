@@ -4556,10 +4556,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void testFindHistoricoByColaboradors() {
 		Colaborador colaborador1 = getColaborador();
 		colaborador1.setNome("A TESTE");
+		colaborador1.setNomeComercial("A TESTE");
 		colaboradorDao.save(colaborador1);
 
 		Colaborador colaborador2 = getColaborador();
 		colaborador2.setNome("X Maria");
+		colaborador2.setNomeComercial("X Maria");
 		colaboradorDao.save(colaborador2);
 
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();

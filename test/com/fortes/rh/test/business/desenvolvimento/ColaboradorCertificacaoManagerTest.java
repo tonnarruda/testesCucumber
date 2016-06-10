@@ -42,7 +42,6 @@ import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 
@@ -181,11 +180,16 @@ public class ColaboradorCertificacaoManagerTest
 		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
 		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2016);
 		
-		Long[] cursosIds = new CollectionUtil<Curso>().convertCollectionToArrayIds(cursos, "getId");
+		Long[] colabIds = new Long[]{colab1.getId(), colab2.getId()};
 		
 		when(certificacaoManager.findCollectionByIdProjection(certificacoesIds)).thenReturn(certificacoes);
 		when(avaliacaoPraticaManager.findMapByCertificacaoId(certificacoesIds)).thenReturn(mapAvaliacoesPraticas);
-		when(colaboradorCertificacaoDao.findColaboradoresCertificadosENaoCertificados(dataIni, dataFim, null, null, certificacao1.getId(), null,  null, new Long[]{colab1.getId()}, cursosIds, null)).thenReturn(colaboradorCertificacaos);
+		
+		
+		when(colaboradorCertificacaoDao.findColaboradoresCertificados(dataIni, dataFim, null, new Long[]{certificacao1.getId()}, null,  null, new Long[]{colab1.getId()}, null, null)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoDao.findColaboradoresQueParticipamDaCertificacao(new Long[]{certificacao1.getId()}, null, null, new Long[]{colab1.getId()}, null, colabIds)).thenReturn(colaboradorCertificacaos);
+		
+		
 		when(certificacaoManager.findCursosByCertificacaoId(certificacao1.getId())).thenReturn(cursos);
 		when(colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacao1.getId(), colaboradoresIds)).thenReturn(mapColaboradorAvaliacoesPraticas);
 
@@ -469,7 +473,7 @@ public class ColaboradorCertificacaoManagerTest
 		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
 		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2016);
 
-		when(colaboradorCertificacaoDao.colaboradoresQueParticipamDaCertificacao(dataIni, dataFim, null, certificacoesIds, null, null, null, false, null)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoDao.findColaboradoresQueParticipamDaCertificacao(certificacoesIds, null, null, null, null, null)).thenReturn(colaboradorCertificacaos);
 		
 		Collection<ColaboradorCertificacao> colaboradorescertificacoes = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(dataIni, dataFim, null, true, true, null, null, certificacoesIds, null, null);
 		assertEquals(1, colaboradorescertificacoes.size());
@@ -479,10 +483,11 @@ public class ColaboradorCertificacaoManagerTest
 	public void colaboradoresParticipamCertificacaoNaoCertificados()
 	{
 		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, DateUtil.criarDataMesAno(1, 1, 2016));
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador1, certificacao, DateUtil.criarDataMesAno(1, 1, 2016));
 		
-		ColaboradorCertificacao colaboradorNaoCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, null);
+		ColaboradorCertificacao colaboradorNaoCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador2, certificacao, null);
 		
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
 		colaboradorCertificacaos.add(colaboradorCertificacao);
@@ -494,8 +499,8 @@ public class ColaboradorCertificacaoManagerTest
 		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
 		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2016);
 
-		when(colaboradorCertificacaoDao.findColaboradoresQueParticipamDaCertificacao(certificacoesIds, null, null, null, null)).thenReturn(colaboradorNaoCertificacaos);
-		when(colaboradorCertificacaoDao.findColaboradoresCertificados(dataIni, dataFim, null, certificacoesIds, null, null, null, null)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoDao.findColaboradoresQueParticipamDaCertificacao(certificacoesIds, null, null, null, null, null)).thenReturn(colaboradorNaoCertificacaos);
+		when(colaboradorCertificacaoDao.findColaboradoresCertificados(dataIni, dataFim, null, certificacoesIds, null, null, null, null, null)).thenReturn(colaboradorCertificacaos);
 		
 		Collection<ColaboradorCertificacao> colaboradorescertificacoes = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(dataIni, dataFim, null, false, true, null, null, certificacoesIds, null, null);
 		ColaboradorCertificacao colaboradorNaoCertificacaoResultado = ((ColaboradorCertificacao) colaboradorescertificacoes.toArray()[0]); 

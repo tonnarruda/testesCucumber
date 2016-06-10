@@ -26,13 +26,13 @@ public class CertificacaoDWR
 		
     	Collection<ColaboradorCertificacao> colaboradoresCertificacao = colaboradorCertificacaoManager.colaboradoresParticipamCertificacao(null, dataFinal, mesesCertificacoesAVencer, colaboradorCertificado, colaboradorNaoCertificado, areasIdsLong, estabelecimentoIdsLong, certificacoesIdsLong, null, situacaoColaborador);
     	Collection<Long> colaboradoresIdsAdicionados = new ArrayList<Long>();
-    	for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificacao) {
+    	for (ColaboradorCertificacao colaboradorCert : colaboradoresCertificacao) {
     		CheckBox checkBox = new CheckBox();
-			checkBox.setId(colaboradorCertificacao.getColaborador().getId());
-			checkBox.setNome(colaboradorCertificacao.getColaborador().getNome());
+			checkBox.setId(colaboradorCert.getColaboradorId());
+			checkBox.setNome(colaboradorCert.getColaborador().getNome());
 			
-			if(!colaboradoresIdsAdicionados.contains(colaboradorCertificacao.getColaborador().getId())){
-				colaboradoresIdsAdicionados.add(colaboradorCertificacao.getColaborador().getId());
+			if(!colaboradoresIdsAdicionados.contains(colaboradorCert.getColaboradorId())){
+				colaboradoresIdsAdicionados.add(colaboradorCert.getColaboradorId());
 				checkboxes.add(checkBox);
 			}
     	}

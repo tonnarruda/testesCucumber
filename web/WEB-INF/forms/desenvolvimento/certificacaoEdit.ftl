@@ -51,9 +51,9 @@
 			function processaSubmit(){
 				<#if empresaSistema.controlarVencimentoPorCertificacao && certificacao.id?exists>
 					if($('#alterouCertificacao').val() == 'true'){
-						msg = 'Essa operação irá descertificar todos os colaboradores e certificá-los novamente, removendo todos os históricos dos colaboradores ' +
-								'existentes dessa certificação até o momento.</br></br>Obs: Essa operação pode demorar, dependendo da quantidades de dados em seu sistema.' +
-								'</br></br>Tem certeza que deseja efetuar essa alteração?';
+						msg = 'Esta operação irá descertificar todos os colaboradores e certificá-los novamente de acordo com as novas regras pré-estabelecidas, removendo todos os históricos vinculados à certificação.</br></br>'
+								+ 'Obs: Essa operação pode demorar, dependendo da quantidades de dados em seu sistema.</br></br>'
+								+ 'Tem certeza que deseja efetuar essa alteração?';
 						$('<div>'+ msg +'</div>').dialog({	
 										title: 'Alerta!',
 										modal: true, 
@@ -71,8 +71,10 @@
 			}
 			
 			function submit(){
-				processando('${urlImgs}');
-				return validaFormulario('form', new Array('nome', '@cursosCheck'), null);
+				if(validaFormulario('form', new Array('nome', '@cursosCheck'), null, true)){
+					processando('${urlImgs}');
+					document.form.submit();
+				}
 			}
 			
 		</script>

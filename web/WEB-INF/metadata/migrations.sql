@@ -173,10 +173,11 @@ return (
 END; 
 $$ LANGUAGE plpgsql; --.go 
 
-delete from perfil_papel where papeis_id = 463;--.go
+delete from perfil_papel where papeis_id in (463,50,64,6,16,72,15,12,475,66,47,36,29,31,32,13,529,618,634);--.go
 insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (673, 'USUARIO_FORTES', 'Usuário Fortes', '#', 17, true, 37);--.go
 insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (674, 'REPROCESSA_CERTIFICACAO', 'Reprocessar Certificações', '/desenvolvimento/certificacao/prepareReprocessaCertificacao.action', 4, true, 673);--.go
 update papel set papelmae_id = 673 where id in (463, 529, 618, 634);--.go
 update papel set ordem = 1 where id = 529;--.go
 update papel set ordem = 2 where id = 618;--.go
 update papel set ordem = 3 where id = 634;--.go
+alter sequence papel_sequence restart with 675;--.go

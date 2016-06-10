@@ -349,7 +349,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario.setAcessoSistema(true);
-		usuario.setLogin("usuario");
+		usuario.setLogin("usuario" + new Date().getTime());
 		usuarioDao.save(usuario);
 		
 		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
@@ -404,7 +404,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario.setAcessoSistema(true);
-		usuario.setLogin("usuario");
+		usuario.setLogin("usuario" + new Date().getTime());
 		usuarioDao.save(usuario);
 		
 		Colaborador colab = ColaboradorFactory.getEntity();
@@ -436,7 +436,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Usuario usuario = UsuarioFactory.getEntity("usuario", true);
+		Usuario usuario = UsuarioFactory.getEntity("usuario" + new Date().getTime(), true);
 		usuarioDao.save(usuario);
 		
 		Colaborador colab = ColaboradorFactory.getEntity(null, usuario, "colab@gmail.com");
@@ -471,7 +471,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Usuario usuario = UsuarioFactory.getEntity("usuario", true);
+		Usuario usuario = UsuarioFactory.getEntity("usuario" + new Date().getTime(), true);
 		usuarioDao.save(usuario);
 		
 		Colaborador colab = ColaboradorFactory.getEntity(empresa, usuario, "colab@gmail.com");

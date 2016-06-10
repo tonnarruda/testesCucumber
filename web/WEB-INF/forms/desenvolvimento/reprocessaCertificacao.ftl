@@ -21,7 +21,7 @@
 	        		removendo todos os histórico de certificações dos colaboradores existentes até o momento.
 	        	</h4>
 	        	
-	        	<@frt.checkListBox label="Certificações" name="certificacoesCheck" list="certificacoesCheckList"/>
+	        	<@frt.checkListBox label="Certificações" name="certificacoesCheck" list="certificacoesCheckList" filtro="true"/>
 			</@ww.form>
 			<div class="buttonGroup">
 				<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
