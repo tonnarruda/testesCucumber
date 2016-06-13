@@ -119,8 +119,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	public String insert() throws Exception
 	{
 		populaCertificacao();
-		certificacaoManager.save(certificacao);
-		
 		return Action.SUCCESS;
 	}
 
@@ -136,6 +134,9 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	private void populaCertificacao() throws Exception 
 	{
+		if(certificacao.getPeriodicidade() != null && certificacao.getPeriodicidade() == 0)
+			certificacao.setPeriodicidade(null);
+		
 		CollectionUtil<Curso> util = new CollectionUtil<Curso>();
 		certificacao.setCursos(util.convertArrayStringToCollection(Curso.class, cursosCheck));
 		

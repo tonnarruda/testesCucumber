@@ -49,32 +49,39 @@
 			}
 			
 			function processaSubmit(){
-				<#if empresaSistema.controlarVencimentoPorCertificacao && certificacao.id?exists>
-					if($('#alterouCertificacao').val() == 'true'){
-						msg = 'Esta operação irá descertificar todos os colaboradores e certificá-los novamente de acordo com as novas regras pré-estabelecidas, removendo todos os históricos vinculados à certificação.</br></br>'
-								+ 'Obs: Essa operação pode demorar, dependendo da quantidades de dados em seu sistema.</br></br>'
-								+ 'Tem certeza que deseja efetuar essa alteração?';
-						$('<div>'+ msg +'</div>').dialog({	
-										title: 'Alerta!',
-										modal: true, 
-										height: 250,
-										width: 500,
-										buttons: [ 	{ text: "Sim", click: function() {return submit();}},
-										    		{ text: "Não", click: function() {$(this).dialog("close"); } } ] 
-						});
-					}else
-						return submit();
+				$('#periodicidade').css('background-color','#fff');
+				if($('#periodicidade').val() == 0){
+					jAlert('A periodicidade não pode ser 0 (zero)');
+					$('#periodicidade').css('background-color','rgb(255, 238, 194)');
+					return;
+				}
 				
-				<#else>
-					return submit();
-				</#if>
+				if(validaFormulario('form', new Array('nome', '@cursosCheck'), null, true)){
+					<#if empresaSistema.controlarVencimentoPorCertificacao && certificacao.id?exists>
+						if($('#alterouCertificacao').val() == 'true'){
+							msg = 'Esta operação irá descertificar todos os colaboradores e certificá-los novamente de acordo com as novas regras pré-estabelecidas, removendo todos os históricos vinculados à certificação.</br></br>'
+									+ 'Obs: Essa operação pode demorar, dependendo da quantidades de dados em seu sistema.</br></br>'
+									+ 'Tem certeza que deseja efetuar essa alteração?';
+							$('<div>'+ msg +'</div>').dialog({	
+											title: 'Alerta!',
+											modal: true, 
+											height: 250,
+											width: 500,
+											buttons: [ 	{ text: "Sim", click: function() {$(this).dialog("close"); return submit();}},
+											    		{ text: "Não", click: function() {$(this).dialog("close"); } } ] 
+							});
+						}else
+							return submit();
+					
+					<#else>
+						return submit();
+					</#if>
+				}
 			}
 			
 			function submit(){
-				if(validaFormulario('form', new Array('nome', '@cursosCheck'), null, true)){
-					processando('${urlImgs}');
-					document.form.submit();
-				}
+				processando('${urlImgs}');
+				document.form.submit();
 			}
 			
 		</script>

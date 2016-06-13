@@ -333,7 +333,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 					if(cetificadosVencidos )
 						ultimoColaboradorCertificacao.add(Expression.sqlRestriction("(this0__.data + ("+alias+".periodicidade || ' month')::interval) < '" + DateUtil.formataDiaMesAno(new Date()) + "' ", new String[]{}, new Type[]{}));
 					else
-						ultimoColaboradorCertificacao.add(Expression.sqlRestriction(alias+".periodicidade is null or (this0__.data + ("+alias+".periodicidade || ' month')::interval) >= '" + DateUtil.formataDiaMesAno(new Date()) + "' ", new String[]{}, new Type[]{}));
+						ultimoColaboradorCertificacao.add(Expression.sqlRestriction("( " + alias+".periodicidade is null or (this0__.data + ("+alias+".periodicidade || ' month')::interval) >= '" + DateUtil.formataDiaMesAno(new Date()) + "' )", new String[]{}, new Type[]{}));
 				}
 		
 		return ultimoColaboradorCertificacao;
@@ -453,7 +453,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 	    criteria.add(Subqueries.propertyEq("cc.data", dataChedUltimoColaboradorCertificacao(dataIni, dataFim, mesesCertificacoesAVencer, "cert7_", certificacaoVencida)));
 	    criteria.add(Expression.in("cc.certificacao.id",certificacoesIds));
 		situacaoColaborador(situacaoColaborador, criteria, "c");	    
-	    criteria.addOrder(Order.asc("c.nome"));
+	    criteria.addOrder(Order.asc("c.nome")).addOrder(Order.asc("cu.nome"));
 	    criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	    criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
 		return criteria.list();
@@ -498,7 +498,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		
 		criteria.add(Subqueries.propertyEq("hc.data", ultimoHistoricoColaborador));
 	    situacaoColaborador(situacaoColaborador, criteria, "c");
-	    criteria.addOrder(Order.asc("c.nome"));
+	    criteria.addOrder(Order.asc("c.nome")).addOrder(Order.asc("cu.nome"));
 	    criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	    criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
 		return criteria.list();

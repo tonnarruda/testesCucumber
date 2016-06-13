@@ -80,7 +80,7 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
 		colaboradorTurmaManager.expects(atLeastOnce()).method("findByProjection").with(ANYTHING).will(returnValue(colaboradorTurma));
 
-		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
+		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
 	}
 
 	public void testSaveNotas() throws Exception
@@ -105,7 +105,7 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").withAnyArguments().isVoid();
 		colaboradorTurmaManager.expects(atLeastOnce()).method("findByProjection").with(ANYTHING).will(returnValue(colaboradorTurma));
 		
-		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
+		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
 	}
 	
 	public void testSaveNotasComConfiguracaoPeriodicidadePorCertificacao() throws Exception
@@ -128,7 +128,7 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(null));
 		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").withAnyArguments().isVoid();
 		colaboradorTurmaManager.expects(atLeastOnce()).method("findByProjection").with(ANYTHING).will(returnValue(colaboradorTurma));
-		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, true);
+		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
 	}
 	
 	public void testSaveNotas2()
@@ -177,7 +177,7 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		Exception exc = null;
 		try
 		{
-			aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);			
+			aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);			
 		}
 		catch (Exception e)
 		{

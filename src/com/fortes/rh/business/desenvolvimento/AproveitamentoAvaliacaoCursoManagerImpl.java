@@ -1,5 +1,6 @@
 package com.fortes.rh.business.desenvolvimento;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -13,17 +14,17 @@ import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
 import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
-import com.fortes.rh.thread.certificaColaboradorThread;
 import com.fortes.rh.util.SpringUtil;
 
 public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<AproveitamentoAvaliacaoCurso, AproveitamentoAvaliacaoCursoDao> implements AproveitamentoAvaliacaoCursoManager
 {
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
-	private CertificacaoManager certificacaoManager;
 
-	public void saveNotas(Long[] colaboradorTurmaIds, String[] notas, AvaliacaoCurso avaliacaoCurso, boolean validarCertificacao) throws Exception
+	public Collection<Long> saveNotas(Long[] colaboradorTurmaIds, String[] notas, AvaliacaoCurso avaliacaoCurso) throws Exception
 	{
+		Collection<Long> colaboradoresTurmasIds = new ArrayList<Long>();
+		
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
@@ -40,17 +41,14 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 				colabTurma.setId(colaboradorTurmaIds[i]);
 				
 				AproveitamentoAvaliacaoCurso aproveitamento = new AproveitamentoAvaliacaoCurso(colabTurma, avaliacaoCurso, valor);
-				
 				saveOrUpdate(aproveitamento, colaboradorTurmaManager);
-				getDao().getHibernateTemplateByGenericDao().flush();
 
-				if(validarCertificacao)
-					new certificaColaboradorThread(colaboradorCertificacaoManager, colabTurma.getId(), certificacaoManager).start();
+				colaboradoresTurmasIds.add(colabTurma.getId());
 			}
-
+			
 			transactionManager.commit(status);
-		}
-		catch (Exception e)
+			return colaboradoresTurmasIds;
+		}catch (Exception e)
 		{
 			transactionManager.rollback(status);
 			e.printStackTrace();
@@ -159,9 +157,5 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 	public void setColaboradorCertificacaoManager(
 			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
-	}
-
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager) {
-		this.certificacaoManager = certificacaoManager;
 	}
 }

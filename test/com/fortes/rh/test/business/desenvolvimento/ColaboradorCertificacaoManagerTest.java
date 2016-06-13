@@ -184,12 +184,8 @@ public class ColaboradorCertificacaoManagerTest
 		
 		when(certificacaoManager.findCollectionByIdProjection(certificacoesIds)).thenReturn(certificacoes);
 		when(avaliacaoPraticaManager.findMapByCertificacaoId(certificacoesIds)).thenReturn(mapAvaliacoesPraticas);
-		
-		
-		when(colaboradorCertificacaoDao.findColaboradoresCertificados(dataIni, dataFim, null, new Long[]{certificacao1.getId()}, null,  null, new Long[]{colab1.getId()}, null, null)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoDao.findColaboradoresCertificados(dataIni, dataFim, null, new Long[]{certificacao1.getId()}, null,  null, new Long[]{colab1.getId()}, null, false)).thenReturn(colaboradorCertificacaos);
 		when(colaboradorCertificacaoDao.findColaboradoresQueParticipamDaCertificacao(new Long[]{certificacao1.getId()}, null, null, new Long[]{colab1.getId()}, null, colabIds)).thenReturn(colaboradorCertificacaos);
-		
-		
 		when(certificacaoManager.findCursosByCertificacaoId(certificacao1.getId())).thenReturn(cursos);
 		when(colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacao1.getId(), colaboradoresIds)).thenReturn(mapColaboradorAvaliacoesPraticas);
 

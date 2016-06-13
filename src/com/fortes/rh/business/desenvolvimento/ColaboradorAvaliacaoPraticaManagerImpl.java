@@ -39,4 +39,8 @@ public class ColaboradorAvaliacaoPraticaManagerImpl extends GenericManagerImpl<C
 	public void setColaboradorCertificacoNull(Long[] colaboradorCertificacoesIds) {
 		getDao().setColaboradorCertificacoNull(colaboradorCertificacoesIds);
 	}
+
+	public void removeByCertificacaoId(Long certificacaoId) {
+		getDao().removeByCertificacaoId(certificacaoId);
+	}
 }

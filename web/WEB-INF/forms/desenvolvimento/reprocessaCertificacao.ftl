@@ -17,8 +17,8 @@
 			<@ww.form name="form" action="reprocessaCertificacao" onsubmit="${validarCampos}" method="POST">
 	        	<h4>
 	        		OBS:</br>
-	       			Essa operação irá descertificar todos os colaboradores e certificá-los novamente, <br/>
-	        		removendo todos os histórico de certificações dos colaboradores existentes até o momento.
+	        		Esta operação irá descertificar todos os colaboradores e certificá-los novamente de acordo  <br/> 
+	        		com as novas regras pré-estabelecidas, removendo todos os históricos vinculados à certificação
 	        	</h4>
 	        	
 	        	<@frt.checkListBox label="Certificações" name="certificacoesCheck" list="certificacoesCheckList" filtro="true"/>

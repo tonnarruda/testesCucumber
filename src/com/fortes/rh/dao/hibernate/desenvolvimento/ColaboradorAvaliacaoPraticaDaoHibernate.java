@@ -100,4 +100,11 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 		query.setParameterList("colaboradorCertificacoesIds", colaboradorCertificacoesIds, Hibernate.LONG);
 		query.executeUpdate();
 	}
+
+	public void removeByCertificacaoId(Long certificacaoId) {
+		String hql = "delete from ColaboradorAvaliacaoPratica cap where cap.certificacao.id = :certificacaoId ";
+		Query query = getSession().createQuery(hql);
+		query.setLong("certificacaoId", certificacaoId);
+		query.executeUpdate();
+	}
 }

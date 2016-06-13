@@ -55,6 +55,7 @@ import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
+import com.fortes.rh.thread.certificaColaboradorThread;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -545,9 +546,13 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public String saveAproveitamentoCurso()
 	{
-		try
-		{
-			aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, getEmpresaSistema().isControlarVencimentoPorCertificacao());
+		try	{
+			Collection<Long> colaboradoresTurmasIds = aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
+		
+			if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
+				for (Long colabTurmaId : colaboradoresTurmasIds) 
+					new certificaColaboradorThread(colaboradorCertificacaoManager, colabTurmaId, certificacaoManager).start();
+			
 			addActionSuccess("Aproveitamento/Notas salvos com sucesso.");
 			prepareAproveitamento();
 			return Action.SUCCESS;
