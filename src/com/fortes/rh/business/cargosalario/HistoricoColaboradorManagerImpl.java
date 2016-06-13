@@ -1059,8 +1059,14 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		historicoColaborador.setData(situacao.getDataFormatada());
 		historicoColaborador.setEstabelecimento(estabelecimentoManager.findEstabelecimentoByCodigoAc(situacao.getEstabelecimentoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC()));
+		if ( historicoColaborador.getEstabelecimento() == null )
+			throw new Exception("Não foi possível realizar a operação. Estabelecimento não existe no RH.");
 		historicoColaborador.setAreaOrganizacional(areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(situacao.getLotacaoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC()));
+		if ( historicoColaborador.getAreaOrganizacional() == null )
+			throw new Exception("Não foi possível realizar a operação. Área organizacional não existe no RH.");
 		historicoColaborador.setFaixaSalarial(faixaSalarialManager.findFaixaSalarialByCodigoAc(situacao.getCargoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC()));
+		if ( historicoColaborador.getFaixaSalarial() == null )
+			throw new Exception("Não foi possível realizar a operação. Faixa salarial não existe no RH.");
 
 		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.getValor(situacao.getTipoSalario()));
 		historicoColaborador.setGfip(situacao.getExpAgenteNocivo());
