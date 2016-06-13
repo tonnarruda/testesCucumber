@@ -1154,6 +1154,20 @@
       <ref bean="testemunhaManagerTarget" />
     </property>
   </bean>
+  <bean id="ordemDeServicoManagerTarget" class="com.fortes.rh.business.sesmt.OrdemDeServicoManagerImpl">
+    <property name="dao">
+      <ref bean="ordemDeServicoDao" />
+    </property>
+  </bean>
+  <bean id="ordemDeServicoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.OrdemDeServicoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="ordemDeServicoManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 

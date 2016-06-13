@@ -418,7 +418,9 @@
   <include file="/com/fortes/rh/web/action/desenvolvimento/xwork-ColaboradorAvaliacaoPratica.xml" />
   <include file="/com/fortes/rh/web/action/captacao/xwork-NivelCompetenciaHistorico.xml" />
   <include file="/com/fortes/rh/web/action/captacao/xwork-ConfigHistoricoNivel.xml" />
+  <include file="/com/fortes/rh/web/action/sesmt/xwork-OrdemDeServico.xml" />
 </xwork>
+
 
 
 

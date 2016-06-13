@@ -2221,6 +2221,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		this.funcao = funcao;
 	}
+	public void setFuncaoId(Long funcaoId){
+		if(this.funcao == null)
+			this.funcao = new Funcao();
+		funcao.setId(funcaoId);
+	}
 	public Collection<HistoricoColaborador> getHistoricoColaboradors()
 	{
 		return historicoColaboradors;

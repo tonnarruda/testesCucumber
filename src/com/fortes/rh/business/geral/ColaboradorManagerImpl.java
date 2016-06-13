@@ -107,6 +107,7 @@ import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -119,6 +120,7 @@ import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, ColaboradorDao> implements ColaboradorManager
@@ -2956,5 +2958,29 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
 		this.solicitacaoExameManager = solicitacaoExameManager;
+	}
+
+	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Usuario usuarioLogado, String situacao, Boolean possuiOrdemDeServico, int page, int pagingSize) {
+		Long[] areasIdsPorResponsavel = populaAreasIds(colaborador.getEmpresa(), usuarioLogado);
+		return getDao().findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, areasIdsPorResponsavel, situacao, possuiOrdemDeServico, page, pagingSize);
+	}
+
+	public Integer getCountColaboradorComESemOrdemDeServico( Colaborador colaborador, HistoricoColaborador historicoColaborador, Usuario usuarioLogado, String situacao, Boolean possuiOrdemDeServico) {
+		Long[] areasIdsPorResponsavel = populaAreasIds(colaborador.getEmpresa(), usuarioLogado);
+		return getDao().findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, areasIdsPorResponsavel, situacao, possuiOrdemDeServico, 0, 0).size();
+	}
+
+	/**
+	 * Se a variável areasIdsPorResponsavel for inicializada com o seguinte valor: new Long[]{-1L}, segnifica que o usuário não é responsável por nenhuma área organizacional, 
+	 * 		não tem permissão de visualizar todos os colaboradores e não é usuário Fortes. Desta forma, a consulta não poderá encontrar nenhum colaborador.
+	 */
+	private Long[] populaAreasIds(Empresa empresa, Usuario usuarioLogado) {
+		Long[] areasIdsPorResponsavel = null;
+		if(usuarioLogado.getId() != 1L && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COLAB_VER_TODOS"})){
+			areasIdsPorResponsavel = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuarioLogado.getId(), empresa.getId());
+			if(areasIdsPorResponsavel.length == 0)
+				areasIdsPorResponsavel = new Long[]{-1L};
+		}
+		return areasIdsPorResponsavel;
 	}
 }

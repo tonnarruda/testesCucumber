@@ -213,5 +213,7 @@
     <mapping class="com.fortes.rh.model.avaliacao.AvaliacaoPratica" />
     
     <mapping class="com.fortes.rh.model.ws.Token" />
+      <mapping class="com.fortes.rh.model.sesmt.OrdemDeServico" />
   </session-factory>
+
 </hibernate-configuration>

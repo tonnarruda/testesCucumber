@@ -340,7 +340,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="ordemDeServicoDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.OrdemDeServicoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

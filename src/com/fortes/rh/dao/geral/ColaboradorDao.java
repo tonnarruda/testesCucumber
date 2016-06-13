@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
@@ -149,4 +150,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId);
 	public Integer countDemitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean reducaoDeQuadro);
 	public boolean existeColaboradorAtivo(String cpf, Date data);
+	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] areaIds, String situacao, Boolean possuiOrdemDeServico, int page, int pagingSize);
 }

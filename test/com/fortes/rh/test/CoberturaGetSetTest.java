@@ -235,6 +235,7 @@ import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.MedidaSeguranca;
 import com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi;
 import com.fortes.rh.model.sesmt.Obra;
+import com.fortes.rh.model.sesmt.OrdemDeServico;
 import com.fortes.rh.model.sesmt.Pcmat;
 import com.fortes.rh.model.sesmt.Prontuario;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
@@ -983,6 +984,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new ConfigHistoricoNivel());
 		cobreGetSet(new NivelCompetenciaHistorico());
 		cobreGetSet(new AreaOrganizacionalManagerImpl());
+		cobreGetSet(new OrdemDeServico());
 	}
 	
 	private void cobreGetSet(Object obj)

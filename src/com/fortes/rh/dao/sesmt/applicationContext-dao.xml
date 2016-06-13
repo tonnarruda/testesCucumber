@@ -521,7 +521,16 @@
       <ref bean="testemunhaDaoTarget" />
     </property>
   </bean>  
+  <bean id="ordemDeServicoDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.OrdemDeServicoDao</value>
+    </property>
+    <property name="target">
+      <ref bean="ordemDeServicoDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

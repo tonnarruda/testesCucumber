@@ -165,6 +165,7 @@ import com.fortes.rh.test.business.sesmt.MedicoCoordenadorManagerTest;
 import com.fortes.rh.test.business.sesmt.MedidaSegurancaManagerTest;
 import com.fortes.rh.test.business.sesmt.NaturezaLesaoManagerTest;
 import com.fortes.rh.test.business.sesmt.ObraManagerTest;
+import com.fortes.rh.test.business.sesmt.OrdemDeServicoManagerTest;
 import com.fortes.rh.test.business.sesmt.PcmatManagerTest;
 import com.fortes.rh.test.business.sesmt.PcmsoManagerTest;
 import com.fortes.rh.test.business.sesmt.ProntuarioManagerTest;
@@ -340,6 +341,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.MedidaSegurancaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.MotivoSolicitacaoEpiDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.NaturezaLesaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ObraDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.OrdemDeServicoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.PcmatDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ProntuarioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.RealizacaoExameDaoHibernateTest;
@@ -610,6 +612,7 @@ import com.fortes.rh.test.web.action.sesmt.MedidaSegurancaEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.MotivoSolicitacaoEpiEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.NaturezaLesaoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ObraEditActionTest;
+import com.fortes.rh.test.web.action.sesmt.OrdemDeServicoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.PcmatEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.PcmsoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.PppEditActionTest;
@@ -1303,6 +1306,10 @@ import com.fortes.test.web.tags.LinkTagTest;
 	TipoTamanhoEPIDaoHibernateTest.class,
 	TipoEpiEditActionTest.class,
 	TipoEpiListActionTest.class,
+	
+	OrdemDeServicoDaoHibernateTest.class,
+	OrdemDeServicoManagerTest.class,
+	OrdemDeServicoEditActionTest.class,
 	        
     // UTILITARIOS
 	AutenticadorTest.class,
