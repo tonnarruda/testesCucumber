@@ -264,14 +264,13 @@
 					</#if>
 				</#if>
 				
-				<#if colaborador.dataSolicitacaoDesligamentoAc?exists && empresaSistema.acIntegra>
+				<#if colaborador.dataSolicitacaoDesligamentoAc?exists && empresaSistema.acIntegra && colaborador.id != colaboradorLogadoId>
 					<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_ENTREVISTA"><!--Tem que existir esse authorize devido a um bug. Não remover-->
 						<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="${linkEntrevista}"	imgTitle="${imgTitleEntrevista}" imgName="${imgRespondeuEntrevista}" opacity=opacityEntrevista />
 					</@authz.authorize>	
 				<#else>
 					<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="javascript:;" imgTitle="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" imgName="entrevistaBalaoDesligaNova.gif" opacity=true/>
 				</#if>
-				
 			<#else>
 				<#assign statusSolicitacao="I"/>
 				<#if colaborador.dataDesligamento?exists && !colaborador.motivoDemissao.motivo?exists>

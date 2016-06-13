@@ -14,7 +14,6 @@
 				jAlert("A data de desligamento não pode ser anterior à data de admissão\nData de admissão: ${colaborador.dataAdmissao?string}");
 				return false;
 			}
-		
 			
 			if(validaFormulario('form', new Array('data','motivoId'), new Array('data'), true))
 			{
