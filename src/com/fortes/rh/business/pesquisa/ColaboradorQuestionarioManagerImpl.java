@@ -536,8 +536,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 					break;
 				}
 			}
+			
 			if(!existe){
-				getDao().remove(colaboradorQuestionarioExistenteAvDesempenho);
+				getDao().remove(colaboradorQuestionarioExistenteAvDesempenho.getId());
 				colaboradorQuestionarios.remove(colaboradorQuestionariosExistentesAvDesempenho);
 			}
 		}

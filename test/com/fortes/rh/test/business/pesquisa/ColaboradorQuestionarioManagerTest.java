@@ -516,7 +516,7 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
     	colaboradorQuestionariosASalvar.add(colaboradorQuestionarioB);
     	
     	colaboradorQuestionarioDao.expects(once()).method("findByAvaliacaoDesempenho").withAnyArguments().will(returnValue(colaboradorQuestionariosExistentesAvDesempenho));
-    	colaboradorQuestionarioDao.expects(once()).method("remove").with(eq(colaboradorQuestionarioAv2)).isVoid();
+    	colaboradorQuestionarioDao.expects(once()).method("remove").with(eq(colaboradorQuestionarioAv2.getId())).isVoid();
     	colaboradorQuestionarioDao.expects(once()).method("saveOrUpdate").with(eq(colaboradorQuestionariosASalvar)).isVoid();
 
     	Exception re = null;

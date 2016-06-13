@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.1xx.1xx" db="" data="xx/xx/2016">
+		<Item visivel="S" motivo="16060000093"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Correção de inconsistência ao remover colaborador a ser avaliado.]]></Item>
+	</Versao>
 	<Versao id="1.1.167.199" db="" data="08/06/2016">
 		<Item visivel="S" motivo="P16050000186"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Organograma > imprimir: Ajuste de inconsistência ao imprimir o organograma.]]></Item>
 		<Item visivel="S" motivo="P16030000325"><![CDATA[Info Funcionais > Movimentações > Ocorrência: Ajuste de inconsistência no período da ocorrência quando integrago com o sistema Fortes Pessoal.]]></Item>
