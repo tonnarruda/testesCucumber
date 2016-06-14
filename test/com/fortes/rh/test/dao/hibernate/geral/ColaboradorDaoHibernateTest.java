@@ -81,6 +81,7 @@ import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.EstadoCivil;
+import com.fortes.rh.model.dicionario.FiltroOrdemDeServico;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -1888,7 +1889,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
-		Colaborador colaborador1 = saveColaborador(empresa, "Pedro Jose", "12e3456789", null, null);
+		Colaborador colaborador1 = saveColaborador(empresa, "Pedro Jose", "12e3456789", "000", null);
 		Colaborador colaborador2 = saveColaborador(empresa, "Maria", "123", null, null);
 
 		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
@@ -6591,7 +6592,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertNull(colaboradorDao.findEntidadeComAtributosSimplesById(-1L));
 		
 		String qtdTabelasComColaborador = JDBCConnection.executeQuery("SELECT COUNT(kcu.column_name) FROM information_schema.table_constraints AS tc INNER JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name INNER JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND ccu.table_name = 'colaborador'");
-		assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em ColaboradorDaoHibernate.removeComDependencias", "34", qtdTabelasComColaborador);
+		assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em ColaboradorDaoHibernate.removeComDependencias", "35", qtdTabelasComColaborador);
 	}
 	
 	public void testFindUsuarioByAreaEstabelecimento()
@@ -6926,6 +6927,88 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertFalse(colaboradorDao.existeColaboradorAtivo("12345678912", DateUtil.criarDataMesAno(02, 04, 2016)));
 	}
 	
+	public void testFindColaboradorComESemOrdemDeServico() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
+		Cargo cargo = saveCargo();
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
+		
+		Colaborador colaborador = saveColaborador(empresa, "Francisco", "000122", "04404404433", null);
+		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, DateUtil.criarDataMesAno(02, 04, 2016), 1);
+		
+		Colaborador colaboradorBusca = ColaboradorFactory.getEntity(1L, "cisc", null, "0012", null, "044", empresa);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaboradorBusca, DateUtil.criarDataMesAno(02, 04, 2016), faixaSalarial, estabelecimento, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
+		Long[] idsAreasDoGestor = {areaOrganizacional.getId()};
+
+		Collection<Colaborador> colaboradores = colaboradorDao.findColaboradorComESemOrdemDeServico(colaboradorBusca, historicoColaborador, idsAreasDoGestor, SituacaoColaborador.ATIVO, FiltroOrdemDeServico.TODOS, 0, 0);
+		assertEquals(1, colaboradores.size());
+	}
+	
+	public void testFindColaboradorComESemOrdemDeServicoSemDadosDoHistorico() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
+		Cargo cargo = saveCargo();
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
+		
+		Colaborador colaborador = saveColaborador(empresa, "Francisco", "000122", "04404404433", null);
+		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, DateUtil.criarDataMesAno(02, 04, 2016), 1);
+		
+		Colaborador colaboradorBusca = ColaboradorFactory.getEntity(1L, "Francisco", null, "0012", null, "04404404433", empresa);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+
+		Collection<Colaborador> colaboradores = colaboradorDao.findColaboradorComESemOrdemDeServico(colaboradorBusca, historicoColaborador, null, SituacaoColaborador.DESLIGADO, FiltroOrdemDeServico.TODOS, 1, 15);
+		assertEquals(0, colaboradores.size());
+	}
+	
+	public void testFindColaboradorComESemOrdemDeServicoFiltrandoPelasAreasQueOGestorEResponsavel() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
+		Cargo cargo = saveCargo();
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
+		
+		Long[] idsAreasDoGestor = {areaOrganizacional.getId()};
+		
+		Colaborador colaborador = saveColaborador(empresa, "Francisco", "000122", "04404404433", null);
+		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, DateUtil.criarDataMesAno(02, 04, 2016), 1);
+		
+		Colaborador colaboradorBusca = ColaboradorFactory.getEntity(1L, "Francisco", null, "0012", null, "04404404433", empresa);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+
+		Collection<Colaborador> colaboradores = colaboradorDao.findColaboradorComESemOrdemDeServico(colaboradorBusca, historicoColaborador, idsAreasDoGestor, SituacaoColaborador.TODOS, FiltroOrdemDeServico.SEM_ORDEM_DE_SERVICO, 0, 0);
+		assertEquals(1, colaboradores.size());
+	}
+	
+	public void testFindColaboradorComESemOrdemDeServicoFiltrandoPelasAreasQueOGestorEResponsavelAreasSemColaborador() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
+		Cargo cargo = saveCargo();
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
+		
+		Long[] idsAreasDoGestor = {2L};
+		
+		Colaborador colaborador = saveColaborador(empresa, "Francisco", "000122", "04404404433", null);
+		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, DateUtil.criarDataMesAno(02, 04, 2016), 1);
+		
+		Colaborador colaboradorBusca = new Colaborador();
+		colaboradorBusca.setEmpresa(empresa);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+
+		Collection<Colaborador> colaboradores = colaboradorDao.findColaboradorComESemOrdemDeServico(colaboradorBusca, historicoColaborador, idsAreasDoGestor, SituacaoColaborador.TODOS, FiltroOrdemDeServico.COM_ORDEM_DE_SERVICO, 0, 0);
+		assertEquals(0, colaboradores.size());
+	}
+	
 	private FaixaSalarial saveFaixaSalarial(Cargo cargo){
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarial.setCargo(cargo);
@@ -6987,6 +7070,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setNome(nome);
 		colaborador.setMatricula(matricula);
 		colaborador.setDataAdmissao(admissao);
+		colaborador.setPessoalCpf(cpf);
 		colaboradorDao.save(colaborador);
 		return colaborador;
 	}

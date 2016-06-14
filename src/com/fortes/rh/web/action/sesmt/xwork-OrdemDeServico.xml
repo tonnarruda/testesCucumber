@@ -3,10 +3,9 @@
 
 <xwork>
 	<package name="ordemDeServico" extends="default" namespace="/sesmt/ordemDeServico">
-		<action name="listColaboradores" class="com.fortes.rh.web.action.sesmt.OrdemDeServicoEditAction" method="listColaboradores">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/colaboradoresOrdemDeServicoList.ftl</result>
+		<action name="listGerenciamentoOS" class="com.fortes.rh.web.action.sesmt.OrdemDeServicoEditAction" method="listGerenciamentoOS">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/gerenciamentoOrdemDeServicoList.ftl</result>
 		</action>
-		
 		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.OrdemDeServicoEditAction" method="updateFilter">
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>

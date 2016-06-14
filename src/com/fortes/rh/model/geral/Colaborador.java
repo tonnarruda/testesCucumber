@@ -54,6 +54,7 @@ import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.model.sesmt.OrdemDeServico;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SalarioUtil;
@@ -138,7 +139,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorPeriodoExperienciaAvaliacaos; 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
-	private Collection<ComissaoMembro> comissaoMembros; 
+	private Collection<ComissaoMembro> comissaoMembros;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
+	private Collection<OrdemDeServico> ordensDeServico;
 
 	@OneToOne(optional=true)
 	private Candidato candidato;
@@ -3080,5 +3083,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setProdutividade(Double produtividade) {
 		this.produtividade = produtividade;
+	}
+
+	public Collection<OrdemDeServico> getOrdensDeServico() {
+		return ordensDeServico;
+	}
+
+	public void setOrdensDeServico(Collection<OrdemDeServico> ordensDeServico) {
+		this.ordensDeServico = ordensDeServico;
 	}
 }

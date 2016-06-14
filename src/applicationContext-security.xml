@@ -667,8 +667,8 @@
 				/sesmt/epiPcmat/*/**=ROLE_MOV_PCMAT
 				/sesmt/epcPcmat/*/**=ROLE_MOV_PCMAT
 				/sesmt/sinalizacaoPcmat/*/**=ROLE_MOV_PCMAT
-				/sesmt/ordemDeServico/listColaboradores=ROLE_MOV_ORDEM_DE_SERVICO
-				/sesmt/ordemDeServico/list/*/**=ROLE_MOV_ORDEM_DE_SERVICO
+				/sesmt/ordemDeServico/listGerenciamentoOS.action*=ROLE_MOV_ORDEM_DE_SERVICO
+				/sesmt/ordemDeServico/list.action*=ROLE_MOV_ORDEM_DE_SERVICO
 				
 				/avaliacao/periodoExperiencia/prepareRelatorioAcompanhamento**=ROLE_REL_ACOMP_EXPERIENCIA_PREVISTO, ROLE_REL_ACOMP_PERIODO_EXPERIENCIA
 				/avaliacao/periodoExperiencia/imprimeRelatorioPeriodoDeAcompanhamento**=ROLE_REL_ACOMP_PERIODO_EXPERIENCIA

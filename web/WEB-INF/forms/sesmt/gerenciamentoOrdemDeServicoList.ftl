@@ -40,22 +40,22 @@
 		}
 	</script>
 
-	<title>Gerenciamento das Ordens de Serviço dos Colaboradores</title>
+	<title>Gerenciamento de Ordem de Serviço</title>
 </head>
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
 
 	<#include "../util/topFiltro.ftl" />
-	<@ww.form name="form" id="form" action="listColaboradores.action" method="POST">
+	<@ww.form name="form" id="form" action="listGerenciamentoOS.action" method="POST">
 		<table>
 				<tr>
 					<td width="370">
+						<@ww.textfield label="Colaborador" name="colaborador.nome" id="nomeBusca" cssStyle="width: 353px;"/>
 						<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matriculaBusca" liClass="liLeft" cssStyle="width: 226px;"/>
 						<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpfBusca" cssClass="mascaraCpf"/>
-						<@ww.textfield label="Nome" name="colaborador.nome" id="nomeBusca" cssStyle="width: 353px;"/>
-						<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" cssStyle="width: 355px;"/>
-						<@ww.select label="Possui Ordem de Serviço" name="possuiOrdemDeServico" id="possuiOrdemDeServico" list="situacaos" cssStyle="width: 355px;"/>
+						<@ww.select label="Situação" name="situacao" id="situacao" list="situacoes" cssStyle="width: 355px;"/>
+						<@ww.select label="Considerar colaboradores" name="filtroOrdemDeServico" id="filtroOrdemDeServico" list="filtrosOrdemDeServico" cssStyle="width: 355px;"/>
 					</td>
 					<td>
 						<@ww.select label="Área Organizacional" name="historicoColaborador.areaOrganizacional.id" id="areaOrganizacional" list="areasList"  listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
@@ -72,14 +72,14 @@
 	<br>
 
 	<@display.table name="colaboradores" id="colaborador" class="dados">
-		<@display.column title="Ações" class="acao" style = "width:95px";>
+		<@display.column title="Ações" class="acao" style="width:95px";>
 			<#if colaborador.funcao?exists && colaborador.funcao.id?exists>
-				<@frt.link href="list.action?colaborador.id=${colaborador.id}" imgTitle="Ordens de Serviço(OS)" imgName="edit.gif"/>
+				<@frt.link href="list.action?colaborador.id=${colaborador.id}" imgTitle="Ordens de Serviço(OS)" imgName="folhaCheia.gif"/>
 			<#else>
-				<@frt.link href="list.action?colaborador.id=${colaborador.id}" imgTitle="Colaborador sem função no histórico." imgName="edit.gif" disabled=true />
+				<@frt.link href="list.action?colaborador.id=${colaborador.id}" imgTitle="Colaborador sem função no histórico." imgName="folhaCheia.gif" disabled=true />
 			</#if>
 		</@display.column>
-		<@display.column property="nome" title="Nome"/>
+		<@display.column property="nome" title="Colaborador"/>
 		<@display.column property="pessoal.cpf" title="CPF"/>
 
 	</@display.table>

@@ -235,6 +235,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void getRemuneracaoVariavelFromAcPessoalByColaboradores(Collection<Colaborador> colaboradores) throws Exception;
 	public Collection<Colaborador> findComAnoDeEmpresa(Long empresaId, Date data);
 	public boolean existeColaboradorAtivo(String cpf, Date data);
-	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Usuario usuarioLogado, String situacao, Boolean possuiOrdemDeServico, int page, int pagingSize);
-	public Integer getCountColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Usuario usuarioLogado, String situacao, Boolean possuiOrdemDeServico);
+	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] idsAreasPermitidas, String situacao, String filtroOrdemDeServico, int page, int pagingSize);
+	public Integer getCountColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] idsAreasPermitidas, String situacao, String filtroOrdemDeServico);
 }

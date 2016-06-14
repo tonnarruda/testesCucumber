@@ -58,6 +58,7 @@ import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EscolaridadeACPessoal;
+import com.fortes.rh.model.dicionario.FiltroOrdemDeServico;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
@@ -1782,6 +1783,11 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	assertNotNull(exception);
     }
 
+    public void testGetCountColaboradorComESemOrdemDeServico() {
+    	colaboradorDao.expects(once()).method("findColaboradorComESemOrdemDeServico").withAnyArguments().will(returnValue(Arrays.asList(ColaboradorFactory.getEntity())));
+    	assertEquals(new Integer(1), manager.getCountColaboradorComESemOrdemDeServico(colaborador, null, null, SituacaoColaborador.ATIVO, FiltroOrdemDeServico.TODOS));
+	}
+    
 	public void testExecutaTesteAutomaticoDoManager() 
 	{
 		testeAutomatico(colaboradorDao);		

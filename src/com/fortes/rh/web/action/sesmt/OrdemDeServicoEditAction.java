@@ -9,65 +9,83 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.OrdemDeServicoManager;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.FiltroOrdemDeServico;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.OrdemDeServico;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
+@SuppressWarnings("rawtypes")
 public class OrdemDeServicoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private OrdemDeServicoManager ordemDeServicoManager;
-	private OrdemDeServico ordemDeServico;
-	private Collection<OrdemDeServico> ordemDeServicos = new ArrayList<OrdemDeServico>();
-	
-	private Collection<Colaborador> colaboradores;
-	private ColaboradorManager colaboradorManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
+	private OrdemDeServicoManager ordemDeServicoManager;
+	private UsuarioEmpresaManager usuarioEmpresaManager;
+	private ColaboradorManager colaboradorManager;
 	private CargoManager cargoManager;
-	private Colaborador colaborador = new Colaborador();
-	private HistoricoColaborador historicoColaborador = new HistoricoColaborador();
-	
+
 	private Collection<Estabelecimento> estabelecimentosList = new ArrayList<Estabelecimento>();
 	private Collection<AreaOrganizacional> areasList = new ArrayList<AreaOrganizacional>();
+	private Collection<OrdemDeServico> ordensDeServico = new ArrayList<OrdemDeServico>();
+	private HistoricoColaborador historicoColaborador = new HistoricoColaborador();
 	private Collection<Cargo> cargosList = new ArrayList<Cargo>();
+	private Collection<Colaborador> colaboradores;
 	
-	@SuppressWarnings("rawtypes")
-	private Map situacaos = new SituacaoColaborador();
-	private String situacao = SituacaoColaborador.getAtivo();
-	Boolean possuiOrdemDeServico;
+	private OrdemDeServico ordemDeServico;
+	private Colaborador colaborador = new Colaborador();
 	
+	private Map situacoes = new SituacaoColaborador();
+	private Map filtrosOrdemDeServico = new FiltroOrdemDeServico();
+	private String situacao = SituacaoColaborador.ATIVO;
+	private String filtroOrdemDeServico = FiltroOrdemDeServico.TODOS;
 
-	public String listColaboradores() throws Exception
+	public String listGerenciamentoOS() throws Exception
 	{
-		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, getEmpresaSistema().getId());
-		areasList = areaOrganizacionalManager.montaFamilia(areaOrganizacionalsTmp);
-		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
-		areasList = cu1.sortCollectionStringIgnoreCase(areasList, "descricao");
+		setAreasPermitidas();
 		estabelecimentosList = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		cargosList = cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, getEmpresaSistema().getId());
 		
 		colaborador.setEmpresa(getEmpresaSistema());
-		setTotalSize(colaboradorManager.getCountColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, getUsuarioLogado(), situacao, possuiOrdemDeServico));
-		colaboradores = colaboradorManager.findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, getUsuarioLogado(), situacao, possuiOrdemDeServico, getPage(), getPagingSize());
+		setTotalSize(colaboradorManager.getCountColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, LongUtil.collectionToArrayLong(areasList), situacao, filtroOrdemDeServico));
+		colaboradores = colaboradorManager.findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, LongUtil.collectionToArrayLong(areasList), situacao, filtroOrdemDeServico, getPage(), getPagingSize());
 		
 		if (colaboradores == null || colaboradores.size() == 0)
-			addActionMessage("Não existem colaboradores a serem listados.");
+			addActionMessage("Não existem colaboradores a serem listados para os filtros informados.");
 		
 		return Action.SUCCESS;
 	}
 	
+	
+	private void setAreasPermitidas() throws Exception {
+		Collection<AreaOrganizacional> areaOrganizacionalsTmp = new ArrayList<AreaOrganizacional>();
+		if(getUsuarioLogado().getId().equals(1L) || usuarioEmpresaManager.containsRole(getUsuarioLogado().getId(), getEmpresaSistema().getId(), "ROLE_VER_AREAS") ) 
+			areaOrganizacionalsTmp.addAll(areaOrganizacionalManager.findByEmpresa(getEmpresaSistema().getId()));
+		else 
+			areaOrganizacionalsTmp.addAll(areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(),  getEmpresaSistema().getId()));
+		
+		areasList = areaOrganizacionalManager.montaFamilia(areaOrganizacionalsTmp);
+		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
+		areasList = cu1.sortCollectionStringIgnoreCase(areasList, "descricao");
+	}
+	
+	
 	public String list() throws Exception
 	{
+		setTotalSize(ordemDeServicoManager.getCount(new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}));
+		ordensDeServico = ordemDeServicoManager.find(getPage(), getPagingSize(), new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}, new String[]{"data"});
 		return Action.SUCCESS;
 	}
+	
 //
 //	public String delete() throws Exception
 //	{
@@ -130,7 +148,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 
 	public Collection<OrdemDeServico> getOrdemDeServicos()
 	{
-		return ordemDeServicos;
+		return ordensDeServico;
 	}
 
 	public Colaborador getColaborador() {
@@ -173,9 +191,29 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 		this.cargosList = cargosList;
 	}
 	
-	public Map getSituacaos()
+	public Map getSituacoes()
 	{
-		return situacaos;
+		return situacoes;
+	}
+	
+	public Map getFiltrosOrdemDeServico() {
+		return filtrosOrdemDeServico;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
+	}
+	
+	public String getSituacao() {
+		return situacao;
+	}
+
+	public String getFiltroOrdemDeServico() {
+		return filtroOrdemDeServico;
+	}
+	
+	public void setFiltroOrdemDeServico(String filtropossuiOrdemDeServico) {
+		this.filtroOrdemDeServico = filtropossuiOrdemDeServico;
 	}
 	
 	public void setOrdemDeServicoManager(OrdemDeServicoManager ordemDeServicoManager)
@@ -205,5 +243,10 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 
 	public void setCargoManager(CargoManager cargoManager) {
 		this.cargoManager = cargoManager;
+	}
+
+
+	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
+		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 }

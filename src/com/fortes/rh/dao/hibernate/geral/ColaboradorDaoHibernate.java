@@ -21,6 +21,7 @@ import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Junction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -39,6 +40,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
+import com.fortes.rh.model.dicionario.FiltroOrdemDeServico;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
@@ -4947,6 +4949,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"DELETE FROM ParticipanteAvaliacaoDesempenho WHERE colaborador.id = :id",
 				"DELETE FROM ConfiguracaoCompetenciaAvaliacaoDesempenho WHERE avaliador.id = :id",
 				
+				"DELETE FROM OrdemDeServico WHERE colaborador.id = :id",
+				
 				"DELETE FROM Colaborador WHERE id = :id"
 		};
 		
@@ -5149,7 +5153,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list().size() > 0;
 	}
 
-	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] areaIds, String situacao, Boolean possuiOrdemDeServico, int page, int pagingSize) {
+	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] areaIds, String situacao, String filtroOrdemDeServico, int page, int pagingSize) {
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
 				.setProjection(Projections.max("hc2.data"))
 				.add(Restrictions.eqProperty("hc2.colaborador.id", "co.id"))
@@ -5165,23 +5169,24 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "co", Criteria.INNER_JOIN);
 		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.INNER_JOIN);
+		criteria.createCriteria("co.ordensDeServico", "os", Criteria.LEFT_JOIN);
 		
 		criteria.add(Expression.eq("co.empresa.id", colaborador.getEmpresa().getId()));
 		criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
 		
 		if(colaborador.getNome() != null && !colaborador.getNome().trim().isEmpty())
-			criteria.add(Expression.eq("co.nome.id", colaborador.getNome()));
+			criteria.add(Expression.ilike("co.nome", colaborador.getNome(), MatchMode.ANYWHERE));
 		
 		if(colaborador.getMatricula() != null && !colaborador.getMatricula().trim().isEmpty())
-			criteria.add(Expression.eq("co.matricula", colaborador.getMatricula()));
+			criteria.add(Expression.ilike("co.matricula", colaborador.getMatricula(), MatchMode.ANYWHERE));
 		
 		if(colaborador.getPessoal() != null && colaborador.getPessoal().getCpf() != null && !colaborador.getPessoal().getCpf().trim().isEmpty())
-			criteria.add(Expression.eq("co.pessoal.cpf", colaborador.getPessoal().getCpf()));
+			criteria.add(Expression.ilike("co.pessoal.cpf", colaborador.getPessoal().getCpf(), MatchMode.ANYWHERE));
 		
 		if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
 			criteria.add(Expression.eq("hc.estabelecimento.id", historicoColaborador.getEstabelecimento().getId()));
 		
-		if((historicoColaborador.getAreaOrganizacional() == null || historicoColaborador.getAreaOrganizacional().getId() == null ) && areaIds != null)
+		if((historicoColaborador.getAreaOrganizacional() == null || historicoColaborador.getAreaOrganizacional().getId() == null) && areaIds != null)
 			criteria.add(Expression.in("hc.areaOrganizacional.id", areaIds));
 		else if(historicoColaborador.getAreaOrganizacional() != null && historicoColaborador.getAreaOrganizacional().getId() != null)
 			criteria.add(Expression.eq("hc.areaOrganizacional.id", historicoColaborador.getAreaOrganizacional().getId()));
@@ -5199,13 +5204,18 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		else if(situacao.equals(SituacaoColaborador.DESLIGADO))
 			criteria.add(Expression.eq("co.desligado", true));
 		
+		if(filtroOrdemDeServico.equals(FiltroOrdemDeServico.COM_ORDEM_DE_SERVICO))
+			criteria.add(Expression.isNotNull("os.id"));
+		else if(filtroOrdemDeServico.equals(FiltroOrdemDeServico.SEM_ORDEM_DE_SERVICO))
+			criteria.add(Expression.isNull("os.id"));
+		
 		if(page != 0 && pagingSize != 0)
 		{
 			criteria.setMaxResults(pagingSize);
 			criteria.setFirstResult((page - 1)*pagingSize);
 		}
-		
-		criteria.setProjection(p);
+		criteria.addOrder(Order.asc("co.nome"));
+		criteria.setProjection(Projections.distinct(p));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 		return criteria.list();

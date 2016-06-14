@@ -150,5 +150,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId);
 	public Integer countDemitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean reducaoDeQuadro);
 	public boolean existeColaboradorAtivo(String cpf, Date data);
-	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] areaIds, String situacao, Boolean possuiOrdemDeServico, int page, int pagingSize);
+	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] areaIds, String situacao, String filtroOrdemDeServico, int page, int pagingSize);
 }
