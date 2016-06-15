@@ -38,6 +38,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/certificacaoEdit.ftl</result>
 		</action>
 		<action name="matrizTreinamento" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoListAction" method="matrizTreinamento">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/matrizTreinamento.ftl</result>
 		</action>
 		<action name="imprimirMatrizTreinamento" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoListAction" method="imprimirMatrizTreinamento">

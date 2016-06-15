@@ -20,6 +20,7 @@
 			<result name="error" type="redirect">prepareRelatorio.action</result>
 		</action>
 		<action name="prepareRelatorio" class="com.fortes.rh.web.action.desenvolvimento.RelatorioPresencaAction" method="prepareRelatorio">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioPresenca.ftl</result>
 		</action>
 	</package>

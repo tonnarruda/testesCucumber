@@ -11,6 +11,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -49,13 +50,18 @@ public class CertificacaoListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		if (certificacao != null && certificacao.getId() != null && certificacaoManager.verificaEmpresa(certificacao.getId(), getEmpresaSistema().getId()))
-		{
-			certificacaoManager.remove(certificacao.getId());
-			addActionMessage("Certificação excluída com sucesso.");
+		try {
+			if (certificacao != null && certificacao.getId() != null && certificacaoManager.verificaEmpresa(certificacao.getId(), getEmpresaSistema().getId()))
+			{
+				certificacaoManager.remove(certificacao.getId());
+				addActionSuccess("Certificação excluída com sucesso.");
+			}
+			else
+				addActionWarning("A Certificação solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta certificação.");
 		}
-		else
-			addActionError("A Certificação solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
 
 		return Action.SUCCESS;
 	}
@@ -83,7 +89,7 @@ public class CertificacaoListAction extends MyActionSupportList
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionMessage("Erro ao gerar Matriz.");
+			addActionError("Não foi possível gerar a matriz de treinamento.");
 			areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 			return Action.INPUT;
 		}

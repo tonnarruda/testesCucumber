@@ -4,11 +4,11 @@
 <xwork>
 	<package name="aspecto" extends="default" namespace="/pesquisa/aspecto">
 		<action name="list" class="com.fortes.rh.web.action.pesquisa.AspectoListAction" method="list">
-		    <interceptor-ref name="defaultListStack" />
+		    <interceptor-ref name="defaultListTokenStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/aspectoList.ftl</result>
 		</action>
 		<action name="listAvaliacao" class="com.fortes.rh.web.action.pesquisa.AspectoListAction" method="listAvaliacao">
-		    <interceptor-ref name="defaultListStack" />
+		    <interceptor-ref name="defaultListTokenStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/aspectoAvaliacaoList.ftl</result>
 		</action>
 		<action name="deleteAvaliacao" class="com.fortes.rh.web.action.pesquisa.AspectoListAction" method="deleteAvaliacao">
@@ -22,23 +22,23 @@
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/aspectoEdit.ftl</result>
-			<result name="input" type="redirect">list.action?actionErr=${actionErr}</result>
+			<result name="input" type="redirect"><![CDATA[list.action?actionErr=${actionErr}&internalToken=${internalToken}]]></result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="insert">
-			<result name="success" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}&internalToken=${internalToken}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/aspectoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="update">
-			<result name="success" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}]]></result>
-			<result name="input" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}&actionErr=${actionErr}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}&internalToken=${internalToken}]]></result>
+			<result name="input" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}&actionErr=${actionErr}&internalToken=${internalToken}]]></result>
 		</action>
 		<action name="insertAvaliacao" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="insertAvaliacao">
-			<result name="success" type="redirect"><![CDATA[listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
+			<result name="success" type="redirect"><![CDATA[listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}&internalToken=${internalToken}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/aspectoEdit.ftl</result>
 		</action>
 		<action name="updateAvaliacao" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="updateAvaliacao">
-			<result name="success" type="redirect"><![CDATA[listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
-			<result name="input" type="redirect"><![CDATA[listAvaliacao.action?avaliacao.id=${avaliacao.id}&actionErr=${actionErr}]]></result>
+			<result name="success" type="redirect"><![CDATA[listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}&internalToken=${internalToken}]]></result>
+			<result name="input" type="redirect"><![CDATA[listAvaliacao.action?avaliacao.id=${avaliacao.id}&actionErr=${actionErr}&internalToken=${internalToken}]]></result>
 		</action>
 	</package>
 </xwork>

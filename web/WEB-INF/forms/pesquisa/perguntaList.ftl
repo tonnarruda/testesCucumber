@@ -42,7 +42,7 @@
 			if(posicaoSugerida > ${ultimaOrdenacao} || posicaoSugerida < 1 )
 				jAlert("Posição não permitida");
 			else
-				window.location="alterarPosicao.action?pergunta.id="+perguntaId+"&questionario.id=${questionario.id}&posicaoSugerida="+posicaoSugerida;
+				executeLink("alterarPosicao.action?pergunta.id="+perguntaId+"&questionario.id=${questionario.id}&posicaoSugerida="+posicaoSugerida);
 		}
 	</script>
 
@@ -91,12 +91,12 @@
 				<a href="javascript: executeLink('prepareUpdate.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../pergunta/delete.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<#if 1 < pergunta.ordem>
-					<a href="reordenar.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}&sinal=-"><img src="<@ww.url value="/imgs/up.gif"/>" title="Mover para cima"/></a>
+					<a href="javascript: executeLink('reordenar.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}&sinal=-');"><img src="<@ww.url value="/imgs/up.gif"/>" title="Mover para cima"/></a>
 				<#else>
 					<img src="<@ww.url value="/imgs/up.gif" />" title="Mover para cima" class="imgApagada"/>
 				</#if>
 				<#if !(pergunta.ordem == ultimaOrdenacao)>
-					<a href="reordenar.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}"><img src="<@ww.url value="/imgs/down.gif"/>"  title="Mover para baixo"/></a>
+					<a href="javascript: executeLink('reordenar.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}');"><img src="<@ww.url value="/imgs/down.gif"/>"  title="Mover para baixo"/></a>
 				<#else>
 					<img src="<@ww.url value="/imgs/down.gif"/>" title="Mover para baixo" class="imgApagada"/>
 				</#if>
@@ -154,7 +154,7 @@
 
 	<#-- Monta o botão de acordo com o destino pesquisa, avaliação, entrevista-->
 	<#if urlVoltar?exists>
-		<button class="btnVoltar" onclick="window.location='${urlVoltar}'"></button>
+		<button class="btnVoltar" onclick="javascript: executeLink('${urlVoltar}');"></button>
 	</#if>
 
 	<script type="text/javascript">

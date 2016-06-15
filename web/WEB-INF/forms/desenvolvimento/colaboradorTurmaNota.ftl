@@ -42,7 +42,7 @@
 		{ 
 			$('input[id^="nota_"]').val('');
 			
-			var urlFind = "<@ww.url includeParams="none" value="/desenvolvimento/colaboradorTurma/findNotas.action"/>";
+			var urlFind = "<@ww.url includeParams="none" value="/desenvolvimento/colaboradorTurma/findNotas.action?internalToken=${internalToken}"/>";
 			
 			$.getJSON(urlFind,
 			{
@@ -97,7 +97,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="javascript: inserir();" class="btnInserir"></button>
-		<button onclick="window.location='list.action?turma.id=${turma.id}&curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}'" class="btnVoltar"></button>
+		<button onclick="javascript: executeLink('list.action?turma.id=${turma.id}&curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}');" class="btnVoltar"></button>
 	</div>
 </body>
 </html>

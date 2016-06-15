@@ -46,6 +46,7 @@ import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -386,8 +387,13 @@ public class TurmaListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		turmaManager.removeCascade(turma.getId(), turmaAvaliacaoTurmaManager, turmaDocumentoAnexoManager);
-		addActionSuccess("Turma excluída com sucesso.");
+		try {
+			turmaManager.removeCascade(turma.getId(), turmaAvaliacaoTurmaManager, turmaDocumentoAnexoManager);
+			addActionSuccess("Turma excluída com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta turma.");
+		}
 
 		if(planoTreinamento)
 			return "successFiltroPlanoTreinamento";

@@ -17,13 +17,11 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/responderPesquisa.ftl</result>
 		</action>
 		<action name="salvaQuestionarioRespondido" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="salvaQuestionarioRespondido">
-			<interceptor-ref name="myDefaultWebStack" />
 			<result name="success" type="redirect"><![CDATA[${retorno}]]></result>
 			<result name="colaboradorQuestionario" type="redirect"><![CDATA[${retorno}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/erroTmp.ftl</result>
 		</action>
 		<action name="imprimirEntrevistaDesligamento" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="imprimirEntrevistaDesligamento">
-			<interceptor-ref name="myDefaultWebStack" />
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/avaliacaoRespondidaModoEconomico.jasper</param>
 				<param name="dataSource">perguntasRespondidas</param>
@@ -31,7 +29,6 @@
 			</result>
 		</action>
 		<action name="imprimirAvaliacaoTurma" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="imprimirAvaliacaoTurma">
-			<interceptor-ref name="myDefaultWebStack" />
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/avaliacaoTurmaRespondida.jasper</param>
 				<param name="dataSource">perguntasRespondidas</param>

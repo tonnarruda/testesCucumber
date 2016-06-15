@@ -37,14 +37,14 @@
 </#list>
 
 	<#if preview == false>
-		<button class="btnConcluir" onclick="window.location='aplicarByAspecto.action?questionario.id=${questionario.id}'" accesskey="C">
+		<button class="btnConcluir" onclick="javascript: executeLink('aplicarByAspecto.action?questionario.id=${questionario.id}');" accesskey="C">
 		</button>
-		<button class="btnVoltar" onclick="window.location='../pergunta/list.action?questionario.id=${questionario.id}'" accesskey="V">
+		<button class="btnVoltar" onclick="javascript: executeLink('../pergunta/list.action?questionario.id=${questionario.id}');" accesskey="V">
 		</button>
 	<#else>
 		<#-- Monta o botão de acordo com o destino pesquisa, avaliação, entrevista-->
 		<#if urlVoltar?exists>
-			<button class="btnVoltar" onclick="window.location='${urlVoltar}'"></button>
+			<button class="btnVoltar" onclick="javascript: executeLink('${urlVoltar}');"></button>
 		</#if>
 	</#if>
 </body>

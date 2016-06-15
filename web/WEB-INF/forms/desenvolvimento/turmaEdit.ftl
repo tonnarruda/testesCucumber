@@ -576,7 +576,7 @@
 	<#if !somenteLeitura>
 		<div class="buttonGroup">
 			<button id="btnGravar" onclick="enviar()" class="btnGravar" accesskey="${accessKey}"></button>
-			<button onclick="window.location='${urlVoltar}'" class="btnVoltar"></button>
+			<button onclick="javascript: executeLink('${urlVoltar}');" class="btnVoltar"></button>
 		</div>
 	</#if>
 	

@@ -217,11 +217,11 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         if (tela.equals("index")) {
         	if(actionMsgTemp == null)
         		actionMsg = "Respostas gravadas com sucesso.";
-        	retorno = "../../index.action?actionMsg="+actionMsg;
+        	retorno = "../../index.action?actionMsg="+actionMsg+"&internalToken="+getInternalToken();
             return Action.SUCCESS;
         } else if(voltarPara.equals("../../sesmt/fichaMedica/prepareInsertFicha.action") || voltarPara.equals("../../sesmt/fichaMedica/listPreenchida.action"))  {
         	actionMsg = "Respostas gravadas com sucesso.";
-        	retorno = voltarPara + "?actionMsg=" +actionMsg;
+        	retorno = voltarPara + "?actionMsg=" +actionMsg+"&internalToken="+getInternalToken();
         	return Action.SUCCESS;
         } else {
         	retorno = voltarPara;
@@ -229,6 +229,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         		retorno += "&actionMsg=" + actionMsgTemp;
         		actionMsg = actionMsgTemp;
         	}
+        	retorno = retorno + (retorno.indexOf("?") > 0 ? "&" : "?") + "&internalToken="+getInternalToken();
             return "colaboradorQuestionario";
         }
     }

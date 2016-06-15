@@ -58,7 +58,7 @@ public class TipoDespesaEditAction extends MyActionSupportList
 		try
 		{
 			tipoDespesaManager.remove(tipoDespesa.getId());
-			addActionMessage("Tipo de Despesa excluído com sucesso.");
+			addActionSuccess("Tipo de Despesa excluído com sucesso.");
 		}
 		catch (Exception e)
 		{

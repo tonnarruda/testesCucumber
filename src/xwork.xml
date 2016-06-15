@@ -104,6 +104,20 @@
 				
 			</interceptor-stack>
 
+			<interceptor-stack name="defaultListTokenStack">
+				<interceptor-ref name="myDefaultWebStackPart1" />			
+				<interceptor-ref name="defaultListDeleteScope"/>
+				<interceptor-ref name="scope">
+						<param name="session">__TO_BE_OVERWRITTEN_IN_THE_ACTION__</param>
+				</interceptor-ref>
+				<interceptor-ref name="myDefaultWebStackPart2" />
+				<interceptor-ref name="store">
+						<param name="operationMode">RETRIEVE</param>
+				</interceptor-ref>
+				<interceptor-ref name="myToken" />
+				
+			</interceptor-stack>
+
       <interceptor-stack name="defaultDeleteStack">
         <interceptor-ref name="store">
             <param name="operationMode">STORE</param>

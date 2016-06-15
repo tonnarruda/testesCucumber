@@ -473,7 +473,7 @@
 		<#if !temCriterioRespondido>
 			<button onclick="${validarCampos}" class="btnGravar"></button>
 		</#if>
-		<button onclick="window.location='../perguntaAvaliacao/list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}'" class="btnVoltar"></button>
+		<button onclick="javascript: executeLink('../perguntaAvaliacao/list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}');" class="btnVoltar"></button>
 	</div>
 
 	<script type="text/javascript">

@@ -148,10 +148,10 @@
 		<#assign totalCustos = 0/>
 		<@display.table name="turmas" id="turma" class="dados">
 			<@display.column title="Ações" media="html" class="acao" style="width: 95px;">
-				<a href="prepareUpdate.action?turma.id=${turma.id}&planoTreinamento=true"><img border="0" title="<@ww.text name="list.edit.hint"/> Turma" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+				<a href="javascript: executeLink('prepareUpdate.action?turma.id=${turma.id}&planoTreinamento=true');"><img border="0" title="<@ww.text name="list.edit.hint"/> Turma" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 				<a href="#" onclick="enviarEmail(${turma.id});" ><img border="0" title="Enviar aviso por email" src="<@ww.url value="/imgs/icon_email.gif"/>"></a>
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?turma.id=${turma.id}&planoTreinamento=true'});"><img border="0" title="<@ww.text name="list.del.hint"/> Turma" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
-				<a href="../colaboradorTurma/list.action?turma.id=${turma.id}&page=1&planoTreinamento=true"><img border="0" title="Colaboradores Inscritos na Turma" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?turma.id=${turma.id}&planoTreinamento=true');});"><img border="0" title="<@ww.text name="list.del.hint"/> Turma" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+				<a href="javascript: executeLink('../colaboradorTurma/list.action?turma.id=${turma.id}&page=1&planoTreinamento=true');"><img border="0" title="Colaboradores Inscritos na Turma" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 
 				<#if turma.realizada>
 					<img border="0" style="cursor: pointer;" onclick="updateRealizada(${turma.id}, this);" title="Realizada" src="<@ww.url value="/imgs/flag_green.gif"/>">
@@ -184,7 +184,7 @@
 		</@display.table>
 
 		<div class="buttonGroup">
-			<button class="btnInserirTurma" onclick="window.location='prepareInsert.action?planoTreinamento=true'"></button>
+			<button class="btnInserirTurma" onclick="executeLink('prepareInsert.action?planoTreinamento=true');"></button>
 			<button class="btnRelatorio" onclick="javascript: mudaAction();"></button>
 		</div>
 	</#if>

@@ -312,7 +312,7 @@
 
 	<div id="dialog" title="Confirmar Remoção da Certificação"></div>
 	<div class="buttonGroup">
-		<button onclick="window.location='${retorno}?curso.id=${turma.curso.id}'" class="btnVoltar" accesskey="V"></button>
+		<button onclick="javascript: executeLink('${retorno}?curso.id=${turma.curso.id}');" class="btnVoltar" accesskey="V"></button>
 	</div>
 
 	<script type="text/javascript">

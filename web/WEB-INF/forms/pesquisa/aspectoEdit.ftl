@@ -44,12 +44,12 @@
 		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}"></button>
 		
 		<#if avaliacao?exists && avaliacao.id?exists>
-			<button class="btnCancelar" onclick="window.location='listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}'"></button>		
+			<button class="btnCancelar" onclick="javascript: executeLink('listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}');"></button>		
 		<#else>
 			<#if pergunta?exists && pergunta.id?exists>
-				<button class="btnCancelar" onclick="window.location='list.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}'"></button>
+				<button class="btnCancelar" onclick="javascript: executeLink('list.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}');"></button>
 			<#else>
-				<button class="btnCancelar" onclick="window.location='list.action?questionario.id=${questionario.id}'"></button>
+				<button class="btnCancelar" onclick="javascript: executeLink('list.action?questionario.id=${questionario.id}');"></button>
 			</#if>
 		</#if>
 	</div>

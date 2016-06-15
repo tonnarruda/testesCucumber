@@ -31,7 +31,7 @@
 	<#if turmas?exists && 0 < turmas?size>
 		<@display.table name="turmas" id="turma" class="dados">
 			<@display.column title="Ações" class="acao">
-				<a href="preparePresenca.action?turma.id=${turma.id}&curso.id=${curso.id}&voltarPara=verTurmasCurso.action"><img border="0" title="Lista de Freqüência" src="<@ww.url value="/imgs/check.gif"/>"></a>
+				<a href="javascript: executeLink('preparePresenca.action?turma.id=${turma.id}&curso.id=${curso.id}&voltarPara=verTurmasCurso.action');"><img border="0" title="Lista de Freqüência" src="<@ww.url value="/imgs/check.gif"/>"></a>
 			</@display.column>
 			<@display.column property="descricao" title="Descrição"/>
 

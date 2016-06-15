@@ -21,6 +21,7 @@ import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -90,8 +91,13 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		motivoDemissaoManager.remove(motivoDemissao.getId());
-		addActionSuccess("Motivo de desligamento excluído com sucesso.");
+		try {
+			motivoDemissaoManager.remove(motivoDemissao.getId());
+			addActionSuccess("Motivo de desligamento excluído com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este motivo de demissão.");
+		}
 
 		return Action.SUCCESS;
 	}

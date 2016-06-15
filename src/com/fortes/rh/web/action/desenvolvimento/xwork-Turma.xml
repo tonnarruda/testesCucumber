@@ -8,17 +8,18 @@
 		</action>
 			<action name="liberar" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="liberar">
 			<interceptor-ref name="defaultDeleteStack"/>
-			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${curso.id}&page=${page}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${curso.id}&page=${page}&internalToken=${internalToken}]]></result>
 		</action>
 		<action name="bloquear" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="bloquear">
 			<interceptor-ref name="defaultDeleteStack"/>
-			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${curso.id}&page=${page}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${curso.id}&page=${page}&internalToken=${internalToken}]]></result>
 		</action>
 		<action name="popUpTurmaAvaliacaoAcao" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="popUpTurmaAvaliacaoAcao">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/popUpTurmaAvaliacao.ftl</result>
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="list">
-			<interceptor-ref name="defaultListStack">
+			<interceptor-ref name="defaultListTokenStack">
 	    		<param name="scope.session">curso.id</param>
 	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/turmaList.ftl</result>
@@ -27,18 +28,19 @@
 			<interceptor-ref name="defaultDeleteStack">
 				<param name="scope.session">cargo.id</param>
 			</interceptor-ref>
-			<result name="success" type="redirect">list.action?curso.id=${curso.id}</result>
-			<result name="error" type="redirect">list.action?curso.id=${curso.id}</result>
-			<result name="successFiltroPlanoTreinamento" type="redirect">filtroPlanoTreinamento.action</result>
+			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${curso.id}&internalToken=${internalToken}]]></result>
+			<result name="error" type="redirect"><![CDATA[list.action?curso.id=${curso.id}&internalToken=${internalToken}]]></result>
+			<result name="successFiltroPlanoTreinamento" type="redirect">filtroPlanoTreinamento.action?internalToken=${internalToken}</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/turmaEdit.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/turmaEdit.ftl</result>
-			<result name="error" type="redirect">list.action?curso.id=${curso.id}</result>
+			<result name="error" type="redirect"><![CDATA[list.action?curso.id=${curso.id}&internalToken=${internalToken}]]></result>
 		</action>
 		<action name="prepareFrequencia" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="prepareFrequencia">
+			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareFrequencia.ftl</result>
 		</action>
 		<action name="verTurmasCurso" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="verTurmasCurso">
@@ -48,7 +50,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/presencaEdit.ftl</result>
 		</action>
 		<action name="prepareAproveitamento" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="prepareAproveitamento">
-			<interceptor-ref name="defaultListStack" />
+			<interceptor-ref name="defaultListTokenStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/aproveitamentoEdit.ftl</result>
 		</action>
 		<action name="saveAproveitamentoCurso" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="saveAproveitamentoCurso">
@@ -57,14 +59,14 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect"><![CDATA[../colaboradorTurma/prepareInsert.action?turma.id=${turma.id}&turma.curso.id=${curso.id}&planoTreinamento=${planoTreinamento}]]></result>
-			<result name="successFiltroPlanoTreinamento" type="redirect">filtroPlanoTreinamento.action</result>
+			<result name="success" type="redirect"><![CDATA[../colaboradorTurma/prepareInsert.action?turma.id=${turma.id}&turma.curso.id=${curso.id}&planoTreinamento=${planoTreinamento}&internalToken=${internalToken}]]></result>
+			<result name="successFiltroPlanoTreinamento" type="redirect">filtroPlanoTreinamento.action?internalToken=${internalToken}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/turmaEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${turma.curso.id}]]></result>
-			<result name="successFiltroPlanoTreinamento" type="redirect">filtroPlanoTreinamento.action</result>
+			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${turma.curso.id}&internalToken=${internalToken}]]></result>
+			<result name="successFiltroPlanoTreinamento" type="redirect">filtroPlanoTreinamento.action?internalToken=${internalToken}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/turmaEdit.ftl</result>
 		</action>
 		<action name="prepareImprimirTurma" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="prepareImprimirTurma">
@@ -86,6 +88,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareImprimirMatriz.ftl</result>
 		</action>
 		<action name="prepareImprimirCertificado" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="prepareImprimirCertificado">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareImprimirCertificado.ftl</result>
 		</action>
 		<action name="getColaboradoresByFiltro" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="getColaboradoresByFiltro">
@@ -158,7 +161,7 @@
 			<result name="success" type="redirect">preparePresenca.action?turma.id=${turma.id}</result>
 		</action>
 		<action name="imprimirConfirmacaoCertificado" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="imprimirConfirmacaoCertificado">
-			<interceptor-ref name="defaultDeleteStack" />
+			<interceptor-ref name="defaultDeleteTokenStack" />
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/confirmacao_certificado.jasper</param>
 				<param name="dataSource">dataSource</param>
@@ -168,6 +171,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/turmaList.ftl</result>
 		</action>
 		<action name="filtroCronogramaTreinamento" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="filtroCronogramaTreinamento">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/filtroCronogramaTreinamento.ftl</result>
 		</action>
 		<action name="imprimirCronogramaTreinamento" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="imprimirCronogramaTreinamento">
@@ -180,6 +184,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/filtroCronogramaTreinamento.ftl</result>
 		</action>
 		<action name="relatorioInvestimento" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="relatorioInvestimento">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioInvestimento.ftl</result>
 		</action>
 		<action name="imprimirRelatorioInvestimento" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="imprimirRelatorioInvestimento">
@@ -192,6 +197,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioInvestimento.ftl</result>
 		</action>
 		<action name="relatorioInvestimentoPorColaborador" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="relatorioInvestimentoPorColaborador">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioInvestimentoPorColaborador.ftl</result>
 		</action>
 		<action name="imprimirRelatorioInvestimentoPorColaborador" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="imprimirRelatorioInvestimentoPorColaborador">
@@ -219,6 +225,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamento.ftl</result>
 		</action>
 		<action name="preparePdi" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="preparePdi">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamentoIndividual.ftl</result>
 		</action>
 		<action name="pdi" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="pdi">
@@ -242,6 +249,7 @@
 		<action name="showAssinatura" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="showAssinatura" />
 		
 		<action name="prepareImprimirCursosVencidosAVencer" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="prepareImprimirCursosVencidosAVencer">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioCursosVencidosAVencer.ftl</result>
 		</action>
 		

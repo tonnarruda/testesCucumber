@@ -4,16 +4,15 @@
 <xwork>
 	<package name="perguntaAvaliacao" extends="default" namespace="/avaliacao/perguntaAvaliacao">
 		<action name="list" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="list">
-			<interceptor-ref name="defaultListStack"/>
+			<interceptor-ref name="defaultListTokenStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack"/>
-			<result name="success" type="redirect"><![CDATA[list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
-			<result name="error" type="redirect"><![CDATA[list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}&internalToken=${internalToken}]]></result>
+			<result name="error" type="redirect"><![CDATA[list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}&internalToken=${internalToken}]]></result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="prepareInsert">
-		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoEdit.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="prepareUpdate">
@@ -24,7 +23,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="update">
-			<result name="success" type="redirect"><![CDATA[list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}&internalToken=${internalToken}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoEdit.ftl</result>
 		</action>
 	</package>

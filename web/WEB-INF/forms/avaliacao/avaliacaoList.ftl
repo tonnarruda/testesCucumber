@@ -71,8 +71,8 @@
 			<a href="javascript: executeLink('prepareUpdate.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="javascript:;" onclick="javascript:clonar(${avaliacao.id},'${modeloAvaliacao}','${avaliacao.titulo}');"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
 			<#if modeloAvaliacao?exists && (modeloAvaliacao = tipoModeloAvaliacao.getSolicitacao() || modeloAvaliacao = tipoModeloAvaliacao.getAvaliacaoAluno()) >
-				<a href="imprimir.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="Imprimir Modelo da Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
-				<a href="imprimir.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}&imprimirFormaEconomica=true"><img border="0" title="Imprimir Modelo da Avaliação em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>
+				<a href="javascript: executeLink('imprimir.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}');"><img border="0" title="Imprimir Modelo da Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="javascript: executeLink('imprimir.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}&imprimirFormaEconomica=true');"><img border="0" title="Imprimir Modelo da Avaliação em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>
 			<#else>
 				<a href="#" onclick="escolheTipoAgrupamento('${avaliacao.id}', '${avaliacao.titulo}','${modeloAvaliacao}', false)"><img border="0" title="Imprimir Modelo da Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 				<a href="#" onclick="escolheTipoAgrupamento('${avaliacao.id}', '${avaliacao.titulo}','${modeloAvaliacao}', true)"><img border="0" title="Imprimir Modelo da Avaliação em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>

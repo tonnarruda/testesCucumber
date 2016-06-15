@@ -55,7 +55,7 @@
 			
 			$(avaliacoes).each(function(i, avaliacao) {
 				popupAvaliacoes += "<li id='"+ avaliacao.questionarioId + "_" + colaboradorId + "'>";
-				popupAvaliacoes += "<a href='../../pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=" + avaliacao.questionarioId + "&colaborador.id=" + colaboradorId + "&turmaId=" + avaliacao.turmaId + "&voltarPara=../../desenvolvimento/colaboradorTurma/list.action?turma.id=" + avaliacao.turmaId + "'>";
+				popupAvaliacoes += "<a href='../../pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=" + avaliacao.questionarioId + "&colaborador.id=" + colaboradorId + "&turmaId=" + avaliacao.turmaId + "&voltarPara=../../desenvolvimento/colaboradorTurma/list.action?turma.id=" + avaliacao.turmaId + "&internalToken=${internalToken}" + "'>";
 				popupAvaliacoes += "<img align='absmiddle'/>&nbsp;&nbsp; " + avaliacao.questionarioTitulo;
 				popupAvaliacoes += "</a></li>\n";
 			});
@@ -138,7 +138,7 @@
 					</#if>
 				</@authz.authorize>	
 					
-				<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='../colaboradorTurma/delete.action?colaboradorTurma.id=${colaboradorTurma.id}&colaboradorTurma.colaborador.id=${colaboradorTurma.colaborador.id}&turma.id=${turma.id}&planoTreinamento=${planoTreinamento?string}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){executeLink('../colaboradorTurma/delete.action?colaboradorTurma.id=${colaboradorTurma.id}&colaboradorTurma.colaborador.id=${colaboradorTurma.colaborador.id}&turma.id=${turma.id}&planoTreinamento=${planoTreinamento?string}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</@display.column>
 
 			<@display.column property="colaborador.nome" title="Nome" style="width: 300px;"/>
@@ -153,8 +153,8 @@
 
 	<div class="buttonGroup">
 		<#if turma?exists && turma.id?exists>
-			<button class="btnIncluirColaboradores" onclick="window.location='../colaboradorTurma/prepareInsert.action?turma.id=${turma.id}&turma.curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}'"></button>
-			<button class="btnIncluirColaboradoresNota" onclick="window.location='../colaboradorTurma/prepareInsertNota.action?turma.id=${turma.id}&turma.curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}'"></button>
+			<button class="btnIncluirColaboradores" onclick="executeLink('../colaboradorTurma/prepareInsert.action?turma.id=${turma.id}&turma.curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}');"></button>
+			<button class="btnIncluirColaboradoresNota" onclick="executeLink('../colaboradorTurma/prepareInsertNota.action?turma.id=${turma.id}&turma.curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}');"></button>
 		</#if>
 
 		<#if planoTreinamento>
@@ -162,7 +162,7 @@
 		<#else>
 			<#assign urlVoltar="../turma/list.action?curso.id=${turma.curso.id}"/>
 		</#if>
-		<button class="btnVoltar" onclick="window.location='${urlVoltar}'"></button>
+		<button class="btnVoltar" onclick="executeLink('${urlVoltar}');"></button>
 	</div>
 	
 	<div class='avaliacoes' title='Respostas das avaliações'></div>

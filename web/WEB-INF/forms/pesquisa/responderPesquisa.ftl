@@ -178,6 +178,7 @@
 		<@ww.hidden name="turmaId"  />
 		<@ww.hidden name="empresaCodigo"  />
 		<@ww.hidden name="matricula"  />
+		<@ww.hidden name="internalToken"  />
 	</@ww.form>
 
 
@@ -245,10 +246,10 @@
 		<button onclick="javascript: executeLink('${retorno}');" class="btnVoltar"></button>
 		
 		<#if exibirImprimir>
-			<button onclick="javascript:window.location='imprimirEntrevistaDesligamento.action?colaborador.id=${colaborador.id}&questionario.id=${questionario.id}'" class="btnImprimir"></button>
+			<button onclick="javascript:executeLink('imprimirEntrevistaDesligamento.action?colaborador.id=${colaborador.id}&questionario.id=${questionario.id}');" class="btnImprimir"></button>
 		<#else>
 			<#if turmaId?exists && 0 < colaboradorRespostas?size>
-				<button onclick="javascript:window.location='imprimirAvaliacaoTurma.action?colaborador.id=${colaborador.id}&questionario.id=${questionario.id}&turmaId=${turmaId}'" class="btnImprimir"></button>
+				<button onclick="javascript:executeLink('imprimirAvaliacaoTurma.action?colaborador.id=${colaborador.id}&questionario.id=${questionario.id}&turmaId=${turmaId}');" class="btnImprimir"></button>
 			</#if>
 		</#if>
 		

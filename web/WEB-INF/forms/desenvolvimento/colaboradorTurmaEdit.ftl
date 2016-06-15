@@ -135,7 +135,7 @@
 		<#if colaboradorTurmas?exists && colaboradorTurmas?size != 0>
 			<button onclick="javascript: inserir();" class="btnInserirSelecionados"></button>
 		</#if>
-		<button onclick="window.location='list.action?turma.id=${turma.id}&curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}'" class="btnVoltar"></button>
+		<button onclick="executeLink('list.action?turma.id=${turma.id}&curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}');" class="btnVoltar"></button>
 	</div>
 	
 	<script type='text/javascript'>

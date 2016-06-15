@@ -14,6 +14,7 @@
 			</interceptor-ref>
 		</action>
 		<action name="prepareFiltroHistoricoTreinamentos" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="prepareFiltroHistoricoTreinamentos">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioHistoricoTreinamentos.ftl</result>
 		</action>
 		<action name="filtroHistoricoTreinamentos" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="filtroHistoricoTreinamentos">
@@ -30,16 +31,16 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioHistoricoTreinamentos.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="delete">
-			<result name="success" type="redirect"><![CDATA[list.action?turma.id=${turma.id}]]></result>
-			<result name="successFiltroPlanoTreinamento" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&planoTreinamento=${planoTreinamento}&empresaId=${empresaId}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&internalToken=${internalToken}]]></result>
+			<result name="successFiltroPlanoTreinamento" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&planoTreinamento=${planoTreinamento}&empresaId=${empresaId}&internalToken=${internalToken}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorTurmaList.ftl</result>
-			<result name="successDnt" type="redirect"><![CDATA[../dnt/listDetalhes.action?dnt.id=${dntId}&areaFiltro.id=${areaFiltroId}&gestor=${gestor}&msgAlert=${msgAlert}&estabelecimento.id=${estabelecimento.id}&empresaId=${empresaId}]]></result>
+			<result name="successDnt" type="redirect"><![CDATA[../dnt/listDetalhes.action?dnt.id=${dntId}&areaFiltro.id=${areaFiltroId}&gestor=${gestor}&msgAlert=${msgAlert}&estabelecimento.id=${estabelecimento.id}&empresaId=${empresaId}&internalToken=${internalToken}]]></result>
 			<interceptor-ref name="defaultDeleteStack">
 				<param name="scope.session">turma.id,empresaId</param>
 			</interceptor-ref>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaEditAction" method="prepareInsert">
-			<result name="list" type="redirect"><![CDATA[list.action?turma.id=${turma.id}]]></result>
+			<result name="list" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&internalToken=${internalToken}]]></result>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorTurmaEdit.ftl</result>
 		</action>
 		<action name="prepareInsertNota" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaEditAction" method="prepareInsertNota">
@@ -49,16 +50,16 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorTurmaNota.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaEditAction" method="prepareUpdate">
-			<result name="list" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&planoTreinamento=${planoTreinamento}]]></result>
+			<result name="list" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&planoTreinamento=${planoTreinamento}&internalToken=${internalToken}]]></result>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorTurmaEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaEditAction" method="insert">
-			<result name="success" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&msgAlert=${msgAlert}&planoTreinamento=${planoTreinamento}]]></result>
-			<result name="successFiltroPlanoTreinamento" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&msgAlert=${msgAlert}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&msgAlert=${msgAlert}&planoTreinamento=${planoTreinamento}&internalToken=${internalToken}]]></result>
+			<result name="successFiltroPlanoTreinamento" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&msgAlert=${msgAlert}&internalToken=${internalToken}]]></result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaEditAction" method="update">
-			<result name="success" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&planoTreinamento=${planoTreinamento}]]></result>
-			<result name="input" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&msgAlert=${msgAlert}&planoTreinamento=${planoTreinamento}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&planoTreinamento=${planoTreinamento}&internalToken=${internalToken}]]></result>
+			<result name="input" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&msgAlert=${msgAlert}&planoTreinamento=${planoTreinamento}&internalToken=${internalToken}]]></result>
 		</action>
 		<action name="listFiltro" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaEditAction" method="listFiltro">
 			<interceptor-ref name="defaultListStack">
@@ -83,6 +84,7 @@
 		</action>
 
 		<action name="prepareRelatorioColaborador" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="prepareRelatorioColaborador">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorTreinamento.ftl</result>
 		</action>
 		<action name="relatorioColaboradorSemTreinamento" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="relatorioColaboradorSemTreinamento">
@@ -136,6 +138,7 @@
 		</action>
 
 		<action name="prepareRelatorioColaboradorSemIndicacao" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="prepareRelatorioColaboradorSemIndicacao">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorSemIndicacaoTreinamento.ftl</result>
 			<result name="input" type="redirect">prepareRelatorioColaboradorSemIndicacao.action</result>
 		</action>
@@ -151,6 +154,7 @@
 		</action>
 		
 		<action name="prepareRelatorioColaboradorCertificacao" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="prepareRelatorioColaboradorCertificacao">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorCertificacao.ftl</result>
 		</action>
 		<action name="relatorioColaboradorCertificacao" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="relatorioColaboradorCertificacao">

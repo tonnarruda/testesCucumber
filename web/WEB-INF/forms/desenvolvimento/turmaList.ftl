@@ -41,12 +41,12 @@
 		
 		function exibeResultados(turmaId, questionarioId)
 		{
-			window.location = "../../pesquisa/questionario/prepareResultado.action?questionario.id=" + questionarioId + "&turmaId=" + turmaId + "&cursoId=" + ${curso.id};
+			executeLink("../../pesquisa/questionario/prepareResultado.action?questionario.id=" + questionarioId + "&turmaId=" + turmaId + "&cursoId=" + ${curso.id});
 		}
 
 		function imprimirAvaliacao(turmaId, questionarioId)
 		{
-			window.location = "../../pesquisa/questionario/imprimir.action?questionario.id=" + questionarioId + "&filtroQuestionario=" + turmaId;
+			executeLink("../../pesquisa/questionario/imprimir.action?questionario.id=" + questionarioId + "&filtroQuestionario=" + turmaId);
 		}
 		
 		function liberarAvaliacaoTurma(turmaId, avaliacaoTurmaId)
@@ -143,25 +143,25 @@
 				<#assign textoStatus>Bloqueado</#assign>
 			</#if>
 			
-			<a href="../colaboradorTurma/list.action?turma.id=${turma.id}&page=1"><img border="0" title="Colaboradores Inscritos" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
-			<a href="prepareUpdate.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="javascript: executeLink('../colaboradorTurma/list.action?turma.id=${turma.id}&page=1');"><img border="0" title="Colaboradores Inscritos" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?turma.id=${turma.id}&curso.id=${curso.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="enviarEmail(${turma.id});" ><img border="0" title="Enviar aviso por email" src="<@ww.url value="/imgs/icon_email.gif"/>"></a>
 			
 			<#if avaliacaoCursos?exists && 0 < avaliacaoCursos?size>
-				<a href="prepareAproveitamento.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="Avaliações dos Alunos" src="<@ww.url value="/imgs/favourites.gif"/>"></a>
+				<a href="javascript: executeLink('prepareAproveitamento.action?turma.id=${turma.id}&curso.id=${curso.id}');"><img border="0" title="Avaliações dos Alunos" src="<@ww.url value="/imgs/favourites.gif"/>"></a>
 			<#else>
 				<a href="javascript:;"><img border="0" title="Não existem avaliações definidas para este curso" src="<@ww.url value="/imgs/favourites.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"/></a>
 			</#if>
 			
-			<a href="preparePresenca.action?turma.id=${turma.id}&curso.id=${curso.id}&voltarPara=list.action"><img border="0" title="Lista de Frequência" src="<@ww.url value="/imgs/check.gif"/>"></a>
+			<a href="javascript: executeLink('preparePresenca.action?turma.id=${turma.id}&curso.id=${curso.id}&voltarPara=list.action');"><img border="0" title="Lista de Frequência" src="<@ww.url value="/imgs/check.gif"/>"></a>
 			
 			<#if turma.empresa.id == empresaSistema.id>
-				<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?turma.id=${turma.id}&turma.empresa.id=${turma.empresa.id}&curso.id=${curso.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?turma.id=${turma.id}&turma.empresa.id=${turma.empresa.id}&curso.id=${curso.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			<#else>
 				<img border="0" title="Turma compartilhada" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
 			
-			<a href="imprimirConfirmacaoCertificado.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="Relatório de Realização de Curso" src="<@ww.url value="/imgs/report.gif"/>"></a>
+			<a href="javascript: executeLink('imprimirConfirmacaoCertificado.action?turma.id=${turma.id}&curso.id=${curso.id}');"><img border="0" title="Relatório de Realização de Curso" src="<@ww.url value="/imgs/report.gif"/>"></a>
 			
 			<#if turma.qtdAvaliacoes?exists && 0 < turma.qtdAvaliacoes>
 				<a href="javascript:;" onclick="getMenuAvaliacoes(event, ${turma.id}, ${curso.id})"><img border="0" title="Avaliações da Turma" src="<@ww.url includeParams="none" value="/imgs/form.gif"/>"></a>
@@ -191,9 +191,9 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action?curso.id=${curso.id}'" accesskey="N">
+		<button class="btnInserir" onclick="executeLink('prepareInsert.action?curso.id=${curso.id}');" accesskey="N">
 		</button>
-		<button onclick="window.location='../curso/list.action'" class="btnVoltar" accesskey="V">
+		<button onclick="javascript: executeLink('../curso/list.action');" class="btnVoltar" accesskey="V">
 		</button>
 	</div>
 

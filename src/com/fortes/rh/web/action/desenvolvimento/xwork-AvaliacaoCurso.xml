@@ -40,6 +40,7 @@
 		</action>
 		
 		<action name="prepareRelatorioRankingAvaliacaoAluno" class="com.fortes.rh.web.action.desenvolvimento.AvaliacaoCursoListAction" method="prepareRelatorioRankingAvaliacaoAluno">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioRankingAvaliacaoAluno.ftl</result>
 		</action>
 		<action name="relatorioRankingAvaliacaoAluno" class="com.fortes.rh.web.action.desenvolvimento.AvaliacaoCursoListAction" method="relatorioRankingAvaliacaoAluno">

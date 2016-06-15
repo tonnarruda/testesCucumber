@@ -8,6 +8,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -47,13 +48,18 @@ public class CursoListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		if (curso != null && curso.getId() != null && cursoManager.verifyExists(new String[]{"id", "empresa.id"}, new Object[]{curso.getId(),getEmpresaSistema().getId()}))
-		{
-			cursoManager.remove(curso.getId());
-			addActionMessage("Curso excluído com sucesso.");
+		try {
+			if (curso != null && curso.getId() != null && cursoManager.verifyExists(new String[]{"id", "empresa.id"}, new Object[]{curso.getId(),getEmpresaSistema().getId()}))
+			{
+				cursoManager.remove(curso.getId());
+				addActionSuccess("Curso excluído com sucesso.");
+			}
+			else
+				addActionWarning("O Curso solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este curso.");
 		}
-		else
-			addActionError("O Curso solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
 
 		return Action.SUCCESS;
 	}
