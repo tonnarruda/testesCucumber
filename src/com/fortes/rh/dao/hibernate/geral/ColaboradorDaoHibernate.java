@@ -2719,7 +2719,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return (Colaborador) query.uniqueResult();
 	}
-
+	
 	public Collection<Colaborador> findByIdHistoricoAtual(Collection<Long> colaboradorIds)
 	{
 		StringBuilder hql = new StringBuilder();
@@ -4541,7 +4541,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return criteria.list();
 	}
-
+	
 	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId)
 	{
 		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
@@ -5219,5 +5219,39 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 		return criteria.list();
+	}
+	
+	public Colaborador findComDadosBasicosParaOrdemDeServico(Colaborador colaborador){
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
+
+		DetachedCriteria subQueryHf = DetachedCriteria.forClass(HistoricoFuncao.class, "hf2")
+														.setProjection(Projections.max("hf2.data"))
+														.add(Restrictions.eqProperty("hf2.funcao.id", "f.id"))
+														.add(Restrictions.le("hf2.data", new Date()));
+		
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.colaborador", "c", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.INNER_JOIN);
+		criteria.createCriteria("fs.cargo", "ca", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.funcao", "f", Criteria.INNER_JOIN);
+		criteria.createCriteria("f.historicoFuncaos", "hf", Criteria.LEFT_JOIN);
+		
+		criteria.add(Property.forName("hc.data").eq(subQueryHc));	
+		criteria.add(Property.forName("hf.data").eq(subQueryHf));	
+		criteria.add(Expression.eq("c.id", colaborador.getId()));
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
+		p.add(Projections.property("f.nome"), "funcaoNome");
+		p.add(Projections.property("f.id"), "funcaoId");
+		p.add(Projections.property("ca.cboCodigo"), "cargoCodigoCBO");
+		p.add(Projections.property("hf.id"), "funcaoHistoricoFuncaoAtualId");
+		p.add(Projections.property("hf.descricao"), "funcaoHistoricoFuncaoAtualDescricao");
+		
+		criteria.setProjection(Projections.distinct(p));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+		return (Colaborador) criteria.uniqueResult();
 	}
 }

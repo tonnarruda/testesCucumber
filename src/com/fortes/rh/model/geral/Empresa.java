@@ -124,6 +124,13 @@ public class Empresa extends AbstractModel implements Serializable
     private boolean mostrarPerformanceAvalDesempenho;
     private boolean notificarSomentePeriodosConfigurados;
     
+    @Lob
+	private String normasInternas;
+    @Lob
+	private String procedimentoEmCasoDeAcidente;
+	@Lob
+	private String termoDeResponsabilidade;
+    
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
 	{
@@ -674,5 +681,29 @@ public class Empresa extends AbstractModel implements Serializable
 	public void setNotificarSomentePeriodosConfigurados(
 			boolean notificarSomentePeriodosConfigurados) {
 		this.notificarSomentePeriodosConfigurados = notificarSomentePeriodosConfigurados;
+	}
+
+	public String getNormasInternas() {
+		return normasInternas;
+	}
+
+	public void setNormasInternas(String normasInternas) {
+		this.normasInternas = normasInternas;
+	}
+
+	public String getProcedimentoEmCasoDeAcidente() {
+		return procedimentoEmCasoDeAcidente;
+	}
+
+	public void setProcedimentoEmCasoDeAcidente(String procedimentoEmCasoDeAcidente) {
+		this.procedimentoEmCasoDeAcidente = procedimentoEmCasoDeAcidente;
+	}
+
+	public String getTermoDeResponsabilidade() {
+		return termoDeResponsabilidade;
+	}
+
+	public void setTermoDeResponsabilidade(String termoDeResponsabilidade) {
+		this.termoDeResponsabilidade = termoDeResponsabilidade;
 	}
 }

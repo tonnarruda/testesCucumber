@@ -337,6 +337,14 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	{
 		this.cargo = cargo;
 	}
+	
+	public void setCargoCadigoCBO(String codigoCBO)
+	{
+		if(this.cargo == null)
+			this.cargo = new Cargo();
+		
+		this.cargo.setCboCodigo(codigoCBO);
+	}
 
 	public String getDescricao()
 	{

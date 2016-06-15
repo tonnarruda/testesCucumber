@@ -97,4 +97,9 @@ public class RiscoFuncao extends AbstractModel implements Serializable
 	{
 		this.medidaDeSeguranca = medidaDeSeguranca;
 	}
+	public void setRiscoDescricao(String riscoDescricao){
+		if(this.risco == null)
+			this.risco = new Risco();
+		risco.setDescricao(riscoDescricao);
+	}
 }

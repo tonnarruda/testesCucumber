@@ -2,11 +2,19 @@ package com.fortes.rh.dao.hibernate.sesmt;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RiscoFuncaoDao;
+import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
 
@@ -45,5 +53,25 @@ public class RiscoFuncaoDaoHibernate extends GenericDaoHibernate<RiscoFuncao> im
 		query.setLong("funcaoId", funcaoId);
 		
 		query.executeUpdate();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<RiscoFuncao> riscosByHistoricoFuncao(HistoricoFuncao historicoFuncao) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("r.descricao"), "riscoDescricao");
+		p.add(Projections.property("rf.medidaDeSeguranca"), "medidaDeSeguranca");
+		
+
+		Criteria criteria = getSession().createCriteria(RiscoFuncao.class, "rf");
+		criteria.createCriteria("rf.risco", "r", Criteria.INNER_JOIN);
+		
+		criteria.add(Expression.eq("rf.historicoFuncao.id", historicoFuncao.getId()));
+		criteria.addOrder(Order.asc("r.descricao"));
+		criteria.setProjection(p);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(RiscoFuncao.class));
+		return criteria.list();
+				
+		
 	}
 }

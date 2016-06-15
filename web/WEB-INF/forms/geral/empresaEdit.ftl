@@ -23,6 +23,25 @@
 
 	<style type="text/css">
 		.divInfo { width: 850px !important;}
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+		
+		.ordemDeServico { margin: 20px 10px 10px 5px }
+		.ordemDeServico h2 {margin: -9px 0px 0 0px;
+					    padding: 3px 2px;
+					    background: none;
+					    color: #797979;
+					    border-bottom: 2px solid #999999;
+			         }
+			         
+		.ordemDeServico ul{padding: 10px 10px 10px 15px;
+					    border-top: none;
+					    background: #f1f1f1;
+					    border-bottom-left-radius: 5px;
+					    border-bottom-right-radius: 5px;
+					}
+		.ordemDeServico textarea{	height: 150px;
+									width: 650px;
+								}
 	</style>
 	
 	<script type="text/javascript">
@@ -294,6 +313,15 @@
 					<br>
 					<@ww.checkbox label="Tornar obrigatório o preenchimento dos campos de Ambiente e Função para o histórico do colaborador e solicitação de pessoal" name="empresa.obrigarAmbienteFuncao" id="obrigarAmbienteFuncao" labelPosition="right" /><br>
 					<@ww.checkbox label="Exibir logo da empresa ao emitir PPRA e LTCAT" name="empresa.exibirLogoEmpresaPpraLtcat" id="exibirLogoEmpresaPpraLtcat" labelPosition="right" />
+					
+					<@ww.div cssClass="ordemDeServico">
+						<h2>Ordem de Serviço</h2>	
+							<ul>
+								<@ww.textarea label="Normas Internas" name="empresa.normasInternas" id="normasInternas" size="40"/>
+								<@ww.textarea label="Procedimentos em caso de acidente de trabalho" name="empresa.procedimentoEmCasoDeAcidente" id="procedimentoEmCasoDeAcidente" size="40"/>
+								<@ww.textarea label="Termo de Responsabilidade" name="empresa.termoDeResponsabilidade" id="termoDeResponsabilidade" size="40"/>
+							</ul>
+					</@ww.div>
 				</ul>
 			</@ww.div>
 		</li>

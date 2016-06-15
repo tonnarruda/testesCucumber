@@ -688,8 +688,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 				cidadeNome, ufSigla, afastamentoInicio, afastamentoFim,
 				candIndicadoPor);
 		
-		if (this.funcao == null)
-			this.funcao =  new Funcao();
+		inicializaFuncao();
 		this.funcao.setNome(funcaoNome);
 
 		if (this.ambiente == null)
@@ -2225,10 +2224,28 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.funcao = funcao;
 	}
 	public void setFuncaoId(Long funcaoId){
-		if(this.funcao == null)
-			this.funcao = new Funcao();
+		inicializaFuncao();
 		funcao.setId(funcaoId);
 	}
+	public void setFuncaoNome(String funcaoNome){
+		inicializaFuncao();
+		funcao.setNome(funcaoNome);
+	}
+	public void setFuncaoHistoricoFuncaoAtualId(Long historicoFuncaoId){
+		inicializaFuncao();
+		funcao.setHistoricoAtualId(historicoFuncaoId);
+	}
+	
+	public void setFuncaoHistoricoFuncaoAtualDescricao(String historicoFuncaoDescricao){
+		inicializaFuncao();
+		funcao.setHistoricoAtualDescricao(historicoFuncaoDescricao);
+	}
+
+	private void inicializaFuncao() {
+		if(this.funcao == null)
+			this.funcao = new Funcao();
+	}
+	
 	public Collection<HistoricoColaborador> getHistoricoColaboradors()
 	{
 		return historicoColaboradors;
@@ -2712,6 +2729,25 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			return "-";
 		}
 	}
+	
+	@NaoAudita
+	public String getCargoCodigoCBO()
+	{
+		try {
+			return faixaSalarial.getCargo().getCboCodigo();
+		} catch (Exception e) {
+			return "-";
+		}
+	}
+	
+	public void setCargoCodigoCBO(String codigoCBO)
+	{
+		if(faixaSalarial == null)
+			faixaSalarial = new FaixaSalarial();
+		
+		this.faixaSalarial.setCargoCadigoCBO(codigoCBO);
+	}
+	
 	@NaoAudita
 	public Cargo getCargo()
 	{

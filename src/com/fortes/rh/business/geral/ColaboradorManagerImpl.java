@@ -2966,4 +2966,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Integer getCountColaboradorComESemOrdemDeServico( Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] idsAreasPermitidas, String situacao, String filtroOrdemDeServico) {
 		return getDao().findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, idsAreasPermitidas, situacao, filtroOrdemDeServico, 0, 0).size();
 	}
+	
+	public Colaborador findComDadosBasicosParaOrdemDeServico(Colaborador colaborador){
+		return getDao().findComDadosBasicosParaOrdemDeServico(colaborador);
+	}
 }

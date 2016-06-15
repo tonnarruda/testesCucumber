@@ -44,11 +44,11 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	@Lob
 	private String atividades;
 	@Lob
-	private String riscoDaOperacao;
+	private String riscos;
 	@Lob
 	private String epis;
 	@Lob
-	private String medidasDePrevencao;
+	private String medidasPreventivas;
 	@Lob
 	private String treinamentos;
 	@Lob
@@ -138,12 +138,12 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 		this.atividades = atividades;
 	}
 	
-	public String getRiscoDaOperacao() {
-		return riscoDaOperacao;
+	public String getRiscos() {
+		return riscos;
 	}
 	
-	public void setRiscoDaOperacao(String riscoDaOperacao) {
-		this.riscoDaOperacao = riscoDaOperacao;
+	public void setRiscos(String riscos) {
+		this.riscos = riscos;
 	}
 	
 	public String getEpis() {
@@ -154,12 +154,12 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 		this.epis = epis;
 	}
 	
-	public String getMedidasDePrevencao() {
-		return medidasDePrevencao;
+	public String getMedidasPreventivas() {
+		return medidasPreventivas;
 	}
 	
-	public void setMedidasDePrevencao(String medidasDePrevencao) {
-		this.medidasDePrevencao = medidasDePrevencao;
+	public void setMedidasPreventivas(String medidasPreventivas) {
+		this.medidasPreventivas = medidasPreventivas;
 	}
 	
 	public String getTreinamentos() {

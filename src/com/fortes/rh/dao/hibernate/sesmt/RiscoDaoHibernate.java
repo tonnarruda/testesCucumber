@@ -10,7 +10,9 @@ import org.hibernate.criterion.Order;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RiscoDao;
+import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.Risco;
+import com.fortes.rh.model.sesmt.RiscoFuncao;
 
 @SuppressWarnings("unchecked")
 public class RiscoDaoHibernate extends GenericDaoHibernate<Risco> implements RiscoDao

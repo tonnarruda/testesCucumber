@@ -14,7 +14,7 @@ CREATE TABLE ordemDeServico (
 	data timestamp without time zone,
 	revisao double precision,
 	atividades text,
-	riscoDaOperacao text,
+	riscos text,
 	epis text,
 	medidasDePrevencao text,
 	treinamentos text,
@@ -26,3 +26,7 @@ CREATE TABLE ordemDeServico (
 ALTER TABLE ordemDeServico ADD CONSTRAINT ordemDeServico_pkey PRIMARY KEY(id);--.go
 ALTER TABLE ordemDeServico ADD CONSTRAINT ordemDeServico_colaborador_id_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
 CREATE SEQUENCE ordemDeServico_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+alter table empresa add column normasInternas text;--.go
+alter table empresa add column procedimentoEmCasoDeAcidente text;--.go
+alter table empresa add column termoDeResponsabilidade text;--.go

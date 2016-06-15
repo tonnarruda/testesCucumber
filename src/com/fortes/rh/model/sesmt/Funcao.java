@@ -115,6 +115,21 @@ public class Funcao extends AbstractModel implements Serializable
 	public void setHistoricoAtual(HistoricoFuncao historicoAtual) {
 		this.historicoAtual = historicoAtual;
 	}
+	
+	public void setHistoricoAtualId(Long historicoAtualId) {
+		inicializaHistoricoAtual();
+		historicoAtual.setId(historicoAtualId);
+	}
+	
+	public void setHistoricoAtualDescricao(String historicoAtualDescricao) {
+		inicializaHistoricoAtual();
+		historicoAtual.setDescricao(historicoAtualDescricao);
+	}
+
+	private void inicializaHistoricoAtual() {
+		if(historicoAtual == null)
+			this.historicoAtual = new HistoricoFuncao();
+	}
 
 	public Collection<MedicaoRisco> getMedicaoRiscos() {
 		return medicaoRiscos;
