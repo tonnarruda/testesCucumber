@@ -2,6 +2,7 @@ package com.fortes.rh.test.web.action.sesmt;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -26,10 +27,12 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.OrdemDeServico;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.sesmt.OrdemDeServicoFactory;
 import com.fortes.rh.web.action.sesmt.OrdemDeServicoEditAction;
 
 public class OrdemDeServicoEditActionTest
@@ -152,13 +155,35 @@ public class OrdemDeServicoEditActionTest
 		assertEquals("success", action.listGerenciamentoOS());
 	}
 
-//	public void testList() throws Exception
-//	{
-//		ordemDeServicoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<OrdemDeServico>()));
-//		assertEquals("success", action.list());
-//		assertNotNull(action.getOrdemDeServicos());
-//	}
-//
+	@Test
+	public void list() throws Exception
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		action.setColaborador(colaborador);
+		
+		when(ordemDeServicoManager.getCount(new String[]{"colaborador.id"}, new Long[]{colaborador.getId()})).thenReturn(1);
+		when(ordemDeServicoManager.find(action.getPage(), action.getPagingSize(), new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}, new String[]{"data"})).thenReturn(Arrays.asList(OrdemDeServicoFactory.getEntity()));
+		
+		assertEquals("success", action.list());
+	}
+	
+	@Test
+	public void prepareInsert() throws Exception
+	{
+		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
+		when(ordemDeServicoManager.montaOrdemDeServico(any(OrdemDeServico.class), any(Colaborador.class), any(Empresa.class))).thenReturn(ordemDeServico);
+		assertEquals("success", action.prepareInsert());
+	}
+	
+	@Test
+	public void prepareUpdate() throws Exception
+	{
+		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
+		when(ordemDeServicoManager.montaOrdemDeServico(any(OrdemDeServico.class), any(Colaborador.class), any(Empresa.class))).thenReturn(ordemDeServico);
+		assertEquals("success", action.prepareUpdate());
+	}
+
+
 //	public void testDelete() throws Exception
 //	{
 //		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);

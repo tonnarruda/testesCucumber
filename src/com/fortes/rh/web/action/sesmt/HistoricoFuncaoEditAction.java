@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
@@ -26,6 +27,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	private ExameManager exameManager;
 	private EpiManager epiManager;
 	private RiscoManager riscoManager;
+	private CursoManager cursoManager;
 
 	private HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 	private Funcao funcao;
@@ -36,6 +38,8 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	private Long[] episChecked;
 	private Collection<CheckBox> episCheckList = new HashSet<CheckBox>();
 	private Long[] riscoChecks;
+	private Collection<CheckBox> cursosCheckList = new HashSet<CheckBox>();
+	private Long[] cursosChecked;
 
 	private Collection<Risco> riscos;
 	private Collection<RiscoFuncao> riscosFuncoes;
@@ -60,7 +64,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		Collection<Exame> exames = exameManager.findByEmpresaComAsoPadrao(getEmpresaSistema().getId());
 		examesCheckList = CheckListBoxUtil.populaCheckListBox(exames, "getId", "getNome");
 		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), epiAtivo);
-		
+		setCursosCheckList(cursoManager.populaCheckListCurso(getEmpresaSistema().getId()));
 		riscosFuncoes = riscoManager.findRiscosFuncoesByEmpresa(getEmpresaSistema().getId());
 	}
 
@@ -76,7 +80,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		prepare();
 		examesCheckList = CheckListBoxUtil.marcaCheckListBox(examesCheckList, historicoFuncao.getExames(), "getId");
 		episCheckList = CheckListBoxUtil.marcaCheckListBox(episCheckList, historicoFuncao.getEpis(), "getId");
-		
+		cursosCheckList = CheckListBoxUtil.marcaCheckListBox(cursosCheckList, historicoFuncao.getCursos(), "getId");
 		return Action.SUCCESS;
 	}
 
@@ -84,7 +88,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	{
 		try {
 			historicoFuncao.setFuncao(funcao);
-			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes);
+			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, cursosChecked, riscosFuncoes);
 	
 			if(veioDoSESMT)
 				return "SUCESSO_VEIO_SESMT";
@@ -106,7 +110,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	public String update() throws Exception
 	{
 		try {
-			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes);
+			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, cursosChecked, riscosFuncoes);
 	
 			if(veioDoSESMT)
 				return "SUCESSO_VEIO_SESMT";
@@ -195,6 +199,10 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		this.episChecked = episChecked;
 	}
 
+	public Long[] getEpisChecked() {
+		return episChecked;
+	}
+
 	public boolean isVeioDoSESMT()
 	{
 		return veioDoSESMT;
@@ -227,5 +235,25 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 
 	public void setRiscoChecks(Long[] riscoChecks) {
 		this.riscoChecks = riscoChecks;
+	}
+
+	public Collection<CheckBox> getCursosCheckList() {
+		return cursosCheckList;
+	}
+
+	public void setCursosCheckList(Collection<CheckBox> cursosCheckList) {
+		this.cursosCheckList = cursosCheckList;
+	}
+
+	public Long[] getCursosChecked() {
+		return cursosChecked;
+	}
+
+	public void setCursosChecked(Long[] cursosChecked) {
+		this.cursosChecked = cursosChecked;
+	}
+
+	public void setCursoManager(CursoManager cursoManager) {
+		this.cursoManager = cursoManager;
 	}
 }

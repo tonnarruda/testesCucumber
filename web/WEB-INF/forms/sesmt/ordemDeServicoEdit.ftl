@@ -19,37 +19,45 @@
 	<body>
 		<@ww.actionerror />
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
+			<@ww.hidden name="colaborador.id" value="${ordemDeServico.colaborador.id}" />
 			<@ww.hidden name="ordemDeServico.id" />
-			<@ww.hidden name="colaborador.id" />
+			<@ww.hidden name="ordemDeServico.colaborador.id" value="${ordemDeServico.colaborador.id}" />
+			<@ww.hidden name="ordemDeServico.nomeColaborador" />
+			<@ww.hidden name="ordemDeServico.dataAdmisaoColaborador" />
+			<@ww.hidden name="ordemDeServico.nomeFuncao" />
+			<@ww.hidden name="ordemDeServico.codigoCBO" />
+			<@ww.hidden name="ordemDeServico.normasInternas" />
+			<@ww.hidden name="ordemDeServico.procedimentoEmCasoDeAcidente" />
+			<@ww.hidden name="ordemDeServico.termoDeResponsabilidade" />
 			<@ww.token/>
 			
 			<table>
 				<tr>
-					<td width="370"> <span style="font-weight: bold;">Colaborador:</span> ${colaborador.nome} </td>
-					<td width="370"> <span style="font-weight: bold;">Data de Admissão:</span> ${colaborador.dataAdmissaoFormatada} </td>
+					<td width="370"> <span style="font-weight: bold;">Colaborador:</span> ${ordemDeServico.nomeColaborador} </td>
+					<td width="370"> <span style="font-weight: bold;">Data de Admissão:</span> ${ordemDeServico.dataAdmisaoColaboradorFormatada} </td>
 				</tr>
 				<tr>
-					<td> <span style="font-weight: bold;">Função:</span> ${colaborador.funcaoNome} </td>
-					<td> <span style="font-weight: bold;">Código CBO</span> ${colaborador.cargoCodigoCBO} </td>
+					<td> <span style="font-weight: bold;">Função:</span> ${ordemDeServico.nomeFuncao} </td>
+					<td> <span style="font-weight: bold;">Código CBO</span> ${ordemDeServico.codigoCBO} </td>
 				</tr>
 			</table>
 			
 			<@ww.textfield label="Nº Revisão" name="ordemDeServico.revisao" id="revisaoOS" disable="true" liClass="liLeft" cssStyle="width:180px;" maxLength="30"/>
 			<@ww.datepicker label="Data da Ordem de Serviço" name="ordemDeServico.data" value="${data}" id="dataOS" required="true" cssClass="mascaraData"/>
-			<@ww.textarea label="Atividades Desenvolvidas" name="ordemDeServico.atividades" value="${colaborador.funcao.historicoAtual.descricao}" id="atividadesOS" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Riscos da Operação" name="ordemDeServico.riscos" id="riscosOS" value="${riscosDaOperacao}" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Epi's - Uso Obrigatório" name="ordemDeServico.epis" id="episOS" value="${epis}" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Medidas Preventivas" name="ordemDeServico.medidasDePrevencao" id="medidasPreventivasOS"  value="${medidasPreventivas}" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Treinamentos Necessários" name="ordemDeServico.treinamentos" id="treinamentosOS" value="${treinamentos}" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Normas Internas" name="ordemDeServico.normasInternas" id="normasInternasOS" value="${empresaSistema.normasInternas}" disabled="true" cssStyle="width:800px;height:451px; background-color: #ececec;"/>
-			<@ww.textarea label="Procedimento em Caso de Acidente de Trabalho" name="ordemDeServico.procedimentoEmCasoDeAcidente" value="${empresaSistema.procedimentoEmCasoDeAcidente}" id="procedimentoEmCasoDeAcidenteOS" disabled="true" cssStyle="width:800px;height:150px; background-color: #ececec;"/>
-			<@ww.textarea label="Termo de Responsabilidade" name="ordemDeServico.termoDeResponsabilidade" value="${empresaSistema.termoDeResponsabilidade}" id="termoDeResponsabilidadeOS"  disabled="true" cssStyle="width:800px;height:150px;background-color: #ececec;"/>
+			<@ww.textarea label="Atividades Desenvolvidas" name="ordemDeServico.atividades" id="atividadesOS" cssStyle="width:800px;height:150px;"/>
+			<@ww.textarea label="Riscos da Operação" name="ordemDeServico.riscos" id="riscosOS" cssStyle="width:800px;height:150px;"/>
+			<@ww.textarea label="Epi's - Uso Obrigatório" name="ordemDeServico.epis" id="episOS" cssStyle="width:800px;height:150px;"/>
+			<@ww.textarea label="Medidas Preventivas" name="ordemDeServico.medidasPreventivas" id="medidasPreventivasOS" cssStyle="width:800px;height:150px;"/>
+			<@ww.textarea label="Treinamentos Necessários" name="ordemDeServico.treinamentos" id="treinamentosOS" cssStyle="width:800px;height:150px;"/>
+			<@ww.textarea label="Normas Internas" name="ordemDeServico.normasInternas" id="normasInternasOS" disabled="true" cssStyle="width:800px;height:451px; background-color: #ececec;"/>
+			<@ww.textarea label="Procedimento em Caso de Acidente de Trabalho" name="ordemDeServico.procedimentoEmCasoDeAcidente" id="procedimentoEmCasoDeAcidenteOS" disabled="true" cssStyle="width:800px;height:150px; background-color: #ececec;"/>
+			<@ww.textarea label="Termo de Responsabilidade" name="ordemDeServico.termoDeResponsabilidade" id="termoDeResponsabilidadeOS"  disabled="true" cssStyle="width:800px;height:150px;background-color: #ececec;"/>
 			
 		</@ww.form>
 	
 		<div class="buttonGroup">
 			<button onclick="${validarCampos};" class="btnGravar"></button>
-			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+			<button onclick="window.location='list.action?colaborador.id=${ordemDeServico.colaborador.id}'" class="btnVoltar"></button>
 		</div>
 	</body>
 </html>

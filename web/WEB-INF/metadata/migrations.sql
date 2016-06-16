@@ -27,6 +27,14 @@ ALTER TABLE ordemDeServico ADD CONSTRAINT ordemDeServico_pkey PRIMARY KEY(id);--
 ALTER TABLE ordemDeServico ADD CONSTRAINT ordemDeServico_colaborador_id_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
 CREATE SEQUENCE ordemDeServico_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
+CREATE TABLE historicofuncao_curso (
+    historicofuncao_id bigint NOT NULL,
+    cursos_id bigint NOT NULL
+);--.go
+
+ALTER TABLE historicofuncao_curso ADD CONSTRAINT historicofuncao_curso_curso_fk FOREIGN KEY (cursos_id) REFERENCES curso(id);--.go
+ALTER TABLE historicofuncao_curso ADD CONSTRAINT historicofuncao_curso_historicofuncao_fk FOREIGN KEY (historicofuncao_id) REFERENCES historicofuncao(id);--.go
+
 alter table empresa add column normasInternas text;--.go
 alter table empresa add column procedimentoEmCasoDeAcidente text;--.go
 alter table empresa add column termoDeResponsabilidade text;--.go

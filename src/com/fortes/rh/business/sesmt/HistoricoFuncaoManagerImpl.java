@@ -15,6 +15,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
@@ -195,7 +196,7 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		return historicoFuncaosRetorno;
 	}
 
-	public void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes) throws FortesException, Exception 
+	public void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] riscoChecks, Long[] cursosChecked, Collection<RiscoFuncao> riscoFuncoes) throws FortesException, Exception 
 	{
 		if (this.findByData(historicoFuncao.getData(), historicoFuncao.getId(), historicoFuncao.getFuncao().getId()) != null)
 			throw new FortesException("Já existe um histórico para a data informada");			
@@ -204,19 +205,18 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		CollectionUtil<Epi> collectionUtil = new CollectionUtil<Epi>(); 
 		historicoFuncao.setEpis(collectionUtil.convertArrayLongToCollection(Epi.class, episChecked));
 		
+		CollectionUtil<Curso> cursosCollectionUtil = new CollectionUtil<Curso>(); 
+		historicoFuncao.setCursos(cursosCollectionUtil.convertArrayLongToCollection(Curso.class, cursosChecked));
+		
 		if (historicoFuncao.getId() != null)
 			riscoFuncaoManager.removeByHistoricoFuncao(historicoFuncao.getId());
 		
 		Collection<RiscoFuncao> riscoFuncoesSelecionados = new ArrayList<RiscoFuncao>();
 		
-		if (riscoChecks != null)
-		{
-			for (Long riscoId : riscoChecks)
-			{
-				for (RiscoFuncao riscoFuncao : riscoFuncoes)
-				{
-					if (riscoFuncao != null && riscoFuncao.getRisco() != null && riscoId.equals(riscoFuncao.getRisco().getId()))
-					{
+		if (riscoChecks != null) {
+			for (Long riscoId : riscoChecks) {
+				for (RiscoFuncao riscoFuncao : riscoFuncoes) {
+					if (riscoFuncao != null && riscoFuncao.getRisco() != null && riscoId.equals(riscoFuncao.getRisco().getId())) {
 						riscoFuncao.setHistoricoFuncao(historicoFuncao);
 						riscoFuncoesSelecionados.add(riscoFuncao);
 					}

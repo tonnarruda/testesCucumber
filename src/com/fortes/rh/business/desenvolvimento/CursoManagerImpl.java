@@ -298,4 +298,23 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	{
 		this.transactionManager = transactionManager;
 	}
+
+	public Collection<Curso> findByHistoricoFuncaoId(Long historicoFuncaoId) {
+		return getDao().findByHistoricoFuncaoId(historicoFuncaoId);
+	}
+
+	public Collection<CheckBox> populaCheckListCurso(Long empresaId) {
+		Collection<CheckBox> checks = new ArrayList<CheckBox>();
+		try
+		{
+			Collection<Curso> cursos = findAllByEmpresasParticipantes(empresaId);
+			checks = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return checks;
+	}
 }

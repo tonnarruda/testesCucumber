@@ -1158,6 +1158,18 @@
     <property name="dao">
       <ref bean="ordemDeServicoDao" />
     </property>
+    <property name="colaboradorManager">
+      <ref bean="colaboradorManager" />
+    </property>
+    <property name="riscoFuncaoManager">
+      <ref bean="riscoFuncaoManager" />
+    </property>
+    <property name="epiManager">
+      <ref bean="epiManager" />
+    </property>
+    <property name="cursoManager">
+      <ref bean="cursoManager" />
+    </property>
   </bean>
   <bean id="ordemDeServicoManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -1168,6 +1180,3 @@
     </property>
   </bean>
 </beans>
-
-
-

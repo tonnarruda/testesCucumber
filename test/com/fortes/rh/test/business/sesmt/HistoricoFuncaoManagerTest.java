@@ -243,7 +243,7 @@ public class HistoricoFuncaoManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		
 		try {
-			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscosChecked, riscosFuncoes);
+			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscosChecked, null, riscosFuncoes);
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -271,7 +271,7 @@ public class HistoricoFuncaoManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		
 		try {
-			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscosChecked, riscosFuncoes);
+			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscosChecked, null, riscosFuncoes);
 		} catch (Exception e) {
 			exception = e;
 		}

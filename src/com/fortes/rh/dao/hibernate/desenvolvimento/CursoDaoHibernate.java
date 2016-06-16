@@ -28,6 +28,7 @@ import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
@@ -568,5 +569,21 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
 		
 		return  criteria.list();
+	}
+
+	public Collection<Curso> findByHistoricoFuncaoId(Long historicoFuncaoId) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.alias(Projections.groupProperty("c.id"), "id"));
+		p.add(Projections.alias(Projections.groupProperty("c.nome"), "nome"));
+		
+		Criteria criteria = getSession().createCriteria(HistoricoFuncao.class, "hf");
+		criteria.createCriteria("hf.cursos","c", Criteria.INNER_JOIN );
+		criteria.add(Expression.eq("hf.id", historicoFuncaoId));
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setProjection(p);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
+		
+		return criteria.list();
 	}
 }

@@ -6,6 +6,8 @@ import java.util.Date;
 
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.OrdemDeServico;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -76,6 +78,12 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	
 	public Date getDataAdmisaoColaborador() {
 		return dataAdmisaoColaborador;
+	}
+	
+	@NaoAudita
+	public String getDataAdmisaoColaboradorFormatada()
+	{
+		return DateUtil.formataDate(this.dataAdmisaoColaborador, "dd/MM/yyyy");
 	}
 	
 	public void setDataAdmisaoColaborador(Date dataAdmisaoColaborador) {
@@ -192,5 +200,12 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	
 	public void setTermoDeResponsabilidade(String termoDeResponsabilidade) {
 		this.termoDeResponsabilidade = termoDeResponsabilidade;
+	}
+	
+	public void setColaboradorId(Long colaboradorId){
+		if(colaborador == null)
+			colaborador = new Colaborador();
+		
+		colaborador.setId(colaboradorId);
 	}
 }

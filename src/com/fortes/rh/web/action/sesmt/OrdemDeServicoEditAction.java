@@ -2,16 +2,13 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
-import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.OrdemDeServicoManager;
-import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -20,9 +17,7 @@ import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
-import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.OrdemDeServico;
-import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -38,8 +33,6 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private ColaboradorManager colaboradorManager;
 	private CargoManager cargoManager;
-	private RiscoFuncaoManager riscoFuncaoManager;
-	private EpiManager epiManager;
 
 	private Collection<Estabelecimento> estabelecimentosList = new ArrayList<Estabelecimento>();
 	private Collection<AreaOrganizacional> areasList = new ArrayList<AreaOrganizacional>();
@@ -47,9 +40,6 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	private HistoricoColaborador historicoColaborador = new HistoricoColaborador();
 	private Collection<Cargo> cargosList = new ArrayList<Cargo>();
 	private Collection<Colaborador> colaboradores;
-	private List<RiscoFuncao> riscosFuncao;
-	private Collection<Epi> epis;
-	private List<String> treinamentos;
 	
 	private OrdemDeServico ordemDeServico;
 	private Colaborador colaborador = new Colaborador();
@@ -113,58 +103,15 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 //		return list();
 //	}
 	
-	private void prepare() throws Exception
-	{
-		if(ordemDeServico != null && ordemDeServico.getId() != null)
-			ordemDeServico = (OrdemDeServico) ordemDeServicoManager.findById(ordemDeServico.getId());
-		
-		colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador);
-		riscosFuncao = riscoFuncaoManager.riscosByHistoricoFuncao(colaborador.getFuncao().getHistoricoAtual());
-		epis = epiManager.findByHistoricoFuncao(colaborador.getFuncao().getHistoricoAtual().getId());
-		
-	}
-
-	public String getRiscosDaOperacao(){
-		String riscosDaOperacao = "";
-		for (RiscoFuncao riscoFuncao : riscosFuncao) 
-			riscosDaOperacao += "- " + riscoFuncao.getRisco().getDescricao() + "\n";
-			
-		return riscosDaOperacao;
-	}
-	
-	public String getMedidasPreventivas(){
-		String medidasPreventivas = "";
-		for (RiscoFuncao riscoFuncao : riscosFuncao) 
-			medidasPreventivas += "- " + riscoFuncao.getMedidaDeSeguranca() + "\n";
-			
-		return medidasPreventivas;
-	}
-	
-	public String getTreinamentos(){
-		String medidasPreventivas = "";
-		for (RiscoFuncao riscoFuncao : riscosFuncao) 
-			medidasPreventivas += "- " + riscoFuncao.getMedidaDeSeguranca() + "\n";
-			
-		return medidasPreventivas;
-	}
-	
-	public String getEpis(){
-		String episDescricao = "";
-		for (Epi epi : epis) {
-			episDescricao += "- " + epi.getNome() + "\n";
-		}
-		return episDescricao;
-	}
-	
 	public String prepareInsert() throws Exception
 	{
-		prepare();
+		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, getEmpresaSistema());
 		return Action.SUCCESS;
 	}
 
 	public String prepareUpdate() throws Exception
 	{
-		prepare();
+		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, getEmpresaSistema());
 		return Action.SUCCESS;
 	}
 
@@ -192,7 +139,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 		this.ordemDeServico = ordemDeServico;
 	}
 
-	public Collection<OrdemDeServico> getOrdemDeServicos()
+	public Collection<OrdemDeServico> getOrdensDeServico()
 	{
 		return ordensDeServico;
 	}
@@ -294,14 +241,5 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
-
-	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
-		this.riscoFuncaoManager = riscoFuncaoManager;
-	}
-
-
-	public void setEpiManager(EpiManager epiManager) {
-		this.epiManager = epiManager;
 	}
 }

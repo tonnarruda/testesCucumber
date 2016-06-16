@@ -64,7 +64,6 @@ public class Funcao extends AbstractModel implements Serializable
 		this.nome = nome;
 	}
 
-	//projection
 	public void setProjectionCargoId(Long cargoId)
 	{
 		if(this.cargo == null)
@@ -146,5 +145,4 @@ public class Funcao extends AbstractModel implements Serializable
 	public void setExameNome(String exameNome) {
 		this.exameNome = exameNome;
 	}
-
 }

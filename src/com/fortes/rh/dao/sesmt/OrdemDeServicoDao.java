@@ -5,5 +5,6 @@ import com.fortes.rh.model.sesmt.OrdemDeServico;
 
 public interface OrdemDeServicoDao extends GenericDao<OrdemDeServico> 
 {
+	public OrdemDeServico findOrdemServicoProjection(Long id);
 
 }

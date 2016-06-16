@@ -33,4 +33,5 @@ public interface CursoDao extends GenericDao<Curso>
 	public boolean existeAvaliacaoAlunoRespondida(Long cursoId, char tipoAvaliacaoCurso);
 	public Collection<Curso> findByEmpresaIdAndCursosId(Long empresaId, Long... cursosIds);
 	public Collection<Curso> somaDespesasPorCurso(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
+	public Collection<Curso> findByHistoricoFuncaoId(Long historicoFuncaoId);
 }

@@ -24,14 +24,14 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.OrdemDeServicoEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">list.action</result>
+			<result name="invalid.token" type="redirect">list.action?colaborador.id=${colaborador.id}</result>
+			<result name="success" type="redirect">list.action?colaborador.id=${colaborador.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/ordemDeServicoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.OrdemDeServicoEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">list.action</result>
+			<result name="invalid.token" type="redirect">list.action?colaborador.id=${colaborador.id}</result>
+			<result name="success" type="redirect">list.action?colaborador.id=${colaborador.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/ordemDeServicoEdit.ftl</result>
 		</action>
 	</package>

@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -38,6 +39,9 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
 
     @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
     private Collection<Epi> epis;
+    
+    @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    private Collection<Curso> cursos;
     
     @OneToMany(mappedBy="historicoFuncao", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Collection<RiscoFuncao> riscoFuncaos;
@@ -195,5 +199,13 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
 
 	public void setDataDesligamento(Date dataDesligamento) {
 		this.dataDesligamento = dataDesligamento;
+	}
+
+	public Collection<Curso> getCursos() {
+		return cursos;
+	}
+
+	public void setCursos(Collection<Curso> cursos) {
+		this.cursos = cursos;
 	}
 }
