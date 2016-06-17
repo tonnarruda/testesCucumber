@@ -82,26 +82,26 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		setTotalSize(ordemDeServicoManager.getCount(new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}));
+		colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador);
 		ordensDeServico = ordemDeServicoManager.find(getPage(), getPagingSize(), new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}, new String[]{"data"});
 		return Action.SUCCESS;
 	}
 	
-//
-//	public String delete() throws Exception
-//	{
-//		try
-//		{
-//			ordemDeServicoManager.remove(ordemDeServico.getId());
-//			addActionMessage("OrdemDeServico excluído com sucesso.");verificar msg
-//		}
-//		catch (Exception e)
-//		{
-//			e.printStackTrace();
-//			addActionError("Não foi possível excluir este ordemDeServico.");verificar msg
-//		}
-//
-//		return list();
-//	}
+	public String delete() throws Exception
+	{
+		try
+		{
+			ordemDeServicoManager.remove(ordemDeServico.getId());
+			addActionSuccess("Ordem de serviço excluída com sucesso.");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			addActionError("Ocorreu um erro ao excluir a ordem de serviço.");
+		}
+
+		return list();
+	}
 	
 	public String prepareInsert() throws Exception
 	{
@@ -117,14 +117,28 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
-		ordemDeServicoManager.save(ordemDeServico);
-		return Action.SUCCESS;
+		try {
+			ordemDeServicoManager.save(ordemDeServico);
+			addActionSuccess("Ordem de serviço gravada com sucesso.");
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			addActionError("Ocorreu um erro ao gravar a ordem de serviço.");
+			prepareInsert();
+			return Action.INPUT;
+		}
 	}
 
 	public String update() throws Exception
 	{
-		ordemDeServicoManager.update(ordemDeServico);
-		return Action.SUCCESS;
+		try {
+			ordemDeServicoManager.update(ordemDeServico);
+			addActionSuccess("Ordem de serviço atualizada com sucesso.");
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			addActionError("Ocorreu um erro ao atualizar a ordem de serviço.");
+			prepareUpdate();
+			return Action.INPUT;
+		}
 	}
 	
 	public OrdemDeServico getOrdemDeServico()

@@ -162,6 +162,7 @@ public class OrdemDeServicoEditActionTest
 		action.setColaborador(colaborador);
 		
 		when(ordemDeServicoManager.getCount(new String[]{"colaborador.id"}, new Long[]{colaborador.getId()})).thenReturn(1);
+		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador)).thenReturn(colaborador);
 		when(ordemDeServicoManager.find(action.getPage(), action.getPagingSize(), new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}, new String[]{"data"})).thenReturn(Arrays.asList(OrdemDeServicoFactory.getEntity()));
 		
 		assertEquals("success", action.list());
@@ -184,67 +185,51 @@ public class OrdemDeServicoEditActionTest
 	}
 
 
-//	public void testDelete() throws Exception
-//	{
-//		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
-//		action.setOrdemDeServico(ordemDeServico);
-//
-//		ordemDeServicoManager.expects(once()).method("remove");
-//		ordemDeServicoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<OrdemDeServico>()));
-//		assertEquals("success", action.delete());
-//	}
-//	
-//	public void testDeleteException() throws Exception
-//	{
-//		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
-//		action.setOrdemDeServico(ordemDeServico);
-//		
-//		ordemDeServicoManager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-//		assertEquals("success", action.delete());
-//	}
-//
-//	public void testInsert() throws Exception
-//	{
-//		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
-//		action.setOrdemDeServico(ordemDeServico);
-//
-//		ordemDeServicoManager.expects(once()).method("save").with(eq(ordemDeServico)).will(returnValue(ordemDeServico));
-//
-//		assertEquals("success", action.insert());
-//	}
-//
-//	public void testInsertException() throws Exception
-//	{
-//		ordemDeServicoManager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-//		assertEquals("input", action.insert());
-//	}
-//
-//	public void testUpdate() throws Exception
-//	{
-//		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
-//		action.setOrdemDeServico(ordemDeServico);
-//
-//		ordemDeServicoManager.expects(once()).method("update").with(eq(ordemDeServico)).isVoid();
-//
-//		assertEquals("success", action.update());
-//	}
-//
-//	public void testUpdateException() throws Exception
-//	{
-//		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
-//		action.setOrdemDeServico(ordemDeServico);
-//
-//		ordemDeServicoManager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-//		ordemDeServicoManager.expects(once()).method("findById").with(eq(ordemDeServico.getId())).will(returnValue(ordemDeServico));
-//
-//		assertEquals("input", action.update());
-//	}
-//
-//	public void testGetSet() throws Exception
-//	{
-//		action.setOrdemDeServico(null);
-//
-//		assertNotNull(action.getOrdemDeServico());
-//		assertTrue(action.getOrdemDeServico() instanceof OrdemDeServico);
-//	}
+	@Test
+	public void delete() throws Exception
+	{
+		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
+		action.setOrdemDeServico(ordemDeServico);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		action.setColaborador(colaborador);
+		
+		when(ordemDeServicoManager.getCount(new String[]{"colaborador.id"}, new Long[]{colaborador.getId()})).thenReturn(1);
+		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador)).thenReturn(colaborador);
+		when(ordemDeServicoManager.find(action.getPage(), action.getPagingSize(), new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}, new String[]{"data"})).thenReturn(Arrays.asList(OrdemDeServicoFactory.getEntity()));
+
+		assertEquals("success", action.delete());
+		assertEquals("Ordem de serviço excluída com sucesso.",action.getActionSuccess().iterator().next());
+	}
+	
+	@Test
+	public void insert() throws Exception
+	{
+		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
+		action.setOrdemDeServico(ordemDeServico);
+		assertEquals("success", action.insert());
+		assertEquals("Ordem de serviço gravada com sucesso.",action.getActionSuccess().iterator().next());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void insertException() throws Exception
+	{
+		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
+		action.setOrdemDeServico(ordemDeServico);
+		
+		when(ordemDeServicoManager.save(ordemDeServico)).thenThrow(Exception.class);
+		when(ordemDeServicoManager.montaOrdemDeServico(any(OrdemDeServico.class), any(Colaborador.class), any(Empresa.class))).thenReturn(ordemDeServico);
+		assertEquals("input", action.insert());
+		assertEquals("Ocorreu um erro ao gravar a ordem de serviço.",action.getActionErrors().iterator().next());
+	}
+
+	@Test
+	public void update() throws Exception
+	{
+		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
+		action.setOrdemDeServico(ordemDeServico);
+		assertEquals("success", action.update());
+		assertEquals("Ordem de serviço atualizada com sucesso.",action.getActionSuccess().iterator().next());
+	}
 }
