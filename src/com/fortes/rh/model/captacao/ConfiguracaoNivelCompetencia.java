@@ -17,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -65,12 +66,37 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	private Integer avaliadorPeso;
 	@Transient
 	private Long avaliadorId;
-	
+	@Transient
+	private Cargo cargo;
+	@Transient
+	private Competencia competencia;
 	
 	public ConfiguracaoNivelCompetencia()
 	{
 	}
 
+	//findByAvaliacaaDesempenhoAndAvaliado
+	public ConfiguracaoNivelCompetencia(Long colaboradorId, String colaboradorNome, Long competenciaId, String competenciaNome, Character competenciaTipo, Long nivelcompetenciaId, String nivelCompetenciaDescricao, Integer nivelCompetenciaOrdem, Long cargoId, String cargoNome)
+	{
+		this.colaborador = new Colaborador();
+		colaborador.setId(colaboradorId);
+		colaborador.setNome(colaboradorNome);
+
+		this.competencia = new Competencia();
+		this.competencia.setId(competenciaId);
+		this.competencia.setTipo(competenciaTipo);
+		this.competencia.setNome(competenciaNome);
+
+		this.nivelCompetencia = new NivelCompetencia();
+		this.nivelCompetencia.setId(nivelcompetenciaId);
+		this.nivelCompetencia.setDescricao(nivelCompetenciaDescricao);
+		this.nivelCompetencia.setOrdem(nivelCompetenciaOrdem);
+		
+		this.cargo = new Cargo();
+		this.cargo.setId(cargoId);
+		this.cargo.setNome(cargoNome);
+	}
+	
 	// findColaboradoresCompetenciasAbaixoDoNivel
 	public ConfiguracaoNivelCompetencia(BigInteger colaboradorId, String colaboradorNome, BigInteger faixaSalarialId, String empresaNome, String estabelecimentoNome, BigInteger competenciaId, Character tipoCompetencia, String nivelCompetenciaDescricao, String nivelCompetenciaColaboradorDescricao, String competenciaDescricao, BigInteger cursoId, String cursoNome)
 	{
@@ -543,5 +569,21 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	private void inicializaConfiguracaoNivelCompetenciaCandidato(){
 		if(this.configuracaoNivelCompetenciaCandidato == null)
 			this.configuracaoNivelCompetenciaCandidato = new ConfiguracaoNivelCompetenciaCandidato();
+	}
+
+	public Cargo getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
+	}
+
+	public Competencia getCompetencia() {
+		return competencia;
+	}
+
+	public void setCompetencia(Competencia competencia) {
+		this.competencia = competencia;
 	}
 }

@@ -7,15 +7,21 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 
 public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetenciaColaborador> implements ConfiguracaoNivelCompetenciaColaboradorDao
@@ -208,5 +214,27 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaColaborador.class));
 		
 		return criteria.list();	
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Colaborador> findAvaliadores(Long avaliacaoDesempenhoId, Long avaliadoId) {
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
+		criteria.createCriteria("cncc.colaboradorQuestionario", "cq", CriteriaSpecification.INNER_JOIN);
+		criteria.createCriteria("cncc.avaliador", "av", CriteriaSpecification.INNER_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("av.id"), "id");
+		p.add(Projections.property("av.nome"), "nome");
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+		criteria.add(Expression.eq("cncc.colaborador.id", avaliadoId));
+		criteria.add(Expression.eq("cq.respondida", true));
+		
+		criteria.addOrder(Order.asc("av.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+		
+		return criteria.list();
 	}
 }

@@ -8,6 +8,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.DateUtil;
 
 public class ConfiguracaoNivelCompetenciaColaboradorFactory
@@ -82,5 +83,14 @@ public class ConfiguracaoNivelCompetenciaColaboradorFactory
 		configuracaoNivelCompetenciaColaboradors.add(getEntity(id));
 		
 		return configuracaoNivelCompetenciaColaboradors;
+	}
+	public static ConfiguracaoNivelCompetenciaColaborador getEntity(Date data, Colaborador colaborador, Colaborador avaliador, ColaboradorQuestionario colaboradorQuestionario) {
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = getEntity();
+		configuracaoNivelCompetenciaColaborador.setData(data);
+		configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
+		configuracaoNivelCompetenciaColaborador.setAvaliador(avaliador);
+		configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(colaboradorQuestionario);
+		
+		return configuracaoNivelCompetenciaColaborador;
 	}
 }

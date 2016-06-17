@@ -17,6 +17,7 @@ import org.hibernate.type.Type;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
 @SuppressWarnings("unchecked")
@@ -217,6 +218,27 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 
 		criteria.add(Expression.eq("a.id", avaliacaoId));
 		criteria.addOrder(Order.asc("ad.id"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
+	
+	public Collection<AvaliacaoDesempenho> findComCompetencia(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
+		criteria.createCriteria("cncc.colaboradorQuestionario", "cq", Criteria.INNER_JOIN);
+		criteria.createCriteria("cq.avaliacaoDesempenho", "ad", Criteria.INNER_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ad.id"), "id");
+		p.add(Projections.property("ad.titulo"), "titulo");
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.add(Expression.eq("ad.liberada", true));
+		criteria.add(Expression.eq("ad.empresa.id", empresaId));
+		
+		criteria.addOrder(Order.asc("ad.titulo"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();

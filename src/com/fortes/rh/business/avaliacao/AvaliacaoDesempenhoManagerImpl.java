@@ -402,6 +402,10 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			colaboradorQuestionarioManager.update(colaboradorQuestionario);
 		}
 	}
+
+	public Collection<AvaliacaoDesempenho> findComCompetencia(Long empresaId) {
+		return getDao().findComCompetencia(empresaId);
+	}
 	
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;

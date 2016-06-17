@@ -72,4 +72,8 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 	public Collection<ConfiguracaoNivelCompetenciaColaborador> findByDataAndFaixaSalarial(Date dataInicio, Date dataFim, Long faixaSalarialId) {
 		return getDao().findByDataAndFaixaSalarial(dataInicio, dataFim, faixaSalarialId);
 	}
+
+	public Collection<Colaborador> findCargosAvaliadores(Long avaliacaoDesempenhoId, Long avaliadoId) {
+		return getDao().findAvaliadores(avaliacaoDesempenhoId, avaliadoId);
+	}
 }

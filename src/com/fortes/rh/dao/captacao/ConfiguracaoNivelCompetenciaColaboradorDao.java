@@ -17,4 +17,5 @@ public interface ConfiguracaoNivelCompetenciaColaboradorDao extends GenericDao<C
 	boolean existeDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal);
 	boolean existeConfigCompetenciaParaAFaixaDestehistorico(Long historicoColaboradorId);
 	Collection<ConfiguracaoNivelCompetenciaColaborador> findByDataAndFaixaSalarial(Date dataInicio, Date dataFim, Long faixaSalarialId);
+	Collection<Colaborador> findAvaliadores(Long avaliacaoDesempenhoId,	Long avaliadoId);
 }

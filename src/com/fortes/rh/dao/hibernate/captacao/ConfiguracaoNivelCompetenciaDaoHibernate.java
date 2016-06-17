@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -738,6 +739,41 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		{
 			Object[] res = it.next();
 			lista.add(new ConfiguracaoNivelCompetencia(((BigInteger)res[0]).longValue(), ((BigInteger)res[1]).longValue(), (Character)res[2], (Integer)res[3], ((BigInteger)res[4]).longValue(), (res[5]!=null ? (Integer)res[5] : 1), (String)res[6], ((BigInteger)res[7]).longValue(), ((BigInteger)res[8]).longValue()));
+		}
+		
+		return lista;
+	}
+
+	public LinkedList<ConfiguracaoNivelCompetencia> findByAvaliacaaDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select distinct c.id as colabId, c.nome as colabNome, comp.id as compId, comp.nome as compNome, comp.tipo as compTipo, nc.id as ncId, nc.descricao as ncDescricao, chn.ordem as ncOrdem, cg.id as cgId, cg.nome as cgNome ");
+		sql.append("from configuracaonivelcompetencia cnc ");
+		sql.append("left join competencia comp on comp.id = cnc.competencia_id and comp.tipo = cnc.tipocompetencia ");
+		sql.append("inner join configuracaonivelcompetenciacolaborador as cncc on cncc.id = cnc.configuracaonivelcompetenciacolaborador_id ");
+		sql.append("inner join configuracaonivelcompetenciafaixasalarial as cncf on cncf.id = cncc.configuracaonivelcompetenciafaixasalarial_id ");
+		sql.append("inner join nivelcompetenciahistorico nch on nch.id = cncf.nivelcompetenciahistorico_id ");
+		sql.append("inner join confighistoriconivel chn on chn.nivelcompetenciahistorico_id = nch.id ");
+		sql.append("inner join nivelcompetencia nc on nc.id = chn.nivelcompetencia_id and nc.id = cnc.nivelcompetencia_id ");
+		sql.append("inner join colaboradorquestionario cq on cq.id = cncc.colaboradorquestionario_id ");
+		sql.append("inner join colaborador c on c.id = cncc.avaliador_id ");
+		sql.append("inner join historicocolaborador hc on hc.colaborador_id = c.id ");
+		sql.append("inner join faixasalarial fs on fs.id = hc.faixasalarial_id ");
+		sql.append("inner join cargo cg on cg.id = fs.cargo_id ");
+		sql.append("where cncc.colaborador_id = :avaliadoId ");
+		sql.append("and cq.avaliacaodesempenho_id = :avaliacaoDesempenhoId ");
+		sql.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2 where hc2.colaborador_id = hc.colaborador_id and hc2.status = :status) ");
+		sql.append("order by comp.nome, cg.nome, c.nome ");
+
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("avaliadoId", avaliadoId);
+		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		Collection<Object[]> resultado = query.list();
+		LinkedList<ConfiguracaoNivelCompetencia> lista = new LinkedList<ConfiguracaoNivelCompetencia>();
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+			Object[] res = it.next();
+			lista.add(new ConfiguracaoNivelCompetencia(((BigInteger)res[0]).longValue(), ((String)res[1]), ((BigInteger)res[2]).longValue(), ((String)res[3]), ((String)res[4]).charAt(0), ((BigInteger)res[5]).longValue(), ((String)res[6]), ((Integer)res[7]), ((BigInteger)res[8]).longValue(), ((String)res[9])));
 		}
 		
 		return lista;

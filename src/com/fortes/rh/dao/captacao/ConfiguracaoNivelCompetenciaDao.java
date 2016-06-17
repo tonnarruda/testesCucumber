@@ -2,6 +2,7 @@ package com.fortes.rh.dao.captacao;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.captacao.Candidato;
@@ -40,4 +41,5 @@ public interface ConfiguracaoNivelCompetenciaDao extends GenericDao<Configuracao
 	void removeBySolicitacaoId(Long solicitacaoId);
 	Collection<ConfiguracaoNivelCompetencia> findConfiguracaoNivelCompetenciaCandidato(Long configuracaoNivelCompetenciaCandidatoId);
 	Collection<ConfiguracaoNivelCompetencia> findCompetenciasAndPesos(Long avaliacaoDesempenhoId, Long avaliadoId);
+	LinkedList<ConfiguracaoNivelCompetencia> findByAvaliacaaDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId);
 }

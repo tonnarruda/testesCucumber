@@ -162,11 +162,17 @@
 		</action>
 		<action name="analiseDesempenhoCompetenciaColaborador" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="analiseDesempenhoCompetenciaColaborador">
 			<interceptor-ref name="defaultListStack"/>
-			<result name="success" type="jasper">
+			<result name="successResumido" type="jasper">
 				<param name="location">WEB-INF/report/analiseDesempenhoCompetenciaColaborador.jasper</param>
 				<param name="dataSource">resultados</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">analiseDesempenhoCompetenciaColaborador.pdf</param>
+			</result>
+			<result name="successDetalhado" type="jasper">
+				<param name="location">WEB-INF/report/resultadoCompetenciaColaborador.jasper</param>
+				<param name="dataSource">resultadoCompetenciaColaborador</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">resultadoCompetenciaColaborador.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/prepareAnaliseDesempenhoCompetenciaColaborador.ftl</result>
 		</action>

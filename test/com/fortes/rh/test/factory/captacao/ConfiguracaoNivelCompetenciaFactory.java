@@ -1,11 +1,14 @@
 package com.fortes.rh.test.factory.captacao;
 
+import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCandidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.geral.Colaborador;
 
 public class ConfiguracaoNivelCompetenciaFactory
 {
@@ -110,5 +113,15 @@ public class ConfiguracaoNivelCompetenciaFactory
 		configuracaoNivelCompetencia.setCompetenciaId(competenciaId);
 		configuracaoNivelCompetencia.setTipoCompetencia(tipoCompetencia);
 		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
+	}
+	
+	public static ConfiguracaoNivelCompetencia getEntity(Competencia competencia, Colaborador colaborador, Cargo cargo, Integer ordem)
+	{
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
+		configuracaoNivelCompetencia.setCompetencia(competencia);
+		configuracaoNivelCompetencia.setCargo(cargo);
+		configuracaoNivelCompetencia.setColaborador(colaborador);
+		configuracaoNivelCompetencia.setNivelCompetenciaOrdemProjection(ordem);
+		return configuracaoNivelCompetencia;
 	}
 }

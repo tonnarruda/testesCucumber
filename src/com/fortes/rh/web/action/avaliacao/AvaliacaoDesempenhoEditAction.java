@@ -13,6 +13,7 @@ import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -26,6 +27,7 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ResultadoCompetenciaColaborador;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
@@ -40,6 +42,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.dispatcher.SessionMap;
@@ -58,6 +61,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
 	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
 	private Collection<Avaliacao> avaliacaos;
@@ -77,20 +81,23 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Empresa empresa;
 	private Collection<Empresa> empresas;
 	
-	private String[] empresasCheck;
 	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
-	private String[] cargosCheck;
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
-	
-	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
-	private String[] colaboradorsCheck;
-	private String[] avaliados;
-	private String[] produtividade;
-	private String[] avaliadores;
 	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> avaliacoesCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> cargosAvaliadoCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> avaliadoresCheckList = new ArrayList<CheckBox>();
+	
+	private String[] empresasCheck;
+	private String[] avaliadosCheck;
+	private String[] colaboradorsCheck;
+	private String[] avaliados;
+	private String[] avaliadores;
 	private String[] avaliacoesCheck;
+	
+	private Collection<ResultadoCompetenciaColaborador> resultadoCompetenciaColaborador;
+	private Integer notaMinimaMediaGeralCompetencia;
 	
 	private String nomeBusca;
 	private Long empresaId;
@@ -98,6 +105,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	private boolean isAvaliados;
 	private boolean temAvaliacoesRespondidas;
+	private boolean relatorioDetalhado = true;
 	
 	private Date periodoInicial;
 	private Date periodoFinal;
@@ -300,7 +308,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try {
 			compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 			empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
-			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(null, null, null, null, getEmpresaSistema().getId(), null, null, true);
+			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findComCompetencia(getEmpresaSistema().getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -309,6 +317,14 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	}
 	
 	public String analiseDesempenhoCompetenciaColaborador()
+	{
+		if(relatorioDetalhado)
+			return competenciaColaboradorDetalhado();
+		else
+			return competenciaColaboradorResumido();
+	}
+	
+	public String competenciaColaboradorResumido()
 	{
 		try {
 			AvaliacaoDesempenho avaliacao = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
@@ -330,7 +346,32 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 
-		return Action.SUCCESS;
+		return "successResumido";
+	}
+	
+	@SuppressWarnings({ "unchecked", "static-access", "rawtypes" })
+	public String competenciaColaboradorDetalhado(){
+		try {
+			avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(avaliacaoDesempenho.getId());
+			Collection<Long> avaliadoresIds = new CollectionUtil().convertArrayToCollection(new StringUtil().stringToLong(avaliadores));
+			resultadoCompetenciaColaborador = configuracaoNivelCompetenciaManager.montaRelatorioResultadoCompetencia(avaliacaoDesempenho.getId(), avaliado.getId(), avaliadoresIds);
+			
+			if(resultadoCompetenciaColaborador.size() == 0){
+				addActionMessage("Não existem competências para o avaliado informado.");
+				prepareAnaliseDesempenhoCompetenciaColaborador();
+				return INPUT;
+			}
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Resultado das Competências do Colaborador", getEmpresaSistema(), avaliacaoDesempenho.getTitulo());
+			parametros.put("MEDIAGERARLCOMPETENCIA", notaMinimaMediaGeralCompetencia);
+		} catch (Exception e) {
+			addActionError("Problema ao gerar relatório.");
+			e.printStackTrace();
+			prepareAnaliseDesempenhoCompetenciaColaborador();
+			return Action.INPUT;
+		}
+
+		return "successDetalhado";
 	}
 	
 	public String prepareInsert() throws Exception
@@ -878,18 +919,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		this.desconsiderarAutoAvaliacao = desconsiderarAutoAvaliacao;
 	}
 
-	public Collection<CheckBox> getCargosCheckList() {
-		return cargosCheckList;
-	}
-
-	public void setCargosCheck(String[] cargosCheck) {
-		this.cargosCheck = cargosCheck;
-	}
-
-	public void setAreasCheck(String[] areasCheck) {
-		this.areasCheck = areasCheck;
-	}
-
 	public void setExibirObsAvaliadores(boolean exibirObsAvaliadores) {
 		this.exibirObsAvaliadores = exibirObsAvaliadores;
 	}
@@ -932,10 +961,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	}
 
-	public void setProdutividade(String[] produtividade) {
-		this.produtividade = produtividade;
-	}
-
 	public Collection<ParticipanteAvaliacaoDesempenho> getParticipantesAvaliados() {
 		return participantesAvaliados;
 	}
@@ -964,5 +989,55 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public boolean isExibeMenuRespondidoParcialmente() {
 		return exibeMenuRespondidoParcialmente;
+	}
+
+	public String[] getAvaliadosCheck() {
+		return avaliadosCheck;
+	}
+
+	public void setAvaliadosCheck(String[] avaliadosCheck) {
+		this.avaliadosCheck = avaliadosCheck;
+	}
+
+	public Collection<CheckBox> getCargosCheckList() {
+		return cargosCheckList;
+	}
+
+	public Collection<CheckBox> getCargosAvaliadoCheckList() {
+		return cargosAvaliadoCheckList;
+	}
+
+	public Integer getNotaMinimaMediaGeralCompetencia() {
+		return notaMinimaMediaGeralCompetencia;
+	}
+
+	public void setNotaMinimaMediaGeralCompetencia(Integer notaMinimaMediaGeralCompetencia) {
+		this.notaMinimaMediaGeralCompetencia = notaMinimaMediaGeralCompetencia;
+	}
+
+	public Collection<ResultadoCompetenciaColaborador> getResultadoCompetenciaColaborador() {
+		return resultadoCompetenciaColaborador;
+	}
+
+	public void setResultadoCompetenciaColaborador(
+			Collection<ResultadoCompetenciaColaborador> resultadoCompetenciaColaborador) {
+		this.resultadoCompetenciaColaborador = resultadoCompetenciaColaborador;
+	}
+
+	public Collection<CheckBox> getAvaliadoresCheckList() {
+		return avaliadoresCheckList;
+	}
+
+	public boolean isRelatorioDetalhado() {
+		return relatorioDetalhado;
+	}
+
+	public void setRelatorioDetalhado(boolean relatorioDetalhado) {
+		this.relatorioDetalhado = relatorioDetalhado;
+	}
+
+	public void setConfiguracaoNivelCompetenciaManager(
+			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 }

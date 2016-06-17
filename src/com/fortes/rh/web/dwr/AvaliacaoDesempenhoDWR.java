@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.security.SecurityUtil;
@@ -22,6 +24,7 @@ public class AvaliacaoDesempenhoDWR
 	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
 	private ColaboradorManager colaboradorManager;
 	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
+	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 
 	@SuppressWarnings("unchecked")
 	public Map<Long, String> getAvaliacoesByEmpresa(Long empresaId)
@@ -128,6 +131,13 @@ public class AvaliacaoDesempenhoDWR
 		return options;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Map<Long, String> getAvaliadores(Long avaliacaoDesempenhoId, Long avaliadoId)
+	{
+		Collection<Colaborador> avaliadores = configuracaoNivelCompetenciaColaboradorManager.findCargosAvaliadores(avaliacaoDesempenhoId, avaliadoId);
+		return CollectionUtil.convertCollectionToMap(avaliadores, "getId", "getNome", Cargo.class);
+	}
+	
 	public boolean existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(Long avaliacaoDesempenhoId) {
 		return configuracaoCompetenciaAvaliacaoDesempenhoManager.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenhoId);
 	}
@@ -143,5 +153,9 @@ public class AvaliacaoDesempenhoDWR
 	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
 		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	}
-	
+
+	public void setConfiguracaoNivelCompetenciaColaboradorManager(
+			ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
+		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
+	}
 }

@@ -3,6 +3,7 @@ package com.fortes.rh.test.dao.hibernate.captacao;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
@@ -10,14 +11,17 @@ import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
@@ -36,6 +40,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao;
+	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
 
 	@Override
 	public ConfiguracaoNivelCompetenciaColaborador getEntity()
@@ -251,6 +256,80 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 		assertEquals(2, (configuracaoNivelCompetenciaColaboradorDao.findByDataAndFaixaSalarial(DateUtil.criarDataMesAno(1, 1, 2005), DateUtil.criarDataMesAno(1, 11, 2015), faixaSalarial.getId())).size());
 	}
 	
+	public void testFindCargosAvaliadores()
+	{
+		Cargo cargo1 = CargoFactory.getEntity();
+		cargo1.setNome("BCargo1");
+		cargoDao.save(cargo1);
+
+		Cargo cargo2 = CargoFactory.getEntity();
+		cargo2.setNome("ACargo2");
+		cargoDao.save(cargo2);
+		
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
+		faixaSalarial1.setCargo(cargo1);
+		faixaSalarialDao.save(faixaSalarial1);
+		
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
+		faixaSalarial2.setCargo(cargo1);
+		faixaSalarialDao.save(faixaSalarial2);
+		
+		FaixaSalarial faixaSalarial3 = FaixaSalarialFactory.getEntity();
+		faixaSalarial3.setCargo(cargo2);
+		faixaSalarialDao.save(faixaSalarial3);
+		
+		Colaborador avaliador1 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(avaliador1);
+		
+		HistoricoColaborador historicoAvaliador1 = HistoricoColaboradorFactory.getEntity(null, avaliador1, faixaSalarial1, DateUtil.criarDataMesAno(1, 1, 2011));
+		historicoAvaliador1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoAvaliador1);
+
+		Colaborador avaliador2 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(avaliador2);
+
+		HistoricoColaborador historicoAvaliador2 = HistoricoColaboradorFactory.getEntity(null, avaliador2, faixaSalarial2, DateUtil.criarDataMesAno(1, 1, 2010));
+		historicoAvaliador2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoAvaliador2);
+		
+		Colaborador avaliador3 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(avaliador3);
+
+		HistoricoColaborador historicoAvaliador3 = HistoricoColaboradorFactory.getEntity(null, avaliador3, faixaSalarial3, DateUtil.criarDataMesAno(1, 1, 2009));
+		historicoAvaliador3.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoAvaliador3);
+		
+		Colaborador colaboradorAvaliado = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaboradorAvaliado);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(colaboradorAvaliado, avaliador1, null, avaliacaoDesempenho, true);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity(colaboradorAvaliado, avaliador2, null, avaliacaoDesempenho, true);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity(colaboradorAvaliado, avaliador3, null, avaliacaoDesempenho, true);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
+		
+		ConfiguracaoNivelCompetenciaColaborador config1 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(DateUtil.criarDataMesAno(7, 7, 2011), colaboradorAvaliado, avaliador1, colaboradorQuestionario1);
+		configuracaoNivelCompetenciaColaboradorDao.save(config1);
+		
+		ConfiguracaoNivelCompetenciaColaborador config2 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(DateUtil.criarDataMesAno(8, 8, 2011), colaboradorAvaliado, avaliador2, colaboradorQuestionario2);
+		configuracaoNivelCompetenciaColaboradorDao.save(config2);
+		
+		ConfiguracaoNivelCompetenciaColaborador config3 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(DateUtil.criarDataMesAno(8, 8, 2011), colaboradorAvaliado, avaliador3, colaboradorQuestionario3);
+		configuracaoNivelCompetenciaColaboradorDao.save(config3);
+		
+		Collection<Cargo> cargos = configuracaoNivelCompetenciaColaboradorDao.findAvaliadores(avaliacaoDesempenho.getId(), colaboradorAvaliado.getId());
+		
+		assertEquals(2, cargos.size());
+		assertEquals(cargo2.getNome(), ((Cargo)cargos.toArray()[0]).getNome());
+		assertEquals(cargo1.getNome(), ((Cargo)cargos.toArray()[1]).getNome());
+	}
+	
 	public void setConfiguracaoNivelCompetenciaColaboradorDao(ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao)
 	{
 		this.configuracaoNivelCompetenciaColaboradorDao = configuracaoNivelCompetenciaColaboradorDao;
@@ -280,5 +359,9 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 
 	public void setConfiguracaoNivelCompetenciaFaixaSalarialDao(ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao) {
 		this.configuracaoNivelCompetenciaFaixaSalarialDao = configuracaoNivelCompetenciaFaixaSalarialDao;
+	}
+
+	public void setAvaliacaoDesempenhoDao(AvaliacaoDesempenhoDao avaliacaoDesempenhoDao) {
+		this.avaliacaoDesempenhoDao = avaliacaoDesempenhoDao;
 	}
 }
