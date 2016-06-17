@@ -7,5 +7,6 @@ import com.fortes.rh.model.sesmt.OrdemDeServico;
 
 public interface OrdemDeServicoManager extends GenericManager<OrdemDeServico>
 {
+	public OrdemDeServico findOrdemServicoProjection(Long id);
 	public OrdemDeServico montaOrdemDeServico(OrdemDeServico ordemDeServico, Colaborador colaborador, Empresa empresaSistema);
 }

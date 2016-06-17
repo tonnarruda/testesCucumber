@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -40,6 +41,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	private HistoricoColaborador historicoColaborador = new HistoricoColaborador();
 	private Collection<Cargo> cargosList = new ArrayList<Cargo>();
 	private Collection<Colaborador> colaboradores;
+	private Map<String, Object> parametros;
 	
 	private OrdemDeServico ordemDeServico;
 	private Colaborador colaborador = new Colaborador();
@@ -141,6 +143,13 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 		}
 	}
 	
+	public String imprimir(){
+		ordensDeServico.add(ordemDeServicoManager.findOrdemServicoProjection(ordemDeServico.getId()));
+   	   	parametros = new HashMap<String, Object>();
+    	parametros.put("LOGO", getEmpresaSistema().getLogoUrl());
+		return Action.SUCCESS;
+	}
+	
 	public OrdemDeServico getOrdemDeServico()
 	{
 		if(ordemDeServico == null)
@@ -196,6 +205,10 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 
 	public void setCargosList(Collection<Cargo> cargosList) {
 		this.cargosList = cargosList;
+	}
+	
+	public Map<String, Object> getParametros() {
+		return parametros;
 	}
 	
 	public Map getSituacoes()

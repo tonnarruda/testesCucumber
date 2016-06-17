@@ -593,7 +593,6 @@ import com.fortes.rh.test.web.action.sesmt.FichaMedicaEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.FuncaoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.FuncaoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.HistoricoAmbienteEditActionTest;
-import com.fortes.rh.test.web.action.sesmt.HistoricoFuncaoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.HistoricoFuncaoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.IndicadorTreinamentosListActionTest;
 import com.fortes.rh.test.web.action.sesmt.MedicaoRiscoEditActionTest;
@@ -1058,7 +1057,6 @@ public class AllUnitTestsJunit3 extends TestSuite
         suite.addTestSuite(HistoricoFuncaoManagerTest.class);
         suite.addTestSuite(HistoricoFuncaoDaoHibernateTest.class);
         suite.addTestSuite(HistoricoFuncaoListActionTest.class);
-        suite.addTestSuite(HistoricoFuncaoEditActionTest.class);
 
         suite.addTestSuite(AmbienteEditActionTest.class);
         suite.addTestSuite(AmbienteDaoHibernateTest.class);

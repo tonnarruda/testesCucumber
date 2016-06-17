@@ -9,7 +9,6 @@
 		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.OrdemDeServicoEditAction" method="updateFilter">
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>
-		
 		<action name="list" class="com.fortes.rh.web.action.sesmt.OrdemDeServicoEditAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/ordemDeServicoList.ftl</result>
 		</action>
@@ -33,6 +32,14 @@
 			<result name="invalid.token" type="redirect">list.action?colaborador.id=${colaborador.id}</result>
 			<result name="success" type="redirect">list.action?colaborador.id=${colaborador.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/ordemDeServicoEdit.ftl</result>
+		</action>
+		<action name="imprimir" class="com.fortes.rh.web.action.sesmt.OrdemDeServicoEditAction" method="imprimir">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/ordemDeServico.jasper</param>
+				<param name="dataSource">ordensDeServico</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">ordemDeServico.pdf</param>
+			</result>
 		</action>
 	</package>
 </xwork>

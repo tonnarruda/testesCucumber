@@ -22,6 +22,10 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 	private CursoManager cursoManager;
 	private EpiManager epiManager;
 	
+	public OrdemDeServico findOrdemServicoProjection(Long id){
+		return getDao().findOrdemServicoProjection(id);
+	}
+	
 	public OrdemDeServico montaOrdemDeServico(OrdemDeServico ordemDeServico, Colaborador colaborador, Empresa empresa) {
 		
 		if(ordemDeServico != null && ordemDeServico.getId() != null)
@@ -79,7 +83,7 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 		 Collection<Epi> epis = epiManager.findByHistoricoFuncao(historicoFuncao.getId());
 		 String nomeEpis = "";
 		 for (Epi epi : epis) 
-			nomeEpis += "- " + epi.getNome();
+			nomeEpis += "- " + epi.getNome() + "\n";
 		 ordemDeServico.setEpis(nomeEpis);
 	}
 
