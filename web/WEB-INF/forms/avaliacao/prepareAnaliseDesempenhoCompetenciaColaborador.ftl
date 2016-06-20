@@ -10,6 +10,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
+	<#assign validarCampos="return validaFormulario('form', new Array('avaliacao', 'avaliados'), null)"/>
+	
 	<script type="text/javascript">
 		var empresaIds = new Array();
 		<#if empresas?exists>
@@ -111,13 +113,6 @@
 			addChecks('avaliadores',data);
 		}
 		
-		function submit(){
-			if($('#relatorioDetalhado').val() == 'true')
-				return validaFormulario('form', new Array('avaliacao', 'avaliados', '@avaliadores'), null);
-			else
-				return validaFormulario('form', new Array('avaliacao', 'avaliados'), null);
-		}
-		
 	</script>
 	
 </head>
@@ -125,7 +120,7 @@
 	<@ww.actionerror />
 	<@ww.actionmessage />
 	
-	<@ww.form name="form" action="analiseDesempenhoCompetenciaColaborador.action" onsubmit="submit()" method="POST">
+	<@ww.form name="form" action="analiseDesempenhoCompetenciaColaborador.action" onsubmit="${validarCampos}" method="POST">
 		<@ww.select label="Gerar relatório" name="relatorioDetalhado" id="relatorioDetalhado" list=r"#{true:'Detalhado',false:'Resumido'}" cssStyle="width: 600px;" onchange="exibeOuOcultaFiltros();populaCargosAvaliado();"/>
 		<@ww.select label="Avaliação de desempenho que avaliam competência" required="true" name="avaliacaoDesempenho.id" id="avaliacao" list="avaliacaoDesempenhos" listKey="id" listValue="titulo" cssStyle="width: 600px;" headerKey="" headerValue="Selecione..." onchange="populaAvaliados();"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByAreaVinculados();populaAvaliados();" filtro="true" selectAtivoInativo="true"/>
@@ -134,13 +129,13 @@
 		<@ww.select label="Avaliado" required="true" name="avaliado.id" id="avaliados" list="participantesAvaliadores" listKey="id" listValue="nome" cssStyle="width: 600px;" headerKey="-1" headerValue="Selecione uma avaliação de desempenho"  onchange="populaCargosAvaliado();"/>
 		
 		<div id="paraRealatorioDetalahado">
-			<@frt.checkListBox label="Agrupar pelo cargo do avaliador" name="avaliadores" id="avaliadores" list="avaliadoresCheckList" width="600" filtro="true" selectAtivoInativo="true" required="true"/>
+			<@frt.checkListBox label="Agrupar pelo cargo do avaliador" name="avaliadores" id="avaliadores" list="avaliadoresCheckList" width="600" filtro="true" selectAtivoInativo="true"/>
 			<@ww.textfield label="Nota mínima considerada em \"Média Geral das Competências\"" id="notaMinimaMediaGeralCompetencia" name="notaMinimaMediaGeralCompetencia" cssStyle="width: 50px;" maxLength="5" onkeypress="return somenteNumeros(event,',');"/>
 		</div>
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="submit();" class="btnRelatorio"></button>		
+		<button onclick="${validarCampos}" class="btnRelatorio"></button>		
 	</div>
 </body>
 </html>

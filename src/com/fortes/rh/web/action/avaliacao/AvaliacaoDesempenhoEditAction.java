@@ -26,8 +26,8 @@ import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.RelatorioAnaliseDesempenhoColaborador;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
-import com.fortes.rh.model.avaliacao.ResultadoCompetenciaColaborador;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
@@ -62,6 +62,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
 	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
 	private Collection<Avaliacao> avaliacaos;
@@ -96,7 +97,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private String[] avaliadores;
 	private String[] avaliacoesCheck;
 	
-	private Collection<ResultadoCompetenciaColaborador> resultadoCompetenciaColaborador;
+	private Collection<RelatorioAnaliseDesempenhoColaborador> relatorioAnaliseDesempenhoColaboradores = new ArrayList<RelatorioAnaliseDesempenhoColaborador>();
 	private Integer notaMinimaMediaGeralCompetencia;
 	
 	private String nomeBusca;
@@ -354,16 +355,16 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try {
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(avaliacaoDesempenho.getId());
 			Collection<Long> avaliadoresIds = new CollectionUtil().convertArrayToCollection(new StringUtil().stringToLong(avaliadores));
-			resultadoCompetenciaColaborador = configuracaoNivelCompetenciaManager.montaRelatorioResultadoCompetencia(avaliacaoDesempenho.getId(), avaliado.getId(), avaliadoresIds);
+			relatorioAnaliseDesempenhoColaboradores.add(configuracaoNivelCompetenciaManager.montaRelatorioAnaliseDesempenhoColaborador(avaliacaoDesempenho.getId(), avaliado.getId(), avaliadoresIds, notaMinimaMediaGeralCompetencia));
 			
-			if(resultadoCompetenciaColaborador.size() == 0){
+			if(relatorioAnaliseDesempenhoColaboradores.size() == 0){
 				addActionMessage("Não existem competências para o avaliado informado.");
 				prepareAnaliseDesempenhoCompetenciaColaborador();
 				return INPUT;
 			}
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Resultado das Competências do Colaborador", getEmpresaSistema(), avaliacaoDesempenho.getTitulo());
-			parametros.put("MEDIAGERARLCOMPETENCIA", notaMinimaMediaGeralCompetencia);
+			
 		} catch (Exception e) {
 			addActionError("Problema ao gerar relatório.");
 			e.printStackTrace();
@@ -1015,15 +1016,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		this.notaMinimaMediaGeralCompetencia = notaMinimaMediaGeralCompetencia;
 	}
 
-	public Collection<ResultadoCompetenciaColaborador> getResultadoCompetenciaColaborador() {
-		return resultadoCompetenciaColaborador;
-	}
-
-	public void setResultadoCompetenciaColaborador(
-			Collection<ResultadoCompetenciaColaborador> resultadoCompetenciaColaborador) {
-		this.resultadoCompetenciaColaborador = resultadoCompetenciaColaborador;
-	}
-
 	public Collection<CheckBox> getAvaliadoresCheckList() {
 		return avaliadoresCheckList;
 	}
@@ -1036,8 +1028,11 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		this.relatorioDetalhado = relatorioDetalhado;
 	}
 
-	public void setConfiguracaoNivelCompetenciaManager(
-			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+
+	public Collection<RelatorioAnaliseDesempenhoColaborador> getRelatorioAnaliseDesempenhoColaboradores() {
+		return relatorioAnaliseDesempenhoColaboradores;
 	}
 }

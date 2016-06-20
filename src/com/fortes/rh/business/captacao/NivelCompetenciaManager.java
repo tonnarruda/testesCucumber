@@ -26,4 +26,6 @@ public interface NivelCompetenciaManager extends GenericManager<NivelCompetencia
 	boolean existeNivelCompetenciaSemPercentual(Long empresaId);
 	
 	Double getOrdemMaximaByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId);
+
+	Integer getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId);
 }

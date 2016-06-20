@@ -1,12 +1,13 @@
 package com.fortes.rh.model.avaliacao;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ResultadoCompetenciaColaborador
 {
 	private Long competenciaId;
 	private String competenciaNome;
-	private LinkedList<ResultadoCompetencia> resultadoCompetencias = new LinkedList<ResultadoCompetencia>();
+	private Collection<ResultadoCompetencia> resultadoCompetencias = new ArrayList<ResultadoCompetencia>();
 	
 	public Long getCompetenciaId() {
 		return competenciaId;
@@ -20,11 +21,10 @@ public class ResultadoCompetenciaColaborador
 	public void setCompetenciaNome(String competenciaNome) {
 		this.competenciaNome = competenciaNome;
 	}
-	public LinkedList<ResultadoCompetencia> getResultadoCompetencias() {
+	public Collection<ResultadoCompetencia> getResultadoCompetencias() {
 		return resultadoCompetencias;
 	}
-	public void setResultadoCompetencias(LinkedList<ResultadoCompetencia> resultadoCompetencias) {
+	public void setResultadoCompetencias(Collection<ResultadoCompetencia> resultadoCompetencias) {
 		this.resultadoCompetencias = resultadoCompetencias;
 	}
-	
 }

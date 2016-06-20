@@ -169,10 +169,10 @@
 				<param name="documentName">analiseDesempenhoCompetenciaColaborador.pdf</param>
 			</result>
 			<result name="successDetalhado" type="jasper">
-				<param name="location">WEB-INF/report/resultadoCompetenciaColaborador.jasper</param>
-				<param name="dataSource">resultadoCompetenciaColaborador</param>
+				<param name="location">WEB-INF/report/analiseDesempenhoCompetenciaColaboradorDetalhado.jasper</param>
+				<param name="dataSource">relatorioAnaliseDesempenhoColaboradores</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">resultadoCompetenciaColaborador.pdf</param>
+				<param name="documentName">analiseDesempenhoCompetenciaColaboradorDetalhado.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/prepareAnaliseDesempenhoCompetenciaColaborador.ftl</result>
 		</action>

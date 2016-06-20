@@ -7,21 +7,15 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
-import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 
 public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetenciaColaborador> implements ConfiguracaoNivelCompetenciaColaboradorDao

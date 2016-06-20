@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.avaliacao.RelatorioAnaliseDesempenhoColaborador;
 import com.fortes.rh.model.avaliacao.ResultadoCompetenciaColaborador;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
@@ -59,5 +60,5 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	public boolean existeConfiguracaoNivelCompetencia(Long competenciaId, char tipoCompetencia);
 	void removeBySolicitacaoId(Long solicitacaoId);
 	Collection<ConfiguracaoNivelCompetencia> findCompetenciasAndPesos(Long avaliacaoDesempenhoId, Long avaliadoId);
-	LinkedList<ResultadoCompetenciaColaborador> montaRelatorioResultadoCompetencia(Long avaliacaoDesempenhoId,	Long avaliadoId, Collection<Long> avaliadoresIds);
+	RelatorioAnaliseDesempenhoColaborador montaRelatorioAnaliseDesempenhoColaborador(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds, Integer notaMinimaMediaGeralCompetencia);
 }

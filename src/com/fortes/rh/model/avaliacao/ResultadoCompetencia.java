@@ -4,6 +4,14 @@ public class ResultadoCompetencia
 {
 	private String nome;
 	private Double ordem;
+
+	public ResultadoCompetencia() {
+	}
+	
+	public ResultadoCompetencia(String nome, Double ordem) {
+		this.nome = nome;
+		this.ordem = ordem;
+	}
 	
 	public String getNome() {
 		return nome;

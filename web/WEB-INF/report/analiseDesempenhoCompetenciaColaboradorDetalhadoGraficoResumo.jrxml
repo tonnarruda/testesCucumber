@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Competencia" pageWidth="560" pageHeight="200" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="560" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="2496fb03-abc2-4584-871b-6b027461fe56">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.5394743546921197"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["D:\\workspace\\FortesRH\\web\\WEB-INF\\report\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="nome" class="java.lang.String"/>
+	<field name="ordem" class="java.lang.Double"/>
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<printWhenExpression><![CDATA[new Boolean(! $V{COLUMN_COUNT}.equals(new Integer(0)))]]></printWhenExpression>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="200" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="560" height="200" uuid="81a7da92-3861-4f33-a85e-e3fc617fbffc"/>
+			</rectangle>
+			<barChart>
+				<chart isShowLegend="false">
+					<reportElement x="0" y="0" width="560" height="200" uuid="2d290f93-a036-47a4-83bb-bc85f466c7f4"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend position="Bottom"/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[""]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{nome}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{ordem}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowLabels="true" isShowTickLabels="true" isShowTickMarks="true">
+					<plot backgroundAlpha="0.6" foregroundAlpha="0.6" labelRotation="-25.0">
+						<seriesColor seriesOrder="0" color="#C9C9C9"/>
+					</plot>
+					<itemLabel/>
+					<categoryAxisFormat labelRotation="-25.0">
+						<axisFormat verticalTickLabels="true"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat verticalTickLabels="false"/>
+					</valueAxisFormat>
+					<domainAxisMinValueExpression><![CDATA[1]]></domainAxisMinValueExpression>
+					<domainAxisMaxValueExpression><![CDATA[1]]></domainAxisMaxValueExpression>
+					<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+					<rangeAxisMaxValueExpression><![CDATA[110]]></rangeAxisMaxValueExpression>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>

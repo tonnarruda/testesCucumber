@@ -15,6 +15,7 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.avaliacao.RelatorioAnaliseDesempenhoColaborador;
 import com.fortes.rh.model.avaliacao.ResultadoCompetencia;
 import com.fortes.rh.model.avaliacao.ResultadoCompetenciaColaborador;
 import com.fortes.rh.model.captacao.Candidato;
@@ -697,24 +698,32 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().findCompetenciasAndPesos(avaliacaoDesempenhoId, avaliadoId);
 	}
 
-	public LinkedList<ResultadoCompetenciaColaborador> montaRelatorioResultadoCompetencia(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds) {
+	public RelatorioAnaliseDesempenhoColaborador montaRelatorioAnaliseDesempenhoColaborador(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds, Integer notaMinimaMediaGeralCompetencia) {
+		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = new RelatorioAnaliseDesempenhoColaborador();
+		relatorioAnaliseDesempenhoColaborador.setNotaMinimaMediaGeralCompetencia(notaMinimaMediaGeralCompetencia);
+		relatorioAnaliseDesempenhoColaborador.setResultadosCompetenciaColaborador(montaRelatorioResultadoCompetencia(avaliacaoDesempenhoId, avaliadoId, avaliadoresIds));
+		relatorioAnaliseDesempenhoColaborador.setValorMaximoGrafico(nivelCompetenciaManager.getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId));
+		
+		return relatorioAnaliseDesempenhoColaborador;
+	}
+	
+	private LinkedList<ResultadoCompetenciaColaborador> montaRelatorioResultadoCompetencia(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds) {
 		LinkedList<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findByAvaliacaaDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId);
 		LinkedList<ResultadoCompetenciaColaborador> resultadoCompetenciaColaboradores = new LinkedList<ResultadoCompetenciaColaborador>();
 		
-		Map<Competencia, LinkedList<ConfiguracaoNivelCompetencia>> cncAbrupadoPorCompetencia = new HashMap<Competencia, LinkedList<ConfiguracaoNivelCompetencia>>();
+		Map<String, LinkedList<ConfiguracaoNivelCompetencia>> cncAbrupadoPorCompetencia = new HashMap<String, LinkedList<ConfiguracaoNivelCompetencia>>();
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNivelCompetencias) {
-			if(!cncAbrupadoPorCompetencia.containsKey(configuracaoNivelCompetencia.getCompetencia()))
-				cncAbrupadoPorCompetencia.put(configuracaoNivelCompetencia.getCompetencia(), new LinkedList<ConfiguracaoNivelCompetencia>());
+			if(!cncAbrupadoPorCompetencia.containsKey(configuracaoNivelCompetencia.getCompetencia().getNome()))
+				cncAbrupadoPorCompetencia.put(configuracaoNivelCompetencia.getCompetencia().getNome(), new LinkedList<ConfiguracaoNivelCompetencia>());
 			
-			cncAbrupadoPorCompetencia.get(configuracaoNivelCompetencia.getCompetencia()).add(configuracaoNivelCompetencia);
+			cncAbrupadoPorCompetencia.get(configuracaoNivelCompetencia.getCompetencia().getNome()).add(configuracaoNivelCompetencia);
 		}
 		
 		ResultadoCompetenciaColaborador resultadoCompetenciaColaborador;
-		for (Competencia competencia : cncAbrupadoPorCompetencia.keySet()) {
+		for (String competenciaNome : cncAbrupadoPorCompetencia.keySet()) {
 			resultadoCompetenciaColaborador = new ResultadoCompetenciaColaborador();
-			resultadoCompetenciaColaborador.setResultadoCompetencias(montaResultadoCompetencia(cncAbrupadoPorCompetencia.get(competencia), avaliadoId, avaliadoresIds));
-			resultadoCompetenciaColaborador.setCompetenciaId(competencia.getId());
-			resultadoCompetenciaColaborador.setCompetenciaNome(competencia.getNome());
+			resultadoCompetenciaColaborador.setResultadoCompetencias(montaResultadoCompetencia(cncAbrupadoPorCompetencia.get(competenciaNome), avaliadoId, avaliadoresIds));
+			resultadoCompetenciaColaborador.setCompetenciaNome(competenciaNome);
 			resultadoCompetenciaColaboradores.add(resultadoCompetenciaColaborador);
 		}
 		
@@ -747,7 +756,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			resultadoCompetencias.add(resultadoCompetencia);
 		}
 		
-		if(configuracaoNivelCompetencias.size() > 0 && cncAgrupadoPorCargo.size() > 1){
+		if(configuracaoNivelCompetencias.size() > 0){
 			resultadoCompetencia = new ResultadoCompetencia();
 			resultadoCompetencia.setNome("Média");
 			resultadoCompetencia.setOrdem(somaTotalDaOrdem / totalDeCompetencia);

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="admitidos" columnCount="2" printOrder="Horizontal" pageWidth="560" pageHeight="220" whenNoDataType="AllSectionsNoDetail" columnWidth="280" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="24767a6b-f9cf-40db-9a88-9000fc09d8a3">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.196150000000009"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
+	<parameter name="MEDIAGERARLCOMPETENCIA" class="java.lang.Double"/>
+	<parameter name="VALORMAXIMOGRAFICO" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="competenciaNome" class="java.lang.String"/>
+	<field name="resultadoCompetencias" class="java.lang.Object"/>
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="countColaborador" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="TOTAL" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="220" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="280" height="217" uuid="fe0fb324-1a86-43b1-b4d6-e4099cd526b2"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="280" height="17" uuid="639b1000-ab47-4c3f-97b0-52f7e1af84b4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{competenciaNome}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" x="0" y="17" width="280" height="200" uuid="87cb8989-4082-4f7a-8443-0c09990abe3b"/>
+				<subreportParameter name="VALORMAXIMOGRAFICO">
+					<subreportParameterExpression><![CDATA[$P{VALORMAXIMOGRAFICO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[$F{resultadoCompetencias}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "analiseDesempenhoCompetenciaColaboradorDetalhadoGrafico.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

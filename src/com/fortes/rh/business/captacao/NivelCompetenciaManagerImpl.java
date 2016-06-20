@@ -81,4 +81,8 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 		return getDao().existeNivelCompetenciaSemPercentual(empresaId);
 	}
 
+	public Integer getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId) {
+		return getDao().getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId);
+	}
+
 }

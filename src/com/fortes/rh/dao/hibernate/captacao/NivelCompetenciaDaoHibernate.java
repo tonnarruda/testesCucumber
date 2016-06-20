@@ -24,6 +24,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
 import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 
@@ -190,5 +191,20 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 				.add(Restrictions.le("nch2.data", data!=null?data:new Date()));
 		
 		return Subqueries.propertyEq("nch.data", subQueryHc);
+	}
+
+	public Integer getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId) {
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
+		criteria.createCriteria("cncc.colaboradorQuestionario", "cq", Criteria.INNER_JOIN);
+		criteria.createCriteria("cncc.configuracaoNivelCompetenciaFaixaSalarial", "cncf", Criteria.INNER_JOIN);
+		criteria.createCriteria("cncf.nivelCompetenciaHistorico", "nch", Criteria.INNER_JOIN);
+		criteria.createCriteria("nch.configHistoricoNiveis", "chn", Criteria.INNER_JOIN);
+		
+		criteria.setProjection(Projections.max("chn.ordem"));
+		
+		criteria.add(Expression.eq("cncc.colaborador.id", avaliadoId));
+		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+		Integer result = (Integer) criteria.uniqueResult();
+		return (int) (result == null ? 0 : result);
 	}
 }
