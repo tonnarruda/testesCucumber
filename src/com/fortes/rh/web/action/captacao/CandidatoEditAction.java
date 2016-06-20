@@ -187,10 +187,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 			empresaId = getEmpresaSistema().getId();
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect("nomeMercado", null, Cargo.ATIVO, empresaId), "getId", "getNomeMercado");
-			
-			parametrosDoSistema.setCamposCandidatoVisivel("nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,comoFicouSabendoVaga");
-			parametrosDoSistema.setCamposCandidatoObrigatorio("nome,escolaridade,ende,num,cidade,ddd,fone");
-			parametrosDoSistema.setCamposCandidatoTabs("abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais" + abaExtra);
 		}
 		else
 		{
@@ -201,6 +197,11 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			habilitaCampoExtra = empresaManager.findById(empresaId).isCampoExtraCandidato();
 			
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect("nomeMercado", true, Cargo.ATIVO, empresaId), "getId", "getNomeMercado");
+		
+			parametrosDoSistema.setCamposCandidatoVisivel(parametrosDoSistema.getCamposCandidatoExternoVisivel());
+			parametrosDoSistema.setCamposCandidatoObrigatorio(parametrosDoSistema.getCamposCandidatoExternoObrigatorio());
+			parametrosDoSistema.setCamposCandidatoTabs(parametrosDoSistema.getCamposCandidatoExternoTabs());
+
 		}
 
 		if(habilitaCampoExtra)

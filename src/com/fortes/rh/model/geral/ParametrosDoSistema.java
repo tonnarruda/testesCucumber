@@ -80,9 +80,19 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private Perfil perfilPadrao;
 
     private String emailDoSuporteTecnico;
+    
     private String camposCandidatoVisivel;
     private String camposCandidatoObrigatorio;
     private String camposCandidatoTabs;
+    
+    private String camposColaboradorVisivel;
+    private String camposColaboradorObrigatorio;
+    private String camposColaboradorTabs;
+    
+    private String camposCandidatoExternoVisivel;
+    private String camposCandidatoExternoObrigatorio;
+    private String camposCandidatoExternoTabs;
+    
     private boolean autenticacao;
     private boolean tls;
     private Integer modulosPermitidosSomatorio = 0;
@@ -429,5 +439,54 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	
 	public void setModulosPermitidosSomatorio(Integer modulosPermitidosSomatorio) {
 		this.modulosPermitidosSomatorio = modulosPermitidosSomatorio;
+	}
+	
+	public String getCamposColaboradorVisivel() {
+		return camposColaboradorVisivel;
+	}
+	
+	public void setCamposColaboradorVisivel(String camposColaboradorVisivel) {
+		this.camposColaboradorVisivel = camposColaboradorVisivel;
+	}
+	
+	public String getCamposColaboradorObrigatorio() {
+		return camposColaboradorObrigatorio;
+	}
+	
+	public void setCamposColaboradorObrigatorio(String camposColaboradorObrigatorio) {
+		this.camposColaboradorObrigatorio = camposColaboradorObrigatorio;
+	}
+	public String getCamposColaboradorTabs() {
+		return camposColaboradorTabs;
+	}
+	
+	public void setCamposColaboradorTabs(String camposColaboradorTabs) {
+		this.camposColaboradorTabs = camposColaboradorTabs;
+	}
+	
+	public String getCamposCandidatoExternoVisivel() {
+		return camposCandidatoExternoVisivel;
+	}
+	
+	public void setCamposCandidatoExternoVisivel(
+			String camposCandidatoExternoVisivel) {
+		this.camposCandidatoExternoVisivel = camposCandidatoExternoVisivel;
+	}
+	
+	public String getCamposCandidatoExternoObrigatorio() {
+		return camposCandidatoExternoObrigatorio;
+	}
+	
+	public void setCamposCandidatoExternoObrigatorio(
+			String camposCandidatoExternoObrigatorio) {
+		this.camposCandidatoExternoObrigatorio = camposCandidatoExternoObrigatorio;
+	}
+	
+	public String getCamposCandidatoExternoTabs() {
+		return camposCandidatoExternoTabs;
+	}
+	
+	public void setCamposCandidatoExternoTabs(String camposCandidatoExternoTabs) {
+		this.camposCandidatoExternoTabs = camposCandidatoExternoTabs;
 	}
 }

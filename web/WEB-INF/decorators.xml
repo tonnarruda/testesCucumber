@@ -3,6 +3,7 @@
 <decorators defaultdir="/decorators">
 	<excludes>
 		<pattern>/geral/colaborador/formPrint.action</pattern>
+		<pattern>/geral/parametrosDoSistema/configCampos.action*</pattern>
 		<pattern>*Json.action*</pattern>
 		<pattern>/webwork/richtexteditor/editor/*</pattern>
 		<pattern>/webwork/**</pattern>
@@ -47,6 +48,7 @@
 		<pattern>/grafico.jsp*</pattern>
 		<pattern>/conteudo.jsp*</pattern>
 		<pattern>/index.jsp*</pattern>
+		
 	</excludes>
 
 	<decorator name="login" page="login.ftl">

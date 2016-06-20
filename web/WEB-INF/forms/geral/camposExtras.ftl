@@ -12,14 +12,8 @@
 			<#assign data = camposExtras.data3?date/>
 		</#if>
 	</#if>
-	
-		<#if moduloExterno?exists && moduloExterno>
-			<#assign externoCampo = "campo"/>
-		<#else>
-			<#assign externoCampo = ""/>
-		</#if>
 		
-		<@ww.div id="wwgrp_${configuracaoCampoExtra.nome}" cssClass="${externoCampo}">
+		<@ww.div id="wwgrp_${configuracaoCampoExtra.nome}" cssClass="campo">
 			<#if configuracaoCampoExtra.tipo == "texto">
 				<@ww.textfield id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssStyle="width: 400px;" maxLength="250" />
 			</#if>

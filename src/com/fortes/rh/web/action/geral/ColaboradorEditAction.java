@@ -89,6 +89,7 @@ import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
 import com.fortes.rh.model.relatorio.RelatorioPerformanceFuncional;
@@ -262,6 +263,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	
 	private String encerrarSolicitacao;
 	
+	private ParametrosDoSistema parametrosDoSistema;
+	
 	private void prepare() throws Exception
 	{
 		try
@@ -272,6 +275,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		{
 			addActionError(e.getMessage());
 		}
+		
+		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		
 		obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
 		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
@@ -1906,9 +1911,16 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public ParametrosDoSistemaManager getParametrosDoSistemaManager() {
 		return parametrosDoSistemaManager;
 	}
+	
+	public ParametrosDoSistema getParametrosDoSistema() {
+		return parametrosDoSistema;
+	}
 
-	public void setParametrosDoSistemaManager(
-			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+	public void setParametrosDoSistema(ParametrosDoSistema parametrosDoSistema) {
+		this.parametrosDoSistema = parametrosDoSistema;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

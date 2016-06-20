@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import mockit.Mockit;
-import net.sf.ezmorph.test.ArrayAssertions;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -34,6 +33,7 @@ import com.fortes.rh.business.geral.ConfiguracaoPerformanceManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.CatManager;
@@ -90,7 +90,6 @@ import com.fortes.rh.web.action.geral.ColaboradorEditAction;
 import com.fortes.rh.web.ws.AcPessoalClientSistema;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class ColaboradorEditActionTest extends MockObjectTestCase
 {
@@ -125,6 +124,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 	private Mock periodoExperienciaManager;
 	private Mock avaliacaoManager;
 	private Mock indiceManager;
+	private Mock parametrosDoSistemaManager;
 
 	protected void setUp () throws Exception
 	{
@@ -160,6 +160,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		periodoExperienciaManager = new Mock(PeriodoExperienciaManager.class);
 		avaliacaoManager = new Mock(AvaliacaoManager.class);
 		indiceManager = new Mock(IndiceManager.class);
+		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
 		
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
@@ -191,6 +192,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		action.setPeriodoExperienciaManager((PeriodoExperienciaManager) periodoExperienciaManager.proxy());
 		action.setAvaliacaoManager((AvaliacaoManager) avaliacaoManager.proxy());
 		action.setIndiceManager((IndiceManager) indiceManager.proxy());
+		action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -280,6 +282,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		quantidadeLimiteColaboradoresPorCargoManager.expects(once()).method("validaLimite").with(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(historicoColaborador.getFaixaSalarial().getId()), eq(empresa.getId()), eq(null)).isVoid();
 		colaboradorManager.expects(once()).method("insert").withAnyArguments().will(returnValue(false));
 		transactionManager.expects(once()).method("rollback").withAnyArguments().isVoid();
+		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(null));
 
 		mocksDoPrepare(areaOrganizacional, faixaSalarial);
 		

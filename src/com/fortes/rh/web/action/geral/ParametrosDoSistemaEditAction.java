@@ -79,8 +79,10 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private Empresa empresa;
 	private ParametrosDoSistema parametrosDoSistema;
 
-	private String[] camposCandidatoObrigatorios;
-	private String[] camposCandidatoVisivels;
+	private String entidade;
+	private String[] camposObrigatorios;
+	private String[] camposVisivels; 
+	private String camposTabs; 
 	private Collection<String> horariosBackup;
 	private Collection<CheckBox> horariosBackupList = new ArrayList<CheckBox>();
 	
@@ -196,14 +198,27 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		return somatorioModulos;
 	}
 	
-	public String listCamposCandidato() throws Exception
+	public String listCampos() throws Exception
 	{
-		habilitaCampoExtra = getEmpresaSistema().isCampoExtraCandidato();
+		return Action.SUCCESS;
+	}
+	
+	public String configCampos() throws Exception
+	{
+		String tipoCampoExtra = "ativoColaborador";
+		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CONFIG_CAMPOS_COLABORADOR"}) && 
+				(entidade == null || entidade.equals("colaborador")))
+			habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
+		else {
+			habilitaCampoExtra = getEmpresaSistema().isCampoExtraCandidato();
+			tipoCampoExtra = "ativoCandidato";
+		}
+		
 		if(habilitaCampoExtra)
-			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoCandidato", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});		
+			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{tipoCampoExtra, "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});		
 				
 		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-		return Action.SUCCESS;
+		return Action.SUCCESS+"_"+entidade;
 	}
 	
 	public String prepareDeleteSemCodigoAC() throws Exception
@@ -270,15 +285,41 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	{
 		ParametrosDoSistema parametrosDoSistemaTmp = parametrosDoSistemaManager.findById(1L);
 		
-		parametrosDoSistemaTmp.setCamposCandidatoObrigatorio(StringUtil.converteArrayToString(camposCandidatoObrigatorios));
-		parametrosDoSistemaTmp.setCamposCandidatoVisivel(StringUtil.converteArrayToString(camposCandidatoVisivels));
-		parametrosDoSistemaTmp.setCamposCandidatoTabs(parametrosDoSistema.getCamposCandidatoTabs());
+		parametrosDoSistemaTmp.setCamposCandidatoObrigatorio(StringUtil.converteArrayToString(camposObrigatorios));
+		parametrosDoSistemaTmp.setCamposCandidatoVisivel(StringUtil.converteArrayToString(camposVisivels));
+		parametrosDoSistemaTmp.setCamposCandidatoTabs(camposTabs);
 		
 		parametrosDoSistemaManager.update(parametrosDoSistemaTmp);
 		
 		return Action.SUCCESS;
 	}
 
+	public String updateCamposColaborador() throws Exception
+	{
+		ParametrosDoSistema parametrosDoSistemaTmp = parametrosDoSistemaManager.findById(1L);
+		
+		parametrosDoSistemaTmp.setCamposColaboradorObrigatorio(StringUtil.converteArrayToString(camposObrigatorios));
+		parametrosDoSistemaTmp.setCamposColaboradorVisivel(StringUtil.converteArrayToString(camposVisivels));
+		parametrosDoSistemaTmp.setCamposColaboradorTabs(camposTabs);
+		
+		parametrosDoSistemaManager.update(parametrosDoSistemaTmp);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String updateCamposCandidatoExterno() throws Exception
+	{
+		ParametrosDoSistema parametrosDoSistemaTmp = parametrosDoSistemaManager.findById(1L);
+		
+		parametrosDoSistemaTmp.setCamposCandidatoExternoObrigatorio(StringUtil.converteArrayToString(camposObrigatorios));
+		parametrosDoSistemaTmp.setCamposCandidatoExternoVisivel(StringUtil.converteArrayToString(camposVisivels));
+		parametrosDoSistemaTmp.setCamposCandidatoExternoTabs(camposTabs);
+		
+		parametrosDoSistemaManager.update(parametrosDoSistemaTmp);
+		
+		return Action.SUCCESS;
+	}
+	
 	public ParametrosDoSistema getParametrosDoSistema()
 	{
 		if(parametrosDoSistema == null)
@@ -311,20 +352,36 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		this.perfils = perfils;
 	}
 
-	public String[] getCamposCandidatoObrigatorios() {
-		return camposCandidatoObrigatorios;
+	public String getEntidade() {
+		return entidade;
 	}
 
-	public void setCamposCandidatoObrigatorios(String[] camposCandidatoObrigatorios) {
-		this.camposCandidatoObrigatorios = camposCandidatoObrigatorios;
+	public void setEntidade(String entidade) {
+		this.entidade = entidade;
 	}
 
-	public String[] getCamposCandidatoVisivels() {
-		return camposCandidatoVisivels;
+	public String[] getCamposObrigatorios() {
+		return camposObrigatorios;
 	}
 
-	public void setCamposCandidatoVisivels(String[] camposCandidatoVisivels) {
-		this.camposCandidatoVisivels = camposCandidatoVisivels;
+	public void setCamposObrigatorios(String[] camposObrigatorios) {
+		this.camposObrigatorios = camposObrigatorios;
+	}
+
+	public String[] getCamposVisivels() {
+		return camposVisivels;
+	}
+
+	public void setCamposVisivels(String[] camposVisivels) {
+		this.camposVisivels = camposVisivels;
+	}
+
+	public String getCamposTabs() {
+		return camposTabs;
+	}
+
+	public void setCamposTabs(String camposTabs) {
+		this.camposTabs = camposTabs;
 	}
 
 	public Collection<CheckBox> getHorariosBackupList() {

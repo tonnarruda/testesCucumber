@@ -196,36 +196,30 @@
 		    		jAlert(msg);
 		    		return false;
 		    	}
+			</#if>
 			
-				<#if candidato.id?exists>
-					arrayObrigatorios = $.grep(arrayObrigatorios, function(value) {
-						return value != 'senha' && value != 'comfirmaSenha';
-					});
-				</#if>
-				
-				// valida os multicheckboxes
-				arrayObrigatorios = $.map(arrayObrigatorios, function(item) {
-					return (item == 'areasCheck' || item ==  'cargosCheck' || item == 'conhecimentosCheck') ? '@' + item : item;
-				});
-				
-				// valida os itens que constituem subformularios
+			<#if candidato.id?exists>
 				arrayObrigatorios = $.grep(arrayObrigatorios, function(value) {
-					return value != 'formacao' && value != 'idioma' && value != 'expProfissional';
+					return value != 'senha' && value != 'comfirmaSenha';
 				});
+			</#if>
+			
+			// valida os multicheckboxes
+			arrayObrigatorios = $.map(arrayObrigatorios, function(item) {
+				return (item == 'areasCheck' || item ==  'cargosCheck' || item == 'conhecimentosCheck') ? '@' + item : item;
+			});
+			
+			// valida os itens que constituem subformularios
+			arrayObrigatorios = $.grep(arrayObrigatorios, function(value) {
+				return value != 'formacao' && value != 'idioma' && value != 'expProfissional';
+			});
 
-				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('email', 'cpf', 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'pis', 'data1', 'data2', 'data3'));
-		   	
-		   	<#else>
-		       	if ($("#cpf").val() == "   .   .   -  ")
-		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('email','nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'pis', 'data1', 'data2', 'data3'));
-		   		else
-			   		return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('email', 'cpf' , 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'pis', 'data1', 'data2', 'data3'));
-			 </#if>
+			return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('email', 'cpf', 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'pis', 'data1', 'data2', 'data3'));
 		}
 		
 		function createListConhecimentos(data)
 		{
-			addChecks('conhecimentosCheck',data)
+			addChecks('conhecimentosCheck',data);
 		}
 		
 		function setaCampos()
@@ -363,7 +357,7 @@
 				$('#wwgrp_comoFicouSabendoVagaQual').show();
 			else
 			{
-				$('#comoFicouSabendoVagaQual').val('')
+				$('#comoFicouSabendoVagaQual').val('');
 				$('#wwgrp_comoFicouSabendoVagaQual').hide();
 			}
 		}
