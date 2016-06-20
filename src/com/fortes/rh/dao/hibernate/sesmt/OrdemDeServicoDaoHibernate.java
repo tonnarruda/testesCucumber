@@ -28,7 +28,10 @@ public class OrdemDeServicoDaoHibernate extends GenericDaoHibernate<OrdemDeServi
 		p.add(Projections.property("os.treinamentos"), "treinamentos");
 		p.add(Projections.property("os.normasInternas"), "normasInternas");
 		p.add(Projections.property("os.procedimentoEmCasoDeAcidente"), "procedimentoEmCasoDeAcidente");
+		p.add(Projections.property("os.informacoesAdicionais"), "informacoesAdicionais");
 		p.add(Projections.property("os.termoDeResponsabilidade"), "termoDeResponsabilidade");
+		p.add(Projections.property("os.impressa"), "impressa");
+		p.add(Projections.property("os.imprimirInfoAdicionais"), "imprimirInfoAdicionais");
 		p.add(Projections.property("os.colaborador.id"), "colaboradorId");
 
 		Criteria criteria = getSession().createCriteria(OrdemDeServico.class, "os");

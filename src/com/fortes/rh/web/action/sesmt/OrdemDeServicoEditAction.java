@@ -50,6 +50,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	private Map filtrosOrdemDeServico = new FiltroOrdemDeServico();
 	private String situacao = SituacaoColaborador.ATIVO;
 	private String filtroOrdemDeServico = FiltroOrdemDeServico.TODOS;
+	private boolean imprimirInfoAdicionais;
 
 	public String listGerenciamentoOS() throws Exception
 	{
@@ -144,9 +145,19 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	}
 	
 	public String imprimir(){
-		ordensDeServico.add(ordemDeServicoManager.findOrdemServicoProjection(ordemDeServico.getId()));
+		ordemDeServico = ordemDeServicoManager.findOrdemServicoProjection(ordemDeServico.getId());
+		ordensDeServico.add(ordemDeServico);
+		
+		if(!ordemDeServico.isImpressa()){
+			ordemDeServico.setImpressa(true);
+			ordemDeServicoManager.update(ordemDeServico);
+			ordensDeServico = ordemDeServicoManager.find(getPage(), getPagingSize(), new String[]{"colaborador.id"}, new Long[]{ordemDeServico.getColaborador().getId()}, new String[]{"data"});
+		}
+		
    	   	parametros = new HashMap<String, Object>();
     	parametros.put("LOGO", getEmpresaSistema().getLogoUrl());
+    	parametros.put("IMPRIMIR_INFO_ADICIONAIS", true);
+//    	parametros.put("IMPRIMIR_INFO_ADICIONAIS", imprimirInfoAdicionais);
 		return Action.SUCCESS;
 	}
 	
@@ -236,6 +247,16 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 		this.filtroOrdemDeServico = filtropossuiOrdemDeServico;
 	}
 	
+	public boolean isImprimirInfoAdicionais() {
+		return imprimirInfoAdicionais;
+	}
+
+
+	public void setImprimirInfoAdicionais(boolean imprimirInfoAdicionais) {
+		this.imprimirInfoAdicionais = imprimirInfoAdicionais;
+	}
+
+
 	public void setOrdemDeServicoManager(OrdemDeServicoManager ordemDeServicoManager)
 	{
 		this.ordemDeServicoManager = ordemDeServicoManager;

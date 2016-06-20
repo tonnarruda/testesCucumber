@@ -16,11 +16,14 @@ CREATE TABLE ordemDeServico (
 	atividades text,
 	riscos text,
 	epis text,
-	medidasDePrevencao text,
+	medidaspreventivas text,
 	treinamentos text,
 	normasInternas text,
 	procedimentoEmCasoDeAcidente text,
-	termoDeResponsabilidade text
+	termoDeResponsabilidade text,
+	informacoesAdicionais text,
+	impressa boolean DEFAULT false,
+	imprimirInfoAdicionais boolean DEFAULT false
 );--.go
 
 ALTER TABLE ordemDeServico ADD CONSTRAINT ordemDeServico_pkey PRIMARY KEY(id);--.go
