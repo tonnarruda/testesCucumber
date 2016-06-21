@@ -89,7 +89,7 @@
 		</@display.column>
 		<@display.column property="revisao" title="Nº da Revisão"/>
 		<@display.column property="dataFormatada" title="Data" />
-		<@display.column property="nomeFuncao" title="Função"/>
+		<@display.column property="nomeFuncao" title="Função" />
 
 	</@display.table>
 

@@ -1,8 +1,28 @@
 <html>
 	<head>
-	
-		<#include "../ftl/mascarasImports.ftl" />
 		<@ww.head/>
+		<#include "../ftl/mascarasImports.ftl" />
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OrdemDeServicoDWR.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+		<script>
+			function repopularOrdemDeServico()
+			{
+				OrdemDeServicoDWR.recarregaDadosOrdemDeServico(repopularOrdemDeServicoByDados, ${ordemDeServico.id}, ${ordemDeServico.colaborador.id},${empresaSistema.id}, $('#dataOS').val());
+			}
+			
+			function repopularOrdemDeServicoByDados(dados){
+				var nomeColaborador = dados["nomeColaborador"];
+				var nomeFuncao = dados["nomeFuncao"];
+			}
+			
+			
+						
+		
+		</script>		
+		
+		
+		
 		<#if ordemDeServico.id?exists>
 			<title>Editar Ordem de Serviço</title>
 			<#assign formAction="update.action"/>
@@ -43,7 +63,7 @@
 			</table>
 			
 			<@ww.textfield label="Nº Revisão" name="ordemDeServico.revisao" id="revisaoOS" disable="true" liClass="liLeft" cssStyle="width:180px;" maxLength="30"/>
-			<@ww.datepicker label="Data da Ordem de Serviço" name="ordemDeServico.data" value="${data}" id="dataOS" required="true" cssClass="mascaraData"/>
+			<@ww.datepicker label="Data da Ordem de Serviço" name="ordemDeServico.data" value="${data}" id="dataOS" required="true" cssClass="mascaraData" onchange="repopularOrdemDeServico();" />
 			<@ww.textarea label="Atividades Desenvolvidas" name="ordemDeServico.atividades" id="atividadesOS" required="true" cssStyle="width:800px;height:150px;"/>
 			<@ww.textarea label="Riscos da Operação" name="ordemDeServico.riscos" id="riscosOS" required="true" cssStyle="width:800px;height:150px;"/>
 			<@ww.textarea label="Epi's - Uso Obrigatório" name="ordemDeServico.epis" id="episOS" required="true" cssStyle="width:800px;height:150px;"/>

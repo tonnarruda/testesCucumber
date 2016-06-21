@@ -116,6 +116,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 
 	public String prepareUpdate() throws Exception
 	{
+		ordemDeServico = ordemDeServicoManager.findOrdemServicoProjection(ordemDeServico.getId());
 		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, getEmpresaSistema(), ordemDeServico.getData());
 		return Action.SUCCESS;
 	}
