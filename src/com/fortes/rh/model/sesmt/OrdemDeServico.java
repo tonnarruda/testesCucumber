@@ -37,8 +37,7 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	
 	private String nomeEmpresa;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	
+	@Temporal(TemporalType.DATE)
 	private Date data;
 	
 	private Double revisao; 

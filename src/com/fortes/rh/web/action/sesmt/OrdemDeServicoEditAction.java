@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +51,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	private Map filtrosOrdemDeServico = new FiltroOrdemDeServico();
 	private String situacao = SituacaoColaborador.ATIVO;
 	private String filtroOrdemDeServico = FiltroOrdemDeServico.TODOS;
-	private boolean imprimirInfoAdicionais;
+	private OrdemDeServico ordemDeServicoAtual;
 
 	public String listGerenciamentoOS() throws Exception
 	{
@@ -85,8 +86,9 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		setTotalSize(ordemDeServicoManager.getCount(new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}));
-		colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador);
+		colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador, new Date());
 		ordensDeServico = ordemDeServicoManager.find(getPage(), getPagingSize(), new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}, new String[]{"data"});
+		ordemDeServicoAtual = ordemDeServicoManager.ordemDeServicoAtual(colaborador.getId());
 		return Action.SUCCESS;
 	}
 	
@@ -108,13 +110,13 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	
 	public String prepareInsert() throws Exception
 	{
-		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, getEmpresaSistema());
+		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, getEmpresaSistema(), new Date());
 		return Action.SUCCESS;
 	}
 
 	public String prepareUpdate() throws Exception
 	{
-		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, getEmpresaSistema());
+		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, getEmpresaSistema(), ordemDeServico.getData());
 		return Action.SUCCESS;
 	}
 
@@ -151,13 +153,17 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 		if(!ordemDeServico.isImpressa()){
 			ordemDeServico.setImpressa(true);
 			ordemDeServicoManager.update(ordemDeServico);
-			ordensDeServico = ordemDeServicoManager.find(getPage(), getPagingSize(), new String[]{"colaborador.id"}, new Long[]{ordemDeServico.getColaborador().getId()}, new String[]{"data"});
 		}
 		
    	   	parametros = new HashMap<String, Object>();
     	parametros.put("LOGO", getEmpresaSistema().getLogoUrl());
     	parametros.put("IMPRIMIR_INFO_ADICIONAIS", true);
-//    	parametros.put("IMPRIMIR_INFO_ADICIONAIS", imprimirInfoAdicionais);
+//    	parametros.put("IMPRIMIR_INFO_ADICIONAIS", ordemDeServico.isImprimirInfoAdicionais());
+		return Action.SUCCESS;
+	}
+	
+	public String visualizar(){
+		ordemDeServico = ordemDeServicoManager.findOrdemServicoProjection(ordemDeServico.getId());
 		return Action.SUCCESS;
 	}
 	
@@ -247,16 +253,10 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 		this.filtroOrdemDeServico = filtropossuiOrdemDeServico;
 	}
 	
-	public boolean isImprimirInfoAdicionais() {
-		return imprimirInfoAdicionais;
+	public OrdemDeServico getOrdemDeServicoAtual() {
+		return ordemDeServicoAtual;
 	}
-
-
-	public void setImprimirInfoAdicionais(boolean imprimirInfoAdicionais) {
-		this.imprimirInfoAdicionais = imprimirInfoAdicionais;
-	}
-
-
+	
 	public void setOrdemDeServicoManager(OrdemDeServicoManager ordemDeServicoManager)
 	{
 		this.ordemDeServicoManager = ordemDeServicoManager;

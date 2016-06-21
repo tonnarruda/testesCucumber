@@ -1,9 +1,12 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -39,6 +42,27 @@ public class OrdemDeServicoDaoHibernate extends GenericDaoHibernate<OrdemDeServi
 		
 		criteria.setProjection(p);
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(OrdemDeServico.class));
+		return (OrdemDeServico) criteria.uniqueResult();
+	}
+
+	public OrdemDeServico ordemDeServicoAtual(Long colaboradorId) {
+		DetachedCriteria subQueryOS = DetachedCriteria.forClass(OrdemDeServico.class, "os2")
+				.setProjection(Projections.max("os2.revisao"))
+				.add(Restrictions.eqProperty("os2.colaborador.id", "os.colaborador.id"));
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("os.id"), "id"); 
+		p.add(Projections.property("os.colaborador.id"), "colaboradorId");
+		p.add(Projections.property("os.impressa"), "impressa");
+		p.add(Projections.property("os.data"), "data");
+		p.add(Projections.property("os.revisao"), "revisao");
+		
+		Criteria criteria = getSession().createCriteria(OrdemDeServico.class, "os");
+		criteria.add(Property.forName("os.revisao").eq(subQueryOS));	
+		criteria.add(Expression.eq("os.colaborador.id", colaboradorId));
+		
+		criteria.setProjection(Projections.distinct(p));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(OrdemDeServico.class));
 		return (OrdemDeServico) criteria.uniqueResult();
 	}

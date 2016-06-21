@@ -25,6 +25,7 @@ import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.OrdemDeServicoFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class OrdemDeServicoManagerTest
 {
@@ -34,6 +35,9 @@ public class OrdemDeServicoManagerTest
 	private OrdemDeServicoDao ordemDeServicoDao;
 	private CursoManager cursoManager;
 	private EpiManager epiManager;
+	private OrdemDeServico ordemDeServico;
+	private Colaborador colaborador;
+	private Empresa empresa;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -54,36 +58,62 @@ public class OrdemDeServicoManagerTest
 		epiManager = mock(EpiManager.class);
 		ordemDeServicoManager.setEpiManager(epiManager);
 	}
-	
-	@Test
-	public void montaOrdemDeServicoComIdDiferenteDeNull() {
-		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L); 
+	@Before
+	public void inicializaOrdemDeServicoColaboradorEEmpresa(){
+		this.ordemDeServico = OrdemDeServicoFactory.getEntity(); 
 		
-		when(ordemDeServicoDao.findOrdemServicoProjection(ordemDeServico.getId())).thenReturn(ordemDeServico);
-
-		assertEquals(ordemDeServico.getId(), ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, null, null).getId());
-	}
-	
-	@Test
-	public void montaOrdemDeServicoComIdNulo() {
-		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(); 
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Colaborador");
+		this.colaborador = ColaboradorFactory.getEntity(1L, "Colaborador");
 		colaborador.setDataAdmissao(new Date());
 		colaborador.setFuncaoNome("Função");
 		colaborador.setCargoCodigoCBO("012345");
 		colaborador.setFuncaoHistoricoFuncaoAtualId(1L);
 		colaborador.setFuncaoHistoricoFuncaoAtualDescricao("Descricao");
 		
-		Empresa empresa = EmpresaFactory.getEmpresa();
+		this.empresa = EmpresaFactory.getEmpresa();
 		empresa.setNormasInternas("normasInternas");
 		empresa.setProcedimentoEmCasoDeAcidente("procedimentoEmCasoDeAcidente");
 		empresa.setTermoDeResponsabilidade("termoDeResponsabilidade");
+	}
+	
+	@Test
+	public void montaOrdemDeServicoComIdDiferenteDeNullEImpressa() {
+		ordemDeServico.setId(1L);
+		ordemDeServico.setImpressa(true);
+		when(ordemDeServicoDao.findOrdemServicoProjection(ordemDeServico.getId())).thenReturn(ordemDeServico);
+		assertEquals(ordemDeServico.getId(), ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, null, null, null).getId());
+	}
+	
+	@Test
+	public void montaOrdemDeServicoComIdDiferenteDeNullENaoImpressa() {
+		ordemDeServico.setId(1L);
+		when(ordemDeServicoDao.findOrdemServicoProjection(ordemDeServico.getId())).thenReturn(ordemDeServico);
+		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(ordemDeServico.getColaborador(), ordemDeServico.getData())).thenReturn(colaborador);
+		assertEquals(ordemDeServico.getId(), ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, null, empresa, ordemDeServico.getData()).getId());
+	}
+	
+	@Test
+	public void montaOrdemDeServicoComIdNulo() {
+		Date dataOS = DateUtil.criarDataMesAno(1, 1, 2016);
 		
-		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador)).thenReturn(colaborador);
+		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador, dataOS)).thenReturn(colaborador);
 		when(riscoFuncaoManager.riscosByHistoricoFuncao(colaborador.getFuncao().getHistoricoAtual())).thenReturn(new ArrayList<RiscoFuncao>());
 		when(cursoManager.findByHistoricoFuncaoId(colaborador.getFuncao().getHistoricoAtual().getId())).thenReturn(new ArrayList<Curso>());
 		when(epiManager.findByHistoricoFuncao(colaborador.getFuncao().getHistoricoAtual().getId())).thenReturn(new ArrayList<Epi>());
 		
-		assertNull(ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, empresa).getId());
+		assertNull(ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, empresa, dataOS).getId());
+	}
+	
+	@Test
+	public void findOrdemServicoProjection(){
+		ordemDeServico.setId(1L);
+		when(ordemDeServicoDao.findOrdemServicoProjection(ordemDeServico.getId())).thenReturn(ordemDeServico);
+		assertEquals(ordemDeServico.getId(), ordemDeServicoManager.findOrdemServicoProjection(ordemDeServico.getId()).getId());
+	}
+	
+	@Test
+	public void ordemDeServicoAtual() {
+		ordemDeServico.setId(1L);
+		when(ordemDeServicoDao.ordemDeServicoAtual(colaborador.getId())).thenReturn(ordemDeServico);
+		assertEquals(ordemDeServico.getId(), ordemDeServicoManager.ordemDeServicoAtual(colaborador.getId()).getId());
 	}
 }

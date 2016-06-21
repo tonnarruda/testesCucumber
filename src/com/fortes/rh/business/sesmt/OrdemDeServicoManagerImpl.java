@@ -1,6 +1,7 @@
 package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import com.fortes.business.GenericManagerImpl;
@@ -26,13 +27,19 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 		return getDao().findOrdemServicoProjection(id);
 	}
 	
-	public OrdemDeServico montaOrdemDeServico(OrdemDeServico ordemDeServico, Colaborador colaborador, Empresa empresa) {
+	public OrdemDeServico montaOrdemDeServico(OrdemDeServico ordemDeServico, Colaborador colaborador, Empresa empresa, Date dataOdemDeServico) {
 		
-		if(ordemDeServico != null && ordemDeServico.getId() != null)
+		if(ordemDeServico != null && ordemDeServico.getId() != null){
 			ordemDeServico = getDao().findOrdemServicoProjection(ordemDeServico.getId());
+			if (!ordemDeServico.isImpressa()){
+				colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(ordemDeServico.getColaborador(), dataOdemDeServico);
+				montaDadosProvenientesDoColaborador(ordemDeServico, colaborador);
+				montaDadosProvenienteDaEmpresa(ordemDeServico, empresa);
+			}
+		}
 		else{
-			colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador);
 			ordemDeServico = new OrdemDeServico();
+			colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador, dataOdemDeServico);
 			ordemDeServico.setAtividades(colaborador.getFuncao().getHistoricoAtual().getDescricao());
 			montaDadosProvenientesDoColaborador(ordemDeServico, colaborador);
 			montaDadosProvenienteDaEmpresa(ordemDeServico, empresa);
@@ -87,6 +94,10 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 		 ordemDeServico.setEpis(nomeEpis);
 	}
 
+	public OrdemDeServico ordemDeServicoAtual(Long colaboradorId) {
+		return getDao().ordemDeServicoAtual(colaboradorId);
+	}
+	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
 	}

@@ -166,6 +166,9 @@
 		<create creator="spring" javascript="ColaboradorAvaliacaoPraticaDWR">
 			<param name="beanName" value="colaboradorAvaliacaoPraticaDWR"/>
 		</create>
+		<create creator="spring" javascript="OrdemDeServicoDWR">
+			<param name="beanName" value="ordemDeServicoDWR"/>
+		</create>
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
 		

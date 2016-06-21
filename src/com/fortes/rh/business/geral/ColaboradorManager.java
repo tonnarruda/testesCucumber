@@ -237,5 +237,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean existeColaboradorAtivo(String cpf, Date data);
 	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] idsAreasPermitidas, String situacao, String filtroOrdemDeServico, int page, int pagingSize);
 	public Integer getCountColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] idsAreasPermitidas, String situacao, String filtroOrdemDeServico);
-	public Colaborador findComDadosBasicosParaOrdemDeServico(Colaborador colaborador);
+	public Colaborador findComDadosBasicosParaOrdemDeServico(Colaborador colaborador, Date dataOrdemDeServico);
 }

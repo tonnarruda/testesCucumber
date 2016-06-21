@@ -2,8 +2,6 @@ package com.fortes.rh.test.dao.hibernate.sesmt;
 
 import java.util.Date;
 
-import org.junit.Test;
-
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.sesmt.OrdemDeServicoDao;
@@ -43,25 +41,37 @@ public class OrdemDeServicoDaoHibernateTest extends GenericDaoHibernateTest<Orde
 		this.colaboradorDao = colaboradorDao;
 	}
 
-	@Test
-	public void findOrdemServicoProjection(){
+	
+	public void testFindOrdemServicoProjection(){
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Teste");
 		colaboradorDao.save(colaborador);
-		OrdemDeServico ordemDeServico = saveOrdemDeServico(colaborador);
+		OrdemDeServico ordemDeServico = saveOrdemDeServico(colaborador, 1.0, new Date());
 		
 		OrdemDeServico ordemDeServicoDoBanco = ordemDeServicoDao.findOrdemServicoProjection(ordemDeServico.getId());
 		assertEquals(ordemDeServico.getId(), ordemDeServicoDoBanco.getId());
 	}
 	
-	private OrdemDeServico saveOrdemDeServico(Colaborador colaborador){
+	
+	public void testOrdemDeServicoAtual(){
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Teste");
+		colaboradorDao.save(colaborador);
+		
+		saveOrdemDeServico(colaborador, 1.0, new Date());
+		OrdemDeServico ordemDeServico2 = saveOrdemDeServico(colaborador, 2.0, new Date());
+		
+		OrdemDeServico ordemDeServicoDoBanco = ordemDeServicoDao.ordemDeServicoAtual(colaborador.getId());
+		assertEquals(ordemDeServico2.getRevisao(), ordemDeServicoDoBanco.getRevisao());
+	}
+	
+	private OrdemDeServico saveOrdemDeServico(Colaborador colaborador, Double revisao, Date dataOS){
 		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity();
 		ordemDeServico.setColaborador(colaborador);
 		ordemDeServico.setNomeColaborador(colaborador.getNome());
 		ordemDeServico.setDataAdmisaoColaborador(colaborador.getDataAdmissao());
 		ordemDeServico.setNomeFuncao("Desenvolvedor");
 		ordemDeServico.setCodigoCBO("000000");
-		ordemDeServico.setData(new Date());
-		ordemDeServico.setRevisao(1.0);
+		ordemDeServico.setData(dataOS);
+		ordemDeServico.setRevisao(revisao);
 		ordemDeServico.setAtividades("atividades");
 		ordemDeServico.setEpis("epis");
 		ordemDeServico.setMedidasPreventivas("medidasPreventivas");

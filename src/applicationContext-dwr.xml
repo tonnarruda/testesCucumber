@@ -207,4 +207,7 @@
 		<property name="colaboradorCertificacaoManager" ref="colaboradorCertificacaoManager"/>
 		<property name="colaboradorAvaliacaoPraticaManager" ref="colaboradorAvaliacaoPraticaManager"/>
 	</bean>
+	<bean id="ordemDeServicoDWR" class="com.fortes.rh.web.dwr.OrdemDeServicoDWR">
+		<property name="ordemDeServicoManager" ref="ordemDeServicoManager"/>
+	</bean>	
 </beans>

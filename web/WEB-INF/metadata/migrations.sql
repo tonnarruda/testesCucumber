@@ -11,7 +11,7 @@ CREATE TABLE ordemDeServico (
 	codigoCBO character varying(6),
 	nomeFuncao character varying(100),
 	nomeEmpresa character varying(100),
-	data timestamp without time zone,
+	data date,
 	revisao double precision,
 	atividades text,
 	riscos text,

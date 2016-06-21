@@ -5221,14 +5221,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 	
-	public Colaborador findComDadosBasicosParaOrdemDeServico(Colaborador colaborador){
-		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
-
+	public Colaborador findComDadosBasicosParaOrdemDeServico(Colaborador colaborador, Date dataOrdemDeServico){
+		
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(dataOrdemDeServico, StatusRetornoAC.CONFIRMADO);
+		
 		DetachedCriteria subQueryHf = DetachedCriteria.forClass(HistoricoFuncao.class, "hf2")
 														.setProjection(Projections.max("hf2.data"))
 														.add(Restrictions.eqProperty("hf2.funcao.id", "f.id"))
-														.add(Restrictions.le("hf2.data", new Date()));
-
+														.add(Restrictions.le("hf2.data", dataOrdemDeServico));
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");

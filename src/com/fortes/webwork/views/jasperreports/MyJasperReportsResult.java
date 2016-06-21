@@ -4,12 +4,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -81,6 +83,8 @@ public class MyJasperReportsResult extends JasperReportsResult implements Jasper
 
 		HttpServletRequest request = (HttpServletRequest) invocation.getInvocationContext().get(ServletActionContext.HTTP_REQUEST);
 		HttpServletResponse response = (HttpServletResponse) invocation.getInvocationContext().get(ServletActionContext.HTTP_RESPONSE);
+
+		criaCookieProcessando(response);
 
 		// construct the data source for the report
 		OgnlValueStack stack = invocation.getStack();
@@ -267,6 +271,13 @@ public class MyJasperReportsResult extends JasperReportsResult implements Jasper
 			}
 		}
 	}
+	
+	private void criaCookieProcessando(HttpServletResponse response) {
+		Long time = new Date().getTime();
+		Cookie myCookie = new Cookie("processando", time.toString());
+		response.addCookie(myCookie);
+	}
+	
 	private JasperReport compileReport(String reportPath, InputStream reportInputStream) throws JRException {
 		JasperReport jasperReport;// = JasperCompileManager.compileReport(systemId.replaceAll("jasper", "jrxml"));
 		if (reportInputStream == null)

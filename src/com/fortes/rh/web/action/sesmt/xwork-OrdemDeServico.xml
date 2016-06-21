@@ -41,5 +41,8 @@
 				<param name="documentName">ordemDeServico.pdf</param>
 			</result>
 		</action>
+		<action name="visualizar" class="com.fortes.rh.web.action.sesmt.OrdemDeServicoEditAction" method="visualizar">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/ordemDeServicoEdit.ftl</result>
+		</action>
 	</package>
 </xwork>
