@@ -85,4 +85,8 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 		return getDao().getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId);
 	}
 
+	public Collection<NivelCompetencia> findNiveisCompetenciaByAvDesempenho(Long avaliacaoDesempenhoId) {
+		return getDao().findNiveisCompetenciaByAvDesempenho(avaliacaoDesempenhoId);
+	}
+
 }

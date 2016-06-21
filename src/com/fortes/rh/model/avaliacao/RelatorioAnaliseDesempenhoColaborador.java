@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
 import com.ibm.icu.text.DecimalFormat;
 
@@ -16,6 +17,7 @@ public class RelatorioAnaliseDesempenhoColaborador
 	private Collection<ResultadoCompetenciaColaborador> resultadosCompetenciaColaborador = new ArrayList<ResultadoCompetenciaColaborador>();
 	@SuppressWarnings("unused")
 	private Collection<ResultadoCompetencia> resultadoCompetenciaFinal = new ArrayList<ResultadoCompetencia>();
+	private Collection<NivelCompetencia> niveisCompeteencias = new ArrayList<NivelCompetencia>();
 
 	public Colaborador getAvaliado() {
 		return avaliado;
@@ -76,4 +78,15 @@ public class RelatorioAnaliseDesempenhoColaborador
 		
 		return resultadoCompetenciaRetorno;
 	}
+	public Collection<NivelCompetencia> getNiveisCompeteencias() {
+		return niveisCompeteencias;
+	}
+	public void setNiveisCompeteencias(
+			Collection<NivelCompetencia> niveisCompeteencias) {
+		this.niveisCompeteencias = niveisCompeteencias;
+	}
+	public Integer getTamanhoCollectionNiveisCompeteencias(){
+		return this.niveisCompeteencias.size(); 
+	} 
+	
 }

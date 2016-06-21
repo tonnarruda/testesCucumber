@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="admitidos" printOrder="Horizontal" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="565" leftMargin="15" rightMargin="15" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="24767a6b-f9cf-40db-9a88-9000fc09d8a3">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.2396694214876056"/>
+	<property name="ireport.zoom" value="1.1269722013523686"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="106"/>
+	<property name="ireport.y" value="79"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -14,11 +14,17 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="avaliadoNome" class="java.lang.String"/>
+	<field name="avaliado.nome" class="java.lang.String"/>
 	<field name="resultadosCompetenciaColaborador" class="java.lang.Object"/>
 	<field name="valorMaximoGrafico" class="java.lang.Integer"/>
 	<field name="resultadoCompetenciaFinal" class="java.lang.Object"/>
 	<field name="notaMinimaMediaGeralCompetencia" class="java.lang.Integer"/>
+	<field name="avaliado.cargoFaixa" class="java.lang.String"/>
+	<field name="avaliado.areaOrganizacional.nome" class="java.lang.String"/>
+	<field name="avaliado.matricula" class="java.lang.String"/>
+	<field name="avaliado.dataAdmissaoFormatada" class="java.lang.String"/>
+	<field name="niveisCompeteencias" class="java.lang.Object"/>
+	<field name="tamanhoCollectionNiveisCompeteencias" class="java.lang.Integer"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
@@ -49,7 +55,61 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band splitType="Stretch"/>
+		<band height="153" splitType="Stretch">
+			<textField>
+				<reportElement x="13" y="49" width="537" height="15" uuid="7213eaad-0485-4b61-b44e-8b3899f8bd9e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cargo: " + $F{avaliado.cargoFaixa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="13" y="34" width="537" height="15" uuid="5ce5abc3-3980-4c40-ac78-f65e3e607bb3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Área Organizacional: " + $F{avaliado.areaOrganizacional.nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="13" y="64" width="537" height="15" uuid="31a8ee8f-a288-4879-a5cc-cd7036845f2b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Data admissão: " + $F{avaliado.dataAdmissaoFormatada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="13" y="4" width="537" height="15" uuid="bffd2cac-1bb5-4562-8775-f1ed8570d8cb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Colaborador: " + $F{avaliado.nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="13" y="19" width="537" height="15" uuid="d1f6ddf3-f5b7-4ae5-a74a-d83c3dca6a7a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Matrícula: " + ($F{avaliado.matricula} == null ? "Sem matrícula" : $F{avaliado.matricula})]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" x="2" y="107" width="560" height="46" uuid="7687e1cf-baa6-452b-a463-63cc399d0496"/>
+				<dataSourceExpression><![CDATA[$F{niveisCompeteencias}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "analiseDesempenhoCompetenciaColaboradorDetalhadoEscalaDesempenho" + $F{tamanhoCollectionNiveisCompeteencias} + ".jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="2" y="91" width="560" height="16" uuid="15976537-9fcd-43eb-b620-d4e37253bc99"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RESULTADOS OBTIDOS]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
 		<band height="220" splitType="Stretch">

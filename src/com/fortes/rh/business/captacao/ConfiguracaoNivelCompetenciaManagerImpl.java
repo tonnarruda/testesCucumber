@@ -703,6 +703,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		relatorioAnaliseDesempenhoColaborador.setNotaMinimaMediaGeralCompetencia(notaMinimaMediaGeralCompetencia);
 		relatorioAnaliseDesempenhoColaborador.setResultadosCompetenciaColaborador(montaRelatorioResultadoCompetencia(avaliacaoDesempenhoId, avaliadoId, avaliadoresIds));
 		relatorioAnaliseDesempenhoColaborador.setValorMaximoGrafico(nivelCompetenciaManager.getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId));
+		relatorioAnaliseDesempenhoColaborador.setNiveisCompeteencias(nivelCompetenciaManager.findNiveisCompetenciaByAvDesempenho(avaliacaoDesempenhoId));
 		
 		return relatorioAnaliseDesempenhoColaborador;
 	}

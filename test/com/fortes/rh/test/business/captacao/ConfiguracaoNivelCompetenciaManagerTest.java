@@ -26,6 +26,7 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.RelatorioAnaliseDesempenhoColaborador;
 import com.fortes.rh.model.avaliacao.ResultadoCompetencia;
 import com.fortes.rh.model.avaliacao.ResultadoCompetenciaColaborador;
 import com.fortes.rh.model.captacao.Atitude;
@@ -726,7 +727,10 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCaseM
 		colaboradorIds.add(colaborador2.getId());
 		
 		configuracaoNivelCompetenciaDao.expects(once()).method("findByAvaliacaaDesempenhoAndAvaliado").withAnyArguments().will(returnValue(configuracaoNivelCompetencias));
-		LinkedList<ResultadoCompetenciaColaborador> resultadoCompetenciaColaboradores = manager.montaRelatorioResultadoCompetencia(1L, colaborador1.getId(), colaboradorIds);
+		nivelCompetenciaManager.expects(once()).method("getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado").withAnyArguments().will(returnValue(5));
+		
+		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = manager.montaRelatorioAnaliseDesempenhoColaborador(1L, colaborador1.getId(), colaboradorIds, 0);
+		LinkedList<ResultadoCompetenciaColaborador> resultadoCompetenciaColaboradores = (LinkedList<ResultadoCompetenciaColaborador>) relatorioAnaliseDesempenhoColaborador.getResultadosCompetenciaColaborador(); 
 		assertEquals(1, resultadoCompetenciaColaboradores.size());
 		
 		ResultadoCompetenciaColaborador resultadoCompetenciaColaborador1 = (ResultadoCompetenciaColaborador) resultadoCompetenciaColaboradores.toArray()[0];
@@ -775,7 +779,10 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCaseM
 		colaboradorIds.add(colaborador4.getId());
 		
 		configuracaoNivelCompetenciaDao.expects(once()).method("findByAvaliacaaDesempenhoAndAvaliado").withAnyArguments().will(returnValue(configuracaoNivelCompetencias));
-		LinkedList<ResultadoCompetenciaColaborador> resultadoCompetenciaColaboradores = manager.montaRelatorioResultadoCompetencia(1L, colaborador1.getId(), colaboradorIds);
+		nivelCompetenciaManager.expects(once()).method("getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado").withAnyArguments().will(returnValue(5));
+		
+		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = manager.montaRelatorioAnaliseDesempenhoColaborador(1L, colaborador1.getId(), colaboradorIds, 0);
+		LinkedList<ResultadoCompetenciaColaborador> resultadoCompetenciaColaboradores = (LinkedList<ResultadoCompetenciaColaborador>) relatorioAnaliseDesempenhoColaborador.getResultadosCompetenciaColaborador();
 		assertEquals(1, resultadoCompetenciaColaboradores.size());
 		
 		ResultadoCompetenciaColaborador resultadoCompetenciaColaborador1 = (ResultadoCompetenciaColaborador) resultadoCompetenciaColaboradores.toArray()[0];

@@ -355,7 +355,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try {
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(avaliacaoDesempenho.getId());
 			Collection<Long> avaliadoresIds = new CollectionUtil().convertArrayToCollection(new StringUtil().stringToLong(avaliadores));
-			relatorioAnaliseDesempenhoColaboradores.add(configuracaoNivelCompetenciaManager.montaRelatorioAnaliseDesempenhoColaborador(avaliacaoDesempenho.getId(), avaliado.getId(), avaliadoresIds, notaMinimaMediaGeralCompetencia));
+			RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = configuracaoNivelCompetenciaManager.montaRelatorioAnaliseDesempenhoColaborador(avaliacaoDesempenho.getId(), avaliado.getId(), avaliadoresIds, notaMinimaMediaGeralCompetencia); 
+			relatorioAnaliseDesempenhoColaborador.setAvaliado(colaboradorManager.findByIdHistoricoAtual(avaliado.getId(), false));
+			relatorioAnaliseDesempenhoColaboradores.add(relatorioAnaliseDesempenhoColaborador);
 			
 			if(relatorioAnaliseDesempenhoColaboradores.size() == 0){
 				addActionMessage("Não existem competências para o avaliado informado.");

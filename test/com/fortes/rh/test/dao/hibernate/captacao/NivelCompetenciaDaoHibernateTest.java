@@ -1742,7 +1742,6 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(0, configs.size());
 	}
 	
-	
 	public void testGetOrdemMaximaByAavaliacaoDesempenhoAndAvaliado()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -1787,6 +1786,49 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador);
 
 		assertEquals((Integer) 3, nivelCompetenciaDao.getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(avaliacaoDesempenho.getId(), colaborador.getId()));
+	}
+	
+	public void testFindNiveisCompetenciaByAvDesempenho()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(DateUtil.criarDataMesAno(1, 1, 2005), empresa);
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
+		
+		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
+		nivelCompetenciaDao.save(nivelCompetencia1);
+		
+		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
+		nivelCompetenciaDao.save(nivelCompetencia2);
+		
+		NivelCompetencia nivelCompetencia3 = NivelCompetenciaFactory.getEntity();
+		nivelCompetenciaDao.save(nivelCompetencia3);
+
+		ConfigHistoricoNivel configHistoricoNivel1 = ConfigHistoricoNivelFactory.getEntity(null, 1, nivelCompetenciaHistorico, nivelCompetencia1, null);
+		configHistoricoNivelDao.save(configHistoricoNivel1);
+		
+		ConfigHistoricoNivel configHistoricoNivel2 = ConfigHistoricoNivelFactory.getEntity(null, 2, nivelCompetenciaHistorico, nivelCompetencia2, null);
+		configHistoricoNivelDao.save(configHistoricoNivel2);
+
+		ConfigHistoricoNivel configHistoricoNivel3 = ConfigHistoricoNivelFactory.getEntity(null, 3, nivelCompetenciaHistorico, nivelCompetencia3, null);
+		configHistoricoNivelDao.save(configHistoricoNivel3);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(null, null, DateUtil.criarDataMesAno(1, 1, 2016), nivelCompetenciaHistorico);
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
+		
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(null, configuracaoNivelCompetenciaFaixaSalarial);
+		configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(colaboradorQuestionario);
+		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador);
+
+		assertEquals(3, nivelCompetenciaDao.findNiveisCompetenciaByAvDesempenho(avaliacaoDesempenho.getId()).size());
 	}
 	
 	public GenericDao<NivelCompetencia> getGenericDao()

@@ -207,4 +207,25 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		Integer result = (Integer) criteria.uniqueResult();
 		return (int) (result == null ? 0 : result);
 	}
+
+	public Collection<NivelCompetencia> findNiveisCompetenciaByAvDesempenho(Long avaliacaoDesempenhoId) {
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
+		criteria.createCriteria("cncc.colaboradorQuestionario", "cq", Criteria.INNER_JOIN);
+		criteria.createCriteria("cncc.configuracaoNivelCompetenciaFaixaSalarial", "cncf", Criteria.INNER_JOIN);
+		criteria.createCriteria("cncf.nivelCompetenciaHistorico", "nch", Criteria.INNER_JOIN);
+		criteria.createCriteria("nch.configHistoricoNiveis", "chn", Criteria.INNER_JOIN);
+		criteria.createCriteria("chn.nivelCompetencia", "nc", Criteria.INNER_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("nc.descricao"), "descricao");
+		p.add(Projections.property("chn.ordem"), "ordem");
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+		criteria.addOrder(Order.asc("chn.ordem"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(NivelCompetencia.class));
+		
+		return criteria.list();
+	}
 }

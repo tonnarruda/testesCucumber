@@ -7,15 +7,20 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 
 public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetenciaColaborador> implements ConfiguracaoNivelCompetenciaColaboradorDao
@@ -212,23 +217,40 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 
 	@SuppressWarnings("unchecked")
 	public Collection<Colaborador> findAvaliadores(Long avaliacaoDesempenhoId, Long avaliadoId) {
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
+		
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
 		criteria.createCriteria("cncc.colaboradorQuestionario", "cq", CriteriaSpecification.INNER_JOIN);
-		criteria.createCriteria("cncc.avaliador", "av", CriteriaSpecification.INNER_JOIN);
+		criteria.createCriteria("cncc.avaliador", "c", CriteriaSpecification.INNER_JOIN);
+		criteria.createCriteria("c.historicoColaboradors", "hc", CriteriaSpecification.INNER_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "fs", CriteriaSpecification.INNER_JOIN);
+		criteria.createCriteria("fs.cargo", "cg", CriteriaSpecification.INNER_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("av.id"), "id");
-		p.add(Projections.property("av.nome"), "nome");
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("cg.nome"), "cargoNomeProjection");
+		p.add(Projections.property("fs.nome"), "faixaSalarialNomeProjection");
 		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
 		criteria.add(Expression.eq("cncc.colaborador.id", avaliadoId));
 		criteria.add(Expression.eq("cq.respondida", true));
+		criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
 		
-		criteria.addOrder(Order.asc("av.nome"));
+		criteria.addOrder(Order.asc("c.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 		
 		return criteria.list();
+	}
+
+	private DetachedCriteria montaSubQueryHistoricoColaborador(Date data, Integer status)
+	{
+		return DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", data))
+				.add(Restrictions.eq("hc2.status", status));
 	}
 }

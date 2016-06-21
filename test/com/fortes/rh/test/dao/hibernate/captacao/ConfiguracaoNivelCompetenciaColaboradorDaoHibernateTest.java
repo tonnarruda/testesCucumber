@@ -257,6 +257,12 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 	
 	public void testFindCargosAvaliadores()
 	{
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity("I", cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
 		Colaborador avaliador1 = ColaboradorFactory.getEntity();
 		avaliador1.setNome("Avaliador 1");
 		colaboradorDao.save(avaliador1);
@@ -266,6 +272,12 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 		
 		Colaborador colaboradorAvaliado = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaboradorAvaliado);
+
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(null, avaliador1, faixaSalarial, DateUtil.criarDataMesAno(1, 1, 2016));
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(null, avaliador2, faixaSalarial, DateUtil.criarDataMesAno(1, 1, 2016));
+		historicoColaboradorDao.save(historicoColaborador2);
 		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);

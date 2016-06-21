@@ -24,4 +24,6 @@ public interface NivelCompetenciaDao extends GenericDao<NivelCompetencia>
 	Double getOrdemMaximaByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId);
 
 	Integer getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId);
+
+	Collection<NivelCompetencia> findNiveisCompetenciaByAvDesempenho(Long avaliacaoDesempenhoId);
 }

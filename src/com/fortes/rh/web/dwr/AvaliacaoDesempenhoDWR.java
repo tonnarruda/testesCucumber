@@ -2,6 +2,7 @@ package com.fortes.rh.web.dwr;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +12,6 @@ import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempen
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
-import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.security.SecurityUtil;
@@ -118,24 +118,26 @@ public class AvaliacaoDesempenhoDWR
 			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, true, empresaId, areasIds, cargosIds);
 		
 		Option option = null;
-
 		for (Colaborador avaliado : participantes) {
-			
 			option = new Option();
 			option.setId(avaliado.getId());
 			option.setNome(avaliado.getNome());
-			
 			options.add(option);
 		}
 
 		return options;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Map<Long, String> getAvaliadores(Long avaliacaoDesempenhoId, Long avaliadoId)
 	{
+		Map<Long, String> checks = new HashMap<Long, String>();
 		Collection<Colaborador> avaliadores = configuracaoNivelCompetenciaColaboradorManager.findCargosAvaliadores(avaliacaoDesempenhoId, avaliadoId);
-		return CollectionUtil.convertCollectionToMap(avaliadores, "getId", "getNome", Cargo.class);
+		for (Colaborador colaborador : avaliadores) {
+			if(!colaborador.getId().equals(avaliadoId))
+				checks.put(colaborador.getId(), colaborador.getNome() + " (" + colaborador.getCargo().getNome() + ")");
+		}
+		
+		return checks;
 	}
 	
 	public boolean existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(Long avaliacaoDesempenhoId) {
