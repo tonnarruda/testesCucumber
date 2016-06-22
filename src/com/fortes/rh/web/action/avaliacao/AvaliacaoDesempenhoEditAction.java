@@ -99,6 +99,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	private Collection<RelatorioAnaliseDesempenhoColaborador> relatorioAnaliseDesempenhoColaboradores = new ArrayList<RelatorioAnaliseDesempenhoColaborador>();
 	private Integer notaMinimaMediaGeralCompetencia;
+	private boolean agruparPorCargo;
 	
 	private String nomeBusca;
 	private Long empresaId;
@@ -355,9 +356,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try {
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(avaliacaoDesempenho.getId());
 			Collection<Long> avaliadoresIds = new CollectionUtil().convertArrayToCollection(new StringUtil().stringToLong(avaliadores));
-			RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = configuracaoNivelCompetenciaManager.montaRelatorioAnaliseDesempenhoColaborador(avaliacaoDesempenho.getId(), avaliado.getId(), avaliadoresIds, notaMinimaMediaGeralCompetencia); 
-			relatorioAnaliseDesempenhoColaborador.setAvaliado(colaboradorManager.findByIdHistoricoAtual(avaliado.getId(), false));
-			relatorioAnaliseDesempenhoColaboradores.add(relatorioAnaliseDesempenhoColaborador);
+			RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = configuracaoNivelCompetenciaManager.montaRelatorioAnaliseDesempenhoColaborador(avaliacaoDesempenho.getId(), avaliado.getId(), avaliadoresIds, notaMinimaMediaGeralCompetencia, agruparPorCargo); 
+			
+			if(relatorioAnaliseDesempenhoColaborador != null){
+				relatorioAnaliseDesempenhoColaborador.setAvaliado(colaboradorManager.findByIdHistoricoAtual(avaliado.getId(), false));
+				relatorioAnaliseDesempenhoColaboradores.add(relatorioAnaliseDesempenhoColaborador);
+			}
 			
 			if(relatorioAnaliseDesempenhoColaboradores.size() == 0){
 				addActionMessage("Não existem competências para o avaliado informado.");
@@ -1036,5 +1040,13 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public Collection<RelatorioAnaliseDesempenhoColaborador> getRelatorioAnaliseDesempenhoColaboradores() {
 		return relatorioAnaliseDesempenhoColaboradores;
+	}
+
+	public boolean isAgruparPorCargo() {
+		return agruparPorCargo;
+	}
+
+	public void setAgruparPorCargo(boolean agruparPorCargo) {
+		this.agruparPorCargo = agruparPorCargo;
 	}
 }

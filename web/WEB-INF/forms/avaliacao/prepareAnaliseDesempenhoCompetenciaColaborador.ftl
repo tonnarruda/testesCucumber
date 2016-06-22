@@ -28,6 +28,7 @@
 			populaCargosByAreaVinculados();
 			populaCargosAvaliado();
 			populaOrdensNivelCompetencia();
+			mudaLabelMultCheckBoxAvaliadores();
 			
 			if($('#avaliacao').val())
 			 	populaAvaliados();
@@ -114,7 +115,7 @@
 		
 		function createListCargosAvaliadores(data)
 		{
-			addChecks('avaliadores',data, 'verificaQtdBarraGrafico()');
+			addChecks('avaliadores',data, 'verificaQtdMarcados()');
 		}
 		
 		function populaOrdensNivelCompetencia()
@@ -158,12 +159,12 @@
 			$('#ordensNivelCompetencia').append(tabela);
 		}
 		
-		function verificaQtdBarraGrafico()
+		function verificaQtdMarcados()
 		{
-			qtdColunasAdicionais = 4;
+			qtdColunasAdicionais = 1;
 			$("input[name=avaliadores]:not(:checked)").removeAttr('disabled');
 			
-			if($('#agruparAvaliador').checked){
+			if($('#agruparPorCargo').attr("checked")){
 				cargosAdicionados = [];
 				$("input[name=avaliadores]:checked").each(function(){
 					textoChecked = $(this).parent().text();
@@ -174,13 +175,35 @@
 						cargosAdicionados.push(cargo);
 				});
 				
-				if(cargosAdicionados.length >= qtdColunasAdicionais)
-					$("input[name=avaliadores]:not(:checked)").attr('disabled', true);
+				if(cargosAdicionados.length > qtdColunasAdicionais)
+					$("input[name=avaliadores]:checked").removeAttr('checked');
+					
+				if(cargosAdicionados.length == qtdColunasAdicionais){
+					$("input[name=avaliadores]:not(:checked)").each(function(){
+						textoChecked = $(this).parent().text();
+						regExp = /\(([^)]+)\)/;
+						cargo = regExp.exec(textoChecked)[1];
+						
+						if(!(cargosAdicionados.indexOf(cargo) == 0))
+							$(this).attr('disabled', true);
+					});
+				}
 			}else{
-				if(	$("input[name=avaliadores]:checked").length >= qtdColunasAdicionais)
+				if($("input[name=avaliadores]:checked").length > qtdColunasAdicionais)
+					$("input[name=avaliadores]:checked").removeAttr('checked');
+					
+				if($("input[name=avaliadores]:checked").length == qtdColunasAdicionais)
 					$("input[name=avaliadores]:not(:checked)").attr('disabled', true);
 			}
 		}
+		
+		function mudaLabelMultCheckBoxAvaliadores(){
+			if($('#agruparPorCargo').attr("checked"))
+				$('#wwlbl_avaliadores > .desc').text('Avaliadores (máx. 4 Cargos Distintos):');
+			else
+				$('#wwlbl_avaliadores > .desc').text('Avaliadores (máx. 4 Avaliadores):');
+		}
+		
 	</script>
 </head>
 <body>
@@ -196,8 +219,8 @@
 		<@ww.select label="Avaliado" required="true" name="avaliado.id" id="avaliados" list="participantesAvaliadores" listKey="id" listValue="nome" cssStyle="width: 600px;" headerKey="-1" headerValue="Selecione uma avaliação de desempenho"  onchange="populaCargosAvaliado();"/>
 		
 		<div id="paraRealatorioDetalahado">
-			<@ww.checkbox label="Agrupar pelo cargo do avaliador." id="agruparAvaliador" name="" labelPosition="left"/>
-			<@frt.checkListBox label="Avaliadores (máx. 4 opções)" name="avaliadores" id="avaliadores" list="avaliadoresCheckList" width="600" filtro="true" selectAtivoInativo="true"/>
+			<@ww.checkbox label="Agrupar pelo cargo do avaliador." id="agruparPorCargo" name="agruparPorCargo" labelPosition="left" onchange="verificaQtdMarcados();mudaLabelMultCheckBoxAvaliadores();"/>
+			<@frt.checkListBox label="Avaliadores (máx. 4 Avaliadores)" name="avaliadores" id="avaliadores" list="avaliadoresCheckList" width="600" filtro="true" selectAtivoInativo="true"/>
 			Nota mínima considerada em "Média Geral das Competências":</br>
 			<div id="ordensNivelCompetencia"/>
 		</div>

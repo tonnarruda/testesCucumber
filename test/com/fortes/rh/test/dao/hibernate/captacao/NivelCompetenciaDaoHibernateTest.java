@@ -1706,7 +1706,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		historicoAvaliador.setFaixaSalarial(faixaSalarial);
 		historicoAvaliador.setColaborador(avaliador);
 		historicoAvaliador.setStatus(StatusRetornoAC.CONFIRMADO);
-		historicoAvaliador.setData(DateUtil.criarDataMesAno(1, 1, 2016));
+		historicoAvaliador.setData(DateUtil.criarDataMesAno(1, 1, 2000));
 		historicoColaboradorDao.save(historicoAvaliador);
 		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();

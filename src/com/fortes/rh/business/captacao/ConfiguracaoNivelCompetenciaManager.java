@@ -60,5 +60,5 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	public boolean existeConfiguracaoNivelCompetencia(Long competenciaId, char tipoCompetencia);
 	void removeBySolicitacaoId(Long solicitacaoId);
 	Collection<ConfiguracaoNivelCompetencia> findCompetenciasAndPesos(Long avaliacaoDesempenhoId, Long avaliadoId);
-	RelatorioAnaliseDesempenhoColaborador montaRelatorioAnaliseDesempenhoColaborador(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds, Integer notaMinimaMediaGeralCompetencia);
+	RelatorioAnaliseDesempenhoColaborador montaRelatorioAnaliseDesempenhoColaborador(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds, Integer notaMinimaMediaGeralCompetencia, boolean agruparPorCargo);
 }

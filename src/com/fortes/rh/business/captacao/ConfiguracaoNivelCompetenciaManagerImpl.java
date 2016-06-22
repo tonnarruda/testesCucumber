@@ -698,17 +698,18 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().findCompetenciasAndPesos(avaliacaoDesempenhoId, avaliadoId);
 	}
 
-	public RelatorioAnaliseDesempenhoColaborador montaRelatorioAnaliseDesempenhoColaborador(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds, Integer notaMinimaMediaGeralCompetencia) {
+	public RelatorioAnaliseDesempenhoColaborador montaRelatorioAnaliseDesempenhoColaborador(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds, Integer notaMinimaMediaGeralCompetencia, boolean agruparPorCargo) {
 		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = new RelatorioAnaliseDesempenhoColaborador();
-		relatorioAnaliseDesempenhoColaborador.setNotaMinimaMediaGeralCompetencia(notaMinimaMediaGeralCompetencia);
-		relatorioAnaliseDesempenhoColaborador.setResultadosCompetenciaColaborador(montaRelatorioResultadoCompetencia(avaliacaoDesempenhoId, avaliadoId, avaliadoresIds));
-		relatorioAnaliseDesempenhoColaborador.setValorMaximoGrafico(nivelCompetenciaManager.getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId));
 		relatorioAnaliseDesempenhoColaborador.setNiveisCompeteencias(nivelCompetenciaManager.findNiveisCompetenciaByAvDesempenho(avaliacaoDesempenhoId));
+		if(relatorioAnaliseDesempenhoColaborador.getNiveisCompeteencias().size() == 0)	return null;
+		relatorioAnaliseDesempenhoColaborador.setNotaMinimaMediaGeralCompetencia(notaMinimaMediaGeralCompetencia);
+		relatorioAnaliseDesempenhoColaborador.setResultadosCompetenciaColaborador(montaRelatorioResultadoCompetencia(avaliacaoDesempenhoId, avaliadoId, avaliadoresIds, agruparPorCargo));
+		relatorioAnaliseDesempenhoColaborador.setValorMaximoGrafico(nivelCompetenciaManager.getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId));
 		
 		return relatorioAnaliseDesempenhoColaborador;
 	}
 	
-	private LinkedList<ResultadoCompetenciaColaborador> montaRelatorioResultadoCompetencia(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds) {
+	private LinkedList<ResultadoCompetenciaColaborador> montaRelatorioResultadoCompetencia(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds, boolean agruparPorCargo) {
 		LinkedList<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findByAvaliacaaDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId);
 		LinkedList<ResultadoCompetenciaColaborador> resultadoCompetenciaColaboradores = new LinkedList<ResultadoCompetenciaColaborador>();
 		
@@ -723,7 +724,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		ResultadoCompetenciaColaborador resultadoCompetenciaColaborador;
 		for (String competenciaNome : cncAbrupadoPorCompetencia.keySet()) {
 			resultadoCompetenciaColaborador = new ResultadoCompetenciaColaborador();
-			resultadoCompetenciaColaborador.setResultadoCompetencias(montaResultadoCompetencia(cncAbrupadoPorCompetencia.get(competenciaNome), avaliadoId, avaliadoresIds));
+			resultadoCompetenciaColaborador.setResultadoCompetencias(montaResultadoCompetencia(cncAbrupadoPorCompetencia.get(competenciaNome), avaliadoId, avaliadoresIds, agruparPorCargo));
 			resultadoCompetenciaColaborador.setCompetenciaNome(competenciaNome);
 			resultadoCompetenciaColaboradores.add(resultadoCompetenciaColaborador);
 		}
@@ -731,35 +732,37 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return resultadoCompetenciaColaboradores;
 	}
 
-	private LinkedList<ResultadoCompetencia> montaResultadoCompetencia(LinkedList<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias, Long avaliadoId, Collection<Long> avaliadoresIds) {
+	private LinkedList<ResultadoCompetencia> montaResultadoCompetencia(LinkedList<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias, Long avaliadoId, Collection<Long> avaliadoresIds, boolean agruparPorCargo) {
 		LinkedList<ResultadoCompetencia> resultadoCompetencias = new LinkedList<ResultadoCompetencia>();
 		Integer totalDeCompetencia = configuracaoNivelCompetencias.size();
-		HashMap<Long, LinkedList<ConfiguracaoNivelCompetencia>> cncAgrupadoPorCargo = montaMapCNC(configuracaoNivelCompetencias, avaliadoId, avaliadoresIds);
+		HashMap<Long, LinkedList<ConfiguracaoNivelCompetencia>> cncAgrupador = montaMapCNC(configuracaoNivelCompetencias, avaliadoId, avaliadoresIds, agruparPorCargo);
 		
 		Double somaTotalDaOrdem = 0.0;
 		ResultadoCompetencia resultadoCompetencia;
-		for (Long key : cncAgrupadoPorCargo.keySet()) {
+		for (Long key : cncAgrupador.keySet()) {
 			Double somaOrdem = 0.0;
 			resultadoCompetencia = new ResultadoCompetencia();
-			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : cncAgrupadoPorCargo.get(key))
+			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : cncAgrupador.get(key))
 				somaOrdem += configuracaoNivelCompetencia.getNivelCompetencia().getOrdem();
 
 			somaTotalDaOrdem += somaOrdem;
 			
 			if(key.equals(AUTOAVALIACAO))
-				resultadoCompetencia.setNome("Auto-Avaliação");
+				resultadoCompetencia.setNome(RelatorioAnaliseDesempenhoColaborador.AUTOAVALIACAO);
 			else if(key.equals(OUTROSAVALIADORES))
-				resultadoCompetencia.setNome("Outros Avaliadores");
+				resultadoCompetencia.setNome(RelatorioAnaliseDesempenhoColaborador.OUTROSAVALIADORES);
+			else if(agruparPorCargo)
+				resultadoCompetencia.setNome(((ConfiguracaoNivelCompetencia) cncAgrupador.get(key).toArray()[0]).getCargo().getNome());
 			else
-				resultadoCompetencia.setNome(((ConfiguracaoNivelCompetencia) cncAgrupadoPorCargo.get(key).toArray()[0]).getCargo().getNome());
+				resultadoCompetencia.setNome(((ConfiguracaoNivelCompetencia) cncAgrupador.get(key).toArray()[0]).getColaborador().getNome());
 			
-			resultadoCompetencia.setOrdem(somaOrdem / cncAgrupadoPorCargo.get(key).size());
+			resultadoCompetencia.setOrdem(somaOrdem / cncAgrupador.get(key).size());
 			resultadoCompetencias.add(resultadoCompetencia);
 		}
 		
-		if(configuracaoNivelCompetencias.size() > 0){
+		if(totalDeCompetencia > 0){
 			resultadoCompetencia = new ResultadoCompetencia();
-			resultadoCompetencia.setNome("Média");
+			resultadoCompetencia.setNome(RelatorioAnaliseDesempenhoColaborador.MEDIA);
 			resultadoCompetencia.setOrdem(somaTotalDaOrdem / totalDeCompetencia);
 			resultadoCompetencias.add(resultadoCompetencia);
 		}
@@ -767,8 +770,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return resultadoCompetencias;
 	}
 
-	private HashMap<Long, LinkedList<ConfiguracaoNivelCompetencia>> montaMapCNC(LinkedList<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias, Long avaliadoId, Collection<Long> avaliadoresIds) {
-		HashMap<Long, LinkedList<ConfiguracaoNivelCompetencia>> cncAgrupadoPorCargo = new LinkedHashMap<Long, LinkedList<ConfiguracaoNivelCompetencia>>();
+	private HashMap<Long, LinkedList<ConfiguracaoNivelCompetencia>> montaMapCNC(LinkedList<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias, Long avaliadoId, Collection<Long> avaliadoresIds, boolean agruparPorCargo) {
+		HashMap<Long, LinkedList<ConfiguracaoNivelCompetencia>> cncAgrupador = new LinkedHashMap<Long, LinkedList<ConfiguracaoNivelCompetencia>>();
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasAdicionadosNoMap = new ArrayList<ConfiguracaoNivelCompetencia>();
 		
 		if(avaliadoresIds.contains(avaliadoId))
@@ -776,31 +779,39 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNivelCompetencias) {
 			if(configuracaoNivelCompetencia.getColaborador().getId().equals(avaliadoId)){
-				if(!cncAgrupadoPorCargo.containsKey(AUTOAVALIACAO))
-					cncAgrupadoPorCargo.put(AUTOAVALIACAO, new LinkedList<ConfiguracaoNivelCompetencia>());
+				if(!cncAgrupador.containsKey(AUTOAVALIACAO))
+					cncAgrupador.put(AUTOAVALIACAO, new LinkedList<ConfiguracaoNivelCompetencia>());
 				
-				cncAgrupadoPorCargo.get(AUTOAVALIACAO).add(configuracaoNivelCompetencia);
+				cncAgrupador.get(AUTOAVALIACAO).add(configuracaoNivelCompetencia);
 				configuracaoNivelCompetenciasAdicionadosNoMap.add(configuracaoNivelCompetencia);
 			}
 		}
-		
+
 		for (Long avaliadorId : avaliadoresIds){
 			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNivelCompetencias) {
 				if(configuracaoNivelCompetencia.getColaborador().getId().equals(avaliadorId)){
-					if(!cncAgrupadoPorCargo.containsKey(configuracaoNivelCompetencia.getCargo().getId()))
-						cncAgrupadoPorCargo.put(configuracaoNivelCompetencia.getCargo().getId(), new LinkedList<ConfiguracaoNivelCompetencia>());
-					
-					cncAgrupadoPorCargo.get(configuracaoNivelCompetencia.getCargo().getId()).add(configuracaoNivelCompetencia);
-					configuracaoNivelCompetenciasAdicionadosNoMap.add(configuracaoNivelCompetencia);
+					if(agruparPorCargo){
+						if(!cncAgrupador.containsKey(configuracaoNivelCompetencia.getCargo().getId()))
+							cncAgrupador.put(configuracaoNivelCompetencia.getCargo().getId(), new LinkedList<ConfiguracaoNivelCompetencia>());
+
+						cncAgrupador.get(configuracaoNivelCompetencia.getCargo().getId()).add(configuracaoNivelCompetencia);
+						configuracaoNivelCompetenciasAdicionadosNoMap.add(configuracaoNivelCompetencia);
+					}else{
+						if(!cncAgrupador.containsKey(configuracaoNivelCompetencia.getColaborador().getId()))
+							cncAgrupador.put(configuracaoNivelCompetencia.getColaborador().getId(), new LinkedList<ConfiguracaoNivelCompetencia>());
+
+						cncAgrupador.get(configuracaoNivelCompetencia.getColaborador().getId()).add(configuracaoNivelCompetencia);
+						configuracaoNivelCompetenciasAdicionadosNoMap.add(configuracaoNivelCompetencia);
+					}
 				}
 			}
 		}
 
 		configuracaoNivelCompetencias.removeAll(configuracaoNivelCompetenciasAdicionadosNoMap);
 		if(configuracaoNivelCompetencias.size() > 0)
-			cncAgrupadoPorCargo.put(OUTROSAVALIADORES, configuracaoNivelCompetencias);
+			cncAgrupador.put(OUTROSAVALIADORES, configuracaoNivelCompetencias);
 		
-		return cncAgrupadoPorCargo;
+		return cncAgrupador;
 	}
 
 	public void setNivelCompetenciaManager(NivelCompetenciaManager nivelCompetenciaManager) {
