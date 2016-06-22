@@ -58,6 +58,7 @@
 	</script>	
 	</head>
 	<body>
+		<@ww.actionmessage />
 		<@ww.actionerror />
 		<@ww.form name="form" action="${formAction}" onsubmit="enviaForm();" method="POST">
 		
@@ -89,9 +90,9 @@
 			<button onclick="enviaForm();" class="${btnClass}"></button>
 			
 			<#if telaInicial?exists>
-				<button onclick="window.location='list.action?modeloAvaliacao=${modeloAvaliacao}'" class="btnVoltar"></button>
+				<button onclick="javascript: executeLink('list.action?modeloAvaliacao=${modeloAvaliacao}');" class="btnVoltar"></button>
 			<#else>
-				<button onclick="window.location='../../index.action'" class="btnVoltar"></button>
+				<button onclick="javascript: executeLink('../../index.action');" class="btnVoltar"></button>
 			</#if>
 		</div>
 	</body>

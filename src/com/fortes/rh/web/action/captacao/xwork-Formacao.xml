@@ -3,12 +3,11 @@
 
 <xwork>
 	<package name="Formacao" extends="default" namespace="/captacao/formacao">
-		<default-interceptor-ref name="myDefaultWebStack"/>
 		<action name="list" class="com.fortes.rh.web.action.captacao.FormacaoListAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/formacaoList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.captacao.FormacaoListAction" method="delete">
-			<result name="success" type="redirect">list.action</result>
+			<result name="success" type="redirect">list.action?internalToken=${internalToken}</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.captacao.FormacaoEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/formacaoEdit.ftl</result>
@@ -17,11 +16,11 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/formacaoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.captacao.FormacaoEditAction" method="insert">
-			<result name="success" type="redirect">list.action</result>
+			<result name="success" type="redirect">list.action?internalToken=${internalToken}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/formacaoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.captacao.FormacaoEditAction" method="update">
-			<result name="success" type="redirect">list.action</result>
+			<result name="success" type="redirect">list.action?internalToken=${internalToken}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/formacaoEdit.ftl</result>
 		</action>
 	</package>

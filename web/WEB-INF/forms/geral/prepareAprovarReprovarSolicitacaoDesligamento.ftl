@@ -14,7 +14,7 @@
 	
 	<@display.table name="colaboradores" id="colaborador" class="dados" >
 		<@display.column title="Ações" class="acao">
-			<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="visualizarSolicitacaoDesligamento.action?colaborador.id=${colaborador.id}" imgTitle="Visualizar solicitação de desligamento" imgName="desliga_colab.gif"/>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript: executeLink('visualizarSolicitacaoDesligamento.action?colaborador.id=${colaborador.id}');" imgTitle="Visualizar solicitação de desligamento" imgName="desliga_colab.gif"/>
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>
 		<@display.column property="estabelecimento.nome" title="Estabelecimento"/>

@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.geral.TipoDocumentoManager;
 import com.fortes.rh.model.geral.TipoDocumento;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -58,12 +59,12 @@ public class TipoDocumentoEditAction extends MyActionSupportList
 		try
 		{
 			tipoDocumentoManager.remove(tipoDocumento.getId());
-			addActionMessage("Tipo do Documento excluído com sucesso.");
+			addActionSuccess("Tipo do Documento excluído com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir este Tipo do Documento.");
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este Tipo do Documento.");
 		}
 
 		return list();

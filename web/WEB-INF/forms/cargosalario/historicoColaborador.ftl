@@ -114,7 +114,7 @@
 			<#if !colaborador.desligado>
 				<@authz.authorize ifAllGranted="ROLE_CAD_HISTORICOCOLABORADOR">
 					<#if !voltar?exists || voltar != '../../index.action'>
-						<button onclick="window.location='historicoColaboradorList.action?colaborador.id=${colaborador.id}'" class="btnEditarHistoricos"></button>
+						<button onclick="javascript: executeLink('historicoColaboradorList.action?colaborador.id=${colaborador.id}');" class="btnEditarHistoricos"></button>
 					</#if>
 				</@authz.authorize>
 			</#if>

@@ -39,7 +39,7 @@
 		<div class="buttonGroup">
 			<input type="button" value="" onclick="newConfirm('Deseja realmente aprovar essa solicitação de desligamento?', function(){ enviarForm('aprovarSolicitacaoDesligamento.action'); })" class="btnAprovar" />
 			<input type="button" value="" onclick="newConfirm('Deseja realmente reprovar essa solicitação de desligamento?', function(){ enviarForm('reprovarSolicitacaoDesligamento.action'); })" class="btnReprovar" />
-			<input type="button" value="" onclick="window.location='prepareAprovarReprovarSolicitacaoDesligamento.action'" class="btnVoltar" />
+			<input type="button" value="" onclick="javascript: executeLink('prepareAprovarReprovarSolicitacaoDesligamento.action');" class="btnVoltar" />
 		</div>
 	</@ww.form>
 </body>

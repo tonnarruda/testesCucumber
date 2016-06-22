@@ -30,11 +30,11 @@
 			<#if historicoColaboradors?size == 1 && colaborador.codigoAC?exists && colaborador.codigoAC == "" && !colaborador.naoIntegraAc>
 				<img border="0" title="Edição da primeira situação pode ser realizada no cadastro de colaborador." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">			
 			<#else>
-				<a href="prepareUpdate.action?historicoColaborador.id=${historicoColaborador.id}&colaborador.id=${colaborador.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+				<a href="javascript: executeLink('prepareUpdate.action?historicoColaborador.id=${historicoColaborador.id}&colaborador.id=${colaborador.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			</#if>
 			
 			<#if (historicoColaboradors?size > 1)>
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?historicoColaborador.id=${historicoColaborador.id}&colaborador.id=${colaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?historicoColaborador.id=${historicoColaborador.id}&colaborador.id=${colaborador.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			<#else>
 				<img border="0" title="Não é possível excluir a primeira situação." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
@@ -89,8 +89,8 @@ Histórico da faixa salarial: ${statusRetornoAC.getDescricao(historicoColaborado
 	</@display.table>
 
 	<div class="buttonGroup">
-		<button onclick="window.location='prepareInsert.action?colaborador.id=${colaborador.id}&novoHistorico=true'" class="btnInserir"></button>
-		<button onclick="window.location='list.action?colaborador.id=${colaborador.id}'" class="btnVoltar"></button>
+		<button onclick="javascript: executeLink('prepareInsert.action?colaborador.id=${colaborador.id}&novoHistorico=true');" class="btnInserir"></button>
+		<button onclick="javascript: executeLink('list.action?colaborador.id=${colaborador.id}');" class="btnVoltar"></button>
 	</div>
 </body>
 </html>

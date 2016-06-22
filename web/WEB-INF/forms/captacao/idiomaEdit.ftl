@@ -5,7 +5,7 @@
 <script type='text/javascript'>
     function voltarIdioma()
     {
-    	$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
+    	$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action?internalToken=${internalToken}"/>');
     }
 </script>
 
@@ -34,6 +34,7 @@
 		<@ww.select label="Nível" name="candidatoIdioma.nivel" id="nivelSelec" list="nivelIdioma" theme="css_xhtml" required="true" />
 
 		<@ww.hidden name="candidatoIdioma.id" />
+		<@ww.hidden name="internalToken"/>
 
 		<@ww.submit value=" " cssClass="btnGravar grayBG" liClass="liLeft" cssStyle="float:left; display:block;"/>
 		<input type="button" class="btnCancelar grayBG" onclick="voltarIdioma();" />

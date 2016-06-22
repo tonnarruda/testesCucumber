@@ -4,22 +4,6 @@
 <xwork>
 
 	<package name="cargo" extends="default" namespace="/cargosalario/cargo">
-    	<interceptors>
-          <interceptor-stack name="defaultRelatorioCargoSalarioStack">
-            <interceptor-ref name="store">
-                <param name="operationMode">STORE</param>
-            </interceptor-ref>
-            <interceptor-ref name="myDefaultWebStackPart1" />     
-            <interceptor-ref name="defaultListDeleteScope"/>
-            <interceptor-ref name="scope">
-                <param name="session">__TO_BE_OVERWRITTEN_IN_THE_ACTION__</param>
-            </interceptor-ref>
-            <interceptor-ref name="myDefaultWebStackPart2" />
-            <interceptor-ref name="store">
-                <param name="operationMode">STORE</param>
-            </interceptor-ref>
-    	  </interceptor-stack>  
-    	</interceptors>
     <!-- ###### LIST/DELETE ###### -->    
 		<action name="list" class="com.fortes.rh.web.action.cargosalario.CargoListAction" method="list">
 	    	<interceptor-ref name="defaultListStack">
@@ -52,7 +36,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/cargoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="insert">
-			<result name="success" type="redirect">../faixaSalarial/prepareInsert.action?cargoAux.id=${cargo.id}</result>
+			<result name="success" type="redirect"><![CDATA[../faixaSalarial/prepareInsert.action?internalToken=${internalToken}&cargoAux.id=${cargo.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/cargoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="update">

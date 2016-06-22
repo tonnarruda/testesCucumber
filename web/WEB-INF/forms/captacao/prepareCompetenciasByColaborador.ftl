@@ -652,7 +652,7 @@
 			<#else>
 				<button class="btnGravarDesabilitado"></button>
 			</#if>
-			<button onclick="window.location='listCompetenciasColaborador.action?colaborador.id=${colaborador.id}';" class="btnVoltar"></button>
+			<button onclick="javascript: executeLink('listCompetenciasColaborador.action?colaborador.id=${colaborador.id}');" class="btnVoltar"></button>
 			<button onclick="window.print();" class="btnImprimir"></button>
 		</div>
 	</body>

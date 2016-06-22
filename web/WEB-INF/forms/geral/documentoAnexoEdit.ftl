@@ -99,7 +99,7 @@
 
 <div class="buttonGroup">
 	<button onclick="${validarCampos};" class="btnGravar"></button>
-	<button onclick="window.location='${voltar}'" class="btnCancelar"></button>
+	<button onclick="javascript: executeLink('${voltar}');" class="btnCancelar"></button>
 </button>
 </div>
 </body>

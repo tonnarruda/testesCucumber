@@ -29,8 +29,8 @@
 	<br>
 	<@display.table name="ocorrencias" id="ocorrencia" class="dados">
 		<@display.column title="Ações" class="acao">
-			<@frt.link verifyRole="ROLE_CAD_OCORRENCIA_EDITAR" href="prepareUpdate.action?ocorrencia.id=${ocorrencia.id}" imgTitle="Editar" imgName="edit.gif"/>
-			<@frt.link verifyRole="ROLE_CAD_OCORRENCIA_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?ocorrencia.id=${ocorrencia.id}&page=${page}'});" imgTitle="Excluir" imgName="delete.gif"/>
+			<@frt.link verifyRole="ROLE_CAD_OCORRENCIA_EDITAR" href="javascript: executeLink('prepareUpdate.action?ocorrencia.id=${ocorrencia.id}');" imgTitle="Editar" imgName="edit.gif"/>
+			<@frt.link verifyRole="ROLE_CAD_OCORRENCIA_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?ocorrencia.id=${ocorrencia.id}&page=${page}');});" imgTitle="Excluir" imgName="delete.gif"/>
 		</@display.column>
 		<@display.column property="descricao" title="Descrição"/>
 		<@display.column property="pontuacao" title="Pontuação" style = "width:80px;"/>
@@ -41,7 +41,7 @@
 
 	<div class="buttonGroup">
 		<@authz.authorize ifAllGranted="ROLE_CAD_OCORRENCIA_INSERIR">
-			<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
+			<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');" accesskey="I"></button>
 		</@authz.authorize>
 	</div>
 </body>

@@ -28,6 +28,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/motivoDemissaoEdit.ftl</result>
 		</action>
 		<action name="prepareRelatorioMotivoDemissao" class="com.fortes.rh.web.action.geral.MotivoDemissaoListAction" method="prepareRelatorioMotivoDemissao">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/motivoDemissaoPrepareRelatorio.ftl</result>
 		</action>
 		<action name="relatorioMotivoDemissaoXLS" class="com.fortes.rh.web.action.geral.MotivoDemissaoListAction" method="relatorioMotivoDemissao">

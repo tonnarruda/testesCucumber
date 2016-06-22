@@ -45,7 +45,7 @@
 					"&nomeBusca="+document.getElementById('nomeBusca').value+
 					"&cpfBusca="+limpaCamposMascaraCpf(document.getElementById('cpfBusca').value)+
 					"&page="+document.getElementById('pagina').value;
-			window.location = link;
+			executeLink(link);
 		}
 		
 		
@@ -92,7 +92,7 @@
 			if (data != null){
 				enviarPrepareDesliga(colaboradorId, colaboradorNome, link, data);
 			} else {
-				window.location=link; 
+				executeLink(link); 
 			}
 		}
 		
@@ -122,7 +122,7 @@
 		function enviarPrepareProgressaoColaborador(colaborador)
 		{
 			link = "../../cargosalario/historicoColaborador/list.action?colaborador.id="+colaborador;
-			window.location = link;
+			executeLink(link);
 		}
 	</script>
 
@@ -266,7 +266,7 @@
 				
 				<#if colaborador.dataSolicitacaoDesligamentoAc?exists && empresaSistema.acIntegra && colaborador.id != colaboradorLogadoId>
 					<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_ENTREVISTA"><!--Tem que existir esse authorize devido a um bug. Não remover-->
-						<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="${linkEntrevista}"	imgTitle="${imgTitleEntrevista}" imgName="${imgRespondeuEntrevista}" opacity=opacityEntrevista />
+						<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="javascript: executeLink('${linkEntrevista}');"	imgTitle="${imgTitleEntrevista}" imgName="${imgRespondeuEntrevista}" opacity=opacityEntrevista />
 					</@authz.authorize>	
 				<#else>
 					<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="javascript:;" imgTitle="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" imgName="entrevistaBalaoDesligaNova.gif" opacity=true/>
@@ -286,37 +286,37 @@
 				</#if>
 
 				<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_ENTREVISTA"><!--Tem que existir esse authorize devido a um bug. Não remover-->
-					<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="${linkEntrevista}"	imgTitle="${imgTitleEntrevista}" imgName="${imgRespondeuEntrevista}" opacity=opacityEntrevista />
+					<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="javascript: executeLink('${linkEntrevista}');"	imgTitle="${imgTitleEntrevista}" imgName="${imgRespondeuEntrevista}" opacity=opacityEntrevista />
 				</@authz.authorize>
 			</#if>
 
-			<@frt.link verifyRole="ROLE_COLAB_LIST_EDITAR" href="javascript:enviarPrepareUpDate('${colaborador.id}')" imgTitle="Editar" imgName="edit.gif"/>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_EDITAR" href="javascript: enviarPrepareUpDate('${colaborador.id}')" imgTitle="Editar" imgName="edit.gif"/>
 			
-			<@frt.link verifyRole="ROLE_COLAB_LIST_EXCLUIR" href="javascript:;" onclick="newConfirm('${avisoExclusao?js_string}', function(){window.location='delete.action?colaborador.id=${colaborador.id}'});" imgTitle="Excluir" imgName="delete.gif"/>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_EXCLUIR" href="javascript:;" onclick="newConfirm('${avisoExclusao?js_string}', function(){executeLink('delete.action?colaborador.id=${colaborador.id}');});" imgTitle="Excluir" imgName="delete.gif"/>
 			
-			<@frt.link verifyRole="ROLE_CAD_HISTORICOCOLABORADOR" href="javascript:enviarPrepareProgressaoColaborador('${colaborador.id}')" imgTitle="Visualizar Progressão" imgName="progressao.gif"/>
+			<@frt.link verifyRole="ROLE_CAD_HISTORICOCOLABORADOR" href="javascript: enviarPrepareProgressaoColaborador('${colaborador.id}')" imgTitle="Visualizar Progressão" imgName="progressao.gif"/>
 
-			<@frt.link verifyRole="ROLE_COLAB_LIST_PERFORMANCE" href="preparePerformanceFuncional.action?colaborador.id=${colaborador.id}" imgTitle="Performance Profissional" imgName="medalha.gif"/>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_PERFORMANCE" href="javascript: executeLink('preparePerformanceFuncional.action?colaborador.id=${colaborador.id}');" imgTitle="Performance Profissional" imgName="medalha.gif"/>
 			
-			<@frt.link verifyRole="ROLE_COLAB_LIST_NIVELCOMPETENCIA" href="../../captacao/nivelCompetencia/listCompetenciasColaborador.action?colaborador.id=${colaborador.id}" imgTitle="Competências" imgName="competencias.gif"/>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_NIVELCOMPETENCIA" href="javascript: executeLink('../../captacao/nivelCompetencia/listCompetenciasColaborador.action?colaborador.id=${colaborador.id}');" imgTitle="Competências" imgName="competencias.gif"/>
 			
-			<@frt.link verifyRole="ROLE_COLAB_LIST_SOLICITACAO" href="prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=${statusSolicitacao}&voltarPara=../../geral/colaborador/list.action" imgTitle="Incluir em Solicitação" imgName="db_add.gif" disabled=colaborador.statusAcPessoalAguardandoConfirmacao />
+			<@frt.link verifyRole="ROLE_COLAB_LIST_SOLICITACAO" href="javascript: executeLink('prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=${statusSolicitacao}&voltarPara=../../geral/colaborador/list.action');" imgTitle="Incluir em Solicitação" imgName="db_add.gif" disabled=colaborador.statusAcPessoalAguardandoConfirmacao />
 			
-			<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="../documentoAnexo/listColaborador.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="javascript: executeLink('../documentoAnexo/listColaborador.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}');" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
 
 			<#if colaborador.usuario.id?exists>
-				<@frt.link verifyRole="ROLE_COLAB_LIST_CRIARUSUARIO" href="../../acesso/usuario/prepareUpdate.action?origem=C&usuario.id=${colaborador.usuario.id}&colaborador.id=${colaborador.id}" imgTitle="Editar Acesso ao Sistema" imgName="key.gif"/>
+				<@frt.link verifyRole="ROLE_COLAB_LIST_CRIARUSUARIO" href="javascript: executeLink('../../acesso/usuario/prepareUpdate.action?origem=C&usuario.id=${colaborador.usuario.id}&colaborador.id=${colaborador.id}');" imgTitle="Editar Acesso ao Sistema" imgName="key.gif"/>
 			<#else>
 				<#if colaborador.nomeComercial?exists>
 					<#assign nomComercial=colaborador.nomeComercial/>
 				<#else>
 					<#assign nomComercial=""/>
 				</#if>
-				<@frt.link verifyRole="ROLE_COLAB_LIST_CRIARUSUARIO" href="../../acesso/usuario/prepareInsert.action?origem=C&colaborador.id=${colaborador.id}&nome=${nomComercial}" imgTitle="Criar Acesso ao Sistema" imgName="key_add.gif"/>
+				<@frt.link verifyRole="ROLE_COLAB_LIST_CRIARUSUARIO" href="javascript: executeLink('../../acesso/usuario/prepareInsert.action?origem=C&colaborador.id=${colaborador.id}&nome=${nomComercial}" imgTitle="Criar Acesso ao Sistema" imgName="key_add.gif"/>
 			</#if>
 		
 			<#if colaborador.candidato?exists && colaborador.candidato.id?exists>
-				<@frt.link verifyRole="ROLE_COLAB_LIST_VISUALIZARCURRICULO" href="javascript:popup('../../captacao/candidato/infoCandidato.action?candidato.id=${colaborador.candidato.id}&origemList=CO', 580, 750)" imgTitle="Visualizar Currículo" imgName="page_curriculo.gif"/>
+				<@frt.link verifyRole="ROLE_COLAB_LIST_VISUALIZARCURRICULO" href="javascript:popup('../../captacao/candidato/infoCandidato.action?internalToken=${internalToken}&candidato.id=${colaborador.candidato.id}&origemList=CO', 580, 750)" imgTitle="Visualizar Currículo" imgName="page_curriculo.gif"/>
 			<#else>
 				<@frt.link verifyRole="ROLE_COLAB_LIST_VISUALIZARCURRICULO" imgTitle="Não é possível visualizar currículo, este colaborador não é candidato." imgName="page_curriculo.gif" opacity=true/>
 			</#if>
@@ -341,10 +341,10 @@
 
 	<div class="buttonGroup">
 		<@authz.authorize ifAllGranted="ROLE_CAD_COLABORADOR">
-			<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+			<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');"></button>
 		</@authz.authorize>
 		<@authz.authorize ifAllGranted="ROLE_REL_LISTA_COLAB">
-			<button class="btnListagemColaborador" onclick="window.location='prepareRelatorioDinamico.action'"></button>
+			<button class="btnListagemColaborador" onclick="javascript: executeLink('prepareRelatorioDinamico.action');"></button>
 		</@authz.authorize>
 	</div>
 </body>

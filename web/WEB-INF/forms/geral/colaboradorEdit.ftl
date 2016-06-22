@@ -215,9 +215,9 @@
 			            $(this).hide();
 			});
 			
-			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
-			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
-			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action"/>');
+			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action?internalToken=${internalToken}"/>');
+			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action?internalToken=${internalToken}"/>');
+			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?internalToken=${internalToken}"/>');
 			
 			$('#ambienteTooltipHelp').qtip({
 				content: '<strong>Ambiente</strong><br />Necessário para o PPP e PPRA.',
@@ -599,7 +599,7 @@
 						<tr>
 							<td>
 								<#if colaborador.id?exists>
-									<img src="<@ww.url includeParams="none" value="showFoto.action?colaborador.id=${colaborador.id}"/>" style="display:inline" id="fotoImg" width="120px" height="120px">
+									<img src="<@ww.url includeParams="none" value="showFoto.action?colaborador.id=${colaborador.id}&internalToken=${internalToken}"/>" style="display:inline" id="fotoImg" width="120px" height="120px">
 								<#else>
 									<#-- Veio do prepareContrata, era um candidato -->
 									<#if candidato?exists && candidato.id?exists && candidato.foto?exists>
@@ -938,9 +938,9 @@
 			</button>
 
 			<#if nomeBusca?exists && cpfBusca?exists>
-				<button onclick="window.location='list.action?nomeBusca=${nomeBusca}&cpfBusca=${cpfBusca}'" class="btnCancelar" accesskey="C">
+				<button onclick="javascript: executeLink('list.action?nomeBusca=${nomeBusca}&cpfBusca=${cpfBusca}');" class="btnCancelar" accesskey="C">
 			<#else>
-				<button onclick="window.location='list.action'" class="btnCancelar" accesskey="C">
+				<button onclick="javascript: executeLink('list.action');" class="btnCancelar" accesskey="C">
 			</#if>
 			</button>
 		</div>

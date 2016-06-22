@@ -44,18 +44,19 @@
 			<result name="error" type="redirect">list.action?msgAlert=${msgAlert}</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="insert">
-		    <result name="invalid.token" type="redirect"><![CDATA[list.action?msgAlert=${msgAlert}]]></result>
-			<result name="success" type="redirect"><![CDATA[sucesso.action?candidato.id=${candidato.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[sucesso.action?internalToken=${internalToken}&candidato.id=${candidato.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="update">
-		    <result name="invalid.token" type="redirect"><![CDATA[list.action?msgAlert=${msgAlert}]]></result>
+		<interceptor-ref name="defaultUpdateStack"/>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoEdit.ftl</result>
 			<result name="error" type="redirect">list.action?msgAlert=${msgAlert}</result>
 		</action>
 
-		<action name="showFoto" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="showFoto" />
+		<action name="showFoto" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="showFoto" >
+			<interceptor-ref name="myDefaultWebStack"/>
+		</action>
 
 		<action name="verCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="verCurriculo">
 			<interceptor-ref name="myDefaultWebStack"/>

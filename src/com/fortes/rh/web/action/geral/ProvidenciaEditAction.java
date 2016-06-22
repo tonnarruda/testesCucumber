@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.geral.ProvidenciaManager;
 import com.fortes.rh.model.geral.Providencia;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -74,12 +75,12 @@ public class ProvidenciaEditAction extends MyActionSupportList
 		try
 		{
 			providenciaManager.remove(providencia.getId());
-			addActionMessage("Providência excluída com sucesso.");
+			addActionSuccess("Providência excluída com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir esta providência.");
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta providência.");
 		}
 
 		return list();

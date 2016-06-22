@@ -10,9 +10,9 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.DateUtil;
 
-@SuppressWarnings("serial")
 public class UserDetailsImpl implements UserDetails
 {
+	private static final long serialVersionUID = 4443849419750614917L;
 	private Long id;
 	private String nome;
 	private String username;

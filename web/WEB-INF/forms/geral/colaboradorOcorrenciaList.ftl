@@ -43,8 +43,8 @@
 	<div style = "font-weight:bold;">Colaborador: ${colaborador.nome}</div><br>
 	<@display.table name="colaboradorOcorrencias" id="colaboradorOcorrencia" class="dados">
 		<@display.column title="Ações" class="acao">
-			<@frt.link verifyRole="ROLE_MOV_OCORRENCIA_EDITAR" href="prepareUpdate.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}" imgTitle="Editar" imgName="edit.gif"/>
-			<@frt.link verifyRole="ROLE_MOV_OCORRENCIA_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}&colaborador.id=${colaborador.id}'});" imgTitle="Excluir" imgName="delete.gif"/>
+			<@frt.link verifyRole="ROLE_MOV_OCORRENCIA_EDITAR" href="javascript: executeLink('prepareUpdate.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}');" imgTitle="Editar" imgName="edit.gif"/>
+			<@frt.link verifyRole="ROLE_MOV_OCORRENCIA_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}&colaborador.id=${colaborador.id}');});" imgTitle="Excluir" imgName="delete.gif"/>
 		</@display.column>
 		<@display.column property="ocorrencia.descricao" 	title="Descrição"/>
 		<@display.column property="dataIni" 				title="Início" 	format="{0,date,dd/MM/yyyy}"/>
@@ -56,7 +56,7 @@
 			 
 	<div class="buttonGroup">
 		<@authz.authorize ifAllGranted="ROLE_MOV_OCORRENCIA_INSERIR">
-			<button class="btnInserir" onclick="window.location='prepareInsert.action?colaborador.id=${colaborador.id}'" accesskey="I"></button>
+			<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action?colaborador.id=${colaborador.id}');" accesskey="I"></button>
 		</@authz.authorize>
 	</div>
 	</#if>

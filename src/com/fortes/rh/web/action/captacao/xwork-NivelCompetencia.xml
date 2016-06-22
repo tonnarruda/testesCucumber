@@ -62,7 +62,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByFaixaSalarial.ftl</result>
 		</action>
 		<action name="saveCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasColaborador">
-			<result name="success" type="redirect"><![CDATA[listCompetenciasColaborador.action?colaborador.id=${colaborador.id}&actionSuccess=${actionMsg}]]></result>
+			<result name="success" type="redirect"><![CDATA[listCompetenciasColaborador.action?internalToken=${internalToken}&colaborador.id=${colaborador.id}&actionSuccess=${actionMsg}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
 		</action>
 		<action name="saveCompetenciasByFaixaSalarial" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasByFaixaSalarial">

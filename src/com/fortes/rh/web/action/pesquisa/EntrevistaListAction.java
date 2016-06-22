@@ -12,6 +12,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Entrevista;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -68,8 +69,13 @@ public class EntrevistaListAction extends  MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		entrevistaManager.delete(entrevista.getId(), getEmpresaSistema().getId());
-		setActionMsg("Entrevista excluída com sucesso.");
+		try {
+			entrevistaManager.delete(entrevista.getId(), getEmpresaSistema().getId());
+			addActionSuccess("Entrevista excluída com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta entrevista de desligamento.");
+		}
 
 		return Action.SUCCESS;
 	}

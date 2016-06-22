@@ -8,12 +8,11 @@
 
 <xwork>
 	<package name="Experiencia" extends="default" namespace="/captacao/experiencia">
-		<default-interceptor-ref name="myDefaultWebStack"/>
 		<action name="list" class="com.fortes.rh.web.action.captacao.ExperienciaListAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/experienciaList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.captacao.ExperienciaListAction" method="delete">
-			<result name="success" type="redirect">list.action?empresaId=${empresaId}</result>
+			<result name="success" type="redirect"><![CDATA[list.action?empresaId=${empresaId}&internalToken=${internalToken}]]></result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.captacao.ExperienciaEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/experienciaEdit.ftl</result>
@@ -22,11 +21,11 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/experienciaEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.captacao.ExperienciaEditAction" method="insert">
-			<result name="success" type="redirect">list.action?empresaId=${empresaId}</result>
+			<result name="success" type="redirect"><![CDATA[list.action?empresaId=${empresaId}&internalToken=${internalToken}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/experienciaEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.captacao.ExperienciaEditAction" method="update">
-			<result name="success" type="redirect">list.action?empresaId=${empresaId}</result>
+			<result name="success" type="redirect"><![CDATA[list.action?empresaId=${empresaId}&internalToken=${internalToken}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/experienciaEdit.ftl</result>
 		</action>
 	</package>

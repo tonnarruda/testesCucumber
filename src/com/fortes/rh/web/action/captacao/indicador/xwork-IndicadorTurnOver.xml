@@ -4,9 +4,11 @@
 <xwork>
 	<package name="indicadorTurnOver" extends="default" namespace="/indicador/indicadorTurnOver">
 		<action name="prepare" class="com.fortes.rh.web.action.captacao.indicador.IndicadorTurnOverListAction" method="prepare">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorTurnOver.ftl</result>
 		</action>
 		<action name="prepareTaxaDeDemissao" class="com.fortes.rh.web.action.captacao.indicador.IndicadorTurnOverListAction" method="prepare">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/indicador/prepareTaxaDeDemissao.ftl</result>
 		</action>
 		<action name="turnOver" class="com.fortes.rh.web.action.captacao.indicador.IndicadorTurnOverListAction" method="turnOver">

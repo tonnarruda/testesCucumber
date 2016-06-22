@@ -9,31 +9,29 @@
 		</action>
 	
 		<action name="list" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="list">
-			<interceptor-ref name="defaultListStack"/>
+			<interceptor-ref name="defaultListTokenStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaborador.ftl</result>
 			<result name="input" type="freemarker">error</result>
 		</action>
 		<action name="historicoColaboradorList" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="historicoColaboradorList">
-			<interceptor-ref name="defaultListStack"/>
+			<interceptor-ref name="defaultListTokenStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorList.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
-			<result name="input" type="redirect"><![CDATA[/cargosalario/historicoColaborador/historicoColaboradorList.action?colaborador.id=${colaborador.id}&actionMsg=${actionMsg}]]></result>
+			<result name="input" type="redirect"><![CDATA[/cargosalario/historicoColaborador/historicoColaboradorList.action?internalToken=${internalToken}&colaborador.id=${colaborador.id}&actionMsg=${actionMsg}]]></result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="update">
-			<result name="success" type="redirect">historicoColaboradorList.action?colaborador.id=${colaborador.id}</result>
+			<result name="success" type="redirect"><![CDATA[historicoColaboradorList.action?internalToken=${internalToken}&colaborador.id=${colaborador.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="delete">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorList.ftl</result>
 		</action>
 		<action name="prepareRelatorioPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareRelatorioPromocoes">
-		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioPromocoes.ftl</result>
 		</action>
 		<action name="imprimirRelatorioPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="imprimirRelatorioPromocoes">
-		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/promocoes.jasper</param>
 				<param name="dataSource">dataSource</param>
@@ -61,17 +59,17 @@
 		</action-->
 		
 		<action name="prepareInsert" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="prepareInsert">
-			<interceptor-ref name="defaultListStack"/>
+			<interceptor-ref name="defaultListTokenStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
-			<result name="input" type="redirect"><![CDATA[/cargosalario/historicoColaborador/historicoColaboradorList.action?colaborador.id=${colaborador.id}&actionMsg=${actionMsg}]]></result>
+			<result name="input" type="redirect"><![CDATA[/cargosalario/historicoColaborador/historicoColaboradorList.action?internalToken=${internalToken}&colaborador.id=${colaborador.id}&actionMsg=${actionMsg}]]></result>
 		</action>
 		
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="insert">
 			<interceptor-ref name="defaultUpdateStack"/>
 			<interceptor-ref name="tokenWebStack" />
 			<result name="invalid.token" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
-			<result name="success" type="redirect">historicoColaboradorList.action?colaborador.id=${colaborador.id}</result>
-			<result name="successSolicitacao" type="redirect">../../captacao/candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}</result>
+			<result name="success" type="redirect"><![CDATA[historicoColaboradorList.action?internalToken=${internalToken}&colaborador.id=${colaborador.id}]]></result>
+			<result name="successSolicitacao" type="redirect"><![CDATA[../../captacao/candidatoSolicitacao/list.action?internalToken=${internalToken}&solicitacao.id=${solicitacao.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
 		</action>
 		

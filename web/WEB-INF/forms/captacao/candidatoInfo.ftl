@@ -146,20 +146,20 @@
 		$(function() {
 			<@authz.authorize ifAllGranted="${role}">
 				$('#aba1').css("display", "inline");
-				$("#cv").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculo.action"/>', {'candidato.id':'${candidato.id}'});
+				$("#cv").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculo.action?internalToken=${internalToken}"/>', {'candidato.id':'${candidato.id}'});
 			</@authz.authorize>
 
 			<@authz.authorize ifAllGranted="ROLE_INFORM_CANDIDATO_HISTORICO">
 				$('#aba2').css("display", "inline");
-				$("#historico").load('<@ww.url includeParams="none" value="/captacao/candidatoSolicitacao/verHistoricoCandidato.action"/>', {'candidato.id':'${candidato.id}'});
+				$("#historico").load('<@ww.url includeParams="none" value="/captacao/candidatoSolicitacao/verHistoricoCandidato.action?internalToken=${internalToken}"/>', {'candidato.id':'${candidato.id}'});
 			</@authz.authorize>
 			
-			$("#imagens").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoEscaneado.action"/>', {'candidato.id':'${candidato.id}'});
-			$("#textoOcr").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoTextoOcr.action"/>', {'candidato.id':'${candidato.id}',palavras:'${palavras}',forma:'${forma}'});
+			$("#imagens").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoEscaneado.action?internalToken=${internalToken}"/>', {'candidato.id':'${candidato.id}'});
+			$("#textoOcr").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoTextoOcr.action?internalToken=${internalToken}"/>', {'candidato.id':'${candidato.id}',palavras:'${palavras}',forma:'${forma}'});
 
 			<@authz.authorize ifAllGranted="ROLE_INFORM_CANDIDATO_COMPETENCIA">
 				$('#aba5').css("display", "inline");
-				$("#competencia").load('<@ww.url includeParams="none" value="/captacao/nivelCompetencia/visualizarCandidato.action"/>', paramsCompetencia);
+				$("#competencia").load('<@ww.url includeParams="none" value="/captacao/nivelCompetencia/visualizarCandidato.action?internalToken=${internalToken}"/>', paramsCompetencia);
 			</@authz.authorize>
 		});
 	</script>

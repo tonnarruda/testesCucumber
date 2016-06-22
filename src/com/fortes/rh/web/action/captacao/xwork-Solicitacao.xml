@@ -134,8 +134,8 @@
 		
 		<action name="gravarSolicitacoesCandidato" class="com.fortes.rh.web.action.captacao.SolicitacaoListAction" method="gravarSolicitacoesCandidato">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/insereSolicitacaoCandidato.ftl</result>
-			<result name="successSolicitacao" type="redirect">../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}</result>
-			<result name="successColaboradorList" type="redirect"><![CDATA[../../geral/colaborador/list.action?actionMsg=${actionMsg}]]></result>
+			<result name="successSolicitacao" type="redirect"><![CDATA[../candidatoSolicitacao/list.action?internalToken=${internalToken}&solicitacao.id=${solicitacao.id}]]></result>
+			<result name="successColaboradorList" type="redirect"><![CDATA[../../geral/colaborador/list.action?internalToken=${internalToken}&actionMsg=${actionMsg}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/insereSolicitacaoCandidato.ftl</result>
 		</action>
 

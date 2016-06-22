@@ -32,9 +32,9 @@
 	<@display.table name="colaboradorOcorrencias" id="colaboradorOcorrencia" class="dados">
 		<@display.column title="Ações" class="acao">
 			<#if colaboradorOcorrencia.providencia?exists && colaboradorOcorrencia.providencia.descricao?exists>
-				<a href="prepare.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/form.gif"/>"></a>
+				<a href="javascript: executeLink('prepare.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}');"><img border="0" title="Editar" src="<@ww.url value="/imgs/form.gif"/>"></a>
 			<#else>
-				<a href="prepare.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}"><img border="0" title="Inserir" src="<@ww.url value="/imgs/form2.gif"/>"></a>
+				<a href="javascript: executeLink('prepare.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}');"><img border="0" title="Inserir" src="<@ww.url value="/imgs/form2.gif"/>"></a>
 			</#if>
 		</@display.column>
 		<@display.column property="colaborador.nome" title="Colaborador"/>

@@ -44,19 +44,19 @@
 	<br>
 	<div class="buttonGroup">
 		<span style="float:left;">
-			<button onclick="window.location='list.action'" class="btnVoltar" accesskey="V">
+			<button onclick="javascript: executeLink('list.action');" class="btnVoltar" accesskey="V">
 			</button>
 
-			<button onclick="window.location='prepareUpdate.action?candidato.id=${candidato.id}'" class="btnEditar" accesskey="E">
+			<button onclick="javascript: executeLink('prepareUpdate.action?candidato.id=${candidato.id}');" class="btnEditar" accesskey="E">
 			</button>
-			<button class="btnImprimirPdf" onclick="window.location='imprimirCurriculo.action?candidato.id=${candidato.id}'">
+			<button class="btnImprimirPdf" onclick="javascript: executeLink('imprimirCurriculo.action?candidato.id=${candidato.id}');">
 			</button>
-			<button onclick="window.location='prepareInsertCurriculoPlus.action?candidato.id=${candidato.id}'" class="btnInserirCurriculoEscaneado" accesskey="E">
+			<button onclick="javascript: executeLink('prepareInsertCurriculoPlus.action?candidato.id=${candidato.id}');" class="btnInserirCurriculoEscaneado" accesskey="E">
 			</button>
 		</span>
 
 		<span style="float: right;">
-			<button onclick="window.location='../../captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}'" class="btnSolicitacoes" accesskey="S"> </button>
+			<button onclick="javascript: executeLink('../../captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}');" class="btnSolicitacoes" accesskey="S"> </button>
 		</span>
 	</div>
 	<br>

@@ -50,7 +50,7 @@
 	<script type='text/javascript'>
 	    function voltarExperiencia()
 	    {
-	    	$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?empresaId=${empresaIdTmp}"/>');
+	    	$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?empresaId=${empresaIdTmp}&internalToken=${internalToken}"/>');
 	    }
 	    
 	    function validarFormExperiencia()
@@ -118,6 +118,7 @@
 		<@ww.hidden name="experiencia.cargo.nomeMercado" id="cargoNomeMercado" value="${nomeMercadoCargo}"/>
 		<@ww.hidden name="experiencia.id" />
 		<@ww.hidden name="empresaId" />
+		<@ww.hidden name="internalToken" />
 
 		<@ww.submit value=" " cssClass="btnGravar grayBG" cssStyle="float:left; display:block;"/>
 		<input type="button" onclick="voltarExperiencia();" class="btnCancelar grayBG" />

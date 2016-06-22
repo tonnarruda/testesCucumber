@@ -21,17 +21,16 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="insertOrUpdate">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect">list.action?colaborador.id=${colaborador.id}</result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&colaborador.id=${colaborador.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorOcorrenciaEdit.ftl</result>
-			<result name="invalid.token" type="redirect">list.action</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="insertOrUpdate">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect">list.action?colaborador.id=${colaborador.id}</result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&colaborador.id=${colaborador.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorOcorrenciaEdit.ftl</result>
-			<result name="invalid.token" type="redirect">list.action</result>
 		</action>
 		<action name="prepareRelatorioAbsenteismo" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="prepareRelatorioAbsenteismo">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/relatorioAbsenteismo.ftl</result>
 		</action>
 		<action name="relatorioAbsenteismo" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="relatorioAbsenteismo">

@@ -269,7 +269,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="enviaForm();" class="btnGravar"></button>
-		<button onclick="window.location='historicoColaboradorList.action?colaborador.id=${historicoColaborador.colaborador.id}'" class="btnCancelar"></button>
+		<button onclick="javascript: executeLink('historicoColaboradorList.action?colaborador.id=${historicoColaborador.colaborador.id}');" class="btnCancelar"></button>
 	</div>
 
 	<script>

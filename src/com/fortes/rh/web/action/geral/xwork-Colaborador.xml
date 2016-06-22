@@ -136,6 +136,7 @@
 		</action>		
 
 		<action name="prepareRelatorioAniversariantes" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareRelatorioAniversariantes">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/relatorioAniversariantes.ftl</result>
 		</action>
 		<action name="relatorioAniversariantes" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="relatorioAniversariantes">
@@ -148,7 +149,6 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/relatorioAniversariantes.ftl</result>
 		</action>
 		<action name="relatorioAniversariantesXls" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="relatorioAniversariantesXls">
-		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="sucessoAreaNomeComercial" type="xls">
 				<param name="dataSource">colaboradors</param>
 				<param name="documentName">aniversariantes.xls</param>
@@ -283,7 +283,9 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorEdit.ftl</result>
 		</action>
 
-		<action name="showFoto" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="showFoto" />
+		<action name="showFoto" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="showFoto" >
+			<interceptor-ref name="myDefaultwebStack"/>
+		</action>
 
 		<action name="desliga" class="com.fortes.rh.web.action.geral.ColaboradorDesligaAction" method="desliga">
 		    <interceptor-ref name="defaultDeleteStack"/>
@@ -343,7 +345,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/projecaoSalarialRelatorioFiltro.ftl</result>
 		</action>
 		<action name="prepareColaboradorSolicitacao" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="prepareColaboradorSolicitacao">
-			<result name="success" type="redirect"><![CDATA[/captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}&statusCandSol=${statusCandSol}&voltarPara=${voltarPara}]]></result>
+			<result name="success" type="redirect"><![CDATA[/captacao/solicitacao/verSolicitacoes.action?internalToken=${internalToken}&candidato.id=${candidato.id}&statusCandSol=${statusCandSol}&voltarPara=${voltarPara}]]></result>
 			<result name="input" type="redirect">list.action</result>
 			<result name="mesmo_cpf" type="freemarker">/WEB-INF/forms/geral/vincularCandidatoColaborador.ftl</result>
 		</action>
@@ -352,6 +354,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorPerformance.ftl</result>
 		</action>
 		<action name="prepareUpdateInfoPessoais" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="prepareUpdateInfoPessoais">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorInfoPessoaisEdit.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorInfoPessoaisEdit.ftl</result>
 		</action>
@@ -366,6 +369,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoList.ftl</result>
 		</action>
 		<action name="prepareRelatorioAdmitidos" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareRelatorioAdmitidos">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/prepareRelatorioAdmitidos.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/prepareRelatorioAdmitidos.ftl</result>
 		</action>
@@ -403,6 +407,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorPerformance.ftl</result>
 		</action>
 		<action name="prepareRelatorioDinamico" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareRelatorioDinamico">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorListagemRelatorio.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorListagemRelatorio.ftl</result>
 			<result name="semPermissaoDeVerAreaOrganizacional" type="freemarker">/WEB-INF/pages/mensagemInfoWarnError.ftl</result>
@@ -431,6 +436,7 @@
 		</action>
 		
 		<action name="prepareRelatorioFormacaoEscolar" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareRelatorioFormacaoEscolar">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/formacaoEscolarRelatorioFiltro.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/formacaoEscolarRelatorioFiltro.ftl</result>
 		</action>

@@ -4,6 +4,7 @@
 <xwork>
 	<package name="providencia" extends="default" namespace="/geral/providencia">
 		<action name="list" class="com.fortes.rh.web.action.geral.ProvidenciaEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/providenciaList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.geral.ProvidenciaEditAction" method="delete">
@@ -16,14 +17,10 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/providenciaEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.ProvidenciaEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/providenciaEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.geral.ProvidenciaEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/providenciaEdit.ftl</result>
 		</action>

@@ -147,7 +147,7 @@
 		
 	<#if colaborador.foto?exists>
 		<div class='grade_field_foto'>
-			<img src="<@ww.url includeParams="none" value="showFoto.action?colaborador.id=${colaborador.id}"/>" style="display:inline" id="fotoImg" width="120px" height="120px">
+			<img src="<@ww.url includeParams="none" value="showFoto.action?colaborador.id=${colaborador.id}&internalToken=${internalToken}"/>" style="display:inline" id="fotoImg" width="120px" height="120px">
 		</div>
 	</#if>
 			
@@ -733,7 +733,7 @@
 </ul>
 	<div class="buttonGroup">
 		<button onclick="javascript:history.back();" class="btnVoltar" accesskey="V"></button>
-		<button class="btnImprimirPdf" onclick="window.location='imprimirPerformanceFuncional.action?colaborador.id=${colaborador.id}'" id="btnImprimePerformance"></button>
+		<button class="btnImprimirPdf" onclick="javascript: executeLink('imprimirPerformanceFuncional.action?colaborador.id=${colaborador.id}');" id="btnImprimePerformance"></button>
 	</div>
 	
 	

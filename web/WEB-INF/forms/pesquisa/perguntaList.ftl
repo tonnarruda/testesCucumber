@@ -89,7 +89,7 @@
 
 			<div class="acaoPerguntas">
 				<a href="javascript: executeLink('prepareUpdate.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../pergunta/delete.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('../pergunta/delete.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<#if 1 < pergunta.ordem>
 					<a href="javascript: executeLink('reordenar.action?pergunta.id=${pergunta.id}&questionario.id=${questionario.id}&sinal=-');"><img src="<@ww.url value="/imgs/up.gif"/>" title="Mover para cima"/></a>
 				<#else>

@@ -398,7 +398,7 @@
 	<div class="buttonGroup">
 		<button onclick="${validarCampos}" class="${buttonClass}" accesskey="${accessKey}">
 		</button>
-		<button onclick="window.location='${voltarAction}'" class="btnVoltar" accesskey="V">
+		<button onclick="javascript: executeLink('${voltarAction}');" class="btnVoltar" accesskey="V">
 		</button>
 	</div>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>

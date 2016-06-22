@@ -12,7 +12,7 @@
 	<script type='text/javascript'>
 		function voltarFormacao()
 	    {
-	    	$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
+	    	$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action?internalToken=${internalToken}"/>');
 	    }
 	</script>
 	
@@ -29,6 +29,7 @@
 			<@ww.select label="Situação" name="formacao.situacao" id="formacaoSituacao" list="situacoesFormacao" required="true" theme="css_xhtml" liClass="liLeft" />
 			<@ww.textfield label="Conclusão" name="formacao.conclusao" id="formacaoConclusao" maxLength="20" theme="css_xhtml"/>
 			<@ww.hidden label="Id" name="formacao.id"  theme="css_xhtml"/>
+			<@ww.hidden name="internalToken"/>
 	
 			<@ww.submit value=" "  cssClass="btnGravar grayBG" cssStyle="float:left; display:block;" />
 			<input type="button" class="btnCancelar grayBG" onclick="voltarFormacao();" />

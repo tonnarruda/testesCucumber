@@ -257,6 +257,7 @@
       <result name="success">/WEB-INF/pages/concurrentSessionError.jsp</result>
     </action>
     <action name="grafico" class="com.fortes.rh.web.chart.ProgressaoColaborador">
+      <interceptor-ref name="myDefaultWebStack" />  
       <result name="success" type="chart">
         <param name="width">966</param>
         <param name="height">450</param>

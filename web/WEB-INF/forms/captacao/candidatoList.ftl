@@ -95,6 +95,8 @@
 
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="formBusca" id="formBusca" action="list.action" onsubmit="${validarCampos}" validate="true" method="POST">
+			<@ww.hidden  name="internalToken" />
+			
 			<@ww.select label="Empresa" id="empresaId" name="empresaId" list="empresas" listKey="id" listValue="nome" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
 			<@ww.textfield label="Nome" name="nomeBusca" liClass="liLeft" cssStyle="width: 350px;" value="${nomeBusca}"/>
 			<@ww.textfield label="CPF" id="cpfBusca" name="cpfBusca" value="${cpfBusca}" cssClass="mascaraCpf"/>
