@@ -227,6 +227,9 @@
 		
 		<!-- AVALIACAO -->
 		<convert converter="bean" match="com.fortes.rh.model.avaliacao.Avaliacao"/>
+		
+		<!-- SESMT -->
+		<convert converter="bean" match="com.fortes.rh.model.sesmt.OrdemDeServico"/>
     </allow>
 
 </dwr>

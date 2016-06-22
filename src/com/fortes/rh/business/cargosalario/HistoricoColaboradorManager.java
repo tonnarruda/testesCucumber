@@ -178,4 +178,6 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public void reenviaAguardandoConfirmacao(Empresa empresa) throws Exception;
 	
 	public void updateArea(Long areaIdMae, Long areaId) ;
+
+	public boolean existeHistoricoComFuncao(Long colaboradorId, Date data);
 }

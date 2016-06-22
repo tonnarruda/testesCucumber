@@ -5,20 +5,27 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OrdemDeServicoDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-		<script>
+		<script type="text/javascript">
 			function repopularOrdemDeServico()
 			{
-				OrdemDeServicoDWR.recarregaDadosOrdemDeServico(repopularOrdemDeServicoByDados, ${ordemDeServico.id}, ${ordemDeServico.colaborador.id},${empresaSistema.id}, $('#dataOS').val());
+				OrdemDeServicoDWR.recarregaDadosOrdemDeServico(repopularOrdemDeServicoByDados, ${ordemDeServico.id}, ${ordemDeServico.colaborador.id}, ${empresaSistema.id}, $('#dataOS').val());
 			}
 			
 			function repopularOrdemDeServicoByDados(dados){
-				var nomeColaborador = dados["nomeColaborador"];
-				var nomeFuncao = dados["nomeFuncao"];
+				$('#nomeColaboradorOS').text(dados["nomeColaborador"]);
+				$('#dataAdmissaoFormatadaOS').text(dados["dataAdmisaoColaboradorFormatada"]);
+				$('#nomeFuncaoOS').text(dados["nomeFuncao"]);
+				$('#codigoCBOOS').text(dados["codigoCBO"]);
+				$('#atividadesOS').text(dados["atividades"]);
+				$('#riscosOS').text(dados["riscos"]);
+				$('#episOS').text(dados["epis"]);
+				$('#medidasPreventivasOS').text(dados["medidasPreventivas"]);
+				$('#treinamentosOS').text(dados["treinamentos"]);
+				$('#normasInternasOS').text(dados["normasInternas"]);
+				$('#procedimentoEmCasoDeAcidenteOS').text(dados["procedimentoEmCasoDeAcidente"]);
+				$('#termoDeResponsabilidadeOS').text(dados["termoDeResponsabilidadeOS"]);
 			}
 			
-			
-						
-		
 		</script>		
 		
 		
@@ -53,12 +60,12 @@
 			
 			<table>
 				<tr>
-					<td width="370"> <span style="font-weight: bold;">Colaborador:</span> ${ordemDeServico.nomeColaborador} </td>
-					<td width="370"> <span style="font-weight: bold;">Data de Admissão:</span> ${ordemDeServico.dataAdmisaoColaboradorFormatada} </td>
+					<td width="370"> <span style="font-weight: bold;">Colaborador:</span> <span id="nomeColaboradorOS">${ordemDeServico.nomeColaborador}</span> </td>
+					<td width="370"> <span style="font-weight: bold;">Data de Admissão:</span> <span id="dataAdmissaoFormatadaOS">${ordemDeServico.dataAdmisaoColaboradorFormatada}</span> </td>
 				</tr>
 				<tr>
-					<td> <span style="font-weight: bold;">Função:</span> ${ordemDeServico.nomeFuncao} </td>
-					<td> <span style="font-weight: bold;">Código CBO</span> ${ordemDeServico.codigoCBO} </td>
+					<td> <span style="font-weight: bold;">Função:</span> <span id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span> </td>
+					<td> <span style="font-weight: bold;">Código CBO</span> <span id="codigoCBOOS">${ordemDeServico.codigoCBO}</span> </td>
 				</tr>
 			</table>
 			

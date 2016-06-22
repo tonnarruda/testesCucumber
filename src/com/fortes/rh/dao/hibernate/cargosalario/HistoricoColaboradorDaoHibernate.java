@@ -1549,5 +1549,19 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
-	
+
+	public boolean existeHistoricoComFuncao(Long colaboradorId, Date data) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select exists "); 
+		hql.append("	(select hc.funcao_id from HistoricoColaborador hc ");
+		hql.append("		where hc.colaborador_id = :colaboradorId and hc.status = :status ");
+		hql.append("			and data = (select max(hc2.data) historicoColaborador hc2 where hc2.colaorador_id = :colaboradorId and hc2.data <= :data ");
+		hql.append("			and hc.funcao_id is not null");
+		hql.append("	) ");
+		
+		Query query = getSession().createSQLQuery(hql.toString());
+		query.setLong("colaboradorId", colaboradorId);
+		query.setDate("data", data);
+		return (Boolean) query.uniqueResult();
+	}
 }

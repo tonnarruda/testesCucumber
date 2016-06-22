@@ -40,7 +40,7 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
     @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
     private Collection<Epi> epis;
     
-    @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
     private Collection<Curso> cursos;
     
     @OneToMany(mappedBy="historicoFuncao", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
