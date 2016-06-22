@@ -88,7 +88,7 @@
 			</#if>
 		</@display.column>
 		<@display.column property="revisao" title="Nº da Revisão"/>
-		<@display.column property="dataFormatada" title="Data" />
+		<@display.column property="dataFormatada" title="Data"/>
 		<@display.column property="nomeFuncao" title="Função"/>
 
 	</@display.table>
@@ -97,7 +97,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 	
 	<div class="buttonGroup">
-		<#if ordemDeServicoAtual?exists && ordemDeServicoAtual.impressa > 
+		<#if (ordemDeServicoAtual?exists && ordemDeServicoAtual.impressa) || !ordemDeServicoAtual?exists> 
 			<button class="btnInserir" onclick="window.location='prepareInsert.action?colaborador.id=${colaborador.id}'"></button>
 		<#else>
 		<@ww.form name="form" action="prepareUpdate.action" method="POST" >

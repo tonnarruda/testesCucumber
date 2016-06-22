@@ -5,10 +5,16 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OrdemDeServicoDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+		
 		<script type="text/javascript">
 			function repopularOrdemDeServico()
 			{
-				OrdemDeServicoDWR.recarregaDadosOrdemDeServico(repopularOrdemDeServicoByDados, ${ordemDeServico.id}, ${ordemDeServico.colaborador.id}, ${empresaSistema.id}, $('#dataOS').val());
+				var ordemDeServicoId = 0;
+				<#if ordemDeServico.id?exists>
+					ordemDeServicoId = ${ordemDeServico.id}
+				</#if>
+				DWREngine.setErrorHandler(errorRecarregaDadosOrdemDeServico);
+				OrdemDeServicoDWR.recarregaDadosOrdemDeServico(repopularOrdemDeServicoByDados, ordemDeServicoId, ${ordemDeServico.colaborador.id}, ${empresaSistema.id}, $('#dataOS').val());
 			}
 			
 			function repopularOrdemDeServicoByDados(dados){
@@ -26,20 +32,25 @@
 				$('#termoDeResponsabilidadeOS').text(dados["termoDeResponsabilidadeOS"]);
 			}
 			
-		</script>		
-		
-		
-		
+			function errorRecarregaDadosOrdemDeServico(msg){
+				var data = new Date();
+				<#if ordemDeServico.id?exists>
+					data = ${ordemDeServico.data};
+				</#if>
+				$('#dataOS').val($.datepicker.formatDate('dd/mm/yy',data));
+				jAlert(msg);
+			}
+		</script>	
+			
 		<#if ordemDeServico.id?exists>
 			<title>Editar Ordem de Serviço</title>
 			<#assign formAction="update.action"/>
-			<#assign data = ordemDeServico.data?date/>
+			<#assign dataOS = ordemDeServico.data?date/>
 		<#else>
 			<title>Inserir Ordem de Serviço</title>
 			<#assign formAction="insert.action"/>
-			<#assign data = ""/>
+			<#assign dataOS = dataDoDia?date>
 		</#if>
-		
 		
 		<#assign validarCampos="return validaFormulario('form', new Array())"/>
 	</head>
@@ -60,26 +71,26 @@
 			
 			<table>
 				<tr>
-					<td width="370"> <span style="font-weight: bold;">Colaborador:</span> <span id="nomeColaboradorOS">${ordemDeServico.nomeColaborador}</span> </td>
-					<td width="370"> <span style="font-weight: bold;">Data de Admissão:</span> <span id="dataAdmissaoFormatadaOS">${ordemDeServico.dataAdmisaoColaboradorFormatada}</span> </td>
+					<td width="250"> <span style="font-weight: bold;">Código CBO:</span> <span style="margin-left: 40px;" id="codigoCBOOS">${ordemDeServico.codigoCBO}</span> </td>
+					<td> <span style="font-weight: bold;">Colaborador:</span> <span style="margin-left: 4px;" id="nomeColaboradorOS">${ordemDeServico.nomeColaborador}</span> </td>
 				</tr>
 				<tr>
-					<td> <span style="font-weight: bold;">Função:</span> <span id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span> </td>
-					<td> <span style="font-weight: bold;">Código CBO</span> <span id="codigoCBOOS">${ordemDeServico.codigoCBO}</span> </td>
+					<td width="250"> <span style="font-weight: bold;">Data de Admissão:</span> <span style="margin-left: 4px;" id="dataAdmissaoFormatadaOS">${ordemDeServico.dataAdmisaoColaboradorFormatada}</span> </td>
+					<td> <span style="font-weight: bold;">Função:</span> <span style="margin-left: 34px;" id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span> </td>
 				</tr>
 			</table>
 			
 			<@ww.textfield label="Nº Revisão" name="ordemDeServico.revisao" id="revisaoOS" disable="true" liClass="liLeft" cssStyle="width:180px;" maxLength="30"/>
-			<@ww.datepicker label="Data da Ordem de Serviço" name="ordemDeServico.data" value="${data}" id="dataOS" required="true" cssClass="mascaraData" onchange="repopularOrdemDeServico();" />
+			<@ww.datepicker label="Data da Ordem de Serviço" name="ordemDeServico.data" value="${dataOS}" id="dataOS" required="true" cssClass="mascaraData" onchange="repopularOrdemDeServico();" />
 			<@ww.textarea label="Atividades Desenvolvidas" name="ordemDeServico.atividades" id="atividadesOS" required="true" cssStyle="width:800px;height:150px;"/>
 			<@ww.textarea label="Riscos da Operação" name="ordemDeServico.riscos" id="riscosOS" required="true" cssStyle="width:800px;height:150px;"/>
 			<@ww.textarea label="Epi's - Uso Obrigatório" name="ordemDeServico.epis" id="episOS" required="true" cssStyle="width:800px;height:150px;"/>
 			<@ww.textarea label="Medidas Preventivas" name="ordemDeServico.medidasPreventivas" required="true" id="medidasPreventivasOS" cssStyle="width:800px;height:150px;"/>
 			<@ww.textarea label="Treinamentos Necessários" name="ordemDeServico.treinamentos" required="true" id="treinamentosOS" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Normas Internas" name="ordemDeServico.normasInternas" id="normasInternasOS" disabled="true" cssStyle="width:800px;height:451px; background-color: #ececec;"/>
-			<@ww.textarea label="Procedimento em Caso de Acidente de Trabalho" name="ordemDeServico.procedimentoEmCasoDeAcidente" id="procedimentoEmCasoDeAcidenteOS" disabled="true" cssStyle="width:800px;height:150px; background-color: #ececec;"/>
+			<@ww.textarea label="Normas Internas" name="ordemDeServico.normasInternas" id="normasInternasOS" cssStyle="width:800px;height:451px;"/>
+			<@ww.textarea label="Procedimento em Caso de Acidente de Trabalho" name="ordemDeServico.procedimentoEmCasoDeAcidente" id="procedimentoEmCasoDeAcidenteOS" cssStyle="width:800px;height:150px;"/>
 			<@ww.textarea label="Informações Adicionais" name="ordemDeServico.informacoesAdicionais" id="informacoesAdicionaisOS" required="false" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Termo de Responsabilidade" name="ordemDeServico.termoDeResponsabilidade" id="termoDeResponsabilidadeOS"  disabled="true" cssStyle="width:800px;height:150px;background-color: #ececec;"/>
+			<@ww.textarea label="Termo de Responsabilidade" name="ordemDeServico.termoDeResponsabilidade" id="termoDeResponsabilidadeOS"  cssStyle="width:800px;height:150px;"/>
 			
 		</@ww.form>
 	

@@ -166,7 +166,7 @@ public class OrdemDeServicoEditActionTest
 		when(ordemDeServicoManager.getCount(new String[]{"colaborador.id"}, new Long[]{colaborador.getId()})).thenReturn(1);
 		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(eq(colaborador), any(Date.class))).thenReturn(colaborador);
 		when(ordemDeServicoManager.find(action.getPage(), action.getPagingSize(), new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}, new String[]{"data"})).thenReturn(Arrays.asList(OrdemDeServicoFactory.getEntity()));
-		when(ordemDeServicoManager.ordemDeServicoAtual(colaborador.getId())).thenReturn(new OrdemDeServico());
+		when(ordemDeServicoManager.findUltimaOrdemDeServico(colaborador.getId())).thenReturn(new OrdemDeServico());
 		
 		assertEquals("success", action.list());
 	}
@@ -202,7 +202,7 @@ public class OrdemDeServicoEditActionTest
 		when(ordemDeServicoManager.getCount(new String[]{"colaborador.id"}, new Long[]{colaborador.getId()})).thenReturn(1);
 		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(eq(colaborador), any(Date.class))).thenReturn(colaborador);
 		when(ordemDeServicoManager.find(action.getPage(), action.getPagingSize(), new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}, new String[]{"data"})).thenReturn(Arrays.asList(OrdemDeServicoFactory.getEntity()));
-		when(ordemDeServicoManager.ordemDeServicoAtual(colaborador.getId())).thenReturn(ordemDeServico);
+		when(ordemDeServicoManager.findUltimaOrdemDeServico(colaborador.getId())).thenReturn(ordemDeServico);
 		assertEquals("success", action.delete());
 		assertEquals("Ordem de serviço excluída com sucesso.",action.getActionSuccess().iterator().next());
 	}

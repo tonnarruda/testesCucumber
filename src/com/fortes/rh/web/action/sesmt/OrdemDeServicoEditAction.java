@@ -21,6 +21,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.OrdemDeServico;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -88,7 +89,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 		setTotalSize(ordemDeServicoManager.getCount(new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}));
 		colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador, new Date());
 		ordensDeServico = ordemDeServicoManager.find(getPage(), getPagingSize(), new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}, new String[]{"data"});
-		ordemDeServicoAtual = ordemDeServicoManager.ordemDeServicoAtual(colaborador.getId());
+		ordemDeServicoAtual = ordemDeServicoManager.findUltimaOrdemDeServico(colaborador.getId());
 		return Action.SUCCESS;
 	}
 	
@@ -256,6 +257,11 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	
 	public OrdemDeServico getOrdemDeServicoAtual() {
 		return ordemDeServicoAtual;
+	}
+	
+	public String getDataDoDia() 
+	{
+		return DateUtil.formataDiaMesAno(new Date());
 	}
 	
 	public void setOrdemDeServicoManager(OrdemDeServicoManager ordemDeServicoManager)

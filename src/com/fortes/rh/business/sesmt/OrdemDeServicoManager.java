@@ -11,5 +11,6 @@ public interface OrdemDeServicoManager extends GenericManager<OrdemDeServico>
 {
 	public OrdemDeServico findOrdemServicoProjection(Long id);
 	public OrdemDeServico montaOrdemDeServico(OrdemDeServico ordemDeServico, Colaborador colaborador, Empresa empresaSistema, Date dataOdemDeServico);
-	public OrdemDeServico ordemDeServicoAtual(Long colaboradorId);
+	public OrdemDeServico findUltimaOrdemDeServico(Long colaboradorId);
+	public OrdemDeServico findUltimaOrdemDeServicoImpressa(Long colaboradorId);
 }

@@ -1566,8 +1566,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
-	public boolean existeHistoricoComFuncao(Long colaboradorId,Date data) {
-		return getDao().existeHistoricoComFuncao(colaboradorId, data);
+	public HistoricoColaborador historicoColaboradorByData(Long colaboradorId,Date data) {
+		return getDao().historicoColaboradorByData(colaboradorId, data);
 	}
 
 }

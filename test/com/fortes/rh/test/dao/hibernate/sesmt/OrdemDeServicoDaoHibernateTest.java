@@ -59,7 +59,7 @@ public class OrdemDeServicoDaoHibernateTest extends GenericDaoHibernateTest<Orde
 		saveOrdemDeServico(colaborador, 1.0, new Date());
 		OrdemDeServico ordemDeServico2 = saveOrdemDeServico(colaborador, 2.0, new Date());
 		
-		OrdemDeServico ordemDeServicoDoBanco = ordemDeServicoDao.ordemDeServicoAtual(colaborador.getId());
+		OrdemDeServico ordemDeServicoDoBanco = ordemDeServicoDao.ultimaOrdemDeServico(colaborador.getId());
 		assertEquals(ordemDeServico2.getRevisao(), ordemDeServicoDoBanco.getRevisao());
 	}
 	

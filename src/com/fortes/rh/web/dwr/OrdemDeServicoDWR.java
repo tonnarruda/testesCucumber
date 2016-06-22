@@ -1,5 +1,7 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.Date;
+
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.sesmt.OrdemDeServicoManager;
@@ -16,10 +18,16 @@ public class OrdemDeServicoDWR {
 	private HistoricoColaboradorManager historicoColaboradorManager;
 
 	public OrdemDeServico recarregaDadosOrdemDeServico(Long idOdemDeServico, Long colaboradorId, Long empresaId, String dataOrdemDeServico) throws Exception{
-		validaDataOrdemDeServico(colaboradorId, dataOrdemDeServico);
 		
+		try {
+			validaDataOrdemDeServico(colaboradorId, DateUtil.criarDataDiaMesAno(dataOrdemDeServico));
+			checaDataUltimaOrdemDeServico(colaboradorId, DateUtil.criarDataDiaMesAno(dataOrdemDeServico));
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
 		OrdemDeServico ordemDeServico = new OrdemDeServico();
-		ordemDeServico.setId(idOdemDeServico);
+		if(idOdemDeServico != 0)
+			ordemDeServico.setId(idOdemDeServico);
 		
 		Colaborador colaborador = new Colaborador();
 		colaborador.setId(colaboradorId);
@@ -29,10 +37,22 @@ public class OrdemDeServicoDWR {
 		return ordemDeServico;
 	}
 
-	private void validaDataOrdemDeServico(Long colaboradorId, String dataHistorico) throws Exception {
-		if(historicoColaboradorManager.existeHistoricoComFuncao(colaboradorId, DateUtil.criarDataDiaMesAno(dataHistorico)))
-			throw new Exception("Não é possível inserir uma ordem de serviço para esta data pois o colaborador não possui um histórico com função nesta data");
-		
+	private void validaDataOrdemDeServico(Long colaboradorId, Date dataHistorico) throws Exception {
+		HistoricoColaborador historicoColaborador = historicoColaboradorManager.historicoColaboradorByData(colaboradorId, dataHistorico);
+		if(historicoColaborador != null)
+			if(historicoColaborador.getFuncao().getId() == null)
+				throw new Exception("Não é possível inserir uma ordem de serviço para a data: <b>" + DateUtil.formataDate(dataHistorico, "dd/MM/yyyy") +"</b>, pois o histórico do colaborador não possui função.");
+			else if(historicoColaborador.getColaborador().getDataAdmissao().after(dataHistorico))
+				throw new Exception("Não é possível inserir uma ordem de serviço com data anterior a data de Admissão do colaborador.");
+			else if (historicoColaborador.getColaborador().isDesligado() && historicoColaborador.getColaborador().getDataDesligamento().before(dataHistorico))
+				throw new Exception("Não é possível inserir uma ordem de serviço com data posterior a data de desligamento do colaborador.");
+	}
+	
+	private void checaDataUltimaOrdemDeServico(Long colaboradorId, Date dataOrdemDeServico) throws Exception{
+		OrdemDeServico ordemDeServico = ordemDeServicoManager.findUltimaOrdemDeServico(colaboradorId);
+		if(ordemDeServico != null && dataOrdemDeServico.before(ordemDeServico.getData()))
+			throw new Exception("Não é possível inserir uma ordem de serviço.</br></br>A data informada está inferior a data da última Ordem de Serviço impressa."
+					+ "</br></br>Data da última ordem de serviço: " + ordemDeServico.getDataFormatada());
 	}
 
 	public void setOrdemDeServicoManager(OrdemDeServicoManager ordemDeServicoManager) {

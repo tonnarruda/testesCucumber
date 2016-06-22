@@ -113,7 +113,7 @@ public class OrdemDeServicoManagerTest
 	@Test
 	public void ordemDeServicoAtual() {
 		ordemDeServico.setId(1L);
-		when(ordemDeServicoDao.ordemDeServicoAtual(colaborador.getId())).thenReturn(ordemDeServico);
-		assertEquals(ordemDeServico.getId(), ordemDeServicoManager.ordemDeServicoAtual(colaborador.getId()).getId());
+		when(ordemDeServicoDao.ultimaOrdemDeServico(colaborador.getId())).thenReturn(ordemDeServico);
+		assertEquals(ordemDeServico.getId(), ordemDeServicoManager.findUltimaOrdemDeServico(colaborador.getId()).getId());
 	}
 }

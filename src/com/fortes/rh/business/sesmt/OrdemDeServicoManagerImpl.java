@@ -94,8 +94,12 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 		 ordemDeServico.setEpis(nomeEpis);
 	}
 
-	public OrdemDeServico ordemDeServicoAtual(Long colaboradorId) {
-		return getDao().ordemDeServicoAtual(colaboradorId);
+	public OrdemDeServico findUltimaOrdemDeServico(Long colaboradorId) {
+		return getDao().ultimaOrdemDeServico(colaboradorId);
+	}
+	
+	public OrdemDeServico findUltimaOrdemDeServicoImpressa(Long colaboradorId) {
+		return getDao().findUltimaOrdemDeServicoImpressa(colaboradorId);
 	}
 	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {

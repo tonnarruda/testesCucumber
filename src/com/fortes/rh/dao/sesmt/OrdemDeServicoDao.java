@@ -7,6 +7,8 @@ public interface OrdemDeServicoDao extends GenericDao<OrdemDeServico>
 {
 	public OrdemDeServico findOrdemServicoProjection(Long id);
 
-	public OrdemDeServico ordemDeServicoAtual(Long colaboradorId);
+	public OrdemDeServico ultimaOrdemDeServico(Long colaboradorId);
 
+	public OrdemDeServico findUltimaOrdemDeServicoImpressa(Long colaboradorId);
+	
 }

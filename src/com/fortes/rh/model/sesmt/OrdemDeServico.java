@@ -1,13 +1,7 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.sesmt.OrdemDeServico;
-import com.fortes.rh.util.DateUtil;
-import com.fortes.security.auditoria.NaoAudita;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +12,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -129,8 +126,7 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	
 	public String getDataFormatada() {
 		if(this.data != null){
-			SimpleDateFormat formatDataHora = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-			return formatDataHora.format(data);
+			return DateUtil.formataDate(this.data, "dd/MM/yyyy");
 		}
 		return "";
 	}

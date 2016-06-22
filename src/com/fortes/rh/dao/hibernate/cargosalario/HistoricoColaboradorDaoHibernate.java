@@ -19,6 +19,8 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
@@ -1550,18 +1552,29 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 
-	public boolean existeHistoricoComFuncao(Long colaboradorId, Date data) {
-		StringBuilder hql = new StringBuilder();
-		hql.append("select exists "); 
-		hql.append("	(select hc.funcao_id from HistoricoColaborador hc ");
-		hql.append("		where hc.colaborador_id = :colaboradorId and hc.status = :status ");
-		hql.append("			and data = (select max(hc2.data) historicoColaborador hc2 where hc2.colaorador_id = :colaboradorId and hc2.data <= :data ");
-		hql.append("			and hc.funcao_id is not null");
-		hql.append("	) ");
+	public HistoricoColaborador historicoColaboradorByData(Long colaboradorId, Date data) {
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+							.setProjection(Projections.max("hc2.data"))
+							.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+							.add(Restrictions.le("hc2.data", data))
+							.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
 		
-		Query query = getSession().createSQLQuery(hql.toString());
-		query.setLong("colaboradorId", colaboradorId);
-		query.setDate("data", data);
-		return (Boolean) query.uniqueResult();
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("hc.id"), "id");
+		p.add(Projections.property("hc.data"), "data");
+		p.add(Projections.property("hc.funcao.id"), "funcaoId");
+		p.add(Projections.property("c.dataAdmissao"), "colaboradorDataAdmissao");
+		p.add(Projections.property("c.desligado"), "colaboradorDesligado");
+		p.add(Projections.property("c.dataDesligamento"), "colaboradorDataDesligamento");
+		
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.colaborador", "c");
+		criteria.add(Property.forName("hc.data").eq(subQueryHc));	
+		criteria.add(Expression.eq("hc.colaborador.id", colaboradorId));
+
+		criteria.setProjection(p);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
+		return (HistoricoColaborador) criteria.uniqueResult();
 	}
 }

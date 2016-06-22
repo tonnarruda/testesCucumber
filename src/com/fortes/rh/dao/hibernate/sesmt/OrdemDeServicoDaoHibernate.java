@@ -46,10 +46,32 @@ public class OrdemDeServicoDaoHibernate extends GenericDaoHibernate<OrdemDeServi
 		return (OrdemDeServico) criteria.uniqueResult();
 	}
 
-	public OrdemDeServico ordemDeServicoAtual(Long colaboradorId) {
+	public OrdemDeServico ultimaOrdemDeServico(Long colaboradorId) {
 		DetachedCriteria subQueryOS = DetachedCriteria.forClass(OrdemDeServico.class, "os2")
 				.setProjection(Projections.max("os2.revisao"))
 				.add(Restrictions.eqProperty("os2.colaborador.id", "os.colaborador.id"));
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("os.id"), "id"); 
+		p.add(Projections.property("os.colaborador.id"), "colaboradorId");
+		p.add(Projections.property("os.impressa"), "impressa");
+		p.add(Projections.property("os.data"), "data");
+		p.add(Projections.property("os.revisao"), "revisao");
+		
+		Criteria criteria = getSession().createCriteria(OrdemDeServico.class, "os");
+		criteria.add(Property.forName("os.revisao").eq(subQueryOS));	
+		criteria.add(Expression.eq("os.colaborador.id", colaboradorId));
+		
+		criteria.setProjection(Projections.distinct(p));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(OrdemDeServico.class));
+		return (OrdemDeServico) criteria.uniqueResult();
+	}
+	
+	public OrdemDeServico findUltimaOrdemDeServicoImpressa(Long colaboradorId) {
+		DetachedCriteria subQueryOS = DetachedCriteria.forClass(OrdemDeServico.class, "os2")
+				.setProjection(Projections.max("os2.revisao"))
+				.add(Restrictions.eqProperty("os2.colaborador.id", "os.colaborador.id"))
+				.add(Expression.eq("impressa", true));
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("os.id"), "id"); 
