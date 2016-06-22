@@ -57,7 +57,7 @@
 				<textElement textAlignment="Right">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{CABECALHO}.getMsgAutenticado() == "" ? "Licenciado para: " + $P{CABECALHO}.getLicenciadoPara():"Sistema não licenciado"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{CABECALHO}.getMsgAutenticado() == "" && !$P{CABECALHO}.getVersaoAcademica() ? "Licenciado para: " + $P{CABECALHO}.getLicenciadoPara():"Sistema não licenciado"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField" x="71" y="17" width="323" height="14" uuid="f5882c96-01d9-4dda-9865-c483d63a0b2b"/>
@@ -163,6 +163,22 @@
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{pageGroup}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-1" x="9" y="31" width="536" height="30" uuid="648db1d5-8ce4-4869-bffe-5068e42cb7b8">
+					<printWhenExpression><![CDATA[$P{CABECALHO}.getVersaoAcademica()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+					<paragraph lineSpacing="Fixed"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Versão Acadêmica"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

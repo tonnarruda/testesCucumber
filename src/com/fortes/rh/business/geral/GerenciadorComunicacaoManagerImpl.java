@@ -467,7 +467,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		String msgRegistro = Autenticador.getMsgAutenticado("");
 		String logo = ArquivoUtil.getPathLogoEmpresa() + empresa.getLogoUrl();
-		Cabecalho cabecalho = new Cabecalho("Exames Previstos até " + DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior), empresa.getNome(), "", "[Envio Automático]", parametrosDoSistema.getAppVersao(), logo, msgRegistro);
+		Cabecalho cabecalho = new Cabecalho("Exames Previstos até " + DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior), empresa.getNome(), "", "[Envio Automático]", parametrosDoSistema.getAppVersao(), logo, msgRegistro, parametrosDoSistema.isVersaoAcademica());
 		cabecalho.setLicenciadoPara(empresa.getNome());
 		parametros.put("CABECALHO", cabecalho);
 		parametros.put("SUBREPORT_DIR", path);

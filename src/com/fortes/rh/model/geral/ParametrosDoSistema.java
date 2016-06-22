@@ -67,6 +67,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private boolean suporteVeica;
     private boolean bancoConsistente;
     private int quantidadeConstraints;
+    private boolean versaoAcademica;
 
     private Integer sessionTimeout;
     private Integer tamanhoMaximoUpload;
@@ -404,6 +405,14 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	
 	public void setQuantidadeConstraints(int quantidadeConstraints) {
 		this.quantidadeConstraints = quantidadeConstraints;
+	}
+	
+	public boolean isVersaoAcademica() {
+		return versaoAcademica;
+	}
+	
+	public void setVersaoAcademica(boolean versaoAcademica) {
+		this.versaoAcademica = versaoAcademica;
 	}
 	
 	public Integer getTamanhoMaximoUpload() {

@@ -82,7 +82,7 @@
 		function abiltaOuDesabilitaCampoQtdResposta()
 		{
 			if ($('#inibirGerarRelatorioPesquisaAnonima').is(":checked"))
-				$('#qtdColabPesquisa').removeAttr('disabled').css('background', '#FFFFFF')
+				$('#qtdColabPesquisa').removeAttr('disabled').css('background', '#FFFFFF');
 			else
 				$('#qtdColabPesquisa').attr('disabled', true).css('background', '#F6F6F6');
 		} 
@@ -223,9 +223,11 @@
 		&nbsp;&nbsp;&nbsp;		
 		<@ww.checkbox label="Enviar email" id="enviarEmail" name="parametrosDoSistema.enviarEmail" labelPosition="left"/>	
 		<@ww.datepicker label="Data da versão" id="proximaVersao" name="parametrosDoSistema.proximaVersao" value="${dataVersao}" cssClass="mascaraData" />
+		<@ww.checkbox label="Versão acadêmica" id="versaoAcademica" name="parametrosDoSistema.versaoAcademica" labelPosition="left"/>	
 		<@frt.checkListBox name="modulosSistemaCheck" id="modulosSistemaCheck" label="Módulos do Sistema" list="modulosSistema"/>
 	<#else>
 		<@ww.hidden name="parametrosDoSistema.proximaVersao" />
+		<@ww.hidden name="parametrosDoSistema.versaoAcademica" />
 		<@ww.hidden name="parametrosDoSistema.enviarEmail" />
 	</#if>
 	

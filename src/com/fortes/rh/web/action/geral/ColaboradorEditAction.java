@@ -41,6 +41,7 @@ import com.fortes.rh.business.geral.ConfiguracaoPerformanceManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
@@ -141,6 +142,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private AvaliacaoManager avaliacaoManager;
 	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
 	private PlatformTransactionManager transactionManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
 	private Colaborador colaborador;
 	private AreaOrganizacional areaOrganizacional;
@@ -1899,5 +1901,14 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setCqAvaliacaoExperiencias(Collection<ColaboradorQuestionario> cqAvaliacaoExperiencias)
 	{
 		this.cqAvaliacaoExperiencias = cqAvaliacaoExperiencias;
+	}
+
+	public ParametrosDoSistemaManager getParametrosDoSistemaManager() {
+		return parametrosDoSistemaManager;
+	}
+
+	public void setParametrosDoSistemaManager(
+			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

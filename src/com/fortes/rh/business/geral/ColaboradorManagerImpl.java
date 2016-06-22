@@ -1809,8 +1809,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		//TODO remprot
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-		if (parametrosDoSistema.verificaRemprot()) {
-
+		if ( parametrosDoSistema.isVersaoAcademica() ) {
+			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos();
+			if ( qtdColaboradorNoBanco >= 10 ) {
+				throw new FortesException("Versão acadêmica, só é permitido cadastrar 10 Colaboradores");
+			}
+		} else if (parametrosDoSistema.verificaRemprot()) {
 			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos();
 
 			RPClient remprot = Autenticador.getRemprot();

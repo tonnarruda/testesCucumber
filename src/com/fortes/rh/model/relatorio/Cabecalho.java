@@ -12,13 +12,14 @@ public class Cabecalho
 	private String logoUrl;
 	private String msgAutenticado;
 	private String licenciadoPara;
+	private Boolean versaoAcademica;
 
 	public Cabecalho()
 	{
 		
 	}
 	
-	public Cabecalho(String titulo, String nomeEmpresa, String filtro, String usuario, String versaoSistema, String logoUrl, String msgAutenticado)
+	public Cabecalho(String titulo, String nomeEmpresa, String filtro, String usuario, String versaoSistema, String logoUrl, String msgAutenticado, Boolean versaoAcademica)
 	{
 		super();
 		this.titulo = titulo;
@@ -28,6 +29,7 @@ public class Cabecalho
 		this.versaoSistema = versaoSistema;
 		this.logoUrl = logoUrl;
 		this.msgAutenticado = msgAutenticado;
+		this.versaoAcademica = versaoAcademica;
 	}
 
 	public String getFiltro()
@@ -101,5 +103,12 @@ public class Cabecalho
 	{
 		this.licenciadoPara = licenciadoPara;
 	}
+	
+	public Boolean getVersaoAcademica() {
+		return versaoAcademica;
+	}
 
+	public void setVersaoAcademica(Boolean versaoAcademica) {
+		this.versaoAcademica = versaoAcademica;
+	}
 }

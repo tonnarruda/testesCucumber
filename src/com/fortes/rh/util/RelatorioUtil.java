@@ -38,14 +38,14 @@ public class RelatorioUtil
 			try {
 				if(Autenticador.isDemo())
 					msgRegistro = Autenticador.getMsgPadrao();
-			else
-				msgRegistro = Autenticador.getMsgAutenticado(parametrosDoSistema.getServidorRemprot());			
+				else
+					msgRegistro = Autenticador.getMsgAutenticado(parametrosDoSistema.getServidorRemprot());			
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
-    	Cabecalho cabecalho = new Cabecalho(titulo, empresa.getNome(), filtro, usuario.getNome(), parametrosDoSistema.getAppVersao(), pathLogoRelatorio, msgRegistro);
+    	Cabecalho cabecalho = new Cabecalho(titulo, empresa.getNome(), filtro, usuario.getNome(), parametrosDoSistema.getAppVersao(), pathLogoRelatorio, msgRegistro, parametrosDoSistema.isVersaoAcademica());
     	cabecalho.setLicenciadoPara(empresa.getNome());
     	
     	parametros.put("CABECALHO", cabecalho);

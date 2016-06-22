@@ -77,7 +77,7 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
     	empresa.setId(1L);
     	action.setEmpresaSistema(empresa);
 
-    	Cabecalho cabecalho = new Cabecalho("Relatório de Motivos de Desligamento", "", "", "", "", "", "");
+    	Cabecalho cabecalho = new Cabecalho("Relatório de Motivos de Desligamento", "", "", "", "", "", "", false);
 
     	Map<String, Object> parametros = new HashMap<String, Object>();
     	parametros.put("CABECALHO", cabecalho);
