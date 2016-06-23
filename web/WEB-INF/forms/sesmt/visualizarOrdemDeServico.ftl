@@ -9,8 +9,17 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 		
 		<style type="text/css">
-			table {
+			.bordas {
 			    border-collapse: collapse;
+			    border: 1px solid;
+			    border-color: #D9D9D9;
+			}
+			.titulo{
+				font-weight: bold; 
+				font-size: 13px;
+			}
+			
+			table{
 			    width: 960px;
 			    height: 19px;
 			}
@@ -18,7 +27,7 @@
 		
 	</head>
 	<body>
-		<table border='1'>
+		<table class="bordas" border="1">
 			<tr >
 				<td border="1px" colspan = "2" align="center" valign="middle">
 					<span style="font-weight: bold; font-size: 15px;">ORDEM DE SERVIÇO</span>
@@ -39,12 +48,12 @@
 		</br>
 		<table>
 			<tr>
-				<td border="1px" colspan = "2" align="center" valign="middle">
-					<span style="font-weight: bold; font-size: 15px;">ATIVIDADES DESENVOLVIDAS</span>
+				<td colspan = "2" align="center" valign="middle">
+					<span class="titulo">ATIVIDADES DESENVOLVIDAS</span>
 				</td>
 			</tr>
 		</table>
-		<table border='1'>
+		<table class="bordas" >
 			<tr>
 				<td colspan = "2">
 					${ordemDeServico.atividades?replace('\n','</br>')}
@@ -54,12 +63,12 @@
 		</br>
 		<table>
 			<tr>
-				<td border="1px" colspan = "2" align="center" valign="middle">
-					<span style="font-weight: bold; font-size: 15px;">RISCO DA OPERAÇÃO</span>
+				<td colspan = "2" align="center" valign="middle">
+					<span class="titulo">RISCO DA OPERAÇÃO</span>
 				</td>
 			</tr>
 		</table>
-		<table border='1'>
+		<table class="bordas" >
 			<tr>
 				<td colspan = "2">
 					${ordemDeServico.riscos?replace('\n','</br>')}
@@ -69,12 +78,12 @@
 		</br>
 		<table>
 			<tr>
-				<td border="1px" colspan = "2" align="center" valign="middle">
-					<span style="font-weight: bold; font-size: 15px;">EPI’S - USO OBRIGATÓRIO</span>
+				<td colspan = "2" align="center" valign="middle">
+					<span class="titulo">EPI’S - USO OBRIGATÓRIO</span>
 				</td>
 			</tr>
 		</table>
-		<table border='1'>
+		<table class="bordas" >
 			<tr>
 				<td colspan = "2">
 					${ordemDeServico.epis?replace('\n','</br>')}
@@ -84,12 +93,12 @@
 		</br>
 		<table>
 			<tr>
-				<td border="1px" colspan = "2" align="center" valign="middle">
-					<span style="font-weight: bold; font-size: 15px;">MEDIDAS PREVENTIVAS</span>
+				<td colspan = "2" align="center" valign="middle">
+					<span class="titulo">MEDIDAS PREVENTIVAS</span>
 				</td>
 			</tr>
 		</table>
-		<table border='1'>
+		<table class="bordas" >
 			<tr>
 				<td colspan = "2">
 					${ordemDeServico.medidasPreventivas?replace('\n','</br>')}
@@ -99,12 +108,12 @@
 		</br>
 		<table>
 			<tr>
-				<td border="1px" colspan = "2" align="center" valign="middle">
-					<span style="font-weight: bold; font-size: 15px;">TREINAMENTO(S) NECESSÁRIO(S)</span>
+				<td colspan = "2" align="center" valign="middle">
+					<span class="titulo">TREINAMENTO(S) NECESSÁRIO(S)</span>
 				</td>
 			</tr>
 		</table>
-		<table border='1'>
+		<table class="bordas" >
 			<tr>
 				<td colspan = "2">
 					${ordemDeServico.treinamentos?replace('\n','</br>')}
@@ -114,12 +123,12 @@
 		</br>
 		<table>
 			<tr>
-				<td border="1px" colspan = "2" align="center" valign="middle">
-					<span style="font-weight: bold; font-size: 15px;">NORMAS INTERNAS</span>
+				<td colspan = "2" align="center" valign="middle">
+					<span class="titulo">NORMAS INTERNAS</span>
 				</td>
 			</tr>
 		</table>
-		<table border='1'>
+		<table class="bordas" >
 			<tr>
 				<td colspan = "2">
 					${ordemDeServico.normasInternas?replace('\n','</br>')}
@@ -129,12 +138,12 @@
 		</br>
 		<table>
 			<tr>
-				<td border="1px" colspan = "2" align="center" valign="middle">
-					<span style="font-weight: bold; font-size: 15px;">PROCEDIMENTO EM CASO DE ACIDENTE DE TRABALHO</span>
+				<td colspan = "2" align="center" valign="middle">
+					<span class="titulo">PROCEDIMENTO EM CASO DE ACIDENTE DE TRABALHO</span>
 				</td>
 			</tr>
 		</table>
-		<table border='1'>
+		<table class="bordas" >
 			<tr>
 				<td colspan = "2">
 					${ordemDeServico.procedimentoEmCasoDeAcidente?replace('\n','</br>')}
@@ -144,12 +153,12 @@
 		</br>
 		<table>
 			<tr>
-				<td border="1px" colspan = "2" align="center" valign="middle">
-					<span style="font-weight: bold; font-size: 15px;">INFORMAÇÕES ADICIONAIS</span>
+				<td colspan = "2" align="center" valign="middle">
+					<span class="titulo">INFORMAÇÕES ADICIONAIS</span>
 				</td>
 			</tr>
 		</table>
-		<table border='1'>
+		<table class="bordas" >
 			<tr>
 				<td colspan = "2">
 					${ordemDeServico.informacoesAdicionais?replace('\n','</br>')}
@@ -159,12 +168,12 @@
 		</br>
 		<table>
 			<tr>
-				<td border="1px" colspan = "2" align="center" valign="middle">
-					<span style="font-weight: bold; font-size: 15px;">TERMO DE RESPONSABILIDADE</span>
+				<td colspan = "2" align="center" valign="middle">
+					<span class="titulo">TERMO DE RESPONSABILIDADE</span>
 				</td>
 			</tr>
 		</table>
-		<table border='1'>
+		<table class="bordas" >
 			<tr>
 				<td colspan = "2">
 					${ordemDeServico.termoDeResponsabilidade?replace('\n','</br>')}
@@ -172,7 +181,7 @@
 			</tr>
 		</table>
 		</br>
-		<table border='1'>
+		<table class="bordas" border="1px">
 			<tr>
 				<td border="1px" style ="width: 480px;">
 					<span style="font-weight: bold;">Revisão: </span> <span id="codigoCBOOS">${ordemDeServico.revisao}</span>

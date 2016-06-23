@@ -1,10 +1,13 @@
+<#assign ww=JspTaglibs["/WEB-INF/tlds/webwork.tld"] />
 <html>
 	<head>
 		<@ww.head/>
+		
 		<#include "../ftl/mascarasImports.ftl" />
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OrdemDeServicoDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	
 		
 		<script type="text/javascript">
 			var dataUltimaDataValida = "";
@@ -46,15 +49,33 @@
 				jAlert(msg);
 			}
 		</script>	
+						
+		<style type="text/css">
+			.divTitulo{
+				width: 960px;
+			}
+			.titulo{
+				font-weight: bold; 
+				font-size: 13px;
+			}
+			.wwctrl textarea{
+				width: 960px;
+				height:150px;
+				border: 1px solid;
+				border-color: #D9D9D9;
+			}
+		</style>
 			
 		<#if ordemDeServico.id?exists>
 			<title>Editar Ordem de Serviço</title>
 			<#assign formAction="update.action"/>
 			<#assign dataOS = ordemDeServico.data?date/>
+			<#assign revisao = ordemDeServico.revisao>
 		<#else>
 			<title>Inserir Ordem de Serviço</title>
 			<#assign formAction="insert.action"/>
 			<#assign dataOS = dataDoDia?date>
+			<#assign revisao = ordemDeServico.revisao>
 		</#if>
 		
 		<#assign validarCampos="return validaFormulario('form', new Array())"/>
@@ -76,6 +97,13 @@
 			
 			<table>
 				<tr>
+					<td><@ww.datepicker label="Data da Ordem de Serviço" name="ordemDeServico.data" value="${dataOS}" id="dataOS" required="true" cssClass="mascaraData" onchange="repopularOrdemDeServico();" onblur="repopularOrdemDeServico();" /></td>
+				</tr>
+				<tr>	
+					<td> <span style="font-weight: bold;">Revisão: </span> <span style="margin-left: 4px;" id="nomeColaboradorOS">${revisao}</span> </td>
+				</tr>
+				
+				<tr>
 					<td width="250"> <span style="font-weight: bold;">Código CBO:</span> <span style="margin-left: 40px;" id="codigoCBOOS">${ordemDeServico.codigoCBO}</span> </td>
 					<td> <span style="font-weight: bold;">Colaborador:</span> <span style="margin-left: 4px;" id="nomeColaboradorOS">${ordemDeServico.nomeColaborador}</span> </td>
 				</tr>
@@ -84,18 +112,33 @@
 					<td> <span style="font-weight: bold;">Função:</span> <span style="margin-left: 34px;" id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span> </td>
 				</tr>
 			</table>
+
+			</br><div class="divTitulo" align="center"><span class="titulo">ATIVIDADES DESENVOLVIDAS</span></div>
+			<@ww.textarea name="ordemDeServico.atividades" id="atividadesOS" required="true"/>
+
+			</br><div class="divTitulo" align="center"><span class="titulo">RISCO DA OPERAÇÃO</span></div>
+			<@ww.textarea name="ordemDeServico.riscos" id="riscosOS" required="true"/>
 			
-			<@ww.textfield label="Nº Revisão" name="ordemDeServico.revisao" id="revisaoOS" disable="true" liClass="liLeft" cssStyle="width:180px;" maxLength="30"/>
-			<@ww.datepicker label="Data da Ordem de Serviço" name="ordemDeServico.data" value="${dataOS}" id="dataOS" required="true" cssClass="mascaraData" onchange="repopularOrdemDeServico();" onblur="repopularOrdemDeServico();" />
-			<@ww.textarea label="Atividades Desenvolvidas" name="ordemDeServico.atividades" id="atividadesOS" required="true" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Riscos da Operação" name="ordemDeServico.riscos" id="riscosOS" required="true" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Epi's - Uso Obrigatório" name="ordemDeServico.epis" id="episOS" required="true" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Medidas Preventivas" name="ordemDeServico.medidasPreventivas" required="true" id="medidasPreventivasOS" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Treinamentos Necessários" name="ordemDeServico.treinamentos" required="true" id="treinamentosOS" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Normas Internas" name="ordemDeServico.normasInternas" id="normasInternasOS" cssStyle="width:800px;height:451px;"/>
-			<@ww.textarea label="Procedimento em Caso de Acidente de Trabalho" name="ordemDeServico.procedimentoEmCasoDeAcidente" id="procedimentoEmCasoDeAcidenteOS" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Informações Adicionais" name="ordemDeServico.informacoesAdicionais" id="informacoesAdicionaisOS" required="false" cssStyle="width:800px;height:150px;"/>
-			<@ww.textarea label="Termo de Responsabilidade" name="ordemDeServico.termoDeResponsabilidade" id="termoDeResponsabilidadeOS"  cssStyle="width:800px;height:150px;"/>
+			</br><div class="divTitulo" align="center"><span class="titulo">EPI’S - USO OBRIGATÓRIO</span></div>
+			<@ww.textarea name="ordemDeServico.epis" id="episOS" required="true"/>
+			
+			</br><div class="divTitulo" align="center"><span class="titulo">MEDIDAS PREVENTIVAS</span></div>
+			<@ww.textarea name="ordemDeServico.medidasPreventivas" required="true" id="medidasPreventivasOS"/>
+			
+			</br><div class="divTitulo" align="center"><span class="titulo">TREINAMENTO(S) NECESSÁRIO(S)</span></div>
+			<@ww.textarea name="ordemDeServico.treinamentos" required="true" id="treinamentosOS"/>
+			
+			</br><div class="divTitulo" align="center"><span class="titulo">NORMAS INTERNAS</span></div>
+			<@ww.textarea name="ordemDeServico.normasInternas" id="normasInternasOS"/>
+			
+			</br><div class="divTitulo" align="center"><span class="titulo">PROCEDIMENTO EM CASO DE ACIDENTE DE TRABALHO</span></div>
+			<@ww.textarea name="ordemDeServico.procedimentoEmCasoDeAcidente" id="procedimentoEmCasoDeAcidenteOS"/>
+			
+			</br><div class="divTitulo" align="center"><span class="titulo">INFORMAÇÕES ADICIONAIS</span></div>
+			<@ww.textarea name="ordemDeServico.informacoesAdicionais" id="informacoesAdicionaisOS" required="false"/>
+			
+			</br><div class="divTitulo" align="center"><span class="titulo">TERMO DE RESPONSABILIDADE</span></div>
+			<@ww.textarea name="ordemDeServico.termoDeResponsabilidade" id="termoDeResponsabilidadeOS"/>
 			
 		</@ww.form>
 	

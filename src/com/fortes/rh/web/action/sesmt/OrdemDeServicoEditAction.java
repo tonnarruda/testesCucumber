@@ -264,11 +264,6 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 		return DateUtil.formataDiaMesAno(new Date());
 	}
 	
-	public Integer getRevisao() {
-		return revisao;
-	}
-
-	
 	public void setOrdemDeServicoManager(OrdemDeServicoManager ordemDeServicoManager)
 	{
 		this.ordemDeServicoManager = ordemDeServicoManager;
@@ -300,5 +295,10 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
+	}
+
+
+	public Integer getRevisao() {
+		return revisao;
 	}
 }
