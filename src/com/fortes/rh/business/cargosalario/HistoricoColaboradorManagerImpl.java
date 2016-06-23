@@ -23,6 +23,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -83,11 +84,13 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
+	@TesteAutomatico(metodoMock="findPromocaoByColaborador")
 	public Collection<HistoricoColaborador> getByColaboradorId(Long colaboradorId)
 	{
 		return getDao().findPromocaoByColaborador(colaboradorId);
 	}
 
+	@TesteAutomatico
 	public Collection findPromocaoByColaborador(Long colaboradorId)
 	{
 		return getDao().findPromocaoByColaborador(colaboradorId);
@@ -391,6 +394,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return areaOrganizacionals;
 	}
 
+	@TesteAutomatico
 	public HistoricoColaborador getHistoricoAnterior(HistoricoColaborador historico)
 	{
 		return getDao().getHistoricoAnterior(historico);
@@ -420,6 +424,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historicos;
 	}
 
+	@TesteAutomatico
 	public Collection<HistoricoColaborador> findByColaboradorData(Long idColaborador, Date data)
 	{
 		return getDao().findByColaboradorData(idColaborador, data);
@@ -482,6 +487,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return !historicos.isEmpty();
 	}
 
+	@TesteAutomatico
 	public Collection<HistoricoColaborador> getHistoricosAtuaisByEstabelecimentoAreaGrupo(Long[] estabelecimentoIds, char filtrarPor,
 			Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId, Date dataTabela)
 	{
@@ -651,11 +657,13 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historicos;
 	}
 
+	@TesteAutomatico
 	public HistoricoColaborador findByIdHQL(Long historicoColaboradorId)
 	{
 		return getDao().findByIdHQL(historicoColaboradorId);
 	}
 
+	@TesteAutomatico
 	public boolean setStatus(Long historicoColaboradorId, Boolean aprovado)
 	{
 		return getDao().setStatus(historicoColaboradorId, aprovado);
@@ -947,6 +955,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return situacoes;
 	}
 
+	@TesteAutomatico
 	public String findColaboradorCodigoAC(Long historicoColaboradorId)
 	{
 		return getDao().findColaboradorCodigoAC(historicoColaboradorId);
@@ -1000,6 +1009,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historicoColaboradors.size() > 0;
 	}
 	
+	@TesteAutomatico
 	public HistoricoColaborador getHistoricoContratacaoAguardando(Long colaboradorId)
 	{
 		return getDao().getHistoricoContratacaoAguardando(colaboradorId);
@@ -1017,6 +1027,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historicoColaborador;
 	}
 	
+	@TesteAutomatico
 	public void updateSituacaoByMovimentacao(String codigoEmpregado, String movimentacao, String codPessoalEstabOuArea, boolean atualizarTodasSituacoes, Long empresaId)
 	{
 		getDao().updateSituacaoByMovimentacao(codigoEmpregado, movimentacao, codPessoalEstabOuArea, atualizarTodasSituacoes, empresaId);
@@ -1126,6 +1137,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return situacao;
 	}
 
+	@TesteAutomatico
 	public HistoricoColaborador findByAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
 		return getDao().findByAC(data, empregadoCodigoAC, empresaCodigoAC, grupoAC);
@@ -1145,6 +1157,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			return verificaDataPrimeiroHistorico(colaborador);
 	}
 
+	@TesteAutomatico
 	public void removeColaborador(Long colaboradorId)
 	{
 		getDao().removeColaborador(colaboradorId);
@@ -1157,11 +1170,13 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 				.compareTo(historicoColaborador.getColaborador().getDataAdmissao()) == 1;
 	}
 
+	@TesteAutomatico
 	public Collection<HistoricoColaborador> findColaboradoresByTabelaReajusteData(Long tabelaReajusteColaboradorId, Date data)
 	{
 		return getDao().findColaboradoresByTabelaReajusteData(tabelaReajusteColaboradorId, data);
 	}
 
+	@TesteAutomatico
 	public HistoricoColaborador getPrimeiroHistorico(Long colaboradorId)
 	{
 		return getDao().getPrimeiroHistorico(colaboradorId);
@@ -1297,6 +1312,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().findByPeriodo(empresaId, dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao, agruparPor, imprimirDesligados);
 	}
 
+	@TesteAutomatico
 	public Collection<HistoricoColaborador> findAllByColaborador(Long colaboradorId) {
 		return getDao().findAllByColaborador(colaboradorId);
 	}
@@ -1383,6 +1399,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
  		return valorTotalFolha;
 	}
 
+	@TesteAutomatico
 	public void deleteSituacaoByMovimentoSalarial(Long movimentoSalarialId, Long empresaId)
 	{
 		getDao().deleteSituacaoByMovimentoSalarial(movimentoSalarialId, empresaId);
@@ -1397,6 +1414,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().findImprimirListaFrequencia(estabelecimento, votacaoIni, votacaoFim);
 	}
 
+	@TesteAutomatico
 	public void setMotivo(Long[] historicoColaboradorIds, String tipo) {
 		getDao().setMotivo(historicoColaboradorIds, tipo);
 	}
@@ -1453,11 +1471,13 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historicos;
 	}
 
+	@TesteAutomatico
 	public void ajustaMotivoContratado(Long colaboradorId) 
 	{
 		getDao().ajustaMotivoContratado(colaboradorId);
 	}
 
+	@TesteAutomatico
 	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId) {
 		getDao().removeCandidatoSolicitacao(candidatoSolicitacaoId);		
 	}
@@ -1511,11 +1531,13 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradoresIds);
 	}
 	
+	@TesteAutomatico
 	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception 
 	{
 		getDao().deleteHistoricoColaborador(colaboradorIds);
 	}
 	
+	@TesteAutomatico
 	public boolean existeHistoricoPorIndice(Long empresaId) 
 	{
 		return getDao().existeHistoricoPorIndice(empresaId);
@@ -1526,6 +1548,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().updateStatusAc(statusRetornoAC, id);
 	}
 	
+	@TesteAutomatico
 	public void updateArea(Long areaIdMae, Long areaId) 
 	{
 		getDao().updateArea(areaIdMae, areaId);	
@@ -1566,8 +1589,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
-	public HistoricoColaborador historicoColaboradorByData(Long colaboradorId,Date data) {
-		return getDao().historicoColaboradorByData(colaboradorId, data);
+	@TesteAutomatico
+	public HistoricoColaborador findHistoricoColaboradorByData(Long colaboradorId, Date data) {
+		return getDao().findHistoricoColaboradorByData(colaboradorId, data);
 	}
-
 }

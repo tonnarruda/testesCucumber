@@ -179,5 +179,5 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	
 	public void updateArea(Long areaIdMae, Long areaId) ;
 
-	public HistoricoColaborador historicoColaboradorByData(Long colaboradorId, Date data);
+	public HistoricoColaborador findHistoricoColaboradorByData(Long colaboradorId, Date data);
 }

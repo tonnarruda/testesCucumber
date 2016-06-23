@@ -92,4 +92,13 @@ public class HistoricoColaboradorFactory
 		historicoColaborador.setStatus(status);
 		return historicoColaborador;
 	}
+	
+	public static HistoricoColaborador getEntity(Long id, Colaborador colaborador, Funcao funcao, Date data)
+	{
+		HistoricoColaborador historicoColaborador = getEntity(1L);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setFuncao(funcao);
+		historicoColaborador.setData(data);
+		return historicoColaborador;
+	}
 }

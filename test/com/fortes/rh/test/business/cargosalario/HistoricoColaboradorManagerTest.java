@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.ListResourceBundle;
 import java.util.Map;
 
 import mockit.Mockit;
-import net.sf.ezmorph.test.ArrayAssertions;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -61,6 +57,8 @@ import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -77,16 +75,13 @@ import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.rh.web.ws.AcPessoalClientTabelaReajusteInterface;
 
-@SuppressWarnings("deprecation")
-public class HistoricoColaboradorManagerTest extends MockObjectTestCase
+public class HistoricoColaboradorManagerTest extends MockObjectTestCaseManager<HistoricoColaboradorManagerImpl> implements TesteAutomaticoManager
 {
-	HistoricoColaboradorManagerImpl historicoColaboradorManager = new HistoricoColaboradorManagerImpl();
 	Mock historicoColaboradorDao;
 	Mock areaOrganizacionalManager;
 	Mock indiceHistoricoManager;
@@ -108,47 +103,49 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 	
 	protected void setUp() throws Exception
 	{
+		manager = new HistoricoColaboradorManagerImpl();
+		
         transactionManager = new Mock(PlatformTransactionManager.class);
-        historicoColaboradorManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+        manager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 
         historicoColaboradorDao = new Mock(HistoricoColaboradorDao.class);
-		historicoColaboradorManager.setDao((HistoricoColaboradorDao) historicoColaboradorDao.proxy());
+		manager.setDao((HistoricoColaboradorDao) historicoColaboradorDao.proxy());
 
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
-		historicoColaboradorManager.setAreaOrganizacionalManager((AreaOrganizacionalManager)areaOrganizacionalManager.proxy());
+		manager.setAreaOrganizacionalManager((AreaOrganizacionalManager)areaOrganizacionalManager.proxy());
 
 		indiceHistoricoManager = new Mock(IndiceHistoricoManager.class);
-		historicoColaboradorManager.setIndiceHistoricoManager((IndiceHistoricoManager)indiceHistoricoManager.proxy());
+		manager.setIndiceHistoricoManager((IndiceHistoricoManager)indiceHistoricoManager.proxy());
 
 		faixaSalarialManager = new Mock(FaixaSalarialManager.class);
-		historicoColaboradorManager.setFaixaSalarialManager((FaixaSalarialManager)faixaSalarialManager.proxy());
+		manager.setFaixaSalarialManager((FaixaSalarialManager)faixaSalarialManager.proxy());
 
 		indiceManager = new Mock(IndiceManager.class);
-		historicoColaboradorManager.setIndiceManager((IndiceManager)indiceManager.proxy());
+		manager.setIndiceManager((IndiceManager)indiceManager.proxy());
 
 		faixaSalarialHistoricoManager = new Mock(FaixaSalarialHistoricoManager.class);
-		historicoColaboradorManager.setFaixaSalarialHistoricoManager((FaixaSalarialHistoricoManager)faixaSalarialHistoricoManager.proxy());
+		manager.setFaixaSalarialHistoricoManager((FaixaSalarialHistoricoManager)faixaSalarialHistoricoManager.proxy());
 
 		reajusteColaboradorManager = new Mock(ReajusteColaboradorManager.class);
-		historicoColaboradorManager.setReajusteColaboradorManager((ReajusteColaboradorManager)reajusteColaboradorManager.proxy());
+		manager.setReajusteColaboradorManager((ReajusteColaboradorManager)reajusteColaboradorManager.proxy());
 		
 		candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
-		historicoColaboradorManager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager)candidatoSolicitacaoManager.proxy());
+		manager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager)candidatoSolicitacaoManager.proxy());
 
 		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
-		historicoColaboradorManager.setEstabelecimentoManager((EstabelecimentoManager)estabelecimentoManager.proxy());
+		manager.setEstabelecimentoManager((EstabelecimentoManager)estabelecimentoManager.proxy());
 
 		empresaManager = new Mock(EmpresaManager.class);
-		historicoColaboradorManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
+		manager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 
 		acPessoalClientTabelaReajuste = mock(AcPessoalClientTabelaReajusteInterface.class);
-		historicoColaboradorManager.setAcPessoalClientTabelaReajuste((AcPessoalClientTabelaReajusteInterface) acPessoalClientTabelaReajuste.proxy());
+		manager.setAcPessoalClientTabelaReajuste((AcPessoalClientTabelaReajusteInterface) acPessoalClientTabelaReajuste.proxy());
 
 		acPessoalClientColaborador = mock(AcPessoalClientColaborador.class);
-		historicoColaboradorManager.setAcPessoalClientColaborador((AcPessoalClientColaborador) acPessoalClientColaborador.proxy());
+		manager.setAcPessoalClientColaborador((AcPessoalClientColaborador) acPessoalClientColaborador.proxy());
 
 		gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
-		historicoColaboradorManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
+		manager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
@@ -171,7 +168,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Long colaboradorId = 1L;
 
 		historicoColaboradorDao.expects(once()).method("findPromocaoByColaborador").with(ANYTHING).will(returnValue(historicoColaboradors));
-		Collection<HistoricoColaborador> retorno = historicoColaboradorManager.getByColaboradorId(colaboradorId);
+		Collection<HistoricoColaborador> retorno = manager.getByColaboradorId(colaboradorId);
 		assertNotNull(retorno);
 	}
 
@@ -187,7 +184,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Long colaboradorId = 1L;
 
 		historicoColaboradorDao.expects(once()).method("findPromocaoByColaborador").with(ANYTHING).will(returnValue(historicoColaboradors));
-		historicoColaboradorManager.findPromocaoByColaborador(colaboradorId);
+		manager.findPromocaoByColaborador(colaboradorId);
 	}
 
 	public void testGetHistoricosAtuaisByEstabelecimentoAreaGrupo()
@@ -202,7 +199,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Date data = new Date();
 
 		historicoColaboradorDao.expects(once()).method("getHistoricosAtuaisByEstabelecimentoAreaGrupo").with(new Constraint[]{eq(estabelecimentoIds), eq(filtrarPor), eq(areaOrganizacionalIds), eq(grupoOcupacionalIds), eq(empresaId), eq(data)}).will(returnValue(historicoColaboradors));
-		historicoColaboradorManager.getHistoricosAtuaisByEstabelecimentoAreaGrupo(estabelecimentoIds, filtrarPor, areaOrganizacionalIds, grupoOcupacionalIds, empresaId, data);
+		manager.getHistoricosAtuaisByEstabelecimentoAreaGrupo(estabelecimentoIds, filtrarPor, areaOrganizacionalIds, grupoOcupacionalIds, empresaId, data);
 	}
 	
 	public void testRelatorioColaboradorCargoComColaboradoresRegistradosNoAC() throws Exception {
@@ -217,7 +214,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		//opcao 0
 		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
-		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(data, null, null, 2, '0', null, true, null, null, true, empresa.getId()).size());
+		assertEquals(1, manager.relatorioColaboradorCargo(data, null, null, 2, '0', null, true, null, null, true, empresa.getId()).size());
 	}
 	
 	private HistoricoColaborador dadoUmColaboradorQueTambemEstaRegistradoNoAC() {
@@ -238,19 +235,19 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		//opcao 0
 		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
-		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(data, null, null, 2, '0', null, true, null, null, false, empresa.getId()).size());
+		assertEquals(1, manager.relatorioColaboradorCargo(data, null, null, 2, '0', null, true, null, null, false, empresa.getId()).size());
 		
 		// opcao 1
 		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
-		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(data, null, null, 2, '1', null, true, null, null, false, empresa.getId()).size());
+		assertEquals(1, manager.relatorioColaboradorCargo(data, null, null, 2, '1', null, true, null, null, false, empresa.getId()).size());
 
 		// quantidade de meses null
 		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
-		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(data, null, null, null, '1', null, true, null, null, false, empresa.getId()).size());
+		assertEquals(1, manager.relatorioColaboradorCargo(data, null, null, null, '1', null, true, null, null, false, empresa.getId()).size());
 
 		// qtd Meses Desatualizacao 10
 		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
-		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(data, null, null, null, '1', null, true, 10, null, false, empresa.getId()).size());
+		assertEquals(1, manager.relatorioColaboradorCargo(data, null, null, null, '1', null, true, 10, null, false, empresa.getId()).size());
 	}
 	
 	public void testRelatorioColaboradorCargo_ComHistoricoColaboradorNulo() throws Exception
@@ -270,7 +267,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 			historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(hoje), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<HistoricoColaborador>()));
 			
 			
-			Collection<HistoricoColaborador> resultado = historicoColaboradorManager.relatorioColaboradorCargo(hoje, null, null, 2, '1', null, true, null, null, false, empresa.getId());
+			Collection<HistoricoColaborador> resultado = manager.relatorioColaboradorCargo(hoje, null, null, 2, '1', null, true, null, null, false, empresa.getId());
 		} catch (Exception e) {
 			exp = e;
 		}
@@ -322,7 +319,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		empresaManager.expects(atLeastOnce()).method("findById").with(ANYTHING).will(returnValue(empresa));
 		
 		
-		Collection<HistoricoColaborador> resultado = historicoColaboradorManager.relatorioColaboradorCargo(hoje, null, null, 2, '1', null, true, null, null, true, empresa.getId());
+		Collection<HistoricoColaborador> resultado = manager.relatorioColaboradorCargo(hoje, null, null, 2, '1', null, true, null, null, true, empresa.getId());
 
 		assertEquals(3, resultado.size());
 		
@@ -342,7 +339,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		try{
 			Empresa empresa = EmpresaFactory.getEmpresa();
 			historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(hoje), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<HistoricoColaborador>()));
-			historicoColaboradorManager.relatorioColaboradorCargo(hoje, null, null, 2, '1', null, true, null, null, true, empresa.getId());
+			manager.relatorioColaboradorCargo(hoje, null, null, 2, '1', null, true, null, null, true, empresa.getId());
 		
 		}catch (Exception e) {
 			exp = e;
@@ -360,7 +357,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Long colaboradorId = 1L;
 
 		historicoColaboradorDao.expects(once()).method("getHistoricoAtual").with(ANYTHING, ANYTHING).will(returnValue(historicoColaborador));
-		historicoColaboradorManager.getHistoricoAtual(colaboradorId);
+		manager.getHistoricoAtual(colaboradorId);
 	}
 	
 	public void testGetValorTotalFolha()
@@ -389,7 +386,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradors.add(historicoColaborador3);
 		
 		historicoColaboradorDao.expects(once()).method("findHistoricoAdmitidos").with(ANYTHING, ANYTHING).will(returnValue(historicoColaboradors));
-		assertEquals(900.0, historicoColaboradorManager.getValorTotalFolha(null, new Date()));
+		assertEquals(900.0, manager.getValorTotalFolha(null, new Date()));
 	}
 	
 	public void testFindSemDissidioByDataPercentual()
@@ -481,28 +478,28 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		String[] areasIds = new String[] {"3","4"};
 		String[] estabelecimentosIds = new String[] {"5","6"};
 		
-		Collection<HistoricoColaborador> resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
+		Collection<HistoricoColaborador> resultado = manager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
 		assertEquals("Todos hist. colaboradores", 4, resultado.size());
 
 		cargosIds = new String[] {"1"};
 		areasIds = new String[] {"3","4"};
 		estabelecimentosIds = new String[] {"5","6"};
 		
-		resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
+		resultado = manager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
 		assertEquals("Sem cargo ID=2", historico1Colaborador1.getFaixaSalarial().getCargo().getId() , ((HistoricoColaborador) resultado.toArray()[0]).getFaixaSalarial().getCargo().getId());
 
 		cargosIds = new String[] {"1","2"};
 		areasIds = new String[] {"4"};
 		estabelecimentosIds = new String[] {"5","6"};
 		
-		resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
+		resultado = manager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
 		assertEquals("Sem área ID=3", historico1Colaborador2.getAreaOrganizacional().getId() , ((HistoricoColaborador) resultado.toArray()[0]).getAreaOrganizacional().getId());
 		
 		cargosIds = new String[] {"1","2"};
 		areasIds = new String[] {"3","4"};
 		estabelecimentosIds = new String[] {"5"};
 		
-		resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
+		resultado = manager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
 		assertEquals("Sem estabelecimento ID=6", historico1Colaborador1.getEstabelecimento().getId() , ((HistoricoColaborador) resultado.toArray()[0]).getEstabelecimento().getId());
 		
 
@@ -532,7 +529,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findByCargosIds").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(historicos));
 
-		assertEquals(2, historicoColaboradorManager.findByCargosIds(0,0,cargosIds,null, 1L).size());
+		assertEquals(2, manager.findByCargosIds(0,0,cargosIds,null, 1L).size());
 	}
 
 	public void testFindByGrupoOcupacionalIdsPaginado()
@@ -559,7 +556,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findByGrupoOcupacionalIds").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(historicos));
 
-		assertEquals(2, historicoColaboradorManager.findByGrupoOcupacionalIds(0,0,grupoOcupacionalIds_,1L).size());
+		assertEquals(2, manager.findByGrupoOcupacionalIds(0,0,grupoOcupacionalIds_,1L).size());
 	}
 	
 //	public void testGetPromocoes()
@@ -674,7 +671,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		historicoColaboradorDao.expects(once()).method("getPromocoes").will(returnValue(situacoes));
 		
-		Map<Character, Collection<Object[]>> promocoes = historicoColaboradorManager.montaPromocoesHorizontalEVertical(DateUtil.criarDataMesAno(01, 01, 2000), DateUtil.criarDataMesAno(01, 05, 2000), empresa.getId(), null);
+		Map<Character, Collection<Object[]>> promocoes = manager.montaPromocoesHorizontalEVertical(DateUtil.criarDataMesAno(01, 01, 2000), DateUtil.criarDataMesAno(01, 05, 2000), empresa.getId(), null);
 		
 		int qtdHorizontal = 0;
 		for (Object[] promocaoHorizontal : promocoes.get('H'))
@@ -787,7 +784,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areaOrganizacionals)).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(garagem.getId())).will(returnValue(garagem));
 		
-		List<SituacaoColaborador> retorno = historicoColaboradorManager.getColaboradoresSemReajuste(null, null, DateUtil.criarDataMesAno(02, 02, 2002), empresa.getId(), 12);
+		List<SituacaoColaborador> retorno = manager.getColaboradoresSemReajuste(null, null, DateUtil.criarDataMesAno(02, 02, 2002), empresa.getId(), 12);
 		assertEquals(6, retorno.size());
 		assertEquals(joao, retorno.get(0).getColaborador());
 		assertEquals(garagem, retorno.get(0).getAreaOrganizacional());
@@ -827,7 +824,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicos.add(hc2);
 		historicos.add(hc3);
 
-		Collection<HistoricoColaborador> colhfRetorno = historicoColaboradorManager.findDistinctFuncao(historicos);
+		Collection<HistoricoColaborador> colhfRetorno = manager.findDistinctFuncao(historicos);
 
 		assertEquals(2, colhfRetorno.size());
 		assertFalse(colhfRetorno.contains(hc2));
@@ -841,7 +838,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findByColaboradorData").with(ANYTHING,ANYTHING).will(returnValue(historicoColaboradors));
 
-		assertEquals(1, historicoColaboradorManager.findByColaboradorData(1L,new Date()).size());
+		assertEquals(1, manager.findByColaboradorData(1L,new Date()).size());
 	}
 
 	public void testGetHistoricoAnterior()
@@ -851,7 +848,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("getHistoricoAnterior").with(ANYTHING).will(returnValue(historicoColaborador));
 
-		assertEquals(historicoColaborador.getId(), historicoColaboradorManager.getHistoricoAnterior(historicoColaborador).getId());
+		assertEquals(historicoColaborador.getId(), manager.getHistoricoAnterior(historicoColaborador).getId());
 	}
 
 	public void testInserirPeriodos()
@@ -866,7 +863,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicos.add(h1);
 		historicos.add(h2);
 
-		assertEquals(2, historicoColaboradorManager.inserirPeriodos(historicos).size());
+		assertEquals(2, manager.inserirPeriodos(historicos).size());
 	}
 
 	public void testFindDistinctAmbienteFuncao()
@@ -901,7 +898,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicos.add(h2);
 		historicos.add(h3);
 
-		assertEquals(2, historicoColaboradorManager.findDistinctAmbienteFuncao(historicos).size());
+		assertEquals(2, manager.findDistinctAmbienteFuncao(historicos).size());
 	}
 
 	public void testExisteHistoricoData()
@@ -915,17 +912,17 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findByData").with(ANYTHING, ANYTHING).will(returnValue(historicos));
 
-		assertTrue(historicoColaboradorManager.existeHistoricoData(historicoColaborador));
+		assertTrue(manager.existeHistoricoData(historicoColaborador));
 
 		historicoColaboradorDao.expects(once()).method("findByData").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<HistoricoColaborador>()));
 
-		assertFalse(historicoColaboradorManager.existeHistoricoData(historicoColaborador));	}
+		assertFalse(manager.existeHistoricoData(historicoColaborador));	}
 
 	public void testMontaTipoSalarioValor()
 	{
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.VALOR);
-		assertEquals("Por Valor", historicoColaboradorManager.montaTipoSalario(0.0, historicoColaborador.getTipoSalario(), ""));
+		assertEquals("Por Valor", manager.montaTipoSalario(0.0, historicoColaborador.getTipoSalario(), ""));
 	}
 
 	public void testMontaTipoSalarioIndice()
@@ -936,14 +933,14 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.INDICE);
 		historicoColaborador.setIndice(indice);
-		assertEquals("Por Índice (2.0 x Salario Mínimo)", historicoColaboradorManager.montaTipoSalario(2.0, historicoColaborador.getTipoSalario(), historicoColaborador.getIndice().getNome()));
+		assertEquals("Por Índice (2.0 x Salario Mínimo)", manager.montaTipoSalario(2.0, historicoColaborador.getTipoSalario(), historicoColaborador.getIndice().getNome()));
 	}
 
 	public void testMontaTipoSalarioCargo()
 	{
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.CARGO);
-		assertEquals("Por Cargo", historicoColaboradorManager.montaTipoSalario(2.0, historicoColaborador.getTipoSalario(), ""));
+		assertEquals("Por Cargo", manager.montaTipoSalario(2.0, historicoColaborador.getTipoSalario(), ""));
 	}
 
 	public void testFindByColaboradorProjection()
@@ -952,7 +949,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findByColaboradorProjection").with(eq(colaborador.getId()), ANYTHING).will(returnValue(HistoricoColaboradorFactory.getCollection()));
 
-		assertNotNull(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), null));
+		assertNotNull(manager.findByColaboradorProjection(colaborador.getId(), null));
 	}
 
 	public void testFindByColaborador()
@@ -981,7 +978,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			retorno = historicoColaboradorManager.findByColaborador(colaborador.getId(), empresa.getId());
+			retorno = manager.findByColaborador(colaborador.getId(), empresa.getId());
 		}
 		catch (Exception e)
 		{
@@ -1013,7 +1010,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findHistoricosByTabelaReajuste").with(eq(tabelaReajusteColaborador.getId())).will(returnValue(historicos));
 
-		Collection<TSituacao> situacoes = historicoColaboradorManager.findHistoricosByTabelaReajuste(tabelaReajusteColaborador.getId(), empresa);
+		Collection<TSituacao> situacoes = manager.findHistoricosByTabelaReajuste(tabelaReajusteColaborador.getId(), empresa);
 
 		TSituacao situacao = (TSituacao)situacoes.toArray()[0];
 
@@ -1050,7 +1047,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Double salarioColaborador = 5333.00;
 
 		//Para Cargo
-		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManager.ajustaTipoSalario(historico, TipoAplicacaoIndice.CARGO, indice, quantidadeIndice, salarioColaborador);
+		HistoricoColaborador historicoColaboradorRetorno = manager.ajustaTipoSalario(historico, TipoAplicacaoIndice.CARGO, indice, quantidadeIndice, salarioColaborador);
 
 		assertEquals(TipoAplicacaoIndice.CARGO, historicoColaboradorRetorno.getTipoSalario());
 		assertEquals(null, historicoColaboradorRetorno.getIndice());
@@ -1058,7 +1055,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		assertEquals(0.0, historicoColaboradorRetorno.getQuantidadeIndice());
 
 		//Para Valor
-		historicoColaboradorRetorno = historicoColaboradorManager.ajustaTipoSalario(historico, TipoAplicacaoIndice.VALOR, indice, quantidadeIndice, salarioColaborador);
+		historicoColaboradorRetorno = manager.ajustaTipoSalario(historico, TipoAplicacaoIndice.VALOR, indice, quantidadeIndice, salarioColaborador);
 
 		assertEquals(TipoAplicacaoIndice.VALOR, historicoColaboradorRetorno.getTipoSalario());
 		assertEquals(null, historicoColaboradorRetorno.getIndice());
@@ -1066,7 +1063,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		assertEquals(0.0, historicoColaboradorRetorno.getQuantidadeIndice());
 
 		//Para Indice
-		historicoColaboradorRetorno = historicoColaboradorManager.ajustaTipoSalario(historico, TipoAplicacaoIndice.INDICE, indice, quantidadeIndice, salarioColaborador);
+		historicoColaboradorRetorno = manager.ajustaTipoSalario(historico, TipoAplicacaoIndice.INDICE, indice, quantidadeIndice, salarioColaborador);
 
 		assertEquals(TipoAplicacaoIndice.INDICE, historicoColaboradorRetorno.getTipoSalario());
 		assertEquals(indice, historicoColaboradorRetorno.getIndice());
@@ -1098,7 +1095,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
 
-		Collection<HistoricoColaborador> retorno = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), empresa.getId());
+		Collection<HistoricoColaborador> retorno = manager.progressaoColaborador(colaborador.getId(), empresa.getId());
 		assertEquals(1, retorno.size());
 	}
 
@@ -1144,7 +1141,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
 
-		Collection<HistoricoColaborador> retorno = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), empresa.getId());
+		Collection<HistoricoColaborador> retorno = manager.progressaoColaborador(colaborador.getId(), empresa.getId());
 		assertEquals(2, retorno.size());
 	}
 
@@ -1184,7 +1181,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
 
-		Collection<HistoricoColaborador> retorno = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), empresa.getId());
+		Collection<HistoricoColaborador> retorno = manager.progressaoColaborador(colaborador.getId(), empresa.getId());
 		assertEquals(6, retorno.size());
 	}
 
@@ -1195,7 +1192,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		historicoColaboradorDao.expects(once()).method("findByIdProjection").with(eq(historicoColaborador.getId())).will(returnValue(historicoColaborador));
 		
-		HistoricoColaborador retorno = historicoColaboradorManager.findByIdProjection(historicoColaborador.getId());
+		HistoricoColaborador retorno = manager.findByIdProjection(historicoColaborador.getId());
 		
 		assertNull(retorno.getReajusteColaborador());
 	}
@@ -1210,7 +1207,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		historicoColaboradorDao.expects(once()).method("findByIdProjection").with(eq(historicoColaborador.getId())).will(returnValue(historicoColaborador));
 		
-		HistoricoColaborador retorno = historicoColaboradorManager.findByIdProjection(historicoColaborador.getId());
+		HistoricoColaborador retorno = manager.findByIdProjection(historicoColaborador.getId());
 		
 		assertNull(retorno.getReajusteColaborador());
 	}
@@ -1224,7 +1221,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		historicoColaboradorDao.expects(once()).method("findByIdProjection").with(eq(historicoColaborador.getId())).will(returnValue(historicoColaborador));
 		
-		HistoricoColaborador retorno = historicoColaboradorManager.findByIdProjection(historicoColaborador.getId());
+		HistoricoColaborador retorno = manager.findByIdProjection(historicoColaborador.getId());
 		
 		assertEquals(reajusteColaborador.getId(), retorno.getReajusteColaborador().getId());
 	}
@@ -1268,7 +1265,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa, true);
+			manager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa, true);
 		}
 		catch (Exception e)
 		{
@@ -1298,7 +1295,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa, true);
+			manager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa, true);
 		}
 		catch (Exception e)
 		{
@@ -1328,7 +1325,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCancelamentoSituacao").with(eq(situacao), eq(mensagem), eq(historicoColaborador)).isVoid();
 		solicitacaoManager.expects(once()).method("atualizaStatusSolicitacaoByColaborador").with(eq(colaborador), eq(StatusCandidatoSolicitacao.APROMOVER), eq(false)).isVoid();
 		
-		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManager.cancelarSituacao(situacao, mensagem);
+		HistoricoColaborador historicoColaboradorRetorno = manager.cancelarSituacao(situacao, mensagem);
 
 		assertEquals(historicoColaborador, historicoColaboradorRetorno);
 	}
@@ -1367,7 +1364,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCancelamentoSituacao").with(eq(situacao), eq(mensagem), eq(historicoColaborador)).isVoid();
 		solicitacaoManager.expects(once()).method("atualizaStatusSolicitacaoByColaborador").with(eq(colaborador), eq(StatusCandidatoSolicitacao.APROMOVER), eq(false)).isVoid();
 		
-		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManager.cancelarSituacao(situacao, mensagem);
+		HistoricoColaborador historicoColaboradorRetorno = manager.cancelarSituacao(situacao, mensagem);
 
 		assertEquals(historicoColaborador, historicoColaboradorRetorno);
 	}
@@ -1398,7 +1395,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findPendenciasByHistoricoColaborador").withAnyArguments().will(returnValue(historicoColaboradors));
 
-		Collection<PendenciaAC> pendenciaACs = historicoColaboradorManager.findPendenciasByHistoricoColaborador(1L);
+		Collection<PendenciaAC> pendenciaACs = manager.findPendenciasByHistoricoColaborador(1L);
 
 		assertEquals(2, pendenciaACs.size());
 		PendenciaAC pendenciaAC1 = (PendenciaAC) pendenciaACs.toArray()[0];
@@ -1455,7 +1452,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			historicoColaboradorManager.updateHistorico(historicoColaborador, empresa);
+			manager.updateHistorico(historicoColaborador, empresa);
 		}
 		catch (Exception e)
 		{
@@ -1503,7 +1500,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			historicoColaboradorManager.insertHistorico(historicoColaborador, empresa);
+			manager.insertHistorico(historicoColaborador, empresa);
 		}
 		catch (Exception e)
 		{
@@ -1534,7 +1531,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			historicoColaboradorManager.insertHistorico(historicoColaborador, empresa);
+			manager.insertHistorico(historicoColaborador, empresa);
 		}
 		catch (Exception e)
 		{
@@ -1590,7 +1587,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			historicoColaboradorManager.updateHistorico(historicoColaborador, empresa);
+			manager.updateHistorico(historicoColaborador, empresa);
 		}
 		catch (Exception e)
 		{
@@ -1626,7 +1623,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			historicoColaboradorManager.updateHistorico(historicoColaborador, empresa);
+			manager.updateHistorico(historicoColaborador, empresa);
 		}
 		catch (Exception e)
 		{
@@ -1642,7 +1639,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findByIdHQL").with(eq(historicoColaborador.getId())).will(returnValue(historicoColaborador));
 
-		assertEquals(historicoColaborador, historicoColaboradorManager.findByIdHQL(historicoColaborador.getId()));
+		assertEquals(historicoColaborador, manager.findByIdHQL(historicoColaborador.getId()));
 	}
 
 	public void testAlterouDadosIntegradoAC()
@@ -1674,7 +1671,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorBanco.setSalario(2323.0D);
 		historicoColaboradorBanco.setGfip(CodigoGFIP._00);
 
-		assertEquals(false, historicoColaboradorManager.alterouDadosIntegradoAC(historicoColaboradorTela, historicoColaboradorBanco));
+		assertEquals(false, manager.alterouDadosIntegradoAC(historicoColaboradorTela, historicoColaboradorBanco));
 	}
 
 	public void testAlterouDadosIntegradoACArea()
@@ -1694,7 +1691,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorBanco.setAreaOrganizacional(areaOrganizacionalBanco);
 		historicoColaboradorBanco.setGfip(CodigoGFIP._00);
 
-		assertEquals(true, historicoColaboradorManager.alterouDadosIntegradoAC(historicoColaboradorTela, historicoColaboradorBanco));
+		assertEquals(true, manager.alterouDadosIntegradoAC(historicoColaboradorTela, historicoColaboradorBanco));
 	}
 
 	public void testAlterouDadosIntegradoACQuantidadeIndice()
@@ -1729,7 +1726,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorBanco.setIndice(indice);
 		historicoColaboradorBanco.setQuantidadeIndice(2D);
 
-		assertEquals(true, historicoColaboradorManager.alterouDadosIntegradoAC(historicoColaboradorTela, historicoColaboradorBanco));
+		assertEquals(true, manager.alterouDadosIntegradoAC(historicoColaboradorTela, historicoColaboradorBanco));
 	}
 
 	public void testAlterouDadosIntegradoACQuantidadeIndiceOk()
@@ -1766,7 +1763,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorBanco.setQuantidadeIndice(3D);
 		historicoColaboradorBanco.setSalario(null);
 
-		assertEquals(false, historicoColaboradorManager.alterouDadosIntegradoAC(historicoColaboradorTela, historicoColaboradorBanco));
+		assertEquals(false, manager.alterouDadosIntegradoAC(historicoColaboradorTela, historicoColaboradorBanco));
 	}
 
 	public void testAlterouDadosIntegradoACValor()
@@ -1798,7 +1795,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorBanco.setTipoSalario(TipoAplicacaoIndice.VALOR);
 		historicoColaboradorBanco.setSalario(2323.0D);
 
-		assertEquals(true, historicoColaboradorManager.alterouDadosIntegradoAC(historicoColaboradorTela, historicoColaboradorBanco));
+		assertEquals(true, manager.alterouDadosIntegradoAC(historicoColaboradorTela, historicoColaboradorBanco));
 	}
 
 	public void testAlterouDadosIntegradoACCancelado()
@@ -1808,7 +1805,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		HistoricoColaborador historicoColaboradorBanco = HistoricoColaboradorFactory.getEntity(2L);
 		historicoColaboradorBanco.setStatus(StatusRetornoAC.CANCELADO);
 
-		assertEquals(true, historicoColaboradorManager.alterouDadosIntegradoAC(historicoColaboradorTela, historicoColaboradorBanco));
+		assertEquals(true, manager.alterouDadosIntegradoAC(historicoColaboradorTela, historicoColaboradorBanco));
 	}
 
 	public void testSetStatus()
@@ -1817,7 +1814,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("setStatus").with(eq(historicoColaborador.getId()), eq(true)).will(returnValue(true));
 
-		assertTrue(historicoColaboradorManager.setStatus(historicoColaborador.getId(), true));
+		assertTrue(manager.setStatus(historicoColaborador.getId(), true));
 	}
 
 	public void testFindByAC()
@@ -1832,7 +1829,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorDao.expects(once()).method("findByAC").with(eq(dataFormatada), eq(situacao.getEmpregadoCodigoAC()),	eq(situacao.getEmpresaCodigoAC()), ANYTHING)
 			.will(returnValue(historicoColaborador));
 
-		assertEquals(historicoColaborador, historicoColaboradorManager.findByAC(dataFormatada, situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), ""));
+		assertEquals(historicoColaborador, manager.findByAC(dataFormatada, situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), ""));
 	}
 
 	public void testAjustaAmbienteFuncao()
@@ -1844,7 +1841,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaborador.setAmbiente(ambiente);
 		historicoColaborador.setFuncao(funcao);
 
-		historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
+		manager.ajustaAmbienteFuncao(historicoColaborador);
 
 		assertNull(historicoColaborador.getAmbiente());
 		assertNull(historicoColaborador.getFuncao());
@@ -1859,7 +1856,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaborador.setAmbiente(ambiente);
 		historicoColaborador.setFuncao(funcao);
 
-		historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
+		manager.ajustaAmbienteFuncao(historicoColaborador);
 
 		assertNull(historicoColaborador.getAmbiente());
 		assertNull(historicoColaborador.getFuncao());
@@ -1870,7 +1867,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
 		historicoColaboradorDao.expects(once()).method("getPrimeiroHistorico").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
-		historicoColaboradorManager.getPrimeiroHistorico(colaborador.getId());
+		manager.getPrimeiroHistorico(colaborador.getId());
 		
 	}
 
@@ -1887,7 +1884,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findHistoricoAprovado").with(eq(historicoColaborador.getId()), eq(colaborador.getId())).will(returnValue(historicoColaboradors));
 
-		boolean retorno = historicoColaboradorManager.existeHistoricoAprovado(historicoColaborador.getId(), colaborador.getId());
+		boolean retorno = manager.existeHistoricoAprovado(historicoColaborador.getId(), colaborador.getId());
 
 		assertTrue(retorno);
 	}
@@ -1902,7 +1899,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findColaboradorCodigoAC").with(eq(historicoColaborador.getId())).will(returnValue(colaborador.getCodigoAC()));
 
-		String retorno = historicoColaboradorManager.findColaboradorCodigoAC(historicoColaborador.getId());
+		String retorno = manager.findColaboradorCodigoAC(historicoColaborador.getId());
 
 		assertEquals(colaborador.getCodigoAC(), retorno);
 	}
@@ -1916,7 +1913,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("getHistoricoAtual").with(eq(colaborador.getId()), eq(TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO)).will(returnValue(historicoColaborador));
 
-		HistoricoColaborador retorno = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
+		HistoricoColaborador retorno = manager.getHistoricoAtualOuFuturo(colaborador.getId());
 
 		assertEquals(historicoColaborador.getId(), retorno.getId());
 	}
@@ -1932,7 +1929,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("getHistoricoContratacaoAguardando").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
 
-		HistoricoColaborador retorno = historicoColaboradorManager.getHistoricoContratacaoAguardando(colaborador.getId());
+		HistoricoColaborador retorno = manager.getHistoricoContratacaoAguardando(colaborador.getId());
 
 		assertEquals(historicoColaborador.getId(), retorno.getId());
 	}
@@ -1949,21 +1946,21 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("getPrimeiroHistorico").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
 
-		assertEquals(true, historicoColaboradorManager.verificaDataPrimeiroHistorico(colaborador));
+		assertEquals(true, manager.verificaDataPrimeiroHistorico(colaborador));
 
 		//Mesma data
 		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(02, 02, 2000));
 		historicoColaborador.setData(DateUtil.criarDataMesAno(02, 02, 2000));
 
 		historicoColaboradorDao.expects(once()).method("getPrimeiroHistorico").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
-		assertEquals(false, historicoColaboradorManager.verificaDataPrimeiroHistorico(colaborador));
+		assertEquals(false, manager.verificaDataPrimeiroHistorico(colaborador));
 
 		//Historico depois da data de admissao
 		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(01, 01, 1999));
 		historicoColaborador.setData(DateUtil.criarDataMesAno(02, 02, 2000));
 
 		historicoColaboradorDao.expects(once()).method("getPrimeiroHistorico").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
-		assertEquals(false, historicoColaboradorManager.verificaDataPrimeiroHistorico(colaborador));
+		assertEquals(false, manager.verificaDataPrimeiroHistorico(colaborador));
 	}
 
 	public void testVerificaPrimeiroHistoricoAdmissao()
@@ -1976,20 +1973,20 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 1999));
 		historicoColaborador.setColaborador(colaborador);
 
-		assertEquals(true, historicoColaboradorManager.verificaPrimeiroHistoricoAdmissao(true, historicoColaborador, colaborador));
+		assertEquals(true, manager.verificaPrimeiroHistoricoAdmissao(true, historicoColaborador, colaborador));
 
 		//Historico depois da data de admissao, editarHistorico = true
 		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(01, 01, 1999));
 		historicoColaborador.setData(DateUtil.criarDataMesAno(02, 02, 2000));
 
-		assertEquals(false, historicoColaboradorManager.verificaPrimeiroHistoricoAdmissao(true, historicoColaborador, colaborador));
+		assertEquals(false, manager.verificaPrimeiroHistoricoAdmissao(true, historicoColaborador, colaborador));
 
 		//Historico depois da data de admissao, editarHistorico = false
 		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(01, 01, 1999));
 		historicoColaborador.setData(DateUtil.criarDataMesAno(02, 02, 2000));
 
 		historicoColaboradorDao.expects(once()).method("getPrimeiroHistorico").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
-		assertEquals(false, historicoColaboradorManager.verificaPrimeiroHistoricoAdmissao(false, historicoColaborador, colaborador));
+		assertEquals(false, manager.verificaPrimeiroHistoricoAdmissao(false, historicoColaborador, colaborador));
 	}
 
 	public void testUpdateSituacao() throws Exception
@@ -2011,7 +2008,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
 		historicoColaboradorDao.expects(once()).method("update").with(ANYTHING);
 
-		HistoricoColaborador retorno = historicoColaboradorManager.updateSituacao(situacao);
+		HistoricoColaborador retorno = manager.updateSituacao(situacao);
 
 		assertEquals(historicoColaborador.getId(), retorno.getId());
 	}
@@ -2033,7 +2030,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
 
-		HistoricoColaborador historicoColaborador = historicoColaboradorManager.prepareSituacao(situacao);
+		HistoricoColaborador historicoColaborador = manager.prepareSituacao(situacao);
 		assertEquals(historicoColaborador.getMotivo(), MotivoHistoricoColaborador.IMPORTADO);
 		assertEquals(historicoColaborador.getStatus(), StatusRetornoAC.CONFIRMADO);
 	}
@@ -2065,7 +2062,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaborador.setSalario(null);
 		historicoColaborador.setQuantidadeIndice(null);
 
-		TSituacao situacao = historicoColaboradorManager.bindSituacao(historicoColaborador, "");
+		TSituacao situacao = manager.bindSituacao(historicoColaborador, "");
 
 		assertEquals(areaOrganizacional.getCodigoAC(), situacao.getLotacaoCodigoAC());
 		assertEquals(estabelecimento.getCodigoAC(), situacao.getEstabelecimentoCodigoAC());
@@ -2087,7 +2084,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaborador.setSalario(null);
 		historicoColaborador.setQuantidadeIndice(2.0);
 
-		situacao = historicoColaboradorManager.bindSituacao(historicoColaborador, "");
+		situacao = manager.bindSituacao(historicoColaborador, "");
 
 		assertEquals(areaOrganizacional.getCodigoAC(), situacao.getLotacaoCodigoAC());
 		assertEquals(estabelecimento.getCodigoAC(), situacao.getEstabelecimentoCodigoAC());
@@ -2109,7 +2106,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaborador.setSalario(123.45);
 		historicoColaborador.setQuantidadeIndice(null);
 
-		situacao = historicoColaboradorManager.bindSituacao(historicoColaborador, "empresaCodigoAC");
+		situacao = manager.bindSituacao(historicoColaborador, "empresaCodigoAC");
 
 		assertEquals(areaOrganizacional.getCodigoAC(), situacao.getLotacaoCodigoAC());
 		assertEquals(estabelecimento.getCodigoAC(), situacao.getEstabelecimentoCodigoAC());
@@ -2131,7 +2128,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		historicoColaboradorDao.expects(once()).method("findHistoricoAdmissao").with(eq(1L)).will(returnValue(historicoColaborador));
 		
-		assertTrue(historicoColaboradorManager.verifyDataHistoricoAdmissao(1L));
+		assertTrue(manager.verifyDataHistoricoAdmissao(1L));
 	}
 	
 	public void testFindAllByColaborador()
@@ -2149,7 +2146,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		historicoColaboradorDao.expects(once()).method("findAllByColaborador").with(eq(1L)).will(returnValue(historicoColaboradors));
 		
-		assertEquals(2, historicoColaboradorManager.findAllByColaborador(1L).size());
+		assertEquals(2, manager.findAllByColaborador(1L).size());
 	}
 	
 	public void testGetHistoricosComAmbienteEFuncao()
@@ -2165,7 +2162,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		ambienteManager.expects(once()).method("findByEstabelecimento").with(eq(new Long[]{1L})).will(returnValue(new ArrayList<Ambiente>()));
 		funcaoManager.expects(once()).method("findByCargo").with(eq(1L)).will(returnValue(new ArrayList<Funcao>()));
 		
-		assertEquals(1, historicoColaboradorManager.getHistoricosComAmbienteEFuncao(1L).size());
+		assertEquals(1, manager.getHistoricosComAmbienteEFuncao(1L).size());
 	}
 	
 	public void testUpdateAmbientesEFuncoes() throws Exception
@@ -2183,7 +2180,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorDao.expects(once()).method("updateAmbienteEFuncao").will(returnValue(true));
 		historicoColaboradorDao.expects(once()).method("updateAmbienteEFuncao").will(returnValue(true));
 		
-		historicoColaboradorManager.updateAmbientesEFuncoes(historicoColaboradors);
+		manager.updateAmbientesEFuncoes(historicoColaboradors);
 	}
 	public void testUpdateAmbientesEFuncoesException()
 	{
@@ -2202,7 +2199,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		Exception exception = null;
 		try {
-			historicoColaboradorManager.updateAmbientesEFuncoes(historicoColaboradors);
+			manager.updateAmbientesEFuncoes(historicoColaboradors);
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -2222,7 +2219,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Date dataFim = new Date();
 		Long[] estabelecimentosIds = new Long[]{1L};
 		Long[] areasIds = new Long[]{1L};
-		historicoColaboradorManager.montaRelatorioSituacoes(1L, dataIni, dataFim, estabelecimentosIds, areasIds, "RH", 'A', false);
+		manager.montaRelatorioSituacoes(1L, dataIni, dataFim, estabelecimentosIds, areasIds, "RH", 'A', false);
 	}
 	
 	public void testExisteDependenciaComHistoricoIndiceComNenhumHistoricoIndice() 
@@ -2232,7 +2229,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		indiceHistoricoManager.expects(once()).method("findToList").will(returnValue(new ArrayList<IndiceHistorico>()));
 		
-		boolean existeDependencia = historicoColaboradorManager.existeDependenciaComHistoricoIndice(dataHistoricoExcluir, indiceId);
+		boolean existeDependencia = manager.existeDependenciaComHistoricoIndice(dataHistoricoExcluir, indiceId);
 		
 		assertFalse(existeDependencia);
 	}
@@ -2248,7 +2245,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		indiceHistoricoManager.expects(once()).method("findToList").will(returnValue(indiceHistoricos));
 		historicoColaboradorDao.expects(once()).method("existeDependenciaComHistoricoIndice").with(eq(dataHistoricoExcluir), NULL, eq(indiceId)) .will(returnValue(true));
 		
-		boolean existeDependencia = historicoColaboradorManager.existeDependenciaComHistoricoIndice(dataHistoricoExcluir, indiceId);
+		boolean existeDependencia = manager.existeDependenciaComHistoricoIndice(dataHistoricoExcluir, indiceId);
 		
 		assertTrue(existeDependencia);
 	}
@@ -2268,7 +2265,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		indiceHistoricoManager.expects(once()).method("findToList").will(returnValue(indiceHistoricos));
 		historicoColaboradorDao.expects(once()).method("existeDependenciaComHistoricoIndice").with(eq(dataHistoricoExcluir), eq(indiceHistorico2.getData()), eq(indiceId)) .will(returnValue(true));
 		
-		boolean existeDependencia = historicoColaboradorManager.existeDependenciaComHistoricoIndice(dataHistoricoExcluir, indiceId);
+		boolean existeDependencia = manager.existeDependenciaComHistoricoIndice(dataHistoricoExcluir, indiceId);
 		
 		assertTrue(existeDependencia);
 	}
@@ -2334,7 +2331,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("findByIdProjection").with(eq(area2.getId())).will(returnValue(area2));
 		areaOrganizacionalManager.expects(once()).method("getDescendentes").with(eq(areasOrganizacionais), eq(area2.getId()), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
 
-		Map<Character, Collection<DataGrafico>> promocoes = historicoColaboradorManager.montaPromocoesHorizontalEVerticalPorArea(DateUtil.criarDataMesAno(01, 01, 2000), DateUtil.criarDataMesAno(01, 05, 2000), empresa.getId(), somenteAreasFilhas, new Long[]{areaMae1.getId(), area2.getId()});
+		Map<Character, Collection<DataGrafico>> promocoes = manager.montaPromocoesHorizontalEVerticalPorArea(DateUtil.criarDataMesAno(01, 01, 2000), DateUtil.criarDataMesAno(01, 05, 2000), empresa.getId(), somenteAreasFilhas, new Long[]{areaMae1.getId(), area2.getId()});
 		
 		Collection<DataGrafico> promocaoHorizontal = promocoes.get('H');
 		Collection<DataGrafico> promocaovertical = promocoes.get('V');
@@ -2395,7 +2392,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("findByIdProjection").with(eq(areaMae1.getId())).will(returnValue(areaMae1));
 		areaOrganizacionalManager.expects(once()).method("getDescendentes").with(eq(areasOrganizacionais), eq(area1.getId()), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
 		
-		Map<Character, Collection<DataGrafico>> promocoes = historicoColaboradorManager.montaPromocoesHorizontalEVerticalPorArea(DateUtil.criarDataMesAno(01, 01, 2000), DateUtil.criarDataMesAno(01, 05, 2000), empresa.getId(), somenteAreasFilhas, new Long[]{areaMae1.getId()});
+		Map<Character, Collection<DataGrafico>> promocoes = manager.montaPromocoesHorizontalEVerticalPorArea(DateUtil.criarDataMesAno(01, 01, 2000), DateUtil.criarDataMesAno(01, 05, 2000), empresa.getId(), somenteAreasFilhas, new Long[]{areaMae1.getId()});
 		
 		Collection<DataGrafico> promocaoHorizontal = promocoes.get('H');
 		Collection<DataGrafico> promocaovertical = promocoes.get('V');
@@ -2405,5 +2402,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		assertEquals("AreaMae1 > Area1", ((DataGrafico) promocaovertical.toArray()[0]).getLabel());
 		assertEquals(1.0, ((DataGrafico) promocaovertical.toArray()[0]).getData());
+	}
+
+	public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(historicoColaboradorDao);
 	}
 }

@@ -2,6 +2,7 @@ package com.fortes.rh.test.factory.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.model.sesmt.OrdemDeServico;
 
@@ -19,6 +20,15 @@ public class OrdemDeServicoFactory
 		OrdemDeServico ordemDeServico = getEntity();
 		ordemDeServico.setId(id);
 
+		return ordemDeServico;
+	}
+	
+	public static OrdemDeServico getEntity(Long id, Date data, boolean impressa)
+	{
+		OrdemDeServico ordemDeServico = getEntity();
+		ordemDeServico.setId(id);
+		ordemDeServico.setData(data);
+		ordemDeServico.setImpressa(impressa);
 		return ordemDeServico;
 	}
 

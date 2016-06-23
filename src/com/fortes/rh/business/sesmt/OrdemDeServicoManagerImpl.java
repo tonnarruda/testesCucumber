@@ -27,8 +27,8 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 		return getDao().findOrdemServicoProjection(id);
 	}
 	
-	public OrdemDeServico montaOrdemDeServico(Colaborador colaborador, Empresa empresa, Date dataOdemDeServico) {
-		colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador, dataOdemDeServico);
+	public OrdemDeServico montaOrdemDeServico(Long colaboradorId, Empresa empresa, Date dataOdemDeServico) {
+		Colaborador colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaboradorId, dataOdemDeServico);
 
 		OrdemDeServico ordemDeServico = new OrdemDeServico();
 		ordemDeServico.setAtividades(colaborador.getFuncao().getHistoricoAtual().getDescricao());

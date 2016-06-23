@@ -89,7 +89,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		setTotalSize(ordemDeServicoManager.getCount(new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}));
-		colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador, new Date());
+		colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador.getId(), new Date());
 		ordensDeServico = ordemDeServicoManager.find(getPage(), getPagingSize(), new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}, new String[]{"data"});
 		ordemDeServicoAtual = ordemDeServicoManager.findUltimaOrdemDeServico(colaborador.getId());
 		return Action.SUCCESS;
@@ -113,7 +113,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	
 	public String prepareInsert() throws Exception
 	{
-		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(colaborador, getEmpresaSistema(), new Date());
+		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(colaborador.getId(), getEmpresaSistema(), new Date());
 		
 		OrdemDeServico ordemDeServico = ordemDeServicoManager.findUltimaOrdemDeServico(colaborador.getId()); 
 		if(ordemDeServico != null)

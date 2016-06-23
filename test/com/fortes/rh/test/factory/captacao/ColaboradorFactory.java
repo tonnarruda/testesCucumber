@@ -145,4 +145,13 @@ public class ColaboradorFactory
 		
 		return colaborador;
 	}
+	
+	public static Colaborador getEntity(Boolean desligado, Date dataAdmissao, Date dataDesligamento){
+		Colaborador colaborador = getEntity();
+		colaborador.setDesligado(desligado);
+		colaborador.setDataAdmissao(dataAdmissao);
+		colaborador.setDataDesligamento(dataDesligamento);
+		
+		return colaborador;
+	}
 }

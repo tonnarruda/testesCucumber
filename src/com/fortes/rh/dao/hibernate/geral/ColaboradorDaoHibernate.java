@@ -5222,7 +5222,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 	
-	public Colaborador findComDadosBasicosParaOrdemDeServico(Colaborador colaborador, Date dataOrdemDeServico){
+	public Colaborador findComDadosBasicosParaOrdemDeServico(Long colaboradorId, Date dataOrdemDeServico){
 		
 		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(dataOrdemDeServico, StatusRetornoAC.CONFIRMADO);
 		
@@ -5249,7 +5249,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));	
 		criteria.add(Property.forName("hf.data").eq(subQueryHf));	
-		criteria.add(Expression.eq("c.id", colaborador.getId()));
+		criteria.add(Expression.eq("c.id", colaboradorId));
 		
 		criteria.setProjection(Projections.distinct(p));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));

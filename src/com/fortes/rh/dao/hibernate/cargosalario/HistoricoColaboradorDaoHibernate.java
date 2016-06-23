@@ -1552,7 +1552,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 
-	public HistoricoColaborador historicoColaboradorByData(Long colaboradorId, Date data) {
+	public HistoricoColaborador findHistoricoColaboradorByData(Long colaboradorId, Date data) {
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
 							.setProjection(Projections.max("hc2.data"))
 							.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))

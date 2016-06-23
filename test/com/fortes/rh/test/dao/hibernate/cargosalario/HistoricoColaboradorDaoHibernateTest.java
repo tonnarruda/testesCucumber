@@ -2187,6 +2187,25 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		
 		assertFalse("Histórico do colaborador com outro índice", existeDependencia);
 	}
+	
+	
+	public void testHistoricoColaboradorByData() {
+		Colaborador colaborador = ColaboradorFactory.getEntity(false, DateUtil.criarDataMesAno(1, 1, 2016), null);
+		colaboradorDao.save(colaborador);
+		
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(null, colaborador, funcao, DateUtil.criarDataMesAno(1, 1, 2016));
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(null, colaborador, funcao, DateUtil.criarDataMesAno(1, 5, 2016));
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		HistoricoColaborador historicoColaboradorRetornadoDoBanco = historicoColaboradorDao.findHistoricoColaboradorByData(colaborador.getId(), DateUtil.criarDataMesAno(1, 5, 2016));
+		
+		assertEquals(historicoColaborador2.getId(), historicoColaboradorRetornadoDoBanco.getId());
+	}
 
 	private void criaHistoricoColaborador(Indice indice, Date dataPrimeiroHistoricoIndice, int tipoSalario, int status, boolean criaNovoHistorico)
 	{

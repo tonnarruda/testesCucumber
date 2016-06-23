@@ -79,12 +79,12 @@ public class OrdemDeServicoManagerTest
 	public void montaOrdemDeServicoComIdNulo() {
 		Date dataOS = DateUtil.criarDataMesAno(1, 1, 2016);
 		
-		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador, dataOS)).thenReturn(colaborador);
+		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador.getId(), dataOS)).thenReturn(colaborador);
 		when(riscoFuncaoManager.riscosByHistoricoFuncao(colaborador.getFuncao().getHistoricoAtual())).thenReturn(new ArrayList<RiscoFuncao>());
 		when(cursoManager.findByHistoricoFuncaoId(colaborador.getFuncao().getHistoricoAtual().getId())).thenReturn(new ArrayList<Curso>());
 		when(epiManager.findByHistoricoFuncao(colaborador.getFuncao().getHistoricoAtual().getId())).thenReturn(new ArrayList<Epi>());
 		
-		assertNull(ordemDeServicoManager.montaOrdemDeServico(colaborador, empresa, dataOS).getId());
+		assertNull(ordemDeServicoManager.montaOrdemDeServico(colaborador.getId(), empresa, dataOS).getId());
 	}
 	
 	@Test

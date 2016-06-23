@@ -164,7 +164,7 @@ public class OrdemDeServicoEditActionTest
 		action.setColaborador(colaborador);
 		
 		when(ordemDeServicoManager.getCount(new String[]{"colaborador.id"}, new Long[]{colaborador.getId()})).thenReturn(1);
-		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(eq(colaborador), any(Date.class))).thenReturn(colaborador);
+		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(eq(colaborador.getId()), any(Date.class))).thenReturn(colaborador);
 		when(ordemDeServicoManager.find(action.getPage(), action.getPagingSize(), new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}, new String[]{"data"})).thenReturn(Arrays.asList(OrdemDeServicoFactory.getEntity()));
 		when(ordemDeServicoManager.findUltimaOrdemDeServico(colaborador.getId())).thenReturn(new OrdemDeServico());
 		
@@ -175,7 +175,7 @@ public class OrdemDeServicoEditActionTest
 	public void prepareInsert() throws Exception
 	{
 		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
-		when(ordemDeServicoManager.montaOrdemDeServico(any(Colaborador.class), any(Empresa.class), any(Date.class))).thenReturn(ordemDeServico);
+		when(ordemDeServicoManager.montaOrdemDeServico(anyLong(), any(Empresa.class), any(Date.class))).thenReturn(ordemDeServico);
 		assertEquals("success", action.prepareInsert());
 	}
 	
@@ -200,7 +200,7 @@ public class OrdemDeServicoEditActionTest
 		action.setColaborador(colaborador);
 		
 		when(ordemDeServicoManager.getCount(new String[]{"colaborador.id"}, new Long[]{colaborador.getId()})).thenReturn(1);
-		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(eq(colaborador), any(Date.class))).thenReturn(colaborador);
+		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(eq(colaborador.getId()), any(Date.class))).thenReturn(colaborador);
 		when(ordemDeServicoManager.find(action.getPage(), action.getPagingSize(), new String[]{"colaborador.id"}, new Long[]{colaborador.getId()}, new String[]{"data"})).thenReturn(Arrays.asList(OrdemDeServicoFactory.getEntity()));
 		when(ordemDeServicoManager.findUltimaOrdemDeServico(colaborador.getId())).thenReturn(ordemDeServico);
 		assertEquals("success", action.delete());
@@ -224,7 +224,7 @@ public class OrdemDeServicoEditActionTest
 		action.setOrdemDeServico(ordemDeServico);
 		
 		when(ordemDeServicoManager.save(ordemDeServico)).thenThrow(Exception.class);
-		when(ordemDeServicoManager.montaOrdemDeServico(any(Colaborador.class), any(Empresa.class), any(Date.class))).thenReturn(ordemDeServico);
+		when(ordemDeServicoManager.montaOrdemDeServico(anyLong(), any(Empresa.class), any(Date.class))).thenReturn(ordemDeServico);
 		
 		assertEquals("input", action.insert());
 		assertEquals("Ocorreu um erro ao gravar a ordem de serviço.",action.getActionErrors().iterator().next());

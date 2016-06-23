@@ -18,15 +18,10 @@
 
 			function repopularOrdemDeServico()
 			{
-				var ordemDeServicoId = 0;
-				<#if ordemDeServico.id?exists>
-					ordemDeServicoId = ${ordemDeServico.id}
-				</#if>
-				
 				var dataValida =  validaDate($('#dataOS')[0]) && $('#dataOS').val() != "  /  /    " &&  $('#dataOS').val() != "";
 				if(dataValida){
 					DWREngine.setErrorHandler(errorRecarregaDadosOrdemDeServico);
-					OrdemDeServicoDWR.recarregaDadosOrdemDeServico(repopularOrdemDeServicoByDados, ordemDeServicoId, ${ordemDeServico.colaborador.id}, ${empresaSistema.id}, $('#dataOS').val());
+					OrdemDeServicoDWR.recarregaDadosOrdemDeServico(repopularOrdemDeServicoByDados, ${ordemDeServico.colaborador.id}, ${empresaSistema.id}, $('#dataOS').val());
 				}
 				else
 					jAlert("Informe uma data válida");
