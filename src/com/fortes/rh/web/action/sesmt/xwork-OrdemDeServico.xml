@@ -42,7 +42,7 @@
 			</result>
 		</action>
 		<action name="visualizar" class="com.fortes.rh.web.action.sesmt.OrdemDeServicoEditAction" method="visualizar">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/ordemDeServicoEdit.ftl</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/visualizarOrdemDeServico.ftl</result>
 		</action>
 	</package>
 </xwork>

@@ -5164,6 +5164,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("co.id"),"id");
 		p.add(Projections.property("co.nome"),"nome");
 		p.add(Projections.property("co.pessoal.cpf"),"colaboradorCPF");
+		p.add(Projections.property("co.dataDesligamento"),"dataDesligamento");
 		p.add(Projections.property("hc.funcao.id"),"funcaoId");
 		
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");

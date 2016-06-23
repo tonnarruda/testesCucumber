@@ -47,6 +47,8 @@
 	<@ww.actionmessage />
 
 	<#include "../util/topFiltro.ftl" />
+
+
 	<@ww.form name="form" id="form" action="listGerenciamentoOS.action" method="POST">
 		<table>
 				<tr>
@@ -70,17 +72,29 @@
 	</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
+	
+	<p align="right">
+		<span style="background-color: #e36f6f;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Colaboradores Desligados&nbsp;&nbsp;
+		<span style="background-color: #002EB8;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Colaboradores sem função no cadastro de seu último histórico
+	</p>
 
 	<@display.table name="colaboradores" id="colaborador" class="dados">
+		<#assign style=""/>
+		
 		<@display.column title="Ações" class="acao" style="width:95px";>
 			<#if colaborador.funcao?exists && colaborador.funcao.id?exists>
 				<@frt.link href="list.action?colaborador.id=${colaborador.id}" imgTitle="Ordens de Serviço(OS)" imgName="folhaCheia.gif"/>
 			<#else>
+				<#assign style="color:#002EB8;"/>
 				<@frt.link href="list.action?colaborador.id=${colaborador.id}" imgTitle="Colaborador sem função no histórico." imgName="folhaCheia.gif" disabled=true />
 			</#if>
 		</@display.column>
-		<@display.column property="nome" title="Colaborador"/>
-		<@display.column property="pessoal.cpf" title="CPF"/>
+
+		<#if colaborador.dataDesligamento?exists>
+			<#assign style="color:#e36f6f;"/>
+		</#if> 
+		<@display.column property="nome" title="Colaborador" style="${style};"/>
+		<@display.column property="pessoal.cpf" title="CPF" style="${style};"/>
 
 	</@display.table>
 

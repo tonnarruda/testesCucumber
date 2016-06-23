@@ -81,7 +81,7 @@
 				<@frt.link href="#" imgTitle="Não é permitida a edição pois a ordem de serviço já foi impressa." imgName="edit.gif" disabled=true />
 				<@frt.link href="imprimir.action?ordemDeServico.id=${ordemDeServico.id}" imgTitle="Imprimir" imgName="printer.gif"/>
 			<#else>
-				<@frt.link href="visualizar.action?ordemDeServico.id=${ordemDeServico.id}" id="editar${ordemDeServico.id}" imgTitle="Visualização permitida somente após a primeira impressão da ordem de serviço" imgName="olho.jpg" disabled=true />
+				<@frt.link href="visualizar.action?ordemDeServico.id=${ordemDeServico.id}" id="editar${ordemDeServico.id}" imgTitle="Visualização permitida somente após a primeira impressão da ordem de serviço" imgName="olho.jpg"/>
 				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?ordemDeServico.id=${ordemDeServico.id}&colaborador.id=${colaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<@frt.link href="prepareUpdate.action?ordemDeServico.id=${ordemDeServico.id}" id="editar${ordemDeServico.id}" imgTitle="Editar" imgName="edit.gif"/>
 				<@frt.link href="javascript:avisoAoImprimirOSPelaPrimeiraVez('${ordemDeServico.nomeColaborador}', '${ordemDeServico.nomeFuncao}', '${ordemDeServico.dataFormatada}', '${ordemDeServico.id}')" imgTitle="Imprimir" imgName="printer.gif"/>
@@ -100,11 +100,7 @@
 		<#if (ordemDeServicoAtual?exists && ordemDeServicoAtual.impressa) || !ordemDeServicoAtual?exists> 
 			<button class="btnInserir" onclick="window.location='prepareInsert.action?colaborador.id=${colaborador.id}'"></button>
 		<#else>
-		<@ww.form name="form" action="prepareUpdate.action" method="POST" >
-			<@ww.hidden name="ordemDeServico.id" value="${ordemDeServicoAtual.id}" />
-			<@ww.hidden name="ordemDeServico.data" value="${ordemDeServicoAtual.data}" />
-			<button class="btnEditar" title="Editar última ordem de serviço" type="submit"  style="float: left;"></button>
-		</@ww.form>
+			<button class="btnInserir" disabled="disabled" style="opacity: 0.4" title="Não é posspivel inserir uma nova OS, pois existe uma OS em aberto e não impressa"></button>
 		</#if>
 		
 		<button onclick="window.location='listGerenciamentoOS.action'" class="btnVoltar"></button>
