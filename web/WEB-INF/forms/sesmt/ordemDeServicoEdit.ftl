@@ -10,10 +10,10 @@
 	
 		
 		<script type="text/javascript">
-			var dataUltimaDataValida = "";
+			var ultimaDataValida = "";
 
 			$(function(){
-				dataUltimaDataValida = $('#dataOS').val();
+				ultimaDataValida = $('#dataOS').val();
 			});
 
 			function repopularOrdemDeServico()
@@ -22,14 +22,18 @@
 				<#if ordemDeServico.id?exists>
 					ordemDeServicoId = ${ordemDeServico.id}
 				</#if>
-				var data = $('#dataOS').val();
 				
-				DWREngine.setErrorHandler(errorRecarregaDadosOrdemDeServico);
-				OrdemDeServicoDWR.recarregaDadosOrdemDeServico(repopularOrdemDeServicoByDados, ordemDeServicoId, ${ordemDeServico.colaborador.id}, ${empresaSistema.id}, $('#dataOS').val());
+				var dataValida =  validaDate($('#dataOS')[0]) && $('#dataOS').val() != "  /  /    " &&  $('#dataOS').val() != "";
+				if(dataValida){
+					DWREngine.setErrorHandler(errorRecarregaDadosOrdemDeServico);
+					OrdemDeServicoDWR.recarregaDadosOrdemDeServico(repopularOrdemDeServicoByDados, ordemDeServicoId, ${ordemDeServico.colaborador.id}, ${empresaSistema.id}, $('#dataOS').val());
+				}
+				else
+					jAlert("Informe uma data válida");
 			}
 			
 			function repopularOrdemDeServicoByDados(dados){
-				dataUltimaDataValida = $('#dataOS').val();
+				ultimaDataValida = $('#dataOS').val();
 				$('#nomeColaboradorOS').text(dados["nomeColaborador"]);
 				$('#dataAdmissaoFormatadaOS').text(dados["dataAdmisaoColaboradorFormatada"]);
 				$('#nomeFuncaoOS').text(dados["nomeFuncao"]);
@@ -45,7 +49,7 @@
 			}
 			
 			function errorRecarregaDadosOrdemDeServico(msg){
-				$('#dataOS').val(dataUltimaDataValida);
+				$('#dataOS').val(ultimaDataValida);
 				jAlert(msg);
 			}
 		</script>	

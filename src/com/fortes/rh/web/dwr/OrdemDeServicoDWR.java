@@ -21,7 +21,7 @@ public class OrdemDeServicoDWR {
 		
 		try {
 			validaDataOrdemDeServico(colaboradorId, DateUtil.criarDataDiaMesAno(dataOrdemDeServico));
-			checaDataUltimaOrdemDeServico(colaboradorId, DateUtil.criarDataDiaMesAno(dataOrdemDeServico));
+			checaDataUltimaOrdemDeServicoImpressa(colaboradorId, DateUtil.criarDataDiaMesAno(dataOrdemDeServico));
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
@@ -48,7 +48,7 @@ public class OrdemDeServicoDWR {
 				throw new Exception("Não é possível inserir uma ordem de serviço com data posterior a data de desligamento do colaborador.");
 	}
 	
-	private void checaDataUltimaOrdemDeServico(Long colaboradorId, Date dataOrdemDeServico) throws Exception{
+	private void checaDataUltimaOrdemDeServicoImpressa(Long colaboradorId, Date dataOrdemDeServico) throws Exception{
 		OrdemDeServico ordemDeServico = ordemDeServicoManager.findUltimaOrdemDeServico(colaboradorId);
 		if(ordemDeServico != null && dataOrdemDeServico.before(ordemDeServico.getData()))
 			throw new Exception("Não é possível inserir uma ordem de serviço.</br></br>A data informada está inferior a data da última Ordem de Serviço impressa."
