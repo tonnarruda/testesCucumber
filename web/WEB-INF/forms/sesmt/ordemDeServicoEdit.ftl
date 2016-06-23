@@ -74,15 +74,13 @@
 			<title>Editar Ordem de Serviço</title>
 			<#assign formAction="update.action"/>
 			<#assign dataOS = ordemDeServico.data?date/>
-			<#assign revisao = ordemDeServico.revisao>
 		<#else>
 			<title>Inserir Ordem de Serviço</title>
 			<#assign formAction="insert.action"/>
 			<#assign dataOS = dataDoDia?date>
-			<#assign revisao = ordemDeServico.revisao>
 		</#if>
 		
-		<#assign validarCampos="return validaFormulario('form', new Array())"/>
+		<#assign validarCampos="return validaFormulario('form', new Array('atividadesOS','riscosOS','episOS','medidasPreventivasOS','treinamentosOS','normasInternasOS','procedimentoEmCasoDeAcidenteOS','termoDeResponsabilidadeOS'), new Array('dataOS'));"/>
 	</head>
 	<body>
 		<@ww.actionerror />
@@ -97,6 +95,7 @@
 			<@ww.hidden name="ordemDeServico.normasInternas" />
 			<@ww.hidden name="ordemDeServico.procedimentoEmCasoDeAcidente" />
 			<@ww.hidden name="ordemDeServico.termoDeResponsabilidade" />
+			<@ww.hidden name="ordemDeServico.revisao" value="${revisao}"/>
 			<@ww.token/>
 			
 			<table>
@@ -106,7 +105,6 @@
 				<tr>	
 					<td> <span style="font-weight: bold;">Revisão: </span> <span style="margin-left: 4px;" id="nomeColaboradorOS">${revisao}</span> </td>
 				</tr>
-				
 				<tr>
 					<td width="250"> <span style="font-weight: bold;">Código CBO:</span> <span style="margin-left: 40px;" id="codigoCBOOS">${ordemDeServico.codigoCBO}</span> </td>
 					<td> <span style="font-weight: bold;">Colaborador:</span> <span style="margin-left: 4px;" id="nomeColaboradorOS">${ordemDeServico.nomeColaborador}</span> </td>
@@ -117,32 +115,32 @@
 				</tr>
 			</table>
 
-			</br><div class="divTitulo" align="center"><span class="titulo">ATIVIDADES DESENVOLVIDAS</span></div>
+			</br><div class="divTitulo" align="center"><span class="titulo">ATIVIDADES DESENVOLVIDAS*</span></div>
 			<@ww.textarea name="ordemDeServico.atividades" id="atividadesOS" required="true"/>
 
-			</br><div class="divTitulo" align="center"><span class="titulo">RISCO DA OPERAÇÃO</span></div>
+			</br><div class="divTitulo" align="center"><span class="titulo">RISCO DA OPERAÇÃO*</span></div>
 			<@ww.textarea name="ordemDeServico.riscos" id="riscosOS" required="true"/>
 			
-			</br><div class="divTitulo" align="center"><span class="titulo">EPI’S - USO OBRIGATÓRIO</span></div>
+			</br><div class="divTitulo" align="center"><span class="titulo">EPI’S - USO OBRIGATÓRIO*</span></div>
 			<@ww.textarea name="ordemDeServico.epis" id="episOS" required="true"/>
 			
-			</br><div class="divTitulo" align="center"><span class="titulo">MEDIDAS PREVENTIVAS</span></div>
+			</br><div class="divTitulo" align="center"><span class="titulo">MEDIDAS PREVENTIVAS*</span></div>
 			<@ww.textarea name="ordemDeServico.medidasPreventivas" required="true" id="medidasPreventivasOS"/>
 			
-			</br><div class="divTitulo" align="center"><span class="titulo">TREINAMENTO(S) NECESSÁRIO(S)</span></div>
+			</br><div class="divTitulo" align="center"><span class="titulo">TREINAMENTO(S) NECESSÁRIO(S)*</span></div>
 			<@ww.textarea name="ordemDeServico.treinamentos" required="true" id="treinamentosOS"/>
 			
-			</br><div class="divTitulo" align="center"><span class="titulo">NORMAS INTERNAS</span></div>
-			<@ww.textarea name="ordemDeServico.normasInternas" id="normasInternasOS"/>
+			</br><div class="divTitulo" align="center"><span class="titulo">NORMAS INTERNAS*</span></div>
+			<@ww.textarea name="ordemDeServico.normasInternas" id="normasInternasOS" required="true"/>
 			
-			</br><div class="divTitulo" align="center"><span class="titulo">PROCEDIMENTO EM CASO DE ACIDENTE DE TRABALHO</span></div>
-			<@ww.textarea name="ordemDeServico.procedimentoEmCasoDeAcidente" id="procedimentoEmCasoDeAcidenteOS"/>
+			</br><div class="divTitulo" align="center"><span class="titulo">PROCEDIMENTO EM CASO DE ACIDENTE DE TRABALHO*</span></div>
+			<@ww.textarea name="ordemDeServico.procedimentoEmCasoDeAcidente" id="procedimentoEmCasoDeAcidenteOS" required="true"/>
 			
 			</br><div class="divTitulo" align="center"><span class="titulo">INFORMAÇÕES ADICIONAIS</span></div>
-			<@ww.textarea name="ordemDeServico.informacoesAdicionais" id="informacoesAdicionaisOS" required="false"/>
+			<@ww.textarea name="ordemDeServico.informacoesAdicionais" id="informacoesAdicionaisOS"/>
 			
-			</br><div class="divTitulo" align="center"><span class="titulo">TERMO DE RESPONSABILIDADE</span></div>
-			<@ww.textarea name="ordemDeServico.termoDeResponsabilidade" id="termoDeResponsabilidadeOS"/>
+			</br><div class="divTitulo" align="center"><span class="titulo">TERMO DE RESPONSABILIDADE*</span></div>
+			<@ww.textarea name="ordemDeServico.termoDeResponsabilidade" id="termoDeResponsabilidadeOS" required="true"/>
 			
 		</@ww.form>
 	

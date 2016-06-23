@@ -9,11 +9,13 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>"></script>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+		.acao img{
+			margin: 1px; 
+		}
 	</style>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<script>
 		var processandoTime = "";
-	
 		function avisoAoImprimirOSPelaPrimeiraVez(colaboradorNome, funcaoNome, data, ordemDeServicoId)
 		{
 			msg = 'Após a impressão não será permidito editar ou excluír esta ordem de serviço.'
@@ -73,13 +75,13 @@
 		<@display.column title="Ações" class="acao" style="width:95px";>
 			<#if ordemDeServico.impressa>
 				<@frt.link href="visualizar.action?ordemDeServico.id=${ordemDeServico.id}" id="editar${ordemDeServico.id}" imgTitle="Visualizar" imgName="olho.jpg"/>
-				<@frt.link href="#" imgTitle="Não é permitida a exclusão pois a ordem de serviço já foi impressa." imgName="delete.gif" disabled=true/>
 				<@frt.link href="#" imgTitle="Não é permitida a edição pois a ordem de serviço já foi impressa." imgName="edit.gif" disabled=true />
+				<@frt.link href="#" imgTitle="Não é permitida a exclusão pois a ordem de serviço já foi impressa." imgName="delete.gif" disabled=true/>
 				<@frt.link href="imprimir.action?ordemDeServico.id=${ordemDeServico.id}" imgTitle="Imprimir" imgName="printer.gif"/>
 			<#else>
 				<@frt.link href="visualizar.action?ordemDeServico.id=${ordemDeServico.id}" id="editar${ordemDeServico.id}" imgTitle="Visualização permitida somente após a primeira impressão da ordem de serviço" imgName="olho.jpg"/>
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?ordemDeServico.id=${ordemDeServico.id}&colaborador.id=${colaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<@frt.link href="prepareUpdate.action?ordemDeServico.id=${ordemDeServico.id}" id="editar${ordemDeServico.id}" imgTitle="Editar" imgName="edit.gif"/>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?ordemDeServico.id=${ordemDeServico.id}&colaborador.id=${colaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<@frt.link href="javascript:avisoAoImprimirOSPelaPrimeiraVez('${ordemDeServico.nomeColaborador}', '${ordemDeServico.nomeFuncao}', '${ordemDeServico.dataFormatada}', '${ordemDeServico.id}')" imgTitle="Imprimir" imgName="printer.gif"/>
 			</#if>
 		</@display.column>

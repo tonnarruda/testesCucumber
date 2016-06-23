@@ -151,21 +151,24 @@
 			</tr>
 		</table>
 		</br>
-		<table>
-			<tr>
-				<td colspan = "2" align="center" valign="middle">
-					<span class="titulo">INFORMAÇÕES ADICIONAIS</span>
-				</td>
-			</tr>
-		</table>
-		<table class="bordas" >
-			<tr>
-				<td colspan = "2">
-					${ordemDeServico.informacoesAdicionais?replace('\n','</br>')}
-				</td>
-			</tr>
-		</table>
-		</br>
+		
+		<#if ordemDeServico.informacoesAdicionais?exists && ordemDeServico.informacoesAdicionais != "">
+			<table>
+				<tr>
+					<td colspan = "2" align="center" valign="middle">
+						<span class="titulo">INFORMAÇÕES ADICIONAIS</span>
+					</td>
+				</tr>
+			</table>
+			<table class="bordas" >
+				<tr>
+					<td colspan = "2">
+						${ordemDeServico.informacoesAdicionais?replace('\n','</br>')}
+					</td>
+				</tr>
+			</table>
+			</br>
+		</#if>
 		<table>
 			<tr>
 				<td colspan = "2" align="center" valign="middle">

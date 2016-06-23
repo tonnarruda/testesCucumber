@@ -53,7 +53,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	private String situacao = SituacaoColaborador.ATIVO;
 	private String filtroOrdemDeServico = FiltroOrdemDeServico.TODOS;
 	private OrdemDeServico ordemDeServicoAtual;
-	private Integer revisao;
+	private Integer revisao = 1;
 
 	public String listGerenciamentoOS() throws Exception
 	{
@@ -113,12 +113,18 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	public String prepareInsert() throws Exception
 	{
 		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(colaborador, getEmpresaSistema(), new Date());
+		
+		OrdemDeServico ordemDeServico = ordemDeServicoManager.findUltimaOrdemDeServico(colaborador.getId()); 
+		if(ordemDeServico != null)
+			revisao = ordemDeServico.getRevisao() + 1; 
+		
 		return Action.SUCCESS;
 	}
 
 	public String prepareUpdate() throws Exception
 	{
 		ordemDeServico = ordemDeServicoManager.findOrdemServicoProjection(ordemDeServico.getId());
+		revisao = ordemDeServico.getRevisao();
 		return Action.SUCCESS;
 	}
 
@@ -296,7 +302,6 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
-
 
 	public Integer getRevisao() {
 		return revisao;
