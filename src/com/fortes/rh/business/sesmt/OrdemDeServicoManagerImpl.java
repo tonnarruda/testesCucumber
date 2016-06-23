@@ -27,26 +27,16 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 		return getDao().findOrdemServicoProjection(id);
 	}
 	
-	public OrdemDeServico montaOrdemDeServico(OrdemDeServico ordemDeServico, Colaborador colaborador, Empresa empresa, Date dataOdemDeServico) {
-		
-		if(ordemDeServico != null && ordemDeServico.getId() != null){
-			ordemDeServico = getDao().findOrdemServicoProjection(ordemDeServico.getId());
-			if (!ordemDeServico.isImpressa()){
-				colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(ordemDeServico.getColaborador(), dataOdemDeServico);
-				montaDadosProvenientesDoColaborador(ordemDeServico, colaborador);
-				montaDadosProvenienteDaEmpresa(ordemDeServico, empresa);
-			}
-		}
-		else{
-			ordemDeServico = new OrdemDeServico();
-			colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador, dataOdemDeServico);
-			ordemDeServico.setAtividades(colaborador.getFuncao().getHistoricoAtual().getDescricao());
-			montaDadosProvenientesDoColaborador(ordemDeServico, colaborador);
-			montaDadosProvenienteDaEmpresa(ordemDeServico, empresa);
-			montaListaRiscosEMedidasPreventivas(ordemDeServico, colaborador.getFuncao().getHistoricoAtual()); 
-			montaListaEpi(ordemDeServico, colaborador.getFuncao().getHistoricoAtual());
-			montaListaTreinamentos(ordemDeServico, colaborador.getFuncao().getHistoricoAtual());
-		}
+	public OrdemDeServico montaOrdemDeServico(Colaborador colaborador, Empresa empresa, Date dataOdemDeServico) {
+		colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador, dataOdemDeServico);
+
+		OrdemDeServico ordemDeServico = new OrdemDeServico();
+		ordemDeServico.setAtividades(colaborador.getFuncao().getHistoricoAtual().getDescricao());
+		montaDadosProvenientesDoColaborador(ordemDeServico, colaborador);
+		montaDadosProvenienteDaEmpresa(ordemDeServico, empresa);
+		montaListaRiscosEMedidasPreventivas(ordemDeServico, colaborador.getFuncao().getHistoricoAtual()); 
+		montaListaEpi(ordemDeServico, colaborador.getFuncao().getHistoricoAtual());
+		montaListaTreinamentos(ordemDeServico, colaborador.getFuncao().getHistoricoAtual());
 		return ordemDeServico;
 	}
 

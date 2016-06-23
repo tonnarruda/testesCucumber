@@ -23,6 +23,8 @@ public class OrdemDeServicoDaoHibernateTest extends GenericDaoHibernateTest<Orde
 		colaboradorDao.save(colaborador);
 		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity();
 		ordemDeServico.setColaborador(colaborador);
+		ordemDeServico.setRevisao(1);
+		ordemDeServico.setData(new Date());
 		return ordemDeServico;
 	}
 
@@ -45,7 +47,7 @@ public class OrdemDeServicoDaoHibernateTest extends GenericDaoHibernateTest<Orde
 	public void testFindOrdemServicoProjection(){
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Teste");
 		colaboradorDao.save(colaborador);
-		OrdemDeServico ordemDeServico = saveOrdemDeServico(colaborador, 1.0, new Date());
+		OrdemDeServico ordemDeServico = saveOrdemDeServico(colaborador, 1, new Date());
 		
 		OrdemDeServico ordemDeServicoDoBanco = ordemDeServicoDao.findOrdemServicoProjection(ordemDeServico.getId());
 		assertEquals(ordemDeServico.getId(), ordemDeServicoDoBanco.getId());
@@ -56,14 +58,14 @@ public class OrdemDeServicoDaoHibernateTest extends GenericDaoHibernateTest<Orde
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Teste");
 		colaboradorDao.save(colaborador);
 		
-		saveOrdemDeServico(colaborador, 1.0, new Date());
-		OrdemDeServico ordemDeServico2 = saveOrdemDeServico(colaborador, 2.0, new Date());
+		saveOrdemDeServico(colaborador, 1, new Date());
+		OrdemDeServico ordemDeServico2 = saveOrdemDeServico(colaborador, 2, new Date());
 		
 		OrdemDeServico ordemDeServicoDoBanco = ordemDeServicoDao.ultimaOrdemDeServico(colaborador.getId());
 		assertEquals(ordemDeServico2.getRevisao(), ordemDeServicoDoBanco.getRevisao());
 	}
 	
-	private OrdemDeServico saveOrdemDeServico(Colaborador colaborador, Double revisao, Date dataOS){
+	private OrdemDeServico saveOrdemDeServico(Colaborador colaborador, Integer revisao, Date dataOS){
 		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity();
 		ordemDeServico.setColaborador(colaborador);
 		ordemDeServico.setNomeColaborador(colaborador.getNome());

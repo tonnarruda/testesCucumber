@@ -37,7 +37,7 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	@Temporal(TemporalType.DATE)
 	private Date data;
 	
-	private Double revisao; 
+	private Integer revisao; 
 	
 	@Lob
 	private String atividades;
@@ -131,11 +131,11 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 		return "";
 	}
 	
-	public Double getRevisao() {
+	public Integer getRevisao() {
 		return revisao;
 	}
 	
-	public void setRevisao(Double revisao) {
+	public void setRevisao(Integer revisao) {
 		this.revisao = revisao;
 	}
 	

@@ -53,6 +53,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	private String situacao = SituacaoColaborador.ATIVO;
 	private String filtroOrdemDeServico = FiltroOrdemDeServico.TODOS;
 	private OrdemDeServico ordemDeServicoAtual;
+	private Integer revisao;
 
 	public String listGerenciamentoOS() throws Exception
 	{
@@ -111,14 +112,13 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	
 	public String prepareInsert() throws Exception
 	{
-		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, getEmpresaSistema(), new Date());
+		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(colaborador, getEmpresaSistema(), new Date());
 		return Action.SUCCESS;
 	}
 
 	public String prepareUpdate() throws Exception
 	{
 		ordemDeServico = ordemDeServicoManager.findOrdemServicoProjection(ordemDeServico.getId());
-		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, getEmpresaSistema(), ordemDeServico.getData());
 		return Action.SUCCESS;
 	}
 
@@ -264,6 +264,11 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 		return DateUtil.formataDiaMesAno(new Date());
 	}
 	
+	public Integer getRevisao() {
+		return revisao;
+	}
+
+	
 	public void setOrdemDeServicoManager(OrdemDeServicoManager ordemDeServicoManager)
 	{
 		this.ordemDeServicoManager = ordemDeServicoManager;
@@ -292,7 +297,6 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	public void setCargoManager(CargoManager cargoManager) {
 		this.cargoManager = cargoManager;
 	}
-
 
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
 		this.usuarioEmpresaManager = usuarioEmpresaManager;

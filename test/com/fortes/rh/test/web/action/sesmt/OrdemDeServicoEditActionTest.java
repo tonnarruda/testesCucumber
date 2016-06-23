@@ -175,7 +175,7 @@ public class OrdemDeServicoEditActionTest
 	public void prepareInsert() throws Exception
 	{
 		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
-		when(ordemDeServicoManager.montaOrdemDeServico(any(OrdemDeServico.class), any(Colaborador.class), any(Empresa.class), any(Date.class))).thenReturn(ordemDeServico);
+		when(ordemDeServicoManager.montaOrdemDeServico(any(Colaborador.class), any(Empresa.class), any(Date.class))).thenReturn(ordemDeServico);
 		assertEquals("success", action.prepareInsert());
 	}
 	
@@ -185,7 +185,7 @@ public class OrdemDeServicoEditActionTest
 		OrdemDeServico ordemDeServico = OrdemDeServicoFactory.getEntity(1L);
 		ordemDeServico.setData(DateUtil.criarDataMesAno(1, 1, 2015));
 		action.setOrdemDeServico(ordemDeServico);
-		when(ordemDeServicoManager.montaOrdemDeServico(eq(action.getOrdemDeServico()), any(Colaborador.class), any(Empresa.class), eq(action.getOrdemDeServico().getData()))).thenReturn(ordemDeServico);
+		when(ordemDeServicoManager.findOrdemServicoProjection(ordemDeServico.getId())).thenReturn(ordemDeServico);
 		assertEquals("success", action.prepareUpdate());
 	}
 
@@ -224,7 +224,7 @@ public class OrdemDeServicoEditActionTest
 		action.setOrdemDeServico(ordemDeServico);
 		
 		when(ordemDeServicoManager.save(ordemDeServico)).thenThrow(Exception.class);
-		when(ordemDeServicoManager.montaOrdemDeServico(any(OrdemDeServico.class), any(Colaborador.class), any(Empresa.class), any(Date.class))).thenReturn(ordemDeServico);
+		when(ordemDeServicoManager.montaOrdemDeServico(any(Colaborador.class), any(Empresa.class), any(Date.class))).thenReturn(ordemDeServico);
 		
 		assertEquals("input", action.insert());
 		assertEquals("Ocorreu um erro ao gravar a ordem de serviço.",action.getActionErrors().iterator().next());

@@ -76,22 +76,6 @@ public class OrdemDeServicoManagerTest
 	}
 	
 	@Test
-	public void montaOrdemDeServicoComIdDiferenteDeNullEImpressa() {
-		ordemDeServico.setId(1L);
-		ordemDeServico.setImpressa(true);
-		when(ordemDeServicoDao.findOrdemServicoProjection(ordemDeServico.getId())).thenReturn(ordemDeServico);
-		assertEquals(ordemDeServico.getId(), ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, null, null, null).getId());
-	}
-	
-	@Test
-	public void montaOrdemDeServicoComIdDiferenteDeNullENaoImpressa() {
-		ordemDeServico.setId(1L);
-		when(ordemDeServicoDao.findOrdemServicoProjection(ordemDeServico.getId())).thenReturn(ordemDeServico);
-		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(ordemDeServico.getColaborador(), ordemDeServico.getData())).thenReturn(colaborador);
-		assertEquals(ordemDeServico.getId(), ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, null, empresa, ordemDeServico.getData()).getId());
-	}
-	
-	@Test
 	public void montaOrdemDeServicoComIdNulo() {
 		Date dataOS = DateUtil.criarDataMesAno(1, 1, 2016);
 		
@@ -100,7 +84,7 @@ public class OrdemDeServicoManagerTest
 		when(cursoManager.findByHistoricoFuncaoId(colaborador.getFuncao().getHistoricoAtual().getId())).thenReturn(new ArrayList<Curso>());
 		when(epiManager.findByHistoricoFuncao(colaborador.getFuncao().getHistoricoAtual().getId())).thenReturn(new ArrayList<Epi>());
 		
-		assertNull(ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, empresa, dataOS).getId());
+		assertNull(ordemDeServicoManager.montaOrdemDeServico(colaborador, empresa, dataOS).getId());
 	}
 	
 	@Test

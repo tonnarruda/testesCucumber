@@ -33,7 +33,7 @@ public class OrdemDeServicoDWR {
 		colaborador.setId(colaboradorId);
 		
 		Empresa empresa = empresaManager.findByIdProjection(empresaId); 
-		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(ordemDeServico, colaborador, empresa, DateUtil.criarDataDiaMesAno(dataOrdemDeServico));
+		ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(colaborador, empresa, DateUtil.criarDataDiaMesAno(dataOrdemDeServico));
 		return ordemDeServico;
 	}
 
