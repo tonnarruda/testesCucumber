@@ -14,10 +14,6 @@
 	<script>
 		var processandoTime = "";
 	
-		(function($) {
-			processandoTime = getCookieProcessando();		
-		});
-	
 		function avisoAoImprimirOSPelaPrimeiraVez(colaboradorNome, funcaoNome, data, ordemDeServicoId)
 		{
 			msg = 'Após a impressão não será permidito editar ou excluír esta ordem de serviço.'
@@ -30,9 +26,9 @@
 															    {
 															        text: "Imprimir",
 															        click: function() {
+															        	setTimeout("checkProcessandoTime()",500);
 																		window.location='imprimir.action?ordemDeServico.id='+ordemDeServicoId;	
 															        	$(this).dialog("close");	
-															        	setTimeout("checkProcessandoTime()",500);
 															        }
 															    },
 															    {
