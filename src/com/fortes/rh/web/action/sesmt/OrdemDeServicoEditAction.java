@@ -20,6 +20,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.OrdemDeServico;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
@@ -164,9 +165,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 		}
 		
    	   	parametros = new HashMap<String, Object>();
-    	parametros.put("LOGO", getEmpresaSistema().getLogoUrl());
-    	parametros.put("IMPRIMIR_INFO_ADICIONAIS", true);
-//    	parametros.put("IMPRIMIR_INFO_ADICIONAIS", ordemDeServico.isImprimirInfoAdicionais());
+    	parametros.put("LOGO", ArquivoUtil.getPathLogoEmpresa() + getEmpresaSistema().getLogoUrl());
 		return Action.SUCCESS;
 	}
 	

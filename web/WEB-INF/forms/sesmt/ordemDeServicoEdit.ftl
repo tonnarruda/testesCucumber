@@ -92,9 +92,6 @@
 			<@ww.hidden name="ordemDeServico.dataAdmisaoColaborador" />
 			<@ww.hidden name="ordemDeServico.nomeFuncao" />
 			<@ww.hidden name="ordemDeServico.codigoCBO" />
-			<@ww.hidden name="ordemDeServico.normasInternas" />
-			<@ww.hidden name="ordemDeServico.procedimentoEmCasoDeAcidente" />
-			<@ww.hidden name="ordemDeServico.termoDeResponsabilidade" />
 			<@ww.hidden name="ordemDeServico.revisao" value="${revisao}"/>
 			<@ww.token/>
 			
@@ -121,7 +118,7 @@
 			</br><div class="divTitulo" align="center"><span class="titulo">RISCO DA OPERAÇÃO*</span></div>
 			<@ww.textarea name="ordemDeServico.riscos" id="riscosOS" required="true"/>
 			
-			</br><div class="divTitulo" align="center"><span class="titulo">EPI’S - USO OBRIGATÓRIO*</span></div>
+			</br><div class="divTitulo" align="center"><span class="titulo">EQUIPAMENTOS DE PROTEÇAO INDIVIDUAL (EPI'S) - USO OBRIGATÓRIO*</span></div>
 			<@ww.textarea name="ordemDeServico.epis" id="episOS" required="true"/>
 			
 			</br><div class="divTitulo" align="center"><span class="titulo">MEDIDAS PREVENTIVAS*</span></div>

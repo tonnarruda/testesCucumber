@@ -60,8 +60,6 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	
 	private boolean impressa;
 	
-	private boolean imprimirInfoAdicionais;
-	
 	public Colaborador getColaborador() {
 		return colaborador;
 	}
@@ -224,13 +222,5 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 
 	public void setImpressa(boolean impressa) {
 		this.impressa = impressa;
-	}
-
-	public boolean isImprimirInfoAdicionais() {
-		return imprimirInfoAdicionais;
-	}
-
-	public void setImprimirInfoAdicionais(boolean imprimirInfoAdicionais) {
-		this.imprimirInfoAdicionais = imprimirInfoAdicionais;
 	}
 }

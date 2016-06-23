@@ -79,7 +79,7 @@
 		<table>
 			<tr>
 				<td colspan = "2" align="center" valign="middle">
-					<span class="titulo">EPI’S - USO OBRIGATÓRIO</span>
+					<span class="titulo">EQUIPAMENTOS DE PROTEÇAO INDIVIDUAL (EPI'S) - USO OBRIGATÓRIO</span>
 				</td>
 			</tr>
 		</table>
