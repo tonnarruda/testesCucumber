@@ -87,7 +87,7 @@ public class OrdemDeServicoManagerTest
 		Date dataOS = DateUtil.criarDataMesAno(1, 1, 2016);
 		
 		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador.getId(), dataOS)).thenReturn(colaborador);
-		when(historicoFuncaoManager.findByData(dataOS, null, colaborador.getFuncao().getId())).thenReturn(colaborador.getFuncao().getHistoricoAtual());
+		when(historicoFuncaoManager.findByFuncaoAndData(colaborador.getFuncao().getId(), dataOS)).thenReturn(colaborador.getFuncao().getHistoricoAtual());
 		when(riscoFuncaoManager.riscosByHistoricoFuncao(colaborador.getFuncao().getHistoricoAtual())).thenReturn(new ArrayList<RiscoFuncao>());
 		when(cursoManager.findByHistoricoFuncaoId(colaborador.getFuncao().getHistoricoAtual().getId())).thenReturn(new ArrayList<Curso>());
 		when(epiManager.findByHistoricoFuncao(colaborador.getFuncao().getHistoricoAtual().getId())).thenReturn(new ArrayList<Epi>());

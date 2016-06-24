@@ -35,7 +35,7 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 		montaDadosProvenienteDaEmpresa(ordemDeServico, empresa);
 		
 		if(colaborador.getFuncao() != null && colaborador.getFuncao().getId() !=null){
-			HistoricoFuncao historicoFuncao = historicoFuncaoManager.findByData(dataOdemDeServico, null, colaborador.getFuncao().getId());
+			HistoricoFuncao historicoFuncao = historicoFuncaoManager.findByFuncaoAndData(colaborador.getFuncao().getId(), dataOdemDeServico);
 			if(historicoFuncao != null && historicoFuncao.getId() != null){
 				ordemDeServico.setAtividades(historicoFuncao.getDescricao());
 				montaListaRiscosEMedidasPreventivas(ordemDeServico, historicoFuncao); 

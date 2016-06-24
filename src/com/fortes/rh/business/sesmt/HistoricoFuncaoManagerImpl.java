@@ -43,7 +43,7 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		this.funcaoManager = funcaoManager;
 	}
 
-	public void saveFuncaoHistorico(Funcao funcao, HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, String[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes) throws Exception
+	public void saveFuncaoHistorico(Funcao funcao, HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] cursosChecked, String[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -58,6 +58,9 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 			
 			CollectionUtil<Epi> collectionUtil = new CollectionUtil<Epi>(); 
 			historicoFuncao.setEpis(collectionUtil.convertArrayLongToCollection(Epi.class, episChecked));
+			
+			CollectionUtil<Curso> cursosCollectionUtil = new CollectionUtil<Curso>(); 
+			historicoFuncao.setCursos(cursosCollectionUtil.convertArrayLongToCollection(Curso.class, cursosChecked));
 			
 			Long[] riscosMarcados = LongUtil.arrayStringToArrayLong(riscoChecks);
 			
@@ -266,6 +269,10 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		return historicoFuncao;
 	}
 
+	public HistoricoFuncao findByFuncaoAndData(Long funcaoId, Date data) {
+		return getDao().findByFuncaoAndData(funcaoId, data);
+	}
+	
 	public Collection<Funcao> findByFuncoes(Date data, Long[] funcoesCheck) 
 	{
 		return getDao().findByFuncoes(data, funcoesCheck);

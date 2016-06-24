@@ -11,6 +11,7 @@ import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpiManager;
@@ -61,6 +62,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
 	private Mock exameManager;
 	private Mock epiManager;
 	private Mock riscoManager;
+	private Mock cursoManager;
 
     protected void setUp() throws Exception
     {
@@ -74,6 +76,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
         exameManager = new Mock(ExameManager.class);
         epiManager = new Mock(EpiManager.class);
         riscoManager = new Mock(RiscoManager.class);
+        cursoManager = new Mock(CursoManager.class);
 
         action = new FuncaoEditAction();
         action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
@@ -84,6 +87,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
         action.setExameManager((ExameManager) exameManager.proxy());
         action.setEpiManager((EpiManager) epiManager.proxy());
         action.setRiscoManager((RiscoManager) riscoManager.proxy());
+        action.setCursoManager((CursoManager) cursoManager.proxy());
 
         action.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
         action.setAmbienteManager((AmbienteManager) ambienteManager.proxy());
@@ -129,7 +133,8 @@ public class FuncaoEditActionTest extends MockObjectTestCase
     	exameManager.expects(once()).method("findByEmpresaComAsoPadrao").with(ANYTHING).will(returnValue(new ArrayList<Exame>()));
     	epiManager.expects(once()).method("populaCheckToEpi").with(eq(empresa.getId()), ANYTHING).will(returnValue(new ArrayList<Epi>()));
     	riscoManager.expects(once()).method("findRiscosFuncoesByEmpresa").with(eq(empresa.getId())).will(returnValue(new ArrayList<RiscoFuncao>()));
-
+    	cursoManager.expects(once()).method("populaCheckListCurso").with(eq(empresa.getId())).will(returnValue(new ArrayList<CheckBox>()));
+    	
     	assertEquals(action.prepareInsert(), "success");
     	assertEquals(action.getCargoTmp(), cargo);
     	assertEquals(action.getFuncao(), funcaoRetorno);
@@ -166,6 +171,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
     	epiManager.expects(once()).method("populaCheckToEpi").with(eq(empresa.getId()), ANYTHING).will(returnValue(new ArrayList<Epi>()));
     	cargoManager.expects(once()).method("findByIdProjection").with(eq(cargo.getId())).will(returnValue(cargo));
     	funcaoManager.expects(once()).method("findByIdProjection").with(eq(funcaoRetorno.getId())).will(returnValue(funcaoRetorno));
+    	cursoManager.expects(once()).method("populaCheckListCurso").with(eq(empresa.getId())).will(returnValue(new ArrayList<CheckBox>()));
     	historicoFuncaoManager.expects(once()).method("findToList").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoFuncaos));
 
     	assertEquals(action.prepareUpdate(), "success");
@@ -202,12 +208,15 @@ public class FuncaoEditActionTest extends MockObjectTestCase
     	Long[] episChecked = new Long[]{1L};
     	action.setEpisChecked(episChecked);
     	
+    	Long[] cursosChecked = new Long[]{1L};
+    	action.setCursosChecked(cursosChecked);
+    	
     	String[] riscoChecks = new String[]{"822", "823"};
     	Collection<RiscoFuncao> riscosFuncoes = RiscoFuncaoFactory.getCollection();
     	action.setRiscoChecks(riscoChecks);
 		action.setRiscosFuncoes(riscosFuncoes);
 
-    	historicoFuncaoManager.expects(once()).method("saveFuncaoHistorico").with(new Constraint[]{ eq(funcaoRetorno), eq(historicoFuncao), eq(examesChecked), eq(episChecked), eq(riscoChecks), eq(riscosFuncoes)});
+    	historicoFuncaoManager.expects(once()).method("saveFuncaoHistorico").with(new Constraint[]{ eq(funcaoRetorno), eq(historicoFuncao), eq(examesChecked), eq(episChecked), eq(cursosChecked), eq(riscoChecks), eq(riscosFuncoes)});
 
     	assertEquals(action.insert(), "success");
     }

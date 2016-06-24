@@ -74,29 +74,6 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		return criteria.list();
 	}
 
-//	public List getHistoricoNaData(Long empresaId, Date data)
-//	{
-//		String hql =   "select a.nome, f.nome, hf.descricao, e.nome, e.periodicidade" +
-//							" from HistoricoFuncao hf" +
-//						    " left join hf.funcao f"+
-//						    " left join hf.exames e"+
-//						    " left join f.cargo c"+
-//						    " left join c.areasOrganizacionais a"+
-//						    	" where c.empresa.id = :empresaId" +
-//						    	" and hf.data = (select max(hf2.data)"+
-//						    					" from HistoricoFuncao hf2"+
-//						    					" where hf2.funcao.id = hf.funcao.id"+
-//						    					" and hf2.data <= :dataHist)" +
-//						    	" order by a.nome, f.nome";
-//
-//		Query query = getSession().createQuery(hql);
-//		query.setLong("empresaId", empresaId);
-//		query.setDate("dataHist", data);
-//
-//		return query.list();
-//
-//	}
-
 	public void removeByFuncoes(Long[] funcaoIds)
 	{
 		String hql = "delete HistoricoFuncao where funcao.id in (:funcaoIds)";
@@ -255,4 +232,29 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		
 		return criteria.list();
 	}
+	
+	public HistoricoFuncao findByFuncaoAndData(Long funcaoId, Date data) {
+		DetachedCriteria subQueryHf = DetachedCriteria.forClass(HistoricoFuncao.class, "hf2")
+																.setProjection(Projections.max("hf2.data"))
+																.add(Restrictions.eq("hf2.funcao.id", funcaoId))
+																.add(Restrictions.le("hf2.data", data));
+		
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "hf");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("id"), "id");
+		p.add(Projections.property("descricao"), "descricao");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("hf.funcao.id", funcaoId));
+		criteria.add(Property.forName("hf.data").eq(subQueryHf));
+		
+		criteria.setMaxResults(1);
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return (HistoricoFuncao)criteria.uniqueResult();
+	}
+
 }

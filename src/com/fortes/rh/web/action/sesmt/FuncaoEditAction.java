@@ -7,6 +7,7 @@ import java.util.HashSet;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpiManager;
@@ -39,6 +40,7 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	private ExameManager exameManager;
 	private EpiManager epiManager;
 	private RiscoManager riscoManager;
+	private CursoManager cursoManager;
 
 	private Funcao funcao;
 	private Cargo cargoTmp;
@@ -70,6 +72,8 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	private Collection<CheckBox> examesCheckList = new HashSet<CheckBox>();
 	private Long[] episChecked;
 	private Collection<CheckBox> episCheckList = new HashSet<CheckBox>();
+	private Collection<CheckBox> cursosCheckList = new HashSet<CheckBox>();
+	private Long[] cursosChecked;
 
 	public String execute() throws Exception
 	{
@@ -84,6 +88,7 @@ public class FuncaoEditAction extends MyActionSupportEdit
 		Collection<Exame> exames = exameManager.findByEmpresaComAsoPadrao(getEmpresaSistema().getId());
 		examesCheckList = CheckListBoxUtil.populaCheckListBox(exames, "getId", "getNome");
 		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), true);
+		setCursosCheckList(cursoManager.populaCheckListCurso(getEmpresaSistema().getId()));
 	}
 
 	public String prepareInsert() throws Exception
@@ -125,7 +130,7 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	public String insert() throws Exception
 	{
 		funcao.setCargo(cargoTmp);
-		historicoFuncaoManager.saveFuncaoHistorico(funcao, historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes);
+		historicoFuncaoManager.saveFuncaoHistorico(funcao, historicoFuncao, examesChecked, episChecked, cursosChecked, riscoChecks, riscosFuncoes);
 
 		if(veioDoSESMT)
 			return "SUCESSO_VEIO_SESMT";
@@ -378,6 +383,17 @@ public class FuncaoEditAction extends MyActionSupportEdit
 		return episCheckList;
 	}
 
+	public void setCursosCheckList(Collection<CheckBox> cursosCheckList) {
+		this.cursosCheckList = cursosCheckList;
+	}
+	public Collection<CheckBox> getCursosCheckList() {
+		return cursosCheckList;
+	}
+
+	public void setCursosChecked(Long[] cursosChecked) {
+		this.cursosChecked = cursosChecked;
+	}
+
 	public void setEpisChecked(Long[] episChecked)
 	{
 		this.episChecked = episChecked;
@@ -411,6 +427,10 @@ public class FuncaoEditAction extends MyActionSupportEdit
 
 	public void setRiscoManager(RiscoManager riscoManager) {
 		this.riscoManager = riscoManager;
+	}
+
+	public void setCursoManager(CursoManager cursoManager) {
+		this.cursoManager = cursoManager;
 	}
 
 
