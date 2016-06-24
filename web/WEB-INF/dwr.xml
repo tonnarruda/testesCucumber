@@ -229,7 +229,9 @@
 		<convert converter="bean" match="com.fortes.rh.model.avaliacao.Avaliacao"/>
 		
 		<!-- SESMT -->
-		<convert converter="bean" match="com.fortes.rh.model.sesmt.OrdemDeServico"/>
+		<convert converter="bean" match="com.fortes.rh.model.sesmt.OrdemDeServico">
+			<param name="exclude" value="colaborador"/>
+		</convert>
     </allow>
 
 </dwr>
