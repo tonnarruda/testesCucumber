@@ -55,7 +55,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="validarCampos();" class="btnGravar" accesskey="${accessKey}"></button>
-		<button onclick="window.location='list.action'" class="btnCancelar" accesskey="V"></button>
+		<button onclick="javascript: executeLink('list.action');" class="btnCancelar" accesskey="V"></button>
 	</div>
 </body>
 </html>

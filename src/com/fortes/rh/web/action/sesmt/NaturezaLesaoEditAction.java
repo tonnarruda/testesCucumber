@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.sesmt.NaturezaLesaoManager;
 import com.fortes.rh.model.sesmt.NaturezaLesao;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -59,12 +60,12 @@ public class NaturezaLesaoEditAction extends MyActionSupportList
 		try
 		{
 			naturezaLesaoManager.remove(naturezaLesao.getId());
-			addActionMessage("Natureza da Lesão excluída com sucesso.");
+			addActionSuccess("Natureza da Lesão excluída com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir esta Natureza da Lesão.");
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta Natureza da Lesão.");
 		}
 
 		return list();

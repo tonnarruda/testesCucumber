@@ -17,6 +17,7 @@ import com.fortes.rh.model.sesmt.FasePcmat;
 import com.fortes.rh.model.sesmt.Obra;
 import com.fortes.rh.model.sesmt.Pcmat;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
@@ -159,7 +160,7 @@ public class PcmatEditAction extends MyActionSupportList
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir esse PCMAT.");
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esse PCMAT.");
 		}
 
 		return Action.SUCCESS;

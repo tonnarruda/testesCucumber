@@ -4,6 +4,7 @@
 <xwork>
 	<package name="Ppp" extends="default" namespace="/sesmt/ppp">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.PppEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/colaboradorPppList.ftl</result>
 		</action>
 		<action name="prepareRelatorio" class="com.fortes.rh.web.action.sesmt.PppEditAction" method="prepareRelatorio">

@@ -16,15 +16,15 @@
 				<tr>
 				<td style="width:882px;font-weight:bold;">Comissão de ${comissaoPeriodo.periodoFormatado}</td>
 				<td>
-					<a href="prepareUpdate.action?comissaoPeriodo.id=${comissaoPeriodo.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif?comissao.id=51"/>"></a>
+					<a href="javascript: executeLink('prepareUpdate.action?comissaoPeriodo.id=${comissaoPeriodo.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif?comissao.id=51"/>"></a>
 					
 					<#if comissaoPeriodo.permitirExcluir>
-						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?comissaoPeriodo.id=${comissaoPeriodo.id}&comissao.id=${comissao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?comissaoPeriodo.id=${comissaoPeriodo.id}&comissao.id=${comissao.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 					<#else>
 						<img border="0" title="Não é possível excluir essa comissão, pois a mesma já possui membros que já participaram de uma reunião." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					</#if>
 					
-					<a href="clonar.action?comissaoPeriodo.id=${comissaoPeriodo.id}&comissao.id=${comissao.id}"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
+					<a href="javascript: executeLink('clonar.action?comissaoPeriodo.id=${comissaoPeriodo.id}&comissao.id=${comissao.id}');"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
 				 </td>
 				</tr>
 			</table>

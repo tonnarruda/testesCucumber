@@ -28,15 +28,12 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.AgendaEditAction" method="insert">
 			<interceptor-ref name="defaultDeleteStack"/>
-			<interceptor-ref name="tokenWebStack" />
 			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/agendaEdit.ftl</result>
 			<result name="error" type="redirect">list.action</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.AgendaEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/agendaEdit.ftl</result>
 		</action>

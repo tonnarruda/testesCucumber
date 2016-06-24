@@ -49,7 +49,7 @@
 	
 		<div class="buttonGroup">
 			<button onclick="${validarCampos};" class="btnGravar"></button>
-			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+			<button onclick="javascript: executeLink('list.action');" class="btnVoltar"></button>
 		</div>
 		
 		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>

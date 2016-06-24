@@ -51,7 +51,7 @@
 <div class="buttonGroup">
 	<button onclick="${validaForm}" class="btnGravar" accesskey="${accessKey}">
 	</button>
-	<button onclick="window.location='list.action'" class="btnVoltar" accesskey="V">
+	<button onclick="javascript: executeLink('list.action');" class="btnVoltar" accesskey="V">
 	</button>
 </div>
 </body>

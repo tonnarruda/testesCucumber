@@ -214,7 +214,7 @@
 		<#if colaboradoresTurma?exists && 0 < colaboradoresTurma?size && avaliacaoCurso?exists && avaliacaoCurso.tipo != 'a'>
 			<button class="btnGravar" onclick="submit()"></button>
 		</#if>
-		<button class="btnVoltar" onclick="window.location='list.action?curso.id=${curso.id}'"></button>
+		<button class="btnVoltar" onclick="javascript: executeLink('list.action?curso.id=${curso.id}');"></button>
 	</div>
 </body>
 </html>

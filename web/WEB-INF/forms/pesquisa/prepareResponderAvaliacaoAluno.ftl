@@ -104,7 +104,7 @@
 	<#else>
 		<div class="buttonGroup">
 	</#if>
-			<button class="btnCancelar" onclick="window.location='${urlVoltar}'"></button>
+			<button class="btnCancelar" onclick="javascript: executeLink('${urlVoltar}');"></button>
 		</div>
 	<div id="dialog" title="Confirmar Remoção da Certificação"></div>
 </body>

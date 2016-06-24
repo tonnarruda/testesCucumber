@@ -4,6 +4,7 @@
 <xwork>
 	<package name="prontuario" extends="default" namespace="/sesmt/prontuario">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.ProntuarioEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/prontuarioList.ftl</result>
 			<result name="successRelatorio" type="freemarker">/WEB-INF/forms/sesmt/relatorioProntuario.ftl</result>
 		</action>
@@ -17,17 +18,15 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/prontuarioEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.ProntuarioEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/prontuarioList.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/prontuarioEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.ProntuarioEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/prontuarioList.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/prontuarioEdit.ftl</result>
-			<result name="invalid.token" type="redirect">list.action</result>
 		</action>
 		<action name="prepareRelatorioProntuario" class="com.fortes.rh.web.action.sesmt.ProntuarioEditAction" method="prepareRelatorioProntuario">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioProntuario.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioProntuario.ftl</result>
 		</action>

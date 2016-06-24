@@ -4,6 +4,7 @@
 <xwork>
 	<package name="comissao" extends="default" namespace="/sesmt/comissao">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.ComissaoEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.ComissaoEditAction" method="delete">
@@ -17,7 +18,7 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.ComissaoEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect"><![CDATA[../comissaoPeriodo/list.action?comissao.id=${comissao.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[../comissaoPeriodo/list.action?internalToken=${internalToken}&comissao.id=${comissao.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.ComissaoEditAction" method="update">

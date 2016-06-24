@@ -110,9 +110,9 @@
 		<br>
 		<@display.table name="historicoExtintores" id="historico" class="dados">
 			<@display.column title="Ações" class="acao">
-				<a href="../historicoExtintor/prepare.action?historicoExtintor.id=${historico.id}&extintor.id=${extintor.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+				<a href="javascript: executeLink('../historicoExtintor/prepare.action?historicoExtintor.id=${historico.id}&extintor.id=${extintor.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 				<#if 1 < historicoExtintores.size()>
-					<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='../historicoExtintor/delete.action?historicoExtintor.id=${historico.id}&extintor.id=${extintor.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){executeLink('../historicoExtintor/delete.action?historicoExtintor.id=${historico.id}&extintor.id=${extintor.id}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<#else>
 					<a href="#"><img border="0" src="<@ww.url value="/imgs/delete.gif?historicoExtintor.id=${historico.id}"/>" title="Não é possível excluir o último histórico." class="disabledImg"></a>
 				</#if>
@@ -125,10 +125,10 @@
 		</@display.table>
 
 		<div class="buttonGroup">
-			<button onclick="window.location='../historicoExtintor/prepare.action?extintor.id=${extintor.id}'" class="btnInserir" accesskey="I"></button>
+			<button onclick="javascript: executeLink('../historicoExtintor/prepare.action?extintor.id=${extintor.id}');" class="btnInserir" accesskey="I"></button>
 	</#if>
 
-		<button onclick="window.location='list.action'" class="btnCancelar" accesskey="C"></button>
+		<button onclick="javascript: executeLink('list.action');" class="btnCancelar" accesskey="C"></button>
 	</div>
 </body>
 </html>

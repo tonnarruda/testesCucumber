@@ -34,12 +34,12 @@
 	<![endif]-->
 	
 <div id="menuEleicao">
-	<a href="../eleicao/prepareUpdate.action?eleicao.id=${eleicao.id}" class="ativaGeral">Geral</a>
-	<a href="../etapaProcessoEleitoral/calendarioEleicaoList.action?eleicao.id=${eleicao.id}" class="ativaCalendario">Calendário</a>
-	<a href="../comissaoEleicao/list.action?eleicao.id=${eleicao.id}" class="ativaComissao">Comissão Eleitoral</a>
-	<a href="../candidatoEleicao/list.action?eleicao.id=${eleicao.id}" class="ativaCandidato">Candidatos</a>
-	<a href="../candidatoEleicao/listVotos.action?eleicao.id=${eleicao.id}" class="ativaResultado">Resultado</a>
-	<a href="../eleicao/prepareComunicados.action?eleicao.id=${eleicao.id}" class="ativaComunicado">Atas e Comunicados</a>
+	<a href="javascript: executeLink('../eleicao/prepareUpdate.action?eleicao.id=${eleicao.id}');" class="ativaGeral">Geral</a>
+	<a href="javascript: executeLink('../etapaProcessoEleitoral/calendarioEleicaoList.action?eleicao.id=${eleicao.id}');" class="ativaCalendario">Calendário</a>
+	<a href="javascript: executeLink('../comissaoEleicao/list.action?eleicao.id=${eleicao.id}');" class="ativaComissao">Comissão Eleitoral</a>
+	<a href="javascript: executeLink('../candidatoEleicao/list.action?eleicao.id=${eleicao.id}');" class="ativaCandidato">Candidatos</a>
+	<a href="javascript: executeLink('../candidatoEleicao/listVotos.action?eleicao.id=${eleicao.id}');" class="ativaResultado">Resultado</a>
+	<a href="javascript: executeLink('../eleicao/prepareComunicados.action?eleicao.id=${eleicao.id}');" class="ativaComunicado">Atas e Comunicados</a>
 	
 	<a style="border-right: none;">&nbsp;</a> <!-- Essa ultima serve só para deixar uma bordinha clara -->
 	<div style="clear: both"></div>

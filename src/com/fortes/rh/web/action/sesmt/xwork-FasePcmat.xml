@@ -7,7 +7,7 @@
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.sesmt.FasePcmatEditAction" method="list">
-			<interceptor-ref name="defaultListStack" />
+			<interceptor-ref name="defaultListTokenStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/fasePcmatList.ftl</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.FasePcmatEditAction" method="prepareInsert">
@@ -17,17 +17,13 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/fasePcmatEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.FasePcmatEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect"><![CDATA[list.action?pcmat.id=${fasePcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
-			<result name="success" type="redirect"><![CDATA[list.action?pcmat.id=${fasePcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&pcmat.id=${fasePcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/fasePcmatList.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.FasePcmatEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect"><![CDATA[list.action?pcmat.id=${fasePcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
-			<result name="success" type="redirect"><![CDATA[list.action?pcmat.id=${fasePcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&pcmat.id=${fasePcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/fasePcmatList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.FasePcmatEditAction" method="delete">

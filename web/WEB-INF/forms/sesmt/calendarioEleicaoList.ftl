@@ -61,7 +61,7 @@
 	<@display.table name="etapaProcessoEleitorals" id="etapaProcessoEleitoral" class="dados" >
 		<@display.column title="Ações" class="acao">
 			<a href="#" onclick="preparaDadosUpdate(${etapaProcessoEleitoral.id});"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteCalendarioEleicao.action?etapaProcessoEleitoral.id=${etapaProcessoEleitoral.id}&eleicao.id=${eleicao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('deleteCalendarioEleicao.action?etapaProcessoEleitoral.id=${etapaProcessoEleitoral.id}&eleicao.id=${eleicao.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="nome" title="Etapa" style="width:320px;"/>
 		<@display.column property="prazoLegal" title="Prazo Legal" style="width:250px;"/>
@@ -72,7 +72,7 @@
 		<button onclick="limpaForm(); openbox('Inserir Etapa', 'etapaNome');" accesskey="N" class="btnInserir">
 		</button>
 		<#if (etapaProcessoEleitorals?exists && etapaProcessoEleitorals?size>0)>
-			<button class="btnImprimirPdf" onclick="window.location='imprimirCalendario.action?eleicao.id=${eleicao.id}'" ></button>
+			<button class="btnImprimirPdf" onclick="javascript: executeLink('imprimirCalendario.action?eleicao.id=${eleicao.id}');" ></button>
 		</#if>
 	</div>
 

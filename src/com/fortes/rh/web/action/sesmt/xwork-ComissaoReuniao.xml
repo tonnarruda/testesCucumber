@@ -7,7 +7,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoReuniaoList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="delete">
-			<result name="success" type="redirect">list.action?comissao.id=${comissao.id}</result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&comissao.id=${comissao.id}]]></result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="prepare">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoReuniaoEdit.ftl</result>
@@ -16,14 +16,14 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoReuniaoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="insert">
-			<result name="success" type="redirect">list.action?comissao.id=${comissao.id}</result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&comissao.id=${comissao.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoReuniaoEdit.ftl</result>
 		</action>
 		<action name="sugerirReuniao" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="sugerirReuniao">
-			<result name="success" type="redirect">list.action?comissao.id=${comissao.id}</result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&comissao.id=${comissao.id}]]></result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="update">
-			<result name="success" type="redirect">list.action?comissao.id=${comissao.id}</result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&comissao.id=${comissao.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoReuniaoEdit.ftl</result>
 		</action>
 		<action name="imprimirCalendario" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="imprimirCalendario">

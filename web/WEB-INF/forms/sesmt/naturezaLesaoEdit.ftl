@@ -21,7 +21,7 @@
 	
 		<div class="buttonGroup">
 			<button onclick="${validarCampos};" class="btnGravar"></button>
-			<button onclick="window.location='list.action'" class="btnCancelar"></button>
+			<button onclick="javascript: executeLink('list.action');" class="btnCancelar"></button>
 		</div>
 	</body>
 </html>

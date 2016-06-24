@@ -70,7 +70,7 @@
 				} else {
 					newConfirm('Deseja liberar esta Avaliação?', function(){
 						$('#btnLiberar').removeAttr("href");
-						window.location='liberar.action?avaliacaoDesempenho.id=' + avaliacaoDesempenhoId;
+						executeLink('liberar.action?avaliacaoDesempenho.id=' + avaliacaoDesempenhoId);
 					});
 				}
 			});			

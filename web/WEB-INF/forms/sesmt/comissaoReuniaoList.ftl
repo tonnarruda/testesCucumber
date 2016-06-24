@@ -140,8 +140,8 @@
 	<@display.table name="comissaoReuniaos" id="comissaoReuniao" class="dados">
 		<@display.column title="Ações" class="acao">
 			<a href="javascript:;" onclick="limpaForm(); preparaDadosUpdate(${comissaoReuniao.id});"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?comissaoReuniao.id=${comissaoReuniao.id}&comissao.id=${comissao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-			<a href="imprimirAta.action?comissaoReuniao.id=${comissaoReuniao.id}&comissao.id=${comissao.id}"><img border="0" title="Imprimir ata da reunião" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+			<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?comissaoReuniao.id=${comissaoReuniao.id}&comissao.id=${comissao.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('imprimirAta.action?comissaoReuniao.id=${comissaoReuniao.id}&comissao.id=${comissao.id}');"><img border="0" title="Imprimir ata da reunião" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 		</@display.column>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px;"/>
 		<@display.column property="descricao" title="Descrição"/>
@@ -153,11 +153,11 @@
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="limpaForm(); openbox('Inserir Reunião', 'reuniaoHorario');"></button>
 		<#if comissaoReuniaos?size < 4 >
-			<button class="btnSugerirReunioesOrdinarias" onclick="window.location='sugerirReuniao.action?comissao.id=${comissao.id}'" ></button>
+			<button class="btnSugerirReunioesOrdinarias" onclick="javascript: executeLink('sugerirReuniao.action?comissao.id=${comissao.id}');" ></button>
 		</#if>
-		<button class="btnImprimirCalendario" onclick="window.location='imprimirCalendario.action?comissao.id=${comissao.id}'"></button>
-		<button class="btnFrequencia" title="Frequência" onclick="window.location='relatorioPresenca.action?comissao.id=${comissao.id}'"></button>
-		<button class="btnImprimirRelatorioFrequencia" title="Relatório de frequência" onclick="window.location='imprimirFrequencia.action?comissao.id=${comissao.id}'"></button>
+		<button class="btnImprimirCalendario" onclick="javascript: executeLink('imprimirCalendario.action?comissao.id=${comissao.id}');"></button>
+		<button class="btnFrequencia" title="Frequência" onclick="javascript: executeLink('relatorioPresenca.action?comissao.id=${comissao.id}');"></button>
+		<button class="btnImprimirRelatorioFrequencia" title="Relatório de frequência" onclick="javascript: executeLink('imprimirFrequencia.action?comissao.id=${comissao.id}');"></button>
 	</div>
 
 	<#--

@@ -13,6 +13,7 @@ import com.fortes.rh.model.dicionario.GrupoRisco;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 
@@ -134,19 +135,10 @@ public class RiscoEditAction extends MyActionSupportList
 		{
 			try {
 				riscoManager.remove(new Long[]{risco.getId()});
-				addActionMessage("Risco excluído com sucesso.");
+				addActionSuccess("Risco excluído com sucesso.");
 			} catch (Exception e) {
-				String message = "Erro ao excluir o risco.<br/>";
-				
-				if(e instanceof DataIntegrityViolationException)
-					message = "O risco não pode ser excluído, pois possui dependência com outros cadastros.";
-				else if(e.getMessage() != null)
-					message += e.getMessage();
-				else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
-					message += e.getCause().getLocalizedMessage();				
-				
 				e.printStackTrace();
-				addActionError(message);
+				ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este Risco.");			
 			}
 		}
 

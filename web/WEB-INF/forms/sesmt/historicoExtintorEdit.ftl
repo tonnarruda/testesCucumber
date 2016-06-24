@@ -29,9 +29,9 @@
 	</#if>
 	
 	<#if troca>
-		<#assign voltar="window.location='../historicoExtintor/list.action'"/>
+		<#assign voltar="../historicoExtintor/list.action"/>
 	<#else>
-		<#assign voltar="window.location='../extintor/prepareUpdate.action?extintor.id=${extintor.id}'"/>
+		<#assign voltar="../extintor/prepareUpdate.action?extintor.id=${extintor.id}"/>
 	</#if>
 	
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
@@ -61,7 +61,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}"></button>
-		<button onclick="${voltar}" class="btnCancelar" accesskey="V"></button>
+		<button onclick="javascript: executeLink('${voltar}');" class="btnCancelar" accesskey="V"></button>
 	</div>
 </body>
 </html>

@@ -4,6 +4,7 @@
 <xwork>
 	<package name="engenheiroResponsavel" extends="default" namespace="/sesmt/engenheiroResponsavel">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.EngenheiroResponsavelListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/engenheiroResponsavelList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.EngenheiroResponsavelListAction" method="delete">

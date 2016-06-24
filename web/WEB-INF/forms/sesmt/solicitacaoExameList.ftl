@@ -294,10 +294,10 @@
 			<#if solicitacaoExame.semExames>
 				<img border="0" title="Não há exames para esta solicitação/atendimento" src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			<#else>
-				<a href="prepareResultados.action?solicitacaoExame.id=${solicitacaoExame.id}&solicitacaoExame.colaboradorNome=${nomeColaborador}"><img border="0" title="Resultados" src="<@ww.url value="/imgs/cliper.gif"/>"></a>
+				<a href="javascript: executeLink('prepareResultados.action?solicitacaoExame.id=${solicitacaoExame.id}&solicitacaoExame.colaboradorNome=${nomeColaborador}');"><img border="0" title="Resultados" src="<@ww.url value="/imgs/cliper.gif"/>"></a>
 			</#if>
-			<a href="prepareUpdate.action?solicitacaoExame.id=${solicitacaoExame.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacaoExame.id=${solicitacaoExame.id}&solicitacaoExame.data=${solicitacaoExame.data}&&solicitacaoExame.ordem=${solicitacaoExame.ordem}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?solicitacaoExame.id=${solicitacaoExame.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?solicitacaoExame.id=${solicitacaoExame.id}&solicitacaoExame.data=${solicitacaoExame.data}&solicitacaoExame.ordem=${solicitacaoExame.ordem}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			
 			<#if solicitacaoExame.semExames>
 				<img border="0" title="Não há exames para esta solicitação/atendimento" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
@@ -350,7 +350,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
 	<div class="buttonGroup">
-		<button onclick="window.location='prepareInsert.action?nomeBusca='+escape($('#nomeBusca').val()) + '&vinculo=' +$('#vinculo').val()+'&primeiraExecucao=true'" accesskey="N" class="btnInserir"></button>
+		<button onclick="executeLink('prepareInsert.action?nomeBusca='+escape($('#nomeBusca').val()) + '&vinculo=' +$('#vinculo').val()+'&primeiraExecucao=true');" accesskey="N" class="btnInserir"></button>
 	</div>
 	
 	<div id="considerarRiscoPorDialog" style="display: none;">
@@ -360,7 +360,7 @@
 			<@ww.select label="Imprimir ASO considerando risco por" name="imprimirASOComRiscoPor" list="tiposRiscoSistema" cssStyle="width: 200px; margin-top: 6px;" />
 			
 			<button type="submit" class="btnImprimir grayBG" onclick="$('#considerarRiscoPorDialog').dialog('close');"></button>
-			<button type="button" onclick="$('#considerarRiscoPorDialog').dialog('close'); $('#considerarRiscoPorDialog input').val(''); $('#considerarRiscoPorDialog select').val('');" class="btnCancelar grayBG">	</button>
+			<button type="button" onclick="$('#considerarRiscoPorDialog').dialog('close'); $('#considerarRiscoPorDialog select').val('');" class="btnCancelar grayBG">	</button>
 		</@ww.form>
 	</div>
 	

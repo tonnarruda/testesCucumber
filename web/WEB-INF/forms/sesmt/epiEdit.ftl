@@ -126,9 +126,9 @@
 		<h4>Históricos deste EPI</h4>
 		<@display.table name="epiHistoricos" id="epiHistorico" pagesize=10 class="dados" defaultsort=2 sort="list" defaultorder="descending">
 			<@display.column title="Ações" class="acao">
-				<a href="../epiHistorico/prepareUpdate.action?epiHistorico.id=${epiHistorico.id}&epi.id=${epi.id}&epi.nome=${epi.nome}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+				<a href="javascript: executeLink('../epiHistorico/prepareUpdate.action?epiHistorico.id=${epiHistorico.id}&epi.id=${epi.id}&epi.nome=${epi.nome}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 				<#if 1 < epiHistoricos?size>
-					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../epiHistorico/delete.action?epiHistorico.id=${epiHistorico.id}&epi.id=${epi.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('../epiHistorico/delete.action?epiHistorico.id=${epiHistorico.id}&epi.id=${epi.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<#else>
 					<a href="javascript:;"><img border="0" title="Não é possível remover o único histórico do EPI" src="<@ww.url value="/imgs/delete.gif"/>"  style="opacity:0.2;filter:alpha(opacity=20);"></a>
 				</#if>
@@ -140,10 +140,10 @@
 			<@display.column property="CA" title="Número CA" style="width:60px;"/>
 		</@display.table>
 	<div class="buttonGroup">
-		<button onclick="window.location='../epiHistorico/prepareInsert.action?epi.id=${epi.id}'" class="btnInserir_Historico" accesskey="I">
+		<button onclick="javascript: executeLink('../epiHistorico/prepareInsert.action?epi.id=${epi.id}');" class="btnInserir_Historico" accesskey="I">
 		</button>
 	</#if>
-		<button onclick="window.location='list.action'" class="btnCancelar">
+		<button onclick="javascript: executeLink('list.action');" class="btnCancelar">
 		</button>
 	</div>
 </body>

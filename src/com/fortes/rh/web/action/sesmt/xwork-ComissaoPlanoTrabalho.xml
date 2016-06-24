@@ -7,7 +7,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoPlanoTrabalhoList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.ComissaoPlanoTrabalhoEditAction" method="delete">
-			<result name="success" type="redirect"><![CDATA[list.action?comissao.id=${comissao.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&comissao.id=${comissao.id}]]></result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.ComissaoPlanoTrabalhoEditAction" method="prepare">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoPlanoTrabalhoEdit.ftl</result>
@@ -16,11 +16,11 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoPlanoTrabalhoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.ComissaoPlanoTrabalhoEditAction" method="insert">
-			<result name="success" type="redirect"><![CDATA[list.action?comissao.id=${comissao.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&comissao.id=${comissao.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoPlanoTrabalhoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.ComissaoPlanoTrabalhoEditAction" method="update">
-			<result name="success" type="redirect"><![CDATA[list.action?comissao.id=${comissao.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&comissao.id=${comissao.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoPlanoTrabalhoEdit.ftl</result>
 		</action>
 		<action name="imprimirPlanoTrabalho" class="com.fortes.rh.web.action.sesmt.ComissaoPlanoTrabalhoEditAction" method="imprimirPlanoTrabalho">

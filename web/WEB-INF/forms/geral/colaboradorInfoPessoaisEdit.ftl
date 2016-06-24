@@ -121,9 +121,9 @@
 			
 			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
 			
-			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
-			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
-			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action"/>');			
+			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action?internalToken=${internalToken}"/>');
+			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action?internalToken=${internalToken}"/>');
+			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?internalToken=${internalToken}"/>');			
 		});
 		
 		function validaFormularioDinamico()

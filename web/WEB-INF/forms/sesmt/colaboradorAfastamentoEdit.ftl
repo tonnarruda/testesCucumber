@@ -184,6 +184,7 @@
 					<@ww.textfield label="Nome" name="colaborador.nome" id="nomeColaborador" cssStyle="width: 300px;"/>
 					<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matriculaBusca" liClass="liLeft" cssStyle="width: 60px;"/>
 					<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpfColaborador" cssClass="mascaraCpf"/>
+					<@ww.hidden name="internalToken" />
 
 					<div class="buttonGroup">
 						<button onclick="validaFormulario('formFiltro', null, null);" class="btnPesquisar grayBGE"></button>

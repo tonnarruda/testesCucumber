@@ -4,7 +4,7 @@
 <xwork>
 	<package name="areaVivenciaPcmat" extends="default" namespace="/sesmt/areaVivenciaPcmat">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.AreaVivenciaPcmatEditAction" method="list">
-			<interceptor-ref name="defaultListStack" />
+			<interceptor-ref name="defaultListTokenStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaPcmatList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.AreaVivenciaPcmatEditAction" method="delete">
@@ -17,17 +17,13 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaPcmatEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.AreaVivenciaPcmatEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect"><![CDATA[list.action?pcmat.id=${areaVivenciaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
-			<result name="success" type="redirect"><![CDATA[list.action?pcmat.id=${areaVivenciaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&pcmat.id=${areaVivenciaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaPcmatEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.AreaVivenciaPcmatEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect"><![CDATA[list.action?pcmat.id=${areaVivenciaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
-			<result name="success" type="redirect"><![CDATA[list.action?pcmat.id=${areaVivenciaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&pcmat.id=${areaVivenciaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaPcmatEdit.ftl</result>
 		</action>
 	</package>

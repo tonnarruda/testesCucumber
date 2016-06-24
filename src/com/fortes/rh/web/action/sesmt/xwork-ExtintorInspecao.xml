@@ -27,17 +27,13 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/extintorInspecaoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.ExtintorInspecaoEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/extintorInspecaoEdit.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/extintorInspecaoEdit.ftl</result>
-		    <result name="invalid.token" type="redirect">list.action</result>
 		</action>
 		
 		<action name="update" class="com.fortes.rh.web.action.sesmt.ExtintorInspecaoEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/extintorInspecaoEdit.ftl</result>
-		    <result name="invalid.token" type="redirect">list.action</result>
 		</action>
 		
 		<action name="imprimirListaInspecaoDeExtintores" class="com.fortes.rh.web.action.sesmt.ExtintorInspecaoEditAction" method="imprimirListaInspecaoDeExtintores">

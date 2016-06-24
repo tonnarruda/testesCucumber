@@ -153,6 +153,7 @@ function agrupaPerguntaseRespostas(formulario){
 	<#assign validarCampos="return submete(document.forms[1],false);"/>
 
 	<@ww.actionerror />
+	<@ww.actionmessage />
 
 		<@ww.hidden name="respostas" id="respostas" />
 		<@ww.hidden name="questionario.id" />
@@ -226,7 +227,7 @@ function agrupaPerguntaseRespostas(formulario){
 		<#if questionario.perguntas?exists && 0 < questionario.perguntas?size>
 			<button onclick="${validarCampos}" class="${buttonClass}" accesskey="${accessKey}"></button>
 		</#if>
-		<button onclick="window.location='${retorno}'" class="btnVoltar" accesskey="V"></button>
+		<button onclick="javascript: executeLink('${retorno}');" class="btnVoltar" accesskey="V"></button>
 	</div>
 </body>
 </html>

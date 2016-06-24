@@ -40,6 +40,7 @@
 		<result name="success" type="freemarker">/WEB-INF/forms/sesmt/catEdit.ftl</result>
 		</action>
 		<action name="prepareRelatorioCats" class="com.fortes.rh.web.action.sesmt.CatEditAction" method="prepareRelatorioCats">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioCats.ftl</result>
 		</action>
 		<action name="imprimirFichaInvestigacaoAcidente" class="com.fortes.rh.web.action.sesmt.CatEditAction" method="imprimirFichaInvestigacaoAcidente">
@@ -69,6 +70,8 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioCats.ftl</result>
 		</action>
-		<action name="showFoto" class="com.fortes.rh.web.action.sesmt.CatEditAction" method="showFoto" />
+		<action name="showFoto" class="com.fortes.rh.web.action.sesmt.CatEditAction" method="showFoto" >
+			<interceptor-ref name="myDefaultWebStack"/>
+		</action>
 	</package>
 </xwork>

@@ -29,10 +29,10 @@
 		</action>
 		
 		<action name="prepareRelatorioAcompanhamentoExperienciaPrevisto" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioAcompanhamentoExperienciaPrevisto">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperienciaPrevisto.ftl</result>
 		</action>
 		<action name="imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaPrevisto" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaPrevisto">
-			<interceptor-ref name="myDefaultWebStack" />
 		  	<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/periodoDeAcompanhamentoDeExperienciaPrevisto.jasper</param>
 				<param name="dataSource">colaboradores</param>
@@ -43,10 +43,10 @@
 		</action>
 		
 		<action name="prepareRelatorioAcompanhamentoExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioAcompanhamentoExperiencia">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperiencia.ftl</result>
 		</action>
 		<action name="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia">
-			<interceptor-ref name="myDefaultWebStack" />
 		  	<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/periodoDeAcompanhamentoDeExperiencia.jasper</param>
 				<param name="dataSource">acompanhamentos</param>
@@ -56,7 +56,6 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperiencia.ftl</result>
 		</action>
 		<action name="imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaXls" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia">
-			<interceptor-ref name="myDefaultWebStack" />
 			<result name="success" type="xls">
 				<param name="dataSource">acompanhamentos</param>
 				<param name="documentName">periodoDeAcompanhamentoDeExperiencia.xls</param>
@@ -72,10 +71,10 @@
 		</action>
 
 		<action name="prepareCartoesAcompanhamentoPeriodoExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareCartoesAcompanhamentoPeriodoExperiencia">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/cartoesAcompanhamentoPeriodoDeExperiencia.ftl</result>
 		</action>
 		<action name="imprimeCartoesAcompanhamentoPeriodoExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeCartoesAcompanhamentoPeriodoExperiencia">
-			<interceptor-ref name="myDefaultWebStack" />
 		  	<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/cartoes_periodo_experiencia.jasper</param>
 				<param name="dataSource">cartoesAcompanhamentoExperienciaVOs</param>
@@ -85,10 +84,10 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/cartoesAcompanhamentoPeriodoDeExperiencia.ftl</result>
 		</action>
 		<action name="prepareRelatorioRankingPerformancePeriodoDeExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioRankingPerformance">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
 		</action>
 		<action name="imprimeRelatorioRankingPerformancePeriodoDeExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioRankingPerformancePeriodoDeExperiencia">
-			<interceptor-ref name="myDefaultWebStack" />
 		  	<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/rankingPerformanceAvDesempenho.jasper</param>
 				<param name="dataSource">colaboradores</param>
@@ -104,10 +103,10 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
 		</action>
 		<action name="prepareRelatorioPerformanceAvaliacaoDesempenho" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioPerformanceAvaliacaoDesempenho">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPerformanceAvaliacaoDesempenho.ftl</result>
 		</action>
 		<action name="imprimeRelatorioPerformanceAvaliacaoDesempenho" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioPerformanceAvaliacaoDesempenho">
-			<interceptor-ref name="myDefaultWebStack" />
 		  	<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/performanceAvaliacaoDesempenho.jasper</param>
 				<param name="dataSource">faixaPerformanceAvaliacaoDesempenhos</param>
@@ -117,7 +116,6 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPerformanceAvaliacaoDesempenho.ftl</result>
 		</action>
 		<action name="imprimeRelatorioRankingPerformancePeriodoDeExperienciaXLS" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioRankingPerformancePeriodoDeExperiencia">
-			<interceptor-ref name="myDefaultWebStack" />
 			<result name="success" type="xls">
 				<param name="dataSource">colaboradores</param>
 				<param name="documentName">rankingPerformaceExperiencia.xls</param>

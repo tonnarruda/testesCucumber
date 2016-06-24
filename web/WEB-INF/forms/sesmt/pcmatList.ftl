@@ -26,7 +26,7 @@
 	
 	<@display.table name="obras" id="obra" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="listPcmats.action?obra.id=${obra.id}"><img border="0" title="Listar PCMATs" src="<@ww.url value="/imgs/form2.gif"/>"></a>
+			<a href="javascript: executeLink('listPcmats.action?obra.id=${obra.id}');"><img border="0" title="Listar PCMATs" src="<@ww.url value="/imgs/form2.gif"/>"></a>
 		</@display.column>
 		<@display.column title="Obra" property="nome"/>
 	</@display.table>

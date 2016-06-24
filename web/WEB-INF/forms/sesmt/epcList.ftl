@@ -13,8 +13,8 @@
 	<@ww.actionmessage/>
 	<@display.table name="epcs" id="epc" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?epc.id=${epc.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?epc.id=${epc.id}&page=${page}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?epc.id=${epc.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?epc.id=${epc.id}&page=${page}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="codigo" title="Código"/>
 		<@display.column property="descricao" title="Descrição"/>
@@ -24,7 +24,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="list.action?" page='${page}'/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');" accesskey="I">
 		</button>
 	</div>
 </body>

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.sesmt.EpcManager;
 import com.fortes.rh.model.sesmt.Epc;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -43,19 +44,19 @@ public class EpcListAction extends MyActionSupportList
 
 		if(epcTmp == null || !getEmpresaSistema().equals(epcTmp.getEmpresa()))
 		{
-			addActionError("O EPC solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
+			addActionWarning("O EPC solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
 		}
 		else
 		{
 			try
 			{
 				epcManager.remove(new Long[]{epc.getId()});
-				addActionMessage("EPC excluído com sucesso.");
+				addActionSuccess("EPC excluído com sucesso.");
 			}
 			catch (Exception e)
 			{
-				addActionError("Não foi possível excluir este EPC.");
 				e.printStackTrace();
+				ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este EPC.");
 			}
 		}
 

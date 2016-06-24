@@ -35,7 +35,7 @@
 		<action name="update" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">list.action</result>
-			<result name="successImprime" type="redirect">imprimirSolicitacaoExames.action</result>
+			<result name="successImprime" type="redirect">imprimirSolicitacaoExames.action?internalToken=${internalToken}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoExameEdit.ftl</result>
 		</action>
 		<action name="filtroSolicitacaoExames" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="filtroSolicitacaoExames">
@@ -73,6 +73,7 @@
 		</action>
 		
 		<action name="prepareRelatorioAtendimentosMedicos" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="prepareRelatorioAtendimentosMedicos">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioAtendimentosMedicos.ftl</result>
 		</action>
 		<action name="relatorioAtendimentosMedicos" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="relatorioAtendimentosMedicos">

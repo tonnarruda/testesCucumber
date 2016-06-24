@@ -10,8 +10,8 @@
 <body>
 	<@display.table name="etapaProcessoEleitorals" id="etapaProcessoEleitoral" class="dados" >
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?etapaProcessoEleitoral.id=${etapaProcessoEleitoral.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?etapaProcessoEleitoral.id=${etapaProcessoEleitoral.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?etapaProcessoEleitoral.id=${etapaProcessoEleitoral.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?etapaProcessoEleitoral.id=${etapaProcessoEleitoral.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="nome" title="Etapa" style="width:320px;"/>
 		<@display.column property="prazoLegal" title="Prazo Legal" style="width:250px;"/>
@@ -24,10 +24,10 @@
 		<#assign paramEleicaoId=""/>
 	</#if>
 	<div class="buttonGroup">
-		<button onclick="window.location='prepareInsert.action${paramEleicaoId}'" accesskey="N" class="btnInserir">
+		<button onclick="javascript: executeLink('prepareInsert.action${paramEleicaoId}');" accesskey="N" class="btnInserir">
 		</button>
 		<#if !etapaProcessoEleitorals?exists || etapaProcessoEleitorals.empty>
-			<button onclick="window.location='gerarEtapasModelo.action${paramEleicaoId}'" class="btnSugerirEtapas">
+			<button onclick="javascript: executeLink('gerarEtapasModelo.action${paramEleicaoId}');" class="btnSugerirEtapas">
 			</button>			
 		</#if>
 	</div>

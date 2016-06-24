@@ -22,20 +22,20 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.ComissaoPeriodoEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect"><![CDATA[list.action?comissao.id=${comissao.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&comissao.id=${comissao.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoPeriodoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.ComissaoPeriodoEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect"><![CDATA[list.action?comissao.id=${comissao.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&comissao.id=${comissao.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoPeriodoEdit.ftl</result>
 		</action>
 		<action name="insertComissaoMembro" class="com.fortes.rh.web.action.sesmt.ComissaoPeriodoEditAction" method="insertComissaoMembro">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect"><![CDATA[prepareUpdate.action?comissaoPeriodo.id=${comissaoPeriodo.id}&clonar=${clonar}]]></result>
+			<result name="success" type="redirect"><![CDATA[prepareUpdate.action?internalToken=${internalToken}&comissaoPeriodo.id=${comissaoPeriodo.id}&clonar=${clonar}]]></result>
 		</action>
 		<action name="deleteComissaoMembro" class="com.fortes.rh.web.action.sesmt.ComissaoPeriodoEditAction" method="deleteComissaoMembro">
-			<result name="success" type="redirect"><![CDATA[prepareUpdate.action?comissaoPeriodo.id=${comissaoPeriodo.id}&clonar=${clonar}]]></result>
+			<result name="success" type="redirect"><![CDATA[prepareUpdate.action?internalToken=${internalToken}&comissaoPeriodo.id=${comissaoPeriodo.id}&clonar=${clonar}]]></result>
 		</action>
 	</package>
 </xwork>

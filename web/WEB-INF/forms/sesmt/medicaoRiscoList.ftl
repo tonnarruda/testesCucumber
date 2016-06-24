@@ -41,8 +41,8 @@
 	
 	<@display.table name="medicaoRiscos" id="medicaoRisco" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?controlaRiscoPor=${controlaRiscoPor}&medicaoRisco.id=${medicaoRisco.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?controlaRiscoPor=${controlaRiscoPor}&medicaoRisco.id=${medicaoRisco.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?controlaRiscoPor=${controlaRiscoPor}&medicaoRisco.id=${medicaoRisco.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?controlaRiscoPor=${controlaRiscoPor}&medicaoRisco.id=${medicaoRisco.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column title="Data da Medição" property="data" format="{0,date,dd/MM/yyyy}" />
 		
@@ -56,7 +56,7 @@
 	</@display.table>
 	
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action?controlaRiscoPor=${controlaRiscoPor}'"></button>
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action?controlaRiscoPor=${controlaRiscoPor}');"></button>
 	</div>
 </body>
 </html>

@@ -287,6 +287,7 @@
 		<@ww.hidden id="nomeBusca" name="nomeBusca" />
 		<@ww.hidden id="vinculo" name="vinculo" />
 		<@ww.hidden id="primeiraExecucao" name="primeiraExecucao" value="false"/>
+		<@ww.hidden id="internalToken" name="internalToken"/>
 		
 		<div class="buttonGroup">
 			<button id="btnPesquisar" onclick="pesquisar();" class="btnPesquisar grayBGE"> </button>

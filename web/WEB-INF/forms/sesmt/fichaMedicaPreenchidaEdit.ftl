@@ -104,7 +104,7 @@
 		<@ww.hidden name="inserirFichaMedica" value="true"/>
 	<div class="buttonGroup">
 		<button type="submit" class="btnAvancar" ></button>
-		<button onclick="window.location='listPreenchida.action'" class="btnVoltar" ></button>
+		<button onclick="javascript: executeLink('listPreenchida.action');" class="btnVoltar" ></button>
 	</div>
 	</@ww.form>
 

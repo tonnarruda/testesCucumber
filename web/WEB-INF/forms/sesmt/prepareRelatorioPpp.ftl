@@ -67,7 +67,7 @@
 	
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnRelatorio" accesskey="G"></button>
-		<button onclick="window.location='list.action';" class="btnVoltar" accesskey="V"></button>
+		<button onclick="javascript: executeLink('list.action');" class="btnVoltar" accesskey="V"></button>
 	</div>
 
 </body>

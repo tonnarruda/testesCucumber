@@ -51,6 +51,7 @@
 		</action>
 
 		<action name="prepareRelatorioExamesPrevistos" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="prepareRelatorioExamesPrevistos">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioExamesPrevistos.ftl</result>
 		</action>
 		<action name="relatorioExamesPrevistos" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="relatorioExamesPrevistos">
@@ -76,6 +77,7 @@
 		</action>
 		
 		<action name="prepareRelatorioExamesRealizados" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="prepareRelatorioExamesRealizados">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioExamesRealizados.ftl</result>
 		</action>
 		<action name="relatorioExamesRealizados" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="relatorioExamesRealizados">

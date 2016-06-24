@@ -98,8 +98,8 @@
 
 	<@display.table name="extintorManutencaos" id="extintorManutencao" class="dados" defaultsort=2 sort="list">
 		<@display.column title="Ações" class="acao" style="width:25px;">
-			<a href="prepareUpdate.action?extintorManutencao.id=${extintorManutencao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?extintorManutencao.id=${extintorManutencao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?extintorManutencao.id=${extintorManutencao.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?extintorManutencao.id=${extintorManutencao.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="saida" title="Data Saída" format="{0,date,dd/MM/yyyy}" style="width:50px; text-align:center"/>
 		<@display.column property="retorno" title="Data Retorno" format="{0,date,dd/MM/yyyy}" style="width:50px; text-align:center"/>
@@ -115,7 +115,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 	
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="N"></button>
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');" accesskey="N"></button>
 		
 		<button class="btnListaDeManutencaoExtintores" id="btnListaDeManutencaoExtintores" ></button>
 		<img id="relatorioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" style="margin-left: -25px" width="16" height="16" /><br>

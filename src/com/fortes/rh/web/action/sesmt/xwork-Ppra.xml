@@ -14,6 +14,7 @@
 		</action>
 		
 		<action name="prepareRelatorio" class="com.fortes.rh.web.action.sesmt.PpraEditAction" method="prepareRelatorio">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/prepareRelatorioPpraLtcat.ftl</result>
 		</action>
 	</package>

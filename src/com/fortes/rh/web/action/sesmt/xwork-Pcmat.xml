@@ -7,15 +7,16 @@
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatList.ftl</result>
 		</action>
 		<action name="listPcmats" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="listPcmats">
-			<interceptor-ref name="defaultListStack" />
+			<interceptor-ref name="defaultListTokenStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatObraList.ftl</result>
 		</action>
 		<action name="gerar" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="gerar">
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="success" type="redirect">listPcmats.action?obra.id=${obra.id}</result>
+			<result name="success" type="redirect"><![CDATA[listPcmats.action?internalToken=${internalToken}&obra.id=${obra.id}]]></result>
 		</action>
 		<action name="clonar" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="clonar">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatObraList.ftl</result>
@@ -23,28 +24,24 @@
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack" />
-			<result name="success" type="redirect">listPcmats.action?obra.id=${obra.id}</result>
+			<result name="success" type="redirect"><![CDATA[listPcmats.action?internalToken=${internalToken}&obra.id=${obra.id}]]></result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="prepareInsert">
-			<interceptor-ref name="defaultListStack" />
+			<interceptor-ref name="defaultListTokenStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatEdit.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="prepareUpdate">
-			<interceptor-ref name="defaultListStack" />
+			<interceptor-ref name="defaultListTokenStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect">prepareInsert.action</result>
-			<result name="success" type="redirect">prepareUpdate.action?pcmat.id=${pcmat.id}</result>
-			<result name="input" type="redirect">prepareInsert.action?pcmat.obra.id=${pcmat.obra.id}</result>
+			<result name="success" type="redirect"><![CDATA[prepareUpdate.action?internalToken=${internalToken}&pcmat.id=${pcmat.id}]]></result>
+			<result name="input" type="redirect"><![CDATA[prepareInsert.action?internalToken=${internalToken}&pcmat.obra.id=${pcmat.obra.id}]]></result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">listPcmats.action?obra.id=${pcmat.obra.id}</result>
+			<result name="success" type="redirect"><![CDATA[listPcmats.action?internalToken=${internalToken}&obra.id=${pcmat.obra.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/pcmatEdit.ftl</result>
 		</action>
 	</package>

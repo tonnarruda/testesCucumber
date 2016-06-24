@@ -6,7 +6,7 @@
 		
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.EpiHistoricoEditAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack" />
-			<result name="success" type="redirect">../epi/prepareUpdate.action?epi.id=${epi.id}</result>
+			<result name="success" type="redirect"><![CDATA[../epi/prepareUpdate.action?internalToken=${internalToken}&epi.id=${epi.id}]]></result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.EpiHistoricoEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/epiHistoricoEdit.ftl</result>
@@ -16,12 +16,12 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/epiHistoricoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.EpiHistoricoEditAction" method="insert">
-			<result name="success" type="redirect">../epi/prepareUpdate.action?epi.id=${epi.id}</result>
+			<result name="success" type="redirect"><![CDATA[../epi/prepareUpdate.action?internalToken=${internalToken}&epi.id=${epi.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/epiHistoricoEdit.ftl</result>
 			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/epiHistoricoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.EpiHistoricoEditAction" method="update">
-			<result name="success" type="redirect">../epi/prepareUpdate.action?epi.id=${epi.id}</result>
+			<result name="success" type="redirect"><![CDATA[../epi/prepareUpdate.action?internalToken=${internalToken}&epi.id=${epi.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/epiHistoricoEdit.ftl</result>
 			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/epiHistoricoEdit.ftl</result>
 		</action>

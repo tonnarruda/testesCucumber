@@ -33,7 +33,7 @@
 			<#if ultimoPcmatId == atividadeSegurancaPcmat.pcmat.id>
 				<button onclick="${validarCampos};" class="btnGravar"></button>
 			</#if>
-			<button onclick="window.location='list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}'" class="btnVoltar"></button>
+			<button onclick="javascript: executeLink('list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}');" class="btnVoltar"></button>
 		</div>
 	</body>
 </html>

@@ -52,8 +52,8 @@
 
 	<@display.table name="extintors" id="extintor" class="dados">
 		<@display.column title="Ações" class="acao" style="width:25px;">
-			<a href="prepareUpdate.action?extintor.id=${extintor.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?extintor.id=${extintor.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?extintor.id=${extintor.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?extintor.id=${extintor.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="descricao" title="Descrição" style="width:170px;"/>
 		<@display.column property="ultimoHistorico.localizacao" title="Localização" style="width:140px;"/>
@@ -63,7 +63,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="N"></button>
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');" accesskey="N"></button>
 		<button class="btnImprimir" onclick="imprimir();"></button>
 	</div>
 </body>

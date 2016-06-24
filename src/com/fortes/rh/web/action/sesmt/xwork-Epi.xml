@@ -4,6 +4,7 @@
 <xwork>
 	<package name="epi" extends="default" namespace="/sesmt/epi">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.EpiListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/epiList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.EpiListAction" method="delete">
@@ -13,7 +14,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/epiEdit.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.EpiEditAction" method="prepareUpdate">
-			<interceptor-ref name="defaultListStack" />
+			<interceptor-ref name="defaultListTokenStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/epiEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.EpiEditAction" method="insert">
@@ -27,6 +28,7 @@
 		</action>
 
 		<action name="prepareImprimirFicha" class="com.fortes.rh.web.action.sesmt.EpiEditAction" method="prepareImprimirFicha">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/imprimirFichaEpi.ftl</result>
 		</action>
 		<action name="filtroImprimirFicha" class="com.fortes.rh.web.action.sesmt.EpiEditAction" method="filtroImprimirFicha">
@@ -42,6 +44,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/imprimirFichaEpi.ftl</result>
 		</action>
 		<action name="prepareImprimirVencimentoCa" class="com.fortes.rh.web.action.sesmt.EpiListAction" method="prepareImprimirVencimentoCa">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/imprimirVencimentoCa.ftl</result>
 		</action>
 		<action name="imprimirVencimentoCa" class="com.fortes.rh.web.action.sesmt.EpiListAction" method="imprimirVencimentoCa">

@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.sesmt.EventoManager;
 import com.fortes.rh.model.sesmt.Evento;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -62,12 +63,12 @@ public class EventoEditAction extends MyActionSupportList
 		try
 		{
 			eventoManager.remove(evento.getId());
-			addActionMessage("Evento excluído com sucesso.");
+			addActionSuccess("Evento excluído com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir este evento.");
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este evento.");
 		}
 
 		return list();

@@ -118,7 +118,7 @@
 	
 		<div class="buttonGroup">
 			<button type="button" onclick="validarCampos();" class="btnGravar"></button>
-			<button type="button" onclick="window.location='list.action'" class="btnVoltar"></button>
+			<button type="button" onclick="executeLink('lsit.action');" class="btnVoltar"></button>
 		</div>
 		
 		<script type="text/javascript">

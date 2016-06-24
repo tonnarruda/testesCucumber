@@ -185,7 +185,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="javascript:gravar();" class="btnGravar"></button>
-		<button onclick="window.location='list.action'" class="btnVoltar" ></button>
+		<button onclick="javascript: executeLink('list.action');" class="btnVoltar" ></button>
 	</div>
 
 	<script type="text/javascript">

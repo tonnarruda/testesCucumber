@@ -20,7 +20,7 @@
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>		
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.ExtintorEditAction" method="prepare">
-			<interceptor-ref name="defaultListStack">
+			<interceptor-ref name="defaultListTokenStack">
 				<param name="scope.session">extintor.estabelecimento.id</param>
 			</interceptor-ref>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/extintorEdit.ftl</result>
@@ -33,8 +33,8 @@
 			<interceptor-ref name="defaultDeleteStack">
 				<param name="scope.session">extintor.estabelecimento.id</param>
 			</interceptor-ref>
-			<result name="success" type="redirect">prepareInsert.action</result>
-			<result name="input" type="redirect">prepareInsert.action</result>
+			<result name="success" type="redirect">prepareInsert.action?internalToken=${internalToken}</result>
+			<result name="input" type="redirect">prepareInsert.action?internalToken=${internalToken}</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.ExtintorEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
@@ -42,6 +42,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/extintorEdit.ftl</result>
 		</action>
 		<action name="prepareRelatorio" class="com.fortes.rh.web.action.sesmt.ExtintorEditAction" method="prepareRelatorio">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/extintorRelatorio.ftl</result>
 		</action>
 		<action name="relatorioManutencaoAndInspecao" class="com.fortes.rh.web.action.sesmt.ExtintorEditAction" method="relatorioManutencaoAndInspecao">

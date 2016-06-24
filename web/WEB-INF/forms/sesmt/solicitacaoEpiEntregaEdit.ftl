@@ -42,7 +42,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="${validarCampos}" class="btnGravar"></button>
-		<button onclick="window.location='prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}'" class="btnVoltar"></button>
+		<button onclick="javascript: executeLink('prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}');" class="btnVoltar"></button>
 	</div>
 </body>
 </html>

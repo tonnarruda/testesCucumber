@@ -13,6 +13,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.HistoricoExtintor;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -105,10 +106,15 @@ public class HistoricoExtintorEditAction extends MyActionSupportList
 	
 	public String delete() throws Exception
 	{
-		if(extintor != null && extintor.getId()!=null  && (historicoExtintorManager.findByExtintor(extintor.getId()).size() <= 1))
-			addActionError("Historico do extintor não pode ser excluido devido o extintor possui apenas um único histórico.");
-		else
-			historicoExtintorManager.remove(historicoExtintor.getId());
+		try {
+			if(extintor != null && extintor.getId()!=null  && (historicoExtintorManager.findByExtintor(extintor.getId()).size() <= 1))
+				addActionWarning("Historico do extintor não pode ser excluido devido o extintor possui apenas um único histórico.");
+			else
+				historicoExtintorManager.remove(historicoExtintor.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta localização.");
+		}
 		
 		if(troca)
 			return "successTroca";

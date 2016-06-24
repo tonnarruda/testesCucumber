@@ -14,8 +14,8 @@
 	
 	<@display.table name="composicaoSesmts" id="composicaoSesmt" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?composicaoSesmt.id=${composicaoSesmt.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?composicaoSesmt.id=${composicaoSesmt.id}&page=${page}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?composicaoSesmt.id=${composicaoSesmt.id}');"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?composicaoSesmt.id=${composicaoSesmt.id}&page=${page}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 
 		</@display.column>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="text-align: center;"/>
@@ -27,7 +27,7 @@
 	</@display.table>
 	
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');"></button>
 	</div>
 </body>
 </html>

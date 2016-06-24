@@ -61,6 +61,7 @@
 		</action>
 		
 		<action name="prepareImprimirCertificadosVencidosAVencer" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction" method="prepareImprimirCertificadosVencidosAVencer">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareImprimirCertificadosVencidosAVencer.ftl</result>
 		</action>
 		<action name="imprimirCertificadosVencidosAVencer" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction" method="imprimirCertificadosVencidosAVencer">

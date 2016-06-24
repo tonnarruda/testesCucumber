@@ -29,8 +29,8 @@
 	
 	<@display.table name="epis" id="epi" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?epi.id=${epi.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?epi.id=${epi.id}&page=${page}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?epi.id=${epi.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?epi.id=${epi.id}&page=${page}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>
 		<@display.column property="tipoEPI.nome" title="Categoria de EPI"/>
@@ -44,7 +44,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');"></button>
 	</div>
 </body>
 </html>

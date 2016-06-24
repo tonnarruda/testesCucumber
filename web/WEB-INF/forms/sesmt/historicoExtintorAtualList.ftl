@@ -46,8 +46,8 @@
 
 	<@display.table name="historicoExtintores" id="historicoExtintor" class="dados">
 		<@display.column title="Ações" class="acao" style="width:25px;">
-			<a href="prepare.action?troca=true&historicoExtintor.id=${historicoExtintor.id}&extintor.id=${historicoExtintor.extintor.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?troca=true&historicoExtintor.id=${historicoExtintor.id}&extintor.id=${historicoExtintor.extintor.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepare.action?troca=true&historicoExtintor.id=${historicoExtintor.id}&extintor.id=${historicoExtintor.extintor.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?troca=true&historicoExtintor.id=${historicoExtintor.id}&extintor.id=${historicoExtintor.extintor.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:50px; text-align:center"/>
 		<@display.column property="localizacao" title="Localização" style="width:200px;"/>
@@ -57,7 +57,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 	
 	<div class="buttonGroup">
-		<button class="btnTrocaExtintores" onclick="window.location='prepareInsertTroca.action'"></button>
+		<button class="btnTrocaExtintores" onclick="javascript: executeLink('prepareInsertTroca.action');"></button>
 	</div>
 </body>
 </html>

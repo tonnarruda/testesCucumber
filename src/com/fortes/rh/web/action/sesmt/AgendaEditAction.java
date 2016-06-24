@@ -12,6 +12,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Agenda;
 import com.fortes.rh.model.sesmt.Evento;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -88,8 +89,13 @@ public class AgendaEditAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		agendaManager.remove(agenda.getId());
-		addActionMessage("Agenda excluída com sucesso.");
+		try {
+			agendaManager.remove(agenda.getId());
+			addActionSuccess("Agenda excluída com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta agenda.");
+		}
 
 		return Action.SUCCESS;
 	}

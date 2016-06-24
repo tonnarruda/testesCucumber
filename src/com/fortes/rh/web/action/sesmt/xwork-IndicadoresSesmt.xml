@@ -7,6 +7,7 @@
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>
 		<action name="painel" class="com.fortes.rh.web.action.sesmt.IndicadorSesmtListAction" method="painel">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/painelSesmt.ftl</result>
 		</action>
 	</package>

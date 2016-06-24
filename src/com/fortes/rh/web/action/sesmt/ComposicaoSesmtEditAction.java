@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.sesmt.ComposicaoSesmtManager;
 import com.fortes.rh.model.sesmt.ComposicaoSesmt;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -59,12 +60,12 @@ public class ComposicaoSesmtEditAction extends MyActionSupportList
 		try
 		{
 			composicaoSesmtManager.remove(composicaoSesmt.getId());
-			addActionMessage("Composição do SESMT excluído com sucesso.");
+			addActionSuccess("Composição do SESMT excluído com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir esta Composição do SESMT.");
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir esta Composição do SESMT.");
 		}
 
 		return list();

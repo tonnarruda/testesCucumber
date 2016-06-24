@@ -43,17 +43,10 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="prepareUpdate">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
-		</action>
-		<action name="prepareUpdateFromHistorico" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="prepareUpdate">
-			<interceptor-ref name="myDefaultWebStack"/>
+			<interceptor-ref name="defaultUpdateStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
 		</action>
 		<action name="prepareUpdateFiltro" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="prepareUpdateFiltro">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
-		</action>
-		<action name="prepareUpdateFiltroFromHistorico" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="prepareUpdateFiltro">
-			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="insert">
@@ -73,16 +66,17 @@
 		</action>
 		<action name="prepareMudancaFuncao" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="prepareMudancaFuncao">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/mudancaFuncaoEdit.ftl</result>
-			<result name="error" type="redirect">mudancaFuncaoFiltro.action</result>
+			<result name="error" type="redirect">mudancaFuncaoFiltro.action?internalToken=${internalToken}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/mudancaFuncaoEdit.ftl</result>
 		</action>
 		<action name="mudaFuncao" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="mudaFuncao">
-			<result name="success" type="redirect"><![CDATA[mudancaFuncaoFiltro.action?colaborador.id=${colaborador.id}&areaBusca.id=${areaBusca.id}&nomeBusca=${nomeBusca}&page=${page}]]></result>
+			<result name="success" type="redirect"><![CDATA[mudancaFuncaoFiltro.action?internalToken=${internalToken}&colaborador.id=${colaborador.id}&areaBusca.id=${areaBusca.id}&nomeBusca=${nomeBusca}&page=${page}]]></result>
 			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/mudancaFuncaoEdit.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/mudancaFuncaoEdit.ftl</result>
 		</action>
 
 		<action name="prepareRelatorioQtdPorFuncao" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="prepareRelatorioQtdPorFuncao">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioQtdPorFuncao.ftl</result>
 		</action>
 		<action name="gerarRelatorioQtdPorFuncao" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="gerarRelatorioQtdPorFuncao">
@@ -95,6 +89,7 @@
 		</action>
 
 		<action name="prepareRelatorioExamesPorFuncao" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="prepareRelatorioExamesPorFuncao">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioExamesPorFuncao.ftl</result>
 		</action>
 		

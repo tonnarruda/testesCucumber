@@ -92,9 +92,9 @@
 		</#if>
 	
 		<#if veioDoSESMT?exists && veioDoSESMT>
-			<button onclick="window.location='listFiltro.action?cargoTmp.id=${cargoTmp.id}'" class="btnVoltar"></button>
+			<button onclick="javascript: executeLink('listFiltro.action?cargoTmp.id=${cargoTmp.id}');" class="btnVoltar"></button>
 		<#else>
-			<button onclick="window.location='list.action?cargoTmp.id=${cargoTmp.id}'" class="btnVoltar"></button>
+			<button onclick="javascript: executeLink('list.action?cargoTmp.id=${cargoTmp.id}');" class="btnVoltar"></button>
 		</#if>
 	</div>
 

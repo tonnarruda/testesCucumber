@@ -4,6 +4,7 @@
 <xwork>
 	<package name="medicoCoordenador" extends="default" namespace="/sesmt/medicoCoordenador">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.MedicoCoordenadorListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/medicoCoordenadorList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.MedicoCoordenadorListAction" method="delete">

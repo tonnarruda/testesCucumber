@@ -4,6 +4,7 @@
 <xwork>
 	<package name="epc" extends="default" namespace="/sesmt/epc">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.EpcListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/epcList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.EpcListAction" method="delete">

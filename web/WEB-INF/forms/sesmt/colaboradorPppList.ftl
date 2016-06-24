@@ -34,7 +34,7 @@
 	<@display.table name="colaboradors" id="colaborador" pagesize=20 class="dados" defaultsort=3 >
 	<#assign style=""/>
 		<@display.column title="Ações" media="html" class="acao" style = "width:130px;">
-			<a href="javascript:window.location='prepareRelatorio.action?colaborador.id=${colaborador.id}'"><img border="0" title="Gerar PPP" src="<@ww.url includeParams="none" value="/imgs/report.gif"/>"></a>
+			<a href="javascript: executeLink('prepareRelatorio.action?colaborador.id=${colaborador.id}');"><img border="0" title="Gerar PPP" src="<@ww.url includeParams="none" value="/imgs/report.gif"/>"></a>
 		</@display.column>
 
 		<#if colaborador?exists && colaborador.dataDesligamento?exists>

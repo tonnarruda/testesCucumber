@@ -7,7 +7,7 @@
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.sesmt.RiscoFasePcmatEditAction" method="list">
-			<interceptor-ref name="defaultListStack" />
+			<interceptor-ref name="defaultListTokenStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/riscoFasePcmatList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.RiscoFasePcmatEditAction" method="delete">
@@ -21,16 +21,12 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.RiscoFasePcmatEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
-			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect"><![CDATA[list.action?fasePcmat.id=${riscoFasePcmat.fasePcmat.id}&pcmatId=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}]]></result>
-			<result name="success" type="redirect"><![CDATA[list.action?fasePcmat.id=${riscoFasePcmat.fasePcmat.id}&pcmatId=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&fasePcmat.id=${riscoFasePcmat.fasePcmat.id}&pcmatId=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/riscoFasePcmatEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.RiscoFasePcmatEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect"><![CDATA[list.action?fasePcmat.id=${riscoFasePcmat.fasePcmat.id}&pcmatId=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}]]></result>
-			<result name="success" type="redirect"><![CDATA[list.action?fasePcmat.id=${riscoFasePcmat.fasePcmat.id}&pcmatId=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?internalToken=${internalToken}&fasePcmat.id=${riscoFasePcmat.fasePcmat.id}&pcmatId=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/riscoFasePcmatEdit.ftl</result>
 		</action>
 	</package>

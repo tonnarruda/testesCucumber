@@ -117,7 +117,7 @@
 		<@display.table name="comissaoMembros" id="comissaoMembro" class="dados">
 			<@display.column title="Ações" class="acao" style="width: 40px;">
 				<#if clonar || comissaoMembro.permitirExcluir>
-					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteComissaoMembro.action?comissaoMembro.id=${comissaoMembro.id}&comissaoPeriodo.id=${comissaoPeriodo.id}&clonar=true'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('deleteComissaoMembro.action?comissaoMembro.id=${comissaoMembro.id}&comissaoPeriodo.id=${comissaoPeriodo.id}&clonar=true');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<#else>
 					<img border="0" title="Não é possível excluir o membro da comissão, pois o mesmo já participou de uma reuniao da comissão." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				</#if>
@@ -142,7 +142,7 @@
 		<button onclick="validaPeriodoClonado($('#aPartirDe').val());" class="btnGravar"></button>
 
 		<#if !clonar>
-			<button onclick="window.location='list.action?comissao.id=${comissao.id}'" class="btnVoltar" accesskey="V"></button>
+			<button onclick="javascript: executeLink('list.action?comissao.id=${comissao.id}');" class="btnVoltar" accesskey="V"></button>
 		</#if>
 	</div>
 

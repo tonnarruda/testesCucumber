@@ -137,8 +137,8 @@
 
 	<@display.table name="cats" id="cat" pagesize=20 class="dados">
 		<@display.column title="Açőes" class="acao">
-			<a href="prepareUpdate.action?cat.id=${cat.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?cat.id=${cat.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?cat.id=${cat.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?cat.id=${cat.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			<a href="javascript:;" onclick="imprimirRelatorio(${cat.id})"><img border="0" title="Imprimir Ficha de Investigação de Acidente" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 		 </@display.column>
 		<@display.column property="colaborador.nome" title="Colaborador" style="width:280px;"/>
@@ -185,7 +185,7 @@
 	</div>
 	
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');" accesskey="I">
 		</button>
 	</div>
 </body>

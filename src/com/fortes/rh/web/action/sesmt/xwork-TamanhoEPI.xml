@@ -4,6 +4,7 @@
 <xwork>
 	<package name="tamanhoEPI" extends="default" namespace="/sesmt/tamanhoEPI">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.TamanhoEPIListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/tamanhoEPIList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.TamanhoEPIListAction" method="delete">

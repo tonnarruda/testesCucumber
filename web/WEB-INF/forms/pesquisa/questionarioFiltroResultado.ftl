@@ -241,7 +241,7 @@
 			<button class="btnRelatorio" onclick="${validarCampos};" accesskey="I"></button>
 			<#-- Monta o botão de acordo com o destino pesquisa, avaliação, entrevista-->
 			<#if urlVoltar?exists && urlVoltar != "menu">
-				<button class="btnVoltar" onclick="window.location='${urlVoltar}'"></button>
+				<button class="btnVoltar" onclick="javascript: executeLink('${urlVoltar}');"></button>
 			</#if>
 		</div>
 </body>

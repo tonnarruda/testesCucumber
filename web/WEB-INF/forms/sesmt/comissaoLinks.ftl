@@ -24,11 +24,11 @@
 </style>
 
 <div id="menuComissao">
-	<a href="../comissao/prepareUpdate.action?comissao.id=${comissao.id}" class="ativaGeral">Geral</a>
-	<a href="../comissaoPeriodo/list.action?comissao.id=${comissao.id}" class="ativaComissao">Comissão</a>
-	<a href="../comissaoReuniao/list.action?comissao.id=${comissao.id}" class="ativaReuniao">Reuniões</a>
-	<a href="../comissaoPlanoTrabalho/list.action?comissao.id=${comissao.id}" class="ativaPlano">Plano de Trabalho</a>
-	<a href="../comissao/prepareDocumentos.action?comissao.id=${comissao.id}" class="ativaDocumentos">Atas e Comunicados</a>
+	<a href="javascript: executeLink('../comissao/prepareUpdate.action?comissao.id=${comissao.id}');" class="ativaGeral">Geral</a>
+	<a href="javascript: executeLink('../comissaoPeriodo/list.action?comissao.id=${comissao.id}');" class="ativaComissao">Comissão</a>
+	<a href="javascript: executeLink('../comissaoReuniao/list.action?comissao.id=${comissao.id}');" class="ativaReuniao">Reuniões</a>
+	<a href="javascript: executeLink('../comissaoPlanoTrabalho/list.action?comissao.id=${comissao.id}');" class="ativaPlano">Plano de Trabalho</a>
+	<a href="javascript: executeLink('../comissao/prepareDocumentos.action?comissao.id=${comissao.id}');" class="ativaDocumentos">Atas e Comunicados</a>
 
 	<a style="border-right: none;">&nbsp;</a> <!-- Essa ultima serve só para deixar uma bordinha clara -->
 	<div style="clear: both"></div>

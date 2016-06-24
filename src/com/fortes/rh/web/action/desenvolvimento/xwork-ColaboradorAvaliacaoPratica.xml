@@ -4,24 +4,25 @@
 <xwork>
 	<package name="colaboradorAvaliacaoPratica" extends="default" namespace="/desenvolvimento/colaboradorAvaliacaoPratica">
 		<action name="prepare" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="prepare">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaEdit.ftl</result>
 		</action>
 		<action name="buscaColaboradores" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="buscaColaboradores">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaEdit.ftl</result>
 		</action>
 		<action name="insertOrUpdate" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="insertOrUpdate">
-			<result name="invalid.token" type="redirect">buscaColaboradores.action</result>
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaEdit.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaEdit.ftl</result>
 		</action>
 		<action name="prepareLote" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="prepareLote">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaList.ftl</result>
 		</action>
 		<action name="buscaColaboradoresLote" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="buscaColaboradoresLote">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaList.ftl</result>
 		</action>
 		<action name="insertOrUpdateLote" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="insertOrUpdateLote">
-			<result name="invalid.token" type="redirect">buscaColaboradores.action</result>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaList.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaList.ftl</result>
 		</action>

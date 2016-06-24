@@ -55,8 +55,8 @@
 	</div>
 		<@display.table name="candidatoEleicaos" id="candidatoEleicao" class="dados">
 		<@display.column title="Ações" class="acao" style="width: 40px;">
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?candidatoEleicao.id=${candidatoEleicao.id}&eleicao.id=${eleicao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-			<a href="imprimirComprovanteInscricao.action?candidatoEleicao.candidato.id=${candidatoEleicao.candidato.id}&eleicao.id=${eleicao.id}"><img border="0" title="Imprimir o comprovante de inscrição" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){javascript: executeLink('delete.action?candidatoEleicao.id=${candidatoEleicao.id}&eleicao.id=${eleicao.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('imprimirComprovanteInscricao.action?candidatoEleicao.candidato.id=${candidatoEleicao.candidato.id}&eleicao.id=${eleicao.id}');"><img border="0" title="Imprimir o comprovante de inscrição" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 		</@display.column>
 		<@display.column title="Candidato">
 			${i} - ${candidatoEleicao.candidato.nome}
@@ -71,11 +71,11 @@
 	<div class="buttonGroup">
 		<button class="btnInserirCandidato" onclick="limpaForm();openbox('Inserir Candidatos', 'nomeBusca');" ></button>
 	<#if (candidatoEleicaos?exists && candidatoEleicaos?size>0)>
-		<button class="btnGerarCedulas" onclick="window.location='imprimirCedulas.action?eleicao.id=${eleicao.id}'" ></button>
+		<button class="btnGerarCedulas" onclick="javascript: executeLink('imprimirCedulas.action?eleicao.id=${eleicao.id}');" ></button>
 	</#if>
 	
 	<#if (eleicao.votacaoIni?exists && eleicao.votacaoFim?exists)>
-		<button class="btnListaFrequenciaVotacao" onclick="window.location='imprimirListaFrequencia.action?eleicao.id=${eleicao.id}'" ></button>
+		<button class="btnListaFrequenciaVotacao" onclick="javascript: executeLink('imprimirListaFrequencia.action?eleicao.id=${eleicao.id}');" ></button>
 	</#if>
 	
 	</div>

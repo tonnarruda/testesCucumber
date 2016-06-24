@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.model.sesmt.Afastamento;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -51,12 +52,12 @@ public class AfastamentoEditAction extends MyActionSupportList
 		try
 		{
 			afastamentoManager.remove(afastamento.getId());
-			addActionMessage("Afastamento excluído com sucesso.");
+			addActionSuccess("Afastamento excluído com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir este afastamento.");
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este afastamento.");
 		}
 
 		return list();

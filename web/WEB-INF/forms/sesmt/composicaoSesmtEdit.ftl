@@ -21,6 +21,8 @@
 	</head>
 	<body>
 		<@ww.actionerror />
+		<@ww.actionmessage />
+		
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.hidden name="composicaoSesmt.id" />
 			<@ww.hidden name="composicaoSesmt.empresa.id" />
@@ -37,7 +39,7 @@
 	
 		<div class="buttonGroup">
 			<button onclick="${validarCampos};" class="btnGravar"></button>
-			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+			<button onclick="javascript: executeLink('list.action');" class="btnVoltar"></button>
 		</div>
 	</body>
 </html>

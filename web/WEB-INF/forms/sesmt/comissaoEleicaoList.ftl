@@ -85,7 +85,7 @@
 	<@ww.form name="formList" id="formList" action="saveFuncao.action" method="POST">
 		<@display.table name="comissaoEleicaos" id="comissaoEleicao" class="dados">
 			<@display.column title="Ações" class="acao" style="width: 40px;">
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?comissaoEleicao.id=${comissaoEleicao.id}&eleicao.id=${eleicao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){javascript: executeLink('delete.action?comissaoEleicao.id=${comissaoEleicao.id}&eleicao.id=${eleicao.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</@display.column>
 			<@display.column property="colaborador.nome" title="Nome"/>
 			<@display.column title="Função" style="width: 280px;text-align:center;">

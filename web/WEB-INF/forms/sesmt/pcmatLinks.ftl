@@ -35,13 +35,13 @@
 
 <#if pcmatId?exists>
 	<div id="menuPcmat">
-		<a href="../pcmat/prepareUpdate.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuGeral">Geral</a>
-		<a href="../fasePcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuFases">Fases</a>
-		<a href="../areaVivenciaPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuAreasVivencia">Áreas de Vivência</a>
-		<a href="../atividadeSegurancaPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuAtividadesSeguranca">Atividades de Segurança</a>
-		<a href="../epiPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuEPIs">EPIs</a>
-		<a href="../epcPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuEPCs">EPCs</a>
-		<a href="../sinalizacaoPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuSinalizacao">Sinalização</a>
+		<a href="javascript: executeLink('../pcmat/prepareUpdate.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}');" id="menuGeral">Geral</a>
+		<a href="javascript: executeLink('../fasePcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}');" id="menuFases">Fases</a>
+		<a href="javascript: executeLink('../areaVivenciaPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}');" id="menuAreasVivencia">Áreas de Vivência</a>
+		<a href="javascript: executeLink('../atividadeSegurancaPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}');" id="menuAtividadesSeguranca">Atividades de Segurança</a>
+		<a href="javascript: executeLink('../epiPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}');" id="menuEPIs">EPIs</a>
+		<a href="javascript: executeLink('../epcPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}');" id="menuEPCs">EPCs</a>
+		<a href="javascript: executeLink('../sinalizacaoPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}');" id="menuSinalizacao">Sinalização</a>
 		<a class="last">&nbsp;</a>
 		<div style="clear: both"></div>
 	</div>

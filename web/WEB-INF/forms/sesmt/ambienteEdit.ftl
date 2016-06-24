@@ -78,9 +78,9 @@
 		<br>
 		<@display.table name="historicoAmbientes" id="historicoAmbiente" pagesize=10 class="dados">
 			<@display.column title="Ações" class="acao">
-				<a href="../historicoAmbiente/prepareUpdate.action?historicoAmbiente.id=${historicoAmbiente.id}&ambiente.id=${ambiente.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+				<a href="javascript: executeLink('../historicoAmbiente/prepareUpdate.action?historicoAmbiente.id=${historicoAmbiente.id}&ambiente.id=${ambiente.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 				<#if 1 < historicoAmbientes?size>
-					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../historicoAmbiente/delete.action?historicoAmbiente.id=${historicoAmbiente.id}&ambiente.id=${ambiente.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('../historicoAmbiente/delete.action?historicoAmbiente.id=${historicoAmbiente.id}&ambiente.id=${ambiente.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<#else>
 					<a href="javascript:;"><img border="0" title="Não é possível remover o único histórico do ambiente" src="<@ww.url value="/imgs/delete.gif"/>"  style="opacity:0.2;filter:alpha(opacity=20);"></a>
 				</#if>
@@ -90,9 +90,9 @@
 		</@display.table>
 
 	<div class="buttonGroup">
-		<button onclick="window.location='../historicoAmbiente/prepareInsert.action?ambiente.id=${ambiente.id}'" class="btnInserir" accesskey="I"></button>
+		<button onclick="javascript: executeLink('../historicoAmbiente/prepareInsert.action?ambiente.id=${ambiente.id}');" class="btnInserir" accesskey="I"></button>
 	</#if>
-		<button onclick="window.location='list.action'" class="btnVoltar" accesskey="V"></button>
+		<button onclick="javascript: executeLink('list.action');" class="btnVoltar" accesskey="V"></button>
 	</div>
 </body>
 </html>

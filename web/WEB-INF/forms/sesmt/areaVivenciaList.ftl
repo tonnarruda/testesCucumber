@@ -26,14 +26,14 @@
 	
 	<@display.table name="areaVivencias" id="areaVivencia" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?areaVivencia.id=${areaVivencia.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="javascript:;" onclick="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?areaVivencia.id=${areaVivencia.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?areaVivencia.id=${areaVivencia.id}');"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="javascript:;" onclick="javascript:newConfirm('Confirma exclusão?', function(){executeLink('delete.action?areaVivencia.id=${areaVivencia.id}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column title="Nome" property="nome"/>
 	</@display.table>
 	
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');"></button>
 	</div>
 </body>
 </html>

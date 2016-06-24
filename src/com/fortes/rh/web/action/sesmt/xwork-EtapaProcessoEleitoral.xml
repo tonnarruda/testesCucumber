@@ -5,6 +5,7 @@
 	<package name="etapaProcessoEleitoral" extends="default" namespace="/sesmt/etapaProcessoEleitoral">
 
 		<action name="list" class="com.fortes.rh.web.action.sesmt.EtapaProcessoEleitoralEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/etapaProcessoEleitoralList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.EtapaProcessoEleitoralEditAction" method="delete">
@@ -43,14 +44,14 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/calendarioEleicaoList.ftl</result>
 		</action>
 		<action name="deleteCalendarioEleicao" class="com.fortes.rh.web.action.sesmt.EtapaProcessoEleitoralEditAction" method="delete">
-			<result name="success" type="redirect"><![CDATA[calendarioEleicaoList.action?eleicao.id=${eleicao.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[calendarioEleicaoList.action?internalToken=${internalToken}&eleicao.id=${eleicao.id}]]></result>
 		</action>
 		<action name="insertCalendarioEleicao" class="com.fortes.rh.web.action.sesmt.EtapaProcessoEleitoralEditAction" method="insert">
-			<result name="success" type="redirect"><![CDATA[calendarioEleicaoList.action?eleicao.id=${eleicao.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[calendarioEleicaoList.action?internalToken=${internalToken}&eleicao.id=${eleicao.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/calendarioEleicaoList.ftl</result>
 		</action>
 		<action name="updateCalendarioEleicao" class="com.fortes.rh.web.action.sesmt.EtapaProcessoEleitoralEditAction" method="update">
-			<result name="success" type="redirect"><![CDATA[calendarioEleicaoList.action?eleicao.id=${eleicao.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[calendarioEleicaoList.action?internalToken=${internalToken}&eleicao.id=${eleicao.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/calendarioEleicaoList.ftl</result>
 		</action>
 	</package>

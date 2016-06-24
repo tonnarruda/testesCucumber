@@ -17,10 +17,10 @@
 	
 	<@display.table name="epiPcmats" id="epiPcmat" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?epiPcmat.id=${epiPcmat.id}&ultimoPcmatId=${ultimoPcmatId}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?epiPcmat.id=${epiPcmat.id}&ultimoPcmatId=${ultimoPcmatId}');"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			
 			<#if ultimoPcmatId == pcmat.id>	
-				<a href="javascript:;" onclick="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?epiPcmat.id=${epiPcmat.id}&pcmat.id=${pcmat.id}&ultimoPcmatId=${ultimoPcmatId}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+				<a href="javascript:;" onclick="javascript:newConfirm('Confirma exclusão?', function(){executeLink('delete.action?epiPcmat.id=${epiPcmat.id}&pcmat.id=${pcmat.id}&ultimoPcmatId=${ultimoPcmatId}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			<#else>
 				<img border="0" title="Só é possível excluir EPI do último PCMAT" src="<@ww.url value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
@@ -31,7 +31,7 @@
 	
 	<div class="buttonGroup">
 		<#if ultimoPcmatId == pcmat.id>
-			<button class="btnInserir" onclick="window.location='prepareInsert.action?epiPcmat.pcmat.id=${pcmat.id}&ultimoPcmatId=${ultimoPcmatId}'"></button>
+			<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action?epiPcmat.pcmat.id=${pcmat.id}&ultimoPcmatId=${ultimoPcmatId}');"></button>
 		</#if>
 	</div>
 </body>

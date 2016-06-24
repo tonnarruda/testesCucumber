@@ -5,6 +5,7 @@
 	<package name="avaliacaoExperiencia" extends="default" namespace="/avaliacao/avaliacaoExperiencia">
 		
 		<action name="prepareResultado" class="com.fortes.rh.web.action.avaliacao.AvaliacaoExperienciaEditAction" method="prepareResultado">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoExperienciaFiltroResultado.ftl</result>
 		</action>
 		<action name="imprimeResultado" class="com.fortes.rh.web.action.avaliacao.AvaliacaoExperienciaEditAction" method="imprimeResultado">

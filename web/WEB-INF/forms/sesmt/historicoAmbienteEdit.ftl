@@ -75,7 +75,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="${validarCamp};" class="btnGravar" accesskey="${accessKey}"></button>
-		<button onclick="window.location='../ambiente/prepareUpdate.action?ambiente.id=${ambiente.id}'" class="btnCancelar" accesskey="V"></button>
+		<button onclick="javascript: executeLink('../ambiente/prepareUpdate.action?ambiente.id=${ambiente.id}');" class="btnCancelar" accesskey="V"></button>
 	</div>
 </body>
 </html>

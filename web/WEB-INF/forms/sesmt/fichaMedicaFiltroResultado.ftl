@@ -78,7 +78,7 @@
 			<button class="btnRelatorio" onclick="${validarCampos};" accesskey="I"></button>
 			
 			<@authz.authorize ifAllGranted="ROLE_CAD_FICHAMEDICA">
-				<button class="btnVoltar" onclick="window.location='${urlVoltar}'"></button>
+				<button class="btnVoltar" onclick="javascript: executeLink('${urlVoltar}');"></button>
 			</@authz.authorize>
 		</div>
 </body>

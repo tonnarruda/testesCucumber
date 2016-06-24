@@ -4,6 +4,7 @@
 <xwork>
 	<package name="fichaMedica" extends="default" namespace="/sesmt/fichaMedica">
 		<action name="list" class="com.fortes.rh.web.action.pesquisa.FichaMedicaListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/fichaMedicaList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.pesquisa.FichaMedicaListAction" method="delete">
@@ -17,11 +18,11 @@
 			<result name="error.empresa" type="redirect">list.action?msg=${msg}</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.pesquisa.FichaMedicaEditAction" method="insert">
-			<result name="success" type="redirect">/pesquisa/pergunta/list.action?questionario.id=${questionario.id}</result>
+			<result name="success" type="redirect"><![CDATA[/pesquisa/pergunta/list.action?internalToken=${internalToken}&questionario.id=${questionario.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/fichaMedicaEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.pesquisa.FichaMedicaEditAction" method="update">
-			<result name="success" type="redirect">/pesquisa/pergunta/list.action?questionario.id=${questionario.id}</result>
+			<result name="success" type="redirect"><![CDATA[/pesquisa/pergunta/list.action?internalToken=${internalToken}&questionario.id=${questionario.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/fichaMedicaEdit.ftl</result>
 		</action>
 		<action name="gravar" class="com.fortes.rh.web.action.pesquisa.FichaMedicaEditAction" method="gravar">
@@ -43,8 +44,8 @@
 			<interceptor-ref name="defaultDeleteStack">
 				<param name="scope.session">dataIni,dataFim,vinculo,nomeBusca,cpfBusca,matriculaBusca</param>
 			</interceptor-ref>
-			<result name="success" type="redirect">listPreenchida.action</result>
-			<result name="error" type="redirect">listPreenchida.action</result>
+			<result name="success" type="redirect">listPreenchida.action?internalToken=${internalToken}</result>
+			<result name="error" type="redirect">listPreenchida.action?internalToken=${internalToken}</result>
 		</action>
 		
 		<action name="prepareInsertFicha" class="com.fortes.rh.web.action.pesquisa.FichaMedicaListAction" method="prepareInsertFicha">
@@ -67,6 +68,7 @@
 		<!-- Apontando para action de Questionario. -->
 		
 		<action name="prepareResultadoFichaMedica" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="prepareResultadoFichaMedica">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/fichaMedicaFiltroResultado.ftl</result>
 		</action>
 		<action name="imprimeResultadoFichaMedica" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="imprimeResultado">

@@ -283,9 +283,9 @@
 		</#if>
 
 		<#if pergunta.id?exists>
-			<a href="../aspecto/list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}"><img src="<@ww.url value="/imgs/agrupar.gif"/>" title="Aspectos" width="16" height="16" /></a>
+			<a href="javascript: executeLink('../aspecto/list.action?questionario.id=${questionario.id}&pergunta.id=${pergunta.id}');"><img src="<@ww.url value="/imgs/agrupar.gif"/>" title="Aspectos" width="16" height="16" /></a>
 		<#else>
-			<a href="../aspecto/list.action?questionario.id=${questionario.id}"><img src="<@ww.url value="/imgs/agrupar.gif"/>" title="Aspectos" width="16" height="16" /></a>
+			<a href="javascript: executeLink('../aspecto/list.action?questionario.id=${questionario.id}')"><img src="<@ww.url value="/imgs/agrupar.gif"/>" title="Aspectos" width="16" height="16" /></a>
 		</#if>
 
 			<span class="hotspot" id="help_aspecto" ><img src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /></span>

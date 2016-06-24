@@ -4,6 +4,7 @@
 <xwork>
 	<package name="pcmso" extends="default" namespace="/sesmt/pcmso">
 		<action name="prepareRelatorio" class="com.fortes.rh.web.action.sesmt.PcmsoListAction" method="prepareRelatorio">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmso.ftl</result>
 		</action>
 		<action name="gerarRelatorio" class="com.fortes.rh.web.action.sesmt.PcmsoListAction" method="gerarRelatorio">

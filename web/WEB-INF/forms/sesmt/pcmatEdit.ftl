@@ -74,7 +74,7 @@
 				<button onclick="${validarCampos};" class="btnGravar"></button>
 			</#if>
 			
-			<button onclick="window.location='listPcmats.action?obra.id=${pcmat.obra.id}'" class="btnVoltar"></button>
+			<button onclick="javascript: executeLink('listPcmats.action?obra.id=${pcmat.obra.id}');" class="btnVoltar"></button>
 		</div>
 	</body>
 </html>

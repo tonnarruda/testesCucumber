@@ -73,7 +73,7 @@
 					fim = limpaCamposMascaraData(fim);
 				}
 			    var host = "imprimirListaInspecaoDeExtintores.action?estabelecimentoId=" + estabelecimento + "&extintorId=" + extintor + "&regularidade=" + regularidade + "&inicio=" + inicio + "&fim=" + fim;
-			    window.location = host;
+			    executeLink(host);
 			});
 		});
 		
@@ -142,8 +142,8 @@
 
 	<@display.table name="extintorInspecaos" id="extintorInspecao" class="dados">
 		<@display.column title="Ações" class="acao" style="width:25px;">
-			<a href="prepareUpdate.action?extintorInspecao.id=${extintorInspecao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?extintorInspecao.id=${extintorInspecao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?extintorInspecao.id=${extintorInspecao.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?extintorInspecao.id=${extintorInspecao.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="data" title="Data da Inspeção" format="{0,date,dd/MM/yyyy}" style="width:80px; text-align:center" class="${extintorInspecao.tipoDeRegularidade}"/>
 		<@display.column property="extintor.localizacao" title="Localização" style="width:190px;" class="${extintorInspecao.tipoDeRegularidade}"/>
@@ -158,7 +158,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 			
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="N"></button>
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');" accesskey="N"></button>
 		
 		<button class="btnListaDeInspecaoExtintores" id="btnListaDeInspecaoExtintores" ></button>
 		<img id="relatorioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" style="margin-left: -25px" width="16" height="16" /><br>

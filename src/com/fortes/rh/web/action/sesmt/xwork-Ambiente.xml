@@ -13,6 +13,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/ambienteList.ftl</result>
 		</action>
 		<action name="prepareRelatorioMapaDeRisco" class="com.fortes.rh.web.action.sesmt.AmbienteEditAction" method="prepareRelatorioMapaDeRisco">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/prepareRelatorioMapaDeRisco.ftl</result>
 		</action>
 		<action name="imprimirRelatorioMapaDeRisco" class="com.fortes.rh.web.action.sesmt.AmbienteEditAction" method="imprimirRelatorioMapaDeRisco">

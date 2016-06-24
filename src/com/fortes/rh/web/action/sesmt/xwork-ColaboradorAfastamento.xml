@@ -31,18 +31,15 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/colaboradorAfastamentoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/colaboradorAfastamentoEdit.ftl</result>
-		    <result name="invalid.token" type="redirect">list.action</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/colaboradorAfastamentoEdit.ftl</result>
-		    <result name="invalid.token" type="redirect">list.action</result>
 		</action>
 		<action name="prepareRelatorioAfastamentos" class="com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoListAction" method="prepareRelatorio">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioAfastamentos.ftl</result>
 		</action>
 		<action name="relatorioAfastamentos" class="com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoListAction" method="relatorioAfastamentos">
@@ -211,6 +208,7 @@
 			<result name="inputXls" type="freemarker">/WEB-INF/forms/sesmt/relatorioAfastamentos.ftl</result>
 		</action>
 		<action name="prepareRelatorioResumoAfastamentos" class="com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoListAction" method="prepareRelatorioResumoAfastamentos">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioResumoAfastamentos.ftl</result>
 		</action>
 		<action name="relatorioResumoAfastamentos" class="com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoListAction" method="relatorioResumoAfastamentos">

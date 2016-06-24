@@ -4,6 +4,7 @@
 <xwork>
 	<package name="composicaoSesmt" extends="default" namespace="/sesmt/composicaoSesmt">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.ComposicaoSesmtEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/composicaoSesmtList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.ComposicaoSesmtEditAction" method="delete">
@@ -16,14 +17,10 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/composicaoSesmtEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.ComposicaoSesmtEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/composicaoSesmtEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.ComposicaoSesmtEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/composicaoSesmtEdit.ftl</result>
 		</action>

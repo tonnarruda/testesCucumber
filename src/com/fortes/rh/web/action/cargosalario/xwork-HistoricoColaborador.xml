@@ -135,6 +135,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioSituacoes.ftl</result>
 		</action>
 		<action name="prepareUpdateAmbientesEFuncoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="prepareUpdateAmbientesEFuncoes">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/ambientesEFuncoesEdit.ftl</result>
 		</action>
 		<action name="updateAmbientesEFuncoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="updateAmbientesEFuncoes">

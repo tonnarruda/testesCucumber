@@ -99,8 +99,8 @@
 									<#list item.solicitacaoEpiItemEntregas as entrega>
 										<tr>
 											<td width="50" align="center">
-												<a href="prepareUpdateEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemEntrega.id=${entrega.id}&solicitacaoEpiItem.id=${item.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-												<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemEntrega.id=${entrega.id}&solicitacaoEpiItem.id=${item.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+												<a href="javascript: executeLink('prepareUpdateEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemEntrega.id=${entrega.id}&solicitacaoEpiItem.id=${item.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+												<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){executeLink('deleteEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemEntrega.id=${entrega.id}&solicitacaoEpiItem.id=${item.id}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 											</td>
 											<td width="100" align="center">${entrega.dataEntrega}</td>
 											<td width="100" align="right">${entrega.qtdEntregue}</td>
@@ -111,7 +111,7 @@
 						</#if>
 						
 						<#if item.totalEntregue < item.qtdSolicitado>
-							<a href="prepareInsertEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItem.id=${item.id}">
+							<a href="javascript: executeLink('prepareInsertEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItem.id=${item.id}');">
 								<img title="Inserir entrega" src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
 								Inserir entrega
 							</a>
@@ -130,8 +130,8 @@
 									<#list item.solicitacaoEpiItemDevolucoes as devolucao>
 										<tr>
 											<td width="50" align="center">
-												<a href="prepareUpdateDevolucao.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemDevolucao.id=${devolucao.id}&solicitacaoEpiItem.id=${item.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-												<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteDevolucao.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemDevolucao.id=${devolucao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+												<a href="javascript: executeLink('prepareUpdateDevolucao.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemDevolucao.id=${devolucao.id}&solicitacaoEpiItem.id=${item.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+												<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){javascript: executeLink('deleteDevolucao.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemDevolucao.id=${devolucao.id}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 											</td>
 											<td width="100" align="center">${devolucao.dataDevolucao}</td>
 											<td width="100" align="right">${devolucao.qtdDevolvida}</td>
@@ -142,7 +142,7 @@
 						</#if>
 						
 						<#if (item.totalDevolvido < item.totalEntregue) >
-							<a href="prepareInsertDevolucao.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItem.id=${item.id}">
+							<a href="javascript: executeLink('prepareInsertDevolucao.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItem.id=${item.id}');">
 								<img title="Inserir Devolução" src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
 								Inserir devolução
 							</a>
@@ -165,7 +165,7 @@
 	</table>
 	
 	<div class="buttonGroup">
-		<button onclick="window.location='list.action'" class="btnVoltar"></button>
+		<button onclick="javascript: executeLink('list.action');" class="btnVoltar"></button>
 	</div>
 </body>
 </html>
