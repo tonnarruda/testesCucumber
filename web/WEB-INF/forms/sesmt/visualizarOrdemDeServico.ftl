@@ -28,6 +28,7 @@
 	</head>
 	<body>
 		<table class="bordas" border="1">
+			
 			<tr >
 				<td border="1px" colspan = "2" align="center" valign="middle">
 					<span style="font-weight: bold; font-size: 15px;">ORDEM DE SERVIÇO</span>

@@ -13,6 +13,7 @@ import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.CnpjUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.security.auditoria.NaoAudita;
 
@@ -33,6 +34,29 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	private String nomeFuncao;
 	
 	private String nomeEmpresa;
+	
+	private String empresaCNPJ;
+
+	private String nomeEstabelecimento;
+	
+	private String estabelecimentoComplementoCNPJ;
+	
+	private String estabelecimentoEndereco;
+	
+	private String nomeCargo;
+//	private String estabelecimentoLogradouro;
+	
+//	private String estabelecimentoNumero;
+//	
+//	private String estabelecimentoCep;
+//	
+//	private String estabelecimentoBairro;
+//	
+//	private String estabelecimentoComplementoEndereco;
+//	
+//	private String estabelecimentoNomeCidade;
+//	
+//	private String estabelecimentoSiglaUF;
 	
 	@Temporal(TemporalType.DATE)
 	private Date data;
@@ -223,4 +247,106 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	public void setImpressa(boolean impressa) {
 		this.impressa = impressa;
 	}
+
+	public String getEmpresaCNPJ() {
+		return empresaCNPJ;
+	}
+
+	public void setEmpresaCNPJ(String empresaCNPJ) {
+		this.empresaCNPJ = empresaCNPJ;
+	}
+
+	public String getNomeEstabelecimento() {
+		return nomeEstabelecimento;
+	}
+
+	public void setNomeEstabelecimento(String nomeEstabelecimento) {
+		this.nomeEstabelecimento = nomeEstabelecimento;
+	}
+
+	public String getEstabelecimentoComplementoCNPJ() {
+		return estabelecimentoComplementoCNPJ;
+	}
+
+	public void setEstabelecimentoComplementoCNPJ(
+			String estabelecimentoComplementoCNPJ) {
+		this.estabelecimentoComplementoCNPJ = estabelecimentoComplementoCNPJ;
+	}
+
+	public String getEstabelecimentoEndereco() {
+		return estabelecimentoEndereco;
+	}
+
+	public void setEstabelecimentoEndereco(String estabelecimentoEndereco) {
+		this.estabelecimentoEndereco = estabelecimentoEndereco;
+	}
+	
+	public String getCNPJFormatado(){
+		return CnpjUtil.formata(empresaCNPJ + estabelecimentoComplementoCNPJ); 
+	}
+
+	public String getNomeCargo() {
+		return nomeCargo;
+	}
+
+	public void setNomeCargo(String nomeCargo) {
+		this.nomeCargo = nomeCargo;
+	}
+	
+//	public String getEstabelecimentoLogradouro() {
+//		return estabelecimentoLogradouro;
+//	}
+//
+//	public void setEstabelecimentoLogradouro(String estabelecimentoLogradouro) {
+//		this.estabelecimentoLogradouro = estabelecimentoLogradouro;
+//	}
+//
+//	public String getEstabelecimentoNumero() {
+//		return estabelecimentoNumero;
+//	}
+//
+//	public void setEstabelecimentoNumero(String estabelecimentoNumero) {
+//		this.estabelecimentoNumero = estabelecimentoNumero;
+//	}
+//
+//	public String getEstabelecimentoCep() {
+//		return estabelecimentoCep;
+//	}
+//
+//	public void setEstabelecimentoCep(String estabelecimentoCep) {
+//		this.estabelecimentoCep = estabelecimentoCep;
+//	}
+//
+//	public String getEstabelecimentoBairro() {
+//		return estabelecimentoBairro;
+//	}
+//
+//	public void setEstabelecimentoBairro(String estabelecimentoBairro) {
+//		this.estabelecimentoBairro = estabelecimentoBairro;
+//	}
+//
+//	public String getEstabelecimentoComplementoEndereco() {
+//		return estabelecimentoComplementoEndereco;
+//	}
+//
+//	public void setEstabelecimentoComplementoEndereco(
+//			String estabelecimentoComplementoEndereco) {
+//		this.estabelecimentoComplementoEndereco = estabelecimentoComplementoEndereco;
+//	}
+//
+//	public String getEstabelecimentoNomeCidade() {
+//		return estabelecimentoNomeCidade;
+//	}
+//
+//	public void setEstabelecimentoNomeCidade(String estabelecimentoNomeCidade) {
+//		this.estabelecimentoNomeCidade = estabelecimentoNomeCidade;
+//	}
+//
+//	public String getEstabelecimentoSiglaUF() {
+//		return estabelecimentoSiglaUF;
+//	}
+//
+//	public void setEstabelecimentoSiglaUF(String estabelecimentoSiglaUF) {
+//		this.estabelecimentoSiglaUF = estabelecimentoSiglaUF;
+//	}
 }

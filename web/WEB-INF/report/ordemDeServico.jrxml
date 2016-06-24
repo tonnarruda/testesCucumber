@@ -31,28 +31,49 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="84" splitType="Stretch">
-			<staticText>
-				<reportElement x="57" y="21" width="497" height="25" uuid="93c71c29-6d40-4033-9701-1d70258f5437"/>
-				<textElement textAlignment="Center">
-					<font size="20" isBold="false"/>
-				</textElement>
-				<text><![CDATA[ORDEM DE SERVIÇO]]></text>
-			</staticText>
-			<image>
-				<reportElement x="0" y="0" width="78" height="79" uuid="7d972769-8e20-42dc-9165-f66d273f1e00"/>
-				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
-			</image>
+		<band height="48" splitType="Stretch">
 			<rectangle>
-				<reportElement mode="Transparent" x="0" y="0" width="555" height="79" uuid="845acfa5-f949-4bc4-957c-94a9977308ac"/>
+				<reportElement mode="Transparent" x="0" y="0" width="555" height="48" uuid="30371ec3-d988-464c-b559-09335d800c9e"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
+			<image>
+				<reportElement x="1" y="1" width="67" height="46" uuid="7d972769-8e20-42dc-9165-f66d273f1e00"/>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="58" y="27" width="497" height="15" uuid="22cc353a-e098-4cf1-96de-25cd1139803c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Rua Antônio Fortes, 330 - Luciano Cavalcante, Fortaleza/CE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="58" y="0" width="497" height="27" uuid="67bc803c-b7c1-4d73-b1ed-6630a1bdc5b9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fornecedora]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band splitType="Stretch"/>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement isPrintRepeatedValues="false" x="1" y="8" width="554" height="17" uuid="93c71c29-6d40-4033-9701-1d70258f5437"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ORDEM DE SERVIÇO
+
+]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
 		<band height="47" splitType="Stretch">

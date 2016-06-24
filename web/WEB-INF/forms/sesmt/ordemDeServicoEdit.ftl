@@ -98,6 +98,12 @@
 			<@ww.hidden name="ordemDeServico.nomeColaborador" />
 			<@ww.hidden name="ordemDeServico.dataAdmisaoColaborador" />
 			<@ww.hidden name="ordemDeServico.nomeFuncao" />
+			<@ww.hidden name="ordemDeServico.nomeEmpresa" />
+			<@ww.hidden name="ordemDeServico.nomeCargo" />
+			<@ww.hidden name="ordemDeServico.nomeEstabelecimento"/>
+			<@ww.hidden name="ordemDeServico.empresaCNPJ" />
+			<@ww.hidden name="ordemDeServico.estabelecimentoComplementoCNPJ" />
+			<@ww.hidden name="ordemDeServico.estabelecimentoEndereco" />
 			<@ww.hidden name="ordemDeServico.codigoCBO" />
 			<@ww.hidden name="ordemDeServico.revisao" value="${revisao}"/>
 			<@ww.token/>

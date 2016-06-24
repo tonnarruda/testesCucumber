@@ -22,7 +22,12 @@ CREATE TABLE ordemDeServico (
 	procedimentoEmCasoDeAcidente text,
 	termoDeResponsabilidade text,
 	informacoesAdicionais text,
-	impressa boolean DEFAULT false
+	impressa boolean DEFAULT false,
+	empresacnpj character varying(20),
+	nomeEstabelecimento character varying(30),
+	nomeCargo character varying(30),
+	estabelecimentoComplementoCNPJ character varying(10),
+	estabelecimentoEndereco text
 );--.go
 
 ALTER TABLE ordemDeServico ADD CONSTRAINT ordemDeServico_pkey PRIMARY KEY(id);--.go

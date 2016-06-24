@@ -1294,6 +1294,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.getEstabelecimento().setNome(estabelecimentoNome);
 	}
 	
+	public void setEstabelecimentoomplementoCNPJ(String complementoCNPJ)
+	{
+		iniciaEstabelecimento();
+		this.getEstabelecimento().setComplementoCnpj(complementoCNPJ);
+	}
+	
 	public void setEstabelecimentoCodigoACProjection(String codigoAC)
 	{
 		iniciaEstabelecimento();
@@ -1620,6 +1626,61 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			this.endereco.setUf(new Estado());
 		this.endereco.getUf().setId(enderecoUfId);
 	}
+	
+	private void  inicializaEstabelecimentoEndereco(){
+		if(this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		
+		if(this.estabelecimento.getEndereco() == null){
+			this.estabelecimento.setEndereco(new Endereco());
+		}
+	}
+	
+	public void setEstabelecimentoEnderecoLogradouro(String logradouro)
+	{
+		inicializaEstabelecimentoEndereco();
+		this.estabelecimento.getEndereco().setLogradouro(logradouro);
+	}
+
+	public void setEstabelecimentoEnderecoComplemento(String complemento)
+	{
+		inicializaEstabelecimentoEndereco();
+		this.estabelecimento.getEndereco().setComplemento(complemento);
+	}
+
+	public void setEstabelecimentoEnderecoNumero(String numero)
+	{
+		inicializaEstabelecimentoEndereco();
+		this.estabelecimento.getEndereco().setNumero(numero);
+	}
+
+	public void setEstabelecimentoEnderecoCep(String cep)
+	{
+		inicializaEstabelecimentoEndereco();
+		this.estabelecimento.getEndereco().setCep(cep);
+	}
+
+	public void setEstabelecimentoEnderecoBairro(String bairro)
+	{
+		inicializaEstabelecimentoEndereco();
+		this.estabelecimento.getEndereco().setBairro(bairro);
+	}
+
+	public void setEstabelecimentoEnderecoCidadeNome(String nome)
+	{
+		inicializaEstabelecimentoEndereco();
+		if (this.estabelecimento.getEndereco().getCidade() == null)
+			this.estabelecimento.getEndereco().setCidade(new Cidade());
+		this.estabelecimento.getEndereco().getCidade().setNome(nome);
+	}
+
+	public void setEstabelecimentoEnderecoUfSigla(String sigla)
+	{
+		inicializaEstabelecimentoEndereco();
+		if (this.estabelecimento.getEndereco().getUf() == null)
+			this.estabelecimento.getEndereco().setUf(new Estado());
+		this.estabelecimento.getEndereco().getUf().setSigla(sigla);
+	}
 
 	public void setContatoFoneFixo(String foneFixo)
 	{
@@ -1867,6 +1928,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		criarEmpresa();
 		empresa.setEmailRemetente(emailRemetente);
+	}
+	
+	public void setEmpresaCnpj(String cnpj)
+	{
+		criarEmpresa();
+		empresa.setCnpj(cnpj);
 	}
 	
 	@NaoAudita

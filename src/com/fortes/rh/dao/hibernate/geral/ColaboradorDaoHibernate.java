@@ -5225,7 +5225,26 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Colaborador findComDadosBasicosParaOrdemDeServico(Long colaboradorId, Date dataOrdemDeServico){
 		
 		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(dataOrdemDeServico, StatusRetornoAC.CONFIRMADO);
+
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.colaborador", "c", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.estabelecimento", "est", Criteria.INNER_JOIN);
+		criteria.createCriteria("est.endereco.cidade", "cid", Criteria.INNER_JOIN);
+		criteria.createCriteria("est.endereco.uf", "uf", Criteria.INNER_JOIN);
+		criteria.createCriteria("fs.cargo", "ca", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.funcao", "f", Criteria.INNER_JOIN);
+		criteria.createCriteria("f.historicoFuncaos", "hf", Criteria.LEFT_JOIN);
 		
+		criteria.add(Property.forName("hc.data").eq(subQueryHc));	
+		criteria.add(Expression.eq("c.id", colaboradorId));
+		
+		criteria.setProjection(Projections.distinct(montaProjectionOrdemDeServico()));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+		return (Colaborador) criteria.uniqueResult();
+	}
+
+	private ProjectionList montaProjectionOrdemDeServico() {
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
@@ -5235,19 +5254,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("f.nome"), "funcaoNome");
 		p.add(Projections.property("f.id"), "funcaoId");
 		p.add(Projections.property("ca.cboCodigo"), "cargoCodigoCBO");
-		
-		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
-		criteria.createCriteria("hc.colaborador", "c", Criteria.INNER_JOIN);
-		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.INNER_JOIN);
-		criteria.createCriteria("fs.cargo", "ca", Criteria.INNER_JOIN);
-		criteria.createCriteria("hc.funcao", "f", Criteria.INNER_JOIN);
-		criteria.createCriteria("f.historicoFuncaos", "hf", Criteria.LEFT_JOIN);
-		
-		criteria.add(Property.forName("hc.data").eq(subQueryHc));	
-		criteria.add(Expression.eq("c.id", colaboradorId));
-		
-		criteria.setProjection(Projections.distinct(p));
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
-		return (Colaborador) criteria.uniqueResult();
+		p.add(Projections.property("ca.nome"), "cargoNomeProjection");
+		p.add(Projections.property("est.nome"), "estabelecimentoNomeProjection");
+		p.add(Projections.property("est.endereco.logradouro"), "estabelecimentoEnderecoLogradouro");
+		p.add(Projections.property("est.endereco.complemento"), "estabelecimentoEnderecoComplemento");
+		p.add(Projections.property("est.endereco.numero"), "estabelecimentoEnderecoNumero");
+		p.add(Projections.property("est.endereco.cep"), "estabelecimentoEnderecoCep");
+		p.add(Projections.property("est.endereco.bairro"), "estabelecimentoEnderecoBairro");
+		p.add(Projections.property("cid.nome"), "estabelecimentoEnderecoCidadeNome");
+		p.add(Projections.property("uf.sigla"), "estabelecimentoEnderecoUfSigla");
+		p.add(Projections.property("est.complementoCnpj"), "estabelecimentoomplementoCNPJ");
+		return p;
 	}
 }
