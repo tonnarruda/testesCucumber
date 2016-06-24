@@ -37,4 +37,12 @@ public class AvaliacaoDesempenhoFactory
 		
 		return avaliacaoDesempenhos;
 	}
+	
+	public static AvaliacaoDesempenho getEntity(String titulo)
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = getEntity();
+		avaliacaoDesempenho.setTitulo(titulo);
+
+		return avaliacaoDesempenho;
+	}
 }

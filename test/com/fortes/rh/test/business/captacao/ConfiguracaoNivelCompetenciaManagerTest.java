@@ -697,7 +697,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCaseM
 		testeAutomatico(configuracaoNivelCompetenciaDao);
 	}
 	
-	public void testMontaRelatorioResultadoCompetencia(){
+	private Colaborador prepareRelatorioAnaliseCompetencia() {
 		Competencia competencia1 = new Competencia();
 		competencia1.setId(1L);
 		competencia1.setNome("Competência 1");
@@ -721,18 +721,24 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCaseM
 		configuracaoNivelCompetencias.add(ConfiguracaoNivelCompetenciaFactory.getEntity(competencia1, colaborador2, cargo2, 3));
 		configuracaoNivelCompetencias.add(ConfiguracaoNivelCompetenciaFactory.getEntity(competencia1, colaborador3, cargo3, 6));
 		configuracaoNivelCompetencias.add(ConfiguracaoNivelCompetenciaFactory.getEntity(competencia1, colaborador4, cargo2, 5));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findByAvaliacaaDesempenhoAndAvaliado").withAnyArguments().will(returnValue(configuracaoNivelCompetencias));
+		
+		return colaborador1;
+	}
+	
+	public void testMontaRelatorioResultadoCompetencia(){
+		Colaborador colaborador = prepareRelatorioAnaliseCompetencia();
 		
 		Collection<Long> colaboradorIds = new ArrayList<Long>();
-		colaboradorIds.add(colaborador1.getId());
-		colaboradorIds.add(colaborador2.getId());
+		colaboradorIds.add(1L);
+		colaboradorIds.add(2L);
 		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
 		Collection<NivelCompetencia> niveisCompetencia = Arrays.asList(nivelCompetencia);
 		
-		configuracaoNivelCompetenciaDao.expects(once()).method("findByAvaliacaaDesempenhoAndAvaliado").withAnyArguments().will(returnValue(configuracaoNivelCompetencias));
 		nivelCompetenciaManager.expects(once()).method("getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado").withAnyArguments().will(returnValue(5));
 		nivelCompetenciaManager.expects(once()).method("findNiveisCompetenciaByAvDesempenho").withAnyArguments().will(returnValue(niveisCompetencia));
 		
-		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = manager.montaRelatorioAnaliseDesempenhoColaborador(1L, colaborador1.getId(), colaboradorIds, 0, true);
+		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = manager.montaRelatorioAnaliseDesempenhoColaborador(1L, colaborador.getId(), colaboradorIds, 0, true);
 		LinkedList<ResultadoCompetenciaColaborador> resultadoCompetenciaColaboradores = (LinkedList<ResultadoCompetenciaColaborador>) relatorioAnaliseDesempenhoColaborador.getResultadosCompetenciaColaborador(); 
 		assertEquals(1, resultadoCompetenciaColaboradores.size());
 		
@@ -752,41 +758,18 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCaseM
 	}
 	
 	public void testMontaRelatorioResultadoCompetenciaComColabNoMesmoCargo(){
-		Competencia competencia1 = new Competencia();
-		competencia1.setId(1L);
-		competencia1.setNome("Competência 1");
-
-		Cargo cargo1 = CargoFactory.getEntity(1L);
-		cargo1.setNome("Cargo 1");
-		
-		Cargo cargo2 = CargoFactory.getEntity(2L);
-		cargo2.setNome("Cargo 2");
-		
-		Cargo cargo3 = CargoFactory.getEntity(3L);
-		cargo3.setNome("Cargo 3");
-		
-		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L, "Colaborador 1");
-		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L, "Colaborador 2");
-		Colaborador colaborador3 = ColaboradorFactory.getEntity(3L, "Colaborador 3");
-		Colaborador colaborador4 = ColaboradorFactory.getEntity(4L, "Colaborador 4");
-
-		LinkedList<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = new LinkedList<ConfiguracaoNivelCompetencia>();
-		configuracaoNivelCompetencias.add(ConfiguracaoNivelCompetenciaFactory.getEntity(competencia1, colaborador1, cargo1, 2));
-		configuracaoNivelCompetencias.add(ConfiguracaoNivelCompetenciaFactory.getEntity(competencia1, colaborador2, cargo2, 3));
-		configuracaoNivelCompetencias.add(ConfiguracaoNivelCompetenciaFactory.getEntity(competencia1, colaborador3, cargo3, 7));
-		configuracaoNivelCompetencias.add(ConfiguracaoNivelCompetenciaFactory.getEntity(competencia1, colaborador4, cargo2, 9));
+		Colaborador colaborador = prepareRelatorioAnaliseCompetencia();
 		
 		Collection<Long> colaboradorIds = new ArrayList<Long>();
-		colaboradorIds.add(colaborador2.getId());
-		colaboradorIds.add(colaborador4.getId());
+		colaboradorIds.add(1L);
+		colaboradorIds.add(2L);
 		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
 		Collection<NivelCompetencia> niveisCompetencia = Arrays.asList(nivelCompetencia);
 		
-		configuracaoNivelCompetenciaDao.expects(once()).method("findByAvaliacaaDesempenhoAndAvaliado").withAnyArguments().will(returnValue(configuracaoNivelCompetencias));
 		nivelCompetenciaManager.expects(once()).method("getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado").withAnyArguments().will(returnValue(5));
 		nivelCompetenciaManager.expects(once()).method("findNiveisCompetenciaByAvDesempenho").withAnyArguments().will(returnValue(niveisCompetencia));
 		
-		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = manager.montaRelatorioAnaliseDesempenhoColaborador(1L, colaborador1.getId(), colaboradorIds, 0, true);
+		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = manager.montaRelatorioAnaliseDesempenhoColaborador(1L, colaborador.getId(), colaboradorIds, 0, true);
 		LinkedList<ResultadoCompetenciaColaborador> resultadoCompetenciaColaboradores = (LinkedList<ResultadoCompetenciaColaborador>) relatorioAnaliseDesempenhoColaborador.getResultadosCompetenciaColaborador();
 		assertEquals(1, resultadoCompetenciaColaboradores.size());
 		
@@ -800,48 +783,24 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCaseM
 		assertEquals("Média", ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[3]).getNome());
 		
 		assertEquals(2.0, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[0]).getOrdem());
-		assertEquals(6.0, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[1]).getOrdem());
-		assertEquals(7.0, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[2]).getOrdem());
-		assertEquals(5.25, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[3]).getOrdem());
+		assertEquals(3.0, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[1]).getOrdem());
+		assertEquals(5.5, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[2]).getOrdem());
+		assertEquals(4.0, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[3]).getOrdem());
 	}
 	
 	public void testMontaRelatorioResultadoCompetenciaPorAvaliado(){
-		Competencia competencia1 = new Competencia();
-		competencia1.setId(1L);
-		competencia1.setNome("Competência 1");
-
-		Cargo cargo1 = CargoFactory.getEntity(1L);
-		cargo1.setNome("Cargo 1");
-		
-		Cargo cargo2 = CargoFactory.getEntity(2L);
-		cargo2.setNome("Cargo 2");
-		
-		Cargo cargo3 = CargoFactory.getEntity(3L);
-		cargo3.setNome("Cargo 3");
-		
-		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L, "Colaborador 1");
-		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L, "Colaborador 2");
-		Colaborador colaborador3 = ColaboradorFactory.getEntity(3L, "Colaborador 3");
-		Colaborador colaborador4 = ColaboradorFactory.getEntity(4L, "Colaborador 4");
-
-		LinkedList<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = new LinkedList<ConfiguracaoNivelCompetencia>();
-		configuracaoNivelCompetencias.add(ConfiguracaoNivelCompetenciaFactory.getEntity(competencia1, colaborador1, cargo1, 2));
-		configuracaoNivelCompetencias.add(ConfiguracaoNivelCompetenciaFactory.getEntity(competencia1, colaborador2, cargo2, 3));
-		configuracaoNivelCompetencias.add(ConfiguracaoNivelCompetenciaFactory.getEntity(competencia1, colaborador3, cargo3, 7));
-		configuracaoNivelCompetencias.add(ConfiguracaoNivelCompetenciaFactory.getEntity(competencia1, colaborador4, cargo2, 9));
-		
+		Colaborador colaborador = prepareRelatorioAnaliseCompetencia();
 		Collection<Long> colaboradorIds = new ArrayList<Long>();
-		colaboradorIds.add(colaborador2.getId());
-		colaboradorIds.add(colaborador4.getId());
+		colaboradorIds.add(2L);
+		colaboradorIds.add(4L);
 		
 		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
 		Collection<NivelCompetencia> niveisCompetencia = Arrays.asList(nivelCompetencia);
 		
-		configuracaoNivelCompetenciaDao.expects(once()).method("findByAvaliacaaDesempenhoAndAvaliado").withAnyArguments().will(returnValue(configuracaoNivelCompetencias));
 		nivelCompetenciaManager.expects(once()).method("getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado").withAnyArguments().will(returnValue(5));
 		nivelCompetenciaManager.expects(once()).method("findNiveisCompetenciaByAvDesempenho").withAnyArguments().will(returnValue(niveisCompetencia));
 		
-		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = manager.montaRelatorioAnaliseDesempenhoColaborador(1L, colaborador1.getId(), colaboradorIds, 0, false);
+		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = manager.montaRelatorioAnaliseDesempenhoColaborador(1L, colaborador.getId(), colaboradorIds, 0, false);
 		LinkedList<ResultadoCompetenciaColaborador> resultadoCompetenciaColaboradores = (LinkedList<ResultadoCompetenciaColaborador>) relatorioAnaliseDesempenhoColaborador.getResultadosCompetenciaColaborador();
 		assertEquals(1, resultadoCompetenciaColaboradores.size());
 		
@@ -857,8 +816,8 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCaseM
 		
 		assertEquals(2.0, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[0]).getOrdem());
 		assertEquals(3.0, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[1]).getOrdem());
-		assertEquals(9.0, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[2]).getOrdem());
-		assertEquals(7.0, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[3]).getOrdem());
-		assertEquals(5.25, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[4]).getOrdem());
+		assertEquals(5.0, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[2]).getOrdem());
+		assertEquals(6.0, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[3]).getOrdem());
+		assertEquals(4.0, ((ResultadoCompetencia)resultadoCompetenciaColaborador1.getResultadoCompetencias().toArray()[4]).getOrdem());
 	}
 }

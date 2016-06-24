@@ -76,10 +76,20 @@ public class HistoricoColaboradorFactory
 	
 	public static HistoricoColaborador getEntity(Long id, Colaborador colaborador, FaixaSalarial faixaSalarial, Date data)
 	{
-		HistoricoColaborador historicoColaborador = getEntity(1L);
+		HistoricoColaborador historicoColaborador = getEntity(id);
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
 		historicoColaborador.setData(data);
+		return historicoColaborador;
+	}
+	
+	public static HistoricoColaborador getEntity(Colaborador colaborador, FaixaSalarial faixaSalarial, Date data, Integer status)
+	{
+		HistoricoColaborador historicoColaborador = getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setData(data);
+		historicoColaborador.setStatus(status);
 		return historicoColaborador;
 	}
 }

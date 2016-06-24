@@ -47,4 +47,14 @@ public class CargoFactory
 
 		return cargos;
 	}
+	
+	public static Cargo getEntity(Long id, String nome)
+	{
+		Cargo cargo = getEntity();
+		cargo.setId(id);
+		cargo.setNome(nome);
+
+		return cargo;
+	}
+
 }
