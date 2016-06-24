@@ -94,10 +94,12 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 	
 	<div class="buttonGroup">
-		<#if (ordemDeServicoAtual?exists && ordemDeServicoAtual.impressa) || !ordemDeServicoAtual?exists> 
+		<#if (ordemDeServicoAtual?exists && ordemDeServicoAtual.impressa) || !ordemDeServicoAtual?exists && !dataDesligamentoInferiorADataAtual> 
 			<button class="btnInserir" onclick="window.location='prepareInsert.action?colaborador.id=${colaborador.id}'"></button>
-		<#else>
+		<#elseif (ordemDeServicoAtual?exists && !ordemDeServicoAtual.impressa) && !dataDesligamentoInferiorADataAtual>
 			<button class="btnInserir" disabled="disabled" style="opacity: 0.4" title="Não é possível inserir uma nova Ordem de Serviço, pois a última Ordem de Serviço criada ainda não foi impressa"></button>
+		<#else>	
+			<button class="btnInserir" disabled="disabled" style="opacity: 0.4" title="Colaborador desligado em ${colaborador.dataDesligamentoFormatada}. Não é possível inserir uma Ordem de Serviço para colaboradores desligados, cuja data de desligamento é inferior a data atual (${dataDoDia})."></button>
 		</#if>
 		
 		<button onclick="window.location='listGerenciamentoOS.action'" class="btnVoltar"></button>

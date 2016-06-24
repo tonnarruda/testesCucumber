@@ -89,7 +89,7 @@ public class OrdemDeServicoDWRTest
 		} catch (Exception e) {
 				exception = e;
 		}
-		assertEquals("Não é possível inserir uma ordem de serviço com data anterior a data de Admissão do colaborador.", exception.getMessage());
+		assertEquals("Não é possível inserir uma ordem de serviço com data anterior a data de Admissão do colaborador.</br></br> Data de admissão: "+ colaborador.getDataAdmissaoFormatada(), exception.getMessage());
 	}
 	
 	@Test
@@ -108,7 +108,7 @@ public class OrdemDeServicoDWRTest
 		} catch (Exception e) {
 				exception = e;
 		}
-		assertEquals("Não é possível inserir uma ordem de serviço com data posterior a data de desligamento do colaborador.", exception.getMessage());
+		assertEquals("Não é possível inserir uma ordem de serviço com data posterior a data de desligamento do colaborador.</br></br> Data de desligamento: " + colaborador.getDataDesligamentoFormatada(), exception.getMessage());
 	}
 	
 	@Test
@@ -144,7 +144,7 @@ public class OrdemDeServicoDWRTest
 		Long empresaId = 1L;
 		
 		when(historicoColaboradorManager.findHistoricoColaboradorByData(eq(colaboradorId), any(Date.class))).thenReturn(historicoColaborador);
-		when(ordemDeServicoManager.findUltimaOrdemDeServico(colaboradorId)).thenReturn(ordemDeServicoImpressa);
+		when(ordemDeServicoManager.findUltimaOrdemDeServicoImpressa(colaboradorId)).thenReturn(ordemDeServicoImpressa);
 		Exception exception = null;
 		try {
 			ordemDeServicoDWR.recarregaDadosOrdemDeServico(colaboradorId, empresaId, "01/01/2015");

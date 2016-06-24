@@ -33,14 +33,14 @@
 				$('#dataAdmissaoFormatadaOS').text(dados["dataAdmisaoColaboradorFormatada"]);
 				$('#nomeFuncaoOS').text(dados["nomeFuncao"]);
 				$('#codigoCBOOS').text(dados["codigoCBO"]);
-				$('#atividadesOS').text(dados["atividades"]);
-				$('#riscosOS').text(dados["riscos"]);
-				$('#episOS').text(dados["epis"]);
-				$('#medidasPreventivasOS').text(dados["medidasPreventivas"]);
-				$('#treinamentosOS').text(dados["treinamentos"]);
-				$('#normasInternasOS').text(dados["normasInternas"]);
-				$('#procedimentoEmCasoDeAcidenteOS').text(dados["procedimentoEmCasoDeAcidente"]);
-				$('#termoDeResponsabilidadeOS').text(dados["termoDeResponsabilidadeOS"]);
+				$('#atividadesOS').text(dados["atividades"] == null ? "" :  dados["atividades"]);
+				$('#riscosOS').text(dados["riscos"] == null ? "" : dados["riscos"]);
+				$('#episOS').text(dados["epis"] == null ? "" : dados["epis"]);
+				$('#medidasPreventivasOS').text(dados["medidasPreventivas"] == null ? "" : dados["medidasPreventivas"]);
+				$('#treinamentosOS').text(dados["treinamentos"] == null ? "" : dados["treinamentos"]);
+				$('#normasInternasOS').text(dados["normasInternas"] == null ? "" : dados["normasInternas"]);
+				$('#procedimentoEmCasoDeAcidenteOS').text(dados["procedimentoEmCasoDeAcidente"] == null ? "" : dados["procedimentoEmCasoDeAcidente"]);
+				$('#termoDeResponsabilidadeOS').text(dados["termoDeResponsabilidade"] == null ? "" : dados["termoDeResponsabilidade"]);
 			}
 			
 			function errorRecarregaDadosOrdemDeServico(msg){

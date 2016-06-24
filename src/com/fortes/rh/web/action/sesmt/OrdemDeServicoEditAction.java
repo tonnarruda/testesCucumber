@@ -269,6 +269,10 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 		return DateUtil.formataDiaMesAno(new Date());
 	}
 	
+	public boolean isDataDesligamentoInferiorADataAtual(){
+		return colaborador.isDesligado() && (colaborador.getDataDesligamento().compareTo(DateUtil.criarDataMesAno(new Date())) < 0);
+	}
+	
 	public void setOrdemDeServicoManager(OrdemDeServicoManager ordemDeServicoManager)
 	{
 		this.ordemDeServicoManager = ordemDeServicoManager;

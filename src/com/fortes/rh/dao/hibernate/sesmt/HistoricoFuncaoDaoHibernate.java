@@ -193,6 +193,7 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("id"), "id");
+		p.add(Projections.property("descricao"), "descricao");
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("hf.funcao.id", funcaoId));

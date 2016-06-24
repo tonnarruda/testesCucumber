@@ -657,6 +657,7 @@ import com.fortes.rh.test.web.dwr.HistoricoCandidatoDWRTest;
 import com.fortes.rh.test.web.dwr.ListaPresencaDWRTest;
 import com.fortes.rh.test.web.dwr.MorroDWRTest;
 import com.fortes.rh.test.web.dwr.OcorrenciaDWRTest;
+import com.fortes.rh.test.web.dwr.OrdemDeServicoDWRTest;
 import com.fortes.rh.test.web.dwr.PerguntaDWRTest;
 import com.fortes.rh.test.web.dwr.ReajusteDWRTest;
 import com.fortes.rh.test.web.dwr.RiscoAmbienteDWRTest;
@@ -1310,6 +1311,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	OrdemDeServicoDaoHibernateTest.class,
 	OrdemDeServicoManagerTest.class,
 	OrdemDeServicoEditActionTest.class,
+	OrdemDeServicoDWRTest.class,
 	        
     // UTILITARIOS
 	AutenticadorTest.class,

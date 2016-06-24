@@ -1158,6 +1158,9 @@
     <property name="dao">
       <ref bean="ordemDeServicoDao" />
     </property>
+     <property name="historicoFuncaoManager">
+      <ref bean="historicoFuncaoManager" />
+    </property>
     <property name="colaboradorManager">
       <ref bean="colaboradorManager" />
     </property>

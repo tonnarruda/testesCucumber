@@ -5226,19 +5226,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(dataOrdemDeServico, StatusRetornoAC.CONFIRMADO);
 		
-		DetachedCriteria subQueryHf = DetachedCriteria.forClass(HistoricoFuncao.class, "hf2")
-														.setProjection(Projections.max("hf2.data"))
-														.add(Restrictions.eqProperty("hf2.funcao.id", "f.id"))
-														.add(Restrictions.le("hf2.data", dataOrdemDeServico));
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
+		p.add(Projections.property("c.desligado"), "desligado");
+		p.add(Projections.property("c.dataDesligamento"), "dataDesligamento");
 		p.add(Projections.property("f.nome"), "funcaoNome");
 		p.add(Projections.property("f.id"), "funcaoId");
 		p.add(Projections.property("ca.cboCodigo"), "cargoCodigoCBO");
-		p.add(Projections.property("hf.id"), "funcaoHistoricoFuncaoAtualId");
-		p.add(Projections.property("hf.descricao"), "funcaoHistoricoFuncaoAtualDescricao");
 		
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "c", Criteria.INNER_JOIN);
@@ -5248,7 +5244,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.createCriteria("f.historicoFuncaos", "hf", Criteria.LEFT_JOIN);
 		
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));	
-		criteria.add(Property.forName("hf.data").eq(subQueryHf));	
 		criteria.add(Expression.eq("c.id", colaboradorId));
 		
 		criteria.setProjection(Projections.distinct(p));

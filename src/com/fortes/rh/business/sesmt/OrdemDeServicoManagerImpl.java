@@ -18,6 +18,7 @@ import com.fortes.rh.model.sesmt.RiscoFuncao;
 
 public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico, OrdemDeServicoDao> implements OrdemDeServicoManager
 {
+	private HistoricoFuncaoManager historicoFuncaoManager;
 	private ColaboradorManager colaboradorManager;
 	private RiscoFuncaoManager riscoFuncaoManager;
 	private CursoManager cursoManager;
@@ -29,14 +30,19 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 	
 	public OrdemDeServico montaOrdemDeServico(Long colaboradorId, Empresa empresa, Date dataOdemDeServico) {
 		Colaborador colaborador = colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaboradorId, dataOdemDeServico);
-
 		OrdemDeServico ordemDeServico = new OrdemDeServico();
-		ordemDeServico.setAtividades(colaborador.getFuncao().getHistoricoAtual().getDescricao());
 		montaDadosProvenientesDoColaborador(ordemDeServico, colaborador);
 		montaDadosProvenienteDaEmpresa(ordemDeServico, empresa);
-		montaListaRiscosEMedidasPreventivas(ordemDeServico, colaborador.getFuncao().getHistoricoAtual()); 
-		montaListaEpi(ordemDeServico, colaborador.getFuncao().getHistoricoAtual());
-		montaListaTreinamentos(ordemDeServico, colaborador.getFuncao().getHistoricoAtual());
+		
+		if(colaborador.getFuncao() != null && colaborador.getFuncao().getId() !=null){
+			HistoricoFuncao historicoFuncao = historicoFuncaoManager.findByData(dataOdemDeServico, null, colaborador.getFuncao().getId());
+			if(historicoFuncao != null && historicoFuncao.getId() != null){
+				ordemDeServico.setAtividades(historicoFuncao.getDescricao());
+				montaListaRiscosEMedidasPreventivas(ordemDeServico, historicoFuncao); 
+				montaListaEpi(ordemDeServico, historicoFuncao);
+				montaListaTreinamentos(ordemDeServico, historicoFuncao);
+			}		
+		}
 		return ordemDeServico;
 	}
 
@@ -54,8 +60,8 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 		ordemDeServico.setNomeFuncao(colaborador.getFuncaoNome());
 	}
 
-	private void montaListaRiscosEMedidasPreventivas(OrdemDeServico ordemDeServico, HistoricoFuncao historicoAtual) {
-		List<RiscoFuncao> riscosFuncao = riscoFuncaoManager.riscosByHistoricoFuncao(historicoAtual);
+	private void montaListaRiscosEMedidasPreventivas(OrdemDeServico ordemDeServico, HistoricoFuncao historicoFuncao) {
+		List<RiscoFuncao> riscosFuncao = riscoFuncaoManager.riscosByHistoricoFuncao(historicoFuncao);
 		String riscosDaOperacao = "";
 		String medidasPreventivas = "";
 		
@@ -90,6 +96,10 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 	
 	public OrdemDeServico findUltimaOrdemDeServicoImpressa(Long colaboradorId) {
 		return getDao().findUltimaOrdemDeServicoImpressa(colaboradorId);
+	}
+	
+	public void setHistoricoFuncaoManager(HistoricoFuncaoManager historicoFuncaoManager) {
+		this.historicoFuncaoManager = historicoFuncaoManager;
 	}
 	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {

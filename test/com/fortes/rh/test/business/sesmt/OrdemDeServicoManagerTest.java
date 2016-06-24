@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.sesmt;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -13,6 +14,7 @@ import org.junit.Test;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.OrdemDeServicoManagerImpl;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.dao.sesmt.OrdemDeServicoDao;
@@ -30,6 +32,7 @@ import com.fortes.rh.util.DateUtil;
 public class OrdemDeServicoManagerTest
 {
 	private OrdemDeServicoManagerImpl ordemDeServicoManager;
+	private HistoricoFuncaoManager historicoFuncaoManager;
 	private ColaboradorManager colaboradorManager;
 	private RiscoFuncaoManager riscoFuncaoManager;
 	private OrdemDeServicoDao ordemDeServicoDao;
@@ -42,6 +45,9 @@ public class OrdemDeServicoManagerTest
 	@Before
 	public void setUp() throws Exception {
 		ordemDeServicoManager = new OrdemDeServicoManagerImpl();
+
+		historicoFuncaoManager = mock(HistoricoFuncaoManager.class);
+		ordemDeServicoManager.setHistoricoFuncaoManager(historicoFuncaoManager);
 		
 		colaboradorManager = mock(ColaboradorManager.class);
 		ordemDeServicoManager.setColaboradorManager(colaboradorManager);
@@ -65,6 +71,7 @@ public class OrdemDeServicoManagerTest
 		this.colaborador = ColaboradorFactory.getEntity(1L, "Colaborador");
 		colaborador.setDataAdmissao(new Date());
 		colaborador.setFuncaoNome("Função");
+		colaborador.setFuncaoId(1L);
 		colaborador.setCargoCodigoCBO("012345");
 		colaborador.setFuncaoHistoricoFuncaoAtualId(1L);
 		colaborador.setFuncaoHistoricoFuncaoAtualDescricao("Descricao");
@@ -80,6 +87,7 @@ public class OrdemDeServicoManagerTest
 		Date dataOS = DateUtil.criarDataMesAno(1, 1, 2016);
 		
 		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador.getId(), dataOS)).thenReturn(colaborador);
+		when(historicoFuncaoManager.findByData(dataOS, null, colaborador.getFuncao().getId())).thenReturn(colaborador.getFuncao().getHistoricoAtual());
 		when(riscoFuncaoManager.riscosByHistoricoFuncao(colaborador.getFuncao().getHistoricoAtual())).thenReturn(new ArrayList<RiscoFuncao>());
 		when(cursoManager.findByHistoricoFuncaoId(colaborador.getFuncao().getHistoricoAtual().getId())).thenReturn(new ArrayList<Curso>());
 		when(epiManager.findByHistoricoFuncao(colaborador.getFuncao().getHistoricoAtual().getId())).thenReturn(new ArrayList<Epi>());
