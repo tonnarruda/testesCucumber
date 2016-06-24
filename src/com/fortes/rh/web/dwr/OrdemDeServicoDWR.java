@@ -49,6 +49,10 @@ public class OrdemDeServicoDWR {
 			throw new Exception("Não é possível inserir uma ordem de serviço.</br></br>A data informada está inferior a data da última Ordem de Serviço impressa."
 					+ "</br></br>Data da última ordem de serviço: " + ordemDeServico.getDataFormatada());
 	}
+	
+	public OrdemDeServico carregaUltimaOrdemDeServicoByColaborador(Long colaboradorId){
+		return ordemDeServicoManager.findUltimaOrdemDeServico(colaboradorId);
+	}
 
 	public void setOrdemDeServicoManager(OrdemDeServicoManager ordemDeServicoManager) {
 		this.ordemDeServicoManager = ordemDeServicoManager;

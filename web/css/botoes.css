@@ -647,6 +647,12 @@
 	width: 225px !important;
 }
 
+.btnCarregarOrdemDeServico
+{
+	background-image:url(../imgs/btnCarregarOrdemDeServico.gif);
+	width: 277px !important;
+}
+
 .btnExportar,
 .btnVoltarInicial,
 .btnExcluir,
@@ -778,7 +784,8 @@
 .btnEnviarParaAmigo,
 .btnInserirEditar,
 .btnDividirPercentualIgualmente,
-.btnGravarParcialmente
+.btnGravarParcialmente,
+.btnCarregarOrdemDeServico
 {
 	border: 0;
 	background-repeat: no-repeat;

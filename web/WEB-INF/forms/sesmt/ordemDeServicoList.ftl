@@ -11,11 +11,12 @@
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 		.acao img{
 			margin: 1px; 
+			vertical-align: middle;
 		}
 	</style>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<script>
-		var processandoTime = "";
+		var processandoTime = getCookieProcessando();
 		function avisoAoImprimirOSPelaPrimeiraVez(colaboradorNome, funcaoNome, data, ordemDeServicoId)
 		{
 			msg = 'Após a impressão não será permidito editar ou excluír esta ordem de serviço.'
@@ -47,8 +48,10 @@
 				$('.processando').remove();
 				window.location.reload();
 			}
-			else
+			else{
 				setTimeout("checkProcessandoTime()",500);
+				console.log('teste');
+			}
 		};
 		
 		function getCookieProcessando() {
@@ -84,8 +87,8 @@
 				<@frt.link href="javascript:avisoAoImprimirOSPelaPrimeiraVez('${ordemDeServico.nomeColaborador}', '${ordemDeServico.nomeFuncao}', '${ordemDeServico.dataFormatada}', '${ordemDeServico.id}')" imgTitle="Imprimir" imgName="printer.gif"/>
 			</#if>
 		</@display.column>
-		<@display.column property="revisao" title="Nº da Revisão"/>
-		<@display.column property="dataFormatada" title="Data"/>
+		<@display.column property="revisao" title="Nº da Revisão" style="width: 60px; text-align: center;"/>
+		<@display.column property="dataFormatada" title="Data" style="width: 100px; text-align: center;"/>
 		<@display.column property="nomeFuncao" title="Função"/>
 
 	</@display.table>

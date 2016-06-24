@@ -41,12 +41,19 @@
 				$('#normasInternasOS').text(dados["normasInternas"] == null ? "" : dados["normasInternas"]);
 				$('#procedimentoEmCasoDeAcidenteOS').text(dados["procedimentoEmCasoDeAcidente"] == null ? "" : dados["procedimentoEmCasoDeAcidente"]);
 				$('#termoDeResponsabilidadeOS').text(dados["termoDeResponsabilidade"] == null ? "" : dados["termoDeResponsabilidade"]);
+				$('#informacoesAdicionaisOS').text(dados["informacoesAdicionais"] == null ? "" : dados["informacoesAdicionais"]);
 			}
 			
 			function errorRecarregaDadosOrdemDeServico(msg){
 				$('#dataOS').val(ultimaDataValida);
 				jAlert(msg);
 			}
+			
+			function carregaDadosOrdemDeServicoAnterior(){
+				DWRUtil.useLoadingMessage('Carregando...');
+				OrdemDeServicoDWR.carregaUltimaOrdemDeServicoByColaborador(repopularOrdemDeServicoByDados, ${ordemDeServico.colaborador.id});
+			}
+			
 		</script>	
 						
 		<style type="text/css">
@@ -62,6 +69,11 @@
 				height:150px;
 				border: 1px solid;
 				border-color: #D9D9D9;
+			}
+			#dadosColab{
+				border-bottom: 1pt solid black;
+				border-color: #D9D9D9;
+				width: 966px;
 			}
 		</style>
 			
@@ -90,12 +102,14 @@
 			<@ww.hidden name="ordemDeServico.revisao" value="${revisao}"/>
 			<@ww.token/>
 			
-			<table>
+			<table id="dadosColab">
 				<tr>
-					<td><@ww.datepicker label="Data da Ordem de Serviço" name="ordemDeServico.data" value="${dataOS}" id="dataOS" required="true" cssClass="mascaraData" onchange="repopularOrdemDeServico();" onblur="repopularOrdemDeServico();" /></td>
+					<td width="600px">
+						<@ww.datepicker label="Data da Ordem de Serviço" name="ordemDeServico.data" value="${dataOS}" id="dataOS" required="true" cssClass="mascaraData" onchange="repopularOrdemDeServico();" onblur="repopularOrdemDeServico();"/>
+					</td>
 				</tr>
 				<tr>	
-					<td> <span style="font-weight: bold;">Revisão: </span> <span style="margin-left: 4px;" id="nomeColaboradorOS">${revisao}</span> </td>
+					<td> <span style="font-weight: bold;">Revisão: </span> <span style="margin-left: 4px;">${revisao}</span> </td>
 				</tr>
 				<tr>
 					<td width="250"> <span style="font-weight: bold;">Código CBO:</span> <span style="margin-left: 40px;" id="codigoCBOOS">${ordemDeServico.codigoCBO}</span> </td>
@@ -106,6 +120,12 @@
 					<td> <span style="font-weight: bold;">Função:</span> <span style="margin-left: 34px;" id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span> </td>
 				</tr>
 			</table>
+			
+			<#if !ordemDeServico.id?exists && revisao != 1>
+				<div class="buttonGroup">
+					<button type="button" onclick="carregaDadosOrdemDeServicoAnterior()" class="btnCarregarOrdemDeServico"></button>
+				</div>
+			</#if>
 
 			</br><div class="divTitulo" align="center"><span class="titulo">ATIVIDADES DESENVOLVIDAS*</span></div>
 			<@ww.textarea name="ordemDeServico.atividades" id="atividadesOS" required="true"/>
