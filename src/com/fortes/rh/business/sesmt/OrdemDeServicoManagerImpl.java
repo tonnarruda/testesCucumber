@@ -50,7 +50,7 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 		ordemDeServico.setNormasInternas(empresa.getNormasInternas());
 		ordemDeServico.setProcedimentoEmCasoDeAcidente(empresa.getProcedimentoEmCasoDeAcidente());
 		ordemDeServico.setTermoDeResponsabilidade(empresa.getTermoDeResponsabilidade());
-		ordemDeServico.setEmpresaCNPJ(empresa.getCnpj());
+		ordemDeServico.setEmpresaCnpj(empresa.getCnpj());
 		ordemDeServico.setNomeEmpresa(empresa.getNome());
 	}
 
@@ -62,16 +62,8 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 		ordemDeServico.setNomeCargo(colaborador.getFaixaSalarial().getCargo().getNome());
 		ordemDeServico.setNomeFuncao(colaborador.getFuncaoNome());
 		ordemDeServico.setNomeEstabelecimento(colaborador.getEstabelecimentoNome());
-		ordemDeServico.setEstabelecimentoComplementoCNPJ(colaborador.getEstabelecimento().getComplementoCnpj());
+		ordemDeServico.setEstabelecimentoComplementoCnpj(colaborador.getEstabelecimento().getComplementoCnpj());
 		ordemDeServico.setEstabelecimentoEndereco(colaborador.getEstabelecimento().getEndereco().getEnderecoCompletoFormatado());
-//		ordemDeServico.setEstabelecimentoLogradouro(colaborador.getEstabelecimento().getEndereco().getLogradouro());
-//		ordemDeServico.setEstabelecimentoNumero(colaborador.getEstabelecimento().getEndereco().getNumero());
-//		ordemDeServico.setEstabelecimentoComplementoEndereco(colaborador.getEstabelecimento().getEndereco().getEnderecoCompletoFormatado());
-//		ordemDeServico.setEstabelecimentoBairro(colaborador.getEstabelecimento().getEndereco().getBairro());
-//		ordemDeServico.setEstabelecimentoCep(colaborador.getEstabelecimento().getEndereco().getCepFormatado());
-//		ordemDeServico.setEstabelecimentoComplementoCNPJ(colaborador.getEstabelecimento().getComplementoCnpj());
-//		
-		
 	}
 	
 	private void montaListaRiscosEMedidasPreventivas(OrdemDeServico ordemDeServico, HistoricoFuncao historicoFuncao) {

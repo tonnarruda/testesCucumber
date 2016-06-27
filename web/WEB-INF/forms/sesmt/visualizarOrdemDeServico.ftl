@@ -28,7 +28,17 @@
 	</head>
 	<body>
 		<table class="bordas" border="1">
-			
+
+			<tr >
+				<td border="1px" colspan = "2" align="center" valign="middle">
+					<span style="font-weight: bold; font-size: 15px;">${ordemDeServico.nomeEmpresa} </span><br>
+					<span style="font-size: 13px;">${ordemDeServico.nomeEstabelecimento} - ${ordemDeServico.cnpjFormatado}</span><br>
+					<span style="font-size: 13px;">${ordemDeServico.estabelecimentoEndereco}</span><br>
+				</td>
+			</tr>
+		</table>
+		</br>
+		<table class="bordas" border="1">
 			<tr >
 				<td border="1px" colspan = "2" align="center" valign="middle">
 					<span style="font-weight: bold; font-size: 15px;">ORDEM DE SERVIÇO</span>
@@ -36,13 +46,12 @@
 			</tr>
 			<tr>
 				<td>
-					<span style="font-weight: bold;">Código CBO: </span> <span id="codigoCBOOS">${ordemDeServico.codigoCBO}</span>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-					<span style="font-weight: bold;">Colaborador: </span> <span id="nomeColaboradorOS">${ordemDeServico.nomeColaborador}</span> 
+					<span style="font-weight: bold;">Colaborador: </span> <span id="nomeColaboradorOS">${ordemDeServico.nomeColaborador}</span>
+					<span style="font-weight: bold; margin-left: 5%;">Data de Admissão: </span> <span id="dataAdmissaoFormatadaOS">${ordemDeServico.dataAdmisaoColaboradorFormatada}</span>
 					</br>
-					<span style="font-weight: bold;">Data de Admissão: </span> <span id="dataAdmissaoFormatadaOS">${ordemDeServico.dataAdmisaoColaboradorFormatada}</span>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<span style="font-weight: bold;">Função: </span> <span id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span>
+					<span style="font-weight: bold;">Cargo: </span> <span id="nomeFuncaoOS">${ordemDeServico.nomeCargo}</span>
+					<span style="font-weight: bold; margin-left: 113px;">Função: </span> <span id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span>
+					<span style="font-weight: bold; margin-left: 5%;">Código CBO: </span> <span id="codigoCBOOS">${ordemDeServico.codigoCBO}</span> 
 				</td>
 			</tr>
 		</table>

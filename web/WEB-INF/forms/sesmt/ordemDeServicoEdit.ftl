@@ -131,8 +131,8 @@
 			<@ww.hidden name="ordemDeServico.nomeEmpresa" />
 			<@ww.hidden name="ordemDeServico.nomeCargo" />
 			<@ww.hidden name="ordemDeServico.nomeEstabelecimento"/>
-			<@ww.hidden name="ordemDeServico.empresaCNPJ" />
-			<@ww.hidden name="ordemDeServico.estabelecimentoComplementoCNPJ" />
+			<@ww.hidden name="ordemDeServico.empresaCnpj" />
+			<@ww.hidden name="ordemDeServico.estabelecimentoComplementoCnpj" />
 			<@ww.hidden name="ordemDeServico.estabelecimentoEndereco" />
 			<@ww.hidden name="ordemDeServico.revisao" value="${revisao}"/>
 			<@ww.token/>

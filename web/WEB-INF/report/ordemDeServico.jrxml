@@ -24,6 +24,11 @@
 	<field name="procedimentoEmCasoDeAcidente" class="java.lang.String"/>
 	<field name="termoDeResponsabilidade" class="java.lang.String"/>
 	<field name="informacoesAdicionais" class="java.lang.String"/>
+	<field name="nomeEmpresa" class="java.lang.String"/>
+	<field name="nomeCargo" class="java.lang.String"/>
+	<field name="cnpjFormatado" class="java.lang.String"/>
+	<field name="nomeEstabelecimento" class="java.lang.String"/>
+	<field name="estabelecimentoEndereco" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -31,35 +36,126 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="48" splitType="Stretch">
+		<band height="57" splitType="Stretch">
 			<rectangle>
-				<reportElement mode="Transparent" x="0" y="0" width="555" height="48" uuid="30371ec3-d988-464c-b559-09335d800c9e"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="555" height="57" uuid="30371ec3-d988-464c-b559-09335d800c9e"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
-			<image>
-				<reportElement x="1" y="1" width="67" height="46" uuid="7d972769-8e20-42dc-9165-f66d273f1e00"/>
+			<image vAlign="Top">
+				<reportElement x="2" y="4" width="67" height="46" uuid="7d972769-8e20-42dc-9165-f66d273f1e00"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="58" y="27" width="497" height="15" uuid="22cc353a-e098-4cf1-96de-25cd1139803c"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Rua Antônio Fortes, 330 - Luciano Cavalcante, Fortaleza/CE]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="58" y="0" width="497" height="27" uuid="67bc803c-b7c1-4d73-b1ed-6630a1bdc5b9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Fornecedora]]></text>
+				<text><![CDATA[]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="1" y="1" width="553" height="26" uuid="67fe1057-2809-46b7-9a1c-5b32ce2ac4b0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomeEmpresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="26" width="553" height="14" uuid="d6e587f3-b140-4a9d-b372-1dc2ccd52697"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nomeEstabelecimento} +" - " + $F{cnpjFormatado}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="69" y="40" width="428" height="14" uuid="df56f4e3-10a7-4921-b7b1-22fea973c321"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{estabelecimentoEndereco}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="25" splitType="Stretch">
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="70" splitType="Stretch">
+			<rectangle>
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="34" width="555" height="36" uuid="02227f42-07e7-4f3b-b9c6-b0edaffd727d"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
 			<staticText>
-				<reportElement isPrintRepeatedValues="false" x="1" y="8" width="554" height="17" uuid="93c71c29-6d40-4033-9701-1d70258f5437"/>
+				<reportElement x="461" y="56" width="26" height="12" uuid="4ed36cb3-78a7-4793-812e-a6294af8ffd8"/>
+				<textElement verticalAlignment="Top">
+					<font size="9" isBold="true" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[CBO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="421" y="40" width="76" height="12" uuid="7ee7ebd3-42b0-4c3c-908d-4515c617df61"/>
+				<textElement verticalAlignment="Top">
+					<font size="9" isBold="true" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Data Admisão:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="494" y="56" width="58" height="12" uuid="e7f62954-9221-48c5-b777-e36a79590e54"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigoCBO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="494" y="40" width="58" height="12" uuid="ce35db4f-a0d3-48e9-81cc-ba29a7808df8"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataAdmisaoColaboradorFormatada}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="40" width="34" height="12" uuid="e5b663cf-3815-4609-bd54-449e2688d60d"/>
+				<textElement verticalAlignment="Top">
+					<font size="9" isBold="true" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Nome:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="56" width="42" height="12" uuid="0ce39d30-4fed-40bc-bff1-3460de78a4a8"/>
+				<textElement verticalAlignment="Top">
+					<font size="9" isBold="true" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Função:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="38" y="40" width="383" height="12" uuid="b7b2f819-4270-44ba-bc77-9014a5cb9165"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomeColaborador}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="212" y="56" width="249" height="12" uuid="59894c11-e743-4edd-bfb1-681dc2468e9c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomeFuncao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="38" y="56" width="134" height="12" uuid="97ae6e89-1722-4e64-ad06-d3a0b9090f2e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomeCargo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="56" width="34" height="12" uuid="e2c56777-9f09-4af0-9618-f8d16c189f4b"/>
+				<textElement verticalAlignment="Top">
+					<font size="9" isBold="true" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Cargo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="7" width="555" height="18" uuid="9b860c9b-62f8-490a-933a-c2e2b6ea08f3"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -67,66 +163,10 @@
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="false"/>
+					<font isBold="true" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[ORDEM DE SERVIÇO
-
-]]></text>
+				<text><![CDATA[ORDEM DE SERVIÇO]]></text>
 			</staticText>
-		</band>
-	</columnHeader>
-	<detail>
-		<band height="47" splitType="Stretch">
-			<rectangle>
-				<reportElement mode="Transparent" x="0" y="11" width="555" height="36" uuid="02227f42-07e7-4f3b-b9c6-b0edaffd727d"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
-			<staticText>
-				<reportElement x="4" y="17" width="83" height="14" uuid="4ed36cb3-78a7-4793-812e-a6294af8ffd8"/>
-				<textElement verticalAlignment="Top">
-					<font isBold="true" isUnderline="false" isStrikeThrough="false"/>
-				</textElement>
-				<text><![CDATA[CBO:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="4" y="31" width="83" height="14" uuid="7ee7ebd3-42b0-4c3c-908d-4515c617df61"/>
-				<textElement verticalAlignment="Top">
-					<font isBold="true" isUnderline="false" isStrikeThrough="false"/>
-				</textElement>
-				<text><![CDATA[Data Admisão:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="87" y="17" width="85" height="14" uuid="e7f62954-9221-48c5-b777-e36a79590e54"/>
-				<textFieldExpression><![CDATA[$F{codigoCBO}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="87" y="31" width="85" height="14" uuid="ce35db4f-a0d3-48e9-81cc-ba29a7808df8"/>
-				<textFieldExpression><![CDATA[$F{dataAdmisaoColaboradorFormatada}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="186" y="17" width="45" height="14" uuid="e5b663cf-3815-4609-bd54-449e2688d60d"/>
-				<textElement verticalAlignment="Top">
-					<font isBold="true" isUnderline="false" isStrikeThrough="false"/>
-				</textElement>
-				<text><![CDATA[Nome:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="186" y="31" width="45" height="14" uuid="0ce39d30-4fed-40bc-bff1-3460de78a4a8"/>
-				<textElement verticalAlignment="Top">
-					<font isBold="true" isUnderline="false" isStrikeThrough="false"/>
-				</textElement>
-				<text><![CDATA[Função:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="231" y="17" width="322" height="14" uuid="b7b2f819-4270-44ba-bc77-9014a5cb9165"/>
-				<textFieldExpression><![CDATA[$F{nomeColaborador}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="231" y="31" width="322" height="14" uuid="59894c11-e743-4edd-bfb1-681dc2468e9c"/>
-				<textFieldExpression><![CDATA[$F{nomeFuncao}]]></textFieldExpression>
-			</textField>
 		</band>
 		<band height="35" splitType="Stretch">
 			<rectangle>
