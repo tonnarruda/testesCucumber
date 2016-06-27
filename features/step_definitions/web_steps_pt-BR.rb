@@ -316,6 +316,11 @@ Então /^eu devo ver o alert "([^"]*)" e clico no sim/ do |msg_alert|
   When %{I press "Sim"}
 end
 
+Então /^eu devo ver o alert "([^"]*)" e clico no Imprimir/ do |msg_alert|
+  Then %{I should see "#{msg_alert}"}
+  When %{I press "Imprimir"}
+end
+
 Então /^eu devo ver o alert do confirmar exclusão e clico no ok/ do
   Then %{I should see "Confirma exclusão?"}
   When %{I press "OK"}
@@ -758,6 +763,21 @@ Dado /^que exista um novo historico para o colaborador "([^"]*)", na area "([^"]
     colaborador :nome => colaborador_nome
     faixasalarial :nome => faixasalarial_nome
     areaorganizacional :nome => areaorganizacional_nome
+    estabelecimento :id => 1
+    motivo 'P'
+    tiposalario 3
+    salario 1040
+    status 1
+  end
+end
+
+Dado /^que exista um novo historico para o colaborador "([^"]*)", na area "([^"]*)", na faixa salarial "([^"]*)", na funcao "([^"]*)"$/ do |colaborador_nome, areaorganizacional_nome,faixasalarial_nome,funcao_nome|
+  insert :historicocolaborador do
+    data '20/06/2016'
+    colaborador :nome => colaborador_nome
+    faixasalarial :nome => faixasalarial_nome
+    areaorganizacional :nome => areaorganizacional_nome
+    funcao :nome => funcao_nome
     estabelecimento :id => 1
     motivo 'P'
     tiposalario 3

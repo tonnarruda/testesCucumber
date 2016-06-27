@@ -1,19 +1,63 @@
-<#assign ww=JspTaglibs["/WEB-INF/tlds/webwork.tld"] />
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
+<#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 	<head>
 		<@ww.head/>
+		<style type="text/css">
+			.divTitulo{
+				width: 960px;
+			}
+			.titulo{
+				font-weight: bold; 
+				font-size: 13px;
+			}
+			.wwctrl textarea{
+				width: 960px;
+				height:150px;
+				border: 1px solid;
+				border-color: #D9D9D9;
+			}
+			#dadosColab{
+				border-bottom: 1pt solid black;
+				border-color: #D9D9D9;
+				width: 966px;
+			}
+			#wwgrp_descricaoCBO
+		    {
+				float: left;
+		    	background-color: #E9E9E9;
+				width: 310px;
+				padding-left: 4px;
+			}
+			.desc{
+				font-weight: bold 
+			}
+		</style>
 		
 		<#include "../ftl/mascarasImports.ftl" />
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OrdemDeServicoDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>'></script>
 		
 		<script type="text/javascript">
 			var ultimaDataValida = "";
 
 			$(function(){
 				ultimaDataValida = $('#dataOS').val();
+				
+				var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
+				$("#descricaoCBO").autocomplete({
+					source: ajaxData(urlFind),				 
+					minLength: 2,
+					select: function( event, ui ) { 
+						$("#codigoCBO").val(ui.item.id);
+					}
+				}).data( "autocomplete" )._renderItem = renderData;
+	
+				$('#descricaoCBO').focus(function() {
+				    $(this).select();
+				});
 			});
 
 			function repopularOrdemDeServico()
@@ -32,7 +76,7 @@
 				$('#nomeColaboradorOS').text(dados["nomeColaborador"]);
 				$('#dataAdmissaoFormatadaOS').text(dados["dataAdmisaoColaboradorFormatada"]);
 				$('#nomeFuncaoOS').text(dados["nomeFuncao"]);
-				$('#codigoCBOOS').text(dados["codigoCBO"]);
+				$('#codigoCBOOS').val(dados["codigoCBO"]);
 				$('#atividadesOS').text(dados["atividades"] == null ? "" :  dados["atividades"]);
 				$('#riscosOS').text(dados["riscos"] == null ? "" : dados["riscos"]);
 				$('#episOS').text(dados["epis"] == null ? "" : dados["epis"]);
@@ -54,28 +98,16 @@
 				OrdemDeServicoDWR.carregaUltimaOrdemDeServicoByColaborador(repopularOrdemDeServicoByDados, ${ordemDeServico.colaborador.id});
 			}
 			
+			function submit(){
+				var array =  new Array('atividadesOS','riscosOS','episOS','medidasPreventivasOS','treinamentosOS','normasInternasOS','procedimentoEmCasoDeAcidenteOS','termoDeResponsabilidadeOS');
+				
+				<#if !ordemDeServico.codigoCBO?exists>
+					array.push('codigoCBOOS');
+				</#if>
+				
+				return validaFormulario('form', array, new Array('dataOS'));
+			}
 		</script>	
-						
-		<style type="text/css">
-			.divTitulo{
-				width: 960px;
-			}
-			.titulo{
-				font-weight: bold; 
-				font-size: 13px;
-			}
-			.wwctrl textarea{
-				width: 960px;
-				height:150px;
-				border: 1px solid;
-				border-color: #D9D9D9;
-			}
-			#dadosColab{
-				border-bottom: 1pt solid black;
-				border-color: #D9D9D9;
-				width: 966px;
-			}
-		</style>
 			
 		<#if ordemDeServico.id?exists>
 			<title>Editar Ordem de Serviço</title>
@@ -86,12 +118,10 @@
 			<#assign formAction="insert.action"/>
 			<#assign dataOS = dataDoDia?date>
 		</#if>
-		
-		<#assign validarCampos="return validaFormulario('form', new Array('atividadesOS','riscosOS','episOS','medidasPreventivasOS','treinamentosOS','normasInternasOS','procedimentoEmCasoDeAcidenteOS','termoDeResponsabilidadeOS'), new Array('dataOS'));"/>
 	</head>
 	<body>
 		<@ww.actionerror />
-		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
+		<@ww.form name="form" action="${formAction}" onsubmit="submit();" method="POST">
 			<@ww.hidden name="colaborador.id" value="${ordemDeServico.colaborador.id}" />
 			<@ww.hidden name="ordemDeServico.id" />
 			<@ww.hidden name="ordemDeServico.colaborador.id" value="${ordemDeServico.colaborador.id}" />
@@ -104,13 +134,12 @@
 			<@ww.hidden name="ordemDeServico.empresaCNPJ" />
 			<@ww.hidden name="ordemDeServico.estabelecimentoComplementoCNPJ" />
 			<@ww.hidden name="ordemDeServico.estabelecimentoEndereco" />
-			<@ww.hidden name="ordemDeServico.codigoCBO" />
 			<@ww.hidden name="ordemDeServico.revisao" value="${revisao}"/>
 			<@ww.token/>
 			
 			<table id="dadosColab">
 				<tr>
-					<td width="600px">
+					<td width="480px">
 						<@ww.datepicker label="Data da Ordem de Serviço" name="ordemDeServico.data" value="${dataOS}" id="dataOS" required="true" cssClass="mascaraData" onchange="repopularOrdemDeServico();" onblur="repopularOrdemDeServico();"/>
 					</td>
 				</tr>
@@ -118,12 +147,38 @@
 					<td> <span style="font-weight: bold;">Revisão: </span> <span style="margin-left: 4px;">${revisao}</span> </td>
 				</tr>
 				<tr>
-					<td width="250"> <span style="font-weight: bold;">Código CBO:</span> <span style="margin-left: 40px;" id="codigoCBOOS">${ordemDeServico.codigoCBO}</span> </td>
-					<td> <span style="font-weight: bold;">Colaborador:</span> <span style="margin-left: 4px;" id="nomeColaboradorOS">${ordemDeServico.nomeColaborador}</span> </td>
+					<td> <span style="font-weight: bold;">Colaborador:</span> <span id="nomeColaboradorOS">${ordemDeServico.nomeColaborador}</span> </td>
+					<td> <span style="font-weight: bold;">Data de Admissão:</span> <span id="dataAdmissaoFormatadaOS">${ordemDeServico.dataAdmisaoColaboradorFormatada}</span> </td>
 				</tr>
 				<tr>
-					<td width="250"> <span style="font-weight: bold;">Data de Admissão:</span> <span style="margin-left: 4px;" id="dataAdmissaoFormatadaOS">${ordemDeServico.dataAdmisaoColaboradorFormatada}</span> </td>
-					<td> <span style="font-weight: bold;">Função:</span> <span style="margin-left: 34px;" id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span> </td>
+					<td> <span style="font-weight: bold;">Cargo:</span> <span id="nomeCargoOS">${ordemDeServico.nomeCargo}</span> </td>
+					<td> <span style="font-weight: bold;">Função:</span> <span id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span> </td>
+				</tr>
+				<tr>
+					<td width="480"> 
+						<#if ordemDeServico.codigoCBO?exists>
+							<span style="font-weight: bold;">Código CBO:</span> <span id="codigoCBOOS">${ordemDeServico.codigoCBO}</span> 
+							<@ww.hidden name="ordemDeServico.codigoCBO" />
+						<#else>
+							<li id="wwgrp_codigoCBO" class="liLeft">    
+								<div id="wwlbl_codigoCBO" class="wwlbl">
+									<label for="codigoCBO" class="desc" style="font-weight: bold"> Cód. CBO:<span class="req">* </span></label>
+								</div> 
+								<div id="wwctrl_codigoCBO" class="wwctrl">
+									<input type="text" name="ordemDeServico.codigoCBO" size="6" maxlength="6" value="" id="codigoCBOOS" onkeypress="return(somenteNumeros(event,''));">
+								</div> 
+							</li>
+								<li id="wwgrp_descricaoCBO" class="wwgrp">    
+									<div id="wwlbl_descricaoCBO" class="wwlbl">
+									<label for="descricaoCBO" class="desc" style="font-weight: bold"> Busca CBO (Código ou Descrição):</label>        
+								</div> 
+								<div id="wwctrl_descricaoCBO" class="wwctrl">
+									<input type="text" name="descricaoCBO" value="" id="descricaoCBO" style="width: 300px;">
+								</div>
+								<div style="clear:both"></div> 
+							</li>						
+						</#if>
+					</td>
 				</tr>
 			</table>
 			
@@ -163,7 +218,7 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button onclick="${validarCampos};" class="btnGravar"></button>
+			<button onclick="submit();" class="btnGravar"></button>
 			<button onclick="window.location='list.action?colaborador.id=${ordemDeServico.colaborador.id}'" class="btnVoltar"></button>
 		</div>
 	</body>
