@@ -93,7 +93,7 @@
 		<@display.column property="entidade" title="Movimentação"/>
 		<@display.column title="Operação" property="operacao" />
 		<@display.column title="Detalhes" style="text-align: center;width:50px;">
-			<a title="Ver Informação" href="javascript:popup('<@ww.url includeParams="none" value="viewAuditoria.action?auditoriaView.id=${auditoria.id?string?replace('.', '')}"/>', 610, 750)">
+			<a title="Ver Informação" href="javascript:popup('<@ww.url includeParams="none" value="viewAuditoria.action?internalToken=${internalToken}&auditoriaView.id=${auditoria.id?string?replace('.', '')}" />', 610, 750)">
 				<img border="0" title="Visualizar" src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>">
 			</a>
 		</@display.column>

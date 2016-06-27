@@ -37,7 +37,7 @@
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnCriarUsuarios" >
 		</button>
-		<button onclick="window.location='list.action'" class="btnCancelar" >
+		<button onclick="javascript: executeLink('list.action');" class="btnCancelar" >
 		</button>
 	</div>
 </body>

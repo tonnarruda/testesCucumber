@@ -57,8 +57,8 @@
 
 	<@display.table name="bairros" id="bairro" class="dados" sort="list">
 		<@display.column title="Ações" style="text-align:center; width: 80px" media="html">
-			<a href="prepareUpdate.action?bairro.id=${bairro.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?bairro.id=${bairro.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: executeLink('prepareUpdate.action?bairro.id=${bairro.id}');"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?bairro.id=${bairro.id}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>
 		<@display.column property="cidade.nome" title="Cidade"/>
@@ -67,8 +67,8 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" ></button>
-		<button class="btnUnirBairros" onclick="window.location='prepareMigrar.action'" ></button>
+		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');" ></button>
+		<button class="btnUnirBairros" onclick="javascript: executeLink('prepareMigrar.action');" ></button>
 	</div>
 </body>
 </html>

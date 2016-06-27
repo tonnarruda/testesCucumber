@@ -4,10 +4,10 @@
 <xwork>
 	<package name="configuracaoCampoExtra" extends="default" namespace="/geral/configuracaoCampoExtra">
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.geral.ConfiguracaoCampoExtraEditAction" method="prepareUpdate">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/configuracaoCampoExtraEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.geral.ConfiguracaoCampoExtraEditAction" method="update">
-			<result name="invalid.token" type="freemarker">/WEB-INF/forms/geral/configuracaoCampoExtraEdit.ftl</result>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/configuracaoCampoExtraEdit.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/configuracaoCampoExtraEdit.ftl</result>
 		</action>

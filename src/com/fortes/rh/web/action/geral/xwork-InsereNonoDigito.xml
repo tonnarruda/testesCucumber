@@ -4,6 +4,7 @@
 <xwork>
 	<package name="insereNonoDigito" extends="default" namespace="/geral/insereNonoDigito">
 		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.InsereNonoDigitoEditAction" method="prepareInsert">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/inserirNonoDigitoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.InsereNonoDigitoEditAction" method="insert">

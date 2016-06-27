@@ -27,8 +27,8 @@
 						<tr class="${class}">
 							<td width="40" align="center">
 								<#if msg.usuarioMensagemId?exists>
-									<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}&amp;tipo=${tipo}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="<@ww.url value="/imgs/olho.jpg"/>"/> </a>
-									<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"/></a>
+									<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?internalToken=${internalToken}&amp;usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}&amp;tipo=${tipo}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="<@ww.url value="/imgs/olho.jpg"/>"/> </a>
+									<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?internalToken=${internalToken}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"/></a>
 								</#if>
 							</td>
 							<td>

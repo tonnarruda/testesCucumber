@@ -178,6 +178,7 @@
 	<@ww.checkbox label="Compartilhar candidatos e vagas entre empresas." id="compartilharCandidato" name="parametrosDoSistema.compartilharCandidatos" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar colaboradores entre empresas." id="compartilharColaborador" name="parametrosDoSistema.compartilharColaboradores" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar cursos entre empresas." id="compartilharCurso" name="parametrosDoSistema.compartilharCursos" liClass="liLeft" labelPosition="left"/>
+	<@ww.hidden name="internalToken" />
 	
 	<li style="margin-bottom: 5px">
 		<input type="checkbox" name="parametrosDoSistema.autorizacaoGestorNaSolicitacaoPessoal" id="autorizacaoGestorNaSolicitacaoPessoal" value="true" onchange="renderizaAviso()"/>

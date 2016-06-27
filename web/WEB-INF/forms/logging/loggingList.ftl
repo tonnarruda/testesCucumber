@@ -13,12 +13,12 @@
 		<@ww.actionerror />
 		<@display.table name="logs" id="row" class="dados">
 			<@display.column title="Ações" class="acao">
-				<a href="loadLogFile.action?filename=${row.name}">
+				<a href="javascript: executeLink('loadLogFile.action?filename=${row.name}');">
 					<img border="0" title="Detalhar Arquivo de Log" src="<@ww.url value="/imgs/log.png"/>">
 				</a>
 			</@display.column>
 			<@display.column title="Nome">
-				<a href="loadLogFile.action?filename=${row.name}">
+				<a href="javascript: executeLink('loadLogFile.action?filename=${row.name}');">
 					${row.name}
 				</a>
 			</@display.column>

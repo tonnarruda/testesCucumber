@@ -8,7 +8,7 @@
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.geral.UsuarioMensagemListAction" method="delete">
 			<result name="success" type="redirect">../../index.action</result>
-			<result name="success_popup" type="redirect"><![CDATA[leituraUsuarioMensagemPopup.action?usuarioMensagem.id=${usuarioMensagem.id}&usuarioMensagemAnteriorId=${usuarioMensagemAnteriorId}&usuarioMensagemProximoId=${usuarioMensagemProximoId}&navegacao=delete&tipo=${tipo}]]></result>
+			<result name="success_popup" type="redirect"><![CDATA[leituraUsuarioMensagemPopup.action?internalToken=${internalToken}&usuarioMensagem.id=${usuarioMensagem.id}&usuarioMensagemAnteriorId=${usuarioMensagemAnteriorId}&usuarioMensagemProximoId=${usuarioMensagemProximoId}&navegacao=delete&tipo=${tipo}]]></result>
 			<result name="success_mensagens" type="redirect"><![CDATA[../../mensagens.action?tipo=${tipo}]]></result>
 			<result name="error" type="redirect">../../index.action</result>
 			<result name="input" type="redirect">../../index.action</result>
@@ -21,20 +21,17 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/usuarioMensagemEdit.ftl</result>
 		</action>
 		<action name="leituraUsuarioMensagemPopup" class="com.fortes.rh.web.action.geral.UsuarioMensagemEditAction" method="leituraUsuarioMensagemPopup">
+			<interceptor-ref name="myDefaultWebStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/leituraUsuarioMensagemPopup.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.UsuarioMensagemEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect">prepareUpdate.action</result>
 			<result name="success" type="redirect">prepareUpdate.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/usuarioMensagemEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.geral.UsuarioMensagemEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect"><![CDATA[leituraUsuarioMensagemPopup.action?usuarioMensagem.id=${usuarioMensagem.id}&usuarioMensagem.empresa.id=${usuarioMensagem.empresa.id}]]></result>
-			<result name="success" type="redirect"><![CDATA[leituraUsuarioMensagemPopup.action?usuarioMensagem.id=${usuarioMensagem.id}&usuarioMensagem.empresa.id=${usuarioMensagem.empresa.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[leituraUsuarioMensagemPopup.action?internalToken=${internalToken}&usuarioMensagem.id=${usuarioMensagem.id}&usuarioMensagem.empresa.id=${usuarioMensagem.empresa.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/leituraUsuarioMensagemPopup.ftl</result>
 		</action>
 	</package>

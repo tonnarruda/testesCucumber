@@ -30,14 +30,10 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/acesso/perfilEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.acesso.PerfilEditAction" method="insert">
-		    <interceptor-ref name="tokenWebStack" />
-		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/acesso/perfilEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.acesso.PerfilEditAction" method="update">
-		    <interceptor-ref name="tokenWebStack" />
-		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/acesso/perfilEdit.ftl</result>
 		</action>

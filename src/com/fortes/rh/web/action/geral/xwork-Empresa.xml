@@ -32,18 +32,28 @@
 			<result name="successAlterandoMenu" type="redirect">../../index.action?empresaId=${empresaSistema.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/empresaEdit.ftl</result>
 		</action>
-		<action name="showLogo" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showLogo" />
-		<action name="showLogoCertificado" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showLogoCertificado" />
-		
-		<action name="showImgCartao" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showImgCartao" />
+		<action name="showLogo" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showLogo" >
+			<interceptor-ref name="myDefaultWebStack"/>
+		</action>
+		<action name="showLogoCertificado" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showLogoCertificado" >
+			<interceptor-ref name="myDefaultWebStack"/>
+		</action>
+		<action name="showImgAniversariante" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showImgAniversariante" >
+			<interceptor-ref name="myDefaultWebStack"/>
+		</action>
+		<action name="showImgCartao" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showImgCartao" >
+			<interceptor-ref name="myDefaultWebStack"/>
+		</action>
 		
 		<action name="prepareImportarCadastros" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="prepareImportarCadastros">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/importaCadastros.ftl</result>
 		</action>
 		<action name="importarCadastros" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="importarCadastros">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/importaCadastros.ftl</result>
 		</action>
 		<action name="sobre" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="sobre">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/sobre.ftl</result>
 		</action>
 		<action name="previewCartao" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="previewCartao">

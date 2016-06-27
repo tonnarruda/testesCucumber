@@ -340,7 +340,7 @@
 	
 		<div class="buttonGroup">
 			<button onclick="validacoesGerenciadorComunicacao();" class="btnGravar"></button>
-			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+			<button onclick="javascript: executeLink('list.action');" class="btnVoltar"></button>
 		</div>
 	</body>
 </html>

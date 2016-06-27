@@ -136,7 +136,7 @@
 		<button onclick="verificaCnpj();;" class="btnGravar" accesskey="${accessKey}">
 		</button>
 		</#if>
-		<button onclick="window.location='list.action'" class="btnCancelar" accesskey="V">
+		<button onclick="javascript: executeLink('list.action');" class="btnCancelar" accesskey="V">
 		</button>
 	</div>
 	

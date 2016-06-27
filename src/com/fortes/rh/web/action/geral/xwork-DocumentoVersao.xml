@@ -4,6 +4,7 @@
 <xwork>
 	<package name="documentoVersao" extends="default" namespace="/geral/documentoVersao">
 		<action name="list" class="com.fortes.rh.web.action.geral.DocumentoVersaoListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/documentoVersaoList.ftl</result>
 		</action>
 	</package>

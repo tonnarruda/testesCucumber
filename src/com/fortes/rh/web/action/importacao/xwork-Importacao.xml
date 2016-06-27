@@ -3,35 +3,34 @@
 <xwork>
 	<package name="importacao" extends="default" namespace="/importacao">
 		<action name="prepareImportarAfastamentos" class="com.fortes.rh.web.action.importacao.ImportacaoAction" method="prepareImportarAfastamentos">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/importacao/afastamentos.ftl</result>
 			<result name="erro">/error.jsp</result>
 		</action>
 		<action name="carregarAfastamentos" class="com.fortes.rh.web.action.importacao.ImportacaoAction" method="carregarAfastamentos">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/importacao/carregarAfastamentos.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/importacao/afastamentos.ftl</result>
 		</action>
 		<action name="importarAfastamentos" class="com.fortes.rh.web.action.importacao.ImportacaoAction" method="importarAfastamentos">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/importacao/afastamentos.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/importacao/afastamentos.ftl</result>
 		</action>
 	
 		<action name="prepareImportarColaboradorDadosPessoais" class="com.fortes.rh.web.action.importacao.ImportacaoAction" method="prepareImportarColaboradorDadosPessoais">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/importacao/colaboradores.ftl</result>
 			<result name="erro">/error.jsp</result>
 		</action>
 		<action name="importarColaboradorDadosPessoais" class="com.fortes.rh.web.action.importacao.ImportacaoAction" method="importarColaboradorDadosPessoais">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/importacao/colaboradores.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/importacao/colaboradores.ftl</result>
 		</action>
 	
 		<action name="prepareImportarEPIs" class="com.fortes.rh.web.action.importacao.ImportacaoAction" method="prepareImportarEPIs">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/importacao/epis.ftl</result>
 		</action>
 		<action name="importarEPIs" class="com.fortes.rh.web.action.importacao.ImportacaoAction" method="importarEPIs">
-			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/importacao/epis.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/importacao/epis.ftl</result>
 		</action>

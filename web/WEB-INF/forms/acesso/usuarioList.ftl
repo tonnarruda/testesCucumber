@@ -76,7 +76,7 @@
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action');" accesskey="I"></button>
 		<button class="btnCriarUsuariosAuto" onclick="javascript: executeLink('prepareAutoInsert.action');" accesskey="I"></button>
-		<button class="btnImprimirPdf" onclick="window.location='imprimirUsuariosPerfis.action'">
+		<button class="btnImprimirPdf" onclick="javascript: executeLink('imprimirUsuariosPerfis.action');">
 	</div>
 </body>
 </html>

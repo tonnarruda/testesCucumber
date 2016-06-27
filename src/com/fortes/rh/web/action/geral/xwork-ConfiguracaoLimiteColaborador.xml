@@ -4,27 +4,24 @@
 <xwork>
 	<package name="configuracaoLimiteColaborador" extends="default" namespace="/geral/configuracaoLimiteColaborador">
 		<action name="list" class="com.fortes.rh.web.action.geral.ConfiguracaoLimiteColaboradorEditAction" method="list">
+						<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/configuracaoLimiteColaboradorList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.geral.ConfiguracaoLimiteColaboradorEditAction" method="delete">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/configuracaoLimiteColaboradorList.ftl</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.ConfiguracaoLimiteColaboradorEditAction" method="prepareInsert">
-			<interceptor-ref name="defaultListStack"/>
+			<interceptor-ref name="defaultListTokenStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/configuracaoLimiteColaboradorEdit.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.geral.ConfiguracaoLimiteColaboradorEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/configuracaoLimiteColaboradorEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.ConfiguracaoLimiteColaboradorEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack"/>
-			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">prepareInsert.action</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.geral.ConfiguracaoLimiteColaboradorEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/configuracaoLimiteColaboradorEdit.ftl</result>
 		</action>

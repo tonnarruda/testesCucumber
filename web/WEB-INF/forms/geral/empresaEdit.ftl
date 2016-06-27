@@ -200,7 +200,7 @@
 				<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
 					<ul>
 						<#if empresa.id?exists && empresa.logoUrl?exists && empresa.logoUrl != "">
-							<img border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showLogo.action?empresa.logoUrl=${empresa.logoUrl}"/>">
+							<img border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showLogo.action?empresa.logoUrl=${empresa.logoUrl}&internalToken${internalToken}"/>">
 						</#if>
 					</ul>
 				</@ww.div>
@@ -212,7 +212,7 @@
 				<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
 					<ul>
 						<#if empresa.id?exists && empresa.logoCertificadoUrl?exists && empresa.logoCertificadoUrl != "">
-							<img border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showLogoCertificado.action?empresa.logoCertificadoUrl=${empresa.logoCertificadoUrl}"/>">
+							<img border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showLogoCertificado.action?empresa.logoCertificadoUrl=${empresa.logoCertificadoUrl}&internalToken${internalToken}"/>">
 						</#if>
 					</ul>
 				</@ww.div>
@@ -384,7 +384,7 @@
 						<li>
 							<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
 								<#if empresa.id?exists && cartaoAniversario.imgUrl?exists && cartaoAniversario.imgUrl != "">
-									<a href="previewCartao.action?cartao.id=${cartaoAniversario.id}" ><img title="Visualizar cartão dos aniversariantes." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgCartao.action?cartao.imgUrl=${cartaoAniversario.imgUrl}"/>"></a>
+									<a href="previewCartao.action?cartao.id=${cartaoAniversario.id}" ><img title="Visualizar cartão dos aniversariantes." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgCartao.action?cartao.imgUrl=${cartaoAniversario.imgUrl}&internalToken${internalToken}"/>"></a>
 								</#if>
 							</@ww.div>
 						</li>
@@ -399,7 +399,7 @@
 						<li>
 							<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
 								<#if empresa.id?exists && cartaoAnoDeEmpresa.imgUrl?exists && cartaoAnoDeEmpresa.imgUrl != "">
-									<a href="previewCartao.action?cartao.id=${cartaoAnoDeEmpresa.id}" ><img title="Visualizar cartão de parabenizar por ano de empresa." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgCartao.action?cartao.imgUrl=${cartaoAnoDeEmpresa.imgUrl}"/>"></a>
+									<a href="previewCartao.action?cartao.id=${cartaoAnoDeEmpresa.id}" ><img title="Visualizar cartão de parabenizar por ano de empresa." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgCartao.action?cartao.imgUrl=${cartaoAnoDeEmpresa.imgUrl}&internalToken${internalToken}"/>"></a>
 								</#if>
 							</@ww.div>
 						</li>

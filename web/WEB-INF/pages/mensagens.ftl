@@ -64,8 +64,8 @@
 						</@display.column>
 					
 						<@display.column title="Ações" media="html" style="text-align:center; width:50px;">
-							<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}&amp;tipo=${tipo}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="${contexto}/imgs/olho.jpg"></a>
-							<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}&amp;fromTodasMensagens=true&amp;tipo=${tipo}'});"><img border="0" title="Excluir" src="${contexto}/imgs/delete.gif"/></a>
+							<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?internalToken=${internalToken}&amp;usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}&amp;tipo=${tipo}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="${contexto}/imgs/olho.jpg"></a>
+							<a href="javascript: newConfirm('Confirma exclusão?', function(){javascript: executeLink('geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}&amp;fromTodasMensagens=true&amp;tipo=${tipo}');});"><img border="0" title="Excluir" src="${contexto}/imgs/delete.gif"/></a>
 						</@display.column>
 					
 						<@display.column title="De" style="${style} text-align:center; width:70px;">

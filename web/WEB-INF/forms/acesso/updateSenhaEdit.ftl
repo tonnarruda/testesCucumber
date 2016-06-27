@@ -23,10 +23,10 @@
 			<@ww.password label="Senha atual" name="usuario.senha" id="senha" required="true"/>
 			<@ww.password label="Nova senha" name="usuario.novaSenha" id="novaSenha"  required="true"/>
 			<@ww.password label="Confirmação nova senha" name="usuario.confNovaSenha" id="confSenha"  required="true"/>
+			<@ww.hidden name="internalToken" />
 		
 		<@ww.token/>
 		</@ww.form>
-		
 		
 		<div class="buttonGroup">
 			<button  class="btnGravar" accesskey="G" onclick="${validarCampos};">

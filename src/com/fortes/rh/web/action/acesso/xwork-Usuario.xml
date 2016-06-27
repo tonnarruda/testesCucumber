@@ -39,28 +39,23 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/acesso/usuarioEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.acesso.UsuarioEditAction" method="insert">
-		    <interceptor-ref name="tokenWebStack" />
-		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/acesso/usuarioEdit.ftl</result>
-			<result name="usuarioColaborador" type="redirect">../../geral/colaborador/list.action</result>
+			<result name="usuarioColaborador" type="redirect">../../geral/colaborador/list.action?internalToken=${internalToken}</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.acesso.UsuarioEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/acesso/usuarioEdit.ftl</result>
-			<result name="usuarioColaborador" type="redirect">../../geral/colaborador/list.action</result>
+			<result name="usuarioColaborador" type="redirect">../../geral/colaborador/list.action?internalToken=${internalToken}</result>
 		</action>
 		<action name="prepareCriarUsuario" class="com.fortes.rh.web.action.acesso.UsuarioEditAction" method="prepareCriarUsuario">
 			<result name="success" type="freemarker">/WEB-INF/forms/acesso/usuarioCreate.ftl</result>
 		</action>
 		<action name="prepareUpdateSenhaUsuario" class="com.fortes.rh.web.action.acesso.UsuarioEditAction" method="prepareUpdateSenhaUsuario">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/acesso/updateSenhaEdit.ftl</result>
 		</action>
 		<action name="updateSenhaUsuario" class="com.fortes.rh.web.action.acesso.UsuarioEditAction" method="updateSenhaUsuario">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="freemarker">/WEB-INF/forms/acesso/updateSenhaEdit.ftl</result>
 			<result name="success" type="freemarker">/WEB-INF/forms/acesso/updateSenhaEdit.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/acesso/updateSenhaEdit.ftl</result>
 		</action>

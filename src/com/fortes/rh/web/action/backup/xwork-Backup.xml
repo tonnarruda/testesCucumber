@@ -18,6 +18,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/backup/success.ftl</result>
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.backup.BackupAction" method="list">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/backup/success.ftl</result>
 		</action>
 		<action name="enviarFileBox" class="com.fortes.rh.web.action.backup.BackupAction" method="enviarFileBox">

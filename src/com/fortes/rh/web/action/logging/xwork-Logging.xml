@@ -4,6 +4,7 @@
 <xwork>
 	<package name="logging" extends="default" namespace="/logging">
 		<action name="list" class="com.fortes.rh.web.action.logging.LoggingAction" method="list">
+			<interceptor-ref name="defaultListStack"></interceptor-ref>
 			<result name="success" type="freemarker">/WEB-INF/forms/logging/loggingList.ftl</result>
 		</action>
 		<action name="loadLogFile" class="com.fortes.rh.web.action.logging.LoggingAction" method="loadLogFile">

@@ -4,6 +4,7 @@
 <xwork>
 	<package name="parametrosDoSistema" extends="default" namespace="/geral/parametrosDoSistema">
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="prepareUpdate">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/parametrosDoSistemaEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="update">
@@ -12,9 +13,11 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/parametrosDoSistemaEdit.ftl</result>
 		</action>
 		<action name="listCampos" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="listCampos">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/listCampos.ftl</result>
 		</action>
 		<action name="configCampos" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="configCampos">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success_candidato" type="freemarker">/WEB-INF/forms/geral/configCamposCandidato.ftl</result>
 			<result name="success_candidatoExterno" type="freemarker">/WEB-INF/forms/geral/configCamposCandidatoExterno.ftl</result>
 			<result name="success_colaborador" type="freemarker">/WEB-INF/forms/geral/configCamposColaborador.ftl</result>
@@ -44,6 +47,7 @@
 		</action>
 		
 		<action name="prepareDeleteSemCodigoAC" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="prepareDeleteSemCodigoAC">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/listSemCodigoAC.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/semAcessoListSemCodigoAC.ftl</result>
 		</action>
