@@ -42,6 +42,7 @@ CREATE TABLE historicofuncao_curso (
 ALTER TABLE historicofuncao_curso ADD CONSTRAINT historicofuncao_curso_curso_fk FOREIGN KEY (cursos_id) REFERENCES curso(id);--.go
 ALTER TABLE historicofuncao_curso ADD CONSTRAINT historicofuncao_curso_historicofuncao_fk FOREIGN KEY (historicofuncao_id) REFERENCES historicofuncao(id);--.go
 
-alter table empresa add column normasInternas text;--.go
+alter table historicoFuncao add column normasInternas text;--.go
+
 alter table empresa add column procedimentoEmCasoDeAcidente text;--.go
 alter table empresa add column termoDeResponsabilidade text;--.go

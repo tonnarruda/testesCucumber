@@ -317,9 +317,8 @@
 					<@ww.div cssClass="ordemDeServico">
 						<h2>Ordem de Serviço</h2>	
 							<ul>
-								<@ww.textarea label="Normas Internas" name="empresa.normasInternas" id="normasInternas" size="40"/>
-								<@ww.textarea label="Procedimentos em caso de acidente de trabalho" name="empresa.procedimentoEmCasoDeAcidente" id="procedimentoEmCasoDeAcidente" size="40"/>
-								<@ww.textarea label="Termo de Responsabilidade" name="empresa.termoDeResponsabilidade" id="termoDeResponsabilidade" size="40"/>
+								<@ww.textarea label="Procedimentos em caso de acidente de trabalho" name="empresa.procedimentoEmCasoDeAcidente" id="procedimentoEmCasoDeAcidente"/>
+								<@ww.textarea label="Termo de Responsabilidade" name="empresa.termoDeResponsabilidade" id="termoDeResponsabilidade"/>
 							</ul>
 					</@ww.div>
 				</ul>

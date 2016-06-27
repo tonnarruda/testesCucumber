@@ -132,7 +132,6 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.emailRemetente"), "emailRemetente");
 		p.add(Projections.property("e.emailRespRH"),"emailRespRH");
 		p.add(Projections.property("e.formulaTurnover"), "formulaTurnover");
-		p.add(Projections.property("e.normasInternas"), "normasInternas");
 		p.add(Projections.property("e.procedimentoEmCasoDeAcidente"), "procedimentoEmCasoDeAcidente");
 		p.add(Projections.property("e.termoDeResponsabilidade"), "termoDeResponsabilidade");
 		p.add(Projections.property("cid.nome"), "projectionCidadeNome");

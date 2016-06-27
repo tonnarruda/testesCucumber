@@ -38,6 +38,7 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 			HistoricoFuncao historicoFuncao = historicoFuncaoManager.findByFuncaoAndData(colaborador.getFuncao().getId(), dataOdemDeServico);
 			if(historicoFuncao != null && historicoFuncao.getId() != null){
 				ordemDeServico.setAtividades(historicoFuncao.getDescricao());
+				ordemDeServico.setNormasInternas(historicoFuncao.getNormasInternas());
 				montaListaRiscosEMedidasPreventivas(ordemDeServico, historicoFuncao); 
 				montaListaEpi(ordemDeServico, historicoFuncao);
 				montaListaTreinamentos(ordemDeServico, historicoFuncao);
@@ -47,7 +48,6 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 	}
 
 	private void montaDadosProvenienteDaEmpresa(OrdemDeServico ordemDeServico, Empresa empresa) {
-		ordemDeServico.setNormasInternas(empresa.getNormasInternas());
 		ordemDeServico.setProcedimentoEmCasoDeAcidente(empresa.getProcedimentoEmCasoDeAcidente());
 		ordemDeServico.setTermoDeResponsabilidade(empresa.getTermoDeResponsabilidade());
 		ordemDeServico.setEmpresaCnpj(empresa.getCnpj());

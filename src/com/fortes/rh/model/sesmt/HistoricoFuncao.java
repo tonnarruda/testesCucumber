@@ -46,6 +46,9 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
     @OneToMany(mappedBy="historicoFuncao", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Collection<RiscoFuncao> riscoFuncaos;
 
+    @Lob
+	private String normasInternas;
+    
     @Transient
     private Epi epi;
     
@@ -207,5 +210,13 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
 
 	public void setCursos(Collection<Curso> cursos) {
 		this.cursos = cursos;
+	}
+
+	public String getNormasInternas() {
+		return normasInternas;
+	}
+
+	public void setNormasInternas(String normasInternas) {
+		this.normasInternas = normasInternas;
 	}
 }

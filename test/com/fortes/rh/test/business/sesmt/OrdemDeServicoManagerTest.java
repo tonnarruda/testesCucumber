@@ -19,8 +19,11 @@ import com.fortes.rh.business.sesmt.OrdemDeServicoManagerImpl;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.dao.sesmt.OrdemDeServicoDao;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Endereco;
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.OrdemDeServico;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
@@ -76,8 +79,12 @@ public class OrdemDeServicoManagerTest
 		colaborador.setFuncaoHistoricoFuncaoAtualId(1L);
 		colaborador.setFuncaoHistoricoFuncaoAtualDescricao("Descricao");
 		
+		colaborador.setEstabelecimentoNomeProjection("Estabelecimento");
+		colaborador.getEstabelecimento().setEndereco(new Endereco());
+		colaborador.getEstabelecimento().getEndereco().setCidade(new Cidade());
+		colaborador.getEstabelecimento().getEndereco().setUf(new Estado());
+		
 		this.empresa = EmpresaFactory.getEmpresa();
-		empresa.setNormasInternas("normasInternas");
 		empresa.setProcedimentoEmCasoDeAcidente("procedimentoEmCasoDeAcidente");
 		empresa.setTermoDeResponsabilidade("termoDeResponsabilidade");
 	}
@@ -85,7 +92,7 @@ public class OrdemDeServicoManagerTest
 	@Test
 	public void montaOrdemDeServicoComIdNulo() {
 		Date dataOS = DateUtil.criarDataMesAno(1, 1, 2016);
-		
+
 		when(colaboradorManager.findComDadosBasicosParaOrdemDeServico(colaborador.getId(), dataOS)).thenReturn(colaborador);
 		when(historicoFuncaoManager.findByFuncaoAndData(colaborador.getFuncao().getId(), dataOS)).thenReturn(colaborador.getFuncao().getHistoricoAtual());
 		when(riscoFuncaoManager.riscosByHistoricoFuncao(colaborador.getFuncao().getHistoricoAtual())).thenReturn(new ArrayList<RiscoFuncao>());

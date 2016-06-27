@@ -125,8 +125,6 @@ public class Empresa extends AbstractModel implements Serializable
     private boolean notificarSomentePeriodosConfigurados;
     
     @Lob
-	private String normasInternas;
-    @Lob
 	private String procedimentoEmCasoDeAcidente;
 	@Lob
 	private String termoDeResponsabilidade;
@@ -681,14 +679,6 @@ public class Empresa extends AbstractModel implements Serializable
 	public void setNotificarSomentePeriodosConfigurados(
 			boolean notificarSomentePeriodosConfigurados) {
 		this.notificarSomentePeriodosConfigurados = notificarSomentePeriodosConfigurados;
-	}
-
-	public String getNormasInternas() {
-		return normasInternas;
-	}
-
-	public void setNormasInternas(String normasInternas) {
-		this.normasInternas = normasInternas;
 	}
 
 	public String getProcedimentoEmCasoDeAcidente() {
