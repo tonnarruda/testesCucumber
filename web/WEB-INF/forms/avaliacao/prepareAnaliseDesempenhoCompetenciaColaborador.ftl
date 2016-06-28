@@ -116,6 +116,12 @@
 		function createListCargosAvaliadores(data)
 		{
 			addChecks('avaliadores',data, 'verificaQtdMarcados()');
+			$("input[name=avaliadores]").each(function(){
+				if($(this).val() == $("#avaliados").val() ){
+					$(this).attr('checked', 'checked');
+					$(this).attr('disabled', 'disabled');
+				}
+			});
 		}
 		
 		function populaOrdensNivelCompetencia()
@@ -161,7 +167,7 @@
 		
 		function verificaQtdMarcados()
 		{
-			qtdColunasAdicionais = 3;
+			qtdColunasAdicionais = 4;
 			$("input[name=avaliadores]:not(:checked)").removeAttr('disabled');
 			
 			if($('#agruparPorCargo').attr("checked")){
@@ -199,9 +205,9 @@
 		
 		function mudaLabelMultCheckBoxAvaliadores(){
 			if($('#agruparPorCargo').attr("checked"))
-				$('#wwlbl_avaliadores > .desc').text('Avaliadores (máx. 3 Cargos Distintos):');
+				$('#wwlbl_avaliadores > .desc').text('Avaliadores (máx. 4 Cargos Distintos):');
 			else
-				$('#wwlbl_avaliadores > .desc').text('Avaliadores (máx. 3 Avaliadores):');
+				$('#wwlbl_avaliadores > .desc').text('Avaliadores (máx. 4 Avaliadores):');
 		}
 		
 	</script>
@@ -220,7 +226,7 @@
 		
 		<div id="paraRealatorioDetalahado">
 			<@ww.checkbox label="Agrupar pelo cargo do avaliador." id="agruparPorCargo" name="agruparPorCargo" labelPosition="left" onchange="verificaQtdMarcados();mudaLabelMultCheckBoxAvaliadores();"/>
-			<@frt.checkListBox label="Avaliadores (máx. 3 Avaliadores)" name="avaliadores" id="avaliadores" list="avaliadoresCheckList" width="600" filtro="true" selectAtivoInativo="true"/>
+			<@frt.checkListBox label="Avaliadores (máx. 4 Avaliadores)" name="avaliadores" id="avaliadores" list="avaliadoresCheckList" width="600" filtro="true" selectAtivoInativo="true"/>
 			Nota mínima considerada em "Média Geral das Competências":</br>
 			<div id="ordensNivelCompetencia"/>
 		</div>

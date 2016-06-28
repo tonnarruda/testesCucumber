@@ -133,7 +133,6 @@ public class AvaliacaoDesempenhoDWR
 		Map<Long, String> checks = new HashMap<Long, String>();
 		Collection<Colaborador> avaliadores = configuracaoNivelCompetenciaColaboradorManager.findCargosAvaliadores(avaliacaoDesempenhoId, avaliadoId);
 		for (Colaborador colaborador : avaliadores) {
-			if(!colaborador.getId().equals(avaliadoId))
 				checks.put(colaborador.getId(), colaborador.getNome() + " (" + colaborador.getCargo().getNome() + ")");
 		}
 		
