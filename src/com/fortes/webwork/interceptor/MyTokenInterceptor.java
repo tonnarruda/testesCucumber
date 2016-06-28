@@ -11,10 +11,12 @@ public class MyTokenInterceptor extends TokenInterceptor
 	protected String doIntercept(ActionInvocation invocation) throws Exception
 	{
 		String token = null;
+		boolean externalLinkResponse = (invocation.getInvocationContext().getParameters().get("externalLinkResponse") != null);
+		
 		if (invocation.getInvocationContext().getParameters().get("internalToken") != null)
 			token = ((String[]) invocation.getInvocationContext().getParameters().get("internalToken"))[0];
-
-		if (SecurityUtil.isTokenValido(token))
+		
+		if (externalLinkResponse || SecurityUtil.isTokenValido(token))
 			return handleValidToken(invocation);
 		else
 			return handleInvalidToken(invocation);
