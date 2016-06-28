@@ -2,9 +2,11 @@
 <!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
 <xwork>
 	<package name="externo" extends="default" namespace="/externo">
+		<default-interceptor-ref name="myDefaultWebStack"/>
+		
 		<action name="prepareLogin" class="com.fortes.rh.web.action.externo.ExternoAction" method="prepareLogin">
 			<result name="success" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
-			<result name="tela_vagas_disponiveis" type="redirect">prepareListAnuncio.action?empresaId=${empresaId}</result>
+			<result name="tela_vagas_disponiveis" type="redirect"><![CDATA[prepareListAnuncio.action?empresaId=${empresaId}]]></result>
 			<result name="erro">/error.jsp</result>
 		</action>
  		<action name="checaLogin" class="com.fortes.rh.web.action.externo.ExternoAction" method="checaLogin">
@@ -23,15 +25,11 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/acesso/recuperaSenhaLogin.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
-		    <result name="invalid.token" type="redirect"><![CDATA[prepareLogin.action?moduloExterno=${moduloExterno}&empresaId=${empresaId}&msg=${msgAlert}]]></result>
 			<result name="success" type="redirect"><![CDATA[prepareLogin.action?msg=0&empresaId=${empresaId}]]></result>
 			<result name="enviarCurriculo" type="redirect"><![CDATA[prepareLogin.action?msg=3&cpf=${candidato.pessoal.cpf}&empresaId=${empresaId}&solicitacao.id=${solicitacao.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-		    <result name="invalid.token" type="redirect"><![CDATA[prepareLogin.action?moduloExterno=${moduloExterno}&empresaId=${empresaId}&msg=${msgAlert}]]></result>
 			<result name="success" type="redirect">prepareListAnuncio.action?msg=1</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoEdit.ftl</result>
 		</action>

@@ -29,7 +29,7 @@
 	
 		<@display.column title="Ações" media="html" class="acao" style="width: 40px;">
 			<!--<a href="javascript: newConfirm('Confirma inclusão na seleção?', function(){window.location='removerTriagem.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}&solicitacao.id=${solicitacao.id}'});"><img border="0" title="Incluir na Seleção" src="<@ww.url includeParams="none" value="/imgs/add.gif"/>"></a> -->
-			<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='delete.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="javascript: newConfirm('Confirma exclusão?', function(){javascript: executeLink('delete.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}');});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column title="Nome" >
 			<a href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}"/>', 580, 750)">
@@ -45,6 +45,7 @@
 		<@display.column property="candidato.dataAtualizacao" title="Últ. Atualização" format="{0,date,dd/MM/yyyy}" />
 		<@display.column property="candidato.origemDescricao" title="Origem" />
 		<@ww.hidden name="solicitacao.id" value="${solicitacao.id}" />
+		<@ww.hidden name="internalToken" />
 	</@display.table>
 	
 	
@@ -52,7 +53,7 @@
 		<!--<button onclick="window.location='../solicitacaoBDS/prepareImportacaoBDS.action?solicitacao.id=${solicitacao.id}'" class="btnImportarbds" accesskey="I"></button>-->
 		<button type="button" onclick="prepareEnviarFormCandSolic();" class="btnInserirSelecionados" accesskey="I"></button>
 		<button type="button" onclick="removerCandidatosDaSolicitacao(${solicitacao.id}, document.formCandSolic);" class="btnExcluirSelecionados" ></button>
-		<button type="button" onclick="window.location='list.action?solicitacao.id=${solicitacao.id}'" class="btnVoltar" accesskey="V"></button>
+		<button type="button" onclick="javascript: executeLink('list.action?solicitacao.id=${solicitacao.id}');" class="btnVoltar" accesskey="V"></button>
 	</div>
 </@ww.form>
 </body>

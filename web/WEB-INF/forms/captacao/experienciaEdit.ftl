@@ -50,7 +50,7 @@
 	<script type='text/javascript'>
 	    function voltarExperiencia()
 	    {
-	    	$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?empresaId=${empresaIdTmp}&internalToken=${internalToken}"/>');
+	    	$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?empresaId=${empresaIdTmp}"/>');
 	    }
 	    
 	    function validarFormExperiencia()

@@ -5,14 +5,14 @@
 <script type='text/javascript'>
     function removeIdioma(id)
     {
-		$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/delete.action?candidatoIdioma.id="/>' + id + '&internalToken=${internalToken}', function (){
+		$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/delete.action?candidatoIdioma.id="/>' + id, function (){
 			target: "#idioma" 
     	});
     }
     
     function prepareUpdateIdioma(id)
     {
-		$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/prepareUpdate.action?candidatoIdioma.id="/>' + id + '&internalToken=${internalToken}', function (){
+		$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/prepareUpdate.action?candidatoIdioma.id="/>' + id, function (){
 		    $("#frmIdioma").ajaxForm({ 
     	   	    target: "#idioma" 
 		    }); 
@@ -21,7 +21,7 @@
     
     function prepareInsertIdioma()
     {
-    	$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/prepareInsert.action?internalToken=${internalToken}"/>', function (){
+    	$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/prepareInsert.action"/>', function (){
 		    $("#frmIdioma").ajaxForm({ 
     	   	    target: "#idioma" 
 		    }); 

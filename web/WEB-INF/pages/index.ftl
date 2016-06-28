@@ -274,7 +274,7 @@
 				Existe uma inconsistência no cadastro de Modelo de Avaliação, foi criado um novo vínculo entre o "Modelo de Avaliação" e "Períodos de Acompanhamento de Experiência".<br>
 				Clique nos "Modelo de Avaliação" abaixo e edite o campo "Períodos de Acompanhamento de Experiência":<br><br>
 				<#list avaliacaos as avaliacao>
-					<a href="avaliacao/modelo/prepareUpdate.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${avaliacao.tipoModeloAvaliacao}&telaInicial=true">${avaliacao.titulo}</a><br>
+					<a href="javascript: executeLink('avaliacao/modelo/prepareUpdate.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${avaliacao.tipoModeloAvaliacao}&telaInicial=true');">${avaliacao.titulo}</a><br>
 				</#list>
 			</p>
 		</div>
@@ -329,7 +329,7 @@
 									</#if>
 									
 									<@display.column title="Ações" style="text-align:center; width: 80px;" media="html">
-										<@frt.link href="#" onclick="newConfirm('${pendenciaAC.msg}', function(){window.location='${pendenciaAC.action}'});" imgTitleDisabled="Você não tem permissão para remover esse ítem." imgTitle="Excluir" imgName="delete.gif" opacity=opacityDisabled disabled=opacityDisabled/>
+										<@frt.link href="#" onclick="newConfirm('${pendenciaAC.msg}', function(){executeLink('${pendenciaAC.action}');});" imgTitleDisabled="Você não tem permissão para remover esse ítem." imgTitle="Excluir" imgName="delete.gif" opacity=opacityDisabled disabled=opacityDisabled/>
 									</@display.column>
 		
 								</#if>

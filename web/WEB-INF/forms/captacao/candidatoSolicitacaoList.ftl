@@ -356,7 +356,7 @@
 			</#if>
 		</@authz.authorize>
 
-		<button onclick="window.location='../solicitacao/list.action'" class="btnVoltar" accesskey="V"></button>
+		<button onclick="javascript: executeLink('../solicitacao/list.action');" class="btnVoltar" accesskey="V"></button>
 	</div>
 	
 	<div style="clear: both;"></div>
@@ -366,7 +366,7 @@
 	<div id="popupImpressao" title="Selecione a avaliação" style="display:none;">
 		<@display.table name="solicitacaoAvaliacaos" id="solicitacaoAvaliacao" class="dados" >
 			<@display.column title="Ações" style="width:30px;text-align:center;">
-				<a href="imprimeRankingAvaliacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.avaliacao.id=${solicitacaoAvaliacao.avaliacao.id}" title="Imprimir"><img src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"/></a>
+				<a href="javascript: executeLink('imprimeRankingAvaliacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.avaliacao.id=${solicitacaoAvaliacao.avaliacao.id}');" title="Imprimir"><img src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"/></a>
 			</@display.column>
 			
 			<@display.column property="avaliacao.titulo" title="Avaliação" />

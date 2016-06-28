@@ -5,7 +5,7 @@
 <script type='text/javascript'>
     function voltarIdioma()
     {
-    	$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action?internalToken=${internalToken}"/>');
+    	$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
     }
 </script>
 

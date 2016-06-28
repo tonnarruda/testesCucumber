@@ -37,7 +37,7 @@
 			<result name="success" type="redirect"><![CDATA[list.action?solicitacao.id=${solicitacao.id}]]></result>
 		</action>
 		<action name="removerTriagem" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="removerTriagem">
-			<result name="success" type="redirect">listTriagem.action?solicitacao.id=${solicitacao.id}</result>
+			<result name="success" type="redirect"><![CDATA[listTriagem.action?internalToken=${internalToken}&solicitacao.id=${solicitacao.id}]]></result>
 		</action>
 		<action name="verHistoricoCandidato" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="verHistoricoCandidato">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/verHistoricoCandidato.ftl</result>

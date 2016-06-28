@@ -114,15 +114,16 @@
 
 	</head>
 	<body>
+		<@ww.hidden  name="internalToken" />
 		<div id="topDiv">
 			<div id="topContent">
 				<#if SESSION_CANDIDATO_ID?exists>
 					<ul>
-						<li><a href="prepareListAnuncio.action">Vagas Abertas</a></li>
-						<li><a href="prepareUpdate.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Editar Currículo</a></li>
-						<li><a href="listDocumentosAnexos.action?moduloExterno=true">Anexar Documentos</a></li>
-						<li><a href="prepareUpdateSenha.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Alterar Senha</a></li>
-						<li><a href="logoutExterno.action?empresaId=${SESSION_EMPRESA}">Sair</a></li>
+						<li><a href="javascript: executeLink('prepareListAnuncio.action');">Vagas Abertas</a></li>
+						<li><a href="javascript: executeLink('prepareUpdate.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}');">Editar Currículo</a></li>
+						<li><a href="javascript: executeLink('listDocumentosAnexos.action?moduloExterno=true');">Anexar Documentos</a></li>
+						<li><a href="javascript: executeLink('prepareUpdateSenha.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}');">Alterar Senha</a></li>
+						<li><a href="javascript: executeLink('logoutExterno.action?empresaId=${SESSION_EMPRESA}');">Sair</a></li>
 					</ul>
 					<div class="saudacao">
 						Bem vindo(a)<br />
@@ -137,4 +138,9 @@
 			${body}
 		</div>
 	</body>
+	<script>
+		$(document).ready(function($){
+			$("input[name='internalToken']").appendTo($('form'));
+		});
+	</script>
 </html>

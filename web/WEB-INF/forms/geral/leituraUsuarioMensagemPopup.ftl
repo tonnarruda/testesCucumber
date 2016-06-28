@@ -144,6 +144,7 @@
 		<@ww.hidden name="usuarioMensagemProximoId" />
 		<@ww.hidden name="usuarioMensagemAnteriorId" />
 		<@ww.hidden name="fromPopup" value="true" />
+		<@ww.hidden name="internalToken" />
 	</@ww.form>
 
 	<#assign btnExcluir="btnExcluir" />

@@ -3,7 +3,7 @@
 		<input type="hidden" name="caixa" value="${tipo}"/>
 		<div class="portlet-header portlet-header-${tipo}">
 			${action.getDescricaoTipo(tipo)} (${action.getTotalNaoLidas(tipo)} não lidas) 
-			<a href="mensagens.action?tipo=${tipo}" class="verTodas">&bull; ver todas</a>
+			<a href="javascript: executeLink('mensagens.action?tipo=${tipo}');" class="verTodas">&bull; ver todas</a>
 		</div>
 		<div class="portlet-content">
 			<table width="100%" class="dados" style="border:none;">
@@ -28,7 +28,7 @@
 							<td width="40" align="center">
 								<#if msg.usuarioMensagemId?exists>
 									<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?internalToken=${internalToken}&amp;usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}&amp;tipo=${tipo}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="<@ww.url value="/imgs/olho.jpg"/>"/> </a>
-									<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?internalToken=${internalToken}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"/></a>
+									<a href="javascript: newConfirm('Confirma exclusão?', function(){executeLink('geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"/></a>
 								</#if>
 							</td>
 							<td>
@@ -38,7 +38,7 @@
 								
 								<div class="tituloMensagem">
 									<#if msg.link?exists && msg.link != "">
-										<a href="${msg.link}" <#if msg.usuarioMensagemId?exists> onclick="marcarMensagemLida(${msg.usuarioMensagemId});" </#if> style="text-decoration:underline; ${style}" <#if msg.anexo>download title="Disponível apenas durante o período de realização do curso."<#else>title="${msg.textoAbreviado}"</#if>>
+										<a href="javascript: executeLink('${msg.link}');" <#if msg.usuarioMensagemId?exists> onclick="marcarMensagemLida(${msg.usuarioMensagemId});" </#if> style="text-decoration:underline; ${style}" <#if msg.anexo>download title="Disponível apenas durante o período de realização do curso."<#else>title="${msg.textoAbreviado}"</#if>>
 											${msg.textoAbreviado}
 										</a>
 									<#else>

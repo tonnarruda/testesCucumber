@@ -8,6 +8,8 @@
 
 <xwork>
 	<package name="Experiencia" extends="default" namespace="/captacao/experiencia">
+		<default-interceptor-ref name="defaultListStack"/>
+		
 		<action name="list" class="com.fortes.rh.web.action.captacao.ExperienciaListAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/experienciaList.ftl</result>
 		</action>

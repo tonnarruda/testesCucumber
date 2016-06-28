@@ -51,8 +51,8 @@
 								</#if>
 								<br /><br />
 								<span class="linkCadastro">
-									<a href="prepareInsert.action?moduloExterno=true&empresaId=${empresaId}">Quero me cadastrar</a><br />
-									<a href="prepareListAnuncio.action?empresaId=${empresaId}">Visualizar oportunidades</a><br />
+									<a href="javascript: executeLink('prepareInsert.action?moduloExterno=true&empresaId=${empresaId}');">Quero me cadastrar</a><br />
+									<a href="javascript: executeLink('prepareListAnuncio.action?empresaId=${empresaId}');">Visualizar oportunidades</a><br />
 								</span>	
 							</td>
 						</tr>
@@ -85,7 +85,7 @@
 						<tr>
 							<td>
 								<span class="linkCadastro">
-									<a href="prepareRecuperaSenha.action?empresaId=${empresaId}" class="linkbranco">Esqueci minha senha</a><br />
+									<a href="javascript: executeLink('prepareRecuperaSenha.action?empresaId=${empresaId}');" class="linkbranco">Esqueci minha senha</a><br />
 								</span>
 							</td>
 						</tr>
