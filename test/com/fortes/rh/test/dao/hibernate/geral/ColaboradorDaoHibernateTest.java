@@ -5770,8 +5770,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void testDependenciasApagarColaboradorNoImportador()
 	{
 		String qtdTabelasComColaborador = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col where col.column_name = 'colaborador_id' and col.table_schema = 'public' and is_updatable = 'YES';");
-		//se esse quebrar, provavelmente tem que inserir uma linha de delete no Importador colaboradorJDBC.java método removerColaborador();
-		assertEquals("25", qtdTabelasComColaborador);
+		/**se esse quebrar, provavelmente tem que inserir uma linha de delete no Importador colaboradorJDBC.java método removerColaborador(); **/
+		assertEquals("26", qtdTabelasComColaborador);
 	}
 
 	public void testAtualizaSolicitacaoDesligamento() 

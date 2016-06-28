@@ -44,6 +44,10 @@
 			</#list>
 		</#if>
 
+		$('.tooltipHelp').qtip({
+			content: 'Os dados informados neste campo serão utilizados no cadastro da Ordem de Serviço.'
+		});
+		
 		$('#md').click(function() {
 			var checked = $(this).attr('checked');
 			$('input[name="riscoChecks"]').each(function() { $(this).attr('checked', checked); habilitarDesabilitarCamposLinha(this); });

@@ -4,10 +4,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.sesmt.OrdemDeServicoDao;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -15,6 +18,7 @@ import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.OrdemDeServico;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
+import com.fortes.rh.util.DateUtil;
 
 public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico, OrdemDeServicoDao> implements OrdemDeServicoManager
 {
@@ -26,6 +30,15 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 	
 	public OrdemDeServico findOrdemServicoProjection(Long id){
 		return getDao().findOrdemServicoProjection(id);
+	}
+	
+	public void auditaImpressao(OrdemDeServico ordemDeServico, Usuario usuarioLogado) {
+		Logger logger = Logger.getLogger(OrdemDeServico.class);
+		logger.info("Auditoria da impressão da Ordem de Serviço");
+		logger.info("Colaborador: " + ordemDeServico.getNomeColaborador());
+		logger.info("Empresa: " + ordemDeServico.getNomeEmpresa());
+		logger.info("Data da impressão: " + DateUtil.formataDiaMesAno(new Date()));
+		logger.info("Usuário que execultou a impressão: " + usuarioLogado.getNome());
 	}
 	
 	public OrdemDeServico montaOrdemDeServico(Long colaboradorId, Empresa empresa, Date dataOdemDeServico) {

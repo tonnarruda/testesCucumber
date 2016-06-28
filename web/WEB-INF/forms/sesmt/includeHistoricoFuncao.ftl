@@ -2,8 +2,15 @@
 			<@ww.textarea label="Descrição das Atividades Executadas pela Função" name="historicoFuncao.descricao" id="descricao" cssClass="inputNome"  required="true"/>
 			<@frt.checkListBox label="Exames Obrigatórios (SESMT)" name="examesChecked" id="exame" list="examesCheckList" filtro="true"/>
 			<@frt.checkListBox label="EPIs (PPRA)" name="episChecked" id="epi" list="episCheckList" filtro="true"/>
-			<@frt.checkListBox label="Treinamentos (Ordem de Serviço)" name="cursosChecked" id="curso" list="cursosCheckList" filtro="true"/>
-			<@ww.textarea label="Normas Internas (Ordem de Serviço)" name="historicoFuncao.normasInternas" id="normasInternas"/>
+			<label>Treinamentos (Ordem de Serviço):  
+				<img class="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-bottom: -3px;" />
+			</label>
+			<@frt.checkListBox name="cursosChecked" id="curso" list="cursosCheckList" filtro="true"/>
+			
+			<label>Normas Internas (Ordem de Serviço):  
+				<img class="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-bottom: -3px;" />
+			</label>
+			<@ww.textarea name="historicoFuncao.normasInternas" id="normasInternas" />
 			
 			<#assign i = 0/>
 			Riscos existentes:<br>

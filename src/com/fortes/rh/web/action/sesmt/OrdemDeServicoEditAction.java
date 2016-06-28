@@ -163,6 +163,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 			ordemDeServico.setImpressa(true);
 			ordemDeServicoManager.update(ordemDeServico);
 		}
+		ordemDeServicoManager.auditaImpressao(ordemDeServico, getUsuarioLogado());
 		
    	   	parametros = new HashMap<String, Object>();
     	parametros.put("LOGO", ArquivoUtil.getPathLogoEmpresa() + getEmpresaSistema().getLogoUrl());

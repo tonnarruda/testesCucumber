@@ -64,6 +64,10 @@
 				style: { width: 400 }
 			});
 			
+			$('#tooltipHelpOrdemDeServico').qtip({
+				content: 'Os dados informados a seguir serão utilizados no cadastro da Ordem de Serviço.'
+			});
+			
 			$('#nomeHomonimoEmpresa').change(function() {
 				if ($(this).is(":checked"))
 					$('#nomeHomonimo').attr("disabled", true);
@@ -315,7 +319,7 @@
 					<@ww.checkbox label="Exibir logo da empresa ao emitir PPRA e LTCAT" name="empresa.exibirLogoEmpresaPpraLtcat" id="exibirLogoEmpresaPpraLtcat" labelPosition="right" />
 					
 					<@ww.div cssClass="ordemDeServico">
-						<h2>Ordem de Serviço</h2>	
+						<h2>Ordem de Serviço <img id="tooltipHelpOrdemDeServico" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-bottom: -3px;" /> </h2>	
 							<ul>
 								<@ww.textarea label="Procedimentos em caso de acidente de trabalho" name="empresa.procedimentoEmCasoDeAcidente" id="procedimentoEmCasoDeAcidente"/>
 								<@ww.textarea label="Termo de Responsabilidade" name="empresa.termoDeResponsabilidade" id="termoDeResponsabilidade"/>
