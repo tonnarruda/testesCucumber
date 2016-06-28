@@ -17,7 +17,7 @@ public class RelatorioAnaliseDesempenhoColaborador
 	private Collection<ResultadoCompetenciaColaborador> resultadosCompetenciaColaborador = new ArrayList<ResultadoCompetenciaColaborador>();
 	@SuppressWarnings("unused")
 	private Collection<ResultadoCompetencia> resultadoCompetenciaFinal = new ArrayList<ResultadoCompetencia>();
-	private Collection<NivelCompetencia> niveisCompeteencias = new ArrayList<NivelCompetencia>();
+	private Collection<NivelCompetencia> niveisCompetencias = new ArrayList<NivelCompetencia>();
 	
 	public static String AUTOAVALIACAO = "Auto-Avaliação";
 	public static String OUTROSAVALIADORES = "Outros Avaliadores";
@@ -88,14 +88,14 @@ public class RelatorioAnaliseDesempenhoColaborador
 		
 		return resultadoCompetenciaRetorno;
 	}
-	public Collection<NivelCompetencia> getNiveisCompeteencias() {
-		return niveisCompeteencias;
-	}
-	public void setNiveisCompeteencias(
-			Collection<NivelCompetencia> niveisCompeteencias) {
-		this.niveisCompeteencias = niveisCompeteencias;
-	}
 	public Integer getTamanhoCollectionNiveisCompeteencias(){
-		return this.niveisCompeteencias.size(); 
+		return this.niveisCompetencias.size(); 
+	}
+	public Collection<NivelCompetencia> getNiveisCompetencias() {
+		return niveisCompetencias;
+	}
+	public void setNiveisCompetencias(
+			Collection<NivelCompetencia> niveisCompetencias) {
+		this.niveisCompetencias = niveisCompetencias;
 	} 
 }

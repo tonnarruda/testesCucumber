@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Competencia" pageWidth="275" pageHeight="200" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="275" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="2496fb03-abc2-4584-871b-6b027461fe56">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Competencia" pageWidth="275" pageHeight="180" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="275" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="2496fb03-abc2-4584-871b-6b027461fe56">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5394743546921197"/>
@@ -43,10 +43,10 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="200" splitType="Stretch">
+		<band height="180" splitType="Stretch">
 			<barChart>
 				<chart isShowLegend="false">
-					<reportElement x="0" y="0" width="275" height="200" uuid="2d290f93-a036-47a4-83bb-bc85f466c7f4"/>
+					<reportElement x="0" y="0" width="275" height="180" uuid="2d290f93-a036-47a4-83bb-bc85f466c7f4"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend position="Bottom"/>

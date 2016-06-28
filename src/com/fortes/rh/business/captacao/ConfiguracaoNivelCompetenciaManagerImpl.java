@@ -700,10 +700,17 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 
 	public RelatorioAnaliseDesempenhoColaborador montaRelatorioAnaliseDesempenhoColaborador(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds, Integer notaMinimaMediaGeralCompetencia, boolean agruparPorCargo) {
 		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = new RelatorioAnaliseDesempenhoColaborador();
-		relatorioAnaliseDesempenhoColaborador.setNiveisCompeteencias(nivelCompetenciaManager.findNiveisCompetenciaByAvDesempenho(avaliacaoDesempenhoId));
-		if(relatorioAnaliseDesempenhoColaborador.getNiveisCompeteencias().size() == 0)	return null;
+		relatorioAnaliseDesempenhoColaborador.setNiveisCompetencias(nivelCompetenciaManager.findNiveisCompetenciaByAvDesempenho(avaliacaoDesempenhoId));
+		
+		if(relatorioAnaliseDesempenhoColaborador.getNiveisCompetencias().size() == 0)	
+			return null;
+		
 		relatorioAnaliseDesempenhoColaborador.setNotaMinimaMediaGeralCompetencia(notaMinimaMediaGeralCompetencia);
 		relatorioAnaliseDesempenhoColaborador.setResultadosCompetenciaColaborador(montaRelatorioResultadoCompetencia(avaliacaoDesempenhoId, avaliadoId, avaliadoresIds, agruparPorCargo));
+		
+		if(relatorioAnaliseDesempenhoColaborador.getResultadosCompetenciaColaborador().size() == 0)	
+			return null;
+		
 		relatorioAnaliseDesempenhoColaborador.setValorMaximoGrafico(nivelCompetenciaManager.getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId));
 		
 		return relatorioAnaliseDesempenhoColaborador;
