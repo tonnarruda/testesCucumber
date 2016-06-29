@@ -1992,15 +1992,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCaseManager<H
 	public void testUpdateSituacao() throws Exception
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
 		historicoColaborador.setColaborador(colaborador);
-
-		String empresaCodigoAC = "001";
-		TSituacao situacao = new TSituacao();
-		situacao.setTipoSalario("C");
-		situacao.setId(1);
-		situacao.setEmpresaCodigoAC(empresaCodigoAC);
+		TSituacao situacao = montaTSituacao();
 		
 		historicoColaboradorDao.expects(once()).method("findByAC").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(historicoColaborador));
 		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Estabelecimento()));
@@ -2011,6 +2005,78 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCaseManager<H
 		HistoricoColaborador retorno = manager.updateSituacao(situacao);
 
 		assertEquals(historicoColaborador.getId(), retorno.getId());
+	}
+	
+	public void testUpdateSituacaoComFaixaNulo() throws Exception
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setColaborador(colaborador);
+		TSituacao situacao = montaTSituacao();
+		
+		historicoColaboradorDao.expects(once()).method("findByAC").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(historicoColaborador));
+		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Estabelecimento()));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new AreaOrganizacional()));
+		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+
+		String msg = "";
+		try {
+			manager.updateSituacao(situacao);
+		} catch (Exception e) {
+			msg = e.getMessage();
+		}
+
+		assertEquals(msg, "Não foi possível realizar a operação. Faixa salarial não existe no RH.");
+	}
+	
+	public void testUpdateSituacaoComAreaNula() throws Exception
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setColaborador(colaborador);
+		TSituacao situacao = montaTSituacao();
+		
+		historicoColaboradorDao.expects(once()).method("findByAC").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(historicoColaborador));
+		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Estabelecimento()));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+
+		String msg = "";
+		try {
+			manager.updateSituacao(situacao);
+		} catch (Exception e) {
+			msg = e.getMessage();
+		}
+
+		assertEquals(msg, "Não foi possível realizar a operação. Área organizacional não existe no RH.");
+	}
+	
+	public void testUpdateSituacaoComEstabelecimentoNula() throws Exception
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setColaborador(colaborador);
+		TSituacao situacao = montaTSituacao();
+		
+		historicoColaboradorDao.expects(once()).method("findByAC").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(historicoColaborador));
+		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+
+		String msg = "";
+		try {
+			manager.updateSituacao(situacao);
+		} catch (Exception e) {
+			msg = e.getMessage();
+		}
+
+		assertEquals(msg, "Não foi possível realizar a operação. Estabelecimento não existe no RH.");
+	}
+
+	private TSituacao montaTSituacao() {
+		String empresaCodigoAC = "001";
+		TSituacao situacao = new TSituacao();
+		situacao.setTipoSalario("C");
+		situacao.setId(1);
+		situacao.setEmpresaCodigoAC(empresaCodigoAC);
+		return situacao;
 	}
 
 	public void testPrepareSituacao() throws Exception

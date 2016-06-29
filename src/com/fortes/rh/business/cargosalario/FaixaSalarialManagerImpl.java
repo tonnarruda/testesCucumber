@@ -258,7 +258,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	{
 		FaixaSalarial faixaSalarial = getDao().findFaixaSalarialByCodigoAc(faixaCodigoAC, empresaCodigoAC, grupoAC);
 		if(faixaSalarial == null || faixaSalarial.getId() == null)
-			throw new Exception("Faixa não encontrada, codigoAC: " + faixaCodigoAC + " empresaCodigoAC: " + empresaCodigoAC + " grupoAC: " + grupoAC);
+			throw new Exception("Não foi possível realizar a operação. Faixa salarial não existe no RH., codigoAC: " + faixaCodigoAC + " empresaCodigoAC: " + empresaCodigoAC + " grupoAC: " + grupoAC);
 		
 		return faixaSalarial;
 
