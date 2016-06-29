@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.363636363636371"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="7"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -25,6 +25,7 @@
 	<field name="avaliado.dataAdmissaoFormatada" class="java.lang.String"/>
 	<field name="niveisCompetencias" class="java.lang.Object"/>
 	<field name="tamanhoCollectionNiveisCompeteencias" class="java.lang.Integer"/>
+	<field name="legenda" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
@@ -118,10 +119,15 @@
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band splitType="Stretch"/>
+		<band height="86" splitType="Stretch">
+			<textField>
+				<reportElement x="24" y="5" width="451" height="81" uuid="8ebc513b-4249-4ca3-bb03-9694578ceef3"/>
+				<textFieldExpression><![CDATA[$F{legenda}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
-		<band height="640" splitType="Stretch">
+		<band height="403" splitType="Stretch">
 			<subreport isUsingCache="true">
 				<reportElement key="subreport-1" x="2" y="0" width="560" height="197" uuid="87cb8989-4082-4f7a-8443-0c09990abe3b"/>
 				<subreportParameter name="SUBREPORT_DIR">

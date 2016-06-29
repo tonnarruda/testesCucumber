@@ -712,12 +712,13 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			return null;
 		
 		relatorioAnaliseDesempenhoColaborador.setValorMaximoGrafico(nivelCompetenciaManager.getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId));
+		relatorioAnaliseDesempenhoColaborador.montaLegenda();
 		
 		return relatorioAnaliseDesempenhoColaborador;
 	}
 	
 	private LinkedList<ResultadoCompetenciaColaborador> montaRelatorioResultadoCompetencia(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds, boolean agruparPorCargo) {
-		LinkedList<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findByAvaliacaaDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId);
+		LinkedList<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findByAvaliacaaDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId, agruparPorCargo);
 		LinkedList<ResultadoCompetenciaColaborador> resultadoCompetenciaColaboradores = new LinkedList<ResultadoCompetenciaColaborador>();
 		
 		Map<String, LinkedList<ConfiguracaoNivelCompetencia>> cncAbrupadoPorCompetencia = new HashMap<String, LinkedList<ConfiguracaoNivelCompetencia>>();

@@ -2,8 +2,11 @@ package com.fortes.rh.model.avaliacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
@@ -18,6 +21,7 @@ public class RelatorioAnaliseDesempenhoColaborador
 	@SuppressWarnings("unused")
 	private Collection<ResultadoCompetencia> resultadoCompetenciaFinal = new ArrayList<ResultadoCompetencia>();
 	private Collection<NivelCompetencia> niveisCompetencias = new ArrayList<NivelCompetencia>();
+	LinkedHashMap<String, Integer> legendaMap = new LinkedHashMap<String, Integer>();
 	
 	public static String AUTOAVALIACAO = "Auto-Avaliação";
 	public static String OUTROSAVALIADORES = "Outros Avaliadores";
@@ -80,11 +84,11 @@ public class RelatorioAnaliseDesempenhoColaborador
 		
 		for (String nome : mapResultadoCompetenciaRetorno.keySet()) {
 			Double percentual = (mapResultadoCompetenciaRetorno.get(nome).doubleValue() / resultadosCompetenciaColaborador.size()) * 100;
-			resultadoCompetenciaRetorno.add(new ResultadoCompetencia(nome, Double.valueOf(new DecimalFormat("#.##").format(percentual))));
+			resultadoCompetenciaRetorno.add(new ResultadoCompetencia(legendaMap.get(nome), nome, Double.valueOf(new DecimalFormat("#.##").format(percentual))));
 		}
 		
 		Double percentual = (acimaDaNotaMinimaMediaGeral.doubleValue()/totalDeResultados) * 100;
-		resultadoCompetenciaRetorno.add(new ResultadoCompetencia(MEDIAGERAL, Double.valueOf(new DecimalFormat("#.##").format(percentual))));
+		resultadoCompetenciaRetorno.add(new ResultadoCompetencia(legendaMap.get(MEDIA), MEDIAGERAL, Double.valueOf(new DecimalFormat("#.##").format(percentual))));
 		
 		return resultadoCompetenciaRetorno;
 	}
@@ -94,8 +98,58 @@ public class RelatorioAnaliseDesempenhoColaborador
 	public Collection<NivelCompetencia> getNiveisCompetencias() {
 		return niveisCompetencias;
 	}
-	public void setNiveisCompetencias(
-			Collection<NivelCompetencia> niveisCompetencias) {
+	public void setNiveisCompetencias(Collection<NivelCompetencia> niveisCompetencias) {
 		this.niveisCompetencias = niveisCompetencias;
-	} 
+	}
+	
+	private static Comparator<String> ALPHABETICAL_ORDER = new Comparator<String>() {
+	    public int compare(String str1, String str2) {
+	        int res = String.CASE_INSENSITIVE_ORDER.compare(str1, str2);
+	        if (res == 0) {
+	            res = str1.compareTo(str2);
+	        }
+	        return res;
+	    }
+	};
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private Collection<String> nomesDistinctsOrdenados() {
+		Collection<String> nomes = new ArrayList<String>();
+		for (ResultadoCompetenciaColaborador resultadoCompetenciaColaborador : resultadosCompetenciaColaborador) {
+			for (ResultadoCompetencia resultadoCompetencia : resultadoCompetenciaColaborador.getResultadoCompetencias()) {
+				if(!resultadoCompetencia.getNome().equals(AUTOAVALIACAO) && !resultadoCompetencia.getNome().equals(MEDIA) 
+						&& !resultadoCompetencia.getNome().equals(OUTROSAVALIADORES) && !nomes.contains(resultadoCompetencia.getNome()))
+					nomes.add(resultadoCompetencia.getNome());
+			}
+		}
+		Collections.sort((List) nomes, ALPHABETICAL_ORDER);
+		return nomes;
+	}
+	
+	public void montaLegenda(){
+		Collection<String> nomes = nomesDistinctsOrdenados();
+		Integer contador = 1;
+
+		legendaMap.put(AUTOAVALIACAO, contador++);
+		for (String nome : nomes) {
+			if(!legendaMap.containsKey(nome))
+				legendaMap.put(nome, contador++);
+		}
+		legendaMap.put(OUTROSAVALIADORES, contador++);
+		legendaMap.put(MEDIA, contador++);
+		
+		for (ResultadoCompetenciaColaborador resultadoCompetenciaColaborador : resultadosCompetenciaColaborador) {
+			for (ResultadoCompetencia resultadoCompetencia : resultadoCompetenciaColaborador.getResultadoCompetencias()) {
+				resultadoCompetencia.setIdentificador(legendaMap.get(resultadoCompetencia.getNome()));
+			}
+		}
+	}
+	
+	public String getLegenda(){
+		String retorno = "";
+		for(String nome : legendaMap.keySet()){
+			retorno += legendaMap.get(nome) + " - " + nome + "\n";
+		}
+		return retorno;
+	}
 }

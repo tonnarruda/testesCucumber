@@ -41,5 +41,5 @@ public interface ConfiguracaoNivelCompetenciaDao extends GenericDao<Configuracao
 	void removeBySolicitacaoId(Long solicitacaoId);
 	Collection<ConfiguracaoNivelCompetencia> findConfiguracaoNivelCompetenciaCandidato(Long configuracaoNivelCompetenciaCandidatoId);
 	Collection<ConfiguracaoNivelCompetencia> findCompetenciasAndPesos(Long avaliacaoDesempenhoId, Long avaliadoId);
-	LinkedList<ConfiguracaoNivelCompetencia> findByAvaliacaaDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId);
+	LinkedList<ConfiguracaoNivelCompetencia> findByAvaliacaaDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId, boolean agruparPorCargo);
 }

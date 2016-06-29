@@ -744,7 +744,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return lista;
 	}
 
-	public LinkedList<ConfiguracaoNivelCompetencia> findByAvaliacaaDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId) {
+	public LinkedList<ConfiguracaoNivelCompetencia> findByAvaliacaaDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId, boolean agruparPorCargo) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select distinct c.id as colabId, c.nome as colabNome, comp.id as compId, comp.nome as compNome, comp.tipo as compTipo, nc.id as ncId, nc.descricao as ncDescricao, chn.ordem as ncOrdem, cg.id as cgId, cg.nome as cgNome ");
 		sql.append("from configuracaonivelcompetencia cnc ");
@@ -762,7 +762,11 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("where cncc.colaborador_id = :avaliadoId ");
 		sql.append("and cq.avaliacaodesempenho_id = :avaliacaoDesempenhoId ");
 		sql.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2 where hc2.colaborador_id = hc.colaborador_id and hc2.status = :status) ");
-		sql.append("order by comp.nome, cg.nome, c.nome ");
+		
+		if(agruparPorCargo)
+			sql.append("order by comp.nome, cg.nome, c.nome ");
+		else
+			sql.append("order by comp.nome, c.nome, cg.nome ");
 
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("avaliadoId", avaliadoId);
