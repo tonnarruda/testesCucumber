@@ -50,6 +50,9 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		CollectionUtil<ColaboradorAvaliacaoPratica> colectionUtil = new CollectionUtil<ColaboradorAvaliacaoPratica>();
 		
 		Collection<ColaboradorCertificacao> colaboradoresCertificacoes = getDao().colaboradoresAprovadosEmTodosOsCursosDaCertificacao(certificacaoId);
+		if(colaboradoresCertificacoes == null || colaboradoresCertificacoes.size() == 0)
+			return colaboradoresCertificacoes;
+		
 		Long[] colaboradoresIdsParticipantes = new CollectionUtil<ColaboradorCertificacao>().convertCollectionToArrayIds(colaboradoresCertificacoes, "getColaboradorId");
 		Map<Long, Collection<ColaboradorAvaliacaoPratica>> mapColaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacaoId, colaboradoresIdsParticipantes);
 		

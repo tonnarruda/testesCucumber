@@ -191,77 +191,79 @@
 		<@ww.form name="form" id="form" action="insertOrUpdateLote.action" method="POST">
 			<@ww.hidden name="certificacao.id" value="${certificacao.id}"/>
 			<@ww.hidden name="avaliacaoPratica.id" value="${avaliacaoPratica.id}"/>
-			
-			<#assign i = 0/>		
-			
-			<@display.table name="colaboradorCertificacaos" id="colabCertificacao" class="dados">
-				<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;" id="tituloTabelaAP" >Colaboradores que participam da certificação e estão aprovados em seus cursos</div> </@display.caption>
-			
-				<#if colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao.id?exists>
-					<#assign colaboradorCertificacaoId = "${colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao.id}"/>
-				<#else>
-					<#assign colaboradorCertificacaoId = ""/>
-				</#if>
-				
-				<#if colabCertificacao.colaborador?exists && colabCertificacao.colaborador.id?exists>
-					<#assign colaboradorId = "${colabCertificacao.colaborador.id}"/>
-				<#else>
-					<#assign colaboradorId = ""/>
-				</#if>
-	
-				<#if colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.nota?exists>
-					<#assign colaboradorAvaliacaoPraticaNota = "${colabCertificacao.colaboradorAvaliacaoPraticaAtual.nota}"/>
-				<#else>
-					<#assign colaboradorAvaliacaoPraticaNota = ""/>
-				</#if>
-				
-				<#if colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.data?exists>
-					<#assign colaboradorAvaliacaoPraticaData = "${colabCertificacao.colaboradorAvaliacaoPraticaAtual.data?date}"/>
-				<#else>
-					<#assign colaboradorAvaliacaoPraticaData = "${hoje?date}"/>
-				</#if>
-				
-				<@display.column property="colaborador.nome" title="Nome do Colaborador" style="width: 500px;"/>
-					
-				<@display.column title="Avaliações Certificadas Respondidas em" style="width: 180px;text-align: center;height: 30px !important">
-					<#if (!colabCertificacao.colaboradoresAvaliacoesPraticas?exists) || (colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao.id?exists)>
-						<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" cssStyle="width: 100px;" headerKey="" headerValue="Nova nota" onchange="verificaCertificacao(${i}, this.value);ajustaFormSubmit(${i});"/>
-					<#else>
-						<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" cssStyle="width: 100px;" onchange="verificaCertificacao(${i}, this.value);ajustaFormSubmit(${i});"/>
-					</#if>
-				</@display.column>
-					
-				<#if colabCertificacao.id?exists && (colabCertificacao.ultimaCertificacao?exists && !colabCertificacao.ultimaCertificacao)>
-					<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
-						${colaboradorAvaliacaoPraticaData}
-					</@display.column>
-
-					<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
-						${colaboradorAvaliacaoPraticaNota}
-					</@display.column>
-				<#else>						
-					<@display.column title="Realizada em" style="width: 180px;text-align: center;height: 30px !important">
-						<@ww.datepicker id="data-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple" onchange="onKeyPressData(${i});ajustaFormSubmit(${i});" onblur="onKeyPressData(${i});ajustaFormSubmit(${i});" /> 
-						<@ww.hidden name="colaboradorCertificacaos[${i}].id" id="colaboradorCertificacaoId-${i}" value="${colaboradorCertificacaoId}"/>
-						<@ww.hidden name="colaboradorCertificacaos[${i}].ultimaCertificacao" id="ultimaCertificacao-${i}" value="true"/>
-						<@ww.hidden name="colaboradorCertificacaos[${i}].colaborador.id" id="colaboradorId-${i}" value="${colaboradorId}"/>
-					</@display.column>
-					<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
-						<@ww.textfield id="nota-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeyup = "ajustaFormSubmit(${i});return(somenteNumeros(event,'.,,'));" liClass="liLeft"/>
-						<a href="#" onclick="apagarNota(${i})"><img id="excluir-${i}" border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
-					</@display.column>
-				</#if>
-				
-				<#assign i = i + 1/>
-			</@display.table>
-			
 			<#if colaboradorCertificacaos?exists && (0 < colaboradorCertificacaos?size)>
+				<#assign i = 0/>		
+				<@display.table name="colaboradorCertificacaos" id="colabCertificacao" class="dados">
+					<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;" id="tituloTabelaAP" >Colaboradores que participam da certificação e estão aprovados em seus cursos</div> </@display.caption>
+				
+					<#if colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao.id?exists>
+						<#assign colaboradorCertificacaoId = "${colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao.id}"/>
+					<#else>
+						<#assign colaboradorCertificacaoId = ""/>
+					</#if>
+					
+					<#if colabCertificacao.colaborador?exists && colabCertificacao.colaborador.id?exists>
+						<#assign colaboradorId = "${colabCertificacao.colaborador.id}"/>
+					<#else>
+						<#assign colaboradorId = ""/>
+					</#if>
+		
+					<#if colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.nota?exists>
+						<#assign colaboradorAvaliacaoPraticaNota = "${colabCertificacao.colaboradorAvaliacaoPraticaAtual.nota}"/>
+					<#else>
+						<#assign colaboradorAvaliacaoPraticaNota = ""/>
+					</#if>
+					
+					<#if colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.data?exists>
+						<#assign colaboradorAvaliacaoPraticaData = "${colabCertificacao.colaboradorAvaliacaoPraticaAtual.data?date}"/>
+					<#else>
+						<#assign colaboradorAvaliacaoPraticaData = "${hoje?date}"/>
+					</#if>
+					
+					<@display.column property="colaborador.nome" title="Nome do Colaborador" style="width: 500px;"/>
+						
+					<@display.column title="Avaliações Certificadas Respondidas em" style="width: 180px;text-align: center;height: 30px !important">
+						<#if (!colabCertificacao.colaboradoresAvaliacoesPraticas?exists) || (colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao.id?exists)>
+							<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" cssStyle="width: 100px;" headerKey="" headerValue="Nova nota" onchange="verificaCertificacao(${i}, this.value);ajustaFormSubmit(${i});"/>
+						<#else>
+							<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" cssStyle="width: 100px;" onchange="verificaCertificacao(${i}, this.value);ajustaFormSubmit(${i});"/>
+						</#if>
+					</@display.column>
+						
+					<#if colabCertificacao.id?exists && (colabCertificacao.ultimaCertificacao?exists && !colabCertificacao.ultimaCertificacao)>
+						<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
+							${colaboradorAvaliacaoPraticaData}
+						</@display.column>
+	
+						<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
+							${colaboradorAvaliacaoPraticaNota}
+						</@display.column>
+					<#else>						
+						<@display.column title="Realizada em" style="width: 180px;text-align: center;height: 30px !important">
+							<@ww.datepicker id="data-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple" onchange="onKeyPressData(${i});ajustaFormSubmit(${i});" onblur="onKeyPressData(${i});ajustaFormSubmit(${i});" /> 
+							<@ww.hidden name="colaboradorCertificacaos[${i}].id" id="colaboradorCertificacaoId-${i}" value="${colaboradorCertificacaoId}"/>
+							<@ww.hidden name="colaboradorCertificacaos[${i}].ultimaCertificacao" id="ultimaCertificacao-${i}" value="true"/>
+							<@ww.hidden name="colaboradorCertificacaos[${i}].colaborador.id" id="colaboradorId-${i}" value="${colaboradorId}"/>
+						</@display.column>
+						<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
+							<@ww.textfield id="nota-${i}" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeyup = "ajustaFormSubmit(${i});return(somenteNumeros(event,'.,,'));" liClass="liLeft"/>
+							<a href="#" onclick="apagarNota(${i})"><img id="excluir-${i}" border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+						</@display.column>
+					</#if>
+					
+					<#assign i = i + 1/>
+				</@display.table>
+			
 				<div class="buttonGroup">
 					<button type="button" class="btnGravar" onclick="submeter('insertOrUpdateLote.action');"></button>
 				</div>
+			<#else>	
+				<div class="info">
+					<ul>
+						<li>Não existem colaboradores participantes nessa certificação</li>
+					</ul>
+				</div>
 			</#if>
-			
-
 		</@ww.form>
 	</#if>	
 </body>
