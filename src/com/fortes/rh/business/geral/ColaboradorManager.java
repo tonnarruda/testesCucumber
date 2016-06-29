@@ -140,7 +140,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void migrarBairro(String bairro, String bairroDestino);
 	public Integer getCountAtivosEstabelecimento(Long estabelecimentoId);
 	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao, Long notUsuarioId);
-	public void validaQtdCadastros() throws Exception;
+	public void validaQtdCadastros(Long empresaId) throws Exception;
 	public Collection<String> findEmailsDeColaboradoresByPerfis(Collection<Perfil> perfis, Long empresaId);
 	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa, Long periodoExperienciaId) throws Exception;
 	public Collection<Colaborador> findAdmitidos(Long[] empresaIds, String vinculo, Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos) throws ColecaoVaziaException, Exception;

@@ -5030,11 +5030,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 	
-	public int countColaboradoresComHistoricos(){
+	public int countColaboradoresComHistoricos(Long empresaId){
 		StringBuilder hql = new StringBuilder();
-		hql.append("select count( c.id ) from Colaborador c where c.desligado = false and c.id in (select hc.colaborador.id from HistoricoColaborador hc )");
+		hql.append("select count( c.id ) from Colaborador c where c.desligado = false and c.id in (select hc.colaborador.id from HistoricoColaborador hc ) ");
 		
+		if(empresaId != null)
+			hql.append("and c.empresa.id = :empresaId");
+			
 		Query query = getSession().createQuery(hql.toString());
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
 		
 		return (Integer) query.uniqueResult();
 	}

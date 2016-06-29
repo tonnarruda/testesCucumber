@@ -1805,17 +1805,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByAreaOrganizacionalEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, situacao, notUsuarioId);
 	}
 
-	public void validaQtdCadastros() throws Exception
+	public void validaQtdCadastros(Long empresaId) throws Exception
 	{
 		//TODO remprot
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		if ( parametrosDoSistema.isVersaoAcademica() ) {
-			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos();
+			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos(empresaId);
 			if ( qtdColaboradorNoBanco >= 10 ) {
-				throw new FortesException("Versão acadêmica, só é permitido cadastrar 10 Colaboradores");
+				throw new FortesException("Versão acadêmica, só é permitido 10 colaboradores ativos por empresa.");
 			}
 		} else if (parametrosDoSistema.verificaRemprot()) {
-			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos();
+			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos(null);
 
 			RPClient remprot = Autenticador.getRemprot();
 			if (Autenticador.isRegistrado())

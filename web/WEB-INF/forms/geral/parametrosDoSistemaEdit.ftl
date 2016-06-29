@@ -45,7 +45,11 @@
 			$('#tooltipHelp').qtip({
 				content: 'Destinado ao envio de emails referentes a assuntos que envolvem todas as empresas. <br /> Ex: Aviso de Backup'
 			});
-		
+			
+			$('#versaoAcademicaHelp').qtip({
+				content: 'Ao marcar essa opção, o sistema limitará a quantidade de 10 empregados por empresa e alguns relatórios sairão com o nome versão acadêmica.'
+			});
+			
 			if ($('#autenticacao').is(':checked')){
 				$('#divAutenticacao').show();
 				$("#emailUser").removeAttr('disabled');
@@ -111,7 +115,13 @@
 		}
 		
 	</script>
-	
+
+	<style type="text/css">
+		#wwgrp_modulosSistemaCheck{ 
+								margin-top:-10px;
+							}
+		
+	</style>	
 	<#include "../ftl/mascarasImports.ftl" />
 </head>
 <body>
@@ -223,7 +233,9 @@
 		&nbsp;&nbsp;&nbsp;		
 		<@ww.checkbox label="Enviar email" id="enviarEmail" name="parametrosDoSistema.enviarEmail" labelPosition="left"/>	
 		<@ww.datepicker label="Data da versão" id="proximaVersao" name="parametrosDoSistema.proximaVersao" value="${dataVersao}" cssClass="mascaraData" />
-		<@ww.checkbox label="Versão acadêmica" id="versaoAcademica" name="parametrosDoSistema.versaoAcademica" labelPosition="left"/>	
+
+		<@ww.checkbox label="Versão acadêmica" id="versaoAcademica" name="parametrosDoSistema.versaoAcademica" labelPosition="left"/>
+		<img id='versaoAcademicaHelp' src="<@ww.url value='/imgs/help.gif'/>" width='16' height='16' style='margin-left: 133px;margin-top: -20px;vertical-align: top;' />
 		<@frt.checkListBox name="modulosSistemaCheck" id="modulosSistemaCheck" label="Módulos do Sistema" list="modulosSistema"/>
 	<#else>
 		<@ww.hidden name="parametrosDoSistema.proximaVersao" />

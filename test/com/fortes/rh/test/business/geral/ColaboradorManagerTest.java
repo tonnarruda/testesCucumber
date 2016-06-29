@@ -72,6 +72,7 @@ import com.fortes.rh.model.geral.ColaboradorIdioma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TaxaDemissao;
 import com.fortes.rh.model.geral.relatorio.TaxaDemissaoCollection;
@@ -102,6 +103,7 @@ import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorIdiomaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
 import com.fortes.rh.test.util.mockObjects.MockAutenticador;
 import com.fortes.rh.test.util.mockObjects.MockImportacaoCSVUtil;
@@ -1781,6 +1783,57 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
 			exception = e;
 		}
     	assertNotNull(exception);
+    }
+    
+    public void testValidaQtdCadastrosVersaoAcademica10ColaboradoresJaCadastrados(){
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+    	parametrosDoSistema.setVersaoAcademica(true);
+    	
+    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
+    	colaboradorDao.expects(once()).method("countColaboradoresComHistoricos").with(eq(1L)).will(returnValue(10));
+    	
+    	Exception exception = null;
+    	
+    	try {
+			manager.validaQtdCadastros(1L);
+		} catch (Exception e) {
+			exception = e;
+		}
+    	assertEquals("Versão acadêmica, só é permitido 10 colaboradores ativos por empresa.", exception.getMessage());
+    }	
+
+    public void testValidaQtdCadastrosVersaoAcademicaComMenosDe10ColaboradoresCadastrados(){
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+    	parametrosDoSistema.setVersaoAcademica(true);
+    	
+    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
+    	colaboradorDao.expects(once()).method("countColaboradoresComHistoricos").with(eq(1L)).will(returnValue(9));
+    	
+    	Exception exception = null;
+    	
+    	try {
+			manager.validaQtdCadastros(1L);
+		} catch (Exception e) {
+			exception = e;
+		}
+    	assertNull(exception);
+    }
+    
+    public void testValidaQtdCadastros(){
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+    	parametrosDoSistema.setVersaoAcademica(false);
+    	
+    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
+    	colaboradorDao.expects(once()).method("countColaboradoresComHistoricos").with(eq(null)).will(returnValue(9));
+    	
+    	Exception exception = null;
+    	
+    	try {
+			manager.validaQtdCadastros(1L);
+		} catch (Exception e) {
+			exception = e;
+		}
+    	assertNull(exception);
     }
 
     public void testGetCountColaboradorComESemOrdemDeServico() {

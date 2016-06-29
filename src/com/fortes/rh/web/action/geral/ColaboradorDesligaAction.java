@@ -150,7 +150,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	{
 		try
 		{
-			colaboradorManager.validaQtdCadastros();			
+			colaboradorManager.validaQtdCadastros(getEmpresaSistema().getId());			
 			colaboradorManager.religaColaborador(colaborador.getId());
 			
 			addActionSuccess("Colaborador religado com sucesso.");

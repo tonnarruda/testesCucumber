@@ -353,7 +353,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			colaboradorManager.validaQtdCadastros();
+			colaboradorManager.validaQtdCadastros(getEmpresaSistema().getId());
 		} catch (Exception e)
 		{
 			addActionMessage(e.getMessage());
@@ -551,7 +551,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			colaboradorManager.validaQtdCadastros();			
+			colaboradorManager.validaQtdCadastros(getEmpresaSistema().getId());			
 		} catch (FortesException e) 
 		{
 			addActionMessage(e.getMessage());

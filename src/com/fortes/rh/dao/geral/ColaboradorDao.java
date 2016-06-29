@@ -142,7 +142,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public void removeComDependencias(Long id);
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);
 	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId,	boolean joinComHistorico, String... codigosACColaboradores);
-	public int countColaboradoresComHistoricos();
+	public int countColaboradoresComHistoricos(Long empresaId);
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);
 	public Colaborador findColaboradorComTodosOsDados(Long id);
 	public Collection<Colaborador> findByEstadosCelularOitoDigitos(Long[] ufId);
