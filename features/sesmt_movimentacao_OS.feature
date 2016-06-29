@@ -34,6 +34,7 @@ Funcionalidade: CATs (Acidentes de Trabalho)
 
     Então eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Ordem de Serviço"
+    E eu preencho o campo (JS) "dataOS" com "01/06/2016"
     E eu preencho o campo (JS) "codigoCBOOS" com "12345"
     E eu preencho o campo (JS) "atividadesOS" com "ATIVIDADES DESENVOLVIDAS"
     E eu preencho o campo (JS) "riscosOS" com "RISCO DA OPERAÇÃO"
@@ -83,6 +84,7 @@ Funcionalidade: CATs (Acidentes de Trabalho)
 
     Então eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Ordem de Serviço"
+    E eu preencho o campo (JS) "dataOS" com "02/06/2016"
     E eu clico no botão "CarregarOrdemDeServico"
     E eu clico no botão "Gravar"
 

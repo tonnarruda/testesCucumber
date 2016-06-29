@@ -2,7 +2,6 @@
 <Versoes>
 	<Versao id="1.1.168.200" db="" data="29/06/2016">
 		<Item visivel="S" motivo="P16060000093"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste de inconsistência ao remover colaborador a ser avaliado.]]></Item>
-		<Item visivel="S" motivo="S16060000006"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competência do Colaborador: Novo relatório Detalhado.]]></Item>
  		<Item visivel="S" motivo="S16040000282"><![CDATA[T&D > Cadastros > Certificações: Possibilidade de editar certificações contendo colaboradores já certificados.]]></Item> 
  		<Item visivel="S" motivo="S16050000288"><![CDATA[T&D > Movimentações > Avaliação Prática > Notas Individuais/Notas em Lote: Listar apenas os colaboradores aprovados nos cursos da certificações.]]></Item> 
 		<Item visivel="S" motivo="S16050000288"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Nova opção de filtro por colaboradores ativos, inativos e todos.]]></Item>
