@@ -6,7 +6,6 @@ import java.util.Collection;
 
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -22,6 +21,8 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.relatorio.LinhaCedulaEleitoralRelatorio;
 import com.fortes.rh.model.sesmt.CandidatoEleicao;
 import com.fortes.rh.model.sesmt.Eleicao;
+import com.fortes.rh.test.business.MockObjectTestCaseManager;
+import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
@@ -29,9 +30,8 @@ import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.sesmt.CandidatoEleicaoFactory;
 import com.fortes.rh.test.factory.sesmt.EleicaoFactory;
 
-public class CandidatoEleicaoManagerTest extends MockObjectTestCase
+public class CandidatoEleicaoManagerTest extends MockObjectTestCaseManager<CandidatoEleicaoManagerImpl> implements TesteAutomaticoManager
 {
-    private CandidatoEleicaoManagerImpl candidatoEleicaoManager = new CandidatoEleicaoManagerImpl();
     private Mock transactionManager;
     private Mock candidatoEleicaoDao;
     private Mock eleicaoManager;
@@ -40,27 +40,28 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
 
     protected void setUp() throws Exception
     {
+    	manager = new CandidatoEleicaoManagerImpl();
         super.setUp();
         candidatoEleicaoDao = new Mock(CandidatoEleicaoDao.class);
-        candidatoEleicaoManager.setDao((CandidatoEleicaoDao) candidatoEleicaoDao.proxy());
+        manager.setDao((CandidatoEleicaoDao) candidatoEleicaoDao.proxy());
 
         eleicaoManager = new Mock(EleicaoManager.class);
-        candidatoEleicaoManager.setEleicaoManager((EleicaoManager) eleicaoManager.proxy());
+        manager.setEleicaoManager((EleicaoManager) eleicaoManager.proxy());
 
         colaboradorManager = new Mock(ColaboradorManager.class);
-        candidatoEleicaoManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+        manager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
 
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
-        candidatoEleicaoManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+        manager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 
         transactionManager = new Mock(PlatformTransactionManager.class);
-        candidatoEleicaoManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+        manager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
     }
 
     public void testFindByEleicao()
     {
         candidatoEleicaoDao.expects(once()).method("findByEleicao").with(ANYTHING, eq(false), ANYTHING).will(returnValue(new ArrayList<CandidatoEleicao>()));
-        assertNotNull(candidatoEleicaoManager.findByEleicao(null));
+        assertNotNull(manager.findByEleicao(null));
     }
 
     public void testGetColaboradoresByEleicao() throws Exception
@@ -86,7 +87,7 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
         areaOrganizacionalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
         areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(null));
 
-        assertEquals(1, candidatoEleicaoManager.getColaboradoresByEleicao(null, null).size());
+        assertEquals(1, manager.getColaboradoresByEleicao(null, null).size());
     }
 
     public void testSaveVotosEleicao()
@@ -106,7 +107,7 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
         Exception exception = null;
         try
         {
-            candidatoEleicaoManager.saveVotosEleicao(eleitosIds, qtdVotos, idCandidatoEleicaos, eleicao);
+            manager.saveVotosEleicao(eleitosIds, qtdVotos, idCandidatoEleicaos, eleicao);
         }
         catch (Exception e)
         {
@@ -131,7 +132,7 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
         Exception exception = null;
         try
         {
-            candidatoEleicaoManager.saveVotosEleicao(eleitosIds, qtdVotos, idCandidatoEleicaos, eleicao);
+            manager.saveVotosEleicao(eleitosIds, qtdVotos, idCandidatoEleicaos, eleicao);
         }
         catch (Exception e)
         {
@@ -154,7 +155,7 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
         Exception exception = null;
         try
         {
-            candidatoEleicaoManager.save(candidatosCheck, eleicao);
+            manager.save(candidatosCheck, eleicao);
         }
         catch (Exception e)
         {
@@ -186,7 +187,7 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
         Exception exception = null;
         try
         {
-            candidatoEleicaoManager.save(candidatosCheck, eleicao);
+            manager.save(candidatosCheck, eleicao);
         }
         catch (Exception e)
         {
@@ -209,7 +210,7 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
         Exception exception = null;
         try
         {
-            candidatoEleicaoManager.save(candidatosCheck, eleicao);
+            manager.save(candidatosCheck, eleicao);
         }
         catch (Exception e)
         {
@@ -225,7 +226,7 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
 
     	candidatoEleicaoDao.expects(once()).method("removeByEleicao").with(eq(eleicao.getId())).isVoid();
 
-    	candidatoEleicaoManager.removeByEleicao(eleicao.getId());
+    	manager.removeByEleicao(eleicao.getId());
     }
 
     public void testMontaCedulas() throws Exception
@@ -263,7 +264,7 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
     	candidatoEleicaos.add(candidatoEleicao1);
     	candidatoEleicaos.add(candidatoEleicao2);
 
-    	Collection<LinhaCedulaEleitoralRelatorio> cedulas = candidatoEleicaoManager.montaCedulas(candidatoEleicaos);
+    	Collection<LinhaCedulaEleitoralRelatorio> cedulas = manager.montaCedulas(candidatoEleicaos);
     	assertEquals(10, cedulas.size());
     	assertEquals("(  )  1 - nome - cargo1\n(  )  2 - nome2 (nomeComercial2) - cargo2\n", ((LinhaCedulaEleitoralRelatorio)cedulas.toArray()[0]).getLinhas());
     }
@@ -298,7 +299,7 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
     	candidatoEleicaos.add(candidatoEleicao1);
     	candidatoEleicaos.add(candidatoEleicao2);
     	
-    	Collection<LinhaCedulaEleitoralRelatorio> cedulas = candidatoEleicaoManager.montaCedulas(candidatoEleicaos);
+    	Collection<LinhaCedulaEleitoralRelatorio> cedulas = manager.montaCedulas(candidatoEleicaos);
     	assertEquals(10, cedulas.size());
     	assertEquals("(  )  1 - nome (nomeComercial) - cargo1\n(  )  2 - nome2 (nomeComercial2) - \n", ((LinhaCedulaEleitoralRelatorio)cedulas.toArray()[0]).getLinhas());
     }
@@ -312,7 +313,7 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
     	Exception exception = null;
     	try
 		{
-    		candidatoEleicaoManager.montaCedulas(candidatoEleicaos);
+    		manager.montaCedulas(candidatoEleicaos);
 		}
 		catch (Exception e)
 		{
@@ -327,6 +328,11 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
     	
     	candidatoEleicaoDao.expects(once()).method("findByColaborador").with(eq(1L)).will(returnValue(candidatoEleicaos));
     	
-    	assertEquals(1, candidatoEleicaoManager.findByColaborador(1L).size());
+    	assertEquals(1, manager.findByColaborador(1L).size());
     }
+
+	@Override
+	public void testExecutaTesteAutomaticoDoManager() {
+		testeAutomatico(candidatoEleicaoDao);
+	}
 }

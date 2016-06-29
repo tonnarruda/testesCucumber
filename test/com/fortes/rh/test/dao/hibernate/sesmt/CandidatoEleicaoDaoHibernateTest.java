@@ -125,6 +125,34 @@ public class CandidatoEleicaoDaoHibernateTest extends GenericDaoHibernateTest<Ca
 
 		assertEquals(candidatoEleicao.getId(), candidatoEleicaoDao.findByIdProjection(candidatoEleicao.getId()).getId());
 	}
+	
+	public void testFindCandidatoEleicao()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		CandidatoEleicao candidatoEleicao = CandidatoEleicaoFactory.getEntity();
+		candidatoEleicao.setCandidato(colaborador);
+		candidatoEleicaoDao.save(candidatoEleicao);
+		
+		assertEquals(candidatoEleicao.getId(), candidatoEleicaoDao.findCandidatoEleicao(candidatoEleicao.getId()).getId());
+	}
+	
+	public void testFindByColaboradorIdAndEleicaoId()
+	{
+		Eleicao eleicao = EleicaoFactory.getEntity();
+		eleicaoDao.save(eleicao);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		CandidatoEleicao candidatoEleicao = CandidatoEleicaoFactory.getEntity();
+		candidatoEleicao.setEleicao(eleicao);
+		candidatoEleicao.setCandidato(colaborador);
+		candidatoEleicaoDao.save(candidatoEleicao);
+		
+		assertEquals(candidatoEleicao.getId(), candidatoEleicaoDao.findByColaboradorIdAndEleicaoId(colaborador.getId(), eleicao.getId()).getId());
+	}
 
 	public void testSetEleito()
 	{

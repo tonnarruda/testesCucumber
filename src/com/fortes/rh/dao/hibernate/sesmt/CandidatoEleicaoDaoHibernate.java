@@ -96,6 +96,40 @@ public class CandidatoEleicaoDaoHibernate extends GenericDaoHibernate<CandidatoE
 
 		return (CandidatoEleicao) criteria.uniqueResult();
 	}
+	
+	public CandidatoEleicao findCandidatoEleicao(Long candidatoEleicaoId)
+	{
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ce.id"), "id");
+		p.add(Projections.property("ce.eleito"), "eleito");
+		p.add(Projections.property("cand.id"), "projectionCandidatoId");
+		p.add(Projections.property("cand.nome"), "projectionCandidatoNome");
+
+		Criteria criteria = getSession().createCriteria(CandidatoEleicao.class,"ce");
+		criteria.createCriteria("ce.candidato", "cand");
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("ce.id", candidatoEleicaoId));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return (CandidatoEleicao) criteria.uniqueResult();
+	}
+	
+	public CandidatoEleicao findByColaboradorIdAndEleicaoId(Long colaboradorId, Long eleicaoId)
+	{
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ce.id"), "id");
+		p.add(Projections.property("cand.id"), "projectionCandidatoId");
+		p.add(Projections.property("cand.nome"), "projectionCandidatoNome");
+
+		Criteria criteria = getSession().createCriteria(CandidatoEleicao.class,"ce");
+		criteria.createCriteria("ce.candidato", "cand");
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("cand.id", colaboradorId));
+		criteria.add(Expression.eq("ce.eleicao.id", eleicaoId));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return (CandidatoEleicao) criteria.uniqueResult();
+	}
 
 	public void setEleito(boolean eleito, Long[] ids)
 	{

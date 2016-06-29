@@ -18,4 +18,8 @@ public interface CandidatoEleicaoDao extends GenericDao<CandidatoEleicao>
 	void removeByEleicao(Long eleicaoId);
 
 	Collection<CandidatoEleicao> findByColaborador(Long colaboradorId);
+	
+	public CandidatoEleicao findCandidatoEleicao(Long candidatoEleicaoId);
+	
+	public CandidatoEleicao findByColaboradorIdAndEleicaoId(Long colaboradorId, Long eleicaoId);
 }

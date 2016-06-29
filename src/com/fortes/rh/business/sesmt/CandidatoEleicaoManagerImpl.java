@@ -10,6 +10,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.sesmt.CandidatoEleicaoDao;
@@ -218,9 +219,19 @@ public class CandidatoEleicaoManagerImpl extends GenericManagerImpl<CandidatoEle
 		}
 	}
 	
-	
+	@TesteAutomatico
 	public void removeByEleicao(Long eleicaoId)
 	{
 		getDao().removeByEleicao(eleicaoId);
+	}
+
+	@TesteAutomatico
+	public CandidatoEleicao findCandidatoEleicao(Long candidatoEleicaoId) {
+		return getDao().findCandidatoEleicao(candidatoEleicaoId);
+	}
+
+	@TesteAutomatico
+	public CandidatoEleicao findByColaboradorIdAndEleicaoId(Long colaboradorId, Long eleicaoId) {
+		return getDao().findByColaboradorIdAndEleicaoId(colaboradorId, eleicaoId);
 	}
 }
