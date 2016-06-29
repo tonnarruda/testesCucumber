@@ -1552,7 +1552,7 @@ public class CandidatoManagerTest extends MockObjectTestCaseManager<CandidatoMan
 		manager.getTotalSize();
 	}
 	
-	public void testEnviaEmailResponsavelRh() throws Exception
+	public void testEnviaAvisoDeCadastroCandidato() throws Exception
 	{
 		String nomeCandidato = "teste";
 		
@@ -1561,8 +1561,8 @@ public class CandidatoManagerTest extends MockObjectTestCaseManager<CandidatoMan
 		empresa.setNome("empresa");
 		empresa.setEmailRespRH("x@x.com");
 
-		gerenciadorComunicacaoManager.expects(once()).method("enviaEmailResponsavelRh").with(ANYTHING, ANYTHING).isVoid();
-		manager.enviaEmailResponsavelRh(nomeCandidato, empresa.getId());
+		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDeCadastroCandidato").with(ANYTHING, ANYTHING).isVoid();
+		manager.enviaAvisoDeCadastroCandidato(nomeCandidato, empresa.getId());
 	}
 	
 	public void testCountComoFicouSabendoVagas(){

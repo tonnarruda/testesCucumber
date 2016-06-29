@@ -61,7 +61,7 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public Collection<Candidato> findByNomeCpfAllEmpresas(Candidato candidato);
 	public Candidato verifyCPF(String cpf, Long empresId, Long candidatoId, Boolean contratado) throws Exception;
 	public void ajustaSenha(Candidato candidato);
-	public void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId);
+	public void enviaAvisoDeCadastroCandidato(String nomeCandidato, Long empresaId);
 	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long... colaboradoresIds);
 	public void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas);
 	public String getComoFicouSabendoVagas();

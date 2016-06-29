@@ -32,7 +32,7 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviarLembreteResponderAvaliacaoDesempenhoAoLiberar(Long avaliacaoDesempenhoId, Empresa empresa);
 	void enviarLembreteAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Empresa empresa);
 	void enviaEmailQuestionarioLiberado(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
-	void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId);
+	void enviaAvisoDeCadastroCandidato(String nomeCandidato, Long empresaId);
 	void enviaEmailQuestionario(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
 	void enviaLembreteDeQuestionarioNaoLiberado();
 	void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas, Date inicioMes, Date fimMes, Collection<Candidato> candidatos);

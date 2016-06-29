@@ -363,7 +363,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		if(moduloExterno)
 		{
 			candidato.setOrigem(OrigemCandidato.EXTERNO);
-			candidatoManager.enviaEmailResponsavelRh(candidato.getNome(), empresa.getId());
+			candidatoManager.enviaAvisoDeCadastroCandidato(candidato.getNome(), empresa.getId());
 		}else
 			candidato.setOrigem(OrigemCandidato.CADASTRADO);
 

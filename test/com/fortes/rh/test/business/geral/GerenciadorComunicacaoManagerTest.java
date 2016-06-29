@@ -458,7 +458,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 assertNull(exception);
 	 }
 	 
-	 public void testEnviaEmailResponsavelRh() throws Exception
+	 public void testEnviaAvisoDeCadastroCandidatoModuloExternoPorEmailParaResponsavelRh() throws Exception
 	 {
 		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		 empresa.setNome("Empresa I");
@@ -468,13 +468,38 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
-		 empresaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(empresa));
+		 empresaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(empresa));
 		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.CADASTRAR_CANDIDATO_MODULO_EXTERNO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		 
 		 Exception exception = null;
 		 try {
-			 gerenciadorComunicacaoManager.enviaEmailResponsavelRh("Chico", empresa.getId());
+			 gerenciadorComunicacaoManager.enviaAvisoDeCadastroCandidato("Chico", empresa.getId());
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
+	 
+	 public void testEnviaAvisoDeCadastroCandidatoModuloExternoPorEmailParaUsuarios() throws Exception
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setNome("Empresa I");
+		 empresa.setEmailRespRH("email@email.com");
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.USUARIOS);
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		 String[] emails = new String[] {"email@email.com"};
+		 
+		 empresaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(empresa));
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.CADASTRAR_CANDIDATO_MODULO_EXTERNO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 colaboradorManager.expects(atLeastOnce()).method("findEmailsByUsuarios").with(ANYTHING).will(returnValue(emails));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaAvisoDeCadastroCandidato("Chico", empresa.getId());
 		 } catch (Exception e) {
 			 exception = e;
 		 }

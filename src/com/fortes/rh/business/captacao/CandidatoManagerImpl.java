@@ -1093,9 +1093,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return resultado;
 	}
 
-	public void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId)
+	public void enviaAvisoDeCadastroCandidato(String nomeCandidato, Long empresaId)
 	{
-		gerenciadorComunicacaoManager.enviaEmailResponsavelRh(nomeCandidato, empresaId);
+		gerenciadorComunicacaoManager.enviaAvisoDeCadastroCandidato(nomeCandidato, empresaId);
 	}
 	
 	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager)

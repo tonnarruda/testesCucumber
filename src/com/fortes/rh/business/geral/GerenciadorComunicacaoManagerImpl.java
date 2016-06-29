@@ -329,9 +329,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		return getDao().verifyExists(gerenciadorComunicacao);
 	}
 	
-	public void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId){
+	public void enviaAvisoDeCadastroCandidato(String nomeCandidato, Long empresaId){
 		String subject = "[RH] - Novo candidato (" + nomeCandidato +")";
-		Empresa empresa = empresaManager.findById(empresaId);
+		Empresa empresa = empresaManager.findByIdProjection(empresaId);
 		StringBuilder body = new StringBuilder();
 		body.append("O candidato " + nomeCandidato + ", <br>");
 		body.append("se cadastrou na empresa " + empresa.getNome() );
@@ -342,9 +342,18 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
     			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
     				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
     				mail.send(empresa, subject, body.toString(), null, emails);
-    			} 		
+    			}
+    			
+    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
+    				ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+    				Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
+    				String[] emails = colaboradorManager.findEmailsByUsuarios(LongUtil.collectionToCollectionLong(usuariosConfigurados));
+    				mail.send(empresa, subject, body.toString(), null, emails);
+    			} 
     		}
-		} catch (Exception e){e.printStackTrace();}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas, Date inicioMes, Date fimMes, Collection<Candidato> candidatos){
