@@ -7,6 +7,7 @@
  		<Item visivel="S" motivo="S16050000288"><![CDATA[T&D > Movimentações > Avaliação Prática > Notas Individuais/Notas em Lote: Listar apenas os colaboradores aprovados nos cursos da certificações.]]></Item> 
 		<Item visivel="S" motivo="S16050000288"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Nova opção de filtro por colaboradores ativos, inativos e todos.]]></Item>
 		<Item visivel="S" motivo="P16050000239"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Impossibilitar que o colaborador tenha acesso as informações referentes ao seu próprio desligamento.]]></Item>
+		<Item visivel="S" motivo="P16040000328"><![CDATA[SESMT > Movimentações > Afastamentos > Inserir/Editar: Impossibilitar a inclusão de afastamento com data inferior a data de admissão do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16060000005"><![CDATA[SESMT > Movimentações > Gerenciamento de Ordem de Serviço: Nova implementação de ordem de serviço no sistema.]]></Item>
  		<Item visivel="S" motivo="S16050000290"><![CDATA[Utilitários > Usuário Fortes > Reprocessar Certificações: Nova tela para o usuário Fortes para reprocessar as certificações existentes na empresa logada.]]></Item>
  		<Item visivel="N" motivo="S16060000131"><![CDATA[Utilitários > Configurações > Sistema: Restrição versão do PAE, limite do cadastro de colaboradores por empresa e relatórios com tag "Versão Acadêmica"]]></Item>

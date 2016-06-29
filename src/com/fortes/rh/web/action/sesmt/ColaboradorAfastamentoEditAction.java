@@ -8,7 +8,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
-import com.fortes.rh.exception.FortesDataAdmisao;
+import com.fortes.rh.exception.EventoAntesDaDataAdmissaoException;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Afastamento;
@@ -58,48 +58,46 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 	public String insert() throws Exception
 	{
 		try {
-			verificaDataAdmissao();
-			if(colaboradorAfastamentoManager.possuiAfastamentoNestePeriodo(colaboradorAfastamento, false)) {
+			verificaSeAfastamentoAntesDaDataAdmissao();
+			if (colaboradorAfastamentoManager.isPossivelAfastamentoNestePeriodo(colaboradorAfastamento, false)) {
 				colaboradorAfastamentoManager.save(colaboradorAfastamento);
 				gerenciadorComunicacaoManager.enviaAvisoDeAfastamento(colaboradorAfastamento.getId(), getEmpresaSistema());
-				addActionMessage("Afastamento gravado com sucesso.");
+				addActionSuccess("Afastamento gravado com sucesso.");
 
 				return SUCCESS;
-			}else {
+			} else {
 				addActionMessage("O colaborador já possui um afastamento que compreende este período.");
 				filtrarColaboradores();
 
 				return INPUT;
 			}
-		}
-		catch(FortesDataAdmisao e){
+		} catch (EventoAntesDaDataAdmissaoException e) {
 			addActionMessage(e.getMessage());
 			prepareInsert();
 			return INPUT;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			addActionError("Não foi possível gravar o afastamento.");
 			filtrarColaboradores();
 			return INPUT;
 		}
 	}
 
-	private void verificaDataAdmissao() throws FortesDataAdmisao {
+	private void verificaSeAfastamentoAntesDaDataAdmissao() throws EventoAntesDaDataAdmissaoException
+	{
 		colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorAfastamento.getColaborador().getId());
-		if(colaborador.getDataAdmissao().compareTo(colaboradorAfastamento.getInicio()) == 1)
-			throw new FortesDataAdmisao("Data do afastamento não pode ser inferior à data de admissão (Data Admissão: " + colaborador.getDataAdmissaoFormatada() + ")." );
+		if (colaborador.getDataAdmissao().compareTo(colaboradorAfastamento.getInicio()) == 1)
+			throw new EventoAntesDaDataAdmissaoException("Data do afastamento não pode ser inferior à data de admissão (Data Admissão: " + colaborador.getDataAdmissaoFormatada() + ").");
 	}
 
 	public String update() throws Exception
 	{
 		try
 		{
-			verificaDataAdmissao();
-			if(colaboradorAfastamentoManager.possuiAfastamentoNestePeriodo(colaboradorAfastamento, true))
-			{
+			verificaSeAfastamentoAntesDaDataAdmissao();
+			if (colaboradorAfastamentoManager.isPossivelAfastamentoNestePeriodo(colaboradorAfastamento, true)) {
 				colaboradorAfastamentoManager.update(colaboradorAfastamento);
-				addActionMessage("Afastamento gravado com sucesso.");
-			}else
-			{
+				addActionSuccess("Afastamento gravado com sucesso.");
+			} else {
 				addActionMessage("O colaborador já possui um afastamento que compreende este período.");
 				prepare();
 
@@ -108,7 +106,7 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 
 			return SUCCESS;
 		}
-		catch(FortesDataAdmisao e){
+		catch(EventoAntesDaDataAdmissaoException e){
 			addActionMessage(e.getMessage());
 			prepareUpdate();
 			return INPUT;

@@ -238,7 +238,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		return graficoAfastamentosPorMotivo;
 	}
 	
-	public boolean possuiAfastamentoNestePeriodo(ColaboradorAfastamento colaboradorAfastamento, boolean isUpdate) 
+	public boolean isPossivelAfastamentoNestePeriodo(ColaboradorAfastamento colaboradorAfastamento, boolean isUpdate) 
 	{
 		Collection<ColaboradorAfastamento> colAfastamentos = getDao().findByColaborador(colaboradorAfastamento.getColaborador().getId());
 		

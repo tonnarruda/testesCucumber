@@ -294,7 +294,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCaseManager
 		
 		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(colabAfastamentoNovo.getColaborador().getId())).will(returnValue(colaboradorAfastamentos));
 
-		assertFalse(manager.possuiAfastamentoNestePeriodo(colabAfastamentoNovo, false));
+		assertFalse(manager.isPossivelAfastamentoNestePeriodo(colabAfastamentoNovo, false));
 	}
 
 	public void testPossuiAfastamentoNestePeriodoDuasDataTrue() throws Exception
@@ -319,7 +319,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCaseManager
 		
 		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(colabAfastamentoNovo.getColaborador().getId())).will(returnValue(colaboradorAfastamentos));
 		
-		assertTrue(manager.possuiAfastamentoNestePeriodo(colabAfastamentoNovo, false));
+		assertTrue(manager.isPossivelAfastamentoNestePeriodo(colabAfastamentoNovo, false));
 	}
 	
 	public void testPossuiAfastamentoNestePeriodoUmaDataTrue() throws Exception
@@ -343,7 +343,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCaseManager
 		
 		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(colabAfastamentoNovo.getColaborador().getId())).will(returnValue(colaboradorAfastamentos));
 		
-		assertTrue(manager.possuiAfastamentoNestePeriodo(colabAfastamentoNovo, false));
+		assertTrue(manager.isPossivelAfastamentoNestePeriodo(colabAfastamentoNovo, false));
 	}
 
 	public void testPossuiAfastamentoNestePeriodoUmaDatafalse() throws Exception
@@ -367,7 +367,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCaseManager
 		
 		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(colabAfastamentoNovo.getColaborador().getId())).will(returnValue(colaboradorAfastamentos));
 		
-		assertFalse(manager.possuiAfastamentoNestePeriodo(colabAfastamentoNovo, false));
+		assertFalse(manager.isPossivelAfastamentoNestePeriodo(colabAfastamentoNovo, false));
 	}
 	
 	public void testPossuiAfastamentoNestePeriodoUmaData2True() throws Exception
@@ -390,7 +390,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCaseManager
 		
 		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(colabAfastamentoNovo.getColaborador().getId())).will(returnValue(colaboradorAfastamentos));
 		
-		assertTrue(manager.possuiAfastamentoNestePeriodo(colabAfastamentoNovo, false));
+		assertTrue(manager.isPossivelAfastamentoNestePeriodo(colabAfastamentoNovo, false));
 	}
 	
 	public void testPossuiAfastamentoNestePeriodoUmaData2False() throws Exception
@@ -413,7 +413,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCaseManager
 		
 		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(colabAfastamentoNovo.getColaborador().getId())).will(returnValue(colaboradorAfastamentos));
 		
-		assertFalse(manager.possuiAfastamentoNestePeriodo(colabAfastamentoNovo, false));
+		assertFalse(manager.isPossivelAfastamentoNestePeriodo(colabAfastamentoNovo, false));
 	}
 	
 	public void testFindByColaborador()
