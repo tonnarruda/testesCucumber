@@ -50,7 +50,7 @@
 			
 			function processaSubmit(){
 				$('#periodicidade').css('background-color','#fff');
-				if($('#periodicidade').val() == 0){
+				if($('#periodicidade').val() != "" && $('#periodicidade').val() == 0){
 					jAlert('A periodicidade não pode ser 0 (zero)');
 					$('#periodicidade').css('background-color','rgb(255, 238, 194)');
 					return;
@@ -93,7 +93,7 @@
 			<@ww.textfield label="Nome" id="nome" name="certificacao.nome"  cssStyle="width:500px" maxLength="100" required="true"/>
 			<@ww.textfield label="Periodicidade em meses" name="certificacao.periodicidade" id="periodicidade" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/>
 			<@ww.select Label="Certificação pré-requisito" name="certificacao.certificacaoPreRequisito.id" id="certificacaoPreRequisitoId" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 500px;" onchange="verificaAlteracaoCertificacao()"/>
-        	<@frt.checkListBox label="Cursos" name="cursosCheck" list="cursosCheckList" filtro="true" onClick="verificaAlteracaoCertificacao()"/>
+        	<@frt.checkListBox label="Cursos" name="cursosCheck" list="cursosCheckList" filtro="true" onClick="verificaAlteracaoCertificacao()" required="true"/>
        		<@frt.checkListBox label="Avaliações Práticas" name="avaliacoesPraticasCheck" list="avaliacoesPraticasCheckList" filtro="true" onClick="verificaAlteracaoCertificacao()"/>
 			
 			<@ww.hidden name="certificacao.id" />

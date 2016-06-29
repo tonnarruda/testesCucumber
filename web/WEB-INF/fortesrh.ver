@@ -1,10 +1,14 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.1xx.1xx" db="" data="xx/xx/2016">
+	<Versao id="1.1.168.200" db="" data="29/06/2016">
 		<Item visivel="S" motivo="P16060000093"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste de inconsistência ao remover colaborador a ser avaliado.]]></Item>
-		<Item visivel="S" motivo="S16060000006"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competência do Colaborador: Novo relatório Detalahado.]]></Item>
+		<Item visivel="S" motivo="S16060000006"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competência do Colaborador: Novo relatório Detalhado.]]></Item>
+ 		<Item visivel="S" motivo="S16040000282"><![CDATA[T&D > Cadastros > Certificações: Possibilidade de editar certificações contendo colaboradores já certificados.]]></Item> 
+ 		<Item visivel="S" motivo="S16050000288"><![CDATA[T&D > Movimentações > Avaliação Prática > Notas Individuais/Notas em Lote: Listar apenas os colaboradores aprovados nos cursos da certificações.]]></Item> 
+		<Item visivel="S" motivo="S16050000288"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Nova opção de filtro por colaboradores ativos, inativos e todos.]]></Item>
 		<Item visivel="S" motivo="P16050000239"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Impossibilitar que o colaborador tenha acesso as informações referentes ao seu próprio desligamento.]]></Item>
 		<Item visivel="S" motivo="S16060000005"><![CDATA[SESMT > Movimentações > Gerenciamento de Ordem de Serviço: Nova implementação de ordem de serviço no sistema.]]></Item>
+ 		<Item visivel="S" motivo="S16050000290"><![CDATA[Utilitários > Usuário Fortes > Reprocessar Certificações: Nova tela para o usuário Fortes para reprocessar as certificações existentes na empresa logada.]]></Item>
 	</Versao>
 	<Versao id="1.1.167.199" db="" data="08/06/2016">
 		<Item visivel="S" motivo="P16050000186"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Organograma > imprimir: Ajuste de inconsistência ao imprimir o organograma.]]></Item>

@@ -119,6 +119,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	public String insert() throws Exception
 	{
 		populaCertificacao();
+		certificacaoManager.save(certificacao);
 		return Action.SUCCESS;
 	}
 

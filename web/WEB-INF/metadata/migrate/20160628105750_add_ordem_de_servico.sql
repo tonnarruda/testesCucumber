@@ -1,7 +1,5 @@
 
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (673,'ROLE_MOV_ORDEM_DE_SERVICO', 'Gerenciamento de Ordem de Serviço', '/sesmt/ordemDeServico/listGerenciamentoOS.action', 11, true, 386);--.go
-alter sequence papel_sequence restart with 674;--.go
-
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (675,'ROLE_MOV_ORDEM_DE_SERVICO', 'Gerenciamento de Ordem de Serviço', '/sesmt/ordemDeServico/listGerenciamentoOS.action', 11, true, 386);--.go
 
 CREATE TABLE ordemDeServico (
 	id bigint NOT NULL,

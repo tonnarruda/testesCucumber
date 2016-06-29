@@ -46,8 +46,8 @@ Funcionalidade: CATs (Acidentes de Trabalho)
     E eu preencho o campo (JS) "termoDeResponsabilidadeOS" com "TERMO DE RESPONSABILIDADE"
     E eu clico no botão "Gravar"
 
-    Então eu devo ver "27/06/2016"
-    E eu clico na ação "Visualizar" de "27/06/2016"
+    Então eu devo ver "desenvolver"
+    E eu clico na ação "Visualizar" de "1"
     E eu devo ver o título "Ordem de Serviço"
     E eu devo ver "12345"
     E eu devo ver "ATIVIDADES DESENVOLVIDAS"
@@ -61,8 +61,8 @@ Funcionalidade: CATs (Acidentes de Trabalho)
     E eu devo ver "TERMO DE RESPONSABILIDADE"
     E eu clico no botão "Voltar"
 
-    Então eu devo ver "27/06/2016"
-    E eu clico na ação "Editar" de "27/06/2016"
+    Então eu devo ver "desenvolver"
+    E eu clico na ação "Editar" de "1"
     E eu devo ver o título "Ordem de Serviço"
     E eu devo ver "12345"
     E eu devo ver "ATIVIDADES DESENVOLVIDAS"
@@ -76,7 +76,7 @@ Funcionalidade: CATs (Acidentes de Trabalho)
     E eu devo ver "TERMO DE RESPONSABILIDADE"
     E eu clico no botão "Voltar"
 
-    E eu clico na ação "Imprimir" de "27/06/2016"
+    E eu clico na ação "Imprimir" de "1"
     E eu espero 1 segundo
     E eu devo ver o alert "Após a impressão não será permidito editar ou excluír esta ordem de serviço" e clico no Imprimir
     E eu espero 1 segundo

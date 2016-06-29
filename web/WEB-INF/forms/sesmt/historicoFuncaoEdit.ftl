@@ -39,7 +39,7 @@
 					$('#epcEficaz' + ${riscoFuncao.risco.id}).attr('checked', true);
 				</#if>
 				<#if riscoFuncao.medidaDeSeguranca?exists>
-					$('#medidaDeSeguranca' + ${riscoFuncao.risco.id}).val('${riscoFuncao.medidaDeSeguranca}');
+					$('#medidaDeSeguranca' + ${riscoFuncao.risco.id}).val('${riscoFuncao.medidaDeSeguranca?js_string?replace('\'', '\'')}');
 				</#if>
 			</#list>
 		</#if>
