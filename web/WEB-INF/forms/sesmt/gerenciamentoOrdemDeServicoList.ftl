@@ -9,7 +9,6 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>"></script>
 	
-	
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
@@ -82,11 +81,11 @@
 		<#assign style=""/>
 		
 		<@display.column title="Ações" class="acao" style="width:95px";>
-			<#if colaborador.funcao?exists && colaborador.funcao.id?exists>
+			<#if colaborador.temFuncao >
 				<@frt.link href="list.action?colaborador.id=${colaborador.id}" imgTitle="Ordens de Serviço(OS)" imgName="folhaCheia.gif"/>
 			<#else>
 				<#assign style="color:#002EB8;"/>
-				<@frt.link href="list.action?colaborador.id=${colaborador.id}" imgTitle="Colaborador sem função no histórico." imgName="folhaCheia.gif" disabled=true />
+				<@frt.link href="list.action?colaborador.id=${colaborador.id}" imgTitle="Colaborador sem histórico com função." imgName="folhaCheia.gif" disabled=true />
 			</#if>
 		</@display.column>
 

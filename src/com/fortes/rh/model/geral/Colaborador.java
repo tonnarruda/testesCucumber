@@ -156,10 +156,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	private boolean respondeuEntrevista = false;
 	private File foto;
-
+	
 	@OneToOne(fetch=FetchType.LAZY)
 	private CamposExtras camposExtras;
 
+	@Transient
+	private boolean temFuncao;
 	@Transient
 	private HistoricoColaborador historicoColaborador;
 	@Transient
@@ -3231,4 +3233,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.colaboradorCertificacao.setData(colaboradorCertificacaoData);
 	}
 
+	public boolean isTemFuncao() {
+		return temFuncao;
+	}
+
+	public void setTemFuncao(boolean temFuncao) {
+		this.temFuncao = temFuncao;
+	}
 }

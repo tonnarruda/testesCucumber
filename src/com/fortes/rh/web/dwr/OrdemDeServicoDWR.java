@@ -25,6 +25,7 @@ public class OrdemDeServicoDWR {
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
+		
 		Empresa empresa = empresaManager.findByIdProjection(empresaId); 
 		OrdemDeServico ordemDeServico = ordemDeServicoManager.montaOrdemDeServico(colaboradorId, empresa, dataOrdemDeServico1);
 		return ordemDeServico;

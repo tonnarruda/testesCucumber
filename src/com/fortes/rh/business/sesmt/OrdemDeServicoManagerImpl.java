@@ -57,6 +57,7 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 				montaListaTreinamentos(ordemDeServico, historicoFuncao);
 			}		
 		}
+		
 		return ordemDeServico;
 	}
 
