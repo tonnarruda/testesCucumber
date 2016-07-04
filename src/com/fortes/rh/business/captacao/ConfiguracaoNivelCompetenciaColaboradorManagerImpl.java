@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.geral.Colaborador;
@@ -38,6 +39,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 			configuracaoNivelCompetenciaColaborador.getAvaliador().setNome("Anônimo");
 	}
 
+	@TesteAutomatico
 	public void removeColaborador(Colaborador colaborador) 
 	{
 		getDao().removeColaborador(colaborador);
@@ -54,25 +56,30 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 		ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager = (ConfiguracaoNivelCompetenciaManager) SpringUtil.getBean("configuracaoNivelCompetenciaManager");
 		configuracaoNivelCompetenciaManager.removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixaSalarial(faixaIds);
 	}
-
+	
+	@TesteAutomatico
 	public ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId) 
 	{
 		return getDao().findByData(data, colaboradorId, avaliadorId, colaboradorQuestionarioId);
 	}
 
+	@TesteAutomatico
 	public boolean existeDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal)
 	{
 		return getDao().existeDependenciaComCompetenciasDaFaixaSalarial(faixaSalarialId, dataInicial, dataFinal);
 	}
 
+	@TesteAutomatico
 	public boolean existeConfigCompetenciaParaAFaixaDestehistorico(Long historicoColaboradorId) {
 		return getDao().existeConfigCompetenciaParaAFaixaDestehistorico(historicoColaboradorId);
 	}
 
+	@TesteAutomatico
 	public Collection<ConfiguracaoNivelCompetenciaColaborador> findByDataAndFaixaSalarial(Date dataInicio, Date dataFim, Long faixaSalarialId) {
 		return getDao().findByDataAndFaixaSalarial(dataInicio, dataFim, faixaSalarialId);
 	}
 
+	@TesteAutomatico(metodoMock="findAvaliadores")
 	public Collection<Colaborador> findCargosAvaliadores(Long avaliacaoDesempenhoId, Long avaliadoId) {
 		return getDao().findAvaliadores(avaliacaoDesempenhoId, avaliadoId);
 	}
