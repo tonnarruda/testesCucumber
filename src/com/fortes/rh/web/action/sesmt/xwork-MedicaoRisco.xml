@@ -6,6 +6,7 @@
 		<action name="list" class="com.fortes.rh.web.action.sesmt.MedicaoRiscoEditAction" method="list">
 	    	<interceptor-ref name="defaultListStack">
 	    		<param name="scope.session">ambiente.id</param>
+	    		<param name="scope.session">controlaRiscoPor</param>
 	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/medicaoRiscoList.ftl</result>
 		</action>
@@ -13,8 +14,8 @@
 			<interceptor-ref name="defaultDeleteStack">
 				<param name="scope.session">ambiente.id</param>
 			</interceptor-ref>
-			<result name="success" type="redirect">list.action</result>
-			<result name="error" type="redirect">list.action</result>
+			<result name="success" type="redirect">list.action?controlaRiscoPor=${controlaRiscoPor}</result>
+			<result name="error" type="redirect">list.action?controlaRiscoPor=${controlaRiscoPor}</result>
 		</action>
 		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.MedicaoRiscoEditAction" method="updateFilter">
 	      	<interceptor-ref name="showFilterStack" />			
@@ -34,14 +35,14 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.MedicaoRiscoEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">list.action</result>
+			<result name="invalid.token" type="redirect">list.action?controlaRiscoPor=${controlaRiscoPor}</result>
+			<result name="success" type="redirect">list.action?controlaRiscoPor=${controlaRiscoPor}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/medicaoRiscoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.MedicaoRiscoEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">list.action</result>
+			<result name="invalid.token" type="redirect">list.action?controlaRiscoPor=${controlaRiscoPor}</result>
+			<result name="success" type="redirect">list.action?controlaRiscoPor=${controlaRiscoPor}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/medicaoRiscoEdit.ftl</result>
 		</action>
 	</package>

@@ -142,7 +142,6 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 					
 					posicao++;
 					
-					
 					// no início do período prevalece a data mais recente: 
 					// 		histórico do ambiente, data da medição ou histórico do colaborador
 					if (dataMedicao.compareTo(pppFatorRiscoIni) == 1)

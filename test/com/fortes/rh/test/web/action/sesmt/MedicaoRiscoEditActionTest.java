@@ -86,6 +86,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('A');
+		action.setControlaRiscoPor('A');
 		action.setEmpresaSistema(empresa);
 		
 		ambienteManager.expects(once()).method("findAmbientes");
@@ -99,6 +100,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('F');
+		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
 		
 		funcaoManager.expects(once()).method("findByEmpresa").with(eq(empresa.getId()));
@@ -112,6 +114,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('A');
+		action.setControlaRiscoPor('A');
 		action.setEmpresaSistema(empresa);
 		
 		Ambiente ambiente = AmbienteFactory.getEntity(2L);
@@ -132,6 +135,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('F');
+		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
 		
 		Funcao funcao  = FuncaoFactory.getEntity(2L);
@@ -153,6 +157,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('A');
+		action.setControlaRiscoPor('A');
 		action.setEmpresaSistema(empresa);
 		
 		action.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
@@ -178,6 +183,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('F');
+		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
 		
 		Funcao funcao  = FuncaoFactory.getEntity(2L);
@@ -211,6 +217,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('A');
+		action.setControlaRiscoPor('A');
 		action.setEmpresaSistema(empresa);
 		
 		Ambiente ambiente = AmbienteFactory.getEntity(15L);
@@ -234,6 +241,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('A');
+		action.setControlaRiscoPor('A');
 		action.setEmpresaSistema(empresa);
 		
 		Ambiente ambiente = AmbienteFactory.getEntity(15L);
@@ -263,6 +271,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('F');
+		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
 		
 		action.setCargo(CargoFactory.getEntity(1L));
@@ -294,6 +303,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('F');
+		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
 		
 		action.setCargo(CargoFactory.getEntity(1L));
@@ -323,6 +333,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('F');
+		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
 		
 		action.setCargo(CargoFactory.getEntity(1L));
@@ -348,6 +359,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('F');
+		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
 		
 		action.setCargo(CargoFactory.getEntity(1L));
@@ -397,6 +409,8 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 
 	public void testInsertException() throws Exception
 	{
+		action.setControlaRiscoPor('A');
+		
 		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		manager.expects(once()).method("getTecnicasUtilizadas");
 		estabelecimentoManager.expects(once()).method("findAllSelect");
@@ -435,6 +449,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
 		medicaoRisco.setAmbiente(null);
 		
+		action.setControlaRiscoPor('A');
 		action.setMedicaoRisco(medicaoRisco);
 		
 		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));

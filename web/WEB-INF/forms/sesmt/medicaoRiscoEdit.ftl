@@ -27,7 +27,6 @@
 		var tecnicasUtilizadas = [${tecnicasUtilizadas}];
 	</script>
 
-	<#assign empresaControlaRiscoPor><@authz.authentication operation="empresaControlaRiscoPor"/></#assign>
     <#assign date = "" />
     <#if data?exists>
 		<#assign date = data?date/>
@@ -51,7 +50,7 @@
 			
 			<@ww.datepicker label="Data da medição" id="data" name="data" required="true" cssClass="mascaraData" value="${date}" onchange="setGravarDesabilitado('true');"/>
 			
-			<#if empresaControlaRiscoPor == 'A'>
+			<#if controlaRiscoPor == 'A'>
 				<#if atualizacao>
 					<#assign headerValue="Selecione..." />
 				<#else>
@@ -106,6 +105,7 @@
 			</@display.table>
 			
 			<@ww.hidden name="medicaoRisco.id" />
+			<@ww.hidden name="controlaRiscoPor" />
 			
 			<@ww.token/>
 		</@ww.form>
@@ -198,7 +198,7 @@
 	    {
 	    	document.form.action = formAction;
 	    	
-	    	<#if empresaControlaRiscoPor == 'A'>
+	    	<#if controlaRiscoPor == 'A'>
 	    		validaFormulario('form', new Array('data','ambiente'), new Array('data'));
 			<#else>
 	    		validaFormulario('form', new Array('data','funcao'), new Array('data'));

@@ -42,6 +42,8 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	private Estabelecimento estabelecimento;
 	private Cargo cargo;
 	
+	private char controlaRiscoPor;
+	
 	private Date data;
 	
 	private String[] ltcatValues;
@@ -66,18 +68,18 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	{
 		tecnicasUtilizadas = medicaoRiscoManager.getTecnicasUtilizadas(getEmpresaSistema().getId());
 		
-		if (getEmpresaSistema().getControlaRiscoPor() == 'A')
+		if (controlaRiscoPor == 'A')
 			estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-		else  if (getEmpresaSistema().getControlaRiscoPor() == 'F')
+		else  if (controlaRiscoPor == 'F')
 			cargos = cargoManager.findCargos(0, 0, getEmpresaSistema().getId(), null, null, null);
 		
 		if (medicaoRisco.getId() != null)
 		{
-			if (getEmpresaSistema().getControlaRiscoPor() == 'A')
+			if (controlaRiscoPor == 'A')
 			{
 				medicaoRisco = medicaoRiscoManager.findById(medicaoRisco.getId());
 				estabelecimento = medicaoRisco.getAmbiente().getEstabelecimento();
-			}else  if (getEmpresaSistema().getControlaRiscoPor() == 'F')
+			}else  if (controlaRiscoPor == 'F')
 			{
 				medicaoRisco = medicaoRiscoManager.getFuncaoByMedicaoRisco(medicaoRisco.getId());
 				medicaoRisco.setRiscoMedicaoRiscos(medicaoRiscoManager.findRiscoMedicaoRiscos(medicaoRisco.getId()));
@@ -104,12 +106,12 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	{
 		prepare();
 		desabilitarGravar = false;
-		if (getEmpresaSistema().getControlaRiscoPor() == 'A')
+		if (controlaRiscoPor == 'A')
 		{
 			ambientes = ambienteManager.findByEstabelecimento(estabelecimento.getId());
 			riscos = riscoAmbienteManager.findRiscosByAmbienteData(ambiente.getId(), data);
 		} 
-		else  if (getEmpresaSistema().getControlaRiscoPor() == 'F')
+		else  if (controlaRiscoPor == 'F')
 		{
 			funcoes = funcaoManager.findByCargo(cargo.getId());
 			riscos = riscoFuncaoManager.findRiscosByFuncaoData(funcao.getId(), data);
@@ -121,12 +123,12 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		populaRiscos();
 		String contexto = "";
 
-		if (getEmpresaSistema().getControlaRiscoPor() == 'A')
+		if (controlaRiscoPor == 'A')
 		{
 			riscoMedicaoRiscos = riscoMedicaoRiscoManager.findMedicoesDeRiscosDoAmbiente(ambiente.getId(), data);
 			contexto = "este Ambiente";
 		}
-		else if (getEmpresaSistema().getControlaRiscoPor() == 'F')
+		else if (controlaRiscoPor == 'F')
 		{
 			riscoMedicaoRiscos = riscoMedicaoRiscoManager.findMedicoesDeRiscosDaFuncao(funcao.getId(), data);
 			contexto = "esta Função";
@@ -145,13 +147,13 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	{
 		prepare();
 		
-		if (getEmpresaSistema().getControlaRiscoPor() == 'A')
+		if (controlaRiscoPor == 'A')
 		{
 			ambiente = medicaoRisco.getAmbiente();
 			ambientes = ambienteManager.findByEstabelecimento(estabelecimento.getId());
 			riscos = riscoAmbienteManager.findRiscosByAmbienteData(medicaoRisco.getAmbiente().getId(), medicaoRisco.getData());
 		}
-		else  if (getEmpresaSistema().getControlaRiscoPor() == 'F')
+		else  if (controlaRiscoPor == 'F')
 		{
 			funcao = medicaoRisco.getFuncao();
 			funcoes = funcaoManager.findByCargo(cargo.getId());
@@ -171,9 +173,9 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		{
 			medicaoRisco.setData(data);
 			
-			if (getEmpresaSistema().getControlaRiscoPor() == 'A')
+			if (controlaRiscoPor == 'A')
 				medicaoRisco.setAmbiente(ambiente);
-			else if (getEmpresaSistema().getControlaRiscoPor() == 'F')
+			else if (controlaRiscoPor == 'F')
 				medicaoRisco.setFuncao(funcao);
 			
 			medicaoRiscoManager.save(medicaoRisco, riscoIds, ltcatValues, ppraValues, tecnicaValues, intensidadeValues);
@@ -193,9 +195,9 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		{
 			medicaoRisco.setData(data);
 			
-			if (getEmpresaSistema().getControlaRiscoPor() == 'A')
+			if (controlaRiscoPor == 'A')
 				medicaoRisco.setAmbiente(ambiente);
-			else if (getEmpresaSistema().getControlaRiscoPor() == 'F')
+			else if (controlaRiscoPor == 'F')
 				medicaoRisco.setFuncao(funcao);
 			
 			medicaoRiscoManager.save(medicaoRisco, riscoIds, ltcatValues, ppraValues, tecnicaValues, intensidadeValues);
@@ -208,19 +210,25 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		}
 		return SUCCESS;
 	}
-
+	
 	public String list() throws Exception
 	{
-		if (getEmpresaSistema().getControlaRiscoPor() == 'A')
-		{
+		if (controlaRiscoPor == 'A') {
 			ambientes = ambienteManager.findAmbientes(getEmpresaSistema().getId());
 			medicaoRiscos = medicaoRiscoManager.findAllSelectByAmbiente(getEmpresaSistema().getId(), getAmbiente().getId());
-		} 
-		else  if (getEmpresaSistema().getControlaRiscoPor() == 'F')
-		{
+		} else if (controlaRiscoPor == 'F') {
 			funcoes = funcaoManager.findByEmpresa(getEmpresaSistema().getId());
 			medicaoRiscos = medicaoRiscoManager.findAllSelectByFuncao(getEmpresaSistema().getId(), getFuncao().getId());
 		}
+	
+		return SUCCESS;
+	}
+
+	public String listPorAmbiente() throws Exception
+	{
+		ambientes = ambienteManager.findAmbientes(getEmpresaSistema().getId());
+		medicaoRiscos = medicaoRiscoManager.findAllSelectByAmbiente(getEmpresaSistema().getId(), getAmbiente().getId());
+		controlaRiscoPor = 'A';
 		
 		return SUCCESS;
 	}
@@ -399,6 +407,14 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 
 	public Collection<Cargo> getCargos() {
 		return cargos;
+	}
+	
+	public char getControlaRiscoPor() {
+		return controlaRiscoPor;
+	}
+	
+	public void setControlaRiscoPor(char controlaRiscoPor) {
+		this.controlaRiscoPor = controlaRiscoPor;
 	}
 
 	public void setCargoManager(CargoManager cargoManager) {

@@ -10,7 +10,6 @@
 
 	<title>Medição dos Riscos</title>
 	
-	<#assign empresaControlaRiscoPor><@authz.authentication operation="empresaControlaRiscoPor"/></#assign>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
 	<#include "../ftl/showFilterImports.ftl" />
@@ -19,8 +18,9 @@
 <body>
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="form" id="form" action="list.action" method="POST">
+		<@ww.hidden id="controlaRiscoPor" name="controlaRiscoPor"/>
 
-		<#if empresaControlaRiscoPor == 'A'>
+		<#if controlaRiscoPor == 'A'>
 			<@ww.select label="Ambiente" id="ambiente" name="ambiente.id" list="ambientes" listValue="nome" listKey="id" headerKey="-1" headerValue="Todos" />
 		<#else>
 			<@ww.select label="Função" id="funcao" name="funcao.id" list="funcoes" listValue="nome" listKey="id" headerKey="-1" headerValue="Todas" />
@@ -37,12 +37,12 @@
 	
 	<@display.table name="medicaoRiscos" id="medicaoRisco" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?medicaoRisco.id=${medicaoRisco.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?medicaoRisco.id=${medicaoRisco.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="prepareUpdate.action?controlaRiscoPor=${controlaRiscoPor}&medicaoRisco.id=${medicaoRisco.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?controlaRiscoPor=${controlaRiscoPor}&medicaoRisco.id=${medicaoRisco.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column title="Data da Medição" property="data" format="{0,date,dd/MM/yyyy}" />
 		
-		<#if empresaControlaRiscoPor == 'A'>
+		<#if controlaRiscoPor == 'A'>
 			<@display.column title="Ambiente" property="ambiente.nome" />
 			<@display.column title="Estabelecimento" property="ambiente.estabelecimento.nome" />
 		<#else>
@@ -52,7 +52,7 @@
 	</@display.table>
 	
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+		<button class="btnInserir" onclick="window.location='prepareInsert.action?controlaRiscoPor=${controlaRiscoPor}'"></button>
 	</div>
 </body>
 </html>
