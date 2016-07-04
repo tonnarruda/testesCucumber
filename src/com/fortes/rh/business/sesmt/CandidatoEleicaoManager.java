@@ -8,7 +8,9 @@ import com.fortes.rh.model.sesmt.CandidatoEleicao;
 import com.fortes.rh.model.sesmt.Eleicao;
 import com.fortes.rh.security.spring.aop.callback.CandidatoEleicaoAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
+import com.fortes.security.auditoria.Modulo;
 
+@Modulo("Candidato da Eleicao")
 public interface CandidatoEleicaoManager extends GenericManager<CandidatoEleicao>
 {
 	Collection<CandidatoEleicao> findByEleicao(Long eleicaoId);

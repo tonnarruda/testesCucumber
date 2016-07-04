@@ -19,40 +19,43 @@ public class CandidatoEleicaoAuditorCallbackImpl implements AuditorCallback {
 		return (Auditavel) method.invoke(this, metodo);
 	}
 
-	public Auditavel remove(MetodoInterceptado metodo) throws Throwable {
+	public Auditavel remove(MetodoInterceptado metodo) throws Throwable
+	{
 		Long candidatoEleicaoId = (Long) metodo.getParametros()[0];
-		
+
 		CandidatoEleicao candidatoEleicao = carregaCandidatoElelicao(metodo, candidatoEleicaoId);
-		
-		String dados = "Candidato Eleição ID: "  + candidatoEleicao.getId();
-		dados += "\nEleito: " + (candidatoEleicao.isEleito() ? "Sim" : "Não") ;
-		dados += "\nColaborador: " + candidatoEleicao.getCandidato().getNome();
-		dados += "\nColaborador ID: " + candidatoEleicao.getCandidato().getId();
-		
+
+		StringBuilder dados = new StringBuilder("");
+		dados.append("Candidato da Eleição ID: " + candidatoEleicao.getId());
+		dados.append("\nEleito: " + (candidatoEleicao.isEleito() ? "Sim" : "Não"));
+		dados.append("\nColaborador: " + candidatoEleicao.getCandidato().getNome());
+		dados.append("\nColaborador ID: " + candidatoEleicao.getCandidato().getId());
+
 		metodo.processa();
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "Remoção - "+candidatoEleicao.getCandidato().getNome() , dados);			
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "Remoção - " + candidatoEleicao.getCandidato().getNome(), dados.toString());
 	}
 	
-	public Auditavel save(MetodoInterceptado metodo) throws Throwable {
+	public Auditavel save(MetodoInterceptado metodo) throws Throwable
+	{
 		String[] candidatosCheck = (String[]) metodo.getParametros()[0];
 		Eleicao eleicao = (Eleicao) metodo.getParametros()[1];
 		CandidatoEleicaoManager manager = (CandidatoEleicaoManager) metodo.getComponente();
 		Collection<CandidatoEleicao> candidatosAnteror = manager.findByEleicao(eleicao.getId());
 		metodo.processa();
 
-		String dados = "";
+		StringBuilder dados = new StringBuilder("");
 		for (String string : candidatosCheck) {
 			CandidatoEleicao candidatoEleicao = manager.findByColaboradorIdAndEleicaoId(Long.parseLong(string), eleicao.getId());
 			candidatoEleicao.setEleicao(eleicao);
-			if(!candidatosAnteror.contains(candidatoEleicao)){
-				dados += "Candidato Eleição ID: "  + candidatoEleicao.getId();
-				dados += "\nColaborador: " + candidatoEleicao.getCandidato().getNome();
-				dados += "\nColaborador ID: " + candidatoEleicao.getCandidato().getId();
-				dados +="\n\n"; 
+			if (!candidatosAnteror.contains(candidatoEleicao)) {
+				dados.append("Candidato da Eleição ID: " + candidatoEleicao.getId());
+				dados.append("\nColaborador: " + candidatoEleicao.getCandidato().getNome());
+				dados.append("\nColaborador ID: " + candidatoEleicao.getCandidato().getId());
+				dados.append("\n\n");
 			}
 		}
-		if(!dados.isEmpty())
-			return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "Inserção - Eleição ID: " + eleicao.getId() , dados);
+		if (!dados.toString().isEmpty())
+			return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "Inserção - Eleição ID: " + eleicao.getId(), dados.toString());
 		else
 			return null;
 	}

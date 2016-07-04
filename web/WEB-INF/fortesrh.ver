@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.1xx.201" db="" data="xx/06/2016">
+		<Item visivel="S" motivo="S16060000318"><![CDATA[SESMT > Cadastros > CIPA > Eleições > Candidatos:  Auditoria da inserção e remoção de candidatos da eleição da CIPA.]]></Item>
+	</Versao>
 	<Versao id="1.1.168.200" db="" data="29/06/2016">
 		<Item visivel="S" motivo="P16060000093"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste de inconsistência ao remover colaborador a ser avaliado.]]></Item>
  		<Item visivel="S" motivo="S16040000282"><![CDATA[T&D > Cadastros > Certificações: Possibilidade de editar certificações contendo colaboradores já certificados.]]></Item> 

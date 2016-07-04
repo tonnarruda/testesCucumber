@@ -22,29 +22,6 @@ public class CandidatoEleicaoDaoHibernate extends GenericDaoHibernate<CandidatoE
 {
 	public Collection<CandidatoEleicao> findByEleicao(Long eleicaoId, boolean somenteEleitos, boolean retornoAC)
 	{
-//		Criteria criteria = getSession().createCriteria(getEntityClass(),"c");
-//		criteria = criteria.createCriteria("c.candidato", "cand");
-//
-//		ProjectionList p = Projections.projectionList().create();
-//		p.add(Projections.property("c.id"), "id");
-//		p.add(Projections.property("c.qtdVoto"), "qtdVoto");
-//		p.add(Projections.property("c.eleito"), "eleito");
-//		p.add(Projections.property("c.eleicao.id"), "projectionEleicaoId");
-//		p.add(Projections.property("cand.id"), "projectionCandidatoId");
-//		p.add(Projections.property("cand.nome"), "projectionCandidatoNome");
-//		p.add(Projections.property("cand.nomeComercial"), "projectionCandidatoNomeComercial");
-//		criteria.setProjection(p);
-//
-//		if (somenteEleitos)
-//			criteria.add(Expression.eq("c.eleito", true));
-//
-//		criteria.add(Expression.eq("c.eleicao.id", eleicaoId));
-//
-//		criteria.addOrder( Order.asc("cand.nome") );
-//		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
-//
-//		return criteria.list();
-		
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new CandidatoEleicao(c.id, c.qtdVoto, c.eleito, e.id, cand.id, cand.nome, cand.nomeComercial, cargo.nome) ");
 		hql.append("from CandidatoEleicao as c ");
