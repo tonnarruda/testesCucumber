@@ -199,13 +199,13 @@ $(function() {
 
 function conectAvaliadosAvaliadores() {
 	$( "#avaliadores ul" ).droppable({
-      activeClass: "ui-state-default",
+      activeClass: "ui-state-default:visible",
       hoverClass: "ui-state-hover",
       accept: ":not(.ui-sortable-helper)",
       sort: function( event, ui ) {
-    	  
       },
       drop: function( event, ui ) {
+    	  
     	var ulAvaliadores = $(this);
     	if ( $("#avaliados li.ui-selected").length > 0 ) {
 	    	$("#avaliados li.ui-selected").each(function(){
