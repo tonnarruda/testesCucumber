@@ -2,8 +2,10 @@ package com.fortes.webwork.interceptor;
 
 import java.io.IOException;
 import java.sql.BatchUpdateException;
+import java.util.Date;
 import java.util.Vector;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.acegisecurity.context.SecurityContext;
@@ -55,6 +57,8 @@ public class ValidationExceptionInterceptor implements Interceptor
 		
 		try
 		{
+			HttpServletResponse response = (HttpServletResponse) invocation.getInvocationContext().get(ServletActionContext.HTTP_RESPONSE);
+			criaCookieProcessando(response);
 			result = invocation.invoke();
 		}
 		catch (DataIntegrityViolationException e)
@@ -163,6 +167,12 @@ public class ValidationExceptionInterceptor implements Interceptor
 		}
 	}
 
+	private void criaCookieProcessando(HttpServletResponse response) {
+		Long time = new Date().getTime();
+		Cookie myCookie = new Cookie("processando", time.toString());
+		response.addCookie(myCookie);
+	}
+	
 	private void logaErros(Exception e)
 	{
 		logger.error(e.getMessage());

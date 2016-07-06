@@ -28,6 +28,7 @@
 		<#assign countParticipantesAvaliados=0 />
 		<#assign countParticipantesAvaliadores=0 />
 		<#assign gerarAutoAvaliacoesEmLoteAction="gerarAutoAvaliacoesEmLote.action"/>
+		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 		
 		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
@@ -169,9 +170,10 @@
 			
 			$(".pesoAvaliador").toggle(!validForm);
 			$(".portlet-toggle").toggle(validForm);
-			if(validForm)
+			if(validForm){
+				processando('${urlImgs}');
 				$("#formParticipantes").submit();
-			else {
+			}else {
 				jAlert("Preencha os campos indicados.");
 			}
 		};
@@ -210,6 +212,7 @@
 		
 		<div style="width: 760px; margin: 0 auto;">
 			<@ww.form name="formParticipantes" id="formParticipantes" action="saveParticipantes" method="POST">
+				<@ww.hidden name="avaliacaoDesempenho.id"/>
 				<div id="avaliados" class="box">
 				  <h1 class="ui-widget-header title">
 				  	<span id = "inserir_Avaliado" class="ui-icon ui-icon-plusthick more-avaliado" title="Inserir Avaliado" <#if !avaliacaoDesempenho.liberada>onclick="openboxAvaliado('Inserir Avaliado', 'nomeBusca');"<#else>disabled="disabled"</#if> ></span>
@@ -370,10 +373,11 @@
 				  	</div>
 				</div>
 				
-				<script>countColaboradorQuestionarios=${countColaboradorQuestionarios};</script>
-				<script>countParticipantesAvaliados=${countParticipantesAvaliados};</script>
-				<script>countParticipantesAvaliadores=${countParticipantesAvaliadores};</script>
-				<@ww.hidden name="avaliacaoDesempenho.id"/>
+				<script>
+					countColaboradorQuestionarios=${countColaboradorQuestionarios};
+					countParticipantesAvaliados=${countParticipantesAvaliados};
+					countParticipantesAvaliadores=${countParticipantesAvaliadores};
+				</script>
 				
 				<button type="button" onclick="validForm();" class="btnGravar" id = "btnGravar"></button>
 				<button type="button" onclick="window.location='list.action'" class="btnVoltar"></button>
