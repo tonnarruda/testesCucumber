@@ -20,6 +20,7 @@
 	<field name="nome" class="java.lang.String"/>
 	<field name="ordem" class="java.lang.Double"/>
 	<field name="identificador" class="java.lang.Integer"/>
+	<field name="identificadorAlafabeto" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count"/>
 	<background>
 		<band splitType="Stretch"/>
@@ -73,7 +74,7 @@
 				<categoryDataset>
 					<categorySeries>
 						<seriesExpression><![CDATA[""]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{identificador}]]></categoryExpression>
+						<categoryExpression><![CDATA[$F{identificadorAlafabeto}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{ordem}]]></valueExpression>
 					</categorySeries>
 				</categoryDataset>

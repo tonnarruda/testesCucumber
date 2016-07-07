@@ -34,6 +34,13 @@ public class NivelCompetencia extends AbstractModel implements Serializable
 	@Transient
 	private Integer ordem;
 	
+	public NivelCompetencia(){}
+	
+	public NivelCompetencia(String descricao, Integer ordem){
+		this.descricao = descricao;
+		this.ordem = ordem;
+	}
+	
 	public String getDescricao() {
 		return descricao;
 	}

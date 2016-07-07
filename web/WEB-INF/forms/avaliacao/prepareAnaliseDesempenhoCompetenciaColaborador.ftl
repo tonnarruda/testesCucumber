@@ -28,8 +28,8 @@
 			populaCargosByAreaVinculados();
 			populaCargosAvaliado();
 			exibeOuOcultaFiltros();
-			//populaOrdensNivelCompetencia();
-			//mudaLabelMultCheckBoxAvaliadores();
+			populaOrdensNivelCompetencia();
+			mudaLabelMultCheckBoxAvaliadores();
 			
 			if($('#avaliacao').val())
 			 	populaAvaliados();
@@ -218,8 +218,8 @@
 	<@ww.actionmessage />
 	
 	<@ww.form name="form" action="analiseDesempenhoCompetenciaColaborador.action" onsubmit="${validarCampos}" method="POST">
-		<!--<@ww.select label="Gerar relatório" name="relatorioDetalhado" id="relatorioDetalhado" list=r"#{false:'Resumido', true:'Detalhado'}" cssStyle="width: 600px;" onchange="exibeOuOcultaFiltros();"/>-->
-		<@ww.hidden name="relatorioDetalhado" id="relatorioDetalhado" value="false" />
+		<@ww.select label="Gerar relatório" name="relatorioDetalhado" id="relatorioDetalhado" list=r"#{false:'Resumido', true:'Detalhado'}" cssStyle="width: 600px;" onchange="exibeOuOcultaFiltros();"/>
+		<!--<@ww.hidden name="relatorioDetalhado" id="relatorioDetalhado" value="false" />-->
 		<@ww.select label="Avaliação de desempenho que avaliam competência" required="true" name="avaliacaoDesempenho.id" id="avaliacao" list="avaliacaoDesempenhos" listKey="id" listValue="titulo" cssStyle="width: 600px;" headerKey="" headerValue="Selecione..." onchange="populaAvaliados();populaOrdensNivelCompetencia();"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByAreaVinculados();populaAvaliados();" filtro="true" selectAtivoInativo="true"/>
 		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>

@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -50,12 +49,10 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	private static Long AUTOAVALIACAO = 0L;
 	private static Long OUTROSAVALIADORES = -1L;
 
-	@TesteAutomatico
 	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data) {
 		return getDao().findByFaixa(faixaSalarialId, data);
 	}
 
-	@TesteAutomatico
 	public Collection<ConfiguracaoNivelCompetencia> findByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId) {
 		return getDao().findByCandidatoAndSolicitacao(candidatoId, solicitacaoId);
 	}
@@ -290,7 +287,6 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return configuracoesNiveisCompetencia;
 	}
 	
-	@TesteAutomatico
 	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelCompetenciaFaixaSalarialId)
 	{
 		return getDao().findByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarialId);
@@ -569,13 +565,11 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return matriz;
 	}
 
-	@TesteAutomatico
 	public void removeByFaixas(Long[] faixaSalarialIds) 
 	{
 		getDao().removeByFaixas(faixaSalarialIds);
 	}
 
-	@TesteAutomatico
 	public void removeColaborador(Colaborador colaborador) {
 		getDao().removeColaborador(colaborador);
 	}
@@ -594,7 +588,6 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 
 	public void removeConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelFaixaSalarialId) throws Exception
 	{
-		// TODO: Criar teste
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findById(configuracaoNivelFaixaSalarialId);
 		
 		verificaDependencias(configuracaoNivelCompetenciaFaixaSalarial);
@@ -630,47 +623,39 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		configuracaoNivelCompetenciaCandidatoManager.removeByCandidato(candidatoId);
 	}
 
-	@TesteAutomatico
 	public Long[] findCompetenciasIdsConfiguradasByFaixaSolicitacao(Long faixaSalarialId) {
 		return getDao().findCompetenciasIdsConfiguradasByFaixaSolicitacao(faixaSalarialId);
 	}
 
-	@TesteAutomatico
 	public Integer somaConfiguracoesByFaixa(Long faixaSalarialId) {
 		return getDao().somaConfiguracoesByFaixa(faixaSalarialId);
 	}
 
-	@TesteAutomatico
 	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Boolean colaboradoresAvaliados, char agruparPor) 
 	{
 		return getDao().findColaboradoresCompetenciasAbaixoDoNivel(	empresaId, estabelecimentoIds, areaIds, colaboradoresAvaliados, agruparPor);
 	}
 	
-	@TesteAutomatico
 	public Collection<Competencia> findCompetenciasColaboradorByFaixaSalarialAndPeriodo(Long faixaId, Date dataIni, Date dataFim) 
 	{
 		return getDao().findCompetenciasColaboradorByFaixaSalarialAndPeriodo(faixaId, dataIni, dataFim);
 	}
 	
-	@TesteAutomatico(metodoMock="removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixasSalariais")
 	public void removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixaSalarial(Long[] faixaIds)
 	{
 		getDao().removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixasSalariais(faixaIds);
 	}
 	
-	@TesteAutomatico(metodoMock="removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixasSalariais")
 	public void removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixaSalarial(Long[] faixaIds)
 	{
 		getDao().removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixasSalariais(faixaIds);
 	}
 
-	@TesteAutomatico
 	public Collection<Colaborador> findDependenciaComColaborador(Long faixaSalarialId, Date data) 
 	{
 		return getDao().findDependenciaComColaborador(faixaSalarialId, data);
 	}
 	
-	@TesteAutomatico
 	public Collection<Candidato> findDependenciaComCandidato(Long faixaSalarialId, Date data)
 	{
 		return getDao().findDependenciaComCandidato(faixaSalarialId, data);
@@ -686,13 +671,11 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().verifyExists(new String[]{"competenciaId", "tipoCompetencia"}, new Object[]{competenciaId, tipoCompetencia});
 	}
 
-	@TesteAutomatico
 	public void removeBySolicitacaoId(Long solicitacaoId) 
 	{
 		getDao().removeBySolicitacaoId(solicitacaoId);
 	}
 
-	@TesteAutomatico
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciasAndPesos(Long avaliacaoDesempenhoId, Long avaliadoId) 
 	{
 		return getDao().findCompetenciasAndPesos(avaliacaoDesempenhoId, avaliadoId);
@@ -701,16 +684,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	public RelatorioAnaliseDesempenhoColaborador montaRelatorioAnaliseDesempenhoColaborador(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds, Integer notaMinimaMediaGeralCompetencia, boolean agruparPorCargo) {
 		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = new RelatorioAnaliseDesempenhoColaborador();
 		relatorioAnaliseDesempenhoColaborador.setNiveisCompetencias(nivelCompetenciaManager.findNiveisCompetenciaByAvDesempenho(avaliacaoDesempenhoId));
-		
-		if(relatorioAnaliseDesempenhoColaborador.getNiveisCompetencias().size() == 0)	
-			return null;
-		
 		relatorioAnaliseDesempenhoColaborador.setNotaMinimaMediaGeralCompetencia(notaMinimaMediaGeralCompetencia);
 		relatorioAnaliseDesempenhoColaborador.setResultadosCompetenciaColaborador(montaRelatorioResultadoCompetencia(avaliacaoDesempenhoId, avaliadoId, avaliadoresIds, agruparPorCargo));
-		
-		if(relatorioAnaliseDesempenhoColaborador.getResultadosCompetenciaColaborador().size() == 0)	
-			return null;
-		
 		relatorioAnaliseDesempenhoColaborador.setValorMaximoGrafico(nivelCompetenciaManager.getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId));
 		relatorioAnaliseDesempenhoColaborador.montaLegenda();
 		
@@ -718,7 +693,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	}
 	
 	private LinkedList<ResultadoCompetenciaColaborador> montaRelatorioResultadoCompetencia(Long avaliacaoDesempenhoId, Long avaliadoId, Collection<Long> avaliadoresIds, boolean agruparPorCargo) {
-		LinkedList<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findByAvaliacaaDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId, agruparPorCargo);
+		LinkedList<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findByAvaliacaoDesempenhoAndAvaliado(avaliacaoDesempenhoId, avaliadoId, agruparPorCargo);
 		LinkedList<ResultadoCompetenciaColaborador> resultadoCompetenciaColaboradores = new LinkedList<ResultadoCompetenciaColaborador>();
 		
 		Map<String, LinkedList<ConfiguracaoNivelCompetencia>> cncAbrupadoPorCompetencia = new HashMap<String, LinkedList<ConfiguracaoNivelCompetencia>>();

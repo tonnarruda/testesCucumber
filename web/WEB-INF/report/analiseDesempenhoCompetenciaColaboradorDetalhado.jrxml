@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="admitidos" printOrder="Horizontal" pageWidth="595" pageHeight="850" whenNoDataType="AllSectionsNoDetail" columnWidth="565" leftMargin="15" rightMargin="15" topMargin="15" bottomMargin="10" isFloatColumnFooter="true" uuid="24767a6b-f9cf-40db-9a88-9000fc09d8a3">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="admitidos" columnCount="2" printOrder="Horizontal" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="280" leftMargin="17" rightMargin="18" topMargin="30" bottomMargin="30" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="24767a6b-f9cf-40db-9a88-9000fc09d8a3">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.363636363636371"/>
+	<property name="ireport.zoom" value="1.024520183047615"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="7"/>
+	<property name="ireport.y" value="22"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
-	<parameter name="MEDIAGERARLCOMPETENCIA" class="java.lang.Double"/>
+	<parameter name="VALORMAXIMOGRAFICO" class="java.lang.Integer"/>
+	<parameter name="AVALIADONOME" class="java.lang.String"/>
+	<parameter name="NOTAMINIMAMEDIAGERALCOMPETENCIA" class="java.lang.Integer"/>
+	<parameter name="CARGOFAIXA" class="java.lang.String"/>
+	<parameter name="AREANOME" class="java.lang.String"/>
+	<parameter name="MATRICULA" class="java.lang.String"/>
+	<parameter name="DATAADMISSAO" class="java.lang.String"/>
+	<parameter name="TAMANHOCOLECTIONNIVELCOMPETENCIAS" class="java.lang.Integer"/>
+	<parameter name="TAMANHOLEGENDA" class="java.lang.Integer"/>
+	<parameter name="RESULTADOCOMPETENCIAFINAL" class="java.lang.Object"/>
+	<parameter name="NIVEISCOMPETENCIADESCRICAO" class="java.lang.String"/>
+	<parameter name="NIVEISCOMPETENCIAORDEM" class="java.lang.String"/>
+	<parameter name="LEGENDA" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="avaliado.nome" class="java.lang.String"/>
-	<field name="resultadosCompetenciaColaborador" class="java.lang.Object"/>
-	<field name="valorMaximoGrafico" class="java.lang.Integer"/>
-	<field name="resultadoCompetenciaFinal" class="java.lang.Object"/>
-	<field name="notaMinimaMediaGeralCompetencia" class="java.lang.Integer"/>
-	<field name="avaliado.cargoFaixa" class="java.lang.String"/>
-	<field name="avaliado.areaOrganizacional.nome" class="java.lang.String"/>
-	<field name="avaliado.matricula" class="java.lang.String"/>
-	<field name="avaliado.dataAdmissaoFormatada" class="java.lang.String"/>
-	<field name="niveisCompetencias" class="java.lang.Object"/>
-	<field name="tamanhoCollectionNiveisCompeteencias" class="java.lang.Integer"/>
-	<field name="legenda" class="java.lang.String"/>
+	<field name="competenciaNome" class="java.lang.String"/>
+	<field name="resultadoCompetencias" class="java.lang.Object"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
@@ -42,7 +44,7 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="52" splitType="Stretch">
+		<band height="161" splitType="Stretch">
 			<subreport isUsingCache="true">
 				<reportElement key="subreport-1" x="14" y="1" width="537" height="50" uuid="33071d5f-4928-4bec-8beb-1498465fdd56"/>
 				<subreportParameter name="SUBREPORT_DIR">
@@ -53,12 +55,8 @@
 				</subreportParameter>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cabecalho.jasper"]]></subreportExpression>
 			</subreport>
-		</band>
-	</pageHeader>
-	<columnHeader>
-		<band height="99" splitType="Stretch">
 			<staticText>
-				<reportElement x="2" y="39" width="560" height="14" uuid="15976537-9fcd-43eb-b620-d4e37253bc99"/>
+				<reportElement x="2" y="103" width="560" height="14" uuid="15976537-9fcd-43eb-b620-d4e37253bc99"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -71,83 +69,158 @@
 				<text><![CDATA[RESULTADOS OBTIDOS]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="2" y="13" width="402" height="12" uuid="7213eaad-0485-4b61-b44e-8b3899f8bd9e"/>
+				<reportElement x="2" y="77" width="402" height="12" uuid="7213eaad-0485-4b61-b44e-8b3899f8bd9e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Cargo: " + $F{avaliado.cargoFaixa}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Cargo: " + $P{CARGOFAIXA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="2" y="26" width="560" height="12" uuid="5ce5abc3-3980-4c40-ac78-f65e3e607bb3"/>
+				<reportElement x="2" y="90" width="560" height="12" uuid="5ce5abc3-3980-4c40-ac78-f65e3e607bb3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Área Organizacional: " + $F{avaliado.areaOrganizacional.nome}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Área Organizacional: " + $P{AREANOME}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="404" y="13" width="158" height="12" uuid="31a8ee8f-a288-4879-a5cc-cd7036845f2b"/>
+				<reportElement x="404" y="77" width="158" height="12" uuid="31a8ee8f-a288-4879-a5cc-cd7036845f2b"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Data admissão: " + $F{avaliado.dataAdmissaoFormatada}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Data admissão: " + $P{DATAADMISSAO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="404" y="1" width="158" height="12" uuid="d1f6ddf3-f5b7-4ae5-a74a-d83c3dca6a7a"/>
+				<reportElement x="404" y="65" width="158" height="12" uuid="d1f6ddf3-f5b7-4ae5-a74a-d83c3dca6a7a"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Matrícula: " + ($F{avaliado.matricula} == null ? "Sem matrícula" : $F{avaliado.matricula})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Matrícula: " + ($P{MATRICULA} == null ? "Sem matrícula" : $P{MATRICULA})]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="2" y="65" width="402" height="12" uuid="bffd2cac-1bb5-4562-8775-f1ed8570d8cb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Colaborador: " + $P{AVALIADONOME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="117" width="560" height="14" uuid="61d2a451-952f-4730-824b-4f4e6f9e3009"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Escala de Desempenho]]></text>
+			</staticText>
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="2" y="53" width="560" height="46" uuid="7687e1cf-baa6-452b-a463-63cc399d0496"/>
-				<dataSourceExpression><![CDATA[$F{niveisCompetencias}]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "analiseDesempenhoCompetenciaColaboradorDetalhadoEscalaDesempenho" + $F{tamanhoCollectionNiveisCompeteencias} + ".jasper"]]></subreportExpression>
+				<reportElement key="subreport-1" x="2" y="131" width="560" height="30" isPrintWhenDetailOverflows="true" uuid="7687e1cf-baa6-452b-a463-63cc399d0496"/>
+				<subreportParameter name="NOME">
+					<subreportParameterExpression><![CDATA[$P{NIVEISCOMPETENCIADESCRICAO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="VALOR">
+					<subreportParameterExpression><![CDATA[$P{NIVEISCOMPETENCIAORDEM}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "analiseDesempenhoCompetenciaColaboradorDetalhadoEscalaDesempenho" + $P{TAMANHOCOLECTIONNIVELCOMPETENCIAS} + ".jasper"]]></subreportExpression>
 			</subreport>
-			<textField>
-				<reportElement x="2" y="1" width="402" height="12" uuid="bffd2cac-1bb5-4562-8775-f1ed8570d8cb"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Colaborador: " + $F{avaliado.nome}]]></textFieldExpression>
-			</textField>
 		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band splitType="Stretch"/>
+		<band height="197" splitType="Stretch">
+			<rectangle>
+				<reportElement x="2" y="0" width="280" height="197" uuid="fccc7c58-0017-48f4-ba26-37fb42d473c5"/>
+			</rectangle>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" x="2" y="17" width="280" height="180" uuid="88ca0036-2ce7-4331-81d0-414ce26fea2b"/>
+				<subreportParameter name="VALORMAXIMOGRAFICO">
+					<subreportParameterExpression><![CDATA[$P{VALORMAXIMOGRAFICO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[$F{resultadoCompetencias}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "analiseDesempenhoCompetenciaColaboradorDetalhadoGrafico.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="2" y="0" width="280" height="17" uuid="934296a4-4714-4692-8130-656fd76d0817"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{competenciaNome}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 	<columnFooter>
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="86" splitType="Stretch">
+		<band height="170" splitType="Stretch">
+			<rectangle>
+				<reportElement x="2" y="14" width="560" height="121" uuid="cda6c876-0b65-48ff-b7fd-5723cb519659"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="2" y="0" width="560" height="14" uuid="3c06f7da-44c7-433d-954f-95d1be239d32"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Legenda]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="24" y="5" width="451" height="81" uuid="8ebc513b-4249-4ca3-bb03-9694578ceef3"/>
-				<textFieldExpression><![CDATA[$F{legenda}]]></textFieldExpression>
+				<reportElement x="14" y="21" width="526" height="114" uuid="ee22041d-8936-4de0-bef2-f4a8f8d4dfb8"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<paragraph lineSpacing="1_1_2" firstLineIndent="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{LEGENDA}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-8" x="529" y="144" width="32" height="13" uuid="364f7209-aedd-4b11-8cb6-89f879a1ee84"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-7" x="336" y="144" width="186" height="13" uuid="22d11d44-4a5d-4ddf-8e99-9c9cf1fd6a84"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="403" splitType="Stretch">
+		<band height="197" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="2" y="0" width="560" height="197" uuid="87cb8989-4082-4f7a-8443-0c09990abe3b"/>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="VALORMAXIMOGRAFICO">
-					<subreportParameterExpression><![CDATA[new Integer($F{valorMaximoGrafico} + 1)]]></subreportParameterExpression>
-				</subreportParameter>
-				<dataSourceExpression><![CDATA[$F{resultadosCompetenciaColaborador}]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "analiseDesempenhoCompetenciaColaboradorDetalhadoDados.jasper"]]></subreportExpression>
-			</subreport>
-			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" positionType="Float" stretchType="RelativeToBandHeight" x="2" y="197" width="560" height="197" uuid="beafa2be-248d-4544-bd5e-2a9e93e99671"/>
+				<reportElement key="subreport-1" positionType="Float" stretchType="RelativeToBandHeight" x="2" y="0" width="560" height="197" uuid="beafa2be-248d-4544-bd5e-2a9e93e99671"/>
 				<subreportParameter name="notaMinimaMediaGeralCompetencia">
-					<subreportParameterExpression><![CDATA[$F{notaMinimaMediaGeralCompetencia}]]></subreportParameterExpression>
+					<subreportParameterExpression><![CDATA[$P{NOTAMINIMAMEDIAGERALCOMPETENCIA}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="valorMaximoGrafico">
-					<subreportParameterExpression><![CDATA[$F{valorMaximoGrafico}]]></subreportParameterExpression>
+					<subreportParameterExpression><![CDATA[$P{VALORMAXIMOGRAFICO}]]></subreportParameterExpression>
 				</subreportParameter>
-				<dataSourceExpression><![CDATA[$F{resultadoCompetenciaFinal}]]></dataSourceExpression>
+				<dataSourceExpression><![CDATA[$P{RESULTADOCOMPETENCIAFINAL}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "analiseDesempenhoCompetenciaColaboradorDetalhadoGraficoResumo.jasper"]]></subreportExpression>
 			</subreport>
 		</band>

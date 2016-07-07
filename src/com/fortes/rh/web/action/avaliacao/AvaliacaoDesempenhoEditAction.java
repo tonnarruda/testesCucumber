@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
@@ -28,6 +30,7 @@ import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.RelatorioAnaliseDesempenhoColaborador;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ResultadoCompetenciaColaborador;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
@@ -97,7 +100,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private String[] avaliadores;
 	private String[] avaliacoesCheck;
 	
-	private Collection<RelatorioAnaliseDesempenhoColaborador> relatorioAnaliseDesempenhoColaboradores = new ArrayList<RelatorioAnaliseDesempenhoColaborador>();
+	private Collection<ResultadoCompetenciaColaborador> resultadosCompetenciaColaborador = new ArrayList<ResultadoCompetenciaColaborador>();
 	private Integer notaMinimaMediaGeralCompetencia;
 	private boolean agruparPorCargo;
 	
@@ -358,18 +361,30 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			Collection<Long> avaliadoresIds = new CollectionUtil().convertArrayToCollection(new StringUtil().stringToLong(avaliadores));
 			RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = configuracaoNivelCompetenciaManager.montaRelatorioAnaliseDesempenhoColaborador(avaliacaoDesempenho.getId(), avaliado.getId(), avaliadoresIds, notaMinimaMediaGeralCompetencia, agruparPorCargo); 
 			
-			if(relatorioAnaliseDesempenhoColaborador != null){
-				relatorioAnaliseDesempenhoColaborador.setAvaliado(colaboradorManager.findByIdHistoricoAtual(avaliado.getId(), false));
-				relatorioAnaliseDesempenhoColaboradores.add(relatorioAnaliseDesempenhoColaborador);
-			}
-			
-			if(relatorioAnaliseDesempenhoColaboradores.size() == 0){
+			resultadosCompetenciaColaborador =  relatorioAnaliseDesempenhoColaborador.getResultadosCompetenciaColaborador();
+			if(resultadosCompetenciaColaborador.size() == 0){
 				addActionMessage("Não existem competências para o avaliado informado.");
 				prepareAnaliseDesempenhoCompetenciaColaborador();
 				return INPUT;
 			}
 			
+			relatorioAnaliseDesempenhoColaborador.setAvaliado(colaboradorManager.findByIdHistoricoAtual(avaliado.getId(), false));
+			
 			parametros = RelatorioUtil.getParametrosRelatorio("Resultado das Competências do Colaborador", getEmpresaSistema(), avaliacaoDesempenho.getTitulo());
+			parametros.put("VALORMAXIMOGRAFICO", relatorioAnaliseDesempenhoColaborador.getValorMaximoGrafico());
+			parametros.put("AVALIADONOME", relatorioAnaliseDesempenhoColaborador.getAvaliado().getNome());
+			parametros.put("NOTAMINIMAMEDIAGERALCOMPETENCIA", relatorioAnaliseDesempenhoColaborador.getNotaMinimaMediaGeralCompetencia());
+			parametros.put("CARGOFAIXA", relatorioAnaliseDesempenhoColaborador.getAvaliado().getCargoFaixa());
+			parametros.put("AREANOME", relatorioAnaliseDesempenhoColaborador.getAvaliado().getAreaOrganizacional().getNome());
+			parametros.put("MATRICULA", relatorioAnaliseDesempenhoColaborador.getAvaliado().getMatricula());
+			parametros.put("DATAADMISSAO", relatorioAnaliseDesempenhoColaborador.getAvaliado().getDataAdmissaoFormatada());
+			parametros.put("TAMANHOCOLECTIONNIVELCOMPETENCIAS", relatorioAnaliseDesempenhoColaborador.getTamanhoCollectionNiveisCompetencias());
+			parametros.put("RESULTADOCOMPETENCIAFINAL", new JRBeanCollectionDataSource(relatorioAnaliseDesempenhoColaborador.getResultadoCompetenciaFinal()));
+			parametros.put("NIVEISCOMPETENCIADESCRICAO", relatorioAnaliseDesempenhoColaborador.getNiveisCompetenciasDescricao());
+			parametros.put("NIVEISCOMPETENCIAORDEM", relatorioAnaliseDesempenhoColaborador.getNiveisCompetenciasOrdem());
+			parametros.put("LEGENDA", relatorioAnaliseDesempenhoColaborador.getLegenda());
+
+			//parametros.put("NIVEISCOMPETENCIA", new JRBeanCollectionDataSource(relatorioAnaliseDesempenhoColaborador.getNiveisCompetencias()));
 			
 		} catch (Exception e) {
 			addActionError("Problema ao gerar relatório.");
@@ -1038,15 +1053,15 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
-	public Collection<RelatorioAnaliseDesempenhoColaborador> getRelatorioAnaliseDesempenhoColaboradores() {
-		return relatorioAnaliseDesempenhoColaboradores;
-	}
-
 	public boolean isAgruparPorCargo() {
 		return agruparPorCargo;
 	}
 
 	public void setAgruparPorCargo(boolean agruparPorCargo) {
 		this.agruparPorCargo = agruparPorCargo;
+	}
+
+	public Collection<ResultadoCompetenciaColaborador> getResultadosCompetenciaColaborador() {
+		return resultadosCompetenciaColaborador;
 	}
 }

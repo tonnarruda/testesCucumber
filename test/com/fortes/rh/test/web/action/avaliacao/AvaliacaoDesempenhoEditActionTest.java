@@ -30,6 +30,7 @@ import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.RelatorioAnaliseDesempenhoColaborador;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ResultadoCompetenciaColaborador;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
@@ -40,6 +41,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
@@ -676,9 +678,20 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		Collection<Competencia> competencias = new ArrayList<Competencia>();
 		competencias.add(BRL);
 		
+		ResultadoCompetenciaColaborador resultadoCompetenciaColaborador = new ResultadoCompetenciaColaborador(); 
+		Collection<ResultadoCompetenciaColaborador> resultadoCompetenciaColaboradors = new ArrayList<ResultadoCompetenciaColaborador>();
+		resultadoCompetenciaColaboradors.add(resultadoCompetenciaColaborador);
+		
+		RelatorioAnaliseDesempenhoColaborador relatorioAnaliseDesempenhoColaborador = new RelatorioAnaliseDesempenhoColaborador();
+		relatorioAnaliseDesempenhoColaborador.setResultadosCompetenciaColaborador(resultadoCompetenciaColaboradors);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity());
+		
+		configuracaoNivelCompetenciaManager.expects(once()).method("montaRelatorioAnaliseDesempenhoColaborador").withAnyArguments().will(returnValue(relatorioAnaliseDesempenhoColaborador));
+		colaboradorManager.expects(once()).method("findByIdHistoricoAtual").withAnyArguments().will(returnValue(colaborador));
+
 		manager.expects(once()).method("findByIdProjection").withAnyArguments().will(returnValue(new AvaliacaoDesempenho()));
-		configuracaoNivelCompetenciaManager.expects(once()).method("montaRelatorioAnaliseDesempenhoColaborador").withAnyArguments().will(returnValue(new RelatorioAnaliseDesempenhoColaborador()));
-		colaboradorManager.expects(once()).method("findByIdHistoricoAtual").withAnyArguments().will(returnValue(new Colaborador()));
 		
 		assertEquals("successDetalhado",action.analiseDesempenhoCompetenciaColaborador());
 	}
@@ -726,7 +739,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		parametrosDoSistema.setCompartilharColaboradores(true);
 		
 		manager.expects(once()).method("findByIdProjection").withAnyArguments().will(returnValue(new AvaliacaoDesempenho()));
-		configuracaoNivelCompetenciaManager.expects(once()).method("montaRelatorioAnaliseDesempenhoColaborador").withAnyArguments().will(returnValue(null));
+		configuracaoNivelCompetenciaManager.expects(once()).method("montaRelatorioAnaliseDesempenhoColaborador").withAnyArguments().will(returnValue(new RelatorioAnaliseDesempenhoColaborador()));
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("findComCompetencia").withAnyArguments().will(returnValue(action.getAvaliacaoDesempenhos()));

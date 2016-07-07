@@ -395,6 +395,7 @@ import com.fortes.rh.test.exception.FaixaJaCadastradaExceptionTest;
 import com.fortes.rh.test.exception.IntegraACExceptionTest;
 import com.fortes.rh.test.model.acesso.UsuarioTest;
 import com.fortes.rh.test.model.avaliacao.AcompanhamentoExperienciaColaboradorTest;
+import com.fortes.rh.test.model.avaliacao.RelatorioAnaliseDesempenhoColaboradorTest;
 import com.fortes.rh.test.model.captacao.CandidatoIdiomaTest;
 import com.fortes.rh.test.model.captacao.CandidatoSolicitacaoTest;
 import com.fortes.rh.test.model.captacao.CandidatoTest;
@@ -1355,6 +1356,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	AvaliacaoDesempenhoDaoHibernateTest.class,
 	AvaliacaoDesempenhoManagerTest.class,
 	AvaliacaoDesempenhoEditActionTest.class,
+	RelatorioAnaliseDesempenhoColaboradorTest.class,
 	        
 	ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest.class,
 

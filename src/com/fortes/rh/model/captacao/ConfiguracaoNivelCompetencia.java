@@ -489,8 +489,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		return configuracaoNivelCompetenciaCriterios;
 	}
 
-	public void setConfiguracaoNivelCompetenciaCriterios(
-			Collection<ConfiguracaoNivelCompetenciaCriterio> configuracaoNivelCompetenciaCriterios) {
+	public void setConfiguracaoNivelCompetenciaCriterios(Collection<ConfiguracaoNivelCompetenciaCriterio> configuracaoNivelCompetenciaCriterios) {
 		this.configuracaoNivelCompetenciaCriterios = configuracaoNivelCompetenciaCriterios;
 	}
 

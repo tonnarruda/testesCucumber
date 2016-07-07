@@ -744,7 +744,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return lista;
 	}
 
-	public LinkedList<ConfiguracaoNivelCompetencia> findByAvaliacaaDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId, boolean agruparPorCargo) {
+	public LinkedList<ConfiguracaoNivelCompetencia> findByAvaliacaoDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId, boolean agruparPorCargo) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select distinct c.id as colabId, c.nome as colabNome, comp.id as compId, comp.nome as compNome, comp.tipo as compTipo, nc.id as ncId, nc.descricao as ncDescricao, chn.ordem as ncOrdem, cg.id as cgId, cg.nome as cgNome ");
 		sql.append("from configuracaonivelcompetencia cnc ");

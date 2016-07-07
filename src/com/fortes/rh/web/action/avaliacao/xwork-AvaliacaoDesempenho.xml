@@ -170,7 +170,7 @@
 			</result>
 			<result name="successDetalhado" type="jasper">
 				<param name="location">WEB-INF/report/analiseDesempenhoCompetenciaColaboradorDetalhado.jasper</param>
-				<param name="dataSource">relatorioAnaliseDesempenhoColaboradores</param>
+				<param name="dataSource">resultadosCompetenciaColaborador</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">analiseDesempenhoCompetenciaColaboradorDetalhado.pdf</param>
 			</result>

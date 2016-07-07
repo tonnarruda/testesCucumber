@@ -1714,7 +1714,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		
 		configuracaoNivelCompetenciaDao.getHibernateTemplateByGenericDao().flush();
 		
-		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByAvaliacaaDesempenhoAndAvaliado(avaliacaoDesempenho.getId(), avaliado.getId(), false);
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByAvaliacaoDesempenhoAndAvaliado(avaliacaoDesempenho.getId(), avaliado.getId(), false);
 		
 		assertEquals(0, configs.size());
 	}

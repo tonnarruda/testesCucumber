@@ -22,11 +22,12 @@ public class RelatorioAnaliseDesempenhoColaborador
 	private Collection<ResultadoCompetencia> resultadoCompetenciaFinal = new ArrayList<ResultadoCompetencia>();
 	private Collection<NivelCompetencia> niveisCompetencias = new ArrayList<NivelCompetencia>();
 	LinkedHashMap<String, Integer> legendaMap = new LinkedHashMap<String, Integer>();
+	private boolean existeAutoAvaliacao;
+	private boolean existeOutrosAvaliadores;
 	
-	public static String AUTOAVALIACAO = "Auto-Avaliação";
-	public static String OUTROSAVALIADORES = "Outros Avaliadores";
-	public static String MEDIA = "Média";
-	public static String MEDIAGERAL = "Média Geral";
+	public static String AUTOAVALIACAO = "Auto-Avaliação-&RelatórioAnaliseDesempenho&";
+	public static String OUTROSAVALIADORES = "Outros Avaliadores-&RelatórioAnaliseDesempenho&";
+	public static String MEDIA = "Média-&RelatórioAnaliseDesempenho&";
 
 	public Colaborador getAvaliado() {
 		return avaliado;
@@ -52,47 +53,7 @@ public class RelatorioAnaliseDesempenhoColaborador
 	public void setNotaMinimaMediaGeralCompetencia(Integer notaMinimaMediaGeralCompetencia) {
 		this.notaMinimaMediaGeralCompetencia = notaMinimaMediaGeralCompetencia;
 	}
-	public Collection<ResultadoCompetencia> getResultadoCompetenciaFinal() {
-		LinkedList<ResultadoCompetencia> resultadoCompetenciaRetorno = new LinkedList<ResultadoCompetencia>();
-		LinkedHashMap<String, Integer> mapResultadoCompetenciaRetorno = new LinkedHashMap<String, Integer>();
-		Integer acimaDaNotaMinimaMediaGeral = 0, totalDeResultados = 0;
-		
-		mapResultadoCompetenciaRetorno.put(AUTOAVALIACAO, 0);
-		
-		for (ResultadoCompetenciaColaborador resultadoCompetenciaColaborador : resultadosCompetenciaColaborador) {
-			for (ResultadoCompetencia resultadoCompetencia : resultadoCompetenciaColaborador.getResultadoCompetencias()) {
-				if(resultadoCompetencia.getNome().equals(MEDIA)) continue;
-
-				totalDeResultados++;
-				
-				if(!mapResultadoCompetenciaRetorno.containsKey(resultadoCompetencia.getNome()))
-					mapResultadoCompetenciaRetorno.put(resultadoCompetencia.getNome(), 0);
-					
-				if(resultadoCompetencia.getOrdem() >= notaMinimaMediaGeralCompetencia){
-					mapResultadoCompetenciaRetorno.put(resultadoCompetencia.getNome(), mapResultadoCompetenciaRetorno.get(resultadoCompetencia.getNome()) + 1);
-					acimaDaNotaMinimaMediaGeral++;
-				}
-			}
-		}
-		if(mapResultadoCompetenciaRetorno.get(AUTOAVALIACAO) == 0) mapResultadoCompetenciaRetorno.remove(AUTOAVALIACAO);
-		
-		if(mapResultadoCompetenciaRetorno.containsKey(OUTROSAVALIADORES)){
-			Integer resultadoOuros = mapResultadoCompetenciaRetorno.get(OUTROSAVALIADORES);
-			mapResultadoCompetenciaRetorno.remove(OUTROSAVALIADORES);
-			mapResultadoCompetenciaRetorno.put(OUTROSAVALIADORES, resultadoOuros);
-		}
-		
-		for (String nome : mapResultadoCompetenciaRetorno.keySet()) {
-			Double percentual = (mapResultadoCompetenciaRetorno.get(nome).doubleValue() / resultadosCompetenciaColaborador.size()) * 100;
-			resultadoCompetenciaRetorno.add(new ResultadoCompetencia(legendaMap.get(nome), nome, Double.valueOf(new DecimalFormat("#.##").format(percentual))));
-		}
-		
-		Double percentual = (acimaDaNotaMinimaMediaGeral.doubleValue()/totalDeResultados) * 100;
-		resultadoCompetenciaRetorno.add(new ResultadoCompetencia(legendaMap.get(MEDIA), MEDIAGERAL, Double.valueOf(new DecimalFormat("#.##").format(percentual))));
-		
-		return resultadoCompetenciaRetorno;
-	}
-	public Integer getTamanhoCollectionNiveisCompeteencias(){
+	public Integer getTamanhoCollectionNiveisCompetencias(){
 		return this.niveisCompetencias.size(); 
 	}
 	public Collection<NivelCompetencia> getNiveisCompetencias() {
@@ -101,13 +62,70 @@ public class RelatorioAnaliseDesempenhoColaborador
 	public void setNiveisCompetencias(Collection<NivelCompetencia> niveisCompetencias) {
 		this.niveisCompetencias = niveisCompetencias;
 	}
+	public Collection<ResultadoCompetencia> getResultadoCompetenciaFinal() {
+		LinkedHashMap<String, Integer> mapQtdCompetenciaMaiorQueNotaMinima = new LinkedHashMap<String, Integer>();
+		LinkedHashMap<String, Integer> mapQtdCompetenciaExistente = new LinkedHashMap<String, Integer>();
+		Integer acimaDaNotaMinimaMediaGeral = 0, totalDeResultados = 0;
+		
+		mapQtdCompetenciaMaiorQueNotaMinima.put(AUTOAVALIACAO, 0);
+		mapQtdCompetenciaExistente.put(AUTOAVALIACAO, 0);
+		
+		for (ResultadoCompetenciaColaborador resultadoCompetenciaColaborador : resultadosCompetenciaColaborador) {
+			for (ResultadoCompetencia resultadoCompetencia : resultadoCompetenciaColaborador.getResultadoCompetencias()) {
+				if(resultadoCompetencia.getNome().equals(MEDIA)) 
+					continue;
+
+				totalDeResultados++;
+				
+				if(!mapQtdCompetenciaMaiorQueNotaMinima.containsKey(resultadoCompetencia.getNome()))
+					mapQtdCompetenciaMaiorQueNotaMinima.put(resultadoCompetencia.getNome(), 0);
+				
+				if(!mapQtdCompetenciaExistente.containsKey(resultadoCompetencia.getNome()))
+					mapQtdCompetenciaExistente.put(resultadoCompetencia.getNome(), 1);
+				else
+					mapQtdCompetenciaExistente.put(resultadoCompetencia.getNome(), mapQtdCompetenciaExistente.get(resultadoCompetencia.getNome()) + 1);
+					
+				if(resultadoCompetencia.getOrdem() >= notaMinimaMediaGeralCompetencia){
+					mapQtdCompetenciaMaiorQueNotaMinima.put(resultadoCompetencia.getNome(), mapQtdCompetenciaMaiorQueNotaMinima.get(resultadoCompetencia.getNome()) + 1);
+					acimaDaNotaMinimaMediaGeral++;
+				}
+			}
+		}
+		
+		return montaResultadoCompetenciaRetorno(mapQtdCompetenciaMaiorQueNotaMinima, mapQtdCompetenciaExistente, acimaDaNotaMinimaMediaGeral,totalDeResultados);
+	}
+	
+	private LinkedList<ResultadoCompetencia>  montaResultadoCompetenciaRetorno(LinkedHashMap<String, Integer> mapQtdCompetenciaMaiorQueNotaMinima, LinkedHashMap<String, Integer> mapQtdCompetenciaExistente, Integer acimaDaNotaMinimaMediaGeral, Integer totalDeResultados) throws NumberFormatException {
+		ajustaPosicaoMap(mapQtdCompetenciaMaiorQueNotaMinima);
+
+		LinkedList<ResultadoCompetencia> resultadoCompetenciaRetorno = new LinkedList<ResultadoCompetencia>();
+		
+		for (String nome : mapQtdCompetenciaMaiorQueNotaMinima.keySet()) {
+			Double percentual = (mapQtdCompetenciaMaiorQueNotaMinima.get(nome).doubleValue() / mapQtdCompetenciaExistente.get(nome).doubleValue()) * 100;
+			resultadoCompetenciaRetorno.add(new ResultadoCompetencia(legendaMap.get(nome), nome, Double.valueOf(new DecimalFormat("#.##").format(percentual).replace(",", "."))));
+		}
+		
+		Double percentual = (acimaDaNotaMinimaMediaGeral.doubleValue()/totalDeResultados) * 100;
+		resultadoCompetenciaRetorno.add(new ResultadoCompetencia(legendaMap.get(MEDIA), MEDIA, Double.valueOf(new DecimalFormat("#.##").format(percentual).replace(",", "."))));
+		
+		return resultadoCompetenciaRetorno;
+	}
+	
+	private void ajustaPosicaoMap(LinkedHashMap<String, Integer> mapResultadoCompetenciaRetorno) {
+		if(mapResultadoCompetenciaRetorno.get(AUTOAVALIACAO) == 0) 
+			mapResultadoCompetenciaRetorno.remove(AUTOAVALIACAO);
+		
+		if(mapResultadoCompetenciaRetorno.containsKey(OUTROSAVALIADORES)){
+			Integer resultadoOuros = mapResultadoCompetenciaRetorno.get(OUTROSAVALIADORES);
+			mapResultadoCompetenciaRetorno.remove(OUTROSAVALIADORES);
+			mapResultadoCompetenciaRetorno.put(OUTROSAVALIADORES, resultadoOuros);
+		}
+	}
 	
 	private static Comparator<String> ALPHABETICAL_ORDER = new Comparator<String>() {
 	    public int compare(String str1, String str2) {
 	        int res = String.CASE_INSENSITIVE_ORDER.compare(str1, str2);
-	        if (res == 0) {
-	            res = str1.compareTo(str2);
-	        }
+	        if (res == 0) { res = str1.compareTo(str2);  }
 	        return res;
 	    }
 	};
@@ -120,6 +138,11 @@ public class RelatorioAnaliseDesempenhoColaborador
 				if(!resultadoCompetencia.getNome().equals(AUTOAVALIACAO) && !resultadoCompetencia.getNome().equals(MEDIA) 
 						&& !resultadoCompetencia.getNome().equals(OUTROSAVALIADORES) && !nomes.contains(resultadoCompetencia.getNome()))
 					nomes.add(resultadoCompetencia.getNome());
+				else if(resultadoCompetencia.getNome().equals(OUTROSAVALIADORES))
+					existeOutrosAvaliadores = true;
+				else if(resultadoCompetencia.getNome().equals(AUTOAVALIACAO))
+					existeAutoAvaliacao = true;
+					
 			}
 		}
 		Collections.sort((List) nomes, ALPHABETICAL_ORDER);
@@ -129,13 +152,18 @@ public class RelatorioAnaliseDesempenhoColaborador
 	public void montaLegenda(){
 		Collection<String> nomes = nomesDistinctsOrdenados();
 		Integer contador = 1;
-
-		legendaMap.put(AUTOAVALIACAO, contador++);
+		
+		if(existeAutoAvaliacao)
+			legendaMap.put(AUTOAVALIACAO, contador++);
+		
 		for (String nome : nomes) {
 			if(!legendaMap.containsKey(nome))
 				legendaMap.put(nome, contador++);
 		}
-		legendaMap.put(OUTROSAVALIADORES, contador++);
+		
+		if(existeOutrosAvaliadores)
+			legendaMap.put(OUTROSAVALIADORES, contador++);
+		
 		legendaMap.put(MEDIA, contador++);
 		
 		for (ResultadoCompetenciaColaborador resultadoCompetenciaColaborador : resultadosCompetenciaColaborador) {
@@ -145,11 +173,35 @@ public class RelatorioAnaliseDesempenhoColaborador
 		}
 	}
 	
-	public String getLegenda(){
+	public String getNiveisCompetenciasDescricao() {
 		String retorno = "";
-		for(String nome : legendaMap.keySet()){
-			retorno += legendaMap.get(nome) + " - " + nome + "\n";
-		}
+		if(niveisCompetencias != null)
+			for (NivelCompetencia nivelCompetencia : niveisCompetencias) 
+				retorno += nivelCompetencia.getDescricao() + ",";
+		
+		if(retorno != null && retorno.length() > 0)
+			return retorno.substring(0, retorno.length() - 1);
+		else
+			return "";
+	}
+	
+	public String getNiveisCompetenciasOrdem() {
+		String retorno = "";
+		if(niveisCompetencias != null)
+			for (NivelCompetencia nivelCompetencia : niveisCompetencias) 
+				retorno += nivelCompetencia.getOrdem() + ",";
+		
+		if(retorno != null && retorno.length() > 0)
+			return retorno.substring(0, retorno.length() - 1);
+		else
+			return "";
+	}
+	
+	public String getLegenda() {
+		String retorno = "";
+		for(String nome : legendaMap.keySet())
+			retorno += ResultadoCompetencia.getAlafabeto(legendaMap.get(nome)) + " - " + nome.replace("-&RelatórioAnaliseDesempenho&", "") + "\n";
+
 		return retorno;
 	}
 }
