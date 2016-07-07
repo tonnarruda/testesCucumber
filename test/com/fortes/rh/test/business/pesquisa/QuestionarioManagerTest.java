@@ -754,7 +754,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 		avaliacaoManager.expects(once()).method("montaObsAvaliadores").will(returnValue("obsAvaliadores"));
 		perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq("José"));
 		
-		Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, null, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, 1, desconsiderarAutoAvaliacao);
+		Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, null, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, 1, desconsiderarAutoAvaliacao, false);
 		assertEquals(2, resultados.size());
     }
     
@@ -824,7 +824,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	avaliacaoManager.expects(once()).method("montaObsAvaliadores").will(returnValue("obsAvaliadores"));
     	perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq("José"));
     	
-    	Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, null, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, 1, desconsiderarAutoAvaliacao);
+    	Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, null, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, 1, desconsiderarAutoAvaliacao, false);
     	assertEquals(4, resultados.size());
     }
 

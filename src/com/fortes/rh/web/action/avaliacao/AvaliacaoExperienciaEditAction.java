@@ -65,6 +65,8 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	
 	private boolean exibirRespostas;
 	private boolean exibirComentarios;
+	private boolean ocultarNomeColaboradores;
+	private boolean ocultarQtdRespostas;
 	private boolean exibirCabecalho;
 	private boolean exibirObsAvaliadores;
 	private boolean agruparPorAspectos;
@@ -104,6 +106,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	    	parametros = RelatorioUtil.getParametrosRelatorio(defineModeloDeAvaliacaoDoRelatorio(), getEmpresaSistema(), avaliacaoExperiencia.getTitulo());
 	    	parametros.put("AGRUPAR_ASPECTO", agruparPorAspectos);
 	    	parametros.put("EXIBIR_CABECALHO", exibirCabecalho);
+	    	parametros.put("OCULTAR_NOME_COLABORADOR", ocultarNomeColaboradores);
 	    	parametros.put("EXIBIR_RESPOSTAS_SUBJETIVAS", true);
 	    	parametros.put("EXIBIR_RESPOSTAS_NAO_SUBJETIVAS", exibirRespostas);
 	    	parametros.put("EXIBIR_COMENTARIOS", exibirComentarios);
@@ -114,7 +117,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	    	Long[] perguntasIds = clu.convertCollectionToArrayIds(perguntas);
 	    	Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
 	    	
-    		resultados = avaliacaoManager.montaResultado(perguntas, perguntasIds, areaIds, periodoIni, periodoFim, avaliacaoExperiencia, empresa.getId(), tipoModeloAvaliacao);
+    		resultados = avaliacaoManager.montaResultado(perguntas, perguntasIds, areaIds, periodoIni, periodoFim, avaliacaoExperiencia, empresa.getId(), tipoModeloAvaliacao, ocultarQtdRespostas);
     		parametros.put("TOTAL_COLAB_RESP", avaliacaoExperiencia.getTotalColab());
     		
     		String obsAval = "";
@@ -241,6 +244,14 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 		this.agruparPorAspectos = agruparPorAspectos;
 	}
 
+	public boolean isOcultarQtdRespostas() {
+		return ocultarQtdRespostas;
+	}
+
+	public void setOcultarQtdRespostas(boolean ocultarQtdRespostas) {
+		this.ocultarQtdRespostas = ocultarQtdRespostas;
+	}
+
 	public boolean isExibirCabecalho() {
 		return exibirCabecalho;
 	}
@@ -283,6 +294,14 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 
 	public void setExibirComentarios(boolean exibirComentarios) {
 		this.exibirComentarios = exibirComentarios;
+	}
+
+	public boolean isOcultarNomeColaboradores() {
+		return ocultarNomeColaboradores;
+	}
+
+	public void setOcultarNomeColaboradores(boolean ocultarNomeColaboradores) {
+		this.ocultarNomeColaboradores = ocultarNomeColaboradores;
 	}
 
 	public Collection<Empresa> getEmpresas() {

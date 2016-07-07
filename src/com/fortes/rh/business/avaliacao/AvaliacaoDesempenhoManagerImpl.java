@@ -187,7 +187,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(avaliadoId, avaliacaoDesempenho.getId(), desconsiderarAutoAvaliacao);
 			percentuaisDeRespostas.addAll(percentuaisDeRespostasMultiplas);
 			
-			resultadoQuestionarios.addAll(questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, pontuacoesMaximasPerguntas, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, qtdAvaliadores, desconsiderarAutoAvaliacao));        	
+			resultadoQuestionarios.addAll(questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, pontuacoesMaximasPerguntas, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, qtdAvaliadores, desconsiderarAutoAvaliacao, false));        	
 		}
 		
 		if (resultadoQuestionarios.isEmpty())

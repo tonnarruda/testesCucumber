@@ -308,12 +308,12 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null);
         percentuaisDeRespostas.addAll(calculaPercentualRespostasMultiplas);
         
-    	resultadoQuestionarios = montaResultadosQuestionarios(perguntas, respostas, colaboradorRespostas, percentuaisDeRespostas, questionario.isAnonimo());
+    	resultadoQuestionarios = montaResultadosQuestionarios(perguntas, respostas, colaboradorRespostas, percentuaisDeRespostas, questionario.isAnonimo(), false);
        
         return resultadoQuestionarios;
     }
     
-    public Collection<ResultadoQuestionario> montaResultadosQuestionarios(Collection<Pergunta> perguntas, Collection<Resposta> respostas, Collection<ColaboradorResposta> colaboradorRespostas, Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas, boolean anonimo)
+    public Collection<ResultadoQuestionario> montaResultadosQuestionarios(Collection<Pergunta> perguntas, Collection<Resposta> respostas, Collection<ColaboradorResposta> colaboradorRespostas, Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas, boolean anonimo, boolean ocultarQtdRespostas)
     {
     	Collection<ResultadoQuestionario> resultadoQuestionarios = new ArrayList<ResultadoQuestionario>();
 		
@@ -321,7 +321,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     		ResultadoQuestionario resultadoQuestionario = new ResultadoQuestionario();
     		resultadoQuestionario.setPergunta(calculaMedia(colaboradorRespostas, pergunta));
     		resultadoQuestionario.setColabRespostas(montaColaboradorReposta(colaboradorRespostas, pergunta));
-    		resultadoQuestionario.setRespostas(montaRespostas(respostas, pergunta, percentuaisDeRespostas));
+    		resultadoQuestionario.setRespostas(montaRespostas(respostas, pergunta, percentuaisDeRespostas, ocultarQtdRespostas));
     		resultadoQuestionarios.add(resultadoQuestionario);
     	}
 		
@@ -355,7 +355,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
      * Monta resultados da avaliação de desempenho
      * @see avaliacaoDesempenhoManager.montaResultado()
      */
-    public Collection<ResultadoAvaliacaoDesempenho> montaResultadosAvaliacaoDesempenho(Collection<Pergunta> perguntas, Map<Long, Integer> pontuacoesMaximasPerguntas, Collection<Resposta> respostas, Long avaliadoId, Collection<ColaboradorResposta> colaboradorRespostas, Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas, AvaliacaoDesempenho avaliacaoDesempenho, Integer qtdAvaliadores, boolean desconsiderarAutoAvaliacao)
+    public Collection<ResultadoAvaliacaoDesempenho> montaResultadosAvaliacaoDesempenho(Collection<Pergunta> perguntas, Map<Long, Integer> pontuacoesMaximasPerguntas, Collection<Resposta> respostas, Long avaliadoId, Collection<ColaboradorResposta> colaboradorRespostas, Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas, AvaliacaoDesempenho avaliacaoDesempenho, Integer qtdAvaliadores, boolean desconsiderarAutoAvaliacao, boolean ocultarQtdRespostas)
 	{
 		Collection<ResultadoAvaliacaoDesempenho> resultadoQuestionarios = new ArrayList<ResultadoAvaliacaoDesempenho>();
 		
@@ -371,7 +371,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 			pergunta.setAspecto(calculaPontuacaoAspecto(colaboradorRespostas, pergunta, pontuacoesMaximasPerguntas, avaliadoId, qtdAvaliadores));
 			resultadoQuestionario.setPergunta(calculaMedia(colaboradorRespostas, pergunta));
 			resultadoQuestionario.setColabRespostas(montaColaboradorReposta(colaboradorRespostas, pergunta));
-			resultadoQuestionario.setRespostas(montaRespostas(respostas, pergunta, percentuaisDeRespostas));
+			resultadoQuestionario.setRespostas(montaRespostas(respostas, pergunta, percentuaisDeRespostas, ocultarQtdRespostas));
 			resultadoQuestionarios.add(resultadoQuestionario);
 		}
 		
@@ -492,7 +492,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         return retorno;
     }
 
-    public Collection<Resposta> montaRespostas(Collection<Resposta> respostas, Pergunta pergunta, Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas)
+    public Collection<Resposta> montaRespostas(Collection<Resposta> respostas, Pergunta pergunta, Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas, boolean ocultarQtdRespostas)
     {
         Collection<Resposta> retorno = new ArrayList<Resposta>();
 
@@ -505,8 +505,15 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
                     if(resposta.getId().equals(resultadoObjetiva.getRespostaId()))
                     {
                         resposta.setQtdRespostas(resultadoObjetiva.getQtdRespostas());
-                        resposta.setLegenda(resultadoObjetiva.getQtdPercentualRespostas() + "% (" + resultadoObjetiva.getQtdRespostas() + ")");
-                        resposta.setTexto(resposta.getTexto() + " (" + resultadoObjetiva.getQtdPercentualRespostas() + "% " + resultadoObjetiva.getQtdRespostas() + ")");
+                        String legenda = resultadoObjetiva.getQtdPercentualRespostas() + "%";
+                        String texto = resposta.getTexto() + " (" + resultadoObjetiva.getQtdPercentualRespostas() + "%";
+                        if (!ocultarQtdRespostas) {
+                        	legenda+=" (" + resultadoObjetiva.getQtdRespostas() + ")";
+                        	texto+=" " + resultadoObjetiva.getQtdRespostas();
+                        }
+                        texto+=")";
+                        resposta.setLegenda(legenda);
+                        resposta.setTexto(texto);
                     }
                 }
 

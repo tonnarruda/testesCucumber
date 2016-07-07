@@ -102,6 +102,14 @@
 			<#list avaliacaoExperienciasInativas as avaliacaoInativa>
 				$('#grpInativo').append('<option value="${avaliacaoInativa.id}">${avaliacaoInativa.titulo}</option>');
 			</#list>
+			
+			if ($("#exibirComentarios").is(":checked")) {
+				$("#ocultarNomeColaboradores").removeAttr("disabled");
+			}
+			
+			$("#exibirComentarios").click(function(){
+				$("#ocultarNomeColaboradores").toggleDisabled();
+			});
 		});
 	</script>
 	
@@ -134,10 +142,12 @@
 			<@frt.checkListBox label="Exibir apenas os Aspectos" name="aspectosCheck" id="aspectosCheck" list="aspectosCheckList" filtro="true"/>
 			<@frt.checkListBox label="Exibir apenas as Perguntas" name="perguntasCheck" id="perguntasCheck" list="perguntasCheckList" filtro="true"/>
 
+			<@ww.checkbox label="Ocultar quantidade de respostas" id="ocultarQtdRespostas" name="ocultarQtdRespostas" labelPosition="left" />
 			<@ww.checkbox label="Exibir observação do formulário" id="exibirCabecalho" name="exibirCabecalho" labelPosition="left" />
 			<@ww.checkbox label="Exibir observações dos avaliadores" id="exibirObsAvaliadores" name="exibirObsAvaliadores" labelPosition="left"/>
 			<@ww.checkbox label="Exibir todas as respostas" id="exibirRespostas" name="exibirRespostas" labelPosition="left"/>
 			<@ww.checkbox label="Exibir comentários" id="exibirComentarios" name="exibirComentarios" labelPosition="left"/>
+			<@ww.checkbox label="Ocultar nome dos colaboradores" id="ocultarNomeColaboradores" name="ocultarNomeColaboradores" disabled="true" labelPosition="left" />
 			<@ww.checkbox label="Agrupar perguntas por aspecto" id="agruparPorAspectos" name="agruparPorAspectos" labelPosition="left"/>
 
 			<@ww.hidden name="urlVoltar"/>

@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resultado_questionario" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="d1807905-d142-4889-88a7-e01ec9b0da74">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="3.797498335832415"/>
-	<property name="ireport.x" value="103"/>
-	<property name="ireport.y" value="256"/>
+	<property name="ireport.zoom" value="2.143588810000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -21,6 +21,7 @@
 	<parameter name="TOTAL_COLAB_RESP" class="java.lang.Integer" isForPrompting="false"/>
 	<parameter name="EXIBIR_RESPOSTAS_NAO_SUBJETIVAS" class="java.lang.Boolean" isForPrompting="false"/>
 	<parameter name="OBS_AVALIADOS" class="java.lang.String"/>
+	<parameter name="OCULTAR_NOME_COLABORADOR" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="pergunta.id" class="java.lang.Long"/>
 	<field name="pergunta.texto" class="java.lang.String"/>
 	<field name="pergunta.ordem" class="java.lang.Integer"/>
@@ -43,7 +44,7 @@
 			<band height="22" splitType="Stretch">
 				<printWhenExpression><![CDATA[$P{AGRUPAR_ASPECTO}]]></printWhenExpression>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="873c0624-217c-4a5e-a66d-cd48de44e1ad" key="textField" mode="Opaque" x="0" y="4" width="535" height="13" backcolor="#CCCCCC"/>
+					<reportElement key="textField" mode="Opaque" x="0" y="4" width="535" height="13" backcolor="#CCCCCC" uuid="873c0624-217c-4a5e-a66d-cd48de44e1ad"/>
 					<box leftPadding="5">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -56,7 +57,7 @@
 					<textFieldExpression><![CDATA[$F{pergunta.aspecto.nome}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="939ba05e-3a02-47c0-993f-35f2939fac89" key="staticText-1" mode="Opaque" x="0" y="3" width="535" height="13" backcolor="#CCCCCC">
+					<reportElement key="staticText-1" mode="Opaque" x="0" y="3" width="535" height="13" backcolor="#CCCCCC" uuid="939ba05e-3a02-47c0-993f-35f2939fac89">
 						<printWhenExpression><![CDATA[new Boolean($F{pergunta.aspecto.nome} == null)]]></printWhenExpression>
 					</reportElement>
 					<box leftPadding="5">
@@ -82,7 +83,7 @@
 			<band height="25">
 				<printWhenExpression><![CDATA[new Boolean(!$P{OBS_AVALIADOS}.equals(""))]]></printWhenExpression>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="95c69208-1ece-4734-a0f2-a822e3f459ee" key="textField" x="16" y="12" width="517" height="12">
+					<reportElement key="textField" x="16" y="12" width="517" height="12" uuid="95c69208-1ece-4734-a0f2-a822e3f459ee">
 						<printWhenExpression><![CDATA[new Boolean(!$P{OBS_AVALIADOS}.equals(""))]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -97,7 +98,7 @@
 					<textFieldExpression><![CDATA[$P{OBS_AVALIADOS}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="939ba05e-3a02-47c0-993f-35f2939fac89" key="staticText-1" mode="Opaque" x="0" y="0" width="535" height="13" backcolor="#FFFFFF">
+					<reportElement key="staticText-1" mode="Opaque" x="0" y="0" width="535" height="13" backcolor="#FFFFFF" uuid="939ba05e-3a02-47c0-993f-35f2939fac89">
 						<printWhenExpression><![CDATA[new Boolean(!$P{OBS_AVALIADOS}.equals(""))]]></printWhenExpression>
 					</reportElement>
 					<box leftPadding="5">
@@ -120,7 +121,7 @@
 	<title>
 		<band height="60" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement uuid="589423e0-5ab1-4436-96e6-089068349246" key="subreport-4" x="0" y="1" width="535" height="50"/>
+				<reportElement key="subreport-4" x="0" y="1" width="535" height="50" uuid="589423e0-5ab1-4436-96e6-089068349246"/>
 				<subreportParameter name="CABECALHO">
 					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -135,7 +136,7 @@
 		<band height="16" splitType="Stretch">
 			<printWhenExpression><![CDATA[new Boolean(!$P{QUESTIONARIO_CABECALHO}.equals("") && $V{PAGE_NUMBER}.equals(new Integer(1)) && $P{EXIBIR_CABECALHO}.booleanValue())]]></printWhenExpression>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="95c69208-1ece-4734-a0f2-a822e3f459ee" key="textField" x="0" y="1" width="535" height="12">
+				<reportElement key="textField" x="0" y="1" width="535" height="12" uuid="95c69208-1ece-4734-a0f2-a822e3f459ee">
 					<printWhenExpression><![CDATA[new Boolean(!$P{QUESTIONARIO_CABECALHO}.equals(""))]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -154,7 +155,7 @@
 	<detail>
 		<band height="42" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="c4391265-c7ee-468c-b455-26bffade14ef" key="textField-3" positionType="Float" x="15" y="12" width="518" height="14" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true">
+				<reportElement key="textField-3" positionType="Float" x="15" y="12" width="518" height="14" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="c4391265-c7ee-468c-b455-26bffade14ef">
 					<printWhenExpression><![CDATA[new Boolean($F{pergunta.media} != null)]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -169,7 +170,7 @@
 				<textFieldExpression><![CDATA["Média: " + $F{pergunta.media}]]></textFieldExpression>
 			</textField>
 			<subreport isUsingCache="false">
-				<reportElement uuid="34aa012b-e309-4fab-b536-8525206b2a8a" key="subreport-8" positionType="Float" isPrintRepeatedValues="false" x="16" y="21" width="517" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true">
+				<reportElement key="subreport-8" positionType="Float" isPrintRepeatedValues="false" x="16" y="21" width="517" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="34aa012b-e309-4fab-b536-8525206b2a8a">
 					<printWhenExpression><![CDATA[new Boolean(!$F{pergunta.tipo}.equals(new Integer(3))&& $P{EXIBIR_RESPOSTAS_SUBJETIVAS}.booleanValue()&&$P{EXIBIR_RESPOSTAS_NAO_SUBJETIVAS}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<subreportParameter name="REPORT_DATA_SOURCE">
@@ -181,7 +182,7 @@
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "resultado_respostas.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport isUsingCache="true">
-				<reportElement uuid="09319206-9baf-47e5-b0e0-60a75713e41a" key="subreport-7" positionType="Float" x="15" y="12" width="519" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true">
+				<reportElement key="subreport-7" positionType="Float" x="15" y="12" width="519" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="09319206-9baf-47e5-b0e0-60a75713e41a">
 					<printWhenExpression><![CDATA[new Boolean($F{pergunta.tipo}.equals(new Integer(1)))]]></printWhenExpression>
 				</reportElement>
 				<subreportParameter name="REPORT_DATA_SOURCE">
@@ -196,7 +197,7 @@
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "resultado_resposta_objetiva.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport isUsingCache="true">
-				<reportElement uuid="44a8ca3a-84ef-4ed9-86db-1705e9197af9" key="subreport-9" positionType="Float" x="15" y="12" width="519" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true">
+				<reportElement key="subreport-9" positionType="Float" x="15" y="12" width="519" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="44a8ca3a-84ef-4ed9-86db-1705e9197af9">
 					<printWhenExpression><![CDATA[new Boolean($F{pergunta.tipo}.equals(new Integer(5)))]]></printWhenExpression>
 				</reportElement>
 				<subreportParameter name="REPORT_DATA_SOURCE">
@@ -211,7 +212,7 @@
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "resultado_resposta_multipla.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport isUsingCache="true">
-				<reportElement uuid="3b61bc0e-fd06-4489-ab06-7e3ca7ba6e99" key="subreport-5" positionType="Float" x="16" y="12" width="517" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true">
+				<reportElement key="subreport-5" positionType="Float" x="16" y="12" width="517" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="3b61bc0e-fd06-4489-ab06-7e3ca7ba6e99">
 					<printWhenExpression><![CDATA[new Boolean($F{pergunta.tipo}.equals(new Integer(3)) && $P{EXIBIR_RESPOSTAS_SUBJETIVAS}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<subreportParameter name="REPORT_DATA_SOURCE">
@@ -223,21 +224,24 @@
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "resultado_resposta_subjetiva.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport isUsingCache="true">
-				<reportElement uuid="b6c2e216-c725-4e84-94a3-ee26d51d4dc9" key="subreport-6" mode="Transparent" x="4" y="3" width="529" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="subreport-6" mode="Transparent" x="4" y="3" width="529" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="b6c2e216-c725-4e84-94a3-ee26d51d4dc9"/>
 				<subreportParameter name="PERGUNTA">
 					<subreportParameterExpression><![CDATA[$F{pergunta.ordem} + ") " + $F{pergunta.texto}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "resultado_pergunta.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport isUsingCache="false">
-				<reportElement uuid="d725e80c-233f-4875-b83a-f2e47b8ab359" key="subreport-10" positionType="Float" isPrintRepeatedValues="false" x="4" y="30" width="529" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true">
+				<reportElement key="subreport-10" positionType="Float" isPrintRepeatedValues="false" x="4" y="30" width="529" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="d725e80c-233f-4875-b83a-f2e47b8ab359">
 					<printWhenExpression><![CDATA[new Boolean(!$F{pergunta.tipo}.equals(new Integer(3)) && $P{EXIBIR_COMENTARIOS}.booleanValue() && $F{pergunta.comentario}.booleanValue())]]></printWhenExpression>
 				</reportElement>
-				<subreportParameter name="REPORT_DATA_SOURCE">
-					<subreportParameterExpression><![CDATA[$F{colabComentariosDistinct}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="QUESTIONARIO_ANONIMO">
 					<subreportParameterExpression><![CDATA[$P{QUESTIONARIO_ANONIMO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="OCULTAR_NOME_COLABORADOR">
+					<subreportParameterExpression><![CDATA[$P{OCULTAR_NOME_COLABORADOR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$F{colabComentariosDistinct}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "resultado_comentario_objetiva.jasper"]]></subreportExpression>
 			</subreport>
@@ -249,7 +253,7 @@
 	<pageFooter>
 		<band height="15" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="65dce39d-cfda-49fe-a68b-5f4e6c355893" key="textField-1" x="308" y="1" width="186" height="13"/>
+				<reportElement key="textField-1" x="308" y="1" width="186" height="13" uuid="65dce39d-cfda-49fe-a68b-5f4e6c355893"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -260,14 +264,13 @@
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement uuid="63bccafe-d606-4e3a-95de-1567bfd375db" key="textField-2" x="501" y="1" width="32" height="13"/>
+				<reportElement key="textField-2" x="501" y="1" width="32" height="13" uuid="63bccafe-d606-4e3a-95de-1567bfd375db"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
 				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
 		</band>

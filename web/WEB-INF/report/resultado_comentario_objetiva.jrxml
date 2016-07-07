@@ -9,6 +9,7 @@
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="QUESTIONARIO_ANONIMO" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="OCULTAR_NOME_COLABORADOR" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="comentario" class="java.lang.String"/>
 	<field name="colaboradorQuestionario.colaborador.nomeComercial" class="java.lang.String"/>
 	<field name="colaboradorQuestionario.colaborador.nome" class="java.lang.String"/>
@@ -57,7 +58,8 @@
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" x="14" y="0" width="227" height="13" isRemoveLineWhenBlank="true" uuid="9e948c90-9a20-4546-a873-1364a4fe1b42">
-					<printWhenExpression><![CDATA[new Boolean($P{QUESTIONARIO_ANONIMO}.equals(new Boolean(false)))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean($P{QUESTIONARIO_ANONIMO}.equals(new Boolean(false))) &&
+new Boolean($P{OCULTAR_NOME_COLABORADOR}.equals(new Boolean(false)))]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

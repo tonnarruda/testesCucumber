@@ -25,10 +25,10 @@ public interface QuestionarioManager extends GenericManager<Questionario>
 	public Integer countColaborador(Collection<ColaboradorResposta> colaboradorRespostas);
 	public Pergunta calculaMedia(Collection<ColaboradorResposta> colaboradorRespostas, Pergunta pergunta);
 	public Collection<ColaboradorResposta> montaColaboradorReposta(Collection<ColaboradorResposta> colaboradorRespostas, Pergunta pergunta);
-	public Collection<Resposta> montaRespostas(Collection<Resposta> respostas, Pergunta pergunta, Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas);
+	public Collection<Resposta> montaRespostas(Collection<Resposta> respostas, Pergunta pergunta, Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas, boolean ocultarQtdRespostas);
 	
-    public Collection<ResultadoQuestionario> montaResultadosQuestionarios(Collection<Pergunta> perguntas, Collection<Resposta> respostas, Collection<ColaboradorResposta> colaboradorRespostas, Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas, boolean anonimo);
-    public Collection<ResultadoAvaliacaoDesempenho> montaResultadosAvaliacaoDesempenho(Collection<Pergunta> perguntas, Map<Long, Integer> pontuacoesMaximasPerguntas, Collection<Resposta> respostas, Long avaliadoId, Collection<ColaboradorResposta> colaboradorRespostas, Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas, AvaliacaoDesempenho avaliacaoDesempenho, Integer qtdAvaliadores, boolean desconsiderarAutoAvaliacao);
+    public Collection<ResultadoQuestionario> montaResultadosQuestionarios(Collection<Pergunta> perguntas, Collection<Resposta> respostas, Collection<ColaboradorResposta> colaboradorRespostas, Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas, boolean anonimo, boolean ocultarQtdRespostas);
+    public Collection<ResultadoAvaliacaoDesempenho> montaResultadosAvaliacaoDesempenho(Collection<Pergunta> perguntas, Map<Long, Integer> pontuacoesMaximasPerguntas, Collection<Resposta> respostas, Long avaliadoId, Collection<ColaboradorResposta> colaboradorRespostas, Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas, AvaliacaoDesempenho avaliacaoDesempenho, Integer qtdAvaliadores, boolean desconsiderarAutoAvaliacao, boolean ocultarQtdRespostas);
 	
 	//	
 	Questionario findByIdProjection(Long questionarioId);
