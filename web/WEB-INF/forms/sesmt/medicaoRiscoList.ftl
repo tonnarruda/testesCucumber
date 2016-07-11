@@ -8,7 +8,11 @@
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 
-	<title>Medição dos Riscos</title>
+	<#if controlaRiscoPor == 'A'>
+		<title>Medição dos Riscos do Ambiente</title>
+	<#else>
+		<title>Medição dos Riscos da Função</title>
+	</#if>
 	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	

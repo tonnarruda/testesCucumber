@@ -32,12 +32,18 @@
 		<#assign date = data?date/>
 	</#if>
 	
+	<#if controlaRiscoPor == 'A'>
+		<#assign addTitle = "do Ambiente"/>
+	<#else>
+		<#assign addTitle = "da Função"/>
+	</#if>
+	
 	<#if medicaoRisco.id?exists>
-		<title>Editar Medição dos Riscos</title>
+		<title>Editar Medição dos Riscos ${addTitle}</title>
 		<#assign formAction="update.action"/>
 		<#assign atualizacao = true/>
 	<#else>
-		<title>Inserir Medição dos Riscos</title>
+		<title>Inserir Medição dos Riscos ${addTitle}</title>
 		<#assign formAction="insert.action"/>
 		<#assign atualizacao = false/>
 	</#if>
