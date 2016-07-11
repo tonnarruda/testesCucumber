@@ -224,6 +224,9 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 	
 	public String getReciboPagamento(Colaborador colaborador, Date mesAno) throws Exception
 	{
+		if(colaborador.getCodigoAC() == null || "".equals(colaborador.getCodigoAC()))
+			throw new IntegraACException("Este colaborador não está integrado com o Fortes Pessoal ou não possui código Fortes Pessoal.");
+		
 		StringBuilder token = new StringBuilder();
 		GrupoAC grupoAC = new GrupoAC();
 		Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetReciboDePagamento");

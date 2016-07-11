@@ -150,7 +150,7 @@ public class FuncaoEditAction extends MyActionSupportEdit
 			return Action.SUCCESS;
 	}
 
-	public String prepareMudancaFuncao()
+	public String prepareMudancaFuncao() throws Exception
 	{
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 
@@ -169,7 +169,7 @@ public class FuncaoEditAction extends MyActionSupportEdit
 		return SUCCESS;
 	}
 
-	public String mudaFuncao()
+	public String mudaFuncao() throws Exception
 	{
 		HistoricoColaborador historico = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
 

@@ -11,7 +11,7 @@
 		<@ww.actionerror />
 		<@ww.actionmessage />
 		
-		<#if colaborador.id?exists && empresaSistema.acIntegra>
+		<#if colaborador.id?exists && empresaSistema.acIntegra && colaborador.codigoac?exists>
 			<@ww.form name="form" action="reciboDeDecimoTerceiro.action" onsubmit="${validarCampos}" method="POST">
 				<@ww.select label="Data" name="dataCalculo" id="dataCalculo" list="dataCalculos"/>
 				<div class="buttonGroup">

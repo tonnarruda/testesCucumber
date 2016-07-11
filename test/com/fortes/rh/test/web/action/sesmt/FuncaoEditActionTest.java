@@ -241,7 +241,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
     	assertEquals(action.getCargoTmp(), cargo);
     }
 
-    public void testPrepareMudancaFuncaoEmpresaErrada()
+    public void testPrepareMudancaFuncaoEmpresaErrada() throws Exception
     {
     	Empresa empresaDiferente = new Empresa();
     	empresaDiferente.setId(999L);
@@ -256,7 +256,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
 
     	assertEquals(action.prepareMudancaFuncao(), "error");
     }
-    public void testPrepareMudancaFuncaoEmpresaCorreta()
+    public void testPrepareMudancaFuncaoEmpresaCorreta() throws Exception
     {
     	Empresa empresa = new Empresa();
     	empresa.setId(1L);

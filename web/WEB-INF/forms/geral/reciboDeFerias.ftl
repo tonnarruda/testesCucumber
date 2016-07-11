@@ -21,7 +21,7 @@
 		<@ww.actionerror />
 		<@ww.actionmessage />
 		
-		<#if colaborador.id?exists && empresaSistema.acIntegra>
+		<#if colaborador.id?exists && empresaSistema.acIntegra && colaborador.codigoac?exists>
 			<@ww.form name="form" action="reciboDeFerias.action" onsubmit="${validarCampos}" method="POST">
 				<input type="hidden" name="dataInicioGozo"/>
 				<input type="hidden" name="dataFimGozo"/>

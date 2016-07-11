@@ -4,15 +4,18 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.acegisecurity.context.SecurityContext;
+
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.security.UserDetailsImpl;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 
 public class MockSecurityUtil
 {
 	public static boolean verifyRole = false;
-	public static String[] roles = new String[]{};
+	public static String[] roles = new String[]{"ROLE_COMPROU_SESMT"};
 
 	public static Empresa getEmpresaSession(Map session)
 	{
@@ -49,5 +52,10 @@ public class MockSecurityUtil
 	public static String getNomeUsuarioLogedByDWR(HttpSession session) 
 	{
 		return "UsuarioTeste";
+	}
+	
+	public static Long getIdUsuarioLoged(Map session)
+	{
+		return 1L;
 	}
 }

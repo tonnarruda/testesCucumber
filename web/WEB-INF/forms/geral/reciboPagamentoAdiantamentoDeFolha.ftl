@@ -11,7 +11,7 @@
 		<@ww.actionerror />
 		<@ww.actionmessage />
 		
-		<#if colaborador.id?exists && empresaSistema.acIntegra>
+		<#if colaborador.id?exists && empresaSistema.acIntegra && colaborador.codigoac?exists>
 			<@ww.form name="form" action="reciboPagamentoAdiantamentoDeFolha.action" onsubmit="${validarCampos}" method="POST">
 				<@ww.textfield label="Mês/Ano" id="mesAno" name="mesAno" maxLength="7" size="7" cssClass="mascaraMesAnoData"/>
 				<div class="buttonGroup">

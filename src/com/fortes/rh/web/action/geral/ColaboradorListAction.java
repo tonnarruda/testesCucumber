@@ -170,7 +170,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Long[] empresaIds;//repassado para o DWR
 	private Long[] empresasPermitidas;
 
-	private CamposExtras camposExtras = new CamposExtras();;
+	private CamposExtras camposExtras = new CamposExtras();
 	private Map sexos = new Sexo();
 	private String sexo;
 	private String deficiencia;
@@ -191,9 +191,11 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private ByteArrayInputStream byteArrayInputStream;
 	private String mesAno;
+	private Date mesAnoDate;
 	private String dataInicioGozo;
 	private String dataFimGozo;
 	private Long colaboradorLogadoId;
+
 
 	private enum Nomenclatura {
 		ENVIADO_FP("Enviado Fortes Pessoal"),
@@ -286,7 +288,10 @@ public class ColaboradorListAction extends MyActionSupportList
 		try {
 			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
 			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
-
+			
+			if(colaborador.getCodigoAC() == null || "".equals(colaborador.getCodigoAC()))
+				throw new IntegraACException("Este colaborador não está integrado com o Fortes Pessoal ou não possui código Fortes Pessoal.");
+			
 			String recibo = comprovante.gera();
 
 			byte[] reciboBytes = Base64.decodeBase64(recibo.getBytes()); 
@@ -462,20 +467,19 @@ public class ColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	private void preparaRecibo(String descricaoRecibo) {
+	private void preparaRecibo(String descricaoRecibo) throws Exception {
 		colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 		
 		if(!getEmpresaSistema().isAcIntegra()) {
 			addActionWarning("Esta empresa não está integrada com o Fortes Pessoal.");
-			
 		} else if(colaborador == null) {
 			addActionWarning("Sua conta de usuário não está vinculada à um colaborador.");
-			
 		} else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId())) {
 			addActionWarning("Só é possível solicitar " + descricaoRecibo + " pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar seu recibo.");
 			colaborador = null;
-		}
+		} else if(colaborador.getCodigoAC() == null || "".equals(colaborador.getCodigoAC()))
+			addActionWarning("Este colaborador não está integrado com o Fortes Pessoal ou não possui código Fortes Pessoal.");
 	}
 	
 	public String delete() throws Exception
@@ -570,10 +574,8 @@ public class ColaboradorListAction extends MyActionSupportList
 		}
 	}
 
-	public String relatorioDinamico() throws Exception
-	{
-		try
-		{
+	public String relatorioDinamico() throws Exception{
+		try	{
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			areaOrganizacionalsCheck = areaOrganizacionalManager.filtraPermitidas(areaOrganizacionalsCheck, (empresa.getId() == null ? getEmpresaSistema().getId() : empresa.getId()));
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
@@ -583,14 +585,11 @@ public class ColaboradorListAction extends MyActionSupportList
 			
 			String nomeRelatorio = "modeloDinamico.jrxml";
 			
-			if(agruparPorTempoServico)
-			{
+			if(agruparPorTempoServico){
 				nomeRelatorio = "modeloDinamicoAgrupadoTempoServico.jrxml";
 				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, cargos, " co.dataAdmissao desc, " + orderField);
 				colaboradores = colaboradorManager.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, ReportColumn.getpropertyByOrderField(colunas, orderField));
-			}
-			else 
-			{
+			}else{
 				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, cargos, orderField);
 			}
 
@@ -608,7 +607,6 @@ public class ColaboradorListAction extends MyActionSupportList
             geraRelatorioDinamico(dataSource, dynamicReport);
             
 			return Action.SUCCESS;
-			
 		}
 		catch (Exception e)
 		{
@@ -982,7 +980,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	class ReciboPagamento implements Comprovante {
 		public String gera() throws Exception {
-			return colaboradorManager.getReciboPagamento(colaborador, DateUtil.criarDataMesAno(mesAno));
+			return colaboradorManager.getReciboPagamento(colaborador, mesAnoDate);
 		}
 		
 		public String nomeDoArquivo() {
@@ -1012,7 +1010,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	class ReciboPagamentoComplementar implements Comprovante {
 		public String gera() throws Exception {
-			return colaboradorManager.getReciboDePagamentoComplementar(colaborador, DateUtil.criarDataMesAno(mesAno));
+			return colaboradorManager.getReciboDePagamentoComplementar(colaborador, mesAnoDate);
 		}
 		
 		public String nomeDoArquivo() {
@@ -1022,7 +1020,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	class ReciboPagamentoAdiantamentoDeFolha implements Comprovante {
 		public String gera() throws Exception {
-			return colaboradorManager.getReciboPagamentoAdiantamentoDeFolha(colaborador, DateUtil.criarDataMesAno(mesAno));
+			return colaboradorManager.getReciboPagamentoAdiantamentoDeFolha(colaborador, mesAnoDate);
 		}
 		
 		public String nomeDoArquivo() {
@@ -1531,8 +1529,9 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setMesAno(String mesAno) {
 		this.mesAno = mesAno;
+		this.mesAnoDate = DateUtil.criarDataMesAno(mesAno);
 	}
-
+	
 	public ByteArrayInputStream getByteArrayInputStream() {
 		return byteArrayInputStream;
 	}
@@ -1631,5 +1630,9 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public void setUsuarioManager(UsuarioManager usuarioManager) {
 		this.usuarioManager = usuarioManager;
+	}
+
+	public Date getMesAnoDate() {
+		return mesAnoDate;
 	}
 }

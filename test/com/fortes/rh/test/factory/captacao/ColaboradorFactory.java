@@ -154,4 +154,13 @@ public class ColaboradorFactory
 		
 		return colaborador;
 	}
+	
+	public static Colaborador getEntity(String codigoAC, Long id)
+	{
+		Colaborador colaborador = getEntity();
+		colaborador.setId(id);
+		colaborador.setCodigoAC(codigoAC);
+
+		return colaborador;
+	}
 }

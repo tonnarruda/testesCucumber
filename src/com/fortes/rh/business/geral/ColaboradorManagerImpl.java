@@ -824,7 +824,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 
 	@TesteAutomatico
-	public Colaborador findColaboradorById(Long id)
+	public Colaborador findColaboradorById(Long id) throws Exception
 	{
 		return getDao().findColaboradorById(id);
 	}

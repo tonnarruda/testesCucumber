@@ -1,0 +1,1 @@
+delete from perfil_papel where papeis_id = 572 and perfil_id in (select p.id from perfil p inner join perfil_papel pp on pp.perfil_id = p.id where  papeis_id = 572 and p.id not in (select distinct perfil_id from perfil_papel where papeis_id in (select id from papel where papelmae_id = 572)));--go
