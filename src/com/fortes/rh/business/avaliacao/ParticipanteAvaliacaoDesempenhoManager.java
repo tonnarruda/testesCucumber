@@ -21,5 +21,5 @@ public interface ParticipanteAvaliacaoDesempenhoManager extends GenericManager<P
 	public Collection<ParticipanteAvaliacaoDesempenho> findParticipantes(Long avaliacaoDesempenhoId, Character tipo);
 	public Double findByAvalDesempenhoIdAbadColaboradorId(Long avaliacaoDesempenhoId, Long avaliadoId, Character tipoParticipanteAvaliacao);
 	@Audita(operacao="Inserção/Atualização", auditor=ParticipanteAvaliacaoDesempenhoAuditorCallbackImpl.class)
-	public void save(AvaliacaoDesempenho avaliacaoDesempenho, Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliados, Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores, Collection<ColaboradorQuestionario> colaboradorQuestionarios) throws Exception;
+	public void save(AvaliacaoDesempenho avaliacaoDesempenho, Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliados, Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores, Collection<ColaboradorQuestionario> colaboradorQuestionarios, Long[] colaboradorQuestionariosRemovidos, Long[] participantesAvaliadosRemovidos, Long[] participantesAvaliadoresRemovidos) throws Exception;
 }

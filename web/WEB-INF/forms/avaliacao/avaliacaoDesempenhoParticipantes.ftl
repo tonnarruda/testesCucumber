@@ -47,22 +47,6 @@
 		</#if>
 		var avaliacaoLiberada = ${avaliacaoDesempenho.liberada?string};
 		
-		$(function() {
-			$('#tooltipHelp').qtip({
-				content: 'Gera uma nova avaliação para cada um dos colaboradores desta avaliação, na qual ele irá avaliar apenas a si próprio.'
-			});
-			
-			if (!avaliacaoLiberada) {
-				conectAvaliadosAvaliadores();
-			
-		    	atualizeSelectables("#avaliados-list", "li", "avaliados");
-				atualizeSelectables("#avaliadores-list", ".portlet", "avaliadores");
-				atualizeSelectablesMini();
-		    } else {
-		    	$("li, .portlet-header").css("color", "#A1A1A1");
-		    }
-		});
-		
 		function pesquisar()
 		{
 			var matricula = $("#matriculaBusca").val();
@@ -181,6 +165,10 @@
 		</script>
 	</head>
 	<body>
+		<script type='text/javascript'>
+		    processando('${urlImgs}');
+		</script>
+		
 		<@ww.actionerror/>
 		<@ww.actionmessage/>
 		
@@ -254,12 +242,12 @@
 				    <ol id="avaliados-list">
 				      <#list participantesAvaliados as avaliado>
 				      	<li class="ui-widget-content" id="${avaliado.colaborador.id}">
-					      	<input type="hidden" name="participantesAvaliados[${countParticipantesAvaliados}].id" value="${avaliado.id}"/>
-					      	<input type="hidden" name="participantesAvaliados[${countParticipantesAvaliados}].colaborador.id" value="${avaliado.colaborador.id}"/>
-					      	<input type="hidden" name="participantesAvaliados[${countParticipantesAvaliados}].colaborador.nome" value="${avaliado.colaborador.nome}"/>
-					      	<input type="hidden" name="participantesAvaliados[${countParticipantesAvaliados}].avaliacaoDesempenho.id" value="${avaliado.avaliacaoDesempenho.id}"/>
-					      	<input type="hidden" name="participantesAvaliados[${countParticipantesAvaliados}].tipo" value="${avaliado.tipo}"/>
-					      	<input type="text" name="participantesAvaliados[${countParticipantesAvaliados}].produtividade" class="notaProdutividade" value="${avaliado.produtividadeString}" />
+					      	<input type="hidden" nameTmp="participantesAvaliados[${countParticipantesAvaliados}].id" class="participanteAvaliadoId" value="${avaliado.id}"/>
+					      	<input type="hidden" nameTmp="participantesAvaliados[${countParticipantesAvaliados}].colaborador.id" value="${avaliado.colaborador.id}"/>
+					      	<input type="hidden" nameTmp="participantesAvaliados[${countParticipantesAvaliados}].colaborador.nome" value="${avaliado.colaborador.nome}"/>
+					      	<input type="hidden" nameTmp="participantesAvaliados[${countParticipantesAvaliados}].avaliacaoDesempenho.id" value="${avaliado.avaliacaoDesempenho.id}"/>
+					      	<input type="hidden" nameTmp="participantesAvaliados[${countParticipantesAvaliados}].tipo" value="${avaliado.tipo}"/>
+					      	<input type="text" nameTmp="participantesAvaliados[${countParticipantesAvaliados}].produtividade" class="notaProdutividade" value="${avaliado.produtividadeString}" />
 					      	
 				      		<div class="nome">${avaliado.colaborador.nome}</div>
 				      		<div class="faixa show-when-expand">${avaliado.colaborador.faixaSalarial.descricao}</div>
@@ -270,6 +258,7 @@
 				      	<#assign countParticipantesAvaliados = countParticipantesAvaliados + 1/>
 				      </#list>
 				    </ol>
+				    <div id="participantesAvaliadosRemovidos"></div>
 				  </div>
 				</div>
 			 
@@ -305,11 +294,11 @@
 						
 					  	<#list participantesAvaliadores as avaliador>
 						  	<div class="portlet" id="${avaliador.colaborador.id}">
-						  		<input type="hidden" name="participantesAvaliadores[${countParticipantesAvaliadores}].id" value="${avaliador.id}"/>
-						      	<input type="hidden" name="participantesAvaliadores[${countParticipantesAvaliadores}].colaborador.id" value="${avaliador.colaborador.id}"/>
-						      	<input type="hidden" name="participantesAvaliadores[${countParticipantesAvaliadores}].colaborador.nome" value="${avaliador.colaborador.nome}"/>
-						      	<input type="hidden" name="participantesAvaliadores[${countParticipantesAvaliadores}].avaliacaoDesempenho.id" value="${avaliador.avaliacaoDesempenho.id}"/>
-						      	<input type="hidden" name="participantesAvaliadores[${countParticipantesAvaliadores}].tipo" value="${avaliador.tipo}"/>
+						  		<input type="hidden" nametmp="participantesAvaliadores[${countParticipantesAvaliadores}].id" class="participanteAvaliadorId" value="${avaliador.id}"/>
+						      	<input type="hidden" nametmp="participantesAvaliadores[${countParticipantesAvaliadores}].colaborador.id" value="${avaliador.colaborador.id}"/>
+						      	<input type="hidden" nametmp="participantesAvaliadores[${countParticipantesAvaliadores}].colaborador.nome" value="${avaliador.colaborador.nome}"/>
+						      	<input type="hidden" nametmp="participantesAvaliadores[${countParticipantesAvaliadores}].avaliacaoDesempenho.id" value="${avaliador.avaliacaoDesempenho.id}"/>
+						      	<input type="hidden" nametmp="participantesAvaliadores[${countParticipantesAvaliadores}].tipo" value="${avaliador.tipo}"/>
 					      	
 						  		 <div class="portlet-header">
 						  		 	<input type="text" class="pesoAvaliador" value="" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> />
@@ -344,20 +333,20 @@
 							        	<#list avaliador.colaborador.avaliados as avaliado>
 								        	<li class="avaliado_${avaliado.id}">
 								        		${avaliado.nome}
-								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].id" value="${avaliado.colaboradorQuestionario.id}"/>
+								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].id" class="colaboradorQuestionarioId" value="${avaliado.colaboradorQuestionario.id}"/>
 								        		<#if avaliado.id == avaliador.colaborador.id >
-									        		<input type="text" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="pesoAvaliador" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> />
+									        		<input type="text" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="pesoAvaliador" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> />
 								        		<#else>
-									        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="peso" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}"/>
+									        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="peso" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}"/>
 								        		</#if>
-								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.id" value="${avaliado.id}"/>
-								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.nome" value="${avaliado.nome}"/>
-								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliador.id" value="${avaliador.colaborador.id}"/>
-								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliador.nome" value="${avaliador.colaborador.nome}"/>
+								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.id" value="${avaliado.id}"/>
+								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.nome" value="${avaliado.nome}"/>
+								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliador.id" value="${avaliador.colaborador.id}"/>
+								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliador.nome" value="${avaliador.colaborador.nome}"/>
 								        		<#if avaliacaoDesempenho.avaliacao?exists && avaliacaoDesempenho.avaliacao.id?exists>
-								        			<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>
+								        			<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>
 								        		</#if>
-								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>
+								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>
 								        		<#if avaliado.colaboradorQuestionario.respondida>
 								        			<i class="fa fa-check respondida" title="Respondida"></i>
 								        		</#if>
@@ -370,6 +359,8 @@
 						  	
 						  	<#assign countParticipantesAvaliadores = countParticipantesAvaliadores + 1/>
 					  	</#list>
+					  	<div id="participantesAvaliadoresRemovidos"></div>
+				      	<div id="colaboradorQuestionariosRemovidos"></div>
 				  	</div>
 				</div>
 				
@@ -385,6 +376,34 @@
 			<div style="clear: both;"></div>
 		</div>
 		
+		<script>
+			window.onload = function() {
+				$(".portlet-header .pesoAvaliador").each(function(){
+			    	$(this).val($(this).parents(".portlet").find(".peso:eq(0)").val());
+			    	if ($(this).val() == "")
+			    		$(this).val(1);
+			    	
+			    	if ( $(this).parents(".portlet").find(".peso").length == 0 && $(this).parents(".portlet").find(".portlet-content .pesoAvaliador").length > 0)
+			    		$(this).val($(this).parents(".portlet").find(".portlet-content .pesoAvaliador:eq(0)").val());
+			    });
+				
+				$('#tooltipHelp').qtip({
+					content: 'Gera uma nova avaliação para cada um dos colaboradores desta avaliação, na qual ele irá avaliar apenas a si próprio.'
+				});
+				
+				if (!avaliacaoLiberada) {
+					conectAvaliadosAvaliadores();
+				
+			    	atualizeSelectables("#avaliados-list", "li", "avaliados");
+					atualizeSelectables("#avaliadores-list", ".portlet", "avaliadores");
+					atualizeSelectablesMini();
+			    } else {
+			    	$("li, .portlet-header").css("color", "#A1A1A1");
+			    }
+			    
+			    $('.processando').remove();
+			}
+		</script>
 		<div id="black-back" style="display:none; /*display: block;*/ top: 0; left: 0; bottom: 0; background: gray; opacity: 0.6; width: 100%; position: absolute; z-index: 1000;"></div>
 	</body>
 </html>

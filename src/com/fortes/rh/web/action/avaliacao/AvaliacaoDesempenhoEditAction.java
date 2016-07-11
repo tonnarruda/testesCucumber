@@ -99,6 +99,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private String[] avaliados;
 	private String[] avaliadores;
 	private String[] avaliacoesCheck;
+	private Long[] colaboradorQuestionariosRemovidos;
+	private Long[] participantesAvaliadosRemovidos;
+	private Long[] participantesAvaliadoresRemovidos;
 	
 	private Collection<ResultadoCompetenciaColaborador> resultadosCompetenciaColaborador = new ArrayList<ResultadoCompetenciaColaborador>();
 	private Integer notaMinimaMediaGeralCompetencia;
@@ -297,7 +300,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String saveParticipantes() throws Exception {
 		try {
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(avaliacaoDesempenho.getId());
-			participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, participantesAvaliados, participantesAvaliadores, colaboradorQuestionarios);
+			participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, participantesAvaliados, participantesAvaliadores, colaboradorQuestionarios, colaboradorQuestionariosRemovidos, participantesAvaliadosRemovidos, participantesAvaliadoresRemovidos);
 			addActionSuccess("Gravado com sucesso.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1063,5 +1066,33 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public Collection<ResultadoCompetenciaColaborador> getResultadosCompetenciaColaborador() {
 		return resultadosCompetenciaColaborador;
+	}
+
+	public Long[] getColaboradorQuestionariosRemovidos() {
+		return colaboradorQuestionariosRemovidos;
+	}
+
+	public void setColaboradorQuestionariosRemovidos(
+			Long[] colaboradorQuestionariosRemovidos) {
+		this.colaboradorQuestionariosRemovidos = colaboradorQuestionariosRemovidos;
+	}
+
+	public Long[] getParticipantesAvaliadosRemovidos() {
+		return participantesAvaliadosRemovidos;
+	}
+
+	public void setParticipantesAvaliadosRemovidos(
+			Long[] participantesAvaliadosRemovidos) {
+		this.participantesAvaliadosRemovidos = participantesAvaliadosRemovidos;
+	}
+
+	public Long[] getParticipantesAvaliadoresRemovidos() {
+		return participantesAvaliadoresRemovidos;
+	}
+
+	public void setParticipantesAvaliadoresRemovidos(
+			Long[] participantesAvaliadoresRemovidos) {
+		this.participantesAvaliadoresRemovidos = participantesAvaliadoresRemovidos;
+>>>>>>> 16070000070 Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Melhoria na performance ao gravar participantes da avaliação.
 	}
 }

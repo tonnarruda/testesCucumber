@@ -10,10 +10,8 @@ import com.fortes.rh.dao.avaliacao.ParticipanteAvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
-import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 
 public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<ParticipanteAvaliacaoDesempenho, ParticipanteAvaliacaoDesempenhoDao> implements ParticipanteAvaliacaoDesempenhoManager
@@ -62,19 +60,27 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void save(AvaliacaoDesempenho avaliacaoDesempenho,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliados,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores,Collection<ColaboradorQuestionario> colaboradorQuestionarios) throws Exception {
+	public void save(AvaliacaoDesempenho avaliacaoDesempenho,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliados,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores,Collection<ColaboradorQuestionario> colaboradorQuestionarios, Long[] colaboradorQuestionariosRemovidos, Long[] participantesAvaliadosRemovidos, Long[] participantesAvaliadoresRemovidos) throws Exception {
 		participantesAvaliados.removeAll(Collections.singleton(null));
 		this.saveOrUpdate(participantesAvaliados);
 		
 		if ( !avaliacaoDesempenho.isLiberada() ) {
-			this.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliados), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
+			//this.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliados), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
+			if (participantesAvaliadosRemovidos != null)
+				this.remove(participantesAvaliadosRemovidos);
 			
 			participantesAvaliadores.removeAll(Collections.singleton(null));
 			this.saveOrUpdate(participantesAvaliadores);
-			this.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliadores), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
+			//this.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliadores), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
+			if (participantesAvaliadoresRemovidos != null)
+				this.remove(participantesAvaliadoresRemovidos);
 			
 			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBeanOld("colaboradorQuestionarioManager");
-			colaboradorQuestionarioManager.ajustaColaboradorQuestionarioByAvDesempenho(avaliacaoDesempenho.getId(),	colaboradorQuestionarios);
+			colaboradorQuestionarios.removeAll(Collections.singleton(null));
+			colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
+			if (colaboradorQuestionariosRemovidos != null)
+				colaboradorQuestionarioManager.remove(colaboradorQuestionariosRemovidos);
+			//colaboradorQuestionarioManager.ajustaColaboradorQuestionarioByAvDesempenho(avaliacaoDesempenho.getId(),	colaboradorQuestionarios);
 		}
 	}
 

@@ -13,15 +13,6 @@ $(function() {
 	
     portletEvents();
     
-    $(".portlet-header .pesoAvaliador").each(function(){
-    	$(this).val($(this).parents(".portlet").find(".peso:eq(0)").val());
-    	if ($(this).val() == "")
-    		$(this).val(1);
-    	
-    	if ( $(this).parents(".portlet").find(".peso").length == 0 && $(this).parents(".portlet").find(".portlet-content .pesoAvaliador").length > 0)
-    		$(this).val($(this).parents(".portlet").find(".portlet-content .pesoAvaliador:eq(0)").val());
-    });
-    
 	$(".show-info").click(function(){
 		$('#avaliados, #avaliadores').hide();
 		$(this).parent().parent().show();
@@ -59,6 +50,14 @@ $(function() {
     });
 	
 	$(".mini-actions .remove").live("click", function(event) {
+		if($(this).find(".colaboradorQuestionarioId").length > 0 )
+			$(this).parents(".portlet").append("<input type='hidden' name='colaboradorQuestionariosRemovidos' value='"+$(this).find(".colaboradorQuestionarioId").val()+"' />")
+		
+		$(this).parents(".portlet").find("li.ui-selected").each(function(){
+			if($(this).find(".colaboradorQuestionarioId").length > 0 )
+				$("#colaboradorQuestionariosRemovidos").append("<input type='hidden' name='colaboradorQuestionariosRemovidos' value='" + $(this).find('.colaboradorQuestionarioId').val() + "' />");
+		});
+			
 		$(this).parents(".portlet").find("li.ui-selected").remove();
 		if($(this).parents(".portlet").find("li").not('.placeholder').length == 0)
 			$(this).parents(".portlet").find("ul").append('<li class="placeholder">Arraste os avaliados até aqui</li>');
@@ -106,11 +105,18 @@ $(function() {
 	$(".pesoAvaliador").live("keyup", function() {
 		if ( $(this).parents(".portlet").find(".peso").length == 0 )
 			$(this).parents(".portlet").find(".pesoAvaliador").val($(this).val());
+		
+		$(this).parents("li").find("input").each(function(){
+			$(this).attr("name", $(this).attr("nameTmp"));
+		});
 	});
 	
 	$(".pesoAvaliador").live("click", function(event) { event.stopPropagation(); });
 	$(".portlet-header .pesoAvaliador").live("keyup", function(event) { 
 		$(this).parents(".portlet").find(".peso").val($(this).val());
+		$(this).parents(".portlet").find("input").each(function(){
+			$(this).attr("name", $(this).attr("nameTmp"));
+		});
 	});
 	
 	$(".actions .unselect-all").click(function(){
@@ -121,6 +127,13 @@ $(function() {
 	
 	$("#avaliadores .actions .remove").click(function(){
 		if ( !$(this).hasClass("disabled") ) {
+			$(this).parents(".box").find(".ui-selected").each(function(){
+				$("#participantesAvaliadosRemovidos").append("<input type='hidden' name='participantesAvaliadoresRemovidos' value='" + $(this).find('.participanteAvaliadorId').val() + "' />");
+				$(this).find(".colaboradorQuestionarioId").each(function(){
+					$("#colaboradorQuestionariosRemovidos").append("<input type='hidden' name='colaboradorQuestionariosRemovidos' value='"+$(this).val()+"' />");
+				});
+			});
+			
 			$(this).parents(".box").find(".ui-selected").remove();
 			$(this).parents(".box").find(".ui-widget-header.actions .only-selectables").addClass("disabled");
 		}
@@ -129,6 +142,12 @@ $(function() {
 	$("#avaliados .actions .remove").click(function(){
 		if ( !$(this).hasClass("disabled") ) {
 			$(this).parents(".box").find(".ui-selected").each(function(){
+				$("#participantesAvaliadosRemovidos").append("<input type='hidden' name='participantesAvaliadosRemovidos' value='" + $(this).find('.participanteAvaliadoId').val() + "' />");
+				
+				$("#avaliadores .avaliado_" + $(this).attr("id")).each(function(){
+					$("#colaboradorQuestionariosRemovidos").append("<input type='hidden' name='colaboradorQuestionariosRemovidos' value='" + $(this).find('.colaboradorQuestionarioId').val() + "' />");
+				});
+				
 				$("#avaliadores .avaliado_" + $(this).attr("id")).remove();
 			});
 			
@@ -184,6 +203,10 @@ $(function() {
 	}).live("keyup", function(){
 		if ( parseFloat($(this).val().replace(",", ".") == "" ? 0 : $(this).val().replace(",", ".")) > 10 )
 			$(this).val(Math.min(Math.max( parseFloat($(this).val().replace(",", ".") == "" ? 0 : $(this).val().replace(",", ".")) , 0), 10));
+		
+		$(this).parents("li").find("input").each(function(){
+			$(this).attr("name", $(this).attr("nameTmp"));
+		});
 	});
 	
 	$(".notaProdutividade").live("click", function(event){ event.stopPropagation(); });
@@ -370,6 +393,7 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
 		    	$(this).parent().remove();
 		    });
         	
+        	$("#formInsereParticipantes").append();
 		    
         	countColaboradorQuestionarios++;
         }

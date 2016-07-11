@@ -74,15 +74,16 @@ public class ParticipanteAvaliacaoDesempenhoManagerTest extends MockObjectTestCa
 		Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliados = Arrays.asList(participanteAvaliacaoDesempenhoAvaliado);
 		Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores = Arrays.asList(participanteAvaliacaoDesempenhoAvaliador);
 		
-		particapanteAvaliacaoDesempenhoDao.expects(once()).method("removeNotIn").with(eq(LongUtil.collectionToArrayLong(participantesAvaliados)), eq(avaliacaoDesempenho.getId()), eq(TipoParticipanteAvaliacao.AVALIADO)).isVoid();
+		particapanteAvaliacaoDesempenhoDao.expects(once()).method("remove").with(eq(new Long[]{})).isVoid();
 		particapanteAvaliacaoDesempenhoDao.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
 		
-		particapanteAvaliacaoDesempenhoDao.expects(once()).method("removeNotIn").with(eq(LongUtil.collectionToArrayLong(participantesAvaliadores)), eq(avaliacaoDesempenho.getId()), eq(TipoParticipanteAvaliacao.AVALIADOR)).isVoid();
-		colaboradorQuestionarioManager.expects(once()).method("ajustaColaboradorQuestionarioByAvDesempenho").withAnyArguments();
+		particapanteAvaliacaoDesempenhoDao.expects(once()).method("remove").with(eq(new Long[]{})).isVoid();
+		colaboradorQuestionarioManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
+		colaboradorQuestionarioManager.expects(once()).method("remove").with(eq(new Long[]{})).isVoid();
 		particapanteAvaliacaoDesempenhoDao.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
 		Exception exception=null;
 		try {
-			participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, participantesAvaliados, participantesAvaliadores, new ArrayList<ColaboradorQuestionario>());
+			participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, participantesAvaliados, participantesAvaliadores, new ArrayList<ColaboradorQuestionario>(), new Long[]{}, new Long[]{}, new Long[]{});
 		} catch (Exception e) {
 			exception = e;
 		}

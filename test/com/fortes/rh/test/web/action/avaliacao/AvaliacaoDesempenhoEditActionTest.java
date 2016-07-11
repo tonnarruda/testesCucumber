@@ -156,7 +156,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("findByIdProjection").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		
-		participanteAvaliacaoDesempenhoManager.expects(once()).method("save").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).isVoid();
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("save").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).isVoid();
 		
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findParticipantes").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
