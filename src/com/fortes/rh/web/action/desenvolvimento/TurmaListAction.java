@@ -354,7 +354,7 @@ public class TurmaListAction extends MyActionSupportList
 		// Se não houver resultados na página, refaz a consulta com a página anterior
 		if (turmas == null || turmas.isEmpty()){
 			if (getPage() > 1){
-				setPage(getPage()-1);
+				setPage(1);
 				turmas = turmaManager.findTurmas(getPage(), getPagingSize(), curso.getId(), descricao);
 			}
 			else
