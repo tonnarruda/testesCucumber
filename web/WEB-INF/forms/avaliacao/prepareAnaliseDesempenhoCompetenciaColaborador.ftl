@@ -4,6 +4,10 @@
 <@ww.head/>
 	<title>Análise de Desempenho das Competências do Colaborador</title>
 	
+	<style type="text/css">
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
+	</style>
+	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/NivelCompetenciaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
@@ -13,6 +17,159 @@
 	
 	<#assign validarCampos="return validaFormulario('form', new Array('avaliacao', 'avaliados'), null)"/>
 	
+	<style>
+		#previews {
+			height: 150px;
+	   		width: 295px;
+	   		margin: 30px;
+			margin-top: 0;
+			margin-left: 10px;
+		}
+		
+		#previews .box-type {
+			height: 170px;
+			text-align: center;
+			float: left;
+			margin-right: 15px;
+			margin-bottom: 10px;
+		}
+		
+		#previews input {
+			margin-bottom: 10px;
+		}
+		
+		#previews .box-type:hover, #previews .box-type.selected {
+			color: #5292C0;
+			cursor: pointer;
+		}
+		
+		#previews .box-type:hover .paper, #previews .box-type.selected .paper {
+			border: 1px solid #5292C0;
+		}
+		
+		#previews .paper {
+			width: 70px;
+		    height: 99px;
+		    border: 1px solid #e7e7e7;
+		    padding: 5px;
+		    box-shadow: 1px 1px 0px #e7e7e7;
+		    margin-bottom: 10px;
+		}
+		
+		#previews .box-type-disabled:hover {
+			color: #000 !important;
+		}
+		
+		#previews .box-type-disabled:hover .paper {
+			border: 1px solid #e7e7e7 !important;
+			cursor: default !important;
+		}
+		
+		#previews .box-type-disabled .paper {
+			background-color: #EEEEEE !important;
+		}
+		
+		#previews .paper .x1 {
+			width: 68px;
+	    	height: 97px;
+	    	border: 1px solid #C3C3C3;
+		}
+		#previews .paper .x2 {
+			width: 66px;
+		    height: 36px;
+		    margin: 1px;
+		    margin-bottom: 2px;
+		    border: 1px solid #C3C3C3;
+		}
+		#previews .paper .x2 .graph.horizontal{
+			width: 60px;
+		    height: 14px !important;
+		    margin: 3px;
+		    margin-top: 8px !important;
+		    border-left: 1px solid gray;
+		    border-top: 1px solid gray;
+		    border-bottom: none !important;
+		    padding-top: 5px !important;	
+		}
+		#previews .paper .x2 .graph.horizontal .graph-item{
+			width: 50px;
+		    height: 8px;
+		    background: #C3C3C3;
+		    float: left;	
+		}
+		#previews .paper .x2 .graph {
+			width: 60px;
+		    height: 25px;
+		    margin: 3px;
+		    border-left: 1px solid gray;
+		    border-bottom: 1px solid gray;
+		    padding-top: 4px;			
+		}
+		#previews .paper .x2 .graph .graph-item-1{
+			width: 20px;
+		    height: 25px;
+		    margin-left: 6px;
+		    background: #C3C3C3;
+		    float: left;		
+		}
+		#previews .paper .x2 .graph .graph-item-2{
+			width: 20px; 
+		    height: 16px; 
+		    margin-left: 6px;
+		    background: #C3C3C3;
+		    float: left;
+		    margin-top: 9px;
+		}
+		#previews .paper .x4 {
+			width: 31px;
+		    height: 36px;
+		    float: left;
+		    margin: 1px;
+		    border: 1px solid #C3C3C3;
+		}
+		#previews .paper .x4 {
+			width: 31px;
+		    height: 36px;
+		    float: left;
+		    margin: 1px;
+		    border: 1px solid #C3C3C3;
+		}
+		#previews .paper .x4 .graph {
+			width: 26px;
+		    height: 25px;
+		    margin: 3px;
+		    border-left: 1px solid gray;
+		    border-bottom: 1px solid gray;
+		    padding-top: 4px;			
+		}
+		#previews .paper .x4 .graph .graph-item-1{
+			width: 8px;
+		    height: 25px;
+		    margin-left: 3px;
+		    background: #C3C3C3;
+		    float: left;		
+		}
+		#previews .paper .x4 .graph .graph-item-2{
+			width: 8px; 
+		    height: 16px; 
+		    margin-left: 3px;
+		    background: #C3C3C3;
+		    float: left;
+		    margin-top: 9px;
+		}
+		#previews .cabecalho {
+			width: 66px;
+			height: 14px;
+			margin-bottom: 2px !important;
+			margin: 1px;
+			border: 1px solid #C3C3C3;
+		}
+		
+		.dados {
+			width: 602px;
+		} 
+	</style>
+	
 	<script type="text/javascript">
 		var empresaIds = new Array();
 		<#if empresas?exists>
@@ -20,6 +177,20 @@
 				empresaIds.push(${empresa.id});
 			</#list>
 		</#if>
+		
+		$(function(){
+			$(".box-type").click(function(){
+				selectPrintType(this);
+			});
+			
+			selectPrintType($('input[name=relatorioDetalhado]:eq(0)').parent() );
+		})
+		
+		function selectPrintType(box) {
+			$(".box-type").removeClass("selected");
+			$(box).addClass("selected");
+			$(box).find("input").attr("checked", "checked").change();
+		}
 		
 		$(document).ready(function($){
 			var empresa = ${empresaSistema.id};
@@ -95,22 +266,23 @@
 		}
 	
 		function exibeOuOcultaFiltros(){
-			if($('#relatorioDetalhado').val() == 'true')
-				$('#paraRealatorioDetalahado').show();
-			else
-				$('#paraRealatorioDetalahado').hide();
+			if($('input[name=relatorioDetalhado]:checked').val() == 'true') {
+				populaCargosAvaliado();
+				$('#paraRelatorioDetalhado').show();
+			} else
+				$('#paraRelatorioDetalhado').hide();
 		}
 		
 		function populaCargosAvaliado()
 		{
-			if(($('#relatorioDetalhado').val() == 'true') && ($('#avaliados').val() != 0) && ($('#avaliados').val() != -1)){
+			if(($('input[name=relatorioDetalhado]:checked').val() == 'true') && ($('#avaliados').val() != 0) && ($('#avaliados').val() != -1)){
 				DWREngine.setAsync(true);
 				DWRUtil.useLoadingMessage('Carregando...');
 				AvaliacaoDesempenhoDWR.getAvaliadores(createListCargosAvaliadores, $('#avaliacao').val(), $('#avaliados').val());
 			}else{
 				$("input[name=avaliadores]").parent().remove();
 				$("#listCheckBoxavaliadores > .info").remove();
-				$('#listCheckBoxavaliadores').append('<div class="info"> <ul> <li>Utilize o filtro avaliado para popular os avaliadores.</li> </ul> </div>');
+				$('#listCheckBoxavaliadores').append('<div class="info"> <ul> <li>Selecione um avaliado para popular os avaliadores.</li> </ul> </div>');
 			}
 		}
 		
@@ -127,7 +299,7 @@
 		
 		function populaOrdensNivelCompetencia()
 		{
-			if(($('#relatorioDetalhado').val() == 'true') && ($('#avaliacao').val() != 0) && ($('#avaliacao').val() != -1)){
+			if(($('input[name=relatorioDetalhado]:checked').val() == 'true') && ($('#avaliacao').val() != 0) && ($('#avaliacao').val() != -1)){
 				DWREngine.setAsync(true);
 				DWRUtil.useLoadingMessage('Carregando...');
 				NivelCompetenciaDWR.findNiveisCompetenciaByAvDesempenho(populaRadiosNiveisCompetencia, $('#avaliacao').val());
@@ -141,13 +313,13 @@
 		{
 			$('#ordensNivelCompetencia').empty();
 			
-			tabela = '<table border=1> <tr>';				
+			tabela = '<table class="dados"> <thead><tr>';				
 			
 			for (var key in data) {
-				tabela += '<td width=100 align=middle>' + data[key].descricao + ' (' + data[key].ordem + ')</td>';
+				tabela += '<th width=100 align=middle>' + data[key].descricao + ' (' + data[key].ordem + ')</th>';
 			}
 			
-			tabela += '	</tr> <tr>';
+			tabela += '</tr> </thead> <tr>';
 			
 			checked = true;
 			for (var key in data) {
@@ -218,7 +390,60 @@
 	<@ww.actionmessage />
 	
 	<@ww.form name="form" action="analiseDesempenhoCompetenciaColaborador.action" onsubmit="${validarCampos}" method="POST">
-		<@ww.select label="Gerar relatório" name="relatorioDetalhado" id="relatorioDetalhado" list=r"#{false:'Resumido', true:'Detalhado'}" cssStyle="width: 600px;" onchange="exibeOuOcultaFiltros();"/>
+		<!-- <@ww.select label="Gerar relatório" name="relatorioDetalhado" id="relatorioDetalhado" list=r"#{false:'Resumido', true:'Detalhado'}" cssStyle="width: 600px;" onchange="exibeOuOcultaFiltros();"/> -->
+		
+		<div id="previews">
+			<div id="x4" class="box-type">
+				<input type="radio" value="true" name="relatorioDetalhado" onchange="exibeOuOcultaFiltros();"/>
+				<div class="paper">
+					<div class="cabecalho"></div>
+					<div class="x4">
+						<div class="graph">
+							<div class="graph-item-1"></div>
+						  	<div class="graph-item-2"></div>
+						</div>
+					</div>
+					<div class="x4">
+						<div class="graph">
+							<div class="graph-item-1"></div>
+						  	<div class="graph-item-2"></div>
+						</div>
+					</div>
+					<div class="x4">
+						<div class="graph">
+							<div class="graph-item-1"></div>
+						  	<div class="graph-item-2"></div>
+						</div>
+					</div>
+					<div class="x4">
+						<div class="graph">
+							<div class="graph-item-1"></div>
+						  	<div class="graph-item-2"></div>
+						</div>
+					</div>
+				</div>
+				<div>Detalhado</div>
+			</div>
+			<div id="x2" class="box-type">
+				<input type="radio" value="false" name="relatorioDetalhado" onchange="exibeOuOcultaFiltros();"/>
+				<div class="paper">
+					<div class="cabecalho"></div>
+					<div class="x2">
+						<div class="graph horizontal">
+							<div class="graph-item"></div>
+						</div>
+					</div>
+					<div class="x2">
+						<div class="graph">
+							<div class="graph-item-1"></div>
+						  	<div class="graph-item-2"></div>
+						</div>
+					</div>
+				</div>
+				<div>Resumido</div>
+			</div>
+		</div>
+		
 		<!--<@ww.hidden name="relatorioDetalhado" id="relatorioDetalhado" value="false" />-->
 		<@ww.select label="Avaliação de desempenho que avaliam competência" required="true" name="avaliacaoDesempenho.id" id="avaliacao" list="avaliacaoDesempenhos" listKey="id" listValue="titulo" cssStyle="width: 600px;" headerKey="" headerValue="Selecione..." onchange="populaAvaliados();populaOrdensNivelCompetencia();"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByAreaVinculados();populaAvaliados();" filtro="true" selectAtivoInativo="true"/>
@@ -226,8 +451,8 @@
 		<@frt.checkListBox label="Cargos" name="cargosCheck" id="cargosCheck" list="cargosCheckList"  width="600" onClick="populaAvaliados();" filtro="true" selectAtivoInativo="true"/>
 		<@ww.select label="Avaliado" required="true" name="avaliado.id" id="avaliados" list="participantesAvaliadores" listKey="id" listValue="nome" cssStyle="width: 600px;" headerKey="-1" headerValue="Selecione uma avaliação de desempenho"  onchange="populaCargosAvaliado();"/>
 		
-		<div id="paraRealatorioDetalahado">
-			<@ww.checkbox label="Agrupar pelo cargo do avaliador." id="agruparPorCargo" name="agruparPorCargo" labelPosition="left" onchange="verificaQtdMarcados();mudaLabelMultCheckBoxAvaliadores();"/>
+		<div id="paraRelatorioDetalhado">
+			<@ww.checkbox label="Agrupar avaliadores por cargo." id="agruparPorCargo" name="agruparPorCargo" labelPosition="left" onchange="verificaQtdMarcados();mudaLabelMultCheckBoxAvaliadores();"/>
 			<@frt.checkListBox label="Avaliadores (máx. 4 Avaliadores)" name="avaliadores" id="avaliadores" list="avaliadoresCheckList" width="600" filtro="true" selectAtivoInativo="true"/>
 			Nota mínima considerada em "Média Geral das Competências":</br>
 			<div id="ordensNivelCompetencia"/>

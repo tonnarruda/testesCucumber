@@ -874,15 +874,17 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 	
 	public void updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho) 
 	{
-		String hql = "update ColaboradorQuestionario set avaliacao.id = :avaliacaoId where avaliacaoDesempenho.id = :avaliacaoDesempenhoId"; 
+		String hql = "";
+		if (avaliacaoDesempenho.getAvaliacao() != null && avaliacaoDesempenho.getAvaliacao().getId() != null)
+			hql = "update ColaboradorQuestionario set avaliacao.id = :avaliacaoId where avaliacaoDesempenho.id = :avaliacaoDesempenhoId"; 
+		else
+			hql = "update ColaboradorQuestionario set avaliacao.id = null where avaliacaoDesempenho.id = :avaliacaoDesempenhoId"; 
 		
 		Query query = getSession().createQuery(hql);
 		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenho.getId());
 		
-		Long avaliacaoId = null;
 		if (avaliacaoDesempenho.getAvaliacao() != null && avaliacaoDesempenho.getAvaliacao().getId() != null)
-			avaliacaoId = avaliacaoDesempenho.getAvaliacao().getId();
-		query.setLong("avaliacaoId", avaliacaoId);
+			query.setLong("avaliacaoId", avaliacaoDesempenho.getAvaliacao().getId());
 		
 		query.executeUpdate();
 	}
