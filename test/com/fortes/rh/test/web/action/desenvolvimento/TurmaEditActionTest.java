@@ -42,20 +42,22 @@ import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
+import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
 import com.fortes.rh.test.util.mockObjects.MockCheckListBoxUtil;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.util.ArquivoUtil;
-import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.desenvolvimento.TurmaEditAction;
 import com.fortes.web.tags.CheckBox;
@@ -138,7 +140,6 @@ public class TurmaEditActionTest extends MockObjectTestCase
         action.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
         
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
-        Mockit.redefineMethods(CheckListBoxUtil.class, MockCheckListBoxUtil.class);
         Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
         Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
         Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
@@ -173,9 +174,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	assertEquals(cursos, action.getCursos());
     }
 
-    public void testPrepareUpdate() throws Exception
-    {
-    	
+    public void testPrepareUpdate() throws Exception{
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	Curso curso = CursoFactory.getEntity(1L);
     	action.setCurso(curso);
@@ -187,11 +186,9 @@ public class TurmaEditActionTest extends MockObjectTestCase
 
     	Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
     	Collection<Curso> cursos = new ArrayList<Curso>();
-    	Collection<AvaliacaoTurma> avaliacaoTurmas = new ArrayList<AvaliacaoTurma>();
     	Collection<DocumentoAnexo> documentoAnexos = new ArrayList<DocumentoAnexo>();
-
+    	montaAvaliacaoTurmasCheck();
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
-//    	diaTurmaManager.expects(once()).method("montaListaDias").with(eq(turma.getDataPrevIni()), ANYTHING, eq(false)).will(returnValue(new ArrayList<CheckBox>()));
     	turmaManager.expects(once()).method("verificaAvaliacaoDeTurmaRespondida").with(eq(turma.getId())).will(returnValue(false));
     	turmaAvaliacaoTurmaManager.expects(once()).method("verificaAvaliacaoliberada").with(eq(turma.getId())).will(returnValue(false));
     	Collection<CheckBox> diasCheckList = MockCheckListBoxUtil.populaCheckListBox(null, null, null);
@@ -200,8 +197,6 @@ public class TurmaEditActionTest extends MockObjectTestCase
 
     	cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[]{1L})).will(returnValue(cursos));
     	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(eq(empresa.getId()),eq(curso.getId())).will(returnValue(true));
-    	avaliacaoTurmaManager.expects(once()).method("findByTurma").with(ANYTHING).will(returnValue(avaliacaoTurmas));
-    	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(eq(true), ANYTHING).will(returnValue(avaliacaoTurmas));
     	tipoDespesaManager.expects(once()).method("find");
     	turmaTipoDespesaManager.expects(once()).method("findTipoDespesaTurma").will(returnValue(new ArrayList<TurmaTipoDespesa>()));
     	documentoAnexoManager.expects(once()).method("getDocumentoAnexoByOrigemId").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(documentoAnexos));
@@ -210,7 +205,37 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	assertEquals("success", action.prepareUpdate());
     	assertEquals(false, action.isContemCustosDetalhados());
     	assertEquals(diasCheckList, action.getDiasCheckList());
+    	assertMontaAvaliacaoTurmasCheck();
     }
+
+	private void assertMontaAvaliacaoTurmasCheck() {
+		Collection<CheckBox> avaliacaoTurmasCheckList = action.getAvaliacaoTurmasCheckList();
+    	assertEquals(2, avaliacaoTurmasCheckList.size());
+    	assertEquals("Questionario1", ((CheckBox)avaliacaoTurmasCheckList.toArray()[0]).getNome());
+    	assertEquals("Questionario2 (Inativa)", ((CheckBox)avaliacaoTurmasCheckList.toArray()[1]).getNome());
+	}
+
+	private void montaAvaliacaoTurmasCheck() {
+		Questionario questionario = QuestionarioFactory.getEntity(1L, "Questionario1");
+		Questionario questionarioInativo = QuestionarioFactory.getEntity(2L, "Questionario2");
+		
+		AvaliacaoTurma avaliacaoTurma = AvaliacaoTurmaFactory.getEntity(1L);
+		avaliacaoTurma.setQuestionario(questionario);
+		
+		AvaliacaoTurma avaliacaoTurmaMarcadoInativo = AvaliacaoTurmaFactory.getEntity(2L);
+		avaliacaoTurmaMarcadoInativo.setAtiva(false);
+		avaliacaoTurmaMarcadoInativo.setQuestionario(questionarioInativo);
+		
+		Collection<AvaliacaoTurma> avaliacaoTurmas = new ArrayList<AvaliacaoTurma>();
+		avaliacaoTurmas.add(avaliacaoTurma);
+		avaliacaoTurmas.add(avaliacaoTurmaMarcadoInativo);
+		
+		Collection<AvaliacaoTurma> avaliacaoTurmasMarcados = new ArrayList<AvaliacaoTurma>();
+		avaliacaoTurmasMarcados.add(avaliacaoTurma);
+		
+    	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(eq(null), ANYTHING).will(returnValue(avaliacaoTurmas));
+    	avaliacaoTurmaManager.expects(once()).method("findByTurma").with(ANYTHING).will(returnValue(avaliacaoTurmas));
+	}
 
     public void testInsert() throws Exception
     {

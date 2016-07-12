@@ -141,6 +141,7 @@ public class AvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<AvaliacaoTur
 		ProjectionList p = Projections.projectionList().create();
 
 		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.ativa"), "ativa");
 		p.add(Projections.property("q.id"), "projectionQuestionarioId");
 		p.add(Projections.property("q.titulo"), "projectionQuestionarioTitulo");
 		p.add(Projections.property("ent.id"), "projectionQuestionarioEmpresaId");

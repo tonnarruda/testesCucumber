@@ -233,25 +233,25 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', cursoId);
 		documentoAnexoCheckList = CheckListBoxUtil.populaCheckListBox(documentoAnexos, "getId", "getDescricao");
 		
-		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(true, getEmpresaSistema().getId());
-		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo");
+		
 	}
 
 	public String prepareInsert() throws Exception
 	{
 		prepare();
+		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(true, getEmpresaSistema().getId());
+		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo");
+		
 		if (filtroPlanoTreinamento != null && filtroPlanoTreinamento.getCursoId() != null)
 			turma.setCursoId(filtroPlanoTreinamento.getCursoId());
 		
 		return Action.SUCCESS;
 	}
 
-	public String prepareUpdate() throws Exception
-	{
+	public String prepareUpdate() throws Exception{
 		prepare();
 		
-		if (curso != null && !cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), curso.getId()))
-		{
+		if (curso != null && !cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), curso.getId())){
 			addActionWarning("A turma solicitada não existe ou não está compartilhada para a empresa " + getEmpresaSistema().getNome() +".");
 			return Action.ERROR;
 		}
@@ -266,8 +266,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 		diaTurmas = diaTurmaManager.find(new String[] { "turma.id" }, new Object[] { turma.getId() });
 
-		Collection<AvaliacaoTurma> avaliacaoTurmasMarcadas = avaliacaoTurmaManager.findByTurma(turma.getId());
-		avaliacaoTurmasCheckList = CheckListBoxUtil.marcaCheckListBoxString(avaliacaoTurmasCheckList, avaliacaoTurmasMarcadas, "getQuestionarioTitulo");
+		montaAvaliacaoTurmasCheck();
 		
 		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.findByTurma(turma.getId());
 		documentoAnexoCheckList = CheckListBoxUtil.marcaCheckListBoxString(documentoAnexoCheckList, documentoAnexos, "getDescricao");
@@ -281,6 +280,23 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 			addActionMessage("Não é possível realizar a edição, existem colaboradores certificados nesta turma e em turmas posteriores.");
 		
 		return Action.SUCCESS;
+	}
+
+	private void montaAvaliacaoTurmasCheck() throws Exception {
+		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(null, getEmpresaSistema().getId());
+		Collection<AvaliacaoTurma> avaliacaoTurmasMarcadas = avaliacaoTurmaManager.findByTurma(turma.getId());
+		Collection<AvaliacaoTurma> avaliacaoTurmasComIntaivasDaTurma = new ArrayList<AvaliacaoTurma>();
+		
+		for (AvaliacaoTurma avaliacaoTurma : avaliacaoTurmas) {
+			for (AvaliacaoTurma avaliacaoTurmaMarcado : avaliacaoTurmasMarcadas) {
+				if((avaliacaoTurmaMarcado.getId().equals(avaliacaoTurma.getId()) || avaliacaoTurma.isAtiva()) 
+						&& !avaliacaoTurmasComIntaivasDaTurma.contains(avaliacaoTurma))
+					avaliacaoTurmasComIntaivasDaTurma.add(avaliacaoTurma);
+			}
+		}
+		
+		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmasComIntaivasDaTurma, "getId", "getQuestionarioTituloMaisStatus");
+		avaliacaoTurmasCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacaoTurmasCheckList, avaliacaoTurmasMarcadas, "getId");
 	}
 
 	public String prepareFiltroEstabelecimentoAreaOrganizacional() throws Exception

@@ -26,6 +26,15 @@ public class QuestionarioFactory
 
 		return questionario;
 	}
+	
+	public static Questionario getEntity(Long id, String titulo)
+	{
+		Questionario questionario = getEntity();
+		questionario.setId(id);
+		questionario.setTitulo(titulo);
+
+		return questionario;
+	}
 
 	public static Collection<Questionario> getCollection()
 	{

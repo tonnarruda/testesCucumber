@@ -151,6 +151,14 @@ public class AvaliacaoTurma extends AbstractModel implements Serializable, Clone
     	
     	return this.questionario.getTitulo();
     }
+    
+    //Usado em montaAvaliacaoTurmasCheck
+    public String getQuestionarioTituloMaisStatus()
+    {
+    	newQuestionario();
+    	
+    	return this.questionario.getTitulo() + (this.ativa ? "" : " (Inativa)");
+    }
 
 	private void newQuestionario()
 	{
