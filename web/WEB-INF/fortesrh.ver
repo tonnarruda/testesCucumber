@@ -7,6 +7,7 @@
 		<Item visivel="S" motivo="S16060000006"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competência do Colaborador: Nova opção para gerar relatório detalhado.]]></Item>
 		<Item visivel="S" motivo="P16070000101"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Ajuste na inconsistência da paginação.]]></Item>
 		<Item visivel="S" motivo="S16040000218"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Ajuste na inconsistência na edição da turma quando o questionários de avaliação do curso for inativada.]]></Item>
+		<Item visivel="S" motivo="S16020000282"><![CDATA[Info. Funcionais > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Novas opções para ocultar quantidade de respostas e nome dos colaboradores nos comentários.]]></Item>
 		<Item visivel="S" motivo="P16060000084"><![CDATA[Info Funcionais > Relatórios > Recibos de Pagamento: Ajuste na inconsitência ao gerar relatório para o colaborador não integrado com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S16060000318"><![CDATA[SESMT > Cadastros > CIPA > Eleições > Candidatos:  Auditoria da inserção e remoção de candidatos da eleição da CIPA.]]></Item>
 		<Item visivel="S" motivo="S16040000218"><![CDATA[SESMT > Movimentações > Medição dos Riscos: Novos submenus para fazer medição de riscos para ambiente e função.]]></Item>

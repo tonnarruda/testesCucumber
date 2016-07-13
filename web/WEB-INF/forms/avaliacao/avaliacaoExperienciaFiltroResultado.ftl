@@ -147,7 +147,7 @@
 			<@ww.checkbox label="Exibir observações dos avaliadores" id="exibirObsAvaliadores" name="exibirObsAvaliadores" labelPosition="left"/>
 			<@ww.checkbox label="Exibir todas as respostas" id="exibirRespostas" name="exibirRespostas" labelPosition="left"/>
 			<@ww.checkbox label="Exibir comentários" id="exibirComentarios" name="exibirComentarios" labelPosition="left"/>
-			<@ww.checkbox label="Ocultar nome dos colaboradores" id="ocultarNomeColaboradores" name="ocultarNomeColaboradores" disabled="true" labelPosition="left" />
+			<@ww.checkbox label="Ocultar nome dos colaboradores" id="ocultarNomeColaboradores" name="ocultarNomeColaboradores" disabled="true" labelPosition="left" cssStyle="margin-left: 20px;"/>
 			<@ww.checkbox label="Agrupar perguntas por aspecto" id="agruparPorAspectos" name="agruparPorAspectos" labelPosition="left"/>
 
 			<@ww.hidden name="urlVoltar"/>

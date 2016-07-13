@@ -57,6 +57,7 @@ import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.FichaMedicaFactory;
 import com.fortes.rh.test.factory.pesquisa.PerguntaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
+import com.fortes.rh.test.factory.pesquisa.QuestionarioResultadoPerguntaObjetivaFactory;
 import com.fortes.rh.test.factory.pesquisa.RespostaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
@@ -858,4 +859,44 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	
     	assertEquals(1, perguntaFichaMedicas.size());
     }
+    
+    public void testmontaResultadosQuestionariosNaoOcultarQtdRespostas(){
+    	Collection<Resposta> respostasMontadas = inicioMontaResultadosQuestionarios(false);
+    	
+    	assertEquals("texto (20% 3)", ((Resposta) respostasMontadas.toArray()[0]).getTexto());
+    	assertEquals("texto (10% 2)", ((Resposta) respostasMontadas.toArray()[1]).getTexto());
+    }
+    
+    public void testmontaResultadosQuestionariosOcultarQtdRespostas(){
+    	Collection<Resposta> respostasMontadas = inicioMontaResultadosQuestionarios(true);
+    	
+    	assertEquals("texto (20%)", ((Resposta) respostasMontadas.toArray()[0]).getTexto());
+    	assertEquals("texto (10%)", ((Resposta) respostasMontadas.toArray()[1]).getTexto());
+    }
+
+	private Collection<Resposta> inicioMontaResultadosQuestionarios(boolean ocultarQtdRespostas) {
+		Pergunta pergunta1 = PerguntaFactory.getEntity(1L, TipoPergunta.NOTA, 3);
+    	Pergunta pergunta2 = PerguntaFactory.getEntity(2L, TipoPergunta.OBJETIVA, 2);
+    	Collection<Pergunta> perguntas = Arrays.asList(pergunta1, pergunta2);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
+    	colaboradorQuestionario.setColaborador(colaborador);
+    	
+    	Resposta resposta1 = RespostaFactory.getEntity(1L, pergunta1, 20);
+    	Resposta resposta2 = RespostaFactory.getEntity(2L, pergunta1, 10);
+    	Collection<Resposta> respostas = Arrays.asList(resposta1, resposta2);
+
+    	QuestionarioResultadoPerguntaObjetiva qt1 = QuestionarioResultadoPerguntaObjetivaFactory.getEntity(resposta1.getId(), "20", 3);
+    	QuestionarioResultadoPerguntaObjetiva qt2 = QuestionarioResultadoPerguntaObjetivaFactory.getEntity(resposta2.getId(), "10", 2);
+    	Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = Arrays.asList(qt1, qt2); 
+    	
+    	ColaboradorResposta colaboradorResposta1 = ColaboradorRespostaFactory.getEntity(1L, pergunta1, resposta1, 7, colaboradorQuestionario);
+    	Collection<ColaboradorResposta> colaboradorRespostas = Arrays.asList(colaboradorResposta1);
+    	
+    	Collection<ResultadoQuestionario> resultadoQuestionarios = questionarioManager.montaResultadosQuestionarios(perguntas, respostas, colaboradorRespostas, percentuaisDeRespostas, false, ocultarQtdRespostas);
+    	assertEquals(2, resultadoQuestionarios.size());
+    	Collection<Resposta> respostasMontadas = ((ResultadoQuestionario) resultadoQuestionarios.toArray()[0]).getRespostas();
+		return respostasMontadas;
+	}
 }
