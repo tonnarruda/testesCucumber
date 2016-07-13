@@ -65,13 +65,11 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 		this.saveOrUpdate(participantesAvaliados);
 		
 		if ( !avaliacaoDesempenho.isLiberada() ) {
-			//this.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliados), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
 			if (participantesAvaliadosRemovidos != null)
 				this.remove(participantesAvaliadosRemovidos);
 			
 			participantesAvaliadores.removeAll(Collections.singleton(null));
 			this.saveOrUpdate(participantesAvaliadores);
-			//this.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliadores), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
 			if (participantesAvaliadoresRemovidos != null)
 				this.remove(participantesAvaliadoresRemovidos);
 			
@@ -80,7 +78,6 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 			colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
 			if (colaboradorQuestionariosRemovidos != null)
 				colaboradorQuestionarioManager.remove(colaboradorQuestionariosRemovidos);
-			//colaboradorQuestionarioManager.ajustaColaboradorQuestionarioByAvDesempenho(avaliacaoDesempenho.getId(),	colaboradorQuestionarios);
 		}
 	}
 

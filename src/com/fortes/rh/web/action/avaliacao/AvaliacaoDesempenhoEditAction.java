@@ -1090,9 +1090,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		return participantesAvaliadoresRemovidos;
 	}
 
-	public void setParticipantesAvaliadoresRemovidos(
-			Long[] participantesAvaliadoresRemovidos) {
+	public void setParticipantesAvaliadoresRemovidos(Long[] participantesAvaliadoresRemovidos) {
 		this.participantesAvaliadoresRemovidos = participantesAvaliadoresRemovidos;
->>>>>>> 16070000070 Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Melhoria na performance ao gravar participantes da avaliação.
 	}
 }

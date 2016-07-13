@@ -127,7 +127,7 @@ $(function() {
 	
 	$("#avaliadores .actions .remove").click(function(){
 		if ( !$(this).hasClass("disabled") ) {
-			$(this).parents(".box").find(".ui-selected").each(function(){
+			$(this).parents(".box").find(".ui-selected:not('.avaliadoInterno')").each(function(){
 				$("#participantesAvaliadosRemovidos").append("<input type='hidden' name='participantesAvaliadoresRemovidos' value='" + $(this).find('.participanteAvaliadorId').val() + "' />");
 				$(this).find(".colaboradorQuestionarioId").each(function(){
 					$("#colaboradorQuestionariosRemovidos").append("<input type='hidden' name='colaboradorQuestionariosRemovidos' value='"+$(this).val()+"' />");
@@ -158,17 +158,38 @@ $(function() {
 	
 	$("#avaliados .actions .move-all").click(function(){
 		if ( !$(this).hasClass("disabled") ) {
-			if ( $("#avaliadores .portlet-content ul").length > 0 ) {
-				$("#avaliadores .portlet-content ul").each(function() {
-					var avaliador = $(this);
-					$(".ui-selected").each(function(){
-						createAvaliadoForAvaliador(avaliador, $(this));
+			msg = "Não há avaliadores para relacionar.";
+			qtdMenor = true;
+			qtdRegistros = ($("#avaliados-list .ui-selected").length)*countParticipantesAvaliadores;
+			if(qtdRegistros > 2500){
+				qtdMenor = false;
+				msg = "Não é possível realizar esse procedimento, pois serão vinculados " + $("#avaliados-list .ui-selected").length + " avaliados " +
+						"com " + countParticipantesAvaliadores + " avaliadores, gerando " + qtdRegistros + " registros a serem gravados." +
+						" Isso poderia causar uma inconsistência.";
+			}
+			
+			if (qtdMenor && $("#avaliadores .portlet-content ul").length > 0 ) {
+				processando(urlImagens);
+				setTimeout(function() { 
+					contador = 1;
+					$("#avaliadores .portlet-content ul").each(function() {
+						var avaliador = $(this);
+						console.log(contador);
+						$(".ui-selected").each(function(){
+							createAvaliadoForAvaliador(avaliador, $(this));
+						});
+	
+						if(contador == countParticipantesAvaliadores)
+							$('.processando').remove();
+						
+						contador++;
 					});
-				});
+				}, 800);
 			} else {
-				$("<div>Não há avaliadores para relacionar.</div>").dialog({
+				$("<div>" + msg +"</div>").dialog({
 		    		modal: true,
-		    		height: '120',
+		    		height: 160,
+		    		width: 450,
 		    		title: "Aviso",
 		    		buttons: { "Ok": function() {
 		    			$( this ).dialog( "close" );

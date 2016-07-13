@@ -39,6 +39,7 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 		
 		<script type="text/javascript">
+		var urlImagens = '${urlImgs}';
 		var permiteAutoAvaliacao = ${avaliacaoDesempenho.permiteAutoAvaliacao.toString()};
 		var avaliacaoDesempenhoId = ${avaliacaoDesempenho.id};
 		var avaliacaoId = "";
@@ -331,7 +332,7 @@
 								        	</#if>
 							        	</#if>
 							        	<#list avaliador.colaborador.avaliados as avaliado>
-								        	<li class="avaliado_${avaliado.id}">
+								        	<li class="avaliado_${avaliado.id} avaliadoInterno">
 								        		${avaliado.nome}
 								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].id" class="colaboradorQuestionarioId" value="${avaliado.colaboradorQuestionario.id}"/>
 								        		<#if avaliado.id == avaliador.colaborador.id >

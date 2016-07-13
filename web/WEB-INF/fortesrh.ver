@@ -3,6 +3,7 @@
 	<Versao id="1.1.1xx.201" db="" data="xx/06/2016">
 		<Item visivel="S" motivo="P16070000045"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste da inconsistência ao mover colaborador para avaliado.]]></Item>
 		<Item visivel="S" motivo="P16070000046"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste na performance ao mover colaborador para avaliado.]]></Item>
+		<Item visivel="S" motivo="P16070000070"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Melhoria na performance ao gravar participantes da avaliação.]]></Item>
 		<Item visivel="S" motivo="S16060000006"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competência do Colaborador: Nova opção para gerar relatório detalhado.]]></Item>
 		<Item visivel="S" motivo="P16070000101"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Ajuste na inconsistência da paginação.]]></Item>
 		<Item visivel="S" motivo="S16040000218"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Ajuste na inconsistência na edição da turma quando o questionários de avaliação do curso for inativada.]]></Item>
