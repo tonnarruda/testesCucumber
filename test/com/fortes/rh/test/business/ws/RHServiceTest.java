@@ -1,5 +1,8 @@
 package com.fortes.rh.test.business.ws;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -485,8 +488,13 @@ public class RHServiceTest extends MockObjectTestCase
 		empresa.setCodigoAC(empresaCodigoAC);
 		empresa.setGrupoAC(grupoAC);
 		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
+		areas.add(areaOrganizacional);
+		
 		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
 		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
+		areaOrganizacionalManager.expects(once()).method("find").with(ANYTHING, ANYTHING).will(returnValue(areas));
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), eq(empresa.getGrupoAC())).will(returnValue(empresa));
 		areaOrganizacionalManager.expects(once()).method("possuiAreaFilhasByCodigoAC").with(eq(codPessoalEstabOuArea),eq(empresa.getId())).will(returnValue(false));
 		historicoColaboradorManager.expects(atLeastOnce()).method("updateSituacaoByMovimentacao").withAnyArguments();
@@ -535,7 +543,7 @@ public class RHServiceTest extends MockObjectTestCase
 		assertEquals("Movimentação não encontrada no RH.", feedbackWebService.getMensagem());
 	}
 	
-	public void testAtualizarMovimentacaoEmLotePossuiAreaFilha()
+	public void testAtualizarMovimentacaoEmLoteLotacaoNaoEncontrada()
 	{
 		String codPessoalEstabOuArea = "001";
 		String[] empregadoCodigos = new String[]{"0025", "0026"};
@@ -549,6 +557,32 @@ public class RHServiceTest extends MockObjectTestCase
 		
 		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
 		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
+		areaOrganizacionalManager.expects(once()).method("find").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), eq(empresa.getGrupoAC())).will(returnValue(empresa));
+		
+		FeedbackWebService feedbackWebService = rHServiceImpl.atualizarMovimentacaoEmLote("TOKEN", empregadoCodigos, MovimentacaoAC.AREA, codPessoalEstabOuArea, false, empresa.getCodigoAC(), empresa.getGrupoAC());
+		assertEquals("Não foi possível realizar a atualização em lote. A lotação não foi encontrada no Fortes RH.", feedbackWebService.getMensagem());
+	}
+	
+	public void testAtualizarMovimentacaoEmLotePossuiAreaFilha()
+	{
+		String codPessoalEstabOuArea = "001";
+		String[] empregadoCodigos = new String[]{"0025", "0026"};
+		String empresaCodigoAC = null;
+		String grupoAC = null;
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setId(1L);
+		empresa.setCodigoAC(empresaCodigoAC);
+		empresa.setGrupoAC(grupoAC);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
+		areas.add(areaOrganizacional);
+		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
+		areaOrganizacionalManager.expects(once()).method("find").with(ANYTHING, ANYTHING).will(returnValue(areas));
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), eq(empresa.getGrupoAC())).will(returnValue(empresa));
 		areaOrganizacionalManager.expects(once()).method("possuiAreaFilhasByCodigoAC").with(eq(codPessoalEstabOuArea),eq(empresa.getId())).will(returnValue(true));
 		

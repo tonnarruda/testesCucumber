@@ -464,6 +464,9 @@ public class RHServiceImpl implements RHService
 			if(!MovimentacaoAC.AREA.equals(movimentacao) && !MovimentacaoAC.ESTABELECIMENTO.equals(movimentacao))
 				return new FeedbackWebService(false, "Movimentação não encontrada no RH.", "Movimentação: " + movimentacao);
 			
+			if(MovimentacaoAC.AREA.equals(movimentacao) && areaOrganizacionalManager.find(new String[]{"codigoAC", "empresa.id"}, new Object[]{codPessoalEstabOuArea, empresa.getId()}).size() == 0 ) 
+				return new FeedbackWebService(false, "Não foi possível realizar a movimentação em lote. A lotação destino não foi encontrada no Fortes RH.", "");
+			
 			if(MovimentacaoAC.AREA.equals(movimentacao) && areaOrganizacionalManager.possuiAreaFilhasByCodigoAC(codPessoalEstabOuArea, empresa.getId())) 
 				return new FeedbackWebService(false, "Não foi possível realizar a atualização em lote. A lotação é mãe de outras lotações.", "");
 			
