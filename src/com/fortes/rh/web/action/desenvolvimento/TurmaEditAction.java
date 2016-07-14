@@ -288,11 +288,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		Collection<AvaliacaoTurma> avaliacaoTurmasComIntaivasDaTurma = new ArrayList<AvaliacaoTurma>();
 		
 		for (AvaliacaoTurma avaliacaoTurma : avaliacaoTurmas) {
-			for (AvaliacaoTurma avaliacaoTurmaMarcado : avaliacaoTurmasMarcadas) {
-				if((avaliacaoTurmaMarcado.getId().equals(avaliacaoTurma.getId()) || avaliacaoTurma.isAtiva()) 
-						&& !avaliacaoTurmasComIntaivasDaTurma.contains(avaliacaoTurma))
-					avaliacaoTurmasComIntaivasDaTurma.add(avaliacaoTurma);
-			}
+			if((avaliacaoTurmasMarcadas.contains(avaliacaoTurma) || avaliacaoTurma.isAtiva()) 
+					&& !avaliacaoTurmasComIntaivasDaTurma.contains(avaliacaoTurma))
+				avaliacaoTurmasComIntaivasDaTurma.add(avaliacaoTurma);
 		}
 		
 		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmasComIntaivasDaTurma, "getId", "getQuestionarioTituloMaisStatus");
