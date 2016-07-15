@@ -180,7 +180,7 @@ public class TurmaListActionTest extends MockObjectTestCase
 
     	action.setFiltroPlanoTreinamento(null);
 
-    	turmaManager.expects(once()).method("removeCascade").with(eq(turma.getId()));
+    	turmaManager.expects(once()).method("removeCascade").with(eq(turma.getId()), eq(null), eq(null));
 
     	assertEquals("success", action.delete());
     }
@@ -197,7 +197,7 @@ public class TurmaListActionTest extends MockObjectTestCase
     	Curso curso = CursoFactory.getEntity(1L);
     	action.setCurso(curso);
 
-    	turmaManager.expects(once()).method("removeCascade").with(eq(turma.getId()));
+    	turmaManager.expects(once()).method("removeCascade").withAnyArguments();
     	
     	//essas 2 flags estão ativas quando o delete vem da listagem "plano de treinamento"
     	action.setShowFilter(true);

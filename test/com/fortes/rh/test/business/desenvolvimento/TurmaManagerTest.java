@@ -272,7 +272,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.removeCascade(turma.getId(), null, null);
+			turmaManager.removeCascade(turma.getId(), (TurmaAvaliacaoTurmaManager) turmaAvaliacaoTurmaManager.proxy(), (TurmaDocumentoAnexoManager)turmaDocumentoAnexoManager.proxy());
 		}
 		catch (Exception e)
 		{
