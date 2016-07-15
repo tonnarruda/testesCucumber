@@ -412,9 +412,42 @@
 			else
 				arrayValidacao = arrayValidacao.concat(new Array('dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario'));
 		}
-		exibeLabelDosCamposNaoPreenchidos = true;
 		function validaFormularioDinamico(noSubmit)
 		{
+			marcaAbas = true;
+			exibeLabelDosCamposNaoPreenchidos = true;
+			desmarcarAbas();
+		
+			$('#formacao, #idioma, #expProfissional').css('backgroundColor','inherit');
+		
+			var msg = "Os seguintes campos são obrigatórios: <br />";
+			var idiomaInvalido = $.inArray('idioma', arrayObrigatorios) > -1 && $('#idiomaTable tbody tr').size() < 1;
+			var expInvalido = $.inArray('expProfissional', arrayObrigatorios) > -1 && $('#exp tbody tr').size() < 1;
+			var formacaoInvalido = $.inArray('formacao', arrayObrigatorios) > -1 && $('#formacao tbody tr').size() < 1;
+
+			if (formacaoInvalido){
+    		   	marcarAbas('#formacao');
+				$('#formacao').css('backgroundColor','#ffeec2');
+    			msg += "Formação Escolar<br />";
+			}
+
+			if (idiomaInvalido){
+	    		marcarAbas('#idioma');
+				$('#idioma').css('backgroundColor','#ffeec2');
+	    		msg += "Idiomas<br />";
+			}
+
+			if (expInvalido){
+	    		marcarAbas('#expProfissional');
+				$('#expProfissional').css('backgroundColor','#ffeec2');
+	    		msg += "Experiência Profissional<br />";
+			}
+			
+			if (formacaoInvalido || idiomaInvalido || expInvalido) {
+	    		jAlert(msg);
+	    		return false;
+	    	}
+			
 			// valida os multicheckboxes
 			arrayObrigatorios = $.map(arrayObrigatorios, function(item) {
 				return item;
@@ -436,15 +469,12 @@
 				</#if>
 			</@authz.authorize>
 			
-			return validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}), (noSubmit == true ? true : false));
+			return validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}), (noSubmit == true));
 		}
 		
 		function prepareSubmit() {
 			var selectsAvalPeriodoExperiencia = $(".periodoExperiencia");
 			var selectsAvalPeriodoExperienciaSelecionados = $(".periodoExperiencia[value!='']");
-			console.log(selectsAvalPeriodoExperiencia.length);
-			console.log(selectsAvalPeriodoExperienciaSelecionados.length);
-			console.log($(".abaModelosAvaliacao").is(":visible"));
 			if ( $(".abaModelosAvaliacao").is(":visible") && selectsAvalPeriodoExperiencia.length > 0 && selectsAvalPeriodoExperiencia.length > selectsAvalPeriodoExperienciaSelecionados.length ) {
 				var corpo = "Existem modelos do acompanhamento do período de experiência não configurados: <br>";
 				var modelosColaborador = [];
@@ -475,7 +505,6 @@
 				
 				corpo += "<br><br>Gravar mesmo assim?";
 				
-				//$("<div>"+corpo+"</div>").dialog({ title: 'Modelos de avaliação não configurados', width: 600 });
 				$("<div>"+corpo+"</div>").dialog({ 	modal: true, 
 													title: 'Modelos de avaliação não configurados',
 													width: 400,
@@ -757,7 +786,7 @@
 	      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.rgDataExpedicao" id="rgDataExpedicao" cssClass="mascaraData" value="${rgDataExpedicao}"/>
 	        <li><hr /></li>
 	       	<b><@ww.label label="Carteira de Habilitação" /></b>
-			<@ww.textfield label="Nº de Registro" name="colaborador.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+			<@ww.textfield label="Nº de Registro" id="carteiraHabilitacao" name="colaborador.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
 	      	<@ww.textfield label="Prontuário" name="colaborador.habilitacao.registro" cssStyle="" maxLength="15" liClass="liLeft"/>
 	      	<@ww.datepicker label="Emissão" name="colaborador.habilitacao.emissao" id="emissao" liClass="liLeft" cssClass="mascaraData" value="${habEmissao}"/>
 	      	<@ww.datepicker label="Vencimento" name="colaborador.habilitacao.vencimento" id="vencimento" liClass="liLeft" cssClass="mascaraData" value="${dataVenc}"/>

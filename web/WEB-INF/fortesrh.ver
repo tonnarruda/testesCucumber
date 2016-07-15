@@ -11,6 +11,7 @@
 		<Item visivel="S" motivo="P16060000084"><![CDATA[Info Funcionais > Relatórios > Recibos de Pagamento: Ajuste na inconsitência ao gerar relatório para o colaborador não integrado com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S16060000318"><![CDATA[SESMT > Cadastros > CIPA > Eleições > Candidatos:  Auditoria da inserção e remoção de candidatos da eleição da CIPA.]]></Item>
 		<Item visivel="S" motivo="S16040000218"><![CDATA[SESMT > Movimentações > Medição dos Riscos: Novos submenus para fazer medição de riscos para ambiente e função.]]></Item>
+		<Item visivel="S" motivo="S20130500154"><![CDATA[Utilitários > Configurações > Configurar Cadastro de Colaborador e Candidato: Novas opções de configurar campos no cadastro de colaborador e candidato interno.]]></Item>
 		<Item visivel="S" motivo="P16060000319"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Ajuste na inconsistência ao enviar email aos usuários sobre cadastro de candidato realizado pelo módulo externo.]]></Item>
 	</Versao>
 	<Versao id="1.1.168.200" db="" data="29/06/2016">

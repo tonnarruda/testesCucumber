@@ -218,7 +218,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{tipoCampoExtra, "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});		
 				
 		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-		return Action.SUCCESS+"_"+entidade;
+		return Action.SUCCESS + "_" + entidade;
 	}
 	
 	public String prepareDeleteSemCodigoAC() throws Exception

@@ -229,6 +229,14 @@
 			</tr>
 			<tr>
 				<td>
+					<input id="visivel-candidato-indicado" class="check-visivel" name="camposVisivels" value="indicado" type="checkbox"/>
+    				<label for="visivel-candidato-indicado" class="label-visivel"></label>
+				</td>
+				<td class="campo">Indicado Por</td>
+				<td><input type="checkbox" value="indicado" name="camposObrigatorios" /></td>
+			</tr>
+			<tr>
+				<td>
 					<input id="visivel-candidato-estadoCivil" class="check-visivel" name="camposVisivels" value="estadoCivil" type="checkbox"/>
     				<label for="visivel-candidato-estadoCivil" class="label-visivel"></label>
 				</td>
@@ -452,6 +460,14 @@
 				</td>
 				<td class="campo">Informações Adicionais</td>
 				<td><input type="checkbox" value="infoAdicionais" name="camposObrigatorios"/></td>
+			</tr>
+			<tr>
+				<td>
+					<input id="visivel-candidato-obsrh" class="check-visivel" name="camposVisivels" value="obsrh" type="checkbox"/>
+    				<label for="visivel-candidato-obsrh" class="label-visivel"></label>
+				</td>
+				<td class="campo">Observações do RH</td>
+				<td><input type="checkbox" value="obsrh" name="camposObrigatorios"/></td>
 			</tr>
 		</table>
 	</div>

@@ -127,7 +127,6 @@
 					if (this.value) verificaParentes([this.value]);
 				});
 			</#if>
-			
 		});
 		
 		function verificaParentes(nomes)
@@ -144,59 +143,51 @@
 			CandidatoDWR.getConhecimentos(createListConhecimentos, areasIds, ${idDaEmpresa});
 		}
 		
-		exibeLabelDosCamposNaoPreenchidos = true;
-		marcaAbas = true;
 		function validarCamposCpf()
 		{
-			<#if moduloExterno?exists && moduloExterno>
-				$('#formacao, #idioma, #expProfissional, #cpf, #comoFicouSabendoVagaQual').css('backgroundColor','inherit');
+			exibeLabelDosCamposNaoPreenchidos = true;
+			desmarcarAbas();
+		
+			$('#formacao, #idioma, #expProfissional, #cpf, #comoFicouSabendoVagaQual').css('backgroundColor','inherit');
+		
+			var msg = "Os seguintes campos são obrigatórios: <br />";
+			var formacaoInvalido = $.inArray('formacao', arrayObrigatorios) > -1 && $('#formacao tbody tr').size() < 1;
+			var idiomaInvalido = $.inArray('idioma', arrayObrigatorios) > -1 && $('#idiomaTable tbody tr').size() < 1;
+			var expInvalido = $.inArray('expProfissional', arrayObrigatorios) > -1 && $('#exp tbody tr').size() < 1;
+			var ficouSabendoVaga = $.inArray('comoFicouSabendoVaga', arrayObrigatorios) > -1 && $('#comoFicouSabendoVaga').val() == 1 && ($('#comoFicouSabendoVagaQual').val() == null || $('#comoFicouSabendoVagaQual').val() == '');
 			
-				var msg = "Os seguintes campos são obrigatórios: <br />";
-				var formacaoInvalido = $.inArray('formacao', arrayObrigatorios) > -1 && $('#formacao tbody tr').size() < 1;
-				var idiomaInvalido = $.inArray('idioma', arrayObrigatorios) > -1 && $('#idiomaTable tbody tr').size() < 1;
-				var expInvalido = $.inArray('expProfissional', arrayObrigatorios) > -1 && $('#exp tbody tr').size() < 1;
-				var ficouSabendoVaga = $.inArray('comoFicouSabendoVaga', arrayObrigatorios) > -1 && $('#comoFicouSabendoVaga').val() == 1 && ($('#comoFicouSabendoVagaQual').val() == null || $('#comoFicouSabendoVagaQual').val() == '');
-				
-				if ($("#cpf").val() == "   .   .   -  ")
-		    	{
-		    		marcarAbas('#cpf');
-		    		$('#cpf').css('backgroundColor','#ffeec2');
-		    		msg += "CPF<br />";
-		    	}
-				
-				if (formacaoInvalido)
-				{
-		    		marcarAbas('#formacao');
-					$('#formacao').css('backgroundColor','#ffeec2');
-		    		msg += "Formação Escolar<br />";
-				}
+			if (formacaoInvalido)
+			{
+	    		marcarAbas('#formacao');
+				$('#formacao').css('backgroundColor','#ffeec2');
+	    		msg += "Formação Escolar<br />";
+			}
 
-				if (idiomaInvalido)
-				{
-		    		marcarAbas('#idioma');
-					$('#idioma').css('backgroundColor','#ffeec2');
-		    		msg += "Idiomas<br />";
-				}
+			if (idiomaInvalido)
+			{
+	    		marcarAbas('#idioma');
+				$('#idioma').css('backgroundColor','#ffeec2');
+	    		msg += "Idiomas<br />";
+			}
 
-				if (expInvalido)
-				{
-		    		marcarAbas('#expProfissional');
-					$('#expProfissional').css('backgroundColor','#ffeec2');
-		    		msg += "Experiência Profissional<br />";
-				}
-		    		
-		    	if(ficouSabendoVaga )
-		    	{
-		    		marcarAbas('#comoFicouSabendoVagaQual');
-		    		$('#comoFicouSabendoVagaQual').css('backgroundColor','#ffeec2');
-		    		msg += "Qual?<br />";
-		    	}
-		    			    	
-		    	if (ficouSabendoVaga  || formacaoInvalido || idiomaInvalido || expInvalido || $("#cpf").val() == "   .   .   -  ") {
-		    		jAlert(msg);
-		    		return false;
-		    	}
-			</#if>
+			if (expInvalido)
+			{
+	    		marcarAbas('#expProfissional');
+				$('#expProfissional').css('backgroundColor','#ffeec2');
+	    		msg += "Experiência Profissional<br />";
+			}
+	    		
+	    	if(ficouSabendoVaga )
+	    	{
+	    		marcarAbas('#comoFicouSabendoVagaQual');
+	    		$('#comoFicouSabendoVagaQual').css('backgroundColor','#ffeec2');
+	    		msg += "Qual?<br />";
+	    	}
+	    			    	
+	    	if (ficouSabendoVaga  || formacaoInvalido || idiomaInvalido || expInvalido) {
+	    		jAlert(msg);
+	    		return false;
+	    	}
 			
 			<#if candidato.id?exists>
 				arrayObrigatorios = $.grep(arrayObrigatorios, function(value) {
@@ -214,7 +205,7 @@
 				return value != 'formacao' && value != 'idioma' && value != 'expProfissional';
 			});
 
-			return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('email', 'cpf', 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'pis', 'data1', 'data2', 'data3'));
+			return validaFormulario('form', arrayObrigatorios, new Array('email', 'cpf', 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'pis', 'data1', 'data2', 'data3'));
 		}
 		
 		function createListConhecimentos(data)
@@ -702,10 +693,10 @@
 		</li>	
       	
 	  	<li>
-			<@ww.div id="wwgrp_cartairaHabilitacao" cssClass="campo">
+			<@ww.div id="wwgrp_carteiraHabilitacao" cssClass="campo">
 				<ul>
 			       	<b><@ww.label label="Carteira de Habilitação" /></b>
-					<@ww.textfield id="cartairaHabilitacao" label="Nº de Registro" name="candidato.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+					<@ww.textfield id="carteiraHabilitacao" label="Nº de Registro" name="candidato.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
 			      	<@ww.textfield label="Prontuário" name="candidato.habilitacao.registro"  cssStyle="width: 120px;" maxLength="15" liClass="liLeft"/>
 			      	<@ww.datepicker label="Emissão" name="candidato.habilitacao.emissao" id="emissao" liClass="liLeft" cssClass="mascaraData validaDataIni" value="${habEmissao}"/>
 			      	<@ww.datepicker label="Vencimento" name="candidato.habilitacao.vencimento" id="vencimento" liClass="liLeft" cssClass="mascaraData validaDataFim" value="${dataVenc}"/>

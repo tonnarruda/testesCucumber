@@ -39,11 +39,9 @@ import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorJsonVO;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
-import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.model.geral.ReportColumn;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -59,7 +57,6 @@ import com.fortes.rh.test.util.mockObjects.MockJasperFillManager;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
-import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.geral.ColaboradorListAction;
@@ -80,7 +77,7 @@ public class ColaboradorListActionTest
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 
 	@Before
-	public void setUp () throws Exception
+	public void setUp() throws Exception
 	{
 		action = new ColaboradorListAction();
 

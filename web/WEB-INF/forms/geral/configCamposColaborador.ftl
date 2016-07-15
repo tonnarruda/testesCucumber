@@ -39,7 +39,7 @@
 			$('.marcarTodos').click(function(e) {
 				var marcado = $(this).attr('checked');
 				
-				$(this).parents("div[class*=content]").find("input[name='camposVisivels']:enabled").each(function() {
+				$(this).parents("div[class*=content]").find("input[name='camposVisivels']:enabled").not("[type=hidden]").each(function() {
 					$(this).attr('checked', marcado).change();
 				}); 
 				
@@ -392,11 +392,11 @@
 			</tr>
 			<tr>
 				<td>
-					<input id="visivel-infoAdicionais" class="check-visivel" name="camposVisivels" value="infoAdicionais" type="checkbox"/>
+					<input id="visivel-infoAdicionais" class="check-visivel" name="camposVisivels" value="obs" type="checkbox"/>
     				<label for="visivel-infoAdicionais" class="label-visivel"></label>
 				</td>
 				<td class="campo">Informações Adicionais</td>
-				<td><input type="checkbox" value="infoAdicionais" name="camposObrigatorios"/></td>
+				<td><input type="checkbox" value="obs" name="camposObrigatorios"/></td>
 			</tr>
 		</table>
 	</div>
@@ -415,11 +415,11 @@
 			</thead>			
 			<tr>
 				<td>
-					<input id="visivel-identidade" class="check-visivel" name="camposVisivels" value="identidade" type="checkbox"/>
+					<input id="visivel-identidade" class="check-visivel" name="camposVisivels" value="rg" type="checkbox"/>
     				<label for="visivel-identidade" class="label-visivel"></label>
 				</td>
 				<td class="campo">Identidade</td>
-				<td><input type="checkbox" value="identidade" name="camposObrigatorios" /></td>
+				<td><input type="checkbox" value="rg" name="camposObrigatorios" /></td>
 			</tr>
 			<tr>
 				<td>
@@ -431,27 +431,27 @@
 			</tr>
 			<tr>
 				<td>
-					<input id="visivel-tituloEleitoral" class="check-visivel" name="camposVisivels" value="tituloEleitoral" type="checkbox"/>
+					<input id="visivel-tituloEleitoral" class="check-visivel" name="camposVisivels" value="titEleitNumero" type="checkbox"/>
     				<label for="visivel-tituloEleitoral" class="label-visivel"></label>
 				</td>
 				<td class="campo">Título Eleitoral</td>
-				<td><input type="checkbox" value="tituloEleitoral" name="camposObrigatorios" /></td>
+				<td><input type="checkbox" value="titEleitNumero" name="camposObrigatorios" /></td>
 			</tr>
 			<tr>
 				<td>
-					<input id="visivel-certificadoMilitar" class="check-visivel" name="camposVisivels" value="certificadoMilitar" type="checkbox"/>
+					<input id="visivel-certificadoMilitar" class="check-visivel" name="camposVisivels" value="certMilNumero" type="checkbox"/>
     				<label for="visivel-certificadoMilitar" class="label-visivel"></label>
 				</td>
 				<td class="campo">Certificado Militar</td>
-				<td><input type="checkbox" value="certificadoMilitar" name="camposObrigatorios" /></td>
+				<td><input type="checkbox" value="certMilNumero" name="camposObrigatorios" /></td>
 			</tr>
 			<tr>
 				<td>
-					<input id="visivel-ctps" class="check-visivel" name="camposVisivels" value="ctps" type="checkbox"/>
+					<input id="visivel-ctps" class="check-visivel" name="camposVisivels" value="ctpsNumero" type="checkbox"/>
     				<label for="visivel-ctps" class="label-visivel"></label>
 				</td>
 				<td class="campo">CTPS - Carteira de Trabalho e Previdência Social</td>
-				<td><input type="checkbox" value="ctps" name="camposObrigatorios" /></td>
+				<td><input type="checkbox" value="ctpsNumero" name="camposObrigatorios" /></td>
 			</tr>
 			<tr>
 				<td>

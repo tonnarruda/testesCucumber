@@ -221,17 +221,17 @@ function validaCampos(campos)
 			else if(campoClass.substring(0, 11) == "mascaraData" && campo.value != valueData && campo.value != "")
 				validacao = validaDate(campo);
 			else if(campoClass == "mascaraCnpj" && campo.value != valueCnpj)
-				validacao = validaCpfCnpj(campo.value);
+				validacao = validaCpfCnpj(campo);
 			else if(campoClass == "mascaraCpf" && campo.value != valueCpf)
-				validacao = validaCpfCnpj(campo.value);
+				validacao = validaCpfCnpj(campo);
 			else if(campoClass == "mascaraCep" && campo.value != valueCep)
 				validacao = true;
 			else if(campoClass == "mascaraHora" && campo.value != valueHora)
 				validacao = validaHora(campo.value);
 			else if(campoClass == "mascaraPis")
-				validacao = validaPIS(campo.value);
+				validacao = validaPIS(campo);
 			else if (campoClass == "mascaraEmail" && campo.value != "")
-				validacao = validaEmail(campo.value);
+				validacao = validaEmail(campo.value, campo.id);
 			else if (campoClass == "currency" && campo.value != "")
 				validacao = validaCurrency(campo.value);
 			
@@ -294,6 +294,7 @@ function validaCamposObrigatorios(campos, formulario)
 			nameCampo = 'listCheckBox' + nameCampoSemIdentificador;
 		}
 
+		console.log(nameCampo);
 		campo = document.getElementById(nameCampo);
 		campoClass = campo.className;
 
@@ -509,7 +510,8 @@ function replaceAll(string, token, newtoken)
 
 function validaCpfCnpj(numero)
 {
-	numero = replaceAll(numero,".","");
+	id = numero.id;
+	numero = replaceAll(numero.value,".","");
 	numero = replaceAll(numero,"-","");
 	numero = replaceAll(numero,"/","");
 	numero = numero.trim();
@@ -597,6 +599,9 @@ function validaCpfCnpj(numero)
 		}
 		if (erro.length > 0)
 		{
+			if(exibeLabelDosCamposNaoPreenchidos)
+				marcarAbas('#' + id);
+			
 			return false;
 		}
 		else
@@ -607,6 +612,9 @@ function validaCpfCnpj(numero)
 	}
 	else
 	{
+		if(exibeLabelDosCamposNaoPreenchidos)
+			marcarAbas('#' + id);
+		
   	 	return false;
 	}
 }
@@ -712,7 +720,7 @@ function validaPIS(pis)
 	numPIS=0;
 	strResto="";
 
-	numPIS = pis;
+	numPIS = pis.value;
 	for(i=0;i<=9;i++)
 	{
 		resultado = (numPIS.slice(i,i+1))*(ftap.slice(i,i+1));
@@ -730,8 +738,12 @@ function validaPIS(pis)
 		resto = strResto.slice(1,2);
 	}
 
-	if (resto!=(numPIS.slice(10,11)))
+	if (resto!=(numPIS.slice(10,11))){
+		if(exibeLabelDosCamposNaoPreenchidos)
+			marcarAbas('#' + pis.id);
+		
 		return false;
+	}
 
 	return true;
 }
@@ -748,29 +760,34 @@ function validaHora(hora)
 	return true;
 }
 
-function validaEmail(email)
+function validaEmail(email, id)
 {
+	var retorno = true;
 	var ultimaPos = email.length-1;
 	var posicaoAt = email.indexOf('@');
 	var posicaoDot = email.lastIndexOf('.');
 	
+	
 	// tem espaço
 	if (email.indexOf(" ") != -1)
-		return false;
+		retorno = false;
 	
 	// nao tem @ ou . ou tem @. juntos
 	if (posicaoAt < 1 || posicaoDot < 1 || posicaoDot-posicaoAt < 2)
-		return false;
+		retorno = false;
 	
 	// @ ou . no final
 	if (posicaoAt == ultimaPos || posicaoDot == ultimaPos)
-		return false;
+		retorno = false;
 	
 	// mais de um @
 	if (posicaoAt != email.lastIndexOf('@'))
-		return false;
+		retorno = false;
 
-	return true;
+	if(!retorno && exibeLabelDosCamposNaoPreenchidos)
+		marcarAbas('#' + id);
+	
+	return retorno;
 }
 
 function apresentaMsg(data) { jAlert(data); }
