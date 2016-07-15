@@ -25,6 +25,7 @@ import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.DNTManager;
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManager;
+import com.fortes.rh.business.desenvolvimento.TurmaDocumentoAnexoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -63,6 +64,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
@@ -77,6 +79,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
+	private TurmaDocumentoAnexoManager turmaDocumentoAnexoManager;
 	private ColaboradorPresencaManager colaboradorPresencaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
@@ -311,8 +314,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		turma.setEmpresa(getEmpresaSistema());
 
 		turma = turmaManager.setAssinaturaDigital(false, turma, assinaturaDigital, "assinaturas");
-		
-		turmaManager.inserir(turma, diasCheck, custos, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), LongUtil.arrayStringToArrayLong(documentoAnexoCheck), horariosIni, horariosFim);
+
+		turmaManager.inserir(turma, diasCheck, custos, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), LongUtil.arrayStringToArrayLong(documentoAnexoCheck), 
+				horariosIni, horariosFim, turmaAvaliacaoTurmaManager, turmaDocumentoAnexoManager);
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
@@ -321,7 +325,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		turma = turmaManager.setAssinaturaDigital(manterAssinatura, turma, assinaturaDigital, "assinaturas");
 		
-		turmaManager.atualizar(turma, diasCheck, horariosIni, horariosFim, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), LongUtil.arrayStringToArrayLong(documentoAnexoCheck), getEmpresaSistema().getId().equals(turma.getEmpresa().getId()), getEmpresaSistema().isControlarVencimentoPorCertificacao());
+		turmaManager.atualizar(turma, diasCheck, horariosIni, horariosFim, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), 
+				LongUtil.arrayStringToArrayLong(documentoAnexoCheck), getEmpresaSistema().getId().equals(turma.getEmpresa().getId()), 
+				getEmpresaSistema().isControlarVencimentoPorCertificacao(), certificacaoManager, turmaAvaliacaoTurmaManager, turmaDocumentoAnexoManager);
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
@@ -1357,5 +1363,10 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public boolean isSomenteLeitura() {
 		return somenteLeitura;
+	}
+
+	public void setTurmaDocumentoAnexoManager(
+			TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) {
+		this.turmaDocumentoAnexoManager = turmaDocumentoAnexoManager;
 	}
 }

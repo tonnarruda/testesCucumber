@@ -47,22 +47,19 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
-	public void removeCascade(Long turmaId) throws Exception
+	public void removeCascade(Long turmaId, TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager, TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
 
-		try
-		{
+		try{
 			Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.find(new String[]{"turma.id"}, new Object[]{turmaId});
 			aproveitamentoAvaliacaoCursoManager.removeByTurma(turmaId);
 			turmaTipoDespesaManager.removeByTurma(turmaId);
-			//	Remove todos os relacionamentos com Questionario/Resposta na turma
 			colaboradorQuestionarioManager.removeByColaboradorETurma(null, turmaId);
 			
-			if(colaboradoresTurmas.size() > 0)
-			{
+			if(colaboradoresTurmas.size() > 0){
 				for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 
 					colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), true);
 				
@@ -73,19 +70,14 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			}
 
 			diaTurmaManager.deleteDiasTurma(turmaId);
-			
-			TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager = (TurmaAvaliacaoTurmaManager) SpringUtil.getBean("turmaAvaliacaoTurmaManager");
 			turmaAvaliacaoTurmaManager.removeByTurma(turmaId, null);
-			
-			TurmaDocumentoAnexoManager turmaDocumentoAnexoManager = (TurmaDocumentoAnexoManager) SpringUtil.getBean("turmaDocumentoAnexoManager");
 			turmaDocumentoAnexoManager.removeByTurma(turmaId);
 
 			remove(turmaId);
 
 			transactionManager.commit(status);
 		}
-		catch(Exception e)
-		{
+		catch(Exception e){
 			transactionManager.rollback(status);
 			throw e;
 		}
@@ -96,25 +88,19 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().findByIdProjection(turmaId);
 	}
 
-	public void inserir(Turma turma, String[] dias, String custos, Long[] avaliacaoTurmaIds, Long[] documentoAnexoIds, String[] horasIni, String[] horasFim) throws Exception
+	public void inserir(Turma turma, String[] dias, String custos, Long[] avaliacaoTurmaIds, Long[] documentoAnexoIds, String[] horasIni, String[] horasFim, TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager, TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) throws Exception
 	{
 		salvarTurmaDiasCusto(turma, dias, horasIni, horasFim, custos);
 
-		TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager = (TurmaAvaliacaoTurmaManager) SpringUtil.getBean("turmaAvaliacaoTurmaManager");
-		TurmaDocumentoAnexoManager turmaDocumentoAnexoManager = (TurmaDocumentoAnexoManager) SpringUtil.getBean("turmaDocumentoAnexoManager");
 		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
 		turmaDocumentoAnexoManager.salvarDocumentoAnexos(turma.getId(), documentoAnexoIds);
 	}
 
 	public void atualizar(Turma turma, String[] dias, String[] horasIni, String[] horasFim, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, Long[] documentoAnexoIds,
-			boolean atualizaAvaliacaoEDocumentoAnexos, boolean validarCertificacao) throws Exception
+			boolean atualizaAvaliacaoEDocumentoAnexos, boolean validarCertificacao, CertificacaoManager certificacaoManager, TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager, TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) throws Exception
 	{
-		colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades, validarCertificacao);
-
+		colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades, false);
 		updateTurmaDias(turma, dias, horasIni, horasFim);
-		
-		TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager = (TurmaAvaliacaoTurmaManager) SpringUtil.getBean("turmaAvaliacaoTurmaManager");
-		TurmaDocumentoAnexoManager turmaDocumentoAnexoManager = (TurmaDocumentoAnexoManager) SpringUtil.getBean("turmaDocumentoAnexoManager");
 		
 		if(atualizaAvaliacaoEDocumentoAnexos) {
 			turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
@@ -122,8 +108,8 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		}
 		verificaAprovacaoByTurma(turma.getId());
 		
-		if(validarCertificacao && colaboradorTurma == null)
-			verificaCertificacaoByColaboradorTurma(turma);
+		if(validarCertificacao)
+			verificaCertificacaoByColaboradorTurma(turma, certificacaoManager);
 	}
 	
 	private void verificaAprovacaoByTurma(Long turmaId) {
@@ -133,12 +119,11 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		}
 	}
 	
-	public void verificaCertificacaoByColaboradorTurma(Turma turma){
+	private void verificaCertificacaoByColaboradorTurma(Turma turma, CertificacaoManager certificacaoManager){
 		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaId(turma.getId());
 		if(turma.getRealizada()){
-			CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBean("certificacaoManager");
 			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 
-				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
+				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), null).start();
 		}
 		else{
 			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 
@@ -156,19 +141,15 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			turmaTipoDespesaManager.save(despesaJSON, turma.getId());
 	}
 	
-	public void salvarTurmaDiasCustosColaboradoresAvaliacoes(Turma turma, String[] dias, String custos, Collection<ColaboradorTurma> colaboradorTurmas, Long[] avaliacaoTurmasCheck, String[] horasIni, String[] horasFim) throws Exception 
+	public void salvarTurmaDiasCustosColaboradoresAvaliacoes(Turma turma, String[] dias, String custos, Collection<ColaboradorTurma> colaboradorTurmas, Long[] avaliacaoTurmasCheck, String[] horasIni, String[] horasFim, TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) throws Exception 
 	{
 		salvarTurmaDiasCusto(turma, dias, horasIni, horasFim, custos);
 
-		TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager = (TurmaAvaliacaoTurmaManager) SpringUtil.getBean("turmaAvaliacaoTurmaManager");
 		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmasCheck);
 		
-		if (colaboradorTurmas != null)
-		{
-			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
-			{
-				if (colaboradorTurma != null)
-				{
+		if (colaboradorTurmas != null){
+			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas){
+				if (colaboradorTurma != null){
 					colaboradorTurma.setTurma(turma);
 					colaboradorTurmaManager.save(colaboradorTurma);
 				}

@@ -116,9 +116,6 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
-		
-		MockSpringUtil.mocks.put("turmaAvaliacaoTurmaManager", turmaAvaliacaoTurmaManager);
-		MockSpringUtil.mocks.put("turmaDocumentoAnexoManager", turmaDocumentoAnexoManager);
 	}
 
     protected void tearDown() throws Exception
@@ -275,7 +272,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.removeCascade(turma.getId());
+			turmaManager.removeCascade(turma.getId(), null, null);
 		}
 		catch (Exception e)
 		{
@@ -301,7 +298,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.removeCascade(turma.getId());
+			turmaManager.removeCascade(turma.getId(), null, null);
 		}
 		catch (Exception e)
 		{
@@ -332,7 +329,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.inserir(turma, diasCheck, despesa, avaliacaoTurmaIds, documentoAnexosIds, null, null);
+			turmaManager.inserir(turma, diasCheck, despesa, avaliacaoTurmaIds, documentoAnexosIds, null, null,  (TurmaAvaliacaoTurmaManager) turmaAvaliacaoTurmaManager.proxy(), (TurmaDocumentoAnexoManager) turmaDocumentoAnexoManager.proxy());
 		}
 		catch (Exception e)
 		{
@@ -372,7 +369,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.atualizar(turma, diasCheck, null, null, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds, documentoAnexosIds, true, false);
+			turmaManager.atualizar(turma, diasCheck, null, null, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds, documentoAnexosIds, true, false, null, (TurmaAvaliacaoTurmaManager) turmaAvaliacaoTurmaManager.proxy(), (TurmaDocumentoAnexoManager) turmaDocumentoAnexoManager.proxy());
 		}
 		catch (Exception e)
 		{

@@ -14,6 +14,8 @@ import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManager;
+import com.fortes.rh.business.desenvolvimento.TurmaDocumentoAnexoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -61,6 +63,8 @@ public class TurmaListAction extends MyActionSupportList
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private TipoDespesaManager tipoDespesaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
+	private TurmaDocumentoAnexoManager  turmaDocumentoAnexoManager;
 
 	private Turma turma;
 	private Curso curso;
@@ -313,7 +317,7 @@ public class TurmaListAction extends MyActionSupportList
 						if (avaliacaoTurmasCheck != null && avaliacaoTurmasCheck.size() > i)
 							avaliacoesCheck = LongUtil.arrayStringToArrayLong((String[]) avaliacaoTurmasCheck.toArray()[i]);
 	
-						turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, custosTurma, turma.getColaboradorTurmas(), avaliacoesCheck, (String[]) horariosIni.toArray()[i], (String[]) horariosFim.toArray()[i]);
+						turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, custosTurma, turma.getColaboradorTurmas(), avaliacoesCheck, (String[]) horariosIni.toArray()[i], (String[]) horariosFim.toArray()[i], turmaAvaliacaoTurmaManager);
 					}
 				}
 				
@@ -372,7 +376,7 @@ public class TurmaListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		turmaManager.removeCascade(turma.getId());
+		turmaManager.removeCascade(turma.getId(), turmaAvaliacaoTurmaManager, turmaDocumentoAnexoManager);
 		addActionSuccess("Turma excluída com sucesso.");
 
 		if(planoTreinamento)
@@ -901,5 +905,15 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public void setTurmaAvaliacaoTurmaManager(
+			TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) {
+		this.turmaAvaliacaoTurmaManager = turmaAvaliacaoTurmaManager;
+	}
+
+	public void setTurmaDocumentoAnexoManager(
+			TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) {
+		this.turmaDocumentoAnexoManager = turmaDocumentoAnexoManager;
 	}
 }
