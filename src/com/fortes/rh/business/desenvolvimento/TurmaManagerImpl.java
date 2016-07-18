@@ -26,7 +26,6 @@ import com.fortes.rh.thread.certificaColaboradorThread;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 
 public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implements TurmaManager

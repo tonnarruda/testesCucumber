@@ -561,7 +561,7 @@ public class RHServiceTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), eq(empresa.getGrupoAC())).will(returnValue(empresa));
 		
 		FeedbackWebService feedbackWebService = rHServiceImpl.atualizarMovimentacaoEmLote("TOKEN", empregadoCodigos, MovimentacaoAC.AREA, codPessoalEstabOuArea, false, empresa.getCodigoAC(), empresa.getGrupoAC());
-		assertEquals("Não foi possível realizar a atualização em lote. A lotação não foi encontrada no Fortes RH.", feedbackWebService.getMensagem());
+		assertEquals("Não foi possível realizar a movimentação em lote. A lotação destino não foi encontrada no Fortes RH.", feedbackWebService.getMensagem());
 	}
 	
 	public void testAtualizarMovimentacaoEmLotePossuiAreaFilha()
