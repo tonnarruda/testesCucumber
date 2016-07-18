@@ -1,7 +1,5 @@
 package com.fortes.rh.dao.geral;
 
-import org.hibernate.Query;
-
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 

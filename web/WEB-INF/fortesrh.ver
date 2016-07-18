@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.1xx.201" db="" data="xx/06/2016">
+	<Versao id="1.1.169.201" db="" data="19/06/2016">
 		<Item visivel="S" motivo="P16070000045"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste da inconsistência ao mover colaborador para avaliado.]]></Item>
 		<Item visivel="S" motivo="P16070000046"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste na performance ao mover colaborador para avaliado.]]></Item>
 		<Item visivel="S" motivo="P16070000070"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Melhoria na performance ao gravar participantes da avaliação.]]></Item>
@@ -8,7 +8,7 @@
 		<Item visivel="S" motivo="P16070000101"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Ajuste na inconsistência da paginação.]]></Item>
 		<Item visivel="S" motivo="P16070000044"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Editar: Ajuste de inconsistência relacionada aos questionários de avaliação do curso quando estes eram inativados posteriormente a serem selecionados no cadastro da turma.]]></Item>
 		<Item visivel="S" motivo="S16020000282"><![CDATA[Info. Funcionais > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Novas opções para ocultar quantidade de respostas e nome dos colaboradores nos comentários.]]></Item>
-		<Item visivel="S" motivo="P16060000084"><![CDATA[Info Funcionais > Relatórios > Recibos de Pagamento: Ajuste na inconsitência ao gerar relatório para o colaborador não integrado com o Fortes Pessoal.]]></Item>
+		<Item visivel="S" motivo="P16060000084"><![CDATA[Info Funcionais > Relatórios > Recibos de Pagamento: Ajuste na inconsistência ao gerar relatório para o colaborador não integrado com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S16060000318"><![CDATA[SESMT > Cadastros > CIPA > Eleições > Candidatos:  Auditoria da inserção e remoção de candidatos da eleição da CIPA.]]></Item>
 		<Item visivel="S" motivo="S16040000218"><![CDATA[SESMT > Movimentações > Medição dos Riscos: Novos submenus para fazer medição de riscos para ambiente e função.]]></Item>
 		<Item visivel="S" motivo="S20130500154"><![CDATA[Utilitários > Configurações > Configurar Cadastro de Colaborador e Candidato: Novas opções de configurar campos no cadastro de colaborador e candidato interno.]]></Item>

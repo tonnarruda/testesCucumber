@@ -97,4 +97,63 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 		boolean bancoConsistente = (getDao().getQuantidadeConstraintsDoBanco() == getDao().getQuantidadeConstraintsQueOBancoDeveriaTer());
 		getDao().updateBancoConsistente(bancoConsistente);
 	}
+
+	//TODO sem test
+	public void addCamposExtrasDoCamposVisivel(Collection<String> camposExtras, String camposVisivesisColaborador, String camposVisivesisCandidato) {
+		ParametrosDoSistema parametrosDoSistema  = getDao().findById(1L);
+		
+		if(!"".equals(camposVisivesisColaborador) && !parametrosDoSistema.getCamposColaboradorTabs().contains("abaExtra"))
+			parametrosDoSistema.setCamposColaboradorTabs(parametrosDoSistema.getCamposColaboradorTabs() + ",abaExtra");	
+		
+		if(!"".equals(camposVisivesisCandidato) && !parametrosDoSistema.getCamposCandidatoTabs().contains("abaExtra"))
+			parametrosDoSistema.setCamposCandidatoTabs(parametrosDoSistema.getCamposCandidatoTabs() + ",abaExtra");	
+		
+		addCamposExtrasColaboradorVisivel(camposExtras,camposVisivesisColaborador, parametrosDoSistema);
+		addCamposExtrasCandidatoIntenoExternoVisivel(camposExtras, camposVisivesisCandidato, parametrosDoSistema);
+		
+		update(parametrosDoSistema);
+	}
+
+	private void addCamposExtrasCandidatoIntenoExternoVisivel(Collection<String> camposExtras, String camposVisivesisCandidato,	ParametrosDoSistema parametrosDoSistema) {
+		String newCamposCandidatoVisivel = ""; 
+		String[] camposCandidatoVisivelArray = parametrosDoSistema.getCamposCandidatoVisivel().split(",");
+		for (String campoCandVisivelExistente : camposCandidatoVisivelArray) {
+			if(!camposExtras.contains(campoCandVisivelExistente.trim()))
+				newCamposCandidatoVisivel += campoCandVisivelExistente + ",";
+		}
+		
+		String newCamposCandidatoExternoVisivel = ""; 
+		String[] camposCandidatoExternoVisivelArray = parametrosDoSistema.getCamposCandidatoExternoVisivel().split(",");
+		for (String campoCandExternoVisivelExistente : camposCandidatoExternoVisivelArray) {
+			if(!camposExtras.contains(campoCandExternoVisivelExistente.trim()))
+				newCamposCandidatoExternoVisivel += campoCandExternoVisivelExistente + ",";
+		}
+		
+		if(!"".equals(camposVisivesisCandidato)){
+			newCamposCandidatoVisivel += camposVisivesisCandidato;
+			newCamposCandidatoExternoVisivel += camposVisivesisCandidato;
+		}
+		
+		if(!"".equals(newCamposCandidatoVisivel))
+			parametrosDoSistema.setCamposCandidatoVisivel(newCamposCandidatoVisivel.substring(0, newCamposCandidatoVisivel.length() -1));
+		
+		if(!"".equals(newCamposCandidatoExternoVisivel))
+			parametrosDoSistema.setCamposCandidatoExternoVisivel(newCamposCandidatoExternoVisivel.substring(0, newCamposCandidatoExternoVisivel.length() -1));
+	}
+
+	private void addCamposExtrasColaboradorVisivel(Collection<String> camposExtras, String camposVisivesisColaborador,
+			ParametrosDoSistema parametrosDoSistema) {
+		String newCamposColaboradorVisivel = ""; 
+		String[] camposColaboradorVisivelArray = parametrosDoSistema.getCamposColaboradorVisivel().split(",");
+		for (String campoColabVisivelExistente : camposColaboradorVisivelArray) {
+			if(!camposExtras.contains(campoColabVisivelExistente.trim()))
+				newCamposColaboradorVisivel += campoColabVisivelExistente + ",";
+		}
+		
+		if(!"".equals(camposVisivesisColaborador))
+			newCamposColaboradorVisivel += camposVisivesisColaborador;
+		
+		if(!"".equals(newCamposColaboradorVisivel))
+			parametrosDoSistema.setCamposColaboradorVisivel(newCamposColaboradorVisivel.substring(0,newCamposColaboradorVisivel.length() -1));
+	}
 }

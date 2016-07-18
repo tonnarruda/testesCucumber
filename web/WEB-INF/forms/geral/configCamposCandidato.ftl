@@ -61,7 +61,7 @@
 	<div class="option-aba4 abaExperiencias" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(204, 204, 204); background: rgb(217, 217, 217);"><a href="javascript: abas(4)">Experiências</a></div>
 	<div class="option-aba5 abaDocumentos" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(204, 204, 204); background: rgb(217, 217, 217);"><a href="javascript: abas(5)">Documentos</a></div>
 	<#if habilitaCampoExtra && configuracaoCampoExtras?exists && configuracaoCampoExtras?size != 0>
-		<div class="option-aba6 abaExtra"><a href="javascript: abas(7)">Extra</a></div>
+		<div class="option-aba6 abaExtra"><a href="javascript: abas(6)">Extra</a></div>
 	</#if>
 </div>
 

@@ -49,6 +49,7 @@ import com.ibm.icu.text.SimpleDateFormat;
 public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> implements EmpresaManager
 {
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
@@ -335,17 +336,20 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	{
 		if(empresa.getId() == null || empresa.getId().equals(-1L))//quanto for para aplicar para todas as empresa
 			configuracaoCampoExtraManager.removeAllNotModelo();
+	
+		Collection<String> camposExtras = new ArrayList<String>();
+		String camposVisivesisColaborador = "";
+		String camposVisivesisCandidato = "";
+		
+		for (ConfiguracaoCampoExtra campoExtra : configuracaoCampoExtras){
+			camposExtras.add(campoExtra.getNome());
 			
-		for (ConfiguracaoCampoExtra campoExtra : configuracaoCampoExtras)
-		{
-			if(campoExtra.getEmpresa().getId() == null)
-			{
+			if(campoExtra.getEmpresa().getId() == null){
 				campoExtra.setEmpresa(empresa);
 				campoExtra.setId(null);
 			}
 			
-			if(empresa.getId() == null || empresa.getId().equals(-1L))
-			{
+			if(empresa.getId() == null || empresa.getId().equals(-1L)){
 				Collection<Empresa> empresas = getDao().findTodasEmpresas();
 				for (Empresa empresaTmp : empresas) 
 				{
@@ -355,12 +359,17 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 					campoExtraTmp.setId(null);
 					configuracaoCampoExtraManager.save(campoExtraTmp);
 				}
-			}
-			else
+			}else
 				configuracaoCampoExtraManager.update(campoExtra);
+			
+			if(campoExtra.getAtivoColaborador())
+				camposVisivesisColaborador += campoExtra.getNome() + ","; 			
+			if(campoExtra.getAtivoCandidato())
+				camposVisivesisCandidato += campoExtra.getNome() + ",";
 		}
 
 		getDao().updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+		parametrosDoSistemaManager.addCamposExtrasDoCamposVisivel(camposExtras, camposVisivesisColaborador, camposVisivesisCandidato);
 	}
 	
 	public Collection<Empresa> findEmpresasPermitidas(Boolean compartilhar, Long empresId, Long usuarioId, String... roles) 
@@ -610,5 +619,9 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setMail(Mail mail) {
 		this.mail = mail;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

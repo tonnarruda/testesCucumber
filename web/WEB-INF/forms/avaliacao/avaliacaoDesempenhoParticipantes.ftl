@@ -217,7 +217,7 @@
 						<i class="fa fa-users"></i>
 						<i class="fa fa-long-arrow-right"></i>
 				    </div>
-				    <div class="option select-all" title="Selecionar todos">
+				    <div id="selecionarTodosAvaliado" class="option select-all" title="Selecionar todos">
 						<i class="fa fa-check"></i>
 						<i class="fa fa-align-justify"></i>
 				    </div>

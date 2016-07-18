@@ -46,22 +46,24 @@
 	
 	<script type='text/javascript'>
 		$(function () {
-			$( "#splash" ).dialog({
-				autoOpen: false,
-				modal: true,
-				zIndex: 99999,
-				minWidth: 825,
-				create: function (event, ui) {  },
-			  	close: function() {
-			  		if ( $('#naoExibirMsg').is(':checked') ) 
-			  			$.cookie("pgInicialSplashMarca", false, { expires: 30 }); 
-			  	}
-			});
-			
-			if($.cookie("pgInicialSplashMarca") != 'false')
-			{
-				$("#splash").dialog("open");
-			}
+			/*
+				$( "#splash" ).dialog({
+					autoOpen: false,
+					modal: true,
+					zIndex: 99999,
+					minWidth: 825,
+					create: function (event, ui) {  },
+				  	close: function() {
+				  		if ( $('#naoExibirMsg').is(':checked') ) 
+				  			$.cookie("pgInicialSplashMarca", false, { expires: 30 }); 
+				  	}
+				});
+				
+				if($.cookie("pgInicialSplashMarca") != 'false')
+				{
+					$("#splash").dialog("open");
+				}
+			*/
 						
 			$( ".column" ).sortable({
 				connectWith: ".column",
@@ -255,14 +257,16 @@
 		</#if>
 	</@authz.authorize>
 	
-	<div id="splash" style="display: none;">
-		<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');" style="float: right; color: red;">FECHAR</a>
-		<a href="https://www.youtube.com/watch?v=Hx_tSX1G9a4" target="_blank">
-			<img border="0" title="Nova Avaliação de Desempenho"  src="<@ww.url includeParams="none" value="/imgs/splashAvaliacaoDesempenho.jpg"/>" />
-		</a>
-		<input type="checkbox" id="naoExibirMsg" name="naoExibirMsg"/>
-		<label for="naoExibirMsg">Não exibir esta mensagem novamente</label>
-	</div>
+	<!--
+		<div id="splash" style="display: none;">
+			<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');" style="float: right; color: red;">FECHAR</a>
+			<a href="https://www.youtube.com/watch?v=Hx_tSX1G9a4" target="_blank">
+				<img border="0" title="Nova Avaliação de Desempenho"  src="<@ww.url includeParams="none" value="/imgs/splashAvaliacaoDesempenho.jpg"/>" />
+			</a>
+			<input type="checkbox" id="naoExibirMsg" name="naoExibirMsg"/>
+			<label for="naoExibirMsg">Não exibir esta mensagem novamente</label>
+		</div>
+	-->
 
 	<script type="text/javascript">
 		<#if idiomaIncorreto?exists && !idiomaIncorreto>

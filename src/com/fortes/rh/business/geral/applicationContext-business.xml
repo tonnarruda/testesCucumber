@@ -51,6 +51,9 @@
     <property name="mail">
       <ref bean="mail" />
     </property>
+    <property name="parametrosDoSistemaManager">
+      <ref bean="parametrosDoSistemaManager" />
+    </property>
   </bean>
   <bean id="empresaManager" parent="parentManager">
     <property name="proxyInterfaces">

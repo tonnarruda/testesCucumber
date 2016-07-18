@@ -33,6 +33,7 @@ Funcionalidade: Campos Extras para Colaborador
     E eu preencho "num" com "11"
     E eu seleciono "CE" de "Estado"
     E eu seleciono "Fortaleza" de "Cidade"
+    E eu preencho "E-mail" com "sam@gmai.com"
     E eu preencho "DDD" com "85"
     E eu preencho "Telefone" com "88438383"
     E eu seleciono "Analfabeto, inclusive o que, embora tenha recebido instrução, não se alfabetizou" de "Escolaridade"

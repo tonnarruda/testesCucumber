@@ -63,6 +63,10 @@ Quando /^eu clico no botão de Id "([^"]*)"$/ do |text|
     find('#' + text).click
 end
 
+Quando /^eu clico no botão de class "([^"]*)"$/ do |text|
+    find('.' + text).click
+end
+
 Quando /^eu clico em excluir "([^"]*)"$/ do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Excluir']").click
   #find(:xpath, "//td[text()='#{text}']/../td")

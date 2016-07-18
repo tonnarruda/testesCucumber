@@ -120,16 +120,21 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do
     Então eu devo ver o título "Participantes - _avaliacao 1"
     E eu clico no botão de Id "inserir_Avaliador"
     E eu espero 1 segundos
-    E eu devo ver "Inserir Avaliado"
-    E eu clico no botão "Pesquisar"
-    E eu marco "Paula"
-    E eu clico no botão "Gravar"
-
-    Entao eu clico no botão de Id "inserir_Avaliador"
-    E eu espero 1 segundos
+    E eu devo ver "Inserir Avaliador"
     E eu clico no botão "Pesquisar"
     E eu marco "Samuel"
     E eu clico no botão "Gravar"
+    E eu espero 1 segundos
+
+    Entao eu clico no botão de Id "inserir_Avaliado"
+    E eu clico no botão "Pesquisar"
+    E eu marco "Paula"
+    E eu clico no botão "Gravar"
+    E eu espero 1 segundos
+    E eu clico no botão de Id "selecionarTodosAvaliado"
+    E eu espero 1 segundos
+    E eu clico no botão de Id "relacionar_selecionados"
+    E eu espero 1 segundos
 
     Entao eu clico no botão de Id "btnGravar"
     E eu devo ver "Gravado com sucesso"

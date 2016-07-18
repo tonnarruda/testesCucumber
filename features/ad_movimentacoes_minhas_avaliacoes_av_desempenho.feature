@@ -38,18 +38,23 @@ Funcionalidade: Minhas Avaliações - Avaliação Desempenho
     E eu clico no botão "Avancar"
 
     Então eu devo ver o título "Participantes - _avaliacao 1"
-    E eu clico no botão de Id "inserir_Avaliado"
+    E eu clico no botão de Id "inserir_Avaliador"
     E eu espero 1 segundos
-    Então eu devo ver "Inserir Avaliado"
+    E eu devo ver "Inserir Avaliador"
     E eu clico no botão "Pesquisar"
     E eu marco "Samuel"
     E eu clico no botão "Gravar"
+    E eu espero 1 segundos
 
-    Entao eu clico no botão de Id "inserir_Avaliador"
-    E eu espero 1 segundos
+    Entao eu clico no botão de Id "inserir_Avaliado"
     E eu clico no botão "Pesquisar"
     E eu marco "Samuel"
     E eu clico no botão "Gravar"
+    E eu espero 1 segundos
+    E eu clico no botão de Id "selecionarTodosAvaliado"
+    E eu espero 1 segundos
+    E eu clico no botão de Id "relacionar_selecionados"
+    E eu espero 1 segundos
 
     Entao eu clico no botão de Id "btnGravar"
     E eu devo ver "Gravado com sucesso"
