@@ -12,7 +12,7 @@ ALTER TABLE parametrosdosistema add camposcolaboradortabs text; --.go
 
 update parametrosdosistema set camposcolaboradorvisivel = 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,vinculo,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,modelosAvaliacao'; --.go
 update parametrosdosistema set camposcolaboradorobrigatorio = 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,email,fone,dt_admissao'; --.go
-update parametrosdosistema set camposcolaboradortabs = 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao'; --.go
+update parametrosdosistema set camposcolaboradortabs = 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao'; --.go
 
 update parametrosdosistema set camposcandidatoobrigatorio = 'nome,escolaridade,ende,num,cidade,fone'; --.go
 update parametrosdosistema set camposcandidatotabs = 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais'; --.go
