@@ -65,7 +65,7 @@
 					</valueAxisFormat>
 					<domainAxisMinValueExpression><![CDATA[100]]></domainAxisMinValueExpression>
 					<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
-					<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					<rangeAxisMaxValueExpression><![CDATA[110]]></rangeAxisMaxValueExpression>
 				</barPlot>
 			</barChart>
 		</band>

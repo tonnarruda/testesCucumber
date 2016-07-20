@@ -374,7 +374,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			relatorioAnaliseDesempenhoColaborador.setAvaliado(colaboradorManager.findByIdHistoricoAtual(avaliado.getId(), false));
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Resultado das Competências do Colaborador", getEmpresaSistema(), avaliacaoDesempenho.getTitulo());
-			parametros.put("VALORMAXIMOGRAFICO", relatorioAnaliseDesempenhoColaborador.getValorMaximoGrafico());
+			parametros.put("VALORMAXIMOGRAFICO", relatorioAnaliseDesempenhoColaborador.getValorMaximoGrafico() + 1);
 			parametros.put("AVALIADONOME", relatorioAnaliseDesempenhoColaborador.getAvaliado().getNome());
 			parametros.put("NOTAMINIMAMEDIAGERALCOMPETENCIA", relatorioAnaliseDesempenhoColaborador.getNotaMinimaMediaGeralCompetencia());
 			parametros.put("CARGOFAIXA", relatorioAnaliseDesempenhoColaborador.getAvaliado().getCargoFaixa());

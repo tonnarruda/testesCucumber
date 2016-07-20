@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="admitidos" columnCount="2" printOrder="Horizontal" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="280" leftMargin="17" rightMargin="18" topMargin="30" bottomMargin="30" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="24767a6b-f9cf-40db-9a88-9000fc09d8a3">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.024520183047615"/>
+	<property name="ireport.zoom" value="1.3636363636363764"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="22"/>
+	<property name="ireport.y" value="28"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -44,7 +44,17 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="161" splitType="Stretch">
+		<band height="181" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" stretchType="RelativeToBandHeight" x="2" y="131" width="560" height="50" isPrintWhenDetailOverflows="true" uuid="7687e1cf-baa6-452b-a463-63cc399d0496"/>
+				<subreportParameter name="NOME">
+					<subreportParameterExpression><![CDATA[$P{NIVEISCOMPETENCIADESCRICAO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="VALOR">
+					<subreportParameterExpression><![CDATA[$P{NIVEISCOMPETENCIAORDEM}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "analiseDesempenhoCompetenciaColaboradorDetalhadoEscalaDesempenho" + $P{TAMANHOCOLECTIONNIVELCOMPETENCIAS} + ".jasper"]]></subreportExpression>
+			</subreport>
 			<subreport isUsingCache="true">
 				<reportElement key="subreport-1" x="14" y="1" width="537" height="50" uuid="33071d5f-4928-4bec-8beb-1498465fdd56"/>
 				<subreportParameter name="SUBREPORT_DIR">
@@ -116,16 +126,6 @@
 				</textElement>
 				<text><![CDATA[Escala de Desempenho]]></text>
 			</staticText>
-			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="2" y="131" width="560" height="30" isPrintWhenDetailOverflows="true" uuid="7687e1cf-baa6-452b-a463-63cc399d0496"/>
-				<subreportParameter name="NOME">
-					<subreportParameterExpression><![CDATA[$P{NIVEISCOMPETENCIADESCRICAO}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="VALOR">
-					<subreportParameterExpression><![CDATA[$P{NIVEISCOMPETENCIAORDEM}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "analiseDesempenhoCompetenciaColaboradorDetalhadoEscalaDesempenho" + $P{TAMANHOCOLECTIONNIVELCOMPETENCIAS} + ".jasper"]]></subreportExpression>
-			</subreport>
 		</band>
 	</pageHeader>
 	<columnHeader>

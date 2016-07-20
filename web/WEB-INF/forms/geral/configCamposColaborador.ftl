@@ -116,7 +116,8 @@
     				<label for="visivel-sexo" class="label-visivel"></label>
 				</td>
 				<td class="campo">Sexo</td>
-				<td><input type="checkbox" value="sexo" name="camposObrigatorios" /></td>
+				<td><input type="checkbox" value="sexo" name="camposObrigatorios" checked disabled class="desabilitado"/></td>
+				<input type="hidden"  id="sexo" value="sexo" name="camposObrigatorios" />
 			</tr>
 			<tr class="desabilitado">
 				<td>

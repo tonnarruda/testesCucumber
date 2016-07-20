@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Competencia" columnCount="5" printOrder="Horizontal" pageWidth="560" pageHeight="30" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="112" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="2496fb03-abc2-4584-871b-6b027461fe56">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Competencia" columnCount="5" printOrder="Horizontal" pageWidth="560" pageHeight="50" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="112" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="2496fb03-abc2-4584-871b-6b027461fe56">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.272292855117456"/>
+	<property name="ireport.zoom" value="1.399522140629202"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
+	<subDataset name="Table Dataset 1" uuid="f6d2be6d-9e28-4c30-8ec5-60eec6949bf4"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String">
 		<defaultValueExpression><![CDATA["D:\\workspace\\FortesRH\\web\\WEB-INF\\report\\"]]></defaultValueExpression>
 	</parameter>
@@ -42,20 +43,9 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="30" splitType="Stretch">
-			<textField>
-				<reportElement x="112" y="15" width="112" height="15" uuid="e771e9c3-07d8-490b-92f6-9c1725e12867"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split(",")).get(1)]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="15" width="112" height="15" uuid="3d4d04f4-c3d0-403a-9080-76cb61ecf9a9"/>
+		<band height="50" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement x="0" y="15" width="112" height="35" uuid="3d4d04f4-c3d0-403a-9080-76cb61ecf9a9"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -65,8 +55,19 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split(",")).get(0)]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="224" y="15" width="112" height="15" uuid="9a01bd56-0466-4721-a4a0-25581b3d6fd0"/>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement x="112" y="15" width="112" height="35" uuid="e771e9c3-07d8-490b-92f6-9c1725e12867"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split(",")).get(1)]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement x="224" y="15" width="112" height="35" uuid="9a01bd56-0466-4721-a4a0-25581b3d6fd0"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -76,8 +77,8 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split(",")).get(2)]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="336" y="15" width="112" height="15" uuid="115d71ae-6eb8-494a-b568-395ce7862792"/>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement x="336" y="15" width="112" height="35" uuid="115d71ae-6eb8-494a-b568-395ce7862792"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -87,8 +88,8 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split(",")).get(3)]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="448" y="15" width="112" height="15" uuid="4c2cb4c7-8fb1-47da-8273-08066e527d78"/>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement x="448" y="15" width="112" height="35" uuid="4c2cb4c7-8fb1-47da-8273-08066e527d78"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
