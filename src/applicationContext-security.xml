@@ -27,6 +27,9 @@
 		<property name="empresaManager">
 			<ref bean="empresaManager" />
 		</property>
+		<property name="colaboradorManager">
+			<ref bean="colaboradorManager" />
+		</property>
 		<property name="usuarioEmpresaManager">
 			<ref bean="usuarioEmpresaManager" />
 		</property>

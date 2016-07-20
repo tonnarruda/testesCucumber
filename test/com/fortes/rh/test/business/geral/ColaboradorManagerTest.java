@@ -41,6 +41,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.captacao.Candidato;
@@ -131,6 +132,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     private Mock indiceManager;
     private Mock faixaSalarialManager;
     private Mock usuarioManager;
+    private Mock usuarioEmpresaManager;
     private Mock cidadeManager;
     private Mock estadoManager;
     private Mock formacaoManager;
@@ -231,6 +233,8 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
 
         usuarioManager = new Mock(UsuarioManager.class);
         MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
+        usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
+        MockSpringUtil.mocks.put("usuarioEmpresaManager", usuarioEmpresaManager);
         MockSpringUtil.mocks.put("avaliacaoDesempenhoManager", avaliacaoDesempenhoManager);
         
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
@@ -1374,6 +1378,14 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	tSituacao1.setEmpregadoCodigoAC("tEmp1");
 		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
     	
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+    	
+    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
+    	usuarioManager.expects(once()).method("existeLogin").with(ANYTHING).will(returnValue(false));
+    	usuarioManager.expects(once()).method("save").with(ANYTHING).isVoid();
+    	usuarioEmpresaManager.expects(once()).method("findByUsuarioEmpresa").with(ANYTHING, ANYTHING).isVoid();
+    	usuarioEmpresaManager.expects(once()).method("save").with(ANYTHING).isVoid();
+    	colaboradorDao.expects(once()).method("findByUsuario").with(ANYTHING).will(returnValue(null));
     	cidadeManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(cidade));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
@@ -1414,6 +1426,14 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	tSituacao1.setEmpregadoCodigoACDestino("codigoACDestino");
     	TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
     	
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+    	
+    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
+    	usuarioManager.expects(once()).method("existeLogin").with(ANYTHING).will(returnValue(false));
+    	usuarioManager.expects(once()).method("save").with(ANYTHING).isVoid();
+    	usuarioEmpresaManager.expects(once()).method("findByUsuarioEmpresa").with(ANYTHING, ANYTHING).isVoid();
+    	usuarioEmpresaManager.expects(once()).method("save").with(ANYTHING).isVoid();
+    	colaboradorDao.expects(once()).method("findByUsuario").with(ANYTHING).will(returnValue(null));
     	cidadeManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(cidade));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
@@ -1424,6 +1444,46 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	Exception e = null;
     	try {
     		manager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);
+    	} catch (Exception e2) {
+    		e = e2;
+    	}
+    	
+    	assertNull(e);
+    }
+    
+    public void testCriarUsuarioParaColaborador() throws Exception
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	
+    	TEmpregado tEmpregado = iniciaTEmpregado();
+    	tEmpregado.setCodigoACDestino("codigoACDestino");
+    	tEmpregado.setCodigoAC("tEmp1");
+    	
+    	Pessoal pessoal = new Pessoal();
+    	pessoal.setEscolaridade("Especialização");
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setPessoal(pessoal);
+    	
+    	TSituacao tSituacao1 = new TSituacao();
+    	tSituacao1.setEmpregadoCodigoAC("tEmp1");
+    	tSituacao1.setEmpregadoCodigoACDestino("codigoACDestino");
+    	TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
+    	
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+    	
+    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
+    	usuarioManager.expects(once()).method("existeLogin").with(ANYTHING).will(returnValue(false));
+    	usuarioManager.expects(once()).method("save").with(ANYTHING).isVoid();
+    	usuarioEmpresaManager.expects(once()).method("findByUsuarioEmpresa").with(ANYTHING, ANYTHING).isVoid();
+    	usuarioEmpresaManager.expects(once()).method("save").with(ANYTHING).isVoid();
+    	colaboradorDao.expects(once()).method("findByUsuario").with(ANYTHING).will(returnValue(null));
+    	colaboradorDao.expects(once()).method("atualizarUsuario").with(ANYTHING, ANYTHING).will(returnValue(true));
+    	
+    	
+    	Exception e = null;
+    	try {
+    		manager.criarUsuarioParaColaborador(colaborador, empresa);
     	} catch (Exception e2) {
     		e = e2;
     	}

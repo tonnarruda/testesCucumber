@@ -205,7 +205,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		empresaManager.update(empresa);
 		
 		empresaManager.auditaIntegracao(empresa, tavaIntegradaComAC);
-		Usuario usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()) ;
+		Usuario usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 		empresaManager.enviaEmailInformandoDesintegracao(empresa, tavaIntegradaComAC, motivoDesintegracao, usuario.getNome() + "("+usuario.getLogin()+")" );
 		
 		atualizaEmpresaSessao();

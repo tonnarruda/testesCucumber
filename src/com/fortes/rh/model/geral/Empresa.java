@@ -78,6 +78,7 @@ public class Empresa extends AbstractModel implements Serializable
     private boolean obrigarAmbienteFuncao;
     private boolean codigoTruCurso; 
     private boolean solicitarConfirmacaoDesligamento;
+    private boolean criarUsuarioAutomaticamente;
     
     private char verificaParentesco = 'N';
     @Column(length=400)
@@ -695,5 +696,13 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setTermoDeResponsabilidade(String termoDeResponsabilidade) {
 		this.termoDeResponsabilidade = termoDeResponsabilidade;
+	}
+
+	public boolean isCriarUsuarioAutomaticamente() {
+		return criarUsuarioAutomaticamente;
+	}
+
+	public void setCriarUsuarioAutomaticamente(boolean criarUsuarioAutomaticamente) {
+		this.criarUsuarioAutomaticamente = criarUsuarioAutomaticamente;
 	}
 }

@@ -122,6 +122,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId);
 	public Colaborador updateEmpregado(TEmpregado empregado) throws Exception;
 	public void saveEmpregadosESituacoes(TEmpregado[] tEmpregados, TSituacao[] tSituacoes, Empresa empresa) throws Exception;
+	public void criarUsuarioParaColaborador(Colaborador colaborador, Empresa empresa) throws Exception;
 	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 	public Long findByUsuario(Long usuarioId);
 	public Integer getCountAtivosQualquerStatus(Date dataBase, Long[] empresaIds, Long[] areasIds, Long[] estabelecimentosIds);

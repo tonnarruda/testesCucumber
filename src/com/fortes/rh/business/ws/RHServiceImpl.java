@@ -50,6 +50,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.MovimentacaoAC;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.TipoMensagem;
@@ -594,12 +595,17 @@ public class RHServiceImpl implements RHService
 			}
 
 			try	{
-				historicoColaboradorManager.updateSituacao(situacao);
+				HistoricoColaborador historicoColaborador = historicoColaboradorManager.updateSituacao(situacao);
+				
+				if (historicoColaborador.getMotivo().equals(MotivoHistoricoColaborador.CONTRATADO)) {
+					colaboradorManager.criarUsuarioParaColaborador(historicoColaborador.getColaborador(), historicoColaborador.getColaborador().getEmpresa());
+				}
 			}catch (Exception e){
 				e.printStackTrace();
 				throw new Exception("Erro ao atualizar situação do colaborador.");
 			}
 
+			
 			transactionManager.commit(status);
 			return new FeedbackWebService(true);
 		}catch (TokenException e) {

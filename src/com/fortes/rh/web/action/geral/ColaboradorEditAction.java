@@ -15,6 +15,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
@@ -53,6 +54,9 @@ import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
+import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
@@ -144,6 +148,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
 	private PlatformTransactionManager transactionManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private UsuarioManager usuarioManager;
+	private UsuarioEmpresaManager usuarioEmpresaManager;
 	
 	private Colaborador colaborador;
 	private AreaOrganizacional areaOrganizacional;
@@ -627,6 +633,39 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 					solicitacaoManager.encerrarSolicitacaoAoPreencherTotalVagas(solicitacao, getEmpresaSistema());
 
 				addActionSuccess("Colaborador <strong>" + colaborador.getNome() + "</strong>  cadastrado com sucesso.");
+				
+				if (getEmpresaSistema().isCriarUsuarioAutomaticamente()) {
+					Usuario usuario = new Usuario();
+					usuario.setColaborador(colaborador);
+					usuario.setLogin(colaborador.getPessoal().getCpf());
+					usuario.setAcessoSistema(true);
+					usuario.setSenha("1234");
+					usuario.setNome(colaborador.getNome());
+					if (!getEmpresaSistema().isAcIntegra() || colaborador.isNaoIntegraAc()){
+						if (usuarioManager.existeLogin(usuario))
+							addActionWarning("Não foi possível criar o usuário para o colaborador <strong>"+ colaborador.getNome() +"</strong>. O login <strong>"+ colaborador.getPessoal().getCpf() +"</strong> já existe.");
+						else {
+							usuarioManager.save(usuario);
+							
+							UsuarioEmpresa usuarioEmpresa = usuarioEmpresaManager.findByUsuarioEmpresa(usuario.getId(), getEmpresaSistema().getId());
+							if (usuarioEmpresa == null){
+								ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+								
+								usuarioEmpresa = new UsuarioEmpresa();
+								usuarioEmpresa.setUsuario(usuario);
+								usuarioEmpresa.setEmpresa(getEmpresaSistema());
+								usuarioEmpresa.setPerfil(parametrosDoSistema.getPerfilPadrao());
+								usuarioEmpresaManager.save(usuarioEmpresa);
+							}
+							
+							colaboradorManager.atualizarUsuario(colaborador.getId(), usuario.getId());
+						}
+					}
+					else if (getEmpresaSistema().isAcIntegra() && !colaborador.isNaoIntegraAc()) {
+						if (usuarioManager.existeLogin(usuario))
+							addActionWarning("Não será criado automaticamente o usuário para o colaborador <strong>"+ colaborador.getNome() +"</strong>. O login <strong>"+ colaborador.getPessoal().getCpf() +"</strong> já existe.");
+					}
+				}
 				
 				transactionManager.commit(status);
 				
@@ -1922,5 +1961,13 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void setUsuarioManager(UsuarioManager usuarioManager) {
+		this.usuarioManager = usuarioManager;
+	}
+
+	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
+		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 }

@@ -303,6 +303,7 @@
 				<ul>
 					<@ww.checkbox label="Solicitar confirmação de gestores ao desligar colaboradores. (Ao marcar esta opção, o usuário deverá sair e realizar novo login no sistema)" id="solicitarConfirmacaoDesligamento" name="empresa.solicitarConfirmacaoDesligamento" liClass="liLeft" labelPosition="left"/>
 					<@ww.checkbox label="Notificar somente os períodos de acompanhamento de experiência configurados no cadastro do colaborador na aba 'Modelos de Avaliação'." id="notificarSomentePeriodosConfigurados" name="empresa.notificarSomenteDiasConfigurados" liClass="liLeft" labelPosition="left"/>
+					<@ww.checkbox label="Criar usuário automaticamente ao cadastrar colaborador." id="criarUsuarioAutomaticamente" name="empresa.criarUsuarioAutomaticamente" liClass="liLeft" labelPosition="left"/>
 				</ul>
 			</@ww.div>
 		</li>

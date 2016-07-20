@@ -1,0 +1,1 @@
+ALTER TABLE empresa ADD COLUMN criarusuarioautomaticamente boolean NOT NULL DEFAULT false;--.go

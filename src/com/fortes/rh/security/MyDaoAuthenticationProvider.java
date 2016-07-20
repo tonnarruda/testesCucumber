@@ -2,6 +2,7 @@ package com.fortes.rh.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.BadCredentialsException;
@@ -13,11 +14,13 @@ import org.acegisecurity.userdetails.UserDetails;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.acesso.PapelManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.CollectionUtil;
@@ -28,6 +31,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private PapelManager papelManager;
+	private ColaboradorManager colaboradorManager;
 
 	@Override
 	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException
@@ -38,7 +42,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 		{
 			salt = this.getSaltSource().getSalt(userDetails);
 		}
-
+		
 		if (!this.getPasswordEncoder().isPasswordValid(userDetails.getPassword(), authentication.getCredentials().toString(), salt))
 		{
 			throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
@@ -47,6 +51,14 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 		Long empresaId = Long.parseLong(((UsernamePasswordEmpresaAuthenticationToken)authentication).getEmpresa());
 		
 		try {
+			if( ((UserDetailsImpl)userDetails).getColaborador() != null && ((UserDetailsImpl)userDetails).getColaborador().getId() != null ) {
+				Colaborador colaborador = colaboradorManager.findByIdProjectionEmpresa(((UserDetailsImpl)userDetails).getColaborador().getId());
+				
+				if ( colaborador.getDataAdmissao().getTime() > new Date().getTime() ) {
+					throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
+				}
+			}
+			
 			configuraPapeis(userDetails, empresaId);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -122,6 +134,10 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 	public void setEmpresaManager(EmpresaManager empresaManager)
 	{
 		this.empresaManager = empresaManager;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
 	}
 
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)

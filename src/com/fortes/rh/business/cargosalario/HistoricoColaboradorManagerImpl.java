@@ -1023,7 +1023,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 
 		getDao().update(historicoColaborador);
-
+		
 		return historicoColaborador;
 	}
 	

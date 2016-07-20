@@ -54,6 +54,8 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
@@ -262,7 +264,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		HistoricoColaborador historico = new HistoricoColaborador();
 		historico.setColaborador(colaborador);
 		historico.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
-
+ 
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
 			historico.setStatus(StatusRetornoAC.AGUARDANDO);
 		else
@@ -1408,6 +1410,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.setEmpresa(empresa);
 			getDao().save(colaborador);
 			
+			criarUsuarioParaColaborador(colaborador, empresa);
+			
 			TSituacao tSituacao = new TSituacao();
 			for (TSituacao tSituacaoTmp : tSituacoes) {
 				if (tSituacaoTmp.getEmpregadoCodigoACDestino() != null && tSituacaoTmp.getEmpregadoCodigoACDestino().equals(tEmpregado.getCodigoACDestino()))
@@ -1423,6 +1427,36 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			historicoColaborador.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
 			historicoColaboradorManager.bindSituacao(tSituacao, historicoColaborador);
 			historicoColaboradorManager.save(historicoColaborador);
+		}
+	}
+	
+	public void criarUsuarioParaColaborador(Colaborador colaborador, Empresa empresa) throws Exception {
+		@SuppressWarnings("deprecation")
+		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
+		@SuppressWarnings("deprecation")
+		UsuarioEmpresaManager usuarioEmpresaManager = (UsuarioEmpresaManager) SpringUtil.getBeanOld("usuarioEmpresaManager");
+		
+		Usuario usuario = new Usuario();
+		usuario.setColaborador(colaborador);
+		usuario.setLogin(colaborador.getPessoal().getCpf());
+		usuario.setAcessoSistema(true);
+		usuario.setSenha("1234");
+		usuario.setNome(colaborador.getNome());
+		if (!usuarioManager.existeLogin(usuario)) {
+			usuarioManager.save(usuario);
+			
+			UsuarioEmpresa usuarioEmpresa = usuarioEmpresaManager.findByUsuarioEmpresa(usuario.getId(), empresa.getId());
+			if (usuarioEmpresa == null){
+				ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+				
+				usuarioEmpresa = new UsuarioEmpresa();
+				usuarioEmpresa.setUsuario(usuario);
+				usuarioEmpresa.setEmpresa(empresa);
+				usuarioEmpresa.setPerfil(parametrosDoSistema.getPerfilPadrao());
+				usuarioEmpresaManager.save(usuarioEmpresa);
+			}
+			
+			atualizarUsuario(colaborador.getId(), usuario.getId());
 		}
 	}
 
