@@ -58,7 +58,14 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 
 	public Usuario()
 	{
-
+	}
+	
+	public Usuario(String nome, String login, String senha, boolean acessoSistema, Colaborador colaborador) {
+		this.nome = nome;
+		this.login = login;
+		this.senha = senha;
+		this.acessoSistema = acessoSistema;
+		this.colaborador = colaborador;
 	}
 
 	public Usuario(Long id, String nome, String login, String senha, Date ultimoLogin, boolean acessoSistema, boolean superAdmin, Long idColaborador, String nomeColaborador, String nomeComercialDoColaborador)

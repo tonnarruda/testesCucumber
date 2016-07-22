@@ -29,6 +29,12 @@ public class UsuarioEmpresa extends AbstractModel implements Serializable
 	{	
 	}
 	
+	public UsuarioEmpresa(Usuario usuario, Perfil perfil, Empresa empresa) {
+		this.usuario = usuario;
+		this.perfil = perfil;
+		this.empresa = empresa;
+	}
+	
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;

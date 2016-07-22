@@ -41,6 +41,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
@@ -348,14 +349,26 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TSituacao situacao = new TSituacao();
 		TEmpregado empregado = new TEmpregado();
 		situacao.setEmpresaCodigoAC(empresaCodigoAC);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCriarUsuarioAutomaticamente(true);
+		empregado.setCodigoAC("codigoac");
+		empresa.setGrupoAC("grupoAC");
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
+		historicoColaborador.setColaborador(colaborador);
 
 		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
 		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(empregado)).will(returnValue(colaborador));
-		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao));
+		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao)).will(returnValue(historicoColaborador));
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		colaboradorManager.expects(once()).method("criarUsuarioParaColaborador").withAnyArguments();
 
 		assertEquals(true, rHServiceManager.atualizarEmpregadoAndSituacao("TOKEN", empregado, situacao).isSucesso());
 	}

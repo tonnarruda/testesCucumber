@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.169.201" db="" data="19/06/2016">
+	<Versao id="1.1.1xx.2xx" db="" data="xx/07/2016">
+		<Item visivel="S" motivo="S16040000302"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar: Nova configuração para criar usuário automaticamente ao cadastrar colaborador.]]></Item>
+	</Versao>
+	<Versao id="1.1.169.201" db="" data="19/07/2016">
 		<Item visivel="S" motivo="P16070000045"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste da inconsistência ao mover colaborador para avaliado.]]></Item>
 		<Item visivel="S" motivo="P16070000046"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste na performance ao mover colaborador para avaliado.]]></Item>
 		<Item visivel="S" motivo="P16070000070"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Melhoria na performance ao gravar participantes da avaliação.]]></Item>

@@ -852,7 +852,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.createCriteria("hc.colaborador", "c");
 		criteria.createCriteria("c.empresa", "e");
 
-
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("hc.id"), "id");
 		p.add(Projections.property("hc.gfip"), "gfip");

@@ -11,6 +11,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
@@ -40,6 +41,7 @@ import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
@@ -83,6 +85,7 @@ import com.fortes.rh.test.factory.geral.ColaboradorIdiomaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.DateUtil;
@@ -125,6 +128,8 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 	private Mock avaliacaoManager;
 	private Mock indiceManager;
 	private Mock parametrosDoSistemaManager;
+	private Mock usuarioManager;
+	private Mock usuarioEmpresaManager;
 
 	protected void setUp () throws Exception
 	{
@@ -161,6 +166,8 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		avaliacaoManager = new Mock(AvaliacaoManager.class);
 		indiceManager = new Mock(IndiceManager.class);
 		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
+		usuarioManager = new Mock(UsuarioManager.class);
+		usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
 		
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
@@ -193,6 +200,8 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		action.setAvaliacaoManager((AvaliacaoManager) avaliacaoManager.proxy());
 		action.setIndiceManager((IndiceManager) indiceManager.proxy());
 		action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
+		action.setUsuarioManager((UsuarioManager) usuarioManager.proxy());
+		action.setUsuarioEmpresaManager((UsuarioEmpresaManager)usuarioEmpresaManager.proxy());
 		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -212,32 +221,25 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
     	assertEquals(action.execute(), "success");
     }
 	
-	public void testInsert() throws Exception
-	{
+	public void testInsert() throws Exception{
 		Empresa empresa = EmpresaFactory.getEmpresa(2L);
 		empresa.setCampoExtraColaborador(true);
+		empresa.setCriarUsuarioAutomaticamente(true);
 		action.setEmpresaSistema(empresa);
 		
-		Date dataAdmissao = DateUtil.criarDataMesAno(01, 02, 2000);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		colaborador.setNome("Maluco no pedaço");
-		colaborador.setEmpresa(empresa);
-		colaborador.setDataAdmissao(dataAdmissao);
+		Colaborador colaborador = ColaboradorFactory.getEntity("", "Maluco no pedaço", empresa, DateUtil.criarDataMesAno(01, 02, 2000), null);
 		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
+		colaborador.setNaoIntegraAc(true);
 		action.setColaborador(colaborador);
 		
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
-		
 		Cargo cargo = CargoFactory.getEntity(2L);
 		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setCargo(cargo);
 		
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
-		historicoColaborador.setData(dataAdmissao);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, faixaSalarial, DateUtil.criarDataMesAno(01, 02, 2000), 1);
 		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
-		historicoColaborador.setFaixaSalarial(faixaSalarial);
 		action.setHistoricoColaborador(historicoColaborador);
 		
 		colaboradorManager.expects(once()).method("validaQtdCadastros").isVoid();
@@ -248,7 +250,12 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		solicitacaoExameManager.expects(once()).method("transferirCandidatoToColaborador").withAnyArguments().isVoid();
 		colaboradorPeriodoExperienciaAvaliacaoManager.expects(once()).method("saveConfiguracaoAvaliacaoPeriodoExperiencia").withAnyArguments().isVoid();
 		transactionManager.expects(once()).method("commit").withAnyArguments().isVoid();
-		
+		usuarioManager.expects(once()).method("existeLogin").withAnyArguments().will(returnValue(false));
+		usuarioManager.expects(once()).method("save").isVoid();
+		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(ParametrosDoSistemaFactory.getEntity()));
+		usuarioEmpresaManager.expects(once()).method("save").isVoid();
+		colaboradorManager.expects(once()).method("atualizarUsuario").isVoid();
+
 		assertEquals(Action.SUCCESS, action.insert());
 	}
 

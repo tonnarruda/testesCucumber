@@ -527,7 +527,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			session.put("SESSION_FORMACAO", formacaoManager.findByCandidato(candidato.getId()));
 			session.put("SESSION_IDIOMA", candidatoIdiomaManager.findByCandidato(candidato.getId()));
 			session.put("SESSION_EXPERIENCIA", experienciaManager.findByCandidato(candidato.getId()));
-//			session.put("SESSION_HABILITACAO_CANDIDATO", candidato.getHabilitacao());
 		}
 
 		colaborador.setCandidato(candidato);
@@ -558,29 +557,16 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		return historicoColaborador;
 	}
 
-	public String insert() throws Exception
-	{
-		try
-		{
-			colaboradorManager.validaQtdCadastros(getEmpresaSistema().getId());			
-		} catch (FortesException e) 
-		{
-			addActionMessage(e.getMessage());
-			prepare();
+	public String insert() throws Exception{
+		
+		if(verifyQtdCadastros())
 			return Action.INPUT;
-		} catch (Exception e) 
-		{
-			addActionError(e.getMessage());
-			prepare();
-			return Action.INPUT;
-		}
-
+		
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
 
-		try
-		{
+		try{
 			if(colaborador.getDataAdmissao().after(historicoColaborador.getData()))
 				throw new FortesException("Data do primeiro histórico não pode ser anterior à data de admissão.");
 
@@ -589,8 +575,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			
 			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), null);
 
-			if(!fotoValida(colaborador.getFoto()))
-			{
+			if(!fotoValida(colaborador.getFoto())){
 				if(idCandidato == null)
 					colaborador.setFoto(null);
 				
@@ -633,40 +618,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 					solicitacaoManager.encerrarSolicitacaoAoPreencherTotalVagas(solicitacao, getEmpresaSistema());
 
 				addActionSuccess("Colaborador <strong>" + colaborador.getNome() + "</strong>  cadastrado com sucesso.");
-				
-				if (getEmpresaSistema().isCriarUsuarioAutomaticamente()) {
-					Usuario usuario = new Usuario();
-					usuario.setColaborador(colaborador);
-					usuario.setLogin(colaborador.getPessoal().getCpf());
-					usuario.setAcessoSistema(true);
-					usuario.setSenha("1234");
-					usuario.setNome(colaborador.getNome());
-					if (!getEmpresaSistema().isAcIntegra() || colaborador.isNaoIntegraAc()){
-						if (usuarioManager.existeLogin(usuario))
-							addActionWarning("Não foi possível criar o usuário para o colaborador <strong>"+ colaborador.getNome() +"</strong>. O login <strong>"+ colaborador.getPessoal().getCpf() +"</strong> já existe.");
-						else {
-							usuarioManager.save(usuario);
-							
-							UsuarioEmpresa usuarioEmpresa = usuarioEmpresaManager.findByUsuarioEmpresa(usuario.getId(), getEmpresaSistema().getId());
-							if (usuarioEmpresa == null){
-								ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-								
-								usuarioEmpresa = new UsuarioEmpresa();
-								usuarioEmpresa.setUsuario(usuario);
-								usuarioEmpresa.setEmpresa(getEmpresaSistema());
-								usuarioEmpresa.setPerfil(parametrosDoSistema.getPerfilPadrao());
-								usuarioEmpresaManager.save(usuarioEmpresa);
-							}
-							
-							colaboradorManager.atualizarUsuario(colaborador.getId(), usuario.getId());
-						}
-					}
-					else if (getEmpresaSistema().isAcIntegra() && !colaborador.isNaoIntegraAc()) {
-						if (usuarioManager.existeLogin(usuario))
-							addActionWarning("Não será criado automaticamente o usuário para o colaborador <strong>"+ colaborador.getNome() +"</strong>. O login <strong>"+ colaborador.getPessoal().getCpf() +"</strong> já existe.");
-					}
-				}
-				
+				verifyCadastroUsuario();
 				transactionManager.commit(status);
 				
 				if(solicitacao != null && solicitacao.getId() != null)
@@ -727,6 +679,41 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			}
 	
 			return Action.ERROR;
+		}
+	}
+
+	private boolean verifyQtdCadastros() throws Exception {
+		try{
+			colaboradorManager.validaQtdCadastros(getEmpresaSistema().getId());
+			return false;
+		} catch (FortesException e){
+			addActionMessage(e.getMessage());
+			prepare();
+			return true;
+		} catch (Exception e){
+			addActionError(e.getMessage());
+			prepare();
+			return true;
+		}
+	}
+
+	private void verifyCadastroUsuario() throws Exception {
+		if (getEmpresaSistema().isCriarUsuarioAutomaticamente()) {
+			Usuario usuario = new Usuario(colaborador.getNome(), colaborador.getPessoal().getCpf(), "1234", true, colaborador);
+			if (!getEmpresaSistema().isAcIntegra() || colaborador.isNaoIntegraAc()){
+				if (usuarioManager.existeLogin(usuario))
+					addActionWarning("Não foi possível criar o usuário para o colaborador <strong>"+ colaborador.getNome() +"</strong>. O login <strong>"+ colaborador.getPessoal().getCpf() +"</strong> já existe.");
+				else {
+					usuarioManager.save(usuario);
+					ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+					UsuarioEmpresa usuarioEmpresa = new UsuarioEmpresa(usuario, parametrosDoSistema.getPerfilPadrao(), getEmpresaSistema());
+					usuarioEmpresaManager.save(usuarioEmpresa);
+					colaboradorManager.atualizarUsuario(colaborador.getId(), usuario.getId());
+				}
+			}
+			else if(usuarioManager.existeLogin(usuario)){
+				addActionWarning("Não será criado automaticamente o usuário para o colaborador <strong>"+ colaborador.getNome() +"</strong>. O login <strong>"+ colaborador.getPessoal().getCpf() +"</strong> já existe.");
+			}
 		}
 	}
 	

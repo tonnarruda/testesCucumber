@@ -1430,33 +1430,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void criarUsuarioParaColaborador(Colaborador colaborador, Empresa empresa) throws Exception {
-		@SuppressWarnings("deprecation")
-		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
-		@SuppressWarnings("deprecation")
-		UsuarioEmpresaManager usuarioEmpresaManager = (UsuarioEmpresaManager) SpringUtil.getBeanOld("usuarioEmpresaManager");
-		
-		Usuario usuario = new Usuario();
-		usuario.setColaborador(colaborador);
-		usuario.setLogin(colaborador.getPessoal().getCpf());
-		usuario.setAcessoSistema(true);
-		usuario.setSenha("1234");
-		usuario.setNome(colaborador.getNome());
-		if (!usuarioManager.existeLogin(usuario)) {
-			usuarioManager.save(usuario);
-			
-			UsuarioEmpresa usuarioEmpresa = usuarioEmpresaManager.findByUsuarioEmpresa(usuario.getId(), empresa.getId());
-			if (usuarioEmpresa == null){
+		if(empresaManager.findById(empresa.getId()).isCriarUsuarioAutomaticamente()){
+			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
+			Usuario usuario = new Usuario(colaborador.getNome(), colaborador.getPessoal().getCpf(), "1234", true, colaborador);
+			if(!usuarioManager.existeLogin(usuario)) {
+				usuarioManager.save(usuario);
 				ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-				
-				usuarioEmpresa = new UsuarioEmpresa();
-				usuarioEmpresa.setUsuario(usuario);
-				usuarioEmpresa.setEmpresa(empresa);
-				usuarioEmpresa.setPerfil(parametrosDoSistema.getPerfilPadrao());
+				UsuarioEmpresaManager usuarioEmpresaManager = (UsuarioEmpresaManager) SpringUtil.getBeanOld("usuarioEmpresaManager");
+				UsuarioEmpresa usuarioEmpresa = new UsuarioEmpresa(usuario, parametrosDoSistema.getPerfilPadrao(), empresa);
 				usuarioEmpresaManager.save(usuarioEmpresa);
+				atualizarUsuario(colaborador.getId(), usuario.getId());
 			}
-			
-			atualizarUsuario(colaborador.getId(), usuario.getId());
 		}
 	}
 

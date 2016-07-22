@@ -585,36 +585,38 @@ public class RHServiceImpl implements RHService
 		
 		try{
 			verifyToken(token, true);
-			try	{
-				Colaborador colaborador = colaboradorManager.updateEmpregado(empregado);
-				if(colaborador == null)
-					throw new Exception("Empregado não encontrado.");
-			}catch (Exception e){
-				e.printStackTrace();
-				throw new Exception("Erro ao atualizar colaborador.");
-			}
-
-			try	{
-				HistoricoColaborador historicoColaborador = historicoColaboradorManager.updateSituacao(situacao);
-				
-				if (historicoColaborador.getMotivo().equals(MotivoHistoricoColaborador.CONTRATADO)) {
-					colaboradorManager.criarUsuarioParaColaborador(historicoColaborador.getColaborador(), historicoColaborador.getColaborador().getEmpresa());
-				}
-			}catch (Exception e){
-				e.printStackTrace();
-				throw new Exception("Erro ao atualizar situação do colaborador.");
-			}
-
+			verifyAndUpdateColaborador(empregado);
+			verifyAndUpdateHistoricoColaborador(situacao);
 			
 			transactionManager.commit(status);
 			return new FeedbackWebService(true);
 		}catch (TokenException e) {
+			e.printStackTrace();
+			transactionManager.rollback(status);
 			return new FeedbackWebService(false, "Token incorreto.", "");
 		}catch (Exception e){
 			e.printStackTrace();
 			transactionManager.rollback(status);
-			return new FeedbackWebService(false, "Erro ao atualizar empregado e situação.",  formataException(parametros, e));
+			return new FeedbackWebService(false, "Erro ao atualizar empregado e/ou situação.",  formataException(parametros, e));
 		}
+	}
+
+	private void verifyAndUpdateHistoricoColaborador(TSituacao situacao) throws Exception {
+		try	{
+			HistoricoColaborador historicoColaborador = historicoColaboradorManager.updateSituacao(situacao);
+			
+			if (historicoColaborador.getMotivo().equals(MotivoHistoricoColaborador.CONTRATADO)) 
+				colaboradorManager.criarUsuarioParaColaborador(historicoColaborador.getColaborador(), historicoColaborador.getColaborador().getEmpresa());
+		}catch (Exception e){
+			e.printStackTrace();
+			throw new Exception("Erro ao atualizar situação do colaborador.");
+		}
+	}
+
+	private void verifyAndUpdateColaborador(TEmpregado empregado) throws Exception {
+		Colaborador colaborador = colaboradorManager.updateEmpregado(empregado);
+		if(colaborador == null)
+			throw new Exception("Empregado não encontrado.");
 	}
 	
 	public FeedbackWebService cancelarContratacao(String token, TEmpregado empregado, TSituacao situacao,  String mensagem){
