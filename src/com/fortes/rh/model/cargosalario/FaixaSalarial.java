@@ -28,6 +28,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -352,6 +353,7 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		return descricao;
 	}
 	
+	@NaoAudita
 	public String getDescricaoComEmpresa()
 	{
 		this.descricao = cargo.getEmpresa().getNome() + " - " + getDescricao();
@@ -506,6 +508,7 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		this.competencias = competencias;
 	}
 
+	@NaoAudita
 	public Collection<ConfiguracaoNivelCompetencia> getConfiguracaoNivelCompetencias() {
 		return configuracaoNivelCompetencias;
 	}

@@ -17,29 +17,39 @@ public class FaixaSalarialAuditorCallbackImpl implements AuditorCallback {
 		Method method = this.getClass().getMethod(metodo.getMetodo().getName(), MetodoInterceptado.class);
 		return (Auditavel) method.invoke(this, metodo);
 	}
-	
+
 	public Auditavel saveFaixaSalarial(MetodoInterceptado metodo) throws Throwable 
 	{
-		FaixaSalarial faixa = (FaixaSalarial) metodo.getParametros()[0];
-		
-		metodo.processa();
-		
-		String dados = new GeraDadosAuditados(null, faixa).gera();
-		
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), faixa.getDescricao(), dados);
+		try{
+			FaixaSalarial faixa = (FaixaSalarial) metodo.getParametros()[0];
+			metodo.processa();
+			String dados = new GeraDadosAuditados(null, faixa).gera();
+
+			return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), faixa.getDescricao(), dados);
+		} catch (Exception e) {
+			System.out.println("Auditoria ao salvar Faixa Salarial não funcionou.");
+			e.printStackTrace();
+			return null;
+		}
 	}
-	
+
 	public Auditavel deleteFaixaSalarial(MetodoInterceptado metodo) throws Throwable 
 	{
-		FaixaSalarial faixa = new FaixaSalarial();
-		faixa.setId((Long)metodo.getParametros()[0]);
-		faixa = carregaEntidade(metodo, faixa);
-		String dados = new GeraDadosAuditados(new Object[]{faixa}, null).gera();
-		
-		metodo.processa();
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), faixa.getDescricao(), dados);
+		try {
+			FaixaSalarial faixa = new FaixaSalarial();
+			faixa.setId((Long)metodo.getParametros()[0]);
+			faixa = carregaEntidade(metodo, faixa);
+			String dados = new GeraDadosAuditados(new Object[]{faixa}, null).gera();
+
+			metodo.processa();
+			return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), faixa.getDescricao(), dados);
+		} catch (Exception e) {
+			System.out.println("Auditoria ao deletar Faixa Salarial não funcionou.");
+			e.printStackTrace();
+			return null;
+		}
 	}
-	
+
 	private FaixaSalarial carregaEntidade(MetodoInterceptado metodo, FaixaSalarial faixaSalarial) {
 		FaixaSalarialManager manager = (FaixaSalarialManager) metodo.getComponente();
 		return manager.findById(faixaSalarial.getId());
