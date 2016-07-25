@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.1xx.2xx" db="" data="xx/07/2016">
+		<Item visivel="S" motivo="P16070000250"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais: Ajuste de inconsistência ao tentar excluir faixa salarial.]]></Item>
 		<Item visivel="S" motivo="S16040000302"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar: Nova configuração para criar usuário automaticamente ao cadastrar colaborador.]]></Item>
 	</Versao>
 	<Versao id="1.1.169.201" db="" data="19/07/2016">

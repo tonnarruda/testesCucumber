@@ -198,6 +198,7 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		this.faixaSalarialHistoricoAtual.setValor(historicoFaixaValor);
 	}
 
+	@NaoAudita
 	public String getHistoricoFaixaValorFormatado()
 	{
     	NumberFormat df = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
@@ -360,6 +361,7 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		return this.descricao;
 	}
 	
+	@NaoAudita
 	public String getDescricaoComStatus()
 	{
 		descricao = this.cargo.getNome() + " " + this.nome + (this.cargo.isAtivo() ? " (Ativo)" : " (Inativo)");
@@ -371,6 +373,7 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		this.descricao = descricao;
 	}
 	
+	@NaoAudita
 	public String getAtributoDescricao(){
 		return this.descricao;
 	}
@@ -416,12 +419,14 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		this.certificacaos = certificacaos;
 	}
 	
+	@NaoAudita
 	public String getNomeDoCargo() {
 		if (this.cargo != null && this.cargo.getNome() != null)
 			return this.cargo.getNome();
 		return "";
 	}
 	
+	@NaoAudita
 	public String getNomesDeCargoEFaixa()
 	{
 		String nomesDeCargoEFaixa = "";
@@ -434,6 +439,7 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		return nomesDeCargoEFaixa;
 	}
 	
+	@NaoAudita
 	public String getNomeDeCargoEFaixa()
 	{
 		String nomesDeCargoEFaixa = "";
