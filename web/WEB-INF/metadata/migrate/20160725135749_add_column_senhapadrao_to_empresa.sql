@@ -1,0 +1,2 @@
+
+ALTER TABLE empresa ADD COLUMN senhapadrao CHARACTER VARYING(30);--.go

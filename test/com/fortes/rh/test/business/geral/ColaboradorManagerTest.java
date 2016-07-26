@@ -36,6 +36,7 @@ import com.fortes.rh.business.geral.ColaboradorManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
@@ -149,6 +150,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     private Mock mensagemManager;
     private Mock mail;
     private Mock solicitacaoExameManager;
+    private Mock gerenciadorComunicacaoManager;
     
 	private Colaborador colaborador;
 	private List<Formacao> formacoes;
@@ -226,6 +228,9 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
 		
 		solicitacaoExameManager = new Mock(SolicitacaoExameManager.class);
 		manager.setSolicitacaoExameManager((SolicitacaoExameManager) solicitacaoExameManager.proxy());
+		
+		gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
+		manager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 
 		mail = mock(Mail.class);
         manager.setMail((Mail) mail.proxy());
@@ -1442,6 +1447,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	historicoColaboradorManager.expects(once()).method("bindSituacao").with(eq(tSituacoes[0]), ANYTHING);
     	historicoColaboradorManager.expects(once()).method("save").with( ANYTHING);
     	empresaManager.expects(once()).method("findById").withAnyArguments().will(returnValue(empresa));
+    	gerenciadorComunicacaoManager.expects(once()).method("enviarEmailAoCriarAcessoSistema");
 	}
     
     public void testCriarUsuarioParaColaborador() throws Exception
@@ -1465,6 +1471,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	
     	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
     	
+    	gerenciadorComunicacaoManager.expects(once()).method("enviarEmailAoCriarAcessoSistema");
     	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	usuarioManager.expects(once()).method("existeLogin").with(ANYTHING).will(returnValue(false));
     	usuarioManager.expects(once()).method("save").with(ANYTHING).isVoid();

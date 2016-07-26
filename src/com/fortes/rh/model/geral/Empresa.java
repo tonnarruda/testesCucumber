@@ -96,6 +96,8 @@ public class Empresa extends AbstractModel implements Serializable
     private String mensagemCartaoAniversariante;
     @Column(length=3)
     private String grupoAC;
+    @Column(length=30)
+	private String senhaPadrao;
    
     @OneToMany(mappedBy="empresa")
 	private Collection<UsuarioEmpresa> usuarioEmpresas;
@@ -704,5 +706,16 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setCriarUsuarioAutomaticamente(boolean criarUsuarioAutomaticamente) {
 		this.criarUsuarioAutomaticamente = criarUsuarioAutomaticamente;
+	}
+
+	public String getSenhaPadrao() {
+		if(senhaPadrao == null)
+			return "";
+		else
+			return senhaPadrao;
+	}
+
+	public void setSenhaPadrao(String senhaPadrao) {
+		this.senhaPadrao = senhaPadrao;
 	}
 }

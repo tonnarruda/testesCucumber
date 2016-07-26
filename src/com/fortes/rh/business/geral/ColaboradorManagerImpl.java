@@ -1434,7 +1434,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void criarUsuarioParaColaborador(Colaborador colaborador, Empresa empresa) throws Exception {
 		if(empresaManager.findById(empresa.getId()).isCriarUsuarioAutomaticamente()){
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
-			Usuario usuario = new Usuario(colaborador.getNome(), colaborador.getPessoal().getCpf(), "1234", true, colaborador);
+			Usuario usuario = new Usuario(colaborador.getNome(), colaborador.getPessoal().getCpf(), empresa.getSenhaPadrao(), true, colaborador);
 			if(!usuarioManager.existeLogin(usuario)) {
 				usuarioManager.save(usuario);
 				ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
@@ -1442,6 +1442,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				UsuarioEmpresa usuarioEmpresa = new UsuarioEmpresa(usuario, parametrosDoSistema.getPerfilPadrao(), empresa);
 				usuarioEmpresaManager.save(usuarioEmpresa);
 				atualizarUsuario(colaborador.getId(), usuario.getId());
+				
+				gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema(usuario.getLogin(), empresa.getSenhaPadrao(), colaborador.getContato().getEmail(), empresa);
 			}
 		}
 	}

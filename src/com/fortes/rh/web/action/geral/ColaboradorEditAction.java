@@ -42,6 +42,7 @@ import com.fortes.rh.business.geral.ConfiguracaoPerformanceManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -150,6 +151,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private UsuarioManager usuarioManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	private Colaborador colaborador;
 	private AreaOrganizacional areaOrganizacional;
@@ -566,7 +568,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
 
-		try{
+		try {
 			if(colaborador.getDataAdmissao().after(historicoColaborador.getData()))
 				throw new FortesException("Data do primeiro histórico não pode ser anterior à data de admissão.");
 
@@ -699,7 +701,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	private void verifyCadastroUsuario() throws Exception {
 		if (getEmpresaSistema().isCriarUsuarioAutomaticamente()) {
-			Usuario usuario = new Usuario(colaborador.getNome(), colaborador.getPessoal().getCpf(), "1234", true, colaborador);
+			Usuario usuario = new Usuario(colaborador.getNome(), colaborador.getPessoal().getCpf(), getEmpresaSistema().getSenhaPadrao(), true, colaborador);
 			if (!getEmpresaSistema().isAcIntegra() || colaborador.isNaoIntegraAc()){
 				if (usuarioManager.existeLogin(usuario))
 					addActionWarning("Não foi possível criar o usuário para o colaborador <strong>"+ colaborador.getNome() +"</strong>. O login <strong>"+ colaborador.getPessoal().getCpf() +"</strong> já existe.");
@@ -709,6 +711,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 					UsuarioEmpresa usuarioEmpresa = new UsuarioEmpresa(usuario, parametrosDoSistema.getPerfilPadrao(), getEmpresaSistema());
 					usuarioEmpresaManager.save(usuarioEmpresa);
 					colaboradorManager.atualizarUsuario(colaborador.getId(), usuario.getId());
+					gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema(usuario.getLogin(), getEmpresaSistema().getSenhaPadrao(), colaborador.getContato().getEmail(), getEmpresaSistema());
 				}
 			}
 			else if(usuarioManager.existeLogin(usuario)){
@@ -1956,5 +1959,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
+	}
+
+	public void setGerenciadorComunicacaoManager(
+			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

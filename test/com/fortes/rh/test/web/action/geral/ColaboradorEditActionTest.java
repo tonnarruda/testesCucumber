@@ -34,6 +34,7 @@ import com.fortes.rh.business.geral.ConfiguracaoPerformanceManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -130,6 +131,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 	private Mock parametrosDoSistemaManager;
 	private Mock usuarioManager;
 	private Mock usuarioEmpresaManager;
+	private Mock gerenciadorComunicacaoManager;
 
 	protected void setUp () throws Exception
 	{
@@ -168,6 +170,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
 		usuarioManager = new Mock(UsuarioManager.class);
 		usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
+		gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
 		
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
@@ -202,6 +205,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 		action.setUsuarioManager((UsuarioManager) usuarioManager.proxy());
 		action.setUsuarioEmpresaManager((UsuarioEmpresaManager)usuarioEmpresaManager.proxy());
+		action.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -242,6 +246,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
 		action.setHistoricoColaborador(historicoColaborador);
 		
+		gerenciadorComunicacaoManager.expects(once()).method("enviarEmailAoCriarAcessoSistema");
 		colaboradorManager.expects(once()).method("validaQtdCadastros").isVoid();
 		transactionManager.expects(once()).method("getTransaction").withAnyArguments().will(returnValue(null));
 		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").with(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(null)).will(returnValue(false));

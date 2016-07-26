@@ -42,6 +42,10 @@
 		.ordemDeServico textarea{	height: 150px;
 									width: 650px;
 								}
+								
+		input[disabled] {
+			background: #EFEFEF;
+		}
 	</style>
 	
 	<script type="text/javascript">
@@ -90,6 +94,11 @@
 			
 			$('#nomeHomonimoEmpresa').change();
 			$('#nomeHomonimo').change();
+			
+			$("#senhaPadrao").toggleDisabled(!$("#criarUsuarioAutomaticamente").is(":checked"));
+			$("#criarUsuarioAutomaticamente").change(function(){
+				$("#senhaPadrao").toggleDisabled(!$(this).is(":checked"));
+			});
 		});
 		
 		function testaConexaoAC()
@@ -136,6 +145,12 @@
 			if($('#mensagemCartaoAniversariante').val().length > 300)
 			{
 				jAlert("A quantidade de caracteres do campo [Mensagem do Cartão de Aniversariantes] não pode ser maior que 300");
+				return false;
+			}
+
+			if($("#criarUsuarioAutomaticamente").is(":checked") && $("#senhaPadrao").val() == "")
+			{
+				jAlert("A senha padrão está vazia.");
 				return false;
 			}
 						
@@ -304,6 +319,15 @@
 					<@ww.checkbox label="Solicitar confirmação de gestores ao desligar colaboradores. (Ao marcar esta opção, o usuário deverá sair e realizar novo login no sistema)" id="solicitarConfirmacaoDesligamento" name="empresa.solicitarConfirmacaoDesligamento" liClass="liLeft" labelPosition="left"/>
 					<@ww.checkbox label="Notificar somente os períodos de acompanhamento de experiência configurados no cadastro do colaborador na aba 'Modelos de Avaliação'." id="notificarSomentePeriodosConfigurados" name="empresa.notificarSomenteDiasConfigurados" liClass="liLeft" labelPosition="left"/>
 					<@ww.checkbox label="Criar usuário automaticamente ao cadastrar colaborador." id="criarUsuarioAutomaticamente" name="empresa.criarUsuarioAutomaticamente" liClass="liLeft" labelPosition="left"/>
+					<li id="wwgrp_update_empresa_senhaPadrao" class="wwgrp" style="margin-left: 25px;">
+						<div id="wwlbl_update_empresa_senhaPadrao" class="wwlbl" style="float:left; margin-right: 5px;">
+							<label for="update_empresa_senhaPadrao" class="desc">Senha padrão: </label>
+						</div>
+						
+						<div id="wwctrl_update_empresa_senhaPadrao" class="wwctrl">
+							<input type="text" name="empresa.senhaPadrao" maxlength="25" value="${empresa.senhaPadrao}" id="senhaPadrao">
+						</div>
+					</li>
 				</ul>
 			</@ww.div>
 		</li>
@@ -342,7 +366,7 @@
 		</li>
 		
 		<li>&nbsp;</li>
-				
+		
 		<li>
 			<@ww.div cssClass="divInfo">
 				<h2>Cartões de Aniversário</h2>
