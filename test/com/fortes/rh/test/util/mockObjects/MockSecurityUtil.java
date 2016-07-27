@@ -4,12 +4,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.acegisecurity.context.SecurityContext;
-
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.security.UserDetailsImpl;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 
 public class MockSecurityUtil

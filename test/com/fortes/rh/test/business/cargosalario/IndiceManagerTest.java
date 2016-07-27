@@ -15,7 +15,6 @@ import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.ws.CargoIntranet;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;

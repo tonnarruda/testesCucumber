@@ -430,8 +430,8 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		
 		String[] properties = new String[]{"id", "nome", "nomeComercial"};
 		String[] sets = new String[]{"id", "nome", "nomeComercial"};
-		String[] keys = new String[]{"usuario.id", "empresa.id", "naoIntegraAc"};
-		Object[] values = new Object[]{usuario.getId(), empresa.getId(), false};
+		String[] keys = new String[]{"usuario.id", "empresa.id", "naoIntegraAc", "desligado" };
+		Object[] values = new Object[]{usuario.getId(), empresa.getId(), false, false};
 		
 		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(new Constraint[]{eq(LongUtil.arrayStringToCollectionLong(areasOrganizacionaisIds)), eq(null), eq(SituacaoColaborador.ATIVO), eq(null), eq(true)}).will(returnValue(colaboradoresPermitidos));
 		colaboradorManager.expects(once()).method("findToList").with(eq(properties), eq(sets), eq(keys), eq(values)).will(returnValue(colaboradoresVinculadosAoUsuario));
@@ -455,11 +455,11 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		
 		String[] properties = new String[]{"id", "nome", "nomeComercial"};
 		String[] sets = new String[]{"id", "nome", "nomeComercial"};
-		String[] keys = new String[]{"usuario.id", "empresa.id", "naoIntegraAc"};
-		Object[] values = new Object[]{usuario.getId(), empresa.getId(), false};
+		String[] keys = new String[]{"usuario.id", "empresa.id", "naoIntegraAc", "desligado" };
+		Object[] values = new Object[]{usuario.getId(), empresa.getId(), false, false};
 		
 		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(new Constraint[]{eq(LongUtil.arrayStringToCollectionLong(areasOrganizacionaisIds)), eq(null), eq(SituacaoColaborador.ATIVO), eq(null), eq(true)}).will(returnValue(colaboradoresPermitidos));
-		colaboradorManager.expects(once()).method("findToList").with(eq(properties), eq(sets), eq(keys), eq(values)).will(returnValue(colaboradoresVinculadosAoUsuario));
+		colaboradorManager.expects(once()).method("findToList").with(new Constraint[]{eq(properties), eq(sets), eq(keys), eq(values)}).will(returnValue(colaboradoresVinculadosAoUsuario));
 		
 		Map<Long, String> mapColaboradoresPermitidos = colaboradorDWR.getPermitidosPorResponsavelCoresponsavel(usuario.getId(), areasOrganizacionaisIds, empresa.getId(), SituacaoColaborador.ATIVO, true);
 		
@@ -479,8 +479,8 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		
 		String[] properties = new String[]{"id", "nome", "nomeComercial"};
 		String[] sets = new String[]{"id", "nome", "nomeComercial"};
-		String[] keys = new String[]{"usuario.id", "empresa.id", "naoIntegraAc"};
-		Object[] values = new Object[]{usuario.getId(), empresa.getId(), false};
+		String[] keys = new String[]{"usuario.id", "empresa.id", "naoIntegraAc", "desligado" };
+		Object[] values = new Object[]{usuario.getId(), empresa.getId(), false, false};
 		
 		colaboradorManager.expects(once()).method("findToList").with(eq(properties), eq(sets), eq(keys), eq(values)).will(returnValue(colaboradoresVinculadosAoUsuario));
 		

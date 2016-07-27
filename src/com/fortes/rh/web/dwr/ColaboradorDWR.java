@@ -195,7 +195,12 @@ public class ColaboradorDWR
     		colaboradoresPermitidos = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), null, situacao, null, true);
     	
     	if(considerarColaboradorDoUsuarioLogado){
-    		Collection<Colaborador> colaboradores = colaboradorManager.findToList(new String[]{"id", "nome", "nomeComercial"}, new String[]{"id", "nome", "nomeComercial"},new String[]{"usuario.id", "empresa.id", "naoIntegraAc"},new Object[]{usuarioLogadoId, empresaId, false});
+    		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+    		if(situacao != null && (situacao.equals(SituacaoColaborador.ATIVO) || situacao.equals(SituacaoColaborador.DESLIGADO)))
+    			colaboradores = colaboradorManager.findToList(new String[]{"id", "nome", "nomeComercial"}, new String[]{"id", "nome", "nomeComercial"},new String[]{"usuario.id", "empresa.id", "naoIntegraAc", "desligado"},new Object[]{usuarioLogadoId, empresaId, false, situacao.equals(SituacaoColaborador.DESLIGADO)});
+    		else
+    			colaboradores = colaboradorManager.findToList(new String[]{"id", "nome", "nomeComercial"}, new String[]{"id", "nome", "nomeComercial"},new String[]{"usuario.id", "empresa.id", "naoIntegraAc"},new Object[]{usuarioLogadoId, empresaId, false});
+
     		if(!colaboradores.isEmpty())
     			colaboradoresPermitidos.add((Colaborador) colaboradores.toArray()[0]);
     	}

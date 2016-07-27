@@ -21,7 +21,6 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
-import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 
 public class ParticipanteAvaliacaoDesempenhoManagerTest extends MockObjectTestCase

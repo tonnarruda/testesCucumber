@@ -16,12 +16,10 @@ import com.fortes.rh.business.sesmt.ExameManagerImpl;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.TipoPessoa;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
-import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.util.DateUtil;
 

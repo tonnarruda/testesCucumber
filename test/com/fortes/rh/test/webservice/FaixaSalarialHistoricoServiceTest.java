@@ -1,7 +1,5 @@
 package com.fortes.rh.test.webservice;
 
-import java.net.MalformedURLException;
-
 import org.codehaus.xfire.XFire;
 import org.codehaus.xfire.XFireFactory;
 import org.codehaus.xfire.client.XFireProxyFactory;

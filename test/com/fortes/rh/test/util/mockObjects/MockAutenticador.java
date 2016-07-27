@@ -3,9 +3,9 @@ package com.fortes.rh.test.util.mockObjects;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.fortes.rh.exception.NotConectAutenticationException;
-
 import remprot.RPClient;
+
+import com.fortes.rh.exception.NotConectAutenticationException;
 
 public class MockAutenticador
 {

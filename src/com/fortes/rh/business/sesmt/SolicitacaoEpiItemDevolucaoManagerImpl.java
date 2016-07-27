@@ -2,10 +2,9 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
 
-import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.sesmt.SolicitacaoEpiItemDevolucaoManager;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDevolucaoDao;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 
 public class SolicitacaoEpiItemDevolucaoManagerImpl extends GenericManagerImpl<SolicitacaoEpiItemDevolucao, SolicitacaoEpiItemDevolucaoDao> implements SolicitacaoEpiItemDevolucaoManager{
 	

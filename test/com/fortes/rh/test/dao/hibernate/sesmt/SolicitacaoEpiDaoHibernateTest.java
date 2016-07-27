@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hibernate.Hibernate;
-import org.hibernate.Query;
-
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;

@@ -6,11 +6,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
-
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;

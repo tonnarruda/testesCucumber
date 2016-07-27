@@ -2,10 +2,9 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
 
-import com.fortes.rh.model.sesmt.AreaVivencia;
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.sesmt.AreaVivenciaManager;
 import com.fortes.rh.dao.sesmt.AreaVivenciaDao;
+import com.fortes.rh.model.sesmt.AreaVivencia;
 
 public class AreaVivenciaManagerImpl extends GenericManagerImpl<AreaVivencia, AreaVivenciaDao> implements AreaVivenciaManager
 {

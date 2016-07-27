@@ -16,21 +16,15 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
-import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
-import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoPraticaFactory;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
-import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
-import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 
 public class CertificacaoDaoHibernateTest extends GenericDaoHibernateTest<Certificacao>
 {

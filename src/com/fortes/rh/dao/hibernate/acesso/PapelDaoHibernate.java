@@ -9,8 +9,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.acesso.PapelDao;

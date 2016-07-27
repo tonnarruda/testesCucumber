@@ -10,14 +10,11 @@ import com.fortes.rh.dao.cargosalario.ReajusteFaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
-import com.fortes.rh.model.cargosalario.ReajusteIndice;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
-import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 
 public class ReajusteFaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<ReajusteFaixaSalarial>

@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
-import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.opensymphony.xwork.ActionContext;

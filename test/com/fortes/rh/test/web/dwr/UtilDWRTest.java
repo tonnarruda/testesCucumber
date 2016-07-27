@@ -1,12 +1,10 @@
 package com.fortes.rh.test.web.dwr;
 
-import javax.mail.internet.AddressException;
 import javax.xml.rpc.ServiceException;
 
 import org.apache.axis.client.Service;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
-import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.model.geral.GrupoAC;

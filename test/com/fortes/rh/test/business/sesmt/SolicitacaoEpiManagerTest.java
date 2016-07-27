@@ -32,7 +32,6 @@ import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.test.util.mockObjects.MockTransactionStatus;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.LongUtil;
 
 public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 {

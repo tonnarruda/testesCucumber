@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Habilitacao;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Pessoal;

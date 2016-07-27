@@ -9,7 +9,6 @@ import com.fortes.rh.dao.captacao.CandidatoIdiomaDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
-import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.util.CollectionUtil;
 
 public class CandidatoIdiomaManagerImpl extends GenericManagerImpl<CandidatoIdioma, CandidatoIdiomaDao> implements CandidatoIdiomaManager

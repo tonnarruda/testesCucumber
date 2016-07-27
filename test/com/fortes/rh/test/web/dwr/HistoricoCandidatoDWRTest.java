@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;

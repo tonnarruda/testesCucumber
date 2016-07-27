@@ -261,6 +261,8 @@
 				/geral/colaborador/prepareAtualizarModeloAvaliacao.action* = ROLE_MOV_ATUALIZAR_MODELO_AVALIACAO_COLABORADOR
 				/geral/colaborador/atualizarModeloAvaliacao.action* = ROLE_MOV_ATUALIZAR_MODELO_AVALIACAO_COLABORADOR
 				/geral/colaborador/colaboradoresPorAreaJson.action* = ROLE_ANONYMOUS,ROLE_USER
+				/geral/colaborador/prepareRelatorioFerias.action* = ROLE_REL_FERIAS
+				/geral/colaborador/imprimeRelatorioFerias.action* = ROLE_REL_FERIAS
 				
 				/geral/ocorrencia/list.action*=ROLE_CAD_OCORRENCIA
 				/geral/ocorrencia/prepareInsert.action*=ROLE_CAD_OCORRENCIA_INSERIR

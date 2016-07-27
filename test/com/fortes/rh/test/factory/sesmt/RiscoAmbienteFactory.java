@@ -3,7 +3,6 @@ package com.fortes.rh.test.factory.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.fortes.rh.model.dicionario.GrauRiscoDoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;

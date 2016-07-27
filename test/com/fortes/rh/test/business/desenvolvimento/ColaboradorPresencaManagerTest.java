@@ -1,7 +1,6 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import mockit.Mockit;

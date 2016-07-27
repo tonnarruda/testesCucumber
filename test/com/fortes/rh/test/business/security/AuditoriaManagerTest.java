@@ -7,7 +7,6 @@ import java.util.Date;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.security.AuditoriaManagerImpl;
 import com.fortes.rh.dao.security.AuditoriaDao;

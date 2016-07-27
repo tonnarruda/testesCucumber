@@ -11,10 +11,7 @@ import java.util.Arrays;
 import mockit.Mockit;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;

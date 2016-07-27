@@ -34,7 +34,6 @@ import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.util.mockObjects.MockCheckListBoxUtil;
 import com.fortes.rh.test.util.mockObjects.MockImportacaoCSVUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 import com.fortes.web.tags.CheckBox;
 

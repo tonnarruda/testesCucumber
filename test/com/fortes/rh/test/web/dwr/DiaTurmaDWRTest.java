@@ -2,7 +2,6 @@ package com.fortes.rh.test.web.dwr;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;

@@ -9,9 +9,9 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
-import com.fortes.rh.model.sesmt.AtividadeSegurancaPcmat;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.AtividadeSegurancaPcmatDao;
+import com.fortes.rh.model.sesmt.AtividadeSegurancaPcmat;
 
 public class AtividadeSegurancaPcmatDaoHibernate extends GenericDaoHibernate<AtividadeSegurancaPcmat> implements AtividadeSegurancaPcmatDao
 {

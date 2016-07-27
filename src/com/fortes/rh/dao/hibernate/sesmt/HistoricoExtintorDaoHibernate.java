@@ -2,7 +2,6 @@ package com.fortes.rh.dao.hibernate.sesmt;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;

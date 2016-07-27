@@ -2,12 +2,6 @@ package com.fortes.rh.test.dao.hibernate.captacao;
 
 import java.util.Date;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
-import org.hibernate.transform.AliasToBeanResultTransformer;
-
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
 import com.fortes.rh.dao.captacao.NivelCompetenciaHistoricoDao;

@@ -2,10 +2,9 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
 
-import com.fortes.rh.model.sesmt.MedidaSeguranca;
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.sesmt.MedidaSegurancaManager;
 import com.fortes.rh.dao.sesmt.MedidaSegurancaDao;
+import com.fortes.rh.model.sesmt.MedidaSeguranca;
 
 public class MedidaSegurancaManagerImpl extends GenericManagerImpl<MedidaSeguranca, MedidaSegurancaDao> implements MedidaSegurancaManager
 {

@@ -2,10 +2,7 @@ package com.fortes.rh.test.web.acpessoal;
 
 import java.sql.ResultSet;
 
-import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.ws.TEmpregado;
-import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.web.ws.AcPessoalClientLotacaoImpl;
 

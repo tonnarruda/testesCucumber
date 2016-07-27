@@ -1,8 +1,6 @@
 package com.fortes.rh.model.captacao.relatorio;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;

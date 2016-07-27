@@ -1,17 +1,12 @@
 package com.fortes.rh.test.webservice;
 
-import java.net.MalformedURLException;
-
 import org.codehaus.xfire.XFire;
 import org.codehaus.xfire.XFireFactory;
 import org.codehaus.xfire.client.XFireProxyFactory;
 import org.codehaus.xfire.service.Service;
 import org.codehaus.xfire.service.binding.ObjectServiceFactory;
-import org.jmock.Mock;
 
-import com.fortes.rh.business.security.TokenManager;
 import com.fortes.rh.business.ws.RHService;
-import com.fortes.rh.business.ws.RHServiceImpl;
 
 public class ColaboradorDesligamentoServiceTest
 {

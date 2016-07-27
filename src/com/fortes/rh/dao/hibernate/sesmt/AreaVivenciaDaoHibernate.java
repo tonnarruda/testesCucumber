@@ -12,9 +12,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
-import com.fortes.rh.model.sesmt.AreaVivencia;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.AreaVivenciaDao;
+import com.fortes.rh.model.sesmt.AreaVivencia;
 
 @SuppressWarnings("unchecked")
 public class AreaVivenciaDaoHibernate extends GenericDaoHibernate<AreaVivencia> implements AreaVivenciaDao

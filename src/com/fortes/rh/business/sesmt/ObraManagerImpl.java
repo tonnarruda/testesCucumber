@@ -2,10 +2,9 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
 
-import com.fortes.rh.model.sesmt.Obra;
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.sesmt.ObraManager;
 import com.fortes.rh.dao.sesmt.ObraDao;
+import com.fortes.rh.model.sesmt.Obra;
 
 public class ObraManagerImpl extends GenericManagerImpl<Obra, ObraDao> implements ObraManager
 {

@@ -9,9 +9,9 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
-import com.fortes.rh.model.sesmt.MedidaRiscoFasePcmat;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.MedidaRiscoFasePcmatDao;
+import com.fortes.rh.model.sesmt.MedidaRiscoFasePcmat;
 
 public class MedidaRiscoFasePcmatDaoHibernate extends GenericDaoHibernate<MedidaRiscoFasePcmat> implements MedidaRiscoFasePcmatDao
 {

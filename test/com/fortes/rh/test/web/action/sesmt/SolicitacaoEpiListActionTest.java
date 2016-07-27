@@ -27,7 +27,6 @@ import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.test.util.mockObjects.MockCheckListBoxUtil;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction;
 import com.fortes.web.tags.CheckBox;

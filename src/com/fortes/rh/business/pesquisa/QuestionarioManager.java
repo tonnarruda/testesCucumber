@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Empresa;

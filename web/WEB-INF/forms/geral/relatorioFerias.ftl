@@ -56,7 +56,6 @@
 		function populaChecks()
 		{
 			DWREngine.setAsync(false);
-			
 			populaColaboradores();
 		}
 			
@@ -85,7 +84,7 @@
 		<fieldset style="padding: 5px 0px 5px 5px; width: 495px;">
 			<legend>Colaboradores</legend>
 			<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" onchange="populaColaboradores();"/>
-			<@frt.checkListBox id="colaboradoresCheck" name="colaboradoresCheck" label="Colaboradores*" list="colaboradoresCheckList" width="487" height="180" filtro="true"/>
+			<@frt.checkListBox id="colaboradoresCheck" name="colaboradoresCheck" label="Colaboradores*" list="colaboradoresCheckList" width="585" height="180" filtro="true"/>
 		</fieldset>
 		
 		<fieldset class="fieldsetFeriasGozadas" style="width:578px; margin-bottom: 10px;">

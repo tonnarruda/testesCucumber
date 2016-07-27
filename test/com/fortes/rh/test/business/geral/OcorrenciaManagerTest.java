@@ -6,12 +6,9 @@ import java.util.Collection;
 import mockit.Mockit;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
-import com.fortes.rh.business.geral.AreaOrganizacionalManagerImpl;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.OcorrenciaManagerImpl;
-import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;

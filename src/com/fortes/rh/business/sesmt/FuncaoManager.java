@@ -7,7 +7,6 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.relatorio.PppRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.QtdPorFuncaoRelatorio;

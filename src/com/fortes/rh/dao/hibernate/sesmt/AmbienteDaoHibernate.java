@@ -19,7 +19,6 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.Ambiente;
-import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implements AmbienteDao

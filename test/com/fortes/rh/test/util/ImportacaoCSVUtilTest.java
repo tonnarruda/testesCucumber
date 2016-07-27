@@ -1,7 +1,6 @@
 package com.fortes.rh.test.util;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 
 import junit.framework.TestCase;

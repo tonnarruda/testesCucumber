@@ -2,7 +2,6 @@ package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
 
-import com.fortes.rh.model.sesmt.EpiPcmat;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;

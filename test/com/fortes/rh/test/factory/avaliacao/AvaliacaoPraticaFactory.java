@@ -2,7 +2,6 @@ package com.fortes.rh.test.factory.avaliacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 

@@ -1,6 +1,5 @@
 package com.fortes.rh.test.web.action.captacao;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.hibernate.ObjectNotFoundException;
@@ -20,7 +19,6 @@ import com.fortes.rh.test.factory.captacao.ConfigHistoricoNivelFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaHistoricoFactory;
 import com.fortes.rh.web.action.captacao.ConfigHistoricoNivelEditAction;
-import com.opensymphony.xwork.Action;
 
 public class ConfigHistoricoNivelEditActionTest extends MockObjectTestCase
 {

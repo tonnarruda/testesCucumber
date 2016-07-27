@@ -1006,12 +1006,17 @@ public class ColaboradorListAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 		
-		return SUCCESS;
+		String retorno = SUCCESS; 
+		if(imprimirFeriasGozadas)
+			retorno += "ComFeriasGozadas";
+		
+		return retorno;
 	}
 
 	private void prepareCabecalhoRelatorioFerias()
 	{
 		reportTitle = "Relatório de Férias";
+		reportFilter = "Período informado: " + dataInicioGozo + " a " +  dataFimGozo;
 		
 		parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 		parametros.put("IMPRIMIR_FERIAS_GOZADAS", imprimirFeriasGozadas);

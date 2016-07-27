@@ -2,12 +2,10 @@ package com.fortes.rh.business.captacao;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedList;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.RelatorioAnaliseDesempenhoColaborador;
-import com.fortes.rh.model.avaliacao.ResultadoCompetenciaColaborador;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;

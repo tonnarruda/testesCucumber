@@ -1,6 +1,9 @@
 package com.fortes.rh.model.ws;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @SuppressWarnings("serial")
 public class TPeriodoGozo implements Serializable
@@ -12,6 +15,7 @@ public class TPeriodoGozo implements Serializable
 	private String dataLimite; // Limite do gozo das férias
 	private String gozoInicial;
 	private String gozoFinal;
+	private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public TPeriodoGozo(String gozoInicial, String gozoFinal) {
 		super();
@@ -93,5 +97,17 @@ public class TPeriodoGozo implements Serializable
 		this.gozoFinal = gozoFinal;
 	}
 	
-
+	public Long getQtdDias(){
+		try {
+			if(!gozoInicial.isEmpty() && !gozoInicial.isEmpty()){
+				Date gInicial = new java.sql.Date(format.parse(gozoInicial).getTime());
+				Date gFinal = new java.sql.Date(format.parse(gozoFinal).getTime());
+				long diferencaEmMilisegundos = gFinal.getTime() - gInicial.getTime();
+				return diferencaEmMilisegundos/1000/60/60/24 + 1;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

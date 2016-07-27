@@ -9,9 +9,9 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
-import com.fortes.rh.model.sesmt.AreaVivenciaPcmat;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.AreaVivenciaPcmatDao;
+import com.fortes.rh.model.sesmt.AreaVivenciaPcmat;
 
 public class AreaVivenciaPcmatDaoHibernate extends GenericDaoHibernate<AreaVivenciaPcmat> implements AreaVivenciaPcmatDao
 {

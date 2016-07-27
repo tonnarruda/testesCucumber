@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-07-26T13:51:14 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ferias" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c6048164-3ce7-4cad-80c1-49e99c90e35d">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="ireport.zoom" value="1.2100000000000015"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<subDataset name="periodosGozos" uuid="cc2020e3-84bb-406b-b09e-b7dc393b901d">
 		<queryString>
 			<![CDATA[]]>
@@ -25,44 +26,53 @@
 	<field name="gozoInicial" class="java.lang.String"/>
 	<field name="gozoFinal" class="java.lang.String"/>
 	<sortField name="nome"/>
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" incrementType="Group" incrementGroup="Colaborador" calculation="Count">
+		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
+	</variable>
 	<group name="Colaborador">
 		<groupExpression><![CDATA[$F{nome}]]></groupExpression>
 		<groupHeader>
 			<band height="11">
+				<rectangle>
+					<reportElement key="rectangle-3" stretchType="RelativeToTallestObject" x="0" y="0" width="555" height="11" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#EEEEEE" uuid="e9349144-33ba-4ed9-9bc5-22d44f2e694b">
+						<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.0" lineStyle="Solid"/>
+					</graphicElement>
+				</rectangle>
 				<textField isBlankWhenNull="true">
 					<reportElement key="" x="0" y="0" width="315" height="11" isPrintWhenDetailOverflows="true" uuid="371b03dc-6699-4918-9fa6-250c8ea48929"/>
 					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="8" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="" x="397" y="0" width="78" height="11" uuid="90e6d6f0-61e5-40aa-833b-6c29c4e9bdba"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{previsaoFerias}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="" x="317" y="0" width="78" height="11" uuid="a2d17e01-66ca-43ec-ba88-23e725f68d78"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{dataAdmissao}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="" x="477" y="0" width="78" height="11" uuid="37debe4f-0c6c-4065-9302-6ce79712930d"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{dataLimite}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="4">
-				<printWhenExpression><![CDATA[$P{IMPRIMIR_FERIAS_GOZADAS}]]></printWhenExpression>
-			</band>
+			<band/>
 		</groupFooter>
 	</group>
 	<background>
@@ -85,7 +95,7 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="25" splitType="Stretch">
+		<band height="15" splitType="Stretch">
 			<staticText>
 				<reportElement key="staticText-1" x="0" y="1" width="315" height="11" uuid="511b364a-51f9-4cb9-b30b-3f57191a7c2f">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
@@ -109,7 +119,7 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.0"/>
 				</box>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data de Admissão]]></text>
@@ -122,7 +132,7 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.0"/>
 				</box>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Previsão de Férias]]></text>
@@ -135,61 +145,15 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.0"/>
 				</box>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Limite para Férias]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="10" y="14" width="70" height="11" uuid="742dc1e6-a6fe-4e67-b417-ea62b2eca0ef">
-					<printWhenExpression><![CDATA[$P{IMPRIMIR_FERIAS_GOZADAS}]]></printWhenExpression>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Início das Férias]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="90" y="14" width="70" height="11" uuid="70b4d067-00ad-4bdb-a220-397115f73731">
-					<printWhenExpression><![CDATA[$P{IMPRIMIR_FERIAS_GOZADAS}]]></printWhenExpression>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Final das Férias]]></text>
-			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="11" splitType="Stretch">
-			<printWhenExpression><![CDATA[$P{IMPRIMIR_FERIAS_GOZADAS} && !$F{gozoInicial}.isEmpty() && !$F{gozoFinal}.isEmpty()]]></printWhenExpression>
-			<textField isBlankWhenNull="true">
-				<reportElement key="" x="10" y="0" width="70" height="11" uuid="9528269d-4be3-4c80-a43d-562a2f59c647"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{gozoInicial}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement key="" x="90" y="0" width="70" height="11" uuid="fba3ab22-3595-4c85-acc0-db944a210cbc"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{gozoFinal}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band splitType="Stretch"/>
 	</detail>
 	<columnFooter>
 		<band splitType="Stretch">

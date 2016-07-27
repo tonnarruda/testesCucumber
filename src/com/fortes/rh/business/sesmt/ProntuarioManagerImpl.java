@@ -9,7 +9,6 @@ import com.fortes.rh.business.pesquisa.FichaMedicaManager;
 import com.fortes.rh.dao.sesmt.ProntuarioDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;

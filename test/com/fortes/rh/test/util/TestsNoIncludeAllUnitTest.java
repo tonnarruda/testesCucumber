@@ -2,13 +2,12 @@ package com.fortes.rh.test.util;
 
 import java.io.IOException;
 
-import org.apache.commons.httpclient.HttpException;
-
 import junit.framework.TestCase;
+
+import org.apache.commons.httpclient.HttpException;
 
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.HttpUtil;
-import com.fortes.rh.util.StringUtil;
 
 public class TestsNoIncludeAllUnitTest extends TestCase
 {

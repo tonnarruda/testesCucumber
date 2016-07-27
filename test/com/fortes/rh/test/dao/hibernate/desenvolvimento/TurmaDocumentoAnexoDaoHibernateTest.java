@@ -3,8 +3,6 @@ package com.fortes.rh.test.dao.hibernate.desenvolvimento;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hibernate.Hibernate;
-
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;

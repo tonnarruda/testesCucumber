@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
-import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.security.Auditoria;
