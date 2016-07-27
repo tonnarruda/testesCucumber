@@ -22,6 +22,7 @@ import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TItemTabelaEmpregados;
+import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.DateUtil;
@@ -439,5 +440,41 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
         	throw new IntegraACException(result.getMensagem());
        	
        	return result.getRetorno();
+	}
+	
+	
+	public TPeriodoGozo[] getFerias(Empresa empresa, String[] colaboradoresCodigosACs, String dataInicioGozo, String dataFimGozo) throws Exception
+	{
+		try {
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "GetPrevisaoFerias");
+
+			QName qnamePeriodosGozo = new QName("urn:UnTypesPessoalWebService", "TPeriodoGozo");
+			QName qnameArrPeriodosGozos = new QName("urn:UnTypesPessoalWebService", "TPeriodosGozos");
+
+			call.registerTypeMapping(TPeriodoGozo.class, qnamePeriodosGozo, new org.apache.axis.encoding.ser.BeanSerializerFactory(TPeriodoGozo.class, qnamePeriodosGozo), new org.apache.axis.encoding.ser.BeanDeserializerFactory(TPeriodoGozo.class, qnamePeriodosGozo));
+			call.registerTypeMapping(TPeriodoGozo[].class, qnameArrPeriodosGozos, new org.apache.axis.encoding.ser.ArraySerializerFactory(), new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
+
+			QName xmlstring = new QName("xs:string");
+			QName xmlstringArray = new QName("xs:string[]");
+
+			call.addParameter("Token", xmlstring, ParameterMode.IN);
+			call.addParameter("Empresa", xmlstring, ParameterMode.IN);
+			call.addParameter("DataInicial", xmlstring, ParameterMode.IN);
+			call.addParameter("DataFinal", xmlstring, ParameterMode.IN);
+			call.addParameter("Empregados", xmlstringArray, ParameterMode.IN);
+
+			call.setReturnType(qnameArrPeriodosGozos);
+
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), dataInicioGozo, dataFimGozo, colaboradoresCodigosACs };
+
+			TPeriodoGozo[] result = (TPeriodoGozo[]) call.invoke(param);
+			
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new IntegraACException(e, "Não foi possível obter os dados solicitadoss.");
+		}
 	}
 }

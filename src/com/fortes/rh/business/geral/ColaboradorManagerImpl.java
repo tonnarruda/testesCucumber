@@ -49,6 +49,7 @@ import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
@@ -107,6 +108,7 @@ import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
+import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.ArquivoUtil;
@@ -512,6 +514,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colocacao;
 	}
 
+	// TODO: SEM TESTE
 	public void contratarColaboradorNoAC(Colaborador colaborador, HistoricoColaborador historico, Empresa empresa, boolean enviarEmailContratacao) throws AddressException, MessagingException,Exception
 	{
 		historico.setAreaOrganizacional(areaOrganizacionalManager.findAreaOrganizacionalCodigoAc(historico.getAreaOrganizacional().getId()));
@@ -568,6 +571,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	}
 
+	//TODO: SEM TESTE
 	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias,	Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception
 	{
 		verificaEntidadeIdNulo(colaborador);
@@ -1822,9 +1826,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().migrarBairro(bairro, bairroDestino);
 	}
 
-	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao, Long notUsuarioId)
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao, Long notUsuarioId, boolean consideraSoIntegradosComAC)
 	{
-		return getDao().findByAreaOrganizacionalEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, situacao, notUsuarioId);
+		return getDao().findByAreaOrganizacionalEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, situacao, notUsuarioId, consideraSoIntegradosComAC);
 	}
 
 	public void validaQtdCadastros(Long empresaId) throws Exception
@@ -2941,12 +2945,74 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public boolean existeColaboradorAtivo(String cpf, Date data) {
 		return getDao().existeColaboradorAtivo(cpf, data);
 	}
+
+	@TesteAutomatico
+	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] idsAreasPermitidas, String situacao, String filtroOrdemDeServico, int page, int pagingSize) {
+		return getDao().findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, idsAreasPermitidas, situacao, filtroOrdemDeServico, page, pagingSize);
+	}
+
+	public Integer getCountColaboradorComESemOrdemDeServico( Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] idsAreasPermitidas, String situacao, String filtroOrdemDeServico) {
+		return getDao().findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, idsAreasPermitidas, situacao, filtroOrdemDeServico, 0, 0).size();
+	}
 	
+	@TesteAutomatico
+	public Colaborador findComDadosBasicosParaOrdemDeServico(Long colaboradorId, Date dataOrdemDeServico){
+		return getDao().findComDadosBasicosParaOrdemDeServico(colaboradorId, dataOrdemDeServico);
+	}
+
 	public void confirmaReenvios(TFeedbackPessoalWebService tFeedbackPessoalWebService, Empresa empresa) throws Exception 
 	{
 		acPessoalClientColaborador.confirmarReenvio(tFeedbackPessoalWebService, empresa);
 	}
+
+	@SuppressWarnings("static-access")
+	public String[] findCodigosACByIds(Long[] colaboradoresIds)
+	{
+		Collection<Colaborador> colaboradores = findAllSelect(Arrays.asList(colaboradoresIds), null);
+		
+		Object[] arrayCodigosAc = new CollectionUtil<Colaborador>().collectionToArrayAttribute(colaboradores, "codigoAC");
+		
+		String[] codigosAc = new String[arrayCodigosAc.length];
+		for (int i = 0; i < codigosAc.length; i++) {
+			codigosAc[i] = arrayCodigosAc[i].toString();
+		}
+		
+		return  codigosAc;
+	}
+
+	public Collection<TPeriodoGozo> getFerias(Empresa empresa, String[] colaboradoresCodigosACs, String dataInicioGozo, String dataFimGozo) throws Exception
+	{
+		TPeriodoGozo[] periodosGozo =  acPessoalClientColaborador.getFerias(empresa, colaboradoresCodigosACs, dataInicioGozo, dataFimGozo);
+		
+		if(periodosGozo == null)
+			throw new ColecaoVaziaException("Não existe dados para os filtros informados.");
+		
+		return Arrays.asList(periodosGozo); 
+	}
 	
+	public Collection<AreaOrganizacional> defineAreasPermitidasParaUsuario(Long empresaId, Long usuarioId, boolean verTodasAreas) throws Exception
+	{
+		Collection<AreaOrganizacional> areasList = null;
+		if(verTodasAreas) {
+			areasList = areaOrganizacionalManager.findByEmpresasIds(new Long[]{empresaId}, AreaOrganizacional.TODAS);
+		} else {
+			areasList = areaOrganizacionalManager.findAllListAndInativasByUsuarioId(empresaId, usuarioId, AreaOrganizacional.TODAS, null);
+			if (areasList.isEmpty()) {
+				Collection<Colaborador> colaboradoresDoUsuario = findToList(new String[]{"id","naoIntegraAc"}, new String[]{"id","naoIntegraAc"},new String[]{"usuario.id", "empresa.id"},new Long[]{usuarioId, empresaId});
+				
+				String mensagem = "Usuário sem permissão de gerar este relatório, pois o mesmo não é gestor de área organizacional, não possui em seu perfil de usuário a configuração para \"Visualizar todas as Áreas Organizacionais\"";
+				if(colaboradoresDoUsuario.isEmpty()){
+					throw new AreaColaboradorException(mensagem + " e não existe colaborador vinculado à este usuário.");
+				} else {
+					if (((Colaborador)colaboradoresDoUsuario.toArray()[0]).isNaoIntegraAc())
+						throw new AreaColaboradorException(mensagem + " e o colaborador vinculado à este usuário não está integrado com o Fortes Pessoal.");
+				}
+			}
+		}	
+		return areasList;
+	}
+
+
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
@@ -2982,18 +3048,5 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
 		this.solicitacaoExameManager = solicitacaoExameManager;
-	}
-
-	@TesteAutomatico
-	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] idsAreasPermitidas, String situacao, String filtroOrdemDeServico, int page, int pagingSize) {
-		return getDao().findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, idsAreasPermitidas, situacao, filtroOrdemDeServico, page, pagingSize);
-	}
-
-	public Integer getCountColaboradorComESemOrdemDeServico( Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] idsAreasPermitidas, String situacao, String filtroOrdemDeServico) {
-		return getDao().findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, idsAreasPermitidas, situacao, filtroOrdemDeServico, 0, 0).size();
-	}
-	
-	public Colaborador findComDadosBasicosParaOrdemDeServico(Long colaboradorId, Date dataOrdemDeServico){
-		return getDao().findComDadosBasicosParaOrdemDeServico(colaboradorId, dataOrdemDeServico);
 	}
 }

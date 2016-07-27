@@ -41,8 +41,11 @@ import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.exception.AreaColaboradorException;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.captacao.Candidato;
@@ -81,10 +84,12 @@ import com.fortes.rh.model.geral.relatorio.TaxaDemissaoCollection;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.business.MockObjectTestCaseManager;
 import com.fortes.rh.test.business.TesteAutomaticoManager;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
@@ -1499,8 +1504,8 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     public void testFindByAreaOrganizacionalEstabelecimento()
     {
     	Collection<AreaOrganizacional> areas = Arrays.asList(new AreaOrganizacional[]{AreaOrganizacionalFactory.getEntity(1L)});
-    	colaboradorDao.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
-    	assertNotNull(manager.findByAreaOrganizacionalEstabelecimento(new ArrayList<Long>(), null, SituacaoColaborador.ATIVO, null));
+    	colaboradorDao.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(areas));
+    	assertNotNull(manager.findByAreaOrganizacionalEstabelecimento(new ArrayList<Long>(), null, SituacaoColaborador.ATIVO, null, false));
     }
     
     public void testFindEmailsDeColaboradoresByPerfis()
@@ -1877,27 +1882,168 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
 		}
     	assertNull(exception);
     }
-    
-    public void testValidaQtdCadastros(){
-    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
-    	parametrosDoSistema.setVersaoAcademica(false);
-    	
-    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
-    	colaboradorDao.expects(once()).method("countColaboradoresComHistoricos").with(eq(null)).will(returnValue(9));
-    	
-    	Exception exception = null;
-    	
-    	try {
+
+	public void testValidaQtdCadastros()
+	{
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+		parametrosDoSistema.setVersaoAcademica(false);
+
+		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
+		colaboradorDao.expects(once()).method("countColaboradoresComHistoricos").with(eq(null)).will(returnValue(9));
+
+		Exception exception = null;
+
+		try {
 			manager.validaQtdCadastros(1L);
 		} catch (Exception e) {
 			exception = e;
 		}
-    	assertNull(exception);
-    }
+		assertNull(exception);
+	}
 
-    public void testGetCountColaboradorComESemOrdemDeServico() {
-    	colaboradorDao.expects(once()).method("findColaboradorComESemOrdemDeServico").withAnyArguments().will(returnValue(Arrays.asList(ColaboradorFactory.getEntity())));
-    	assertEquals(new Integer(1), manager.getCountColaboradorComESemOrdemDeServico(colaborador, null, null, SituacaoColaborador.ATIVO, FiltroOrdemDeServico.TODOS));
+	public void testGetCountColaboradorComESemOrdemDeServico()
+	{
+		colaboradorDao.expects(once()).method("findColaboradorComESemOrdemDeServico").withAnyArguments().will(returnValue(Arrays.asList(ColaboradorFactory.getEntity())));
+		assertEquals(new Integer(1), manager.getCountColaboradorComESemOrdemDeServico(colaborador, null, null, SituacaoColaborador.ATIVO, FiltroOrdemDeServico.TODOS));
+	}
+
+	public void testFindCodigosACByIds() throws Exception
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity("000001", 1L);
+		Long[] colaboradoresIds = new Long[]{colaborador.getId()};
+		
+		colaboradorDao.expects(once()).method("findAllSelect").with(eq(Arrays.asList(colaboradoresIds)), eq(null)).will(returnValue(Arrays.asList(colaborador)));
+		
+		assertEquals(colaborador.getCodigoAC(), manager.findCodigosACByIds(colaboradoresIds)[0]);
+	}
+	
+	public void testGetFerias() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		String[] colaboradoresCodigosACs = new String[]{"000001"};
+		
+		TPeriodoGozo tPeriodoGozo = new TPeriodoGozo();
+		tPeriodoGozo.setCodigoAC(colaboradoresCodigosACs[0]);
+		
+		TPeriodoGozo[] tPeriodoGozos = new TPeriodoGozo[]{tPeriodoGozo};
+		
+		acPessoalClientColaborador.expects(once()).method("getFerias").with(eq(empresa), eq(colaboradoresCodigosACs), eq(null), eq(null)).will(returnValue(tPeriodoGozos));
+		
+		Collection<TPeriodoGozo> tPeriodoGozosRetorno = manager.getFerias(empresa, colaboradoresCodigosACs, null, null);
+		
+		assertEquals(tPeriodoGozo.getCodigoAC(), ((TPeriodoGozo)tPeriodoGozosRetorno.toArray()[0]).getCodigoAC());
+	}
+	
+	public void testGetFeriasColecaoVaziaException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		String[] colaboradoresCodigosACs = new String[]{"000001"};
+		
+		TPeriodoGozo tPeriodoGozo = new TPeriodoGozo();
+		tPeriodoGozo.setCodigoAC(colaboradoresCodigosACs[0]);
+		
+		acPessoalClientColaborador.expects(once()).method("getFerias").with(eq(empresa), eq(colaboradoresCodigosACs), eq(null), eq(null)).will(returnValue(null));
+
+		Exception exception = null;
+		try {
+			manager.getFerias(empresa, colaboradoresCodigosACs, null, null);
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertTrue(exception instanceof ColecaoVaziaException);
+	}
+	
+	public void testDefineAreasPermitidasParaUsuarioVerTodasAreas() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(2L);
+		
+		areaOrganizacinoalManager.expects(once()).method("findByEmpresasIds").with(eq(new Long[]{empresa.getId()}), eq(AreaOrganizacional.TODAS)).will(returnValue(Arrays.asList(areaOrganizacional)));
+		
+		Collection<AreaOrganizacional> areasRetorno = manager.defineAreasPermitidasParaUsuario(empresa.getId(), null, true);
+		
+		assertEquals(areaOrganizacional.getId(),areasRetorno.iterator().next().getId());
+	}
+	
+	public void testDefineAreasPermitidasParaUsuarioNaoVerTodasAreasEhResponsavelPorArea() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(2L);
+		
+		areaOrganizacinoalManager.expects(once()).method("findAllListAndInativasByUsuarioId").with(eq(empresa.getId()), eq(usuario.getId()), eq(AreaOrganizacional.TODAS), eq(null)).will(returnValue(Arrays.asList(areaOrganizacional)));
+		
+		Collection<AreaOrganizacional> areasRetorno = manager.defineAreasPermitidasParaUsuario(empresa.getId(), usuario.getId(), false);
+		
+		assertEquals(areaOrganizacional.getId(),areasRetorno.iterator().next().getId());
+	}
+	
+	public void testDefineAreasPermitidasParaUsuarioNaoVerTodasAreasNaoEhResponsavelPorAreaSemColaboradorVinculado() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		
+		String[] properties = new String[]{"id","naoIntegraAc"};
+		String[] sets = new String[]{"id","naoIntegraAc"};
+		String[] keys = new String[]{"usuario.id", "empresa.id"};
+		Long[] values = new Long[]{usuario.getId(), empresa.getId()};
+		
+		areaOrganizacinoalManager.expects(once()).method("findAllListAndInativasByUsuarioId").with(eq(empresa.getId()), eq(usuario.getId()), eq(AreaOrganizacional.TODAS), eq(null)).will(returnValue(new ArrayList<AreaOrganizacional>()));
+		colaboradorDao.expects(once()).method("findToList").with(eq(properties), eq(sets), eq(keys), eq(values)).will(returnValue(new ArrayList<Colaborador>()));
+		
+		try {
+			manager.defineAreasPermitidasParaUsuario(empresa.getId(), usuario.getId(), false);
+			fail("A excessão AreaColaboradorException não foi lançada.");
+		} catch (AreaColaboradorException e) {
+			assertTrue(e.getMessage().endsWith("não existe colaborador vinculado à este usuário."));
+		}
+	}
+	
+	public void testDefineAreasPermitidasParaUsuarioNaoVerTodasAreasNaoEhResponsavelPorAreaComColaboradorVinculado() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNaoIntegraAc(false);
+		
+		String[] properties = new String[]{"id","naoIntegraAc"};
+		String[] sets = new String[]{"id","naoIntegraAc"};
+		String[] keys = new String[]{"usuario.id", "empresa.id"};
+		Long[] values = new Long[]{usuario.getId(), empresa.getId()};
+		
+		areaOrganizacinoalManager.expects(once()).method("findAllListAndInativasByUsuarioId").with(eq(empresa.getId()), eq(usuario.getId()), eq(AreaOrganizacional.TODAS), eq(null)).will(returnValue(new ArrayList<AreaOrganizacional>()));
+		colaboradorDao.expects(once()).method("findToList").with(eq(properties), eq(sets), eq(keys), eq(values)).will(returnValue(Arrays.asList(colaborador)));
+		
+		Collection<AreaOrganizacional> areasRetorno = manager.defineAreasPermitidasParaUsuario(empresa.getId(), usuario.getId(), false);
+		
+		assertTrue(areasRetorno.isEmpty());
+	}
+	
+	public void testDefineAreasPermitidasParaUsuarioNaoVerTodasAreasNaoEhResponsavelPorAreaComColaboradorVinculadoNaoIntegraAC() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNaoIntegraAc(true);
+		
+		String[] properties = new String[]{"id","naoIntegraAc"};
+		String[] sets = new String[]{"id","naoIntegraAc"};
+		String[] keys = new String[]{"usuario.id", "empresa.id"};
+		Long[] values = new Long[]{usuario.getId(), empresa.getId()};
+		
+		areaOrganizacinoalManager.expects(once()).method("findAllListAndInativasByUsuarioId").with(eq(empresa.getId()), eq(usuario.getId()), eq(AreaOrganizacional.TODAS), eq(null)).will(returnValue(new ArrayList<AreaOrganizacional>()));
+		colaboradorDao.expects(once()).method("findToList").with(eq(properties), eq(sets), eq(keys), eq(values)).will(returnValue(Arrays.asList(colaborador)));
+		
+		try {
+			manager.defineAreasPermitidasParaUsuario(empresa.getId(), usuario.getId(), false);
+			fail("A excessão AreaColaboradorException não foi lançada.");
+		} catch (AreaColaboradorException e) {
+			assertTrue(e.getMessage().endsWith("usuário não está integrado com o Fortes Pessoal."));
+		}
 	}
     
 	public void testExecutaTesteAutomaticoDoManager() 

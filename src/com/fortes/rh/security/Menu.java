@@ -26,6 +26,7 @@ public abstract class Menu
 		papeisParaEmpresasIntegradas.add("ROLE_REL_RECIBO_FERIAS");
 		papeisParaEmpresasIntegradas.add("ROLE_REL_ADIANTAMENTO_DE_FOLHA");
 		papeisParaEmpresasIntegradas.add("ROLE_REL_PAGAMENTO_COMPLEMENTAR");
+		papeisParaEmpresasIntegradas.add("ROLE_REL_FERIAS");
 	}
 	
 	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto, ParametrosDoSistema parametros, Collection<Empresa> empresasDoUsuario, Empresa empresaLogada, Long idDoUsuario)

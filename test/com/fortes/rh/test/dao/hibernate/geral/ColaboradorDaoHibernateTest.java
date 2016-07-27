@@ -2253,8 +2253,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = new Empresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = saveColaborador(empresa, new Date(), false, null);
-		Colaborador colaborador2 = saveColaborador(empresa, new Date(), true, new Date());
+		Colaborador colaborador = saveColaborador(empresa, new Date(), false, null, false);
+		Colaborador colaborador2 = saveColaborador(empresa, new Date(), true, new Date(), false);
+		Colaborador colaborador3 = saveColaborador(empresa, new Date(), false, new Date(), true);
 		
 		AreaOrganizacional areaOrganizacionalAtual = saveAreaOrganizacional();
 		AreaOrganizacional areaOrganizacionalAntiga = saveAreaOrganizacional();
@@ -2273,9 +2274,55 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		saveHistoricoColaborador(colaborador2, estabelecimentoAtual, areaOrganizacionalAtual, null, DateUtil.criarDataMesAno(1, 1, 2007), StatusRetornoAC.CONFIRMADO);
 		
-		Collection<Colaborador> colaboradoresAtivos = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.ATIVO, null);
-		Collection<Colaborador> colaboradoresDesligados = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.DESLIGADO, null);
-		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.TODOS, null);
+		saveHistoricoColaborador(colaborador3, estabelecimentoAtual, areaOrganizacionalAtual, null, DateUtil.criarDataMesAno(1, 1, 2007), StatusRetornoAC.CONFIRMADO);
+		
+		Collection<Colaborador> colaboradoresIngtegradosComAC = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.TODOS, null, true);
+		Collection<Colaborador> colaboradoresAtivos = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.ATIVO, null, false);
+		Collection<Colaborador> colaboradoresDesligados = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.DESLIGADO, null, false);
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.TODOS, null, false);
+		
+		assertEquals(3, colaboradores.size());
+		assertEquals(2, colaboradoresIngtegradosComAC.size());
+		
+		Colaborador colaboradorAtivo = (Colaborador) colaboradoresAtivos.toArray()[0];
+		
+		assertEquals(2, colaboradoresAtivos.size());
+		assertEquals(colaborador.getId(), colaboradorAtivo.getId());
+		
+		Colaborador colaboradorInativo = (Colaborador) colaboradoresDesligados.toArray()[0];
+		
+		assertEquals(1, colaboradoresDesligados.size());
+		assertEquals(colaborador2.getId(), colaboradorInativo.getId());
+	}
+	
+	public void testFindByAreaOrganizacionalEstabelecimentoIntegradosComAC() 
+	{
+		Empresa empresa = new Empresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = saveColaborador(empresa, new Date(), false, null, false);
+		Colaborador colaborador2 = saveColaborador(empresa, new Date(), true, new Date(), false);
+		
+		AreaOrganizacional areaOrganizacionalAtual = saveAreaOrganizacional();
+		AreaOrganizacional areaOrganizacionalAntiga = saveAreaOrganizacional();
+		
+		Collection<Long> areasIds = new ArrayList<Long>();
+		areasIds.add(areaOrganizacionalAtual.getId());
+		
+		Estabelecimento estabelecimentoAtual = saveEstabelecimento();
+		Estabelecimento estabelecimentoAntigo = saveEstabelecimento();
+		
+		Collection<Long> estabelecimentosIds = new ArrayList<Long>();
+		estabelecimentosIds.add(estabelecimentoAtual.getId());
+		
+		saveHistoricoColaborador(colaborador, estabelecimentoAntigo, areaOrganizacionalAntiga, null, DateUtil.criarDataMesAno(1, 1, 2007), StatusRetornoAC.CONFIRMADO);
+		saveHistoricoColaborador(colaborador, estabelecimentoAtual, areaOrganizacionalAtual, null, DateUtil.criarDataMesAno(1, 1, 2008), StatusRetornoAC.CONFIRMADO);
+		
+		saveHistoricoColaborador(colaborador2, estabelecimentoAtual, areaOrganizacionalAtual, null, DateUtil.criarDataMesAno(1, 1, 2007), StatusRetornoAC.CONFIRMADO);
+		
+		Collection<Colaborador> colaboradoresAtivos = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.ATIVO, null, false);
+		Collection<Colaborador> colaboradoresDesligados = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.DESLIGADO, null, false);
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.TODOS, null, false);
 		
 		assertEquals(2, colaboradores.size());
 		
@@ -2283,7 +2330,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		assertEquals(1, colaboradoresAtivos.size());
 		assertEquals(colaborador.getId(), colaboradorAtivo.getId());
-		
 		Colaborador colaboradorInativo = (Colaborador) colaboradoresDesligados.toArray()[0];
 		
 		assertEquals(1, colaboradoresDesligados.size());
@@ -2302,7 +2348,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setDesligado(false);
 		colaboradorDao.save(colaborador);
 		
-		Colaborador colaborador2 = saveColaborador(empresa, new Date(), true, new Date());
+		Colaborador colaborador2 = saveColaborador(empresa, new Date(), true, new Date(), false);
 		
 		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
 		
@@ -2317,7 +2363,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, null, DateUtil.criarDataMesAno(1, 1, 2008), StatusRetornoAC.CONFIRMADO);
 		saveHistoricoColaborador(colaborador2, estabelecimento, areaOrganizacional, null, DateUtil.criarDataMesAno(1, 1, 2007), StatusRetornoAC.CONFIRMADO);
 		
-		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.TODOS, usuario.getId());
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.TODOS, usuario.getId(), false);
 		
 		assertEquals(1, colaboradores.size());
 		assertEquals(colaborador2.getId(), ((Colaborador) colaboradores.toArray()[0]).getId());
@@ -4113,9 +4159,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Estabelecimento estabelecimento = saveEstabelecimento();
 		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
 		
-		Colaborador joseAvaliado = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null);
-		Colaborador maria = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null);
-		Colaborador colabDesligado = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), true, DateUtil.incrementaDias(new Date(), -1));
+		Colaborador joseAvaliado = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null, false);
+		Colaborador maria = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null, false);
+		Colaborador colabDesligado = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), true, DateUtil.incrementaDias(new Date(), -1), false);
 		
 		saveHistoricoColaborador(joseAvaliado, estabelecimento, areaOrganizacional, null, DateUtil.criarDataMesAno(01, 01, 2005), StatusRetornoAC.CONFIRMADO);
 		saveHistoricoColaborador(maria, estabelecimento, areaOrganizacional, null, DateUtil.criarDataMesAno(01, 01, 2005), StatusRetornoAC.CONFIRMADO);
@@ -4211,10 +4257,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Estabelecimento estabelecimento = saveEstabelecimento();
 		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
 		
-		Colaborador joseAvaliado = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null);
+		Colaborador joseAvaliado = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null, false);
 		saveHistoricoColaborador(joseAvaliado, estabelecimento, areaOrganizacional, null, trintaNoveDiasAtras.getTime(), StatusRetornoAC.CONFIRMADO);
 		
-		Colaborador maria = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null);
+		Colaborador maria = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null, false);
 		saveHistoricoColaborador(maria, estabelecimento, areaOrganizacional, null, trintaNoveDiasAtras.getTime(), StatusRetornoAC.CONFIRMADO);
 		
 		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity(empresa, 40, true);
@@ -4246,10 +4292,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Estabelecimento estabelecimento = saveEstabelecimento();
 		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
 		
-		Colaborador joseAvaliado = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null);
+		Colaborador joseAvaliado = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null, false);
 		saveHistoricoColaborador(joseAvaliado, estabelecimento, areaOrganizacional, null, trintaNoveDiasAtras.getTime(), StatusRetornoAC.CONFIRMADO);
 		
-		Colaborador maria = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null);
+		Colaborador maria = saveColaborador(empresa, trintaNoveDiasAtras.getTime(), false, null, false);
 		saveHistoricoColaborador(maria, estabelecimento, areaOrganizacional, null, trintaNoveDiasAtras.getTime(), StatusRetornoAC.CONFIRMADO);
 		
 		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity(empresa, 40, true);
@@ -5649,7 +5695,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoJoao.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoJoao);
 		
-		Colaborador jose = saveColaborador(empresa, hoje, false, null);
+		Colaborador jose = saveColaborador(empresa, hoje, false, null, false);
 		
 		HistoricoColaborador historicoJose = new HistoricoColaborador();
 		historicoJose.setData(hoje);
@@ -6102,7 +6148,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = saveColaborador(empresa, hoje, false, null);
+		Colaborador colaborador = saveColaborador(empresa, hoje, false, null, false);
 		
 		Estabelecimento estabelecimento = saveEstabelecimento();
 		AreaOrganizacional area = saveAreaOrganizacional();
@@ -6132,7 +6178,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = saveColaborador(empresa, hoje, true, DateUtil.incrementaMes(hoje, 2));
+		Colaborador colaborador = saveColaborador(empresa, hoje, true, DateUtil.incrementaMes(hoje, 2), false);
 		
 		Estabelecimento estabelecimento = saveEstabelecimento();
 		AreaOrganizacional area = saveAreaOrganizacional();
@@ -6160,7 +6206,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = saveColaborador(empresa, DateUtil.criarDataMesAno(1, 1, 2014), false, null);
+		Colaborador colaborador = saveColaborador(empresa, DateUtil.criarDataMesAno(1, 1, 2014), false, null, false);
 		
 		FaixaSalarial faixaSalarial = saveFaixaSalarial();
 		
@@ -6180,7 +6226,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = saveColaborador(empresa, DateUtil.criarDataMesAno(1, 1, 2014), false, null);
+		Colaborador colaborador = saveColaborador(empresa, DateUtil.criarDataMesAno(1, 1, 2014), false, null, false);
 		
 		FaixaSalarial faixaSalarial = saveFaixaSalarial();
 		
@@ -6207,7 +6253,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = saveColaborador(empresa, hoje, false, null);
+		Colaborador colaborador = saveColaborador(empresa, hoje, false, null, false);
 		Estabelecimento estabelecimento = saveEstabelecimento();
 		AreaOrganizacional area = saveAreaOrganizacional();
 		Cargo cargo = saveCargo();
@@ -6236,7 +6282,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = saveColaborador(empresa, dataAdmissao, true, dataDesligamento);
+		Colaborador colaborador = saveColaborador(empresa, dataAdmissao, true, dataDesligamento, false);
 		FaixaSalarial faixaSalarial = saveFaixaSalarial();
 		saveHistoricoColaborador(colaborador, faixaSalarial, DateUtil.criarDataMesAno(1, 1, 2008), StatusRetornoAC.CONFIRMADO);
 		
@@ -6797,7 +6843,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Date dataHistorico = DateUtil.criarDataMesAno(1, 01, 2015);
 		
 		FaixaSalarial faixaSalarial = saveFaixaSalarial();
-		Colaborador colaborador = saveColaborador(empresa, dataAdmissao, true, new Date());
+		Colaborador colaborador = saveColaborador(empresa, dataAdmissao, true, new Date(), false);
 		saveHistoricoColaborador(colaborador, faixaSalarial, dataHistorico, StatusRetornoAC.CONFIRMADO);
 
 		Ocorrencia ocorrenciaAtestadoMedico = saveOcorrencia("Atestado médico");
@@ -6819,7 +6865,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Date dataHistorico = DateUtil.criarDataMesAno(1, 01, 2014);
 		
 		FaixaSalarial faixaSalarial = saveFaixaSalarial();
-		Colaborador colaborador = saveColaborador(empresa, dataAdmissao,false, null);
+		Colaborador colaborador = saveColaborador(empresa, dataAdmissao,false, null, false);
 		
 		saveHistoricoColaborador(colaborador, faixaSalarial, dataHistorico, StatusRetornoAC.CONFIRMADO);
 		
@@ -6841,7 +6887,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Date dataHistorico = DateUtil.criarDataMesAno(1, 01, 2014);
 		
 		FaixaSalarial faixaSalarial = saveFaixaSalarial();
-		Colaborador colaborador = saveColaborador(empresa, dataAdmissao, false, null);
+		Colaborador colaborador = saveColaborador(empresa, dataAdmissao, false, null, false);
 		
 		saveHistoricoColaborador(colaborador, faixaSalarial, dataHistorico, StatusRetornoAC.CONFIRMADO);
 		
@@ -6866,7 +6912,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Cargo cargo = saveCargo();
 		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
 		
-		Colaborador colaborador = saveColaborador(empresa, dataAdmissao, true, DateUtil.criarDataMesAno(1, 04, 2016));
+		Colaborador colaborador = saveColaborador(empresa, dataAdmissao, true, DateUtil.criarDataMesAno(1, 04, 2016), false);
 		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, dataHistorico, StatusRetornoAC.CONFIRMADO);
 
 		Ocorrencia ocorrenciaAtestadoMedico = saveOcorrencia("Atestado médico");
@@ -7056,10 +7102,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(historicoColaborador);
 	}
 
-	private Colaborador saveColaborador(Empresa empresa, Date dataAdmissao, boolean desligado, Date dataDesligamento) {
+	private Colaborador saveColaborador(Empresa empresa, Date dataAdmissao, boolean desligado, Date dataDesligamento, boolean naoIntegraAc) {
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setDataAdmissao(dataAdmissao);
 		colaborador.setEmpresa(empresa);
+		colaborador.setNaoIntegraAc(naoIntegraAc);
 		colaborador.setDesligado(desligado);
 		colaborador.setDataDesligamento(dataDesligamento);
 		colaboradorDao.save(colaborador);

@@ -31,7 +31,9 @@ import com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
@@ -42,6 +44,7 @@ import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -720,5 +723,115 @@ public class ColaboradorListActionTest
 		when(colaboradorManager.montaTempoServico(colaboradores, null, null, "")).thenReturn(colaboradores);
 		
 		assertEquals(Action.SUCCESS, action.relatorioDinamico());
+	}
+
+	@Test
+	public void testPrepareRelatorioFerias() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+
+		Collection<AreaOrganizacional> areasList = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+		
+		action.setEmpresaSistema(empresa);
+		action.setUsuarioLogado(usuario);
+		
+		when(colaboradorManager.defineAreasPermitidasParaUsuario(empresa.getId(), usuario.getId(), SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))).thenReturn(areasList);
+
+		assertEquals(Action.SUCCESS, action.prepareRelatorioFerias());
+	}
+
+	@Test
+	public void testPrepareRelatorioFeriasAreaColaboradorException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		String mensagem = "Erro I";
+		
+		action.setEmpresaSistema(empresa);
+		action.setUsuarioLogado(usuario);
+		
+		when(colaboradorManager.defineAreasPermitidasParaUsuario(empresa.getId(), usuario.getId(), SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))).thenThrow(new AreaColaboradorException(mensagem));
+		
+		String retorno = action.prepareRelatorioFerias();
+		
+		assertEquals(Action.INPUT, retorno);
+		assertEquals(action.getActionWarnings().iterator().next(), mensagem);
+	}
+	
+	@Test
+	public void testPrepareRelatorioFeriasException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		
+		action.setEmpresaSistema(empresa);
+		action.setUsuarioLogado(usuario);
+		
+		when(colaboradorManager.defineAreasPermitidasParaUsuario(empresa.getId(), usuario.getId(), SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))).thenThrow(new Exception());
+		
+		String retorno = action.prepareRelatorioFerias();
+		
+		assertEquals(Action.INPUT, retorno);
+		assertEquals(action.getActionErrors().iterator().next(), "Não foi possível visualizar esta tela.");
+	}
+	
+	@Test
+	public void testImprimeRelatorioFerias() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		action.setEmpresaSistema(empresa);
+		
+		Long[] colaboradoresCheck = new Long[]{1L};
+		String[] colaboradoresCodigosACs = new String[]{"000001"};
+		Collection<TPeriodoGozo> periodosGozo = Arrays.asList(new TPeriodoGozo());
+		
+		when(colaboradorManager.findCodigosACByIds(colaboradoresCheck)).thenReturn(colaboradoresCodigosACs);
+		when(colaboradorManager.getFerias(empresa, colaboradoresCodigosACs, null, null)).thenReturn(periodosGozo);
+
+		assertEquals(Action.SUCCESS, action.imprimeRelatorioFerias());
+	}
+	
+	@Test
+	public void testImprimeRelatorioFeriasColecaoVaziaException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresaSistema(empresa);
+
+		Long[] colaboradoresCheck = new Long[]{1L};
+		action.setColaboradoresCheck(colaboradoresCheck);
+		
+		String[] colaboradoresCodigosACs = new String[]{"000001"};
+		
+		when(colaboradorManager.findCodigosACByIds(colaboradoresCheck)).thenReturn(colaboradoresCodigosACs);
+		when(colaboradorManager.getFerias(empresa, colaboradoresCodigosACs, null, null)).thenThrow(new ColecaoVaziaException());
+		
+		String retorno = action.imprimeRelatorioFerias();
+
+		assertEquals(Action.INPUT, retorno);
+		assertEquals(action.getActionMessages().iterator().next(), "Não existem dados para o filtro informado.");
+
+	}
+
+	@Test
+	public void testImprimeRelatorioException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresaSistema(empresa);
+		
+		Long[] colaboradoresCheck = new Long[]{1L};
+		action.setColaboradoresCheck(colaboradoresCheck);
+		
+		String[] colaboradoresCodigosACs = new String[]{"000001"};
+		
+		when(colaboradorManager.findCodigosACByIds(colaboradoresCheck)).thenReturn(colaboradoresCodigosACs);
+		when(colaboradorManager.getFerias(empresa, colaboradoresCodigosACs, null, null)).thenThrow(new Exception());
+		
+		String retorno = action.imprimeRelatorioFerias();
+		
+		assertEquals(Action.INPUT, retorno);
+		assertEquals(action.getActionErrors().iterator().next(), "Não foi possível gerar o relatório.");
+		
 	}
 }

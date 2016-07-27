@@ -63,6 +63,7 @@ public class ColaboradorDWR
         return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
     
+	// TODO: SEM TESTE
     public Map<Long, String> getColaboradoresByAreaNome(String[] areaOrganizacionalIds, String nome, String matricula, Long empresaId)
     {
     	Collection<Colaborador> colaboradores;
@@ -92,6 +93,7 @@ public class ColaboradorDWR
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getMatriculaNomeMaisNomeComercial", Colaborador.class);
     }
     
+	// TODO: SEM TESTE
     public Map<Long, String> getColaboradoresByAvaliacoes(Long[] avaliacaoIds)
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -160,7 +162,7 @@ public class ColaboradorDWR
         Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 
         if(areaOrganizacionalIds != null && areaOrganizacionalIds.length > 0)
-        	colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), null, SituacaoColaborador.ATIVO, null);        	
+        	colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), null, SituacaoColaborador.ATIVO, null, false);        	
         else
             colaboradores = colaboradorManager.findAllSelect(empresaId, "nomeComercial");
 
@@ -180,10 +182,25 @@ public class ColaboradorDWR
     	}
     	else
     	{
-    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao, null);        	
+    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao, null, false);        	
     	}
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", (exibirNomeEmpresa ? "getNomeComercialEmpresa" : "getNomeEOuNomeComercial"), Colaborador.class);
+    }
+    
+    public Map<Long, String> getPermitidosPorResponsavelCoresponsavel(Long usuarioLogadoId, String[] areaOrganizacionalIds, Long empresaId, String situacao, boolean considerarColaboradorDoUsuarioLogado) throws Exception
+    {
+    	Collection<Colaborador> colaboradoresPermitidos = new ArrayList<Colaborador>();
+    	if(areaOrganizacionalIds.length > 0)
+    		colaboradoresPermitidos = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), null, situacao, null, true);
+    	
+    	if(considerarColaboradorDoUsuarioLogado){
+    		Collection<Colaborador> colaboradores = colaboradorManager.findToList(new String[]{"id", "nome", "nomeComercial"}, new String[]{"id", "nome", "nomeComercial"},new String[]{"usuario.id", "empresa.id", "naoIntegraAc"},new Object[]{usuarioLogadoId, empresaId, false});
+    		if(!colaboradores.isEmpty())
+    			colaboradoresPermitidos.add((Colaborador) colaboradores.toArray()[0]);
+    	}
+    	
+    	return CollectionUtil.convertCollectionToMap(colaboradoresPermitidos, "getId", "getNomeEOuNomeComercial", Colaborador.class);
     }
     
     public Map<Long, String> getByAreaEstabelecimentoEmpresasResponsavel(Long usuarioLogadoId, String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId, Long[] empresaIds, String situacao, boolean exibirNomeEmpresa) throws Exception
@@ -201,7 +218,7 @@ public class ColaboradorDWR
     		setColaboradoresPermitidos(usuarioLogadoId, empresaIds, situacao, estabelecimentoIds, colaboradores, notUsuarioId);
     	}else
     	{
-    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao, notUsuarioId);        	
+    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao, notUsuarioId, false);        	
     	}
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", (exibirNomeEmpresa ? "getNomeComercialEmpresa" : "getNomeEOuNomeComercial"), Colaborador.class);
@@ -215,7 +232,7 @@ public class ColaboradorDWR
 				colaboradores.addAll(colaboradorManager.findAllSelect(situacao, notUsuarioId, empresaId));
 			} else {
 				Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuario, empresaId);
-				colaboradores.addAll(colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.collectionToCollectionLong(areaOrganizacionals), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao, notUsuarioId));        	
+				colaboradores.addAll(colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.collectionToCollectionLong(areaOrganizacionals), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao, notUsuarioId, false));        	
 			}
 		}
 	}

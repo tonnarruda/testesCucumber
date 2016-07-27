@@ -1303,7 +1303,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setInteger(numeroValue + "Fim", numeroFim);
 	}
 
-	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao, Long notUsuarioId)
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao, Long notUsuarioId, boolean consideraSoIntegradosComAC)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.nome, co.nomeComercial, co.id, e.id, e.nome) ");
@@ -1332,6 +1332,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			hql.append(" and es.id in (:estabelecimentoIds) ");
 		if (notUsuarioId != null)
 			hql.append(" and ( co.usuario.id <> :notUsuarioId or co.usuario.id is null )");
+		if (consideraSoIntegradosComAC )
+			hql.append(" and co.naoIntegraAc = false ");
 			
 		hql.append(" order by e.nome, co.nomeComercial, co.nome ");
 		
@@ -2320,6 +2322,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("c.codigoAC"), "codigoAC");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.in("c.id", colaboradorIds));

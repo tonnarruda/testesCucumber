@@ -287,6 +287,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return getDao().findEmailsEmpresa(empresaId);
 	}
 
+	@TesteAutomatico
 	public Empresa findByIdProjection(Long id) {
 		return getDao().findByIdProjection(id);
 	}

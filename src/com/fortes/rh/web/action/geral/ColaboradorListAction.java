@@ -50,6 +50,7 @@ import com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -69,6 +70,7 @@ import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ReportColumn;
+import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -147,6 +149,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 	private Long[] cargosCheck;
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
+	private Long[] colaboradoresCheck;
+	private Collection<CheckBox> colaboradoresCheckList = new ArrayList<CheckBox>();
 
 	private Collection<String> colunasMarcadas = new ArrayList<String>();
 	private Collection<ReportColumn> colunas = new ArrayList<ReportColumn>();
@@ -196,6 +200,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	private String dataFimGozo;
 	private Long colaboradorLogadoId;
 
+	private boolean imprimirFeriasGozadas;
+	private Collection<TPeriodoGozo> periodosGozo;
 
 	private enum Nomenclatura {
 		ENVIADO_FP("Enviado Fortes Pessoal"),
@@ -916,6 +922,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
+	// TODO: SEM TESTE
 	public String prepareRelatorioFormacaoEscolar() throws Exception
 	{
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
@@ -929,6 +936,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
+	// TODO: SEM TESTE
 	public String imprimeRelatorioFormacaoEscolar() throws Exception
 	{
 		try
@@ -960,6 +968,53 @@ public class ColaboradorListAction extends MyActionSupportList
 
 			return Action.INPUT;
 		}
+	}
+	
+	public String prepareRelatorioFerias()
+	{
+		try {
+			areasList = colaboradorManager.defineAreasPermitidasParaUsuario(getEmpresaSistema().getId(), getUsuarioLogado().getId(), SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}));
+		} catch (Exception e) {
+			e.printStackTrace();
+			if(e instanceof AreaColaboradorException)
+				addActionWarning(e.getMessage());
+			else
+				addActionError("Não foi possível visualizar esta tela.");
+			return INPUT;
+		}
+		return SUCCESS;
+	}
+	
+	public String imprimeRelatorioFerias()
+	{
+		try
+		{
+			String[] colaboradoresCodigosACs = colaboradorManager.findCodigosACByIds(colaboradoresCheck);
+			periodosGozo = colaboradorManager.getFerias(getEmpresaSistema(), colaboradoresCodigosACs, dataInicioGozo, dataFimGozo);
+			
+			prepareCabecalhoRelatorioFerias();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			if(e instanceof ColecaoVaziaException)
+				addActionMessage(e.getMessage());
+			else
+				addActionError("Não foi possível gerar o relatório.");
+			
+			prepareRelatorioFerias();
+			return Action.INPUT;
+		}
+		
+		return SUCCESS;
+	}
+
+	private void prepareCabecalhoRelatorioFerias()
+	{
+		reportTitle = "Relatório de Férias";
+		
+		parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
+		parametros.put("IMPRIMIR_FERIAS_GOZADAS", imprimirFeriasGozadas);
 	}
 	
 	// Início INNER CLASS
@@ -1634,5 +1689,35 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public Date getMesAnoDate() {
 		return mesAnoDate;
+	}
+
+	public Collection<CheckBox> getColaboradoresCheckList()
+	{
+		return colaboradoresCheckList;
+	}
+
+	public void setColaboradoresCheckList(Collection<CheckBox> colaboradoresCheckList)
+	{
+		this.colaboradoresCheckList = colaboradoresCheckList;
+	}
+
+	public void setColaboradoresCheck(Long[] colaboradoresCheck)
+	{
+		this.colaboradoresCheck = colaboradoresCheck;
+	}
+	
+	public Long[] getAreasIds()
+	{
+		return new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areasList);
+	}
+
+	public void setImprimirFeriasGozadas(boolean imprimirFeriasGozadas)
+	{
+		this.imprimirFeriasGozadas = imprimirFeriasGozadas;
+	}
+
+	public Collection<TPeriodoGozo> getPeriodosGozo()
+	{
+		return periodosGozo;
 	}
 }

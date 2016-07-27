@@ -82,6 +82,20 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboComplementoDeFolhaComEncargos.ftl</result>
 		</action>
+		<action name="prepareRelatorioFerias" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareRelatorioFerias">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/relatorioFerias.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/pages/mensagemInfoWarnError.ftl</result>
+		</action>
+		<action name="imprimeRelatorioFerias" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="imprimeRelatorioFerias">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/ferias.jasper</param>
+				<param name="dataSource">periodosGozo</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">ferias.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/relatorioFerias.ftl</result>
+		</action>
+		
 		<action name="list" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="list">
 			<interceptor-ref name="defaultListStack">
 	    		<param name="scope.session">codigoACBusca,matriculaBusca,cpfBusca,nomeBusca,situacao,areaOrganizacional.id,estabelecimento.id,cargo.id</param>

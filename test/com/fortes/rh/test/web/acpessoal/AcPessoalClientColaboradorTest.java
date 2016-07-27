@@ -361,4 +361,22 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		}
 		 assertNotNull(exception);
 	}
+	
+	public void testGetFerias()
+	{
+		montaMockGrupoAC();
+		
+		Exception exception = null;
+		try {
+			Colaborador colaborador = ColaboradorFactory.getEntity("991199", 1L);
+			colaborador.setEmpresa(empresa);
+
+			execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME) VALUES ('"+ empCodigo +"','"+ colaborador.getCodigoAC() +"','TESTE do RH')");
+			
+			acPessoalClientColaboradorImpl.getFerias(empresa, new String[]{colaborador.getCodigoAC()}, null, null);
+		} catch (Exception e) {
+			exception = e;
+		}
+		 assertNull(exception);
+	}
 }

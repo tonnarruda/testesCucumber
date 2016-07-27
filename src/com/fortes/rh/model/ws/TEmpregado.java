@@ -63,6 +63,12 @@ public class TEmpregado implements Serializable
 	private String retiraFoto;
 	private Integer vinculo;
 	private Integer categoria;
+	private String expAgenteNocivo; 
+	
+	public TEmpregado() {
+		super();
+		System.out.println("1");
+	}
 
 	public String getGrupoAC() {
 		return grupoAC;
@@ -531,5 +537,15 @@ public class TEmpregado implements Serializable
 
 	public void setRetiraFoto(String retiraFoto) {
 		this.retiraFoto = retiraFoto;
+	}
+	
+	public String getExpAgenteNocivo()
+	{
+		return expAgenteNocivo;
+	}
+
+	public void setExpAgenteNocivo(String expAgenteNocivo)
+	{
+		this.expAgenteNocivo = expAgenteNocivo;
 	}
 }

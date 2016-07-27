@@ -12,7 +12,9 @@ import org.jmock.core.Constraint;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.VerificacaoParentesco;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -21,6 +23,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -28,6 +31,7 @@ import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.dwr.ColaboradorDWR;
 
 public class ColaboradorDWRTest extends MockObjectTestCase
@@ -97,7 +101,7 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		colaboradors.add(colaborador);
-		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING, eq(null)).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, eq(null), eq(false)}).will(returnValue(colaboradors));
 		
 		String [] areaIds = {areaOrganizacional.getId().toString()};
 		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(areaIds, null, empresa.getId(), new Long[]{}, null, true);
@@ -110,17 +114,43 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		
-		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
 		
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		colaboradors.add(colaborador);
-		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING, eq(null)).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, eq(null), eq(false)}).will(returnValue(colaboradors));
 		
 		String [] estabelecimentoIds = {estabelecimento.getId().toString()};
 		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(null, estabelecimentoIds, empresa.getId(), new Long[]{}, null, true);
 		
 		assertEquals(1, retorno.size());
+	}
+	
+	public void testgetByAreaEstabelecimentoEmpresasResponsavelSemAreaEEstabelecimento()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Collection<Colaborador> colaboradores = Arrays.asList(ColaboradorFactory.getEntity(1L));
+		
+		colaboradorManager.expects(once()).method("findAllSelect").with(eq(SituacaoColaborador.ATIVO), eq(null), eq(new Long[]{empresa.getId()})).will(returnValue(colaboradores));
+		
+		Map<Long, String> retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(null, null, empresa.getId(), new Long[]{}, SituacaoColaborador.ATIVO, true);
+
+		assertEquals(colaboradores.iterator().next().getNomeComercialEmpresa(), retorno.get(1L));
+	}
+	
+	public void testgetByAreaEstabelecimentoEmpresasResponsavelComAreaEEstabelecimento()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Collection<Colaborador> colaboradores = Arrays.asList(ColaboradorFactory.getEntity(1L));
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(new Constraint[]{eq(Arrays.asList(areaOrganizacional.getId())),eq(Arrays.asList(estabelecimento.getId())),eq(SituacaoColaborador.ATIVO), eq(null), eq(false)}).will(returnValue(colaboradores));
+		
+		Map<Long, String> retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(new String[]{areaOrganizacional.getId().toString()}, new String[]{estabelecimento.getId().toString()}, empresa.getId(), new Long[]{}, SituacaoColaborador.ATIVO, true);
+		
+		assertEquals(colaboradores.iterator().next().getNomeComercialEmpresa(), retorno.get(1L));
 	}
 
 	public void testGetColaboradoresSemArea()
@@ -226,7 +256,7 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		colaboradors.add(colaborador1);
 
-		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING, eq(null)).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, eq(null), eq(false)}).will(returnValue(colaboradors));
 
 		String [] areaOrganizacionalIds = {areaOrganizacional.getId().toString()};
 
@@ -358,6 +388,105 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		historicoColaboradorManager.expects(once()).method("findByColaboradorProjection").with(eq(colaboradorJoao.getId()), eq(StatusRetornoAC.AGUARDANDO)).will(returnValue(historicoColaboradores));
 		
 		assertTrue(colaboradorDWR.existeHistoricoAguardandoConfirmacaoNoFortesPessoal(colaboradorJoao.getId()));
+	}
+	
+	public void testGetPermitidosPorResponsavelCoresponsavelNaoEhResponsavelNaoConsiderarColaboradorDoUsuarioLogado() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		
+		String[] areasOrganizacionaisIds = new String[]{};
+		
+		Map<Long, String> colaboradoresPermitidos = colaboradorDWR.getPermitidosPorResponsavelCoresponsavel(usuario.getId(), areasOrganizacionaisIds, empresa.getId(), SituacaoColaborador.ATIVO, false);
+		
+		assertTrue(colaboradoresPermitidos.isEmpty());
+	}
+	
+	public void testGetPermitidosPorResponsavelCoresponsavelEhResponsavelNaoConsideraColaboradorDoUsuarioLogado() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		
+		Collection<Colaborador> colaboradoresPermitidos = Arrays.asList(ColaboradorFactory.getEntity(1L, "João Paulo", "João", null, null, null, empresa));
+		
+		String[] areasOrganizacionaisIds = new String[]{"1", "2"}; 
+		
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(new Constraint[]{eq(LongUtil.arrayStringToCollectionLong(areasOrganizacionaisIds)), eq(null), eq(SituacaoColaborador.ATIVO), eq(null), eq(true)}).will(returnValue(colaboradoresPermitidos));
+		
+		Map<Long, String> mapColaboradoresPermitidos = colaboradorDWR.getPermitidosPorResponsavelCoresponsavel(usuario.getId(), areasOrganizacionaisIds, empresa.getId(), SituacaoColaborador.ATIVO, false);
+		
+		assertEquals(colaboradoresPermitidos.iterator().next().getNomeEOuNomeComercial(), mapColaboradoresPermitidos.get(1L));
+	}
+	
+	public void testGetPermitidosPorResponsavelCoresponsavelEhResponsavelConsideraColaboradorDoUsuarioLogadoSemColaboradorVinculado() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		
+		Collection<Colaborador> colaboradoresPermitidos = Arrays.asList(ColaboradorFactory.getEntity(1L, "Ana Luísa", "Ana", null, null, null, empresa));
+		Collection<Colaborador> colaboradoresVinculadosAoUsuario = new ArrayList<Colaborador>();
+		
+		String[] areasOrganizacionaisIds = new String[]{"1", "2"}; 
+		
+		String[] properties = new String[]{"id", "nome", "nomeComercial"};
+		String[] sets = new String[]{"id", "nome", "nomeComercial"};
+		String[] keys = new String[]{"usuario.id", "empresa.id", "naoIntegraAc"};
+		Object[] values = new Object[]{usuario.getId(), empresa.getId(), false};
+		
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(new Constraint[]{eq(LongUtil.arrayStringToCollectionLong(areasOrganizacionaisIds)), eq(null), eq(SituacaoColaborador.ATIVO), eq(null), eq(true)}).will(returnValue(colaboradoresPermitidos));
+		colaboradorManager.expects(once()).method("findToList").with(eq(properties), eq(sets), eq(keys), eq(values)).will(returnValue(colaboradoresVinculadosAoUsuario));
+		
+		Map<Long, String> mapColaboradoresPermitidos = colaboradorDWR.getPermitidosPorResponsavelCoresponsavel(usuario.getId(), areasOrganizacionaisIds, empresa.getId(), SituacaoColaborador.ATIVO, true);
+		
+		assertEquals(colaboradoresPermitidos.iterator().next().getNomeEOuNomeComercial(), mapColaboradoresPermitidos.get(1L));
+	}
+	
+	public void testGetPermitidosPorResponsavelCoresponsavelEhResponsavelConsideraColaboradorDoUsuarioLogadoComColaboradorVinculado() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		
+		Collection<Colaborador> colaboradoresPermitidos = new ArrayList<Colaborador>();
+		colaboradoresPermitidos.add(ColaboradorFactory.getEntity(1L, "Ana Luísa", "Ana", null, null, null, empresa));
+		
+		Collection<Colaborador> colaboradoresVinculadosAoUsuario = Arrays.asList(ColaboradorFactory.getEntity(2L, "Maria Júlia", "Maria", null, null, null, empresa));
+		
+		String[] areasOrganizacionaisIds = new String[]{"1", "2"}; 
+		
+		String[] properties = new String[]{"id", "nome", "nomeComercial"};
+		String[] sets = new String[]{"id", "nome", "nomeComercial"};
+		String[] keys = new String[]{"usuario.id", "empresa.id", "naoIntegraAc"};
+		Object[] values = new Object[]{usuario.getId(), empresa.getId(), false};
+		
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(new Constraint[]{eq(LongUtil.arrayStringToCollectionLong(areasOrganizacionaisIds)), eq(null), eq(SituacaoColaborador.ATIVO), eq(null), eq(true)}).will(returnValue(colaboradoresPermitidos));
+		colaboradorManager.expects(once()).method("findToList").with(eq(properties), eq(sets), eq(keys), eq(values)).will(returnValue(colaboradoresVinculadosAoUsuario));
+		
+		Map<Long, String> mapColaboradoresPermitidos = colaboradorDWR.getPermitidosPorResponsavelCoresponsavel(usuario.getId(), areasOrganizacionaisIds, empresa.getId(), SituacaoColaborador.ATIVO, true);
+		
+		assertEquals(2, mapColaboradoresPermitidos.size());
+		assertEquals(colaboradoresPermitidos.iterator().next().getNomeEOuNomeComercial(), mapColaboradoresPermitidos.get(1L));
+		assertEquals(colaboradoresVinculadosAoUsuario.iterator().next().getNomeEOuNomeComercial(), mapColaboradoresPermitidos.get(2L));
+	}
+	
+	public void testGetPermitidosPorResponsavelCoresponsavelNaoEhResponsavelConsideraColaboradorDoUsuarioLogadoComColaboradorVinculado() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		
+		Collection<Colaborador> colaboradoresVinculadosAoUsuario = Arrays.asList(ColaboradorFactory.getEntity(2L, "Maria Júlia", "Maria", null, null, null, empresa));
+		
+		String[] areasOrganizacionaisIds = new String[]{}; 
+		
+		String[] properties = new String[]{"id", "nome", "nomeComercial"};
+		String[] sets = new String[]{"id", "nome", "nomeComercial"};
+		String[] keys = new String[]{"usuario.id", "empresa.id", "naoIntegraAc"};
+		Object[] values = new Object[]{usuario.getId(), empresa.getId(), false};
+		
+		colaboradorManager.expects(once()).method("findToList").with(eq(properties), eq(sets), eq(keys), eq(values)).will(returnValue(colaboradoresVinculadosAoUsuario));
+		
+		Map<Long, String> mapColaboradoresPermitidos = colaboradorDWR.getPermitidosPorResponsavelCoresponsavel(usuario.getId(), areasOrganizacionaisIds, empresa.getId(), SituacaoColaborador.ATIVO, true);
+		
+		assertEquals(colaboradoresVinculadosAoUsuario.iterator().next().getNomeEOuNomeComercial(), mapColaboradoresPermitidos.get(2L));
 	}
 	
 }
