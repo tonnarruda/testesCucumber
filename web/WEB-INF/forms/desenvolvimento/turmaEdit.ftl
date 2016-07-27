@@ -219,8 +219,6 @@
 													$('#custos').val(despesasJSON);
 													$('#custo').val(float2moeda(despesasTotal));
 													
-													avaliacoesSomenteLeitura((despesasTotal <= 0), 'custo');
-													
 										        	$(this).dialog("close"); 
 										        }
 										    },
@@ -320,10 +318,6 @@
 		}
 		
 		$(function() {
-			<#if contemCustosDetalhados>
-				avaliacoesSomenteLeitura(false, 'custo');
-			</#if>
-	
 			$('.despesa').blur(function() {
 				var valor = somaDespesas();
 				$('#totalCustos').text(float2moeda(valor));

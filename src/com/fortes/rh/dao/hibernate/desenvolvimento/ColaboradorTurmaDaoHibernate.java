@@ -886,9 +886,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("ct.aprovado"), "aprovado");
 		p.add(Projections.property("c.id"), "cursoId");
 		p.add(Projections.property("c.nome"), "cursoNome");
+		p.add(Projections.property("c.cargaHoraria"), "cursoCargaHoraria");
 		p.add(Projections.property("emp.nome"), "empresaNome");
 		p.add(Projections.property("fs.nome"), "faixaSalarialNome");
 		p.add(Projections.property("ca.nome"), "cargoNome");
+		p.add(Projections.alias(Projections.sqlProjection("carga_horaria_efetiva(c6_.id, t7_.id, this_.id)::text as cargaHorariaEfetiva", new String[] {"cargaHorariaEfetiva"}, new Type[] {Hibernate.TEXT}), "cargaHorariaEfetiva"));
 		return p;
 	}
 	

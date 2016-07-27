@@ -1270,15 +1270,16 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	Colaborador colaborador4 = saveColaboradorComHistorico("Colaborador 4", empresa, estabelecimento, areaOrganizacional, faixaSalarial, new Date(), StatusRetornoAC.CONFIRMADO);
  
     	saveColaboradorTurma(curso, turmaIniciaAntesDoPeriodoPesquisado, colaborador1, true);
-    	saveColaboradorTurma(curso, turmaContidaNoPeriodoFiltradoPesquisado, colaborador2, true);
+    	ColaboradorTurma colaboradorTurma = saveColaboradorTurma(curso, turmaContidaNoPeriodoFiltradoPesquisado, colaborador2, true);
     	saveColaboradorTurma(curso, turmaIniciaDuranteOPeriodoFiltradoPesquisado, colaborador3, true);
     	saveColaboradorTurma(curso, turmaForaDoPeriodoFiltradoPesquisado, colaborador4, true);
 
-    	Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
-    	Long[] areaIds = new Long[]{areaOrganizacional.getId()};
-
-    	Collection<ColaboradorTurma> colaboradoresComTreinamento = colaboradorTurmaDao.findRelatorioComTreinamento(empresa.getId(), new Long[]{curso.getId()}, areaIds, estabelecimentoIds, DateUtil.criarDataMesAno(05, 1, 2016), DateUtil.criarDataMesAno(9, 1, 2016), SituacaoColaborador.TODOS, StatusAprovacao.TODOS);
+    	DiaTurma diaTurma = saveDiaTurma(turmaContidaNoPeriodoFiltradoPesquisado, DateUtil.criarDataMesAno(1, 2, 2016));
+    	saveColaboradorPresenca(colaboradorTurma, diaTurma);
+    	
+    	Collection<ColaboradorTurma> colaboradoresComTreinamento = colaboradorTurmaDao.findRelatorioComTreinamento(empresa.getId(), new Long[]{curso.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, DateUtil.criarDataMesAno(05, 1, 2016), DateUtil.criarDataMesAno(9, 1, 2016), SituacaoColaborador.TODOS, StatusAprovacao.TODOS);
     	assertEquals(3, colaboradoresComTreinamento.size());
+    	assertEquals("04:20:00", ((ColaboradorTurma)colaboradoresComTreinamento.toArray()[1]).getCargaHorariaEfetiva());
     }
     
     public void testFindRelatorioComTreinamentoComFiltroDePeriodo() {
@@ -1299,16 +1300,39 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	
     	Colaborador colaborador = saveColaboradorComHistorico("Colaborador", empresa, estabelecimento, areaOrganizacional, faixaSalarial, new Date(), StatusRetornoAC.CONFIRMADO);
     	Curso curso = saveCurso("Curso");
-    	Turma turma = saveTurma(curso, new Date(), new Date(), true);
+    	Turma turma = saveTurma(curso, DateUtil.criarDataMesAno(1, 2, 2016), DateUtil.criarDataMesAno(1, 2, 2016), true);
  
-    	saveColaboradorTurma(curso, turma, colaborador, true);
+    	ColaboradorTurma colaboradorTurma = saveColaboradorTurma(curso, turma, colaborador, true);
+    	colaboradorTurmaDao.save(colaboradorTurma);
 
+    	DiaTurma diaTurma = saveDiaTurmaComHorasNoDia(turma, DateUtil.criarDataMesAno(1, 2, 2016));
+    	saveColaboradorPresenca(colaboradorTurma, diaTurma);
+    	
     	Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
     	Long[] areaIds = new Long[]{areaOrganizacional.getId()};
 
     	Collection<ColaboradorTurma> colaboradoresComTreinamento = colaboradorTurmaDao.findRelatorioComTreinamento(empresa.getId(), new Long[]{curso.getId()}, areaIds, estabelecimentoIds, null, null, SituacaoColaborador.TODOS, StatusAprovacao.TODOS);
     	assertEquals(1, colaboradoresComTreinamento.size());
+    	assertEquals("02:15:00", ((ColaboradorTurma)colaboradoresComTreinamento.toArray()[0]).getCargaHorariaEfetiva());
     }
+
+	private void saveColaboradorPresenca(ColaboradorTurma colaboradorTurma,	DiaTurma diaTurma) {
+		ColaboradorPresenca colaboradorPresenca = ColaboradorPresencaFactory.getEntity();
+    	colaboradorPresenca.setDiaTurma(diaTurma);
+    	colaboradorPresenca.setColaboradorTurma(colaboradorTurma);
+    	colaboradorPresenca.setPresenca(true);
+    	colaboradorPresencaDao.save(colaboradorPresenca);
+	}
+
+	private DiaTurma saveDiaTurmaComHorasNoDia(Turma turma, Date dia) {
+		DiaTurma diaTurma = DiaTurmaFactory.getEntity();
+    	diaTurma.setTurma(turma);
+    	diaTurma.setHoraIni("0:45");
+    	diaTurma.setHoraFim("3:00");
+    	diaTurma.setDia(dia);
+    	diaTurmaDao.save(diaTurma);
+		return diaTurma;
+	}
    
     public void testFindRelatorioSemTreinamento()
     {
@@ -2699,6 +2723,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 	private Curso saveCurso(String nome){
 		Curso curso = setCurso(nome, null, null);
 		curso.setNome(nome);
+		curso.setCargaHoraria(260);
 		cursoDao.save(curso);
 		return curso;
 	}

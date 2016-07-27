@@ -59,6 +59,7 @@ import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.xwork.Action;
 
 
 public class ColaboradorTurmaListActionTest extends MockObjectTestCase
@@ -263,6 +264,69 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	
     	assertEquals("input", action.relatorioColaboradorComTreinamento());
+    }
+    
+    public void testRelatorioColaboradorComTreinamentoXLSInput() throws Exception
+    {
+    	Curso curso = CursoFactory.getEntity(1L);
+    	curso.setNome("Como programar");
+    	action.setCurso(curso);
+
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
+    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
+    	
+    	assertEquals(Action.INPUT, action.relatorioColaboradorComTreinamentoXls());
+    }
+    
+    
+    public void testRelatorioColaboradorComTreinamentoXLSSuccesComExibirCargoEHoraEfetiva() throws Exception
+    {
+    	action.setExibeCargo(true);
+    	action.setExibeCargaHorariaEfetiva(true);
+    	
+    	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+    	colaboradorTurma.setColaborador(ColaboradorFactory.getEntity(1L));
+    	colaboradorTurma.setTurma(TurmaFactory.getEntity(1L));
+    	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+    	colaboradorTurmas.add(colaboradorTurma);
+    	
+    	Curso curso = CursoFactory.getEntity(1L);
+    	curso.setNome("Como programar");
+    	action.setCurso(curso);
+
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
+    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(returnValue(colaboradorTurmas));
+    	
+    	assertEquals(Action.SUCCESS, action.relatorioColaboradorComTreinamentoXls());
+    	assertEquals("Curso,Carga Horária do Curso,Empresa,Estabelecimento,Área Organizacional,Colaborador,Matrícula,Cargo,Turma,Período,Carga Horária Efetiva,Aprovado", action.getDinamicColumns());
+    	assertEquals("curso.nome,curso.cargaHorariaEmHora,colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,colaborador.matricula,colaborador.cargoFaixa,turma.descricao,turma.periodoFormatado,cargaHorariaEfetiva,aprovadoMaisNota", action.getDinamicProperties());
+    	assertEquals("curso.nome,curso.cargaHorariaEmHora,colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao", action.getDinamicPropertiesGroup());
+    }
+    
+    public void testRelatorioColaboradorComTreinamentoXLSSucces() throws Exception
+    {
+    	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+    	colaboradorTurma.setColaborador(ColaboradorFactory.getEntity(1L));
+    	colaboradorTurma.setTurma(TurmaFactory.getEntity(1L));
+    	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+    	colaboradorTurmas.add(colaboradorTurma);
+    	
+    	Curso curso = CursoFactory.getEntity(1L);
+    	curso.setNome("Como programar");
+    	action.setCurso(curso);
+
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
+    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(returnValue(colaboradorTurmas));
+    	
+    	assertEquals(Action.SUCCESS, action.relatorioColaboradorComTreinamentoXls());
+    	assertEquals("Curso,Carga Horária do Curso,Empresa,Estabelecimento,Área Organizacional,Colaborador,Matrícula,Turma,Período,Aprovado", action.getDinamicColumns());
+    	assertEquals("curso.nome,curso.cargaHorariaEmHora,colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,colaborador.matricula,turma.descricao,turma.periodoFormatado,aprovadoMaisNota", action.getDinamicProperties());
+    	assertEquals("curso.nome,curso.cargaHorariaEmHora,colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao", action.getDinamicPropertiesGroup());
     }
 
     public void testRelatorioColaboradorSemIndicacaoTreinamento() throws Exception

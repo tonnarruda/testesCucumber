@@ -49,6 +49,7 @@ public class XlsResult extends WebWorkResultSupport {
     protected String sheetName;
     protected String dinamicColumns;
     protected String dinamicProperties;
+    protected String dinamicPropertiesGroup;
     protected String msgFinalRelatorioXls;
     protected String totalizadorGroup = null;
     protected String[] nomeAgruoadorAnterior;
@@ -71,15 +72,13 @@ public class XlsResult extends WebWorkResultSupport {
 		Collection<Object> dataSourceRef = (Collection<Object>) stack.findValue(dataSource);
 		Collection<Object> columnsNameDinamicRef = (Collection<Object>) stack.findValue(columnsNameDinamic);
 		
-		if(dataSourceRef!=null && dataSourceRef.size() > 65535)
-		{
+		if(dataSourceRef!=null && dataSourceRef.size() > 65535){
 			MyActionSupport action = (MyActionSupport) invocation.getInvocationContext().getActionInvocation().getAction();
 			action.addActionWarning("Não foi possível gerar o relatório XLS, pois o número de linhas excede a <strong>65535</strong>, que é o máximo suportado por esse formato.<br /> Tente reduzir o número de linhas do seu relatório refinando sua busca através dos filtros.");
 	    	throw new XlsException();
 		}
 		
-		if(StringUtils.isNotBlank(dinamicColumns) && StringUtils.isNotBlank(dinamicProperties))
-		{
+		if(StringUtils.isNotBlank(dinamicColumns) && StringUtils.isNotBlank(dinamicProperties)){
 			columns = (String)stack.findValue(dinamicColumns);				
 			properties = (String)stack.findValue(dinamicProperties);
 		}
@@ -87,7 +86,10 @@ public class XlsResult extends WebWorkResultSupport {
 		propertiesArray = properties.split(",");
 		propertiesGroupArray = new String[]{};
 		String[] columnsArray = columns.split(",");
-				
+
+		if(StringUtils.isNotBlank(dinamicPropertiesGroup))
+			propertiesGroup = (String)stack.findValue(dinamicPropertiesGroup);
+		
 		if(propertiesGroup != null)
 			propertiesGroupArray = propertiesGroup.split(",");
 
@@ -432,5 +434,9 @@ public class XlsResult extends WebWorkResultSupport {
 
 	public void setFormatoInteiro(String formatoInteiro) {
 		this.formatoInteiro = formatoInteiro;
+	}
+
+	public void setDinamicPropertiesGroup(String dinamicPropertiesGroup) {
+		this.dinamicPropertiesGroup = dinamicPropertiesGroup;
 	}
 }

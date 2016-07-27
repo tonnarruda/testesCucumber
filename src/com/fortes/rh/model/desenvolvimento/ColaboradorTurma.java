@@ -1,6 +1,8 @@
 package com.fortes.rh.model.desenvolvimento;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.Date;
 
@@ -25,6 +27,7 @@ import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.DateUtil;
+import com.ibm.icu.text.SimpleDateFormat;
 
 @SuppressWarnings("serial")
 @Entity
@@ -95,6 +98,10 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private Long colaboradorCertificacaoId;
 	@Transient
 	private boolean certificado;
+	@Transient
+	private String cargaHorariaEfetiva;
+	@Transient
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
 	public ColaboradorTurma() {	}
 
@@ -505,36 +512,42 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	public void setCursoId(Long cursoId)
 	{
-		if(curso == null)
-			this.curso = new Curso();
+		iniciaCurso();
 		curso.setId(cursoId);
 	}
 
 	public void setCursoNome(String cursoNome)
 	{
-		if(curso == null)
-			this.curso = new Curso();
+		iniciaCurso();
 		curso.setNome(cursoNome);
 	}
 
 	public void setCursoPeriodicidade(Integer cursoPeriodicidade)
 	{
+		iniciaCurso();
+		curso.setPeriodicidade(cursoPeriodicidade);
+	}
+	
+	public void setCursoCargaHoraria(Integer cursoCargaHoraria)
+	{
+		iniciaCurso();
+		curso.setCargaHoraria(cursoCargaHoraria);
+	}
+
+	private void iniciaCurso() {
 		if(curso == null)
 			this.curso = new Curso();
-		curso.setPeriodicidade(cursoPeriodicidade);
 	}
 	
 	public void setProjectionCursoConteudoProgramatico(String projectionCursoConteudoProgramatico)
 	{
-		if(curso == null)
-			this.curso = new Curso();
+		iniciaCurso();
 		curso.setConteudoProgramatico(projectionCursoConteudoProgramatico);
 	}
 
 	public void setProjectionCursoCargaHoraria(Integer cursoCargaHoraria)
 	{
-		if(curso == null)
-			this.curso = new Curso();
+		iniciaCurso();
 		curso.setCargaHoraria(cursoCargaHoraria);
 	}
 
@@ -978,5 +991,25 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	public void setCertificado(boolean certificado) {
 		this.certificado = certificado;
+	}
+
+	public String getCargaHorariaEfetiva() {
+		return cargaHorariaEfetiva;
+	}
+
+	public void setCargaHorariaEfetiva(String cargaHorariaEfetiva) {
+		this.cargaHorariaEfetiva = cargaHorariaEfetiva;
+	}
+	
+	public Timestamp getCargaHorariaEfetivaTime(){
+		try {
+			if(cargaHorariaEfetiva != null && !"".equals(cargaHorariaEfetiva))
+				return new Timestamp(dateFormat.parse(cargaHorariaEfetiva).getTime());
+			
+			return null;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

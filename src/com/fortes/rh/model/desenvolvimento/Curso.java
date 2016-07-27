@@ -136,6 +136,13 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	{
 		return nome;
 	}
+	
+	//Usado no iReport
+	public String getNomeMaisCargaHoraria()
+	{
+		return nome + "\nCarga Horária: " + getCargaHorariaEmHora();
+	}
+	
 	public String getEmpresaNomeMaisNome()
 	{
 		return this.empresa.getNome() + "-" + nome;

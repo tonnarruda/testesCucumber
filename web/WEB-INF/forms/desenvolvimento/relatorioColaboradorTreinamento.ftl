@@ -16,6 +16,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
 	<style>
 		.div{
@@ -67,6 +68,7 @@
 		
 		function validar()
 		{
+			processando('${urlImgs}');
 			<#if comTreinamento>
 				$('#inicio, #fim').css('background','#fff');
 				
@@ -145,13 +147,14 @@
 		
 		<#if comTreinamento>
 			<@ww.checkbox label="Exibir cargos no relatório" name="exibeCargo" id="exibeCargo" labelPosition="left"/>
+			<@ww.checkbox label="Exibir carga horária efetiva" name="exibeCargaHorariaEfetiva" labelPosition="left"/>
 		</#if>
 		
 		<@ww.hidden name="comTreinamento"/>
 	</@ww.form>
 	
 	<div class="buttonGroup">
-		<button class="btnRelatorio"  onclick="$('form[name=form]').attr('action', '${formAction}');return validar();"></button>
+		<button class="btnRelatorio" onclick="$('form[name=form]').attr('action', '${formAction}');return validar();"></button>
 		<#if comTreinamento>
 			<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'relatorioColaboradorComTreinamentoXls.action');return validar();"></button>
 		</#if>

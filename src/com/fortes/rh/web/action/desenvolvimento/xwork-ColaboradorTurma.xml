@@ -107,27 +107,31 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">colaboradores_com_treinamento.pdf</param>
 			</result>
+			<result name="successExibirHoraEfetiva" type="jasper">
+				<param name="location">WEB-INF/report/colaboradores_com_treinamento_hora_efetiva.jasper</param>
+				<param name="dataSource">colaboradorTurmas</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradores_com_treinamento.pdf</param>
+			</result>
+			<result name="successExibirHoraEfetivaExibirCargos" type="jasper">
+				<param name="location">WEB-INF/report/colaboradores_com_treinamento_hora_efetiva_com_cargo.jasper</param>
+				<param name="dataSource">colaboradorTurmas</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradores_com_treinamento.pdf</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorTreinamento.ftl</result>
 		</action>
-		<action name="relatorioColaboradorComTreinamentoXls" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="relatorioColaboradorComTreinamento">
+		<action name="relatorioColaboradorComTreinamentoXls" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="relatorioColaboradorComTreinamentoXls">
 			<result name="success" type="xls">
 				<param name="dataSource">colaboradorTurmas</param>
 				<param name="documentName">colaboradores_com_treinamento.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Curso, Empresa,Estabelecimento,Área Organizacional,Colaborador,Matrícula,Turma,Período,Aprovado,Carga Horária</param>
-				<param name="propertiesGroup">curso.nome, colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao</param>
-				<param name="properties">curso.nome,colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,colaborador.matricula,turma.descricao,turma.periodoFormatado,aprovadoMaisNota,curso.CargaHorariaEmHora</param>
+				<param name="dinamicColumns">dinamicColumns</param>
+				<param name="dinamicPropertiesGroup">dinamicPropertiesGroup</param>
+				<param name="dinamicProperties">dinamicProperties</param>
 				<param name="reportTitle">reportTitle</param>
+				<param name="reportFilter">reportFilter</param>
 			</result>
-			<result name="successExibirCargos" type="xls">
-				<param name="dataSource">colaboradorTurmas</param>
-				<param name="documentName">colaboradores_com_treinamento.xls</param>
-				<param name="sheetName">Planilha1</param>
-				<param name="columns">Empresa,Estabelecimento,Área Organizacional,Colaborador,Matrícula,Cargo,Turma,Período,Aprovado,Carga Horária</param>
-				<param name="propertiesGroup">colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao</param>
-				<param name="properties">colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,colaborador.matricula,colaborador.cargoFaixa,turma.descricao,turma.periodoFormatado,aprovadoMaisNota,curso.CargaHorariaEmHora</param>
-				<param name="reportTitle">reportTitle</param>
-			</result>	
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorTreinamento.ftl</result>
 		</action>
 

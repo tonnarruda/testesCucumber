@@ -126,6 +126,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	
 	private String reportFilter;
 	private String reportTitle;
+	private String dinamicColumns;
+	private String dinamicProperties;
+	private String dinamicPropertiesGroup;
 	
 	//relatório de Colaboradores x Certificações
 	private Collection<ColaboradorCertificacaoRelatorio> colaboradoresCertificacoes;
@@ -137,6 +140,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private String situacao = null;
 	
 	private boolean exibeCargo;
+	private boolean exibeCargaHorariaEfetiva;
 	
 	private char filtroAgrupamento;
 
@@ -324,6 +328,37 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		}
 	}
 
+	public String relatorioColaboradorComTreinamentoXls(){
+		
+		if(relatorioColaboradorComTreinamento().equals(Action.INPUT))
+			return Action.INPUT;	
+		
+		reportTitle = "Colaboradores que fizeram um treinamento ";
+		reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date()) + "\n";
+		
+		dinamicColumns = "Curso,Carga Horária do Curso,Empresa,Estabelecimento,Área Organizacional,Colaborador,Matrícula,";
+		dinamicPropertiesGroup = "curso.nome,curso.cargaHorariaEmHora,colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao";
+		dinamicProperties = "curso.nome,curso.cargaHorariaEmHora,colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,colaborador.matricula,";
+							 
+		if(exibeCargo){
+			dinamicColumns += "Cargo,";
+			dinamicProperties  += "colaborador.cargoFaixa,";
+		}
+							
+		dinamicColumns += "Turma,Período,";
+		dinamicProperties  += "turma.descricao,turma.periodoFormatado,";
+
+		if(exibeCargaHorariaEfetiva){
+			dinamicColumns += "Carga Horária Efetiva,";
+			dinamicProperties  += "cargaHorariaEfetiva,";
+		}
+		
+		dinamicColumns += "Aprovado";
+		dinamicProperties  += "aprovadoMaisNota";
+		
+		return Action.SUCCESS;
+	}
+	
 	public String relatorioColaboradorComTreinamento(){
 		try{
 			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
@@ -333,9 +368,12 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 				throw new ColecaoVaziaException();
 
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que fizeram o treinamento", getEmpresaSistema(), "");
-			reportTitle = "Colaboradores que fizeram um treinamento ";
 
 			String retorno = Action.SUCCESS;
+			
+			if(exibeCargaHorariaEfetiva)
+				retorno += "ExibirHoraEfetiva";
+
 			if (exibeCargo) 
 				retorno += "ExibirCargos";
 			
@@ -901,5 +939,25 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	
 	public LinkedHashMap<Character, String> getStatusAprovacao(){
 		return new StatusAprovacao();
+	}
+
+	public String getDinamicColumns() {
+		return dinamicColumns;
+	}
+
+	public String getDinamicProperties() {
+		return dinamicProperties;
+	}
+
+	public String getDinamicPropertiesGroup() {
+		return dinamicPropertiesGroup;
+	}
+
+	public boolean isExibeCargaHorariaEfetiva() {
+		return exibeCargaHorariaEfetiva;
+	}
+
+	public void setExibeCargaHorariaEfetiva(boolean exibeCargaHorariaEfetiva) {
+		this.exibeCargaHorariaEfetiva = exibeCargaHorariaEfetiva;
 	} 
 }
