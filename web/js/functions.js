@@ -437,9 +437,6 @@ function resetFormulario(campos)
 function validaFormulario(formulario, camposObrigatorios, camposValidos, noSubmit, urlImg)
 {
 	var validacao = true;
-	
-	if(urlImg)
-		processando(urlImg);
 
 	if(camposObrigatorios != null && camposObrigatorios.length > 0)
 		validacao = validaCamposObrigatorios(camposObrigatorios, formulario);
@@ -449,14 +446,16 @@ function validaFormulario(formulario, camposObrigatorios, camposValidos, noSubmi
 
 	if(validacao)
 	{
+		if(urlImg)
+			processando(urlImg);
+		
 		limpaMascaras(camposValidos);
-		if(noSubmit)
-			return true;
-		else
+		if(!noSubmit)
 		{
 			var form0 = document.getElementsByName(formulario)[0];
 			form0.submit();
 		}
+		return true;
 	}
 
 	return false;

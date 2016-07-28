@@ -120,7 +120,6 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		setCursoId(cursoId);
 	}
 	
-	
 	public ColaboradorTurma(Long id, Boolean aprovado, Long colaboradorId)
 	{
 		setId(id);

@@ -183,7 +183,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		}
 		
 		colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);
-		
 
 		return Action.SUCCESS;
 	}

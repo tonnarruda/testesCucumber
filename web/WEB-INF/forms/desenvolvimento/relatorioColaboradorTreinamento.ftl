@@ -54,7 +54,7 @@
 		{
 			addChecks('estabelecimentosCheck',data);
 		}
-			
+		
 		function populaArea(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -68,7 +68,7 @@
 		
 		function validar()
 		{
-			processando('${urlImgs}');
+			var formValido = false;
 			<#if comTreinamento>
 				$('#inicio, #fim').css('background','#fff');
 				
@@ -79,10 +79,15 @@
 					return false;
 				}
 				
-				return validaFormularioEPeriodo('form', new Array('@cursosCheck'), new Array('inicio','fim'));
+				formValido = validaFormularioEPeriodo('form', new Array('@cursosCheck'), new Array('inicio','fim'));
 			<#else>
-				return validaFormulario('form', new Array('@cursosCheck'), null);
+				formValido = validaFormulario('form', new Array('@cursosCheck'), null);
 			</#if>
+
+			if (formValido)
+				processando('${urlImgs}');
+
+			return formValido;
 		}
 		
 		$(document).ready(function($)
@@ -125,7 +130,7 @@
 		<#assign formAction = "relatorioColaboradorSemTreinamento.action" />
 	</#if>
 	
-	<@ww.form name="form" action="${formAction}" onsubmit="return validar()" method="POST">
+	<@ww.form name="form" action="${formAction}" method="POST">
 		<#if comTreinamento>
 			<label>Período de realização da turma:</label><br />
 			<@ww.datepicker value="${inicio}" name="dataIni" id="inicio" cssClass="mascaraData validaDataIni" after="a" liClass="liLeft"/>
