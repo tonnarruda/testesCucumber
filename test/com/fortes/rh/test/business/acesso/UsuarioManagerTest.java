@@ -27,6 +27,7 @@ import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.util.StringUtil;
 
 public class UsuarioManagerTest extends MockObjectTestCaseManager<UsuarioManagerImpl> implements TesteAutomaticoManager
@@ -187,31 +188,17 @@ public class UsuarioManagerTest extends MockObjectTestCaseManager<UsuarioManager
     	usuarioEmpresaManager.expects(once()).method("findAllBySelectUsuarioEmpresa").will(returnValue(usuarioEmpresas));
 
     	assertEquals(3, manager.findAllBySelectUsuarioEmpresa(1L).size());
-
     }
 
     public void testRemoveUsuario() throws Exception
     {
-    	Usuario usuario = new Usuario();
-    	usuario.setId(1L);
+    	Usuario usuario = UsuarioFactory.getEntity(1L);
 
-    	Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
+    	UsuarioEmpresa us1 = UsuarioEmpresaFactory.getEntity(1L, usuario, null, null);
+    	UsuarioEmpresa us2 = UsuarioEmpresaFactory.getEntity(2L, usuario, null, null);
+    	UsuarioEmpresa us3 = UsuarioEmpresaFactory.getEntity(3L, usuario, null, null);
 
-    	UsuarioEmpresa us1 = new UsuarioEmpresa();
-    	us1.setId(1L);
-    	us1.setUsuario(new Usuario());
-
-    	UsuarioEmpresa us2 = new UsuarioEmpresa();
-    	us2.setId(2L);
-    	us2.setUsuario(new Usuario());
-
-    	UsuarioEmpresa us3 = new UsuarioEmpresa();
-    	us3.setId(3L);
-    	us3.setUsuario(new Usuario());
-
-    	usuarioEmpresas.add(us1);
-    	usuarioEmpresas.add(us2);
-    	usuarioEmpresas.add(us3);
+    	Collection<UsuarioEmpresa> usuarioEmpresas = Arrays.asList(us1, us2, us3);
 
     	usuarioEmpresaManager.expects(atLeastOnce()).method("find").with(ANYTHING, ANYTHING).will(returnValue(usuarioEmpresas));
     	usuarioEmpresaManager.expects(atLeastOnce()).method("remove").with(ANYTHING);

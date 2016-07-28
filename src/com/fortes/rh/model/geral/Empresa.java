@@ -709,10 +709,7 @@ public class Empresa extends AbstractModel implements Serializable
 	}
 
 	public String getSenhaPadrao() {
-		if(senhaPadrao == null)
-			return "";
-		else
-			return senhaPadrao;
+		return (senhaPadrao == null ? "" : senhaPadrao);
 	}
 
 	public void setSenhaPadrao(String senhaPadrao) {

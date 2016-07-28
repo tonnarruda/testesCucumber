@@ -1392,7 +1392,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	colaboradorDao.expects(once()).method("save").with(ANYTHING).isVoid();
-    	empresaManager.expects(once()).method("findById").withAnyArguments().will(returnValue(empresa));
+    	empresaManager.expects(once()).method("findEntidadeComAtributosSimplesById").withAnyArguments().will(returnValue(empresa));
     	
     	Exception e = null;
     	try {
@@ -1451,13 +1451,13 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	colaboradorDao.expects(once()).method("save").with(ANYTHING).isVoid();
     	historicoColaboradorManager.expects(once()).method("bindSituacao").with(eq(tSituacoes[0]), ANYTHING);
     	historicoColaboradorManager.expects(once()).method("save").with( ANYTHING);
-    	empresaManager.expects(once()).method("findById").withAnyArguments().will(returnValue(empresa));
+    	empresaManager.expects(once()).method("findEntidadeComAtributosSimplesById").withAnyArguments().will(returnValue(empresa));
     	gerenciadorComunicacaoManager.expects(once()).method("enviarEmailAoCriarAcessoSistema");
 	}
     
     public void testCriarUsuarioParaColaborador() throws Exception
     {
-    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	empresa.setCriarUsuarioAutomaticamente(true);
     	
     	TEmpregado tEmpregado = iniciaTEmpregado();
@@ -1483,7 +1483,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	usuarioEmpresaManager.expects(once()).method("save").with(ANYTHING).isVoid();
     	colaboradorDao.expects(once()).method("findByUsuario").with(ANYTHING).will(returnValue(null));
     	colaboradorDao.expects(once()).method("atualizarUsuario").with(ANYTHING, ANYTHING).will(returnValue(true));
-    	empresaManager.expects(once()).method("findById").withAnyArguments().will(returnValue(empresa));
+    	empresaManager.expects(once()).method("findEntidadeComAtributosSimplesById").with(eq(empresa.getId())).will(returnValue(empresa));
     	
     	Exception e = null;
     	try {

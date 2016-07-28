@@ -620,8 +620,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 					solicitacaoManager.encerrarSolicitacaoAoPreencherTotalVagas(solicitacao, getEmpresaSistema());
 
 				addActionSuccess("Colaborador <strong>" + colaborador.getNome() + "</strong>  cadastrado com sucesso.");
-				verifyCadastroUsuario();
 				transactionManager.commit(status);
+				
+				verifyCadastroUsuario();
 				
 				if(solicitacao != null && solicitacao.getId() != null)
 					return "successSolicitacao";
@@ -699,23 +700,35 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		}
 	}
 
-	private void verifyCadastroUsuario() throws Exception {
+	private void verifyCadastroUsuario() {
+
 		if (getEmpresaSistema().isCriarUsuarioAutomaticamente()) {
-			Usuario usuario = new Usuario(colaborador.getNome(), colaborador.getPessoal().getCpf(), getEmpresaSistema().getSenhaPadrao(), true, colaborador);
-			if (!getEmpresaSistema().isAcIntegra() || colaborador.isNaoIntegraAc()){
-				if (usuarioManager.existeLogin(usuario))
-					addActionWarning("Não foi possível criar o usuário para o colaborador <strong>"+ colaborador.getNome() +"</strong>. O login <strong>"+ colaborador.getPessoal().getCpf() +"</strong> já existe.");
-				else {
-					usuarioManager.save(usuario);
-					ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-					UsuarioEmpresa usuarioEmpresa = new UsuarioEmpresa(usuario, parametrosDoSistema.getPerfilPadrao(), getEmpresaSistema());
-					usuarioEmpresaManager.save(usuarioEmpresa);
-					colaboradorManager.atualizarUsuario(colaborador.getId(), usuario.getId());
-					gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema(usuario.getLogin(), getEmpresaSistema().getSenhaPadrao(), colaborador.getContato().getEmail(), getEmpresaSistema());
+			DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+			def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+			TransactionStatus status = transactionManager.getTransaction(def);
+			try {
+				Usuario usuario = new Usuario(colaborador.getNome(), colaborador.getPessoal().getCpf(), getEmpresaSistema().getSenhaPadrao(), true, colaborador);
+				if (!getEmpresaSistema().isAcIntegra() || colaborador.isNaoIntegraAc()){
+					if (usuarioManager.existeLogin(usuario))
+						addActionWarning("Não foi possível criar o usuário para o colaborador <strong>"+ colaborador.getNome() +"</strong>. O login <strong>"+ colaborador.getPessoal().getCpf() +"</strong> já existe nesta ou em outra empresa.");
+					else {
+						usuarioManager.save(usuario);
+						ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+						UsuarioEmpresa usuarioEmpresa = new UsuarioEmpresa(usuario, parametrosDoSistema.getPerfilPadrao(), getEmpresaSistema());
+						usuarioEmpresaManager.save(usuarioEmpresa);
+						colaboradorManager.atualizarUsuario(colaborador.getId(), usuario.getId());
+						gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema(usuario.getLogin(), getEmpresaSistema().getSenhaPadrao(), colaborador.getContato().getEmail(), getEmpresaSistema());
+					}
 				}
-			}
-			else if(usuarioManager.existeLogin(usuario)){
-				addActionWarning("Não será criado automaticamente o usuário para o colaborador <strong>"+ colaborador.getNome() +"</strong>. O login <strong>"+ colaborador.getPessoal().getCpf() +"</strong> já existe.");
+				else if(usuarioManager.existeLogin(usuario)){
+					addActionWarning("Não será criado automaticamente o usuário para o colaborador <strong>"+ colaborador.getNome() +"</strong>. O login <strong>"+ colaborador.getPessoal().getCpf() +"</strong> já existe nesta ou em outra empresa.");
+				}
+				
+				transactionManager.commit(status);
+			} catch (Exception e) {
+				transactionManager.rollback(status);
+				e.printStackTrace();
+				addActionWarning("Não foi possível criar automaticamente o usuário para o colaborador <strong>"+ colaborador.getNome() +"</strong>. Caso deseje, crie-o manualmente.");
 			}
 		}
 	}
@@ -1961,8 +1974,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 
-	public void setGerenciadorComunicacaoManager(
-			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager)
+	{
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

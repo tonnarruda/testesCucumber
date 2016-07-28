@@ -248,13 +248,13 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		
 		gerenciadorComunicacaoManager.expects(once()).method("enviarEmailAoCriarAcessoSistema");
 		colaboradorManager.expects(once()).method("validaQtdCadastros").isVoid();
-		transactionManager.expects(once()).method("getTransaction").withAnyArguments().will(returnValue(null));
+		transactionManager.expects(atLeastOnce()).method("getTransaction").withAnyArguments().will(returnValue(null));
 		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").with(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(null)).will(returnValue(false));
 		quantidadeLimiteColaboradoresPorCargoManager.expects(once()).method("validaLimite").with(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(historicoColaborador.getFaixaSalarial().getId()), eq(empresa.getId()), eq(null)).isVoid();
 		colaboradorManager.expects(once()).method("insert").withAnyArguments().will(returnValue(true));
 		solicitacaoExameManager.expects(once()).method("transferirCandidatoToColaborador").withAnyArguments().isVoid();
 		colaboradorPeriodoExperienciaAvaliacaoManager.expects(once()).method("saveConfiguracaoAvaliacaoPeriodoExperiencia").withAnyArguments().isVoid();
-		transactionManager.expects(once()).method("commit").withAnyArguments().isVoid();
+		transactionManager.expects(atLeastOnce()).method("commit").withAnyArguments().isVoid();
 		usuarioManager.expects(once()).method("existeLogin").withAnyArguments().will(returnValue(false));
 		usuarioManager.expects(once()).method("save").isVoid();
 		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(ParametrosDoSistemaFactory.getEntity()));

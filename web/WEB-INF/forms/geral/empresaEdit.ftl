@@ -150,7 +150,7 @@
 
 			if($("#criarUsuarioAutomaticamente").is(":checked") && $("#senhaPadrao").val() == "")
 			{
-				jAlert("A senha padrão está vazia.");
+				jAlert("A senha padrão para usuários criados automaticamente no cadastro do colaborador está vazia.");
 				return false;
 			}
 						

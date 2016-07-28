@@ -1436,7 +1436,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	@SuppressWarnings("deprecation")
 	public void criarUsuarioParaColaborador(Colaborador colaborador, Empresa empresa) throws Exception {
-		if(empresaManager.findById(empresa.getId()).isCriarUsuarioAutomaticamente()){
+		if(empresaManager.findEntidadeComAtributosSimplesById(empresa.getId()).isCriarUsuarioAutomaticamente()){
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 			Usuario usuario = new Usuario(colaborador.getNome(), colaborador.getPessoal().getCpf(), empresa.getSenhaPadrao(), true, colaborador);
 			if(!usuarioManager.existeLogin(usuario)) {
