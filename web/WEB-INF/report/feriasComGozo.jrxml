@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ferias" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c6048164-3ce7-4cad-80c1-49e99c90e35d">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="ireport.zoom" value="3.1384283767210097"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.143588810000006"/>
+	<property name="ireport.x" value="415"/>
 	<property name="ireport.y" value="0"/>
 	<subDataset name="periodosGozos" uuid="cc2020e3-84bb-406b-b09e-b7dc393b901d">
 		<queryString>
@@ -15,6 +15,7 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
+	<parameter name="POSSUIPERIODO" class="java.lang.Boolean"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -82,7 +83,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{gozoInicial}.isEmpty() && $F{gozoFinal}.isEmpty() ? "Sem férias gozadas no período informado" : ""]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{gozoInicial}.isEmpty() && $F{gozoFinal}.isEmpty() ? ($P{POSSUIPERIODO} ? "Sem férias gozadas no período informado" : "Sem férias gozadas") : ""]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>

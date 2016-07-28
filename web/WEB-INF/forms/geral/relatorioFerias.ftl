@@ -72,6 +72,11 @@
 			});
 			
 			$('#periodoFeriasGozadas').hide();
+			
+			if(areasIds.length == 0){
+				$('#wwlbl_situacao').hide();
+				$('#situacao').hide();
+			}
 		});
 	</script>
 </head>

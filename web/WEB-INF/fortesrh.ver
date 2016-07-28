@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.1xx.2xx" db="" data="xx/07/2016">
+	<Versao id="1.1.170.202" db="" data="29/07/2016">
 		<Item visivel="S" motivo="P16070000250"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais: Ajuste de inconsistência ao tentar excluir faixa salarial.]]></Item>
 		<Item visivel="S" motivo="S16030000236"><![CDATA[T&D > Relatórios > Colaboradores com Treinamento: Nova opção para exibir a carga horária efetiva do colaborador.]]></Item>
 		<Item visivel="S" motivo="P16070000300"><![CDATA[Info. Funcionais > Relatórios > Recibo de Pagamento: Ajuste na inconsistência ao exibir data.]]></Item>

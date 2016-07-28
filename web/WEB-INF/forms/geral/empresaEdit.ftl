@@ -148,8 +148,10 @@
 				return false;
 			}
 
+			$('#senhaPadrao').css("background", "#FFF");
 			if($("#criarUsuarioAutomaticamente").is(":checked") && $("#senhaPadrao").val() == "")
 			{
+				$('#senhaPadrao').css("background", "#FFEEC2");
 				jAlert("A senha padrão para usuários criados automaticamente no cadastro do colaborador está vazia.");
 				return false;
 			}
@@ -323,7 +325,6 @@
 						<div id="wwlbl_update_empresa_senhaPadrao" class="wwlbl" style="float:left; margin-right: 5px;">
 							<label for="update_empresa_senhaPadrao" class="desc">Senha padrão: </label>
 						</div>
-						
 						<div id="wwctrl_update_empresa_senhaPadrao" class="wwctrl">
 							<input type="text" name="empresa.senhaPadrao" maxlength="25" value="${empresa.senhaPadrao}" id="senhaPadrao">
 						</div>

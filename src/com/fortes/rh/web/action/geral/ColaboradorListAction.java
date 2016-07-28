@@ -1016,10 +1016,25 @@ public class ColaboradorListAction extends MyActionSupportList
 	private void prepareCabecalhoRelatorioFerias()
 	{
 		reportTitle = "Relatório de Férias";
-		reportFilter = "Período informado: " + dataInicioGozo + " a " +  dataFimGozo;
+	
+		boolean existeDataInicioGozo = !(dataInicioGozo == null || "".equals(dataInicioGozo) || "  /  /    ".equals(dataInicioGozo));
+		boolean existeDataFimGozo = !(dataFimGozo == null || "".equals(dataFimGozo) || "  /  /    ".equals(dataFimGozo));
+		
+		if(existeDataInicioGozo && existeDataFimGozo)
+			reportFilter = "Período informado: " + dataInicioGozo + "   a   " +  dataFimGozo;
+		else{
+			if(!existeDataInicioGozo)
+				dataInicioGozo = "     -     ";
+			
+			if(!existeDataFimGozo)
+				dataFimGozo = DateUtil.formataDiaMesAno(new Date());
+			
+			if(existeDataInicioGozo || existeDataFimGozo)
+				reportFilter = "Período informado: " + dataInicioGozo + "   a   " +  dataFimGozo;
+		}
 		
 		parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
-		parametros.put("IMPRIMIR_FERIAS_GOZADAS", imprimirFeriasGozadas);
+		parametros.put("POSSUIPERIODO", existeDataInicioGozo || existeDataFimGozo);
 	}
 	
 	// Início INNER CLASS

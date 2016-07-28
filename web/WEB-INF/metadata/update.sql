@@ -24442,3 +24442,44 @@ insert into migrations values('20160713152032');--.go
 update papel set url = '#' where id = 450;--.go
 insert into migrations values('20160718132912');--.go
 update parametrosdosistema set appversao = '1.1.169.201';--.go
+-- versao 1.1.170.202
+
+ALTER TABLE empresa ADD COLUMN criarusuarioautomaticamente boolean NOT NULL DEFAULT false;--.go
+insert into migrations values('20160722085415');--.go
+
+ALTER TABLE empresa ADD COLUMN senhapadrao CHARACTER VARYING(30);--.go
+insert into migrations values('20160725135749');--.go
+UPDATE papel SET ordem = ordem + 1 WHERE papelmae_id = 377 AND ordem > 2 ;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (681,'ROLE_REL_FERIAS', 'Férias', '/geral/colaborador/prepareRelatorioFerias.action', 3, true, 377);--.go
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 681);--.go
+ALTER sequence papel_sequence restart WITH 682;--.go
+
+update parametrosdosistema set acversaowebservicecompativel='1.1.62.1';--.go
+insert into migrations values('20160727101838');--.go
+CREATE OR REPLACE FUNCTION carga_horaria_efetiva(id_curso BIGINT, id_turma BIGINT, id_colaboradorturma BIGINT) RETURNS INTERVAL AS $$  
+	BEGIN 
+		IF exists(select * from diaturma where turma_id = id_turma and horaini is not null and horaini != '' and horafim is not null and horafim != ''
+			and ((horaini = '0:00' and horafim != '0:00') or (horaini != '0:00' and horafim = '0:00') or (horaini != '0:00' and horafim != '0:00')))
+		THEN
+			RETURN (select sum(to_timestamp(horafim, 'HH24:MI') - to_timestamp(horaini, 'HH24:MI')) as horas
+			from colaboradorpresenca  cp
+			inner join colaboradorturma ct on ct.id = cp.colaboradorturma_id 
+			inner join diaturma dt on dt.id = cp.diaturma_id
+			where curso_id = id_curso and dt.turma_id = id_turma and presenca = true
+			and ct.id = id_colaboradorturma
+			group by ct.id 
+			order by ct.id);
+		ELSE
+			RETURN (select (count(cp.id)*((cargahoraria::double precision)/(select count(*) from diaturma where turma_id = id_turma))|| 'm')::interval as horas
+			from colaboradorpresenca  cp
+			inner join colaboradorturma ct on ct.id = cp.colaboradorturma_id 
+			inner join curso cu on cu.id = curso_id
+			where curso_id = id_curso and ct.turma_id = id_turma and presenca = true
+			and ct.id = id_colaboradorturma
+			group by ct.id, cargahoraria);
+		END IF;	
+	END; 
+$$ LANGUAGE plpgsql; --.go
+insert into migrations values('20160728084301');--.go
+update parametrosdosistema set appversao = '1.1.170.202';--.go

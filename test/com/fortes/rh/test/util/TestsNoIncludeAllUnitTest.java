@@ -71,7 +71,7 @@ public class TestsNoIncludeAllUnitTest extends TestCase
     // Testes da classe StringUtil.java
 	public void testGetHTML() throws HttpException, IOException
 	{
-		String url = "http://m.correios.com.br/movel/buscaCepConfirma.do?cepEntrada=60743-760&tipoCep=&cepTemp=&metodo=buscarCep";
+		String url = "http://m.correios.com.br/movel/buscaCepConfirma.do?cepEntrada=60870520&tipoCep=&cepTemp=&metodo=buscarCep";
 		
 		assertTrue(HttpUtil.getHtmlViaPost(url).contains("respostadestaque"));
 	}
