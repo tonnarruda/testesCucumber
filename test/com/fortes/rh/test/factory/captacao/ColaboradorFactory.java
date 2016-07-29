@@ -163,4 +163,17 @@ public class ColaboradorFactory
 
 		return colaborador;
 	}
+
+
+	public static Colaborador getEntity(Long id, String nome, String nomeMae, String nomePai, String conjuge, Empresa empresa)
+	{
+		Colaborador colaborador = getEntity(id);
+		colaborador.setNome(nome);
+		colaborador.setPessoalMae(nomeMae);
+		colaborador.setPessoalPai(nomePai);
+		colaborador.setPessoalConjuge(conjuge);
+		colaborador.setEmpresa(empresa);
+
+		return colaborador;
+	}
 }

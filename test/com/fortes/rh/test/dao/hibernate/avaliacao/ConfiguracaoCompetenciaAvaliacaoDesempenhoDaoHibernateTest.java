@@ -92,10 +92,10 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest extends 
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
-		Colaborador avaliadorComCompetencia = ColaboradorFactory.getEntity(null, "Avaliador COM competencia", null,null,null);
+		Colaborador avaliadorComCompetencia = ColaboradorFactory.getEntity(null, "Avaliador COM competencia", null,null,null, null);
 		colaboradorDao.save(avaliadorComCompetencia);
 
-		Colaborador avaliadorSemCompetencia = ColaboradorFactory.getEntity(null, "Avaliador SEM competencia", null,null,null);
+		Colaborador avaliadorSemCompetencia = ColaboradorFactory.getEntity(null, "Avaliador SEM competencia", null,null,null, null);
 		colaboradorDao.save(avaliadorSemCompetencia);
 		
 		ColaboradorQuestionario colaboradorQuestionarioAvaliadorComCompetencia = ColaboradorQuestionarioFactory.getEntity(null, avaliadorComCompetencia, null, avaliacaoDesempenho, null);
@@ -132,10 +132,10 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest extends 
 		avaliacaoDesempenho.setTitulo("Avaliação SEM competencia");
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
-		Colaborador avaliadorComCompetencia = ColaboradorFactory.getEntity(null, "Avaliador COM competencia", null,null,null);
+		Colaborador avaliadorComCompetencia = ColaboradorFactory.getEntity(null, "Avaliador COM competencia", null,null,null, null);
 		colaboradorDao.save(avaliadorComCompetencia);
 		
-		Colaborador avaliadorSemCompetencia = ColaboradorFactory.getEntity(null, "Avaliador SEM competencia", null,null,null);
+		Colaborador avaliadorSemCompetencia = ColaboradorFactory.getEntity(null, "Avaliador SEM competencia", null,null,null, null);
 		colaboradorDao.save(avaliadorSemCompetencia);
 		
 		ColaboradorQuestionario colaboradorQuestionarioAvaliadorComCompetencia = ColaboradorQuestionarioFactory.getEntity(null, avaliadorComCompetencia, null, avaliacaoDesempenho, null);

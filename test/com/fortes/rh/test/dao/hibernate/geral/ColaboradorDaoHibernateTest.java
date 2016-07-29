@@ -2253,9 +2253,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = new Empresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = saveColaborador(empresa, new Date(), false, null, false);
-		Colaborador colaborador2 = saveColaborador(empresa, new Date(), true, new Date(), false);
-		Colaborador colaborador3 = saveColaborador(empresa, new Date(), false, new Date(), true);
+		Colaborador colaborador = saveColaborador(empresa, "Alberto", new Date(), false, null, false);
+		Colaborador colaborador2 = saveColaborador(empresa, "Beto", new Date(), true, new Date(), false);
+		Colaborador colaborador3 = saveColaborador(empresa, "Carla", new Date(), false, new Date(), true);
 		
 		AreaOrganizacional areaOrganizacionalAtual = saveAreaOrganizacional();
 		AreaOrganizacional areaOrganizacionalAntiga = saveAreaOrganizacional();
@@ -5265,47 +5265,27 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Colaborador julia = ColaboradorFactory.getEntity();
-		julia.setNome("roberta rodrigues");
-		julia.setPessoalMae("marcia rodrigues");
-		julia.setPessoalPai("julio medeiro");
-		julia.setEmpresa(empresa);
+		Colaborador julia = ColaboradorFactory.getEntity(null, "julia rodrigues_", "marcia rodrigues_", "julio medeiro_", null, empresa);
 		colaboradorDao.save(julia);
 		
-		Colaborador roberta = ColaboradorFactory.getEntity();
-		roberta.setNome("roberta rodrigues");
-		roberta.setPessoalMae("maria rodrigues");
-		roberta.setPessoalPai("julio medeiro");
-		roberta.setEmpresa(empresa);
+		Colaborador roberta = ColaboradorFactory.getEntity(null, "roberta rodrigues_", "maria rodrigues_", "julio medeiro_", null, empresa);
 		colaboradorDao.save(roberta);
 		
-		Colaborador joao = ColaboradorFactory.getEntity();
-		joao.setNome("joao rodrigues");
-		joao.setPessoalMae("maria rodrigues");
-		joao.setPessoalPai("pedro rodrigues");
-		joao.setEmpresa(empresa);
+		Colaborador joao = ColaboradorFactory.getEntity(null, "joao rodrigues_", "maria rodrigues_", "pedro rodrigues_", null, empresa);
 		colaboradorDao.save(joao);
 		
-		Colaborador maria = ColaboradorFactory.getEntity();
-		maria.setNome("maria rodrigues");
-		maria.setEmpresa(empresa);
-		maria.setPessoalConjuge("geraldo rodrigues");
+		Colaborador maria = ColaboradorFactory.getEntity(null, "maria rodrigues_", null, null, "geraldo rodrigues_", empresa);
 		colaboradorDao.save(maria);
 
-		Colaborador mariana = ColaboradorFactory.getEntity();
-		mariana.setNome("mariana rodrigues");
-		mariana.setEmpresa(empresa);
+		Colaborador mariana = ColaboradorFactory.getEntity(null, "mariana rodrigues_", null, null, null, empresa);
 		colaboradorDao.save(mariana);
 
-		Colaborador pedro = ColaboradorFactory.getEntity();
-		pedro.setPessoalConjuge("maria rodrigues");
-		pedro.setNome("pedro rodrigues");
-		pedro.setEmpresa(empresa);
+		Colaborador pedro = ColaboradorFactory.getEntity(null, "pedro rodrigues_", null, null, "maria rodrigues_", empresa);
 		colaboradorDao.save(pedro);
 		
-		assertEquals(0, colaboradorDao.findParentesByNome(joao.getId(),"joao rodrigues", empresa.getId()).size());
-		assertEquals(0, colaboradorDao.findParentesByNome(maria.getId(),"geraldo rodrigues", empresa.getId()).size());
-		assertEquals(1, colaboradorDao.findParentesByNome(pedro.getId(),"pedro rodrigues", empresa.getId()).size());
+		assertEquals(0, colaboradorDao.findParentesByNome(joao.getId(),joao.getNome(), empresa.getId()).size());
+		assertEquals(0, colaboradorDao.findParentesByNome(maria.getId(),maria.getPessoal().getConjuge(), empresa.getId()).size());
+		assertEquals(1, colaboradorDao.findParentesByNome(pedro.getId(),joao.getPessoal().getPai(), empresa.getId()).size());
 		assertEquals(3, colaboradorDao.findParentesByNome(maria.getId(),maria.getNome(), empresa.getId()).size());
 		assertEquals(3, colaboradorDao.findParentesByNome(maria.getId(),maria.getNome(), null).size());
 		assertEquals(1, colaboradorDao.findParentesByNome(julia.getId(),julia.getPessoal().getPai(), empresa.getId()).size());
@@ -7104,6 +7084,18 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	private Colaborador saveColaborador(Empresa empresa, Date dataAdmissao, boolean desligado, Date dataDesligamento, boolean naoIntegraAc) {
 		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setDataAdmissao(dataAdmissao);
+		colaborador.setEmpresa(empresa);
+		colaborador.setNaoIntegraAc(naoIntegraAc);
+		colaborador.setDesligado(desligado);
+		colaborador.setDataDesligamento(dataDesligamento);
+		colaboradorDao.save(colaborador);
+		return colaborador;
+	}
+	
+	private Colaborador saveColaborador(Empresa empresa, String nome, Date dataAdmissao, boolean desligado, Date dataDesligamento, boolean naoIntegraAc) {
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome(nome);
 		colaborador.setDataAdmissao(dataAdmissao);
 		colaborador.setEmpresa(empresa);
 		colaborador.setNaoIntegraAc(naoIntegraAc);
