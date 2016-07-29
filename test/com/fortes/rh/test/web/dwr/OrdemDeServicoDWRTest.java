@@ -50,7 +50,7 @@ public class OrdemDeServicoDWRTest
 	}
 	
 	@Test
-	public void recarregaDadosOrdemDeServicoInseriPrimeiraOrdemDeServiço() throws Exception{
+	public void recarregaDadosOrdemDeServicoInseriPrimeiraOrdemDeServico() throws Exception{
 		Colaborador colaborador = ColaboradorFactory.getEntity(false, DateUtil.criarDataMesAno(1, 1, 2016), null);
 		Funcao funcao = FuncaoFactory.getEntity(5L);
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L, colaborador, funcao, DateUtil.criarDataMesAno(1, 1, 2016));

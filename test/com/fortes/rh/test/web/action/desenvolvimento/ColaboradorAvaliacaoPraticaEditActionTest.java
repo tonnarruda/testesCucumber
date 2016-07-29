@@ -305,7 +305,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest
 	{
 		when(certificacaoManager.findOsQuePossuemAvaliacaoPratica(action.getEmpresaSistema().getId())).thenReturn(certificacoes);
 		when(avaliacaoPraticaManager.findByCertificacaoId(action.getCertificacao().getId())).thenReturn(avaliacaoPraticas);
-		when(colaboradorCertificacaoManager.possuemAvaliaçõesPraticasRealizadas(action.getCertificacao().getId())).thenReturn(colaboradorCertificacoes);
+		when(colaboradorCertificacaoManager.possuemAvaliacoesPraticasRealizadas(action.getCertificacao().getId())).thenReturn(colaboradorCertificacoes);
 	}
 	
 	@Test

@@ -417,7 +417,7 @@ public class ColaboradorCertificacaoManagerTest
 	}
 	
 	@Test
-	public void populaAvaliaçõesPraticasRealizadas()
+	public void populaAvaliacoesPraticasRealizadas()
 	{
 		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
@@ -447,7 +447,7 @@ public class ColaboradorCertificacaoManagerTest
 		when(colaboradorCertificacaoDao.colaboradoresAprovadosEmTodosOsCursosDaCertificacao(certificacao.getId())).thenReturn(colaboradorCertificacaos);
 		when(colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacao.getId(), colaboradoresIds)).thenReturn(mapColaboradorAvaliacoesPraticas);
 		
-		Collection<ColaboradorCertificacao> colaboradorescertificacoes = colaboradorCertificacaoManager.possuemAvaliaçõesPraticasRealizadas(certificacao.getId());
+		Collection<ColaboradorCertificacao> colaboradorescertificacoes = colaboradorCertificacaoManager.possuemAvaliacoesPraticasRealizadas(certificacao.getId());
 		ColaboradorCertificacao colabCertificacao = (ColaboradorCertificacao) colaboradorescertificacoes.toArray()[0];
 
 		assertEquals(1, colaboradorescertificacoes.size());

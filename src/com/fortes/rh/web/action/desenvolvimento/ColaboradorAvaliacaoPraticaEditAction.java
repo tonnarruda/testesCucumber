@@ -205,7 +205,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		if((certificacao == null || certificacao.getId() == null) || (avaliacaoPratica ==null || avaliacaoPratica.getId()==null))
 			return Action.SUCCESS;
 
-		colaboradorCertificacaos = colaboradorCertificacaoManager.possuemAvaliaçõesPraticasRealizadas(certificacao.getId());
+		colaboradorCertificacaos = colaboradorCertificacaoManager.possuemAvaliacoesPraticasRealizadas(certificacao.getId());
 
 		return Action.SUCCESS;
 	}

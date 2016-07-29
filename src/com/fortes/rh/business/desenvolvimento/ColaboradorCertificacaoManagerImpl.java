@@ -45,7 +45,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return colaboradores;
 	}
 	
-	public Collection<ColaboradorCertificacao> possuemAvaliaçõesPraticasRealizadas(Long certificacaoId) {
+	public Collection<ColaboradorCertificacao> possuemAvaliacoesPraticasRealizadas(Long certificacaoId) {
 		Collection<ColaboradorAvaliacaoPratica> colabAvaliacoesPraticasTemp = new ArrayList<ColaboradorAvaliacaoPratica>();
 		CollectionUtil<ColaboradorAvaliacaoPratica> colectionUtil = new CollectionUtil<ColaboradorAvaliacaoPratica>();
 		
