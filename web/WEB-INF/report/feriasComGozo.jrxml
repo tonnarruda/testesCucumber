@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ferias" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c6048164-3ce7-4cad-80c1-49e99c90e35d">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="ireport.zoom" value="2.143588810000006"/>
-	<property name="ireport.x" value="415"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<subDataset name="periodosGozos" uuid="cc2020e3-84bb-406b-b09e-b7dc393b901d">
 		<queryString>
@@ -50,7 +50,7 @@
 					<text><![CDATA[]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement key="" x="0" y="3" width="150" height="11" isPrintWhenDetailOverflows="true" uuid="371b03dc-6699-4918-9fa6-250c8ea48929"/>
+					<reportElement key="" x="0" y="3" width="228" height="11" isPrintWhenDetailOverflows="true" uuid="371b03dc-6699-4918-9fa6-250c8ea48929"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 						<paragraph leftIndent="5"/>
@@ -58,25 +58,18 @@
 					<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement key="" x="233" y="3" width="78" height="11" uuid="90e6d6f0-61e5-40aa-833b-6c29c4e9bdba"/>
+					<reportElement key="" x="312" y="3" width="78" height="11" uuid="90e6d6f0-61e5-40aa-833b-6c29c4e9bdba"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{previsaoFerias}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement key="" x="153" y="3" width="78" height="11" uuid="a2d17e01-66ca-43ec-ba88-23e725f68d78"/>
+					<reportElement key="" x="232" y="3" width="78" height="11" uuid="a2d17e01-66ca-43ec-ba88-23e725f68d78"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{dataAdmissao}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement key="" x="313" y="3" width="78" height="11" uuid="37debe4f-0c6c-4065-9302-6ce79712930d"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{dataLimite}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="" stretchType="RelativeToBandHeight" x="394" y="3" width="159" height="11" uuid="ff06fd0d-4a03-4344-bf8d-b254eef5f170"/>
@@ -129,7 +122,7 @@
 	<columnHeader>
 		<band height="15" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-1" x="0" y="1" width="150" height="11" uuid="511b364a-51f9-4cb9-b30b-3f57191a7c2f">
+				<reportElement key="staticText-1" x="0" y="1" width="228" height="11" uuid="511b364a-51f9-4cb9-b30b-3f57191a7c2f">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<box>
@@ -144,7 +137,7 @@
 				<text><![CDATA[Nome]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="153" y="1" width="78" height="11" uuid="a9214d3c-c15b-4822-80f1-177aa65b6b53"/>
+				<reportElement key="staticText-1" x="232" y="1" width="78" height="11" uuid="a9214d3c-c15b-4822-80f1-177aa65b6b53"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -157,7 +150,7 @@
 				<text><![CDATA[Data de Admissão]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="233" y="1" width="78" height="11" uuid="014eee1e-2fa1-4a04-94b8-e0f75eec8f01"/>
+				<reportElement key="staticText-1" x="312" y="1" width="78" height="11" uuid="014eee1e-2fa1-4a04-94b8-e0f75eec8f01"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -168,19 +161,6 @@
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Previsão de Férias]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-1" x="313" y="1" width="78" height="11" uuid="169d376e-d083-4001-a299-cac88080284e"/>
-				<box>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Limite para Férias]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="394" y="1" width="110" height="11" uuid="55876609-f91b-42e2-bf97-13ba1dda48ab"/>
