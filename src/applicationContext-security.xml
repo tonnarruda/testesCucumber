@@ -322,7 +322,6 @@
 				/geral/colaborador/update.action*=ROLE_COLAB_LIST_EDITAR
 				/geral/colaborador/delete.action*=ROLE_COLAB_LIST_EXCLUIR
 				/geral/colaborador/preparePerformanceFuncional.action*=ROLE_COLAB_LIST_PERFORMANCE				
-				/captacao/nivelCompetencia/listCompetenciasColaborador.action*=ROLE_COLAB_LIST_NIVELCOMPETENCIA				
 				/geral/colaborador/prepareColaboradorSolicitacao*/**=ROLE_COLAB_LIST_SOLICITACAO
 				/captacao/solicitacao/verSolicitacoes*/**=ROLE_COLAB_LIST_SOLICITACAO,ROLE_MOV_SOLICITACAO
 				/captacao/solicitacao/gravarSolicitacoesCandidato*/**=ROLE_COLAB_LIST_SOLICITACAO,ROLE_MOV_SOLICITACAO
@@ -388,7 +387,6 @@
 				
 				/captacao/candidatoSolicitacao/list.action*=ROLE_CAND_SOLICITACAO_LISTA,ROLE_CAND_SOLICITACAO_HISTORICO,ROLE_CAND_SOLICITACAO_COMPETENCIAS,ROLE_CAND_SOLICITACAO_CONTRATAR,ROLE_CAND_SOLICITACAO_EXCLUIR,ROLE_CAND_SOLICITACAO_AVALIACOES,ROLE_CAND_SOLICITACAO_VISUALIZARCURRICULO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_IMPRIMIR,ROLE_CAND_SOLICITACAO_TRIAGEM,ROLE_CAND_SOLICITACAO_INSERIRETAPAGRUPO,ROLE_CAND_SOLICITACAO_RESULTADOAVALIACAO,ROLE_CAND_SOLICITACAO_TRANSFCANDIDATO,ROLE_CAND_SOLICITACAO_TRIAGEMMODULOEXTERNO
 				/captacao/historicoCandidato/list.action*=ROLE_CAND_SOLICITACAO_HISTORICO
-				/captacao/nivelCompetencia/prepareCompetenciasByCandidato.action*=ROLE_CAND_SOLICITACAO_COMPETENCIAS
 				/geral/colaborador/preparePromoverCandidato.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_COLABORADOR
 				/geral/colaborador/prepareContrata.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_COLABORADOR
 				/geral/colaborador/insert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_COLABORADOR
@@ -440,8 +438,10 @@
 				/captacao/nivelCompetencia/insert.action*=ROLE_CAD_NIVEL_COMPETENCIA_CAD	
 				/captacao/nivelCompetencia/prepareUpdate.action*=ROLE_CAD_NIVEL_COMPETENCIA_CAD	
 				/captacao/nivelCompetencia/update.action*=ROLE_CAD_NIVEL_COMPETENCIA_CAD	
-				/captacao/nivelCompetencia/delete.action*=ROLE_CAD_NIVEL_COMPETENCIA_CAD	
-				/captacao/nivelCompetencia/*/**=ROLE_MOV_SOLICITACAO_CANDIDATO	
+				/captacao/nivelCompetencia/delete.action*=ROLE_CAD_NIVEL_COMPETENCIA_CAD
+				/captacao/nivelCompetencia/listCompetenciasColaborador.action*=ROLE_COLAB_LIST_NIVELCOMPETENCIA
+				/captacao/nivelCompetencia/prepareCompetenciasByCandidato.action*=ROLE_CAND_SOLICITACAO_COMPETENCIAS	
+				/captacao/nivelCompetencia/*/**=ROLE_MOV_SOLICITACAO_CANDIDATO, ROLE_CAD_FAIXA_SALARIAL	
 				/captacao/nivelCompetenciaHistorico/*.action*=ROLE_CAD_NIVEL_COMPETENCIA_HIST	
 				
 				/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR,ROLE_DISSIDIO_COLABORADOR
