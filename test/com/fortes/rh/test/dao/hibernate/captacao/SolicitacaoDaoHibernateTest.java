@@ -201,7 +201,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Usuario solicitante = UsuarioFactory.getEntity();
 		solicitante = usuarioDao.save(solicitante);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity(empresa, solicitante, null);
+		Colaborador colaborador = ColaboradorFactory.getEntity("João", empresa, solicitante, null);
 		colaborador = colaboradorDao.save(colaborador);
 
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L, colaborador,null);
@@ -232,7 +232,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Usuario solicitante = UsuarioFactory.getEntity();
 		solicitante = usuarioDao.save(solicitante);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity(empresa, solicitante, null);
+		Colaborador colaborador = ColaboradorFactory.getEntity("João", empresa, solicitante, null);
 		colaborador = colaboradorDao.save(colaborador);
 
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L, colaborador, null);

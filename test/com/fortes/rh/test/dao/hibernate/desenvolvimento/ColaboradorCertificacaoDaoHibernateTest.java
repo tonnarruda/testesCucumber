@@ -291,10 +291,7 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setNome("Feião");
-		colaborador.setEmpresa(empresa);
-		colaborador.setEmailColaborador("bla@ble.com");
+		Colaborador colaborador = ColaboradorFactory.getEntity("Felipe", empresa, null, "bla@ble.com");
 		colaboradorDao.save(colaborador);
 
 		Curso curso = CursoFactory.getEntity();
@@ -303,20 +300,14 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		
 		Collection<Curso> cursos = Arrays.asList(curso);
 		
-		Certificacao certificacao = CertificacaoFactory.getEntity();
-		certificacao.setEmpresa(empresa);
-		certificacao.setPeriodicidade(1);
-		certificacao.setCursos(cursos);
+		Certificacao certificacao = CertificacaoFactory.getEntity(empresa, 1, cursos);
 		certificacaoDao.save(certificacao);
 
 		Turma turma = TurmaFactory.getEntity();
 		turma.setCurso(curso);
 		turmaDao.save(turma);
 		
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
-		colaboradorTurma.setColaborador(colaborador);
-		colaboradorTurma.setCurso(curso);
-		colaboradorTurma.setTurma(turma);
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, curso, turma);
 		colaboradorTurmaDao.save(colaboradorTurma);
 		
 		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
@@ -324,16 +315,14 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 
 		Collection<ColaboradorTurma> colaboradorTurmas = Arrays.asList(colaboradorTurma);
 		
-		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao();
-		colaboradorCertificacao.setColaborador(colaborador);
-		colaboradorCertificacao.setCertificacao(certificacao);
-		colaboradorCertificacao.setData(data);
+		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao(null, certificacao.getId(), colaborador.getId(), data);
 		colaboradorCertificacao.setColaboradoresTurmas(colaboradorTurmas);
 		colaboradorCertificacaoDao.save(colaboradorCertificacao);
 				
 		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
 		
-		assertEquals(colaboradorCertificacao.getId(), colaboradorCertificacaoDao.findByColaboradorTurma(colaboradorTurma.getId()).getId());
+		assertEquals(1, colaboradorCertificacaoDao.findByColaboradorTurma(colaboradorTurma.getId()).size());
+		assertEquals(colaboradorCertificacao.getId(), ((ColaboradorCertificacao)colaboradorCertificacaoDao.findByColaboradorTurma(colaboradorTurma.getId()).toArray()[0]).getId());
 	}
 	
 	public void testFindColaboradorCertificadoInfomandoSeEUltimaCertificacao() {

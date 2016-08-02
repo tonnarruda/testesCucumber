@@ -67,7 +67,6 @@ public class TEmpregado implements Serializable
 	
 	public TEmpregado() {
 		super();
-		System.out.println("1");
 	}
 
 	public String getGrupoAC() {

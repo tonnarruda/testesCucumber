@@ -46,7 +46,8 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			getDao().getHibernateTemplateByGenericDao().flush();
 			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 			getDao().getHibernateTemplateByGenericDao().flush();
-			if(validarCertificacao)
+			colaboradorTurma = colaboradorTurmaManager.findByProjection(colaboradorTurma.getId());
+			if(validarCertificacao && !colaboradorTurma.isAprovado())
 				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
 		}
 		else{
@@ -54,9 +55,10 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			getDao().getHibernateTemplateByGenericDao().flush();
 			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 			getDao().getHibernateTemplateByGenericDao().flush();
-			colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurmaId, false);
+			colaboradorTurma = colaboradorTurmaManager.findByProjection(colaboradorTurma.getId());
+			if(validarCertificacao && !colaboradorTurma.isAprovado())
+				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurmaId, false);
 		}
-		
 	}
 
 	public void marcarTodos(Long diaTurmaId, Long turmaId, boolean validarCertificacao)

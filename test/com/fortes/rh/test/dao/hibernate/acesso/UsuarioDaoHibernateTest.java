@@ -266,13 +266,13 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		Usuario usuario1 = UsuarioFactory.getEntity();
 		usuarioDao.save(usuario1);
 		
-		Colaborador colaborador1 = ColaboradorFactory.getEntity(null, usuario1, "teste1@teste1.com");
+		Colaborador colaborador1 = ColaboradorFactory.getEntity("João", null, usuario1, "teste1@teste1.com");
 		colaboradorDao.save(colaborador1);
 
 		Usuario usuario2 = UsuarioFactory.getEntity();
 		usuarioDao.save(usuario2);
 		
-		Colaborador colaborador2 = ColaboradorFactory.getEntity(null, usuario2, "teste2@teste2.com");
+		Colaborador colaborador2 = ColaboradorFactory.getEntity("João", null, usuario2, "teste2@teste2.com");
 		colaboradorDao.save(colaborador2);
 		
 		Long[] usuariosIds = new Long[]{usuario1.getId(), usuario2.getId()};
@@ -287,13 +287,13 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		Usuario usuario1 = UsuarioFactory.getEntity();
 		usuarioDao.save(usuario1);
 		
-		Colaborador colaborador1 = ColaboradorFactory.getEntity(null, usuario1, "teste1@teste1.com");
+		Colaborador colaborador1 = ColaboradorFactory.getEntity("João", null, usuario1, "teste1@teste1.com");
 		colaboradorDao.save(colaborador1);
 
 		Usuario usuario2 = UsuarioFactory.getEntity();
 		usuarioDao.save(usuario2);
 		
-		Colaborador colaborador2 = ColaboradorFactory.getEntity(null, usuario2, "teste2@teste2.com");
+		Colaborador colaborador2 = ColaboradorFactory.getEntity("João", null, usuario2, "teste2@teste2.com");
 		colaboradorDao.save(colaborador2);
 		
 		Long[] usuariosIds = new Long[]{usuario1.getId(), usuario2.getId()};
@@ -439,7 +439,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		Usuario usuario = UsuarioFactory.getEntity("usuario" + new Date().getTime(), true);
 		usuarioDao.save(usuario);
 		
-		Colaborador colab = ColaboradorFactory.getEntity(null, usuario, "colab@gmail.com");
+		Colaborador colab = ColaboradorFactory.getEntity("João", null, usuario, "colab@gmail.com");
 		colaboradorDao.save(colab);
 		
 		AreaOrganizacional areaOrganizacionalMae = AreaOrganizacionalFactory.getEntity();
@@ -474,7 +474,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		Usuario usuario = UsuarioFactory.getEntity("usuario" + new Date().getTime(), true);
 		usuarioDao.save(usuario);
 		
-		Colaborador colab = ColaboradorFactory.getEntity(empresa, usuario, "colab@gmail.com");
+		Colaborador colab = ColaboradorFactory.getEntity("João", empresa, usuario, "colab@gmail.com");
 		colaboradorDao.save(colab);
 		
 		AreaOrganizacional areaOrganizacionalMae = AreaOrganizacionalFactory.getEntity(1L);
@@ -513,7 +513,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		Usuario usuario = UsuarioFactory.getEntity("usuario", true);
 		usuarioDao.save(usuario);
 		
-		Colaborador colab = ColaboradorFactory.getEntity(null, usuario, "colab@gmail.com");
+		Colaborador colab = ColaboradorFactory.getEntity("João", null, usuario, "colab@gmail.com");
 		colaboradorDao.save(colab);
 		
 		AreaOrganizacional areaOrganizacionalMae = AreaOrganizacionalFactory.getEntity();
@@ -548,13 +548,13 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		Usuario usuario1 = UsuarioFactory.getEntity("usuario1", true);
 		usuarioDao.save(usuario1);
 		
-		Colaborador colab1 = ColaboradorFactory.getEntity(null, usuario1, "colab_1@gmail.com");
+		Colaborador colab1 = ColaboradorFactory.getEntity("João", null, usuario1, "colab_1@gmail.com");
 		colaboradorDao.save(colab1);
 		
 		Usuario usuario2 = UsuarioFactory.getEntity("usuario2", true);
 		usuarioDao.save(usuario2);
 		
-		Colaborador colab2 = ColaboradorFactory.getEntity(null, usuario2, "colab_2@gmail.com");
+		Colaborador colab2 = ColaboradorFactory.getEntity("João", null, usuario2, "colab_2@gmail.com");
 		colaboradorDao.save(colab2);
 		
 		AreaOrganizacional areaOrganizacionalMae = AreaOrganizacionalFactory.getEntity(null, colab1, null);

@@ -136,9 +136,10 @@ public class ColaboradorFactory
 		return colaboradors;
 	}
 	
-	public static Colaborador getEntity(Empresa empresa, Usuario usuario, String email)
+	public static Colaborador getEntity(String nome, Empresa empresa, Usuario usuario, String email)
 	{
 		Colaborador colaborador = getEntity();
+		colaborador.setNome(nome);
 		colaborador.setEmpresa(empresa);
 		colaborador.setUsuario(usuario);
 		colaborador.setEmailColaborador(email);

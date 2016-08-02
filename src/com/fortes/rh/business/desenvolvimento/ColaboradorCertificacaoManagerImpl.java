@@ -39,7 +39,8 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		
 		Collection<ColaboradorCertificacao> colaboradoresCertificacoes = getDao().colaboradoresAprovadosEmTodosOsCursosDaCertificacao(certificacaoId);
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificacoes) {
-			colaboradores.add(colaboradorCertificacao.getColaborador());
+			if(!colaboradores.contains(colaboradorCertificacao.getColaborador()))
+				colaboradores.add(colaboradorCertificacao.getColaborador());
 		}
 		
 		return colaboradores;
@@ -356,13 +357,16 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	}
 
 	public void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId, boolean removerColaboradorAvaliacaoPratica) {
-		ColaboradorCertificacao colaboradorCertificacao = getDao().findByColaboradorTurma(colaboradorTurmaId);
-		if(colaboradorCertificacao != null && colaboradorCertificacao.getId() != null){
-			if(removerColaboradorAvaliacaoPratica)
-				colaboradorAvaliacaoPraticaManager.removeByColaboradorCertificacaoId(colaboradorCertificacao.getId());
-			
-			this.descertificarColaborador(colaboradorCertificacao.getId());
+		Collection<ColaboradorCertificacao> colaboradoresCertificados = getDao().findByColaboradorTurma(colaboradorTurmaId);
+		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificados) {
+			if(colaboradorCertificacao != null && colaboradorCertificacao.getId() != null){
+				if(removerColaboradorAvaliacaoPratica)
+					colaboradorAvaliacaoPraticaManager.removeByColaboradorCertificacaoId(colaboradorCertificacao.getId());
+				
+				this.descertificarColaborador(colaboradorCertificacao.getId());
+			}
 		}
+		
 	}
 	
 	public void descertificarColaborador(Long colaboradorCertificacaoId) {
@@ -427,10 +431,6 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			colaboradorAvaliacaoPraticaManager.setColaboradorCertificacoNull(colaboradorcertificacaoIds);
 			getDao().remove(colaboradorcertificacaoIds);
 		}
-	}
-
-	public ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId) {
-		return getDao().findByColaboradorTurma(colaboradorTurmaId);
 	}
 
 	public ColaboradorCertificacao findColaboradorCertificadoInfomandoSeEUltimaCertificacao( Long colaboradorCertificacaoId, Long colaboradorId, Long certificacaoId) {

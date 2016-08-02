@@ -224,7 +224,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 	}
 
 	@SuppressWarnings("rawtypes")
-	public ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId) {
+	public Collection<ColaboradorCertificacao> findByColaboradorTurma(Long colaboradorTurmaId) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT distinct cc.id as id, cc.colaborador_id as colaboradorId, cc.certificacao_id as certificacaoId FROM colaboradorcertificacao cc ");
 		sql.append("JOIN colaboradorcertificacao_colaboradorturma cc_ct ON cc_ct.colaboradorcertificacao_id = cc.id WHERE cc_ct.colaboradoresturmas_id = :colaboradorTurmaId ");
@@ -233,15 +233,19 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		query.setLong("colaboradorTurmaId", colaboradorTurmaId);
 		
 		List resultado = query.list();
-		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao();
+		ColaboradorCertificacao colaboradorCertificacao = null;
+		Collection<ColaboradorCertificacao> colaboradoresCertificados = new ArrayList<ColaboradorCertificacao>();
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+			colaboradorCertificacao = new ColaboradorCertificacao();
 			Object[] res = it.next();
 			colaboradorCertificacao.setId(((BigInteger)res[0]).longValue());
 			colaboradorCertificacao.setColaboradorId(((BigInteger)res[1]).longValue());
 			colaboradorCertificacao.setCertificacaoId(((BigInteger)res[2]).longValue());
+			
+			colaboradoresCertificados.add(colaboradorCertificacao);
 		}
-		return colaboradorCertificacao;
+		return colaboradoresCertificados;
 	}
 	
 	private ProjectionList montaProjectionColaboradoresQueParticipamDaCertificacao() {

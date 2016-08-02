@@ -16,7 +16,7 @@ public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertif
 	ColaboradorCertificacao findUltimaCertificacaoByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
 	void removeDependenciaDaAvPratica(Long colaboradorCertificacaoId);
 	Collection<ColaboradorTurma> colaboradoresTurmaCertificados(Long colaboradorId, Long certificacaoId);
-	ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId);
+	Collection<ColaboradorCertificacao> findByColaboradorTurma(Long colaboradorTurmaId);
 	ColaboradorCertificacao findColaboradorCertificadoInfomandoSeEUltimaCertificacao(Long colaboradorCertificacaoId, Long colaboradorId, Long certificacaoId);
 	Date getMaiorDataDasTurmasDaCertificacao(Long colaboradorCertificacaoId);
 	Collection<ColaboradorCertificacao> findColaboradorCertificadoEmUmaTurmaPosterior(Long turmaId, Long colaboradorId);

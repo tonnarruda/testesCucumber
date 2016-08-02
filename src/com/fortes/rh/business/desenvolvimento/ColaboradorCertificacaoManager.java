@@ -17,7 +17,6 @@ public interface ColaboradorCertificacaoManager extends GenericManager<Colaborad
 	void descertificarColaborador(Long colaboradorCertificacaoId);
 	void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId, boolean removerColaboradorAvaliacaoPratica);
 	void saveColaboradorCertificacao(ColaboradorCertificacao colaboradorCertificacao);
-	ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId);
 	ColaboradorCertificacao findColaboradorCertificadoInfomandoSeEUltimaCertificacao(Long colaboradorCertificacaoId, Long colaboradorId, Long certificacaoId);
 	Date getMaiorDataDasTurmasDaCertificacao(Long colaboradorCertificacaoId);
 	boolean existeColaboradorCertificadoEmUmaTurmaPosterior(Long turmaId, Long colaboradorCertificacaoId);
