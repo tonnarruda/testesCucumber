@@ -51,16 +51,10 @@ public class AutenticadorJarvis extends Autenticador
 		if (verificaLicensa) {
 			clientJarvis = getClient();
 
-			System.out.println("applicationId: " + clientJarvis.getCodigoProduto());	// codigo de reset do produto (numero fixo para cada produto: AC=1, AG=16, Nettion=22 etc)
-//			System.out.println("installationId: " + clientRemprot.getInstallationId());	// numero de serie recebido atraves de codigo de resposta (unico por cliente, sequencial independente de produto)
-//			System.out.println("resetCounter: " + clientRemprot.getResetCounter());	    // quantas vezes esta licenca já recebeu resets (ajuda a detectar fraudes)
-//			System.out.println("customerId: " + clientRemprot.getCustomerId());		    // CPF ou CNPJ do cliente
-//			System.out.println("customerName: " + clientRemprot.getCustomerName());	    // denominacao social do cliente
-//			System.out.println("nextCrashDate: " + clientRemprot.getNextCrashDate());	// data limite da execucao (o remprot nao implementa os bloqueios, o sistema deve faze-lo)
-//			System.out.println("errors: " + clientRemprot.getErrors());			        // se errors==0 entao nao houve problemas na conversa com o servidor
-//			System.out.println("registered: " + clientRemprot.getRegistered());		    // se nao esta registrado entao é cópia pirata (ou maquina nova, dá no mesmo)
-//			System.out.println("modulos: " + clientRemprot.getEnabledModules());	    // somatorio dos modulos do RH: 1 - R&S, 2 - C&S, 4 - Pesquisas, 8 - T&D, 16 - Aval. Desempenho, 32 - SESMT
-//			System.out.println("qtd colab: " + clientRemprot.getUserCount());		    // qtd colaboradores
+			System.out.println("** DADOS DO REGISTRO DA LICENCA **");
+
+			for (String atributo : JSONObject.getNames(clientJarvis.getJsonObject())) 
+				System.out.println(atributo+": " + clientJarvis.getJsonObject().get(atributo));	
 
 			verificaRegistro();
 		}

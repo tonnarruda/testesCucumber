@@ -50,8 +50,8 @@ public class LoginAction extends MyActionSupport
 			if(servidorRemprot == null || "".equals(servidorRemprot)) 
 				return "not_conect";
 			
-//			AutenticadorJarvis.verificaCopia(parametrosDoSistema.getCnpjEmpresaLicenca(), parametrosDoSistema.verificaRemprot(), parametrosDoSistema.getModulosPermitidosSomatorio());
-			AutenticadorJarvis.verificaCopia("63542443000124", true, parametrosDoSistema.getModulosPermitidosSomatorio());
+			AutenticadorJarvis.verificaCopia(parametrosDoSistema.getCnpjEmpresaLicenca(), parametrosDoSistema.verificaRemprot(), parametrosDoSistema.getModulosPermitidosSomatorio());
+//			AutenticadorJarvis.verificaCopia("63542443000124", true, parametrosDoSistema.getModulosPermitidosSomatorio());
 			
 		} catch (NotRegistredException e) {
 			msgRemprot = e.getMessage();
