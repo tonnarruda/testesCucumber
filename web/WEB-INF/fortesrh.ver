@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.17x.xxx" db="" data="xx/08/2016">
+		<Item visivel="S" motivo="P16050000286"><![CDATA[C&S > Movimentações > Solicitação de Realinhamento para Colaborador: Ajuste de inconsistência ao ordenar filtro de colaboradores.]]></Item>
+	</Versao>
 	<Versao id="1.1.170.202" db="" data="29/07/2016">
 		<Item visivel="S" motivo="P16070000250"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais: Ajuste de inconsistência ao tentar excluir faixa salarial.]]></Item>
 		<Item visivel="S" motivo="S16030000236"><![CDATA[T&D > Relatórios > Colaboradores com Treinamento: Nova opção para exibir a carga horária efetiva do colaborador.]]></Item>

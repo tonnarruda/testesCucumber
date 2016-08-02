@@ -135,7 +135,6 @@ public class ReajusteDWR
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		
 		Map<Long, String> retorno = new LinkedHashMap<Long, String>();
-		retorno.put(0L, "Selecione...");
 
 		if (areaId != null && !areaId.equals(""))
 		{

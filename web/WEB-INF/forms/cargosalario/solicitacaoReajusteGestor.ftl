@@ -19,6 +19,7 @@
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/areaOrganizacional.js?version=${versao}"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>"></script>
 
 	<script type="text/javascript">
 		function verficaColaborador(tabelaId, colaboradorId)
@@ -144,7 +145,7 @@
 		function exibeColaboradores(data)
 		{
 			DWRUtil.removeAllOptions("colaborador");
-			DWRUtil.addOptions("colaborador", data);
+			addOptionsByMap("colaborador", data, "Selecione...");
 		}
 
 		function formatarMascaraMonetaria(src)
