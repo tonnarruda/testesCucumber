@@ -9,26 +9,43 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
+
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.core.1.8.16.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.widget.1.8.16.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.button.1.8.16.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.position.1.8.16.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.1.8.16.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/combobox.js?version=${versao}"/>"></script>
 
 	<script type="text/javascript">
-		function filtrarOpcao()
-		{
-			var value = document.getElementById("vinculo").value;
-			if (value == 'A')
-			{
-				document.getElementById("matricula").disabled = true;
-				setDisplay("wwgrp_candidato", "");
-				setDisplay("wwgrp_colaborador", "none");
-				resetSelect("colaborador");
-			}
-			else if (value == 'C')
-			{
-				document.getElementById("matricula").disabled = false;
-				setDisplay("wwgrp_candidato", "none");
-				setDisplay("wwgrp_colaborador", "");
-				resetSelect("candidato");
-			}
-		}
+		var reg = [${candidatos_}];
+		
+		var accentMap = {
+	      "á": "a",
+	      "ö": "o",
+	      "ô": "o"
+	    };
+	    var normalize = function( term ) {
+		    var ret = "";
+		    for ( var i = 0; i < term.length; i++ ) {
+		      ret += accentMap[ term.charAt(i) ] || term.charAt(i);
+		    }
+		    return ret;
+	    };
+    
+		$(function() {
+		
+			$( "#nomeBusca" ).autocomplete({
+	      	source: function( request, response ) {
+			        	var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
+			        	response( $.grep( reg, function( value ) {
+			          		value = value.label || value.value || value;
+			          		return matcher.test( value ) || matcher.test( normalize( value ) );
+		        		}) );
+      				}
+	    	});
+		});
 
 		function pesquisar()
 		{
@@ -102,7 +119,7 @@
 		<li>
 			<@ww.div cssClass="divInfo">
 				<ul>
-					<@ww.select label="Ficha para" name="vinculo" id="vinculo" list=r"#{'A':'Candidato','C':'Colaborador'}" onchange="filtrarOpcao();" />
+					<@ww.select label="Ficha para" name="vinculo" id="vinculo" list=r"#{'A':'Candidato','C':'Colaborador'}" />
 					<@ww.textfield label="Nome" name="colaborador.nome" id="nome" cssStyle="width: 300px;"/>
 					<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpf" cssClass="mascaraCpf" liClass="liLeft" />
 					<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matricula" disabled="true" cssStyle="width: 140px;" />
@@ -112,8 +129,7 @@
 			</@ww.div>
 		</li><br>
 
-		<@ww.select label="Candidato" name="candidato.id" id="candidato" list="candidatos"  listKey="id" listValue="nomeECpf" required="true" cssStyle="width: 500px;" headerKey="" headerValue="Selecione..."/>
-		<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" list="colaboradors" listKey="id" listValue="nomeCpfMatricula" required="true" cssStyle="width: 500px;" headerKey="" headerValue="Selecione..."/>
+		<@ww.textfield label="Nome" name="candidato.nome" id="nomeBusca" cssStyle="width: 300px;"/>
 
 		<@ww.select label="Ficha" name="questionario.id" id="ficha" list="fichaMedicas" cssStyle="width: 500px;" required="true" headerKey="" listKey="questionario.id" listValue="questionario.titulo" headerValue="Selecione..."/>
 
@@ -127,8 +143,5 @@
 		<button onclick="window.location='listPreenchida.action'" class="btnVoltar" ></button>
 	</div>
 
-	<script type="text/javascript">
-		filtrarOpcao();
-	</script>
 </body>
 </html>
