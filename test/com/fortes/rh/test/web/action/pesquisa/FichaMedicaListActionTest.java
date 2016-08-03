@@ -82,7 +82,7 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
     	empresaManager.expects(once()).method("findEmpresasPermitidas").withAnyArguments().will(returnValue(new ArrayList<Empresa>()));
 
     	assertEquals("success", fichaMedicaListAction.delete());
-    	assertNotNull(fichaMedicaListAction.getActionMsg());
+    	assertNotNull(fichaMedicaListAction.getActionSuccess());
     }
 
     public void testDeleteException() throws Exception
@@ -102,7 +102,8 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
     	Collection<FichaMedica> fichaMedicas = FichaMedicaFactory.getCollection();
 
     	fichaMedicaManager.expects(once()).method("findToListByEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(fichaMedicas));
-    	empresaManager.expects(once()).method("findEmpresasPermitidas").withAnyArguments().will(returnValue(new ArrayList<Empresa>()));
+    	
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(true), eq(null), ANYTHING, eq(new String[]{"ROLE_CAD_FICHAMEDICA"})).will(returnValue(new ArrayList<Empresa>()));
 
     	assertEquals("success", fichaMedicaListAction.list());
     }
@@ -154,7 +155,7 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
     	colaboradorRespostaManager.expects(once()).method("removeFicha").with(eq(3L)).isVoid();
     	
     	assertEquals("success",fichaMedicaListAction.deletePreenchida());
-    	assertEquals("Ficha médica excluída com sucesso.", fichaMedicaListAction.getActionMessages().toArray()[0]);
+    	assertEquals("Ficha médica excluída com sucesso.", fichaMedicaListAction.getActionSuccess().toArray()[0]);
     }
     
     public void testPrepareInsertFicha() throws Exception

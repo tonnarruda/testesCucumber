@@ -61,7 +61,7 @@ public class FichaMedicaListAction extends MyActionSupportList
 
 		fichaMedicas = fichaMedicaManager.findToListByEmpresa(getEmpresaSistema().getId(), getPage(), getPagingSize());
 		
-		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
+		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_CAD_FICHAMEDICA");
    		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
 
 		return Action.SUCCESS;
@@ -80,7 +80,7 @@ public class FichaMedicaListAction extends MyActionSupportList
 	public String deletePreenchida() throws Exception
 	{
 		colaboradorRespostaManager.removeFicha(colaboradorQuestionario.getId());
-		addActionMessage("Ficha médica excluída com sucesso.");
+		addActionSuccess("Ficha médica excluída com sucesso.");
 
 		return Action.SUCCESS;
 	}
@@ -101,7 +101,7 @@ public class FichaMedicaListAction extends MyActionSupportList
 		try
 		{
 			fichaMedicaManager.delete(fichaMedica.getId(), getEmpresaSistema().getId());
-			setActionMsg("Ficha Médica excluída com sucesso.");
+			addActionSuccess("Ficha Médica excluída com sucesso.");
 		}
 		catch (Exception e)
 		{
@@ -121,7 +121,7 @@ public class FichaMedicaListAction extends MyActionSupportList
 			else
 				fichaMedicaManager.clonarFichaMedica(fichaMedica.getId(), getEmpresaSistema().getId());
 			
-			addActionMessage("Ficha Médica clonada com sucesso.");
+			addActionSuccess("Ficha Médica clonada com sucesso.");
 			list();
 			return Action.SUCCESS;
 		}
