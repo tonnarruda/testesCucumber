@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.17x.xxx" db="" data="xx/08/2016">
 		<Item visivel="S" motivo="P16050000286"><![CDATA[C&S > Movimentações > Solicitação de Realinhamento para Colaborador: Ajuste de inconsistência ao ordenar filtro de colaboradores.]]></Item>
+		<Item visivel="S" motivo="P16070000016"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais > Níveis de Competência: Ajuste da inconsistência na permissão de acesso a esta funcionalidade.]]></Item>
 	</Versao>
 	<Versao id="1.1.170.202" db="" data="29/07/2016">
 		<Item visivel="S" motivo="P16070000250"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais: Ajuste de inconsistência ao tentar excluir faixa salarial.]]></Item>
