@@ -728,7 +728,7 @@
 	</li>
 </ul>
 	<div class="buttonGroup">
-		<button onclick="window.location='../../geral/colaborador/list.action'" class="btnVoltar" accesskey="V"></button>
+		<button onclick="javascript:history.back();" class="btnVoltar" accesskey="V"></button>
 		<button class="btnImprimirPdf" onclick="window.location='imprimirPerformanceFuncional.action?colaborador.id=${colaborador.id}'" id="btnImprimePerformance"></button>
 	</div>
 	

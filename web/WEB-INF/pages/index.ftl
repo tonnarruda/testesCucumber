@@ -10,6 +10,11 @@
 <meta http-equiv="Expires" content="0" />
 <title>RH</title>
 <head>
+	<style type="text/css">
+		@import url('<@ww.url value="/css/horizontal-timeline-style.css?version=${versao}"/>');
+		@import url('<@ww.url value="/css/horizontal-timeline-reset.css?version=${versao}"/>');
+	</style>
+	
 	<style>
 		.dados a { text-decoration: none; font-size: 11px !important; font-family: Arial, Helvetica, sans-serif !important; }
 		.dados td { font-size: 11px !important; }
@@ -35,6 +40,26 @@
 		.portlet-content { padding: 0.4em; height: 180px; overflow: auto;}
 		.ui-sortable-placeholder { background: transparent; border: 1px dotted black; visibility: visible !important; height: 220px !important; }
 		.ui-sortable-placeholder * { visibility: hidden; }
+		
+		.btn {
+			margin: 0 auto;
+/*			background: #D1CDC9;
+			border: none;
+			color: #FFFFFF;*/
+			padding: 8px 16px;
+			font-weight: bold;
+			border-radius: 50px;
+			font-size: 13px;
+			cursor: pointer;
+			border: 2px solid #E3E3E3;
+			background: white;
+			color: #5292C0 !important;
+			font-family: Lucida Grande, Lucida Sans, Arial, sans-serif !important;
+			font-size: 1em !important;
+		}
+		.btn:hover {
+			border: 2px solid #5292C0;
+		}
 	</style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js?version=${versao}"/>'></script>
@@ -42,7 +67,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.cookie.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/modernizr.js"/>'></script>
 	
 	<script type='text/javascript'>
 		$(function () {
@@ -176,6 +201,59 @@
 	</#if>
 	-->
 	
+	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PROGRESSAO">
+		<#if colaborador?exists && colaborador.id?exists>
+			<br>
+			<div class="portlet">
+			<div class="portlet-header">Progressão Salarial</div>
+			<div class="portlet-content timeline" style="text-align: center;">
+				<div class="cd-horizontal-timeline">
+					<div class="timeline" style="margin-bottom: 15px;">
+						<div class="events-wrapper" >
+							<div class="events" >
+								<ol>
+									<#assign i = 0>
+									<#list historicoColaboradors as historico>
+										<li>
+											<a href="#0" data-date="${historico.data}" <#if i==0>class="selected"</#if>>
+												${historico.dataMesAno}
+												<div style="display: none;">
+													<div>${historico.motivoDescricao}</div>
+													<div>${historico.data}</div>
+													<div>${historico.faixaSalarial.descricao}</div>
+													<#if historicoColaboradors.salarioCalculado?exists>
+														<div>Salário: ${historicoColaboradors.salarioCalculado?string.currency}</div>
+													<#else>
+														<div style="width: 100%; text-align: center;">
+															Salário: <img class="tooltipHelp" style="margin: -1px;" src="<@ww.url value="/imgs/iconWarning.gif"/>" />
+														</div>
+													</#if>
+												</div>
+											</a>
+										</li>
+										<#assign i=i+1>
+									</#list>
+								</ol>
+				
+								<span class="filling-line" aria-hidden="true"></span>
+							</div> <!-- .events -->
+						</div> <!-- .events-wrapper -->
+						
+						<ul class="cd-timeline-navigation">
+							<li><a href="#0" class="prev inactive">Prev</a></li>
+							<li><a href="#0" class="next">Next</a></li>
+						</ul> <!-- .cd-timeline-navigation -->
+					</div> <!-- .timeline -->
+				</div>
+				
+				<a href="cargosalario/historicoColaborador/list.action?colaborador.id=${colaborador.id}" type="button" class="btn progressao"></a>
+				<a href="geral/colaborador/preparePerformanceFuncional.action?colaborador.id=${colaborador.id}" type="button" class="btn performance"></a>
+			</div>
+			</div>
+			<br>
+		</#if>
+	</@authz.authorize>
+	
 	<#if avaliacaos?exists && 0 < avaliacaos?size>
 		<div class="waDivTituloX">Aviso!</div>
 		<div class="waDivFormularioX">
@@ -273,5 +351,7 @@
 			jAlert('O idioma do sistema está incorreto, favor alterar para Português-Brasileiro .');
 		</#if>
 	</script>
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/horizontal-timeline.js"/>'></script>
 </body>
 </html>

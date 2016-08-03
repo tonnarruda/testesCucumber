@@ -32,6 +32,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.CaixaMensagem;
@@ -99,6 +100,7 @@ public class Index extends MyActionSupport
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 	private MyDaoAuthenticationProvider authenticationProvider;
 	private Collection<Video> listaVideos = new ArrayList<Video>();
+	private Collection<HistoricoColaborador> historicoColaboradors;
 	
 	private ConfiguracaoCaixasMensagens configuracaoCaixasMensagens;
 	private Character tipo;
@@ -158,6 +160,9 @@ public class Index extends MyActionSupport
 				avaliacaos = avaliacaoManager.findPeriodoExperienciaIsNull(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, empresaId);
 			
 			validaIntegracaoAC();
+			
+			if ( colaborador != null && colaborador.getId() != null && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_PROGRESSAO"}))
+				historicoColaboradors = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), getEmpresaSistema().getId());
 			
 			String msgAvisoQtdColaborador = null;
 			if(parametrosDoSistema.verificaRemprot())
@@ -687,5 +692,14 @@ public class Index extends MyActionSupport
 	
 	public boolean isBancoConsistente(){
 		return this.bancoConsistente;
+	}
+
+	public Collection<HistoricoColaborador> getHistoricoColaboradors() {
+		return historicoColaboradors;
+	}
+
+	public void setHistoricoColaboradors(
+			Collection<HistoricoColaborador> historicoColaboradors) {
+		this.historicoColaboradors = historicoColaboradors;
 	}
 }

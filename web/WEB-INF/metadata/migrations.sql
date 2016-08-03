@@ -1,0 +1,2 @@
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (682, 'ROLE_VISUALIZAR_PROGRESSAO', 'Visualizar progressão salarial na página inicial', '', 3, false, NULL);--.go
+alter sequence papel_sequence restart with 683;--.go

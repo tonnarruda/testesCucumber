@@ -43,7 +43,7 @@
 </tr>
 <tr>
 	<td>
-		<img src="grafico.action?id=${colaborador.id}"/>
+		<img src='<@ww.url includeParams="none" value="/grafico.action?id=${colaborador.id}"/>'/>
 	</td>
 </tr>
 </table>
@@ -104,7 +104,7 @@
 		</script>
 	</#if>
 		<div class="buttonGroup">
-			<button onclick="window.location='../../geral/colaborador/list.action'" class="btnVoltar"></button>
+			<button onclick="javascript:history.back();" class="btnVoltar"></button>
 			<#if !colaborador.desligado>
 				<@authz.authorize ifAllGranted="ROLE_CAD_HISTORICOCOLABORADOR">
 					<button onclick="window.location='historicoColaboradorList.action?colaborador.id=${colaborador.id}'" class="btnEditarHistoricos"></button>

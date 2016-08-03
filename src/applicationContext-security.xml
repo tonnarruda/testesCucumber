@@ -263,6 +263,8 @@
 				/geral/colaborador/colaboradoresPorAreaJson.action* = ROLE_ANONYMOUS,ROLE_USER
 				/geral/colaborador/prepareRelatorioFerias.action* = ROLE_REL_FERIAS
 				/geral/colaborador/imprimeRelatorioFerias.action* = ROLE_REL_FERIAS
+				/geral/colaborador/imprimirPerformanceFuncional.action* = ROLE_CAD_COLABORADOR,ROLE_VISUALIZAR_PROGRESSAO
+				/geral/colaborador/showFoto.action* = ROLE_CAD_COLABORADOR,ROLE_VISUALIZAR_PROGRESSAO
 				
 				/geral/ocorrencia/list.action*=ROLE_CAD_OCORRENCIA
 				/geral/ocorrencia/prepareInsert.action*=ROLE_CAD_OCORRENCIA_INSERIR
@@ -321,7 +323,8 @@
 				/geral/colaborador/prepareUpdate.action*=ROLE_COLAB_LIST_EDITAR
 				/geral/colaborador/update.action*=ROLE_COLAB_LIST_EDITAR
 				/geral/colaborador/delete.action*=ROLE_COLAB_LIST_EXCLUIR
-				/geral/colaborador/preparePerformanceFuncional.action*=ROLE_COLAB_LIST_PERFORMANCE				
+				/geral/colaborador/preparePerformanceFuncional.action*=ROLE_COLAB_LIST_PERFORMANCE,ROLE_VISUALIZAR_PROGRESSAO				
+				/captacao/nivelCompetencia/listCompetenciasColaborador.action*=ROLE_COLAB_LIST_NIVELCOMPETENCIA				
 				/geral/colaborador/prepareColaboradorSolicitacao*/**=ROLE_COLAB_LIST_SOLICITACAO
 				/captacao/solicitacao/verSolicitacoes*/**=ROLE_COLAB_LIST_SOLICITACAO,ROLE_MOV_SOLICITACAO
 				/captacao/solicitacao/gravarSolicitacoesCandidato*/**=ROLE_COLAB_LIST_SOLICITACAO,ROLE_MOV_SOLICITACAO
@@ -490,7 +493,7 @@
 				/cargosalario/historicoColaborador/relatorioSituacoes.action*=ROLE_REL_SITUACOES
 				/cargosalario/historicoColaborador/painelIndicadores.action*=ROLE_INFO_PAINEL_IND
 				/cargosalario/historicoColaborador/historicoColaboradorList.action*=ROLE_CAD_HISTORICOCOLABORADOR
-				/cargosalario/historicoColaborador/list.action*=ROLE_CAD_HISTORICOCOLABORADOR
+				/cargosalario/historicoColaborador/list.action*=ROLE_CAD_HISTORICOCOLABORADOR,ROLE_VISUALIZAR_PROGRESSAO
 				/cargosalario/historicoColaborador/prepareInsert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_HISTORICOCOLABORADOR
 				/cargosalario/historicoColaborador/insert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_HISTORICOCOLABORADOR
 				/cargosalario/historicoColaborador/prepareUpdate.action*=ROLE_CAD_HISTORICOCOLABORADOR

@@ -1,0 +1,45 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+/*.timeline div, .timeline span, .timeline applet, .timeline object, .timeline iframe,
+.timeline h1, .timeline h2, .timeline h3, .timeline h4, .timeline h5, .timeline h6, .timeline p, .timeline blockquote, .timeline pre,
+.timeline a, .timeline abbr, .timeline acronym, .timeline address, .timeline big, .timeline cite, .timeline code,
+.timeline del, .timeline dfn, .timeline em, .timeline img, .timeline ins, .timeline kbd, .timeline q, .timeline s, .timeline samp,
+.timeline small, .timeline strike, .timeline strong, .timeline sub, .timeline sup, .timeline tt, .timeline var,
+.timeline b, .timeline u, .timeline i, .timeline center,
+.timeline dl, .timeline dt, .timeline dd, .timeline ol, .timeline ul, .timeline li,
+.timeline fieldset, .timeline form, .timeline label, .timeline legend,
+.timeline table, .timeline caption, .timeline tbody, .timeline tfoot, .timeline thead, .timeline tr, .timeline th, .timeline td,
+.timeline article, .timeline aside, .timeline canvas, .timeline details, .timeline embed, 
+.timeline figure, .timeline figcaption, .timeline footer, .timeline header, .timeline hgroup, 
+.timeline menu, .timeline nav, .timeline output, .timeline ruby, .timeline section, .timeline summary,
+.timeline time, .timeline mark, .timeline audio, .timeline video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}*/
+/* HTML5 display-role reset for older browsers */
+.timeline article, .timeline aside, .timeline details, .timeline figcaption, .timeline figure, 
+.timeline footer, .timeline header, .timeline hgroup, .timeline menu, .timeline nav, .timeline section, .timeline main {
+	display: block;
+}
+.timeline ol, .timeline ul {
+	list-style: none;
+}
+.timeline blockquote, .timeline q {
+	quotes: none;
+}
+.timeline blockquote:before, .timeline blockquote:after,
+.timeline q:before, .timeline q:after {
+	content: '';
+	content: none;
+}
+.timeline table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}

@@ -853,6 +853,15 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 			dataFormatada = DateUtil.formataDiaMesAno(data);
 		return dataFormatada;
 	}
+	
+	@NaoAudita
+	public String getDataMesAno()
+	{
+		String dataFormatada = "";
+		if(data != null)
+			dataFormatada = DateUtil.formataMesAno(data);
+		return dataFormatada;
+	}
 
 	@NaoAudita
 	public String getMesAno()
