@@ -205,7 +205,7 @@
     </action>
     <action name="index" class="com.fortes.rh.web.action.Index" method="index">
       <result name="success" type="freemarker">/WEB-INF/pages/index.ftl</result>
-      <result name="limiteLoginExcedido" type="redirect">login.action?login_error=2</result>
+      <result name="limiteLoginExcedido" type="redirect"><![CDATA[login.action?login_error=2&maxLoged=${maxLoged}]]></result>
     </action>
     <action name="removePendenciaACHistoricoColaborador" class="com.fortes.rh.web.action.Index" method="removePendenciaACHistoricoColaborador">
       <result name="success" type="freemarker">/WEB-INF/pages/index.ftl</result>

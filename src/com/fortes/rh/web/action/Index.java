@@ -49,6 +49,7 @@ import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.MyDaoAuthenticationProvider;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 import com.opensymphony.webwork.ServletActionContext;
@@ -716,5 +717,9 @@ public class Index extends MyActionSupport
 	public void setHistoricoColaboradors(
 			Collection<HistoricoColaborador> historicoColaboradors) {
 		this.historicoColaboradors = historicoColaboradors;
+	}
+	
+	public String getMaxLoged() throws Exception{
+		return AutenticadorJarvis.getClient().getQtdAcessosSimultaneos().toString();
 	}
 }

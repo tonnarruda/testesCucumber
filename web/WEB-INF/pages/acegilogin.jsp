@@ -71,6 +71,7 @@
 					<%= ((AuthenticationException) session.getAttribute(AbstractProcessingFilter.ACEGI_SECURITY_LAST_EXCEPTION_KEY)).getMessage() %>
 				<% } else if("2".equals(request.getParameter("login_error"))) { %>
 					A quantidade de usuários logados foi excedida!
+					Máximo de usuários permitidos: <%= request.getParameter("maxLoged") %>
 				<% } %>
 				</span>
 			</td>
