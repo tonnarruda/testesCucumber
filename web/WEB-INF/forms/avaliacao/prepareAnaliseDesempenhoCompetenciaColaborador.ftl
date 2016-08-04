@@ -184,6 +184,10 @@
 			});
 			
 			selectPrintType($('input[name=relatorioDetalhado]:eq(0)').parent() );
+			
+			$('#tooltipHelp').qtip({
+				content: 'Ao selecionar a nota mínima, o gráfico de "Média Geral das Competências" apresentará as competências avaliadas de acordo com o nível selecionado.'
+			});
 		})
 		
 		function selectPrintType(box) {
@@ -454,7 +458,9 @@
 		<div id="paraRelatorioDetalhado">
 			<@ww.checkbox label="Agrupar avaliadores por cargo." id="agruparPorCargo" name="agruparPorCargo" labelPosition="left" onchange="verificaQtdMarcados();mudaLabelMultCheckBoxAvaliadores();"/>
 			<@frt.checkListBox label="Avaliadores (máx. 4 Avaliadores)" name="avaliadores" id="avaliadores" list="avaliadoresCheckList" width="600" filtro="true" selectAtivoInativo="true"/>
-			Nota mínima considerada em "Média Geral das Competências":</br>
+			Nota mínima considerada em "Média Geral das Competências":
+			<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-top:20px;" />
+			</br>
 			<div id="ordensNivelCompetencia"/>
 		</div>
 	</@ww.form>
