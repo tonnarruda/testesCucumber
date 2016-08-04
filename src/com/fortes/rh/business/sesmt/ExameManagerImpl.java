@@ -138,9 +138,9 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		return examesRealizados;
 	}
 
-	public Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizadosResumido(Long empresaId, Date dataInicio, Date dataFim, ClinicaAutorizada clinicaAutorizada, Long[] examesIds) throws ColecaoVaziaException
+	public Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizadosResumido(Long empresaId, Date dataInicio, Date dataFim, ClinicaAutorizada clinicaAutorizada, Long[] examesIds, String resultadoExame) throws ColecaoVaziaException
 	{
-		Collection<ExamesRealizadosRelatorio> examesRealizados = getDao().findExamesRealizadosRelatorioResumido(empresaId, dataInicio, dataFim, clinicaAutorizada, examesIds);
+		Collection<ExamesRealizadosRelatorio> examesRealizados = getDao().findExamesRealizadosRelatorioResumido(empresaId, dataInicio, dataFim, clinicaAutorizada, examesIds, resultadoExame);
 		
 		if (examesRealizados == null || examesRealizados.isEmpty())
 			throw new ColecaoVaziaException("Não existem exames realizados para os filtros informados.");

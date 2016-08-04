@@ -324,8 +324,10 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		historicoColaboradorDao.save(historicoColaborador2Atual);
 		
 		Exame exame1 = ExameFactory.getEntity();
+		exame1.setEmpresa(empresa);
 		exameDao.save(exame1);
 		Exame exame2 = ExameFactory.getEntity();
+		exame2.setEmpresa(empresa);
 		exameDao.save(exame2);
 
 		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity();
@@ -364,9 +366,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		solicitacaoExame2.setData(hoje);
 		solicitacaoExameDao.save(solicitacaoExame2);
 
-		RealizacaoExame realizacaoExame2 = RealizacaoExameFactory.getEntity();
-		realizacaoExame2.setData(hoje);
-		realizacaoExame2.setResultado(ResultadoExame.ANORMAL.toString());
+		RealizacaoExame realizacaoExame2 = RealizacaoExameFactory.getEntity(hoje,ResultadoExame.ANORMAL.toString());
 		realizacaoExameDao.save(realizacaoExame2);
 
 		ExameSolicitacaoExame exameSolicitacaoExame2 = new ExameSolicitacaoExame();
@@ -424,8 +424,10 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
     	candidatoSolicitacaoDao.save(candidatoSolicitacao2);
     	
 		Exame exame1 = ExameFactory.getEntity();
+		exame1.setEmpresa(empresa);
 		exameDao.save(exame1);
 		Exame exame2 = ExameFactory.getEntity();
+		exame2.setEmpresa(empresa);
 		exameDao.save(exame2);
 
 		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity();
@@ -465,9 +467,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		solicitacaoExame2.setData(hoje);
 		solicitacaoExameDao.save(solicitacaoExame2);
 
-		RealizacaoExame realizacaoExame2 = RealizacaoExameFactory.getEntity();
-		realizacaoExame2.setData(hoje);
-		realizacaoExame2.setResultado(ResultadoExame.ANORMAL.toString());
+		RealizacaoExame realizacaoExame2 = RealizacaoExameFactory.getEntity(hoje,ResultadoExame.ANORMAL.toString());
 		realizacaoExameDao.save(realizacaoExame2);
 
 		ExameSolicitacaoExame exameSolicitacaoExame2 = new ExameSolicitacaoExame();
@@ -542,7 +542,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		
 		Long[] estabelecimentoIds = new Long[]{exame1.getId(),exame2.getId()};
 		
-		assertEquals(2, exameDao.findExamesRealizadosRelatorioResumido(empresa.getId(), dataIni, dataFim, clinicaAutorizadaLoucos, estabelecimentoIds).size());
+		assertEquals(2, exameDao.findExamesRealizadosRelatorioResumido(empresa.getId(), dataIni, dataFim, clinicaAutorizadaLoucos, estabelecimentoIds, null).size());
 	}
 
 	
@@ -551,19 +551,15 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		Date hoje = new Date();
 		Calendar dataDoisMesesAtras = Calendar.getInstance();
     	dataDoisMesesAtras.add(Calendar.MONTH, -2);
-    	Calendar dataTresMesesAtras = Calendar.getInstance();
-    	dataTresMesesAtras.add(Calendar.MONTH, -3);
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
 
     	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
     	estabelecimentoDao.save(estabelecimento);
-    	
 
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
 		colaborador1.setNome("Colaborador 1");
-//		colaborador1.setHistoricoColaboradors(Arrays.asList(historicoColaborador));
 		colaboradorDao.save(colaborador1);
 
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
@@ -574,8 +570,10 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		historicoColaboradorDao.save(historicoColaborador);
 
 		Exame exame1 = ExameFactory.getEntity();
+		exame1.setEmpresa(empresa);
 		exameDao.save(exame1);
 		Exame exame2 = ExameFactory.getEntity();
+		exame2.setEmpresa(empresa);
 		exameDao.save(exame2);
 
 		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity();
@@ -585,14 +583,10 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		solicitacaoExame1.setData(hoje);
 		solicitacaoExameDao.save(solicitacaoExame1);
 
-		RealizacaoExame realizacaoExame1 = RealizacaoExameFactory.getEntity();
-		realizacaoExame1.setData(dataDoisMesesAtras.getTime());
-		realizacaoExame1.setResultado(ResultadoExame.NAO_REALIZADO.toString());
+		RealizacaoExame realizacaoExame1 = RealizacaoExameFactory.getEntity(dataDoisMesesAtras.getTime(), ResultadoExame.NORMAL.toString());
 		realizacaoExameDao.save(realizacaoExame1);
 		
-		RealizacaoExame realizacaoExame1Fora = RealizacaoExameFactory.getEntity();
-		realizacaoExame1Fora.setData(hoje);
-		realizacaoExame1Fora.setResultado(ResultadoExame.ANORMAL.toString());
+		RealizacaoExame realizacaoExame1Fora = RealizacaoExameFactory.getEntity(hoje, ResultadoExame.NAO_REALIZADO.toString());
 		realizacaoExameDao.save(realizacaoExame1Fora);
 
 		ExameSolicitacaoExame exameSolicitacaoExame1 = new ExameSolicitacaoExame();
@@ -620,7 +614,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		exameSolicitacaoExame2.setSolicitacaoExame(solicitacaoExame2);
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
 
-		assertEquals(2, exameDao.findExamesRealizadosColaboradores(empresa.getId(), null, dataDoisMesesAtras.getTime(), hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.NAO_REALIZADO.toString(), null, null, null).size());
+		assertEquals(1, exameDao.findExamesRealizadosColaboradores(empresa.getId(), null, dataDoisMesesAtras.getTime(), hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.NAO_REALIZADO.toString(), null, null, null).size());
 	}
 	
 	public void testGetCount()

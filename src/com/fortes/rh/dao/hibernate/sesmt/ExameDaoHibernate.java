@@ -176,7 +176,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		return criteria.list();
 	}
 
-	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosRelatorioResumido(Long empresaId, Date dataInicio, Date dataFim, ClinicaAutorizada clinicaAutorizada, Long[] examesIds)
+	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosRelatorioResumido(Long empresaId, Date dataInicio, Date dataFim, ClinicaAutorizada clinicaAutorizada, Long[] examesIds, String resultadoExame)
 	{
 		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id, e.nome, clinica.id, clinica.nome, count(*)) ");
 		hql.append("from ExameSolicitacaoExame ese ");
@@ -193,6 +193,14 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		if (examesIds != null && examesIds.length > 0)
 			hql.append(" and e.id in (:exameIds) ");
 		
+		if (StringUtils.isNotBlank(resultadoExame))
+		{
+			if(resultadoExame.equalsIgnoreCase(ResultadoExame.NAO_REALIZADO.toString()))
+				hql.append("and (re = null or re.resultado = :resultado) ");
+			else
+				hql.append("and re.resultado = :resultado ");
+		}
+		
 		hql.append(" group by e.id, e.nome, clinica.id, clinica.nome ");
 		hql.append(" order by e.nome, clinica.nome ");
 		
@@ -200,6 +208,9 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		query.setDate("dataInicio", dataInicio);
 		query.setDate("dataFim", dataFim);
 		query.setLong("empresaId", empresaId);
+		
+		if (StringUtils.isNotBlank(resultadoExame))
+			query.setString("resultado", resultadoExame);
 		
 		if (clinicaAutorizada != null && clinicaAutorizada.getId() != null)
 			query.setLong("clinicaAutorizadaId", clinicaAutorizada.getId());
@@ -226,7 +237,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 	
 	private Query montaConsultaDeExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Examinado examinado)
 	{
-		StringBuilder hql = new StringBuilder("select distinct new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id,examinado.nome,cast(:tipoPessoa as char),e.nome,se.data,clinica.id,clinica.nome,re.resultado,se.motivo,es.id,es.nome, re.observacao) ");
+		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id,examinado.nome,cast(:tipoPessoa as char),e.nome,se.data,clinica.id,clinica.nome,re.resultado,se.motivo,es.id,es.nome, re.observacao) ");
 		hql.append("from ExameSolicitacaoExame ese ");
 		hql.append("left join ese.realizacaoExame re ");
 		hql.append("left join ese.clinicaAutorizada clinica ");
@@ -235,8 +246,8 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		
 		examinado.setJoins(hql);
 		
-		hql.append("where se.empresa.id = :empresaId ");
-		hql.append("and se.data between :inicio and :fim ");
+		hql.append("where e.empresa.id = :empresaId ");
+		hql.append("and re.data between :inicio and :fim ");
 		if (isNotBlank(nomeBusca))
 			hql.append("and lower(examinado.nome) like :nome ");
 		
@@ -466,13 +477,11 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		{
 			hql.append("and hc.data = ( select max(hc2.data) ");
 			hql.append("	        	from HistoricoColaborador as hc2 ");
-			hql.append("	   			where hc2.colaborador.id = examinado.id ");
-			hql.append("	   			and hc2.status = :status) ");
+			hql.append("	   			where hc2.colaborador.id = examinado.id )");
 		}
 
 		public void setParametros(Query query)
 		{
-			query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 			query.setCharacter("tipoPessoa", 'C');
 		}
 	}
@@ -492,7 +501,6 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			hql.append("and (s.data = ( select max(s2.data) from CandidatoSolicitacao cs2 ");
 			hql.append("				inner join cs2.solicitacao as s2 ");
 			hql.append("				where cs2.candidato.id = examinado.id ");
-			hql.append("				and s2.data <= se.data ");
 			hql.append("				and s2.empresa.id = :empresaId) or s.data is null) ");
 		}
 

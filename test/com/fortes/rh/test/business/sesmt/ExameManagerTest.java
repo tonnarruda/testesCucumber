@@ -249,7 +249,7 @@ public class ExameManagerTest extends MockObjectTestCase
     	
     	exameDao.expects(once()).method("findExamesRealizadosRelatorioResumido").will(returnValue(colecao));
     	
-    	assertEquals(1,exameManager.findRelatorioExamesRealizadosResumido(empresa.getId(), dataIni, dataFim, null, null).size());
+    	assertEquals(1,exameManager.findRelatorioExamesRealizadosResumido(empresa.getId(), dataIni, dataFim, null, null, null).size());
     }
     
     public void testFindRelatorioExamesRealizadosColecaoVaziaException()
@@ -286,7 +286,7 @@ public class ExameManagerTest extends MockObjectTestCase
     	
     	try
     	{
-    		exameManager.findRelatorioExamesRealizadosResumido(empresa.getId(), dataIni, dataFim, null, null).size();
+    		exameManager.findRelatorioExamesRealizadosResumido(empresa.getId(), dataIni, dataFim, null, null, null).size();
     	}
     	catch (ColecaoVaziaException e)
     	{

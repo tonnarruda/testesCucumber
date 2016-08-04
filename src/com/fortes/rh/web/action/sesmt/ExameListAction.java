@@ -102,7 +102,6 @@ public class ExameListAction extends MyActionSupportList
 	private boolean relatorioExamesPrevistosResumido;
 	private String nomeBusca;
 
-
 	public String list() throws Exception
 	{
 		setTotalSize(exameManager.count(getEmpresaSistema().getId(), exame));
@@ -273,7 +272,7 @@ public class ExameListAction extends MyActionSupportList
 		try
 		{
 			if (relatorioExamesPrevistosResumido)
-				examesRealizados = exameManager.findRelatorioExamesRealizadosResumido(getEmpresaSistema().getId(), inicio, fim, clinicaAutorizada, examesIds);
+				examesRealizados = exameManager.findRelatorioExamesRealizadosResumido(getEmpresaSistema().getId(), inicio, fim, clinicaAutorizada, examesIds, resultado);
 			else
 				examesRealizados = exameManager.findRelatorioExamesRealizados(getEmpresaSistema().getId(), nomeBusca, inicio, fim, motivo, resultado, clinicaAutorizada.getId(), examesIds, estabelecimentosIds, tipoPessoa);
 
@@ -601,6 +600,10 @@ public class ExameListAction extends MyActionSupportList
 	public void setImprimirASOComRiscoPor(String imprimirASOComRiscoPor)
 	{
 		this.imprimirASOComRiscoPor = imprimirASOComRiscoPor;
+	}
+
+	public boolean isRelatorioExamesPrevistosResumido() {
+		return relatorioExamesPrevistosResumido;
 	}
 
 }

@@ -24,4 +24,13 @@ public class RealizacaoExameFactory
 		
 		return realizacaoExame;
 	}
+	
+	public static RealizacaoExame getEntity(Date data, String Resultado)
+	{
+		RealizacaoExame realizacaoExame = new RealizacaoExame();
+		realizacaoExame.setData(data);
+		realizacaoExame.setResultado(Resultado);
+
+		return realizacaoExame;
+	}
 }
