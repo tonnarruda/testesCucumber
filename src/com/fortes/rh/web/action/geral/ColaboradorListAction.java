@@ -390,6 +390,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		} 
 		catch (Exception e) 
 		{
+			addActionError("Houve um erro inesperado: "+e.getMessage());
 			prepareReciboDeDecimoTerceiro();
 			return Action.INPUT;
 		}
@@ -416,6 +417,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		catch (Exception e) 
 		{
 			prepareDeclaracaoRendimentos();
+			addActionError("Houve um erro inesperado: "+e.getMessage());
 			return Action.INPUT;
 		}
         
@@ -808,13 +810,13 @@ public class ColaboradorListAction extends MyActionSupportList
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			
-			if(e.getMessage().equals("SEM_DADOS"))
-				addActionMessage("Não existem dados para o filtro informado.");
-			else
-				addActionMessage("Não foi possível gerar o relatório.");
-			
 			prepareRelatorioDinamico();
+			
+			if(e.getMessage() != null && e.getMessage().equals("SEM_DADOS"))
+				setActionMsg("Não existem dados para o filtro informado.");
+			else
+				setActionMsg("Não foi possível gerar o relatório.");
+			
 			return Action.INPUT;
 		}
 	}
@@ -922,7 +924,6 @@ public class ColaboradorListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
-	// TODO: SEM TESTE
 	public String prepareRelatorioFormacaoEscolar() throws Exception
 	{
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
@@ -936,33 +937,21 @@ public class ColaboradorListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
-	// TODO: SEM TESTE
-	public String imprimeRelatorioFormacaoEscolar() throws Exception
-	{
-		try
-		{
+	public String imprimeRelatorioFormacaoEscolar() throws Exception{
+		try{
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areasCheck);
 			Collection<Long> cargos = LongUtil.arrayLongToCollectionLong(cargosCheck);
 				
 			colaboradores = colaboradorManager.findFormacaoEscolar(empresa.getId(), estabelecimentos, areas, cargos);
+			colaboradores = colaboradorManager.ordenaPorEstabelecimentoArea(colaboradores, empresa.getId());
+			empresa = empresaManager.findById(empresa.getId());
 
-			colaboradores = colaboradorManager.ordenaPorEstabelecimentoArea(colaboradores, getEmpresaSistema().getId());
-
-			parametros = areaOrganizacionalManager.getParametrosRelatorio("Relatório de Formação Escolar", getEmpresaSistema(), null);
+			parametros = areaOrganizacionalManager.getParametrosRelatorio("Relatório de Formação Escolar", empresa, null);
 
 			return Action.SUCCESS;
-		}
-		catch (ColecaoVaziaException e)
-		{
-			addActionMessage(e.getMessage());
-			prepareRelatorioFormacaoEscolar();
-
-			return Action.INPUT;
-		}
-		catch (Exception e)
-		{
-			addActionError("Não foi possível gerar o relatório");
+		}catch (Exception e)	{
+			setActionErr("Não foi possível gerar o relatório");
 			e.printStackTrace();
 			prepareRelatorioFormacaoEscolar();
 

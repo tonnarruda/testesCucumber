@@ -674,6 +674,11 @@ import com.fortes.test.web.tags.LinkTagTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+	
+//	SOMENTE PARA O COVERAGE
+//	NoAllUnitTests.class,
+//	IntegracaoACTests.class,
+	
 	CertificacaoManagerTest.class,
 	PapelManagerTest.class,
 
@@ -1496,6 +1501,8 @@ import com.fortes.test.web.tags.LinkTagTest;
     //SERVICES
 	RHServiceTest.class,
 	RHServiceIntranetTest.class
+	
+	
 })
 public class AllUnitTests { }
 

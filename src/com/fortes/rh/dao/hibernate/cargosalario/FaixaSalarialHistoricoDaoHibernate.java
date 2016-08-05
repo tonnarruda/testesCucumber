@@ -375,7 +375,7 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 
 	public void removeByFaixas(Long[] faixaSalarialIds)
 	{
-		String hql = "delete FaixaSalarialHistorico where faixaSalarial.id in(:faixaSalarialIds)";
+		String hql = "delete FaixaSalarialHistorico where faixaSalarial.id in (:faixaSalarialIds)";
 
 		Query query = getSession().createQuery(hql);
 		query.setParameterList("faixaSalarialIds", faixaSalarialIds, Hibernate.LONG);

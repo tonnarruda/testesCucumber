@@ -13,6 +13,7 @@ import org.jmock.MockObjectTestCase;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
+import com.fortes.rh.test.NoAllUnitTests;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.web.ws.AcPessoalClientImpl;
 
@@ -27,7 +28,7 @@ public abstract class AcPessoalClientTest extends MockObjectTestCase
 	public Connection getConexaoAC() throws ClassNotFoundException, SQLException 
 	{
 		Class.forName("org.firebirdsql.jdbc.FBDriver");
-		Connection conexao = DriverManager.getConnection("jdbc:firebirdsql:127.0.0.1/53052:C:\\Fortes\\AC\\AC.FDB?user=SYSDBA&password=masterkey");
+		Connection conexao = DriverManager.getConnection("jdbc:firebirdsql:10.1.18.203/53052:C:\\Fortes\\AC\\AC.FDB?user=SYSDBA&password=masterkey");
 		conexao.setAutoCommit(true);
 		
 		return conexao;
@@ -38,7 +39,7 @@ public abstract class AcPessoalClientTest extends MockObjectTestCase
 	{
 		super.setUp();
 		
-		String baseAcUrl = "http://127.0.0.1:1024";
+		String baseAcUrl = "http://10.1.18.203:1024";
 
 		acPessoalClientImpl = new AcPessoalClientImpl();
 		acPessoalClientImpl.setService(new Service());

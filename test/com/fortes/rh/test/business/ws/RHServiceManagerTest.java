@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.apache.commons.digester.WithDefaultsRulesWrapper;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -658,6 +659,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialManager.expects(once()).method("remove").with(ANYTHING);
 		faixaSalarialManager.expects(once()).method("findByCargo").with(ANYTHING).will(returnValue(new ArrayList<FaixaSalarial>()));
+		faixaSalarialHistoricoManager.expects(once()).method("removeByFaixas").withAnyArguments().isVoid();
 		cargoManager.expects(once()).method("remove").with(ANYTHING);
 		
 		assertEquals(true, rHServiceManager.removerCargo("TOKEN", tCargo).isSucesso());

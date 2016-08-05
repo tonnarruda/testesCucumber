@@ -1021,7 +1021,6 @@ public class RHServiceImpl implements RHService
 	{
 		try {
 			verifyToken(token, true);
-			String parametros = "faixaSalarialHistoricoId: " + faixaSalarialHistoricoId + "\nempresa: " + empresaCodigoAC + "\ngrupoAC: " + grupoAC;
 			if (!aprovado){
 				FaixaSalarialHistorico faixaSalarialHistorico = faixaSalarialHistoricoManager.findByIdProjection(faixaSalarialHistoricoId);
 				if(faixaSalarialHistorico != null)
@@ -1032,10 +1031,8 @@ public class RHServiceImpl implements RHService
 				}
 			}
 	
-			if(faixaSalarialHistoricoManager.setStatus(faixaSalarialHistoricoId, aprovado))
-				return new FeedbackWebService(true);
-			else
-				return new FeedbackWebService(false, "Erro: Histórico da faixa salarial não encontrada.", formataException(parametros, null));
+			faixaSalarialHistoricoManager.setStatus(faixaSalarialHistoricoId, aprovado);
+			return new FeedbackWebService(true);
 		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
 		}
@@ -1241,7 +1238,7 @@ public class RHServiceImpl implements RHService
 			return new FeedbackWebService(false, "Token incorreto.", "");
 		}catch (Exception e){
 			e.printStackTrace();
-			return new FeedbackWebService(false, "Erro ao excluir a situação do cargo.", formataException(parametros, e));
+			return new FeedbackWebService(false, "Erro ao criar a situação do cargo.", formataException(parametros, e));
 		}
 	}
 
@@ -1359,6 +1356,7 @@ public class RHServiceImpl implements RHService
 		try	{
 			verifyToken(token, true);
 			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC(), tCargo.getGrupoAC());
+			faixaSalarialHistoricoManager.removeByFaixas(new Long[]{faixaSalarial.getId()});
 			faixaSalarialManager.remove(faixaSalarial);
 
 			Collection<FaixaSalarial> faixas = faixaSalarialManager.findByCargo(faixaSalarial.getCargo().getId());

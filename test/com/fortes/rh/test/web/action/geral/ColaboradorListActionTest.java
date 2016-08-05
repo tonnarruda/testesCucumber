@@ -41,6 +41,7 @@ import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorJsonVO;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
+import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -53,6 +54,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ConfiguracaoCampoExtraFactory;
 import com.fortes.rh.test.factory.geral.ConfiguracaoRelatorioDinamicoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockDynamicJasperHelpe;
 import com.fortes.rh.test.util.mockObjects.MockJasperExportManager;
@@ -78,6 +80,7 @@ public class ColaboradorListActionTest
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	private String retorno;
 
 	@Before
 	public void setUp() throws Exception
@@ -111,6 +114,7 @@ public class ColaboradorListActionTest
 		Mockit.redefineMethods(JasperExportManager.class, MockJasperExportManager.class);
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		retorno = "JVBERi0xLjINCjEgMCBvYmogPDwNCi9DcmVhdGlvbkRhdGUoRDoyMDE2MDEyNzA5MzQyOSkNCi9DcmVhdG9yKEZvcnRlc1JlcG9ydCB2My4xMDF4IFwyNTEgQ29weXJpZ2h0IKkgMTk5OS0yMDE1IEZvcnRlcyBJbmZvcm3hdGljYSkNCj4";
 	}
 
 	@After
@@ -283,7 +287,6 @@ public class ColaboradorListActionTest
 	
 	@Test
 	public void testReciboPagamentoComplementar() throws Exception{
-		String retorno = "JVBERi0xLjINCjEgMCBvYmogPDwNCi9DcmVhdGlvbkRhdGUoRDoyMDE2MDEyNzA5MzQyOSkNCi9DcmVhdG9yKEZvcnRlc1JlcG9ydCB2My4xMDF4IFwyNTEgQ29weXJpZ2h0IKkgMTk5OS0yMDE1IEZvcnRlcyBJbmZvcm3hdGljYSkNCj4";
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setAcIntegra(true);
 		action.setEmpresaSistema(empresa);
@@ -327,7 +330,6 @@ public class ColaboradorListActionTest
 	
 	@Test
 	public void testReciboPagamentoAdiantamentoDeFolha() throws Exception{
-		String retorno = "JVBERi0xLjINCjEgMCBvYmogPDwNCi9DcmVhdGlvbkRhdGUoRDoyMDE2MDEyNzA5MzQyOSkNCi9DcmVhdG9yKEZvcnRlc1JlcG9ydCB2My4xMDF4IFwyNTEgQ29weXJpZ2h0IKkgMTk5OS0yMDE1IEZvcnRlcyBJbmZvcm3hdGljYSkNCj4";
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setAcIntegra(true);
 		action.setEmpresaSistema(empresa);
@@ -833,5 +835,278 @@ public class ColaboradorListActionTest
 		assertEquals(Action.INPUT, retorno);
 		assertEquals(action.getActionErrors().iterator().next(), "Não foi possível gerar o relatório.");
 		
+	}
+	
+	@Test
+	public void testRelatorioDinamicoXLS() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresa(empresa);
+		
+		Long[] colaboradoresCheck = new Long[]{1L};
+		action.setColaboradoresCheck(colaboradoresCheck);
+		
+		String[] areasPermitidasId = new String[]{"000001"};
+		
+		CamposExtras camposExtras = new CamposExtras();
+		camposExtras.setId(1l);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		colaboradores.add(colaborador);
+		Collection<String> colunasMarcadas = new ArrayList<String>();
+		colunasMarcadas.add("nome");
+		colunasMarcadas.add("co.nomeComercial");
+		action.setColunasMarcadas(colunasMarcadas);
+		
+		action.setConfiguracaoRelatorioDinamico(new ConfiguracaoRelatorioDinamico());
+		action.getConfiguracaoRelatorioDinamico().setTitulo("titulo");
+		
+		when(areaOrganizacionalManager.filtraPermitidas(new String[]{}, empresa.getId())).thenReturn(areasPermitidasId);
+		when(empresaManager.checkEmpresaIntegradaAc()).thenReturn(true);
+		when(colaboradorManager.findAreaOrganizacionalByAreas(false, new ArrayList<Long>(), new ArrayList<Long>(), new ArrayList<Long>(), camposExtras, null, null, null, null, null, null, null, null, null, new Long[]{1L})).thenReturn(colaboradores);
+		
+		String retorno = action.relatorioDinamicoXLS();
+		assertEquals(Action.SUCCESS, retorno);
+	}
+	
+	@Test
+	public void testRelatorioDinamicoXLSAgrupadoPorTempoDeServico() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresa(empresa);
+		
+		Long[] colaboradoresCheck = new Long[]{1L};
+		action.setColaboradoresCheck(colaboradoresCheck);
+		
+		String[] areasPermitidasId = new String[]{"000001"};
+		
+		CamposExtras camposExtras = new CamposExtras();
+		camposExtras.setId(1l);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		colaboradores.add(colaborador);
+		Collection<String> colunasMarcadas = new ArrayList<String>();
+		colunasMarcadas.add("nome");
+		colunasMarcadas.add("co.nomeComercial");
+		action.setColunasMarcadas(colunasMarcadas);
+		
+		action.setConfiguracaoRelatorioDinamico(new ConfiguracaoRelatorioDinamico());
+		action.getConfiguracaoRelatorioDinamico().setTitulo("titulo");
+		
+		action.setAgruparPorTempoServico(true);
+		
+		when(areaOrganizacionalManager.filtraPermitidas(new String[]{}, empresa.getId())).thenReturn(areasPermitidasId);
+		when(empresaManager.checkEmpresaIntegradaAc()).thenReturn(true);
+		when(colaboradorManager.montaTempoServico(colaboradores, null, null, "")).thenReturn(colaboradores);
+		when(colaboradorManager.findAreaOrganizacionalByAreas(false, new ArrayList<Long>(), new ArrayList<Long>(), new ArrayList<Long>(), camposExtras, " co.dataAdmissao desc, null", null, null, null, null, null, null, null, null, new Long[]{1L})).thenReturn(colaboradores);
+		
+		String retorno = action.relatorioDinamicoXLS();
+		assertEquals(Action.SUCCESS, retorno);
+	}
+	
+	@Test
+	public void testRelatorioDinamicoXLSException() throws Exception
+	{
+		String retorno = action.relatorioDinamicoXLS();
+		
+		assertEquals(Action.INPUT, retorno);
+		assertEquals(action.getActionMessages().toArray()[0], "Não foi possível gerar o relatório.");
+		
+	}
+	
+	@Test
+	public void testPrepareRelatorioFormacaoEscolar() throws Exception
+	{
+		when(parametrosDoSistemaManager.findById(1L)).thenReturn(ParametrosDoSistemaFactory.getEntity());
+		String retorno = action.prepareRelatorioFormacaoEscolar();
+		
+		assertEquals(Action.SUCCESS, retorno);
+	}
+	
+	@Test
+	public void testImprimeRelatorioFormacaoEscolar() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresa(empresa);
+		
+		when(empresaManager.findById(empresa.getId())).thenReturn(empresa);
+		when(colaboradorManager.findFormacaoEscolar(empresa.getId(), new ArrayList<Long>(), new ArrayList<Long>(), new ArrayList<Long>())).thenReturn(new ArrayList<Colaborador>());
+		when(colaboradorManager.ordenaPorEstabelecimentoArea(new ArrayList<Colaborador>(), empresa.getId())).thenReturn(new ArrayList<Colaborador>());
+		when(areaOrganizacionalManager.getParametrosRelatorio("Relatório de Formação Escolar", empresa, null)).thenReturn(null);
+		
+		String retorno = action.imprimeRelatorioFormacaoEscolar();
+		
+		assertEquals(Action.SUCCESS, retorno);
+	}
+	
+	@Test
+	public void testImprimeRelatorioFormacaoEscolarException() throws Exception
+	{
+		when(parametrosDoSistemaManager.findById(1L)).thenReturn(ParametrosDoSistemaFactory.getEntity());		
+		String retorno = action.imprimeRelatorioFormacaoEscolar();
+		
+		assertEquals(Action.INPUT, retorno);
+		assertEquals(action.getActionErr(), "Não foi possível gerar o relatório");
+	}
+	
+	
+	@Test
+	public void testRelatorioAniversariantesXls() throws Exception
+	{
+		when(empresaManager.selecionaEmpresa(null, null, null)).thenReturn(new Long[]{});
+		when(colaboradorManager.findAniversariantes(null, 0, null, null)).thenReturn(new ArrayList<Colaborador>());
+		
+		assertEquals("sucessoCargoTodosMeses", action.relatorioAniversariantesXls());
+		action.setExibir('A');
+		assertEquals("sucessoAreaTodosMeses", action.relatorioAniversariantesXls());
+		action.setMes(2);
+		assertEquals("sucessoArea", action.relatorioAniversariantesXls());
+		action.setExibir('B');
+		assertEquals("sucessoCargo", action.relatorioAniversariantesXls());
+	}
+	
+	@Test
+	public void testReciboPagamento() throws Exception
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setCodigoAC("codigoAc");
+		
+		String dataInicioDoGozo = "01/01/2016";
+		String dataFimDoGozo = "30/01/2016";
+		action.setDataInicioGozo(dataInicioDoGozo);
+		action.setDataFimGozo(dataFimDoGozo);
+		String mesAno = "01/2016";
+		action.setMesAno(mesAno);
+		
+		when(colaboradorManager.getReciboPagamento(colaborador, action.getMesAnoDate())).thenReturn(retorno);		
+		when(colaboradorManager.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
+		
+		Exception expException = null;
+		try {
+			assertEquals("success",action.reciboPagamento());
+		} catch (Exception e) {
+			expException = e;
+		}
+		
+		assertNull(expException);
+	}
+	
+	@Test
+	public void testReciboPagamentoException() throws Exception
+	{
+		assertEquals(Action.INPUT ,action.reciboPagamento());
+	}
+	
+	@Test
+	public void testPrepareReciboDeDecimoTerceiro() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity("001", 1L);
+		colaborador.setEmpresa(empresa);
+		
+		when(colaboradorManager.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
+		when(colaboradorManager.getDatasDecimoTerceiroPorEmpregado(colaborador)).thenReturn(new String[]{"01/01/2016"});
+
+		assertEquals("success",action.prepareReciboDeDecimoTerceiro());
+	}
+	
+	@Test
+	public void testPrepareReciboDeDecimoTerceiroException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity("001", 1L);
+		colaborador.setEmpresa(empresa);
+		
+		when(colaboradorManager.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
+		when(colaboradorManager.getDatasDecimoTerceiroPorEmpregado(colaborador)).thenThrow(new Exception());
+
+		assertEquals(Action.SUCCESS ,action.prepareReciboDeDecimoTerceiro());
+		assertEquals(action.getActionErrors().toArray()[0], "Houve um erro inesperado: null");
+	}
+	
+	@Test
+	public void testReciboDeDecimoTerceiro() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity("001", 1L);
+		colaborador.setEmpresa(empresa);
+		
+		String dataCalculo = "01/01/2016";
+		action.setDataCalculo(dataCalculo);
+		
+		when(colaboradorManager.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
+		when(colaboradorManager.getReciboDeDecimoTerceiro(colaborador, dataCalculo)).thenReturn(retorno);
+
+		assertEquals("success",action.reciboDeDecimoTerceiro());
+	}
+	
+	@Test
+	public void testReciboDeDecimoTerceiroException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity("001", 1L);
+		colaborador.setEmpresa(empresa);
+		
+		String dataCalculo = "01/01/2016";
+		action.setDataCalculo(dataCalculo);
+		
+		when(colaboradorManager.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
+		when(colaboradorManager.getReciboDeDecimoTerceiro(colaborador, dataCalculo)).thenThrow(new Exception());
+
+		assertEquals(Action.INPUT ,action.reciboDeDecimoTerceiro());
+		assertEquals(action.getActionErrors().toArray()[1], "Houve um erro inesperado: null");
+	}
+	
+	@Test
+	public void testDeclaracaoRendimentos() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity("001", 1L);
+		colaborador.setEmpresa(empresa);
+		
+		String ano = "2016";
+		action.setAnoDosRendimentos(ano);
+		
+		when(colaboradorManager.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
+		when(colaboradorManager.getDeclaracaoRendimentos(colaborador, ano)).thenReturn(retorno);
+
+		assertEquals("success",action.declaracaoRendimentos());
+	}
+	
+	@Test
+	public void testDeclaracaoRendimentosException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity("001", 1L);
+		colaborador.setEmpresa(empresa);
+		
+		String ano = "01/01/2016";
+		action.setDataCalculo(ano);
+		
+		when(colaboradorManager.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
+		when(colaboradorManager.getDeclaracaoRendimentos(colaborador, ano)).thenThrow(new Exception());
+
+		assertEquals(Action.INPUT ,action.declaracaoRendimentos());
+		assertEquals(action.getActionErrors().toArray()[1], "Houve um erro inesperado: null");
 	}
 }
