@@ -7037,6 +7037,20 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(0, colaboradores.size());
 	}
 	
+	public void testUpdateRespondeuEntrevistaDesligamento() 
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Colaborador colaboradorRetorno = colaboradorDao.findColaboradorById(colaborador.getId());
+		assertFalse(colaboradorRetorno.isRespondeuEntrevista());
+		
+		colaboradorDao.updateRespondeuEntrevistaDesligamento(colaborador.getId(), true);
+		
+		colaboradorRetorno = colaboradorDao.findColaboradorById(colaborador.getId());
+		assertTrue(colaboradorRetorno.isRespondeuEntrevista());
+	}
+	
 	private FaixaSalarial saveFaixaSalarial(Cargo cargo){
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarial.setCargo(cargo);

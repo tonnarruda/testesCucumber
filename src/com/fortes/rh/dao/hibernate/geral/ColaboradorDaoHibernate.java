@@ -596,6 +596,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.demissaoGerouSubstituicao"), "demissaoGerouSubstituicao");
 		p.add(Projections.property("c.vinculo"), "vinculo");
 		p.add(Projections.property("c.naoIntegraAc"), "naoIntegraAc");
+		p.add(Projections.property("c.respondeuEntrevista"), "respondeuEntrevista");
 	}
 
 	public Colaborador findColaboradorByIdProjection(Long colaboradorId)
@@ -5265,5 +5266,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("uf.sigla"), "estabelecimentoEnderecoUfSigla");
 		p.add(Projections.property("est.complementoCnpj"), "estabelecimentoComplementoCNPJ");
 		return p;
+	}
+
+	public void updateRespondeuEntrevistaDesligamento(Long colaboradorId, boolean respondeuEntrevistaDesligamento) {
+		String hql = "update Colaborador set respondeuEntrevista = :respondeuEntrevistaDesligamento where id = :colaboradorId";
+		Query query = getSession().createQuery(hql);
+		query.setLong("colaboradorId", colaboradorId);
+		query.setBoolean("respondeuEntrevistaDesligamento", respondeuEntrevistaDesligamento);
+		query.executeUpdate();
 	}
 }

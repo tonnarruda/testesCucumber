@@ -286,7 +286,19 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     		return Action.INPUT;
     	}
     }
-
+    
+    public String excluirRespostas() throws Exception{
+    	try {
+    		colaboradorQuestionarioManager.removeByColaboradorAndQuestionario(colaborador,questionario);
+    		return Action.SUCCESS;
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		addActionError("Não foi possível excluir as respostas.");
+    		prepareResponderQuestionario();
+    		return Action.INPUT;
+    	}
+    }
+    
     public Object getModel()
     {
         return colaboradorResposta;

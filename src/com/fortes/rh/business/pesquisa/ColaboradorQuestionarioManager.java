@@ -65,5 +65,7 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	boolean existeMesmoModeloAvaliacaoEmDesempenhoEPeriodoExperiencia(Long avaliacaoId);
 	public void updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho);
 	boolean existeColaboradorQuestionarioRespondidoParcialmente(Long avaliacaoDesepenhoId, Long avaliadorId);
-	void ajustaColaboradorQuestionarioByAvDesempenho(Long avaliacaoDesempenhoId, Collection<ColaboradorQuestionario> colaboradorQuestionarios); 
+	void ajustaColaboradorQuestionarioByAvDesempenho(Long avaliacaoDesempenhoId, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
+	@Audita(operacao="Remoção de Resposta", auditor=ColaboradorQuestionarioAuditorCallbackImpl.class)
+	void removeByColaboradorAndQuestionario(Colaborador colaborador, Questionario questionario); 
 }

@@ -128,6 +128,7 @@
 </head>
 <body>
 	<@ww.actionmessage />
+	<@ww.actionerror />
 
 	<#if questionario.tipo == 1>
 		<@authz.authorize ifNotGranted="ROLE_COLAB_LIST_ENTREVISTA_RESPONDER">
@@ -166,8 +167,6 @@
 		<#return aspecto>
 	</#function>
 
-	<@ww.actionerror />
-
 	<@ww.form name="formAction" action="salvaQuestionarioRespondido.action?tela=${tela}#c${colaborador.id}" method="POST">
 		<@ww.hidden name="respostas" id="respostas" />
 		<@ww.hidden name="questionario.id" />
@@ -190,7 +189,6 @@
 	</div>
 	<div>
 	<form name="form">
-
 		<#list questionario.perguntas as pergunta>
 
 			<#if exibirPorAspecto>
@@ -225,7 +223,6 @@
 		<#if colaboradorTurma?exists>
 			<@ww.hidden name="colaboradorTurma.id"  />
 		</#if>
-
 	</form>
 	</div>
 	<div class="buttonGroup">
@@ -234,6 +231,10 @@
 			<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_ENTREVISTA_RESPONDER">
 				<#if questionario.perguntas?exists && 0 < questionario.perguntas?size>
 					<button onclick="${validarCampos}" class="${buttonClass}"></button>
+					<#if colaboradorQuestionario?exists && colaboradorQuestionario.respondidaEm?exists>
+						<!--Não remover parametros do link abaixo serve para auditoria-->
+						<button onclick="newConfirm('Deseja realmente excluir as respostas dessa entrevista de desligamento?', function(){javascript:window.location='excluirRespostasEntrevistaDesligamento.action?colaborador.id=${colaborador.id}&colaborador.nome=${colaborador.nome}&questionario.id=${questionario.id}&questionario.tipo=${questionario.tipo}'});" class="btnExcluirRespostas"></button>
+					</#if>
 				</#if>
 			</@authz.authorize>
 		<#else>

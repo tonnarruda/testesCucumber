@@ -243,4 +243,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public String[] findCodigosACByIds(Long[] colaboradoresIds);
 	public Collection<TPeriodoGozo> getFerias(Empresa empresa, String[] colaboradoresCodigosACs, String dataInicioGozo, String dataFimGozo) throws Exception;
 	public Collection<AreaOrganizacional> defineAreasPermitidasParaUsuario(Long empresaId, Long usuarioId, boolean verTodasAreas) throws Exception;
+	public void updateRespondeuEntrevistaDesligamento(Long colaboradorId, boolean respondeuEntrevistaDesligamento);
 }

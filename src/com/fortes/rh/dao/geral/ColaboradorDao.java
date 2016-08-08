@@ -152,4 +152,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public boolean existeColaboradorAtivo(String cpf, Date data);
 	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] areaIds, String situacao, String filtroOrdemDeServico, int page, int pagingSize);
 	public Colaborador findComDadosBasicosParaOrdemDeServico( Long colaboradorId, Date dataOrdemDeServico);
+	public void updateRespondeuEntrevistaDesligamento(Long colaboradorId, boolean respondeuEntrevistaDesligamento);
 }

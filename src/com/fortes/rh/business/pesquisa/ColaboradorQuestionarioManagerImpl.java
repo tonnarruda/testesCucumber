@@ -21,6 +21,7 @@ import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
+import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
@@ -545,5 +546,15 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		
 		colaboradorQuestionarios.removeAll(colaboradorQuestionariosExistentesAvDesempenho);
 		getDao().saveOrUpdate(colaboradorQuestionarios);
+	}
+
+	public void removeByColaboradorAndQuestionario(Colaborador colaborador,	Questionario questionario) {
+		
+		ColaboradorQuestionario colaboradorQuestionario = findByQuestionario(questionario.getId(), colaborador.getId(), null);
+		remove(colaboradorQuestionario);
+
+		if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA))
+				colaboradorManager.updateRespondeuEntrevistaDesligamento(colaborador.getId(), false);
+		
 	}
 }
