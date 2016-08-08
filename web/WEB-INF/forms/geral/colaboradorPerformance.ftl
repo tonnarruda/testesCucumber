@@ -335,7 +335,9 @@
 
 <br>
 <div class="painelConfiguracao">
-	<a href="javascript:gravarConfiguracao(${usuarioId});" class="salvar"> Gravar layout das seções</a>
+	<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_PERFORMANCE">
+		<a href="javascript:gravarConfiguracao(${usuarioId});" class="salvar"> Gravar layout das seções</a>
+	</@authz.authorize>	
 	<a href="javascript:$('.cabecalhoBox').showBox()" class="exibir"> Expandir todas as seções</a>
 	<a href="javascript:$('.cabecalhoBox').hideBox()" class="ocultar"> Ocultar todas as seções</a>
 </div>

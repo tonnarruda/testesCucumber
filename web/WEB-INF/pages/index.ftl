@@ -205,7 +205,7 @@
 		<#if colaborador?exists && colaborador.id?exists>
 			<br>
 			<div class="portlet">
-			<div class="portlet-header">Progressão Salarial</div>
+			<div class="portlet-header">Visualize seu histórico profissional</div>
 			<div class="portlet-content timeline" style="text-align: center;">
 				<div class="cd-horizontal-timeline">
 					<div class="timeline" style="margin-bottom: 15px;">
@@ -221,8 +221,8 @@
 													<div>${historico.motivoDescricao}</div>
 													<div>${historico.data}</div>
 													<div>${historico.faixaSalarial.descricao}</div>
-													<#if historicoColaboradors.salarioCalculado?exists>
-														<div>Salário: ${historicoColaboradors.salarioCalculado?string.currency}</div>
+													<#if historico.salarioCalculado?exists>
+														<div>Salário: ${historico.salarioCalculado?string.currency}</div>
 													<#else>
 														<div style="width: 100%; text-align: center;">
 															Salário: <img class="tooltipHelp" style="margin: -1px;" src="<@ww.url value="/imgs/iconWarning.gif"/>" />

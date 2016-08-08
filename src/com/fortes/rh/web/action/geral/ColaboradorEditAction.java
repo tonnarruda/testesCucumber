@@ -998,7 +998,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 					colaborador, configuracaoCampoExtras, cqAvaliacaoDesempenhos, cqAvaliacaoExperiencias, historicoColaboradors, 
 					historicoColaborador, idiomasColaborador,formacaos,cursosColaborador, ocorrenciasColaborador, 
 					afastamentosColaborador, documentoAnexosColaborador, documentoAnexosCandidato, historicosCandidatoByColaborador,
-					catsColaborador, participacoesNaCipaColaborador, areaOrganizacionals);
+					catsColaborador, participacoesNaCipaColaborador, areaOrganizacionals, experiencias);
 			
 			configPerformanceBoxes = StringUtil.toJSON(configuracaoPerformanceManager.findByUsuario(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession())), new String[]{"usuario"}); 
 			

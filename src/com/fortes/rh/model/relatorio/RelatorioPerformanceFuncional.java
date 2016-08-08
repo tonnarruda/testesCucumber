@@ -3,6 +3,7 @@ package com.fortes.rh.model.relatorio;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -37,6 +38,7 @@ public class RelatorioPerformanceFuncional {
 	private Collection<ParticipacaoColaboradorCipa> participacoesNaCipaColaborador;
 	private Collection<Formacao> formacaos;
 	private Collection<AreaOrganizacional> areaOrganizacionals;
+	private Collection<Experiencia> experiencias;
 
 
 	public RelatorioPerformanceFuncional(Colaborador colaborador, Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras, 
@@ -46,7 +48,7 @@ public class RelatorioPerformanceFuncional {
 			Collection<ColaboradorOcorrencia> ocorrenciasColaborador, Collection<ColaboradorAfastamento> afastamentosColaborador, 
 			Collection<DocumentoAnexo> documentoAnexosColaborador, Collection<DocumentoAnexo> documentoAnexosCandidato, 
 			Collection<HistoricoCandidato> historicosCandidatoByColaborador, Collection<Cat> catsColaborador, 
-			Collection<ParticipacaoColaboradorCipa> participacoesNaCipaColaborador,	Collection<AreaOrganizacional> areaOrganizacionals) {
+			Collection<ParticipacaoColaboradorCipa> participacoesNaCipaColaborador,	Collection<AreaOrganizacional> areaOrganizacionals, Collection<Experiencia> experiencias) {
 		
 		this.colaborador = colaborador;
 		this.configuracaoCampoExtras = CampoExtraUtil.preencheConteudoCampoExtra(colaborador.getCamposExtras(),  configuracaoCampoExtras);
@@ -65,6 +67,7 @@ public class RelatorioPerformanceFuncional {
 		this.catsColaborador = catsColaborador;
 		this.participacoesNaCipaColaborador = participacoesNaCipaColaborador;
 		this.areaOrganizacionals = areaOrganizacionals;
+		this.experiencias = experiencias;
 	}
 
 	public RelatorioPerformanceFuncional() {
@@ -156,6 +159,10 @@ public class RelatorioPerformanceFuncional {
 		return areaOrganizacionals;
 	}
 	
+	public Collection<Experiencia> getExperiencias() {
+		return experiencias;
+	}
+
 	public Boolean isCamposExtras() {
 		return configuracaoCampoExtras.size() > 0;
 	}

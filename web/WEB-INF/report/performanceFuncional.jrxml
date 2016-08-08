@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="performanceFuncional" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="f5bf1021-9960-4142-9856-02d50ce124e5">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.9965000000000472"/>
-	<property name="ireport.x" value="6"/>
-	<property name="ireport.y" value="51"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="210"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -54,6 +54,7 @@
 	<field name="colaborador.pessoal.tituloEleitoral.titEleitZona" class="java.lang.String"/>
 	<field name="colaborador.pessoal.tituloEleitoral.titEleitSecao" class="java.lang.String"/>
 	<field name="camposExtras" class="java.lang.Boolean"/>
+	<field name="experiencias" class="java.lang.Object"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
 	</variable>
@@ -801,23 +802,6 @@
 			<band splitType="Stretch"/>
 		</groupFooter>
 	</group>
-	<group name="Titulo">
-		<groupExpression><![CDATA[$F{titulo}]]></groupExpression>
-		<groupHeader>
-			<band splitType="Stretch"/>
-		</groupHeader>
-		<groupFooter>
-			<band height="18" splitType="Stretch">
-				<subreport isUsingCache="true">
-					<reportElement key="subreport-14" positionType="Float" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="1" width="782" height="13" uuid="c9f31a8f-bc24-43d2-b907-94757ee3a0bb"/>
-					<subreportParameter name="REPORT_DATA_SOURCE">
-						<subreportParameterExpression><![CDATA[$F{documentoAnexosCandidato}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_documentosDoCandidato.jasper"]]></subreportExpression>
-				</subreport>
-			</band>
-		</groupFooter>
-	</group>
 	<group name="CaposExtras">
 		<groupExpression><![CDATA[$F{performance}]]></groupExpression>
 		<groupHeader>
@@ -833,6 +817,40 @@
 		</groupHeader>
 		<groupFooter>
 			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="Titulo">
+		<groupExpression><![CDATA[$F{titulo}]]></groupExpression>
+		<groupHeader>
+			<band height="18" splitType="Stretch">
+				<subreport isUsingCache="true">
+					<reportElement key="subreport-14" positionType="Float" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="5" width="782" height="13" uuid="c9f31a8f-bc24-43d2-b907-94757ee3a0bb"/>
+					<subreportParameter name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{documentoAnexosCandidato}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_documentosDoCandidato.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="ExperienciaProfissional">
+		<groupExpression><![CDATA[$F{experiencias}]]></groupExpression>
+		<groupHeader>
+			<band height="18">
+				<subreport>
+					<reportElement x="0" y="5" width="782" height="13" uuid="4ddc562a-66f1-46e0-a75c-fdd161fe21fc"/>
+					<subreportParameter name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{experiencias}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_ExperienciaProfissional.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
 		</groupFooter>
 	</group>
 	<background>
