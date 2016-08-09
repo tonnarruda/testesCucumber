@@ -139,14 +139,16 @@ public class ColaboradorAvaliacaoPraticaEditActionTest
 		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
 		colaboradorAvaliacaoPraticas.add(colaboradorAvaliacaoPratica);
 		
-		Curso curso = CursoFactory.getEntity(1L);
+		Curso curso1 = CursoFactory.getEntity(1L);
+		Curso curso2 = CursoFactory.getEntity(2L);
 		
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
-		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setCurso(curso1);
 		Collection<ColaboradorTurma> colaboradorTurmas = Arrays.asList(colaboradorTurma);
 		
 		Collection<Curso> cursos =  new ArrayList<Curso>();
-		cursos.add(curso);
+		cursos.add(curso1);
+		cursos.add(curso2);
 
 		when(certificacaoManager.findOsQuePossuemAvaliacaoPratica(empresa.getId())).thenReturn(new ArrayList<Certificacao>());
 		when(colaboradorCertificacaoManager.colaboradoresQueParticipamDaCertificacao(certificacao.getId())).thenReturn(colaboradoresNaCertificacao);
@@ -305,7 +307,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest
 	{
 		when(certificacaoManager.findOsQuePossuemAvaliacaoPratica(action.getEmpresaSistema().getId())).thenReturn(certificacoes);
 		when(avaliacaoPraticaManager.findByCertificacaoId(action.getCertificacao().getId())).thenReturn(avaliacaoPraticas);
-		when(colaboradorCertificacaoManager.possuemAvaliacoesPraticasRealizadas(action.getCertificacao().getId())).thenReturn(colaboradorCertificacoes);
+		when(colaboradorCertificacaoManager.possuemAvaliacoesPraticasRealizadas(action.getCertificacao().getId(), colaboradorTurmaManager)).thenReturn(colaboradorCertificacoes);
 	}
 	
 	@Test

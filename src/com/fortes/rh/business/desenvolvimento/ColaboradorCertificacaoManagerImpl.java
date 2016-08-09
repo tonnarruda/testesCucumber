@@ -46,7 +46,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return colaboradores;
 	}
 	
-	public Collection<ColaboradorCertificacao> possuemAvaliacoesPraticasRealizadas(Long certificacaoId) {
+	public Collection<ColaboradorCertificacao> possuemAvaliacoesPraticasRealizadas(Long certificacaoId, ColaboradorTurmaManager colaboradorTurmaManager) {
 		Collection<ColaboradorAvaliacaoPratica> colabAvaliacoesPraticasTemp = new ArrayList<ColaboradorAvaliacaoPratica>();
 		CollectionUtil<ColaboradorAvaliacaoPratica> colectionUtil = new CollectionUtil<ColaboradorAvaliacaoPratica>();
 		
@@ -67,9 +67,23 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 					colaboradorCertificacao.setColaboradorAvaliacaoPraticaAtual((ColaboradorAvaliacaoPratica)colabAvaliacoesPraticasTemp.toArray()[0]);
 				}
 			}
+
+			checaSePossivelInserirNovaNotaAvaPratica(colaboradorTurmaManager,colaboradorCertificacao,colaboradorId);
 		}
 		
 		return colaboradoresCertificacoes;
+	}
+
+	private void checaSePossivelInserirNovaNotaAvaPratica(ColaboradorTurmaManager colaboradorTurmaManager, ColaboradorCertificacao colaboradorCertificacao, Long colaboradorId) {
+		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(colaboradorCertificacao.getCertificacao().getId(), null, colaboradorId);
+		
+		if(colaboradoresTurmas.size() > 0){
+			colaboradorCertificacao.setPossivelInserirNotaAvPratica(true);
+			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) {
+				if(!colaboradorTurma.isAprovado())
+					colaboradorCertificacao.setPossivelInserirNotaAvPratica(false);
+			}
+		}
 	}
 
 	public Collection<ColaboradorCertificacao> colaboradoresParticipamCertificacao(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] filtroColaboradoresIds, String situacaoColaborador)	{

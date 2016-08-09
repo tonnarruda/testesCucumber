@@ -44,6 +44,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	private Certificacao certificacao;
 	private Colaborador colaborador; 
 	private ColaboradorCertificacao colaboradorCertificacao;
+	private boolean possivelInserirNotaAvPratica;
 	
 	public String prepare() throws Exception
 	{
@@ -62,11 +63,11 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 			return Action.SUCCESS;
 
 		colaboradores = colaboradorCertificacaoManager.colaboradoresQueParticipamDaCertificacao(certificacao.getId());
-		colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 
 		if(colaborador != null && colaborador.getId() != null && certificacao != null && certificacao.getId() != null)	{
 			colaboradorCertificacaos = colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
 			populaColaboradorTurma();
+			checaSePossivelInserirNotaAvPratica();
 			populaColaboradorAvaliacaoPratica();
 		}
 		
@@ -76,15 +77,32 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
+	private void checaSePossivelInserirNotaAvPratica() {
+		if(!possivelInserirNotaAvPratica){
+			if(colaboradorCertificacaos.size() >= 1){
+				colaboradorCertificacao = (ColaboradorCertificacao) colaboradorCertificacaos.toArray()[0];
+				populaColaboradorTurma();	
+				possivelInserirNotaAvPratica = false;
+			}else
+				possivelInserirNotaAvPratica = true;
+		}
+	}
+
 	private void populaColaboradorTurma(){
+		colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		Collection<Curso> cursos = certificacaoManager.findCursosByCertificacaoId(certificacao.getId());
-		Collection<ColaboradorTurma> colaboradorTurmasRealizadas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao.getId(), colaboradorCertificacao.getId(), colaborador.getId());
+		Collection<ColaboradorTurma> colaboradorTurmasRealizadas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao.getId(), colaboradorCertificacao != null ? colaboradorCertificacao.getId() : null, colaborador.getId());
+		possivelInserirNotaAvPratica = colaboradorCertificacao != null && colaboradorCertificacao.getId() != null;
 		for (Curso curso : cursos) {
 			boolean realizouTurma = false;
 			for (ColaboradorTurma colaboradorTurma : colaboradorTurmasRealizadas) {
 				if(colaboradorTurma.getCurso().getId().equals(curso.getId())){
 					colaboradorTurmas.add(colaboradorTurma);
 					realizouTurma = true;
+					
+					if(!colaboradorTurma.isAprovado())
+						possivelInserirNotaAvPratica = false;
+
 					continue;
 				}
 			}
@@ -94,14 +112,16 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 				colaboradorTurma.setCurso(curso);
 				colaboradorTurma.setTurmaDescricao("Não realizou o curso");
 				colaboradorTurmas.add(colaboradorTurma);
+				possivelInserirNotaAvPratica = false;
 			}
 		}
+		
 	}
 	
 	private void populaColaboradorAvaliacaoPratica() 
 	{
 		Collection<AvaliacaoPratica> avaliacoesPraticasDoCertificado = avaliacaoPraticaManager.findByCertificacaoId(certificacao.getId());
-		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId(), null, true, true);
+		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao != null ? colaboradorCertificacao.getId() : null, null, true, true);
 		colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
 		ColaboradorAvaliacaoPratica ColaboradorAvaliacaoPratica = null;
 		
@@ -205,8 +225,8 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		if((certificacao == null || certificacao.getId() == null) || (avaliacaoPratica ==null || avaliacaoPratica.getId()==null))
 			return Action.SUCCESS;
 
-		colaboradorCertificacaos = colaboradorCertificacaoManager.possuemAvaliacoesPraticasRealizadas(certificacao.getId());
-
+		colaboradorCertificacaos = colaboradorCertificacaoManager.possuemAvaliacoesPraticasRealizadas(certificacao.getId(), colaboradorTurmaManager);
+		
 		return Action.SUCCESS;
 	}
 	
@@ -391,5 +411,13 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	public void setColaboradorCertificacaos(
 			Collection<ColaboradorCertificacao> colaboradorCertificacaos) {
 		this.colaboradorCertificacaos = colaboradorCertificacaos;
+	}
+
+	public boolean isPossivelInserirNotaAvPratica() {
+		return possivelInserirNotaAvPratica;
+	}
+
+	public void setPossivelInserirNotaAvPratica(boolean possivelInserirNotaAvPratica) {
+		this.possivelInserirNotaAvPratica = possivelInserirNotaAvPratica;
 	}
 }

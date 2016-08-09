@@ -174,8 +174,8 @@
 		<li>
 			<@ww.div cssClass="divInfo" cssStyle="width: 950px;">
 				<ul>
-					<@ww.select label="Certificações com avaliações práticas" name="certificacao.id" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradoresLote.action');" cssStyle="width: 800px;" />
-					<@ww.select label="Avaliação prática" name="avaliacaoPratica.id" list="avaliacoesPraticas" listKey="id" listValue="titulo" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradoresLote.action');" cssStyle="width: 800px;" />
+					<@ww.select label="Certificações com avaliações práticas" name="certificacao.id" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="$('#avaliacaoPraticaId option').val('');submeter('buscaColaboradoresLote.action');" cssStyle="width: 800px;" />
+					<@ww.select label="Avaliação prática" name="avaliacaoPratica.id" id="avaliacaoPraticaId" list="avaliacoesPraticas" listKey="id" listValue="titulo" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradoresLote.action');" cssStyle="width: 800px;" />
 					<br><br>
 				</ul>
 			</@ww.div>
@@ -223,7 +223,7 @@
 					<@display.column property="colaborador.nome" title="Nome do Colaborador" style="width: 500px;"/>
 						
 					<@display.column title="Avaliações Certificadas Respondidas em" style="width: 180px;text-align: center;height: 30px !important">
-						<#if (!colabCertificacao.colaboradoresAvaliacoesPraticas?exists) || (colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao.id?exists)>
+						<#if (!colabCertificacao.colaboradoresAvaliacoesPraticas?exists) || (colabCertificacao.colaboradorAvaliacaoPraticaAtual?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao?exists && colabCertificacao.colaboradorAvaliacaoPraticaAtual.colaboradorCertificacao.id?exists && colabCertificacao.possivelInserirNotaAvPratica)>
 							<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" cssStyle="width: 100px;" headerKey="" headerValue="Nova nota" onchange="verificaCertificacao(${i}, this.value);ajustaFormSubmit(${i});"/>
 						<#else>
 							<@ww.select id="avPraticas-${i}" list="colaboradorCertificacaos[${i}].colaboradoresAvaliacoesPraticas" name="colaboradorCertificacaos[${i}].colaboradorAvaliacaoPraticaAtual.id" listKey="id" listValue="dataFormatada" cssStyle="width: 100px;" onchange="verificaCertificacao(${i}, this.value);ajustaFormSubmit(${i});"/>

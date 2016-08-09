@@ -21,7 +21,7 @@ public interface ColaboradorCertificacaoManager extends GenericManager<Colaborad
 	Date getMaiorDataDasTurmasDaCertificacao(Long colaboradorCertificacaoId);
 	boolean existeColaboradorCertificadoEmUmaTurmaPosterior(Long turmaId, Long colaboradorCertificacaoId);
 	Collection<ColaboradorCertificacao> colaboradoresParticipamCertificacao(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] filtroColaboradoresIds, String situacaoColaborador);
-	Collection<ColaboradorCertificacao> possuemAvaliacoesPraticasRealizadas(Long certificacaoId);
+	Collection<ColaboradorCertificacao> possuemAvaliacoesPraticasRealizadas(Long certificacaoId, ColaboradorTurmaManager colaboradorTurmaManager);
 	Collection<Colaborador> colaboradoresQueParticipamDaCertificacao(Long certificadosId);
 	void reprocessaCertificacao(Long certificacaoId, CertificacaoManager certificacaoManager);
 }

@@ -2284,7 +2284,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(3, colaboradores.size());
 		assertEquals(2, colaboradoresIngtegradosComAC.size());
 		
-		Colaborador colaboradorAtivo = (Colaborador) colaboradoresAtivos.toArray()[1];
+		Colaborador colaboradorAtivo = (Colaborador) colaboradoresAtivos.toArray()[0];
 		
 		assertEquals(2, colaboradoresAtivos.size());
 		assertEquals(colaborador.getId(), colaboradorAtivo.getId());

@@ -38,6 +38,8 @@
 
 				if(validaFormulario('form', new Array(), arrayDataValida, true))
 					return	document.form.submit();
+				else
+					$('.processando').remove();
 			}
 		}
 		
@@ -120,9 +122,14 @@
 		<li>
 			<@ww.div cssClass="divInfo" cssStyle="width: 950px;">
 				<ul>
-					<@ww.select label="Certificações com avaliações práticas" name="certificacao.id" id="certificacaoId" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="$('#colaboradorId').val('');submeter('buscaColaboradores.action');" cssStyle="width: 800px;" />
-					<@ww.select label="Colaborador" name="colaborador.id" id="colaboradorId" list="colaboradores" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
-					<@ww.select label="Certificações em que o colaborador foi aprovado" id="colaboradorCertificacaoId" name="colaboradorCertificacao.id" list="colaboradorCertificacaos" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
+					<@ww.select label="Certificações com avaliações práticas" name="certificacao.id" id="certificacaoId" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="$('#colaboradorId option').val('');submeter('buscaColaboradores.action');" cssStyle="width: 800px;" />
+					<@ww.select label="Colaborador" name="colaborador.id" id="colaboradorId" list="colaboradores" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="$('#colaboradorCertificacaoId option').val('');submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
+					<#if possivelInserirNotaAvPratica>
+						<@ww.select label="Certificações em que o colaborador foi aprovado" id="colaboradorCertificacaoId" name="colaboradorCertificacao.id" list="colaboradorCertificacaos" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Nova Certificação" onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
+					<#else>
+						<@ww.select label="Certificações em que o colaborador foi aprovado" id="colaboradorCertificacaoId" name="colaboradorCertificacao.id" list="colaboradorCertificacaos" listKey="id" listValue="dataFormatada" onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
+					</#if>
+					
 					<br><br>
 				</ul>
 			</@ww.div>

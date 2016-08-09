@@ -59,7 +59,9 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	@Transient
 	private ColaboradorTurma colaboradorTurma;
 	@Transient
-	private String dataString;//Usado no DWR
+	private String dataString;//Usado no mapeamento do DWR
+	@Transient
+	private boolean possivelInserirNotaAvPratica;
 
 	public ColaboradorCertificacao() {
 	}
@@ -436,5 +438,13 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 
 	public String getDataString() {
 		return DateUtil.formataDiaMesAno(data);
+	}
+
+	public boolean isPossivelInserirNotaAvPratica() {
+		return possivelInserirNotaAvPratica;
+	}
+
+	public void setPossivelInserirNotaAvPratica(boolean possivelInserirNotaAvPratica) {
+		this.possivelInserirNotaAvPratica = possivelInserirNotaAvPratica;
 	}
 }
