@@ -7,6 +7,10 @@
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>
 	
+		<action name="findJson" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="find">
+		     <result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
+		     <param name="contentType">application/json</param>
+		</action>
 		<action name="list" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="list">
 			<interceptor-ref name="defaultListStack">
 	    		<param name="scope.session">nomeBusca,cpfBusca,indicadoPor,observacaoRH,visualizar,dataCadIni,dataCadFim,exibeContratados,exibeExterno</param>

@@ -52,6 +52,7 @@ import com.fortes.rh.model.dicionario.CampoExtra;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
@@ -1252,6 +1253,11 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	@TesteAutomatico
 	public boolean existeCamposExtras(Long camposExtrasId) {
 		return getDao().existeCamposExtras(camposExtrasId);
+	}
+	
+	@TesteAutomatico
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) {
+		return getDao().getAutoComplete(descricao, empresaId);
 	}
 	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)

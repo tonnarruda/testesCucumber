@@ -193,6 +193,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	private IndiceHistoricoManager indiceHistoricoManager;
 	private RelatorioPerformanceFuncional relatorioPerformanceFuncional;
+	
+	private String descricao;
+	private String json;
 
 	private String nomeBusca;
 	private String cpfBusca;
@@ -1977,5 +1980,21 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager)
 	{
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public String getJson() {
+		return json;
+	}
+
+	public void setJson(String json) {
+		this.json = json;
 	}
 }

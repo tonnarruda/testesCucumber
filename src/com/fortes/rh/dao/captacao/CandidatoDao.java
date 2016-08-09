@@ -15,6 +15,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 
@@ -61,4 +62,5 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public void deleteCargosPretendidos(Long... cargosIds);
 	public void inserirNonoDigitoCelular(Long[] ufIds);
 	public boolean existeCamposExtras(Long camposExtrasId);
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 }

@@ -4082,7 +4082,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new AutoCompleteVO(c.id, c.nome || ' (' || c.nomeComercial || ') CPF: ' || c.pessoal.cpf ) ");
+		hql.append("select new AutoCompleteVO(c.id, c.nome ||  ' - CPF: ' || c.pessoal.cpf ||  ' - ' || c.matricula ) ");
 		hql.append("from Colaborador as c ");
 		
 		hql.append(" where c.empresa.id = :empresaId and ( ");

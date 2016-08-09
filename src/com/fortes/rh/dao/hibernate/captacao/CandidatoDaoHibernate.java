@@ -49,6 +49,7 @@ import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.util.ArquivoUtil;
@@ -1434,5 +1435,24 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria.add(Expression.eq("c.camposExtras.id", camposExtrasId));
 
 		return criteria.list().size() > 0;
+	}
+	
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new AutoCompleteVO(c.id, c.nome ||  ' - CPF: ' || c.pessoal.cpf) ");
+		hql.append("from Candidato as c ");
+		
+		hql.append(" where c.empresa.id = :empresaId and ( ");
+		hql.append(" normalizar(upper(c.nome)) like normalizar(:descricao) ");
+		hql.append(" or normalizar(upper(c.pessoal.cpf)) like normalizar(:descricao) ) ");
+		
+		hql.append(" order by c.nome");		
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setString("descricao", "%" + descricao.toUpperCase() + "%");
+		
+		return query.list();
 	}
 }

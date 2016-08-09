@@ -696,7 +696,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				experienciaManager.save(e);
 			}
 	}
-
+	
 	public void setColaboradorIdiomaManager(ColaboradorIdiomaManager colaboradorIdiomaManager)
 	{
 		this.colaboradorIdiomaManager = colaboradorIdiomaManager;

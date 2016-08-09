@@ -59,6 +59,7 @@ import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.model.geral.AreaInteresse;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
@@ -221,6 +222,9 @@ public class CandidatoListAction extends MyActionSupportList
     private String[] experienciasCheck;
     private Collection<CheckBox> experienciasCheckList = new ArrayList<CheckBox>();
 
+    private String json;
+    private String descricao;
+    
     private String palavras;
     private String forma;
 	private String nomeImg;
@@ -254,6 +258,14 @@ public class CandidatoListAction extends MyActionSupportList
 	private boolean opcaoTodasEmpresas = false;
 
 	private Long[] empresasPermitidas;
+	
+	public String find() throws Exception
+	{
+		Collection<AutoCompleteVO> data = candidatoManager.getAutoComplete(descricao, getEmpresaSistema().getId());
+		json = StringUtil.toJSON(data, null);
+		
+		return Action.SUCCESS;
+	}
 	
 	public String list() throws Exception
 	{
@@ -1869,5 +1881,21 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setAreasFormacaoCheck(String[] areasFormacaoCheck) {
 		this.areasFormacaoCheck = areasFormacaoCheck;
+	}
+
+	public String getJson() {
+		return json;
+	}
+
+	public void setJson(String json) {
+		this.json = json;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 }

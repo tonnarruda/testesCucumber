@@ -629,7 +629,7 @@ public class ColaboradorListActionTest
 	
 	@Test
 	public void testFind() throws Exception{
-		String descricao = "descroção";
+		String descricao = "descrição";
 		action.setDescricao(descricao);
 		
 		AutoCompleteVO autoCompleteVO = new AutoCompleteVO();

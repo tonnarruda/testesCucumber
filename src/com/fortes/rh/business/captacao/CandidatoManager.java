@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.model.type.File;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Conhecimento;
@@ -14,6 +15,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaInteresse;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
@@ -77,4 +79,5 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public void deleteCargosPretendidos(Long... cargosIds);
 	public void inserirNonoDigitoCelular(Long[] ufIds);
 	public boolean existeCamposExtras(Long camposExtrasId);
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 }

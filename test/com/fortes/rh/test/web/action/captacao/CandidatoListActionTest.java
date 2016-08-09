@@ -65,6 +65,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.model.geral.AreaInteresse;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
@@ -90,6 +91,7 @@ import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.captacao.CandidatoListAction;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
 public class CandidatoListActionTest 
@@ -803,4 +805,20 @@ public class CandidatoListActionTest
 		when(configuracaoImpressaoCurriculoManager.findByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId(), action.getEmpresaSistema().getId())).thenReturn(ConfiguracaoImpressaoCurriculoFactory.getEntity(1L));
 		assertEquals("success", action.infoCandidato());
 	}
+	
+	@Test
+	public void testFind() throws Exception{
+		String descricao = "descrição";
+		action.setDescricao(descricao);
+		
+		AutoCompleteVO autoCompleteVO = new AutoCompleteVO();
+		Collection<AutoCompleteVO> autoCompleteVOs = new ArrayList<AutoCompleteVO>();
+		autoCompleteVOs.add(autoCompleteVO);
+		
+		when(candidatoManager.getAutoComplete(descricao, 1L)).thenReturn(autoCompleteVOs);
+		
+		assertEquals(Action.SUCCESS, action.find());
+		assertEquals("[{\"id\":\"\",\"value\":\"\"}]", action.getJson());
+	}
+
 }
