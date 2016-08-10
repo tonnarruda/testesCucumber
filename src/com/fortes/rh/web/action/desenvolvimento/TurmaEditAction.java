@@ -190,6 +190,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private boolean manterAssinatura;
 	private boolean imprimirNotaNoVerso;
 	private boolean somenteLeitura;
+	private boolean existeColaboradorCertificado = false;
 
 	private Map<Long, String> despesas = new HashMap<Long, String>();
 	private String[] horariosIni;
@@ -277,6 +278,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		contemCustosDetalhados = !turmaTipoDespesaManager.findTipoDespesaTurma(turma.getId()).isEmpty();
 
 		somenteLeitura = getEmpresaSistema().isControlarVencimentoPorCertificacao() && colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turma.getId(), null);
+		if(turma.getRealizada() && !somenteLeitura)
+			existeColaboradorCertificado = colaboradorCertificacaoManager.existiColaboradorCertificadoByTurma(turma.getId());
 		
 		if(somenteLeitura)
 			addActionMessage("Não é possível realizar a edição, existem colaboradores certificados nesta turma e em turmas posteriores.");
@@ -1367,5 +1370,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public void setTurmaDocumentoAnexoManager(
 			TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) {
 		this.turmaDocumentoAnexoManager = turmaDocumentoAnexoManager;
+	}
+
+	public boolean isExisteColaboradorCertificado() {
+		return existeColaboradorCertificado;
 	}
 }

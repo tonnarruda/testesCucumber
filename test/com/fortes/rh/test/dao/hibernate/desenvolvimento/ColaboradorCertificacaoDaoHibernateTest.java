@@ -562,6 +562,50 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(colaborador1.getId(), ((Long) colaboradorCertificacaoDao.possiveisColaboradoresCertificados(certificacao.getId()).toArray()[0]));
 	}
 	
+	@Test
+	public void testExistiColaboradorCertificadoByTurmaTrue(){
+		Turma turma = TurmaFactory.getEntity();
+		turmaDao.save(turma);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, null, turma);
+		colaboradorTurma.setAprovado(true);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacaoDao.save(certificacao);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, new Date());
+		colaboradorCertificacao.setColaboradoresTurmas(Arrays.asList(colaboradorTurma));
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+		
+		assertTrue(colaboradorCertificacaoDao.existiColaboradorCertificadoByTurma(turma.getId()));
+	}
+	
+	@Test
+	public void testExistiColaboradorCertificadoByTurmaTFalse(){
+		Turma turma = TurmaFactory.getEntity();
+		turmaDao.save(turma);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, null, turma);
+		colaboradorTurma.setAprovado(true);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacaoDao.save(certificacao);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, new Date());
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+		
+		assertFalse(colaboradorCertificacaoDao.existiColaboradorCertificadoByTurma(turma.getId()));
+	}
+	
+	
 	public void setColaboradorCertificacaoDao(ColaboradorCertificacaoDao colaboradorCertificacaoDao)
 	{
 		this.colaboradorCertificacaoDao = colaboradorCertificacaoDao;

@@ -24,4 +24,5 @@ public interface ColaboradorCertificacaoManager extends GenericManager<Colaborad
 	Collection<ColaboradorCertificacao> possuemAvaliacoesPraticasRealizadas(Long certificacaoId, ColaboradorTurmaManager colaboradorTurmaManager);
 	Collection<Colaborador> colaboradoresQueParticipamDaCertificacao(Long certificadosId);
 	void reprocessaCertificacao(Long certificacaoId, CertificacaoManager certificacaoManager);
+	boolean existiColaboradorCertificadoByTurma(Long turmaId);
 }

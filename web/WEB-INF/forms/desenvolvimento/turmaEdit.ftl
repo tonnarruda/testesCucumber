@@ -11,6 +11,38 @@
 	#diasTable input[type='text'] { border: 1px solid #BEBEBE; width: 50px; }
 	.hora { text-align: right; }
 	.invalido { background-color: #FFEEC2 !important; }
+	
+	.confirmarDescertificacaoDiv{	min-height: 50px;
+									width: 501px;
+								    padding: 10px 12px;
+								    margin-bottom: 5px;
+    								margin-top: 5px;
+								    border-radius: 5px;
+								    color: #fff;
+								    background-color: #f0ad4e;
+								    border-color: #eea236;
+								    position: relative;
+								    font-weight: bold;	
+								}
+								
+	.confirmarDescertificacaoDiagonal{	position: absolute;
+    									-ms-transform: rotate(7deg); /* IE 9 */
+    									-webkit-transform: rotate(7deg); /* Chrome, Safari, Opera */
+    									transform: rotate(45deg);
+										width: 15px;
+									    height: 15px;
+									    background: #f0ad4e;
+									    top: -3px;
+									    left: 32px;
+									}
+									
+	.confirmarDescertificacaoButton{	border-radius: 5px;padding: 5px 10px;
+										cursor: pointer;
+										font-weight: bold;
+										background: white;
+										border: 1px solid white;
+										color: #eea236;" 
+									}
 </style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js?version=${versao}"/>'></script>
@@ -51,6 +83,7 @@
 	<#assign temPresencasRegistradas = turma.temPresenca?exists && turma.temPresenca/>
 	
 	<script type="text/javascript">
+		var confirmacaoDescertificacao ="";
 		String.prototype.capitalize = function() {
 		    return this.charAt(0).toUpperCase() + this.slice(1);
 		}
@@ -348,6 +381,37 @@
 			
 			populaDias(document.forms[0]);
 		});
+		
+		function solicitaConfirmacaoDescertificacao(){
+			if(${existeColaboradorCertificado?string} == true && $('select[name=turma.realizada]').val() == "false")
+			{
+				$(".confirmarDescertificacaoDiv").show();
+				confirmacaoDescertificacao = "false";
+				$("#btnGravar").removeClass("btnGravar");
+				$("#btnGravar").addClass("btnGravarDesabilitado");
+			}
+			
+			if($('select[name=turma.realizada]').val() == "true")
+			{
+				$(".confirmarDescertificacaoDiv").hide();
+				$("#btnGravar").removeClass("btnGravarDesabilitado");
+				$("#btnGravar").addClass("btnGravar");
+				confirmacaoDescertificacao = "";
+			}
+		}
+		
+		function confirmarDescertificacao(){
+			$(".confirmarDescertificacaoDiv").hide();
+			$("#btnGravar").removeClass("btnGravarDesabilitado");
+			$("#btnGravar").addClass("btnGravar");
+			confirmacaoDescertificacao = "true";
+		}
+		
+		function enviar(){
+			if(confirmacaoDescertificacao != "false")
+			validarCampos();	
+			
+		}
 	</script>
 <@ww.head/>
 
@@ -357,7 +421,7 @@
 	<@ww.actionerror />
 	<@ww.actionmessage />
 	
-	<@ww.form id="formTurma" name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST" enctype="multipart/form-data">
+	<@ww.form id="formTurma" name="form" action="${formAction}" onsubmit="enviar()" validate="true" method="POST" enctype="multipart/form-data">
 		
 		<#if turmaPertenceAEmpresaLogada>
 			<@ww.select label="Curso" name="turma.curso.id" list="cursos" id="curso" listKey="id" listValue="nome"  headerKey="" headerValue="Selecione..." onchange="getDocumentoAnexos(this.value);" cssStyle="width: 611px;"/>
@@ -386,9 +450,18 @@
 			</div> 
 		</li>
 		
-		<@ww.select label="Realizada" name="turma.realizada" list=r"#{true:'Sim',false:'Não'}" liClass="liLeft" cssStyle="width: 80px;"/>
+		<@ww.select label="Realizada" name="turma.realizada" list=r"#{true:'Sim',false:'Não'}" liClass="liLeft" cssStyle="width: 80px;" onchange="solicitaConfirmacaoDescertificacao()"/>
 		<@ww.textfield label="Horário" maxLength="20" name="turma.horario" id="horario" liClass="liLeft"/>
 		<@ww.textfield label="Qtd. Prevista de Participantes" name="turma.qtdParticipantesPrevistos" id="qtdParticipantesPrevistos" cssStyle="width:30px; text-align:right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));" />
+		<div class="wwctrl confirmarDescertificacaoDiv" style="display:none" >
+  			<div class="confirmarDescertificacaoDiagonal"></div>
+			
+			Esta turma contêm colaboradores certificados. 
+			Ao informar que a turma não foi realizada, todos os colaboradores serão descertificados e as notas de avaliações prática serão excluídas.<br><br>
+			Clique em 'Confirmar' para possibilitar gravar esta alteração. Caso  não deseje confirmar a alteração, informe 'Realizada' como 'Sim'.<br><br>
+
+		  	<button onclick="confirmarDescertificacao()"; type="button" class="confirmarDescertificacaoButton">Confirmar</button>
+		</div>
 		
 		<fieldset style="padding: 5px 0px 5px 5px; width: 600px; height: 130px;">
 			<legend>Instrutor</legend>
@@ -446,7 +519,6 @@
 				<@ww.label value="a" liClass="liLeft" />
 				<@ww.datepicker required="true" name="turma.dataPrevFim" value="${dataFim}" id="prevFim" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataFim" /><br />
 			</#if>
-
 			<br />
 			
 			<div id="wwctrl_diasCheck" class="wwctrl">
@@ -501,7 +573,7 @@
 
 	<#if !somenteLeitura>
 		<div class="buttonGroup">
-			<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}"></button>
+			<button id="btnGravar" onclick="enviar()" class="btnGravar" accesskey="${accessKey}"></button>
 			<button onclick="window.location='${urlVoltar}'" class="btnVoltar"></button>
 		</div>
 	</#if>

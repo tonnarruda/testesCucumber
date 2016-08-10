@@ -3,6 +3,7 @@ package com.fortes.rh.test.business.desenvolvimento;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -504,5 +505,21 @@ public class ColaboradorCertificacaoManagerTest
 		
 		assertEquals(1, colaboradorescertificacoes.size());
 		assertNull(colaboradorNaoCertificacaoResultado.getData());
+	}
+	
+	@Test
+	public void existiColaboradorCertificadoByTurmaTrue()
+	{
+		Long turmaId = 1L;
+		when(colaboradorCertificacaoDao.existiColaboradorCertificadoByTurma(turmaId)).thenReturn(true);
+		assertTrue(colaboradorCertificacaoManager.existiColaboradorCertificadoByTurma(turmaId));
+	}
+	
+	@Test
+	public void existiColaboradorCertificadoByTurmaFalse()
+	{
+		Long turmaId = 1L;
+		when(colaboradorCertificacaoDao.existiColaboradorCertificadoByTurma(turmaId)).thenReturn(false);
+		assertFalse(colaboradorCertificacaoManager.existiColaboradorCertificadoByTurma(turmaId));
 	}
 }

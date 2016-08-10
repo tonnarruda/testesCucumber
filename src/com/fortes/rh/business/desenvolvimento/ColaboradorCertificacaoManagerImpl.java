@@ -430,11 +430,10 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 
 	private void descertificaRecursivo(Long certificacaoId) {
 		Collection<ColaboradorCertificacao> colaboradoresCertificacoes = getDao().findByColaboradorIdAndCertificacaoId(null, certificacaoId);
-		colaboradorAvaliacaoPraticaManager.removeByCertificacaoId(certificacaoId);
-		
 		if(colaboradoresCertificacoes.size() > 0){
 			Long[] colaboradorcertificacaoIds = new CollectionUtil<ColaboradorCertificacao>().convertCollectionToArrayIds(colaboradoresCertificacoes);
 			Collection<Long> certificacoesIdsPrerequisito = getDao().findCertificacoesIdsDependentes(colaboradorcertificacaoIds);
+			colaboradorAvaliacaoPraticaManager.setColaboradorCertificacoNull(colaboradorcertificacaoIds);
 			
 			if(certificacoesIdsPrerequisito.size() > 0){
 				for (Long certificacoId : certificacoesIdsPrerequisito) 
@@ -442,7 +441,6 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			}
 			
 			getDao().removeColaboradorCertificacaoColaboradorTurma(certificacaoId);
-			colaboradorAvaliacaoPraticaManager.setColaboradorCertificacoNull(colaboradorcertificacaoIds);
 			getDao().remove(colaboradorcertificacaoIds);
 		}
 	}
@@ -466,5 +464,9 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 
 	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
 		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
+	}
+
+	public boolean existiColaboradorCertificadoByTurma(Long turmaId) {
+		return getDao().existiColaboradorCertificadoByTurma(turmaId);
 	}
 }

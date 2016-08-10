@@ -568,4 +568,19 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		
 		return criteria.list();
 	}
+	
+	public boolean existiColaboradorCertificadoByTurma(Long turmaId){
+		DetachedCriteria colaboradorTurmaId = DetachedCriteria.forClass(ColaboradorTurma.class, "ct").setProjection(Projections.property("ct.id"))
+				.add(Restrictions.eq("ct.turma.id", turmaId));
+		
+		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
+		criteria.createCriteria("cc.colaboradoresTurmas", "ccct", Criteria.INNER_JOIN);
+		criteria.add(Subqueries.propertyIn("ccct.id",colaboradorTurmaId));
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cc.id"), "id");
+		criteria.setProjection(p);
+
+		return criteria.list().size() > 0;
+	}
 }

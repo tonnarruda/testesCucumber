@@ -126,7 +126,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		}
 		else{
 			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 
-				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), false);
+				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), true);
 		}
 	}
 

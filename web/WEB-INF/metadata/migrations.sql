@@ -1,3 +1,5 @@
+update certificacao set periodicidade = null where periodicidade = 0;--.go
+
 CREATE OR REPLACE FUNCTION verifica_certificacao(id_certificado BIGINT, id_colaborador BIGINT) RETURNS BOOLEAN AS $$  
 BEGIN 
 	return (select (
@@ -24,7 +26,8 @@ BEGIN
 					select distinct caval.avaliacaopratica_id from colaboradoravaliacaopratica caval where caval.colaborador_id = id_colaborador
 					and caval.certificacao_id = id_certificado
 					and caval.nota >= (select aval.notaMinima from avaliacaopratica aval where aval.id = caval.avaliacaopratica_id)
-					and caval.data > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000'))
+					and caval.data > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc 
+					inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000'))
 					order by caval.avaliacaopratica_id)))
 	) 
 	as situacao 
@@ -50,55 +53,10 @@ BEGIN
 END; 
 $$ LANGUAGE plpgsql; --.go 
 
-
-CREATE OR REPLACE FUNCTION id_coalbCertificacao(idColaborador BIGINT, idCertificacao BIGINT, dataCert date) RETURNS BIGINT[]
-AS $$ DECLARE
-	BEGIN
-		RAISE NOTICE 'colaborador is %',idColaborador;
-
-		IF exists (select colaboradorcertificacao_id from colaboradoravaliacaopratica where colaboradorcertificacao_id  in (select id from colaboradorcertificacao where colaborador_id = idColaborador and certificacao_id = idCertificacao and data = dataCert))
-		THEN
-			return (select Array(
-				select id from colaboradorcertificacao where colaborador_id = idColaborador and certificacao_id = idCertificacao and data = dataCert
-				and not id in (	
-						select min(id) from colaboradorcertificacao where colaborador_id = idColaborador and certificacao_id = idCertificacao and data = dataCert 
-						and id in (select colaboradorcertificacao_id from colaboradoravaliacaopratica where colaboradorcertificacao_id  in (select id from colaboradorcertificacao where colaborador_id = idColaborador and certificacao_id = idCertificacao and data = dataCert))
-														
-						)
-				and id not in (select colaboradorcertificacaoprerequisito_id from colaboradorcertificacao where colaboradorcertificacaoprerequisito_id is not null)
-			));
-		ELSE
-			return (select Array(
-				select id from colaboradorcertificacao where colaborador_id = idColaborador and certificacao_id = idCertificacao and data = dataCert
-				and not id in (
-
-								select min(id) from colaboradorcertificacao where colaborador_id = idColaborador and certificacao_id = idCertificacao and data = dataCert 
-								and id in (select id from colaboradorcertificacao where colaborador_id = idColaborador and certificacao_id = idCertificacao and data = dataCert)
-								
-								
-						)
-				and id not in (select colaboradorcertificacaoprerequisito_id from colaboradorcertificacao where colaboradorcertificacaoprerequisito_id is not null)
-			));
-		END IF;
-		
-	END;
-$$ LANGUAGE plpgsql;--.go
-
-CREATE OR REPLACE FUNCTION ajusta_certificados() RETURNS integer AS $$
-DECLARE
-	mv RECORD;
-	BEGIN
-	FOR mv IN select colaborador_id as colId, certificacao_id as certId, data as data from colaboradorcertificacao where colaboradorcertificacaoprerequisito_id is null group by colaborador_id, certificacao_id, data having count(*) > 1
-		LOOP
-			delete from colaboradorcertificacao_colaboradorturma where colaboradorcertificacao_id in (select unnest(id_coalbCertificacao(mv.colId, mv.certId, mv.data)));
-			delete from colaboradorcertificacao where id in (select unnest(id_coalbCertificacao(mv.colId, mv.certId, mv.data)));
-			
-		END LOOP;
-	RETURN 1;
-END;
-$$ LANGUAGE plpgsql;--.go
-
-
-SELECT ajusta_certificados();--.go
-DROP FUNCTION id_coalbCertificacao(idColaborador BIGINT, idCertificacao BIGINT, dataCert date); --.go
-DROP FUNCTION ajusta_certificados(); --.go
+--script para ser executado na Vega para remover a certificação de educação básica.
+delete from certificacao_curso  where certificacaos_id = 3;
+delete from colaboradorcertificacao_colaboradorturma where colaboradorcertificacao_id in(select id from colaboradorcertificacao where certificacao_id = 3);
+delete from colaboradoravaliacaopratica where certificacao_id = 3;
+delete from colaboradorcertificacao where certificacao_id = 3;
+update faixasalarial_certificacao  set certificacaos_id  = 181 where certificacaos_id = 3;
+delete from certificacao where id = 3; 

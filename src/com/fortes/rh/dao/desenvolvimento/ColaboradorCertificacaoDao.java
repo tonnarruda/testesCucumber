@@ -27,4 +27,5 @@ public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertif
 	Collection<Long> findCertificacoesIdsDependentes(Long[] colaboradorcertificacaoIds);
 	Collection<Long> possiveisColaboradoresCertificados(Long certificacaoId);
 	Collection<ColaboradorCertificacao> colaboradoresAprovadosEmTodosOsCursosDaCertificacao(Long certificacaoId);
+	boolean existiColaboradorCertificadoByTurma(Long turmaId);
 }

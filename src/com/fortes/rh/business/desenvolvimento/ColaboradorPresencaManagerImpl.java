@@ -47,7 +47,7 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 			getDao().getHibernateTemplateByGenericDao().flush();
 			colaboradorTurma = colaboradorTurmaManager.findByProjection(colaboradorTurma.getId());
-			if(validarCertificacao && !colaboradorTurma.isAprovado())
+			if(validarCertificacao && colaboradorTurma.isAprovado())
 				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
 		}
 		else{
