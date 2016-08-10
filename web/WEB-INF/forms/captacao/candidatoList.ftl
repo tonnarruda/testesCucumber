@@ -80,17 +80,10 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
 	<#assign visualizarDocumentos=false/>
-	<@authz.authorize ifNotGranted="ROLE_CAND_LIST_DOCUMENTOANEXO">
-		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO">
-			<#assign visualizarDocumentos=true/>
-		</@authz.authorize>
+	<@authz.authorize ifAllGranted="ROLE_CAND_LIST_DOCUMENTOANEXO">
+		<#assign visualizarDocumentos=true/>
 	</@authz.authorize>
-	<@authz.authorize ifNotGranted="ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO">
-		<@authz.authorize ifAllGranted="ROLE_CAND_LIST_DOCUMENTOANEXO">
-			<#assign visualizarDocumentos=true/>
-		</@authz.authorize>
-	</@authz.authorize>
-
+	
 </head>
 <body>
 	<@ww.actionmessage />
@@ -152,12 +145,13 @@
 			<a href="prepareUpdate.action?candidato.id=${candidato.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 			<a href="javascript:checaDependenciasExclusao(${candidato.id}, ${candidato.empresa.id}, '${candidato.nome}');"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			<a href="prepareUpdateCurriculo.action?candidato.id=${candidato.id}"><img border="0" title="Currículo Escaneado" src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>"></a>
-			<#if visualizarDocumentos=true>
+			<#if visualizarDocumentos = true>
 				<a href="../../geral/documentoAnexo/listCandidato.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidato.id}"><img border="0" title="Documentos do Candidato" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
 			</#if>
 			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO">
 				<a href="../../captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}&statusCandSol=I"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			</@authz.authorize>
+			
 		</@display.column>
 
 		<@display.column title="Nome" style="color: ${color}">
