@@ -298,7 +298,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
 		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
-		assertEquals(4,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testSolicitacaoCandidatoModuloExterno()

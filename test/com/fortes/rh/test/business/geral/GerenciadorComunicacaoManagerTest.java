@@ -994,8 +994,10 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
 		 GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.GESTOR_AREA);
 		 GerenciadorComunicacao gerenciadorComunicacao4 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.COGESTOR_AREA);
+		 GerenciadorComunicacao gerenciadorComunicacao5 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.USUARIOS);
+		 gerenciadorComunicacao5.setUsuarios(Arrays.asList(UsuarioFactory.getEntity(1L)));
 		 
-		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2, gerenciadorComunicacao3, gerenciadorComunicacao4);
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2, gerenciadorComunicacao3, gerenciadorComunicacao4, gerenciadorComunicacao5);
 		 
 		 Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		 colaboradores.add(colaborador);
@@ -1007,6 +1009,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(new Constraint[]{eq(colaborador.getAreaOrganizacional().getId()), eq(colaborador.getEmpresa().getId()), eq(AreaOrganizacional.RESPONSAVEL), ANYTHING}).will(returnValue(emails));
 		 areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(new Constraint[]{eq(colaborador.getAreaOrganizacional().getId()), eq(colaborador.getEmpresa().getId()), eq(AreaOrganizacional.CORRESPONSAVEL), ANYTHING}).will(returnValue(emails));
 		 comissaoMembroManager.expects(once()).method("colaboradoresComEstabilidade").withAnyArguments().will(returnValue(new HashMap<Long, Date>()));
+		 
+		 usuarioManager.expects(once()).method("findEmailsByUsuario").with(eq(new Long[]{1L}), eq(colaborador.getContato().getEmail())).will(returnValue(emails));
+
 		 mail.expects(atLeastOnce()).method("send").withAnyArguments();
 		 
 		 Exception exception = null;

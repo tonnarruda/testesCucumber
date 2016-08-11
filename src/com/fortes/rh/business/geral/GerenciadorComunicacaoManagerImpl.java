@@ -797,8 +797,16 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				}else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())){
 					emails = areaOrganizacionalManager.getEmailsResponsaveis(colaborador.getAreaOrganizacional().getId(), colaborador.getEmpresa().getId(), AreaOrganizacional.CORRESPONSAVEL, colaborador.getContato().getEmail());
 					mail.send(gerenciadorComunicacao.getEmpresa(), subject, null, msgGeral, emails);
+				}else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
+					UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
+					CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
+					Long[] usuariosIds = collUtil.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios());
+					emails = usuarioManager.findEmailsByUsuario(usuariosIds, colaborador.getContato().getEmail());
+					mail.send(empresa, subject, null, msgGeral, emails);
 				}
-			} catch (Exception e) {e.printStackTrace();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -1074,19 +1082,23 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	private void enviaEmailsUsuarios(Collection<GerenciadorComunicacao> gerenciadorComunicacaos, Empresa empresa, String subject, String mensagem){
-		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
-		CollectionUtil<Usuario> cul = new CollectionUtil<Usuario>();
-		
-		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
-				Long[] usuariosIds = cul.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios());
-				
-				try {
-					mail.send(empresa, subject, mensagem, null, usuarioManager.findEmailsByUsuario(usuariosIds, null));
-				} catch (Exception e)	{
-					e.printStackTrace();
-				}
-			} 
+		try {
+			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
+			CollectionUtil<Usuario> cul = new CollectionUtil<Usuario>();
+			
+			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
+					Long[] usuariosIds = cul.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios());
+					
+					try {
+						mail.send(empresa, subject, mensagem, null, usuarioManager.findEmailsByUsuario(usuariosIds, null));
+					} catch (Exception e)	{
+						e.printStackTrace();
+					}
+				} 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
