@@ -303,7 +303,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setProximaVersao(Date proximaversao) {
 		this.proximaVersao = proximaversao;
 	}
-	public boolean verificaRemprot() {
+	public boolean verificaLicenca() {
 		return this.proximaVersao == null || proximaVersao.before(DateUtil.criarDataMesAno(new Date()));
 	}
 	public boolean isAutenticacao() {

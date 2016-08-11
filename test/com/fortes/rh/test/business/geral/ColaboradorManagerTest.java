@@ -90,6 +90,7 @@ import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.fortes.rh.test.business.MockObjectTestCaseManager;
 import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
@@ -116,6 +117,8 @@ import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
+import com.fortes.rh.test.util.mockObjects.MockAutenticadorJarvisNaoRegistrado;
+import com.fortes.rh.test.util.mockObjects.MockAutenticadorJarvisRegistrado;
 import com.fortes.rh.test.util.mockObjects.MockImportacaoCSVUtil;
 import com.fortes.rh.test.util.mockObjects.MockRPClient;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
@@ -1145,23 +1148,6 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
 
         assertNotNull(exc);
     }
-    
-    public void testAvisoQtdCadastros() throws Exception
-    {
-//		TODO remprot
-//		colaboradorDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(95));
-//		String msg = colaboradorManager.avisoQtdCadastros();
-//		assertEquals("Atualmente existem " + 95 + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + 100 + " colaboradores.", msg);
-//
-//		colaboradorDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(96));
-//		msg = colaboradorManager.avisoQtdCadastros();
-//		assertEquals("Atualmente existem " + 96 + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + 100 + " colaboradores.", msg);
-//		
-//		colaboradorDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(10));
-//		msg = colaboradorManager.avisoQtdCadastros();
-//		assertNull(msg);
-    }
-
 
     public void testFindProjecaoSalarial() throws Exception
     {
@@ -1518,6 +1504,144 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	Collection<AreaOrganizacional> areas = Arrays.asList(new AreaOrganizacional[]{AreaOrganizacionalFactory.getEntity(1L)});
     	colaboradorDao.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(areas));
     	assertNotNull(manager.findByAreaOrganizacionalEstabelecimento(new ArrayList<Long>(), null, SituacaoColaborador.ATIVO, null, false));
+    }
+    
+    public void setupValidaQtdCadastros(int qtdColaboradorNoBanco)
+    {
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+    	parametrosDoSistema.setProximaVersao(null);
+    	
+    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(parametrosDoSistema.getId())).will(returnValue(parametrosDoSistema));
+    	colaboradorDao.expects(once()).method("countColaboradoresComHistoricos").will(returnValue(qtdColaboradorNoBanco));
+    }
+    
+    public void testValidaQtdCadastrosComQtdMenorQuePermitida()
+    {
+    	Mockit.redefineMethods(AutenticadorJarvis.class, MockAutenticadorJarvisRegistrado.class);
+    	
+    	// Quant. de colaboradores no MockAutenticadorJarvis é 100.
+    	setupValidaQtdCadastros(99);
+    	
+    	Exception exception = null;
+    	try {
+			manager.validaQtdCadastros();
+		} catch (Exception e) {
+			exception = e;
+		}
+    	
+    	assertNull(exception);
+    }
+    
+    public void testValidaQtdCadastrosComQtdIgualPermitida()
+    {
+    	Mockit.redefineMethods(AutenticadorJarvis.class, MockAutenticadorJarvisRegistrado.class);
+    	
+    	// Quant. de colaboradores no MockAutenticadorJarvis é 100.
+    	int qtdColaboradorNoBanco = 100;
+    	setupValidaQtdCadastros(qtdColaboradorNoBanco);
+    	
+    	Exception exception = null;
+    	try {
+    		manager.validaQtdCadastros();
+    	} catch (Exception e) {
+    		exception = e;
+    	}
+    	
+    	assertNotNull(exception);
+    	assertTrue(exception.getMessage().contains("Atualmente o sistema possui " + qtdColaboradorNoBanco +" colaboradores ativos."));
+    }
+    
+    public void testValidaQtdCadastrosComQtdMaiorQuePermitida()
+    {
+    	Mockit.redefineMethods(AutenticadorJarvis.class, MockAutenticadorJarvisRegistrado.class);
+    	
+    	// Quant. de colaboradores no MockAutenticadorJarvis é 100.
+    	int qtdColaboradorNoBanco = 101;
+    	setupValidaQtdCadastros(qtdColaboradorNoBanco);
+    	
+    	Exception exception = null;
+    	try {
+    		manager.validaQtdCadastros();
+    	} catch (Exception e) {
+    		exception = e;
+    	}
+    	
+    	assertNotNull(exception);
+    	assertTrue(exception.getMessage().contains("Atualmente o sistema possui " + qtdColaboradorNoBanco +" colaboradores ativos."));
+    }
+    
+    public void testValidaQtdCadastrosNaoRegistrado()
+    {
+    	Mockit.redefineMethods(AutenticadorJarvis.class, MockAutenticadorJarvisNaoRegistrado.class);
+    	
+    	// Quant. de colaboradores no MockAutenticadorJarvis é 100.
+    	int qtdColaboradorNoBanco = 80;
+    	setupValidaQtdCadastros(qtdColaboradorNoBanco);
+    	
+    	Exception exception = null;
+    	try {
+    		manager.validaQtdCadastros();
+    	} catch (Exception e) {
+    		exception = e;
+    	}
+    	
+    	assertNotNull(exception);
+    	assertTrue(exception.getMessage().startsWith("Versão demonstração"));
+    }
+    
+    public void testValidaQtdCadastrosNaoVerificaLicenca()
+    {
+    	// Quant. de colaboradores no MockAutenticadorJarvis é 100.
+    	int qtdColaboradorNoBanco = 80;
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+    	parametrosDoSistema.setProximaVersao(DateUtil.incrementaDias(new Date(), 1));
+    	
+    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(parametrosDoSistema.getId())).will(returnValue(parametrosDoSistema));
+    	
+    	Exception exception = null;
+    	try {
+    		manager.validaQtdCadastros();
+    	} catch (Exception e) {
+    		exception = e;
+    	}
+    	
+    	assertNull(exception);
+    }
+    
+    public void testAvisoQtdCadastrosAbaixoDeCincoPorCentoMenosQuePermitido() throws Exception
+    {
+    	// Quant. de colaboradores no MockAutenticadorJarvis é 100.
+    	Mockit.redefineMethods(AutenticadorJarvis.class, MockAutenticadorJarvisRegistrado.class);
+    	
+    	int qtdColaboradorNoBanco = 94;
+    	
+    	colaboradorDao.expects(once()).method("countColaboradoresComHistoricos").will(returnValue(qtdColaboradorNoBanco));
+
+    	assertNull(manager.avisoQtdCadastros());
+    }
+    
+    public void testAvisoQtdCadastrosIgualCincoPorCentoMenosQuePermitido() throws Exception
+    {
+    	// Quant. de colaboradores no MockAutenticadorJarvis é 100.
+    	Mockit.redefineMethods(AutenticadorJarvis.class, MockAutenticadorJarvisRegistrado.class);
+    	
+    	int qtdColaboradorNoBanco = 95;
+    	
+    	colaboradorDao.expects(once()).method("countColaboradoresComHistoricos").will(returnValue(qtdColaboradorNoBanco));
+    	
+    	assertTrue(manager.avisoQtdCadastros().startsWith("Atualmente existem " + qtdColaboradorNoBanco + " colaboradores cadastrados no sistema."));
+    }
+    
+    public void testAvisoQtdCadastrosAcimaDeCincoPorCentoMenosQuePermitido() throws Exception
+    {
+    	// Quant. de colaboradores no MockAutenticadorJarvis é 100.
+    	Mockit.redefineMethods(AutenticadorJarvis.class, MockAutenticadorJarvisRegistrado.class);
+    	
+    	int qtdColaboradorNoBanco = 96;
+    	
+    	colaboradorDao.expects(once()).method("countColaboradoresComHistoricos").will(returnValue(qtdColaboradorNoBanco));
+    	
+    	assertTrue(manager.avisoQtdCadastros().startsWith("Atualmente existem " + qtdColaboradorNoBanco + " colaboradores cadastrados no sistema."));
     }
     
     public void testFindEmailsDeColaboradoresByPerfis()

@@ -49,7 +49,7 @@ public class AfastamentoEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("remove").with(eq(afastamento.getId())).isVoid();
 		manager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Afastamento>()));
 		assertEquals(action.delete(), "success");
-		assertEquals("Afastamento excluído com sucesso.", action.getActionMessages().toArray()[0]);
+		assertEquals("Afastamento excluído com sucesso.", action.getActionSuccess().toArray()[0]);
 	}
 
 	public void testDeleteException() throws Exception

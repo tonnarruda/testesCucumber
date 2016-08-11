@@ -26,7 +26,7 @@ public class LoginAction extends MyActionSupport
 	private String senhaBD;
 	private String versao = "";
 	private Boolean demonstracao = false;
-	private String servidorRemprot;
+	private String servidorAutenticador;
 
 	@SuppressWarnings("unchecked")
 	public String login() throws Exception
@@ -45,12 +45,12 @@ public class LoginAction extends MyActionSupport
 			}
 
 			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-			servidorRemprot = parametrosDoSistema.getServidorRemprot();
+			servidorAutenticador = parametrosDoSistema.getServidorRemprot();
 			
-			if(servidorRemprot == null || "".equals(servidorRemprot)) 
+			if(servidorAutenticador == null || "".equals(servidorAutenticador)) 
 				return "not_conect";
 			
-			AutenticadorJarvis.verificaCopia(parametrosDoSistema.getCnpjEmpresaLicenca(), parametrosDoSistema.verificaRemprot(), parametrosDoSistema.getModulosPermitidosSomatorio());
+			AutenticadorJarvis.verificaCopia(parametrosDoSistema.getCnpjEmpresaLicenca(), parametrosDoSistema.verificaLicenca(), parametrosDoSistema.getModulosPermitidosSomatorio());
 //			AutenticadorJarvis.verificaCopia("63542443000124", true, parametrosDoSistema.getModulosPermitidosSomatorio());
 			
 		} catch (NotRegistredException e) {
@@ -75,7 +75,7 @@ public class LoginAction extends MyActionSupport
 	public String configAutenticador() throws Exception
 	{
 		try {
-			parametrosDoSistemaManager.updateServidorRemprot(servidorRemprot);
+			parametrosDoSistemaManager.updateServidorRemprot(servidorAutenticador);
 		} catch (Exception e) {
 			addActionError("Erro ao configurar servidor de autenticação." + e.getMessage());
 			e.printStackTrace();
@@ -168,11 +168,14 @@ public class LoginAction extends MyActionSupport
 		this.demonstracao = demonstracao;
 	}
 
-	public String getServidorRemprot() {
-		return servidorRemprot;
+	public String getServidorAutenticador()
+	{
+		return servidorAutenticador;
 	}
 
-	public void setServidorRemprot(String servidorRemprot) {
-		this.servidorRemprot = servidorRemprot;
+	public void setServidorAutenticador(String servidorAutenticador)
+	{
+		this.servidorAutenticador = servidorAutenticador;
 	}
+
 }

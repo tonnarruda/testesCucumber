@@ -168,12 +168,12 @@ public class Index extends MyActionSupport
 			if ( colaborador != null && colaborador.getId() != null && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_PROGRESSAO"}))
 				historicoColaboradors = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), getEmpresaSistema().getId());
 			
-			String msgAvisoQtdColaborador = null;
-			if(parametrosDoSistema.verificaRemprot())
-				msgAvisoQtdColaborador = colaboradorManager.avisoQtdCadastros();
-			
-			if (msgAvisoQtdColaborador != null)
-				addActionMessage(msgAvisoQtdColaborador);
+			if(parametrosDoSistema.verificaLicenca()){
+				String msgAvisoQtdColaborador = colaboradorManager.avisoQtdCadastros();
+
+				if (msgAvisoQtdColaborador != null)
+					addActionMessage(msgAvisoQtdColaborador);
+			}
 			
 			if (StringUtils.isNotBlank(actionMsg))
 				addActionMessage(actionMsg);

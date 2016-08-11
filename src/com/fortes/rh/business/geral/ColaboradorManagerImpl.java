@@ -112,6 +112,7 @@ import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
+import com.fortes.rh.security.licenca.AutenticadorJarvis;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -1831,35 +1832,31 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void validaQtdCadastros(Long empresaId) throws Exception
 	{
-		//TODO remprot
-//		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-//		if (parametrosDoSistema.verificaRemprot()) {
-//
-//			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos();
-//
-//			RPClient remprot = Autenticador.getRemprot();
-//			if (Autenticador.isRegistrado())
-//			{
-//				if (remprot.getUserCount() > 0 && qtdColaboradorNoBanco >= remprot.getUserCount())
-//					throw new FortesException("Sua licença só permite manter " + remprot.getUserCount() + " colaboradores ativos.<br>Atualmente o sistema possui " + qtdColaboradorNoBanco +" colaboradores ativos.");			
-//			}	
-//			else
-//				if (qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
-//					throw new FortesException("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
-//		}
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+		if (parametrosDoSistema.verificaLicenca()) {
+
+			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos();
+
+			if (AutenticadorJarvis.isRegistrado())
+			{
+				if (AutenticadorJarvis.getClient().getQtdColaboradores() > 0 && qtdColaboradorNoBanco >= AutenticadorJarvis.getClient().getQtdColaboradores())
+					throw new FortesException("Sua licença só permite manter " + AutenticadorJarvis.getClient().getQtdColaboradores() + " colaboradores ativos.<br>Atualmente o sistema possui " + qtdColaboradorNoBanco +" colaboradores ativos.");			
+			}	
+			else
+				if (qtdColaboradorNoBanco >= AutenticadorJarvis.getQtdCadastrosVersaoDemo())
+					throw new FortesException("Versão demonstração, só é permitido cadastrar " + AutenticadorJarvis.getQtdCadastrosVersaoDemo() + " Colaboradores");
+		}
 	}
 
 	public String avisoQtdCadastros() throws Exception
 	{
-//		TODO remprot
-//		int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
-//		
-//		RPClient remprot = Autenticador.getRemprot();
-//		if(Autenticador.isRegistrado()) {
-//			if (remprot.getUserCount() > 0 && (remprot.getUserCount() - (remprot.getUserCount() * 0.05)) <= qtdColaboradorNoBanco)
-//				return "Atualmente existem " + qtdColaboradorNoBanco + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + remprot.getUserCount() + " colaboradores.";			
-//		}	
-//		
+		int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos();
+		
+		if (AutenticadorJarvis.isRegistrado()){
+			if (AutenticadorJarvis.getClient().getQtdColaboradores() > 0 && (AutenticadorJarvis.getClient().getQtdColaboradores() - (AutenticadorJarvis.getClient().getQtdColaboradores() * 0.05)) <= qtdColaboradorNoBanco)
+				return "Atualmente existem " + qtdColaboradorNoBanco + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + AutenticadorJarvis.getClient().getQtdColaboradores() + " colaboradores.";			
+		}	
+		
 		return null;
 	}
 

@@ -63,7 +63,7 @@ public class IndiceListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("removeIndice").with(eq(indice.getId()));
     	 
     	assertEquals("success", action.delete());
-    	assertFalse(action.getActionMessages().isEmpty());
+    	assertFalse(action.getActionSuccess().isEmpty());
     }
 
     public void testGet() throws Exception

@@ -31,22 +31,22 @@ public class ParametrosDoSistemaTest extends TestCase {
 	
 	public void testVerificaRemprotAteHoje() {
 		parametros.setProximaVersao(new Date());
-		assertEquals(false, parametros.verificaRemprot());
+		assertEquals(false, parametros.verificaLicenca());
 	}
 	
 	public void testVerificaRemprotDataFutura() {
 		parametros.setProximaVersao(DateUtil.criarDataMesAno(21, 03, 2050));
-		assertEquals(false, parametros.verificaRemprot());
+		assertEquals(false, parametros.verificaLicenca());
 	}
 	
 	public void testVerificaRemprotDataPassada() {
 		parametros.setProximaVersao(DateUtil.criarDataMesAno(01, 02, 2000));
-		assertEquals(true, parametros.verificaRemprot());
+		assertEquals(true, parametros.verificaLicenca());
 	}
 	
 	public void testVerificaRemprotSemDataProximaVersao() {
 		parametros.setProximaVersao(null);
-		assertEquals(true, parametros.verificaRemprot());
+		assertEquals(true, parametros.verificaLicenca());
 	}
 	
 	private void seParametroDeEnvioDeEmailEhSetadoPara(Boolean podeEnviar) {

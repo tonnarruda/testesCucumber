@@ -72,7 +72,7 @@ public class AreaInteresseListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("remove").with(ANYTHING);
 
     	assertEquals("success", action.delete());
-    	assertFalse(action.getActionMessages().isEmpty());
+    	assertFalse(action.getActionSuccess().isEmpty());
     }
 
     public void testGets() throws Exception

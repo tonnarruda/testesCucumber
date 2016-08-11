@@ -15,6 +15,10 @@ public class JClient {
 	private String mensagemDeErro;
 	private JSONObject jsonObject;
 
+	public JClient() {
+		super();
+	}
+
 	public JClient(JSONObject jsonObject) {
 
 		try {
@@ -33,10 +37,25 @@ public class JClient {
 		}
 				
 	}
-	
+
 	public String getCodigoProduto()
 	{
 		return codigoProduto;
+	}
+
+	public void setCodigoProduto(String codigoProduto)
+	{
+		this.codigoProduto = codigoProduto;
+	}
+
+	public String getNomeProduto()
+	{
+		return nomeProduto;
+	}
+
+	public void setNomeProduto(String nomeProduto)
+	{
+		this.nomeProduto = nomeProduto;
 	}
 
 	public Boolean getRegistrado()
@@ -44,9 +63,19 @@ public class JClient {
 		return registrado;
 	}
 
+	public void setRegistrado(Boolean registrado)
+	{
+		this.registrado = registrado;
+	}
+
 	public Integer getQtdAcessosSimultaneos()
 	{
 		return qtdAcessosSimultaneos;
+	}
+
+	public void setQtdAcessosSimultaneos(Integer qtdAcessosSimultaneos)
+	{
+		this.qtdAcessosSimultaneos = qtdAcessosSimultaneos;
 	}
 
 	public String getRazaoSocial()
@@ -54,9 +83,9 @@ public class JClient {
 		return razaoSocial;
 	}
 
-	public String getMensagemDeErro()
+	public void setRazaoSocial(String razaoSocial)
 	{
-		return mensagemDeErro;
+		this.razaoSocial = razaoSocial;
 	}
 
 	public String getNomeCliente()
@@ -79,14 +108,24 @@ public class JClient {
 		this.dataVencimento = dataVencimento;
 	}
 
-	public String getNomeProduto()
+	public Integer getQtdColaboradores()
 	{
-		return nomeProduto;
+		return qtdColaboradores;
 	}
 
-	public void setNomeProduto(String nomeProduto)
+	public void setQtdColaboradores(Integer qtdColaboradores)
 	{
-		this.nomeProduto = nomeProduto;
+		this.qtdColaboradores = qtdColaboradores;
+	}
+
+	public String getMensagemDeErro()
+	{
+		return mensagemDeErro;
+	}
+
+	public void setMensagemDeErro(String mensagemDeErro)
+	{
+		this.mensagemDeErro = mensagemDeErro;
 	}
 
 	public JSONObject getJsonObject()
@@ -97,16 +136,6 @@ public class JClient {
 	public void setJsonObject(JSONObject jsonObject)
 	{
 		this.jsonObject = jsonObject;
-	}
-
-	public Integer getQtdColaboradores()
-	{
-		return qtdColaboradores;
-	}
-
-	public void setQtdColaboradores(Integer qtdColaboradores)
-	{
-		this.qtdColaboradores = qtdColaboradores;
 	}
 
 }

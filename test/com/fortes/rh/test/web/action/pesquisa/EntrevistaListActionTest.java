@@ -76,7 +76,7 @@ public class EntrevistaListActionTest extends MockObjectTestCase
     	entrevistaManager.expects(once()).method("delete").with(ANYTHING, ANYTHING);
 
     	assertEquals("success", entrevistaListAction.delete());
-    	assertNotNull(entrevistaListAction.getActionMsg());
+    	assertNotNull(entrevistaListAction.getActionSuccess());
     }
 
     public void testList() throws Exception

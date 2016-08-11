@@ -203,7 +203,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 	public boolean possuiModuloSESMT() throws NotConectAutenticationException, NotRegistredException
 	{
 		return SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()).equals(1L) 
-				|| !parametrosDoSistemaManager.findById(1L).verificaRemprot() 
+				|| !parametrosDoSistemaManager.findById(1L).verificaLicenca() 
 				|| !AutenticadorJarvis.getModulosNaoConfigurados().contains(75L);
 	}
 	

@@ -34,7 +34,7 @@ public class RelatorioUtil
     		pathLogoRelatorio = pathLogo;
 
     	String msgRegistro = "";
-		if (parametrosDoSistema.verificaRemprot())
+		if (parametrosDoSistema.verificaLicenca())
 		{
 			try {
 				if(AutenticadorJarvis.isDemo())

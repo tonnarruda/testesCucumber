@@ -75,4 +75,19 @@ public class MockAutenticador
 	{
 		return new RPClient(33, "RH");
 	}
+	
+	public static boolean getRegistered()
+	{
+		return true;
+	}
+
+	public static int getUserCount()
+	{
+		return 100;
+	}
+
+	public static int getQtdCadastrosVersaoDemo()
+	{
+		return 10;
+	}
 }

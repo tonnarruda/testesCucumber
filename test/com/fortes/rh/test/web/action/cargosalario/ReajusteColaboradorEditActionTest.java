@@ -261,7 +261,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("calculaSalarioProposto").with(eq(reajusteColaborador));
 		
 		assertEquals("input", action.update());
-		assertEquals("Não é possível fazer solicitações para áreas que possuem sub-áreas.", action.getActionErrors().toArray()[0]);
+		assertEquals("Não é possível fazer solicitações para áreas que possuem sub-áreas.", action.getActionWarnings().toArray()[0]);
 	}
 	
 	public void testGetSets()

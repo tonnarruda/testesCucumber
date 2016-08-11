@@ -75,7 +75,7 @@ public class CertificacaoListActionTest extends MockObjectTestCase
     	certificacaoManager.expects(once()).method("remove").with(eq(certificacao.getId()));
     	
     	assertEquals("success", action.delete());
-    	assertEquals("Certificação excluída com sucesso.", action.getActionMessages().toArray()[0]);
+    	assertEquals("Certificação excluída com sucesso.", action.getActionSuccess().toArray()[0]);
     }
 
     public void testDeleteEmpresaErrada() throws Exception
