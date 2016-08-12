@@ -5263,7 +5263,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("est.endereco.bairro"), "estabelecimentoEnderecoBairro");
 		p.add(Projections.property("cid.nome"), "estabelecimentoEnderecoCidadeNome");
 		p.add(Projections.property("uf.sigla"), "estabelecimentoEnderecoUfSigla");
-		p.add(Projections.property("est.complementoCnpj"), "estabelecimentoomplementoCNPJ");
+		p.add(Projections.property("est.complementoCnpj"), "estabelecimentoComplementoCNPJ");
 		return p;
 	}
 }

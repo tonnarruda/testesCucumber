@@ -268,7 +268,9 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	}
 	
 	public String getCnpjFormatado(){
-		return CnpjUtil.formata(empresaCnpj + estabelecimentoComplementoCnpj); 
+		String cnpjFormatado = CnpjUtil.formata(empresaCnpj + estabelecimentoComplementoCnpj);
+		
+		return cnpjFormatado == null ? "" : cnpjFormatado;
 	}
 
 	public String getNomeCargo() {

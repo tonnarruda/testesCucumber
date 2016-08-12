@@ -80,7 +80,7 @@
 				$('#nomeFuncaoOS').text(dados["nomeFuncao"]);
 				$('input[name=ordemDeServico.nomeFuncao]').val(dados["nomeFuncao"]);
 				$('input[name=ordemDeServico.nomeEstabelecimento]').val(dados["nomeEstabelecimento"]);
-				$('input[name=ordemDeServico.estabelecimentoComplementoCnpj]').val(dados["estabelecimentoomplementoCNPJ"]);
+				$('input[name=ordemDeServico.estabelecimentoComplementoCnpj]').val(dados["estabelecimentoComplementoCnpj"]);
 				$('input[name=ordemDeServico.estabelecimentoEndereco]').val(dados["estabelecimentoEndereco"]);
 				$('#codigoCBOOS').val(dados["codigoCBO"]);
 				$('#atividadesOS').text(dados["atividades"] == null ? "" :  dados["atividades"]);
@@ -161,8 +161,8 @@
 					<td> <span style="font-weight: bold;">Data de Admissão:</span> <span id="dataAdmissaoFormatadaOS">${ordemDeServico.dataAdmisaoColaboradorFormatada}</span> </td>
 				</tr>
 				<tr>
-					<td> <span style="font-weight: bold;">Cargo:</span> <span id="nomeCargoOS">${nomeCargo}</span> </td>
-					<td> <span style="font-weight: bold;">Função:</span> <span id="nomeFuncaoOS">${nomeFuncao}</span> </td>
+					<td> <span style="font-weight: bold;">Cargo:</span> <span id="nomeCargoOS">${ordemDeServico.nomeCargo}</span> </td>
+					<td> <span style="font-weight: bold;">Função:</span> <span id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span> </td>
 				</tr>
 				<tr>
 					<td width="480"> 

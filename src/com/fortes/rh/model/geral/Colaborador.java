@@ -1300,7 +1300,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.getEstabelecimento().setNome(estabelecimentoNome);
 	}
 	
-	public void setEstabelecimentoomplementoCNPJ(String complementoCNPJ)
+	public void setEstabelecimentoComplementoCNPJ(String complementoCNPJ)
 	{
 		iniciaEstabelecimento();
 		this.getEstabelecimento().setComplementoCnpj(complementoCNPJ);
