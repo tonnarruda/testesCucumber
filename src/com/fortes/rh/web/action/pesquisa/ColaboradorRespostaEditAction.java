@@ -170,7 +170,6 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     		}
         }
         
-        
         retorno = voltarPara;
 
         return Action.SUCCESS;
@@ -289,7 +288,11 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     
     public String excluirRespostas() throws Exception{
     	try {
-    		colaboradorQuestionarioManager.removeByColaboradorAndQuestionario(colaborador,questionario);
+    		colaboradorRespostaManager.removeFicha(colaboradorQuestionario.getId());
+    		
+    		if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA))
+				colaboradorManager.updateRespondeuEntrevistaDesligamento(colaborador.getId(), false);
+    		
     		return Action.SUCCESS;
     	} catch (Exception e) {
     		e.printStackTrace();

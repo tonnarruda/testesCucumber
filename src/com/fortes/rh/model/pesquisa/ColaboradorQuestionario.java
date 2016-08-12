@@ -114,7 +114,7 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	this.getAvaliacaoCurso().setTitulo(avaliacaoCursoTitulo);
     	this.getAvaliacaoCurso().setTipo(avaliacaoCursoTipo);
 		this.setPerformance(performance);
-    }
+    }	
 
     public ColaboradorQuestionario(AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId, Long avaliadorId) 
     {
@@ -519,6 +519,12 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     {
     	newQuestionario();
     	this.questionario.setId(projectionQuestionarioId);
+    }
+    
+    public void setProjectionQuestionarioTipo(int projectionQuestionarioTipo)
+    {
+    	newQuestionario();
+    	this.questionario.setTipo(projectionQuestionarioTipo);
     }
     
     public void setProjectionQuestionarioTitulo(String questionarioTitulo)

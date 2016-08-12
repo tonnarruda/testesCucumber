@@ -3,9 +3,11 @@ package com.fortes.rh.security.spring.aop.callback;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
@@ -138,6 +140,32 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 		metodo.processa();
 
 		return new AuditavelImpl(TipoQuestionario.getDescricaoMaisc(questionario.getTipo()), metodo.getOperacao(), "Respostas para a " + TipoQuestionario.getDescricao(questionario.getTipo()) + " " + questionario.getTitulo(), dados.toString());
+	}
+	
+	public Auditavel removeFicha(MetodoInterceptado metodo) throws Throwable {
+		
+		Long colaboradorQuestionarioId = (Long) metodo.getParametros()[0];
+		
+		ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) metodo.getComponente();
+		ColaboradorQuestionarioManager colaboradorQuestionarioManager = colaboradorRespostaManager.getColaboradorQuestionarioManager();
+		ColaboradorQuestionario colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionarioId);
+		
+		Colaborador colaborador = colaboradorQuestionario.getColaborador();
+		Questionario questionario = colaboradorQuestionario.getQuestionario();
+		
+		Map<String, Object> dadosColab = new LinkedHashMap<String, Object>();
+		dadosColab.put("Colaborador Desligado", colaborador.getNome());
+		
+		String tipoAval = "Resposta";
+		if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA))
+			tipoAval = "Entrevista de Desligamento";
+		
+		dadosColab.put("Tipo Avaliação", "Entrevista de Desligamento");
+		String dados = new GeraDadosAuditados(null, dadosColab).gera();
+		
+		metodo.processa();
+		
+		return new AuditavelImpl(tipoAval, metodo.getOperacao(), tipoAval + " - " + colaborador.getNome(), dados);
 	}
 	
 	private Usuario carregaUsuario(MetodoInterceptado metodo, Long usuarioId) 

@@ -321,6 +321,11 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
             return colaboradorRespostas;
         }
     }
+    
+    public ColaboradorQuestionarioManager getColaboradorQuestionarioManager()
+	{
+		return this.colaboradorQuestionarioManager;
+	}
 
     public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
     {

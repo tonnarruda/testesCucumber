@@ -14,16 +14,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
-import com.fortes.rh.model.dicionario.TipoQuestionario;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
-import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.spring.aop.MetodoInterceptadoImpl;
-import com.fortes.rh.security.spring.aop.callback.ColaboradorQuestionarioAuditorCallbackImpl;
+import com.fortes.rh.security.spring.aop.callback.ColaboradorRepostaAuditorCallbackImpl;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
-import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -36,7 +32,7 @@ public class ColaboradorQuestionarioAuditorCallbackImplTest {
 	@Before
 	public void setUp() {
 		colaboradorQuestionarioManager = mock(ColaboradorQuestionarioManager.class);
-		callback = new ColaboradorQuestionarioAuditorCallbackImpl();
+		callback = new ColaboradorRepostaAuditorCallbackImpl();
 	}
 	
 	@Test
@@ -81,44 +77,4 @@ public class ColaboradorQuestionarioAuditorCallbackImplTest {
 			}
 		};
 	}
-	
-	@Test
-	public void testRemoveByColaboradorAndQuestionario() throws Throwable {
-		Auditavel auditavel = callback.processa(this.mockaMetodoIntercepRemoveByColaboradorAndQuestionario());
-		
-		assertEquals("Entrevista de Desligamento", auditavel.getModulo());
-		assertEquals("Remoção de Resposta", auditavel.getOperacao());
-		assertEquals("Entrevista de Desligamento - nome colaborador", auditavel.getChave());
-		assertEquals("[DADOS ATUALIZADOS]\n{\n  \"Colaborador Desligado\": \"nome colaborador\",\n  \"Tipo Avaliação\": \"Entrevista de Desligamento\"\n}", auditavel.getDados());
-	}
-	
-	private MetodoInterceptado mockaMetodoIntercepRemoveByColaboradorAndQuestionario() {
-		return new MetodoInterceptadoImpl(this.mockaMethodInvocationParaMetodoRemoveByColaboradorAndQuestionario());
-	}
-	
-	private MethodInvocation mockaMethodInvocationParaMetodoRemoveByColaboradorAndQuestionario() {
-		return new MethodInvocation() {
-			public Method getMethod() {
-				Method m = new Mirror().on(ColaboradorQuestionarioManager.class)
-								.reflect().method("removeByColaboradorAndQuestionario")
-								.withArgs(Colaborador.class, Questionario.class);
-				return m;
-			}
-			public Object[] getArguments() {
-				Questionario questionario = QuestionarioFactory.getEntity(1L);
-				questionario.setTipo(TipoQuestionario.ENTREVISTA);
-				return new Object[]{ColaboradorFactory.getEntity(1L), questionario};
-			}
-			public AccessibleObject getStaticPart() {
-				return null;
-			}
-			public Object getThis() {
-				return colaboradorQuestionarioManager;
-			}
-			public Object proceed() throws Throwable {
-				return null;
-			}
-		};
-	}
-	
 }

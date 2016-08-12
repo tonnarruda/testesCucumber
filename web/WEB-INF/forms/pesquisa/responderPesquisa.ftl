@@ -233,7 +233,7 @@
 					<button onclick="${validarCampos}" class="${buttonClass}"></button>
 					<#if colaboradorQuestionario?exists && colaboradorQuestionario.respondidaEm?exists>
 						<!--Não remover parametros do link abaixo serve para auditoria-->
-						<button onclick="newConfirm('Deseja realmente excluir as respostas dessa entrevista de desligamento?', function(){javascript:window.location='excluirRespostasEntrevistaDesligamento.action?colaborador.id=${colaborador.id}&colaborador.nome=${colaborador.nome}&questionario.id=${questionario.id}&questionario.tipo=${questionario.tipo}'});" class="btnExcluirRespostas"></button>
+						<button onclick="newConfirm('Deseja realmente excluir as respostas dessa entrevista de desligamento?', function(){javascript:window.location='excluirRespostasEntrevistaDesligamento.action?questionario.tipo=${questionario.tipo}&colaborador.id=${colaborador.id}&colaboradorQuestionario.id=${colaboradorQuestionario.id}'});" class="btnExcluirRespostas"></button>
 					</#if>
 				</#if>
 			</@authz.authorize>

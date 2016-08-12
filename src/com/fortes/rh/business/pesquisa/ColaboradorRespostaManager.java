@@ -30,6 +30,7 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	Collection<ColaboradorResposta> findRespostasColaborador(Long questionarioId, Boolean aplicarPorAspecto);
 	Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId, Long colaboradorQuestionarioId);
 	Collection<ColaboradorResposta> findByQuestionarioCandidato(Long questionarioId, Long candidatoId, Long colaboradorQuestionarioId);
+	@Audita(operacao="Remoção de Resposta", auditor=ColaboradorRespostaAuditorCallbackImpl.class)
 	void removeFicha(Long colaboradorQuestionarioId) throws Exception;
 	Collection<ColaboradorResposta> findByColaboradorQuestionario(ColaboradorQuestionario colaboradorQuestionario, Long questionarioId);
 	Collection<ColaboradorResposta> findByColaboradorQuestionario(Long id);
@@ -48,6 +49,7 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	boolean existeRespostaSemCargo(Long[] perguntasIds);
 	Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId, boolean agruparPorAspecto);
 	void removeByQuestionarioId(Long questionarioId);
+	ColaboradorQuestionarioManager getColaboradorQuestionarioManager(); // usado pela auditoria
 	QuestionarioManager getQuestionarioManager(); // usado pela auditoria
 	ColaboradorManager getColaboradorManager(); // usado pela auditoria
 	CandidatoManager getCandidatoManager(); // usado pela auditoria
