@@ -2612,6 +2612,21 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertTrue(candidatoDao.existeCamposExtras(camposExtras.getId()));
 	}
 	
+	public void testGetAutoComplete(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Candidato candidato1 = CandidatoFactory.getCandidato(1L, "Francisco Bernardo");
+		candidato1.setEmpresa(empresa);
+		candidatoDao.save(candidato1);
+		
+		Candidato candidato2 = CandidatoFactory.getCandidato(1L, "Juliana Almeida");
+		candidato2.setEmpresa(empresa);
+		candidatoDao.save(candidato2);
+		
+		assertEquals(1, candidatoDao.getAutoComplete("JULIANA", empresa.getId()).size());
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		 this.empresaDao = empresaDao;

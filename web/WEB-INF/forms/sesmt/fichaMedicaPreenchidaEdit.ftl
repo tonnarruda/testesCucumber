@@ -10,6 +10,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
+	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/font-awesome.min.css"/>');</style>
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>"></script>
 
@@ -37,9 +38,12 @@
 			$( "#nomeBusca" ).unbind("autocomplete", "data");
 			$( "#nomeBusca" ).autocomplete({
 				minLength: 3,
+				delay: 500,
 	      		source: ajaxData(urlFind),
 	      		select: function( event, ui ) { 
 					$("#entityId").val(ui.item.id);
+					decideDesabilitarCampo(true);
+					
 				}
 	    	}).data( "autocomplete" )._renderItem = renderData;
 		};
@@ -53,13 +57,31 @@
 			else if (value == 'C')
 				$("#entityId").attr("name","colaborador.id");
 				
+
 			if ( $("#entityId").val() == "" || $("#nomeBusca").val() == "" || $("#nomeBusca").val().length < 3) {
 				$("#nomeBusca").addClass("invalidInput");
-			} else {
-				$("#nomeBusca").removeClass("invalidInput");
+				jAlert("Informe um " + ($("#vinculo").val() == 'A' ? "candidato" : "colaborador") + " existente.")
+			}else
+				return validaFormulario('form', new Array('entityId', 'nomeBusca', 'ficha'), null);
+		}
+		
+		function decideDesabilitarCampo(desabilita){
+			if(desabilita == true) {
+				if( $("#nomeBusca").val() != "" ){
+					$("#nomeBusca").attr('disabled', 'disabled');
+					$("#nomeBusca").removeClass("invalidInput");
+					$("#backspace").show();
+					document.getElementById("nomeBusca").style.backgroundColor='#EBEBEB';
+				}
 			}
-
-			return validaFormulario('form', new Array('entityId', 'nomeBusca', 'ficha'), null);
+			else{
+				$("#nomeBusca").removeAttr('disabled');
+				$("#nomeBusca").val("");
+				$("#entityId").val("");
+				$("#nomeBusca").removeClass("invalidInput");
+				document.getElementById("nomeBusca").style.backgroundColor='#FFFFFF';
+				$("#backspace").hide();
+			}
 		}
 	</script>
 
@@ -80,7 +102,10 @@
 	<@ww.form name="form" action="../../sesmt/fichaMedica/prepareResponderFichaMedica.action" onsubmit="enviaForm();" method="POST" >
 		<@ww.select label="Ficha para" name="vinculo" id="vinculo" list=r"#{'A':'Candidato','C':'Colaborador'}" />
 
-		<@ww.textfield label="Nome" id="nomeBusca" cssStyle="width: 500px;"/>
+		<@ww.textfield label="Nome" id="nomeBusca" cssStyle="width: 500px;"  onchange="decideDesabilitarCampo(true)" onblur="decideDesabilitarCampo(true)"/>
+		<img src="${urlImgs}/backspace.png" style="float: left;margin-top: -22px;margin-left: 506px; cursor: pointer; display:none" onclick="decideDesabilitarCampo(false);" id="backspace">
+		
+		
 		<@ww.hidden name="candidato.id" id="entityId"/>
 
 		<@ww.select label="Ficha" name="questionario.id" id="ficha" list="fichaMedicas" cssStyle="width: 500px;" required="true" headerKey="" listKey="questionario.id" listValue="questionario.titulo" headerValue="Selecione..."/>

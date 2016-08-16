@@ -17,9 +17,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.FichaMedica;
 import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -99,11 +97,6 @@ public class FichaMedicaListAction extends MyActionSupportList
 		if(StringUtils.isNotBlank(actionMsg))
 			addActionMessage(actionMsg);
 			
-		candidatos = candidatoManager.findByNomeCpf(candidato, getEmpresaSistema().getId());
-		String[] nomes = new CollectionUtil<Candidato>().convertCollectionToArrayString(candidatos, "getNome");
-		Collection<String> nomes_ = new CollectionUtil<String>().convertArrayToCollection(nomes);
-		
-		candidatos_ = StringUtil.converteCollectionToStringComAspas(nomes_);
 		fichaMedicas = fichaMedicaManager.findAllSelect(getEmpresaSistema().getId(), true); 
 			
 		return Action.SUCCESS;

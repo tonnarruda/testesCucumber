@@ -164,7 +164,6 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
     	Candidato candidato = CandidatoFactory.getCandidato();
 		fichaMedicaListAction.setCandidato(candidato);
     	
-    	candidatoManager.expects(once()).method("findByNomeCpf").with(eq(candidato),eq(fichaMedicaListAction.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Candidato>()));
     	fichaMedicaManager.expects(once()).method("findAllSelect").with(eq(fichaMedicaListAction.getEmpresaSistema().getId()), eq(true)).will(returnValue(new ArrayList<FichaMedica>()));
     	
     	assertEquals("success",fichaMedicaListAction.prepareInsertFicha());
