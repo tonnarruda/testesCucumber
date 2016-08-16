@@ -29,6 +29,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.geral.UsuarioNoticiaManager;
 import com.fortes.rh.exception.LoginInvalidoException;
+import com.fortes.rh.exception.NotConectAutenticationException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
@@ -182,9 +183,13 @@ public class Index extends MyActionSupport
 		{
 			return e.getRetorno();
 		}
+		catch (NotConectAutenticationException e)
+		{
+			addActionWarning(e.getMessage());
+			return "not_conect";
+		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
 			addActionError(e.getMessage());
 		}
         

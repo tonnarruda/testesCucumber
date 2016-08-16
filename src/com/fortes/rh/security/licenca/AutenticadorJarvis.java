@@ -22,7 +22,13 @@ public class AutenticadorJarvis extends Autenticador
 	public static JClient getClient() throws Exception
 	{
 		if(clientJarvis == null || clientJarvis.getCodigoProduto().equals("null")) {
-			JSONObject jsonObject = JSONUtil.getObject(urlConexao);
+			JSONObject jsonObject;
+			try {
+				jsonObject = JSONUtil.getObject(urlConexao);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new NotConectAutenticationException();
+			}
 			clientJarvis = new JClient(jsonObject);
 		}
 		
@@ -44,7 +50,7 @@ public class AutenticadorJarvis extends Autenticador
 	
 	public static void verificaCopia(String cnpj, boolean verificaLicensaAutenticador, Integer modulosPermitidoSemLicensa) throws Exception
 	{
-		urlConexao = "http://jarvisws.azurewebsites.net/licenseinfo?cnpj="+cnpj+"&location=ESCRITORIO&area=BDD5C8EC-942B-4EF0-8AB2-A059820B1B42&productcode=47";
+		urlConexao = "http://jarvisws.azurewebsites.net/licenseinfo?cnpj="+cnpj+"&location=TESTE%20RH%20NUVEM&area=BDD5C8EC-942B-4EF0-8AB2-A059820B1B42&productcode=47";
 		verificaLicensa = verificaLicensaAutenticador;
 		modulosPermitidos = modulosPermitidoSemLicensa;
 		
