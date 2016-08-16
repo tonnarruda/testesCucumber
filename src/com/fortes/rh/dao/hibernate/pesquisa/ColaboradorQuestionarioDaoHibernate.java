@@ -103,7 +103,10 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("c.contato.email"), "projectionColaboradorContatoEmail");
 		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
 		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
-		p.add(Projections.property("ao.nome"), "projectionAreaOrganizacionalNome");
+		
+//		p.add(Projections.property("ao.nome"), "projectionAreaOrganizacionalNome");
+		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as projectionAreaOrganizacionalNome", new String[] {"projectionAreaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "projectionAreaOrganizacionalNome");
+
 		p.add(Projections.property("e.nome"), "estabelecimentoNomeProjection");
 		
 		Disjunction disjunction = Expression.disjunction();
@@ -539,7 +542,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
 		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
 		p.add(Projections.property("ao.id"), "projectionAreaOrganizacionalId");
-		p.add(Projections.property("ao.nome"), "projectionAreaOrganizacionalNome");
+		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as projectionAreaOrganizacionalNome", new String[] {"projectionAreaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "projectionAreaOrganizacionalNome");
 		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
 		p.add(Projections.property("ca.nome"), "projectionCargoNome");
 		p.add(Projections.property("es.nome"), "estabelecimentoNomeProjection");
