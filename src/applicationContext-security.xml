@@ -343,16 +343,16 @@
 				/geral/estabelecimento/*/**=ROLE_CAD_ESTABELECIMENTO
 				/geral/bairro/*/**=ROLE_CAD_BAIRRO
 
-				/geral/documentoAnexo/prepareInsertColaborador*/**=ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO
-				/geral/documentoAnexo/prepareUpdateColaborador*/**=ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO
-				/geral/documentoAnexo/deleteColaborador*/**=ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO
-				/geral/documentoAnexo/insertColaborador*/**=ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO
-				/geral/documentoAnexo/updateColaborador*/**=ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO
-				/geral/documentoAnexo/prepareInsertCandidato*/**=ROLE_CAD_CANDIDATO
-				/geral/documentoAnexo/prepareUpdateCandidato*/**=ROLE_CAD_CANDIDATO
-				/geral/documentoAnexo/deleteCandidato*/**=ROLE_CAD_CANDIDATO
-				/geral/documentoAnexo/insertCandidato*/**=ROLE_CAD_CANDIDATO
-				/geral/documentoAnexo/updateCandidato*/**=ROLE_CAD_CANDIDATO
+				/geral/documentoAnexo/prepareInsertColaborador*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO
+				/geral/documentoAnexo/prepareUpdateColaborador*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO
+				/geral/documentoAnexo/deleteColaborador*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO
+				/geral/documentoAnexo/insertColaborador*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO
+				/geral/documentoAnexo/updateColaborador*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO
+				/geral/documentoAnexo/prepareInsertCandidato*/**=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
+				/geral/documentoAnexo/prepareUpdateCandidato*/**=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
+				/geral/documentoAnexo/deleteCandidato*/**=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
+				/geral/documentoAnexo/insertCandidato*/**=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
+				/geral/documentoAnexo/updateCandidato*/**=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
 				/geral/documentoAnexo/listCandidato.action*=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
 				/geral/documentoAnexo/listColaborador.action*=ROLE_COLAB_LIST_DOCUMENTOANEXO
 				
