@@ -16,7 +16,7 @@ import org.junit.Test;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.security.spring.aop.MetodoInterceptadoImpl;
-import com.fortes.rh.security.spring.aop.callback.ColaboradorRepostaAuditorCallbackImpl;
+import com.fortes.rh.security.spring.aop.callback.ColaboradorQuestionarioAuditorCallbackImpl;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
@@ -32,7 +32,7 @@ public class ColaboradorQuestionarioAuditorCallbackImplTest {
 	@Before
 	public void setUp() {
 		colaboradorQuestionarioManager = mock(ColaboradorQuestionarioManager.class);
-		callback = new ColaboradorRepostaAuditorCallbackImpl();
+		callback = new ColaboradorQuestionarioAuditorCallbackImpl();
 	}
 	
 	@Test

@@ -11,12 +11,12 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
-import com.fortes.rh.security.spring.aop.callback.ColaboradorRepostaAuditorCallbackImpl;
+import com.fortes.rh.security.spring.aop.callback.ColaboradorQuestionarioAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
 
 public interface ColaboradorQuestionarioManager extends GenericManager<ColaboradorQuestionario>
 {
-	@Audita(operacao="Remoção de Resposta", auditor=ColaboradorRepostaAuditorCallbackImpl.class)
+	@Audita(operacao="Remoção de Resposta", auditor=ColaboradorQuestionarioAuditorCallbackImpl.class)
 	void deleteRespostaAvaliacaoDesempenho(Long colaboradorQuestionarioId);
 	Collection<ColaboradorQuestionario> findByQuestionario(Long questionarioId);
 	ColaboradorQuestionario findByQuestionario(Long questionarioId, Long colaboradorId, Long turmaId);

@@ -521,10 +521,12 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	this.questionario.setId(projectionQuestionarioId);
     }
     
-    public void setProjectionQuestionarioTipo(int projectionQuestionarioTipo)
+    public void setProjectionQuestionarioTipo(Integer projectionQuestionarioTipo)
     {
-    	newQuestionario();
-    	this.questionario.setTipo(projectionQuestionarioTipo);
+    	if(projectionQuestionarioTipo != null){
+	    	newQuestionario();
+	    	this.questionario.setTipo(projectionQuestionarioTipo);
+    	}
     }
     
     public void setProjectionQuestionarioTitulo(String questionarioTitulo)

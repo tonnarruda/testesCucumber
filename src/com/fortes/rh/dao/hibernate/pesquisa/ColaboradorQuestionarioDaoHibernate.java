@@ -386,8 +386,10 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("colab.id"), "projectionColaboradorId");
 		p.add(Projections.property("colab.nome"), "projectionColaboradorNome");
 		p.add(Projections.property("cand.id"), "projectionCandidatoId");
+		p.add(Projections.property("cand.nome"), "projectionCandidatoNome");
 		p.add(Projections.property("q.id"), "projectionQuestionarioId");
 		p.add(Projections.property("q.tipo"), "projectionQuestionarioTipo");
+		p.add(Projections.property("q.titulo"), "projectionQuestionarioTitulo");
 		p.add(Projections.property("avaliacao.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("avaliacao.titulo"), "projectionAvaliacaoTitulo");
 		p.add(Projections.property("avaliacao.cabecalho"), "projectionAvaliacaoCabecalho");
@@ -400,7 +402,6 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("avaliacaoDesempenho.permiteAutoAvaliacao"), "projectionAvaliacaoDesempenhoPermiteAutoAvaliacao");
 		p.add(Projections.property("avaliacaoDesempenho.inicio"), "projectionAvaliacaoDesempenhoInicio");
 		p.add(Projections.property("cq.avaliador.id"), "projectionAvaliadorId");
-
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("cq.id", id));

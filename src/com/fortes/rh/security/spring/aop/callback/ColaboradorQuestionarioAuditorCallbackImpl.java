@@ -5,10 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
-import com.fortes.rh.model.dicionario.TipoQuestionario;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
-import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.security.auditoria.Auditavel;

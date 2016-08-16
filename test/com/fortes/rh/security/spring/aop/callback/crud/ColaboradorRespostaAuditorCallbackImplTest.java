@@ -2,6 +2,7 @@ package com.fortes.rh.security.spring.aop.callback.crud;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
@@ -11,11 +12,9 @@ import net.vidageek.mirror.dsl.Mirror;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.when;
 
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
-import com.fortes.rh.business.pesquisa.ColaboradorRespostaManagerImpl;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -43,14 +42,15 @@ public class ColaboradorRespostaAuditorCallbackImplTest {
 	}
 	
 	@Test
-	public void testRemoveFicha() throws Throwable {
+	public void testRemoveFichaEntrevistaDeDesligamento() throws Throwable {
 		Colaborador colaborador = ColaboradorFactory.getEntity();
-		Questionario questionario = QuestionarioFactory.getEntity();
+		Questionario questionario = QuestionarioFactory.getEntity(1L, "Entrevista de Desligamento");
 		questionario.setTipo(TipoQuestionario.ENTREVISTA);
 		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionario.setColaborador(colaborador);
 		colaboradorQuestionario.setQuestionario(questionario);
+		
 		
 		when(colaboradorRespostaManager.getColaboradorQuestionarioManager()).thenReturn(colaboradorQuestionarioManager);
 		when(colaboradorQuestionarioManager.findByIdProjection(1L)).thenReturn(colaboradorQuestionario);
@@ -60,7 +60,29 @@ public class ColaboradorRespostaAuditorCallbackImplTest {
 		assertEquals("Entrevista de Desligamento", auditavel.getModulo());
 		assertEquals("Remoção de Resposta", auditavel.getOperacao());
 		assertEquals("Entrevista de Desligamento - nome colaborador", auditavel.getChave());
-		assertEquals("[DADOS ATUALIZADOS]\n{\n  \"Colaborador Desligado\": \"nome colaborador\",\n  \"Tipo Avaliação\": \"Entrevista de Desligamento\"\n}", auditavel.getDados());
+		assertEquals("[DADOS ATUALIZADOS]\n{\n  \"Colaborador Desligado\": \"nome colaborador\",\n  \"Modelo de Entrevista\": \"Entrevista de Desligamento\"\n}", auditavel.getDados());
+	}
+	
+	@Test
+	public void testRemoveFichaFichaMedica() throws Throwable {
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		Questionario questionario = QuestionarioFactory.getEntity(1L, "Admissional");
+		questionario.setTipo(TipoQuestionario.FICHAMEDICA);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setQuestionario(questionario);
+		
+		
+		when(colaboradorRespostaManager.getColaboradorQuestionarioManager()).thenReturn(colaboradorQuestionarioManager);
+		when(colaboradorQuestionarioManager.findByIdProjection(1L)).thenReturn(colaboradorQuestionario);
+
+		Auditavel auditavel = callback.processa(this.mockaMetodoIntercepRemoveFicha());
+
+		assertEquals("Ficha Médica", auditavel.getModulo());
+		assertEquals("Remoção de Resposta", auditavel.getOperacao());
+		assertEquals("Ficha Médica - nome colaborador", auditavel.getChave());
+		assertEquals("[DADOS ATUALIZADOS]\n{\n  \"Colaborador\": \"nome colaborador\",\n  \"Ficha\": \"Admissional\"\n}", auditavel.getDados());
 	}
 	
 	private MetodoInterceptado mockaMetodoIntercepRemoveFicha() {

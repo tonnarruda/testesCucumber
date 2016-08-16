@@ -150,22 +150,34 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 		ColaboradorQuestionarioManager colaboradorQuestionarioManager = colaboradorRespostaManager.getColaboradorQuestionarioManager();
 		ColaboradorQuestionario colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionarioId);
 		
-		Colaborador colaborador = colaboradorQuestionario.getColaborador();
 		Questionario questionario = colaboradorQuestionario.getQuestionario();
 		
 		Map<String, Object> dadosColab = new LinkedHashMap<String, Object>();
-		dadosColab.put("Colaborador Desligado", colaborador.getNome());
 		
-		String tipoAval = "Resposta";
-		if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA))
+		String nome = "";
+		String tipoAval = "";
+		if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA)){
+			nome = colaboradorQuestionario.getColaborador().getNome();
 			tipoAval = "Entrevista de Desligamento";
+			dadosColab.put("Colaborador Desligado", nome);
+			dadosColab.put("Modelo de Entrevista", questionario.getTitulo());
+		}else if(questionario.verificaTipo(TipoQuestionario.FICHAMEDICA)){
+			tipoAval = "Ficha Médica";
+			if(colaboradorQuestionario.getColaborador() != null && colaboradorQuestionario.getColaborador().getNome() != null){
+				nome = colaboradorQuestionario.getColaborador().getNome();
+				dadosColab.put("Colaborador", nome);
+			}else if(colaboradorQuestionario.getCandidato() != null && colaboradorQuestionario.getCandidato().getNome() != null){
+				nome = colaboradorQuestionario.getCandidato().getNome();
+				dadosColab.put("Candidato", nome);
+			}
+			dadosColab.put("Ficha", questionario.getTitulo());
+		}
 		
-		dadosColab.put("Tipo Avaliação", "Entrevista de Desligamento");
 		String dados = new GeraDadosAuditados(null, dadosColab).gera();
 		
 		metodo.processa();
 		
-		return new AuditavelImpl(tipoAval, metodo.getOperacao(), tipoAval + " - " + colaborador.getNome(), dados);
+		return new AuditavelImpl(tipoAval, metodo.getOperacao(), tipoAval + " - " + nome, dados);
 	}
 	
 	private Usuario carregaUsuario(MetodoInterceptado metodo, Long usuarioId) 
