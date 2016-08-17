@@ -47,9 +47,6 @@
 			<result name="error" type="redirect">listPreenchida.action</result>
 		</action>
 		
-		<action name="updateFilter" class="com.fortes.rh.web.action.pesquisa.FichaMedicaListAction" method="updateFilter">
-	      	<interceptor-ref name="showFilterStack" />			
-		</action>
 		<action name="prepareInsertFicha" class="com.fortes.rh.web.action.pesquisa.FichaMedicaListAction" method="prepareInsertFicha">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/fichaMedicaPreenchidaEdit.ftl</result>
 		</action>

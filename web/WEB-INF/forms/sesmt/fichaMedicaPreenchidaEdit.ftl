@@ -60,16 +60,17 @@
 
 			if ( $("#entityId").val() == "" || $("#nomeBusca").val() == "" || $("#nomeBusca").val().length < 3) {
 				$("#nomeBusca").addClass("invalidInput");
-				jAlert("Informe um " + ($("#vinculo").val() == 'A' ? "candidato" : "colaborador") + " existente.")
-			}else
-				return validaFormulario('form', new Array('entityId', 'nomeBusca', 'ficha'), null);
-		}
+				jAlert("Informe um " + ($("#vinculo").val() == 'A' ? "candidato" : "colaborador") + " existente.");
+				return false;
+			}else{
+				return validaFormulario('form', new Array('entityId', 'nomeBusca', 'ficha'), null,  true);
+			}
+		};
 		
 		function decideDesabilitarCampo(desabilita){
 			if(desabilita == true) {
 				if( $("#nomeBusca").val() != "" ){
 					$("#nomeBusca").attr('disabled', 'disabled');
-					$("#nomeBusca").removeClass("invalidInput");
 					$("#backspace").show();
 					document.getElementById("nomeBusca").style.backgroundColor='#EBEBEB';
 				}
@@ -78,11 +79,11 @@
 				$("#nomeBusca").removeAttr('disabled');
 				$("#nomeBusca").val("");
 				$("#entityId").val("");
-				$("#nomeBusca").removeClass("invalidInput");
 				document.getElementById("nomeBusca").style.backgroundColor='#FFFFFF';
 				$("#backspace").hide();
 			}
-		}
+			$("#nomeBusca").removeClass("invalidInput");
+		};
 	</script>
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
@@ -93,16 +94,15 @@
 
 	<title>Fichas Médicas</title>
 
-	<#assign validarCampos="return validaFormulario('form', new Array('nome','data'), null)"/>
 </head>
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
 
-	<@ww.form name="form" action="../../sesmt/fichaMedica/prepareResponderFichaMedica.action" onsubmit="enviaForm();" method="POST" >
+	<@ww.form id="form" name="form" action="../../sesmt/fichaMedica/prepareResponderFichaMedica.action" onsubmit="return enviaForm()" method="POST" >
 		<@ww.select label="Ficha para" name="vinculo" id="vinculo" list=r"#{'A':'Candidato','C':'Colaborador'}" />
 
-		<@ww.textfield label="Nome" id="nomeBusca" cssStyle="width: 500px;"  onchange="decideDesabilitarCampo(true)" onblur="decideDesabilitarCampo(true)"/>
+		<@ww.textfield label="Nome" id="nomeBusca" cssStyle="width: 500px;" cssClass="inputNome" required="true"  onchange="decideDesabilitarCampo(true)" onblur="decideDesabilitarCampo(true)"/>
 		<img src="${urlImgs}/backspace.png" style="float: left;margin-top: -22px;margin-left: 506px; cursor: pointer; display:none" onclick="decideDesabilitarCampo(false);" id="backspace">
 		
 		
@@ -112,12 +112,12 @@
 
 		<@ww.hidden name="voltarPara" value="../../sesmt/fichaMedica/prepareInsertFicha.action"/>
 		<@ww.hidden name="inserirFichaMedica" value="true"/>
-	</@ww.form>
-
 	<div class="buttonGroup">
-		<button onclick="enviaForm();" class="btnAvancar" ></button>
+		<button type="submit" class="btnAvancar" ></button>
 		<button onclick="window.location='listPreenchida.action'" class="btnVoltar" ></button>
 	</div>
+	</@ww.form>
+
 
 </body>
 </html>
