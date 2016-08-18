@@ -32,6 +32,11 @@
 			.desc{
 				font-weight: bold 
 			}
+			.no-data {
+				color: #9D9D9D;
+				font-size: 11px;
+				margin-left: 5px;
+			}
 		</style>
 		
 		<#include "../ftl/mascarasImports.ftl" />
@@ -43,18 +48,11 @@
 		<script type="text/javascript">
 			var ultimaDataValida = "";
 
+			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
+
 			$(function(){
 				ultimaDataValida = $('#dataOS').val();
 				
-				var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
-				$("#descricaoCBO").autocomplete({
-					source: ajaxData(urlFind),				 
-					minLength: 2,
-					select: function( event, ui ) { 
-						$("#codigoCBO").val(ui.item.id);
-					}
-				}).data( "autocomplete" )._renderItem = renderData;
-	
 				$('#descricaoCBO').focus(function() {
 				    $(this).select();
 				});
@@ -73,6 +71,11 @@
 			
 			function repopularOrdemDeServicoByDados(dados){
 				ultimaDataValida = $('#dataOS').val();
+				repopularDadosCabecalho(dados);
+				repopularDadosFormulario(dados);
+			}
+			
+			function repopularDadosCabecalho(dados) {
 				$('#nomeColaboradorOS').text(dados["nomeColaborador"]);
 				$('#dataAdmissaoFormatadaOS').text(dados["dataAdmisaoColaboradorFormatada"]);
 				$('#nomeCargoOS').text(dados["nomeCargo"]);
@@ -82,7 +85,45 @@
 				$('input[name=ordemDeServico.nomeEstabelecimento]').val(dados["nomeEstabelecimento"]);
 				$('input[name=ordemDeServico.estabelecimentoComplementoCnpj]').val(dados["estabelecimentoComplementoCnpj"]);
 				$('input[name=ordemDeServico.estabelecimentoEndereco]').val(dados["estabelecimentoEndereco"]);
-				$('#codigoCBOOS').val(dados["codigoCBO"]);
+	
+				$("#cbo").html("");
+				if ( dados["codigoCBO"] == "" ) {
+					$("#cbo").html('<li id="wwgrp_codigoCBO" class="liLeft">'+  
+										'<div id="wwlbl_codigoCBO" class="wwlbl">'+
+											'<label for="codigoCBO" class="desc" style="font-weight: bold"> Cód. CBO:<span class="req">* </span></label>'+
+										'</div>'+ 
+										'<div id="wwctrl_codigoCBO" class="wwctrl">'+
+											'<input type="text" name="ordemDeServico.codigoCBO" size="6" maxlength="6" value="" id="codigoCBOOS" onkeypress="return(somenteNumeros(event,\'\'));">'+
+										'</div>'+ 
+									'</li>'+
+									'<li id="wwgrp_descricaoCBO" class="wwgrp">'+  
+										'<div id="wwlbl_descricaoCBO" class="wwlbl">'+
+											'<label for="descricaoCBO" class="desc" style="font-weight: bold"> Busca CBO (Código ou Descrição):</label>'+       
+										'</div>'+
+										'<div id="wwctrl_descricaoCBO" class="wwctrl">'+
+											'<input type="text" name="descricaoCBO" value="" id="descricaoCBO" style="width: 300px;">'+
+										'</div>'+
+										'<div style="clear:both"></div>'+ 
+									'</li>');
+						
+					$("#descricaoCBO").autocomplete({
+						source: ajaxData(urlFind),				 
+						minLength: 2,
+						select: function( event, ui ) { 
+							$("#codigoCBOOS").val(ui.item.id);
+						}
+					}).data( "autocomplete" )._renderItem = renderData;
+				} else {
+					$("#cbo").html("");
+					$("#cbo").html('<span style="font-weight: bold;">Código CBO:</span><span id="codigoCBOOS">'+dados["codigoCBO"]+'</span>'+
+								   '<input type="hidden" name="ordemDeServico.codigoCBO" value="'+dados["codigoCBO"]+'" id="insert_ordemDeServico_codigoCBO">');
+
+					//$('#codigoCBOOS').text(dados["codigoCBO"]);
+					//$('input[name=ordemDeServico.codigoCBO]').val(dados["codigoCBO"]);
+				}
+			}
+			
+			function repopularDadosFormulario(dados) {
 				$('#atividadesOS').text(dados["atividades"] == null ? "" :  dados["atividades"]);
 				$('#riscosOS').text(dados["riscos"] == null ? "" : dados["riscos"]);
 				$('#episOS').text(dados["epis"] == null ? "" : dados["epis"]);
@@ -101,17 +142,20 @@
 			
 			function carregaDadosOrdemDeServicoAnterior(){
 				DWRUtil.useLoadingMessage('Carregando...');
-				OrdemDeServicoDWR.carregaUltimaOrdemDeServicoByColaborador(repopularOrdemDeServicoByDados, ${ordemDeServico.colaborador.id});
+				OrdemDeServicoDWR.carregaUltimaOrdemDeServicoByColaborador(repopularDadosFormulario, ${ordemDeServico.colaborador.id});
 			}
 			
-			function submit(){
+			function submit_form(){
 				var array =  new Array('dataOS','atividadesOS','riscosOS','episOS','medidasPreventivasOS','treinamentosOS','normasInternasOS','procedimentoEmCasoDeAcidenteOS','termoDeResponsabilidadeOS');
 				
-				<#if !ordemDeServico.codigoCBO?exists>
-					array.push('codigoCBOOS');
-				</#if>
+				var validateCBO = true;
+				if ( $("#codigoCBOOS").length == 1 && $("#codigoCBOOS").val() == "") {
+					validateCBO = false;
+					$("#codigoCBOOS").css("background", "rgb(255, 238, 194)");
+				} else
+					$("#codigoCBOOS").css("background", "white");
 				
-				return validaFormulario('form', array, new Array('dataOS'));
+				return validaFormulario('form', array, new Array('dataOS'), true) && validateCBO;
 			}
 		</script>	
 			
@@ -121,17 +165,19 @@
 			<#assign dataOS = ordemDeServico.data?date/>
 			<#assign nomeCargo = ordemDeServico.nomeCargo>
 			<#assign nomeFuncao = ordemDeServico.nomeFuncao>
+			<#assign codigoCBO = ordemDeServico.codigoCBO>
 		<#else>
 			<title>Inserir Ordem de Serviço</title>
 			<#assign formAction="insert.action"/>
 			<#assign dataOS = "">
-			<#assign nomeCargo = "">
-			<#assign nomeFuncao = "">
+			<#assign nomeCargo = "<span class='no-data'>[Preencha a data para carregar essa informação]</span>">
+			<#assign nomeFuncao = "<span class='no-data'>[Preencha a data para carregar essa informação]</span>">
+			<#assign codigoCBO = "<span class='no-data'>[Preencha a data para carregar essa informação]</span>">
 		</#if>
 	</head>
 	<body>
 		<@ww.actionerror />
-		<@ww.form name="form" action="${formAction}" onsubmit="submit();" method="POST">
+		<@ww.form id="form" name="form" action="${formAction}" onsubmit="return submit_form();" validate="true" method="POST">
 			<@ww.hidden name="colaborador.id" value="${ordemDeServico.colaborador.id}" />
 			<@ww.hidden name="ordemDeServico.id" />
 			<@ww.hidden name="ordemDeServico.colaborador.id" value="${ordemDeServico.colaborador.id}" />
@@ -141,7 +187,7 @@
 			<@ww.hidden name="ordemDeServico.nomeEmpresa" />
 			<@ww.hidden name="ordemDeServico.nomeCargo" />
 			<@ww.hidden name="ordemDeServico.empresaCnpj" />
-			<@ww.hidden name="ordemDeServico.nomeEstabelecimento"/>
+			<@ww.hidden name="ordemDeServico.nomeEstabelecimento" />
 			<@ww.hidden name="ordemDeServico.estabelecimentoComplementoCnpj" />
 			<@ww.hidden name="ordemDeServico.estabelecimentoEndereco" />
 			<@ww.hidden name="ordemDeServico.revisao" value="${revisao}"/>
@@ -161,33 +207,12 @@
 					<td> <span style="font-weight: bold;">Data de Admissão:</span> <span id="dataAdmissaoFormatadaOS">${ordemDeServico.dataAdmisaoColaboradorFormatada}</span> </td>
 				</tr>
 				<tr>
-					<td> <span style="font-weight: bold;">Cargo:</span> <span id="nomeCargoOS">${ordemDeServico.nomeCargo}</span> </td>
-					<td> <span style="font-weight: bold;">Função:</span> <span id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span> </td>
+					<td> <span style="font-weight: bold;">Cargo:</span> <span id="nomeCargoOS">${nomeCargo}</span> </td>
+					<td> <span style="font-weight: bold;">Função:</span> <span id="nomeFuncaoOS">${nomeFuncao}</span> </td>
 				</tr>
 				<tr>
-					<td width="480"> 
-						<#if ordemDeServico.codigoCBO?exists>
-							<span style="font-weight: bold;">Código CBO:</span> <span id="codigoCBOOS">${ordemDeServico.codigoCBO}</span> 
-							<@ww.hidden name="ordemDeServico.codigoCBO" />
-						<#else>
-							<li id="wwgrp_codigoCBO" class="liLeft">    
-								<div id="wwlbl_codigoCBO" class="wwlbl">
-									<label for="codigoCBO" class="desc" style="font-weight: bold"> Cód. CBO:<span class="req">* </span></label>
-								</div> 
-								<div id="wwctrl_codigoCBO" class="wwctrl">
-									<input type="text" name="ordemDeServico.codigoCBO" size="6" maxlength="6" value="" id="codigoCBOOS" onkeypress="return(somenteNumeros(event,''));">
-								</div> 
-							</li>
-							<li id="wwgrp_descricaoCBO" class="wwgrp">    
-								<div id="wwlbl_descricaoCBO" class="wwlbl">
-									<label for="descricaoCBO" class="desc" style="font-weight: bold"> Busca CBO (Código ou Descrição):</label>        
-								</div> 
-								<div id="wwctrl_descricaoCBO" class="wwctrl">
-									<input type="text" name="descricaoCBO" value="" id="descricaoCBO" style="width: 300px;">
-								</div>
-								<div style="clear:both"></div> 
-							</li>						
-						</#if>
+					<td width="480" id="cbo"> 
+							<span style="font-weight: bold;">Código CBO:</span><span id="codigoCBOOS">${codigoCBO}</span> 
 					</td>
 				</tr>
 			</table>
@@ -225,11 +250,11 @@
 			</br><div class="divTitulo" align="center"><span class="titulo">TERMO DE RESPONSABILIDADE*</span></div>
 			<@ww.textarea name="ordemDeServico.termoDeResponsabilidade" id="termoDeResponsabilidadeOS" required="true"/>
 			
+			<div class="buttonGroup">
+				<button type="submit" class="btnGravar"></button>
+				<button onclick="window.location='list.action?colaborador.id=${ordemDeServico.colaborador.id}'" class="btnVoltar"></button>
+			</div>
 		</@ww.form>
 	
-		<div class="buttonGroup">
-			<button onclick="submit();" class="btnGravar"></button>
-			<button onclick="window.location='list.action?colaborador.id=${ordemDeServico.colaborador.id}'" class="btnVoltar"></button>
-		</div>
 	</body>
 </html>
