@@ -13,6 +13,68 @@
 		.dados th:first-child { text-align: left; padding-left: 5px; }
 	</style>
 	
+	<script type='text/javascript'>
+		function notaObtida(){
+			var notaObtidaQuestionario = 0;
+			 $('.perguntaResposta').each(function(){
+			 	var peso = $(this).find("#pesoPergunta").val();
+			 	var tipo = $(this).find("#tipo").val();
+			 	if(tipo == 1)
+			 		if($(this).find('.objetiva:checked').size() > 0)
+			 			notaObtidaQuestionario += $(this).find('.objetiva:checked').attr('peso') * peso;
+			 	
+			 	if( tipo == '4')
+		 			notaObtidaQuestionario += $(this).find('.nota').val()  * peso;
+
+				if(tipo == 5){
+					var pesoMultiplaEscolha = 0;
+					$(this).find('.multiplaEscolha:checked').each(function(){
+						pesoMultiplaEscolha += parseInt($(this).attr('peso'));
+					});
+					notaObtidaQuestionario += pesoMultiplaEscolha * peso;
+				}
+			 });
+			 
+			 performanceQuestionario = notaObtidaQuestionario / ${pontuacaoMaximaQuestionario};
+			 
+			 return (performanceQuestionario * 100);
+		} 
+		
+		function dialogCertificacao(){
+			msg = "Este colaborador está certificado. </br>" +
+					"Deseja realmente descertificar este colaborador?</br>" +
+					"Ao confirmar, o colaborador será descertificado " +
+					"e caso exista notas de avaliações prática as mesmas serão excluídas.";
+			
+			$('#dialog').html(msg).dialog({ 	modal: true, 
+												width: 500,
+												maxHeight: 360,
+												buttons: 
+												[
+												    {
+												        text: "Confirmar",
+												        click: function() { 
+												        	validaRespostas(null, null, true, true, false, false, true);
+												        	$(this).dialog("close");									        
+												        }
+												    },
+												    {
+												        text: "Cancelar",
+												        click: function() { $(this).dialog("close"); }
+												    }
+												]
+											});
+		}
+		
+		function submeter(){
+			if(${colaboradorCertificado?string} && ${empresaSistema.controlarVencimentoPorCertificacao?string} && (notaObtida() < ${avaliacaoCurso.minimoAprovacao})){
+				dialogCertificacao();
+			}else{
+				validaRespostas(null, null, true, true, false, false, true);
+			}
+		}
+	</script>
+	
 	<#assign respostasCompactas=avaliacao.respostasCompactas />
 </head>
 <body>
@@ -33,15 +95,17 @@
 			<@ww.hidden name="curso.id" />
 			<@ww.hidden name="avaliacaoCurso.id" />
 			<@ww.hidden name="avaliacaoCurso.avaliacao.id" />
+			<@ww.hidden name="colaboradorTurmaId" />
 			<@ww.token/>
 		</@ww.form>
 
 		<div class="buttonGroup">
-			<button onclick="validaRespostas(null, null, true, true, false, false, true)" class="btnGravar"></button>
+			<button onclick="submeter();" class="btnGravar"></button>
 	<#else>
 		<div class="buttonGroup">
 	</#if>
 			<button class="btnCancelar" onclick="window.location='${urlVoltar}'"></button>
 		</div>
+	<div id="dialog" title="Confirmar Remoção da Certificação"></div>
 </body>
 </html>

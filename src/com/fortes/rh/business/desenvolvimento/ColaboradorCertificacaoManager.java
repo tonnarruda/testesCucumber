@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.geral.Colaborador;
 
 public interface ColaboradorCertificacaoManager extends GenericManager<ColaboradorCertificacao>
@@ -15,7 +16,7 @@ public interface ColaboradorCertificacaoManager extends GenericManager<Colaborad
 	Collection<ColaboradorCertificacao> certificaColaborador(Long colaboradorTurmaId, Long colaboradorId, Long certificacaoId, CertificacaoManager certificacaoManager);
 	Collection<ColaboradorCertificacao> getCertificacoesAVencer(Date data, Long empresaId);
 	void descertificarColaborador(Long colaboradorCertificacaoId);
-	void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId, boolean removerColaboradorAvaliacaoPratica);
+	void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId);
 	void saveColaboradorCertificacao(ColaboradorCertificacao colaboradorCertificacao);
 	ColaboradorCertificacao findColaboradorCertificadoInfomandoSeEUltimaCertificacao(Long colaboradorCertificacaoId, Long colaboradorId, Long certificacaoId);
 	Date getMaiorDataDasTurmasDaCertificacao(Long colaboradorCertificacaoId);
@@ -25,4 +26,6 @@ public interface ColaboradorCertificacaoManager extends GenericManager<Colaborad
 	Collection<Colaborador> colaboradoresQueParticipamDaCertificacao(Long certificadosId);
 	void reprocessaCertificacao(Long certificacaoId, CertificacaoManager certificacaoManager);
 	boolean existiColaboradorCertificadoByTurma(Long turmaId);
+	boolean isCertificadoByColaboradorTurmaId(Long colaboradorTurmaId);
+	void setCertificaçõesNomesInColaboradorTurmas(Collection<ColaboradorTurma> colaboradorTurmas);
 }

@@ -446,6 +446,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest
 		assertEquals("success", action.insertOrUpdateLote());
 	}
 	
+	@Test
 	public void testInsertOrUpdateLoteAprovadoDescertificar() throws Exception
 	{
 		Date data1 = DateUtil.criarDataMesAno(1, 1, 2000);
@@ -489,6 +490,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest
 		assertEquals("success", action.insertOrUpdateLote());
 	}
 	
+	@Test
 	public void testInsertOrUpdateLoteSemData() throws Exception
 	{
 		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
@@ -528,6 +530,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest
 		assertEquals("success", action.insertOrUpdateLote());
 	}
 	
+	@Test
 	public void testInsertOrUpdateLoteSemDataESemColaboradorCertificacaoId() throws Exception
 	{
 		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);

@@ -341,13 +341,15 @@
 				
 			});
 			
-			if (!horariosValidos)
-			{
+			if (!horariosValidos){
 				jAlert('Existe(m) horário(s) definidos incorretamente.<br />Informe os horários de início e término para a data ou deixe ambos em branco.');
 				return false;
 			}
 			
-			return validaFormularioEPeriodo('form', new Array('curso','desc','inst','custo','prevIni','prevFim'), new Array('prevIni', 'prevFim'));
+			if(validaFormularioEPeriodo('form', new Array('curso','desc','inst','custo','prevIni','prevFim'), new Array('prevIni', 'prevFim'), true)){
+				processando('<@ww.url includeParams="none" value="/imgs/"/>');
+				document.form.submit();
+			}
 		}
 		
 		$(function() {

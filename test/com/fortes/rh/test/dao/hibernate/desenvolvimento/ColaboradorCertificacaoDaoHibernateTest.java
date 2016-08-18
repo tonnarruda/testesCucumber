@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -47,6 +48,7 @@ import com.fortes.rh.test.factory.desenvolvimento.ColaboradorCertificacaoFactory
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 
 public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorCertificacao>
@@ -603,6 +605,47 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		colaboradorCertificacaoDao.save(colaboradorCertificacao);
 		
 		assertFalse(colaboradorCertificacaoDao.existiColaboradorCertificadoByTurma(turma.getId()));
+	}
+	
+	@Test
+	public void testFindCertificaçõesNomesByColaboradoresTurmasIds(){
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma = TurmaFactory.getEntity(null, null, curso);
+		turmaDao.save(turma);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, curso, turma);
+		colaboradorTurmaDao.save(colaboradorTurma);
+
+		Collection<ColaboradorTurma> colaboradoresTurma = new ArrayList<ColaboradorTurma>();
+		colaboradoresTurma.add(colaboradorTurma);
+
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
+		avaliacaoPraticaDao.save(avaliacaoPratica);
+		
+		Collection<AvaliacaoPratica> avaliacoesPraticas = new ArrayList<AvaliacaoPratica>();
+		avaliacoesPraticas.add(avaliacaoPratica);
+		
+		Collection<Curso> cursos = new ArrayList<Curso>();
+		cursos.add(curso);
+
+		Certificacao certificacao = CertificacaoFactory.getEntity("Certificação Nome", cursos, avaliacoesPraticas);
+		certificacaoDao.save(certificacao);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, null);
+		colaboradorCertificacao.setColaboradoresTurmas(colaboradoresTurma);
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+		
+		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
+		
+		Map<Long, ColaboradorTurma> retorno = colaboradorCertificacaoDao.findCertificaçõesNomesByColaboradoresTurmasIds(new CollectionUtil<ColaboradorTurma>().convertCollectionToArrayIds(colaboradoresTurma));
+		
+		assertEquals(1, retorno.size());
+		assertEquals("Certificação Nome", retorno.get(colaboradorTurma.getId()).getCertificacoesNomes());
 	}
 	
 	

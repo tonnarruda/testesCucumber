@@ -753,8 +753,8 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		colaboradorTurmaDao.expects(once()).method("findByColaboradorAndTurma").with(eq(turma.getId()), eq(colaborador.getId())).will(returnValue(null));
 		colaboradorTurmaDao.expects(once()).method("save").with(ANYTHING).isVoid();
-		aproveitamentoAvaliacaoCursoManager.expects(once()).method("saveNotas").with(ANYTHING, eq(notas), eq(avaliacaoCursoIds)).isVoid();
-		colaboradorTurmaManager.saveColaboradorTurmaNota(turma, colaborador, avaliacaoCursoIds, notas);
+		aproveitamentoAvaliacaoCursoManager.expects(once()).method("saveNotas").with(ANYTHING, eq(notas), eq(avaliacaoCursoIds), ANYTHING).isVoid();
+		colaboradorTurmaManager.saveColaboradorTurmaNota(turma, colaborador, avaliacaoCursoIds, notas, false);
 	}
 
 	public void testMontaRelatorioColaboradorCertificacao() throws Exception

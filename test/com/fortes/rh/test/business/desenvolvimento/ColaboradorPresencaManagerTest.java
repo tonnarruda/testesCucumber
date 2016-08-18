@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import mockit.Mockit;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorCertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
@@ -87,6 +89,7 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, curso, turma);
 		colaboradorTurma.setId(1L);
+		colaboradorTurma.setAprovado(true);
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		colaboradorTurmas.add(colaboradorTurma);
 		
@@ -94,8 +97,10 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		colaboradorCertificacaoManager.expects(once()).method("existeColaboradorCertificadoEmUmaTurmaPosterior").with(ANYTHING, eq(colaboradorTurma.getColaborador().getId())).will(returnValue(false));
 		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
 		colaboradorPresencaDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
-		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
-
+		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).will(returnValue(true));
+		colaboradorCertificacaoManager.expects(once()).method("certificaColaborador").withAnyArguments().will(returnValue(Arrays.asList(ColaboradorCertificacaoFactory.getEntity())));
+		colaboradorCertificacaoManager.expects(once()).method("setCertificaçõesNomesInColaboradorTurmas").withAnyArguments().isVoid();
+		
 		colaboradorPresencaManager.marcarTodos(null, null, true);
 	}
 	
@@ -127,8 +132,28 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		colaboradorTurmaManager.expects(once()).method("findByTurmaPresenteNoDiaTurmaId").with(ANYTHING, ANYTHING).will(returnValue(colaboradoresTurma));
 		
 		colaboradorPresencaDao.expects(once()).method("remove").with(ANYTHING, ANYTHING).isVoid();
-		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
+		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).will(returnValue(true));
 		colaboradorPresencaManager.removeByDiaTurma(null, null, false);
+	}
+	
+	public void testRemoveByDiaTurmaValidaCertificacao() throws Exception
+	{
+		Curso curso = CursoFactory.getEntity(1L);
+		Turma turma = TurmaFactory.getEntity(1L);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(null, curso, turma);
+		colaboradorTurma.setColaborador(ColaboradorFactory.getEntity());
+		colaboradorTurma.setId(1L);
+		Collection<ColaboradorTurma> colaboradoresTurma = new ArrayList<ColaboradorTurma>();
+		colaboradoresTurma.add(colaboradorTurma);
+		
+		colaboradorCertificacaoManager.expects(once()).method("existeColaboradorCertificadoEmUmaTurmaPosterior").withAnyArguments().will(returnValue(false));
+		colaboradorPresencaDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
+		colaboradorTurmaManager.expects(once()).method("findByTurmaPresenteNoDiaTurmaId").with(ANYTHING, ANYTHING).will(returnValue(colaboradoresTurma));
+		colaboradorPresencaDao.expects(once()).method("remove").with(ANYTHING, ANYTHING).isVoid();
+		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).will(returnValue(false));
+		colaboradorCertificacaoManager.expects(once()).method("descertificarColaboradorByColaboradorTurma").withAnyArguments().isVoid();
+		colaboradorPresencaManager.removeByDiaTurma(null, null, true);
 	}
 	
 	public void testUpdatePresenca() throws Exception
@@ -138,25 +163,29 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		Turma turma = TurmaFactory.getEntity(1L);
 		
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, curso, turma);
-		colaboradorTurma.setAprovado(false);
+		colaboradorTurma.setAprovado(true);
 		colaboradorTurma.setId(123L);
 		
 		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
 		colaboradorPresencaDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
-		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
+		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).will(returnValue(true));
 		colaboradorTurmaManager.expects(atLeastOnce()).method("findByProjection").withAnyArguments().will(returnValue(colaboradorTurma));
+		
 		colaboradorPresencaManager.updateFrequencia(null, null, true, false);
 		
 		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
 		colaboradorPresencaDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
-		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
+		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).will(returnValue(true));
 		colaboradorTurmaManager.expects(once()).method("findByProjection").with(ANYTHING).will(returnValue(colaboradorTurma));
-
+		colaboradorCertificacaoManager.expects(once()).method("certificaColaborador").withAnyArguments().will(returnValue(Arrays.asList(ColaboradorCertificacaoFactory.getEntity())));
+		colaboradorCertificacaoManager.expects(once()).method("setCertificaçõesNomesInColaboradorTurmas").withAnyArguments().isVoid();
+		
 		colaboradorPresencaManager.updateFrequencia(null, null, true, true);
 		
+		colaboradorTurma.setAprovado(false);
 		colaboradorPresencaDao.expects(once()).method("remove").with(ANYTHING,ANYTHING);
-		colaboradorCertificacaoManager.expects(once()).method("descertificarColaboradorByColaboradorTurma").with(ANYTHING,ANYTHING);
-		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
+		colaboradorCertificacaoManager.expects(once()).method("descertificarColaboradorByColaboradorTurma").withAnyArguments();
+		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).will(returnValue(false));
 		colaboradorTurmaManager.expects(once()).method("findByProjection").with(ANYTHING).will(returnValue(colaboradorTurma));
 
 		colaboradorPresencaManager.updateFrequencia(null, null, false, true);

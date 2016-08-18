@@ -1,5 +1,7 @@
 package com.fortes.rh.test.web.dwr;
 
+import java.util.ArrayList;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
@@ -24,8 +26,8 @@ public class ListaPresencaDWRTest extends MockObjectTestCase
 
 	public void testUpdatePresenca() throws Exception
 	{
-		colaboradorPresencaManager.expects(once()).method("updateFrequencia").with(eq(null),eq(null),eq(true),eq(false));
-		assertTrue(listaPresencaDWR.updateFrequencia(null, null, true, FiltroControleVencimentoCertificacao.CURSO.getOpcao(),false));
+		colaboradorPresencaManager.expects(once()).method("updateFrequencia").with(eq(null),eq(null),eq(true),eq(false)).will(returnValue(new ArrayList<Long>()));
+		assertTrue(listaPresencaDWR.updateFrequencia(null, null, true, FiltroControleVencimentoCertificacao.CURSO.getOpcao(),false).size() == 0);
 	}
 
 	public void testUpdatePresencaException() throws Exception

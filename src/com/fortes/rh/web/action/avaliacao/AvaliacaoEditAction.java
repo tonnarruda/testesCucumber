@@ -13,6 +13,8 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
+import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
+import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -53,6 +55,8 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private PeriodoExperienciaManager periodoExperienciaManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private PlatformTransactionManager transactionManager;
+	private AvaliacaoCursoManager avaliacaoCursoManager;
+	private CertificacaoManager certificacaoManager;
 	private ColaboradorManager colaboradorManager;
 	private AvaliacaoManager avaliacaoManager;
 	private PerguntaManager perguntaManager;
@@ -91,6 +95,9 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private String titulo;
 	private char ativos = 'T';
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios;
+	private Long colaboradorTurmaId;
+	private boolean colaboradorCertificado;
+	private Integer pontuacaoMaximaQuestionario = 0;
 	
 	private void prepare() throws Exception
 	{
@@ -159,10 +166,16 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	{
 		avaliacao = avaliacaoManager.findById(avaliacaoCurso.getAvaliacao().getId());
 		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacaoCurso.getAvaliacao().getId(), false);
-		
 		colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO);
-		
 		colaboradorQuestionario = colaboradorQuestionarioManager.findByColaboradorAvaliacaoCurso(colaborador.getId(), avaliacaoCurso.getId(), turma.getId());
+		avaliacaoCurso = avaliacaoCursoManager.findById(avaliacaoCurso.getId());
+		
+		if(getEmpresaSistema().isControlarVencimentoPorCertificacao()){
+			colaboradorQuestionario.setAvaliacao(avaliacaoCurso.getAvaliacao());
+			Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
+			pontuacaoMaximaQuestionario = colaboradorRespostaManager.calculaPontuacaoMaximaQuestionario(colaboradorQuestionario, colaboradorRespostas, null);
+			colaboradorCertificado = colaboradorCertificacaoManager.isCertificadoByColaboradorTurmaId(colaboradorTurmaId);
+		}
 		
 		if (colaboradorQuestionario != null && colaboradorQuestionario.getRespondida())
 			colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
@@ -212,6 +225,8 @@ public class AvaliacaoEditAction extends MyActionSupportList
 			
 			transactionManager.commit(status);
 			
+			boolean colaboradotumaAprovado = colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurmaId, turma.getId(), curso.getId());
+			checaCertificacao(colaboradotumaAprovado);
 			addActionSuccess("Respostas gravadas com sucesso");
 			
 			return Action.SUCCESS;
@@ -223,6 +238,15 @@ public class AvaliacaoEditAction extends MyActionSupportList
 			prepareResponderAvaliacaoAluno();
 			addActionError("Ocorreu um erro ao gravar as respostas da avaliação");
 			return Action.INPUT;
+		}
+	}
+	
+	private void checaCertificacao(boolean colaboradotumaAprovado) {
+		if(getEmpresaSistema().isControlarVencimentoPorCertificacao()){	
+			if(colaboradotumaAprovado)
+				colaboradorCertificacaoManager.certificaColaborador(colaboradorTurmaId, null, null, certificacaoManager);
+			else
+				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurmaId);
 		}
 	}
 	
@@ -488,13 +512,39 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		this.agruparPorAspecto = agruparPorAspecto;
 	}
 
-	public void setColaboradorTurmaManager(
-			ColaboradorTurmaManager colaboradorTurmaManager) {
+	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 
-	public void setColaboradorCertificacaoManager(
-			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
+	}
+
+	public void setColaboradorTurmaId(Long colaboradorTurmaId) {
+		this.colaboradorTurmaId = colaboradorTurmaId;
+	}
+
+	public Long getColaboradorTurmaId() {
+		return colaboradorTurmaId;
+	}
+
+	public void setCertificacaoManager(CertificacaoManager certificacaoManager) {
+		this.certificacaoManager = certificacaoManager;
+	}
+
+	public boolean isColaboradorCertificado() {
+		return colaboradorCertificado;
+	}
+
+	public void setColaboradorCertificado(boolean colaboradorCertificado) {
+		this.colaboradorCertificado = colaboradorCertificado;
+	}
+
+	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager) {
+		this.avaliacaoCursoManager = avaliacaoCursoManager;
+	}
+
+	public Integer getPontuacaoMaximaQuestionario() {
+		return pontuacaoMaximaQuestionario;
 	}
 }

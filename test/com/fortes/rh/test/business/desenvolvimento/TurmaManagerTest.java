@@ -267,7 +267,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		turmaDocumentoAnexoManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
 		turmaDao.expects(once()).method("remove").with(eq(turma.getId())).isVoid();
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
-		colaboradorCertificacaoManager.expects(atLeastOnce()).method("descertificarColaboradorByColaboradorTurma").with(ANYTHING, ANYTHING).isVoid();
+		colaboradorCertificacaoManager.expects(atLeastOnce()).method("descertificarColaboradorByColaboradorTurma").withAnyArguments().isVoid();
 
 		Exception ex = null;
 		try
@@ -364,7 +364,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		turmaAvaliacaoTurmaManager.expects(once()).method("salvarAvaliacaoTurmas").with(eq(turma.getId()),eq(avaliacaoTurmaIds)).isVoid();
 		turmaDocumentoAnexoManager.expects(once()).method("salvarDocumentoAnexos").with(eq(turma.getId()),eq(documentoAnexosIds)).isVoid();
 		colaboradorTurmaManager.expects(once()).method("findByTurmaId").with(eq(turma.getId())).will(returnValue(Arrays.asList(colaboradorTurma)));
-		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
+		colaboradorTurmaManager.expects(once()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).will(returnValue(true));
 		
 		Exception ex = null;
 		try

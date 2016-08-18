@@ -39,6 +39,7 @@ import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
+import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -167,7 +168,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private String[] notas;
 	private Long[] colaboradorTurmaIds;
 
-	private Long[] colaboradorTurmasIds;
 	// Indica se a requisição veio do plano de treinamento
 	private boolean planoTreinamento;
 
@@ -349,7 +349,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	
 	public String prepareImprimirTurma() throws Exception
 	{
-
 		dnts = dNTManager.findToList(new String[] { "id", "nome" }, new String[] { "id", "nome" }, new String[] { "empresa.id" },
 				new Object[] { getEmpresaSistema().getId() }, new String[] { "data desc" });
 
@@ -366,9 +365,10 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 			addActionMessage("Não existe previsão de dias para esta turma.");
 
 		colaboradorTurmasLista = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null, getEmpresaSistema().isControlarVencimentoPorCertificacao());
-		CollectionUtil<ColaboradorTurma> util = new CollectionUtil<ColaboradorTurma>();
-		colaboradorTurmasIds = util.convertCollectionToArrayIds(colaboradorTurmasLista);
 
+		if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
+			colaboradorCertificacaoManager.setCertificaçõesNomesInColaboradorTurmas(colaboradorTurmasLista);
+		
 		turma = turmaManager.findByIdProjection(turma.getId());
 		colaboradorPresencas = colaboradorPresencaManager.findPresencaByTurma(turma.getId());
 
@@ -557,6 +557,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 				addActionMessage("Não existe colaborador inscrito nesta turma.");
 			else
 			{
+				if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
+					colaboradorCertificacaoManager.setCertificaçõesNomesInColaboradorTurmas(colaboradoresTurma);
+				
 				avaliacaoCurso = avaliacaoCursoManager.findById(avaliacaoCurso.getId());
 				CollectionUtil<ColaboradorTurma> util = new CollectionUtil<ColaboradorTurma>();
 				aproveitamentos = aproveitamentoAvaliacaoCursoManager.findNotas(avaliacaoCurso.getId(), util.convertCollectionToArrayIds(colaboradoresTurma));
@@ -569,12 +572,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public String saveAproveitamentoCurso()
 	{
 		try	{
-			Collection<Long> colaboradoresTurmasIds = aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
-		
-			if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
-				for (Long colabTurmaId : colaboradoresTurmasIds) 
-					new certificaColaboradorThread(colaboradorCertificacaoManager, colabTurmaId, certificacaoManager).start();
-			
+			aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, getEmpresaSistema().isControlarVencimentoPorCertificacao());
 			addActionSuccess("Aproveitamento/Notas salvos com sucesso.");
 			prepareAproveitamento();
 			return Action.SUCCESS;
@@ -1134,11 +1132,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public Collection<AproveitamentoAvaliacaoCurso> getAproveitamentos()
 	{
 		return aproveitamentos;
-	}
-
-	public Long[] getColaboradorTurmasIds()
-	{
-		return colaboradorTurmasIds;
 	}
 
 	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager)

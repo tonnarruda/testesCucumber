@@ -54,7 +54,6 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	@Transient
 	private Double custoRateado;
-
 	@Transient
 	private String tempoSemCurso;
 	@Transient
@@ -63,10 +62,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private String coluna02RelatorioPresenca;
 	@Transient
 	private String coluna03RelatorioPresenca;
-
 	@Transient
 	private boolean respondeuAvaliacaoTurma;
-
 	@Transient
 	private Double valorAvaliacao;
 	@Transient
@@ -77,7 +74,6 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private String diaTurmaHoraIni;
 	@Transient
 	private String diaTurmaHoraFim;
-
 	@Transient
 	private Integer totalDias;
 	@Transient
@@ -102,6 +98,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private String cargaHorariaEfetiva;
 	@Transient
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	@Transient
+	private String certificacoesNomes;
 
 	public ColaboradorTurma() {	}
 
@@ -1010,5 +1008,13 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public String getCertificacoesNomes() {
+		return certificacoesNomes;
+	}
+
+	public void setCertificacoesNomes(String certificacoesNomes) {
+		this.certificacoesNomes = certificacoesNomes;
 	}
 }

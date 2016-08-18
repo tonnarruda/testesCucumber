@@ -6,7 +6,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -582,5 +584,36 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		criteria.setProjection(p);
 
 		return criteria.list().size() > 0;
+	}
+	
+	public Map<Long, ColaboradorTurma> findCertificaçõesNomesByColaboradoresTurmasIds(Long... colaboradorTurmasIds) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select cc.colaboradoresTurmas_id, ct.nome from colaboradorcertificacao cct ");
+		sql.append("inner join colaboradorcertificacao_colaboradorturma cc on cc.colaboradorcertificacao_id = cct.id ");
+		sql.append("inner join certificacao ct on ct.id = cct.certificacao_id ");
+		sql.append("where cc.colaboradoresTurmas_id in (:colaboradoresTurmasId) ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setParameterList("colaboradoresTurmasId", colaboradorTurmasIds);
+		
+		List resultado = query.list();
+		ColaboradorTurma colaboradorTurma = null;
+		Map<Long, ColaboradorTurma> colaboradoresCertificados = new HashedMap();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+			colaboradorTurma = new ColaboradorTurma();
+			Object[] res = it.next();
+			colaboradorTurma.setId(((BigInteger)res[0]).longValue());
+			String certificacaoNome = res[1] != null ? (String)res[1] : ""; 
+			
+			if(colaboradoresCertificados.containsKey(colaboradorTurma.getId())){
+				colaboradoresCertificados.get(colaboradorTurma.getId()).setCertificacoesNomes(colaboradoresCertificados.get(colaboradorTurma.getId()).getCertificacoesNomes() + ", " + certificacaoNome);
+			}else{
+				colaboradorTurma.setCertificacoesNomes(certificacaoNome);
+				colaboradoresCertificados.put(colaboradorTurma.getId(), colaboradorTurma);
+			}
+		}
+		
+		return colaboradoresCertificados;
 	}
 }

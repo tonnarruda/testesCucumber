@@ -1,17 +1,20 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.Collection;
+
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 public class ListaPresencaDWR
 {
 	private ColaboradorPresencaManager colaboradorPresencaManager;
 	
-	public Boolean updateFrequencia(Long diaTurmaId, Long colaboradorTurmaId, boolean presenca, int controlarVencimentoCertificacaoPor, boolean certificadoEmTurmaPorterior) throws Exception
+	public Collection<ColaboradorTurma> updateFrequencia(Long diaTurmaId, Long colaboradorTurmaId, boolean presenca, int controlarVencimentoCertificacaoPor, boolean certificadoEmTurmaPorterior) throws Exception
 	{
 		try
 		{
 			if(!certificadoEmTurmaPorterior)
-				colaboradorPresencaManager.updateFrequencia(diaTurmaId, colaboradorTurmaId, presenca, verificaCertificacao(controlarVencimentoCertificacaoPor));
+				return colaboradorPresencaManager.updateFrequencia(diaTurmaId, colaboradorTurmaId, presenca, verificaCertificacao(controlarVencimentoCertificacaoPor));
 			else
 				return null;
 		}
@@ -20,13 +23,11 @@ public class ListaPresencaDWR
 			e.printStackTrace();
 			throw new Exception("Erro ao alterar Frequência.");
 		}
-		
-		return presenca;
 	}
 	
-	public void marcarTodos(Long diaTurmaId, Long turmaId, int controlarVencimentoCertificacaoPor) throws Exception
+	public Collection<ColaboradorTurma> marcarTodos(Long diaTurmaId, Long turmaId, int controlarVencimentoCertificacaoPor) throws Exception
 	{
-		colaboradorPresencaManager.marcarTodos(diaTurmaId, turmaId, verificaCertificacao(controlarVencimentoCertificacaoPor));
+		return colaboradorPresencaManager.marcarTodos(diaTurmaId, turmaId, verificaCertificacao(controlarVencimentoCertificacaoPor));
 	}
 	
 	public void desmarcarTodos(Long diaTurmaId, Long turmaId, int controlarVencimentoCertificacaoPor) throws Exception

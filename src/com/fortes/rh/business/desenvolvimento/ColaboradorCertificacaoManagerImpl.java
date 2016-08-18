@@ -327,6 +327,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return colaboradorCertificadosRetorno;
 	}
 
+	
 	@SuppressWarnings("deprecation")
 	private void certificaDependentesRecursivo(ColaboradorCertificacao colaboradorCertificacao, CertificacaoManager certificacaoManager) {
 		if(certificacaoManager == null)
@@ -370,13 +371,11 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return getDao().getCertificacoesAVencer(data, empresaId);
 	}
 
-	public void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId, boolean removerColaboradorAvaliacaoPratica) {
+	public void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId) {
 		Collection<ColaboradorCertificacao> colaboradoresCertificados = getDao().findByColaboradorTurma(colaboradorTurmaId);
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificados) {
 			if(colaboradorCertificacao != null && colaboradorCertificacao.getId() != null){
-				if(removerColaboradorAvaliacaoPratica)
-					colaboradorAvaliacaoPraticaManager.removeByColaboradorCertificacaoId(colaboradorCertificacao.getId());
-				
+				colaboradorAvaliacaoPraticaManager.removeByColaboradorCertificacaoId(colaboradorCertificacao.getId());
 				this.descertificarColaborador(colaboradorCertificacao.getId());
 			}
 		}
@@ -443,6 +442,8 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			getDao().removeColaboradorCertificacaoColaboradorTurma(certificacaoId);
 			getDao().remove(colaboradorcertificacaoIds);
 		}
+		
+		getDao().getHibernateTemplateByGenericDao().flush();
 	}
 
 	public ColaboradorCertificacao findColaboradorCertificadoInfomandoSeEUltimaCertificacao( Long colaboradorCertificacaoId, Long colaboradorId, Long certificacaoId) {
@@ -457,6 +458,22 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	public Date getMaiorDataDasTurmasDaCertificacao( Long colaboradorCertificacaoId) {
 		return getDao().getMaiorDataDasTurmasDaCertificacao(colaboradorCertificacaoId);
 	}
+
+	public void setCertificaçõesNomesInColaboradorTurmas(Collection<ColaboradorTurma> colaboradorTurmas) {
+		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = getDao().findCertificaçõesNomesByColaboradoresTurmasIds(new CollectionUtil<ColaboradorTurma>().convertCollectionToArrayIds(colaboradorTurmas));
+		
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
+			if(colaboradoresTurmaMap.containsKey(colaboradorTurma.getId())){
+				colaboradorTurma.setCertificado(true);
+				colaboradorTurma.setCertificacoesNomes(colaboradoresTurmaMap.get(colaboradorTurma.getId()).getCertificacoesNomes());
+			}
+		}
+	}
+	
+	public boolean isCertificadoByColaboradorTurmaId(Long colaboradorTurmaId){
+		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = getDao().findCertificaçõesNomesByColaboradoresTurmasIds(colaboradorTurmaId);
+		return colaboradoresTurmaMap.containsKey(colaboradorTurmaId);
+	} 
 
 	public void setAvaliacaoPraticaManager( AvaliacaoPraticaManager avaliacaoPraticaManager) {
 		this.avaliacaoPraticaManager = avaliacaoPraticaManager;

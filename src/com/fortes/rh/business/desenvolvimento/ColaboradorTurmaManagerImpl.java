@@ -488,11 +488,12 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 					save(colaboradorTurma);
 				}
 			}
-			aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
+			boolean colaboradorTurmaAprovado = aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 
 			if(validarCertificacao && colaboradorTurma.getId() != null){
 				getDao().getHibernateTemplateByGenericDao().flush();
-				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
+				if(colaboradorTurmaAprovado)
+					new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
 			}
 		}
 
@@ -569,7 +570,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		// Remove os Questionarios/Respostas vinculados ao colaborador nesta turma
 		colaboradorQuestionarioManager.removeByColaboradorETurma(colaboradorTurma.getColaborador().getId(), colaboradorTurma.getTurma().getId());
 		aproveitamentoAvaliacaoCursoManager.removeByColaboradorTurma(colaboradorTurma.getId());
-		colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), true);
+		colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId());
 		super.remove(colaboradorTurma);
 	}
 
@@ -944,7 +945,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		}
 	}
 
-	public void saveColaboradorTurmaNota(Turma turma, Colaborador colaborador, Long[] avaliacaoCursoIds, String[] notas) throws Exception
+	public void saveColaboradorTurmaNota(Turma turma, Colaborador colaborador, Long[] avaliacaoCursoIds, String[] notas, boolean controlaVencimentoPorCertificacao) throws Exception
 	{
 		ColaboradorTurma colaboradorTurma = getDao().findByColaboradorAndTurma(turma.getId(), colaborador.getId());
 		
@@ -957,7 +958,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			getDao().save(colaboradorTurma);			
 		}
 		
-		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurma, notas, avaliacaoCursoIds);
+		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurma, notas, avaliacaoCursoIds, controlaVencimentoPorCertificacao);
 	}
 
 	public Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId, Long avaliacaoCursoId, boolean controlaVencimentoPorCertificacao)
@@ -1132,8 +1133,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findByTurmaId(turmaId);
 	}
 	
-	public void aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId) {
-		getDao().aprovarOrReprovarColaboradorTurma(colaboradorTurmaId, turmaId, cursoId);
+	public boolean aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId) {
+		return getDao().aprovarOrReprovarColaboradorTurma(colaboradorTurmaId, turmaId, cursoId);
 	}
 
 	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {

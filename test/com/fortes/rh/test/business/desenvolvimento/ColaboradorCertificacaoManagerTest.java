@@ -43,6 +43,7 @@ import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 
@@ -521,5 +522,36 @@ public class ColaboradorCertificacaoManagerTest
 		Long turmaId = 1L;
 		when(colaboradorCertificacaoDao.existiColaboradorCertificadoByTurma(turmaId)).thenReturn(false);
 		assertFalse(colaboradorCertificacaoManager.existiColaboradorCertificadoByTurma(turmaId));
+	}
+	
+	@Test
+	public void testSetCertificaçõesNomesInColaboradorTurmas(){
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas.add(colaboradorTurma);
+		
+		colaboradorTurma.setCertificacoesNomes("certificacoesNomes");
+		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = new HashMap<Long, ColaboradorTurma>();
+		colaboradoresTurmaMap.put(colaboradorTurma.getId(), colaboradorTurma);
+
+		when(colaboradorCertificacaoDao.findCertificaçõesNomesByColaboradoresTurmasIds(new CollectionUtil<ColaboradorTurma>().convertCollectionToArrayIds(colaboradorTurmas))).thenReturn(colaboradoresTurmaMap);
+		colaboradorCertificacaoManager.setCertificaçõesNomesInColaboradorTurmas( colaboradorTurmas);
+		
+		assertEquals(colaboradorTurma.getCertificacoesNomes(), ((ColaboradorTurma) colaboradorTurmas.toArray()[0]).getCertificacoesNomes());
+	}
+	
+	@Test
+	public void testIsCertificadoByColaboradorTurmaId(){
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas.add(colaboradorTurma);
+		
+		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = new HashMap<Long, ColaboradorTurma>();
+		colaboradoresTurmaMap.put(colaboradorTurma.getId(), colaboradorTurma);
+
+		when(colaboradorCertificacaoDao.findCertificaçõesNomesByColaboradoresTurmasIds(colaboradorTurma.getId())).thenReturn(colaboradoresTurmaMap);
+		assertTrue(colaboradorCertificacaoManager.isCertificadoByColaboradorTurmaId(colaboradorTurma.getId()));
 	}
 }

@@ -2,6 +2,7 @@ package com.fortes.rh.dao.desenvolvimento;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
@@ -28,4 +29,5 @@ public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertif
 	Collection<Long> possiveisColaboradoresCertificados(Long certificacaoId);
 	Collection<ColaboradorCertificacao> colaboradoresAprovadosEmTodosOsCursosDaCertificacao(Long certificacaoId);
 	boolean existiColaboradorCertificadoByTurma(Long turmaId);
+	Map<Long, ColaboradorTurma> findCertificaçõesNomesByColaboradoresTurmasIds(Long... colaboradorTurmasIds);
 }

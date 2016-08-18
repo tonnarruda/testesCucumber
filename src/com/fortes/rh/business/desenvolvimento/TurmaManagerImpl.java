@@ -60,7 +60,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			
 			if(colaboradoresTurmas.size() > 0){
 				for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 
-					colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), true);
+					colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId());
 				
 				CollectionUtil<ColaboradorTurma> cc = new CollectionUtil<ColaboradorTurma>();
 				Long[] colaboradorTurmaIds = cc.convertCollectionToArrayIds(colaboradoresTurmas);
@@ -106,9 +106,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			turmaDocumentoAnexoManager.salvarDocumentoAnexos(turma.getId(), documentoAnexoIds);
 		}
 		verificaAprovacaoByTurma(turma.getId());
-		
-		if(validarCertificacao)
-			verificaCertificacaoByColaboradorTurma(turma, certificacaoManager);
+		verificaCertificacaoByColaboradorTurma(turma, validarCertificacao, certificacaoManager);
 	}
 	
 	private void verificaAprovacaoByTurma(Long turmaId) {
@@ -118,15 +116,19 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		}
 	}
 	
-	private void verificaCertificacaoByColaboradorTurma(Turma turma, CertificacaoManager certificacaoManager){
-		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaId(turma.getId());
-		if(turma.getRealizada()){
-			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 
-				new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), null).start();
-		}
-		else{
-			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 
-				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), true);
+	private void verificaCertificacaoByColaboradorTurma(Turma turma, boolean validarCertificacao, CertificacaoManager certificacaoManager){
+		if(validarCertificacao){
+			getDao().getHibernateTemplateByGenericDao().flush();
+			Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaId(turma.getId());
+			if(turma.getRealizada()){
+				for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas){ 
+					if(colaboradorTurma.isAprovado())
+						new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), null).start();
+				}
+			}else{
+				for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) 
+					colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId());
+			}
 		}
 	}
 

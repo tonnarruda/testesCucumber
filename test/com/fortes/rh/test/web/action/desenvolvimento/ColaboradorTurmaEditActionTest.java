@@ -8,6 +8,7 @@ import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
@@ -139,7 +140,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
     	turma.setCurso(curso);
     	action.setTurma(turma);
     	
-    	manager.expects(once()).method("saveColaboradorTurmaNota").with(eq(turma),ANYTHING,ANYTHING,ANYTHING);
+    	manager.expects(once()).method("saveColaboradorTurmaNota").with(new Constraint[]{eq(turma),ANYTHING,ANYTHING,ANYTHING,ANYTHING});
     	empresaManager.expects(once()).method("ajustaCombo").with(eq(empresa.getId()),ANYTHING).will(returnValue(empresa.getId()));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(Arrays.asList(empresa)));
     	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));

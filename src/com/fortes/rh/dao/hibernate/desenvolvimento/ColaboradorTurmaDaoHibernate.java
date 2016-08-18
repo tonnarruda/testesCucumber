@@ -1842,6 +1842,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId) {
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ct.id"), "id");
+		p.add(Projections.property("ct.aprovado"), "aprovado");
 		p.add(Projections.property("ct.curso.id"), "cursoId");
 		p.add(Projections.property("ct.turma.id"), "turmaId");
 
@@ -1916,7 +1917,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	}
 
 	
-	public void aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId) {
+	public boolean aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId) {
 		boolean aprovado = verificaAprovacao(colaboradorTurmaId, turmaId, cursoId);
 		String queryHQL = "update ColaboradorTurma ct set ct.aprovado = :aprovado where ct.id = :colaboradorTurmaId";
 
@@ -1924,6 +1925,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		query.setBoolean("aprovado", aprovado);
 		query.setLong("colaboradorTurmaId", colaboradorTurmaId);
 		query.executeUpdate();
+		
+		return aprovado;
 	}
 	
 	private boolean verificaAprovacao(Long colaboradorTurmaId, Long turmaId, Long cursoId){

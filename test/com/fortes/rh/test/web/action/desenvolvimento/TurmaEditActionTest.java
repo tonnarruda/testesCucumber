@@ -374,6 +374,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(10L)).will(returnValue(turma));
     	colaboradorPresencaManager.expects(once()).method("findPresencaByTurma").with(eq(10L)).will(returnValue(new ArrayList<ColaboradorPresenca>()));
     	colaboradorCertificacaoManager.expects(once()).method("existeColaboradorCertificadoEmUmaTurmaPosterior").with(eq(10L), eq(null)).will(returnValue(false));
+    	colaboradorCertificacaoManager.expects(once()).method("setCertificaçõesNomesInColaboradorTurmas").withAnyArguments();
     	
     	assertEquals("success", action.preparePresenca());
     	assertTrue(action.getActionMessages().isEmpty());
@@ -610,7 +611,6 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	action.setNotas(new String[]{"10","9","8"});
     	action.setColaboradorTurmaIds(null);
     	action.getAproveitamentos();
-    	action.getColaboradorTurmasIds();
     	action.isAvaliacaoRespondida();
     	action.getCertificacaos();
     	action.getCertificacao();

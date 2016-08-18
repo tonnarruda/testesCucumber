@@ -226,6 +226,9 @@
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica">
 			<param name="include" value="dataString, nota, colaboradorCertificacao"/>
 		</convert>
+		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.ColaboradorTurma">
+			<param name="include" value="id, certificacoesNomes"/>
+		</convert>
 		
 		<!-- AVALIACAO -->
 		<convert converter="bean" match="com.fortes.rh.model.avaliacao.Avaliacao"/>

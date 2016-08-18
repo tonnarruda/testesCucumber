@@ -913,4 +913,12 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 		inicializaConfiguracaoNivelCompetenciaColaborador();
 		this.configuracaoNivelCompetenciaColaborador.setConfiguracaoNivelCompetenciaFaixaSalarialId(configuracaoNivelCompetenciaFaixaSalarialId);
 	}
+	
+	public void setAvaliacaoCursoNotaMinima(Double minimoAprovacao){
+		
+		if(this.avaliacaoCurso == null)
+			this.avaliacaoCurso = new AvaliacaoCurso();
+		
+		this.avaliacaoCurso.setMinimoAprovacao(minimoAprovacao);
+	}
 }

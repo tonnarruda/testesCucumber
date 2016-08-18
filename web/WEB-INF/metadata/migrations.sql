@@ -23,7 +23,9 @@ BEGIN
 	( 
 		select (select Array(select distinct avaliacoespraticas_id from certificacao_avaliacaopratica where certificacao_id = id_certificado order by avaliacoespraticas_id)) = 
 		(select Array( 
-					select distinct caval.avaliacaopratica_id from colaboradoravaliacaopratica caval where caval.colaborador_id = id_colaborador
+					select distinct caval.avaliacaopratica_id from colaboradoravaliacaopratica caval 
+					inner join certificacao_avaliacaopratica ca on ca.avaliacoespraticas_id = caval.avaliacaopratica_id and ca.certificacao_id = id_certificado
+					where caval.colaborador_id = id_colaborador					
 					and caval.certificacao_id = id_certificado
 					and caval.nota >= (select aval.notaMinima from avaliacaopratica aval where aval.id = caval.avaliacaopratica_id)
 					and caval.data > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc 

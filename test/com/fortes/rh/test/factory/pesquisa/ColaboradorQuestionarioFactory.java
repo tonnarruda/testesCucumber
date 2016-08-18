@@ -5,6 +5,8 @@ import java.util.Collection;
 
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
@@ -53,5 +55,17 @@ public class ColaboradorQuestionarioFactory
 		colaboradorQuestionarios.add(getEntity(1L));
 
 		return colaboradorQuestionarios;
+	}
+	
+	public static ColaboradorQuestionario getEntity(Colaborador colaborador, Turma turma, AvaliacaoCurso avaliacaoCurso, Double performance)
+	{
+		ColaboradorQuestionario colaboradorQuestionario = getEntity();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setAvaliacaoCurso(avaliacaoCurso);
+		colaboradorQuestionario.setTurma(turma);
+		colaboradorQuestionario.setPerformance(performance);
+		colaboradorQuestionario.setRespondida(true);
+		
+		return colaboradorQuestionario;
 	}
 }

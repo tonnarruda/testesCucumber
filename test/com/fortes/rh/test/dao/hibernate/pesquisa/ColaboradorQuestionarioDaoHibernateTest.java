@@ -1521,7 +1521,6 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 			ColaboradorPresencaDao colaboradorPresencaDao) {
 		this.colaboradorPresencaDao = colaboradorPresencaDao;
 	}
-
 	
 	public void setCursoDao(CursoDao cursoDao)
 	{

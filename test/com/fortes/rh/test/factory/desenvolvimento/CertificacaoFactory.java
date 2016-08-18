@@ -2,6 +2,7 @@ package com.fortes.rh.test.factory.desenvolvimento;
 
 import java.util.Collection;
 
+import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Empresa;
@@ -29,6 +30,15 @@ public class CertificacaoFactory
 		Certificacao certificacao = getEntity();
 		certificacao.setEmpresa(empresa);
 		certificacao.setPeriodicidade(1);
+		certificacao.setCursos(cursos);
+		return certificacao;
+	}
+	
+	public static Certificacao getEntity(String nome, Collection<Curso> cursos, Collection<AvaliacaoPratica> avaliacoesPraticas)
+	{
+		Certificacao certificacao = getEntity();
+		certificacao.setNome("Certificação Nome");
+		certificacao.setAvaliacoesPraticas(avaliacoesPraticas);
 		certificacao.setCursos(cursos);
 		return certificacao;
 	}

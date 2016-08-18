@@ -33,6 +33,7 @@ public class AvaliacaoCursoDaoHibernate extends GenericDaoHibernate<AvaliacaoCur
 		p.add(Projections.property("a.id"), "id");
 		p.add(Projections.property("a.titulo"), "titulo");
 		p.add(Projections.property("a.tipo"), "tipo");
+		p.add(Projections.property("a.minimoAprovacao"), "minimoAprovacao");
 		criteria.setProjection(Projections.distinct(p));
 		
 		if (cursosIds != null && cursosIds.length > 0)

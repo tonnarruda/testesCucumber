@@ -1,9 +1,9 @@
 package com.fortes.rh.business.desenvolvimento;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -20,11 +20,10 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 {
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	private CertificacaoManager certificacaoManager;
 
-	public Collection<Long> saveNotas(Long[] colaboradorTurmaIds, String[] notas, AvaliacaoCurso avaliacaoCurso) throws Exception
+	public void saveNotas(Long[] colaboradorTurmaIds, String[] notas, AvaliacaoCurso avaliacaoCurso, boolean controlaVencimentoPorCertificacao) throws Exception
 	{
-		Collection<Long> colaboradoresTurmasIds = new ArrayList<Long>();
-		
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
@@ -41,13 +40,10 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 				colabTurma.setId(colaboradorTurmaIds[i]);
 				
 				AproveitamentoAvaliacaoCurso aproveitamento = new AproveitamentoAvaliacaoCurso(colabTurma, avaliacaoCurso, valor);
-				saveOrUpdate(aproveitamento, colaboradorTurmaManager);
-
-				colaboradoresTurmasIds.add(colabTurma.getId());
+				saveOrUpdate(aproveitamento, colaboradorTurmaManager, controlaVencimentoPorCertificacao);
 			}
 			
 			transactionManager.commit(status);
-			return colaboradoresTurmasIds;
 		}catch (Exception e)
 		{
 			transactionManager.rollback(status);
@@ -56,22 +52,30 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 		}
 	}
 
-	private void saveOrUpdate(AproveitamentoAvaliacaoCurso aproveitamento, ColaboradorTurmaManager colaboradorTurmaManager){
+	private void saveOrUpdate(AproveitamentoAvaliacaoCurso aproveitamento, ColaboradorTurmaManager colaboradorTurmaManager, boolean controlaVencimentoPorCertificacao){
 		ColaboradorTurma colaboradorTurma = colaboradorTurmaManager.findByProjection(aproveitamento.getColaboradorTurma().getId());
-
 		AproveitamentoAvaliacaoCurso resultado = getDao().findByColaboradorTurmaAvaliacaoId(aproveitamento.getColaboradorTurma().getId(), aproveitamento.getAvaliacaoCurso().getId());
 		
 		if (resultado == null){
 			getDao().save(aproveitamento);
-			getDao().getHibernateTemplateByGenericDao().flush();
-			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
 		}else{
 			aproveitamento.setId(resultado.getId());
 			getDao().update(aproveitamento);
+		}
+
+		getDao().getHibernateTemplateByGenericDao().flush();
+		boolean colaboradorTurmaAprovado = colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
+		colaboradorTurma.setAprovado(colaboradorTurmaAprovado);
+		checaCertificacao(controlaVencimentoPorCertificacao, colaboradorTurma, colaboradorTurmaManager);
+	}
+
+	private void checaCertificacao(boolean controlaVencimentoPorCertificacao, ColaboradorTurma colaboradorTurma, ColaboradorTurmaManager colaboradorTurmaManager) throws DataAccessException {
+		if(controlaVencimentoPorCertificacao){	
 			getDao().getHibernateTemplateByGenericDao().flush();
-			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
-			if(aproveitamento.getValor() < resultado.getAvaliacaoCurso().getMinimoAprovacao() )
-				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(aproveitamento.getColaboradorTurma().getId(), false);
+			if(colaboradorTurma.isAprovado())
+				colaboradorCertificacaoManager.certificaColaborador(colaboradorTurma.getId(), null, null, certificacaoManager);
+			else
+				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId());
 		}
 	}
 
@@ -125,7 +129,7 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 		getDao().removeByColaboradorTurma(colaboradorTurmaId);
 	}
 
-	public void saveNotas(ColaboradorTurma colaboradorTurma, String[] notas, Long[] avaliacaoCursoIds)
+	public void saveNotas(ColaboradorTurma colaboradorTurma, String[] notas, Long[] avaliacaoCursoIds, boolean controlaVencimentoPorCertificacao)
 	{
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
 		for (int i = 0; i < notas.length; i++)
@@ -137,7 +141,7 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 				AvaliacaoCurso avaliacaoCurso = new AvaliacaoCurso();
 				avaliacaoCurso.setId(avaliacaoCursoIds[i]);
 				AproveitamentoAvaliacaoCurso aproveitamento = new AproveitamentoAvaliacaoCurso(colaboradorTurma, avaliacaoCurso, valor);
-				saveOrUpdate(aproveitamento, colaboradorTurmaManager);
+				saveOrUpdate(aproveitamento, colaboradorTurmaManager, controlaVencimentoPorCertificacao);
 				getDao().getHibernateTemplateByGenericDao().flush();
 			}
 		}
@@ -157,5 +161,9 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 	public void setColaboradorCertificacaoManager(
 			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
+	}
+
+	public void setCertificacaoManager(CertificacaoManager certificacaoManager) {
+		this.certificacaoManager = certificacaoManager;
 	}
 }

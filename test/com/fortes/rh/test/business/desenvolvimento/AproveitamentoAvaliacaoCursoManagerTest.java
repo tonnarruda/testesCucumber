@@ -75,12 +75,12 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(aproveitamento));
-		colaboradorCertificacaoManager.expects(atLeastOnce()).method("descertificarColaboradorByColaboradorTurma").with(ANYTHING, ANYTHING);
+		colaboradorCertificacaoManager.expects(atLeastOnce()).method("descertificarColaboradorByColaboradorTurma").withAnyArguments();
 		
-		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
+		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).will(returnValue(false));
 		colaboradorTurmaManager.expects(atLeastOnce()).method("findByProjection").with(ANYTHING).will(returnValue(colaboradorTurma));
 
-		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
+		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, true);
 	}
 
 	public void testSaveNotas() throws Exception
@@ -102,10 +102,10 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(null));
-		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").withAnyArguments().isVoid();
+		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").withAnyArguments().will(returnValue(true));
 		colaboradorTurmaManager.expects(atLeastOnce()).method("findByProjection").with(ANYTHING).will(returnValue(colaboradorTurma));
 		
-		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
+		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
 	}
 	
 	public void testSaveNotasComConfiguracaoPeriodicidadePorCertificacao() throws Exception
@@ -126,9 +126,9 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(null));
-		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").withAnyArguments().isVoid();
+		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").withAnyArguments().will(returnValue(true));
 		colaboradorTurmaManager.expects(atLeastOnce()).method("findByProjection").with(ANYTHING).will(returnValue(colaboradorTurma));
-		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
+		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
 	}
 	
 	public void testSaveNotas2()
@@ -153,9 +153,9 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		colaboradorTurmaManager.expects(atLeastOnce()).method("findByProjection").with(eq(colaboradorTurma.getId())).will(returnValue(colaboradorTurma));
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(null));
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("save").with(ANYTHING);
-		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).isVoid();
+		colaboradorTurmaManager.expects(atLeastOnce()).method("aprovarOrReprovarColaboradorTurma").with(eq(colaboradorTurma.getId()), eq(colaboradorTurma.getTurma().getId()), eq(colaboradorTurma.getCurso().getId())).will(returnValue(true));
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
-		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurma, notas, avaliacaoCursoIds);
+		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurma, notas, avaliacaoCursoIds, false);
 	}
 
 	
@@ -177,7 +177,7 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		Exception exc = null;
 		try
 		{
-			aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);			
+			aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);			
 		}
 		catch (Exception e)
 		{

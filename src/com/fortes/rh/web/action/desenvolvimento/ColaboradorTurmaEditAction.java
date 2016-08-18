@@ -142,7 +142,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	{
 		try
 		{
-			colaboradorTurmaManager.saveColaboradorTurmaNota(turma, colaborador, avaliacaoCursoIds, notas);
+			colaboradorTurmaManager.saveColaboradorTurmaNota(turma, colaborador, avaliacaoCursoIds, notas, getEmpresaSistema().isControlarVencimentoPorCertificacao());
 			addActionSuccess("Colaborador e notas inseridos com sucesso.");
 		}
 		catch (FortesException e)
@@ -331,20 +331,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		prepareInsertDnt();
 		return Action.SUCCESS;
 	}
-
-//	public String aprovarColaboradorTurma() throws Exception
-//	{
-//		prepare();
-//		colaboradorTurmaManager.aprovacaoColaboradorTurma(colaboradorTurma.getId(), true);
-//		return Action.SUCCESS;
-//	}
-//
-//	public String desaprovarColaboradorTurma() throws Exception
-//	{
-//		prepare();
-//		colaboradorTurmaManager.aprovacaoColaboradorTurma(colaboradorTurma.getId(), false);
-//		return Action.SUCCESS;
-//	}
 	
 	public void setEstabelecimentoManager(
 			EstabelecimentoManager estabelecimentoManager) {
