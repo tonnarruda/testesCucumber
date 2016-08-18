@@ -135,6 +135,10 @@
 			$("div[id*=box]").hide();
 			$("#box-"+entity).show();
 			
+			$("#box-colaborador").html("");
+			$("#box-candidato").html("");
+			$("#box-candidatoExterno").html("");
+			
 			$("#box-"+entity).load("configCampos.action?entidade="+entity);
 			
 			$("#menuCadastro a").removeClass("ativa");

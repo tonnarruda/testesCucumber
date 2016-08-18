@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.17x.xxx" db="" data="xx/08/2016">
-		<Item visivel="S" motivo="S16050000285"><![CDATA[R&S > Cadastros > Candidatos > Documentos do Candidato: Correção de inconsistência na listagem e inserção de anexos do candidato.]]></Item>
+		<Item visivel="S" motivo="S16050000285"><![CDATA[R&S > Cadastros > Candidatos > Documentos do Candidato: Ajuste de inconsistência na listagem e inserção de anexos do candidato.]]></Item>
 		<Item visivel="S" motivo="P16050000286"><![CDATA[C&S > Movimentações > Solicitação de Realinhamento para Colaborador: Ajuste de inconsistência ao ordenar filtro de colaboradores.]]></Item>
 		<Item visivel="S" motivo="P16070000016"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais > Níveis de Competência: Ajuste da inconsistência na permissão de acesso a esta funcionalidade.]]></Item>
 		<Item visivel="S" motivo="P16050000266"><![CDATA[Pesquisas > Movimentações > Pesquisas > Colaboradores: Apresentar hierárquia das áreas organizacionais na tela e ao imprimir os relatórios em PDF e Excel.]]></Item>
@@ -10,6 +10,7 @@
 		<Item visivel="S" motivo="P16070000182"><![CDATA[SESMT > Movimentações > Gerenciamento de Ordem de Serviço > Inserir/Editar: Ajuste na inconsistência de não visualizar o cargo e a função do colaborador no cabeçalho.]]></Item>
 		<Item visivel="S" motivo="P16070000248"><![CDATA[SESMT > Movimentações > Fichas Médicas > Inserir: Ajuste na usabilidade/performance na busca do colaborador ou do candidato para o qual deseja se inserir uma ficha médica.]]></Item>
 		<Item visivel="S" motivo="P16050000171"><![CDATA[SESMT > Relatórios > Exames > Exames Realizados: Ajuste na inconsistência ao gerar relatório resumido.]]></Item>
+		<Item visivel="S" motivo="P16080000070"><![CDATA[Utilitários > Configurações > Configurar Cadastro de Colaborador e Candidato: Ajuste na inconsistência ao gravar a configuração.]]></Item>
 		<Item visivel="S" motivo="S16050000287"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Nova opção de configuração para notificar usuários por email quando um colaborador for desligado no Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S16040000299"><![CDATA[Nova caixa na tela inicial para o colaborador visualizar seu histórico profissional.]]></Item>
 	</Versao>
