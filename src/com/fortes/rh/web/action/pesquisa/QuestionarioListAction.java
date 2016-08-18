@@ -414,6 +414,7 @@ public class QuestionarioListAction extends MyActionSupportList
     		parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), filtro + complementoFiltro);
     		parametros.put("AGRUPAR_ASPECTO", agruparPorAspectos);
     		parametros.put("EXIBIR_RESPOSTAS_SUBJETIVAS", exibirRespostas);
+    		parametros.put("EXIBIR_RESPOSTAS_NAO_SUBJETIVAS", exibirRespostas);
     		parametros.put("EXIBIR_COMENTARIOS", exibirComentarios);
     		parametros.put("EXIBIR_CABECALHO", exibirCabecalho);
     		parametros.put("QUESTIONARIO_ANONIMO", questionario.isAnonimo());

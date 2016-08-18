@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="P16050000286"><![CDATA[C&S > Movimentações > Solicitação de Realinhamento para Colaborador: Ajuste de inconsistência ao ordenar filtro de colaboradores.]]></Item>
 		<Item visivel="S" motivo="P16070000016"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais > Níveis de Competência: Ajuste da inconsistência na permissão de acesso a esta funcionalidade.]]></Item>
 		<Item visivel="S" motivo="P16050000266"><![CDATA[Pesquisas > Movimentações > Pesquisas > Colaboradores: Apresentar hierárquia das áreas organizacionais na tela e ao imprimir os relatórios em PDF e Excel.]]></Item>
+		<Item visivel="S" motivo="S16050000265"><![CDATA[Pesquisas > Movimentações > Pesquisas > Relatório da Pesquisa: Exibir o nome do funcionário e a resposta de perguntas objetivas e múltipla escolha quando a opção 'Exibir todas as respostas' estiver marcada e a pesquisa for anônima.]]></Item>
 		<Item visivel="S" motivo="S16070000027"><![CDATA[Info Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Nova opção de excluir respostas da entrevista de desligamento.]]></Item>
 		<Item visivel="S" motivo="P16050000169"><![CDATA[SESMT > Cadastros > Modelos de Fichas Médicas > Clonar: Ajuste da inconsistência ao apresentar as empresas para as quais é permitido clonar um modelo de ficha médica.]]></Item>
 		<Item visivel="S" motivo="P16070000182"><![CDATA[SESMT > Movimentações > Gerenciamento de Ordem de Serviço > Inserir/Editar: Ajuste na inconsistência de não visualizar o cargo e a função do colaborador no cabeçalho.]]></Item>
