@@ -42,10 +42,10 @@
 	      		source: ajaxData(urlFind),
 	      		select: function( event, ui ) { 
 					$("#entityId").val(ui.item.id);
-					decideDesabilitarCampo(true);
 					
 				}
 	    	}).data( "autocomplete" )._renderItem = renderData;
+	    	$("#entityId").val("");
 		};
 
 		function enviaForm()
@@ -67,22 +67,12 @@
 			}
 		};
 		
-		function decideDesabilitarCampo(desabilita){
-			if(desabilita == true) {
-				if( $("#nomeBusca").val() != "" ){
-					$("#nomeBusca").attr('disabled', 'disabled');
-					$("#backspace").show();
-					document.getElementById("nomeBusca").style.backgroundColor='#EBEBEB';
-				}
+		function apagarEntityId(){
+			if ( $("#entityId").val() != ""){
+				if(event.keyCode != 13 || $("#entityId").val() != ""){
+					$("#entityId").val("");
+				}	
 			}
-			else{
-				$("#nomeBusca").removeAttr('disabled');
-				$("#nomeBusca").val("");
-				$("#entityId").val("");
-				document.getElementById("nomeBusca").style.backgroundColor='#FFFFFF';
-				$("#backspace").hide();
-			}
-			$("#nomeBusca").removeClass("invalidInput");
 		};
 	</script>
 
@@ -102,7 +92,7 @@
 	<@ww.form id="form" name="form" action="../../sesmt/fichaMedica/prepareResponderFichaMedica.action" onsubmit="return enviaForm()" method="POST" >
 		<@ww.select label="Ficha para" name="vinculo" id="vinculo" list=r"#{'A':'Candidato','C':'Colaborador'}" />
 
-		<@ww.textfield label="Nome" id="nomeBusca" cssStyle="width: 500px;" cssClass="inputNome" required="true"  onchange="decideDesabilitarCampo(true)" onblur="decideDesabilitarCampo(true)"/>
+		<@ww.textfield label="Nome" id="nomeBusca" cssStyle="width: 500px;" cssClass="inputNome" required="true" onchange="apagarEntityId()"/>
 		<img src="${urlImgs}/backspace.png" style="float: left;margin-top: -22px;margin-left: 506px; cursor: pointer; display:none" onclick="decideDesabilitarCampo(false);" id="backspace">
 		
 		
