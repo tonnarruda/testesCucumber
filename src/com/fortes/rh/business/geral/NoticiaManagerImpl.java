@@ -15,6 +15,7 @@ import org.jdom.input.SAXBuilder;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.NoticiaDao;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Noticia;
 import com.fortes.rh.model.geral.NoticiaComparator;
 import com.fortes.rh.security.licenca.AutenticadorJarvis;
@@ -118,5 +119,10 @@ public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> 
 	public void despublicarTodas() 
 	{
 		getDao().despublicarTodas();
+	}
+
+	public Collection<Noticia> findUrgentesNaoLidasPorUsuario(Long usuarioId)
+	{
+		return getDao().findUrgentesNaoLidasPorUsuario(usuarioId);
 	}
 }

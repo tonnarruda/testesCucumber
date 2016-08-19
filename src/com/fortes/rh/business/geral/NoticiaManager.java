@@ -12,4 +12,5 @@ public interface NoticiaManager extends GenericManager<Noticia>
 	void importarUltimasNoticias();
 	Noticia find(String texto, String link, Integer criticidade);
 	void despublicarTodas();
+	Collection<Noticia> findUrgentesNaoLidasPorUsuario(Long usuarioId);
 }

@@ -5,15 +5,19 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.NoticiaDao;
 import com.fortes.rh.model.geral.Noticia;
+import com.fortes.rh.model.geral.UsuarioNoticia;
 import com.fortes.rh.util.StringUtil;
 
 public class NoticiaDaoHibernate extends GenericDaoHibernate<Noticia> implements NoticiaDao
@@ -71,8 +75,34 @@ public class NoticiaDaoHibernate extends GenericDaoHibernate<Noticia> implements
 			return noticias.get(0);
 	}
 
+	// TODO: SEM TESTE
 	public void despublicarTodas() 
 	{
 		getSession().createQuery("update Noticia set publicada = false where publicada = true").executeUpdate();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Noticia> findUrgentesNaoLidasPorUsuario(Long usuarioId)
+	{
+		DetachedCriteria subQuery = DetachedCriteria.forClass(UsuarioNoticia.class, "un2")
+			.setProjection(Projections.distinct(Projections.property("un2.noticia.id")))
+			.add(Restrictions.eq("un2.usuario.id", usuarioId));
+
+		Criteria criteria = getSession().createCriteria(Noticia.class, "n");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("n.id"), "id");
+		p.add(Projections.property("n.link"), "link");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("n.criticidade", -1));
+		criteria.add(Subqueries.propertyNotIn("n.id", subQuery));
+		
+		criteria.addOrder(Order.asc("n.id"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
 	}
 }

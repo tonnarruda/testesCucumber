@@ -29,7 +29,7 @@
 			 border: none; 
 			 text-decoration: none; 
 		}
-		
+
 		#atualizacao { display: none; }
 		
 		.column { width: 50%; float: left; min-height: 50px; }
@@ -65,13 +65,63 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioNoticiaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.cookie.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/modernizr.js"/>'></script>
 	
 	<script type='text/javascript'>
+		var noticiasUrgentes = new Array();
+		var contadorNoticia = 0; 
+		
+		function NoticiaUrgente(_id, _link) {
+		    var id = _id;
+		    var link = _link;
+		
+		    this.getId = function () {
+		        return id;
+		    };
+		
+		    this.getLink = function () {
+		        return link;
+		    };
+		}
+		
+		<#if noticiasUrgentes?exists>
+			<#list noticiasUrgentes.entrySet() as noticiaUrgente>
+				noticiasUrgentes.push(new NoticiaUrgente(${noticiaUrgente.key}, '${noticiaUrgente.value}'));
+			</#list>
+		</#if>
+		
+		function mostraSplash(noticiaUrgente) {
+			$( "#noticiaUrgente" ).dialog({
+				autoOpen: true,
+				modal: true,
+				zIndex: 99999,
+				minWidth: 825,
+				create: function (event, ui) {	},
+			  	open: function() {
+					$('#iframeNoticiaUrgente').attr('src',noticiaUrgente.getLink()); 
+					$('#naoExibirNoticiaUrgente').removeAttr('checked'); 
+					contadorNoticia = contadorNoticia + 1;
+				},
+			  	close: function() {
+			  		if ( $('#naoExibirNoticiaUrgente').is(':checked') ) {
+			  			UsuarioNoticiaDWR.marcarLida(${usuarioId}, noticiaUrgente.getId(), function() {});
+			  		}
+			  		if(contadorNoticia < noticiasUrgentes.length) {
+						mostraSplash(noticiasUrgentes[contadorNoticia]);
+			  		}
+				}
+			});
+		}
+		
 		$(function () {
+			if (noticiasUrgentes.length > 0) {
+				mostraSplash(noticiasUrgentes[0]);
+			}
+			
 			$( "#splash" ).dialog({
 				autoOpen: false,
 				modal: true,
@@ -83,7 +133,7 @@
 			  			$.cookie("pgInicialSplashMarca", false, { expires: 30 }); 
 			  	}
 			});
-			
+
 			if($.cookie("pgInicialSplashMarca") != 'false')
 			{
 				$("#splash").dialog("open");
@@ -353,6 +403,15 @@
 		<input type="checkbox" id="naoExibirMsg" name="naoExibirMsg"/>
 		<label for="naoExibirMsg">Não exibir esta mensagem novamente</label>
 	</div>
+	
+	<#if exibeNoticiaUrgente>
+		<div id="noticiaUrgente" style="display: none;">
+			<a id="fecharNoticiaUrgente" title="Fechar" href="javascript:;" onclick="$('#noticiaUrgente').dialog('close');" style="float: right; color: red;">FECHAR</a>
+			<iframe id="iframeNoticiaUrgente" style="border: 0px; height: 400px;" src="" width="100%" height="100%"></iframe>
+			<input type="checkbox" id="naoExibirNoticiaUrgente" name="naoExibirNoticiaUrgente"/>
+			<label for="naoExibirNoticiaUrgente">Não exibir esta mensagem novamente</label>
+		</div>
+	</#if>
 
 	<script type="text/javascript">
 		<#if idiomaIncorreto?exists && !idiomaIncorreto>

@@ -10,6 +10,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -113,6 +114,7 @@ public class Index extends MyActionSupport
 	private String[] pendenciasAcsSerRemovida = {};
 	
 	private Noticia noticia;
+	HashMap<String,String> noticiasUrgentes = null;
 	
 	public String index()
 	{
@@ -178,6 +180,8 @@ public class Index extends MyActionSupport
 			
 			if (StringUtils.isNotBlank(actionMsg))
 				addActionMessage(actionMsg);
+			
+			verificaNoticiasUrgentes();
 		}
 		catch (LoginInvalidoException e)
 		{
@@ -196,6 +200,18 @@ public class Index extends MyActionSupport
 		return Action.SUCCESS;
 	}
 	
+	private void verificaNoticiasUrgentes()
+	{
+		Collection<Noticia> noticias = noticiaManager.findUrgentesNaoLidasPorUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId());
+		
+		if(!noticias.isEmpty()){
+			noticiasUrgentes = new HashMap<String, String>();
+			for (Noticia noticia : noticias) {
+				noticiasUrgentes.put(noticia.getId().toString(), noticia.getLink());
+			}
+		}
+	}
+
 	public String mensagens()
 	{
 		pgInicial = false;
@@ -726,5 +742,14 @@ public class Index extends MyActionSupport
 	
 	public String getMaxLoged() throws Exception{
 		return AutenticadorJarvis.getClient().getQtdAcessosSimultaneos().toString();
+	}
+	
+	public boolean getExibeNoticiaUrgente() throws Exception{
+		return true;
+	}
+
+	public HashMap<String,String> getNoticiasUrgentes()
+	{
+		return noticiasUrgentes;
 	}
 }
