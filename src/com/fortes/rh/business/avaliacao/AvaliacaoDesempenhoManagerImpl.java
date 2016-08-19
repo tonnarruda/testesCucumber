@@ -160,10 +160,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		return getDao().findByAvaliador(avaliadorId, liberada, empresasIds);
 	}
 	
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-	}
-
 	public Collection<ResultadoAvaliacaoDesempenho> montaResultado(Collection<Long> avaliadosIds, AvaliacaoDesempenho avaliacaoDesempenho, boolean agruparPorAspectos, boolean desconsiderarAutoAvaliacao) throws ColecaoVaziaException
 	{
 		Collection<ResultadoAvaliacaoDesempenho> resultadoQuestionarios = new ArrayList<ResultadoAvaliacaoDesempenho>();
@@ -194,22 +190,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			throw new ColecaoVaziaException("Nenhuma avaliação foi respondida para os colaboradores informados.");
 
         return resultadoQuestionarios;
-	}
-
-	public void setPerguntaManager(PerguntaManager perguntaManager) {
-		this.perguntaManager = perguntaManager;
-	}
-
-	public void setRespostaManager(RespostaManager respostaManager) {
-		this.respostaManager = respostaManager;
-	}
-
-	public void setColaboradorRespostaManager(ColaboradorRespostaManager colaboradorRespostaManager) {
-		this.colaboradorRespostaManager = colaboradorRespostaManager;
-	}
-
-	public void setQuestionarioManager(QuestionarioManager questionarioManager) {
-		this.questionarioManager = questionarioManager;
 	}
 
 	public void enviarLembrete(Long avaliacaoDesempenhoId, Empresa empresa)
@@ -251,11 +231,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		return new ArrayList<CheckBox>();
 	}
 
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
-		this.avaliacaoManager = avaliacaoManager;
-	}
-
-	public void liberarEmLote(String[] avaliacoesCheck, Empresa empresa) throws Exception 
+	public void liberarEmLote(String[] avaliacoesCheck) throws Exception 
 	{
 		if(avaliacoesCheck != null)
 		{
@@ -406,7 +382,31 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	public Collection<AvaliacaoDesempenho> findComCompetencia(Long empresaId) {
 		return getDao().findComCompetencia(empresaId);
 	}
+
+	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
+		this.avaliacaoManager = avaliacaoManager;
+	}
 	
+	public void setPerguntaManager(PerguntaManager perguntaManager) {
+		this.perguntaManager = perguntaManager;
+	}
+
+	public void setRespostaManager(RespostaManager respostaManager) {
+		this.respostaManager = respostaManager;
+	}
+
+	public void setColaboradorRespostaManager(ColaboradorRespostaManager colaboradorRespostaManager) {
+		this.colaboradorRespostaManager = colaboradorRespostaManager;
+	}
+
+	public void setQuestionarioManager(QuestionarioManager questionarioManager) {
+		this.questionarioManager = questionarioManager;
+	}
+	
+	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
+		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
+	}
+
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}

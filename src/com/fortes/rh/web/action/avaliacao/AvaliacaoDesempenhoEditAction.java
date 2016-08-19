@@ -515,7 +515,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		try 
 		{
-			avaliacaoDesempenhoManager.liberarEmLote(avaliacoesCheck, getEmpresaSistema());
+			avaliacaoDesempenhoManager.liberarEmLote(avaliacoesCheck);
 			addActionSuccess("Avaliações liberadas com sucesso.");
 			return Action.SUCCESS;
 		}

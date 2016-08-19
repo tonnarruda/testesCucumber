@@ -32,7 +32,7 @@ public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDese
 	void gerarAutoAvaliacoes(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> participantes);
 	Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId);
 	Collection<CheckBox> populaCheckBox(Long empresaId, boolean ativa);
-	void liberarEmLote(String[] avaliacoesCheck, Empresa empresa) throws Exception;
+	void liberarEmLote(String[] avaliacoesCheck) throws Exception;
 	ResultadoAvaliacaoDesempenho getResultadoAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho,Long avaliadoId);
 	void saveOrUpdateRespostaAvDesempenho(Usuario usuario, Empresa empresa, Colaborador colaborador, ColaboradorQuestionario colaboradorQuestionario, AvaliacaoDesempenho avaliacaoDesempenho, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Collection<Pergunta> perguntas, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais);
 	Collection<AvaliacaoDesempenho> findComCompetencia(Long empresaId);

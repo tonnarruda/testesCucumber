@@ -2,8 +2,11 @@ package com.fortes.rh.test.factory.avaliacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.geral.Empresa;
 
 public class AvaliacaoDesempenhoFactory
 {
@@ -43,6 +46,25 @@ public class AvaliacaoDesempenhoFactory
 		AvaliacaoDesempenho avaliacaoDesempenho = getEntity();
 		avaliacaoDesempenho.setTitulo(titulo);
 
+		return avaliacaoDesempenho;
+	}
+	
+	public static AvaliacaoDesempenho getEntity(Long id, String titulo, Date dataInicio, Date dataFim, boolean liberada, boolean anonima, Avaliacao avaliacao, Empresa empresa )
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = getEntity(id, titulo, liberada, avaliacao, empresa);
+		avaliacaoDesempenho.setInicio(dataInicio);
+		avaliacaoDesempenho.setFim(dataFim);
+		avaliacaoDesempenho.setAnonima(anonima);
+		return avaliacaoDesempenho;
+	}
+	
+	public static AvaliacaoDesempenho getEntity(Long id, String titulo, boolean liberada, Avaliacao avaliacao, Empresa empresa )
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = getEntity(id);
+		avaliacaoDesempenho.setTitulo(titulo);
+		avaliacaoDesempenho.setAvaliacao(avaliacao);
+		avaliacaoDesempenho.setLiberada(liberada);
+		avaliacaoDesempenho.setEmpresa(empresa);
 		return avaliacaoDesempenho;
 	}
 }

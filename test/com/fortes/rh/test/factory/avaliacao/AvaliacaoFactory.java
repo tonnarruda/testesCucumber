@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.geral.Empresa;
 
 public class AvaliacaoFactory
 {
@@ -19,6 +20,14 @@ public class AvaliacaoFactory
 	{
 		Avaliacao avaliacao = getEntity();
 		avaliacao.setId(id);
+
+		return avaliacao;
+	}
+
+	public static Avaliacao getEntity(Long id, Empresa empresa)
+	{
+		Avaliacao avaliacao = getEntity(id);
+		avaliacao.setEmpresa(empresa);
 
 		return avaliacao;
 	}
