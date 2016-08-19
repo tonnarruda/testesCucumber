@@ -36,7 +36,7 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<Empresa> findAllEmpresasParticipantes(Long cursoId);
 	public boolean existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(Long cursoId);
 	public boolean existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(Long cursoId);
-	public void clonar(Long id, Long empresaSistemaId, Long[] empresasIds) throws Exception;
+	public void clonar(Long id, Long empresaSistemaId, Long[] empresasIds, String novoTituloCursoClonado) throws Exception;
 	public Collection<Curso> findByEmpresaIdAndCursosId(Long empresaId,	Long... cursosIds);
 	public Collection<Curso> somaDespesasPorCurso(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public Collection<Curso> findByHistoricoFuncaoId(Long historicoFuncaoId);

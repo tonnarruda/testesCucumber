@@ -250,15 +250,15 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().somaDespesasPorCurso(dataIni, dataFim, empresaIds, cursoIds);
 	}
 
-	public void clonar(Long id, Long empresaSistemaId, Long[] empresasIds) throws Exception {
+	public void clonar(Long id, Long empresaSistemaId, Long[] empresasIds, String novoTituloCursoClonado) throws Exception {
 		if (empresasIds != null && empresasIds.length > 0)
 			for (Long empresaId : empresasIds)
-				clonarCurso(id, empresaId);
+				clonarCurso(id, empresaId, novoTituloCursoClonado);
 		else
-			clonarCurso(id, empresaSistemaId);
+			clonarCurso(id, empresaSistemaId, novoTituloCursoClonado);
 	}
 
-	private void clonarCurso(Long id, Long empresaId) throws Exception{
+	private void clonarCurso(Long id, Long empresaId, String novoTituloCursoClonado) throws Exception{
 		Empresa empresa = new Empresa();
 		empresa.setId(empresaId);
 
@@ -267,7 +267,11 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		CollectionUtil<AvaliacaoCurso> collectionUtil = new CollectionUtil<AvaliacaoCurso>();
 		curso.setAvaliacaoCursos(collectionUtil.convertArrayStringToCollection(AvaliacaoCurso.class, collectionUtil.convertCollectionToArrayIdsString(curso.getAvaliacaoCursos())));
 		
-		curso.setNome(curso.getNome() + " (Clone)");
+		if(novoTituloCursoClonado.isEmpty())
+			curso.setNome(curso.getNome() + " (Clone)");
+		else
+			curso.setNome(novoTituloCursoClonado);
+
 		curso.setEmpresa(empresa);
 		curso.setId(null);
 		curso.setCertificacaos(null);

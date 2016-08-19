@@ -23,6 +23,7 @@ public class CursoListAction extends MyActionSupportList
 	private String nomeCursoBusca;
 	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
 	private String[] empresasCheck;
+	private String novoTituloCursoClonado = "";
 
 	public String execute() throws Exception
 	{
@@ -59,7 +60,7 @@ public class CursoListAction extends MyActionSupportList
 	
 	public String clonar(){
 		try {
-			cursoManager.clonar(curso.getId(),getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(empresasCheck));
+			cursoManager.clonar(curso.getId(),getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(empresasCheck), novoTituloCursoClonado);
 			addActionSuccess("Curso clonado com sucesso.");
 		} catch (Exception e) {
 			addActionError("Não foi possível clonar o curso.");
@@ -120,6 +121,10 @@ public class CursoListAction extends MyActionSupportList
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
+	}
+
+	public void setNovoTituloCursoClonado(String novoTituloCursoClonado) {
+		this.novoTituloCursoClonado = novoTituloCursoClonado;
 	}
 
 }

@@ -19,9 +19,27 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 	<script type='text/javascript'>
+		var novoTitulo="";
+		
 		function clonar(cursoId, titulo){
+			novoTitulo = titulo + " (Clone)";
+			
+			if(novoTitulo.length > 250){
+				$("#divInserirNomeCursoClonado").show();
+			}
+			else{
+				novoTitulo="";
+				$("#divInserirNomeCursoClonado").hide();
+			}
 			$('#cursoId').val(cursoId);
-			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar: ' + titulo });
+			$('#formClonar').dialog({ modal: true, width: 530, title: 'Clonar: ' + titulo });
+		}
+		
+		function enviaFormClonar (){
+			if(novoTitulo !=""){
+				return validaFormulario('formClonar', new Array('novoTituloCursoClonado'), null);
+			}
+			return true;
 		}
 	</script>
 
@@ -37,7 +55,7 @@
 
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="form" id="form" action="list.action" method="POST">
-		<@ww.textfield label="Nome" name="nomeCursoBusca" id="nome" cssClass="inputNome" maxLength="100" cssStyle="width: 340px;"/>
+		<@ww.textfield label="Nome" name="nomeCursoBusca" id="nome" cssClass="inputNome" maxLength="250" cssStyle="width: 502px;"/>
 		<@ww.hidden id="pagina" name="page"/>
 		<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 	</@ww.form>
@@ -68,11 +86,18 @@
 	</div>
 	
 	<div id="formDialog">
-		<@ww.form name="formModal" id="formModal" action="clonar.action" method="POST">
+		<@ww.form name="formClonar" id="formClonar" action="clonar.action" onsubmit="return enviaFormClonar();" method="POST">
+			<div id="divInserirNomeCursoClonado"  style="display: none;">
+				<label>O nome para o curso clonado ultrapassa o limite de 250 caracteres. Infome o nome que deseja para o novo curso.</label>
+				</br></br>
+				<@ww.textfield label="Nome do novo curso" name="novoTituloCursoClonado" id="novoTituloCursoClonado" cssClass="inputNome" required="true" cssStyle="width:502px;" maxLength="250"/>
+				</br>
+			</div>
+		
 			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar este curso" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')" filtro="true"/>
 			* Caso nenhuma empresa seja selecionada, o curso será clonado apenas para a empresa <@authz.authentication operation="empresaNome"/><br>
 			<@ww.hidden name="curso.id" id="cursoId"/>
-			<button class="btnClonar" type="submit"></button>
+			<button onclick="enviaFormClonar();" class="btnClonar">
 		</@ww.form>
 	</div>
 </body>
