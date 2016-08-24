@@ -28,6 +28,7 @@ import com.fortes.rh.test.business.acesso.PerfilManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioEmpresaManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest;
+import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest_Junit4;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoPraticaManagerTest;
 import com.fortes.rh.test.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest;
@@ -1361,6 +1362,7 @@ import com.fortes.test.web.tags.LinkTagTest;
     // Avaliacao de Desempenho
 	AvaliacaoDesempenhoDaoHibernateTest.class,
 	AvaliacaoDesempenhoManagerTest.class,
+	AvaliacaoDesempenhoManagerTest_Junit4.class,
 	AvaliacaoDesempenhoEditActionTest.class,
 	RelatorioAnaliseDesempenhoColaboradorTest.class,
 	        
