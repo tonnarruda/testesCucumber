@@ -195,10 +195,16 @@
 	<@ww.hidden name="parametrosDoSistema.id" />
 	<@ww.hidden name="parametrosDoSistema.appVersao" />
 	<@ww.hidden name="parametrosDoSistema.acVersaoWebServiceCompativel" />
+	<@ww.hidden name="parametrosDoSistema.codEmpresaSuporte" />
 	<@ww.hidden name="parametrosDoSistema.camposCandidatoVisivel" />
 	<@ww.hidden name="parametrosDoSistema.camposCandidatoObrigatorio" />
 	<@ww.hidden name="parametrosDoSistema.camposCandidatoTabs" />
-	<@ww.hidden name="parametrosDoSistema.codEmpresaSuporte" />
+	<@ww.hidden name="parametrosDoSistema.camposCandidatoExternoVisivel" />
+	<@ww.hidden name="parametrosDoSistema.camposCandidatoExternoObrigatorio" />
+	<@ww.hidden name="parametrosDoSistema.camposCandidatoExternoTabs" />
+	<@ww.hidden name="parametrosDoSistema.camposColaboradorVisivel" />
+	<@ww.hidden name="parametrosDoSistema.camposColaboradorObrigatorio" />
+	<@ww.hidden name="parametrosDoSistema.camposColaboradorTabs" />
 	
 	<li>
 		<@ww.div cssClass="divInfo">
