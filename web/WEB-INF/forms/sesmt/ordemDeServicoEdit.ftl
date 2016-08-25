@@ -115,11 +115,8 @@
 					}).data( "autocomplete" )._renderItem = renderData;
 				} else {
 					$("#cbo").html("");
-					$("#cbo").html('<span style="font-weight: bold;">Código CBO:</span><span id="codigoCBOOS">'+dados["codigoCBO"]+'</span>'+
-								   '<input type="hidden" name="ordemDeServico.codigoCBO" value="'+dados["codigoCBO"]+'" id="insert_ordemDeServico_codigoCBO">');
-
-					//$('#codigoCBOOS').text(dados["codigoCBO"]);
-					//$('input[name=ordemDeServico.codigoCBO]').val(dados["codigoCBO"]);
+					$("#cbo").html('<span style="font-weight: bold;">Código CBO:</span><span>'+dados["codigoCBO"]+'</span>'+
+								   '<input type="hidden" name="ordemDeServico.codigoCBO" value="'+dados["codigoCBO"]+'" id="codigoCBOOS">');
 				}
 			}
 			
@@ -212,7 +209,7 @@
 				</tr>
 				<tr>
 					<td width="480" id="cbo"> 
-							<span style="font-weight: bold;">Código CBO:</span><span id="codigoCBOOS">${codigoCBO}</span> 
+							<span style="font-weight: bold;">Código CBO:</span><span>${codigoCBO}</span> 
 					</td>
 				</tr>
 			</table>
