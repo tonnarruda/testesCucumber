@@ -22,6 +22,9 @@
 		<Item visivel="S" motivo="P16070000300"><![CDATA[Info. Funcionais > Relatórios > Recibo de Pagamento: Ajuste na inconsistência ao exibir data.]]></Item>
 		<Item visivel="S" motivo="S16040000295"><![CDATA[Info. Funcionais > Relatórios > Relatórios > Férias: Novo relatório para exibir informações sobre férias.]]></Item>
 		<Item visivel="S" motivo="S16040000302"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar: Nova configuração para criar usuário automaticamente ao cadastrar colaborador.]]></Item>
+		<Item visivel="S" motivo="P16080000065"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações dos Alunos/Lista de Frequência: Novo ícone informando que o colaborador está certificado quando a empresa controla o vencimento da certificação pela periodicidade da certificação.]]></Item>
+		<Item visivel="S" motivo="P16080000065"><![CDATA[T&D > Movimentações > Avaliação Prática: Melhorias na inserção da nota da avaliação prática.]]></Item>
+		<Item visivel="S" motivo="P16070000294"><![CDATA[T&D > Cadastros > Cursos/Treinamentos: Ajustes para certificar colaboradores apenas uma única vez quando a certificação não possuir periodicidade.]]></Item>
 	</Versao>
 	<Versao id="1.1.169.201" db="" data="19/07/2016">
 		<Item visivel="S" motivo="P16070000045"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste da inconsistência ao mover colaborador para avaliado.]]></Item>

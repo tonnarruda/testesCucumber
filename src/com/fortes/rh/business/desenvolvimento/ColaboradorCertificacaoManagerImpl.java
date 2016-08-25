@@ -379,7 +379,6 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 				this.descertificarColaborador(colaboradorCertificacao.getId());
 			}
 		}
-		
 	}
 	
 	public void descertificarColaborador(Long colaboradorCertificacaoId) {

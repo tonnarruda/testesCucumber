@@ -618,7 +618,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 					colaboradorTurma.setColuna03RelatorioPresenca("");
 		}
 		
-
 		return colaboradorTurmas;
 	}
 	
