@@ -48,7 +48,7 @@
 	<@ww.actionmessage />
 	
 	<@ww.form name="form" action="${formAction}" id="form" onsubmit="${validarCampos}" validate="true" method="POST">
-		<@ww.textfield label="Nome" name="curso.nome" id="nome" cssClass="inputNome" required="true" cssStyle="width:502px;" maxLength="250"/>
+		<@ww.textfield label="Nome" name="curso.nome" id="nome" cssClass="inputNome" required="true" cssStyle="width:502px;" maxLength="150"/>
 	
 		<#if codigoTRUCurso>
 			<@ww.textfield label="Código da Ocorrência no TRU" name="curso.codigoTru" id="codigoTRU" onkeypress="return(somenteNumeros(event,''));" size="3"  maxLength="3"/>

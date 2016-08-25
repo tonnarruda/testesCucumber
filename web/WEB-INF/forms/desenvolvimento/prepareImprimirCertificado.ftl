@@ -33,8 +33,8 @@
 		<li>
 			<@ww.div id="divTreinamento">
 				<ul>
-					<@ww.select label="Curso" name="curso.id" id="curso" required="true" list="cursos" listKey="id" listValue="nome"  headerKey="-1" headerValue="Selecione um Curso" />
-					<@ww.select label="Turma" name="turma.id" id="turma" required="true" list="turmas" listKey="id" listValue="descricao" headerKey="-1" headerValue="Selecione uma Turma"/>
+					<@ww.select label="Curso" name="curso.id" id="curso" required="true" list="cursos" listKey="id" listValue="nome"  headerKey="-1" headerValue="Selecione um Curso" cssStyle="width: 603px;"/>
+					<@ww.select label="Turma" name="turma.id" id="turma" required="true" list="turmas" listKey="id" listValue="descricao" headerKey="-1" headerValue="Selecione uma Turma" cssStyle="width: 603px;"/>
 				</ul>
 			</@ww.div>
 		</li>

@@ -267,7 +267,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		CollectionUtil<AvaliacaoCurso> collectionUtil = new CollectionUtil<AvaliacaoCurso>();
 		curso.setAvaliacaoCursos(collectionUtil.convertArrayStringToCollection(AvaliacaoCurso.class, collectionUtil.convertCollectionToArrayIdsString(curso.getAvaliacaoCursos())));
 		
-		if(novoTituloCursoClonado.isEmpty())
+		if(novoTituloCursoClonado == null || novoTituloCursoClonado.isEmpty())
 			curso.setNome(curso.getNome() + " (Clone)");
 		else
 			curso.setNome(novoTituloCursoClonado);

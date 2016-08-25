@@ -23,8 +23,10 @@
 		
 		function clonar(cursoId, titulo){
 			novoTitulo = titulo + " (Clone)";
+			$("#nomeDoCurso").empty();
+			$('#formClonar').prepend('<div id="nomeDoCurso">Curso: ' + titulo + '</br></br></div>');
 			
-			if(novoTitulo.length > 250){
+			if(novoTitulo.length > 150){
 				$("#divInserirNomeCursoClonado").show();
 			}
 			else{
@@ -32,7 +34,7 @@
 				$("#divInserirNomeCursoClonado").hide();
 			}
 			$('#cursoId').val(cursoId);
-			$('#formClonar').dialog({ modal: true, width: 530, title: 'Clonar: ' + titulo });
+			$('#formClonar').dialog({ modal: true, width: 530, title: 'Clonar Curso'});
 		}
 		
 		function enviaFormClonar (){
@@ -55,7 +57,7 @@
 
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="form" id="form" action="list.action" method="POST">
-		<@ww.textfield label="Nome" name="nomeCursoBusca" id="nome" cssClass="inputNome" maxLength="250" cssStyle="width: 502px;"/>
+		<@ww.textfield label="Nome" name="nomeCursoBusca" id="nome" cssClass="inputNome" maxLength="150" cssStyle="width: 502px;"/>
 		<@ww.hidden id="pagina" name="page"/>
 		<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 	</@ww.form>
@@ -88,9 +90,9 @@
 	<div id="formDialog">
 		<@ww.form name="formClonar" id="formClonar" action="clonar.action" onsubmit="return enviaFormClonar();" method="POST">
 			<div id="divInserirNomeCursoClonado"  style="display: none;">
-				<label>O nome para o curso clonado ultrapassa o limite de 250 caracteres. Infome o nome que deseja para o novo curso.</label>
+				<label>O nome para o curso clonado ultrapassa o limite de 150 caracteres. Infome o nome que deseja para o novo curso.</label>
 				</br></br>
-				<@ww.textfield label="Nome do novo curso" name="novoTituloCursoClonado" id="novoTituloCursoClonado" cssClass="inputNome" required="true" cssStyle="width:502px;" maxLength="250"/>
+				<@ww.textfield label="Nome do novo curso" name="novoTituloCursoClonado" id="novoTituloCursoClonado" cssClass="inputNome" required="true" cssStyle="width:502px;" maxLength="150"/>
 				</br>
 			</div>
 		

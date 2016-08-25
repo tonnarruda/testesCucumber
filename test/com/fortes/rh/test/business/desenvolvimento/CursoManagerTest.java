@@ -142,7 +142,7 @@ public class CursoManagerTest extends MockObjectTestCase
 
     	try
 		{
-    		cursoManager.clonar(curso.getId(), empresa.getId(), null, null);
+    		cursoManager.clonar(curso.getId(), empresa.getId(), null, curso.getNome() + "(Clone)");
 		}
 		catch (Exception e)
 		{
@@ -208,7 +208,7 @@ public class CursoManagerTest extends MockObjectTestCase
 
     	try
 		{
-    		cursoManager.clonar(curso.getId(), empresa.getId(), new Long[]{2L,3L}, null);
+    		cursoManager.clonar(curso.getId(), empresa.getId(), new Long[]{2L,3L}, curso.getNome() + "(Clone)");
 		}
 		catch (Exception e)
 		{

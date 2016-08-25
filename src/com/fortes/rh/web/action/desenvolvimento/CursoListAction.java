@@ -62,6 +62,7 @@ public class CursoListAction extends MyActionSupportList
 		try {
 			cursoManager.clonar(curso.getId(),getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(empresasCheck), novoTituloCursoClonado);
 			addActionSuccess("Curso clonado com sucesso.");
+			
 		} catch (Exception e) {
 			addActionError("Não foi possível clonar o curso.");
 			e.printStackTrace();

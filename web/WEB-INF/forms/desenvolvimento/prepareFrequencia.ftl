@@ -13,7 +13,7 @@
 	<#assign validarCampos="return validaFormulario('form', new Array('curso'), null)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
-	<title>Controle de Freqüência</title>
+	<title>Controle de Frequência</title>
 </head>
 <body>
 
@@ -21,7 +21,7 @@
 
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" action="verTurmasCurso.action" method="POST"  onsubmit="${validarCampos}" id="formBusca">
-			<@ww.select label="Curso" name="curso.id" id="curso" list="cursos" listKey="id"  required="true" listValue="nome" headerValue="[Selecione o Curso]" headerKey=""/>
+			<@ww.select label="Curso" name="curso.id" id="curso" list="cursos" listKey="id"  required="true" listValue="nome" headerValue="[Selecione o Curso]" headerKey="" cssStyle="width: 900px;"/>
 			<@ww.hidden id="pagina" name="page"/>
 		</@ww.form>
 		<button onclick="${validarCampos};" class="btnPesquisar grayBGE" accesskey="V">

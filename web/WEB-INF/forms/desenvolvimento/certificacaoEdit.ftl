@@ -91,10 +91,17 @@
 		<@ww.actionerror />
 		<@ww.form name="form" action="${formAction}" onsubmit="processaSubmit()" method="POST">
 			<@ww.textfield label="Nome" id="nome" name="certificacao.nome"  cssStyle="width:500px" maxLength="100" required="true"/>
-			<@ww.textfield label="Periodicidade em meses" name="certificacao.periodicidade" id="periodicidade" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/>
-			<@ww.select Label="Certificação pré-requisito" name="certificacao.certificacaoPreRequisito.id" id="certificacaoPreRequisitoId" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 500px;" onchange="verificaAlteracaoCertificacao()"/>
+			
+			<#if empresaSistema.controlarVencimentoPorCertificacao>
+				<@ww.textfield label="Periodicidade em meses" name="certificacao.periodicidade" id="periodicidade" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/>
+				<@ww.select Label="Certificação pré-requisito" name="certificacao.certificacaoPreRequisito.id" id="certificacaoPreRequisitoId" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 500px;" onchange="verificaAlteracaoCertificacao()"/>
+        	</#if>
+        	
         	<@frt.checkListBox label="Cursos" name="cursosCheck" list="cursosCheckList" filtro="true" onClick="verificaAlteracaoCertificacao()" required="true"/>
-       		<@frt.checkListBox label="Avaliações Práticas" name="avaliacoesPraticasCheck" list="avaliacoesPraticasCheckList" filtro="true" onClick="verificaAlteracaoCertificacao()"/>
+       		
+       		<#if empresaSistema.controlarVencimentoPorCertificacao>
+       			<@frt.checkListBox label="Avaliações Práticas" name="avaliacoesPraticasCheck" list="avaliacoesPraticasCheckList" filtro="true" onClick="verificaAlteracaoCertificacao()"/>
+			</#if>
 			
 			<@ww.hidden name="certificacao.id" />
 			<@ww.hidden name="alterouCertificacao" id="alterouCertificacao" value="false"/>

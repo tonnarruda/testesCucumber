@@ -33,9 +33,9 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="410" splitType="Stretch">
+		<band height="405" splitType="Stretch">
 			<image>
-				<reportElement uuid="cd0ca77e-edea-42ff-9165-1625d9c7ad98" key="image-4" x="0" y="0" width="595" height="410">
+				<reportElement key="image-4" x="0" y="0" width="595" height="405" uuid="cd0ca77e-edea-42ff-9165-1625d9c7ad98">
 					<printWhenExpression><![CDATA[$F{imprimirMoldura}]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -47,7 +47,7 @@
 				<imageExpression><![CDATA[$P{PATH_IMG} + "molduraPequena.jpg"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement uuid="04329770-1921-4f40-b4b9-977591146b39" key="image-6" x="30" y="24" width="58" height="57">
+				<reportElement key="image-6" x="30" y="24" width="58" height="57" uuid="04329770-1921-4f40-b4b9-977591146b39">
 					<printWhenExpression><![CDATA[$F{imprimirLogo}]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -59,7 +59,7 @@
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="294b5e63-1773-4721-88b6-2b13eada467d" key="textField" positionType="Float" x="69" y="74" width="454" height="28"/>
+				<reportElement key="textField" positionType="Float" x="69" y="74" width="454" height="28" uuid="294b5e63-1773-4721-88b6-2b13eada467d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -72,7 +72,7 @@
 				<textFieldExpression><![CDATA[$F{titulo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="8f5b1ccd-6403-4878-88e5-5b0b6f712c01" key="textField" positionType="Float" x="69" y="129" width="454" height="118"/>
+				<reportElement key="textField" positionType="Float" x="69" y="129" width="454" height="118" uuid="8f5b1ccd-6403-4878-88e5-5b0b6f712c01"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -85,7 +85,7 @@
 				<textFieldExpression><![CDATA[$F{conteudo}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="b52692a6-9d42-4c78-8311-7efd3c9d4993" key="textField" positionType="Float" x="0" y="261" width="595" height="18"/>
+				<reportElement key="textField" positionType="Float" x="0" y="261" width="595" height="18" uuid="b52692a6-9d42-4c78-8311-7efd3c9d4993"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -98,7 +98,7 @@
 				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="2409063a-0826-4928-8af3-e94eca2b343b" key="staticText-1" x="0" y="31" width="595" height="40"/>
+				<reportElement key="staticText-1" x="0" y="31" width="595" height="40" uuid="2409063a-0826-4928-8af3-e94eca2b343b"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -111,17 +111,17 @@
 				<text><![CDATA[CERTIFICADO]]></text>
 			</staticText>
 			<frame>
-				<reportElement uuid="5dab4e69-05b2-4dee-9931-158fc06c03b2" key="ass1_ass2" x="25" y="351" width="529" height="42">
+				<reportElement key="ass1_ass2" x="25" y="351" width="529" height="42" uuid="5dab4e69-05b2-4dee-9931-158fc06c03b2">
 					<printWhenExpression><![CDATA[$F{ass1} != null && !$F{ass1}.equals("") && $F{ass2} != null && !$F{ass2}.equals("")]]></printWhenExpression>
 				</reportElement>
 				<line>
-					<reportElement uuid="7ce97518-7413-4d49-ae24-2c4a78d510f9" key="line-1" x="1" y="1" width="249" height="1"/>
+					<reportElement key="line-1" x="1" y="1" width="249" height="1" uuid="7ce97518-7413-4d49-ae24-2c4a78d510f9"/>
 				</line>
 				<line>
-					<reportElement uuid="1b9bb692-59e3-464b-ac60-142d587f991a" key="line-2" x="280" y="1" width="249" height="1"/>
+					<reportElement key="line-2" x="280" y="1" width="249" height="1" uuid="1b9bb692-59e3-464b-ac60-142d587f991a"/>
 				</line>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="cce80aa8-1b26-4524-a6af-43b08de5274b" key="textField" x="0" y="4" width="250" height="36"/>
+					<reportElement key="textField" x="0" y="4" width="250" height="36" uuid="cce80aa8-1b26-4524-a6af-43b08de5274b"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -134,7 +134,7 @@
 					<textFieldExpression><![CDATA[$F{ass1}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="e0102282-4903-4f42-81b2-cada0ac65ae7" key="textField" x="280" y="4" width="249" height="36"/>
+					<reportElement key="textField" x="280" y="4" width="249" height="36" uuid="e0102282-4903-4f42-81b2-cada0ac65ae7"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -148,11 +148,11 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement uuid="71830998-a839-4872-bd94-9107491855fc" key="ass1_assDigital" x="25" y="290" width="529" height="100">
+				<reportElement key="ass1_assDigital" x="25" y="290" width="529" height="100" uuid="71830998-a839-4872-bd94-9107491855fc">
 					<printWhenExpression><![CDATA[$F{ass1} != null && !$F{ass1}.equals("") && $P{EXIBIRASSINSTRUTOR}]]></printWhenExpression>
 				</reportElement>
 				<image hAlign="Center" vAlign="Bottom">
-					<reportElement uuid="bc2afdda-582b-4b2e-b7b3-72f8e0d10028" key="image-9" x="280" y="1" width="249" height="61"/>
+					<reportElement key="image-9" x="280" y="1" width="249" height="61" uuid="bc2afdda-582b-4b2e-b7b3-72f8e0d10028"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -162,10 +162,10 @@
 					<imageExpression><![CDATA[$P{ASS}]]></imageExpression>
 				</image>
 				<line>
-					<reportElement uuid="c0ba4796-98ed-4fd4-9d46-74ea81c2efdd" key="line-2" x="280" y="62" width="249" height="1"/>
+					<reportElement key="line-2" x="280" y="62" width="249" height="1" uuid="c0ba4796-98ed-4fd4-9d46-74ea81c2efdd"/>
 				</line>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="74c7a261-cd65-452f-927d-d6cff68ce20e" key="textField" x="280" y="63" width="249" height="36"/>
+					<reportElement key="textField" x="280" y="63" width="249" height="36" uuid="74c7a261-cd65-452f-927d-d6cff68ce20e"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -178,10 +178,10 @@
 					<textFieldExpression><![CDATA[$P{NOMEINSTRUTOR}]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement uuid="1db66577-4c46-42b7-8fce-79dd867ca3f1" key="line-1" x="0" y="61" width="249" height="1"/>
+					<reportElement key="line-1" x="0" y="61" width="249" height="1" uuid="1db66577-4c46-42b7-8fce-79dd867ca3f1"/>
 				</line>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="6f63cfb8-8976-4a6e-824d-95de11552f74" key="textField" x="0" y="62" width="250" height="36"/>
+					<reportElement key="textField" x="0" y="62" width="250" height="36" uuid="6f63cfb8-8976-4a6e-824d-95de11552f74"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -195,14 +195,14 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement uuid="1de05b57-c32a-4d09-8389-ae604c079041" key="ass2" x="25" y="351" width="529" height="42">
+				<reportElement key="ass2" x="25" y="351" width="529" height="42" uuid="1de05b57-c32a-4d09-8389-ae604c079041">
 					<printWhenExpression><![CDATA[($F{ass1} == null || $F{ass1}.equals("")) && $F{ass2} != null && !$F{ass2}.equals("")]]></printWhenExpression>
 				</reportElement>
 				<line>
-					<reportElement uuid="bfe1e5c4-c383-4416-a98b-f580bb66c196" key="line-2" x="140" y="1" width="249" height="1"/>
+					<reportElement key="line-2" x="140" y="1" width="249" height="1" uuid="bfe1e5c4-c383-4416-a98b-f580bb66c196"/>
 				</line>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="bb813676-de94-4cef-96fc-f36a0a972178" key="textField" x="140" y="5" width="249" height="36"/>
+					<reportElement key="textField" x="140" y="5" width="249" height="36" uuid="bb813676-de94-4cef-96fc-f36a0a972178"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -216,14 +216,14 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement uuid="ec1e8506-7b8a-4111-a74a-cc0ae4d8fb9f" key="ass1" x="25" y="351" width="529" height="42">
+				<reportElement key="ass1" x="25" y="351" width="529" height="42" uuid="ec1e8506-7b8a-4111-a74a-cc0ae4d8fb9f">
 					<printWhenExpression><![CDATA[!$P{EXIBIRASSINSTRUTOR}.booleanValue() && $F{ass1} != null && !$F{ass1}.equals("") && ($F{ass2} == null || $F{ass2}.equals(""))]]></printWhenExpression>
 				</reportElement>
 				<line>
-					<reportElement uuid="9f3a0168-faac-4b39-a3da-042bcb978c22" key="line-1" x="140" y="0" width="249" height="1"/>
+					<reportElement key="line-1" x="140" y="0" width="249" height="1" uuid="9f3a0168-faac-4b39-a3da-042bcb978c22"/>
 				</line>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="dbfd79f2-63f0-49af-89e5-a9032699e54d" key="textField" x="139" y="4" width="250" height="36"/>
+					<reportElement key="textField" x="139" y="4" width="250" height="36" uuid="dbfd79f2-63f0-49af-89e5-a9032699e54d"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -237,11 +237,11 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement uuid="aba600d0-210d-42f4-8783-5eb2327d1d29" key="assDigital" x="25" y="290" width="529" height="100">
+				<reportElement key="assDigital" x="25" y="290" width="529" height="100" uuid="aba600d0-210d-42f4-8783-5eb2327d1d29">
 					<printWhenExpression><![CDATA[$P{EXIBIRASSINSTRUTOR} && ($F{ass1} == null || $F{ass1}.equals(""))]]></printWhenExpression>
 				</reportElement>
 				<image hAlign="Center" vAlign="Bottom">
-					<reportElement uuid="3af74927-b085-4dca-ae8f-bae8e4c36a4c" key="image-9" x="140" y="0" width="249" height="61"/>
+					<reportElement key="image-9" x="140" y="0" width="249" height="61" uuid="3af74927-b085-4dca-ae8f-bae8e4c36a4c"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -251,10 +251,10 @@
 					<imageExpression><![CDATA[$P{ASS}]]></imageExpression>
 				</image>
 				<line>
-					<reportElement uuid="595c559c-f507-4c13-9b89-24433030152a" key="line-2" x="140" y="61" width="249" height="1"/>
+					<reportElement key="line-2" x="140" y="61" width="249" height="1" uuid="595c559c-f507-4c13-9b89-24433030152a"/>
 				</line>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="372f81dc-f91e-44a8-a9e2-46e893560422" key="textField" x="140" y="62" width="249" height="36"/>
+					<reportElement key="textField" x="140" y="62" width="249" height="36" uuid="372f81dc-f91e-44a8-a9e2-46e893560422"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -268,11 +268,11 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement uuid="7c2496d8-9032-404b-b274-544d5fb781e5" key="sem_ass" x="25" y="351" width="529" height="42">
+				<reportElement key="sem_ass" x="25" y="351" width="529" height="42" uuid="7c2496d8-9032-404b-b274-544d5fb781e5">
 					<printWhenExpression><![CDATA[!$P{EXIBIRASSINSTRUTOR} && ($F{ass1} == null || $F{ass1}.equals("")) && ($F{ass2} == null || $F{ass2}.equals(""))]]></printWhenExpression>
 				</reportElement>
 				<line>
-					<reportElement uuid="edb3c342-8b03-4d39-8580-0f4b8e72471f" key="line-1" x="140" y="0" width="249" height="1"/>
+					<reportElement key="line-1" x="140" y="0" width="249" height="1" uuid="edb3c342-8b03-4d39-8580-0f4b8e72471f"/>
 				</line>
 			</frame>
 		</band>
