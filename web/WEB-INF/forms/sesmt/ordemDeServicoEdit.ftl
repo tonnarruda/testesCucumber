@@ -85,9 +85,9 @@
 				$('input[name=ordemDeServico.nomeEstabelecimento]').val(dados["nomeEstabelecimento"]);
 				$('input[name=ordemDeServico.estabelecimentoComplementoCnpj]').val(dados["estabelecimentoComplementoCnpj"]);
 				$('input[name=ordemDeServico.estabelecimentoEndereco]').val(dados["estabelecimentoEndereco"]);
-	
+				
 				$("#cbo").html("");
-				if ( dados["codigoCBO"] == "" ) {
+				if ( dados["codigoCBO"] == "" || dados["codigoCBO"] == null ) {
 					$("#cbo").html('<li id="wwgrp_codigoCBO" class="liLeft">'+  
 										'<div id="wwlbl_codigoCBO" class="wwlbl">'+
 											'<label for="codigoCBO" class="desc" style="font-weight: bold"> Cód. CBO:<span class="req">* </span></label>'+
@@ -143,12 +143,14 @@
 			}
 			
 			function submit_form(){
-				var array =  new Array('dataOS','atividadesOS','riscosOS','episOS','medidasPreventivasOS','treinamentosOS','normasInternasOS','procedimentoEmCasoDeAcidenteOS','termoDeResponsabilidadeOS');
+				var array =  new Array('dataOS', 'atividadesOS','riscosOS','episOS','medidasPreventivasOS','treinamentosOS','normasInternasOS','procedimentoEmCasoDeAcidenteOS','termoDeResponsabilidadeOS');
 				
 				var validateCBO = true;
-				if ( $("#codigoCBOOS").length == 1 && $("#codigoCBOOS").val() == "") {
+				if ( $("#codigoCBOOS").length == 1 && ($("#codigoCBOOS").val() == "" || $("#codigoCBOOS").val() == null)) {
 					validateCBO = false;
 					$("#codigoCBOOS").css("background", "rgb(255, 238, 194)");
+					jAlert('Preencha o campo CBO');
+					return false;
 				} else
 					$("#codigoCBOOS").css("background", "white");
 				
@@ -209,7 +211,8 @@
 				</tr>
 				<tr>
 					<td width="480" id="cbo"> 
-							<span style="font-weight: bold;">Código CBO:</span><span>${codigoCBO}</span> 
+							<span style="font-weight: bold;">Código CBO:</span><span>${codigoCBO}</span>
+							<@ww.hidden name="ordemDeServico.codigoCBO"/> 
 					</td>
 				</tr>
 			</table>

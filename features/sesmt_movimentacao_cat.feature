@@ -21,7 +21,7 @@ Funcionalidade: CATs (Acidentes de Trabalho)
     Então eu devo ver o título "Inserir Ficha de Investigação de Acidente (CAT)"
     E eu preencho "Nome" com "Gera"
     E eu clico no botão "Pesquisar"
-    E eu seleciono "geraldo" de "Colaborador"
+    E eu seleciono "geraldo - 123.213.623-91" de "Colaborador"
     E eu preencho o campo (JS) "data" com "29/07/2011"
     E eu preencho "horario" com "0800"
     E eu marco "gerouAfastamento"

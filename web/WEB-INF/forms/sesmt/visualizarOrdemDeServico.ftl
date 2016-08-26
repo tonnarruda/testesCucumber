@@ -51,7 +51,11 @@
 					</br>
 					<span style="font-weight: bold;">Cargo: </span> <span id="nomeFuncaoOS">${ordemDeServico.nomeCargo}</span>
 					<span style="font-weight: bold; margin-left: 113px;">Função: </span> <span id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span>
-					<span style="font-weight: bold; margin-left: 5%;">Código CBO: </span> <span id="codigoCBOOS">${ordemDeServico.codigoCBO}</span> 
+					<#if ordemDeServico.codigoCBO?exists>
+						<span style="font-weight: bold; margin-left: 5%;">Código CBO: </span> <span id="codigoCBOOS">${ordemDeServico.codigoCBO}</span>
+					<#else>
+						<span style="font-weight: bold; margin-left: 5%;">Código CBO: </span> <span id="codigoCBOOS">Cargo sem código CBO</span>
+					</#if>
 				</td>
 			</tr>
 		</table>

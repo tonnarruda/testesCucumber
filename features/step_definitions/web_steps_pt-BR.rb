@@ -742,10 +742,21 @@ Dado /^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"
     conjugetrabalha true
     qtdfilhos 0
     sexo 'M'
+    cpf '12321362391'
+    logradouro 'Rua a'
+    numero '20'
+    cidade :nome => 'Fortaleza'
+    dataNascimento '01/01/2000'
     naointegraac false
     deficiencia 'N'
     respondeuentrevista true
     empresa :nome => 'Empresa Padrão'
+    email 'samuelpinheiroce@gmail.com'
+    foneFixo '99998888'
+    escolaridade '12'
+    estadocivil '03'
+    vinculo 'E'
+    uf_id 1
   end
 
   insert :historicocolaborador do

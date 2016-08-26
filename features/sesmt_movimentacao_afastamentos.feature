@@ -22,7 +22,7 @@ Funcionalidade: Afastamentos
     Então eu devo ver o título "Inserir Afastamento"
     E eu preencho "Nome" com "Gera"
     E eu clico no botão "Pesquisar"
-    E eu seleciono "geraldo" de "Colaborador"
+    E eu seleciono "geraldo - 123.213.623-91" de "Colaborador"
     E eu seleciono "doença" de "Motivo"
     E eu preencho o campo (JS) "inicio" com "25/07/2011"
     E eu preencho o campo (JS) "fim" com "29/07/2011"

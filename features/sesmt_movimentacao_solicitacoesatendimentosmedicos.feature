@@ -13,11 +13,11 @@ Funcionalidade: Solicitações/Atendimentos Médicos
     Então eu devo ver o título "Inserir Solicitação/Atendimento Médico"
     E eu seleciono "Colaborador" de "Exames para"
     E eu clico no botão "Pesquisar"
-    E eu seleciono "geraldo" de "Colaborador"
+    E eu seleciono "geraldo - 123.213.623-91" de "Colaborador"
     E eu clico no botão "Gravar"
     Então eu devo ver o alert do valida campos e clico no ok
 
-    E eu seleciono "geraldo" de "Colaborador"
+    E eu seleciono "geraldo - 123.213.623-91" de "Colaborador"
     E eu preencho o campo (JS) "data" com "28/07/2011"
     E eu seleciono "Consulta comum" de "Motivo do Atendimento"
     E eu seleciono "alfredo" de "Médico Coordenador"

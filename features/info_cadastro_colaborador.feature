@@ -114,18 +114,23 @@ Funcionalidade: Cadastrar Colaborador
 
     E eu clico em editar "21/12/2010"
     E o campo "Valor:" deve conter "200,00"
+    E eu espero 5 segundos
     E eu clico no botão "Cancelar"
 
     Então eu devo ver "Editar Situações do Colaborador - Silva Barbosa"
     E eu devo ver "Estabelecimento Padrão"
     E eu devo ver "Financeiro > Compras > Almoxarifado"
     E eu devo ver "200,00"
+    E eu espero 5 segundos
     E eu clico no botão "Voltar"
 
     Entao eu devo ver "Estabelecimento Padrão"
     E eu devo ver "Financeiro > Compras > Almoxarifado"
     E eu devo ver "200,00"
+    E eu espero 5 segundos
     E eu clico no botão "Voltar"
+
+
 
     Então eu clico na linha "Silva Barbosa" da imagem "Performance Profissional"
     E eu devo ver "Nome: Silva Barbosa"

@@ -197,6 +197,31 @@ CREATE FUNCTION to_ascii(bytea, name) RETURNS text
 ALTER FUNCTION public.to_ascii(bytea, name) OWNER TO postgres;
 
 --
+-- Name: validade_certificacao(bigint, bigint); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION validade_certificacao(id_certificado bigint, id_colaborador bigint) RETURNS date
+    LANGUAGE plpgsql
+    AS $$  
+BEGIN
+	IF exists(select * from colaboradorcertificacao  cc inner join certificacao c on c.id = cc.certificacao_id where c.id = id_certificado and cc.colaborador_id = id_colaborador and c.periodicidade is null)
+	THEN
+		return '01/01/2500';
+	ELSE       
+		return coalesce((
+			select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) 
+			from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id 
+			where cc.colaborador_id = id_colaborador And cc.certificacao_id = id_certificado 
+			group by ce.periodicidade
+		), '01/01/2000');
+	END IF;
+END; 
+$$;
+
+
+ALTER FUNCTION public.validade_certificacao(id_certificado bigint, id_colaborador bigint) OWNER TO postgres;
+
+--
 -- Name: verifica_aprovacao(bigint, bigint, bigint); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -240,38 +265,39 @@ CREATE FUNCTION verifica_certificacao(id_certificado bigint, id_colaborador bigi
     LANGUAGE plpgsql
     AS $$  
 BEGIN 
-return (
-
-		select (
-				(select (select Array(select distinct cursos_id from certificacao_curso where certificacaos_id = id_certificado order by cursos_id)) =
-		  		(select Array(
-								select distinct t.curso_id from colaboradorturma ct 
-								inner join turma t on t.id = ct.turma_id 
-								and t.dataprevfim = (select max(dataprevfim)  from colaboradorturma ct2 inner join turma t2 on t2.id = ct2.turma_id 
-								where t2.curso_id = t.curso_id and t2.realizada and ct2.colaborador_id = id_colaborador
-								and dataprevfim >= (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) 
-								from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador 
-								and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000')))
-								where ct.colaborador_id = id_colaborador
-								and t.realizada
-								and t.curso_id in (select cursos_id from certificacao_curso where certificacaos_id = id_certificado)
-								and ct.aprovado
-								order by t.curso_id
-							) 
-				) 
+	return (select (
+			(select (select Array(select distinct cursos_id from certificacao_curso where certificacaos_id = id_certificado order by cursos_id)) =
+			(select Array(
+							select distinct t.curso_id from colaboradorturma ct 
+							inner join turma t on t.id = ct.turma_id 
+							and t.dataprevfim = (select max(dataprevfim) from colaboradorturma ct2 inner join turma t2 on t2.id = ct2.turma_id 
+										where t2.curso_id = t.curso_id and t2.realizada and ct2.colaborador_id = id_colaborador
+										and dataprevfim >= validade_certificacao(id_certificado,id_colaborador)
+									)
+							where ct.colaborador_id = id_colaborador
+							and t.realizada
+							and t.curso_id in (select cursos_id from certificacao_curso where certificacaos_id = id_certificado)
+							and ct.aprovado
+							order by t.curso_id
+						) 
 			) 
-		and 
-		( 
-			select (select Array(select distinct avaliacoespraticas_id from certificacao_avaliacaopratica where certificacao_id = id_certificado order by avaliacoespraticas_id)) = 
-			(select Array( 
-						select distinct caval.avaliacaopratica_id from colaboradoravaliacaopratica caval where caval.colaborador_id = id_colaborador
-						and caval.certificacao_id = id_certificado
-						and caval.nota >= (select aval.notaMinima from avaliacaopratica aval where aval.id = caval.avaliacaopratica_id)
-						and caval.data > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000'))
-						order by caval.avaliacaopratica_id)))
 		) 
-		as situacao 
+	and 
+	( 
+		select (select Array(select distinct avaliacoespraticas_id from certificacao_avaliacaopratica where certificacao_id = id_certificado order by avaliacoespraticas_id)) = 
+		(select Array( 
+					select distinct caval.avaliacaopratica_id from colaboradoravaliacaopratica caval 
+					inner join certificacao_avaliacaopratica ca on ca.avaliacoespraticas_id = caval.avaliacaopratica_id and ca.certificacao_id = id_certificado
+					where caval.colaborador_id = id_colaborador					
+					and caval.certificacao_id = id_certificado
+					and caval.nota >= (select aval.notaMinima from avaliacaopratica aval where aval.id = caval.avaliacaopratica_id)
+					and caval.data > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc 
+					inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000'))
+					order by caval.avaliacaopratica_id)))
+	) 
+	as situacao 
 	);
+	
 END; 
 $$;
 
@@ -3285,7 +3311,7 @@ SELECT pg_catalog.setval('criterioavaliacaocompetencia_sequence', 1, false);
 
 CREATE TABLE curso (
     id bigint NOT NULL,
-    nome character varying(100) NOT NULL,
+    nome character varying(250) NOT NULL,
     conteudoprogramatico text,
     empresa_id bigint,
     cargahoraria integer,
@@ -6097,7 +6123,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 682, false);
+SELECT pg_catalog.setval('papel_sequence', 683, false);
 
 
 --
@@ -31815,6 +31841,9 @@ INSERT INTO migrations (name) VALUES ('20160722085415');
 INSERT INTO migrations (name) VALUES ('20160725135749');
 INSERT INTO migrations (name) VALUES ('20160727101838');
 INSERT INTO migrations (name) VALUES ('20160728084301');
+INSERT INTO migrations (name) VALUES ('20160808111945');
+INSERT INTO migrations (name) VALUES ('20160825113858');
+INSERT INTO migrations (name) VALUES ('20160825114205');
 
 
 --
@@ -32242,13 +32271,14 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (509, 'ROLE_REL_ABSENTEISMO', 'Absenteísmo', '/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action', 10, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (646, 'ROLE_TAXA_DEMISSAO', 'Taxa de Demissão', '/indicador/indicadorTurnOver/prepareTaxaDeDemissao.action', 13, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (681, 'ROLE_REL_FERIAS', 'Férias', '/geral/colaborador/prepareRelatorioFerias.action', 3, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (682, 'ROLE_VISUALIZAR_PROGRESSAO', 'Visualizar progressão salarial na página inicial', '', 3, false, NULL, NULL, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.170.202', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.62.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,vinculo,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,modelosAvaliacao', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,email,fone,dt_admissao', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao');
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.171.203', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.62.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,vinculo,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,modelosAvaliacao', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,email,fone,dt_admissao', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao');
 
 
 --

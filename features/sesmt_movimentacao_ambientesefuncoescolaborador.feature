@@ -12,7 +12,7 @@ Funcionalidade: Ambientes e Funções do Colaborador
     Então eu devo ver o título "Ambientes e Funções do Colaborador"
     E eu preencho "Nome" com "Gera"
     E eu clico no botão "Pesquisar"
-    Então eu seleciono "geraldo" de "Colaborador"
+    Então eu seleciono "geraldo - 123.213.623-91" de "Colaborador"
     E eu devo ver "desenvolvedor I"
 
     Então eu seleciono "programador" de "historicoColaboradors[0].funcao.id"

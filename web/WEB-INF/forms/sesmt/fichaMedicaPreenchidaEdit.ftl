@@ -12,21 +12,21 @@
 	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
 	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/font-awesome.min.css"/>');</style>
 
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>"></script>
+	<script type="text/javascript" src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>'></script>
 
 	<style> .invalidInput { background: rgb(255, 238, 194) !important; } </style>
 
 	<script type="text/javascript">
-    	var urlFind = "<@ww.url includeParams="none" value="/captacao/candidato/findJson.action"/>";
+    	var urlFind = '<@ww.url includeParams="none" value="/captacao/candidato/findJson.action"/>';
 		$(function() {
 			$("#vinculo").change(function(){
 				value = $(this).val();
 				$("#entitityId").val("");
 				
 				if (value == 'A')
-					urlFind = "<@ww.url includeParams="none" value="/captacao/candidato/findJson.action"/>";
+					urlFind = '<@ww.url includeParams="none" value="/captacao/candidato/findJson.action"/>';
 				else if (value == 'C')
-					urlFind = "<@ww.url includeParams="none" value="/geral/colaborador/findJson.action"/>";
+					urlFind = '<@ww.url includeParams="none" value="/geral/colaborador/findJson.action"/>';
 
 				resetAutocomplete();
 			});

@@ -13,5 +13,5 @@ Funcionalidade: Ficha de EPI
 
     Então eu clico no botão "ImprimirPdf"
     E eu devo ver o alert do valida campos e clico no ok
-    E eu seleciono "geraldo" de "Colaborador"
+    E eu seleciono "geraldo - 123.213.623-91" de "Colaborador"
     E eu marco "Imprimir verso"

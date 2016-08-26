@@ -10,7 +10,7 @@ Funcionalidade: Registro de Prontuário
     Então eu devo ver o título "Registro de Prontuário"
     E eu preencho "Nome" com "Gera"
     E eu clico no botão "Pesquisar"
-    E eu seleciono "geraldo" de "Colaborador"
+    E eu seleciono "geraldo - 123.213.623-91" de "Colaborador"
     E eu devo ver "Colaborador: geraldo"
 
     Então eu clico no botão "Inserir"
@@ -22,7 +22,7 @@ Funcionalidade: Registro de Prontuário
     Então eu devo ver o título "Registro de Prontuário"
     E eu preencho "Nome" com "Gera"
     E eu clico no botão "Pesquisar"
-    E eu seleciono "geraldo" de "Colaborador"
+    E eu seleciono "geraldo - 123.213.623-91" de "Colaborador"
     E eu devo ver "Colaborador: geraldo"
 
     Então eu clico no botão "Inserir"

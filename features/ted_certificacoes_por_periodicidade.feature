@@ -113,8 +113,6 @@ Funcionalidade: Cadastrar Certificações dos Cursos
     E eu preencho o campo (JS) "data-0" com "04/03/2016"
     E eu preencho o campo (JS) "nota-0" com "10"
     E eu clico no botão "Gravar"
-
-    Entao eu não devo ver "13/06/2012 - 17/06/2012"
     E eu seleciono "04/03/2016" de "Certificações em que o colaborador foi aprovado"
     E eu devo ver "tdd"
     E eu devo ver "13/06/2012 - 17/06/2012"
@@ -122,7 +120,6 @@ Funcionalidade: Cadastrar Certificações dos Cursos
     E eu clico no botão "Gravar"
     E eu devo ver "Avaliação gravada com sucesso"
 
-    Entao eu não devo ver "13/06/2012 - 17/06/2012"
     E eu seleciono "01/03/2016" de "Certificações em que o colaborador foi aprovado"
     E eu devo ver "tdd"
     E eu devo ver "13/06/2012 - 17/06/2012"
@@ -135,12 +132,8 @@ Funcionalidade: Cadastrar Certificações dos Cursos
     E eu seleciono "Pular Corda" de "Avaliação prática"
 
     Entao eu devo ver "Jose"
-    E eu seleciono (JS) "Nova nota" de "avPraticas-0"
-    E eu espero 1 segundo
-    E eu preencho o campo (JS) "data-0" com "01/02/2016"
+    E eu preencho o campo (JS) "data-0" com "02/03/2016"
     E eu saio do campo "data-0"
-    E eu devo ver o alert "Não é possível inserir uma data igual ou inferior a data da última avaliação" e clico no ok
-    E eu preencho o campo (JS) "nota-0" com "10"
     E eu espero 1 segundo
     E eu clico no botão "Gravar"
     E eu devo ver "Avaliação gravada com sucesso"

@@ -14,5 +14,5 @@ Funcionalidade: Relatório de Prontuário
 
     Então eu preencho "Nome" com "Gera"
     E eu clico no botão "Pesquisar"
-    E eu seleciono "geraldo" de "Colaborador"
+    E eu seleciono "geraldo - 123.213.623-91" de "Colaborador"
 
