@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Before;
@@ -32,6 +33,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.OrdemDeServico;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
@@ -88,17 +90,41 @@ public class OrdemDeServicoEditActionTest
 		action.setColaborador(colaborador);
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
 		action.setHistoricoColaborador(historicoColaborador);
-
-		when(areaOrganizacionalManager.findByEmpresa(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<AreaOrganizacional>());
+		Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+	
+		when(areaOrganizacionalManager.findByEmpresa(action.getEmpresaSistema().getId())).thenReturn(areas);
+		when(areaOrganizacionalManager.montaFamilia(areas)).thenReturn(areas);
 		when(estabelecimentoManager.findAllSelect(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Estabelecimento>());
 		when(cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Cargo>());
 
-		when(colaboradorManager.getCountColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, null, SituacaoColaborador.ATIVO, FiltroOrdemDeServico.TODOS)).thenReturn(1);
-		when(colaboradorManager.findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, new Long[]{}, SituacaoColaborador.ATIVO, FiltroOrdemDeServico.TODOS, action.getPage(), action.getPagingSize())).thenReturn(Arrays.asList(ColaboradorFactory.getEntity(1L)));
+		when(colaboradorManager.getCountColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, new Long[]{1L}, SituacaoColaborador.ATIVO, FiltroOrdemDeServico.TODOS)).thenReturn(1);
+		when(colaboradorManager.findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, new Long[]{1L}, SituacaoColaborador.ATIVO, FiltroOrdemDeServico.TODOS, action.getPage(), action.getPagingSize())).thenReturn(Arrays.asList(ColaboradorFactory.getEntity(1L)));
 
 		assertEquals("success", action.listGerenciamentoOS());
 		assertTrue(action.getActionMessages().isEmpty());
 	}
+	
+	@Test
+	public void listGerenciamentoOSNaoGestorESemPermissaoDeVisualizarColaboradores() throws Exception{
+		Usuario usuario = UsuarioFactory.getEntity(2L);
+		action.setUsuarioLogado(usuario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		action.setColaborador(colaborador);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		action.setHistoricoColaborador(historicoColaborador);
+		Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+	
+		when(usuarioEmpresaManager.containsRole(action.getUsuarioLogado().getId(), action.getEmpresaSistema().getId(), "ROLE_COLAB_VER_TODOS")).thenReturn(false);
+		when(areaOrganizacionalManager.findByEmpresa(action.getEmpresaSistema().getId())).thenReturn(areas);
+		when(areaOrganizacionalManager.montaFamilia(areas)).thenReturn(areas);
+		when(estabelecimentoManager.findAllSelect(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Estabelecimento>());
+		when(cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Cargo>());
+
+		assertEquals("success", action.listGerenciamentoOS());
+		assertEquals("Não existem colaboradores a serem listados para os filtros informados.",action.getActionMessages().iterator().next());
+	}
+
 	
 	@Test
 	public void listGerenciamentoOSCollectionVazia() throws Exception{

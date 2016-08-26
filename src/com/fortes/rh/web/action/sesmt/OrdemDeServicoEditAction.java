@@ -43,7 +43,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	private Collection<OrdemDeServico> ordensDeServico = new ArrayList<OrdemDeServico>();
 	private HistoricoColaborador historicoColaborador = new HistoricoColaborador();
 	private Collection<Cargo> cargosList = new ArrayList<Cargo>();
-	private Collection<Colaborador> colaboradores;
+	private Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 	private Map<String, Object> parametros;
 	
 	private OrdemDeServico ordemDeServico;
@@ -63,9 +63,10 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 		cargosList = cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, getEmpresaSistema().getId());
 		
 		colaborador.setEmpresa(getEmpresaSistema());
-		setTotalSize(colaboradorManager.getCountColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, LongUtil.collectionToArrayLong(areasList), situacao, filtroOrdemDeServico));
-		colaboradores = colaboradorManager.findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, LongUtil.collectionToArrayLong(areasList), situacao, filtroOrdemDeServico, getPage(), getPagingSize());
-		
+		if(areasList != null && areasList.size() > 0){
+			setTotalSize(colaboradorManager.getCountColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, LongUtil.collectionToArrayLong(areasList), situacao, filtroOrdemDeServico));
+			colaboradores = colaboradorManager.findColaboradorComESemOrdemDeServico(colaborador, historicoColaborador, LongUtil.collectionToArrayLong(areasList), situacao, filtroOrdemDeServico, getPage(), getPagingSize());
+		}
 		if (colaboradores == null || colaboradores.size() == 0)
 			addActionMessage("Não existem colaboradores a serem listados para os filtros informados.");
 		
@@ -75,7 +76,7 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	
 	private void setAreasPermitidas() throws Exception {
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = new ArrayList<AreaOrganizacional>();
-		if(getUsuarioLogado().getId().equals(1L) || usuarioEmpresaManager.containsRole(getUsuarioLogado().getId(), getEmpresaSistema().getId(), "ROLE_VER_AREAS") ) 
+		if(getUsuarioLogado().getId().equals(1L) || usuarioEmpresaManager.containsRole(getUsuarioLogado().getId(), getEmpresaSistema().getId(), "ROLE_COLAB_VER_TODOS") ) 
 			areaOrganizacionalsTmp.addAll(areaOrganizacionalManager.findByEmpresa(getEmpresaSistema().getId()));
 		else 
 			areaOrganizacionalsTmp.addAll(areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(),  getEmpresaSistema().getId()));

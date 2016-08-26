@@ -5167,7 +5167,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("co.pessoal.cpf"),"colaboradorCPF");
 		p.add(Projections.property("co.dataDesligamento"),"dataDesligamento");
 		p.add(Projections.property("hc.funcao.id"),"funcaoId");
-		p.add(Projections.sqlProjection("(select (count(*) > 0) from historicocolaborador where colaborador_id = co1_.id and funcao_id is not null) as temFuncao", new String[] {"temFuncao"}, new Type[] {Hibernate.BOOLEAN}), "temFuncao");
+		p.add(Projections.sqlProjection("(select (count(*) > 0) from historicocolaborador where colaborador_id = co1_.id and funcao_id is not null ) as temFuncao", new String[] {"temFuncao"}, new Type[] {Hibernate.BOOLEAN}), "temFuncao");
 		
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "co", Criteria.INNER_JOIN);
@@ -5189,7 +5189,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
 			criteria.add(Expression.eq("hc.estabelecimento.id", historicoColaborador.getEstabelecimento().getId()));
 		
-		if((historicoColaborador.getAreaOrganizacional() == null || historicoColaborador.getAreaOrganizacional().getId() == null) && areaIds != null)
+		if((historicoColaborador.getAreaOrganizacional() == null || historicoColaborador.getAreaOrganizacional().getId() == null) && (areaIds != null && areaIds.length > 0))
 			criteria.add(Expression.in("hc.areaOrganizacional.id", areaIds));
 		else if(historicoColaborador.getAreaOrganizacional() != null && historicoColaborador.getAreaOrganizacional().getId() != null)
 			criteria.add(Expression.eq("hc.areaOrganizacional.id", historicoColaborador.getAreaOrganizacional().getId()));
