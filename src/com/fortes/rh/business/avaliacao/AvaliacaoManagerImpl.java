@@ -51,7 +51,7 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		
 		Collection<Pergunta> perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId(), ordenarPorAspecto);
 		
-		//trata as perguntas para substituir #AVALIADO# por AVALIADO (para impressão)
+		/**trata as perguntas para substituir #AVALIADO# por AVALIADO (para impressão)**/
 		for (Pergunta pergunta : perguntas) {
 			perguntaManager.setAvaliadoNaPerguntaDeAvaliacaoDesempenho(pergunta, "AVALIADO");
 		}
@@ -121,22 +121,6 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		return getDao().getPontuacaoMaximaDaPerformance(avaliacaoId, perguntaIds);
 	}
 
-	public void setPerguntaManager(PerguntaManager perguntaManager) {
-		this.perguntaManager = perguntaManager;
-	}
-
-	public void setQuestionarioManager(QuestionarioManager questionarioManager) {
-		this.questionarioManager = questionarioManager;
-	}
-
-	public void setRespostaManager(RespostaManager respostaManager) {
-		this.respostaManager = respostaManager;
-	}
-
-	public void setColaboradorRespostaManager(ColaboradorRespostaManager colaboradorRespostaManager) {
-		this.colaboradorRespostaManager = colaboradorRespostaManager;
-	}
-
 	public void clonar(Long id, Long... empresasIds)
 	{
 		if (empresasIds != null && empresasIds.length > 0)
@@ -180,11 +164,6 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		return getDao().findAllSelectComAvaliacaoDesempenho(empresaId, ativa);
 	}
 
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-	
-	@Override
 	public void remove(Long avaliacaoId) 
 	{
 		Integer qtdColaboradorAvalizacaoRespondida = colaboradorRespostaManager.countColaboradorAvaliacaoRespondida(avaliacaoId);
@@ -196,7 +175,23 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		
 		super.remove(avaliacaoId);
 	}
+	
+	public void setQuestionarioManager(QuestionarioManager questionarioManager) {
+		this.questionarioManager = questionarioManager;
+	}
 
+	public void setRespostaManager(RespostaManager respostaManager) {
+		this.respostaManager = respostaManager;
+	}
+
+	public void setColaboradorRespostaManager(ColaboradorRespostaManager colaboradorRespostaManager) {
+		this.colaboradorRespostaManager = colaboradorRespostaManager;
+	}
+	
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
@@ -208,5 +203,9 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	
 	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager){
 		this.periodoExperienciaManager = periodoExperienciaManager;
+	}
+	
+	public void setPerguntaManager(PerguntaManager perguntaManager) {
+		this.perguntaManager = perguntaManager;
 	}
 }
