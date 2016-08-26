@@ -23,7 +23,7 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 
-public class ColaboradorTurmaManagerTestJunit5
+public class ColaboradorTurmaManagerTest_Junit4
 {
 	private ColaboradorTurmaManagerImpl colaboradorTurmaManager = new ColaboradorTurmaManagerImpl();
 	private ColaboradorTurmaDao colaboradorTurmaDao;

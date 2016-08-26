@@ -1087,7 +1087,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 		usuarioManager.reativaAcessoSistema(colaboradorId);
 		candidatoManager.updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);
-		candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.APROMOVER, colaboradorId);
+		candidatoSolicitacaoManager.atualizaCandidatoSolicitacaoAoReligarColaborador(colaboradorId);
 		getDao().religaColaborador(colaboradorId);
 	}
 
@@ -1122,6 +1122,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Long colaboradorId = getDao().findByCodigoAC(codigoAC, empresaCodigo, grupoAC).getId();
 
 		candidatoManager.updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);
+		candidatoSolicitacaoManager.atualizaCandidatoSolicitacaoAoReligarColaborador(colaboradorId);
 		mensagemManager.removeMensagensColaborador(colaboradorId, TipoMensagem.INFO_FUNCIONAIS);
 		getDao().religaColaborador(colaboradorId);
 

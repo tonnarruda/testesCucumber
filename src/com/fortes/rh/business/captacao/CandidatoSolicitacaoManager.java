@@ -35,4 +35,5 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 	void removeCandidato(Long candidatoId);
 	Collection<ColaboradorQuestionario> findAvaliacoesCandidatoSolicitacao(Long solicitacaoId, Long candidatoId);
 	void setStatusBySolicitacaoAndCandidato(char status, Long candidatoId, Long solicitacaoId);
+	public void atualizaCandidatoSolicitacaoAoReligarColaborador(Long colaboradoresIds);
 }

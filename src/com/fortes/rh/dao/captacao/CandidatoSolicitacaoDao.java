@@ -31,4 +31,5 @@ public interface CandidatoSolicitacaoDao extends GenericDao<CandidatoSolicitacao
 	void removeByCandidato(Long candidatoId);
 	Collection<ColaboradorQuestionario> findAvaliacoesCandidatoSolicitacao(Long solicitacaoId, Long candidatoId);
 	void setStatusBySolicitacaoAndCandidato(char status, Long candidatoId,Long solicitacaoId);
+	public void atualizaCandidatoSolicitacaoStatusContratado(Long colaboradorId);
 }

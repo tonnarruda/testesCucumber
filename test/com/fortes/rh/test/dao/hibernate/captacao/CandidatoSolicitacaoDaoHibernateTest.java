@@ -617,6 +617,36 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals("Duas avaliações não respondidas", 2, candidatoSolicitacaoDao.findAvaliacoesCandidatoSolicitacao(solicitacao.getId(), candidato2.getId()).size());
 	}
 	
+	
+	public void testeAtualizaCandidatoSolicitcaoContratado()
+	{
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setCandidato(candidato);
+		colaborador.setSolicitacao(solicitacao);
+		colaboradorDao.save(colaborador);
+		
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao.setCandidato(candidato);
+		candidatoSolicitacao.setSolicitacao(solicitacao);
+		candidatoSolicitacao.setStatus(StatusCandidatoSolicitacao.INDIFERENTE);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao);
+		
+		Exception exeception = null;
+		try {
+			candidatoSolicitacaoDao.atualizaCandidatoSolicitacaoStatusContratado(colaborador.getId());
+		} catch (Exception e) {
+			exeception = e;
+		}
+		
+		assertNull(exeception);
+	} 
+	
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{
 		this.cidadeDao = cidadeDao;

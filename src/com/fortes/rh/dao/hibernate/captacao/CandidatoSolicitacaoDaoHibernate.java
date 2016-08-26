@@ -557,5 +557,15 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		
 		return query.list();
 	}
+	
+	public void atualizaCandidatoSolicitacaoStatusContratado(Long colaboradorId)
+	{
+		String hql = "update CandidatoSolicitacao set status = :status where solicitacao.id = (select solicitacao.id from Colaborador where id = :colaboradorId) and candidato.id = (select candidato.id from Colaborador where id = :colaboradorId) ";
 
+		Query query = getSession().createQuery(hql);
+		query.setCharacter("status", StatusCandidatoSolicitacao.CONTRATADO);
+		query.setLong("colaboradorId", colaboradorId);
+		
+		query.executeUpdate();
+	}
 }

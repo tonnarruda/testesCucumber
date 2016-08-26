@@ -41,6 +41,7 @@ import com.fortes.rh.test.business.captacao.CandidatoCurriculoManagerTest;
 import com.fortes.rh.test.business.captacao.CandidatoIdiomaManagerTest;
 import com.fortes.rh.test.business.captacao.CandidatoManagerTest;
 import com.fortes.rh.test.business.captacao.CandidatoSolicitacaoManagerTest;
+import com.fortes.rh.test.business.captacao.CandidatoSolicitacaoManagerTest_Junit4;
 import com.fortes.rh.test.business.captacao.ConfigHistoricoNivelManagerTest;
 import com.fortes.rh.test.business.captacao.ConfiguracaoImpressaoCurriculoManagerTest;
 import com.fortes.rh.test.business.captacao.ConfiguracaoNivelCompetenciaCandidatoManagerTest;
@@ -73,7 +74,7 @@ import com.fortes.rh.test.business.desenvolvimento.ColaboradorAvaliacaoPraticaMa
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorCertificacaoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorPresencaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorTurmaManagerTest;
-import com.fortes.rh.test.business.desenvolvimento.ColaboradorTurmaManagerTestJunit5;
+import com.fortes.rh.test.business.desenvolvimento.ColaboradorTurmaManagerTest_Junit4;
 import com.fortes.rh.test.business.desenvolvimento.CursoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.DNTManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.DiaTurmaManagerTest;
@@ -89,6 +90,7 @@ import com.fortes.rh.test.business.geral.CidadeManagerTest;
 import com.fortes.rh.test.business.geral.ClienteManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorIdiomaManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorManagerTest;
+import com.fortes.rh.test.business.geral.ColaboradorManagerTest_Junit4;
 import com.fortes.rh.test.business.geral.ColaboradorOcorrenciaManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManagerTest;
 import com.fortes.rh.test.business.geral.ComoFicouSabendoVagaManagerTest;
@@ -741,6 +743,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	HistoricoCandidatoDaoHibernateTest.class,
 	RelatorioPromocoesTest.class,
 	CandidatoSolicitacaoManagerTest.class,
+	CandidatoSolicitacaoManagerTest_Junit4.class,
 	CandidatoSolicitacaoDaoHibernateTest.class,
 	CandidatoSolicitacaoListActionTest.class,
 	MotivoSolicitacaoListActionTest.class,
@@ -857,7 +860,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ColaboradorTurmaEditActionTest.class,
 	ColaboradorTurmaListActionTest.class,
 	ColaboradorTurmaManagerTest.class,
-	ColaboradorTurmaManagerTestJunit5.class,
+	ColaboradorTurmaManagerTest_Junit4.class,
 	ColaboradorTurmaDaoHibernateTest.class,
 
 	ColaboradorPresencaEditActionTest.class,
@@ -906,6 +909,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	AreaOrganizacionalManagerTest.class,
 	ColaboradorTest.class,
 	ColaboradorManagerTest.class,
+	ColaboradorManagerTest_Junit4.class,
 	ColaboradorDaoHibernateTest.class,
 	ColaboradorOcorrenciaDaoHibernateTest.class,
 	ColaboradorOcorrenciaManagerTest.class,

@@ -13,6 +13,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.LongUtil;
@@ -201,4 +202,12 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 	{
 		getDao().setStatusBySolicitacaoAndCandidato(status, candidatoId, solicitacaoId);
 	}
+	
+	
+	public void atualizaCandidatoSolicitacaoAoReligarColaborador(Long colaboradorId) 
+	{
+		getDao().setStatusByColaborador(StatusCandidatoSolicitacao.APROMOVER, colaboradorId);
+		getDao().atualizaCandidatoSolicitacaoStatusContratado(colaboradorId);
+	}
+	
 }
