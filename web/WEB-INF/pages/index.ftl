@@ -67,6 +67,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.cookie.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/modernizr.js"/>'></script>
 	
 	<script type='text/javascript'>
@@ -89,7 +90,20 @@
 					$("#splash").dialog("open");
 				}
 			*/
-						
+			
+			if($.cookie("timeline_tooltip_explicative") != 'true')
+			{
+				$(".timeline .events li:eq(0)").append('<div id="timeline_tooltip_explicative" style="height: 30px; width: 50px; position: absolute; top: -15px; left: 48px; z-index: 1000; opacity: 0.5;">' +
+															'<img src="imgs/timeline_tooltip_explicative.gif">'+
+														'</div>');
+			}
+			
+			$(".timeline .events li a").hover(function() {
+				$.cookie("timeline_tooltip_explicative", "true");
+				$("#timeline_tooltip_explicative").remove();
+				$(".timeline .events li a").hover(function(){ return false; });
+			});
+			
 			$( ".column" ).sortable({
 				connectWith: ".column",
 				handle: ".portlet-header",
@@ -215,7 +229,7 @@
 									<#assign i = 0>
 									<#list historicoColaboradors as historico>
 										<li>
-											<a href="#0" data-date="${historico.data}" <#if i==0>class="selected"</#if>>
+											<a href="#0" data-date="${historico.data}">
 												${historico.dataMesAno}
 												<div style="display: none;">
 													<div>${historico.motivoDescricao}</div>

@@ -52,7 +52,7 @@ jQuery(document).ready(function($){
 				timelineComponents['timelineEvents'].removeClass('selected');
 				$(this).addClass('selected');
 				updateOlderEvents($(this));
-				updateFilling($(this), timelineComponents['fillingLine'], timelineTotWidth);
+				//updateFilling($(this), timelineComponents['fillingLine'], timelineTotWidth);
 				updateVisibleContent($(this), timelineComponents['eventsContent']);
 			});
 
@@ -96,12 +96,12 @@ jQuery(document).ready(function($){
 			var selectedDate = timelineComponents['eventsWrapper'].find('.selected'),
 				newEvent = ( string == 'next' ) ? selectedDate.parent('li').next('li').children('a') : selectedDate.parent('li').prev('li').children('a');
 			
-			updateFilling(newEvent, timelineComponents['fillingLine'], timelineTotWidth);
+			//updateFilling(newEvent, timelineComponents['fillingLine'], timelineTotWidth);
 			updateVisibleContent(newEvent, timelineComponents['eventsContent']);
 			newEvent.addClass('selected');
 			selectedDate.removeClass('selected');
 			updateOlderEvents(newEvent);
-			updateTimelinePosition(string, newEvent, timelineComponents);
+			//updateTimelinePosition(string, newEvent, timelineComponents);
 		}
 	}
 
@@ -154,10 +154,9 @@ jQuery(document).ready(function($){
 			timeSpanNorm = Math.round(timeSpanNorm) + 4,
 			sumWidth = (timelineComponents['timelineEvents'].length*150) + 50;
 			totalWidth = sumWidth < 720 ? 720 : sumWidth;
-		console.log(timeSpanNorm);
 		timelineComponents['eventsWrapper'].css('width', totalWidth+'px');
-		updateFilling(timelineComponents['eventsWrapper'].find('a.selected'), timelineComponents['fillingLine'], totalWidth);
-		updateTimelinePosition('next', timelineComponents['eventsWrapper'].find('a.selected'), timelineComponents);
+		//updateFilling(timelineComponents['eventsWrapper'].find('a.selected'), timelineComponents['fillingLine'], totalWidth);
+		//updateTimelinePosition('next', timelineComponents['eventsWrapper'].find('a.selected'), timelineComponents);
 	
 		return totalWidth;
 	}
