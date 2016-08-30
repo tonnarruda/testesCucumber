@@ -200,12 +200,9 @@
 					$(this).hide();
 			});		
 
-			console.log('campos obrigatorio - > ' + camposColaboradorObrigatorio);
-
 			$.each(camposColaboradorObrigatorio.split(','), function (index, idCampo) {
 			    var lblAntigo = $('label[for='+idCampo+']');
 			    lblAntigo.text(lblAntigo.text().replace(/\s$/, '') + "*");
-				console.log('label obrigatorio - > ' + lblAntigo);
 			});
 			
 			if(camposColaboradorObrigatorio != "")
@@ -462,7 +459,6 @@
 			
 			alteraArrayValidacao(document.getElementById("tipoSalario").value);
 			
-			console.log(arrayValidacao);
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 				<#if obrigarAmbienteFuncao && somenteLeitura == "false">
 					arrayValidacao.push('ambiente','funcao');
@@ -558,14 +554,14 @@
 	Antes de enviar o form os cursos e a observação são setados em campos hidden dentro do form. -->
 	<#-- Acima do form para corrigir problema de layout no IE -->
 	<div id="content3" style="display: none;">
-		<@ww.div id="formacao"/>
-		<@ww.div  id="idioma"/>
-		<@ww.textarea label="Cursos" id="desCursos" name="desCursos" cssStyle="width: 705px;"/>
+		<@ww.div id="formacao" cssClass="campo"/>
+		<@ww.div  id="idioma" cssClass="campo"/>
+		<@ww.textarea label="Cursos" id="desCursos" name="desCursos" cssStyle="width: 705px;" liClass="campo"/>
 		<div style="clear: both;"></div>
 	</div>
 	<div id="content4" style="display: none;">
 		<@ww.div id="expProfissional" />
-		<@ww.textarea label="Informações Adicionais" id="obs" name="obs" cssStyle="width: 705px;"/>
+		<@ww.textarea label="Informações Adicionais" id="obs" name="obs" cssStyle="width: 705px;" liClass="campo"/>
 		<div style="clear: both;"></div>
 	</div>
 

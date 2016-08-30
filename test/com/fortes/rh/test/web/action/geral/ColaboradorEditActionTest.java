@@ -66,6 +66,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
 import com.fortes.rh.model.sesmt.Cat;
@@ -337,12 +338,16 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		empresa.setCampoExtraColaborador(true);
 		action.setEmpresaSistema(empresa);
 		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+		
 		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setEmpresa(empresa);
 		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
 		colaborador.setCamposExtras(camposExtras);
+		
+		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(colaborador));
 		
 		cidadeManager.expects(once()).method("find").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Cidade>()));
@@ -363,11 +368,15 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		Empresa empresa = EmpresaFactory.getEmpresa(2L);
 		action.setEmpresaSistema(empresa);
 		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+		
 		Empresa empresaColab = EmpresaFactory.getEmpresa(44L);
 		empresaColab.setNome("babau");
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setEmpresa(empresaColab);
+		
 		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(colaborador));
+		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		
 		assertEquals("success", action.prepareUpdateInfoPessoais());
 		assertTrue(((String)action.getActionWarnings().toArray()[0]).equals("Só é possível editar dados pessoais para empresa na qual você foi contratado(a). Acesse a empresa babau para alterar suas informações."));
@@ -375,8 +384,9 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 	
 	public void testPrepareUpdateInfoPessoaisEmpresaSemColaborador() throws Exception
 	{
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
 		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(null));
-		
+		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		assertEquals("success", action.prepareUpdateInfoPessoais());
 		assertTrue(((String)action.getActionWarnings().toArray()[0]).equals("Sua conta de usuário não está vinculada à nenhum colaborador"));
 	}

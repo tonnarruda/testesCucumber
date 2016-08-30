@@ -393,6 +393,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		Map session = ActionContext.getContext().getSession();
 		colaborador = SecurityUtil.getColaboradorSession(session);
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		
 		if(colaborador == null)
 		{

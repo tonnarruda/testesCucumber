@@ -44,7 +44,6 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/colaborador.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
-	<script type="text/javascript" src="jsr_class.js"></script>
 	
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/indice.js?version=${versao}"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.form.js"/>'></script>
@@ -57,7 +56,34 @@
 
 	<#include "../cargosalario/calculaSalarioInclude.ftl" />
 
+	<#assign validaDataCamposExtras = ""/>
+	<#if habilitaCampoExtra>
+		<#list configuracaoCampoExtras as configuracaoCampoExtra>		
+			
+			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data1">
+				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data1'"/>
+			</#if>
+			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data2">
+				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data2'"/>
+			</#if>
+			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data3">
+				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data3'"/>
+			</#if>
+		</#list>
+		
+		<#assign totalAbas = 4/>
+	<#else>
+		<#assign totalAbas = 3/>
+	</#if>
 	<script type="text/javascript">
+	
+		var camposColaboradorVisivel = "${parametrosDoSistema.camposColaboradorVisivel}";
+		var camposColaboradorObrigatorio = "${parametrosDoSistema.camposColaboradorObrigatorio}";
+
+		var abasVisiveis = "${parametrosDoSistema.camposColaboradorTabs}";
+		var arrayAbasVisiveis  = abasVisiveis.split(',');
+		qtdAbas = arrayAbasVisiveis.length;
+		var arrayObrigatorios = new Array();
 
 		function setaCampos()
 		{
@@ -87,6 +113,29 @@
 		}
 		
 		$(function() {
+			$(".campo").each(function(){
+				var campos = camposColaboradorVisivel.split(',');
+				var id = this.id.replace('wwgrp_', '');
+				var idNaoEncontrado = ($.inArray(id, campos) == -1);
+			    if (idNaoEncontrado)
+					$(this).hide();
+			});	
+
+			$.each(camposColaboradorObrigatorio.split(','), function (index, idCampo) {
+			    var lblAntigo = $('label[for='+idCampo+']');
+			    lblAntigo.text(lblAntigo.text().replace(/\s$/, '') + "*");
+			});
+			
+			if(camposColaboradorObrigatorio != "")
+				arrayObrigatorios = camposColaboradorObrigatorio.split(',');
+		
+		
+			$('#abas div').each(function(){
+					var abaNaoEncontrada = ($.inArray($(this).attr('class'), arrayAbasVisiveis) == -1);
+			        if (abaNaoEncontrada)
+			            $(this).hide();
+			});
+			
 			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
 			
 			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
@@ -94,31 +143,62 @@
 			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action"/>');			
 		});
 		
-	</script>
-	<#assign validaDataCamposExtras = ""/>
-	<#if habilitaCampoExtra>
-		<#list configuracaoCampoExtras as configuracaoCampoExtra>		
-			
-			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data1">
-				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data1'"/>
-			</#if>
-			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data2">
-				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data2'"/>
-			</#if>
-			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data3">
-				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data3'"/>
-			</#if>
-		</#list>
+		function validaFormularioDinamico()
+		{
+			marcaAbas = true;
+			exibeLabelDosCamposNaoPreenchidos = true;
+			desmarcarAbas();
 		
-		<#assign totalAbas = 4/>
-	<#else>
-		<#assign totalAbas = 3/>
-	</#if>
+			$('#formacao, #idioma, #expProfissional').css('backgroundColor','inherit');
+		
+			var msg = "Os seguintes campos são obrigatórios: <br />";
+			var idiomaInvalido = $.inArray('idioma', arrayObrigatorios) > -1 && $('#idiomaTable tbody tr').size() < 1;
+			var expInvalido = $.inArray('expProfissional', arrayObrigatorios) > -1 && $('#exp tbody tr').size() < 1;
+			var formacaoInvalido = $.inArray('formacao', arrayObrigatorios) > -1 && $('#formacao tbody tr').size() < 1;
+
+			if (formacaoInvalido){
+    		   	marcarAbas('#formacao');
+				$('#formacao').css('backgroundColor','#ffeec2');
+    			msg += "Formação Escolar<br />";
+			}
+
+			if (idiomaInvalido){
+	    		marcarAbas('#idioma');
+				$('#idioma').css('backgroundColor','#ffeec2');
+	    		msg += "Idiomas<br />";
+			}
+
+			if (expInvalido){
+	    		marcarAbas('#expProfissional');
+				$('#expProfissional').css('backgroundColor','#ffeec2');
+	    		msg += "Experiência Profissional<br />";
+			}
+			
+			if (formacaoInvalido || idiomaInvalido || expInvalido) {
+	    		jAlert(msg);
+	    		return false;
+	    	}
+			
+			// valida os multicheckboxes
+			arrayObrigatorios = $.map(arrayObrigatorios, function(item) {
+				return item;
+			});
+			
+			arrayObrigatorios = $.grep(arrayObrigatorios, function(value) {
+				return value != 'formacao' && value != 'idioma' && value != 'expProfissional' && 
+				value != 'nome' && value != 'nomeComercial' && value != 'nascimento' && value != 'sexo' &&
+				value != 'cpf' && value != 'deficiencia' && value != 'dt_admissao';
+			});
 	
+			arrayValidacao = arrayObrigatorios;
+			
+			return validaFormulario('form', arrayValidacao, new Array('ende','num','uf','cidade','ddd','fone','escolaridade','cep' ${validaDataCamposExtras}))
+		}
+		
+		
+	</script>
 	
-	
-	
-	<#assign validarCampos="return validaFormulario('form', new Array('ende','num','uf','cidade','ddd','fone','escolaridade'), new Array('cep' ${validaDataCamposExtras}))"/>
+	<#assign validarCampos="validaFormularioDinamico();"/>
 	<@ww.head />
 </head>
 <body>
@@ -127,9 +207,9 @@
 
 	<#if colaborador.id?exists>
 		<div id="abas">
-			<div id="aba1"><a href="javascript: abas(1, '', true, ${totalAbas})">Dados Pessoais</a></div>
-			<div id="aba2"><a href="javascript: abas(2, '', true, ${totalAbas})">Formação Escolar</a></div>
-			<div id="aba3"><a href="javascript: abas(3, '', true, ${totalAbas})">Experiências</a></div>
+			<div id="aba1" class="abaDadosPessoais"><a href="javascript: abas(1, '', true, ${totalAbas})">Dados Pessoais</a></div>
+			<div id="aba2" class="abaFormacaoEscolar"><a href="javascript: abas(2, '', true, ${totalAbas})">Formação Escolar</a></div>
+			<div id="aba3" class="abaExperiencias"><a href="javascript: abas(3, '', true, ${totalAbas})">Experiências</a></div>
 			
 			<#if habilitaCampoExtra>
 				<div id="aba4"><a href="javascript: abas(4, '', true, ${totalAbas})">Extra</a></div>
@@ -140,38 +220,43 @@
 		Antes de enviar o form os cursos e a observação são setados em campos hidden dentro do form. -->
 		<#-- Acima do form para corrigir problema de layout no IE -->
 		<div id="content2" style="display: none;">
-			<@ww.div id="formacao" />
-			<@ww.div id="idioma" />
-			<@ww.textarea label="Cursos" id="desCursos" name="desCursos" cssStyle="width: 705px;"/>
+			<@ww.div id="formacao" cssClass="campo" />
+			<@ww.div id="idioma"  cssClass="campo" />
+			<@ww.textarea label="Cursos" id="desCursos" name="desCursos" cssStyle="width: 705px;" liClass="campo" />
 		</div>
 		<div id="content3" style="display: none;">
-			<@ww.div id="expProfissional" />
-			<@ww.textarea label="Informações Adicionais" id="obs" name="obs" cssStyle="width: 705px;"/>
+			<@ww.div id="expProfissional" cssClass="campo" />
+			<@ww.textarea label="Informações Adicionais" id="obs" name="obs" cssStyle="width: 705px;" liClass="campo"/>
 		</div>
 	
 		<@ww.form name="form" action="updateInfoPessoais.action" onsubmit="${validarCampos}" validate="true" method="POST">
 			<div id="content1">
-				<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft"/>
-				<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="ende" required="true" cssStyle="width: 300px;" liClass="liLeft" maxLength="40"/>
-				<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" required="true" cssStyle="width:40px;" liClass="liLeft" maxLength="10"/>
-				<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" cssStyle="width: 232px;" maxLength="20"/>
-				<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""  required="true"/>
-				<@ww.select label="Cidade" name="colaborador.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft" listKey="id" listValue="nome" cssStyle="width: 237px;" headerKey="" headerValue="" required="true" />
-					
-				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" cssStyle="width: 350px;"  maxLength="85"/>
-				<@ww.div id="bairroContainer"/>
-					
-				<@ww.textfield label="E-mail"    name="colaborador.contato.email" id="email" cssStyle="width: 300px;" maxLength="40" liClass="liLeft"/>
-				<@ww.textfield label="DDD" name="colaborador.contato.ddd" required="true" id="ddd" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" maxLength="2" cssStyle="width:25px;"/>
-				<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" required="true" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="8" liClass="liLeft" cssStyle="width:60px;"/>
-				<@ww.textfield label="Celular"   name="colaborador.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" maxLength="9" cssStyle="width:60px;"/>
-				<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 303px;" liClass="liLeft" required="true" headerKey="" headerValue="Selecione..."/>
-				<@ww.select label="Estado Civil" name="colaborador.pessoal.estadoCivil" list="estadosCivis" cssStyle="width: 210px;"/>
-	
-				<@ww.textfield label="Nome do Pai" name="colaborador.pessoal.pai" id="nomePai" liClass="liLeft" cssStyle="width: 300px;" maxLength="60"/>
-				<@ww.textfield label="Nome da Mãe" name="colaborador.pessoal.mae" id="nomeMae" cssStyle="width: 300px;" maxLength="60"/>
-				<@ww.textfield label="Nome do Cônjuge" name="colaborador.pessoal.conjuge" id="nomeConjuge" cssStyle="width: 300px;" maxLength="40" liClass="liLeft" />
-				<@ww.textfield label="Qtd. Filhos" onkeypress = "return(somenteNumeros(event,''));" maxLength="2" name="colaborador.pessoal.qtdFilhos" id="qtdFilhos" cssStyle="width:25px; text-align:right;" maxLength="2" />
+				<@ww.div id="wwgrp_endereco" cssClass="campo">
+					<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft"/>
+					<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="ende" cssStyle="width: 300px;" liClass="liLeft" maxLength="40"/>
+					<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" cssStyle="width:40px;" liClass="liLeft" maxLength="10"/>
+					<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" id="complemento" cssStyle="width: 232px;" maxLength="20"/>
+					<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
+					<@ww.select label="Cidade" name="colaborador.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft" listKey="id" listValue="nome" cssStyle="width: 237px;" headerKey="" headerValue="" />
+						
+					<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" cssStyle="width: 350px;"  maxLength="85"/>
+					<@ww.div id="bairroContainer"/>
+				</@ww.div>	
+				<@ww.textfield label="E-mail"    name="colaborador.contato.email" id="email" cssStyle="width: 300px;" maxLength="40" liClass="liLeft campo"/>
+				<@ww.div id="wwgrp_fone"  cssClass="campo">
+					<@ww.textfield label="DDD" name="colaborador.contato.ddd" id="ddd" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" maxLength="2" cssStyle="width:25px;"/>
+					<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="8" liClass="liLeft" cssStyle="width:60px;"/>
+				</@ww.div>
+				
+				<@ww.textfield label="Celular" name="colaborador.contato.foneCelular" id="celular" onkeypress = "return(somenteNumeros(event,''));" maxLength="9" cssStyle="width:60px;" liClass="campo"/>
+				<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 303px;" liClass="liLeft campo" headerKey="" headerValue="Selecione..."/>
+				
+				<@ww.select label="Estado Civil" name="colaborador.pessoal.estadoCivil" id="estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="campo"/>
+				
+				<@ww.textfield label="Nome do Pai" name="colaborador.pessoal.pai" id="nomePai" liClass="liLeft campo" cssStyle="width: 300px;" maxLength="60"/>
+				<@ww.textfield label="Nome da Mãe" name="colaborador.pessoal.mae" id="nomeMae" liClass="campo" cssStyle="width: 300px;" maxLength="60"/>
+				<@ww.textfield label="Nome do Cônjuge" name="colaborador.pessoal.conjuge" id="nomeConjuge" cssStyle="width: 300px;" maxLength="40" liClass="liLeft campo" />
+				<@ww.textfield label="Qtd. Filhos" onkeypress = "return(somenteNumeros(event,''));" maxLength="2" name="colaborador.pessoal.qtdFilhos" id="qtdFilhos" liClass="campo" cssStyle="width:25px; text-align:right;" maxLength="2" />
 			</div>
 			
 			<#if habilitaCampoExtra>
