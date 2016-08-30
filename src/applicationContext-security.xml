@@ -408,6 +408,8 @@
 				
 				/captacao/candidato/prepareRelatorioAvaliacaoCandidatos*/** = ROLE_REL_AVALIACAO_CANDIDATOS 
 				/captacao/candidato/relatorioAvaliacaoCandidatos*/** = ROLE_REL_AVALIACAO_CANDIDATOS 
+				/captacao/candidato/prepareRelatorioCandidatosIndicadosPor*/** = ROLE_REL_CANDIDATOS_INDICADOS_POR 
+				/captacao/candidato/relatorioCandidatosIndicadosPor*/** = ROLE_REL_CANDIDATOS_INDICADOS_POR 
 				/captacao/candidato/infoCandidato*/**=ROLE_CAD_CANDIDATO,ROLE_MOV_SOLICITACAO,ROLE_INFORM_CANDIDATO_CURRICULO, ROLE_INFORM_CANDIDATO_HISTORICO, ROLE_INFORM_CANDIDATO_COMPETENCIA,ROLE_COLAB_LIST_VISUALIZARCURRICULO,ROLE_CAND_SOLICITACAO_VISUALIZARCURRICULO
 				/captacao/candidato/verCurriculo*/**=ROLE_INFORM_CANDIDATO_CURRICULO,ROLE_COLAB_LIST_VISUALIZARCURRICULO
 				/captacao/candidato/verHistoricoCandidato*/**=ROLE_INFORM_CANDIDATO_HISTORICO

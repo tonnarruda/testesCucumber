@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyChar;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -776,6 +777,28 @@ public class CandidatoListActionTest
 		
 		assertEquals("input", action.relatorioAvaliacaoCandidatos());
 		assertEquals("Não existem dados para o filtro informado.", action.getActionMessages().iterator().next());
+	}
+	
+	@Test
+	public void relatorioCandidatosIndicadosPor() throws Exception {
+		Collection<Candidato> candidatos = new ArrayList<Candidato>();
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+		parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistema.setCompartilharColaboradores(true);
+		
+		Collection<Empresa> empresas = new ArrayList<Empresa>();
+		empresas.add(empresa);
+		
+		action.setParametrosDoSistema(parametrosDoSistema);
+		action.setEmpresasCheck(new String[]{"1"});
+		action.setEmpresaSistema(empresa);
+		
+		when(empresaManager.findEmpresasPermitidas(true, empresa.getId(), anyLong(), anyString())).thenReturn(empresas);
+		when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+		when(candidatoManager.findCandidatosIndicadosPor(null, null, new Long[]{1L})).thenReturn(candidatos); 
+		assertEquals("success", action.relatorioCandidatosIndicadosPor());
 	}
 
 	@Test

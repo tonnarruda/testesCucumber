@@ -850,6 +850,43 @@ public class CandidatoListAction extends MyActionSupportList
 			return INPUT;
 		}
 	}
+	
+	public String prepareRelatorioCandidatosIndicadosPor() throws Exception
+	{
+		boolean compartilharCandidatos = parametrosDoSistemaManager.findById(1L).getCompartilharCandidatos();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_CANDIDATOS_INDICADOS_POR");
+		
+		empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String relatorioCandidatosIndicadosPor() throws Exception
+	{
+		candidatos = new ArrayList<Candidato>();
+		try
+		{
+			Long[] empresasIds = LongUtil.arrayStringToArrayLong(empresasCheck);
+			if ( !(empresasIds != null && empresasIds.length > 0) ) {
+				boolean compartilharCandidatos = parametrosDoSistemaManager.findById(1L).getCompartilharCandidatos();
+				empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_CANDIDATOS_INDICADOS_POR");
+				empresasIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas);
+			}
+					
+			candidatos = candidatoManager.findCandidatosIndicadosPor(dataCadIni, dataCadFim, empresasIds);
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Indicações de candidatos", getEmpresaSistema(), getPeriodoFormatado());
+			return SUCCESS;
+		}
+		catch (ColecaoVaziaException e)
+		{
+			addActionMessage(e.getMessage());
+			prepareRelatorioCandidatosIndicadosPor();
+			empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);
+			
+			return INPUT;
+		}
+	}
 
 	private String getPeriodoFormatado()
 	{

@@ -79,4 +79,5 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public void inserirNonoDigitoCelular(Long[] ufIds);
 	public boolean existeCamposExtras(Long camposExtrasId);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
+	public Collection<Candidato> findCandidatosIndicadosPor(Date dataIni, Date dataFim, Long[] empresasIds) throws ColecaoVaziaException;
 }

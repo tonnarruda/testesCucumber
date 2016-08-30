@@ -1093,6 +1093,16 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 		return resultado;
 	}
+	
+	public Collection<Candidato> findCandidatosIndicadosPor(Date dataIni, Date dataFim, Long[] empresasIds) throws ColecaoVaziaException
+	{
+		Collection<Candidato> candidatosIndicadosPor = getDao().findCandidatosIndicadosPor(dataIni, dataFim, empresasIds);
+
+		if (candidatosIndicadosPor == null || candidatosIndicadosPor.isEmpty())
+			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
+
+		return candidatosIndicadosPor;
+	}
 
 	public void enviaAvisoDeCadastroCandidato(String nomeCandidato, Long empresaId)
 	{

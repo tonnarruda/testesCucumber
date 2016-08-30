@@ -43,6 +43,7 @@ import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
@@ -1067,6 +1068,14 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	public Date getDataCadastro() {
 		return dataCadastro;
+	}
+
+	@NaoAudita
+	public String getDataCadastroFormatada() {
+		if (this.dataCadastro != null)
+			return DateUtil.formataDate(this.dataCadastro, "dd/MM/yyyy");
+		else
+			return "";
 	}
 
 	public void setDataCadastro(Date dataCadastro) {

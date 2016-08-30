@@ -908,6 +908,31 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		return query.list();
 	}
+	
+	public Collection<Candidato> findCandidatosIndicadosPor(Date dataIni, Date dataFim, Long[] empresasIds)
+	{
+		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+		criteria.createCriteria("c.empresa", "e", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"),"nome");
+		p.add(Projections.property("c.dataCadastro"),"dataCadastro");
+		p.add(Projections.property("c.pessoal.indicadoPor"),"pessoalIndicadoPor");
+		p.add(Projections.property("e.nome"),"empresaNome");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.ne("c.pessoal.indicadoPor", ""));
+		if (empresasIds != null)
+			criteria.add(Expression.in("c.empresa.id", empresasIds));
+		
+		criteria.add(Expression.between("c.dataCadastro", dataIni, dataFim));
+		
+		criteria.addOrder(Order.asc("c.pessoal.indicadoPor"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
+		return criteria.list();
+	}
 
 	public Collection<Candidato> findByNomeCpf(Candidato candidato, Long empresaId)
 	{

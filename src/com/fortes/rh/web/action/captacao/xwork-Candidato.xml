@@ -85,6 +85,19 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/relatorioAvaliacaoCandidatos.ftl</result>
 		</action>
 
+		<action name="prepareRelatorioCandidatosIndicadosPor" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="prepareRelatorioCandidatosIndicadosPor">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/relatorioCandidatosIndicadosPor.ftl</result>
+		</action>
+		<action name="relatorioCandidatosIndicadosPor" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="relatorioCandidatosIndicadosPor">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/candidatos_indicadosPor.jasper</param>
+				<param name="dataSource">candidatos</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">candidatoIndicadosPor.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/relatorioCandidatosIndicadosPor.ftl</result>
+		</action>
+
 		<action name="sucesso" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="sucessoInclusao">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoSucesso.ftl</result>
 		</action>
