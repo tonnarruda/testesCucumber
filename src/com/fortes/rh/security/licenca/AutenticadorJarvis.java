@@ -40,7 +40,8 @@ public class AutenticadorJarvis extends Autenticador
 		Collection<Long> modulosNaoConfigurados = new ArrayList<Long>();
 		
 		if(verificaLicensa) {
-			modulosNaoConfigurados = getModulosNaoConfigurados(63);
+//			modulosNaoConfigurados = getModulosNaoConfigurados(63);
+			modulosNaoConfigurados = getModulosNaoConfigurados(clientJarvis.getModulosDisponiveis());
 		} else if(!isDemo()){
 			modulosNaoConfigurados = getModulosNaoConfigurados(getModulosPermitidos());
 		}

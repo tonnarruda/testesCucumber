@@ -8,6 +8,7 @@ public class JClient {
 	private String nomeProduto;
 	private Boolean registrado;
 	private Integer qtdAcessosSimultaneos;
+	private Integer modulosDisponiveis;
 	private String razaoSocial;
 	private String nomeCliente;
 	private String dataVencimento;
@@ -26,6 +27,7 @@ public class JClient {
 			nomeProduto = jsonObject.get("LicenseProductName").toString();
 			registrado = "Enabled".equals(jsonObject.get("CustomerStatus").toString());
 			qtdAcessosSimultaneos = (jsonObject.get("LicenseConcurrentUsers").toString().equals("null") ? 0 : jsonObject.getInt("LicenseConcurrentUsers"));
+			modulosDisponiveis = (jsonObject.get("LicenseEnabledModules").toString().equals("null") ? 0 : jsonObject.getInt("LicenseEnabledModules"));
 			razaoSocial = jsonObject.get("LicenseVendorName").toString();
 			nomeCliente = jsonObject.get("CustomerName").toString();
 			dataVencimento = jsonObject.get("LicenseExpiryDate").toString();
@@ -138,4 +140,13 @@ public class JClient {
 		this.jsonObject = jsonObject;
 	}
 
+	public Integer getModulosDisponiveis()
+	{
+		return modulosDisponiveis;
+	}
+
+	public void setModulosDisponiveis(Integer modulosDisponiveis)
+	{
+		this.modulosDisponiveis = modulosDisponiveis;
+	}
 }
