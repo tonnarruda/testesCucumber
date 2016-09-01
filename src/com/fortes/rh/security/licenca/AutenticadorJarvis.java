@@ -51,7 +51,7 @@ public class AutenticadorJarvis extends Autenticador
 	
 	public static void verificaCopia(String cnpj, boolean verificaLicensaAutenticador, Integer modulosPermitidoSemLicensa) throws Exception
 	{
-		urlConexao = "http://jarvisws.azurewebsites.net/licenseinfo?cnpj="+cnpj+"&location=TESTE%20RH%20NUVEM&area=BDD5C8EC-942B-4EF0-8AB2-A059820B1B42&productcode=47";
+		urlConexao = "http://jarvisws.azurewebsites.net/licenseinfo?cnpj="+cnpj+"&location=TESTE%20RH%20NUVEM&area=BDD5C8EC-942B-4EF0-8AB2-A059820B1B42&productcode=50";
 		verificaLicensa = verificaLicensaAutenticador;
 		modulosPermitidos = modulosPermitidoSemLicensa;
 		
