@@ -357,9 +357,6 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		experienciaManager.expects(once()).method("findByColaborador").with(ANYTHING);
 		formacaoManager.expects(once()).method("findByColaborador").with(ANYTHING);
 
-		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativoColaborador", "empresa.id"}),eq(new Object[]{true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
-		camposExtrasManager.expects(once()).method("findById").with(eq(colaborador.getCamposExtras().getId())).will(returnValue(camposExtras));
-		
 		assertEquals("success", action.prepareUpdateInfoPessoais());
 	}
 	
