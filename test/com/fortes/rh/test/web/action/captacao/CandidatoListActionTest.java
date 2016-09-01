@@ -86,6 +86,7 @@ import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
+import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.EmpresaUtil;
@@ -211,6 +212,7 @@ public class CandidatoListActionTest
 		camposExtrasManager = mock(CamposExtrasManager.class);
 		action.setCamposExtrasManager(camposExtrasManager);
 		
+		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -795,7 +797,7 @@ public class CandidatoListActionTest
 		action.setEmpresasCheck(new String[]{"1"});
 		action.setEmpresaSistema(empresa);
 		
-		when(empresaManager.findEmpresasPermitidas(true, empresa.getId(), anyLong(), anyString())).thenReturn(empresas);
+		when(empresaManager.findEmpresasPermitidas(true, empresa.getId(), 1L, "ROLE_REL_CANDIDATOS_INDICADOS_POR")).thenReturn(empresas);
 		when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
 		when(candidatoManager.findCandidatosIndicadosPor(null, null, new Long[]{1L})).thenReturn(candidatos); 
 		assertEquals("success", action.relatorioCandidatosIndicadosPor());
