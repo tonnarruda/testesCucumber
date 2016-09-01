@@ -412,13 +412,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			cidades = cidadeManager.find(new String[]{"uf.id"}, new Object[]{colaborador.getEndereco().getUf().getId()}, new String[]{"nome"});
 			estados = estadoManager.findAll(new String[]{"sigla"});
 			
-			habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
-			if(habilitaCampoExtra)
-				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
-			
-			if(habilitaCampoExtra && colaborador.getCamposExtras() != null && colaborador.getCamposExtras().getId() != null)
-				camposExtras = camposExtrasManager.findById(colaborador.getCamposExtras().getId());
-			
 			session.put("SESSION_IDIOMA", candidatoIdiomaManager.montaListCandidatoIdioma(colaborador.getId()));
 			session.put("SESSION_EXPERIENCIA", experienciaManager.findByColaborador(colaborador.getId()));
 			session.put("SESSION_FORMACAO", formacaoManager.findByColaborador(colaborador.getId()));			
@@ -862,19 +855,16 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		{
 			recuperarSessao();
 			
-			if(camposExtras != null && habilitaCampoExtra)
-				colaborador.setCamposExtras(camposExtrasManager.update(camposExtras, colaborador.getCamposExtras().getId(), getEmpresaSistema().getId()));
-
 			colaborador.setDataAtualizacao(new Date());
 			colaboradorManager.updateInfoPessoais(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema());
 			prepareUpdateInfoPessoais();
 			
-			addActionSuccess("Colaborador alterado com sucesso.");
+			addActionSuccess("Dados atualizado com sucesso.");
 		}
 		catch (Exception e)
 		{
 			prepareUpdateInfoPessoais();
-			addActionError("Erro ao alterar Colaborador.");
+			addActionError("Não foi possível atualizar os dados.");
 		}
 
 		return Action.SUCCESS;

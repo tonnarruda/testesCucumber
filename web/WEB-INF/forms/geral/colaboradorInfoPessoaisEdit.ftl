@@ -56,25 +56,8 @@
 
 	<#include "../cargosalario/calculaSalarioInclude.ftl" />
 
-	<#assign validaDataCamposExtras = ""/>
-	<#if habilitaCampoExtra>
-		<#list configuracaoCampoExtras as configuracaoCampoExtra>		
-			
-			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data1">
-				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data1'"/>
-			</#if>
-			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data2">
-				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data2'"/>
-			</#if>
-			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data3">
-				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data3'"/>
-			</#if>
-		</#list>
-		
-		<#assign totalAbas = 4/>
-	<#else>
-		<#assign totalAbas = 3/>
-	</#if>
+	<#assign totalAbas = 3/>
+	
 	<script type="text/javascript">
 	
 		var camposColaboradorVisivel = "${parametrosDoSistema.camposColaboradorVisivel}";
@@ -192,7 +175,7 @@
 	
 			arrayValidacao = arrayObrigatorios;
 			
-			return validaFormulario('form', arrayValidacao, new Array('ende','num','uf','cidade','ddd','fone','escolaridade','cep' ${validaDataCamposExtras}))
+			return validaFormulario('form', arrayValidacao, new Array('ende','num','uf','cidade','ddd','fone','escolaridade','cep'))
 		}
 		
 		
@@ -210,10 +193,6 @@
 			<div id="aba1" class="abaDadosPessoais"><a href="javascript: abas(1, '', true, ${totalAbas})">Dados Pessoais</a></div>
 			<div id="aba2" class="abaFormacaoEscolar"><a href="javascript: abas(2, '', true, ${totalAbas})">Formação Escolar</a></div>
 			<div id="aba3" class="abaExperiencias"><a href="javascript: abas(3, '', true, ${totalAbas})">Experiências</a></div>
-			
-			<#if habilitaCampoExtra>
-				<div id="aba4"><a href="javascript: abas(4, '', true, ${totalAbas})">Extra</a></div>
-			</#if>
 		</div>
 	
 		<#-- Campos fora do formulário por causa do ajax.
@@ -228,7 +207,7 @@
 			<@ww.div id="expProfissional" cssClass="campo" />
 			<@ww.textarea label="Informações Adicionais" id="obs" name="obs" cssStyle="width: 705px;" liClass="campo"/>
 		</div>
-	
+
 		<@ww.form name="form" action="updateInfoPessoais.action" onsubmit="${validarCampos}" validate="true" method="POST">
 			<div id="content1">
 				<@ww.div id="wwgrp_endereco" cssClass="campo">
@@ -248,7 +227,7 @@
 					<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="8" liClass="liLeft" cssStyle="width:60px;"/>
 				</@ww.div>
 				
-				<@ww.textfield label="Celular" name="colaborador.contato.foneCelular" id="celular" onkeypress = "return(somenteNumeros(event,''));" maxLength="9" cssStyle="width:60px;" liClass="campo"/>
+				<@ww.textfield label="Celular" name="colaborador.contato.foneCelular" id="celular" onkeypress = "return(somenteNumeros(event,''));" maxLength="9" cssStyle="width:80px;" liClass="campo"/>
 				<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 303px;" liClass="liLeft campo" headerKey="" headerValue="Selecione..."/>
 				
 				<@ww.select label="Estado Civil" name="colaborador.pessoal.estadoCivil" id="estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="campo"/>
@@ -257,15 +236,9 @@
 				<@ww.textfield label="Nome da Mãe" name="colaborador.pessoal.mae" id="nomeMae" liClass="campo" cssStyle="width: 300px;" maxLength="60"/>
 				<@ww.textfield label="Nome do Cônjuge" name="colaborador.pessoal.conjuge" id="nomeConjuge" cssStyle="width: 300px;" maxLength="40" liClass="liLeft campo" />
 				<@ww.textfield label="Qtd. Filhos" onkeypress = "return(somenteNumeros(event,''));" maxLength="2" name="colaborador.pessoal.qtdFilhos" id="qtdFilhos" liClass="campo" cssStyle="width:25px; text-align:right;" maxLength="2" />
+				<div style="clear: both;"></div>
 			</div>
 			
-			<#if habilitaCampoExtra>
-				<div id="content4" style="display: none;">
-					<#include "camposExtras.ftl" />
-			    </div>
-			</#if>
-			
-			<@ww.hidden name="colaborador.camposExtras.id" />		
 			<@ww.hidden name="colaborador.cursos" id="colaborador.cursos" />
 			<@ww.hidden name="colaborador.observacao" id="colaborador.observacao" />
 			<@ww.hidden name="colaborador.candidato.id"/>
