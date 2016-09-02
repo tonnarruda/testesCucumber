@@ -259,8 +259,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 						addPromocaoMesAno(promocoes, DateUtil.getInicioMesData(proximaSituacao.getData()), MotivoHistoricoColaborador.PROMOCAO);
 					continue;
 				}
-				
-				if(!situacao.getFaixaSalarial().equals(proximaSituacao.getFaixaSalarial()) || !situacao.getSalario().equals(proximaSituacao.getSalario()))
+					
+				if(!situacao.getFaixaSalarial().equals(proximaSituacao.getFaixaSalarial()) || (situacao.getSalario() != null && proximaSituacao.getSalario()!= null && !situacao.getSalario().equals(proximaSituacao.getSalario())))
 					if(proximaSituacao.getData().getTime() >= dataIni.getTime() && proximaSituacao.getData().getTime() <= dataFim.getTime())
 						addPromocaoMesAno(promocoes, DateUtil.getInicioMesData(proximaSituacao.getData()), MotivoHistoricoColaborador.PROMOCAO_HORIZONTAL);
 			}
