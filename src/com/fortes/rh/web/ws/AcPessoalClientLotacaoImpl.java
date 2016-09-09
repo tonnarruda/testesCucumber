@@ -39,7 +39,7 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new IntegraACException("Erro ao remover lotação no Fortes Pessoal.");
+			throw new IntegraACException("Não foi possível remover esta área organizacional no Fortes Pessoal.");
 		}
 	}
 

@@ -16,6 +16,7 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -120,16 +121,14 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 			else
 				addActionWarning("A área organizacional solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
 			
-		} catch (FortesException e) {
-			addActionWarning(e.getMessage());
-			e.printStackTrace();
-		
-		} catch (IntegraACException e) {
-			addActionError(e.getMessage());
-			e.printStackTrace();
-		
 		} catch (Exception e) {
-			addActionError("Não foi possível excluir a Área Organizacional.");
+			if (e.getCause() instanceof FortesException)
+				addActionWarning(e.getCause().getMessage());
+			else if (e.getCause() instanceof IntegraACException)
+				addActionError(e.getCause().getMessage());
+			else 		
+				ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir a Área Organizacional.");
+
 			e.printStackTrace();
 		}
 

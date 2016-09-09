@@ -994,7 +994,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	}
 	
 	// TODO: SEM TESTE
-	public void removeComDependencias(Long id) throws FortesException
+	public void removeComDependencias(Long id) throws Exception
 	{
 		String[] tables = getDao().findDependentTables(id);
 		Collection<String> tbls = new ArrayList<String>();
@@ -1011,7 +1011,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		{
 			StringBuffer msg = new StringBuffer("Essa área organizacional possui dependências que não podem ser excluídas automaticamente: <br />");
 			for (String tbl : tbls) {
-				msg.append("&bull; ").append(Entidade.getDescricao(tbl)).append("<br />");
+				msg.append("&bull; ").append(Entidade.getDescricao(tbl)).append(".<br />");
 			}
 			throw new FortesException(msg.toString());
 		}
