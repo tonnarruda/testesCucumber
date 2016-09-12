@@ -19,6 +19,102 @@
 		    .info, .success { width: 670px; margin: 0 auto; }
 		    .info li { color: #00529B !important; }
 		    .success li { color: #4F8A10 !important; }
+		    
+		    .ui-widget-content.column {
+		    	position: relative;
+		    }
+		    /*ol.in-selection {
+		    	margin-top: 20px !important;
+		    }*/
+		    .selecteds {
+		    	/*margin: -5px -10px 5px;
+				position: absolute;*/
+				text-align: center;
+				background: #E5E5E5;
+				display: none;
+				width: 100%;
+		    }
+		    .selecteds .nome{
+		    	width: auto !important;
+		    }
+		    .selecteds .list{
+		    	padding: 10px;
+		    	background: #f5f5f5;
+		    	padding: 7px 20px 5px;
+		    	display: none;
+		    	max-height: 230px;
+		    	overflow-y: auto;
+		    }
+		    .selecteds .list li {
+		    	padding: 5px 10px !important;
+				text-align: start;
+				border-radius: 5px;
+				margin-bottom: 2px;
+				background: #416C89;
+				color: white !important;
+				cursor: initial !important;
+		    }
+		    .selecteds .list li div { float: none; }
+		    .selecteds .toggle {
+		    	width: 100%;
+				font-size: 10px;
+				padding: 2px 0;
+		    	color: gray;
+				cursor: pointer;
+		    }
+		    .selecteds .toggle i {
+		    	color: gray;
+		    	margin-right: 5px;
+		    }
+		    .selecteds .toggle i.up, .selecteds .toggle span.up {
+		    	display: none;
+		    }
+		    .selecteds .toggle:hover, .selecteds .toggle:hover i {
+		    	color: #5C5C5A;
+		    	background: #DDDDDD;
+		    }
+		    
+		    .move .sub {
+		    	display: none;
+		    	position: absolute;
+				z-index: 1000;
+				background: white;
+				font-size: 15px !important;
+				width: 115px;
+				text-align: left;
+				top: 28px;
+				left: 0px;
+		    }
+		    .move .sub div{
+		    	font-size: 11px;
+				padding: 3px;
+				border-bottom: 1px solid #e5e5e5;
+				cursor: pointer;
+		    }
+		    .move .sub div:hover{
+				background: #5292C0;
+				color: white;
+			}
+		    .move:not(.disabled).enabled .sub { display: block; }
+		    
+		    .box-search {
+		    	padding: 5px;
+		    	display: none;
+		    	
+		    	color: #A1A1A1;
+				background: #F9F9F9;
+				border-left: 1px solid #e7e7e7;
+				border-right: 1px solid #e7e7e7;
+			}
+			
+		    .box-search .search {
+		    	width: 90%;
+				border-radius: 3px;
+				padding: 3px 2%;
+				margin: 0 3%;
+		    	font-family: sans-serif !important;
+				border-color: #C8C8C8;
+		    }
 	  	</style>
 	  	
 		<@ww.head/>
@@ -59,6 +155,8 @@
 			ColaboradorDWR.getColaboradoresByAreaNome(createListColaborador, areasIds, nome, matricula, empresaId);
 
 			return false;
+			
+			$("#informaticaCriativa");
 		}
 
 		function createListColaborador(data)
@@ -213,9 +311,13 @@
 				  	<div class="option remove only-selectables disabled" title="Remover selecionados">
 						<span class="ui-icon ui-icon-trash"></span>
 				    </div>
-				  	<div class="option move-all only-selectables disabled" id = "relacionar_selecionados" title="Relacionar selecionados aos avaliadores">
+				  	<div class="option move only-selectables disabled" id = "relacionar_selecionados" title="Relacionar selecionados aos avaliadores">
 						<i class="fa fa-users"></i>
 						<i class="fa fa-long-arrow-right"></i>
+						<div class="sub">
+							<div class="for-all">Para todos</div>
+							<div class="for-selecteds">Para selecionados</div>
+						</div>
 				    </div>
 				    <div id="selecionarTodosAvaliado" class="option select-all" title="Selecionar todos">
 						<i class="fa fa-check"></i>
@@ -228,12 +330,26 @@
 				    <div class="option produtividade" title="Nota de produtividade">
 						<i class="fa fa-line-chart"></i>
 				    </div>
+				    <div class="option pesquisar" title="Pesquisar">
+						<i class="fa fa-search"></i>
+				    </div>
 				    <#if avaliacaoDesempenho.permiteAutoAvaliacao>
 					  	<div class="option generate-autoavaliacao only-selectables disabled" title="Gerar autoavaliação para selecionados">
 							<span class="ui-icon ui-icon-refresh"></span>
 					    </div>
 				    </#if>
 				  </h1>
+			  	<div class="box-search">
+			  		<input type="text" class="search" placeholder="Pesquisar..."/>
+			  	</div>
+			  	<div class="selecteds only-selectables">
+			  		<div class="list">
+			  		</div>
+			  		<div class="toggle">
+			  			<i class="fa fa-chevron-circle-down down"></i><span class="down">Visualizar selecionados</span>
+			  			<i class="fa fa-chevron-circle-up up"></i><span class="up">Esconder selecionados</span>
+			  		</div>
+			  	</div>
 				  <div class="ui-widget-content column">
 				    <div class="legend">
 				  	  <div>Nome</div>
@@ -285,7 +401,21 @@
 					    <div class="option configure-pesos" title="Configurar pesos">
 							<i class="fa fa-balance-scale"></i>
 					    </div>
+					    <div class="option pesquisar" title="Pesquisar">
+							<i class="fa fa-search"></i>
+					    </div>
 					</h1>
+					<div class="box-search">
+				  		<input type="text" class="search" placeholder="Pesquisar..."/>
+				  	</div>
+				  	<div class="selecteds only-selectables">
+				  		<div class="list">
+				  		</div>
+				  		<div class="toggle">
+				  			<i class="fa fa-chevron-circle-down down"></i><span class="down">Visualizar selecionados</span>
+				  			<i class="fa fa-chevron-circle-up up"></i><span class="up">Esconder selecionados</span>
+				  		</div>
+				  	</div>
 					<div class="column ui-widget-content" id="avaliadores-list">
 				  		<div class="legend">
 						  	<div>Nome</div>

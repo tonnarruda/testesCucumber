@@ -78,14 +78,22 @@ $(function() {
 	});
 	
 	$(".actions .select-all").click(function(){
-		$(this).parents(".box").find(".ui-selectable").addClass("ui-selected");
+		$(this).parents(".box").find(".column .ui-selectable:visible").addClass("ui-selected");
 		
-		if ( $(this).parents(".box").find(".ui-selected").length > 0 ) {
+		if ( $(this).parents(".box").find(".column .ui-selected:visible").length > 0 ) {
 			$(this).parents(".box").find(".ui-widget-header.actions .only-selectables").removeClass("disabled");
-			if ($(this).parents(".box").find(".ui-selected").hasClass("has-respondida")) {
+			if ($(this).parents(".box").find(".column .ui-selected:visible").hasClass("has-respondida")) {
 				$(this).parents(".box").find(".actions .remove").addClass("disabled");
 			}
+
+			$(this).parents(".box").find(".column .ui-selected:visible").each(function(){
+				if ( $(this).parents(".box").find(".selecteds .list #"+$(this).attr("id")).length == 0 )
+					$(this).parents(".box").find(".selecteds .list").append($(this).clone());
+			});
 		}
+		
+		$(this).parents(".box").find(".selecteds").toggle( $(this).parents(".box").find(".selecteds .list li").length > 0 );
+		resizeBox(this);
 	});
 	
 	$(".actions .configure-pesos").click(function(){
@@ -97,7 +105,6 @@ $(function() {
 		$(".pesoAvaliador").toggle();
 		$(".portlet-toggle").toggle();
 	});
-	
 	
 	$(".pesoAvaliador").live("keypress", function(event) {
 		return(somenteNumeros(event,''));
@@ -120,13 +127,23 @@ $(function() {
 	});
 	
 	$(".actions .unselect-all").click(function(){
-		$(this).parents(".box").find(".ui-selectable").removeClass("ui-selected");
+		$(this).parents(".box").find(".column .ui-selected:visible").each(function(){
+			console.log("passou");
+			$(this).parents(".box").find(".selecteds .list #"+$(this).attr("id")).remove();
+		});
+
+		$(this).parents(".box").find(".column .ui-selectable:visible").removeClass("ui-selected");
+		
+		if ($(this).parents(".box").find(".selecteds .list li").length == 0)
+			$(this).parent().parent().find(".selecteds").hide();
+		
+		resizeBox(this);
 		
 		$(this).parents(".box").find(".ui-widget-header.actions .only-selectables").addClass("disabled");
 	});
 	
 	$("#avaliadores .actions .remove").click(function(){
-		if ( !$(this).hasClass("disabled") ) {
+		if ( !$(this).hasClass("disabled") && !$(this).hasClass("force-disabled") ) {
 			$(this).parents(".box").find(".ui-selected:not('.avaliadoInterno')").each(function(){
 				$("#participantesAvaliadosRemovidos").append("<input type='hidden' name='participantesAvaliadoresRemovidos' value='" + $(this).find('.participanteAvaliadorId').val() + "' />");
 				$(this).find(".colaboradorQuestionarioId").each(function(){
@@ -136,11 +153,15 @@ $(function() {
 			
 			$(this).parents(".box").find(".ui-selected").remove();
 			$(this).parents(".box").find(".ui-widget-header.actions .only-selectables").addClass("disabled");
+			
+			$(this).parent().parent().find(".selecteds .list").html("");
+			$(this).parent().parent().find(".selecteds").hide();
+			resizeBox(this);
 		}
 	});
 	
 	$("#avaliados .actions .remove").click(function(){
-		if ( !$(this).hasClass("disabled") ) {
+		if ( !$(this).hasClass("disabled") && !$(this).hasClass("force-disabled") ) {
 			$(this).parents(".box").find(".ui-selected").each(function(){
 				$("#participantesAvaliadosRemovidos").append("<input type='hidden' name='participantesAvaliadosRemovidos' value='" + $(this).find('.participanteAvaliadoId').val() + "' />");
 				
@@ -153,11 +174,15 @@ $(function() {
 			
 			$(this).parents(".box").find(".ui-selected").remove();
 			$(this).parents(".box").find(".ui-widget-header.actions .only-selectables").addClass("disabled");
+			
+			$(this).parent().parent().find(".selecteds .list").html("");
+			$(this).parent().parent().find(".selecteds").hide();
+			resizeBox(this);
 		}
 	});
 	
-	$("#avaliados .actions .move-all").click(function(){
-		if ( !$(this).hasClass("disabled") ) {
+	$("#avaliados .actions .move .for-all").click(function(){
+		if ( !$(this).hasClass("disabled") && !$(this).hasClass("force-disabled") ) {
 			msg = "Não há avaliadores para relacionar.";
 			qtdMenor = true;
 			qtdRegistros = ($("#avaliados-list .ui-selected").length)*countParticipantesAvaliadores;
@@ -174,8 +199,7 @@ $(function() {
 					contador = 1;
 					$("#avaliadores .portlet-content ul").each(function() {
 						var avaliador = $(this);
-						console.log(contador);
-						$(".ui-selected").each(function(){
+						$("#avaliados-list .ui-selected").each(function(){
 							createAvaliadoForAvaliador(avaliador, $(this));
 						});
 	
@@ -199,10 +223,135 @@ $(function() {
 			notificatedAboutAutoAvaliacao = false;
 		}
 	});
+
+	$("#avaliados .actions .move .for-selecteds").click(function(){
+		if ( !$(this).hasClass("disabled") && !$(this).hasClass("force-disabled") ) {
+			msg = "Não há avaliadores para relacionar.";
+			qtdMenor = true;
+			var qtdAvaliadoresSelecionados = $("#avaliadores-list .ui-selected").length;
+			qtdRegistros = ($("#avaliados-list .ui-selected").length)*qtdAvaliadoresSelecionados;
+			if(qtdRegistros > 2500){
+				qtdMenor = false;
+				msg = "Não é possível realizar esse procedimento, pois serão vinculados " + $("#avaliados-list .ui-selected").length + " avaliados " +
+						"com " + qtdAvaliadoresSelecionados + " avaliadores, gerando " + qtdRegistros + " registros a serem gravados." +
+						" Isso poderia causar uma inconsistência.";
+			}
+			
+			if (qtdMenor && $("#avaliadores .portlet.ui-selected .portlet-content ul").length > 0 ) {
+				processando(urlImagens);
+				setTimeout(function() { 
+					contador = 1;
+					$("#avaliadores .portlet.ui-selected .portlet-content ul").each(function() {
+						var avaliador = $(this);
+						$("#avaliados-list .ui-selected").each(function(){
+							createAvaliadoForAvaliador(avaliador, $(this));
+						});
+	
+						if(contador == qtdAvaliadoresSelecionados)
+							$('.processando').remove();
+						
+						contador++;
+					});
+				}, 800);
+			} else {
+				$("<div>" + msg +"</div>").dialog({
+		    		modal: true,
+		    		height: 160,
+		    		width: 450,
+		    		title: "Aviso",
+		    		buttons: { "Ok": function() {
+		    			$( this ).dialog( "close" );
+		    		} }
+		    	});
+			}
+			notificatedAboutAutoAvaliacao = false;
+		}
+	});
+	
+	$("#avaliados .actions .move").click(function(){
+		if ( !$(this).hasClass("disabled") && !$(this).hasClass("force-disabled") )
+			$(this).toggleClass("enabled");
+	});
+
+	$(".actions .pesquisar").click(function(){
+		$(this).parents(".box").find(".option").not(".pesquisar").not(".select-all").not(".unselect-all").toggleClass("inactive");
+		$(this).parents(".box").find(".option").not(".pesquisar").not(".select-all").not(".unselect-all").toggleClass("force-disabled");
+		$(this).parents(".box").find(".box-search").toggle();
+		$(this).toggleClass("active");
+		
+		$(this).parents(".box").find(".column > .ui-selectable").show( $(".box-search").is(":visible") );
+		$(this).parents(".box").find(".search").val("");
+		
+		resizeBox($(this));
+	});
+	
+	/*** Pesquisa ***/
+	
+	var accent_map = {
+            'á':'a',
+            'à':'a',
+            'â':'a',
+            'å':'a',
+            'ä':'a',
+            'a':'a',
+            'ã':'a',
+            'ç':'c',
+            'é':'e',
+            'è':'e',
+            'ê':'e',
+            'ë':'e',
+            'í':'i',
+            'ì':'i',
+            'î':'i',
+            'ï':'i',
+            'ñ':'n',
+            'ó':'o',
+            'ò':'o',
+            'ô':'o',
+            'ö':'o',
+            'õ':'o',
+            'ú':'u',
+            'ù':'u',
+            'û':'u',
+            'ü':'u',};
+
+
+	String.prototype.replaceEspecialChars = function() {
+        var ret = '', s = this.toString();
+        if (!s) { return ''; }
+        for (var i=0; i<s.length; i++) {
+            ret += accent_map[s.charAt(i)] || s.charAt(i);
+        }
+        return ret;
+	};
+
+    String.prototype.contains = function(otherString) {
+        return this.toString().indexOf(otherString) !== -1;
+    };
+
+    $.extend($.expr[':'], {
+
+        'contains-IgnoreAccents' : function(elemt, idx, math) {
+            
+            var expression1 = math[3].toLowerCase(),
+                semAcent1 = expression1.replaceEspecialChars(),
+                expression2 = elemt.innerHTML.toLowerCase(),
+                semAcent2 = expression2.replaceEspecialChars();
+
+            return semAcent2.contains(semAcent1);             
+        }
+    });
+	
+    $(".search").keyup(function(e){
+    	$(this).parents(".box").find(".column > .ui-selectable").hide();
+    	$(this).parents(".box").find(".column > .ui-selectable .nome:contains-IgnoreAccents('"+$(this).val()+"')").parents(".ui-selectable").show();
+    });
+	
+    /********/
 	
 	$("#avaliados .actions .generate-autoavaliacao").click(function(){
-		if ( !$(this).hasClass("disabled") ) {
-			$(".ui-selected").each(function(){
+		if ( !$(this).hasClass("disabled") && !$(this).hasClass("force-disabled") ) {
+			$(this).parents(".box").find(".ui-selected").each(function(){
 				createAvaliador( $(this).attr("id"), $(this).find(".nome").text() );
 				
 				var avaliador = $("#avaliadores .portlet[id="+$(this).attr("id")+"] ul");
@@ -232,14 +381,43 @@ $(function() {
 	
 	$(".notaProdutividade").live("click", function(event){ event.stopPropagation(); });
 	$("#avaliados .actions .produtividade").click(function(event){
-		$("#avaliados .option").not(".produtividade").toggleClass("inactive");
-		$(this).toggleClass("active");
-		$("#avaliados-list > li").toggleClass("ui-selectable");
-		$(".notaProdutividade").toggle();
+		if ( !$(this).hasClass("disabled") && !$(this).hasClass("force-disabled") ) {
+			$("#avaliados .option").not(".produtividade").toggleClass("inactive");
+			$(this).toggleClass("active");
+			$("#avaliados-list > li").toggleClass("ui-selectable");
+			$(".notaProdutividade").toggle();
+		}
+	});
+	
+	$(".selecteds .toggle").click(function(){
+		$(this).parent().find(".list").toggle();
+		$(this).find(".up").toggle();
+		$(this).find(".down").toggle();
+
+		//var marginList;
+		//$(this).parent().find(".list").is(":visible") ? marginList = $(this).parent().find(".list").height() + 25 : marginList = 25;
+		//$(this).parent().parent().find(".column").height( 500 - $(this).parent().height() );
+		/*$(this).parent().parent().find(".in-selection").css({"margin-top": marginList+"px !important"});*/
+		
+		resizeBox(this);
 	});
 	
 	disableParentsRespondida();
 });
+
+function resizeBox(element) {
+	var box = $(element).parents(".box");
+	var height = 500;
+	if ( $(box).find(".box-search").is(":visible") )
+		height = height - 32; 
+	if ( $(box).find(".selecteds").is(":visible") )
+		height = height - $(box).find(".selecteds").height(); 
+		
+	$(box).find(".column").height( height );
+	console.log(height);
+	console.log($(box).find(".column"));
+	console.log($(box).find(".column").height());
+}
 
 function conectAvaliadosAvaliadores() {
 	$( "#avaliadores ul" ).droppable({
@@ -251,8 +429,8 @@ function conectAvaliadosAvaliadores() {
       drop: function( event, ui ) {
     	  
     	var ulAvaliadores = $(this);
-    	if ( $("#avaliados li.ui-selected").length > 0 ) {
-	    	$("#avaliados li.ui-selected").each(function(){
+    	if ( $("#avaliados .column li.ui-selected").length > 0 ) {
+	    	$("#avaliados .column li.ui-selected").each(function(){
 	    		createAvaliadoForAvaliador(ulAvaliadores, $(this));
 	    	});
     	} else {
@@ -268,7 +446,7 @@ function conectAvaliadosAvaliadores() {
       }
     });
     
-    $( "#avaliados li" ).draggable({
+    $( "#avaliados .column li" ).draggable({
       connectToSortable: "#sortable ul",
       helper: "clone",
       revert: "invalid"
@@ -293,6 +471,13 @@ function portletEvents() {
 	$(".new-portlet").removeClass("new-portlet");
 }
 
+function cleanSelectedItem(item) {
+	var $newTag = $("<li class='ui-selectable' id='"+$(item).attr('id')+"'></li>");
+	$newTag.append($(item).find(".nome").clone());
+	
+	return $newTag;
+}
+
 function atualizeSelectables(idList, item, type) {
 	$(idList + " " + item).live("click", function(event){
 		if (activeShift) {
@@ -306,12 +491,20 @@ function atualizeSelectables(idList, item, type) {
 	    		elements = elements.splice(elements.index(lastElement), elements.index(element) - elements.index(lastElement) + 1);
 	    		
 	    		$(elements).each(function(){
-	    			if ( !$(this).hasClass("ui-selected") )
+	    			if ( !$(this).hasClass("ui-selected") ) {
 	    				$(this).addClass("ui-selected");
+	    				$(idList).parents(".box").find(".selecteds .list").append(cleanSelectedItem($(this)));
+	    			}
 	    		});
 			}
 		} else {
-			!$(this).hasClass("ui-selected") ?  $(this).addClass("ui-selected") : $(this).removeClass("ui-selected");
+			if (!$(this).hasClass("ui-selected")) {
+				$(this).addClass("ui-selected");
+				$(idList).parents(".box").find(".selecteds .list").append(cleanSelectedItem($(this)));
+			} else {
+				$(this).removeClass("ui-selected");
+				$(idList).parents(".box").find(".selecteds .list #"+$(this).attr("id")).remove();
+			}
 		}
 		
 		if ( $(idList + " " + item).hasClass("ui-selected") ) {
@@ -322,7 +515,9 @@ function atualizeSelectables(idList, item, type) {
 		} else
 			$(idList).parents(".box").find(".ui-widget-header.actions .only-selectables").addClass("disabled"); 
 		
-		lastSelected= $(this).attr("id");
+		$(idList).parents(".box").find(".selecteds").toggle( $(idList).parents(".box").find(".selecteds .list li").length > 0 );
+		
+		resizeBox($(idList));
 		
 		event.stopPropagation();
 	});
@@ -330,7 +525,7 @@ function atualizeSelectables(idList, item, type) {
 }
 
 function atualizeSelectablesMini() {
-	$("#avaliadores li").live("click", function(event){
+	$("#avaliadores .column li").live("click", function(event){
 		if ( !$(this).hasClass("placeholder") && !$(this).hasClass("has-respondida") ) {
 			if ( $(this).parents(".box").find("li.ui-selected").length > 0 && $(this).parents("ul").find("li.ui-selected").length == 0 )
 				$(this).parents(".box").find("li.ui-selected").removeClass("ui-selected");
