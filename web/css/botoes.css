@@ -1,663 +1,454 @@
-.btnSim{
-	background-image:url(../imgs/btnSim.gif);
+.btnSim::before{
 	width: 63px !important;
 }
-.btnNao{
-	background-image:url(../imgs/btnNao.gif);
+.btnNao::before{
 	width: 61px !important;
 }
-.btnAprovar{
-	background-image:url(../imgs/btnAprovar.gif);
+.btnAprovar::before{
 	width: 88px !important;
 }
-.btnReprovar{
-	background-image:url(../imgs/btnReprovar.gif);
+.btnReprovar::before{
 	width: 93px !important;
 }
-.btnRelatorioPorCriterio{
-	background-image:url(../imgs/btnRelatorioPorcriterio.gif);
+.btnRelatorioPorCriterio::before{
 	width: 171px !important;
 }
-.btnRelatorioPorAvaliador{
-	background-image:url(../imgs/btnRelatorioPorAvaliador.gif);
+.btnRelatorioPorAvaliador::before{
 	width: 185px !important;
 }
-.btnIncluirColaboradoresNota{
-	background-image:url(../imgs/btnIncluirColaboradoresNota.gif);
+.btnIncluirColaboradoresNota::before{
 	width: 224px !important;
 }
-.btnSugerirEtapas{
-	background-image:url(../imgs/btnSugerirEtapas.gif);
+.btnSugerirEtapas::before{
 	width: 131px !important;
 }
 
-.btnGerarEtapasModelo{
-	background-image:url(../imgs/btnInserir.gif);
+.btnGerarEtapasModelo::before{
 	width: 78px !important;
 }
 
-.btnTrocaExtintores{
-	background-image:url(../imgs/btnTrocaExtintores.gif);
+.btnTrocaExtintores::before{
 	width: 158px !important;
 }
 
-.btnInserirEtapasEmGrupo{
-	background-image:url(../imgs/btnInserirEtapasEmGrupo.gif);
+.btnInserirEtapasEmGrupo::before{
 	width: 193px !important;
 }
 
-.btnTransferirCandidatos{
-	background-image:url(../imgs/btnTransferirCandidatos.gif);
+.btnTransferirCandidatos::before{
 	width: 155px !important;
 }
 
-.btnUnirBairros{
-	background-image:url(../imgs/btnUnirBairros.gif);
+.btnUnirBairros::before{
 	width: 112px !important;
 }
-.btnCarregarTurmas{
-	background-image:url(../imgs/btnCarregarTurmas.gif);
+.btnCarregarTurmas::before{
 	width: 150px !important;
 }
-.btnImprimirVerso{
-	background-image:url(../imgs/btnImprimirVerso.gif);
+.btnImprimirVerso::before{
 	width: 129px !important;
 }
-.btnListaFrequenciaVotacao{
-	background-image:url(../imgs/btnListaFrequenciaVotacao.gif);
+.btnListaFrequenciaVotacao::before{
 	width: 250px !important;
 }
 
-.btnImprimirVersoPdf{
-	background-image:url(../imgs/btnImprimirVersoPdf.gif);
+.btnImprimirVersoPdf::before{
 	width: 129px !important;
 }
 
-.btnInserirTurma{
-	background-image:url(../imgs/btnInserirTurma.gif);
+.btnInserirTurma::before{
 	width: 123px !important;
 }
-.btnCriarUsuariosAuto{
-	background-image:url(../imgs/btnCriarUsuariosAuto.gif);
+.btnCriarUsuariosAuto::before{
 	width: 214px !important;
 }
-.btnEnviar{
-	background-image:url(../imgs/btnEnviar.gif);
+.btnEnviar::before{
 	width: 81px !important;
 }
-.btnLimparFiltro{
-	background-image:url(../imgs/btnLimparFiltro.gif);
+.btnLimparFiltro::before{
 	width: 117px !important;
 }
-.btnEnviarBlue
-{
-	background-image:url(../imgs/btnEnviarBlue.png);
+.btnEnviarBlue::before{
 	width: 81px !important;
 }
-.btnGerarTicket
-{
-	background-image:url(../imgs/btnGerarTicket.png);
+.btnGerarTicket::before{
 	width: 93px !important;
 }
-.btnOK
-{
-	background-image:url(../imgs/btnOK.png);
+.btnOK::before{
 	width: 46px !important;
 }
-.btnDemo
-{
-	background-image:url(../imgs/btnDemo.png);
+.btnDemo::before{
 	width: 123px !important;
 }
-.btnResultadoAvaliacao
-{
-	background-image:url(../imgs/btnResultadoAvaliacao.gif);
+.btnResultadoAvaliacao::before{
 	width: 184px !important;
 	height: 24px !important;
 }
-.btnEditarHistoricos
-{
-	background-image:url(../imgs/btnEditarSituacoes.gif);
+.btnEditarHistoricos::before{
 	width: 140px !important;
 }
-.btnEditar
-{
-	background-image:url(../imgs/btnEditar.gif);
+.btnEditar::before{
 	width: 71px !important;
 }
-.btnInserir
-{
-	background-image:url(../imgs/btnInserir.gif);
+.btnInserir::before{
 	width: 78px !important;
 }
-.btnInserirDesabilitado
-{
-	background-image:url(../imgs/btnInserirDesabilitado.gif);
+.btnInserirDesabilitado::before{
 	width: 78px !important;
 }
-.btnInserirCurriculoEscaneado
-{
-	background-image:url(../imgs/btnInserirCurriculoEscaneado.gif);
+.btnInserirCurriculoEscaneado::before{
 	width: 214px !important;
 }
-.btnInserirCurriculoDigitado
-{
-	background-image:url(../imgs/btnInserirCurriculoDigitado.gif);
+.btnInserirCurriculoDigitado::before{
 	width: 202px !important;
 }
-.btnSalvarArquivos
-{
-	background-image:url(../imgs/btnSalvarArquivos.gif);
+.btnSalvarArquivos::before{
 	width: 140px !important;
 }
 
-.btnAplicar
-{
-	background-image:url(../imgs/btnAplicar.gif);
+.btnAplicar::before{
 	width: 83px !important;
 }
 
-.btnExportar
-{
-	background-image:url(../imgs/btnExportar.gif);
+.btnExportar::before{
 	width: 92px !important;
 }
 
-.btnGravar
-{
-	background-image:url(../imgs/btnGravar.gif);
+.btnGravar::before{ content: "Gravar"; }
+
+.btnGravarDesabilitado::before{
 	width: 79px !important;
 }
-.btnGravarDesabilitado
-{
-	background-image:url(../imgs/btnGravarDesabilitado.gif);
-	width: 79px !important;
-}
-.btnGravarParcialmente
-{
-	background-image:url(../imgs/btnGravarParcialmente.gif);
+
+.btnGravarParcialmente::before{
 	width: 162px !important;
 }
-.btnCancelar
-{
-	background-image:url(../imgs/btnCancelar.gif);
-	width: 89px !important;
+
+.btnCancelar::before{
+	content: "Cancelar";
 }
-.btnListagemColaborador
-{
-	background-image:url(../imgs/btnListagemColaborador.gif);
+
+.btnListagemColaborador::before{
 	width: 220px !important;
 }
-.btnCarregar
-{
-	background-image:url(../imgs/btnCarregar.gif);
+
+.btnCarregar::before{
 	width: 100px !important;
 }
-.btnFechar
-{
-	background-image:url(../imgs/btnFechar.gif);
+.btnGravar::before ::before{ content: "Gravar"; }
+
+.btnFechar::before{
 	width: 77px !important;
 }
-.btnVoltar
-{
-	background-image:url(../imgs/btnVoltar.gif);
-	width: 69px !important;
-}
-.btnVoltarListaFrequencia
-{
-	background-image:url(../imgs/btnVoltar.gif);
-	width: 69px !important;
-}
-.btnVoltarDesabilitado
-{
-	background-image:url(../imgs/btnVoltarDesabilitado.gif);
+
+.btnVoltar::before{
 	width: 69px !important;
 }
 
-.btnAvancar
-{
-	background-image:url(../imgs/btnAvancar.gif);
+.btnVoltarListaFrequencia::before{
+	width: 69px !important;
+}
+.btnVoltarDesabilitado::before{
+	width: 69px !important;
+}
+
+.btnAvancar::before{
 	width: 85px !important;
 }
-.btnAvancarDesabilitado
-{
-	background-image:url(../imgs/btnAvancarDesabilitado.gif);
+.btnAvancarDesabilitado::before{
 	width: 85px !important;
 }
-.btnVisualizar
-{
-	background-image:url(../imgs/btnVisualizar.gif);
+.btnVisualizar::before{
 }
-.btnImprimir
-{
-	background-image:url(../imgs/btnImprimir.gif);
+.btnImprimir::before{
 	width: 89px !important;
 }
-.btnImprimirPdf
-{
-	background-image:url(../imgs/btnImprimirPdf.gif);
+.btnImprimirPdf::before{
 	width: 89px !important;
 }
-.btnImprimirPdfB
-{
-	background-image:url(../imgs/btnImprimirPdf.gif);
+.btnImprimirPdfB::before{
 	width: 89px !important;
 }
-.btnPesquisar
-{
-	background-image:url(../imgs/btnPesquisar.gif);
+.btnPesquisar::before{
 	width: 98px !important;
 }
-.btnUpLoad
-{
-	background-image:url(../imgs/btnUpload.gif);
+.btnUpLoad::before{
 }
-.btnGravarVisualizar
-{
-	background-image:url(../imgs/btnGravarEVisualizarImpressao.gif);
+.btnGravarVisualizar::before{
 	width: 234px !important;
 }
-.btnInserirPerguntaFinal
-{
-	background-image:url(../imgs/btnInserirPerguntaNoFinal.gif);
+.btnInserirPerguntaFinal::before{
 	width: 195px !important;
 }
-.btnNovaOpcaoResposta
-{
+.btnNovaOpcaoResposta::before{
 	background-image:url(../imgs/btnNovaOpcaoDeResposta.gif);
 	width: 190px !important;
 }
-.btnTriagem
-{
+.btnTriagem::before{
 	background-image:url(../imgs/btnTriagem.gif);
 	width: 87px !important;
 }
-.btnTriagemModuloExterno
-{
+.btnTriagemModuloExterno::before{
 	background-image:url(../imgs/btnTriagemModuloExterno.gif);
 	width: 195px !important;
 }
-.btnMatrizCompetencia
-{
+.btnMatrizCompetencia::before{
 	background-image:url(../imgs/btnMatrizCompetencia.gif);
 	width: 255px !important;
 }
-.btnEnviarPorEmail
-{
+.btnEnviarPorEmail::before{
 	background-image:url(../imgs/btnEnviarPorEmail.gif);
 	width: 151px !important;
 }
-.btnMoverCandidatos
-{
+.btnMoverCandidatos::before{
 	background-image:url(../imgs/btnMoverCandidatos.gif);
 	width: 152px !important;
 }
-.btnRelatorio
-{
+.btnRelatorio::before{
 	background-image:url(../imgs/btnRelatorio.gif);
 	width: 90px !important;
 }
-.btnRelatorioDesabilitado
-{
-	background-image:url(../imgs/btnRelatorioDesabilitado.gif);
+.btnRelatorioDesabilitado::before{
 	width: 90px !important;
 }
-.btnRelatorioExportar
-{
-	background-image:url(../imgs/btn_exportar.gif);
+.btnRelatorioExportar::before{
 	width: 90px !important;
 }
-.btnInserirInvestimento
-{
-	background-image:url(../imgs/btnInserirInvestimento.gif);
+.btnInserirInvestimento::before{
 	width: 117px !important;
 }
-.btnImportarbds
-{
-	background-image:url(../imgs/btnImportarbds.gif);
+.btnImportarbds::before{
 	width: 137px !important;
 }
-.btnImportar
-{
-	background-image:url(../imgs/btnImportar.gif);
+.btnImportar::before{
 	width: 96px !important;
 }
-.btnClonar
-{
-	background-image:url(../imgs/btnClonar.gif);
+.btnClonar::before{
 	width: 77px !important;
 }
-.btnClonarInvestimentos
-{
-	background-image:url(../imgs/btnClonarInvestimentos.gif);
+.btnClonarInvestimentos::before{
 	width: 173px !important;
 }
-.btnVoltarParaAListaDePesquisas
-{
-	background-image:url(../imgs/btnVoltarParaAListaDePesquisas.gif);
+.btnVoltarParaAListaDePesquisas::before{
 	width: 240px !important;
 }
-.btnbtnVoltarParaAListaDeAvaliacoes
-{
-	background-image:url(../imgs/btnVoltarParaAListaDeAvaliacoes.gif);
+.btnbtnVoltarParaAListaDeAvaliacoes::before{
 	width: 245px !important;
 }
-.btnAtualizarSistema
-{
-	background-image:url(../imgs/btnAtualizarSistema.gif);
+.btnAtualizarSistema::before{
 	width: 152px !important;
 }
-.btnUpload
-{
-	background-image:url(../imgs/btnUpload.gif);
+.btnUpload::before{
 	width: 78px !important;
 }
-.btnRealizarBackup
-{
-	background-image:url(../imgs/btnRealizarBackup.gif);
+.btnRealizarBackup::before{
 	width: 142px !important;
 }
-.btnInserirSelecionados
-{
-	background-image:url(../imgs/btnInserirSelecionados.gif);
+.btnInserirSelecionados::before{
 	width: 171px !important;
 }
-.btnExcluirSelecionados
-{
-	background-image:url(../imgs/btnExcluirSelecionados.gif);
+.btnExcluirSelecionados::before{
 	width: 171px !important;
 }
-.btnExcluirRespostas
-{
-	background-image:url(../imgs/btnExcluirRespostas.gif);
+.btnExcluirRespostas::before{
 	width: 152px !important;
 }
-.btnSolicitacoes
-{
-	background-image:url(../imgs/btnSolicitacoes.gif);
+.btnSolicitacoes::before{
 	width: 171px !important;
 }
-.btnListarItens
-{
-	background-image:url(../imgs/btnListarItens.gif);
+.btnListarItens::before{
 	width: 107px !important;
 }
-.btnSolicitarBDS
-{
-	background-image:url(../imgs/btnSolicitarBDS.gif);
+.btnSolicitarBDS::before{
 	width: 116px !important;
 }
-.btnEncerrarSolicitacao
-{
-	background-image:url(../imgs/btnEncerrarSolicitacao.gif);
+.btnEncerrarSolicitacao::before{
 	width: 170px !important;
 }
-.btnIncluirColaboradores
-{
-	background-image:url(../imgs/btnIncluirColaboradores.gif);
+.btnIncluirColaboradores::before{
 	width: 176px !important;
 }
-.btnDadosComplementares
-{
-	background-image:url(../imgs/btnDadosComplementares.gif);
+.btnDadosComplementares::before{
 	width: 185px !important;
 }
-.btnDesligarColaborador
-{
-	background-image:url(../imgs/btnDesligarColaborador.gif);
+.btnDesligarColaborador::before{
 	width: 178px !important;
 }
-.btnSolicitarDesligamento
-{
-	background-image:url(../imgs/btnSolicitarDesligamento.gif);
+.btnSolicitarDesligamento::before{
 	width: 178px !important;
 }
-.btnEditarOpcoesDeResposta
-{
-	background-image:url(../imgs/btnEditarOpcoesDeResposta.gif);
+.btnEditarOpcoesDeResposta::before{
 	width: 207px !important;
 }
-.btnInserirHistorico
-{
-	background-image:url(../imgs/btnInserirHistoricos.gif);
+.btnInserirHistorico::before{
 	width: 146px !important;
 }
-.btnInserir_Historico
-{
-	background-image:url(../imgs/btnInserirHistorico.gif);
+.btnInserir_Historico::before{
 	width: 146px !important;
 }
-.btnInserirNovoCurriculoEscaneado
-{
-	background-image:url(../imgs/btnInserirNovoCurriculoEscaneado.gif);
+.btnInserirNovoCurriculoEscaneado::before{
 	width: 251px !important;
 }
-.btnEditarOCadastroDesseCandidato
-{
-	background-image:url(../imgs/btnEditarOCadastroDesseCandidato.gif);
+.btnEditarOCadastroDesseCandidato::before{
 	width: 255px !important;
 }
-.btnInserirNovoCandidato
-{
-	background-image:url(../imgs/btnInserirNovoCandidato.gif);
+.btnInserirNovoCandidato::before{
 	width: 182px !important;
 }
-.btnSubstituirEsseCurriculoEscaneado
-{
-	background-image:url(../imgs/btnSubstituirEsseCurriculoEscaneado.gif);
+.btnSubstituirEsseCurriculoEscaneado::before{
 	width: 266px !important;
 }
-.btnConcluir
-{
-	background-image:url(../imgs/btnConcluir.gif);
+.btnConcluir::before{
 	width: 86px !important;
 }
-.btnSuspenderSolicitacao
-{
-	background-image:url(../imgs/btnSuspenderSolicitacao.gif);
+.btnSuspenderSolicitacao::before{
 	width: 176px !important;
 }
-.btnInserirPergunta
-{
-	background-image:url(../imgs/btnInserirPergunta.gif);
+.btnInserirPergunta::before{
 	width: 139px !important;
 }
-.btnEmbaralhar
-{
-	background-image:url(../imgs/btnEmbaralhar.gif);
+.btnEmbaralhar::before{
 	width: 112px !important;
 }
-.btnAplicarNaOrdemAtual
-{
-	background-image:url(../imgs/btnAplicarNaOrdemAtual.gif);
+.btnAplicarNaOrdemAtual::before{
 	width: 184px !important;
 }
-.btnAplicarOrdenadoPorAspectos
-{
-	background-image:url(../imgs/btnAplicarOrdenadoPorAspectos.gif);
+.btnAplicarOrdenadoPorAspectos::before{
 	width: 237px !important;
 }
-.btnAspectos
-{
-	background-image:url(../imgs/btnAspectos.gif);
+.btnAspectos::before{
 	width: 237px !important;
 }
 
-.btnCriarUsuarios
-{
-	background-image:url(../imgs/btnCriarUsuarios.gif);
+.btnCriarUsuarios::before{
 	width: 119px !important;
 }
 
-.btnExcluir{
-	background-image:url(../imgs/btnExcluir.gif);
+.btnExcluir::before{
 	width: 82px !important;
 }
-.btnExcluirDesabilitado{
-	background-image:url(../imgs/btnExcluirDesabilitado.gif);
+.btnExcluirDesabilitado::before{
 	width: 82px !important;
 }
-.btnAutoAvaliacoesEmLote{
-	background-image:url(../imgs/btnAutoAvaliacoesEmLote.gif);
+.btnAutoAvaliacoesEmLote::before{
 	width: 235px !important;
 }
-.btnAutoAvaliacoesEmLoteDesabilitado{
-	background-image:url(../imgs/btnAutoAvaliacoesEmLoteDesabilitado.gif);
+.btnAutoAvaliacoesEmLoteDesabilitado::before{
 	width: 235px !important;
 }
-.btnProxima{
-	background-image:url(../imgs/btnProxima.gif);
+.btnProxima::before{
 	width: 90px !important;
 }
-.btnProximaDesabilitado{
-	background-image:url(../imgs/btnProximaDesabilitado.gif);
+.btnProximaDesabilitado::before{
 	width: 90px !important;
 }
-.btnAnterior{
-	background-image:url(../imgs/btnAnterior.gif);
+.btnAnterior::before{
 	width: 90px !important;
 }
-.btnAnteriorDesabilitado{
-	background-image:url(../imgs/btnAnteriorDesabilitado.gif);
+.btnAnteriorDesabilitado::before{
 	width: 90px !important;
 }
-.btnInserirMembro{
-	background-image:url(../imgs/btnInserirMembro.gif);
+.btnInserirMembro::before{
 	width: 138px !important;
 }
-.btnGerarCedulas{
-	background-image:url(../imgs/btnGerarCedulas.gif);
+.btnGerarCedulas::before{
 	width: 128px !important;
 }
-.btnInserirCandidato{
-	background-image:url(../imgs/btnInserirCandidato.gif);
+.btnInserirCandidato::before{
 	width: 145px !important;
 }
-.btnImprimirEdital{
-	background-image:url(../imgs/btnImprimirEdital.gif);
+.btnImprimirEdital::before{
 	width: 212px !important;
 }
-.btnImprimirChamadoEleicao{
-	background-image:url(../imgs/btnImprimirChamadoEleicao.gif);
+.btnImprimirChamadoEleicao::before{
 	width: 239px !important;
 }
-.btnImprimirSindicato{
-	background-image:url(../imgs/btnImprimirSindicato.gif);
+.btnImprimirSindicato::before{
 	width: 280px !important;
 }
-.btnImprimirAtaDRT{
-	background-image:url(../imgs/btnImprimirAtaDRT.gif);
+.btnImprimirAtaDRT::before{
 	width: 190px !important;
 }
-.btnImprimirAtaEleicao{
-	background-image:url(../imgs/btnImprimirAtaEleicao.gif);
+.btnImprimirAtaEleicao::before{
 	width: 180px !important;
 }
-.btnImprimirAtaInstalacao{
-	background-image:url(../imgs/btnImprimirAtaInstalacao.gif);
+.btnImprimirAtaInstalacao::before{
 	width: 253px !important;
 }
-.btnImprimirResultado{
-	background-image:url(../imgs/btnImprimirResultado.gif);
+.btnImprimirResultado::before{
 	width: 155px !important;
 }
-.btnImprimirCalendario{
-	background-image:url(../imgs/btnImprimirCalendario.gif);
+.btnImprimirCalendario::before{
 	width: 164px !important;
 }
-.btnImprimirRelatorioFrequencia{
-	background-image:url(../imgs/btnImprimirRelatorioFrequencia.gif);
+.btnImprimirRelatorioFrequencia::before{
 	width: 200px !important;
 }
-.btnFrequencia{
-	background-image:url(../imgs/btnFrequencia.gif);
+.btnFrequencia::before{
 	width: 110px !important;
 }
-.btnCarregarRiscos{
-	background-image:url(../imgs/btnCarregarRiscos.gif);
+.btnCarregarRiscos::before{
 	width: 139px !important;
 }
-.btnCarregarRiscosMedicao{
-	background-image:url(../imgs/btnCarregarRiscosMedicao.gif);
+.btnCarregarRiscosMedicao::before{
 	width: 300px !important;
 }
-.btnQueroMeCandidatar{
-	background-image:url(../imgs/btnQueroMeCandidatar.gif);
+.btnQueroMeCandidatar::before{
 	width: 180px !important;
 }
-.btnCancelarDesligamento{
-	background-image:url(../imgs/btnCancelarDesligamento.gif);
+.btnCancelarDesligamento::before{
 	width: 190px !important;
 }
 
-.btnSugerirReunioesOrdinarias{
-	background-image:url(../imgs/btnSugerirReunioesOrdinarias.gif);
+.btnSugerirReunioesOrdinarias::before{
 	width: 214px !important;
 }
 
-.btnLiberarAvalEmLote{
-	background-image:url(../imgs/btnLiberarAvalEmLote.gif);
+.btnLiberarAvalEmLote::before{
 	width: 214px !important;
 }
 
-.btnLiberar{
-	background-image:url(../imgs/btnLiberar.gif);
+.btnLiberar::before{
 	width: 70px !important;
 }
 
-.btnResponderPorColaboradores{
-	background-image:url(../imgs/btnResponderPorColaboradores.gif);
+.btnResponderPorColaboradores::before{
 	width: 222px !important;
 }
 
-.btnBackup
-{
-	background-image:url(../imgs/btnBackup.gif);
+.btnBackup::before{
 	width: 85px !important;
 }
 
-.btnDownload
-{
-	background-image:url(../imgs/btnDownload.gif);
+.btnDownload::before{
 	width: 93px !important;
 }
 
-.btnOrganograma
-{
-	background-image:url(../imgs/btnOrganograma.gif);
+.btnOrganograma::before{
 	width: 112px !important;
 }
 
-.btnVoltarInicial
-{
-	background-image:url(../imgs/btnVoltarInicial.gif);
+.btnVoltarInicial::before{
 	width: 169px !important;
 }
 
-.btnEnviarParaAmigo
-{
-	background-image:url(../imgs/btnEnviarParaAmigo.gif);
+.btnEnviarParaAmigo::before{
 	width: 170px !important;
 }
 
-.btnInserirEditar
-{
-	background-image:url(../imgs/btnInserirEditar.gif);
+.btnInserirEditar::before{
 	width: 130px !important;
 }
 
-.btnDividirPercentualIgualmente
-{
-	background-image:url(../imgs/btnDividirPercentualIgualmente.gif);
+.btnDividirPercentualIgualmente::before{
 	width: 225px !important;
 }
 
-.btnCarregarOrdemDeServico
-{
-	background-image:url(../imgs/btnCarregarOrdemDeServico.gif);
+.btnCarregarOrdemDeServico::before{
 	width: 277px !important;
 }
 
+.btn,
 .btnExportar,
 .btnVoltarInicial,
 .btnExcluir,
@@ -794,16 +585,16 @@
 .btnCarregarOrdemDeServico
 {
 	border: 0;
-	background-repeat: no-repeat;
-	background-color: #FFF;
-	width: 78px;
+	padding: 0 18px;
 	height: 24px;
 	margin: 10px 10px 0 0;
 	cursor: pointer;
+	background: #416C89;
+	border-radius: 3px;
+	color: white;
 }
 
-.btnImprimirPdfB
-{
+.btnImprimirPdfB::before{
 	border: 0;
 	background-repeat: no-repeat;
 	width: 78px;
@@ -812,8 +603,7 @@
 	cursor: pointer;
 }
 
-.btnVoltarListaFrequencia
-{
+.btnVoltarListaFrequencia::before{
 	background-color:#EBECF1;
 	color:#000000;
 	border: 0;
@@ -825,20 +615,16 @@
 }
 
 
-.btnLeft
-{
+.btnLeft::before{
 	background-image:url(../imgs/btnLeft.gif);
 }
-.btnAllLeft
-{
+.btnAllLeft::before{
 	background-image:url(../imgs/btnAllLeft.gif);
 }
-.btnRight
-{
+.btnRight::before{
 	background-image:url(../imgs/btnRight.gif);
 }
-.btnAllRight
-{
+.btnAllRight::before{
 	background-image:url(../imgs/btnAllRight.gif);
 }
 .btnAllRight,
@@ -848,8 +634,7 @@
 .btnLimparFiltro,
 .btnImprimirVerso,
 .btnTransferirCandidatos,
-.btnInserirEtapasEmGrupo
-{
+.btnInserirEtapasEmGrupo::before{
 	border: 0;
 	background-repeat: no-repeat;
 	background-color: #FFF;
@@ -859,37 +644,30 @@
 	cursor: pointer;
 }
 
-.whiteBG
-{
+.whiteBG::before{
 	background-color: #FFF !important;
 }
-.grayBG
-{
+.grayBG::before{
 	background-color: #F6F6F6 !important;
 }
-.grayBGE
-{
+.grayBGE::before{
 	background-color: #EEEEEE !important;
 }
-.grayBGDivInfo
-{
+.grayBGDivInfo::before{
 	background-color: #E9E9E9 !important;
 }
 
-.btnListaDeInspecaoExtintores
-{
+.btnListaDeInspecaoExtintores::before{
 	background-image:url(../imgs/btnListaDeInspecaoDeExtintores.gif);
 	width: 270px !important;
 }
 
-.btnListaDeManutencaoExtintores
-{
+.btnListaDeManutencaoExtintores::before{
 	background-image:url(../imgs/btnListaDeManutencaoExtintores.gif);
 	width: 290px !important;
 }
 
-.btnCriarTurmas
-{
+.btnCriarTurmas::before{
 	background-image:url(../imgs/btnCriarTurmas.gif);
 	width: 115px !important;
 }
