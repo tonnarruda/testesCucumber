@@ -19,6 +19,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiVO;
 import com.fortes.rh.util.LongUtil;
 
 public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi, SolicitacaoEpiDao> implements SolicitacaoEpiManager
@@ -26,16 +27,16 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 	private PlatformTransactionManager transactionManager;
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 
-	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem)
+	public SolicitacaoEpiVO findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem)
 	{
-		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, LongUtil.arrayStringToArrayLong(estabelecimentoCheck), ordem); 
-
-		for (SolicitacaoEpi solicitacaoEpi : solicitacaoEpis){ 
+		SolicitacaoEpiVO solicitacaoEpiVO = getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, LongUtil.arrayStringToArrayLong(estabelecimentoCheck), ordem); 
+		
+		for (SolicitacaoEpi solicitacaoEpi : solicitacaoEpiVO.getSolicitacaoEpis()){ 
 			solicitacaoEpi.setInformativoEntrega(montaInformacaoDeEntregas(solicitacaoEpi));
 			solicitacaoEpi.setInformativoDevolucao(montaInformacaoDeDevolucoes(solicitacaoEpi));
 		}
 		
-		return solicitacaoEpis;
+		return solicitacaoEpiVO;
 	}
 
 	private String montaInformacaoDeEntregas(SolicitacaoEpi solicitacaoEpi) 
@@ -108,11 +109,6 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 			epiNaoDevolvido.append("devolver");
 		}
 		return epiDevolvido.toString() + epiNaoDevolvido.toString();
-	}
-
-	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem)
-	{
-		return getDao().getCount(empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, LongUtil.arrayStringToArrayLong(estabelecimentoCheck), ordem);
 	}
 
 	public SolicitacaoEpi findByIdProjection(Long solicitacaoEpiId)

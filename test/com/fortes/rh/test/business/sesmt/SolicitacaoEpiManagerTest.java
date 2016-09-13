@@ -19,12 +19,9 @@ import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManagerImpl;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.dicionario.SituacaoColaborador;
-import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
-import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -52,39 +49,6 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
         transactionManager = new Mock(PlatformTransactionManager.class);
         solicitacaoEpiManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
     }
-
-	public void testFindAllSelectByData()
-	{
-		String situacaoSolicitacaoEpi = SituacaoSolicitacaoEpi.TODAS;
-		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
-		colecao.add(new SolicitacaoEpi());
-		solicitacaoEpiDao.expects(once()).method("findAllSelect").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colecao));
-		solicitacaoEpiItemManager.expects(once()).method("findAllEntregasBySolicitacaoEpi").with(ANYTHING).will(returnValue(new ArrayList<SolicitacaoEpiItem>()));
-		solicitacaoEpiItemManager.expects(once()).method("findAllDevolucoesBySolicitacaoEpi").with(ANYTHING).will(returnValue(new ArrayList<SolicitacaoEpiItem>()));
-
-		assertEquals(colecao, solicitacaoEpiManager.findAllSelect(0, 0, 1L, null, null, new Colaborador(), situacaoSolicitacaoEpi, null, SituacaoColaborador.TODOS, null, 'D'));
-	}
-	
-	public void testFindAllSelectByNome() {
-		String situacaoSolicitacaoEpi = SituacaoSolicitacaoEpi.TODAS;
-		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
-		colecao.add(new SolicitacaoEpi());
-		solicitacaoEpiDao.expects(once()).method("findAllSelect").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colecao));
-		solicitacaoEpiItemManager.expects(once()).method("findAllEntregasBySolicitacaoEpi").with(ANYTHING).will(returnValue(new ArrayList<SolicitacaoEpiItem>()));
-		solicitacaoEpiItemManager.expects(once()).method("findAllDevolucoesBySolicitacaoEpi").with(ANYTHING).will(returnValue(new ArrayList<SolicitacaoEpiItem>()));
-		
-		assertEquals(colecao, solicitacaoEpiManager.findAllSelect(0, 0, 1L, null, null, new Colaborador(), situacaoSolicitacaoEpi, null, SituacaoColaborador.TODOS, null, 'N'));
-	}
-
-	public void testGetCountByData() {
-		solicitacaoEpiDao.expects(once()).method("getCount").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(0));
-		assertEquals(Integer.valueOf(0), solicitacaoEpiManager.getCount(1L, new Date(), new Date(), new Colaborador(), SituacaoSolicitacaoEpi.TODAS, null, SituacaoColaborador.TODOS, null, 'D'));
-	}
-	
-	public void testGetCountByNome() {
-		solicitacaoEpiDao.expects(once()).method("getCount").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(0));
-		assertEquals(Integer.valueOf(0), solicitacaoEpiManager.getCount(1L, new Date(), new Date(), new Colaborador(), SituacaoSolicitacaoEpi.TODAS, null, SituacaoColaborador.TODOS, null, 'N'));
-	}
 
 	public void testFindByIdProjection()
 	{

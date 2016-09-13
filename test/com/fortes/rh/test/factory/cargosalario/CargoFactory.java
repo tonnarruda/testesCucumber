@@ -39,6 +39,14 @@ public class CargoFactory
 
 		return cargo;
 	}
+	
+	public static Cargo getEntity(String nome)
+	{
+		Cargo cargo = getEntity();
+		cargo.setNome(nome);
+
+		return cargo;
+	}
 
 	public static Collection<Cargo> getCollection()
 	{

@@ -189,6 +189,7 @@ import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemDevolucaoManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemEntregaManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiManagerTest;
+import com.fortes.rh.test.business.sesmt.SolicitacaoEpiManagerTest_Junit4;
 import com.fortes.rh.test.business.sesmt.SolicitacaoExameManagerTest;
 import com.fortes.rh.test.business.sesmt.TamanhoEPIManagerTest;
 import com.fortes.rh.test.business.sesmt.TestemunhaManagerTest;
@@ -634,6 +635,7 @@ import com.fortes.rh.test.web.action.sesmt.ProntuarioEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.RiscoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoEpiEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoEpiListActionTest;
+import com.fortes.rh.test.web.action.sesmt.SolicitacaoEpiListActionTest_Junit4;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoExameEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoExameListActionTest;
 import com.fortes.rh.test.web.action.sesmt.TamanhoEPIListActionTest;
@@ -1179,6 +1181,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 
 	SolicitacaoEpiDaoHibernateTest.class,
 	SolicitacaoEpiManagerTest.class,
+	SolicitacaoEpiManagerTest_Junit4.class,
 	SolicitacaoEpiItemDaoHibernateTest.class,
 	SolicitacaoEpiItemManagerTest.class,
 	        
@@ -1189,6 +1192,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	SolicitacaoEpiItemDevolucaoDaoHibernateTest.class,
 	SolicitacaoEpiEditActionTest.class,
 	SolicitacaoEpiListActionTest.class,
+	SolicitacaoEpiListActionTest_Junit4.class,
 
 	EtapaProcessoEleitoralTest.class,
 	EtapaProcessoEleitoralDaoHibernateTest.class,

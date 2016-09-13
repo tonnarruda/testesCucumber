@@ -23,6 +23,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiVO;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -98,10 +99,11 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		
 		CheckListBoxUtil.marcaCheckListBox(estabelecimentoCheckList, estabelecimentoCheck);
 		
-		tipoEpis = tipoEPIManager.find(new String[]{"empresa.id"},new Object[]{ getEmpresaSistema().getId() });
-
-		setTotalSize(solicitacaoEpiManager.getCount(getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem));
-		solicitacaoEpis = solicitacaoEpiManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem);
+		tipoEpis = tipoEPIManager.findCollectionTipoEPI(getEmpresaSistema().getId());
+		
+		SolicitacaoEpiVO solicitacaoEpiVO = solicitacaoEpiManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem);
+		setTotalSize(solicitacaoEpiVO.getQtdSolicitacaoEpis());
+		solicitacaoEpis = solicitacaoEpiVO.getSolicitacaoEpis();
 
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			addActionMessage("Nenhuma solicitação de EPIs a ser listada.");

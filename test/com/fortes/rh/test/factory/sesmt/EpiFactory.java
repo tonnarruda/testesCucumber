@@ -1,6 +1,7 @@
 package com.fortes.rh.test.factory.sesmt;
 
 import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.model.sesmt.TipoEPI;
 
 public class EpiFactory
 {
@@ -20,4 +21,13 @@ public class EpiFactory
 		epi.setId(id);
 		return epi;
 	}
+	
+	public static Epi getEntity(TipoEPI tipoEPI)
+	{
+		Epi epi = getEntity();
+		epi.setTipoEPI(tipoEPI);
+		return epi;
+	}
+
+	
 }

@@ -83,6 +83,15 @@ public class HistoricoColaboradorFactory
 		return historicoColaborador;
 	}
 	
+	public static HistoricoColaborador getEntity(Colaborador colaborador, Date data, Integer status)
+	{
+		HistoricoColaborador historicoColaborador = getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(data);
+		historicoColaborador.setStatus(status);
+		return historicoColaborador;
+	}
+	
 	public static HistoricoColaborador getEntity(Colaborador colaborador, FaixaSalarial faixaSalarial, Date data, Integer status)
 	{
 		HistoricoColaborador historicoColaborador = getEntity();

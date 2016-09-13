@@ -20,7 +20,6 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
-import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
@@ -262,27 +261,5 @@ public class SolicitacaoEpiListActionTest extends MockObjectTestCase
 		Collection<SolicitacaoEpiItemVO> dataSourceLista = Arrays.asList(new SolicitacaoEpiItemVO());
 		solicitacaoEpiManager.expects(once()).method("findEpisWithItens").withAnyArguments().will(returnValue(dataSourceLista));
 		assertEquals("success", action.imprimir());
-	}
-	
-	public void testListSemSolicitacoesASeremListadas() throws Exception
-	{
-		estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<CheckBox>()));
-		tipoEPIManager.expects(once()).method("find").with(eq(new String[]{"empresa.id"}), eq(new Object[]{action.getEmpresaSistema().getId()})).will(returnValue(new ArrayList<TipoEPI>()));
-		
-		solicitacaoEpiManager.expects(once()).method("getCount").withAnyArguments().will(returnValue(0));
-		solicitacaoEpiManager.expects(once()).method("findAllSelect").withAnyArguments();
-		assertEquals("success", action.list());
-		assertEquals("Nenhuma solicitação de EPIs a ser listada.", action.getActionMessages().iterator().next());
-	}
-	
-	public void testList() throws Exception
-	{
-		estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<CheckBox>()));
-		tipoEPIManager.expects(once()).method("find").with(eq(new String[]{"empresa.id"}), eq(new Object[]{action.getEmpresaSistema().getId()})).will(returnValue(new ArrayList<TipoEPI>()));
-		
-		solicitacaoEpiManager.expects(once()).method("getCount").withAnyArguments().will(returnValue(1));
-		solicitacaoEpiManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(Arrays.asList(new SolicitacaoEpi())));
-		assertEquals("success", action.list());
-		assertEquals(0, action.getActionMessages().size());
 	}
 }

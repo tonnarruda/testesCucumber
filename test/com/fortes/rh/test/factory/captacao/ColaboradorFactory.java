@@ -165,6 +165,14 @@ public class ColaboradorFactory
 		return colaborador;
 	}
 	
+	public static Colaborador getEntity(String nome, Boolean desligado, String matricula){
+		Colaborador colaborador = getEntity();
+		colaborador.setNome(nome);
+		colaborador.setDesligado(desligado);
+		colaborador.setMatricula(matricula);
+		return colaborador;
+	}
+	
 	public static Colaborador getEntity(String codigoAC, Long id)
 	{
 		Colaborador colaborador = getEntity();

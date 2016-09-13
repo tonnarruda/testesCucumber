@@ -34,6 +34,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TipoEPI;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiVO;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -46,8 +47,8 @@ import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemDevolucaoFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemEntregaFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemFactory;
+import com.fortes.rh.test.factory.sesmt.TipoEpiFactory;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.LongUtil;
 
 public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<SolicitacaoEpi>
 {
@@ -424,114 +425,57 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		assertEquals(hoje, ((SolicitacaoEpiItemEntrega)entregasParciais.toArray()[0]).getEpiHistorico().getVencimentoCA());
 	}
 	
-	public void testGetCount()
-	{
-		Date dataIni=DateUtil.criarDataMesAno(01, 02, 2010);
-		Date dataFim=DateUtil.criarDataMesAno(01, 02, 2010);
+	private Colaborador saveColaboradorComHistorico(String nomeDoColaborador, String matricula, boolean desligado, Date dataHistorico, Integer statusHistorico){
+		Colaborador colaborador = ColaboradorFactory.getEntity(nomeDoColaborador, desligado, matricula);
+		colaboradorDao.save(colaborador);
 
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, dataHistorico, statusHistorico);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		return colaborador;
+	} 
+	
+	public void testFindAllSelectTodas(){
 		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento1);
 		
-		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
-		estabelecimentoDao.save(estabelecimento2);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setMatricula("132");
-		colaborador.setNome("José");
-		colaboradorDao.save(colaborador);
-
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
-		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2010));
-		historicoColaboradorDao.save(historicoColaborador);
+		Colaborador colaborador1 = saveColaboradorComHistorico("Colaborador 1", null, true,  DateUtil.criarDataMesAno(01, 01, 2010), StatusRetornoAC.CONFIRMADO);
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
 		
-    	TipoEPI tipoEPI = new TipoEPI();
-    	tipoEPI.setNome("tipo Epi");
+    	TipoEPI tipoEPI = TipoEpiFactory.getEntity();
     	tipoEPIDao.save(tipoEPI);
-
-    	TipoEPI tipoEPI2 = new TipoEPI();
-    	tipoEPI2.setNome("tipo Epi 2");
-    	tipoEPIDao.save(tipoEPI2);
     	
-		Epi epi = EpiFactory.getEntity();
-		epi.setTipoEPI(tipoEPI);
-    	epi.setEmpresa(empresa);
+    	Epi epi = EpiFactory.getEntity(tipoEPI);
     	epiDao.save(epi);
 
-    	Epi epi2 = EpiFactory.getEntity();
-    	epi2.setTipoEPI(tipoEPI2);
-    	epi2.setEmpresa(empresa);
-    	epiDao.save(epi2);
-
-		EpiHistorico epiHistorico = new EpiHistorico();
-		epiHistorico.setValidadeUso(6);
-		epiHistorico.setEpi(epi);
-		epiHistorico.setData(dataIni);
-		epiHistoricoDao.save(epiHistorico);
+    	Cargo cargo = CargoFactory.getEntity("Motorista");
+    	cargoDao.save(cargo);
+    	
+    	SolicitacaoEpi solicitacaoEpiEntregue = SolicitacaoEpiFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), colaborador1, empresa, estabelecimento1, cargo);
+		solicitacaoEpiDao.save(solicitacaoEpiEntregue);
 		
-		EpiHistorico epiHistorico2 = new EpiHistorico();
-		epiHistorico2.setValidadeUso(6);
-		epiHistorico2.setEpi(epi2);
-		epiHistorico2.setData(dataIni);
-		epiHistoricoDao.save(epiHistorico2);
+		SolicitacaoEpiItem solicitacaoEpiItem_solicitacaoEpiEntregue = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpiEntregue, epi, 3);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem_solicitacaoEpiEntregue);
 		
-		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
-		solicitacaoEpi.setEmpresa(empresa);
-		solicitacaoEpi.setData(dataIni);
-		solicitacaoEpi.setColaborador(colaborador);
-		solicitacaoEpi.setEstabelecimento(estabelecimento1);
-		solicitacaoEpiDao.save(solicitacaoEpi);
-		
-		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity();
-		solicitacaoEpi2.setEmpresa(empresa);
-		solicitacaoEpi2.setData(dataIni);
-		solicitacaoEpi2.setColaborador(colaborador);
-		solicitacaoEpi2.setEstabelecimento(estabelecimento2);
-		solicitacaoEpiDao.save(solicitacaoEpi2);
-		
-		SolicitacaoEpiItem item = SolicitacaoEpiItemFactory.getEntity();
-		item.setSolicitacaoEpi(solicitacaoEpi);
-		item.setQtdSolicitado(3);
-		item.setEpi(epi);
-		solicitacaoEpiItemDao.save(item);
-		
-		SolicitacaoEpiItem item2 = SolicitacaoEpiItemFactory.getEntity();
-		item2.setSolicitacaoEpi(solicitacaoEpi2);
-		item2.setQtdSolicitado(3);
-		item2.setEpi(epi2);
-		solicitacaoEpiItemDao.save(item2);
-		
-		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
-		entrega.setEpiHistorico(epiHistorico);
-		entrega.setSolicitacaoEpiItem(item);
-		entrega.setDataEntrega(dataIni);
-		entrega.setQtdEntregue(3);
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), solicitacaoEpiItem_solicitacaoEpiEntregue, 3);
 		solicitacaoEpiItemEntregaDao.save(entrega);
 		
-		SolicitacaoEpiItemEntrega entrega2 = SolicitacaoEpiItemEntregaFactory.getEntity();
-		entrega2.setEpiHistorico(epiHistorico2);
-		entrega2.setSolicitacaoEpiItem(item2);
-		entrega2.setDataEntrega(dataIni);
-		entrega2.setQtdEntregue(3);
-		solicitacaoEpiItemEntregaDao.save(entrega2);
+		SolicitacaoEpi solicitacaoEpiAberta = SolicitacaoEpiFactory.getEntity(DateUtil.criarDataMesAno(13, 03, 2010), colaborador1, empresa, estabelecimento1, cargo);
+		solicitacaoEpiDao.save(solicitacaoEpiAberta);
 		
-		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
+		SolicitacaoEpiItem solicitacaoEpiItem_solicitacaoEpiAberta = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpiAberta, epi, 3);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem_solicitacaoEpiAberta);
 		
-		String[] estabelecimentos = null;
-		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').intValue());
-		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').intValue());
+		solicitacaoEpiDao.findByIdProjection(solicitacaoEpiEntregue.getId());
+		SolicitacaoEpiVO solicitacaoEpiVO = solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), null, null, new Colaborador(), 
+				SituacaoSolicitacaoEpi.TODAS, null, SituacaoColaborador.TODOS, null, 'N');
 		
-		estabelecimentos = new String[]{estabelecimento1.getId().toString()};
-		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').intValue());
-		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').intValue());
+		assertEquals(new Integer(2), solicitacaoEpiVO.getQtdSolicitacaoEpis());
 	}
 	
-	public void testFindAllSelect()
-	{
+	public void testFindAllSelectSolicitacoesAbertas() {
 		Date dataIni=DateUtil.criarDataMesAno(01, 02, 2010);
 		Date dataMeio=DateUtil.criarDataMesAno(13, 03, 2010);
 		Date dataFim=DateUtil.criarDataMesAno(01, 04, 2010);
@@ -539,124 +483,228 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento1);
 		
-		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
-		estabelecimentoDao.save(estabelecimento2);
+		Colaborador colaborador1 = saveColaboradorComHistorico("Colaborador 1", null, false,  DateUtil.criarDataMesAno(01, 01, 2010), StatusRetornoAC.CONFIRMADO);
 		
-		Estabelecimento estabelecimento3 = EstabelecimentoFactory.getEntity();
-		estabelecimentoDao.save(estabelecimento3);
+		Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setNome("José");
-		colaborador.setDesligado(true);
-		colaboradorDao.save(colaborador);
+    	TipoEPI tipoEPI = TipoEpiFactory.getEntity();
+    	tipoEPIDao.save(tipoEPI);
+    	
+		Epi epi = EpiFactory.getEntity(tipoEPI);
+    	epiDao.save(epi);
 
-		Colaborador colaborador1 = ColaboradorFactory.getEntity();
-		colaborador1.setNome("");
-		colaborador1.setMatricula("");
-		colaborador1.setDesligado(false);
-		colaboradorDao.save(colaborador1);
-
-		Colaborador colaborador2 = ColaboradorFactory.getEntity();
-		colaborador2.setNome("Chico");
-		colaborador2.setDesligado(false);
-		colaboradorDao.save(colaborador2);
-
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
-		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2010));
-		historicoColaboradorDao.save(historicoColaborador);
-
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
-		historicoColaborador2.setMotivo(null);
-		historicoColaborador2.setColaborador(colaborador2);
-		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2010));
-		historicoColaboradorDao.save(historicoColaborador2);
+    	Cargo cargo = CargoFactory.getEntity("Motorista");
+    	cargoDao.save(cargo);
+    	
+    	SolicitacaoEpi solicitacaoEpiEntregue = SolicitacaoEpiFactory.getEntity(dataIni, colaborador1, empresa, estabelecimento1, cargo);
+		solicitacaoEpiDao.save(solicitacaoEpiEntregue);
+		
+		SolicitacaoEpiItem solicitacaoEpiItem_solicitacaoEpiEntregue = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpiEntregue, epi, 3);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem_solicitacaoEpiEntregue);
+		
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity(dataIni, solicitacaoEpiItem_solicitacaoEpiEntregue, 3);
+		solicitacaoEpiItemEntregaDao.save(entrega);
+		
+		SolicitacaoEpi solicitacaoEpiAberta = SolicitacaoEpiFactory.getEntity(dataMeio, colaborador1, empresa, estabelecimento1, cargo);
+		solicitacaoEpiDao.save(solicitacaoEpiAberta);
+		
+		SolicitacaoEpiItem solicitacaoEpiItem_solicitacaoEpiAberta = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpiAberta, epi, 3);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem_solicitacaoEpiAberta);
+		
+		solicitacaoEpiDao.findByIdProjection(solicitacaoEpiEntregue.getId());
+		SolicitacaoEpiVO solicitacaoEpiVO = solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ABERTA, tipoEPI.getId(), SituacaoColaborador.ATIVO, null, 'D');
+		assertEquals(solicitacaoEpiAberta.getId(), solicitacaoEpiVO.getSolicitacaoEpis().iterator().next().getId());
+		assertEquals(new Integer(1), solicitacaoEpiVO.getQtdSolicitacaoEpis());
+	}
+	
+	public void testFindAllSelectSolicitacoesEntreguesOrdenacaoPorNome(){
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Colaborador colaborador1 = saveColaboradorComHistorico("Colaborador 1", null, true,  DateUtil.criarDataMesAno(01, 01, 2010), StatusRetornoAC.CONFIRMADO);
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
 		
-		Epi epi = EpiFactory.getEntity();
-    	epi.setEmpresa(empresa);
+    	TipoEPI tipoEPI = TipoEpiFactory.getEntity();
+    	tipoEPIDao.save(tipoEPI);
+    	
+    	Epi epi = EpiFactory.getEntity(tipoEPI);
     	epiDao.save(epi);
 
-    	Cargo cargo = CargoFactory.getEntity();
-    	cargo.setNome("motorista");
+    	Cargo cargo = CargoFactory.getEntity("Motorista");
     	cargoDao.save(cargo);
     	
-    	SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
-		solicitacaoEpi.setEmpresa(empresa);
-		solicitacaoEpi.setData(dataIni);
-		solicitacaoEpi.setColaborador(colaborador);
-		solicitacaoEpi.setCargo(cargo);
-		solicitacaoEpi.setEstabelecimento(estabelecimento1);
-		solicitacaoEpiDao.save(solicitacaoEpi);
+    	SolicitacaoEpi solicitacaoEpiEntregue = SolicitacaoEpiFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), colaborador1, empresa, estabelecimento1, cargo);
+		solicitacaoEpiDao.save(solicitacaoEpiEntregue);
 		
-		SolicitacaoEpiItem item = SolicitacaoEpiItemFactory.getEntity();
-		item.setSolicitacaoEpi(solicitacaoEpi);
-		item.setQtdSolicitado(3);
-		solicitacaoEpiItemDao.save(item);
+		SolicitacaoEpiItem solicitacaoEpiItem_solicitacaoEpiEntregue = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpiEntregue, epi, 3);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem_solicitacaoEpiEntregue);
 		
-		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
-		entrega.setSolicitacaoEpiItem(item);
-		entrega.setDataEntrega(dataIni);
-		entrega.setQtdEntregue(3);
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), solicitacaoEpiItem_solicitacaoEpiEntregue, 3);
 		solicitacaoEpiItemEntregaDao.save(entrega);
 		
-		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity();
-		solicitacaoEpi2.setEmpresa(empresa);
-		solicitacaoEpi2.setData(dataMeio);
-		solicitacaoEpi2.setColaborador(colaborador);
-		solicitacaoEpi2.setCargo(cargo);
-		solicitacaoEpi2.setEstabelecimento(estabelecimento2);
-		solicitacaoEpiDao.save(solicitacaoEpi2);
+		SolicitacaoEpi solicitacaoEpiAberta = SolicitacaoEpiFactory.getEntity(DateUtil.criarDataMesAno(13, 03, 2010), colaborador1, empresa, estabelecimento1, cargo);
+		solicitacaoEpiDao.save(solicitacaoEpiAberta);
 		
-		SolicitacaoEpiItem item2 = SolicitacaoEpiItemFactory.getEntity();
-		item2.setSolicitacaoEpi(solicitacaoEpi2);
-		item2.setQtdSolicitado(2);
-		solicitacaoEpiItemDao.save(item2);
+		SolicitacaoEpiItem solicitacaoEpiItem_solicitacaoEpiAberta = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpiAberta, epi, 3);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem_solicitacaoEpiAberta);
 		
-		SolicitacaoEpiItemEntrega entrega2 = SolicitacaoEpiItemEntregaFactory.getEntity();
-		entrega2.setSolicitacaoEpiItem(item2);
-		entrega2.setDataEntrega(dataIni);
-		entrega2.setQtdEntregue(2);
-		solicitacaoEpiItemEntregaDao.save(entrega2);
+		solicitacaoEpiDao.findByIdProjection(solicitacaoEpiEntregue.getId());
+		SolicitacaoEpiVO solicitacaoEpiVO = solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), DateUtil.criarDataMesAno(01, 02, 2010), DateUtil.criarDataMesAno(01, 04, 2010), colaborador1, 
+				SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.DESLIGADO, new Long[]{estabelecimento1.getId()}, 'N');
+		
+		assertEquals(solicitacaoEpiEntregue.getId(), solicitacaoEpiVO.getSolicitacaoEpis().iterator().next().getId());
+		assertEquals(new Integer(1), solicitacaoEpiVO.getQtdSolicitacaoEpis());
+	}
+	
+	public void testFindAllSelectSolicitacoesParcialmenteEntregue(){
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Colaborador colaborador1 = saveColaboradorComHistorico("Colaborador 1", "000123", true,  DateUtil.criarDataMesAno(01, 01, 2010), StatusRetornoAC.CONFIRMADO);
 
-		SolicitacaoEpi solicitacaoEpi3 = SolicitacaoEpiFactory.getEntity();
-		solicitacaoEpi3.setEmpresa(empresa);
-		solicitacaoEpi3.setData(dataIni);
-		solicitacaoEpi3.setColaborador(colaborador2);
-		solicitacaoEpi3.setCargo(cargo);
-		solicitacaoEpi3.setEstabelecimento(estabelecimento3);
-		solicitacaoEpiDao.save(solicitacaoEpi3);
+		Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
 		
-		SolicitacaoEpiItem item3 = SolicitacaoEpiItemFactory.getEntity();
-		item3.setSolicitacaoEpi(solicitacaoEpi3);
-		item3.setQtdSolicitado(3);
-		solicitacaoEpiItemDao.save(item3);
+    	TipoEPI tipoEPI = TipoEpiFactory.getEntity();
+    	tipoEPIDao.save(tipoEPI);
+    	
+    	Epi epi = EpiFactory.getEntity(tipoEPI);
+    	epiDao.save(epi);
+
+    	Cargo cargo = CargoFactory.getEntity("Motorista");
+    	cargoDao.save(cargo);
+    	
+    	SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), colaborador1, empresa, estabelecimento1, cargo);
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		SolicitacaoEpiItem solicitacaoEpiItem = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpi, epi, 3);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
+		
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), solicitacaoEpiItem, 2);
+		solicitacaoEpiItemEntregaDao.save(entrega);
 		
 		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
+		SolicitacaoEpiVO solicitacaoEpiVO = solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), DateUtil.criarDataMesAno(01, 02, 2010), DateUtil.criarDataMesAno(01, 04, 2010), colaborador1, 
+				SituacaoSolicitacaoEpi.ENTREGUE_PARCIALMENTE,tipoEPI.getId(), SituacaoColaborador.DESLIGADO, new Long[]{estabelecimento1.getId()}, 'N');
 		
-		String[] estabelecimentos = new String[]{};
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos ), 'D').size());
-		assertEquals(0, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').size());
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').size());
-		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').size());
-		
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos ), 'N').size());
-		assertEquals(0, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').size());
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').size());
-		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').size());
-		
-		estabelecimentos = new String[]{estabelecimento1.getId().toString(), estabelecimento2.getId().toString()};
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').size());
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').size());
-		
-		estabelecimentos = new String[]{estabelecimento3.getId().toString()};
-		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').size());
-		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').size());
+		assertEquals(solicitacaoEpi.getId(), solicitacaoEpiVO.getSolicitacaoEpis().iterator().next().getId());
+		assertEquals(new Integer(1), solicitacaoEpiVO.getQtdSolicitacaoEpis());
 	}
+	
+	public void testFindAllSelectSolicitacoesDevolvidas(){
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Colaborador colaborador1 = saveColaboradorComHistorico("Colaborador 1", null, true,  DateUtil.criarDataMesAno(01, 01, 2010), StatusRetornoAC.CONFIRMADO);
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
+		
+    	TipoEPI tipoEPI = TipoEpiFactory.getEntity();
+    	tipoEPIDao.save(tipoEPI);
+    	
+    	Epi epi = EpiFactory.getEntity(tipoEPI);
+    	epiDao.save(epi);
+
+    	Cargo cargo = CargoFactory.getEntity("Motorista");
+    	cargoDao.save(cargo);
+    	
+    	SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), colaborador1, empresa, estabelecimento1, cargo);
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		SolicitacaoEpiItem solicitacaoEpiItem = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpi, epi, 3);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
+		
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), solicitacaoEpiItem, 3);
+		solicitacaoEpiItemEntregaDao.save(entrega);
+		
+		SolicitacaoEpiItemDevolucao devolucao = SolicitacaoEpiItemDevolucaoFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), 3, solicitacaoEpiItem);
+		solicitacaoEpiItemDevolucaoDao.save(devolucao);
+		
+		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
+		SolicitacaoEpiVO solicitacaoEpiVO = solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), DateUtil.criarDataMesAno(01, 02, 2010), DateUtil.criarDataMesAno(01, 04, 2010), new Colaborador(), 
+				SituacaoSolicitacaoEpi.DEVOLVIDO, null, SituacaoColaborador.DESLIGADO, new Long[]{estabelecimento1.getId()}, 'N');
+		
+		assertEquals(solicitacaoEpi.getId(), solicitacaoEpiVO.getSolicitacaoEpis().iterator().next().getId());
+		assertEquals(new Integer(1), solicitacaoEpiVO.getQtdSolicitacaoEpis());
+	}
+	
+	public void testFindAllSelectSolicitacoesDevolvidasParcialmente(){
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Colaborador colaborador1 = saveColaboradorComHistorico("Colaborador 1", null, true,  DateUtil.criarDataMesAno(01, 01, 2010), StatusRetornoAC.CONFIRMADO);
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
+		
+    	TipoEPI tipoEPI = TipoEpiFactory.getEntity();
+    	tipoEPIDao.save(tipoEPI);
+    	
+    	Epi epi = EpiFactory.getEntity(tipoEPI);
+    	epiDao.save(epi);
+
+    	Cargo cargo = CargoFactory.getEntity("Motorista");
+    	cargoDao.save(cargo);
+    	
+    	SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), colaborador1, empresa, estabelecimento1, cargo);
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		SolicitacaoEpiItem solicitacaoEpiItem = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpi, epi, 3);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
+		
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), solicitacaoEpiItem, 3);
+		solicitacaoEpiItemEntregaDao.save(entrega);
+		
+		SolicitacaoEpiItemDevolucao devolucao = SolicitacaoEpiItemDevolucaoFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), 2, solicitacaoEpiItem);
+		solicitacaoEpiItemDevolucaoDao.save(devolucao);
+		
+		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
+		SolicitacaoEpiVO solicitacaoEpiVO = solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), DateUtil.criarDataMesAno(01, 02, 2010), DateUtil.criarDataMesAno(01, 04, 2010), new Colaborador(), 
+				SituacaoSolicitacaoEpi.DEVOLVIDO_PARCIALMENTE, null, SituacaoColaborador.TODOS, new Long[]{}, 'D');
+		
+		assertEquals(solicitacaoEpi.getId(), solicitacaoEpiVO.getSolicitacaoEpis().iterator().next().getId());
+		assertEquals(new Integer(1), solicitacaoEpiVO.getQtdSolicitacaoEpis());
+	}
+	
+	public void testFindAllSelectSolicitacoesSemDevolucao(){
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Colaborador colaborador1 = saveColaboradorComHistorico("Colaborador 1", null, true,  DateUtil.criarDataMesAno(01, 01, 2010), StatusRetornoAC.CONFIRMADO);
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
+		
+    	TipoEPI tipoEPI = TipoEpiFactory.getEntity();
+    	tipoEPIDao.save(tipoEPI);
+    	
+    	Epi epi = EpiFactory.getEntity(tipoEPI);
+    	epiDao.save(epi);
+
+    	Cargo cargo = CargoFactory.getEntity("Motorista");
+    	cargoDao.save(cargo);
+    	
+    	SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), colaborador1, empresa, estabelecimento1, cargo);
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		SolicitacaoEpiItem solicitacaoEpiItem = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpi, epi, 3);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
+		
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity(DateUtil.criarDataMesAno(01, 02, 2010), solicitacaoEpiItem, 3);
+		solicitacaoEpiItemEntregaDao.save(entrega);
+		
+		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
+		SolicitacaoEpiVO solicitacaoEpiVO = solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), DateUtil.criarDataMesAno(01, 02, 2010), DateUtil.criarDataMesAno(01, 04, 2010), new Colaborador(), 
+				SituacaoSolicitacaoEpi.SEM_DEVOLUCAO, null, SituacaoColaborador.TODOS, new Long[]{}, 'D');
+		
+		assertEquals(solicitacaoEpi.getId(), solicitacaoEpiVO.getSolicitacaoEpis().iterator().next().getId());
+		assertEquals(new Integer(1), solicitacaoEpiVO.getQtdSolicitacaoEpis());
+	}
+	
 	
 	public void testFindEpisWithItens() 
 	{

@@ -10,11 +10,11 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiVO;
 
 public interface SolicitacaoEpiManager extends GenericManager<SolicitacaoEpi>
 {
-	Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem);
-	Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem);
+	SolicitacaoEpiVO findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem);
 	void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectMotivoSolicitacaoEpi, Date dataEntrega, boolean entregue, String[] selectTamanhoEpi) throws Exception;
 	void update(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectMotivoSolicitacaoEpi, String[] selectTamanhoEpi);
 	Collection<SolicitacaoEpi> findRelatorioVencimentoEpi(Long empresaId, Date vencimento, char agruparPor, boolean exibirVencimentoCA, String[] tipoEPICheck, String[] areasCheck, String[] estabelecimentoCheckList) throws ColecaoVaziaException;

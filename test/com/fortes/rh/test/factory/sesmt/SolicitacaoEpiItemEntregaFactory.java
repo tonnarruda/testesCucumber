@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 
 public class SolicitacaoEpiItemEntregaFactory
@@ -39,5 +40,13 @@ public class SolicitacaoEpiItemEntregaFactory
 		solicitacaoEpiItemEntregas.add(getEntity(id));
 		
 		return solicitacaoEpiItemEntregas;
+	}
+
+	public static SolicitacaoEpiItemEntrega getEntity(Date dataEntrega,	SolicitacaoEpiItem solicitacaoEpiItem, Integer quantidadeEntregue) {
+		SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega = new SolicitacaoEpiItemEntrega();
+		solicitacaoEpiItemEntrega.setDataEntrega(dataEntrega);
+		solicitacaoEpiItemEntrega.setQtdEntregue(quantidadeEntregue);
+		solicitacaoEpiItemEntrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
+		return solicitacaoEpiItemEntrega;
 	}
 }

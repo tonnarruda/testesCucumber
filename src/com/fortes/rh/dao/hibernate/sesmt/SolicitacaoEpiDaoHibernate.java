@@ -29,6 +29,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiVO;
 import com.fortes.rh.util.LongUtil;
 
 /**
@@ -38,7 +39,7 @@ import com.fortes.rh.util.LongUtil;
 @SuppressWarnings("unchecked")
 public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoEpi> implements SolicitacaoEpiDao
 {
-	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
+	public SolicitacaoEpiVO findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
 	{
 		Query query = montaConsultaFind(false, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem);
 
@@ -51,109 +52,104 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		Collection<Object[]> lista = query.list();
 		Collection<SolicitacaoEpi> solicitacoes = new ArrayList<SolicitacaoEpi>();
 		SolicitacaoEpi solicitacaoEpi = null;
+		SolicitacaoEpiVO solicitacaoEpiVO = new SolicitacaoEpiVO();
 		
 		for (Object[] solicitacaoEpiAux : lista) 
 		{
+			solicitacaoEpiVO.setQtdSolicitacaoEpis(((BigInteger)(solicitacaoEpiAux[0])).intValue());
 			SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM-dd");
 			
 			solicitacaoEpi = new SolicitacaoEpi();
-			solicitacaoEpi.setId(new Long(solicitacaoEpiAux[0].toString()));
-			solicitacaoEpi.setColaboradorNome(solicitacaoEpiAux[3].toString());
-			solicitacaoEpi.setColaboradorDesligado(new Boolean(solicitacaoEpiAux[4].toString()));
-			solicitacaoEpi.setColaboradorStatus(new Integer(solicitacaoEpiAux[5].toString()));
-			solicitacaoEpi.setColaboradorMotivoHistorico((String)solicitacaoEpiAux[6]);
+			solicitacaoEpi.setId(new Long(solicitacaoEpiAux[1].toString()));
 			try {
-				solicitacaoEpi.setData(sDF.parse(solicitacaoEpiAux[7].toString()));
-			} catch (ParseException e) {e.printStackTrace();}
-			solicitacaoEpi.setCargoNome(solicitacaoEpiAux[8].toString());
-			solicitacaoEpi.setQtdEpiSolicitado(new Integer(solicitacaoEpiAux[9].toString()));
-			solicitacaoEpi.setQtdEpiEntregue(new Integer(solicitacaoEpiAux[10].toString()));
-			solicitacaoEpi.setQtdEpiDevolvido(new Integer(solicitacaoEpiAux[11].toString()));
+				solicitacaoEpi.setData(sDF.parse(solicitacaoEpiAux[2].toString()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			solicitacaoEpi.setCargoNome(solicitacaoEpiAux[3].toString());
+			solicitacaoEpi.setQtdEpiSolicitado(new Integer(solicitacaoEpiAux[5].toString()));
+			solicitacaoEpi.setQtdEpiEntregue(new Integer(solicitacaoEpiAux[6].toString()));
+			solicitacaoEpi.setQtdEpiDevolvido(new Integer(solicitacaoEpiAux[7].toString()));
+
+			solicitacaoEpi.setColaboradorNome(solicitacaoEpiAux[8].toString());
+			solicitacaoEpi.setColaboradorDesligado(new Boolean(solicitacaoEpiAux[9].toString()));
+			solicitacaoEpi.setColaboradorStatus(new Integer(solicitacaoEpiAux[10].toString()));
+			solicitacaoEpi.setColaboradorMotivoHistorico((String)solicitacaoEpiAux[11]);
 			
 			solicitacoes.add(solicitacaoEpi);
 		}
+		solicitacaoEpiVO.setSolicitacaoEpis(solicitacoes);
 		
-		return solicitacoes;
-	}
-
-	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
-	{
-		Query query = montaConsultaFind(true, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem);
-		return new Integer(query.uniqueResult().toString());
+		return solicitacaoEpiVO;
 	}
 
 	private Query montaConsultaFind(boolean count, Long empresaId, Date dataIni, Date dataFim, String nomeBusca, String matriculaBusca, String situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
 	{
-		StringBuilder sql = null;
-		if (count)
-			sql = new StringBuilder("select count(sub.id) ");
-		else
-			sql = new StringBuilder("select sub.* ");
-
+		StringBuilder sql = new StringBuilder("select sub2.*, c.nome, c.desligado, hc.status, hc.motivo ");
 		sql.append("from ( ");
-		sql.append("select se.id as id, se.empresa_id, c.matricula, c.nome, c.desligado, hc.status, hc.motivo, se.data, ca.nome as nomeCargo,  "); 
-		sql.append("  (select sum(sei2.qtdSolicitado) from solicitacaoepi_item sei2 "); 
-		sql.append("   where sei2.solicitacaoepi_id = se.id "); 
-		sql.append("  ) as qtdSolicitado,  "); 
-		sql.append("coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue, "); 
-		sql.append("coalesce(sum(seid.qtdDevolvida), 0) as qtdDevolvida ");
-		sql.append("from solicitacaoepi as se ");
-		sql.append("left join solicitacaoepi_item as sei on sei.solicitacaoepi_id=se.id "); 
-		sql.append("left join solicitacaoepiitementrega seie on seie.solicitacaoepiitem_id=sei.id ");
-		sql.append("left join solicitacaoepiitemdevolucao seid on seid.solicitacaoepiitem_id=sei.id ");
-		sql.append("left join epihistorico ehist on ehist.id=seie.epihistorico_id "); 
-		sql.append("left join epi e on e.id=ehist.epi_id "); 
-		sql.append("left join colaborador as c on se.colaborador_id=c.id ");
-		sql.append("left join historicocolaborador as hc on c.id=hc.colaborador_id "); 
-		sql.append("left join cargo as ca on se.cargo_id=ca.id ");
-		sql.append("where hc.data = (select max(hc2.data) from historicocolaborador as hc2 where hc2.colaborador_id = c.id) ");
-		
+		sql.append("		select count(sub.id) OVER(), sub.* ");
+		sql.append("		from ( ");
+		sql.append("			select se.id as id, se.data, ca.nome as nomeCargo, se.colaborador_id, ");
+		sql.append("  				(select sum(sei2.qtdSolicitado) from solicitacaoepi_item sei2 "); 
+		sql.append("   					where sei2.solicitacaoepi_id = se.id "); 
+		sql.append("	  			) as qtdSolicitado,  "); 
+		sql.append("				coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue, "); 
+		sql.append("				coalesce(sum(seid.qtdDevolvida), 0) as qtdDevolvida ");
+		sql.append("				from solicitacaoepi as se ");
+		sql.append("				inner join solicitacaoepi_item as sei on sei.solicitacaoepi_id=se.id "); 
+		sql.append("				left join solicitacaoepiitementrega seie on seie.solicitacaoepiitem_id=sei.id ");
+		sql.append("				left join solicitacaoepiitemdevolucao seid on seid.solicitacaoepiitem_id=sei.id ");
+		sql.append("				inner join epi ep on ep.id = sei.epi_id ");
+		sql.append("				inner join cargo as ca on se.cargo_id=ca.id ");
+		sql.append("				where se.empresa_id = :empresaId ");
+
 		if (tipoEpi != null)
-			sql.append("and se.id in( select sei3.solicitacaoepi_id from solicitacaoepi_item  sei3 join epi e2 on sei3.epi_id = e2.id where e2.tipoepi_id  = :tipoEpi) ");
+			sql.append("				and ep.tipoepi_id = :tipoEpi ");
 		
 		if(LongUtil.arrayIsNotEmpty(estabelecimentoCheck))
-			sql.append("and se.estabelecimento_id in (:estabelecimentoCheck)");
-		
-		if (situacaoColaborador.equals(SituacaoColaborador.ATIVO)) {
-			sql.append("and c.desligado = false "); 
-		} else if (situacaoColaborador.equals(SituacaoColaborador.DESLIGADO)) {
-			sql.append("and c.desligado = true "); 
-		}
-
-		sql.append("group by se.id, c.matricula, c.id, c.nome, c.desligado, hc.status, hc.motivo, se.data, ca.id, ca.nome, se.empresa_id ");
-		sql.append(") as sub ");
- 
-		sql.append("where sub.empresa_id = :empresaId ");
-
-		if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.ENTREGUE))
-			sql.append("and sub.qtdSolicitado <= sub.qtdEntregue ");
-		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.ENTREGUE_PARCIALMENTE))
-			sql.append("and sub.qtdEntregue > 0 and sub.qtdEntregue < sub.qtdSolicitado ");
-		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.ABERTA))
-			sql.append("and sub.qtdEntregue = 0 ");
-		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.DEVOLVIDO))
-			sql.append("and (sub.qtdDevolvida != 0 and sub.qtdDevolvida = sub.qtdEntregue) ");
-		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.DEVOLVIDO_PARCIALMENTE))
-			sql.append("and sub.qtdDevolvida > 0 and  sub.qtdDevolvida < sub.qtdEntregue ");
-		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.SEM_DEVOLUCAO))
-			sql.append("and sub.qtdDevolvida = 0 and sub.qtdEntregue > 0 ");
-		
-		if (StringUtils.isNotBlank(matriculaBusca))
-			sql.append("and lower(sub.matricula) like :matricula ");
-		
-		if (StringUtils.isNotBlank(nomeBusca))
-			sql.append("and lower(sub.nome) like :nome ");
-
+			sql.append("				and se.estabelecimento_id in (:estabelecimentoCheck)");
 		
 		if (dataIni != null && dataFim != null)
-			sql.append("and sub.data between :dataIni and :dataFim ");
+			sql.append("				and se.data between :dataIni and :dataFim ");
 
-		if (!count)	{
-			if (ordem == 'D') {
-				sql.append("order by sub.data DESC, sub.nome ASC ");
-			} else {
-				sql.append("order by sub.nome ASC, sub.data DESC ");
-			}
+		sql.append("				group by se.id, se.data, ca.id, ca.nome, se.colaborador_id ");
+		sql.append("		) as sub ");
+
+		sql.append("		where 1=1 ");
+		if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.ENTREGUE))
+			sql.append("		and sub.qtdSolicitado <= sub.qtdEntregue ");
+		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.ENTREGUE_PARCIALMENTE))
+			sql.append("		and sub.qtdEntregue > 0 and sub.qtdEntregue < sub.qtdSolicitado ");
+		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.ABERTA))
+			sql.append("		and sub.qtdEntregue = 0 ");
+		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.DEVOLVIDO))
+			sql.append("		and (sub.qtdDevolvida != 0 and sub.qtdDevolvida = sub.qtdEntregue) ");
+		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.DEVOLVIDO_PARCIALMENTE))
+			sql.append("		and sub.qtdDevolvida > 0 and  sub.qtdDevolvida < sub.qtdEntregue ");
+		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.SEM_DEVOLUCAO))
+			sql.append("		and sub.qtdDevolvida = 0 and sub.qtdEntregue > 0 ");
+
+		sql.append("		order by sub.data DESC ");
+		sql.append("	) as sub2 ");
+		sql.append("	inner join colaborador as c on c.id = sub2.colaborador_id ");
+		sql.append("	inner join historicocolaborador as hc on hc.colaborador_id = c.id "); 
+		sql.append("	where hc.data = (select max(hc2.data) from historicocolaborador as hc2 where hc2.colaborador_id = c.id) ");
+
+		if (situacaoColaborador.equals(SituacaoColaborador.ATIVO)) 
+			sql.append("	and c.desligado = false "); 
+		else if (situacaoColaborador.equals(SituacaoColaborador.DESLIGADO)) 
+			sql.append("	and c.desligado = true ");
+
+		if (StringUtils.isNotBlank(matriculaBusca))
+			sql.append("	and lower(c.matricula) like :matricula ");
+		
+		if (StringUtils.isNotBlank(nomeBusca))
+			sql.append("	and lower(c.nome) like :nome ");
+
+		if (ordem == 'D') {
+			sql.append("order by sub2.data DESC, c.nome ASC ");
+		} else {
+			sql.append("order by c.nome ASC, sub2.data DESC ");
 		}
 		
 		SQLQuery query = getSession().createSQLQuery(sql.toString());

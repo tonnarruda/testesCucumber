@@ -326,9 +326,11 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 				epi.getEpiHistorico().setCA(obj[i].toString());
 			
 			try {
-				epi.getEpiHistorico().setVencimentoCA(sDF.parse(obj[++i].toString()));
-				System.out.println(obj[i].toString());
-			} catch (Exception e) {e.printStackTrace();}
+				if(obj[++i] != null)
+					epi.getEpiHistorico().setVencimentoCA(sDF.parse(obj[i].toString()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 			epi.setRelacionadoAoColaborador(new Boolean(obj[++i].toString()));
 			epi.setTipoEPIId(new BigInteger(obj[++i].toString()).longValue());
