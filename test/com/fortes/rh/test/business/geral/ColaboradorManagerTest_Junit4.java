@@ -4,10 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import mockit.Mockit;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManagerImpl;
@@ -15,6 +17,8 @@ import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
+import com.fortes.rh.util.SpringUtil;
 
 public class ColaboradorManagerTest_Junit4
 {
@@ -23,6 +27,7 @@ public class ColaboradorManagerTest_Junit4
     private CandidatoManager candidatoManager;
     private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
     private MensagemManager mensagemManager;
+    private UsuarioManager usuarioManager;
 
     @Before
     public void setUp() throws Exception
@@ -36,6 +41,11 @@ public class ColaboradorManagerTest_Junit4
         colaboradorManager.setCandidatoManager(candidatoManager);
         colaboradorManager.setCandidatoSolicitacaoManager(candidatoSolicitacaoManager);
         colaboradorManager.setMensagemManager(mensagemManager);
+        
+        usuarioManager = mock(UsuarioManager.class);
+        MockSpringUtilJUnit4.mocks.put("usuarioManager", usuarioManager);
+        
+        Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
     }
     
     @Test
