@@ -258,6 +258,9 @@ public class CandidatoListAction extends MyActionSupportList
 	private boolean opcaoTodasEmpresas = false;
 
 	private Long[] empresasPermitidas;
+
+	private String reportTitle;
+	private String reportFilter;
 	
 	public String find() throws Exception
 	{
@@ -863,6 +866,30 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	public String relatorioCandidatosIndicadosPor() throws Exception
 	{
+		String retorno = montaRelatorioCandidatosIndicadosPor();
+		if(retorno.equals(SUCCESS)){
+			String periodoFormatado = "Período: " + DateUtil.formataDiaMesAno(dataCadIni) + " - " + DateUtil.formataDiaMesAno(dataCadFim);
+			parametros = RelatorioUtil.getParametrosRelatorio("Indicações de candidatos", getEmpresaSistema(), periodoFormatado);
+			return SUCCESS;
+		}
+		else 
+			return retorno;
+	}
+	
+	public String relatorioCandidatosIndicadosPorXLS() throws Exception
+	{
+		String retorno = montaRelatorioCandidatosIndicadosPor();
+		if(retorno.equals(SUCCESS)){
+			reportTitle = "Relatório de Indicações de candidatos";
+			reportFilter = "Período: " + DateUtil.formataDiaMesAno(dataCadIni) + " - " + DateUtil.formataDiaMesAno(dataCadFim);
+			return SUCCESS;
+		}
+		else 
+			return retorno;
+	}
+
+	private String montaRelatorioCandidatosIndicadosPor()  throws Exception
+	{
 		candidatos = new ArrayList<Candidato>();
 		try
 		{
@@ -872,13 +899,10 @@ public class CandidatoListAction extends MyActionSupportList
 				empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_CANDIDATOS_INDICADOS_POR");
 				empresasIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas);
 			}
-					
-			candidatos = candidatoManager.findCandidatosIndicadosPor(dataCadIni, dataCadFim, empresasIds);
 			
-			parametros = RelatorioUtil.getParametrosRelatorio("Indicações de candidatos", getEmpresaSistema(), getPeriodoFormatado());
+			candidatos = candidatoManager.findCandidatosIndicadosPor(dataCadIni, dataCadFim, empresasIds);
 			return SUCCESS;
-		}
-		catch (ColecaoVaziaException e)
+		}catch (ColecaoVaziaException e)
 		{
 			addActionMessage(e.getMessage());
 			prepareRelatorioCandidatosIndicadosPor();
@@ -887,7 +911,7 @@ public class CandidatoListAction extends MyActionSupportList
 			return INPUT;
 		}
 	}
-
+	
 	private String getPeriodoFormatado()
 	{
 		String periodoFormatado = "-";
@@ -1934,5 +1958,14 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	public String getReportTitle()
+	{
+		return this.reportTitle;
+	}
+
+	public String getReportFilter() {
+		return reportFilter;
 	}
 }

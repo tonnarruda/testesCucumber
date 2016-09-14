@@ -2627,6 +2627,31 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(1, candidatoDao.getAutoComplete("JULIANA", empresa.getId()).size());
 	}
 	
+	public void testFindCandidatosIndicadosPor()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Candidato candidato1 = CandidatoFactory.getCandidato();
+		candidato1.setDataCadastro(DateUtil.criarDataMesAno(1, 1, 2015));
+		candidato1.setPessoalIndicadoPor("Francisco");
+		candidato1.setEmpresa(empresa);
+		candidatoDao.save(candidato1);
+		
+		Candidato candidato2 = CandidatoFactory.getCandidato();
+		candidato2.setDataCadastro(DateUtil.criarDataMesAno(1, 1, 2016));
+		candidato2.setPessoalIndicadoPor("Carlos");
+		candidato2.setEmpresa(empresa);
+		candidatoDao.save(candidato2);
+		
+		Long[] empresasIds = new Long[]{empresa.getId()};
+		
+		Collection<Candidato> candidatos = candidatoDao.findCandidatosIndicadosPor(DateUtil.criarDataMesAno(1, 1, 2016), new Date(), empresasIds);
+		
+		assertEquals(1, candidatos.size());
+		assertEquals(candidato2.getPessoal().getIndicadoPor(), candidatos.iterator().next().getPessoal().getIndicadoPor());
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		 this.empresaDao = empresaDao;

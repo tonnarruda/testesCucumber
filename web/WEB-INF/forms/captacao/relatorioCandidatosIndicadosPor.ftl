@@ -12,8 +12,9 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<script type="text/javascript">
-		function validaForm()
+		function enviaForm(action)
 		{
+			$('form[name=form]').attr('action', action);
 			return validaFormularioEPeriodo('form', new Array('dataIni', 'dataFim'), new Array('dataIni','dataFim'));
 		}
 	</script>
@@ -47,7 +48,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="validaForm();" class="btnRelatorio">
+		<button onclick="return enviaForm('relatorioCandidatosIndicadosPor.action');" class="btnRelatorio">
+		<button onclick="return enviaForm('relatorioCandidatosIndicadosPorXLS.action');" class="btnRelatorioExportar"></button>
 		</button>
 	</div>
 </body>

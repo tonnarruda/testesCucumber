@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyChar;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -220,7 +219,7 @@ public class CandidatoListActionTest
 	}
 
 	@Test
-	public void list() throws Exception{
+	public void testList() throws Exception{
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
 		parametrosDoSistema.setCompartilharCandidatos(true);
 		parametrosDoSistema.setCompartilharColaboradores(true);
@@ -239,7 +238,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void delete() throws Exception{
+	public void testDelete() throws Exception{
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidato(candidato);
 		action.delete();
@@ -247,7 +246,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void deleteException() throws Exception{
+	public void testDeleteException() throws Exception{
 		Exception exception = null;
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidato(candidato);
@@ -261,13 +260,13 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void listCbo() throws Exception{
+	public void testLlistCbo() throws Exception{
 		assertEquals("success", action.listCbo());
 	}
 	
 
 	@Test
-	public void prepareBusca() throws Exception {
+	public void testPrepareBusca() throws Exception {
 		montaPreparaBusca();
 		assertEquals("success", action.prepareBusca());
 	}
@@ -306,7 +305,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void prepareBuscaComSolicitacaoDefinindoCidade() throws Exception {
+	public void testPrepareBuscaComSolicitacaoDefinindoCidade() throws Exception {
 		montaPreparaBusca();
 		Cargo cargo = CargoFactory.getEntity(2L);
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(2L, "Faixa", cargo);
@@ -318,7 +317,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void prepareBuscaComSolicitacaoSemDefinirCidade() throws Exception {
+	public void testPrepareBuscaComSolicitacaoSemDefinirCidade() throws Exception {
 		montaPreparaBusca();
 		Cargo cargo = CargoFactory.getEntity(2L);
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(2L, "Faixa", cargo);
@@ -338,13 +337,13 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void prepareBuscaSimples() throws Exception{
+	public void testPrepareBuscaSimples() throws Exception{
 		montaBuscaSimples();
 		assertEquals("success", action.prepareBuscaSimples());
 	}
 	
 	@Test
-	public void prepareBuscaSimplesComSolicitacaoId() throws Exception{
+	public void testPrepareBuscaSimplesComSolicitacaoId() throws Exception{
 		montaBuscaSimples();
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		action.setSolicitacao(solicitacao);
@@ -371,12 +370,12 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void prepareTriagemAutomaticaSemSolicitacaoId() throws Exception{
+	public void testPrepareTriagemAutomaticaSemSolicitacaoId() throws Exception{
 		assertEquals("success", action.prepareTriagemAutomatica());
 	}
 	
 	@Test
-	public void prepareTriagemAutomaticaCommSolicitacaoId() throws Exception{
+	public void testPrepareTriagemAutomaticaCommSolicitacaoId() throws Exception{
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		action.setSolicitacao(solicitacao);
 		
@@ -386,7 +385,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void prepareTriagemColaboradores() throws Exception {
+	public void testPrepareTriagemColaboradores() throws Exception {
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		action.setSolicitacao(solicitacao);
 		
@@ -410,19 +409,19 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void insertColaboradoresComColaboradoresIdsNulo() throws Exception {
+	public void testInsertColaboradoresComColaboradoresIdsNulo() throws Exception {
 		action.setColaboradoresIds(null);
 		assertEquals("success", action.insertColaboradores());
 	}
 	
 	@Test
-	public void insertColaboradoresComColaboradoresIdsVazio() throws Exception {
+	public void testInsertColaboradoresComColaboradoresIdsVazio() throws Exception {
 		action.setColaboradoresIds(new Long[]{});
 		assertEquals("success", action.insertColaboradores());
 	}
 	
 	@Test
-	public void insertColaboradores() throws Exception {
+	public void testInsertColaboradores() throws Exception {
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		action.setSolicitacao(solicitacao);
 		action.setColaboradoresIds(new Long[]{1L,2L});
@@ -431,41 +430,15 @@ public class CandidatoListActionTest
 		assertEquals("success", action.insertColaboradores());
 	}
 	
-//	@Test
-//	public void busca() throws Exception{
-//		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-//		boolean somenteCandidatosSemSolicitacao = false;
-//		Integer qtdRegistros = 15;
-//		Collection<Empresa> empresas = Arrays.asList(empresa);
-//		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
-//		action.setVeiculo('S');
-//		action.setSolicitacao(solicitacao);
-//		action.setopcaoTodasEmpresas(true);
-//		action.setExperienciasCheck(new String[]{"1", "2", "3"});
-//		action.setEmpresaSistema(empresa);
-//		action.setSomenteCandidatosSemSolicitacao(false);
-//		action.setQtdRegistros(qtdRegistros);
-//		
-//		
-//		action.setEmpresasPermitidas(LongUtil.collectionToArrayLong(empresas));
-//		Collection<Candidato> candidatos = Arrays.asList(CandidatoFactory.getCandidato(1L, "Candidato 1"));
-//		
-//		when(candidatoManager.busca(Matchers.anyMapOf(String.class, Object.class), eq(action.getSolicitacao().getId()), eq(somenteCandidatosSemSolicitacao), eq(qtdRegistros), eq("dataAtualizacao"), eq(new Long[]{empresa.getId()}))).thenReturn(new ArrayList<Candidato>());
-//		montaPreparaBusca();
-//		when(cidadeManager.find(new String[]{"uf.id"},new Object[]{action.getUf()}, new String[]{"nome"})).thenReturn(new ArrayList<Cidade>());
-//		when(conhecimentoManager.findByAreaInteresse(new Long[]{1L},action.getEmpresaSistema().getId()));
-//		assertEquals("success", action.busca());
-//	}
-	
 	@Test
-	public void buscaSimplesCollectionVazia() throws Exception {
+	public void testBuscaSimplesCollectionVazia() throws Exception {
 		montaBuscaSimples();
 		action.buscaSimples();
 		assertEquals("Não existem candidatos a serem listados", action.getActionMessages().iterator().next());
 	}
 	
 	@Test
-	public void triagemAutomatica() throws Exception {
+	public void testTriagemAutomatica() throws Exception {
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		action.setSolicitacao(solicitacao);
 		
@@ -482,13 +455,13 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void insertCandidatosComCandidatosIdVazio() throws Exception{
+	public void testInsertCandidatosComCandidatosIdVazio() throws Exception{
 		action.setCandidatosId(new String[]{});
 		assertEquals("success", action.insertCandidatos());
 	}
 	
 	@Test
-	public void insertCandidatosComCandidatos() throws Exception{
+	public void testInsertCandidatosComCandidatos() throws Exception{
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidatosId(new String[]{candidato.getId().toString()});
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
@@ -499,14 +472,14 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void selecionaDestinatariosBDS() throws Exception {
+	public void testSelecionaDestinatariosBDS() throws Exception {
 		montaPreparaBusca();
 		when(anuncioManager.getEmpresasCheck(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<CheckBox>());
 		assertEquals("success", action.selecionaDestinatariosBDS());
 	}
 	
 	@Test
-	public void exportaBDSComCandidatoIdNulo() throws Exception {
+	public void testExportaBDSComCandidatoIdNulo() throws Exception {
 		action.setCandidatosId(null);
 		montaPreparaBusca();
 		assertEquals("success", action.exportaBDS());
@@ -521,7 +494,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void exportaBDSComCandidato() throws Throwable {
+	public void testExportaBDSComCandidato() throws Throwable {
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidatosId(new String[]{candidato.getId().toString()});
 		Collection<Candidato> candidatos = Arrays.asList(CandidatoFactory.getCandidato(1L, "Candidato 1"));
@@ -535,7 +508,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void exportaBDSComCandidatoComExceptionThrowable() throws Throwable {
+	public void testExportaBDSComCandidatoComExceptionThrowable() throws Throwable {
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidatosId(new String[]{candidato.getId().toString()});
 		Collection<Candidato> candidatos = Arrays.asList(CandidatoFactory.getCandidato(1L, "Candidato 1"));
@@ -549,7 +522,7 @@ public class CandidatoListActionTest
 	}
 
 	@Test
-	public void verCurriculoEscaneado() throws Exception {
+	public void testVerCurriculoEscaneado() throws Exception {
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidato(candidato);
 		when(candidatoCurriculoManager.findToList(new String[]{"curriculo"}, new String[]{"curriculo"}, new String[]{"candidato.id"}, new Object[]{action.getCandidato().getId()})).thenReturn(new ArrayList<CandidatoCurriculo>());
@@ -557,7 +530,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void verCurriculoTextoOcr() throws Exception{
+	public void testVerCurriculoTextoOcr() throws Exception{
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidato(candidato);
 		action.setForma("3");
@@ -567,7 +540,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void verCurriculoTextoOcrComPalavrasVazio() throws Exception{
+	public void testVerCurriculoTextoOcrComPalavrasVazio() throws Exception{
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidato(candidato);
 		action.setPalavras("");
@@ -576,7 +549,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void verCurriculoTextoOcrComFormaDiferenteDe3() throws Exception{
+	public void testVerCurriculoTextoOcrComFormaDiferenteDe3() throws Exception{
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidato(candidato);
 		action.setForma("");
@@ -586,7 +559,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void verExamePalografico() {
+	public void testVerExamePalografico() {
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidato(candidato);
 		when(candidatoManager.findByIdProjection(action.getCandidato().getId())).thenReturn(candidato);
@@ -594,7 +567,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void verCurriculo() throws Exception {
+	public void testVerCurriculo() throws Exception {
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidato(candidato);
 		when(candidatoManager.findByIdProjection(action.getCandidato().getId())).thenReturn(candidato);
@@ -609,7 +582,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void verCurriculoCandidatoSemFoto() throws Exception {
+	public void testVerCurriculoCandidatoSemFoto() throws Exception {
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidato(candidato);
 		when(candidatoManager.findByIdProjection(action.getCandidato().getId())).thenReturn(candidato);
@@ -625,7 +598,7 @@ public class CandidatoListActionTest
 	
 
 	@Test
-	public void verCurriculoComEmpresaConfiguradoCampoExtraMasCandidatoSemInformacaoDeCampoExtra() throws Exception {
+	public void testVerCurriculoComEmpresaConfiguradoCampoExtraMasCandidatoSemInformacaoDeCampoExtra() throws Exception {
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidato(candidato);
 		
@@ -648,7 +621,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void verCurriculoComEmpresaConfiguradoCampoExtraECandidatoSemInformacaoDeCampoExtra() throws Exception {
+	public void testVerCurriculoComEmpresaConfiguradoCampoExtraECandidatoSemInformacaoDeCampoExtra() throws Exception {
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		candidato.setCamposExtras(CamposExtrasFactory.getEntity(1L));
 		action.setCandidato(candidato);
@@ -673,7 +646,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void imprimirCurriculo() throws Exception {
+	public void testImprimirCurriculo() throws Exception {
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		candidato.setCamposExtras(CamposExtrasFactory.getEntity(1L));
 		action.setCandidato(candidato);
@@ -700,7 +673,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void imprimirCurriculoComConfiguracaoCampoExtra() throws Exception {
+	public void testImprimirCurriculoComConfiguracaoCampoExtra() throws Exception {
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		candidato.setCamposExtras(CamposExtrasFactory.getEntity(1L));
 		action.setCandidato(candidato);
@@ -733,7 +706,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void prepareRelatorioAvaliacaoCandidatos() throws Exception {
+	public void testPrepareRelatorioAvaliacaoCandidatos() throws Exception {
 		when(estabelecimentoManager.findAllSelect(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Estabelecimento>());
 		when(grupoOcupacionalManager.populaCheckOrderNome(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<CheckBox>());
 		when(cargoManager.populaCheckBox(null, null, action.getEmpresaSistema().getId())).thenReturn(new ArrayList<CheckBox>());
@@ -742,7 +715,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void relatorioAvaliacaoCandidatosFiltrarPorAreas() throws Exception {
+	public void testRelatorioAvaliacaoCandidatosFiltrarPorAreas() throws Exception {
 		Collection<AvaliacaoCandidatosRelatorio> avaliacaoCandidatos = new ArrayList<AvaliacaoCandidatosRelatorio>();
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setCampoExtraCandidato(true);
@@ -754,7 +727,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void relatorioAvaliacaoCandidatosFiltrarPorCargos() throws Exception {
+	public void testRelatorioAvaliacaoCandidatosFiltrarPorCargos() throws Exception {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setCampoExtraCandidato(true);
 		action.setEmpresaSistema(empresa);
@@ -765,7 +738,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void relatorioAvaliacaoCandidatosException() throws Exception {
+	public void testRelatorioAvaliacaoCandidatosException() throws Exception {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setCampoExtraCandidato(true);
 		action.setEmpresaSistema(empresa);
@@ -782,7 +755,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void relatorioCandidatosIndicadosPor() throws Exception {
+	public void testRelatorioCandidatosIndicadosPor() throws Exception {
 		Collection<Candidato> candidatos = new ArrayList<Candidato>();
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		
@@ -802,15 +775,97 @@ public class CandidatoListActionTest
 		when(candidatoManager.findCandidatosIndicadosPor(null, null, new Long[]{1L})).thenReturn(candidatos); 
 		assertEquals("success", action.relatorioCandidatosIndicadosPor());
 	}
+	
+	@Test
+	public void testRelatorioCandidatosIndicadosPorEmpresasCheckVazia() throws Exception {
+		Collection<Candidato> candidatos = new ArrayList<Candidato>();
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+		parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistema.setCompartilharColaboradores(true);
+		
+		Collection<Empresa> empresas = new ArrayList<Empresa>();
+		empresas.add(empresa);
+		
+		action.setParametrosDoSistema(parametrosDoSistema);
+		action.setEmpresaSistema(empresa);
+		
+		when(empresaManager.findEmpresasPermitidas(true, empresa.getId(), 1L, "ROLE_REL_CANDIDATOS_INDICADOS_POR")).thenReturn(empresas);
+		when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+		when(candidatoManager.findCandidatosIndicadosPor(null, null, new Long[]{1L})).thenReturn(candidatos); 
+		assertEquals("success", action.relatorioCandidatosIndicadosPor());
+	}
+	
+	@Test
+	public void testRelatorioCandidatosIndicadosPorColecaoVaziaException() throws Exception {
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+		parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistema.setCompartilharColaboradores(true);
+		
+		Collection<Empresa> empresas = new ArrayList<Empresa>();
+		empresas.add(empresa);
+		
+		action.setParametrosDoSistema(parametrosDoSistema);
+		action.setEmpresaSistema(empresa);
+		
+		when(empresaManager.findEmpresasPermitidas(true, empresa.getId(), 1L, "ROLE_REL_CANDIDATOS_INDICADOS_POR")).thenReturn(empresas);
+		when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+		doThrow(ColecaoVaziaException.class).when(candidatoManager).findCandidatosIndicadosPor(any(Date.class), any(Date.class),  eq(new Long[]{1L}));
+		assertEquals("input", action.relatorioCandidatosIndicadosPor());
+	}
 
 	@Test
-	public void sucessoInclusao() throws Exception {
+	public void testRelatorioCandidatosIndicadosPorXLS() throws Exception {
+		Collection<Candidato> candidatos = new ArrayList<Candidato>();
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+		parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistema.setCompartilharColaboradores(true);
+		
+		Collection<Empresa> empresas = new ArrayList<Empresa>();
+		empresas.add(empresa);
+		
+		action.setParametrosDoSistema(parametrosDoSistema);
+		action.setEmpresasCheck(new String[]{"1"});
+		action.setEmpresaSistema(empresa);
+		
+		when(empresaManager.findEmpresasPermitidas(true, empresa.getId(), 1L, "ROLE_REL_CANDIDATOS_INDICADOS_POR")).thenReturn(empresas);
+		when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+		when(candidatoManager.findCandidatosIndicadosPor(null, null, new Long[]{1L})).thenReturn(candidatos); 
+		assertEquals("success", action.relatorioCandidatosIndicadosPorXLS());
+	}
+	
+	@Test
+	public void testRelatorioCandidatosIndicadosPorXLSColecaoVaziaException() throws Exception {
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+		parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistema.setCompartilharColaboradores(true);
+		
+		Collection<Empresa> empresas = new ArrayList<Empresa>();
+		empresas.add(empresa);
+		
+		action.setParametrosDoSistema(parametrosDoSistema);
+		action.setEmpresaSistema(empresa);
+		
+		when(empresaManager.findEmpresasPermitidas(true, empresa.getId(), 1L, "ROLE_REL_CANDIDATOS_INDICADOS_POR")).thenReturn(empresas);
+		when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+		doThrow(ColecaoVaziaException.class).when(candidatoManager).findCandidatosIndicadosPor(any(Date.class), any(Date.class),  eq(new Long[]{1L}));
+		assertEquals("input", action.relatorioCandidatosIndicadosPorXLS());
+	}
+	@Test
+	public void testSucessoInclusao() throws Exception {
 		assertEquals("success", action.sucessoInclusao());
 		assertEquals("Operação efetuada com sucesso", action.getActionSuccess().iterator().next());
 	}
 
 	@Test
-	public void infoCandidato() throws Exception {
+	public void testInfoCandidato() throws Exception {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setCampoExtraCandidato(true);
 		action.setEmpresaSistema(empresa);
@@ -819,7 +874,7 @@ public class CandidatoListActionTest
 	}
 	
 	@Test
-	public void infoCandidatoComSolicitacaoId() throws Exception {
+	public void testInfoCandidatoComSolicitacaoId() throws Exception {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setCampoExtraCandidato(true);
 		action.setEmpresaSistema(empresa);

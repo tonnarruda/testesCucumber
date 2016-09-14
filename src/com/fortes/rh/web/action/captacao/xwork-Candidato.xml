@@ -97,6 +97,20 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/relatorioCandidatosIndicadosPor.ftl</result>
 		</action>
+		
+		<action name="relatorioCandidatosIndicadosPorXLS" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="relatorioCandidatosIndicadosPorXLS">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="xls">
+				<param name="dataSource">candidatos</param>
+				<param name="documentName">candidatoIndicadosPor.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Indicado Por,Candidato,Cadastrado em,Empresa</param>
+				<param name="properties">pessoal.indicadoPor,nome,dataCadastroFormatada,empresa.nome</param>
+				<param name="reportTitle">reportTitle</param>
+				<param name="reportFilter">reportFilter</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/relatorioCandidatosIndicadosPor.ftl</result>
+		</action>
 
 		<action name="sucesso" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="sucessoInclusao">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoSucesso.ftl</result>
