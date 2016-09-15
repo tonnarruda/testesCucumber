@@ -104,10 +104,18 @@
 		</script>
 	</#if>
 		<div class="buttonGroup">
-			<button onclick="window.location='../../geral/colaborador/list.action'" class="btnVoltar"></button>
+			<#if voltar?exists>
+				<#assign voltarPara = "${voltar}">
+			<#else>
+				<#assign voltarPara = "../../geral/colaborador/list.action">
+			</#if>
+			
+			<button onclick="window.location='${voltarPara}'" class="btnVoltar"></button>
 			<#if !colaborador.desligado>
 				<@authz.authorize ifAllGranted="ROLE_CAD_HISTORICOCOLABORADOR">
-					<button onclick="window.location='historicoColaboradorList.action?colaborador.id=${colaborador.id}'" class="btnEditarHistoricos"></button>
+					<#if !voltar?exists || voltar != '../../index.action'>
+						<button onclick="window.location='historicoColaboradorList.action?colaborador.id=${colaborador.id}'" class="btnEditarHistoricos"></button>
+					</#if>
 				</@authz.authorize>
 			</#if>
 		</div>

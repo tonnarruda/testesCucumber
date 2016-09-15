@@ -171,6 +171,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String reportFilter;
 	private Character tipo = TipoRelatorio.PDF;
 	private Long[] empresasPermitidas;
+	private String voltar;
 	
 	public String painelIndicadores() throws Exception
 	{
@@ -1295,5 +1296,13 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public Long getEmpresaId() {
 		return empresaId;
+	}
+
+	public String getVoltar() {
+		return voltar;
+	}
+
+	public void setVoltar(String voltar) {
+		this.voltar = voltar;
 	}
 }
