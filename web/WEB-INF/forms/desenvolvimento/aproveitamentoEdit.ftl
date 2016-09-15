@@ -67,8 +67,10 @@
 					document.form.submit();
 				}
 			
-			}else
+			}else{
+				processando('${urlImgs}');
 				document.form.submit();
+			}
 		}
 		
 		function dialogCertificacao(){
@@ -85,9 +87,8 @@
 												    {
 												        text: "Confirmar",
 												        click: function() { 
-												        	processando('${urlImgs}');
-												        	document.form.submit();
 												        	$(this).dialog("close");									        
+												        	enviaForm();
 												        }
 												    },
 												    {
@@ -96,6 +97,11 @@
 												    }
 												]
 											});
+		}
+		
+		function enviaForm(){
+			processando('${urlImgs}');
+			document.form.submit();
 		}
 	</script>
 </head>

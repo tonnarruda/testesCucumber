@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="S16060000067"><![CDATA[R&S > Relatórios > Indicações de Candidatos: Novo relatório de indicações de candidatos.]]></Item>
 		<Item visivel="S" motivo="P16090000049"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Excluir: Ajuste na mensagem ao tentar excluir área organizacional que tenha dependência com outros cadastros.]]></Item>
 		<Item visivel="S" motivo="P16080000377"><![CDATA[C&S > Painel de Indicadores: Ajuste na inconsistência ao tentar abrir painel de indicadores quando o sistema apresenta índices sem histórico.]]></Item>
+		<Item visivel="S" motivo="P16080000291"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliação dos alunos: Impossibilitando duplo clique no botão gravar, para impedir a duplicação de notas das avaliações.]]></Item>
 		<Item visivel="S" motivo="P16080000336"><![CDATA[Info. Funcionais > Cadastros > Atualizar meus dados: Ajuste para contemplar a configuração de campos do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16080000348"><![CDATA[Tela inicial: Ajustes no bloco de histórico profissional.]]></Item>
 	</Versao>
