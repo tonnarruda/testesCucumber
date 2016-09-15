@@ -44,4 +44,13 @@ public class EstabelecimentoFactory
 
 		return estabelecimentos;
 	}
+	
+	public static Estabelecimento getEntity(String nome)
+	{
+		Estabelecimento estabelecimento = getEntity();
+		estabelecimento.setNome(nome);
+
+		return estabelecimento;
+	}
+
 }

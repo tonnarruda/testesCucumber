@@ -1,24 +1,30 @@
 package com.fortes.rh.test.dicionario;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
+import com.opensymphony.xwork.interceptor.annotations.After;
 
-public class OperacaoTest extends TestCase
+public class OperacaoTest
 {
 	private static int qtdDeOperacoesTestadas = 0;   // Utilizado para contar quantas operações estão sendo testadas
 	
+	@Test
 	public void testQtdOperacoes()
 	{
-		assertEquals(38, Operacao.values().length);
+		assertEquals(40, Operacao.values().length);
 	}
 
+	@Test
 	public void testGetHashMapGrupos()
 	{
-		assertEquals(8, Operacao.getHashMapGrupos().size());
+		assertEquals(8, Operacao.getHashMapGrupos(null).size());
 	}
 	
+	@Test
 	public void testGetDescricaoById()
 	{
 		int i = 0;
@@ -62,10 +68,13 @@ public class OperacaoTest extends TestCase
 		assertEquals("Notificar quando existir cursos a vencer", Operacao.getDescricaoById(++i));
 		assertEquals("Notificar quando existir certificações a vencer", Operacao.getDescricaoById(++i));
 		assertEquals("Colaborador completar ano de empresa", Operacao.getDescricaoById(++i));
+		assertEquals("Incluir colaborador em uma solicitacao de pessoal", Operacao.getDescricaoById(++i));
+		assertEquals("Alterar status de autorização do colaborador para participar de uma solicitacao de pessoal", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
 
+	@Test
 	public void testGetGrupoById()
 	{
 		int i = 0;
@@ -74,6 +83,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("R&S", Operacao.getGrupoById(++i));
 	}
 	
+	@Test
 	public void testGetMeioComunicacaoById()
 	{
 		int i = 0;
@@ -116,11 +126,13 @@ public class OperacaoTest extends TestCase
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 36
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 37
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 38
+		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 39
+		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 40
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
 
-	
+	@Test
 	public void testChave()
 	{
 		int i = 0;
@@ -162,10 +174,13 @@ public class OperacaoTest extends TestCase
 		assertEquals(++i, Operacao.CURSOS_A_VENCER.getId());			     				// 36
 		assertEquals(++i, Operacao.CERTIFICACOES_A_VENCER.getId());			     			// 37
 		assertEquals(++i, Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId());			    // 38
+		assertEquals(++i, Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_INCLUIR_COLAB.getId());	// 39
+		assertEquals(++i, Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_ALTERAR_STATUS_COLAB.getId());// 40
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
 
+	@Test
 	public void testEncerrarSolicitacao()
 	{
 		++qtdDeOperacoesTestadas;
@@ -175,6 +190,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testAlterarStatusSolicitacao()
 	{
 		++qtdDeOperacoesTestadas;
@@ -184,6 +200,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testEnviarLembreteAvaliacaoDesempenho()
 	{
 		++qtdDeOperacoesTestadas;
@@ -193,7 +210,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
-	
+	@Test
 	public void testLiberarQuestionario()
 	{
 		++qtdDeOperacoesTestadas;
@@ -203,6 +220,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testLembreteAutomaticoPesquisaNaoLiberada()
 	{
 		++qtdDeOperacoesTestadas;
@@ -213,6 +231,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testCadastroCandidatoModuloExterno()
 	{
 		++qtdDeOperacoesTestadas;
@@ -223,6 +242,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
 	}
 	
+	@Test
 	public void testAvisoQtdCurriculosCadastrados()
 	{
 		++qtdDeOperacoesTestadas;
@@ -234,6 +254,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testAvaliacaoPeriodoExperienciaVencendo()
 	{
 		++qtdDeOperacoesTestadas;
@@ -247,6 +268,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(5,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testExamesPrevistos()
 	{
 		++qtdDeOperacoesTestadas;
@@ -258,6 +280,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testBackupAutomatico()
 	{
 		++qtdDeOperacoesTestadas;
@@ -269,6 +292,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testCancelarSituacaoAC()
 	{
 		++qtdDeOperacoesTestadas;
@@ -279,6 +303,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(3,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 
+	@Test
 	public void testCancelarContratacaoAC()
 	{
 		++qtdDeOperacoesTestadas;
@@ -289,6 +314,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testDesligaColaboradorAC()
 	{
 		++qtdDeOperacoesTestadas;
@@ -301,6 +327,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testSolicitacaoCandidatoModuloExterno()
 	{
 		++qtdDeOperacoesTestadas;
@@ -312,6 +339,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testConfiguracaoLimiteColaborador()
 	{
 		++qtdDeOperacoesTestadas;
@@ -323,6 +351,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testLiberarTurma()
 	{
 		++qtdDeOperacoesTestadas;
@@ -334,6 +363,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 
+	@Test
 	public void testContratarColaborador()
 	{
 		++qtdDeOperacoesTestadas;
@@ -345,6 +375,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testResponderAvaliacaoPeriodoExperiencia()
 	{
 		++qtdDeOperacoesTestadas;
@@ -358,6 +389,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 
+	@Test
 	public void testLembreteAberturaSolicitacaoEpi()
 	{
 		++qtdDeOperacoesTestadas;
@@ -369,6 +401,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 
+	@Test
 	public void testLembreteEntregaSolicitacaoEpi()
 	{
 		++qtdDeOperacoesTestadas;
@@ -380,6 +413,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testCancelarSolicitacaoDesligamentoAC()
 	{
 		++qtdDeOperacoesTestadas;
@@ -391,6 +425,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testAvisoCadastroOcorrencia()
 	{
 		++qtdDeOperacoesTestadas;
@@ -402,6 +437,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testAvisoColaboradorAfastamento()
 	{
 		++qtdDeOperacoesTestadas;
@@ -414,6 +450,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testAvisoColaboradorContratacao()
 	{
 		++qtdDeOperacoesTestadas;
@@ -426,6 +463,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 
+	@Test
 	public void testTerminoContratoTemporarioColaborador()
 	{
 		++qtdDeOperacoesTestadas;
@@ -437,6 +475,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testAtualizarInfoPessoais()
 	{
 		++qtdDeOperacoesTestadas;
@@ -449,6 +488,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testEnviarCartaoAniversariantes()
 	{
 		++qtdDeOperacoesTestadas;
@@ -460,6 +500,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testCadastrarSituacaoAC()
 	{
 		++qtdDeOperacoesTestadas;
@@ -473,6 +514,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testHabilitacaoAVencer()
 	{
 		++qtdDeOperacoesTestadas;
@@ -486,6 +528,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testInserirSolicitacaoPessoal()
 	{
 		++qtdDeOperacoesTestadas;
@@ -497,6 +540,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(4,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testCadastrarSolicitacaoRealinhamentoColaborador()
 	{
 		++qtdDeOperacoesTestadas;
@@ -508,6 +552,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(6,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testSolicitarDesligamentoColaborador()
 	{
 		++qtdDeOperacoesTestadas;
@@ -519,6 +564,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(6,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testAprovarSolicitacaoDesligamentoColaborador()
 	{
 		++qtdDeOperacoesTestadas;
@@ -530,6 +576,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testReprovarSolicitacaoDesligamentoColaborador()
 	{
 		++qtdDeOperacoesTestadas;
@@ -541,6 +588,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testCriarAcessoSistema()
 	{
 		++qtdDeOperacoesTestadas;
@@ -552,6 +600,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
+	@Test
 	public void testNotificarCursosAVencer(){
 		++qtdDeOperacoesTestadas;
 		
@@ -567,6 +616,7 @@ public class OperacaoTest extends TestCase
 		
 	}
 	
+	@Test
 	public void testNotificarCertificacoesAVencer(){
 		++qtdDeOperacoesTestadas;
 		
@@ -582,6 +632,7 @@ public class OperacaoTest extends TestCase
 		
 	}
 	
+	@Test
 	public void testColaboradoresComAnoDeEmpresa(){
 		++qtdDeOperacoesTestadas;
 		
@@ -593,8 +644,35 @@ public class OperacaoTest extends TestCase
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
-//	public void testQtdDeOperacoesTestadas() 
-//	{
-//		assertEquals("Quantidade de operações testadas",Operacao.values().length, qtdDeOperacoesTestadas);		
-//	}
+	@Test
+	public void testAutorizacaoSolicitacaoPessoal(){
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_INCLUIR_COLAB;
+		
+		assertEquals(3, operacao.meioComunicação().size());
+		
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
+		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(4,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+	}
+	
+	@Test
+	public void testAlteraStatusAutorizacaoSolicitacaoPessoal(){
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_ALTERAR_STATUS_COLAB;
+		
+		assertEquals(3, operacao.meioComunicação().size());
+		
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
+		assertEquals(6,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(5,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+	}
+	
+	@After
+	public void testQtdDeOperacoesTestadas() 
+	{
+		assertEquals("Quantidade de operações testadas",Operacao.values().length, qtdDeOperacoesTestadas);		
+	}
 }

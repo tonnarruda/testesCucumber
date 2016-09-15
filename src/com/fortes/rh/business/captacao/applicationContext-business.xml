@@ -223,6 +223,9 @@
     <property name="dao">
       <ref bean="candidatoSolicitacaoDao" />
     </property>
+    <property name="parametrosDoSistemaManager">
+      <ref bean="parametrosDoSistemaManager" />
+    </property>
   </bean>
   <bean id="candidatoSolicitacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -61,45 +61,6 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
     	assertEquals(candidatoSolicitacao.getId(), candidatoSolicitacaoManager.findByCandidatoSolicitacao(candidatoSolicitacao).getId());
     }
 
-    public void testInsertCandidatos(){
-
-    	Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
-
-		Candidato c1 = new Candidato();
-		c1.setId(1L);
-
-		Candidato c2 = new Candidato();
-		c2.setId(3L);
-
-		Candidato c3 = new Candidato();
-		c3.setId(2L);
-
-		CandidatoSolicitacao cs1 = CandidatoSolicitacaoFactory.getEntity();
-		cs1.setId(1L);
-		cs1.setCandidato(c1);
-
-		CandidatoSolicitacao cs2 = CandidatoSolicitacaoFactory.getEntity();
-		cs2.setId(2L);
-		cs2.setCandidato(c2);
-
-		CandidatoSolicitacao cs3 = CandidatoSolicitacaoFactory.getEntity();
-		cs3.setId(3L);
-		cs3.setCandidato(c3);
-		cs3.setTriagem(true);
-
-		Collection<CandidatoSolicitacao> cands = new ArrayList<CandidatoSolicitacao>();
-
-		cands.add(cs1);
-		cands.add(cs2);
-		cands.add(cs3);
-
-    	candidatoSolicitacaoDao.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(cands));
-    	candidatoSolicitacaoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(new CandidatoSolicitacao()));
-    	candidatoSolicitacaoDao.expects(once()).method("update").with(ANYTHING);
-
-    	candidatoSolicitacaoManager.insertCandidatos(new String[]{"1", "2", "4"}, solicitacao, StatusCandidatoSolicitacao.INDIFERENTE);
-    }
-
     public void testMoverCandidatos() throws ColecaoVaziaException{
 
     	Long[] candidatosSolicitacaoId = new Long[]{1L,2L,3L};

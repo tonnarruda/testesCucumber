@@ -3,6 +3,7 @@ package com.fortes.rh.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -326,6 +327,16 @@ public final class StringUtil
 			
 			return arrs;
 		}
+	}
+	
+	public static String[] remove(String[] arr, String element) 
+	{
+	    if(element == null || "".equals(element))
+	    	return arr;
+		
+		List<String> list = new ArrayList<String>(Arrays.asList(arr));
+	    list.removeAll(Arrays.asList(element));
+	    return converteCollectionToArrayString(list);
 	}
 	
 	public static String converteCollectionToString(Collection<String> colecao)

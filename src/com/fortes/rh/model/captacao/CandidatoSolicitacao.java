@@ -19,6 +19,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Apto;
+import com.fortes.rh.model.dicionario.StatusAutorizacaoGestor;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
@@ -31,7 +32,7 @@ import com.fortes.rh.util.DateUtil;
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="candidatosolicitacao_sequence", allocationSize=1)
-public class CandidatoSolicitacao extends AbstractModel implements Serializable
+public class CandidatoSolicitacao extends AbstractModel implements Serializable, Cloneable
 {
 	@ManyToOne
 	private Candidato candidato;
@@ -41,11 +42,18 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="candidatoSolicitacao")
 	private Collection<HistoricoCandidato> historicoCandidatos;
 	private char status = StatusCandidatoSolicitacao.INDIFERENTE;
+	private Character statusAutorizacaoGestor; 
+	private Date dataAutorizacaoGestor;
+	private String obsAutorizacaoGestor;
+	@ManyToOne
+	private Usuario usuarioSolicitanteAutorizacaoGestor;
 
 	/* Estes campos são utilizado para exibição dos candidatos da
 	 * solicitação na listagem da solicitação */
 	@Transient
 	private Long colaboradorId;
+	@Transient
+	private String colaboradorNome;
 	@Transient
 	private char apto = Apto.SIM;
 	@Transient
@@ -58,14 +66,12 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 	private String observacao;
 	@Transient
 	private boolean existeColaborador;
-
 	@Transient
 	private int qtdCandidatos;
 	@Transient
 	private int qtdAptos;
 	@Transient
 	private Long colaboradorQuestionarioId;
-	
 
 	public CandidatoSolicitacao()
 	{
@@ -111,6 +117,16 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 		etapaSeletiva.setId(eId);
 		etapaSeletiva.setNome(eNome);
+	}
+	
+	public CandidatoSolicitacao(Candidato candidato, Solicitacao solicitacao, boolean triagem, char status, Character statusAutorizacaoGestor, Usuario usuarioSolicitante){
+		setCandidato(candidato);
+		setSolicitacao(solicitacao);
+		setTriagem(triagem);
+		setStatus(status);
+		setStatusAutorizacaoGestor(statusAutorizacaoGestor);
+		setUsuarioSolicitanteAutorizacaoGestor(usuarioSolicitante);
+		setDataAutorizacaoGestor(new Date());
 	}
 	
 	private void inicializaCandidato() {
@@ -266,17 +282,24 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setSolicitacaoId(Long solicitacaoId)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
-
+		iniciaSolicitacao();
 		solicitacao.setId(solicitacaoId);
 	}
+
+	public void setSolicitacaoDescricao(String solicitacaoDescricao)
+	{
+		iniciaSolicitacao();
+		solicitacao.setDescricao(solicitacaoDescricao);
+	}
+
+	private void iniciaSolicitacao() {
+		if (solicitacao == null)
+			solicitacao = new Solicitacao();
+	}	
 	
 	public void setSolicitacaoData(Date solicitacaoData)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
-		
+		iniciaSolicitacao();
 		solicitacao.setData(solicitacaoData);
 	}
 
@@ -304,15 +327,13 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setSolicitacaoQtd(int qtd)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
+		iniciaSolicitacao();
 		solicitacao.setQuantidade(qtd);
 	}
 
 	public void setSolicitanteId(Long id)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
+		iniciaSolicitacao();
 		if (solicitacao.getSolicitante() == null)
 			solicitacao.setSolicitante(new Usuario());
 		solicitacao.getSolicitante().setId(id);
@@ -320,8 +341,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setSolicitanteNome(String nome)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
+		iniciaSolicitacao();
 		if (solicitacao.getSolicitante() == null)
 			solicitacao.setSolicitante(new Usuario());
 		solicitacao.getSolicitante().setNome(nome);
@@ -329,8 +349,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setAreaOrganizacionalId(Long id)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
+		iniciaSolicitacao();
 		if (solicitacao.getAreaOrganizacional() == null)
 			solicitacao.setAreaOrganizacional(new AreaOrganizacional());
 		solicitacao.getAreaOrganizacional().setId(id);
@@ -338,8 +357,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setAreaOrganizacionalNome(String nome)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
+		iniciaSolicitacao();
 		if (solicitacao.getAreaOrganizacional() == null)
 			solicitacao.setAreaOrganizacional(new AreaOrganizacional());
 		solicitacao.getAreaOrganizacional().setNome(nome);
@@ -347,8 +365,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setFaixaId(Long id)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
+		iniciaSolicitacao();
 		if (solicitacao.getFaixaSalarial() == null)
 			solicitacao.setFaixaSalarial(new FaixaSalarial());
 
@@ -357,18 +374,13 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setFaixaNome(String nome)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
-		if (solicitacao.getFaixaSalarial() == null)
-			solicitacao.setFaixaSalarial(new FaixaSalarial());
-
-		solicitacao.getFaixaSalarial().setNome(nome);
+		iniciaSolicitacao();
+		solicitacao.setFaixaSalarialNome(nome);
 	}
 
 	public void setCargoId(Long id)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
+		iniciaSolicitacao();
 		if (solicitacao.getFaixaSalarial() == null)
 			solicitacao.setFaixaSalarial(new FaixaSalarial());
 		if (solicitacao.getFaixaSalarial().getCargo() == null)
@@ -379,28 +391,20 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setCargoNome(String nome)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
-		if (solicitacao.getFaixaSalarial() == null)
-			solicitacao.setFaixaSalarial(new FaixaSalarial());
-		if (solicitacao.getFaixaSalarial().getCargo() == null)
-			solicitacao.getFaixaSalarial().setCargo(new Cargo());
-
-		solicitacao.getFaixaSalarial().getCargo().setNome(nome);
+		iniciaSolicitacao();
+		solicitacao.setNomeCargo(nome);
 	}
 
 	public void setSolicitacaoObservacaoLiberador(String observacaoLiberador)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
+		iniciaSolicitacao();
 
 		solicitacao.setObservacaoLiberador(observacaoLiberador);
 	}
 
 	public void setDescricaoMotivoSolicitacao(String descricaoMotivoSolicitacao)
 	{
-		if (solicitacao == null)
-			solicitacao = new Solicitacao();
+		iniciaSolicitacao();
 		if (solicitacao.getMotivoSolicitacao() == null)
 			solicitacao.setMotivoSolicitacao(new MotivoSolicitacao());
 
@@ -542,6 +546,11 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 	{
 		this.colaboradorId = colaboradorId;
 	}
+	
+	public void setColaboradorNome(String colaboradorNome)
+	{
+		this.colaboradorNome = colaboradorNome;
+	}
 
 	public Collection<HistoricoCandidato> getHistoricoCandidatos()
 	{
@@ -614,5 +623,76 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 		} catch (Exception e) {
 			return "";
 		}
+	}
+	
+	public void setSolicitacaoNomeCargo(String solicitacaoNomeCargo){
+		iniciaSolicitacao();
+		this.solicitacao.setNomeCargo(solicitacaoNomeCargo);
+	}
+	
+	public void setSolicitacaoNomeArea(String solicitacaoNomeArea){
+		iniciaSolicitacao();
+		this.solicitacao.setNomeArea(solicitacaoNomeArea);
+	}
+	
+	public void setSolicitacaoEstabelecimentoNome(String solicitacaoEstabelecimentoNome){
+		iniciaSolicitacao();
+		this.solicitacao.setEstabelecimentoNome(solicitacaoEstabelecimentoNome);
+	}
+
+	public String getColaboradorNome() {
+		return colaboradorNome;
+	}
+	
+	public String getStatusAutorizacaoGestorFormatado()
+	{
+		return StatusAutorizacaoGestor.getDescricao(getStatusAutorizacaoGestor());
+	}
+
+	public String getDataAutorizacaoGestorFormatado() {
+		return DateUtil.formataDiaMesAno(dataAutorizacaoGestor);
+	}
+	
+	public Date getDataAutorizacaoGestor() {
+		return dataAutorizacaoGestor;
+	}
+
+	public void setDataAutorizacaoGestor(Date dataAutorizacaoGestor) {
+		this.dataAutorizacaoGestor = dataAutorizacaoGestor;
+	}
+
+	public String getObsAutorizacaoGestor() {
+		return obsAutorizacaoGestor;
+	}
+
+	public void setObsAutorizacaoGestor(String obsAutorizacaoGestor) {
+		this.obsAutorizacaoGestor = obsAutorizacaoGestor;
+	}
+
+	public Character getStatusAutorizacaoGestor() {
+		return statusAutorizacaoGestor;
+	}
+
+	public void setStatusAutorizacaoGestor(Character statusAutorizacaoGestor) {
+		this.statusAutorizacaoGestor = statusAutorizacaoGestor;
+	}
+
+	public Usuario getUsuarioSolicitanteAutorizacaoGestor() {
+		return usuarioSolicitanteAutorizacaoGestor;
+	}
+
+	public void setUsuarioSolicitanteAutorizacaoGestor(
+			Usuario usuarioSolicitanteAutorizacaoGestor) {
+		this.usuarioSolicitanteAutorizacaoGestor = usuarioSolicitanteAutorizacaoGestor;
+	}
+	
+	@Override
+	public Object clone()
+	{
+	   try{
+	      return super.clone();
+	   }catch (CloneNotSupportedException e) {
+	      throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto.");
+	   }
 	}
 }

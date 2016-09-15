@@ -2,8 +2,10 @@ package com.fortes.rh.test.dao.hibernate.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
@@ -14,12 +16,15 @@ import com.fortes.rh.dao.captacao.SolicitacaoAvaliacaoDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.EstadoDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
@@ -30,17 +35,23 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.Apto;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusAutorizacaoGestor;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
@@ -53,7 +64,9 @@ import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.util.DateUtil;
 
@@ -71,6 +84,9 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 	private AvaliacaoDao avaliacaoDao;
 	private SolicitacaoAvaliacaoDao solicitacaoAvaliacaoDao;
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
+	private EstabelecimentoDao estabelecimentoDao;
+	private HistoricoColaboradorDao historicoColaboradorDao;
+	private UsuarioDao usuarioDao;
 
 	private Candidato candidato;
 	private Solicitacao solicitacao;
@@ -617,9 +633,69 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals("Duas avaliações não respondidas", 2, candidatoSolicitacaoDao.findAvaliacoesCandidatoSolicitacao(solicitacao.getId(), candidato2.getId()).size());
 	}
 	
-	
-	public void testeAtualizaCandidatoSolicitcaoContratado()
+	public void testFindColabParticipantesDaSolicitacaoByResponsavelArea()
 	{
+		Candidato candidatoDentro = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidatoDentro);
+		
+		Candidato candidatoFora = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidatoFora);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(null, "Colab 1");
+		colaborador1.setCandidato(candidatoDentro);
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(null, "Colab 2");
+		colaborador2.setCandidato(candidatoFora);
+		colaboradorDao.save(colaborador2);
+		
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		Cargo cargo = CargoFactory.getEntity(null, "Cargo Nome");
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity("Faixa Nome", cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("Estabeleciemnto Nome");
+		estabelecimentoDao.save(estabelecimento);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, DateUtil.criarDataMesAno(1, 1, 2016), faixaSalarial, estabelecimento, areaOrganizacional1, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(colaborador2, DateUtil.criarDataMesAno(1, 1, 2016), faixaSalarial, estabelecimento, areaOrganizacional2, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao("Solicitacao", areaOrganizacional1, faixaSalarial, estabelecimento, false);
+		solicitacaoDao.save(solicitacao);
+		
+		Solicitacao solicitacaoEcerrada = SolicitacaoFactory.getSolicitacao("SolicitacaoEncerrada", areaOrganizacional2, faixaSalarial, estabelecimento, true);
+		solicitacaoDao.save(solicitacaoEcerrada);
+		
+		CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity(candidatoDentro, solicitacao, StatusAprovacaoSolicitacao.APROVADO);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao1);
+		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity(candidatoDentro, solicitacaoEcerrada, StatusAprovacaoSolicitacao.APROVADO);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
+		CandidatoSolicitacao candidatoSolicitacao3 = CandidatoSolicitacaoFactory.getEntity(candidatoFora, solicitacao, StatusAprovacaoSolicitacao.APROVADO);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao3);
+		CandidatoSolicitacao candidatoSolicitacao4 = CandidatoSolicitacaoFactory.getEntity(candidatoFora, solicitacaoEcerrada, StatusAprovacaoSolicitacao.APROVADO);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao4);
+		
+		Collection<CandidatoSolicitacao> solicitacoes = candidatoSolicitacaoDao.findColaboradorParticipantesDaSolicitacaoByAreas(new Long[]{areaOrganizacional1.getId()}, null, null, 'T', null, null);
+		
+		assertEquals(1, solicitacoes.size());
+		assertEquals(colaborador1.getNome(), ((CandidatoSolicitacao)solicitacoes.toArray()[0]).getColaboradorNome());
+		assertEquals(solicitacao.getDescricao(), ((CandidatoSolicitacao)solicitacoes.toArray()[0]).getSolicitacao().getDescricao());
+		assertEquals(estabelecimento.getNome(), ((CandidatoSolicitacao)solicitacoes.toArray()[0]).getSolicitacao().getEstabelecimento().getNome());
+		assertEquals(areaOrganizacional1.getNome(), ((CandidatoSolicitacao)solicitacoes.toArray()[0]).getSolicitacao().getAreaOrganizacional().getNome());
+		assertEquals(faixaSalarial.getNomeDeCargoEFaixa(), ((CandidatoSolicitacao)solicitacoes.toArray()[0]).getSolicitacao().getFaixaSalarial().getNomeDeCargoEFaixa());
+	}
+	
+	public void testUpdateStatusAprovacaoResponsavel(){
 		Candidato candidato = CandidatoFactory.getCandidato();
 		candidatoDao.save(candidato);
 		
@@ -646,6 +722,27 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		
 		assertNull(exeception);
 	} 
+		
+//		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(candidato, solicitacao, null);
+//		candidatoSolicitacaoDao.save(candidatoSolicitacao);
+//		
+//		Usuario uauarioSolicitante = UsuarioFactory.getEntity();
+//		usuarioDao.save(uauarioSolicitante);
+//		
+//		CandidatoSolicitacao candidatoSolicitacaoNew = CandidatoSolicitacaoFactory.getEntity();
+//		candidatoSolicitacaoNew.setId(candidatoSolicitacao.getId());
+//		candidatoSolicitacaoNew.setStatusAutorizacaoGestor(StatusAutorizacaoGestor.REPROVADO);
+//		candidatoSolicitacaoNew.setObsAutorizacaoGestor("obsAprovacaoResponsavel");
+//		candidatoSolicitacaoNew.setDataAutorizacaoGestor(new Date());
+//		
+//		candidatoSolicitacaoDao.updateStatusAutorizacaoGestor(candidatoSolicitacaoNew);
+//		candidatoSolicitacaoDao.getHibernateTemplateByGenericDao().flush();
+//		
+//		CandidatoSolicitacao candidatoSolicitacaoRetorno = candidatoSolicitacaoDao.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());
+//		
+//		assertTrue(StatusAutorizacaoGestor.REPROVADO.equals(candidatoSolicitacaoRetorno.getStatusAutorizacaoGestor()));
+//		assertEquals(candidatoSolicitacaoNew.getObsAutorizacaoGestor(), candidatoSolicitacaoRetorno.getObsAutorizacaoGestor());
+//	}
 	
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{
@@ -710,5 +807,17 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 	public void setMotivoSolicitacaoDao(MotivoSolicitacaoDao motivoSolicitacaoDao)
 	{
 		this.motivoSolicitacaoDao = motivoSolicitacaoDao;
+	}
+
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
+		this.estabelecimentoDao = estabelecimentoDao;
+	}
+
+	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
+		this.historicoColaboradorDao = historicoColaboradorDao;
+	}
+
+	public void setUsuarioDao(UsuarioDao usuarioDao) {
+		this.usuarioDao = usuarioDao;
 	}
 }

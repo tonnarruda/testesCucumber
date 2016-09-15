@@ -132,9 +132,11 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private Collection<NivelCompetencia> nivelCompetencias;
 	
-	public Solicitacao()
-	{
-
+	public Solicitacao(){
+	}
+	
+	public Solicitacao(Long id){
+		setId(id);
 	}
 
 	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Long empresaId, Double valorDoHistoricoDaFaixaSalarial, Long faixaSalarialId, Long idCargo, String nomeCargo, String nomeAreaOrganizacional, String nomeSolicitante, Integer qtdVagasPreenchidas)
@@ -311,10 +313,8 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	{
 		if(faixaSalarial == null)
 			setFaixaSalarial(new FaixaSalarial());
-		if(faixaSalarial.getCargo() == null)
-			getFaixaSalarial().setCargo(new Cargo());
 
-		getFaixaSalarial().getCargo().setNome(nomeCargo);
+		getFaixaSalarial().setNomeCargo(nomeCargo);
 	}
 
 	public void setProjectionFaixaSalarialCargoId(Long cargoId)
@@ -927,5 +927,19 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	public void setNivelCompetencias(Collection<NivelCompetencia> nivelCompetencias) {
 		this.nivelCompetencias = nivelCompetencias;
+	}
+
+	public void setFaixaSalarialNome(String faixaSalarialNome) {
+		if(this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+		
+		this.faixaSalarial.setNome(faixaSalarialNome);
+	}
+
+	public void setEstabelecimentoNome(String estabelecimentoNome) {
+		if(this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		
+		this.estabelecimento.setNome(estabelecimentoNome);
 	}
 }

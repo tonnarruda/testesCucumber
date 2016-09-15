@@ -92,5 +92,13 @@
 			</result>
 			<result name="input" type="redirect">list.action?solicitacao.id=${solicitacao.id}</result>
 		</action>
+				
+		<action name="prepareAutorizarColabSolicitacaoPessoal" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="prepareAutorizarColabSolicitacaoPessoal">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareAutorizarColabSolicitacaoPessoal.ftl</result>
+		</action>
+
+		<action name="autorizarColabSolicitacaoPessoal" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="autorizarColabSolicitacaoPessoal">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareAutorizarColabSolicitacaoPessoal.ftl</result>
+		</action>
 	</package>
 </xwork>

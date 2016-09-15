@@ -41,6 +41,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.thread.EnviaEmailSolicitanteThread;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -218,19 +219,18 @@ public class SolicitacaoListAction extends MyActionSupportList
 				candidatoManager.updateDisponivel(true, candidato.getId());
 
 			for (String id : solicitacaosCheckIds) {
-				
-				solicitacao = new Solicitacao();
-				solicitacao.setId(Long.parseLong(id));
-
-				candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao,statusCandSol);
+				solicitacao = new Solicitacao(Long.parseLong(id));
+				candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao, statusCandSol, getEmpresaSistema(), getUsuarioLogado());
 			}
 
-			if(voltarPara != null && voltarPara.equals("../../geral/colaborador/list.action") && !SecurityUtil.verifyRole((SessionMap) ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO"})) {
+			transactionManager.commit(status);
+			
+			if(voltarPara != null && voltarPara.equals("../../geral/colaborador/list.action") && !SecurityUtil.verifyRole((SessionMap) ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_CANDIDATO"})) {
 				setActionMsg("Colaborador inserido na solicitação com sucesso.");
 				return "successColaboradorList";
 			}
 
-			transactionManager.commit(status);
+			
 			if (solicitacaosCheckIds != null && solicitacaosCheckIds.length == 1 && empresa.getId().equals(getEmpresaSistema().getId()))
 				return "successSolicitacao";
 

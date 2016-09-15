@@ -77,6 +77,7 @@ import com.fortes.rh.model.dicionario.EscolaridadeACPessoal;
 import com.fortes.rh.model.dicionario.FormulaTurnover;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
@@ -2728,7 +2729,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colabs;
 	}
 
-	public void insertColaboradoresSolicitacao(Long[] colaboradoresIds, Solicitacao solicitacao, char statusCandidatoSolicitacao) throws Exception{
+	public void insertColaboradoresSolicitacao(Long[] colaboradoresIds, Solicitacao solicitacao, char statusCandidatoSolicitacao, Empresa empresa, Usuario usuarioLogado) throws Exception{
 		Colaborador colaborador = null;
 		Candidato candidato = null;
 		Collection<String> candidatosIds = new ArrayList<String>();
@@ -2744,7 +2745,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			update(colaborador);
 		}
 
-		candidatoSolicitacaoManager.insertCandidatos(candidatosIds.toArray(new String[candidatosIds.size()]), solicitacao, statusCandidatoSolicitacao);
+		candidatoSolicitacaoManager.insertCandidatos(candidatosIds.toArray(new String[candidatosIds.size()]), solicitacao, statusCandidatoSolicitacao, empresa, usuarioLogado);
 	}
 
 	public Collection<Colaborador> ordenaByMediaPerformance(Collection<Colaborador> colaboradores)

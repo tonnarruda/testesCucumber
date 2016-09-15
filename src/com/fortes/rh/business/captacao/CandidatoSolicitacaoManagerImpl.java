@@ -8,70 +8,84 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.StatusAutorizacaoGestor;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<CandidatoSolicitacao, CandidatoSolicitacaoDao> implements CandidatoSolicitacaoManager
 {
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	
     public CandidatoSolicitacao findByCandidatoSolicitacao(CandidatoSolicitacao cand)
     {
         return getDao().findByCandidatoSolicitacao(cand);
     }
 
-    public void insertCandidatos(String[] candidatosId, Solicitacao solicitacao, char status)
-    {
+    public void insertCandidatos(String[] candidatosId, Solicitacao solicitacao, char status, Empresa empresa, Usuario usuarioLogado){
         String[] properties = new String[]{"id","candidato.id","solicitacao.id","triagem"};
         String[] sets = new String[]{"id","candidatoId","solicitacaoId","triagem"};
 
         Collection<CandidatoSolicitacao> cands = findToList(properties, sets, new String[]{"solicitacao"}, new Object[]{solicitacao});
 
-        for (String idCand : candidatosId)
-        {
+        for (String idCand : candidatosId) {
             Candidato candidato = new Candidato();
             candidato.setId(Long.valueOf(idCand));
 
             CandidatoSolicitacao candSolTmp = null;
             boolean existe = false;
 
-            for (CandidatoSolicitacao candidatoSolicitacao : cands)
-            {
-                if (candidatoSolicitacao.getCandidato().getId().equals(candidato.getId()))
-                {
+            for (CandidatoSolicitacao candidatoSolicitacao : cands){
+                if (candidatoSolicitacao.getCandidato().getId().equals(candidato.getId())){
                     candSolTmp = candidatoSolicitacao;
                     existe = true;
                     break;
                 }
             }
 
-            if (existe)
-            {
-                if (candSolTmp.isTriagem())
-                {
+            if (existe) {
+                if (candSolTmp.isTriagem()) {
                     candSolTmp.setTriagem(false);
                     update(candSolTmp);
                 }
-            }
-            else
-            {
-                CandidatoSolicitacao candidatoSol = new CandidatoSolicitacao();
-                candidatoSol.setCandidato(candidato);
-                candidatoSol.setSolicitacao(solicitacao);
-                candidatoSol.setTriagem(false);
-               	candidatoSol.setStatus(status);
-
+            }else{
+            	Character statusAutorizacaoGestor = checaStatusAutorizacaoGestor(empresa, usuarioLogado, candidato.getId(), solicitacao.getId());
+                CandidatoSolicitacao candidatoSol = new CandidatoSolicitacao(candidato, solicitacao, false, status, statusAutorizacaoGestor, usuarioLogado);
                 save(candidatoSol);
             }
         }
     }
+    
+	private Character checaStatusAutorizacaoGestor(Empresa empresa, Usuario usuarioLogado, Long candidatoId, Long solicitacaoId) {
+		Character statusAutorizacaoGestor = null;
+		
+		if(parametrosDoSistemaManager.findById(1L).isAutorizacaoGestorNaSolicitacaoPessoal()){
+			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+			Colaborador colaborador = colaboradorManager.findByCandidato(candidatoId, empresa.getId());
+		
+			if(colaborador != null){
+				GerenciadorComunicacaoManager gerenciadorComunicacaoManager = (GerenciadorComunicacaoManager) SpringUtil.getBean("gerenciadorComunicacaoManager");
+				gerenciadorComunicacaoManager.enviarAvisoAoInserirColaboradorSolPessoal(empresa, usuarioLogado, colaborador.getId(), solicitacaoId);
+				statusAutorizacaoGestor = StatusAutorizacaoGestor.ANALISE;
+			}
+		}
+
+		return statusAutorizacaoGestor;
+	}
 
     public void moverCandidatos(Long[] candidatosSolicitacaoId, Solicitacao solicitacao) throws ColecaoVaziaException
     {
@@ -203,11 +217,21 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		getDao().setStatusBySolicitacaoAndCandidato(status, candidatoId, solicitacaoId);
 	}
 	
-	
 	public void atualizaCandidatoSolicitacaoAoReligarColaborador(Long colaboradorId) 
 	{
 		getDao().setStatusByColaborador(StatusCandidatoSolicitacao.APROMOVER, colaboradorId);
 		getDao().atualizaCandidatoSolicitacaoStatusContratado(colaboradorId);
 	}
 	
+	public Collection<CandidatoSolicitacao> findColaboradorParticipantesDaSolicitacaoByAreas(Collection<AreaOrganizacional> areasOrganizacionais, String colaboradorNomeBusca, String solicitacaoDescricaoBusca, char statusBusca, Integer page, Integer pagingSize){
+		return getDao().findColaboradorParticipantesDaSolicitacaoByAreas(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areasOrganizacionais), colaboradorNomeBusca, solicitacaoDescricaoBusca, statusBusca, page, pagingSize);
+	}
+
+	public void updateStatusAutorizacaoGestor(CandidatoSolicitacao candidatoSolicitacao) {
+		getDao().updateStatusAutorizacaoGestor(candidatoSolicitacao);
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
 }

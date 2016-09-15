@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import mockit.Mockit;
+
+import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
@@ -14,6 +18,7 @@ import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
@@ -21,13 +26,17 @@ import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction;
 import com.opensymphony.xwork.Action;
 
@@ -41,6 +50,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
 	private Mock configuracaoNivelCompetenciaManager;
 	private Mock historicoColaboradorManager;
 	private Mock historicoCandidatoManager;
+	private Mock areaOrganizacionalManager;
 	
     protected void setUp() throws Exception
     {
@@ -53,6 +63,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
         configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
         historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
         historicoCandidatoManager = new Mock(HistoricoCandidatoManager.class);
+        areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
         
         action.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) manager.proxy());
         action.setEtapaSeletivaManager((EtapaSeletivaManager) etapaSeletivaManager.proxy());
@@ -61,6 +72,9 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
         action.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
         action.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
         action.setHistoricoCandidatoManager((HistoricoCandidatoManager) historicoCandidatoManager.proxy());
+        action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+        
+        Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
 
     protected void tearDown() throws Exception
@@ -106,7 +120,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
     	solicitacao.setFaixaSalarial(faixaSalarial);
     	action.setSolicitacao(solicitacao);
     	action.setPage(2);    	
-    	action.setVisualizar('A');;
+    	action.setVisualizar('A');
     	
     	Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
     	Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = new ArrayList<ConfiguracaoNivelCompetencia>();

@@ -103,7 +103,6 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 		this.cargo.setId(projectionCargoId);
 	}
 	
-	
 	public void setProjectionColaboradorId(Long projectionColaboradorId)
 	{
 		inicializaColaborador();

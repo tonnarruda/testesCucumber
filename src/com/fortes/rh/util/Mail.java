@@ -52,7 +52,8 @@ public class Mail
 
     public void send(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, boolean utilizarThread, String... to) throws AddressException, MessagingException
     {
-    	procSend(empresa, parametros, subject, body, null, utilizarThread, to);
+    	if(to != null && to.length > 0)
+    		procSend(empresa, parametros, subject, body, null, utilizarThread, to);
     }
     
     public void send(String from, String subject, String body, String... to) throws AddressException, MessagingException

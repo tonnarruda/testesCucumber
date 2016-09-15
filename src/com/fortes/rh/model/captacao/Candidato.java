@@ -35,6 +35,7 @@ import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
@@ -113,6 +114,9 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="candidato", cascade=CascadeType.ALL)
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
+	
+	@OneToOne (mappedBy="candidato", fetch = FetchType.LAZY)
+	private Colaborador colaborador;
 
 	@Lob
 	private String ocrTexto;
@@ -1231,5 +1235,13 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 			camposExtras = new CamposExtras();
 		
 		this.camposExtras.setId(camposExtrasId);
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 }

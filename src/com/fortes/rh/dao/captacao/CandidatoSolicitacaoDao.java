@@ -32,4 +32,6 @@ public interface CandidatoSolicitacaoDao extends GenericDao<CandidatoSolicitacao
 	Collection<ColaboradorQuestionario> findAvaliacoesCandidatoSolicitacao(Long solicitacaoId, Long candidatoId);
 	void setStatusBySolicitacaoAndCandidato(char status, Long candidatoId,Long solicitacaoId);
 	public void atualizaCandidatoSolicitacaoStatusContratado(Long colaboradorId);
+	Collection<CandidatoSolicitacao> findColaboradorParticipantesDaSolicitacaoByAreas(Long[] areasOrganizacionaisId, String solicitacaoDescricaoBusca, String colaboradorNomeBusca, char statusBusca, Integer page, Integer pagingSize);
+	void updateStatusAutorizacaoGestor(CandidatoSolicitacao candidatoSolicitacao);
 }

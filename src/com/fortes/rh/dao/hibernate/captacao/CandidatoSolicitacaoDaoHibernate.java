@@ -8,12 +8,14 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.Type;
 
@@ -22,8 +24,10 @@ import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
@@ -125,6 +129,9 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         ProjectionList p = Projections.projectionList().create();
         p.add(Projections.property("cs.id"), "id");
         p.add(Projections.property("cs.status"), "status");
+        p.add(Projections.property("cs.statusAutorizacaoGestor"), "statusAutorizacaoGestor");
+        p.add(Projections.property("cs.obsAutorizacaoGestor"), "obsAutorizacaoGestor");
+        p.add(Projections.property("cs.dataAutorizacaoGestor"), "dataAutorizacaoGestor");
         p.add(Projections.property("c.id"), "candidatoId");
         p.add(Projections.property("c.blackList"), "projectionCandidatoBlackList");
         p.add(Projections.property("s.id"), "solicitacaoId");
@@ -146,6 +153,10 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         ProjectionList p = Projections.projectionList().create();
         p.add(Projections.property("cs.id"), "id");
         p.add(Projections.property("cs.status"), "status");
+        p.add(Projections.property("cs.statusAutorizacaoGestor"), "statusAutorizacaoGestor");
+        p.add(Projections.property("cs.dataAutorizacaoGestor"), "dataAutorizacaoGestor");
+        p.add(Projections.property("cs.obsAutorizacaoGestor"), "obsAutorizacaoGestor");
+        p.add(Projections.property("col.solicitacao.id"), "solicitacaoId");//usado para regra de excluir em candidatosolicitacaoList
         p.add(Projections.property("c.id"), "candidatoId");
         p.add(Projections.property("c.nome"), "candidatoNome");
         p.add(Projections.property("c.contato.foneFixo"), "candidatoFoneFixo");
@@ -188,6 +199,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         criteria.createCriteria("cs.historicoCandidatos", "h", Criteria.LEFT_JOIN);
         criteria.createCriteria("h.etapaSeletiva", "e", Criteria.LEFT_JOIN);
         criteria.createCriteria("c.empresa", "emp", Criteria.LEFT_JOIN);
+        criteria.createCriteria("c.colaborador", "col", Criteria.LEFT_JOIN);
         
 		criteria.add(Expression.eq("cs.triagem", false));
 
@@ -565,6 +577,89 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		Query query = getSession().createQuery(hql);
 		query.setCharacter("status", StatusCandidatoSolicitacao.CONTRATADO);
 		query.setLong("colaboradorId", colaboradorId);
+	}
+
+	public Collection<CandidatoSolicitacao> findColaboradorParticipantesDaSolicitacaoByAreas(Long[] areasOrganizacionaisId, String solicitacaoDescricaoBusca, String colaboradorNomeBusca, char statusBusca, Integer page, Integer pagingSize){
+		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
+		criteria.createCriteria("s.areaOrganizacional", "aos");
+		criteria.createCriteria("s.estabelecimento", "est");
+		criteria.createCriteria("s.faixaSalarial", "fs");
+		criteria.createCriteria("fs.cargo", "cg");
+		criteria.createCriteria("s.candidatoSolicitacaos", "cs");
+		criteria.createCriteria("cs.candidato", "c");
+		criteria.createCriteria("c.colaborador", "col");
+		criteria.createCriteria("col.historicoColaboradors", "hc");
+		
+		ProjectionList p = projectionsFindColaboradorParticipantesDaSolicitacaoByAreas();
+		criteria.setProjection(Projections.distinct(p));
+		
+		if(!StringUtils.isEmpty(solicitacaoDescricaoBusca))
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.descricao) ilike  normalizar(?)", "%" + solicitacaoDescricaoBusca + "%", Hibernate.STRING));
+		
+		if(!StringUtils.isEmpty(colaboradorNomeBusca))
+			criteria.add(Restrictions.sqlRestriction("normalizar(col7_.nome) ilike  normalizar(?)", "%" + colaboradorNomeBusca + "%", Hibernate.STRING));
+		
+		if(statusBusca != 'T')
+			criteria.add(Expression.eq("cs.statusAutorizacaoGestor", statusBusca));
+		
+		criteria.add(Expression.isNotNull("cs.statusAutorizacaoGestor"));
+		
+		criteria.add(Expression.in("hc.areaOrganizacional.id", areasOrganizacionaisId));
+		criteria.add(Expression.eq("s.encerrada", false));
+		criteria.add(Subqueries.propertyEq("hc.data", montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO)));
+		
+		if(page != null){
+			criteria.setFirstResult(((page - 1) * pagingSize));
+			criteria.setMaxResults(pagingSize);			
+		}
+		
+		criteria.addOrder(Order.asc("col.nome"));
+		criteria.addOrder(Order.asc("s.descricao"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(CandidatoSolicitacao.class));
+		
+		return criteria.list();
+	}
+
+	private ProjectionList projectionsFindColaboradorParticipantesDaSolicitacaoByAreas() {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("s.id"), "solicitacaoId");
+		p.add(Projections.property("s.descricao"), "solicitacaoDescricao");
+		p.add(Projections.property("col.id"), "colaboradorId");
+		p.add(Projections.property("col.nome"), "colaboradorNome");
+		p.add(Projections.property("cs.id"), "id");
+		p.add(Projections.property("cs.statusAutorizacaoGestor"), "statusAutorizacaoGestor");
+		p.add(Projections.property("cs.dataAutorizacaoGestor"), "dataAutorizacaoGestor");
+		p.add(Projections.property("cs.obsAutorizacaoGestor"), "obsAutorizacaoGestor");
+		p.add(Projections.property("fs.nome"), "faixaNome");
+		p.add(Projections.property("cg.nome"), "cargoNome");
+		p.add(Projections.property("est.nome"), "solicitacaoEstabelecimentoNome");
+		p.add(Projections.sqlProjection("monta_familia_area(aos1_.id) as solicitacaoNomeArea", new String[] {"solicitacaoNomeArea"}, new Type[] {Hibernate.TEXT}), "solicitacaoNomeArea");
+		return p;
+	}
+	
+	private DetachedCriteria montaSubQueryHistoricoColaborador(Date data, Integer status)
+	{
+		return DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "col.id"))
+				.add(Restrictions.le("hc2.data", data))
+				.add(Restrictions.eq("hc2.status", status));
+	}
+
+	public void updateStatusAutorizacaoGestor(CandidatoSolicitacao candidatoSolicitacao) {
+		String hql = "update CandidatoSolicitacao set "
+				+ "statusAutorizacaoGestor = :statusAutorizacaoGestor, "
+				+ "dataAutorizacaoGestor = :dataAutorizacaoGestor, "
+				+ "obsAutorizacaoGestor = :obsAutorizacaoGestor "
+				+ "where id = :id ";
+		
+		Query query = getSession().createQuery(hql);
+		query.setDate("dataAutorizacaoGestor", candidatoSolicitacao.getDataAutorizacaoGestor());
+		query.setCharacter("statusAutorizacaoGestor", candidatoSolicitacao.getStatusAutorizacaoGestor());
+		query.setString("obsAutorizacaoGestor", candidatoSolicitacao.getObsAutorizacaoGestor());
+		query.setLong("id", candidatoSolicitacao.getId());
 		
 		query.executeUpdate();
 	}

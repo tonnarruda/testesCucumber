@@ -73,7 +73,7 @@ public abstract class Menu
 						menu.append("</ul>\n");
 					}
 
-					menu.append(getFilhos(papel.getId(), contexto, empresaLogada, idDoUsuario));
+					menu.append(getFilhos(papel.getId(), contexto, empresaLogada, idDoUsuario, parametros));
 
 					if (exibeMenuTru)
 						menu.append("<li><a href='" + contexto + "/exportacao/prepareExportacaoTreinamentos.action'>Exportar Curso/Turma como ocorrência para o TRU</a>");
@@ -121,7 +121,7 @@ public abstract class Menu
 		return menu.toString();
 	}
 
-	private static String getFilhos(Long id, String contexto, Empresa empresaLogada, Long idDoUsuario)
+	private static String getFilhos(Long id, String contexto, Empresa empresaLogada, Long idDoUsuario, ParametrosDoSistema parametros)
 	{
 		StringBuilder menuFilho = new StringBuilder();
 		String maisFilhos = "";
@@ -141,12 +141,13 @@ public abstract class Menu
 					menuFilho.append("<li>");
 					
 					if (verificaPapeisParaEmpresasIntegradas(papel, empresaLogada) && verificaEmpresaComSolicitacaoDesligamento(papel, empresaLogada) 
-							&& verificaPapeisParaCursosOuCertificacaoVencidasAVencer(papel, empresaLogada) && verificaPapeisUsuarioFortes(papel, idDoUsuario)) 
+							&& verificaPapeisParaCursosOuCertificacaoVencidasAVencer(papel, empresaLogada) && verificaPapeisUsuarioFortes(papel, idDoUsuario)
+							&& verificaParametrosSistemaAutorizacaoSolicitacaoPessoal(papel, parametros)) 
 					{
 						menuFilho.append("<a href='" + url + "'>" + papel.getNome() + "</a>");
 					}
 					
-					maisFilhos = getFilhos(papel.getId(), contexto, empresaLogada, idDoUsuario);
+					maisFilhos = getFilhos(papel.getId(), contexto, empresaLogada, idDoUsuario, parametros);
 	
 					if (!maisFilhos.equals(""))
 					{
@@ -187,5 +188,10 @@ public abstract class Menu
 	private static boolean verificaPapeisUsuarioFortes(Papel papel, Long idDoUsuario) 
 	{
 		return !papel.getCodigo().equalsIgnoreCase("USUARIO_FORTES") || idDoUsuario.equals(1L);
+	}
+	
+	private static boolean verificaParametrosSistemaAutorizacaoSolicitacaoPessoal(Papel papel, ParametrosDoSistema parametros) 
+	{
+		return !papel.getCodigo().equalsIgnoreCase("ROLE_MOV_AUTOR_COLAB_SOL_PESSOAL") || parametros.isAutorizacaoGestorNaSolicitacaoPessoal();
 	}
 }

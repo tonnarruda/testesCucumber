@@ -111,11 +111,11 @@
 
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" id="form" action="list.action" validate="true" method="POST">
-			<@ww.select label="Etapa" name="etapaSeletivaId" list="etapas" listKey="id" listValue="nome" headerKey="" headerValue="Todas" liClass="liLeft"/>
-			<@ww.select label="Situação" name="visualizar" list=r"#{'T':'Todas','A':'Aptos', 'I':'Indiferente', 'N':'Não Aptos', 'P':'Contratados/Promovidos'}" />
-			<@ww.textfield label="Nome" name="nomeBusca"/>
-			<@ww.textfield label="Indicado por" name="indicadoPor"/>
-			<@ww.textfield label="Observações do RH" name="observacaoRH"  cssStyle="width: 240px;"/>
+			<@ww.select label="Etapa" name="etapaSeletivaId" list="etapas" listKey="id" listValue="nome" headerKey="" headerValue="Todas" cssStyle="width: 450px;"/>
+			<@ww.select label="Situação" name="visualizar" list=r"#{'T':'Todas','A':'Aptos', 'I':'Indiferente', 'N':'Não Aptos', 'P':'Contratados/Promovidos'}" cssStyle="width: 450px;"/>
+			<@ww.textfield label="Nome" name="nomeBusca" cssStyle="width: 450px;"/>
+			<@ww.textfield label="Indicado por" name="indicadoPor" cssStyle="width: 450px;"/>
+			<@ww.textfield label="Observações do RH" name="observacaoRH" cssStyle="width: 450px;"/>
 			<@ww.hidden name="solicitacao.id" />
 			<@ww.hidden id="pagina" name="page"/>
 
@@ -168,11 +168,56 @@
 			<#assign classe="contratado"/>
 		</#if>
 		
-		<@display.column title="Ações" media="html" class="acao" style="width: 140px;">
+		<#assign disabledExcluir = solicitacao.encerrada || ((candidatoSolicitacao.etapaSeletiva?exists && candidatoSolicitacao.etapaSeletiva.id?exists) 
+		|| (candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists && candidatoSolicitacao.candidato.contratado && candidatoSolicitacao.status != 'A'
+		&& candidatoSolicitacao.solicitacao?exists && candidatoSolicitacao.solicitacao.id?exists && candidatoSolicitacao.solicitacao.id == solicitacao.id))/>
 		
-			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_HISTORICO" href="../historicoCandidato/list.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}" imgTitle="Histórico" imgName="page_user.gif" disabled=solicitacao.encerrada imgTitleDisabled="Esta solicitação já foi encerrada." />
+		<#assign msgDisabledExcluir = ""/>
+		<#if disabledExcluir>
+			<#if solicitacao.encerrada>
+				<#assign msgDisabledExcluir="Esta solicitação já foi encerrada."/>
+			<#elseif (candidatoSolicitacao.etapaSeletiva?exists && candidatoSolicitacao.etapaSeletiva.id?exists)> 
+				<#assign msgDisabledExcluir="Este candidato já possui históricos. Não é possível removê-lo da seleção."/>
+			<#else>
+				<#if candidatoSolicitacao.status == 'C'>
+					<#assign msgDisabledExcluir="Este candidato foi contratado. Não é possível removê-lo da seleção."/>
+				<#else>
+					<#assign msgDisabledExcluir="Este candidato foi promovido. Não é possível removê-lo da seleção."/>
+				</#if>
+			</#if>
+		</#if>
+		
+		<@authz.authorize ifAllGranted="ROLE_MOV_AUTOR_COLAB_SOL_PESSOAL">
+			<#if candidatoSolicitacao.statusAutorizacaoGestor?exists>
+				<#assign autorizadoPeloGestor =  candidatoSolicitacao.statusAutorizacaoGestor == 'A'/>
+				
+				<#if candidatoSolicitacao.statusAutorizacaoGestor == 'I'>
+					<#assign titleAceito="Aguardando Aprovação do Gestor"/>
+				<#elseif candidatoSolicitacao.statusAutorizacaoGestor == 'R'>
+					<#assign titleAceito="Não Aprovado pelo Gestor"/>
+				<#else>
+					<#assign titleAceito=""/>
+				</#if>
+				
+				<#assign titleDisabled=titleAceito/>
+				<#assign titleDisabledAnexo=titleAceito/>
+			<#else>
+				<#assign autorizadoPeloGestor=true/>
+				<#assign titleDisabled="Esta solicitação já foi encerrada."/>
+				<#assign titleDisabledAnexo="Não há avaliações definidas para essa solicitação"/>
+			</#if>
+		</@authz.authorize>
+		<@authz.authorize ifNotGranted="ROLE_MOV_AUTOR_COLAB_SOL_PESSOAL">
+			<#assign autorizadoPeloGestor=true/>
+			<#assign titleDisabled="Esta solicitação já foi encerrada."/>
+			<#assign titleDisabledAnexo="Não há avaliações definidas para essa solicitação"/>
+		</@authz.authorize>
+		
+		<@display.column title="Ações" media="html" class="acao" style="width: 140px;">
+			
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_HISTORICO" href="../historicoCandidato/list.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}" imgTitle="Histórico" imgName="page_user.gif" imgTitleDisabled=titleDisabled disabled=solicitacao.encerrada || !autorizadoPeloGestor/>
 	
-			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_COMPETENCIAS" href="../nivelCompetencia/prepareCompetenciasByCandidato.action?&candidato.id=${candidatoSolicitacao.candidato.id}&faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}" imgTitle="Competências" imgName="competencias.gif" />
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_COMPETENCIAS" href="../nivelCompetencia/prepareCompetenciasByCandidato.action?&candidato.id=${candidatoSolicitacao.candidato.id}&faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}" imgTitle="Competências" imgName="competencias.gif" imgTitleDisabled=titleDisabled disabled=!autorizadoPeloGestor/>
 	
 			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_VISUALIZARCURRICULO" href="javascript:popup('../candidato/infoCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&origemList=CA', 580, 750)" imgTitle="Visualizar Currículo" imgName="page_curriculo.gif" />
 	
@@ -180,7 +225,7 @@
 				<#if !solicitacao.encerrada>
 					<#assign nomeFormatado=stringUtil.removeApostrofo(candidatoSolicitacao.candidato.nome)>
 					
-					<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C')>
+					<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C' || !autorizadoPeloGestor)>
 						<img border="0" style="opacity:0.3;filter:alpha(opacity=30)" title="${titleAceito}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
 					<#else>
 						<#if candidatoSolicitacao?exists && candidatoSolicitacao.candidato.empresa.id != solicitacao.empresa.id>
@@ -196,28 +241,12 @@
 				</#if>
 			</@authz.authorize>
 			
-			<#assign disabledExcluir = solicitacao.encerrada || ((candidatoSolicitacao.etapaSeletiva?exists && candidatoSolicitacao.etapaSeletiva.id?exists) || (candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists && candidatoSolicitacao.candidato.contratado && candidatoSolicitacao.status != 'A'))/>
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_EXCLUIR" href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}'});" imgTitle="Excluir" imgName="delete.gif" imgTitleDisabled=msgDisabledExcluir disabled=disabledExcluir/>
 			
-			<#assign msgDisabledExcluir = ""/>
-			<#if disabledExcluir>
-				<#if solicitacao.encerrada>
-					<#assign msgDisabledExcluir="Esta solicitação já foi encerrada."/>
-				<#elseif (candidatoSolicitacao.etapaSeletiva?exists && candidatoSolicitacao.etapaSeletiva.id?exists)> 
-					<#assign msgDisabledExcluir="Este candidato já possui históricos. Não é possível removê-lo da seleção."/>
-				<#else>
-					<#if candidatoSolicitacao.status == 'C'>
-						<#assign msgDisabledExcluir="Este candidato foi contratado. Não é possível removê-lo da seleção."/>
-					<#else>
-						<#assign msgDisabledExcluir="Este candidato foi promovido. Não é possível removê-lo da seleção."/>
-					</#if>
-				</#if>
-			</#if>
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO" href="../../geral/documentoAnexo/listCandidato.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidatoSolicitacao.candidato.id}&solicitacaoId=${solicitacao.id}" imgTitle="Documentos Anexos" imgName="anexos.gif" imgTitleDisabled=titleDisabled disabled=solicitacao.encerrada || !autorizadoPeloGestor/>
 			
-			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_EXCLUIR" href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}'});" imgTitle="Excluir" imgName="delete.gif" disabled=disabledExcluir imgTitleDisabled=msgDisabledExcluir/>
-			
-			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO" href="../../geral/documentoAnexo/listCandidato.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidatoSolicitacao.candidato.id}&solicitacaoId=${solicitacao.id}" imgTitle="Documentos Anexos" imgName="anexos.gif" disabled=solicitacao.encerrada imgTitleDisabled="Esta solicitação já foi encerrada."/>
-			
-			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_AVALIACOES" href="javascript:;" onclick="getMenuAvaliacoes(event, ${solicitacao.id}, ${candidatoSolicitacao.candidato.id})" imgTitle="Avaliações da Solicitação" imgName="form.gif" disabled=!(solicitacaoAvaliacaos?exists && (solicitacaoAvaliacaos?size > 0)) imgTitleDisabled="Não há avaliações definidas para essa solicitação"/>
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_AVALIACOES" href="javascript:;" onclick="getMenuAvaliacoes(event, ${solicitacao.id}, ${candidatoSolicitacao.candidato.id})" imgTitle="Avaliações da Solicitação" imgName="form.gif" imgTitleDisabled=titleDisabledAnexo disabled=!(solicitacaoAvaliacaos?exists && (solicitacaoAvaliacaos?size > 0)) || !autorizadoPeloGestor/>
+		
 		</@display.column>
 
 		<@display.column title="Nome" class="${classe}">
@@ -232,6 +261,31 @@
 		<@display.column property="etapaSeletiva.nome" title="Etapa" class="${classe}"/>
 		<@display.column property="responsavel" title="Responsável" class="${classe}"/>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" class="${classe}" style="text-align: center;"/>
+		<@authz.authorize ifAllGranted="ROLE_MOV_AUTOR_COLAB_SOL_PESSOAL">
+			<#if candidatoSolicitacao.obsAutorizacaoGestor?exists && candidatoSolicitacao.obsAutorizacaoGestor != "">
+				<#assign obsAutorizacaoGestor="\nObs: ${candidatoSolicitacao.obsAutorizacaoGestor}"/>
+			<#else>
+				<#assign obsAutorizacaoGestor="\nObs: -"/>
+			</#if>
+			<#if candidatoSolicitacao.dataAutorizacaoGestor?exists>
+				<#assign dataAutorizacaoGestor="\nData: ${candidatoSolicitacao.dataAutorizacaoGestorFormatado}"/>
+			<#else>
+				<#assign dataAutorizacaoGestor="\nData: -"/>
+			</#if>
+			<@display.column title="Status Autorização" media="html" class="acao" style="width: 50px;">	
+				<#if candidatoSolicitacao.statusAutorizacaoGestor?exists>
+					<#if candidatoSolicitacao.statusAutorizacaoGestor == 'A'>
+						<img border="0"  title="Status: Aprovado ${dataAutorizacaoGestor} ${obsAutorizacaoGestor}" src="<@ww.url includeParams="none" value="/imgs/status_green.png"/>"/>
+					<#elseif candidatoSolicitacao.statusAutorizacaoGestor == 'R'>
+						<img border="0"  title="Status: Não Aprovado ${dataAutorizacaoGestor} ${obsAutorizacaoGestor}" src="<@ww.url includeParams="none" value="/imgs/status_red.png"/>"/>
+					<#elseif candidatoSolicitacao.statusAutorizacaoGestor == 'I'>
+						<img border="0"  title="Status: Em Análise ${dataAutorizacaoGestor} ${obsAutorizacaoGestor}" src="<@ww.url includeParams="none" value="/imgs/status_yellow.png"/>"/>
+					</#if>	
+				<#else>
+					<img border="0"  title="Este candidato não passou pelo processo de autorização do gestor." src="<@ww.url includeParams="none" value="/imgs/status_disabled.png"/>"/>
+				</#if>	
+			</@display.column>
+		</@authz.authorize>
 		<@display.column title="Obs." class="${classe}" style="text-align: center;">
 			<#if candidatoSolicitacao.observacao?exists && candidatoSolicitacao.observacao?trim != "">
 				<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${candidatoSolicitacao.observacao?j_string}');return false">...</span>

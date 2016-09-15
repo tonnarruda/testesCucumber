@@ -7,6 +7,7 @@ import java.util.Date;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.Turma;
@@ -66,4 +67,6 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviarEmailAoCriarAcessoSistema(String login, String senha, String email, Empresa empresa);
 	void enviarNotificacaoCursosOuCertificacoesAVencer();
 	void enviarMensagemAoExluirRespostasAvaliacaoPeriodoDeExperiencia(ColaboradorQuestionario colaboradorQuestionario, Usuario usuario, Empresa empresa);
+	void enviarAvisoAoInserirColaboradorSolPessoal(Empresa empresa, Usuario usuarioLogado, Long colaboradorId, Long solicitacaoId); 
+	void enviarAvisoAoAlterarStatusColaboradorSolPessoal(Usuario usuarioLogado, CandidatoSolicitacao candidatoSolicitacaoAnterior, CandidatoSolicitacao candidatoSolicitacao, Empresa empresa);
 }

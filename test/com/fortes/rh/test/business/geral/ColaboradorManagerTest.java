@@ -636,11 +636,11 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	colaboradorDao.expects(atLeastOnce()).method("update").with(ANYTHING).isVoid();
     	
     	candidatoManager.expects(atLeastOnce()).method("saveOrUpdateCandidatoByColaborador").with(ANYTHING).will(returnValue(candidato));
-    	candidatoSolicitacaoManager.expects(atLeastOnce()).method("insertCandidatos").with(ANYTHING, eq(solicitacao), eq(StatusCandidatoSolicitacao.APROMOVER)).isVoid();
+    	candidatoSolicitacaoManager.expects(atLeastOnce()).method("insertCandidatos").with(new Constraint[]{ANYTHING, eq(solicitacao), eq(StatusCandidatoSolicitacao.APROMOVER), ANYTHING, ANYTHING}).isVoid();
     	
     	Exception exception = null;
     	try {
-			manager.insertColaboradoresSolicitacao(colaboradoresIds, solicitacao, StatusCandidatoSolicitacao.APROMOVER);
+			manager.insertColaboradoresSolicitacao(colaboradoresIds, solicitacao, StatusCandidatoSolicitacao.APROMOVER, null, null);
 		} catch (Exception e) {
 			exception = e;
 			e.printStackTrace();

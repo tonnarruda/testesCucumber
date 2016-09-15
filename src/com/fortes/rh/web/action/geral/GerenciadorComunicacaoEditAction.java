@@ -10,10 +10,12 @@ import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -26,6 +28,7 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	private UsuarioManager usuarioManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
 	private GerenciadorComunicacao gerenciadorComunicacao;
 	private Collection<GerenciadorComunicacao> gerenciadorComunicacaos;
@@ -221,7 +224,8 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 
 	public Map<String, Collection<Operacao>> getOperacoes()
 	{
-		return Operacao.getHashMapGrupos();
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+		return Operacao.getHashMapGrupos(parametrosDoSistema);
 	}
 	
 	public TreeMap<Integer, String> getEnviarParas() {
@@ -270,5 +274,10 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
 	{
 		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public void setParametrosDoSistemaManager(
+			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

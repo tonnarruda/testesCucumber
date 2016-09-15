@@ -1,36 +1,48 @@
 package com.fortes.rh.test.business.acesso;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import mockit.Mockit;
 
-import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.fortes.rh.business.acesso.PapelManagerImpl;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.exception.NotConectAutenticationException;
 import com.fortes.rh.exception.NotRegistredException;
 import com.fortes.rh.model.acesso.Papel;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockAutenticador;
 import com.fortes.rh.util.Autenticador;
 
-public class PapelManagerTest extends MockObjectTestCase
+public class PapelManagerTest
 {
-	private PapelManagerImpl papelManager;
-	private Mock papelDao;
+	private PapelManagerImpl papelManager = new PapelManagerImpl();
+	private PapelDao papelDao;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
-	protected void setUp(){
+	@Before
+	public void setUp(){
 
-		papelManager = new PapelManagerImpl();
-
-		papelDao = new Mock(PapelDao.class);
-		papelManager.setDao((PapelDao) papelDao.proxy());
+		papelDao = mock(PapelDao.class);
+		papelManager.setDao(papelDao);
+		
+		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
+		papelManager.setParametrosDoSistemaManager(parametrosDoSistemaManager);
 		
 		Mockit.redefineMethods(Autenticador.class, MockAutenticador.class);
 	}
 
+	@Test
 	public void testGetPerfilOrganizado() throws NotConectAutenticationException, NotRegistredException{
 
 		Collection<Papel> papeis = new ArrayList<Papel>();
@@ -54,23 +66,33 @@ public class PapelManagerTest extends MockObjectTestCase
 		papeis.add(p3);
 		papeis.add(p4);
 
-		papelDao.expects(once()).method("findNotIn").will(returnValue(papeis));
+		Collection<Long> ids = new ArrayList<Long>();
+		
+		when(papelDao.findNotIn(ids)).thenReturn(papeis);
+		when(parametrosDoSistemaManager.findById(1L)).thenReturn(ParametrosDoSistemaFactory.getEntity());
 		
 		String[] permissoes = new String[]{"1","2","3"};
 
 		assertNotNull(papelManager.getPerfilOrganizado(permissoes, null, null));
 	}
 	
+	@Test
 	public void testGetPapeisPermitidos()
 	{
-		String[] permissoes = new String[]{"1","2","3"};
+		Collection<Long> papeisPermitidosIds = Arrays.asList(357L, 361L, 353L, 365L, 373L, 382L, 75L, 37L, 495L);
 		
-		Collection<Long> papeisPermitidosIds = new ArrayList<Long>();
-		papeisPermitidosIds.add(1L);
-		papeisPermitidosIds.add(2L);
-		papeisPermitidosIds.add(3L);
+		Papel p1 = new Papel();
+		p1.setId(99999999999999999L);
+
+		Papel p2 = new Papel();
+		p2.setId(8888888888888888888L);
+		p2.setPapelMae(p1);
 		
-		papelDao.expects(once()).method("findAll").will(returnValue(papeisPermitidosIds));
+		Collection<Papel> papeis = new ArrayList<Papel>();
+		papeis.add(p1);
+		papeis.add(p2);
+		
+		when(papelDao.findAll()).thenReturn(papeis);
 		
 		try {
 			assertEquals(papeisPermitidosIds, papelManager.getPapeisPermitidos());
@@ -80,6 +102,7 @@ public class PapelManagerTest extends MockObjectTestCase
 		}
 	}
 	
+	@Test
 	public void testMontarArvore()
 	{
 		Collection<Papel> papeis = new ArrayList<Papel>();

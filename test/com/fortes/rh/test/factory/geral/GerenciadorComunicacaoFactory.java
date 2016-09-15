@@ -22,9 +22,9 @@ public class GerenciadorComunicacaoFactory
 		return gerenciadorComunicacao;
 	}
 
-	public static GerenciadorComunicacao getEntity(Empresa empresa, MeioComunicacao meioComunicacao, EnviarPara enviarPara)
+	public static GerenciadorComunicacao getEntity(Long id, Empresa empresa, MeioComunicacao meioComunicacao, EnviarPara enviarPara)
 	{
-		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(id);
 		gerenciadorComunicacao.setEmpresa(empresa);
 		gerenciadorComunicacao.setMeioComunicacao(meioComunicacao.getId());
 		gerenciadorComunicacao.setEnviarPara(enviarPara.getId());

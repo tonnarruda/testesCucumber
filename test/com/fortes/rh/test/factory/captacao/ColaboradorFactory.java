@@ -76,6 +76,15 @@ public class ColaboradorFactory
 		return colaborador;
 	}
 	
+	public static Colaborador getEntity(Long id, String email, AreaOrganizacional area)
+	{
+		Colaborador colaborador = getEntity(id);
+		colaborador.setContato(new Contato());
+		colaborador.getContato().setEmail(email);
+		colaborador.setAreaOrganizacional(area);
+		return colaborador;
+	}
+	
 	public static Colaborador getEntity(Long id, String nome, String nomeComercial, String matricula, String codigoAC, String cpf, Empresa empresa)
 	{
 		Colaborador colaborador = getEntity(id);

@@ -356,8 +356,8 @@
 											<#assign nivelPercentual=""/>
 										</#if>
 										
-										<td style="${bgcolor} width: 100px; text-align: center;" class="${class}">
 											<input type="radio" disabled="disabled" percentual="${nivelPercentual}" ordem="${nivel.ordem}"
+										<td style="${bgcolor} width: 100px; text-align: center;" class="${class}">
 											<#if hasCriterios > onclick="return false;"  class="checkNivel radio" <#else>  class="checkNivel changed radio" </#if>
 											name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" onchange="setOrdem(${i}, ${nivel.ordem})"/>
 										</td>

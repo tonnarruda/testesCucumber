@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.fortes.rh.model.geral.ParametrosDoSistema;
+
 public enum Operacao
 {
 	ALTERAR_STATUS_SOLICITACAO(5, "Alterar status da solicitação de pessoal", "R&S"){
@@ -414,6 +416,42 @@ public enum Operacao
 			
 			return this.getListMeioComunicacao();
 		}
+	},
+	
+	AUTORIZACAO_SOLIC_PESSOAL_GESTOR_INCLUIR_COLAB(39, "Incluir colaborador em uma solicitacao de pessoal", "R&S"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.COGESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
+			
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.COGESTOR_AREA);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
+	
+	AUTORIZACAO_SOLIC_PESSOAL_GESTOR_ALTERAR_STATUS_COLAB(40, "Alterar status de autorização do colaborador para participar de uma solicitacao de pessoal", "R&S"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.COGESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
+			MeioComunicacao.EMAIL.add(EnviarPara.SOLICITANTE_SOLICITACAO);
+			
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.COGESTOR_AREA);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.SOLICITANTE_SOLICITACAO);
+			
+			return this.getListMeioComunicacao();
+		}
 	};
 	
 	private int id;
@@ -455,11 +493,14 @@ public enum Operacao
 		return grupo;
 	}
 
-	public static final Map<String, Collection<Operacao>> getHashMapGrupos(){
+	public static final Map<String, Collection<Operacao>> getHashMapGrupos(ParametrosDoSistema parametrosDoSistema){
 		Map<String, Collection<Operacao>> operacoes = new LinkedHashMap<String, Collection<Operacao>>();  
 	    
 		for (Operacao o : Operacao.values())
 		{
+			if(parametrosDoSistema != null && !parametrosDoSistema.isAutorizacaoGestorNaSolicitacaoPessoal() && (o.getId() == Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_INCLUIR_COLAB.id || o.getId() == Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_ALTERAR_STATUS_COLAB.id))
+				continue;
+			
 			if (!operacoes.containsKey(o.getGrupo()))
 				operacoes.put(o.getGrupo(), new ArrayList<Operacao>());
 

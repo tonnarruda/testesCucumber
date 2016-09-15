@@ -6,15 +6,21 @@ import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.security.spring.aop.callback.CandidatoSolicitacaoAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
+import com.fortes.security.auditoria.Modulo;
 
+@Modulo("Candidato na Solicitacao Pessoal")
 public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSolicitacao>
 {
 	CandidatoSolicitacao findByCandidatoSolicitacao(CandidatoSolicitacao cand);
-	void insertCandidatos(String[] candidatosId, Solicitacao solicitacao, char status);
+	void insertCandidatos(String[] candidatosId, Solicitacao solicitacao, char status, Empresa empresa, Usuario usuarioLogado);
 	void moverCandidatos(Long[] candidatosSolicitacaoId, Solicitacao solicitacao) throws ColecaoVaziaException;
 	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(String[] etapaCheck, Long empresaId, char statusSolicitacao, char situacaoCandidato, Date dataIni, Date dataFim);
 	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Solicitacao solicitacao, ArrayList<Long> idCandidatosComHistoricos);
@@ -36,4 +42,7 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 	Collection<ColaboradorQuestionario> findAvaliacoesCandidatoSolicitacao(Long solicitacaoId, Long candidatoId);
 	void setStatusBySolicitacaoAndCandidato(char status, Long candidatoId, Long solicitacaoId);
 	public void atualizaCandidatoSolicitacaoAoReligarColaborador(Long colaboradoresIds);
+	Collection<CandidatoSolicitacao> findColaboradorParticipantesDaSolicitacaoByAreas(Collection<AreaOrganizacional> areasOrganizacionais, String colaboradorNomeBusca, String solicitacaoDescricaoBusca, char statusBusca, Integer page, Integer pagingSize);
+	@Audita(operacao="Alteração do Status Aprovação do Responsável", auditor=CandidatoSolicitacaoAuditorCallbackImpl.class)
+	void updateStatusAutorizacaoGestor(CandidatoSolicitacao candidatoSolicitacao);
 }

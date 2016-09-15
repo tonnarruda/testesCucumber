@@ -18,6 +18,7 @@ import com.fortes.rh.security.spring.aop.AuditoriaPointcutTest;
 import com.fortes.rh.security.spring.aop.DateFormatJsonValueProcessorTest;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditadosTest;
 import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidadeTest;
+import com.fortes.rh.security.spring.aop.callback.crud.CandidatoSolicitacaoAuditorCallbackImplTest;
 import com.fortes.rh.security.spring.aop.callback.crud.ColaboradorQuestionarioAuditorCallbackImplTest;
 import com.fortes.rh.security.spring.aop.callback.crud.CrudAuditorCallbackImplTest;
 import com.fortes.rh.security.spring.aop.callback.crud.InsertAuditorCallbackImplTest;
@@ -104,6 +105,7 @@ import com.fortes.rh.test.business.geral.EstadoManagerTest;
 import com.fortes.rh.test.business.geral.GastoEmpresaManagerTest;
 import com.fortes.rh.test.business.geral.GastoManagerTest;
 import com.fortes.rh.test.business.geral.GerenciadorComunicacaoManagerTest;
+import com.fortes.rh.test.business.geral.GerenciadorComunicacaoManagerTest_Junit4;
 import com.fortes.rh.test.business.geral.GrupoACManagerTest;
 import com.fortes.rh.test.business.geral.GrupoGastoManagerTest;
 import com.fortes.rh.test.business.geral.HistoricoBeneficioManagerTest;
@@ -470,6 +472,7 @@ import com.fortes.rh.test.web.action.captacao.AtitudeEditActionTest;
 import com.fortes.rh.test.web.action.captacao.CandidatoEditActionTest;
 import com.fortes.rh.test.web.action.captacao.CandidatoListActionTest;
 import com.fortes.rh.test.web.action.captacao.CandidatoSolicitacaoListActionTest;
+import com.fortes.rh.test.web.action.captacao.CandidatoSolicitacaoListActionTest_JUnit4;
 import com.fortes.rh.test.web.action.captacao.ConfigHistoricoNivelEditActionTest;
 import com.fortes.rh.test.web.action.captacao.ConhecimentoEditActionTest;
 import com.fortes.rh.test.web.action.captacao.ConhecimentoListActionTest;
@@ -748,6 +751,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	CandidatoSolicitacaoManagerTest_Junit4.class,
 	CandidatoSolicitacaoDaoHibernateTest.class,
 	CandidatoSolicitacaoListActionTest.class,
+	CandidatoSolicitacaoListActionTest_JUnit4.class,
 	MotivoSolicitacaoListActionTest.class,
 	MotivoSolicitacaoEditActionTest.class,
 	MotivoSolicitacaoDaoHibernateTest.class,
@@ -987,6 +991,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ProvidenciaEditActionTest.class,
 	GerenciadorComunicacaoDaoHibernateTest.class,
 	GerenciadorComunicacaoManagerTest.class,
+	GerenciadorComunicacaoManagerTest_Junit4.class,
 	GerenciadorComunicacaoEditActionTest.class,
 	OcorrenciaProvidenciaEditActionTest.class,
 
@@ -1506,6 +1511,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ColaboradorQuestionarioAuditorCallbackImplTest.class,
 	DateFormatJsonValueProcessorTest.class,
 	AbstractModelJsonValueProcessorTest.class,
+	CandidatoSolicitacaoAuditorCallbackImplTest.class,
 	        
 	LinkTagTest.class,
 	ExportacaoActionTest.class,

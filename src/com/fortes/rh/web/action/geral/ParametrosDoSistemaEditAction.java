@@ -158,8 +158,12 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	public String update() throws Exception
 	{
+		String retorno = Action.SUCCESS;
 		ParametrosDoSistema parametrosDoSistemaAux = parametrosDoSistemaManager.findById(parametrosDoSistema.getId());
-
+		
+		if(parametrosDoSistemaAux.isAutorizacaoGestorNaSolicitacaoPessoal() != parametrosDoSistema.isAutorizacaoGestorNaSolicitacaoPessoal())
+			retorno = "successAlterandoMenu"; 
+		
 		if(StringUtils.isBlank(parametrosDoSistema.getEmailPass()))
 			parametrosDoSistema.setEmailPass(parametrosDoSistemaAux.getEmailPass());
 
@@ -183,8 +187,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		populoHorariosBackupList();
 		populaModulosSitema();
 		addActionSuccess("Configurações do sistema atualizadas com sucesso.");
-
-		return Action.SUCCESS;
+			
+		return retorno;
 	}
 	
 	private Integer calculaModulosSitema()

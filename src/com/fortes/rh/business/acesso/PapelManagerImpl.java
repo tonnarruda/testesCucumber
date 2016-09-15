@@ -9,6 +9,7 @@ import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.exception.NotConectAutenticationException;
 import com.fortes.rh.exception.NotRegistredException;
 import com.fortes.rh.model.acesso.Papel;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.StringUtil;
@@ -18,11 +19,13 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 {
 	private static Long ROLE_CX_MENSAGEM = 495L;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private ParametrosDoSistema parametrosDoSistema;
 	
 	public String getPerfilOrganizado(String[] marcados, Collection<Papel> papeisComHelp, Long idDoUsuario) throws NotConectAutenticationException, NotRegistredException
 	{
 		Collection<Long> modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados();
 		Collection<Papel> papeisSemModulosNaoConfigurados = getDao().findNotIn(modulosNaoConfigurados);
+		parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 		return montarOpcoes(papeisSemModulosNaoConfigurados, marcados, papeisComHelp, idDoUsuario);
 	}
 	
@@ -103,6 +106,9 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 		for (Papel papel : papeis)
 		{
 			if(idDoUsuario != null && !idDoUsuario.equals(1L) && papel.getId().equals(673L))
+				continue;
+			
+			if(!parametrosDoSistema.isAutorizacaoGestorNaSolicitacaoPessoal() && papel.getId().equals(683L))
 				continue;
 			
 			if(papel.getPapelMae() != null && papel.getPapelMae().getId() == id)

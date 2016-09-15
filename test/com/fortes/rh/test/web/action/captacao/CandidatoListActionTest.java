@@ -62,7 +62,6 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AutoCompleteVO;
@@ -74,6 +73,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoImpressaoCurriculoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -425,8 +425,9 @@ public class CandidatoListActionTest
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		action.setSolicitacao(solicitacao);
 		action.setColaboradoresIds(new Long[]{1L,2L});
+		action.setUsuarioLogado(UsuarioFactory.getEntity(1L));
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa());
 		
-		colaboradorManager.insertColaboradoresSolicitacao(eq(action.getColaboradoresIds()), eq(action.getSolicitacao()), eq(StatusCandidatoSolicitacao.APROMOVER));
 		assertEquals("success", action.insertColaboradores());
 	}
 	
@@ -467,7 +468,6 @@ public class CandidatoListActionTest
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		action.setSolicitacao(solicitacao);
 		
-		candidatoSolicitacaoManager.insertCandidatos(eq(action.getCandidatosId()), eq(action.getSolicitacao()), eq(StatusCandidatoSolicitacao.INDIFERENTE));
 		assertEquals("success", action.insertCandidatos());
 	}
 	

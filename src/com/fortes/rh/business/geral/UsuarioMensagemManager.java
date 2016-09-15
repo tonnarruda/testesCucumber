@@ -19,8 +19,8 @@ public interface UsuarioMensagemManager extends GenericManager<UsuarioMensagem>
 	Boolean possuiMensagemNaoLida(Long usuarioId, Long empresaId);
 	void salvaMensagem(Empresa empresa, Mensagem mensage, String[] usuariosCheck) throws Exception;
 	void saveMensagemAndUsuarioMensagem(String mensagem, String remetrnte, String link, Collection<UsuarioEmpresa> usuarioEmpresas, Colaborador colaborador, char tipoMensagem, Avaliacao avaliacao, Long usuarioIdDesconsiderado);
-	void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao);
-	void saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao);
+	void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao, Long usuarioIdDesconsiderado);
+	void saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao, Long usuarioIdDesconsiderado);
 	Long getAnteriorOuProximo(Long usuarioMensagemId, Long usuarioId, Long empresaId, char opcao, Character tipo);
 	void delete(UsuarioMensagem usuarioMensagem, Long[] usuarioMensagemIds);
 	Integer countMensagens(Long empresaId, Long usuarioId, Character tipo);

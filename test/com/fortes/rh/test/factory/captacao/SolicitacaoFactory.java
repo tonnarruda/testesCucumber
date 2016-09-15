@@ -99,4 +99,14 @@ public class SolicitacaoFactory
 		setAndamento(solicitacao, encerrada, suspensa);
 		solicitacao.setStatus(status);
 	}
+	
+	public static Solicitacao getSolicitacao(String descricao, AreaOrganizacional area, FaixaSalarial faixaSalarial, Estabelecimento estabelecimento, boolean encerrada){
+		Solicitacao solicitacao = getSolicitacao();
+		solicitacao.setDescricao(descricao);
+		solicitacao.setFaixaSalarial(faixaSalarial);
+		solicitacao.setAreaOrganizacional(area);
+		solicitacao.setEstabelecimento(estabelecimento);
+		solicitacao.setEncerrada(encerrada);
+		return solicitacao;
+	}
 }

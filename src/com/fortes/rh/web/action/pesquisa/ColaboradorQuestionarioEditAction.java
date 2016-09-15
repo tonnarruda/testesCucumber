@@ -100,7 +100,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private String indicadoPor;
 	private String observacaoRH;
 	private String nomeBusca;
-	private char visualizar;
+	private Character visualizar;
 	
 	private Collection<ColaboradorResposta> colaboradorRespostas;
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
@@ -229,11 +229,11 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		}
 	}
 
-	private Boolean getValueApto(char visual)
+	private Boolean getValueApto(Character visual)
 	{
-		if(visual == 'A')
+		if(visual != null && visual == 'A')
 			return true;
-		else if(visual == 'N')
+		else if(visual != null && visual == 'N')
 			return false;
 
 		return null;
@@ -1089,9 +1089,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		this.nomeBusca = nomeBusca;
 	}
 
-	public void setVisualizar(char visualizar) {
-		this.visualizar = visualizar;
-	}
 
 	public RelatorioCandidatoSolicitacaoList getRelatorioCandidatoSolicitacaoList() {
 		return relatorioCandidatoSolicitacaoList;
@@ -1140,5 +1137,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public boolean isExistConfigCompetenciaAvaliacaoDesempenho() {
 		return existConfigCompetenciaAvaliacaoDesempenho;
+	}
+
+	public Character getVisualizar() {
+		return visualizar;
+	}
+
+	public void setVisualizar(Character visualizar) {
+		this.visualizar = visualizar;
 	}
 }

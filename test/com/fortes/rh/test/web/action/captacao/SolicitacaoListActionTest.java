@@ -223,7 +223,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 		action.setSolicitacaosCheckIds(solicitacaosCheckIds);
 		action.setCandidato(candidato);
 		action.setStatusCandSol('A');
-		candidatoSolicitacaoManager.expects(atLeastOnce()).method("insertCandidatos").with(ANYTHING, ANYTHING, ANYTHING).isVoid();
+		candidatoSolicitacaoManager.expects(atLeastOnce()).method("insertCandidatos").withAnyArguments().isVoid();
 		
     	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
     	parametrosDoSistema.setCompartilharCandidatos(true);

@@ -96,6 +96,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private boolean autenticacao;
     private boolean tls;
     private Integer modulosPermitidosSomatorio = 0;
+    private boolean autorizacaoGestorNaSolicitacaoPessoal;
     
 	public String getAppContext()
 	{
@@ -488,5 +489,11 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	
 	public void setCamposCandidatoExternoTabs(String camposCandidatoExternoTabs) {
 		this.camposCandidatoExternoTabs = camposCandidatoExternoTabs;
+	}
+	public boolean isAutorizacaoGestorNaSolicitacaoPessoal() {
+		return autorizacaoGestorNaSolicitacaoPessoal;
+	}
+	public void setAutorizacaoGestorNaSolicitacaoPessoal(boolean autorizacaoGestorNaSolicitacaoPessoal) {
+		this.autorizacaoGestorNaSolicitacaoPessoal = autorizacaoGestorNaSolicitacaoPessoal;
 	}
 }

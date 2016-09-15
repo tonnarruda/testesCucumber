@@ -46,6 +46,10 @@
 				content: 'Destinado ao envio de emails referentes a assuntos que envolvem todas as empresas. <br /> Ex: Aviso de Backup'
 			});
 			
+			$('#tooltipHelpAutorizacao').qtip({
+				content: 'Ao marcar essa opção favor averiguar o perfil "Autorizar Participação do Colaborador na Solicitação de Pessoal" para os usuários que irão utilizar a funcionalidade.'
+			});
+			
 			$('#versaoAcademicaHelp').qtip({
 				content: 'Ao marcar essa opção, o sistema limitará a quantidade de 10 empregados por empresa e alguns relatórios sairão com o nome versão acadêmica.'
 			});
@@ -75,6 +79,7 @@
 			
 			$("#qtdColabPesquisa").val(${parametrosDoSistema.quantidadeColaboradoresRelatorioPesquisaAnonima});
 			$("#inibirGerarRelatorioPesquisaAnonima").attr('checked', ${parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima?string});
+			$("#autorizacaoGestorNaSolicitacaoPessoal").attr('checked', ${parametrosDoSistema.autorizacaoGestorNaSolicitacaoPessoal?string});
 			
 			$('#inibirGerarRelatorioPesquisaAnonima').change(function(){
 				abiltaOuDesabilitaCampoQtdResposta();
@@ -141,6 +146,12 @@
 	<@ww.checkbox label="Compartilhar candidatos entre empresas." id="compartilharCandidato" name="parametrosDoSistema.compartilharCandidatos" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar colaboradores entre empresas." id="compartilharColaborador" name="parametrosDoSistema.compartilharColaboradores" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar cursos entre empresas." id="compartilharCurso" name="parametrosDoSistema.compartilharCursos" liClass="liLeft" labelPosition="left"/>
+	
+	<li style="margin-bottom: 5px">
+		<input type="checkbox" name="parametrosDoSistema.autorizacaoGestorNaSolicitacaoPessoal" id="autorizacaoGestorNaSolicitacaoPessoal" value="true"/>
+		Habilitar autorização da participação do colaborador em uma solicitação de pessoal. 
+		<img id="tooltipHelpAutorizacao" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"/><br>
+	</li>
 	
 	<input type="checkbox" name="parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" value="true" id="inibirGerarRelatorioPesquisaAnonima"/>
 	<label for="inibirGerarRelatorioPesquisaAnonima" class="checkboxLabel">

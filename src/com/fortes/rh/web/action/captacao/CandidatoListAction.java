@@ -498,7 +498,7 @@ public class CandidatoListAction extends MyActionSupportList
 	public String insertColaboradores() throws Exception
 	{
 		if (colaboradoresIds != null && colaboradoresIds.length > 0)
-			colaboradorManager.insertColaboradoresSolicitacao(colaboradoresIds, solicitacao, StatusCandidatoSolicitacao.APROMOVER);
+			colaboradorManager.insertColaboradoresSolicitacao(colaboradoresIds, solicitacao, StatusCandidatoSolicitacao.APROMOVER, getEmpresaSistema(), getUsuarioLogado());
 		
 		return Action.SUCCESS;
 	}
@@ -633,7 +633,7 @@ public class CandidatoListAction extends MyActionSupportList
 	public String insertCandidatos() throws Exception
 	{
 		if(candidatosId != null && candidatosId.length > 0)
-			candidatoSolicitacaoManager.insertCandidatos(candidatosId, solicitacao,StatusCandidatoSolicitacao.INDIFERENTE);
+			candidatoSolicitacaoManager.insertCandidatos(candidatosId, solicitacao,StatusCandidatoSolicitacao.INDIFERENTE, getEmpresaSistema(), getUsuarioLogado());
 
 		return Action.SUCCESS;
 	}

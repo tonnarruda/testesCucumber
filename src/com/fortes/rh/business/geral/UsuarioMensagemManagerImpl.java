@@ -285,16 +285,16 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		}
 	}
 
-	public void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String msg, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao)
+	public void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String msg, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao, Long usuarioIdDesconsiderado)
 	{
 		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionais = usuarioEmpresaManager.findUsuarioResponsavelAreaOrganizacional(areasIds);
-		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, tipoMensagem, avaliacao, null);
+		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, tipoMensagem, avaliacao, usuarioIdDesconsiderado);
 	}
 
-	public void saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao)
+	public void saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao, Long usuarioIdDesconsiderado)
 	{
 		Collection<UsuarioEmpresa> usuariosCoResponsaveisAreaOrganizacionais = usuarioEmpresaManager.findUsuarioCoResponsavelAreaOrganizacional(areasIds);
-		saveMensagemAndUsuarioMensagem(mensagem, remetente, link, usuariosCoResponsaveisAreaOrganizacionais, null, tipoMensagem, avaliacao, null);
+		saveMensagemAndUsuarioMensagem(mensagem, remetente, link, usuariosCoResponsaveisAreaOrganizacionais, null, tipoMensagem, avaliacao, usuarioIdDesconsiderado);
 	}
 
 	public void setMensagemManager(MensagemManager mensagemManager)

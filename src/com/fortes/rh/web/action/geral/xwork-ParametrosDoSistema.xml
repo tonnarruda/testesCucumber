@@ -8,6 +8,7 @@
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="update">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/parametrosDoSistemaEdit.ftl</result>
+			<result name="successAlterandoMenu" type="redirect">../../index.action?empresaId=${empresaSistema.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/parametrosDoSistemaEdit.ftl</result>
 		</action>
 		<action name="listCampos" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="listCampos">

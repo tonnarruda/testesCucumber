@@ -285,7 +285,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
 		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
 		
-		usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional("Msg", "Chico Bagulhoso", "link", new ArrayList<Long>(), TipoMensagem.AVALIACAO_DESEMPENHO, null);
+		usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional("Msg", "Chico Bagulhoso", "link", new ArrayList<Long>(), TipoMensagem.AVALIACAO_DESEMPENHO, null, null);
 	}
 	
 	public void testDeleteUm() throws Exception
