@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="afastamentos" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="e98df71f-a18b-477f-baa8-b04c5db3e515">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="afastamentos" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="e98df71f-a18b-477f-baa8-b04c5db3e515">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -29,18 +29,18 @@
 	<pageHeader>
 		<band height="51" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="0" y="1" width="782" height="50" uuid="f964cadb-0950-4ad5-9c50-2bfc009a898a"/>
+				<reportElement key="subreport-1" x="0" y="1" width="535" height="50" uuid="f964cadb-0950-4ad5-9c50-2bfc009a898a"/>
 				<subreportParameter name="CABECALHO">
 					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cabecalho_paisagem.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cabecalho.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="40" splitType="Stretch">
+		<band height="37" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-1" x="0" y="24" width="274" height="16" uuid="72d09e66-1f35-480c-9864-a88f91ecea55"/>
+				<reportElement key="staticText-1" x="0" y="21" width="169" height="16" uuid="72d09e66-1f35-480c-9864-a88f91ecea55"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -48,12 +48,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Indicado Por]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-5" x="277" y="24" width="274" height="16" uuid="6dbd6f45-cb3b-4e38-a678-fc290f09fa42"/>
+				<reportElement key="staticText-5" x="171" y="21" width="180" height="16" uuid="6dbd6f45-cb3b-4e38-a678-fc290f09fa42"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -61,12 +61,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Candidato]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-8" x="641" y="24" width="141" height="16" uuid="70e4bc41-e22a-4bb5-b1ed-b8833e29597f"/>
+				<reportElement key="staticText-8" x="417" y="21" width="118" height="16" uuid="70e4bc41-e22a-4bb5-b1ed-b8833e29597f"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -74,12 +74,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Empresa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-12" x="553" y="24" width="86" height="16" uuid="c4ab335b-31d0-44a6-b663-8a2c7b10a8d5"/>
+				<reportElement key="staticText-12" x="353" y="21" width="62" height="16" uuid="c4ab335b-31d0-44a6-b663-8a2c7b10a8d5"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -87,7 +87,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Cadastrado em]]></text>
 			</staticText>
@@ -96,7 +96,7 @@
 	<detail>
 		<band height="17" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-1" stretchType="RelativeToTallestObject" x="0" y="1" width="781" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#EEEEEE" uuid="7acd692e-e979-4f03-8acd-b45ce1cbb829">
+				<reportElement key="rectangle-1" stretchType="RelativeToTallestObject" x="0" y="1" width="535" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#EEEEEE" uuid="7acd692e-e979-4f03-8acd-b45ce1cbb829">
 					<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
@@ -104,7 +104,7 @@
 				</graphicElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" positionType="Float" x="0" y="2" width="274" height="15" uuid="f98d0179-fdc8-4af9-baba-32a50d7fc8f0"/>
+				<reportElement key="textField" positionType="Float" x="0" y="2" width="169" height="14" uuid="f98d0179-fdc8-4af9-baba-32a50d7fc8f0"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -116,8 +116,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pessoal.indicadoPor}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="277" y="2" width="274" height="15" uuid="5d3ed4d4-7b5b-449f-addb-6bd5ad66ad60"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" x="171" y="2" width="180" height="14" uuid="5d3ed4d4-7b5b-449f-addb-6bd5ad66ad60"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -130,7 +130,7 @@
 				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-2" positionType="Float" x="641" y="2" width="141" height="15" uuid="4468f30d-6ca3-4381-8649-f3c7332b6bc1"/>
+				<reportElement key="textField-2" positionType="Float" x="417" y="2" width="118" height="14" uuid="4468f30d-6ca3-4381-8649-f3c7332b6bc1"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -143,7 +143,7 @@
 				<textFieldExpression><![CDATA[$F{empresa.nome}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-6" positionType="Float" x="553" y="2" width="86" height="15" uuid="1620deb1-bc0c-4ad3-8b15-2efd93f9e2bc"/>
+				<reportElement key="textField-6" positionType="Float" x="353" y="2" width="62" height="14" uuid="1620deb1-bc0c-4ad3-8b15-2efd93f9e2bc"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -163,7 +163,7 @@
 	<pageFooter>
 		<band height="15" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-7" x="557" y="2" width="186" height="13" uuid="fa1fc1e3-2077-43c6-a93d-07d52dde6351"/>
+				<reportElement key="textField-7" x="310" y="2" width="186" height="13" uuid="fa1fc1e3-2077-43c6-a93d-07d52dde6351"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -174,7 +174,7 @@
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-8" x="750" y="2" width="32" height="13" uuid="95582f5c-f765-4ec4-a741-68a3e59d41cb"/>
+				<reportElement key="textField-8" x="503" y="2" width="31" height="13" uuid="95582f5c-f765-4ec4-a741-68a3e59d41cb"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -188,13 +188,13 @@
 	<summary>
 		<band height="15" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" x="0" y="1" width="782" height="14" backcolor="#D4D3D3" uuid="863fe380-d2e1-49b6-bb74-0d16171d0c7b"/>
+				<reportElement key="rectangle-2" x="0" y="1" width="535" height="14" backcolor="#D4D3D3" uuid="863fe380-d2e1-49b6-bb74-0d16171d0c7b"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-10" x="631" y="2" width="122" height="13" uuid="bff527b0-6f76-4472-ae3e-a71d190a85d2"/>
+				<reportElement key="staticText-10" x="379" y="2" width="122" height="13" uuid="bff527b0-6f76-4472-ae3e-a71d190a85d2"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -202,12 +202,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="754" y="2" width="19" height="13" uuid="d0976cb5-28f2-4912-be67-792c340445ce"/>
+				<reportElement key="textField-4" x="502" y="2" width="28" height="13" uuid="d0976cb5-28f2-4912-be67-792c340445ce"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -215,7 +215,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{countCandidatos}]]></textFieldExpression>
 			</textField>
