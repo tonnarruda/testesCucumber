@@ -299,10 +299,12 @@
 		}
 
 		function checkNaoIntegraAC(){
-			 var isVinculoSocio = $('#vinculo').val() == 'O';
-			 $("#naoIntegraACSocio").parent().parent().parent().toggle(isVinculoSocio);
-			 $("#naoIntegraAc").parent().parent().parent().toggle(!isVinculoSocio);
-			 $("#naoIntegraACSocio").attr('checked', 'checked');
+			<#if edicao != "true">
+				 var isVinculoSocio = $('#vinculo').val() == 'O';
+				 $("#naoIntegraACSocio").parent().parent().parent().toggle(isVinculoSocio);
+				 $("#naoIntegraAc").parent().parent().parent().toggle(!isVinculoSocio);
+				 $("#naoIntegraACSocio").attr('checked', 'checked');
+			</#if>
 		}
 		
 		function populaAmbiente(estabelecimentoId, ambienteId)
@@ -658,20 +660,9 @@
 				<label for="dt_admissao">Admissão:</label><br />
 				<input type="text" theme="simple" disabled="true" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" class="mascaraData"/>
 				<img id="dataAdmissaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
-
 				<br clear="all"/>
-				
-				<@ww.div id="wwgrp_vinculo"  cssClass="campo">
-					<label for="vinculo">Colocação:</label><br />
-					<@ww.select theme="simple" label="Colocação" disabled="true" name="colaborador.vinculo" cssClass="campo" list="vinculos" onchange="habilitaDtEncerramentoContrato();" id="vinculo" cssStyle="width: 150px;"/>
-					<img id="vinculoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
-					<br clear="all"/>
-				</@ww.div> 
-				
 				<@ww.hidden  name="colaborador.dataAdmissao" value="${dataAdm}" />
-				<@ww.hidden  name="colaborador.vinculo" />
 			<#else>
-			
 				<#if editarHistorico>
 					<@ww.datepicker label="Admissão" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" cssClass="mascaraData" onblur="${funcaoDataAdmissao}" onchange="${funcaoDataAdmissao}"/>
 				<#else>
@@ -680,15 +671,26 @@
 					<@ww.hidden  name="colaborador.dataAdmissao" value="${dataAdm}" />
 					<br clear="all"/>
 				</#if>
+			</#if>
 			
+			<#if somenteLeituraIntegraAC=="true" && edicao=="true" && !colaborador.naoIntegraAc>
+				<@ww.div id="wwgrp_vinculo"  cssClass="campo">
+					<label for="vinculo">Colocação:</label><br />
+					<@ww.select theme="simple" label="Colocação" disabled="true" name="colaborador.vinculo" cssClass="campo" list="vinculos" onchange="habilitaDtEncerramentoContrato();" id="vinculo" cssStyle="width: 150px;"/>
+					<img id="vinculoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
+					<br clear="all"/>
+				</@ww.div> 
+				<@ww.hidden  name="colaborador.vinculo" />
+			<#else>
 				<@ww.div id="wwgrp_vinculo"  cssClass="campo">
 					<label for="vinculo">Colocação:</label><br />
 					<@ww.select theme="simple" label="Colocação" name="colaborador.vinculo" list="vinculos" cssClass="campo" cssStyle="width: 150px;"  id="vinculo" onchange="habilitaDtEncerramentoContrato(),checkNaoIntegraAC();" />
-					<#if integraAc>
+					<#if integraAc && !colaborador.naoIntegraAc>
 						<img id="vinculoSocioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
 					</#if>
-				</@ww.div>
+				</@ww.div>	
 			</#if>
+			
 			<@ww.datepicker label="Encerramento do Contrato" name="colaborador.dataEncerramentoContrato" value="${dataEncerramentoContrato}" id="dt_encerramentoContrato" cssClass="mascaraData" liClass="campo"/>
 			
 			<@ww.textfield label="Regime de Revezamento (PPP)" liClass="campo" name="colaborador.regimeRevezamento" id="regimeRevezamento" cssStyle="width:353px;" maxLength="255"/>
