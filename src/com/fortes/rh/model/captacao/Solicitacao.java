@@ -39,6 +39,7 @@ import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -670,7 +671,8 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		return "";
 	}
 
-	private String getDescricaoDaAreaOrganizacional()
+	@NaoAudita
+	public String getDescricaoDaAreaOrganizacional()
 	{
 		AreaOrganizacional area = getAreaOrganizacional();
 		if (area != null)

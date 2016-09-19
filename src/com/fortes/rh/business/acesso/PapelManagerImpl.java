@@ -108,7 +108,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 			if(idDoUsuario != null && !idDoUsuario.equals(1L) && papel.getId().equals(673L))
 				continue;
 			
-			if(!parametrosDoSistema.isAutorizacaoGestorNaSolicitacaoPessoal() && papel.getId().equals(683L))
+			if(!parametrosDoSistema.isAutorizacaoGestorNaSolicitacaoPessoal() && papel.getId().equals(684L))
 				continue;
 			
 			if(papel.getPapelMae() != null && papel.getPapelMae().getId() == id)

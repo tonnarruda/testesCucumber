@@ -14,4 +14,5 @@ public interface PerfilDao extends GenericDao<Perfil>
 	Collection<Perfil> findAll(Integer page, Integer pagingSize);
 	Integer getCount();
 	Collection<Perfil> findByIds(Long[] perfisIds);
+	void removePerfilPapelByPapelId(Long papelId);
 }

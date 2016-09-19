@@ -68,8 +68,8 @@ public class OperacaoTest
 		assertEquals("Notificar quando existir cursos a vencer", Operacao.getDescricaoById(++i));
 		assertEquals("Notificar quando existir certificações a vencer", Operacao.getDescricaoById(++i));
 		assertEquals("Colaborador completar ano de empresa", Operacao.getDescricaoById(++i));
-		assertEquals("Incluir colaborador em uma solicitacao de pessoal", Operacao.getDescricaoById(++i));
-		assertEquals("Alterar status de autorização do colaborador para participar de uma solicitacao de pessoal", Operacao.getDescricaoById(++i));
+		assertEquals("Existir colaborador aguardando autorização para paticipar de uma solicitação de pessoal", Operacao.getDescricaoById(++i));
+		assertEquals("Alterar status de autorização do colaborador para participar de uma solicitação de pessoal", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}

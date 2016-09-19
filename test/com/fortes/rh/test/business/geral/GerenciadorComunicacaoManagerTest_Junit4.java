@@ -2,7 +2,7 @@ package com.fortes.rh.test.business.geral;
 
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -287,5 +287,12 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1,gerenciadorComunicacao2,gerenciadorComunicacao3,gerenciadorComunicacao4,gerenciadorComunicacao5,gerenciadorComunicacao6,gerenciadorComunicacao7,gerenciadorComunicacao8,gerenciadorComunicacao9,gerenciadorComunicacao10);
 		return gerenciadorComunicacaos;
+	}
+	
+	@Test
+	public void testeRemoveByOperacao(){
+		Integer[] operacoes = {Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_ALTERAR_STATUS_COLAB.getId(), Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_INCLUIR_COLAB.getId()};
+		gerenciadorComunicacaoManager.removeByOperacao(operacoes);
+		verify(gerenciadorComunicacaoDao, times(1)).removeByOperacao(operacoes);
 	}
 }

@@ -168,7 +168,7 @@
 			<#assign classe="contratado"/>
 		</#if>
 		
-		<#assign disabledExcluir = solicitacao.encerrada || ((candidatoSolicitacao.etapaSeletiva?exists && candidatoSolicitacao.etapaSeletiva.id?exists) 
+		<#assign disabledExcluir = solicitacao.encerrada || ((candidatoSolicitacao?exists && candidatoSolicitacao.etapaSeletiva?exists && candidatoSolicitacao.etapaSeletiva.id?exists) 
 		|| (candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists && candidatoSolicitacao.candidato.contratado && candidatoSolicitacao.status != 'A'
 		&& candidatoSolicitacao.solicitacao?exists && candidatoSolicitacao.solicitacao.id?exists && candidatoSolicitacao.solicitacao.id == solicitacao.id))/>
 		
@@ -188,7 +188,7 @@
 		</#if>
 		
 		<@authz.authorize ifAllGranted="ROLE_MOV_AUTOR_COLAB_SOL_PESSOAL">
-			<#if candidatoSolicitacao.statusAutorizacaoGestor?exists>
+			<#if candidatoSolicitacao?exists && candidatoSolicitacao.statusAutorizacaoGestor?exists>
 				<#assign autorizadoPeloGestor =  candidatoSolicitacao.statusAutorizacaoGestor == 'A'/>
 				
 				<#if candidatoSolicitacao.statusAutorizacaoGestor == 'I'>
@@ -262,18 +262,18 @@
 		<@display.column property="responsavel" title="Responsável" class="${classe}"/>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" class="${classe}" style="text-align: center;"/>
 		<@authz.authorize ifAllGranted="ROLE_MOV_AUTOR_COLAB_SOL_PESSOAL">
-			<#if candidatoSolicitacao.obsAutorizacaoGestor?exists && candidatoSolicitacao.obsAutorizacaoGestor != "">
+			<#if candidatoSolicitacao?exists && candidatoSolicitacao.obsAutorizacaoGestor?exists && candidatoSolicitacao.obsAutorizacaoGestor != "">
 				<#assign obsAutorizacaoGestor="\nObs: ${candidatoSolicitacao.obsAutorizacaoGestor}"/>
 			<#else>
 				<#assign obsAutorizacaoGestor="\nObs: -"/>
 			</#if>
-			<#if candidatoSolicitacao.dataAutorizacaoGestor?exists>
+			<#if candidatoSolicitacao?exists && candidatoSolicitacao.dataAutorizacaoGestor?exists>
 				<#assign dataAutorizacaoGestor="\nData: ${candidatoSolicitacao.dataAutorizacaoGestorFormatado}"/>
 			<#else>
 				<#assign dataAutorizacaoGestor="\nData: -"/>
 			</#if>
 			<@display.column title="Status Autorização" media="html" class="acao" style="width: 50px;">	
-				<#if candidatoSolicitacao.statusAutorizacaoGestor?exists>
+				<#if candidatoSolicitacao?exists && candidatoSolicitacao.statusAutorizacaoGestor?exists>
 					<#if candidatoSolicitacao.statusAutorizacaoGestor == 'A'>
 						<img border="0"  title="Status: Aprovado ${dataAutorizacaoGestor} ${obsAutorizacaoGestor}" src="<@ww.url includeParams="none" value="/imgs/status_green.png"/>"/>
 					<#elseif candidatoSolicitacao.statusAutorizacaoGestor == 'R'>
@@ -287,7 +287,7 @@
 			</@display.column>
 		</@authz.authorize>
 		<@display.column title="Obs." class="${classe}" style="text-align: center;">
-			<#if candidatoSolicitacao.observacao?exists && candidatoSolicitacao.observacao?trim != "">
+			<#if ccandidatoSolicitacao?exists && andidatoSolicitacao.observacao?exists && candidatoSolicitacao.observacao?trim != "">
 				<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${candidatoSolicitacao.observacao?j_string}');return false">...</span>
 			</#if>
 		</@display.column>

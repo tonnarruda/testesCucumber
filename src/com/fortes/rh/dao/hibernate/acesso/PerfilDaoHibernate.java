@@ -11,6 +11,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.model.acesso.Perfil;
 
@@ -76,6 +77,11 @@ public class PerfilDaoHibernate extends GenericDaoHibernate<Perfil> implements P
 		criteria.setProjection(Projections.rowCount());
 
 		return (Integer) criteria.uniqueResult();
+	}
+
+	public void removePerfilPapelByPapelId(Long papelId) {
+		String[] sql = new String[] { "delete from perfil_papel where papeis_id ="  + papelId };
+		JDBCConnection.executeQuery(sql);
 	}
 
 }

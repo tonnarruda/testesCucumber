@@ -327,4 +327,8 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 	public void setAreaOrganizacionalManager( AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
+
+	public String findEmailByUsuarioId(Long usuarioId) {
+		return getDao().findEmailByUsuarioId(usuarioId);
+	}
 }

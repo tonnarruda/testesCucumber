@@ -614,7 +614,42 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		
 		assertTrue(usuarioDao.isResponsavelOrCoResponsavel(usuario.getId()));
 	}
+	
+	public void testFindEmailByUsuarioId()
+	{
+		Usuario usuario  = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setUsuario(usuario);
+		colaborador.setEmailColaborador("email@email.com.br");
+		colaboradorDao.save(colaborador);
+		
+		assertEquals(colaborador.getContato().getEmail(), usuarioDao.findEmailByUsuarioId(usuario.getId()));
+	}
+	
+	public void testFindEmailByUsuarioIdColaboradorSemEmail()
+	{
+		Usuario usuario  = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setUsuario(usuario);
+		colaborador.setEmailColaborador(null);
+		colaboradorDao.save(colaborador);
+		
+		assertNull(usuarioDao.findEmailByUsuarioId(usuario.getId()));
+	}
 
+
+	public void testFindEmailByUsuarioIdUsuarioSemColaborador()
+	{
+		Usuario usuario  = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		assertNull(usuarioDao.findEmailByUsuarioId(usuario.getId()));
+	}
+	
 	public GenericDao<Usuario> getGenericDao()
 	{
 		return usuarioDao;

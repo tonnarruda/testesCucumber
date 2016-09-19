@@ -46,4 +46,6 @@ public interface UsuarioDao extends GenericDao<Usuario>
 	void removeAcessoSistema(Long... colaboradoresIds);
 
 	boolean isResponsavelOrCoResponsavel(Long usuarioId);
+
+	String findEmailByUsuarioId(Long usuarioId);
 }

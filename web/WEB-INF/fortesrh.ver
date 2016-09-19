@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.17x.20x" db="" data="xx/xx/2016">
 		<Item visivel="S" motivo="P16080000128"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao atualizar o status do candidato da solicitação de pessoal após cancelar o desligamento do colaborador.]]></Item>
+		<Item visivel="S" motivo="S16020000134"><![CDATA[R&S > Movimentações > Autorizar Participação do Colaborador na Solicitação de Pessoal: Nova funcionalidade para autorizar a participação do colaborador em uma Solicitação de Pessoal.]]></Item>
 		<Item visivel="S" motivo="S16060000067"><![CDATA[R&S > Relatórios > Indicações de Candidatos: Novo relatório de indicações de candidatos.]]></Item>
 		<Item visivel="S" motivo="P16090000049"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Excluir: Ajuste na mensagem ao tentar excluir área organizacional que tenha dependência com outros cadastros.]]></Item>
 		<Item visivel="S" motivo="P16080000377"><![CDATA[C&S > Painel de Indicadores: Ajuste na inconsistência ao tentar abrir painel de indicadores quando o sistema apresenta índices sem histórico.]]></Item>

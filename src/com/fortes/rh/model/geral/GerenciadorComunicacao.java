@@ -3,6 +3,7 @@ package com.fortes.rh.model.geral;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,7 +36,7 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 	
 	private boolean permitirResponderAvaliacao;
 	
-	@OneToMany(fetch=FetchType.LAZY, targetEntity=Usuario.class)
+	@OneToMany(fetch=FetchType.LAZY, targetEntity=Usuario.class, cascade = CascadeType.REMOVE)
 	private Collection<Usuario> usuarios;
 
 	public GerenciadorComunicacao (){

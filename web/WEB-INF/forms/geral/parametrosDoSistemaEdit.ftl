@@ -47,7 +47,7 @@
 			});
 			
 			$('#tooltipHelpAutorizacao').qtip({
-				content: 'Ao marcar essa opção favor averiguar o perfil "Autorizar Participação do Colaborador na Solicitação de Pessoal" para os usuários que irão utilizar a funcionalidade.'
+					content: 'Ao marcar essa opção favor averiguar o perfil "Autorizar participação do colaborador na solicitação de pessoal" para os usuários que irão utilizar a funcionalidade.'
 			});
 			
 			$('#versaoAcademicaHelp').qtip({
@@ -119,12 +119,44 @@
 			}
 		}
 		
+		function mostrarAviso(){
+			if (!$('#autorizacaoGestorNaSolicitacaoPessoal').is(":checked")){
+				$('.avisoRemoverautorizacaoGestorNaSolicitacaoPessoalDiv').show();	
+			}
+			else
+				$('.avisoRemoverautorizacaoGestorNaSolicitacaoPessoalDiv').hide();
+			
+		}
+		
 	</script>
 
 	<style type="text/css">
 		#wwgrp_modulosSistemaCheck{ 
 								margin-top:-10px;
 							}
+		.avisoRemoverautorizacaoGestorNaSolicitacaoPessoalDiv{	min-height: 50px;
+									width: 501px;
+								    padding: 14px 12px;
+								    margin-bottom: 5px;
+    								margin-top: 5px;
+								    border-radius: 5px;
+								    color: #fff;
+								    background-color: #f0ad4e;
+								    border-color: #eea236;
+								    position: relative;
+								    font-weight: bold;	
+								}
+								
+		.avisoRemoverautorizacaoGestorNaSolicitacaoPessoalDiagonal{	position: absolute;
+    									-ms-transform: rotate(7deg); /* IE 9 */
+    									-webkit-transform: rotate(7deg); /* Chrome, Safari, Opera */
+    									transform: rotate(45deg);
+										width: 15px;
+									    height: 15px;
+									    background: #f0ad4e;
+									    top: -3px;
+									    left: 32px;
+									}
 		
 	</style>	
 	<#include "../ftl/mascarasImports.ftl" />
@@ -148,9 +180,15 @@
 	<@ww.checkbox label="Compartilhar cursos entre empresas." id="compartilharCurso" name="parametrosDoSistema.compartilharCursos" liClass="liLeft" labelPosition="left"/>
 	
 	<li style="margin-bottom: 5px">
-		<input type="checkbox" name="parametrosDoSistema.autorizacaoGestorNaSolicitacaoPessoal" id="autorizacaoGestorNaSolicitacaoPessoal" value="true"/>
-		Habilitar autorização da participação do colaborador em uma solicitação de pessoal. 
+		<input type="checkbox" name="parametrosDoSistema.autorizacaoGestorNaSolicitacaoPessoal" id="autorizacaoGestorNaSolicitacaoPessoal" value="true" onchange="mostrarAviso()"/>
+		Autorizar participação do colaborador em uma solicitação de pessoal. 
 		<img id="tooltipHelpAutorizacao" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"/><br>
+		<div class="wwctrl avisoRemoverautorizacaoGestorNaSolicitacaoPessoalDiv" style="display:none" >
+  			<div class="avisoRemoverautorizacaoGestorNaSolicitacaoPessoalDiagonal"></div>
+  			Ao desmarcar essa opção e clicar no botão gravar, a permissão "Autorizar participação do colaborador na solicitação de pessoal" será removida dos perfis 
+  			e os gerenciadores de comunicação: "Existir colaborador aguardando autorização para paticipar de uma solicitacao de pessoal" 
+  			e "Alterar status de autorização do colaborador para participar de uma solicitacao de pessoal" serão excluídos.'
+  		</div>
 	</li>
 	
 	<input type="checkbox" name="parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" value="true" id="inibirGerarRelatorioPesquisaAnonima"/>

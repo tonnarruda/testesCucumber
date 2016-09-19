@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.acesso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
@@ -9,6 +10,7 @@ import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.acesso.PapelFactory;
 
 public class PerfilDaoHibernateTest extends GenericDaoHibernateTest<Perfil>
 {
@@ -99,7 +101,21 @@ public class PerfilDaoHibernateTest extends GenericDaoHibernateTest<Perfil>
 		perfilDao.save(perfil);
 		
 		assertTrue(perfilDao.getCount() > 0);
+	}
+	
+	public void testRemovePerfilPapelByPapelId(){
+		Exception exception = null;
+		Papel  papel = PapelFactory.getEntity();
+		papelDao.save(papel);
+		criaPerfil(Arrays.asList(papel), 1L);
 		
+		try {
+			perfilDao.removePerfilPapelByPapelId(papel.getId());
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
 	}
 
 }

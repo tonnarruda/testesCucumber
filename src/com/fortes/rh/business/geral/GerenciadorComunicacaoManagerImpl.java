@@ -1821,7 +1821,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				
 				StringBuilder corpoEmail = new StringBuilder();
 				corpoEmail.append("O Usuário \"" + usuarioLogado.getNome() + "\" inseriu o colaborador \""  + colaborador.getNome() +  "\" em uma Solicitacao de Pessoal.<br><br>");
-				corpoEmail.append("Solicitação de Pessoal: " + solicitacao.getDescricaoFormatada() + "<br><br>");
+				corpoEmail.append("Solicitação de Pessoal: " + solicitacao.getId() + " - " + solicitacao.getDescricao() + " - " + solicitacao.getDataFormatada() + "<br>");
+				corpoEmail.append("Cargo da solicitação: " + solicitacao.getNomeDoCargoDaFaixaSalarial() + "<br>");
+				corpoEmail.append("Área Organizacional da solicitação: " + solicitacao.getDescricaoDaAreaOrganizacional() + "<br><br>");
 				
 				String corpoCxMsg = corpoEmail.toString().replace("<br>", "\n");
 				corpoCxMsg += "Acesse em \"R&S > Movimentações > Autorizar Participação do Colaborador na Solicitação de Pessoal\", para autorizar a participação desse colaborador na Solicitação de Pessoal.";
@@ -1849,33 +1851,48 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			Colaborador colaborador = colaboradorManager.findByCandidato(candidatoSolicitacaoAnterior.getCandidato().getId(), empresa.getId());
 			colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), null); 
 			
+			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
+
 			Usuario usuarioSolicitante = null;
 			if(candidatoSolicitacaoAnterior.getUsuarioSolicitanteAutorizacaoGestor() != null){
-				UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 				usuarioSolicitante = usuarioManager.findById(candidatoSolicitacaoAnterior.getUsuarioSolicitanteAutorizacaoGestor().getId());
+				usuarioSolicitante.setEmailColaborador(usuarioManager.findEmailByUsuarioId(usuarioSolicitante.getId()));
 			}
+			usuarioLogado.setEmailColaborador(usuarioManager.findEmailByUsuarioId(usuarioLogado.getId()));
 			
 			String titulo = "O status de autorização do colaborador, para participar da Solicitação de Pessoal, foi alterado";
 			
-			StringBuilder corpoEmail = new StringBuilder();
-			corpoEmail.append("O Usuário \"" + usuarioLogado.getNome() + "\" alterou o status de autorização do colaborador.<br><br>");
-			corpoEmail.append("Colaborador: "  + colaborador.getNome() +  "<br>");
-			corpoEmail.append("Solicitação de Pessoal: " + solicitacao.getDescricaoFormatada() + "<br><br>");
-
-			corpoEmail.append("Status Anterior:<br>");
-			montaStringStatusGestorCandidatoSolicitacao(candidatoSolicitacaoAnterior, corpoEmail);
-			
-			corpoEmail.append("Status Atual:<br>");
-			montaStringStatusGestorCandidatoSolicitacao(candidatoSolicitacao, corpoEmail);
-
+			StringBuilder corpoEmail = montaCorpoDoEmail(colaborador, solicitacao, candidatoSolicitacao, candidatoSolicitacaoAnterior, usuarioLogado);
+						
 			String corpoCxMsg = corpoEmail.toString().replace("<br>", "\n");
 			getCopyright(corpoEmail);
 
 			Collection<AreaOrganizacional> todasAreas = areaOrganizacionalManager.findAllListAndInativas(true, null, empresa.getId());
+			
 			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_ALTERAR_STATUS_COLAB.getId(), empresa.getId());
 			gerenciaEnvioEmails(gerenciadorComunicacaos, parametros, empresa, colaborador.getAreaOrganizacional().getId(), todasAreas, titulo, corpoEmail.toString(), getEmailUsuario(usuarioSolicitante), getEmailUsuario(usuarioLogado));
 			gerenciaEnvioCaixaMensagem(gerenciadorComunicacaos, empresa, colaborador, todasAreas, titulo, corpoCxMsg, null, TipoMensagem.RES, usuarioSolicitante, usuarioLogado.getId());
-		}catch (Exception e) {e.printStackTrace();}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private StringBuilder montaCorpoDoEmail(Colaborador colaborador, Solicitacao solicitacao, CandidatoSolicitacao candidatoSolicitacaoAtual, CandidatoSolicitacao candidatoSolicitacaoAnterior, Usuario usuarioLogado) {
+		StringBuilder corpoEmail = new StringBuilder();
+		corpoEmail.append("O usuário \"" + usuarioLogado.getNome() + "\" alterou o status de autorização do colaborador.<br><br>");
+		corpoEmail.append("Colaborador: "  + colaborador.getNome() +  "<br>");
+		corpoEmail.append("Solicitação de Pessoal: " + solicitacao.getId() + " - " + solicitacao.getDescricao() + " - " + solicitacao.getDataFormatada() + "<br>");
+		corpoEmail.append("Cargo da solicitação: " + solicitacao.getNomeDoCargoDaFaixaSalarial() + "<br>");
+		corpoEmail.append("Área Organizacional da solicitação: " + solicitacao.getDescricaoDaAreaOrganizacional() + "<br><br>");
+		
+		corpoEmail.append("Status Anterior:<br>");
+		montaStringStatusGestorCandidatoSolicitacao(candidatoSolicitacaoAnterior, corpoEmail);
+
+		corpoEmail.append("Status Atual:<br>");
+		montaStringStatusGestorCandidatoSolicitacao(candidatoSolicitacaoAtual, corpoEmail);
+
+		
+		return corpoEmail;
 	}
 
 	private void getCopyright(StringBuilder corpoEmail) {
@@ -1894,6 +1911,11 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		if(usuario != null && usuario.getColaborador() != null && usuario.getColaborador().getContato() != null && usuario.getColaborador().getContato().getEmail() != null)
 			emailUsuarioLogado = usuario.getColaborador().getContato().getEmail();
 		return emailUsuarioLogado;
+	}
+	
+	
+	public void removeByOperacao(Integer[] operacoes){
+		getDao().removeByOperacao(operacoes);
 	}
 	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {

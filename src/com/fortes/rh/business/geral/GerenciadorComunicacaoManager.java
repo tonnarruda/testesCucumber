@@ -69,4 +69,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviarMensagemAoExluirRespostasAvaliacaoPeriodoDeExperiencia(ColaboradorQuestionario colaboradorQuestionario, Usuario usuario, Empresa empresa);
 	void enviarAvisoAoInserirColaboradorSolPessoal(Empresa empresa, Usuario usuarioLogado, Long colaboradorId, Long solicitacaoId); 
 	void enviarAvisoAoAlterarStatusColaboradorSolPessoal(Usuario usuarioLogado, CandidatoSolicitacao candidatoSolicitacaoAnterior, CandidatoSolicitacao candidatoSolicitacao, Empresa empresa);
+	void removeByOperacao(Integer[] operacoes);
 }

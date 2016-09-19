@@ -69,4 +69,5 @@ public interface UsuarioManager extends GenericManager<Usuario>
 	
 	public boolean isResponsavelOrCoResponsavel(Long usuarioId);
 
+	String findEmailByUsuarioId(Long usuarioId);
 }

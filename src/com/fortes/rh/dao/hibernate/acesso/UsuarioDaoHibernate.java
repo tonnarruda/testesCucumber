@@ -262,7 +262,7 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 
 		return new CollectionUtil<String>().convertCollectionToArrayString(criteria.list());
 	}
-
+	
 	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagens) 
 	{
 		String hql = "update Usuario set caixasMensagens = :caixasMensagens where id = :usuarioId";
@@ -384,5 +384,20 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		Query query = getSession().createSQLQuery(hql.toString());
 		query.setLong("usuarioId", usuarioId);
 		return (Boolean) query.uniqueResult();
+	}
+
+	@Override
+	public String findEmailByUsuarioId(Long usuarioId) {
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.usuario", "u");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.contato.email"), "emailColaborador");
+
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("u.id", usuarioId));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return (String) criteria.uniqueResult();
 	}
 }

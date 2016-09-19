@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -70,5 +71,12 @@ public class GerenciadorComunicacaoDaoHibernate extends GenericDaoHibernate<Gere
 		criteria.add(Expression.eq("gc.enviarPara", gerenciadorComunicacao.getEnviarPara()));
 		
 		return criteria.list().size() > 0;	
+	}
+	
+	public void removeByOperacao(Integer[] operacoes){
+		String hql = "delete from GerenciadorComunicacao where operacao in(:operacoes) ";
+		Query query = getSession().createQuery(hql);
+		query.setParameterList("operacoes", operacoes);
+		query.executeUpdate();
 	}
 }

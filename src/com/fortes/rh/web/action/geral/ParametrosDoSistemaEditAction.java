@@ -26,6 +26,7 @@ import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Perfil;
@@ -33,6 +34,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.ModulosSistema;
+import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
@@ -55,6 +57,7 @@ import com.opensymphony.xwork.ActionContext;
 public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
+	private static final long PERFIL_AUTORIZAR_PARTICIPACAO_COLAB_EM_SOLICITACAO_DE_PESSOAL = 684L;
 	
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -66,6 +69,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private OcorrenciaManager ocorrenciaManager;
 	private EmpresaManager empresaManager;
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<AreaOrganizacional> areaOrganizacionals;
@@ -181,6 +185,12 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		parametrosDoSistema.setHorariosBackup(StringUtil.converteCollectionToString(horariosBackup));
 		
 		ServletActionContext.getRequest().getSession().setMaxInactiveInterval(parametrosDoSistema.getSessionTimeout());
+
+		if(parametrosDoSistemaAux.isAutorizacaoGestorNaSolicitacaoPessoal() && !parametrosDoSistema.isAutorizacaoGestorNaSolicitacaoPessoal()){
+			perfilManager.removePerfilPapelByPapelId(PERFIL_AUTORIZAR_PARTICIPACAO_COLAB_EM_SOLICITACAO_DE_PESSOAL);
+			gerenciadorComunicacaoManager.removeByOperacao(new Integer[]{Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_INCLUIR_COLAB.getId(), Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_ALTERAR_STATUS_COLAB.getId()});
+		}
+		
 		parametrosDoSistemaManager.update(parametrosDoSistema);
 		
 		perfils = perfilManager.findAll();
@@ -527,5 +537,10 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	public String[] getModulosSistemaCheck() {
 		return modulosSistemaCheck;
+	}
+
+	public void setGerenciadorComunicacaoManager(
+			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

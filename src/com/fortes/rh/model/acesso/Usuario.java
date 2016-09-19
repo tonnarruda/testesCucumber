@@ -222,4 +222,11 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 	public boolean isUsuarioFortes() {
 		return getId() == 1;
 	}
+	
+	public void setEmailColaborador(String emailColaborador){
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setEmailColaborador(emailColaborador);
+	}
 }

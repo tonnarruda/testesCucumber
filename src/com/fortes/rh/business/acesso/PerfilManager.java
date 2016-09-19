@@ -12,5 +12,6 @@ public interface PerfilManager extends GenericManager<Perfil>
 	public Integer getCount();
 	public Collection<Perfil> findAll(Integer page, Integer pagingSize);
 	Collection<Perfil> findPapeis(Long[] perfisIds);
+	public void removePerfilPapelByPapelId(Long papelId);
 	
 }
