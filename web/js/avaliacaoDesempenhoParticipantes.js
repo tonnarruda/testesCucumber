@@ -128,7 +128,6 @@ $(function() {
 	
 	$(".actions .unselect-all").click(function(){
 		$(this).parents(".box").find(".column .ui-selected:visible").each(function(){
-			console.log("passou");
 			$(this).parents(".box").find(".selecteds .list #"+$(this).attr("id")).remove();
 		});
 
@@ -279,7 +278,7 @@ $(function() {
 		$(this).parents(".box").find(".box-search").toggle();
 		$(this).toggleClass("active");
 		
-		$(this).parents(".box").find(".column > .ui-selectable").show( $(".box-search").is(":visible") );
+		$(this).parents(".box").find(".column").find(".ui-selectable").show( $(".box-search").is(":visible") );
 		$(this).parents(".box").find(".search").val("");
 		
 		resizeBox($(this));
@@ -343,8 +342,8 @@ $(function() {
     });
 	
     $(".search").keyup(function(e){
-    	$(this).parents(".box").find(".column > .ui-selectable").hide();
-    	$(this).parents(".box").find(".column > .ui-selectable .nome:contains-IgnoreAccents('"+$(this).val()+"')").parents(".ui-selectable").show();
+    	$(this).parents(".box").find(".column").find(".ui-selectable").hide();
+    	$(this).parents(".box").find(".column").find(".ui-selectable .nome:contains-IgnoreAccents('"+$(this).val()+"')").parents(".ui-selectable").show();
     });
 	
     /********/
@@ -393,11 +392,6 @@ $(function() {
 		$(this).parent().find(".list").toggle();
 		$(this).find(".up").toggle();
 		$(this).find(".down").toggle();
-
-		//var marginList;
-		//$(this).parent().find(".list").is(":visible") ? marginList = $(this).parent().find(".list").height() + 25 : marginList = 25;
-		//$(this).parent().parent().find(".column").height( 500 - $(this).parent().height() );
-		/*$(this).parent().parent().find(".in-selection").css({"margin-top": marginList+"px !important"});*/
 		
 		resizeBox(this);
 	});
@@ -414,9 +408,6 @@ function resizeBox(element) {
 		height = height - $(box).find(".selecteds").height(); 
 		
 	$(box).find(".column").height( height );
-	console.log(height);
-	console.log($(box).find(".column"));
-	console.log($(box).find(".column").height());
 }
 
 function conectAvaliadosAvaliadores() {
@@ -537,8 +528,6 @@ function atualizeSelectablesMini() {
 		
 		event.stopPropagation();
 	});
-	
-	//$("#avaliadores li").not(".ui-selectable").not(".has-respondida").addClass("ui-selectable");
 }
 
 function createAvaliador(id, nome) {
