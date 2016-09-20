@@ -83,7 +83,7 @@ public class ConfiguracaoNivelCompetenciaFactory
 		return configuracaoNivelCompetencia;
 	}
 	
-	public static ConfiguracaoNivelCompetencia getEntityColaborador(Long id, ConfiguracaoNivelCompetenciaColaborador cncColaborador,	NivelCompetencia nivelCompetencia,  Long competenciaId, String competenciaDescricao, Character tipoCompetencia) 
+	public static ConfiguracaoNivelCompetencia getEntityColaborador(Long id, ConfiguracaoNivelCompetenciaColaborador cncColaborador, NivelCompetencia nivelCompetencia,  Long competenciaId, String competenciaDescricao, Character tipoCompetencia) 
 	{
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntityColaborador(cncColaborador, nivelCompetencia, competenciaId, competenciaDescricao, tipoCompetencia);
 		configuracaoNivelCompetencia.setId(id);
@@ -122,6 +122,15 @@ public class ConfiguracaoNivelCompetenciaFactory
 		configuracaoNivelCompetencia.setCargo(cargo);
 		configuracaoNivelCompetencia.setColaborador(colaborador);
 		configuracaoNivelCompetencia.setNivelCompetenciaOrdemProjection(ordem);
+		return configuracaoNivelCompetencia;
+	}
+	
+	public static ConfiguracaoNivelCompetencia getEntity(Long id, NivelCompetencia nivelCompetencia, ConfiguracaoNivelCompetenciaFaixaSalarial cncf, Long competenciaId, Long avaliadorId, Character tipoCompetencia, Integer pesoAvaliador){
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntityColaborador(null, nivelCompetencia, competenciaId, tipoCompetencia);
+		configuracaoNivelCompetencia.setId(id);
+		configuracaoNivelCompetencia.setAvaliadorId(avaliadorId);
+		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaFaixaSalarial(cncf);
+		configuracaoNivelCompetencia.setAvaliadorPeso(pesoAvaliador);
 		return configuracaoNivelCompetencia;
 	}
 }

@@ -47,6 +47,13 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.Competencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
+import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
@@ -59,7 +66,11 @@ import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjet
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
+import com.fortes.rh.test.factory.captacao.NivelCompetenciaHistoricoFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.PerguntaFactory;
@@ -421,4 +432,61 @@ public class AvaliacaoDesempenhoManagerTest_Junit4
 		assertNull(exception);
 	}
 	
+	@Test
+	public void testGetResultadoAvaliacaoDesempenho(){
+		Long competenciaId = 2L;
+		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(1L);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial cncf = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(1L);
+		cncf.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		
+		NivelCompetencia nivelCompetenciaColaborador1 = NivelCompetenciaFactory.getEntity("Java", 2);
+		nivelCompetenciaColaborador1.setId(1L);
+		
+		NivelCompetencia nivelCompetenciaColaborador2 = NivelCompetenciaFactory.getEntity("Java", 5);
+		nivelCompetenciaColaborador2.setId(2L);
+				
+		ConfiguracaoNivelCompetencia cncColab1 = ConfiguracaoNivelCompetenciaFactory.getEntity(1L, nivelCompetenciaColaborador1, cncf, competenciaId, 1L, TipoCompetencia.CONHECIMENTO, 2);
+		ConfiguracaoNivelCompetencia cncColab2 = ConfiguracaoNivelCompetenciaFactory.getEntity(2L, nivelCompetenciaColaborador2, cncf, competenciaId, 2L, TipoCompetencia.CONHECIMENTO, 1);
+		
+		ConfiguracaoNivelCompetencia cncFaixa = ConfiguracaoNivelCompetenciaFactory.getEntity(null, nivelCompetenciaColaborador2, competenciaId, TipoCompetencia.CONHECIMENTO);
+		cncFaixa.setId(competenciaId);
+		
+		Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDoColaborador = Arrays.asList(cncColab1, cncColab2);
+		Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDaFaixa = Arrays.asList(cncFaixa);
+		
+		ConfiguracaoNivelCompetenciaCriterio cncCriterio1 = new ConfiguracaoNivelCompetenciaCriterio();
+		cncCriterio1.setNivelCompetencia(nivelCompetenciaColaborador1);
+		
+		ConfiguracaoNivelCompetenciaCriterio cncCriterio2 = new ConfiguracaoNivelCompetenciaCriterio();
+		cncCriterio2.setNivelCompetencia(nivelCompetenciaColaborador2);
+		
+		Collection<ConfiguracaoNivelCompetenciaCriterio> cncCriterios = Arrays.asList(cncCriterio1, cncCriterio2);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		avaliacaoDesempenho.setPermiteAutoAvaliacao(true);
+
+		Long avaliadoId = 2L;
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		mockTestGetResultadoAvaliacaoDesempenho(nivelCompetenciaHistorico, cncf, cncColab1, cncColab2, configNiveisCompetenciasDoColaborador, configNiveisCompetenciasDaFaixa, cncCriterios, avaliacaoDesempenho, avaliadoId, empresa);
+		
+		ResultadoAvaliacaoDesempenho resultado = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(avaliacaoDesempenho,avaliadoId, empresa.getId());
+		assertEquals(1, resultado.getCompetencias().size());
+		assertEquals(new Double(70.0), resultado.getPerformanceAutoAvaliacao());
+		assertEquals(new Double(50.0), resultado.getProdutividade());
+		assertEquals(new Double(70.0), ((Competencia) resultado.getCompetencias().toArray()[0]).getPerformance());
+	}
+
+	private void mockTestGetResultadoAvaliacaoDesempenho(NivelCompetenciaHistorico nivelCompetenciaHistorico, ConfiguracaoNivelCompetenciaFaixaSalarial cncf, ConfiguracaoNivelCompetencia cncColab1, ConfiguracaoNivelCompetencia cncColab2, Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDoColaborador, Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDaFaixa, Collection<ConfiguracaoNivelCompetenciaCriterio> cncCriterios, AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId, Empresa empresa) {
+		when(configuracaoNivelCompetenciaManager.findCompetenciasAndPesos(avaliacaoDesempenho.getId(), avaliadoId)).thenReturn(configNiveisCompetenciasDoColaborador);
+		when(configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaFaixaSalarial(cncf.getId())).thenReturn(configNiveisCompetenciasDaFaixa);
+		when(colaboradorManager.findByIdHistoricoAtual(avaliadoId, true)).thenReturn(ColaboradorFactory.getEntity(1L));
+		when(nivelCompetenciaManager.getOrdemMaximaByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId())).thenReturn(5.0);
+		when(participanteAvaliacaoDesempenhoManager.findByAvalDesempenhoIdAbadColaboradorId(avaliacaoDesempenho.getId(), avaliadoId, TipoParticipanteAvaliacao.AVALIADO)).thenReturn(5.0);
+		when(configuracaoNivelCompetenciaCriterioManager.findByConfiguracaoNivelCompetencia(cncColab1.getId(), cncf.getId())).thenReturn(cncCriterios);
+		when(configuracaoNivelCompetenciaCriterioManager.findByConfiguracaoNivelCompetencia(cncColab2.getId(), cncf.getId())).thenReturn(cncCriterios);
+		when(nivelCompetenciaManager.findAllSelect(empresa.getId(), nivelCompetenciaHistorico.getId(), null)).thenReturn(NivelCompetenciaFactory.getCollection());
+	}
 }

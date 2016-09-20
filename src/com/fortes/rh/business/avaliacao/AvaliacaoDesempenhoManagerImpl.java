@@ -33,6 +33,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
+import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -262,7 +263,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		}
 	}
 
-	public ResultadoAvaliacaoDesempenho getResultadoAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId) 
+	public ResultadoAvaliacaoDesempenho getResultadoAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId, Long empresaId) 
 	{
 		Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDoColaborador = configuracaoNivelCompetenciaManager.findCompetenciasAndPesos(avaliacaoDesempenho.getId(), avaliadoId);
 		ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = new ResultadoAvaliacaoDesempenho();
@@ -278,6 +279,8 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDaFaixaSalarial = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaFaixaSalarial(nivelCompetenciaFaixaSalarial.getId());
 		Double ordemMaxima = nivelCompetenciaManager.getOrdemMaximaByNivelCompetenciaHistoricoId(nivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId()); 
 		
+		Collection<NivelCompetencia> niveisCompetencias = nivelCompetenciaManager.findAllSelect(empresaId, nivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
+		
 		Competencia competencia;
 		Integer pesoAvaliador, somaPesoAvaliadores;
 		Double pesoPorPontuacaoObtidaAvaliadorAcumulado;
@@ -285,19 +288,15 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		Double pesoPorPontuacaoAutoAvaliacao = 0.0;
 		Integer somaPesosCompetenciasDaAutoAvaliacao = 0;
 		
-		for (ConfiguracaoNivelCompetencia cncFaixa : configNiveisCompetenciasDaFaixaSalarial) 
-		{
+		for (ConfiguracaoNivelCompetencia cncFaixa : configNiveisCompetenciasDaFaixaSalarial){
 			pesoPorPontuacaoObtidaAvaliadorAcumulado = 0.0;
 			somaPesoAvaliadores = 0;
 			
-			for (ConfiguracaoNivelCompetencia cncColaborador : configNiveisCompetenciasDoColaborador) 
-			{
-				if(cncFaixa.getCompetenciaId().equals(cncColaborador.getCompetenciaId()) && cncFaixa.getTipoCompetencia().equals(cncColaborador.getTipoCompetencia()) )
-				{
+			for (ConfiguracaoNivelCompetencia cncColaborador : configNiveisCompetenciasDoColaborador){
+				if(cncFaixa.getCompetenciaId().equals(cncColaborador.getCompetenciaId()) && cncFaixa.getTipoCompetencia().equals(cncColaborador.getTipoCompetencia()) ){
+
 					pesoAvaliador = cncColaborador.getAvaliadorPeso() != null ? cncColaborador.getAvaliadorPeso() : 1;
-					
 					Double pontuacaoDaCompetencia = 0.0;
-					
 					Collection<ConfiguracaoNivelCompetenciaCriterio> cncCriterios = configuracaoNivelCompetenciaCriterioManager.findByConfiguracaoNivelCompetencia(cncColaborador.getId(), nivelCompetenciaFaixaSalarial.getId());
 					
 					if ( cncCriterios != null && cncCriterios.size() > 0 ) {
@@ -307,12 +306,10 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 						}
 						
 						pontuacaoDaCompetencia += soma / cncCriterios.size();
-					} else {
+					} else 
 						pontuacaoDaCompetencia += cncColaborador.getNivelCompetenciaColaborador().getOrdem();
-					}
 					
 					pontuacaoObtidaColaborador = pontuacaoDaCompetencia * cncFaixa.getPesoCompetencia();
-					
 					pesoPorPontuacaoObtidaAvaliadorAcumulado += pesoAvaliador * pontuacaoObtidaColaborador;
 					somaPesoAvaliadores += pesoAvaliador;
 				
@@ -323,13 +320,11 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 				}
 			}
 			
-			if(somaPesoAvaliadores != 0)
-			{
-				competencia = new Competencia();
-				competencia.setNome(cncFaixa.getCompetenciaDescricao());
-				competencia.setPerformance((pesoPorPontuacaoObtidaAvaliadorAcumulado/(somaPesoAvaliadores*ordemMaxima*cncFaixa.getPesoCompetencia()))*100);
+			if(somaPesoAvaliadores != 0){
+				competencia = new Competencia(cncFaixa.getCompetenciaDescricao(), (pesoPorPontuacaoObtidaAvaliadorAcumulado/(somaPesoAvaliadores*ordemMaxima*cncFaixa.getPesoCompetencia()))*100,
+						cncFaixa.getPesoCompetencia(), (cncFaixa.getNivelCompetencia().getOrdem()/ordemMaxima)*100);
 				competencia.setCompetenciaAbaixoDoNivelExigido(competencia.getPerformance() < ((cncFaixa.getNivelCompetencia().getOrdem()/ordemMaxima)*100));
-				competencia.setPesoCompetencia(cncFaixa.getPesoCompetencia());
+				setDescricaoNivelCompetencia(competencia, niveisCompetencias, ordemMaxima);
 				competencias.add(competencia);
 			}
 		}
@@ -345,6 +340,15 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			resultadoAvaliacaoDesempenho.setProdutividade(produtividade * 10);
 		
 		return resultadoAvaliacaoDesempenho;
+	}
+	
+	public void setDescricaoNivelCompetencia(Competencia competencia, Collection<NivelCompetencia> niveisCompetencias, Double ordemMaxima){
+		Double ordemObtida = (competencia.getPerformance()*ordemMaxima)/100;
+		
+		for (NivelCompetencia nivelCompetencia : niveisCompetencias) {
+			if(new Double(nivelCompetencia.getOrdem()) <= ordemObtida)
+				competencia.setDescricaoNivelCompetencia(nivelCompetencia.getDescricao());
+		}
 	}
 
 	public void saveOrUpdateRespostaAvDesempenho(Usuario usuario, Empresa empresa, Colaborador colaborador, ColaboradorQuestionario colaboradorQuestionario, AvaliacaoDesempenho avaliacaoDesempenho, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Collection<Pergunta> perguntas, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais) {

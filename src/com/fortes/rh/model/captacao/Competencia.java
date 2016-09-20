@@ -38,7 +38,23 @@ public class Competencia
 	private boolean competenciaAbaixoDoNivelExigido; 
 	@Transient
 	private Integer pesoCompetencia;
+	@Transient
+	private Double percentualExigidoFaixaSalarial;
+	@Transient
+	private String descricaoNivelCompetencia;
 	
+	public Competencia(){
+		super();
+	}
+	
+	public Competencia(String nome, Double performance, Integer pesoCompetencia, Double percentualExigidoFaixaSalarial) 
+	{
+		this.nome = nome;
+		this.performance = performance;
+		this.pesoCompetencia = pesoCompetencia;
+		this.percentualExigidoFaixaSalarial = percentualExigidoFaixaSalarial;
+	}
+
 	public Long getId() 
 	{
 		return id;
@@ -139,5 +155,21 @@ public class Competencia
 
 	public void setPesoCompetencia(Integer pesoCompetencia) {
 		this.pesoCompetencia = pesoCompetencia;
+	}
+
+	public Double getPercentualExigidoFaixaSalarial() {
+		return MathUtil.round(percentualExigidoFaixaSalarial, 2);
+	}
+
+	public void setPercentualExigidoFaixaSalarial(Double percentualExigidoFaixaSalarial) {
+		this.percentualExigidoFaixaSalarial = percentualExigidoFaixaSalarial;
+	}
+
+	public String getDescricaoNivelCompetencia() {
+		return descricaoNivelCompetencia;
+	}
+
+	public void setDescricaoNivelCompetencia(String descricaoNivelCompetencia) {
+		this.descricaoNivelCompetencia = descricaoNivelCompetencia;
 	}
 }

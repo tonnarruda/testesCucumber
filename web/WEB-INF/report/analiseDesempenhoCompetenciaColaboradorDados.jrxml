@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="prontuario_subreportFichaMedica" pageWidth="537" pageHeight="140" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="30c756db-479d-4fc9-a86d-a6fa8b320f62">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.3310000000000033"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.143588810000006"/>
+	<property name="ireport.x" value="281"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -12,6 +12,8 @@
 	<field name="performance" class="java.lang.Double"/>
 	<field name="nome" class="java.lang.String"/>
 	<field name="competenciaAbaixoDoNivelExigido" class="java.lang.Boolean"/>
+	<field name="descricaoNivelCompetencia" class="java.lang.String"/>
+	<field name="percentualExigidoFaixaSalarial" class="java.lang.Double"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
@@ -25,9 +27,21 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="30" splitType="Stretch">
+		<band height="35" splitType="Stretch">
 			<staticText>
-				<reportElement x="10" y="10" width="20" height="20" uuid="8e29bb43-5817-44d8-9c01-f15bdd5e3d32"/>
+				<reportElement x="0" y="0" width="537" height="35" uuid="085fe24a-f82a-4437-91a6-e44daf7a38f4"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="10" width="20" height="25" uuid="8e29bb43-5817-44d8-9c01-f15bdd5e3d32"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -35,13 +49,13 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<paragraph leftIndent="2"/>
 				</textElement>
-				<text><![CDATA[]]></text>
+				<text><![CDATA[N]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="10" width="221" height="20" uuid="b8a84ee6-3dcc-4e7a-8ec8-0c3bf7589dc6"/>
+				<reportElement x="30" y="10" width="221" height="25" uuid="b8a84ee6-3dcc-4e7a-8ec8-0c3bf7589dc6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -55,7 +69,7 @@
 				<text><![CDATA[Competência]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="361" y="10" width="161" height="20" uuid="4d800f1d-529f-4964-984f-3357de843062"/>
+				<reportElement x="473" y="10" width="49" height="25" uuid="4d800f1d-529f-4964-984f-3357de843062"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -67,7 +81,7 @@
 				<text><![CDATA[Resultado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="251" y="10" width="110" height="20" uuid="f48d524e-73a6-4af2-93fb-562784dc9461"/>
+				<reportElement x="251" y="10" width="63" height="25" uuid="f48d524e-73a6-4af2-93fb-562784dc9461"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -79,10 +93,40 @@
 				<text><![CDATA[Performance]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="0" width="537" height="30" uuid="085fe24a-f82a-4437-91a6-e44daf7a38f4"/>
+				<reportElement x="314" y="10" width="99" height="25" uuid="1a73ede2-019b-4b56-be54-54131b91fde8"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nível Competência Atingido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="413" y="10" width="60" height="25" uuid="b3ec6cb8-02c4-45aa-bd48-fb0785f8cfcc"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<paragraph leftIndent="1" rightIndent="1"/>
+				</textElement>
+				<text><![CDATA[Nível Exigido]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="537" height="20" uuid="7b34b71e-c186-48f8-8b63-e1e7c11938b5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.0"/>
 					<rightPen lineWidth="0.5"/>
@@ -90,10 +134,6 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[]]></text>
 			</staticText>
-		</band>
-	</columnHeader>
-	<detail>
-		<band height="20" splitType="Stretch">
 			<textField>
 				<reportElement stretchType="RelativeToBandHeight" x="10" y="0" width="20" height="20" uuid="b666c61d-2a1a-4db3-8b74-b07327b54261"/>
 				<box>
@@ -109,7 +149,7 @@
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="361" y="0" width="161" height="20" uuid="51dbf138-ee4a-4d39-acd2-01e9f1e356ef"/>
+				<reportElement stretchType="RelativeToBandHeight" x="473" y="0" width="49" height="20" uuid="51dbf138-ee4a-4d39-acd2-01e9f1e356ef"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -118,10 +158,10 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{competenciaAbaixoDoNivelExigido} ? "Necessário Desenvolvimento" : "-"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{competenciaAbaixoDoNivelExigido} ? "ND" : "AN"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="30" y="0" width="221" height="20" uuid="575211e8-0600-4073-a172-469026b871d4"/>
+				<reportElement stretchType="RelativeToBandHeight" x="30" y="0" width="221" height="20" uuid="575211e8-0600-4073-a172-469026b871d4"/>
 				<box topPadding="2" bottomPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -135,7 +175,7 @@
 				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="251" y="0" width="110" height="20" uuid="970bda32-d3f1-4d22-bbc8-57540529c173"/>
+				<reportElement stretchType="RelativeToBandHeight" x="251" y="0" width="63" height="20" uuid="970bda32-d3f1-4d22-bbc8-57540529c173"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -146,18 +186,30 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{performance}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="537" height="20" uuid="7b34b71e-c186-48f8-8b63-e1e7c11938b5"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="314" y="0" width="99" height="20" uuid="abe6f85c-b867-466d-9a54-400066b6c4c5"/>
 				<box>
 					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.0"/>
+					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$F{descricaoNivelCompetencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="413" y="0" width="60" height="20" uuid="848fb6c3-2b47-47b9-aa38-0b9bc26f9395"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{percentualExigidoFaixaSalarial}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

@@ -336,7 +336,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		try {
 			AvaliacaoDesempenho avaliacao = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-			ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(avaliacao, avaliado.getId());
+			ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(avaliacao, avaliado.getId(), getEmpresaSistema().getId());
 			
 			if(resultadoAvaliacaoDesempenho.getCompetencias().size() == 0){
 				addActionMessage("Não existem competências para o avaliado informado.");

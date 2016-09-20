@@ -42,7 +42,10 @@ public class NivelCompetenciaFactory
 	public static Collection<NivelCompetencia> getCollection()
 	{
 		Collection<NivelCompetencia> nivelCompetencias = new ArrayList<NivelCompetencia>();
-		nivelCompetencias.add(getEntity());
+		NivelCompetencia nivel1 = getEntity();
+		nivel1.setOrdem(3);
+		
+		nivelCompetencias.add(nivel1);
 
 		return nivelCompetencias;
 	}

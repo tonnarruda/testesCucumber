@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="avaliacao_candidatos" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="3e5d2dbb-32dc-472b-8486-a4f3e312c585">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.100000000000007"/>
+	<property name="ireport.zoom" value="2.1435888100000144"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="84"/>
+	<property name="ireport.y" value="869"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -139,14 +139,56 @@
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "analiseDesempenhoCompetenciaColaboradorDados.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-		<band height="32">
+		<band height="65">
 			<textField evaluationTime="Report">
-				<reportElement x="0" y="16" width="537" height="15" uuid="4f24ada8-a760-4a70-8817-58cfb2671718"/>
+				<reportElement x="-1" y="48" width="537" height="15" uuid="4f24ada8-a760-4a70-8817-58cfb2671718"/>
 				<textElement verticalAlignment="Top">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{produtividade} != null ? ("*Performance = (Média das performances das competências + Produtividade) / 2 ") : ""]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="3" width="512" height="12" uuid="d26eaf05-7d7f-455d-a999-078fe8817ba6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Legenda:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="16" width="498" height="12" uuid="87dec94a-655a-478e-9f34-4747cc09312b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[ND: Necessário desenvolvimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="27" width="498" height="12" uuid="efdf74ac-972a-4354-b53e-70a44ed04a3c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[AN: Atende a necessidade]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>
