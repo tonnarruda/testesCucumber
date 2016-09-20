@@ -1150,7 +1150,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findHistoricoTreinamentosByColaborador(Long empresaId, Date dataIni, Date dataFim, Long... colaboradorIds)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id, co.id, co.nome, c.id, c.nome, c.cargaHoraria, ca.nome, fs.id, fs.nome, t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.instrutor) ");
+		hql.append("select new ColaboradorTurma(ct.id, ct.aprovado, ac.valor, co.id, co.nome, c.id, c.nome, c.cargaHoraria, ca.nome, fs.id, fs.nome, t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.instrutor) ");
 		hql.append("from ColaboradorTurma as ct ");
 		hql.append("left join ct.colaborador as co ");
 		hql.append("left join co.historicoColaboradors as hc ");
@@ -1158,6 +1158,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("left join fs.cargo as ca ");
 		hql.append("left join ct.turma as t ");
 		hql.append("left join t.curso as c ");
+		hql.append("left join ct.aproveitamentoAvaliacaoCursos as ac ");
 		hql.append("where co.empresa.id = :empresaId ");
 		hql.append("and co.id in (:colaboradorIds) ");
 		hql.append("and t.realizada = true ");

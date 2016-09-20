@@ -632,8 +632,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findHistoricoTreinamentosByColaborador(empresaId, dataIni, dataFim, colaboradorIds);
 		
-		if(colaboradorTurmas != null)
-			setAprovacoesDosColaboradoresTurmas(colaboradorTurmas);
+//		if(colaboradorTurmas != null)
+//			setAprovacoesDosColaboradoresTurmas(colaboradorTurmas);
 
 		return colaboradorTurmas;
 	}

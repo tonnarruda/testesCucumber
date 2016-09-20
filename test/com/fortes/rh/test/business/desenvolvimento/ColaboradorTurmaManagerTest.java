@@ -556,19 +556,11 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Collection<ColaboradorTurma> colaboradorTurmasAprovados = new ArrayList<ColaboradorTurma>();
 		colaboradorTurmasAprovados.add(colaboradorTurma1);
 		
-		int qrdAvaliacoes = 1;
-
 		colaboradorTurmaDao.expects(once()).method("findHistoricoTreinamentosByColaborador").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmasAprovados));
-		avaliacaoCursoManager.expects(atLeastOnce()).method("countAvaliacoes").with(eq(turma.getId()), eq("T")).will(returnValue(qrdAvaliacoes));
-		aproveitamentoAvaliacaoCursoManager.expects(atLeastOnce()).method("findColaboradorTurma").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmasAprovados));
 
 		MockSpringUtil.mocks.put("colaboradorPresencaManager", colaboradorPresencaManager);
 		MockSpringUtil.mocks.put("turmaManager", turmaManager);
 		
-		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colaboradorTurmasAprovados));
-		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(null)).will(returnValue(colaboradors));
-		
-
 		Collection<ColaboradorTurma> colaboradorTurmasResposta = new ArrayList<ColaboradorTurma>();		
 		colaboradorTurmasResposta = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(1L, null, null, 1L);
 		
@@ -660,17 +652,10 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Collection<ColaboradorTurma> colaboradorTurmasAprovados = new ArrayList<ColaboradorTurma>();
 		colaboradorTurmasAprovados.add(colaboradorTurma1);
 		
-		int qrdAvaliacoes = 0;
-		
 		colaboradorTurmaDao.expects(once()).method("findHistoricoTreinamentosByColaborador").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmasAprovados));
-		avaliacaoCursoManager.expects(atLeastOnce()).method("countAvaliacoes").with(eq(turma.getId()), eq("T")).will(returnValue(qrdAvaliacoes));
-		//aproveitamentoAvaliacaoCursoManager.expects(atLeastOnce()).method("findColaboradorTurma").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmasAprovados));
 		
 		MockSpringUtil.mocks.put("colaboradorPresencaManager", colaboradorPresencaManager);
 		MockSpringUtil.mocks.put("turmaManager", turmaManager);
-		
-		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colaboradorTurmasAprovados));
-		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(null)).will(returnValue(colaboradors));
 		
 		Collection<ColaboradorTurma> colaboradorTurmasResposta = new ArrayList<ColaboradorTurma>();		
 		colaboradorTurmasResposta = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(1L, null, null, 1L);
