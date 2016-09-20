@@ -10,6 +10,7 @@
 		<Item visivel="S" motivo="P16080000291"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliação dos alunos: Impossibilitando duplo clique no botão gravar, para impedir a duplicação de notas das avaliações.]]></Item>
 		<Item visivel="S" motivo="S16080000214"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Ajuste para possibilitar edição do vinculo do colaborador que não está integrado com o sistema Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="P16080000336"><![CDATA[Info. Funcionais > Cadastros > Atualizar Meus Dados: Ajuste para contemplar a configuração de campos do colaborador.]]></Item>
+		<Item visivel="S" motivo="P16090000024"><![CDATA[SESMT > Movimentações > Gerenciamento de EPIs: Melhoria na performance ao listar solicitações de EPIs.]]></Item>
 		<Item visivel="S" motivo="S16080000348"><![CDATA[Tela inicial: Inserção de ajuda para deixar mais intuitivo a ação de clicar em cada período para visualizar a progressão.]]></Item>
 	</Versao>
 	<Versao id="1.1.171.203" db="" data="30/08/2016">
