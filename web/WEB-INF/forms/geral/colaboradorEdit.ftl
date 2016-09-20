@@ -65,7 +65,7 @@
 		#parentesDialog table { width: 100%; }
 		#parentesDialog td { width: 50%; vertical-align: top; }
 		#wwgrp_dt_encerramentoContrato { margin-top: 5px; }
-		input[disabled] { background: #EFEFEF; }
+		input[disabled], select[disabled] { background: #EFEFEF; }
 	</style>
 
 	<#include "../cargosalario/calculaSalarioInclude.ftl" />
