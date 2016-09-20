@@ -630,12 +630,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	
 	public Collection<ColaboradorTurma> findHistoricoTreinamentosByColaborador(Long empresaId, Date dataIni, Date dataFim, Long... colaboradorIds) throws Exception
 	{
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findHistoricoTreinamentosByColaborador(empresaId, dataIni, dataFim, colaboradorIds);
-		
-//		if(colaboradorTurmas != null)
-//			setAprovacoesDosColaboradoresTurmas(colaboradorTurmas);
-
-		return colaboradorTurmas;
+		return getDao().findHistoricoTreinamentosByColaborador(empresaId, dataIni, dataFim, colaboradorIds);
 	}
 
 	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long empresaId, Long turmaId)
