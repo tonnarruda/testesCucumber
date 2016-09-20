@@ -16,6 +16,8 @@
 
 		$(function(){
 			insereHelp();
+			
+			calculaMediaDasNotas();
 		});
 		
 		function verificaEdicao()
@@ -35,6 +37,15 @@
 		{
 			alterouCampo = valorCampo != valor;
 		}
+		
+		function calculaMediaDasNotas() {
+			var total = 0;
+			$("input[name=notas]").each(function(i,n){
+			    total += parseFloat($(n).val()); 
+			});
+			$(".media").html(parseFloat(total/$("input[name=notas]").length).toFixed(2));
+		}
+		
 		function insereHelp()
 		{
 			<#if somenteLeitura>
@@ -150,7 +161,7 @@
 							<#if aproveitamento.colaboradorTurma.id == colaboradorTurma.id>
 								<#assign valorNota = aproveitamento.valor />
 								<#if !colaboradorTurma.certificadoEmTurmaPosterior>
-									<@ww.textfield id="nota_${colaboradorTurma.id}" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value);"/>
+									<@ww.textfield id="nota_${colaboradorTurma.id}" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value); calculaMediaDasNotas();"/>
 								<#else>
 									${valorNota}
 									<@ww.hidden id="nota_${colaboradorTurma.id}" name="notas" value="${valorNota}"/>
@@ -164,7 +175,15 @@
 					<@ww.hidden name="colaboradorTurmaIds" value="${colaboradorTurma.id}"/>
 				</@display.column>
 			</@display.table>
-
+			
+			<#if avaliacaoCurso.tipo != 'a'>
+				<div style="margin-top: -5px; float: right; border-bottom: 2px solid #BEBEBE; background: #EFEFEF; border-radius: 4px;">
+					<div style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; width: 96px; float:left; text-align: center; padding: 8px; font-weight: bold;">Média: </div>
+					<div class="media" style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; float:left; padding: 8px; width: 355px; text-align: center; float: right; ">00</div>
+				</div>
+				<div style="clear: both;"></div>
+			</#if>
+			
 			<@ww.hidden name="turma.id"/>
 			<@ww.hidden name="curso.id"/>
 			<@ww.hidden name="avaliacaoCurso.id"/>
