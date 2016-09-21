@@ -6,6 +6,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
+	
 	<title>Avaliações dos Alunos</title>
 	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
@@ -16,8 +17,12 @@
 
 		$(function(){
 			insereHelp();
-			
 			calculaMediaDasNotas();
+			
+			$('#helpMedia').qtip({
+				style: { width: true, height: true },
+				content: "Média = (Soma das notas dos participantes) / (qtd total de participantes)</br>Obs: Os participantes que estiverem sem nota serão considerado com nota </br> 0(zero) para o cálculo."
+			});
 		});
 		
 		function verificaEdicao()
@@ -41,7 +46,8 @@
 		function calculaMediaDasNotas() {
 			var total = 0;
 			$("input[name=notas]").each(function(i,n){
-			    total += parseFloat($(n).val()); 
+			    if($(n).val() != null && $(n).val() != "")
+			    	total += parseFloat($(n).val()); 
 			});
 			$(".media").html(parseFloat(total/$("input[name=notas]").length).toFixed(2));
 		}
@@ -178,7 +184,8 @@
 			
 			<#if avaliacaoCurso.tipo != 'a'>
 				<div style="margin-top: -5px; float: right; border-bottom: 2px solid #BEBEBE; background: #EFEFEF; border-radius: 4px;">
-					<div style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; width: 96px; float:left; text-align: center; padding: 8px; font-weight: bold;">Média: </div>
+					<div style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; width: 82px; float:left; text-align: center; padding: 8px; font-weight: bold;">Média: </div>
+					<img id="helpMedia" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="padding: 8px; margin-left: -20px" />
 					<div class="media" style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; float:left; padding: 8px; width: 355px; text-align: center; float: right; ">00</div>
 				</div>
 				<div style="clear: both;"></div>
