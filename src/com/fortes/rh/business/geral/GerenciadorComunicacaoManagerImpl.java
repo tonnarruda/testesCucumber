@@ -1806,7 +1806,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	} 
 	
-	public void enviarAvisoAoInserirColaboradorSolPessoal(Empresa empresa, Usuario usuarioLogado, Long colaboradorId, Long solicitacaoId) {
+	public void enviarAvisoAoInserirColaboradorSolicitacaoDePessoal(Empresa empresa, Usuario usuarioLogado, Long colaboradorId, Long solicitacaoId) {
 		try {
 			ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
 			if(parametros.isAutorizacaoGestorNaSolicitacaoPessoal()){
@@ -1816,20 +1816,20 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 				Colaborador colaborador = colaboradorManager.findByIdDadosBasicos(colaboradorId, null); 
 				
-				String titulo = "Inclusão de colaborador em uma Solicitação de Pessoal";
+				String titulo = "Autorização da participação do colaborador em uma Solicitação de Pessoal";
 				String link = "captacao/candidatoSolicitacao/prepareAutorizarColabSolicitacaoPessoal.action";
 				
 				StringBuilder corpoEmail = new StringBuilder();
-				corpoEmail.append("O Usuário \"" + usuarioLogado.getNome() + "\" inseriu o colaborador \""  + colaborador.getNome() +  "\" em uma Solicitacao de Pessoal.<br><br>");
+				corpoEmail.append("O usuário \"" + usuarioLogado.getNome() + "\" inseriu o colaborador \""  + colaborador.getNome() +  "\" em uma Solicitacao de Pessoal.<br><br>");
 				corpoEmail.append("Solicitação de Pessoal: " + solicitacao.getId() + " - " + solicitacao.getDescricao() + " - " + solicitacao.getDataFormatada() + "<br>");
 				corpoEmail.append("Cargo da solicitação: " + solicitacao.getNomeDoCargoDaFaixaSalarial() + "<br>");
 				corpoEmail.append("Área Organizacional da solicitação: " + solicitacao.getDescricaoDaAreaOrganizacional() + "<br><br>");
 				
 				String corpoCxMsg = corpoEmail.toString().replace("<br>", "\n");
-				corpoCxMsg += "Acesse em \"R&S > Movimentações > Autorizar Participação do Colaborador na Solicitação de Pessoal\", para autorizar a participação desse colaborador na Solicitação de Pessoal.";
+				corpoCxMsg += "Acesse em \"R&S > Movimentações > Autorizar Participação do Colaborador na Solicitação de Pessoal\", para autorizar a participação desse colaborador no processo seletivo.";
 				
-				corpoEmail.append("Acesse o RH para autorizar a participação desse colaborador na Solicitação de Pessoal.<br>");
-				corpoEmail.append("<a href='" + parametros.getAppUrl() + "/" + link + "'>Autorizar Participação do Colaborador na Solicitação de Pessoal.</a><br><br>");
+				corpoEmail.append("Acesse o Fortes RH para autorizar a participação desse colaborador no processo seletivo.<br>");
+				corpoEmail.append("<a href='" + parametros.getAppUrl() + "/" + link + "'>Acesse aqui</a><br><br>");
 				
 				getCopyright(corpoEmail);
 
@@ -1860,7 +1860,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			}
 			usuarioLogado.setEmailColaborador(usuarioManager.findEmailByUsuarioId(usuarioLogado.getId()));
 			
-			String titulo = "O status de autorização do colaborador, para participar da Solicitação de Pessoal, foi alterado";
+			String titulo = "O status de autorização do colaborador para participar da Solicitação de Pessoal, foi alterado";
 			
 			StringBuilder corpoEmail = montaCorpoDoEmail(colaborador, solicitacao, candidatoSolicitacao, candidatoSolicitacaoAnterior, usuarioLogado);
 						

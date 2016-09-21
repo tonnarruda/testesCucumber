@@ -241,7 +241,7 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 		
 		Exception ex = null;
 		try {
-			gerenciadorComunicacaoManager.enviarAvisoAoInserirColaboradorSolPessoal(empresa, usuarioLogado, colaborador.getId(), solicitacao.getId());
+			gerenciadorComunicacaoManager.enviarAvisoAoInserirColaboradorSolicitacaoDePessoal(empresa, usuarioLogado, colaborador.getId(), solicitacao.getId());
 		} catch (Exception e) {
 			ex = e;
 		}

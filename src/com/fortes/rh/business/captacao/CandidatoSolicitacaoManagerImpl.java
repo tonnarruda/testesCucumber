@@ -75,11 +75,11 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		
 		if(parametrosDoSistemaManager.findById(1L).isAutorizacaoGestorNaSolicitacaoPessoal()){
 			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
-			Colaborador colaborador = colaboradorManager.findByCandidato(candidatoId, empresa.getId());
+			Colaborador colaborador = colaboradorManager.findByCandidato(candidatoId, null);
 		
 			if(colaborador != null){
 				GerenciadorComunicacaoManager gerenciadorComunicacaoManager = (GerenciadorComunicacaoManager) SpringUtil.getBean("gerenciadorComunicacaoManager");
-				gerenciadorComunicacaoManager.enviarAvisoAoInserirColaboradorSolPessoal(empresa, usuarioLogado, colaborador.getId(), solicitacaoId);
+				gerenciadorComunicacaoManager.enviarAvisoAoInserirColaboradorSolicitacaoDePessoal(empresa, usuarioLogado, colaborador.getId(), solicitacaoId);
 				statusAutorizacaoGestor = StatusAutorizacaoGestor.ANALISE;
 			}
 		}

@@ -418,7 +418,7 @@ public enum Operacao
 		}
 	},
 	
-	AUTORIZACAO_SOLIC_PESSOAL_GESTOR_INCLUIR_COLAB(39, "Existir colaborador aguardando autorização para paticipar de uma solicitação de pessoal", "R&S"){
+	AUTORIZACAO_SOLIC_PESSOAL_GESTOR_INCLUIR_COLAB(39, "Existir colaborador aguardando autorização para participar de uma solicitação de pessoal", "R&S"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);

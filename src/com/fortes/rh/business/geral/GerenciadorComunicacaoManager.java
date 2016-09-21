@@ -67,7 +67,7 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviarEmailAoCriarAcessoSistema(String login, String senha, String email, Empresa empresa);
 	void enviarNotificacaoCursosOuCertificacoesAVencer();
 	void enviarMensagemAoExluirRespostasAvaliacaoPeriodoDeExperiencia(ColaboradorQuestionario colaboradorQuestionario, Usuario usuario, Empresa empresa);
-	void enviarAvisoAoInserirColaboradorSolPessoal(Empresa empresa, Usuario usuarioLogado, Long colaboradorId, Long solicitacaoId); 
+	void enviarAvisoAoInserirColaboradorSolicitacaoDePessoal(Empresa empresa, Usuario usuarioLogado, Long colaboradorId, Long solicitacaoId); 
 	void enviarAvisoAoAlterarStatusColaboradorSolPessoal(Usuario usuarioLogado, CandidatoSolicitacao candidatoSolicitacaoAnterior, CandidatoSolicitacao candidatoSolicitacao, Empresa empresa);
 	void removeByOperacao(Integer[] operacoes);
 }

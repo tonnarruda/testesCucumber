@@ -6,7 +6,8 @@
 	<title>Editar Configurações do Sistema</title>
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
-
+	
+	<#assign statusInicialAutorizacaoGerstorNaSolicitacaoPessoal = "${parametrosDoSistema.autorizacaoGestorNaSolicitacaoPessoal?string}" />
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
@@ -119,13 +120,12 @@
 			}
 		}
 		
-		function mostrarAviso(){
-			if (!$('#autorizacaoGestorNaSolicitacaoPessoal').is(":checked")){
-				$('.avisoRemoverautorizacaoGestorNaSolicitacaoPessoalDiv').show();	
+		function renderizaAviso(){
+			if (!$('#autorizacaoGestorNaSolicitacaoPessoal').is(":checked") && ${statusInicialAutorizacaoGerstorNaSolicitacaoPessoal}){
+				$('.avisoRemoverAutorizacaoGestorNaSolicitacaoPessoalDiv').show();	
 			}
 			else
-				$('.avisoRemoverautorizacaoGestorNaSolicitacaoPessoalDiv').hide();
-			
+				$('.avisoRemoverAutorizacaoGestorNaSolicitacaoPessoalDiv').hide();
 		}
 		
 	</script>
@@ -134,7 +134,7 @@
 		#wwgrp_modulosSistemaCheck{ 
 								margin-top:-10px;
 							}
-		.avisoRemoverautorizacaoGestorNaSolicitacaoPessoalDiv{	min-height: 50px;
+		.avisoRemoverAutorizacaoGestorNaSolicitacaoPessoalDiv{	min-height: 50px;
 									width: 501px;
 								    padding: 14px 12px;
 								    margin-bottom: 5px;
@@ -147,7 +147,7 @@
 								    font-weight: bold;	
 								}
 								
-		.avisoRemoverautorizacaoGestorNaSolicitacaoPessoalDiagonal{	position: absolute;
+		.avisoRemoverAutorizacaoGestorNaSolicitacaoPessoalDiagonal{	position: absolute;
     									-ms-transform: rotate(7deg); /* IE 9 */
     									-webkit-transform: rotate(7deg); /* Chrome, Safari, Opera */
     									transform: rotate(45deg);
@@ -180,11 +180,11 @@
 	<@ww.checkbox label="Compartilhar cursos entre empresas." id="compartilharCurso" name="parametrosDoSistema.compartilharCursos" liClass="liLeft" labelPosition="left"/>
 	
 	<li style="margin-bottom: 5px">
-		<input type="checkbox" name="parametrosDoSistema.autorizacaoGestorNaSolicitacaoPessoal" id="autorizacaoGestorNaSolicitacaoPessoal" value="true" onchange="mostrarAviso()"/>
+		<input type="checkbox" name="parametrosDoSistema.autorizacaoGestorNaSolicitacaoPessoal" id="autorizacaoGestorNaSolicitacaoPessoal" value="true" onchange="renderizaAviso()"/>
 		Autorizar participação do colaborador em uma solicitação de pessoal. 
 		<img id="tooltipHelpAutorizacao" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"/><br>
-		<div class="wwctrl avisoRemoverautorizacaoGestorNaSolicitacaoPessoalDiv" style="display:none" >
-  			<div class="avisoRemoverautorizacaoGestorNaSolicitacaoPessoalDiagonal"></div>
+		<div class="wwctrl avisoRemoverAutorizacaoGestorNaSolicitacaoPessoalDiv" style="display:none" >
+  			<div class="avisoRemoverAutorizacaoGestorNaSolicitacaoPessoalDiagonal"></div>
   			Ao desmarcar essa opção e clicar no botão gravar, a permissão "Autorizar participação do colaborador na solicitação de pessoal" será removida dos perfis 
   			e os gerenciadores de comunicação: "Existir colaborador aguardando autorização para paticipar de uma solicitacao de pessoal" 
   			e "Alterar status de autorização do colaborador para participar de uma solicitacao de pessoal" serão excluídos.'
