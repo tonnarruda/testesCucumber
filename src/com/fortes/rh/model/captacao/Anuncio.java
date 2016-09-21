@@ -16,6 +16,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.security.auditoria.NaoAudita;
 
 @Entity
@@ -65,6 +66,12 @@ public class Anuncio extends AbstractModel implements Serializable
 		this.setQtdAvaliacoesRespondidas(qtdAvaliacoesRespondidas);
 	}
 
+	public Anuncio(Long id, String titulo, Long solicitacaoId, String solicitacaoEmpresaNome, Integer solicitacaoQtde, Long candidatoSolicitacaoId, Integer qtdAvaliacoes, Integer qtdAvaliacoesRespondidas) 
+	{
+		this(id, titulo, solicitacaoId, solicitacaoQtde, candidatoSolicitacaoId, qtdAvaliacoes, qtdAvaliacoesRespondidas);
+		this.setProjectionSolicitacaoEmpresaNome(solicitacaoEmpresaNome);
+	}
+
 	public String getCabecalho()
 	{
 		return cabecalho;
@@ -93,6 +100,17 @@ public class Anuncio extends AbstractModel implements Serializable
 			this.solicitacao = new Solicitacao();
 		
 		this.solicitacao.setQuantidade(solicitacaoQtde);
+	}
+
+	private void setProjectionSolicitacaoEmpresaNome(String solicitacaoEmpresaNome) 
+	{
+		if(this.solicitacao == null)
+			this.solicitacao = new Solicitacao();
+		
+		if(this.solicitacao.getEmpresa() == null)
+			this.solicitacao.setEmpresa(new Empresa());
+		
+		this.solicitacao.getEmpresa().setNome(solicitacaoEmpresaNome);
 	}
 	
 	private void setProjectionCandidatoSolicitacaoId(Long candidatoSolicitacaoId) 

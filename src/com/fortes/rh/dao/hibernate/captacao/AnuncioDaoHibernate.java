@@ -40,22 +40,25 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 	public Collection<Anuncio> findAnunciosModuloExterno(Long empresaId, Long candidatoId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Anuncio(a.id, a.titulo, s.id, s.quantidade, cs.id, count(sa.id) as qtdAvaliacoes, count(cq.id) as qtdRespondidas) "); 
+		hql.append("select new Anuncio(a.id, a.titulo, s.id, e.nome, s.quantidade, cs.id, count(sa.id) as qtdAvaliacoes, count(cq.id) as qtdRespondidas) ");
 		hql.append("from Anuncio a ");
-		hql.append("inner join a.solicitacao s "); 
-		hql.append("left join s.candidatoSolicitacaos cs with cs.candidato.id = :candidatoId "); 
+		hql.append("inner join a.solicitacao s ");
+		hql.append("left join s.candidatoSolicitacaos cs with cs.candidato.id = :candidatoId ");
 		hql.append("left join s.solicitacaoAvaliacaos sa with sa.responderModuloExterno = true ");
 		hql.append("left join s.colaboradorQuestionarios cq with cq.avaliacao.id = sa.avaliacao.id and cq.candidato.id = :candidatoId ");
+		hql.append("left join s.empresa e ");
 		hql.append("where s.encerrada = false ");
-		hql.append("and s.suspensa = false "); 
-		hql.append("and s.empresa.id = :empresaId ");
-		hql.append("and s.status = :status "); 
-		hql.append("and a.exibirModuloExterno = true "); 
-		hql.append("group by a.id, a.titulo, s.id, s.quantidade, cs.id "); 
+		hql.append("and s.suspensa = false ");
+		if(empresaId != null)
+			hql.append("and e.id = :empresaId ");
+		hql.append("and s.status = :status ");
+		hql.append("and a.exibirModuloExterno = true ");
+		hql.append("group by a.id, a.titulo, s.id, e.nome, s.quantidade, cs.id ");
 		hql.append("order by a.titulo");
 		
 		Query query = getSession().createQuery(hql.toString());
-		query.setLong("empresaId", empresaId);
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
 		query.setLong("candidatoId", candidatoId);
 		query.setCharacter("status", StatusAprovacaoSolicitacao.APROVADO);
 		

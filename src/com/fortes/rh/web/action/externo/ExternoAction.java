@@ -234,8 +234,10 @@ public class ExternoAction extends MyActionSupport
 			Long sessionCandidatoId = (Long) session.get("SESSION_CANDIDATO_ID");
 			
 			empresaId = sessionEmpresaId;
+		
+			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 			
-			anuncios = anuncioManager.findAnunciosModuloExterno(sessionEmpresaId, sessionCandidatoId);
+			anuncios = anuncioManager.findAnunciosModuloExterno(parametrosDoSistema.getCompartilharCandidatos() ? null : empresaId, sessionCandidatoId);
 		}
 		else
 		{
