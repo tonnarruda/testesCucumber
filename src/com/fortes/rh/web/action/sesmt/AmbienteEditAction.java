@@ -147,6 +147,7 @@ public class AmbienteEditAction extends MyActionSupportList
 
 	public String prepareRelatorioMapaDeRisco()
 	{
+		setVideoAjuda(1232L);
 		estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		estabelecimentoCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentoCheckList, estabelecimentoCheck);
 
