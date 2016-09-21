@@ -52,6 +52,7 @@ public class ReportColumn implements Serializable, Cloneable
 		columns.add(new ReportColumn("Pis", "pessoal.pis", "co.pessoal.pis", 60, false));
 		columns.add(new ReportColumn("Rg", "pessoal.rg", "co.pessoal.rg", 70, false));
 		columns.add(new ReportColumn("Orgão Emissor", "pessoal.rgOrgaoEmissor", "co.pessoal.rgOrgaoEmissor", 40, false));
+		columns.add(new ReportColumn("UF do Rg", "pessoal.rgUf.sigla", "co.pessoal.rgUf.sigla", 20, false));
 		columns.add(new ReportColumn("Deficiência", "pessoal.deficienciaDescricao", "co.pessoal.deficiencia", 60, false));
 		columns.add(new ReportColumn("Data de Expedição(RG)", "pessoal.rgDataExpedicaoFormatada", "co.pessoal.rgDataExpedicao", 50, false));
 		columns.add(new ReportColumn("Sexo", "pessoal.sexoDic", "co.pessoal.sexo", 40, false));

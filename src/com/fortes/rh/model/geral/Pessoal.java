@@ -309,6 +309,14 @@ public class Pessoal implements Serializable
 	{
 		this.rgUf = rgUf;
 	}
+	
+	@NaoAudita
+	public void setRgUfSigla(String sigla){
+		if(this.rgUf == null)
+			rgUf = new Estado();
+		
+		this.rgUf.setSigla(sigla);
+	}
 
 	public String getProfissaoConjuge()
 	{
