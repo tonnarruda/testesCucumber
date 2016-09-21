@@ -7,6 +7,7 @@
 		<Item visivel="S" motivo="P16090000049"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Excluir: Ajuste na mensagem ao tentar excluir área organizacional que tenha dependência com outros cadastros.]]></Item>
 		<Item visivel="S" motivo="P16080000377"><![CDATA[C&S > Painel de Indicadores: Ajuste na inconsistência ao tentar abrir painel de indicadores quando o sistema apresenta índices sem histórico.]]></Item>
 		<Item visivel="S" motivo="S16070000129"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Nova opção para pesquisar colaboradores avaliados e avaliadores.]]></Item>
+		<Item visivel="S" motivo="S16070000362"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competências do Colaborado: Novas colunas de "Nível Exigido"" e "Nível Atingido" ao gerar relatório resumido.]]></Item>
 		<Item visivel="S" motivo="P16080000291"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliação dos Alunos: Impossibilitando duplo clique no botão gravar, para impedir a duplicação de notas das avaliações.]]></Item>
 		<Item visivel="S" motivo="S16080000089"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações dos Alunos: Nova informação de média das notas.]]></Item>
 		<Item visivel="S" motivo="P16050000110"><![CDATA[T&D > Relatórios > Histórico de Treinamentos: Melhoria de perfomance ao gerar relatório.]]></Item>

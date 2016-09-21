@@ -322,7 +322,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			
 			if(somaPesoAvaliadores != 0){
 				competencia = new Competencia(cncFaixa.getCompetenciaDescricao(), (pesoPorPontuacaoObtidaAvaliadorAcumulado/(somaPesoAvaliadores*ordemMaxima*cncFaixa.getPesoCompetencia()))*100,
-						cncFaixa.getPesoCompetencia(), (cncFaixa.getNivelCompetencia().getOrdem()/ordemMaxima)*100);
+						cncFaixa.getPesoCompetencia(), cncFaixa.getNivelCompetencia().getDescricao());
 				competencia.setCompetenciaAbaixoDoNivelExigido(competencia.getPerformance() < ((cncFaixa.getNivelCompetencia().getOrdem()/ordemMaxima)*100));
 				setDescricaoNivelCompetencia(competencia, niveisCompetencias, ordemMaxima);
 				competencias.add(competencia);

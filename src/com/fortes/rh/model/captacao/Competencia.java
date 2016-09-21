@@ -39,7 +39,7 @@ public class Competencia
 	@Transient
 	private Integer pesoCompetencia;
 	@Transient
-	private Double percentualExigidoFaixaSalarial;
+	private String descricaoNivelCompetenciaExigido;
 	@Transient
 	private String descricaoNivelCompetencia;
 	
@@ -47,12 +47,12 @@ public class Competencia
 		super();
 	}
 	
-	public Competencia(String nome, Double performance, Integer pesoCompetencia, Double percentualExigidoFaixaSalarial) 
+	public Competencia(String nome, Double performance, Integer pesoCompetencia,String descricaoNivelCompetenciaExigido) 
 	{
 		this.nome = nome;
 		this.performance = performance;
 		this.pesoCompetencia = pesoCompetencia;
-		this.percentualExigidoFaixaSalarial = percentualExigidoFaixaSalarial;
+		this.descricaoNivelCompetenciaExigido = descricaoNivelCompetenciaExigido;
 	}
 
 	public Long getId() 
@@ -157,12 +157,12 @@ public class Competencia
 		this.pesoCompetencia = pesoCompetencia;
 	}
 
-	public Double getPercentualExigidoFaixaSalarial() {
-		return MathUtil.round(percentualExigidoFaixaSalarial, 2);
+	public String getDescricaoNivelCompetenciaExigido() {
+		return descricaoNivelCompetenciaExigido;
 	}
 
-	public void setPercentualExigidoFaixaSalarial(Double percentualExigidoFaixaSalarial) {
-		this.percentualExigidoFaixaSalarial = percentualExigidoFaixaSalarial;
+	public void setDescricaoNivelCompetenciaExigido(String descricaoNivelCompetenciaExigido) {
+		this.descricaoNivelCompetenciaExigido = descricaoNivelCompetenciaExigido;
 	}
 
 	public String getDescricaoNivelCompetencia() {
