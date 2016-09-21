@@ -9,16 +9,20 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 
 @SuppressWarnings("unchecked")
 public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implements AmbienteDao
@@ -169,5 +173,31 @@ public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implemen
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 			query.executeUpdate();		
 		}
+	}
+
+	public Collection<Ambiente> findAllByEmpresa(Long empresaId) {
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoAmbiente.class, "ha2")
+				.setProjection(Projections.max("ha2.data"))
+				.add(Restrictions.eqProperty("ha2.ambiente.id", "ha.ambiente.id"))
+				.add(Restrictions.isNull("ha2.dataInativo"));
+		
+		Criteria criteria = getSession().createCriteria(Ambiente.class,"a");
+		criteria.createCriteria("a.historicoAmbientes", "ha", CriteriaSpecification.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.nome"), "nome");
+		p.add(Projections.property("ha.descricao"), "historicoAmbienteAtualDescricao");
+		p.add(Projections.property("ha.data"), "historicoAmbienteAtualData");
+		p.add(Projections.property("ha.tempoExposicao"), "historicoAmbienteAtualTempoExposicao");
+		criteria.setProjection(p);
+
+		criteria.add(Subqueries.propertyEq("ha.data", subQueryHc));
+		criteria.add(Expression.eq("a.empresa.id", empresaId));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Ambiente.class));
+		criteria.addOrder(Order.asc("a.nome"));
+
+		return criteria.list();
 	}
 }

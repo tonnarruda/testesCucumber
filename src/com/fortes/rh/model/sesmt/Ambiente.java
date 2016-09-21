@@ -2,6 +2,7 @@ package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -131,5 +132,25 @@ public class Ambiente extends AbstractModel implements Serializable
 
 	public void setMedicaoRiscos(Collection<MedicaoRisco> medicaoRiscos) {
 		this.medicaoRiscos = medicaoRiscos;
+	}
+
+	private void iniciaHistoricoAmbineteAtual() {
+		if(this.historicoAtual == null)
+			this.historicoAtual = new HistoricoAmbiente();
+	}
+	
+	public void setHistoricoAmbienteAtualDescricao(String historicoAmbienteAtualDescricao){
+		iniciaHistoricoAmbineteAtual();
+		this.historicoAtual.setDescricao(historicoAmbienteAtualDescricao);
+	}
+	
+	public void setHistoricoAmbienteAtualData(Date historicoAmbienteAtualData){
+		iniciaHistoricoAmbineteAtual();
+		this.historicoAtual.setData(historicoAmbienteAtualData);
+	}
+
+	public void setHistoricoAmbienteAtualTempoExposicao(String historicoAmbienteAtualTempoExposicao){
+		iniciaHistoricoAmbineteAtual();
+		this.historicoAtual.setTempoExposicao(historicoAmbienteAtualTempoExposicao);
 	}
 }

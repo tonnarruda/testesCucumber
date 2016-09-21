@@ -29,6 +29,7 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoAmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
@@ -341,6 +342,44 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		}
 		
 		assertNull(exception);
+	}
+	
+	public void testFindAllByEmpresa() {
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimento);
+		
+		Ambiente ambiente = AmbienteFactory.getEntity();
+		ambiente.setNome("Ambiente 1");
+		ambiente.setEmpresa(empresa);
+		ambiente.setEstabelecimento(estabelecimento);
+		ambienteDao.save(ambiente);
+		
+		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity("Descrição Ambiente 1", ambiente, DateUtil.criarDataMesAno(1, 1, 2011),"tempoExposicao Ambiente 1");
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		Ambiente ambiente2 = new Ambiente();
+		ambiente2.setNome("Ambiente 2");
+		ambiente2.setEmpresa(empresa);
+		ambiente2.setEstabelecimento(estabelecimento);
+		ambienteDao.save(ambiente2);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity("Descrição Ambiente 2 Fora",ambiente2,DateUtil.criarDataMesAno(1, 1, 2015),"tempoExposicao Ambiente 2 Fora");
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		HistoricoAmbiente historicoAmbiente3 = HistoricoAmbienteFactory.getEntity("Descrição Ambiente 2",ambiente2,DateUtil.criarDataMesAno(1, 1, 2016),"tempoExposicao Ambiente 2");
+		historicoAmbienteDao.save(historicoAmbiente3);
+		
+		Collection<Ambiente> ambientes = ambienteDao.findAllByEmpresa(empresa.getId());
+		
+		assertEquals(2, ambientes.size());
+		assertEquals("Ambiente 1", ((Ambiente) ambientes.toArray()[0]).getNome());
+		assertEquals("Descrição Ambiente 1", ((Ambiente) ambientes.toArray()[0]).getHistoricoAtual().getDescricao());
+		assertEquals("tempoExposicao Ambiente 2", ((Ambiente) ambientes.toArray()[1]).getHistoricoAtual().getTempoExposicao());
 	}
 	
 	public GenericDao<Ambiente> getGenericDao()

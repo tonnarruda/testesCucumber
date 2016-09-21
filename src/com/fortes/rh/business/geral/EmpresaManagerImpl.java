@@ -21,6 +21,7 @@ import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -203,8 +204,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return entidades;
 	}
 
-	public List<String> sincronizaEntidades(Long empresaOrigemId, Long empresaDestinoId, String[] cadastrosCheck, String[] tipoOcorrenciasCheck) throws Exception
-	{
+	public List<String> sincronizaEntidades(Long empresaOrigemId, Long empresaDestinoId, String[] cadastrosCheck, String[] tipoOcorrenciasCheck) throws Exception{
+		
 		Empresa empresaDestino = findByIdProjection(empresaDestinoId);
 		Map<Long, Long> areaIds = new  HashMap<Long, Long>();
 		Map<Long, Long> conhecimentoIds = new  HashMap<Long, Long>();
@@ -214,62 +215,56 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		Map<Long, Long> epiIds = new  HashMap<Long, Long>();
 		List<String> mensagens = new ArrayList<String>();
 		
-		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.AREAS))
-		{
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.AREAS)){
 			areaOrganizacionalManager.sincronizar(empresaOrigemId, empresaDestino, areaIds, mensagens);
 		}
 		
-		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CONHECIMENTOS))
-		{
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CONHECIMENTOS)){
 			conhecimentoManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, conhecimentoIds);
 		}
 		
-		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.HABILIDADES))
-		{
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.HABILIDADES)){
 			habilidadeManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, habilidadeIds);
 		}
 		
-		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.ATITUDES))
-		{
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.ATITUDES)){
 			atitudeManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, atitudeIds);
 		}
 		
-		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.AREAS_INTERESSE))
-		{
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.AREAS_INTERESSE)){
 			areaInteresseManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, areaInteresseIds);
 		}
 		
-		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CARGOS))
-		{
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CARGOS)){
 			cargoManager = (CargoManager) SpringUtil.getBean("cargoManager");
 			cargoManager.sincronizar(empresaOrigemId, empresaDestino, areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds, mensagens);
 		}
 		
-		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.TIPOS_OCORRENCIA))
-		{
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.TIPOS_OCORRENCIA)){
 			ocorrenciaManager.sincronizar(empresaOrigemId, empresaDestino, tipoOcorrenciasCheck);
 		}
 		
-		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.EPIS))
-		{
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.EPIS)){
 			epiManager = (EpiManager) SpringUtil.getBean("epiManager");
 			epiManager.sincronizar(empresaOrigemId, empresaDestinoId, epiIds);
 		}
 		
-		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CURSOSETURMAS))
-		{
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CURSOSETURMAS)){
 			TurmaManager turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
 			turmaManager.sincronizar(empresaOrigemId, empresaDestinoId);
 		}
 		
-		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.MOTIVOS_DESLIGAMENTO))
-		{
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.MOTIVOS_DESLIGAMENTO)){
 			motivoDemissaoManager.sincronizar(empresaOrigemId, empresaDestinoId);
 		}
 		
-		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.RISCOS))
-		{
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.RISCOS)){
 			riscoManager.sincronizar(empresaOrigemId, empresaDestinoId, epiIds);
+		}
+		
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.AMBIENTE)){
+			AmbienteManager ambienteManager = (AmbienteManager) SpringUtil.getBean("ambienteManager");
+			ambienteManager.sincronizar(empresaOrigemId, empresaDestinoId);
 		}
 		
 		return mensagens;

@@ -31,5 +31,16 @@ public class HistoricoAmbienteFactory
 		
 		return historicoAmbiente;
 	}
+	
+	public static HistoricoAmbiente getEntity(String descricao, Ambiente ambiente, Date data, String tempoExposicao)
+	{
+		HistoricoAmbiente historicoAmbiente = getEntity();
+		historicoAmbiente.setAmbiente(ambiente);
+		historicoAmbiente.setData(data);
+		historicoAmbiente.setDescricao(descricao);
+		historicoAmbiente.setTempoExposicao(tempoExposicao);
+		
+		return historicoAmbiente;
+	}
 
 }

@@ -264,6 +264,28 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 	public void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception {
 		getDao().deleteByEstabelecimento(estabelecimentoIds);
 	}
+
+	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId) {
+		Collection<Ambiente> ambientesOrigin = getDao().findAllByEmpresa(empresaOrigemId);
+		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findByEmpresa(empresaDestinoId);
+		
+		for (Estabelecimento estabelecimento : estabelecimentos) {
+			for (Ambiente ambienteOrigin : ambientesOrigin){
+				Ambiente ambiente = new Ambiente();
+				ambiente.setNome(ambienteOrigin.getNome());
+				ambiente.setEstabelecimento(estabelecimento);
+				ambiente.setEmpresa(new Empresa(empresaDestinoId));
+				getDao().save(ambiente);
+
+				if(ambienteOrigin.getHistoricoAtual() != null){
+					HistoricoAmbiente historicoAmbiente = new HistoricoAmbiente(null, ambienteOrigin.getHistoricoAtual().getData(), ambiente);
+					historicoAmbiente.setTempoExposicao(ambienteOrigin.getHistoricoAtual().getTempoExposicao());
+					historicoAmbiente.setDescricao(ambienteOrigin.getHistoricoAtual().getDescricao());
+					historicoAmbienteManager.save(historicoAmbiente);
+				}
+			}
+		}
+	}
 	
 	public void setFuncaoManager(FuncaoManager funcaoManager) {
 		this.funcaoManager = funcaoManager;
@@ -271,12 +293,10 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 	public void setEpcManager(EpcManager epcManager) {
 		this.epcManager = epcManager;
 	}
-	public void setRiscoMedicaoRiscoManager(
-			RiscoMedicaoRiscoManager riscoMedicaoRiscoManager) {
+	public void setRiscoMedicaoRiscoManager(RiscoMedicaoRiscoManager riscoMedicaoRiscoManager) {
 		this.riscoMedicaoRiscoManager = riscoMedicaoRiscoManager;
 	}
-	public void setEstabelecimentoManager(
-			EstabelecimentoManager estabelecimentoManager) {
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
 		this.estabelecimentoManager = estabelecimentoManager;
 	}
 	public void setEpiManager(EpiManager epiManager) {
@@ -286,13 +306,10 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 	{
 		this.historicoAmbienteManager = historicoAmbienteManager;
 	}
-
 	public void setComposicaoSesmtManager(ComposicaoSesmtManager composicaoSesmtManager) {
 		this.composicaoSesmtManager = composicaoSesmtManager;
 	}
-
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
 	}
-
 }

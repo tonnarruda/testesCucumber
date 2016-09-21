@@ -29,4 +29,5 @@ public interface AmbienteManager extends GenericManager<Ambiente>
 	Collection<PpraLtcatRelatorio> montaRelatorioPpraLtcat(Empresa empresa, Long estabelecimentoId, Date data, String[] ambienteCheck, boolean gerarPpra, boolean gerarLtcat, boolean exibirComposicaoSesmt) throws Exception;
 	void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception;
 	public int getQtdColaboradorByAmbiente(Long ambienteId, Date data, String sexo);
+	void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
 }

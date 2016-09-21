@@ -1,6 +1,3 @@
-/* Autor: Bruno Bachiega
- * Data: 6/06/2006
- * Requisito: RFA003 */
 package com.fortes.rh.web.action.geral;
 
 import java.io.IOException;

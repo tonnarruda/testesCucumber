@@ -117,6 +117,8 @@
 				<legend>Atenção</legend>
 				Os cargos possuem vínculos com <strong>Áreas Organizacionais, Conhecimentos, Habilidades e Atitudes</strong>. Se desejar manter esses vínculos após a importação, marque também essas opções.
 				<br /><br />
+				Se optar por importar cadastros de <strong>Ambiente</strong>, os mesmos serão importados para cada estabelecimento cadastrado na empresa destino.
+				<br /><br />
 				Cuidado ao importar o cadastro entre empresas, pois o mesmo poderá ficar <strong>duplicado</strong> caso aconteça mais de uma importação.
 			</fieldset>
 		</li>

@@ -141,6 +141,15 @@ public class Empresa extends AbstractModel implements Serializable
 		cidade.setNome(cidadeNome);
 	}
 
+	public Empresa() {
+		super();
+	}
+	
+	public Empresa(Long id) {
+		super();
+		setId(id);
+	}
+
 	public void setProjectionUfSigla(String ufSigla)
 	{
 		if (uf == null)

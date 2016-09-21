@@ -255,11 +255,6 @@ public class EmpresaManagerTest extends MockObjectTestCaseManager<EmpresaManager
 		
 		assertNotNull(manager.findDistinctEmpresasByQuestionario(questionarioId));    
 	}
-    
-    public void testPopulaCadastrosCheckBox()
-    {
-    	assertEquals(11, manager.populaCadastrosCheckBox().size());
-    }
 
     public void testVerificaInconcistenciaIntegracaoACComColecoes()
     {
