@@ -653,7 +653,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		areaOrganizacionalDao.save(areaOrganizacional1);
 		
 		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(areaOrganizacional1);
+		areaOrganizacionalDao.save(areaOrganizacional2);
 		
 		Cargo cargo = CargoFactory.getEntity(null, "Cargo Nome");
 		cargoDao.save(cargo);
