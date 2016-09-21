@@ -45,7 +45,7 @@ import com.fortes.rh.test.business.captacao.CandidatoIdiomaManagerTest;
 import com.fortes.rh.test.business.captacao.CandidatoManagerTest;
 import com.fortes.rh.test.business.captacao.CandidatoManagerTest_Junit4;
 import com.fortes.rh.test.business.captacao.CandidatoSolicitacaoManagerTest;
-import com.fortes.rh.test.business.captacao.CandidatoSolicitacaoManagerTest_Junit4;
+import com.fortes.rh.test.business.captacao.CandidatoSolicitacaoManagerTest_JUnit4;
 import com.fortes.rh.test.business.captacao.ConfigHistoricoNivelManagerTest;
 import com.fortes.rh.test.business.captacao.ConfiguracaoImpressaoCurriculoManagerTest;
 import com.fortes.rh.test.business.captacao.ConfiguracaoNivelCompetenciaCandidatoManagerTest;
@@ -754,7 +754,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	HistoricoCandidatoDaoHibernateTest.class,
 	RelatorioPromocoesTest.class,
 	CandidatoSolicitacaoManagerTest.class,
-	CandidatoSolicitacaoManagerTest_Junit4.class,
+	CandidatoSolicitacaoManagerTest_JUnit4.class,
 	CandidatoSolicitacaoDaoHibernateTest.class,
 	CandidatoSolicitacaoListActionTest.class,
 	CandidatoSolicitacaoListActionTest_JUnit4.class,
