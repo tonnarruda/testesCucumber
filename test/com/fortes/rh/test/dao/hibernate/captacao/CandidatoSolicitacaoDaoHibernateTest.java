@@ -24,7 +24,6 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.EstadoDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
-import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
@@ -38,7 +37,6 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
-import com.fortes.rh.model.dicionario.StatusAutorizacaoGestor;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
@@ -51,7 +49,6 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
-import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
@@ -635,25 +632,11 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 	
 	public void testFindColabParticipantesDaSolicitacaoByResponsavelArea()
 	{
-		Candidato candidatoDentro = CandidatoFactory.getCandidato();
-		candidatoDao.save(candidatoDentro);
+		Candidato candidatoDentro = saveCandidato();
+		Candidato candidatoFora = saveCandidato();
 		
-		Candidato candidatoFora = CandidatoFactory.getCandidato();
-		candidatoDao.save(candidatoFora);
-		
-		Colaborador colaborador1 = ColaboradorFactory.getEntity(null, "Colab 1");
-		colaborador1.setCandidato(candidatoDentro);
-		colaboradorDao.save(colaborador1);
-		
-		Colaborador colaborador2 = ColaboradorFactory.getEntity(null, "Colab 2");
-		colaborador2.setCandidato(candidatoFora);
-		colaboradorDao.save(colaborador2);
-		
-		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(areaOrganizacional1);
-		
-		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(areaOrganizacional2);
+		AreaOrganizacional areaOrganizacional1 = saveAreaOrganizacional();
+		AreaOrganizacional areaOrganizacional2 = saveAreaOrganizacional();
 		
 		Cargo cargo = CargoFactory.getEntity(null, "Cargo Nome");
 		cargoDao.save(cargo);
@@ -663,27 +646,20 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("Estabeleciemnto Nome");
 		estabelecimentoDao.save(estabelecimento);
-		
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, DateUtil.criarDataMesAno(1, 1, 2016), faixaSalarial, estabelecimento, areaOrganizacional1, null, null, StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(historicoColaborador1);
-		
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(colaborador2, DateUtil.criarDataMesAno(1, 1, 2016), faixaSalarial, estabelecimento, areaOrganizacional2, null, null, StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(historicoColaborador2);
-		
+
+		Colaborador colaborador1 = saveColaboradorComCandidatoEHistorico("Colab 1", candidatoDentro, DateUtil.criarDataMesAno(1, 1, 2016), faixaSalarial, estabelecimento, areaOrganizacional1,  StatusRetornoAC.CONFIRMADO );
+		saveColaboradorComCandidatoEHistorico("Colab 2", candidatoFora, DateUtil.criarDataMesAno(1, 1, 2016), faixaSalarial, estabelecimento, areaOrganizacional2, StatusRetornoAC.CONFIRMADO);
+
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao("Solicitacao", areaOrganizacional1, faixaSalarial, estabelecimento, false);
 		solicitacaoDao.save(solicitacao);
 		
 		Solicitacao solicitacaoEcerrada = SolicitacaoFactory.getSolicitacao("SolicitacaoEncerrada", areaOrganizacional2, faixaSalarial, estabelecimento, true);
 		solicitacaoDao.save(solicitacaoEcerrada);
 		
-		CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity(candidatoDentro, solicitacao, StatusAprovacaoSolicitacao.APROVADO);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao1);
-		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity(candidatoDentro, solicitacaoEcerrada, StatusAprovacaoSolicitacao.APROVADO);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
-		CandidatoSolicitacao candidatoSolicitacao3 = CandidatoSolicitacaoFactory.getEntity(candidatoFora, solicitacao, StatusAprovacaoSolicitacao.APROVADO);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao3);
-		CandidatoSolicitacao candidatoSolicitacao4 = CandidatoSolicitacaoFactory.getEntity(candidatoFora, solicitacaoEcerrada, StatusAprovacaoSolicitacao.APROVADO);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao4);
+		saveCandidatoSolicitacao(candidatoDentro, solicitacao, StatusAprovacaoSolicitacao.APROVADO);
+		saveCandidatoSolicitacao(candidatoDentro, solicitacaoEcerrada, StatusAprovacaoSolicitacao.APROVADO);
+		saveCandidatoSolicitacao(candidatoFora, solicitacao, StatusAprovacaoSolicitacao.APROVADO);
+		saveCandidatoSolicitacao(candidatoFora, solicitacaoEcerrada, StatusAprovacaoSolicitacao.APROVADO);
 		
 		Collection<CandidatoSolicitacao> solicitacoes = candidatoSolicitacaoDao.findColaboradorParticipantesDaSolicitacaoByAreas(new Long[]{areaOrganizacional1.getId()}, null, null, 'T', null, null);
 		
@@ -693,6 +669,35 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(estabelecimento.getNome(), ((CandidatoSolicitacao)solicitacoes.toArray()[0]).getSolicitacao().getEstabelecimento().getNome());
 		assertEquals(areaOrganizacional1.getNome(), ((CandidatoSolicitacao)solicitacoes.toArray()[0]).getSolicitacao().getAreaOrganizacional().getNome());
 		assertEquals(faixaSalarial.getNomeDeCargoEFaixa(), ((CandidatoSolicitacao)solicitacoes.toArray()[0]).getSolicitacao().getFaixaSalarial().getNomeDeCargoEFaixa());
+	}
+	
+	
+	private Colaborador saveColaboradorComCandidatoEHistorico(String nomeColaborador, Candidato candidato, Date dataHistorico, FaixaSalarial faixaSalarial, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, int status ){
+		Colaborador colaborador = ColaboradorFactory.getEntity(null, nomeColaborador);
+		colaborador.setCandidato(candidato);
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador, dataHistorico, faixaSalarial, estabelecimento, areaOrganizacional, null, null, status);
+		historicoColaboradorDao.save(historicoColaborador1);
+		return colaborador;
+	}
+	
+	private Candidato saveCandidato(){
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		return candidato;
+	}
+	
+	private AreaOrganizacional saveAreaOrganizacional(){
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		return areaOrganizacional;
+	}
+	
+	private void saveCandidatoSolicitacao(Candidato candidato, Solicitacao solicitacao, char statusAprovacaoSolicitaca){
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(candidato, solicitacao, statusAprovacaoSolicitaca);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao);
 	}
 	
 	public void testUpdateStatusAprovacaoResponsavel(){

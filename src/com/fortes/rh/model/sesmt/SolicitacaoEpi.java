@@ -90,6 +90,22 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		this.vencimentoCA = vencimentoCA;
 	}
 
+	public SolicitacaoEpi(Long id, Date data, String cargoNome, Integer qtdEpiSolicitado, Integer qtdEpiEntregue, Integer qtdEpiDevolvido, String colaboradorNome, boolean colaboradorDesligado,  Integer colaboradorStatus, String colaboradorMotivoHistorico){
+		setId(id);
+		
+		if(data != null)
+			setData(data);
+		
+		setCargoNome(cargoNome);
+		setQtdEpiSolicitado(qtdEpiSolicitado);
+		setQtdEpiEntregue(qtdEpiEntregue);
+		setQtdEpiDevolvido(qtdEpiDevolvido);
+		setColaboradorNome(colaboradorNome);
+		setColaboradorDesligado(colaboradorDesligado);
+		setColaboradorStatus(colaboradorStatus);
+		setColaboradorMotivoHistorico(colaboradorMotivoHistorico);
+	}
+	
 	public String getSituacaoDescricaoEntrega()
 	{
 		return SituacaoSolicitacaoEpi.getSituacaoDescricaoEntrega(qtdEpiEntregue, qtdEpiSolicitado);

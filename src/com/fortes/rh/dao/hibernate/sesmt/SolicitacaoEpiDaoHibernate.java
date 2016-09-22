@@ -43,8 +43,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 	{
 		Query query = montaConsultaFind(false, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem);
 
-		if(pagingSize != 0)
-        {
+		if(pagingSize != 0){
         	query.setFirstResult(((page - 1) * pagingSize));
         	query.setMaxResults(pagingSize);
         }
@@ -54,30 +53,15 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		SolicitacaoEpi solicitacaoEpi = null;
 		SolicitacaoEpiVO solicitacaoEpiVO = new SolicitacaoEpiVO();
 		
-		for (Object[] solicitacaoEpiAux : lista) 
-		{
+		for (Object[] solicitacaoEpiAux : lista){
 			solicitacaoEpiVO.setQtdSolicitacaoEpis(((BigInteger)(solicitacaoEpiAux[0])).intValue());
-			SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM-dd");
-			
-			solicitacaoEpi = new SolicitacaoEpi();
-			solicitacaoEpi.setId(new Long(solicitacaoEpiAux[1].toString()));
-			try {
-				solicitacaoEpi.setData(sDF.parse(solicitacaoEpiAux[2].toString()));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			solicitacaoEpi.setCargoNome(solicitacaoEpiAux[3].toString());
-			solicitacaoEpi.setQtdEpiSolicitado(new Integer(solicitacaoEpiAux[5].toString()));
-			solicitacaoEpi.setQtdEpiEntregue(new Integer(solicitacaoEpiAux[6].toString()));
-			solicitacaoEpi.setQtdEpiDevolvido(new Integer(solicitacaoEpiAux[7].toString()));
-
-			solicitacaoEpi.setColaboradorNome(solicitacaoEpiAux[8].toString());
-			solicitacaoEpi.setColaboradorDesligado(new Boolean(solicitacaoEpiAux[9].toString()));
-			solicitacaoEpi.setColaboradorStatus(new Integer(solicitacaoEpiAux[10].toString()));
-			solicitacaoEpi.setColaboradorMotivoHistorico((String)solicitacaoEpiAux[11]);
+			solicitacaoEpi = new SolicitacaoEpi(new Long(solicitacaoEpiAux[1].toString()), (Date) solicitacaoEpiAux[2], solicitacaoEpiAux[3].toString(), 
+					new Integer(solicitacaoEpiAux[5].toString()),new Integer(solicitacaoEpiAux[6].toString()), new Integer(solicitacaoEpiAux[7].toString()), 
+					solicitacaoEpiAux[8].toString(), new Boolean(solicitacaoEpiAux[9].toString()),new Integer(solicitacaoEpiAux[10].toString()), (String)solicitacaoEpiAux[11]);
 			
 			solicitacoes.add(solicitacaoEpi);
 		}
+
 		solicitacaoEpiVO.setSolicitacaoEpis(solicitacoes);
 		
 		return solicitacaoEpiVO;
