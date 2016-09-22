@@ -382,13 +382,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	private void bindEscolaridadeEmpregado(Colaborador colaborador, TEmpregado empregado) 
 	{
-		if (colaborador.getPessoal() != null && colaborador.getPessoal().getEscolaridade() != null)
-		{
+		if (colaborador.getPessoal() != null && colaborador.getPessoal().getEscolaridade() != null){
 			if (colaborador.getPessoal().getEscolaridade().equals("08") || colaborador.getPessoal().getEscolaridade().equals("09"))//tecnico no rh
 				empregado.setEscolaridade("07");//colegial completo no ac
 			else if (colaborador.getPessoal().getEscolaridade().equals("10"))//superior em andamento no rh
 				empregado.setEscolaridade("08");//superior em andamento no ac
-			else if (colaborador.getPessoal().getEscolaridade().equals("11") || colaborador.getPessoal().getEscolaridade().equals("12"))// superior completo / especializacao no rh
+			else if (colaborador.getPessoal().getEscolaridade().equals("11") || colaborador.getPessoal().getEscolaridade().equals("12") || colaborador.getPessoal().getEscolaridade().equals("15"))// superior completo / especializacao completa ou incompleta
 				empregado.setEscolaridade("09");// superior completo no ac
 			else if (colaborador.getPessoal().getEscolaridade().equals("13"))// mestrado no rh
 				empregado.setEscolaridade("10");// mestrado no ac
@@ -1605,7 +1604,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		if(colaborador.getPessoal().getEscolaridade() != null && ((empregado.getEscolaridade() == null)
 					|| ((colaborador.getPessoal().getEscolaridade().equals(Escolaridade.TECNICO_EM_ANDAMENTO) || colaborador.getPessoal().getEscolaridade().equals(Escolaridade.TECNICO_COMPLETO)) && empregado.getEscolaridade().equals(EscolaridadeACPessoal.COLEGIAL_COMPLETO))
-					|| (colaborador.getPessoal().getEscolaridade().equals(Escolaridade.ESPECIALIZACAO)) && empregado.getEscolaridade().equals(EscolaridadeACPessoal.SUPERIOR_COMPLETO)))
+					|| (colaborador.getPessoal().getEscolaridade().equals(Escolaridade.ESPECIALIZACAO)) && empregado.getEscolaridade().equals(EscolaridadeACPessoal.SUPERIOR_COMPLETO)
+					|| (colaborador.getPessoal().getEscolaridade().equals(Escolaridade.ESPECIALIZACAO_INCOMPLETA)) && empregado.getEscolaridade().equals(EscolaridadeACPessoal.SUPERIOR_COMPLETO)))
 		{
 			return;
 		}
