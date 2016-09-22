@@ -192,9 +192,9 @@
 				<#assign autorizadoPeloGestor =  candidatoSolicitacao.statusAutorizacaoGestor == 'A'/>
 				
 				<#if candidatoSolicitacao.statusAutorizacaoGestor == 'I'>
-					<#assign titleAceito="Aguardando Aprovação do Gestor"/>
+					<#assign titleAceito="Aguardando Autorização do Gestor"/>
 				<#elseif candidatoSolicitacao.statusAutorizacaoGestor == 'R'>
-					<#assign titleAceito="Não Aprovado pelo Gestor"/>
+					<#assign titleAceito="Não Autorizado pelo Gestor"/>
 				<#else>
 					<#assign titleAceito=""/>
 				</#if>
@@ -275,9 +275,9 @@
 			<@display.column title="Status Autorização" media="html" class="acao" style="width: 50px;">	
 				<#if candidatoSolicitacao?exists && candidatoSolicitacao.statusAutorizacaoGestor?exists>
 					<#if candidatoSolicitacao.statusAutorizacaoGestor == 'A'>
-						<img border="0"  title="Status: Aprovado ${dataAutorizacaoGestor} ${obsAutorizacaoGestor}" src="<@ww.url includeParams="none" value="/imgs/status_green.png"/>"/>
+						<img border="0"  title="Status: Autorizado ${dataAutorizacaoGestor} ${obsAutorizacaoGestor}" src="<@ww.url includeParams="none" value="/imgs/status_green.png"/>"/>
 					<#elseif candidatoSolicitacao.statusAutorizacaoGestor == 'R'>
-						<img border="0"  title="Status: Não Aprovado ${dataAutorizacaoGestor} ${obsAutorizacaoGestor}" src="<@ww.url includeParams="none" value="/imgs/status_red.png"/>"/>
+						<img border="0"  title="Status: Não Autorizado ${dataAutorizacaoGestor} ${obsAutorizacaoGestor}" src="<@ww.url includeParams="none" value="/imgs/status_red.png"/>"/>
 					<#elseif candidatoSolicitacao.statusAutorizacaoGestor == 'I'>
 						<img border="0"  title="Status: Em Análise ${dataAutorizacaoGestor} ${obsAutorizacaoGestor}" src="<@ww.url includeParams="none" value="/imgs/status_yellow.png"/>"/>
 					</#if>	
