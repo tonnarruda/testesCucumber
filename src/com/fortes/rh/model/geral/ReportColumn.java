@@ -1,6 +1,3 @@
-/* Autor: Igo Coelho
- * Data: 26/05/2006
- * Requisito: RFA0026 */
 package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
@@ -24,7 +21,6 @@ public class ReportColumn implements Serializable, Cloneable
 		this.orderField = orderField;
 		this.size = size;
 		this.resize = resize;
-		
 	}
 
 	public static Collection<ReportColumn> getColumns()
@@ -76,7 +72,6 @@ public class ReportColumn implements Serializable, Cloneable
 		
 		return columns;
 	}
-	
 	
 	public String getName() {
 		return name;
