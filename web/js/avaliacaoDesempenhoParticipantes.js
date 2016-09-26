@@ -240,6 +240,7 @@ $(function() {
 				processando(urlImagens);
 				setTimeout(function() { 
 					contador = 1;
+					qtdAvaliadoresSelecionados = $("#avaliadores .portlet.ui-selected .portlet-content ul").size();
 					$("#avaliadores .portlet.ui-selected .portlet-content ul").each(function() {
 						var avaliador = $(this);
 						$("#avaliados-list .ui-selected").each(function(){
@@ -279,7 +280,7 @@ $(function() {
 		$(this).toggleClass("active");
 		
 		$(this).parents(".box").find(".column").find(".ui-selectable").show( $(".box-search").is(":visible") );
-		$(this).parents(".box").find(".search").val("");
+		$(this).parents(".box").find(".search").val("").focus();
 		
 		resizeBox($(this));
 	});
