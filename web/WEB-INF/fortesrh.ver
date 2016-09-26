@@ -16,6 +16,7 @@
 		<Item visivel="S" motivo="S16090000151"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção para exibir o UF do RG no relatório.]]></Item>
 		<Item visivel="S" motivo="P16090000024"><![CDATA[SESMT > Movimentações > Gerenciamento de EPIs: Melhoria na performance ao listar solicitações de EPIs.]]></Item>
 		<Item visivel="S" motivo="S16050000146"><![CDATA[SESMT > Relatórios > Mapa de Risco: Inserção de vídeo de ajuda na tela de gerar mapa de risco.]]></Item>
+		<Item visivel="S" motivo="S16070000313"><![CDATA[Utilitários > Importar Cadastros: Nova opção de importar cadastros de ambientes entre empresas.]]></Item>
 		<Item visivel="S" motivo="S16080000348"><![CDATA[Tela inicial: Inserção de ajuda para deixar mais intuitivo a ação de clicar em cada período para visualizar a progressão.]]></Item>
 	</Versao>
 	<Versao id="1.1.171.203" db="" data="30/08/2016">

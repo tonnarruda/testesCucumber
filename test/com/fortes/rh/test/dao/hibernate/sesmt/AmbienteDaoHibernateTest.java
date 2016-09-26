@@ -353,19 +353,13 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		estabelecimento.setEmpresa(empresa);
 		estabelecimentoDao.save(estabelecimento);
 		
-		Ambiente ambiente = AmbienteFactory.getEntity();
-		ambiente.setNome("Ambiente 1");
-		ambiente.setEmpresa(empresa);
-		ambiente.setEstabelecimento(estabelecimento);
+		Ambiente ambiente = AmbienteFactory.getEntity("Ambiente 1", empresa, estabelecimento);
 		ambienteDao.save(ambiente);
 		
 		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity("Descrição Ambiente 1", ambiente, DateUtil.criarDataMesAno(1, 1, 2011),"tempoExposicao Ambiente 1");
 		historicoAmbienteDao.save(historicoAmbiente1);
 		
-		Ambiente ambiente2 = new Ambiente();
-		ambiente2.setNome("Ambiente 2");
-		ambiente2.setEmpresa(empresa);
-		ambiente2.setEstabelecimento(estabelecimento);
+		Ambiente ambiente2 = AmbienteFactory.getEntity("Ambiente 2", empresa, estabelecimento);
 		ambienteDao.save(ambiente2);
 		
 		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity("Descrição Ambiente 2 Fora",ambiente2,DateUtil.criarDataMesAno(1, 1, 2015),"tempoExposicao Ambiente 2 Fora");

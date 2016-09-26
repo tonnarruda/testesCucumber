@@ -3,6 +3,8 @@ package com.fortes.rh.test.factory.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 
 
@@ -32,5 +34,13 @@ public class AmbienteFactory
 		Ambientes.add(getEntity());
 
 		return Ambientes;
+	}
+
+	public static Ambiente getEntity(String nome, Empresa empresa, Estabelecimento estabelecimento) {
+		Ambiente ambiente = new Ambiente();
+		ambiente.setNome(nome);
+		ambiente.setEmpresa(empresa);
+		ambiente.setEstabelecimento(estabelecimento);
+		return ambiente;
 	}
 }
