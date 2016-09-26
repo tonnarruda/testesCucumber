@@ -45,11 +45,18 @@
 		
 		function calculaMediaDasNotas() {
 			var total = 0;
+			qtdColabNaoNulo = 0;
 			$("input[name=notas]").each(function(i,n){
-			    if($(n).val() != null && $(n).val() != "")
+			    if($(n).val() != null && $(n).val() != ""){
 			    	total += parseFloat($(n).val()); 
+			    	qtdColabNaoNulo++;
+			    }
 			});
-			$(".media").html(parseFloat(total/$("input[name=notas]").length).toFixed(2));
+			
+			if(qtdColabNaoNulo == 0)
+				qtdColabNaoNulo = 1;
+			
+			$(".media").html(parseFloat(total/qtdColabNaoNulo).toFixed(2));
 		}
 		
 		function insereHelp()
@@ -136,8 +143,9 @@
 	<div id="legendas" align="right"></div>
 		<br />
 		<@ww.form name="form" action="saveAproveitamentoCurso.action" onsubmit="" method="POST">
+			<#assign qtdColaborador = 0/>
 			<@display.table name="colaboradoresTurma" id="colaboradorTurma" class="dados">
-			
+				<#assign qtdColaborador = qtdColaborador + 1/>
 				<@display.column title="Nome" style="width: 400px;">
 					<p align="left" vertical-align="middle">
 						${colaboradorTurma.colaborador.nome}
@@ -181,6 +189,10 @@
 					<@ww.hidden name="colaboradorTurmaIds" value="${colaboradorTurma.id}"/>
 				</@display.column>
 			</@display.table>
+			
+			<div style="margin-left: -5px; margin-top: -13px; float: left;">
+				<div style="padding-bottom: 12px;font-family: Arial, Helvetica, sans-serif; font-size: 13px; float:left; text-align: center; padding: 10px;">${qtdColaborador} Colaboradores</div>
+			</div>
 			
 			<#if avaliacaoCurso.tipo != 'a'>
 				<div style="margin-top: -5px; float: right; border-bottom: 2px solid #BEBEBE; background: #EFEFEF; border-radius: 4px;">
