@@ -284,11 +284,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	//findComAnoDeEmpresa
-	public Colaborador(Long id, String nome, Double qtdAnosDeEmpresa )
+	public Colaborador(Long id, String nome, String email, Double qtdAnosDeEmpresa )
 	{
 		this.setId(id);
 		this.nome = nome;
 		this.qtdAnosDeEmpresa = qtdAnosDeEmpresa;
+		this.setEmailColaborador(email);
 	}
 
 	//findDemitidosTurnover

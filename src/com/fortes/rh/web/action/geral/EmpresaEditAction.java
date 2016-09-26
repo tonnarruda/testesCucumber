@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
+import com.fortes.rh.business.geral.CartaoManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
@@ -24,6 +25,8 @@ import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.FormulaTurnover;
+import com.fortes.rh.model.dicionario.TipoCartao;
+import com.fortes.rh.model.geral.Cartao;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -49,6 +52,11 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private GrupoACManager grupoACManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private CartaoManager cartaoManager;
+	private Collection<Cartao> cartoes = new ArrayList<Cartao>();
+	private Cartao cartaoAniversario = new Cartao();
+	private Cartao cartaoAnoDeEmpresa = new Cartao();
+	private Cartao cartao = new Cartao();
 
 	private Collection<Estado> ufs = null;
 	private Collection<Cidade> cidades = new ArrayList<Cidade>();
@@ -78,20 +86,19 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		return Action.SUCCESS;
 	}
 
-	public String cartaoAniversariante() throws Exception
+	public String previewCartao() throws Exception
 	{
-		empresa = empresaManager.findByIdProjection(empresa.getId());
-		
+		cartao = cartaoManager.findEntidadeComAtributosSimplesById(cartao.getId());
     	String pathBackGroundRelatorio = "";
     	
-    	String pathLogo = ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl();
+    	String pathLogo = ArquivoUtil.getPathLogoEmpresa() + cartao.getImgUrl();
     	java.io.File logo = new java.io.File(pathLogo);
     	if(logo.exists())
     		pathBackGroundRelatorio = pathLogo;
     	
 		parametros.put("BACKGROUND", pathBackGroundRelatorio);
 		
-		parametros.put("MSG", empresa.getMensagemCartaoAniversariante().replaceAll("#NOMECOLABORADOR#", "Nome do Aniversariante"));
+		parametros.put("MSG", cartao.getMensagem().replaceAll("#NOMECOLABORADOR#", "Nome do Aniversariante"));
 		
 		colaboradores = Arrays.asList(new Colaborador());
 		return Action.SUCCESS;
@@ -99,13 +106,25 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	
 	private void prepare() throws Exception
 	{
-		if(empresa != null && empresa.getId() != null)
+		if(empresa != null && empresa.getId() != null){
 			empresa = empresaManager.findById(empresa.getId());
-
+			montaCartoes();
+		}
 		if (ufs == null)
 			ufs = estadoManager.findAll(new String[]{"sigla"});
 		
 		grupoACs = grupoACManager.findAll(new String[]{"codigo"});
+	}
+
+	private void montaCartoes() {
+		cartoes = cartaoManager.findByEmpresaId(empresa.getId());
+		
+		for (Cartao cartao : cartoes) {
+			if(cartao.getTipoCartao().equals(TipoCartao.ANIVERSARIO))
+				cartaoAniversario = cartao;
+			else if(cartao.getTipoCartao().equals(TipoCartao.ANO_DE_EMPRESA))
+				cartaoAnoDeEmpresa = cartao;
+		}
 	}
 
 	public String sobre() throws Exception
@@ -137,14 +156,12 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		empresa.setGrupoAC(StringUtils.stripToNull(empresa.getGrupoAC()));
 		empresa.setCodigoAC(StringUtils.stripToNull(empresa.getCodigoAC()));
 		
-		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert, imgCartaoAniversariante);
+		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert);
 		
 		if(StringUtils.isEmpty(empresa.getLogoUrl()))
 			empresa.setLogoUrl("fortes.gif");
 		
-		if(StringUtils.isEmpty(empresa.getImgAniversarianteUrl()))
-			empresa.setImgAniversarianteUrl("aniversariantes.jpg");
-		
+		configuraCartoes();
 		empresaManager.save(empresa);
 		
 		try {
@@ -171,6 +188,30 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		return Action.SUCCESS;
 	}
 	
+	private void configuraCartoes(){
+		if(cartaoAniversario.getFile() != null)
+			cartaoAniversario = cartaoManager.saveImagemCartao(cartaoAniversario, "logoEmpresas");
+		
+		if(cartaoAnoDeEmpresa.getFile() != null)
+			cartaoAnoDeEmpresa = cartaoManager.saveImagemCartao(cartaoAnoDeEmpresa, "logoEmpresas");
+		
+		if((cartaoAniversario.getImgUrl() != null && !cartaoAniversario.getImgUrl().isEmpty()) || (cartaoAniversario.getMensagem() != null && !cartaoAniversario.getMensagem().isEmpty()))
+			cartoes.add(cartaoAniversario);
+		else if(cartao.getId() != null)
+			cartaoManager.remove(cartaoAniversario);
+		
+		if((cartaoAnoDeEmpresa.getImgUrl() != null && !cartaoAnoDeEmpresa.getImgUrl().isEmpty()) || (cartaoAnoDeEmpresa.getMensagem() != null && !cartaoAnoDeEmpresa.getMensagem().isEmpty()))
+			cartoes.add(cartaoAnoDeEmpresa);
+		else if(cartao.getId() != null)
+			cartaoManager.remove(cartaoAnoDeEmpresa);
+		
+		for (Cartao carto : cartoes) {
+			carto.setEmpresa(empresa);
+		}
+		
+		empresa.setCartoes(cartoes);
+	}
+	
 	public String update() throws Exception
 	{
 		Empresa empresaAntesDaAlteracao = empresaManager.findByIdProjection(empresa.getId());
@@ -183,7 +224,8 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			empresa.setAcIntegra(tavaIntegradaComAC);
 		}
 		
-		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert, imgCartaoAniversariante);
+		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert);
+		configuraCartoes();
 		
 		if (empresaManager.checkEmpresaCodACGrupoAC(empresa)){
 			throw new Exception("Já existe uma empresa com o mesmo código AC no grupo AC especificado");
@@ -244,13 +286,14 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		return Action.SUCCESS;
 	}
 	
-	public String showImgAniversariante() throws Exception
+	public String showImgCartao() throws Exception
 	{
-		if (empresa.getImgAniversarianteUrl() != null && !empresa.getImgAniversarianteUrl().equals(""))
+		if (cartao.getImgUrl() != null && !cartao.getImgUrl().equals(""))
 		{
-			java.io.File file = ArquivoUtil.getArquivo(empresa.getImgAniversarianteUrl(), "logoEmpresas");
+			java.io.File file = ArquivoUtil.getArquivo(cartao.getImgUrl(), "logoEmpresas");
 			showFile(file);
 		}
+		
 		
 		return Action.SUCCESS;
 	}
@@ -471,5 +514,41 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public String getMotivoDesintegracao() {
 		return motivoDesintegracao;
+	}
+
+	public void setCartaoManager(CartaoManager cartaoManager) {
+		this.cartaoManager = cartaoManager;
+	}
+
+	public Collection<Cartao> getCartoes() {
+		return cartoes;
+	}
+
+	public void setCartoes(Collection<Cartao> cartoes) {
+		this.cartoes = cartoes;
+	}
+
+	public Cartao getCartaoAniversario() {
+		return cartaoAniversario;
+	}
+
+	public void setCartaoAniversario(Cartao cartaoAniversario) {
+		this.cartaoAniversario = cartaoAniversario;
+	}
+
+	public Cartao getCartaoAnoDeEmpresa() {
+		return cartaoAnoDeEmpresa;
+	}
+
+	public void setCartaoAnoDeEmpresa(Cartao cartaoAnoDeEmpresa) {
+		this.cartaoAnoDeEmpresa = cartaoAnoDeEmpresa;
+	}
+
+	public Cartao getCartao() {
+		return cartao;
+	}
+
+	public void setCartao(Cartao cartao) {
+		this.cartao = cartao;
 	}
 }

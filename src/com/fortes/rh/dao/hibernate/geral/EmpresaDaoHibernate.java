@@ -127,8 +127,6 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.campoExtraCandidato"), "campoExtraCandidato");
 		p.add(Projections.property("e.mensagemModuloExterno"), "mensagemModuloExterno");
 		p.add(Projections.property("e.emailRespLimiteContrato"), "emailRespLimiteContrato");
-		p.add(Projections.property("e.imgAniversarianteUrl"), "imgAniversarianteUrl");
-		p.add(Projections.property("e.mensagemCartaoAniversariante"), "mensagemCartaoAniversariante");
 		p.add(Projections.property("e.emailRemetente"), "emailRemetente");
 		p.add(Projections.property("e.emailRespRH"),"emailRespRH");
 		p.add(Projections.property("e.formulaTurnover"), "formulaTurnover");
@@ -353,6 +351,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 				"delete from colaboradorCertificacao where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
 				"delete from ordemDeServico where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
 				"delete from colaborador where empresa_id = " + id + ";",
+				"delete from cartao where empresa_id = " + id + ";",
 				"delete from empresa where id = " + id + ";"
 		};
 		

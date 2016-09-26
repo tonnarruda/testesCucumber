@@ -6,6 +6,7 @@ package com.fortes.rh.model.geral;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
@@ -90,10 +91,10 @@ public class Empresa extends AbstractModel implements Serializable
     private String atividade;
     @Column(length=200)
     private String logoCertificadoUrl;
-    @Column(length=200)
-    private String imgAniversarianteUrl;
-    @Column(length=300)
-    private String mensagemCartaoAniversariante;
+
+    @OneToMany(mappedBy="empresa", cascade=CascadeType.ALL)
+    private Collection<Cartao> cartoes;
+    
     @Column(length=3)
     private String grupoAC;
     @Column(length=30)
@@ -456,22 +457,6 @@ public class Empresa extends AbstractModel implements Serializable
 		this.emailRespLimiteContrato = emailRespLimiteContrato;
 	}
 
-	public String getImgAniversarianteUrl() {
-		return imgAniversarianteUrl;
-	}
-
-	public void setImgAniversarianteUrl(String imgAniversarianteUrl) {
-		this.imgAniversarianteUrl = imgAniversarianteUrl;
-	}
-
-	public String getMensagemCartaoAniversariante() {
-		return mensagemCartaoAniversariante;
-	}
-
-	public void setMensagemCartaoAniversariante(String mensagemCartaoAniversariante) {
-		this.mensagemCartaoAniversariante = mensagemCartaoAniversariante;
-	}
-
 	public boolean isTurnoverPorSolicitacao() {
 		return turnoverPorSolicitacao;
 	}
@@ -723,5 +708,13 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setSenhaPadrao(String senhaPadrao) {
 		this.senhaPadrao = senhaPadrao;
+	}
+
+	public Collection<Cartao> getCartoes() {
+		return cartoes;
+	}
+
+	public void setCartoes(Collection<Cartao> cartoes) {
+		this.cartoes = cartoes;
 	}
 }

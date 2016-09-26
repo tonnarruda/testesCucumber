@@ -61,6 +61,7 @@
     <mapping class="com.fortes.rh.model.geral.TurmaTipoDespesa" />
     <mapping class="com.fortes.rh.model.geral.Providencia" />
     <mapping class="com.fortes.rh.model.geral.GerenciadorComunicacao" />
+    <mapping class="com.fortes.rh.model.geral.Cartao" />
     <!-- CAPTACAO DE TALENTOS -->
     <mapping class="com.fortes.rh.model.captacao.Candidato" />
     <mapping class="com.fortes.rh.model.captacao.HistoricoCandidato" />

@@ -30,6 +30,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.CartaoManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorIdiomaManager;
 import com.fortes.rh.business.geral.ColaboradorManagerImpl;
@@ -69,8 +70,10 @@ import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.dicionario.TipoCartao;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Cartao;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
@@ -93,6 +96,7 @@ import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
+import com.fortes.rh.test.factory.captacao.CartaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.ExperienciaFactory;
@@ -156,6 +160,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     private Mock mail;
     private Mock solicitacaoExameManager;
     private Mock gerenciadorComunicacaoManager;
+    private Mock cartaoManager;
     
 	private Colaborador colaborador;
 	private List<Formacao> formacoes;
@@ -240,6 +245,9 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
 		mail = mock(Mail.class);
         manager.setMail((Mail) mail.proxy());
         
+        
+        cartaoManager = mock(CartaoManager.class);
+        manager.setCartaoManager((CartaoManager) cartaoManager.proxy());
 
         usuarioManager = new Mock(UsuarioManager.class);
         MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
@@ -348,6 +356,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	int mes = DateUtil.getMes(new Date());
     	
 		colaboradorDao.expects(atLeastOnce()).method("findAniversariantesByEmpresa").with(ANYTHING, eq(dia), eq(mes)).will(returnValue(colaboradores));
+		cartaoManager.expects(atLeastOnce()).method("findByEmpresaIdAndTipo").with(ANYTHING, ANYTHING);
 		executaTesteEnviaEmailAniversariante(empresas);
     }
     
@@ -364,11 +373,17 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	colaborador2.getContato().setEmail("");
     	
     	Collection<Colaborador> colaboradores = Arrays.asList(colaborador1,colaborador2);
+    	Cartao cartao = CartaoFactory.getEntity(empresa1, TipoCartao.ANIVERSARIO);
+    	
     	
     	int dia = DateUtil.getDia(new Date());
     	int mes = DateUtil.getMes(new Date());
     	
     	colaboradorDao.expects(atLeastOnce()).method("findAniversariantesByEmpresa").with(ANYTHING, eq(dia), eq(mes)).will(returnValue(colaboradores));
+    	cartaoManager.expects(atLeastOnce()).method("findByEmpresaIdAndTipo").with(ANYTHING, ANYTHING).will(returnValue(cartao));
+    	cartaoManager.expects(atLeastOnce()).method("geraCartao").with(ANYTHING, ANYTHING);
+    	
+    	
     	mail.expects(atLeastOnce()).method("send").withAnyArguments().isVoid();
     	
     	executaTesteEnviaEmailAniversariante(empresas);

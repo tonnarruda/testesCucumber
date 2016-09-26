@@ -40,8 +40,6 @@ public class GerenciadorComunicacaoDaoHibernate extends GenericDaoHibernate<Gere
 		p.add(Projections.property("e.emailRemetente"),"emailRemetente");
 		p.add(Projections.property("e.emailRespRH"),"emailRespRH");
 		p.add(Projections.property("e.logoUrl"),"logoUrl");
-		p.add(Projections.property("e.imgAniversarianteUrl"), "imgAniversarianteUrl");
-		p.add(Projections.property("e.mensagemCartaoAniversariante"), "mensagemCartaoAniversariante");
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("gc.operacao", operacaoId));

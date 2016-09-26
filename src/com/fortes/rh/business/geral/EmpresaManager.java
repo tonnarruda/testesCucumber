@@ -22,7 +22,7 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Collection<UsuarioEmpresa> getPerfilEmpresasByUsuario(Long usuarioId);
 	Empresa findByCodigoAC(String codigoAc, String grupoAC);
 	String saveLogo(File logo, String local) throws Exception;
-	Empresa setLogo(Empresa empresa, File logo, String local, File logoCertificado, File imgAniversariante) throws Exception;
+	Empresa setLogo(Empresa empresa, File logo, String local, File logoCertificado) throws Exception;
 	boolean findIntegracaoAC(Long id);
 	boolean criarEmpresa(TEmpresa empresa);
 	boolean verifyExistsCnpj(Long id, String cnpj);

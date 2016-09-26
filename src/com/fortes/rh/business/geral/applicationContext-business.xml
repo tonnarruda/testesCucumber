@@ -173,6 +173,9 @@
     <property name="solicitacaoExameManager">
       <ref bean="solicitacaoExameManager" />
     </property>
+     <property name="cartaoManager">
+      <ref bean="cartaoManager" />
+    </property>
   </bean>
   <bean id="colaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -885,6 +888,19 @@
       <ref bean="providenciaManagerTarget" />
     </property>
   </bean>
+  <bean id="cartaoManagerTarget" class="com.fortes.rh.business.geral.CartaoManagerImpl">
+  	<property name="dao">
+      <ref bean="cartaoDao" />
+    </property>
+  </bean>
+  <bean id="cartaoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.CartaoManager</value>
+    </property>
+	<property name="target">
+      <ref bean="cartaoManagerTarget" />
+    </property>
+  </bean>
   <bean id="gerenciadorComunicacaoManagerTarget" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
     <property name="dao">
       <ref bean="gerenciadorComunicacaoDao" />
@@ -936,6 +952,9 @@
     </property>
     <property name="colaboradorCertificacaoManager">
       <ref bean="colaboradorCertificacaoManager" />
+    </property>
+    <property name="cartaoManager">
+      <ref bean="cartaoManager" />
     </property>
   </bean>
   <bean id="gerenciadorComunicacaoManager" parent="parentManager">

@@ -190,6 +190,7 @@
     <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
     <property name="empresaManager" ref="empresaManager" />
     <property name="colaboradorManager" ref="colaboradorManager" />
+    <property name="cartaoManager" ref="cartaoManager" />
     <property name="mail" ref="mail" />
   </bean>
   <bean name="emailQuandoColaboradorCompletaAnoDeEmpresa" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">

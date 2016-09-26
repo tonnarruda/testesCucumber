@@ -53,9 +53,11 @@ import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.TipoCartao;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Cartao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
@@ -100,9 +102,11 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	MensagemManager mensagemManager;
 	EmpresaManager empresaManager;
 	PerfilManager perfilManager;
+	CartaoManager cartaoManager;
 	CargoManager cargoManager;
 	CidManager cidManager;
 	Mail mail;
+	
 	
 	public void insereGerenciadorComunicacaoDefault(Empresa empresa) 
 	{
@@ -1194,8 +1198,11 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 				colaboradorManager.enviaEmailAniversariantes(empresas);
 			}
-		} catch (Exception e) {e.printStackTrace();}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+	
 	
 	public void enviaMensagemCadastroSituacaoAC(String nomeColaborador, TSituacao situacao)
 	{
@@ -1714,30 +1721,61 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			for (Empresa empresa : empresas) {
 				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId(), empresa.getId());
 	    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-	    			diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
-					for (Integer diaLembrete : diasLembrete){
-						colaboradores = colaboradorManager.findComAnoDeEmpresa(empresa.getId(), DateUtil.incrementaDias(new Date(), diaLembrete));
-						if ( colaboradores.size() > 0 ) {
-							String subject = "[RH] - Falta(m) "+ diaLembrete + " dia(s) para colaboradores completarem ano de empresa";
-							StringBuilder body = new StringBuilder("Falta(m) "+ diaLembrete + " dia(s) para colaboradores completarem ano de empresa <br><br> ");
-							body.append("<b>Empresa:</b> "+ empresa.getNome() +" <br><br>");
-							body.append("Colaboradores que completarão ano de empresa: <br><br>");
-							body.append("<table><thead><tr><th>Colaborador</th><th></th><th>Qtd. anos</th></tr></thead><tbody>");
-							for (Colaborador colaborador : colaboradores){
-								body.append("<tr><td>" + colaborador.getNome() + "</td>");
-								body.append("<td></td><td align='center'>" + colaborador.getQtdAnosDeEmpresa().intValue() + "</td></tr>");
+	    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId()))
+	    				montaEmailParaColaboradorComAnoDeEmpresa(empresa);
+	    			else{
+		    			diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
+						for (Integer diaLembrete : diasLembrete){
+							colaboradores = colaboradorManager.findComAnoDeEmpresa(empresa.getId(), DateUtil.incrementaDias(new Date(), diaLembrete));
+							if ( colaboradores.size() > 0 ) {
+								String subject = "[RH] - Falta(m) "+ diaLembrete + " dia(s) para colaboradores completarem ano de empresa";
+								StringBuilder body = new StringBuilder("Falta(m) "+ diaLembrete + " dia(s) para colaboradores completarem ano de empresa <br><br> ");
+								body.append("<b>Empresa:</b> "+ empresa.getNome() +" <br><br>");
+								body.append("Colaboradores que completarão ano de empresa: <br><br>");
+								body.append("<table><thead><tr><th>Colaborador</th><th></th><th>Qtd. anos</th></tr></thead><tbody>");
+								for (Colaborador colaborador : colaboradores){
+									body.append("<tr><td>" + colaborador.getNome() + "</td>");
+									body.append("<td></td><td align='center'>" + colaborador.getQtdAnosDeEmpresa().intValue() + "</td></tr>");
+								}
+								body.append("</tbody></table><br>");
+								body.append("<b>Total de colaboradores:</b> " + colaboradores.size());
+				    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
+				    				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
+				    				mail.send(empresa, subject, body.toString(), null, emails);
+				    			}
 							}
-							body.append("</tbody></table><br>");
-							body.append("<b>Total de colaboradores:</b> " + colaboradores.size());
-			    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
-			    				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
-			    				mail.send(empresa, subject, body.toString(), null, emails);
-			    			}
 						}
-					}
+	    			}
 	    		}
 			}
-		}catch (Exception e){e.printStackTrace();}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	private void montaEmailParaColaboradorComAnoDeEmpresa(Empresa empresa) {
+		Collection<Colaborador> colaboradores = colaboradorManager.findComAnoDeEmpresa(empresa.getId(), new Date());
+		Cartao cartao = cartaoManager.findByEmpresaIdAndTipo(empresa.getId(), TipoCartao.ANO_DE_EMPRESA);
+		String body = "";
+		
+		for (Colaborador colaborador : colaboradores) {
+			DataSource[] files = null;
+			if(cartao != null){
+				files = cartaoManager.geraCartao(cartao, colaborador);
+			}
+			String subject = "Parabéns " + colaborador.getNome() + " por mais um ano de empresa";
+			if(files != null)
+				body = "Parabéns por mais um ano de sucesso na empresa.<br><br>Cartão em anexo.";
+			else
+				body = "Parabéns por mais um ano de sucessa na empresa.";
+			try {
+				if(StringUtils.isNotEmpty(colaborador.getContato().getEmail())){
+					mail.send(empresa, subject, files, body, colaborador.getContato().getEmail());		
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private Collection<ColaboradorTurma> agrupaCertificacoes(Collection<ColaboradorTurma> colaboradoresTurmas){
@@ -1986,5 +2024,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setCartaoManager(CartaoManager cartaoManager) {
+		this.cartaoManager = cartaoManager;
 	}
 }

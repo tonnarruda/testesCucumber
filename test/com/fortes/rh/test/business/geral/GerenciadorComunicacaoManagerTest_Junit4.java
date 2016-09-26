@@ -1,11 +1,20 @@
 package com.fortes.rh.test.business.geral;
 
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
+
+import javax.activation.DataSource;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 
 import mockit.Mockit;
 
@@ -21,6 +30,7 @@ import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.CartaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -43,7 +53,9 @@ import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.StatusAutorizacaoGestor;
+import com.fortes.rh.model.dicionario.TipoCartao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Cartao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
@@ -52,6 +64,7 @@ import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
+import com.fortes.rh.test.factory.captacao.CartaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
@@ -87,6 +100,7 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 	private MensagemManager mensagemManager;
 	private EmpresaManager empresaManager;
 	private UsuarioManager usuarioManager;
+	private CartaoManager cartaoManager;
 	private ExameManager exameManager;
 	private CargoManager cargoManager;
 	private Mail mail;
@@ -132,7 +146,10 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 
         mail = mock(Mail.class);
         gerenciadorComunicacaoManager.setMail(mail);
-
+        
+        cartaoManager = mock(CartaoManager.class);
+        gerenciadorComunicacaoManager.setCartaoManager(cartaoManager);
+        
         colaboradorTurmaManager = mock(ColaboradorTurmaManager.class);
         MockSpringUtilJUnit4.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
 
@@ -294,5 +311,88 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 		Integer[] operacoes = {Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_ALTERAR_STATUS_COLAB.getId(), Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_INCLUIR_COLAB.getId()};
 		gerenciadorComunicacaoManager.removeByOperacao(operacoes);
 		verify(gerenciadorComunicacaoDao, times(1)).removeByOperacao(operacoes);
+	}
+	
+	@Test
+	public void testEnviaEmailParaResponsavelDoRHQuandoColaboradorCompletaAnoDeEmpresa() throws AddressException, MessagingException {
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setQtdAnosDeEmpresa(1.0);
+		Collection<Colaborador> colaboradores = Arrays.asList(colaborador); 
+		
+		Empresa empresa = criaEmpresa();
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(null, empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
+		gerenciadorComunicacao.setQtdDiasLembrete("1");
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		when(empresaManager.findTodasEmpresas()).thenReturn(Arrays.asList(empresa));
+		when(gerenciadorComunicacaoDao.findByOperacaoId(eq(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId()),eq(empresa.getId()))).thenReturn(gerenciadorComunicacaos);
+		when(colaboradorManager.findComAnoDeEmpresa(eq(empresa.getId()), any(Date.class))).thenReturn(colaboradores);
+		Exception ex = null;
+		try {
+			gerenciadorComunicacaoManager.enviaEmailQuandoColaboradorCompletaAnoDeEmpresa();
+		} catch (Exception e) {
+			ex = e;
+		}
+		assertNull(ex);
+	}
+	
+	@Test
+	public void testEnviaEmailParaColaboradorQuandoCompletarAnoDeEmpresaComCartaoConfigurado() throws AddressException, MessagingException {
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setQtdAnosDeEmpresa(1.0);
+		colaborador.setEmailColaborador("email@email.com.br");
+		Collection<Colaborador> colaboradores = Arrays.asList(colaborador); 
+		
+		String subject = "Parabéns " + colaborador.getNome() + " por mais um ano de empresa";
+		String body = "Parabéns por mais um ano de sucesso na empresa.<br><br>Cartão em anexo.";
+		Empresa empresa = criaEmpresa();
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(null, empresa, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		Cartao cartao = CartaoFactory.getEntity(empresa, TipoCartao.ANIVERSARIO);
+		DataSource[] files = new DataSource[]{};
+		
+		when(empresaManager.findTodasEmpresas()).thenReturn(Arrays.asList(empresa));
+		when(gerenciadorComunicacaoDao.findByOperacaoId(eq(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId()),eq(empresa.getId()))).thenReturn(gerenciadorComunicacaos);
+
+		when(colaboradorManager.findComAnoDeEmpresa(eq(empresa.getId()), any(Date.class))).thenReturn(colaboradores);
+		when(cartaoManager.findByEmpresaIdAndTipo(eq(empresa.getId()), eq(TipoCartao.ANO_DE_EMPRESA))).thenReturn(cartao);
+		when(cartaoManager.geraCartao(cartao, colaborador)).thenReturn(files);
+		gerenciadorComunicacaoManager.enviaEmailQuandoColaboradorCompletaAnoDeEmpresa();
+		verify(mail).send(empresa, subject, files, body, colaborador.getContato().getEmail());		
+	}
+	
+	@Test
+	public void testEnviaEmailParaColaboradorQuandoCompletarAnoDeEmpresaSemCartaoConfigurado() throws AddressException, MessagingException {
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setQtdAnosDeEmpresa(1.0);
+		colaborador.setEmailColaborador("email@email.com.br");
+		Collection<Colaborador> colaboradores = Arrays.asList(colaborador); 
+		
+		String subject = "Parabéns " + colaborador.getNome() + " por mais um ano de empresa";
+		String body = "Parabéns por mais um ano de sucessa na empresa.";
+		Empresa empresa = criaEmpresa();
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(null, empresa, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		DataSource[] files = null;
+		
+		when(empresaManager.findTodasEmpresas()).thenReturn(Arrays.asList(empresa));
+		when(gerenciadorComunicacaoDao.findByOperacaoId(eq(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId()),eq(empresa.getId()))).thenReturn(gerenciadorComunicacaos);
+
+		when(colaboradorManager.findComAnoDeEmpresa(eq(empresa.getId()), any(Date.class))).thenReturn(colaboradores);
+		when(cartaoManager.findByEmpresaIdAndTipo(eq(empresa.getId()), eq(TipoCartao.ANO_DE_EMPRESA))).thenReturn(null);
+		gerenciadorComunicacaoManager.enviaEmailQuandoColaboradorCompletaAnoDeEmpresa();
+		verify(mail).send(empresa, subject, files, body, colaborador.getContato().getEmail());		
+	}
+	
+	private Empresa criaEmpresa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setNome("Empresa I");
+		empresa.setEmailRespRH("teste1@gmail.com;teste2@gmail.com;");
+		empresa.setEmailRemetente("teste1@gmail.com");
+		
+		return empresa;
 	}
 }

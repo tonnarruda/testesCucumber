@@ -67,6 +67,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	private RiscoManager riscoManager;
 	private EpiManager epiManager;
 	private Mail mail;
+	private CartaoManager cartaoManager;
 
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
 	{
@@ -112,20 +113,16 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return url;
 	}
 
-	public Empresa setLogo(Empresa empresa, File logo, String local, File logoCertificado, File imgAniversariante)
+	public Empresa setLogo(Empresa empresa, File logo, String local, File logoCertificado)
 	{
 		String logoUrl = saveLogo(logo, local);
 		String logoCertificadoUrl = saveLogo(logoCertificado, local);
-		String imgAniversarianteUrl = saveLogo(imgAniversariante, local);
 
 		if(!logoUrl.equals(""))
 			empresa.setLogoUrl(logoUrl);
 		
 		if(!logoCertificadoUrl.equals(""))
 			empresa.setLogoCertificadoUrl(logoCertificadoUrl);
-
-		if(!imgAniversarianteUrl.equals(""))
-			empresa.setImgAniversarianteUrl(imgAniversarianteUrl);
 
 		return empresa;
 	}
@@ -619,5 +616,9 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void setCartaoManager(CartaoManager cartaoManager) {
+		this.cartaoManager = cartaoManager;
 	}
 }

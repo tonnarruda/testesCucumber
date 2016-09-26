@@ -198,10 +198,14 @@
 			{
 				$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId} || operacaoId == ${avaliacaoPeriodoExperienciaVencendoId} || operacaoId == ${habilitacaoAVencerId} ||
 												   operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId} || operacaoId == ${lembreteTerminoContratoTemporarioColaboradorId} || 
-												   operacaoId == ${notificarCursosAVencer} || operacaoId == ${notificarCertificacoesAVencer} || operacaoId == ${emailQuandoColaboradorCompletaAnoDeEmpresaId} );
+												   operacaoId == ${notificarCursosAVencer} || operacaoId == ${notificarCertificacoesAVencer} || (operacaoId == ${emailQuandoColaboradorCompletaAnoDeEmpresaId} && $('#enviarParas').val() != '6'));
 										   
 				var label = (operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId}) ? 'Dias de prazo para o aviso:' : 'Dias de antecedência para o aviso:';
 				$('#camposQtdDiasLembrete label').text(label);
+			}
+			
+			function decideExibirCampoQtdDiasLembrete(){
+				$('#camposQtdDiasLembrete').toggle($('#operacao').val() == ${emailQuandoColaboradorCompletaAnoDeEmpresaId} && $('#enviarParas').val() != '6');
 			}
 			
 			function addDia(qtd)
@@ -303,7 +307,7 @@
 			</li>			
 			
 			<@ww.select label="Através de" name="gerenciadorComunicacao.meioComunicacao" id="meioComunicacoes" cssClass="campo" list="meioComunicacoes" cssStyle="width: 600px;" onchange="populaEnviarPara(this.value);"/>
-			<@ww.select label="Para" id="enviarParas" cssClass="campo" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 600px;" onchange="exibeCamposEmailsAvulsos(this.value);exibeUsuarios(this.value);exibeCampoPermitirResponderAvaliacao();" />
+			<@ww.select label="Para" id="enviarParas" cssClass="campo" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 600px;" onchange="exibeCamposEmailsAvulsos(this.value);exibeUsuarios(this.value);exibeCampoPermitirResponderAvaliacao();decideExibirCampoQtdDiasLembrete();" />
 			<span id="emailDestinatario">
 				<@ww.textfield label="Destinatário(s)*" id="destinatario" require="true" cssClass="mascaraEmail" cssStyle="width:937px;" name="gerenciadorComunicacao.destinatario" />
 				Obs: Coloque vírgula para inserir mais de um email. 

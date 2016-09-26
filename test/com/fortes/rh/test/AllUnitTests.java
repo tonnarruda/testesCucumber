@@ -88,6 +88,7 @@ import com.fortes.rh.test.business.geral.AreaOrganizacionalManagerTest;
 import com.fortes.rh.test.business.geral.BairroManagerTest;
 import com.fortes.rh.test.business.geral.BeneficioManagerTest;
 import com.fortes.rh.test.business.geral.CamposExtrasManagerTest;
+import com.fortes.rh.test.business.geral.CartaoManagerTest;
 import com.fortes.rh.test.business.geral.CidadeManagerTest;
 import com.fortes.rh.test.business.geral.ClienteManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorIdiomaManagerTest;
@@ -262,6 +263,7 @@ import com.fortes.rh.test.dao.hibernate.geral.AreaOrganizacionalDaoHibernateTest
 import com.fortes.rh.test.dao.hibernate.geral.BairroDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.BeneficioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.CamposExtrasDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.CartaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.CidDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.CidadeDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ClienteDaoHibernateTest;
@@ -1000,6 +1002,9 @@ import com.fortes.test.web.tags.LinkTagTest;
 	GerenciadorComunicacaoManagerTest_Junit4.class,
 	GerenciadorComunicacaoEditActionTest.class,
 	OcorrenciaProvidenciaEditActionTest.class,
+	
+	CartaoManagerTest.class,
+	CartaoDaoHibernateTest.class,
 
 	        
     //contatoTest embedded Colaborador

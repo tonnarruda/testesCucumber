@@ -1929,27 +1929,6 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoManager.enviarNotificacaoCursosOuCertificacoesAVencer();
 	}
 	
-	public void testEnviaEmailQuandoColaboradorCompletaAnoDeEmpresa() {
-		
-		Empresa empresa = criaEmpresa();
-		
-		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(null, empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
-		gerenciadorComunicacao.setQtdDiasLembrete("1");
-		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setQtdAnosDeEmpresa(1.0);
-		
-		Collection<Colaborador> colaboradores = Arrays.asList(colaborador);
-		
-		empresaManager.expects(once()).method("findTodasEmpresas").will(returnValue(Arrays.asList(empresa)));
-		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
-		colaboradorManager.expects(once()).method("findComAnoDeEmpresa").with(eq(empresa.getId()), ANYTHING).will(returnValue(colaboradores));
-		mail.expects(once()).method("send").withAnyArguments().isVoid();
-		gerenciadorComunicacaoManager.enviaEmailQuandoColaboradorCompletaAnoDeEmpresa();
-	}
-	
 	private ColaboradorTurma criarColaboradorTurma(){
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();

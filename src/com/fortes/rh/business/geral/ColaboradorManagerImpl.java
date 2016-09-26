@@ -77,17 +77,18 @@ import com.fortes.rh.model.dicionario.EscolaridadeACPessoal;
 import com.fortes.rh.model.dicionario.FormulaTurnover;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
-import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
+import com.fortes.rh.model.dicionario.TipoCartao;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.CamposExtras;
+import com.fortes.rh.model.geral.Cartao;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
@@ -112,7 +113,6 @@ import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
-import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -157,6 +157,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private AuditoriaManager auditoriaManager;
 	private CandidatoIdiomaManager candidatoIdiomaManager;
 	private SolicitacaoExameManager solicitacaoExameManager;
+	private CartaoManager cartaoManager;
 	
 	private static final String RETIRAFOTO = "S";
 	private static final String NAORETIRAFOTO = "N";
@@ -166,34 +167,22 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Date data = new Date();
 		int dia = DateUtil.getDia(data);
 		int mes = DateUtil.getMes(data);
+		Cartao cartao;
 
-		char barra = java.io.File.separatorChar;
-		String path = ArquivoUtil.getSystemConf().getProperty("sys.path").trim();
-		path = path + barra + "WEB-INF" + barra + "report" + barra; 
-
-		Map<String,Object> parametros = new HashMap<String, Object>();
-		parametros.put("SUBREPORT_DIR", path);
-
-		for (Empresa empresa : empresas) 
-		{
-			String pathBackGroundRelatorio = "";
-
-			String pathLogo = ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl();
-			java.io.File logo = new java.io.File(pathLogo);
-			if(logo.exists())
-				pathBackGroundRelatorio = pathLogo;
-
-			parametros.put("BACKGROUND", pathBackGroundRelatorio);
-
+		for (Empresa empresa : empresas) {
 			Collection<Colaborador> aniversariantes = getDao().findAniversariantesByEmpresa(empresa.getId(), dia, mes);
 			for (Colaborador aniversariante : aniversariantes)
 			{
-				parametros.put("MSG", empresa.getMensagemCartaoAniversariante().replaceAll("#NOMECOLABORADOR#", aniversariante.getNome()));					
+				DataSource[] files = null;
 				String subject = "Feliz Aniversário " + aniversariante.getNome();
-				String body = "Cartão em anexo, feliz aniversário!";
+				String body = "Feliz Aniversário!";
 
-				Collection<Colaborador> colaboradores = Arrays.asList(new Colaborador());
-				DataSource[] files = ArquivoUtil.montaRelatorio(parametros, colaboradores, "cartaoAniversariante.jasper");
+				cartao = cartaoManager.findByEmpresaIdAndTipo(empresa.getId(), TipoCartao.ANIVERSARIO);
+				if(cartao != null)
+					files =  cartaoManager.geraCartao(cartao, aniversariante);
+				
+				if(files != null)
+				  body += "<br><br>Cartão em anexo."; 
 
 				if(StringUtils.isNotEmpty(aniversariante.getContato().getEmail())){
 					mail.send(empresa, subject, files, body, aniversariante.getContato().getEmail());		
@@ -3053,6 +3042,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
 		this.solicitacaoExameManager = solicitacaoExameManager;
+	}
+
+	public void setCartaoManager(CartaoManager cartaoManager) {
+		this.cartaoManager = cartaoManager;
 	}
 
 }

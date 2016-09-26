@@ -25,21 +25,21 @@
 		.divInfo { width: 850px !important;}
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 		
-		.ordemDeServico { margin: 20px 10px 10px 5px }
-		.ordemDeServico h2 {margin: -9px 0px 0 0px;
+		.divInfoInterna { margin: 20px 10px 10px 5px }
+		.divInfoInterna h2 {margin: -9px 0px 0 0px;
 					    padding: 3px 2px;
 					    background: none;
 					    color: #797979;
 					    border-bottom: 2px solid #999999;
 			         }
 			         
-		.ordemDeServico ul{padding: 10px 10px 10px 15px;
+		.divInfoInterna ul{padding: 10px 10px 10px 15px;
 					    border-top: none;
 					    background: #f1f1f1;
 					    border-bottom-left-radius: 5px;
 					    border-bottom-right-radius: 5px;
 					}
-		.ordemDeServico textarea{	height: 150px;
+		.divInfoInterna textarea{	height: 150px;
 									width: 650px;
 								}
 								
@@ -145,6 +145,12 @@
 			if($('#mensagemCartaoAniversariante').val().length > 300)
 			{
 				jAlert("A quantidade de caracteres do campo [Mensagem do Cartão de Aniversariantes] não pode ser maior que 300");
+				return false;
+			}
+			
+			if($('#mensagemCartaoAnoEmpresa').val().length > 300)
+			{
+				jAlert("A quantidade de caracteres do campo [Mensagem do Cartão de Ano de Empresa] não pode ser maior que 300");
 				return false;
 			}
 
@@ -344,7 +350,7 @@
 					<@ww.checkbox label="Tornar obrigatório o preenchimento dos campos de Ambiente e Função para o histórico do colaborador e solicitação de pessoal" name="empresa.obrigarAmbienteFuncao" id="obrigarAmbienteFuncao" labelPosition="right" /><br>
 					<@ww.checkbox label="Exibir logo da empresa ao emitir PPRA e LTCAT" name="empresa.exibirLogoEmpresaPpraLtcat" id="exibirLogoEmpresaPpraLtcat" labelPosition="right" />
 					
-					<@ww.div cssClass="ordemDeServico">
+					<@ww.div cssClass="divInfoInterna">
 						<h2>Ordem de Serviço <img id="tooltipHelpOrdemDeServico" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-bottom: -3px;" /> </h2>	
 							<ul>
 								<@ww.textarea label="Procedimentos em caso de acidente de trabalho" name="empresa.procedimentoEmCasoDeAcidente" id="procedimentoEmCasoDeAcidente"/>
@@ -370,18 +376,36 @@
 		
 		<li>
 			<@ww.div cssClass="divInfo">
-				<h2>Cartões de Aniversário</h2>
-				<ul>
-					<@ww.file label="Imagem (400px x 570px)" name="imgCartaoAniversariante" id="imgCartaoAniversariante" liClass="liLeft"/>
-					<li>
-						<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
-							<#if empresa.id?exists && empresa.imgAniversarianteUrl?exists && empresa.imgAniversarianteUrl != "">
-								<a href="cartaoAniversariante.action?empresa.id=${empresa.id}" ><img title="Visualizar cartão dos aniversariantes." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgAniversariante.action?empresa.imgAniversarianteUrl=${empresa.imgAniversarianteUrl}"/>"></a>
-							</#if>
-						</@ww.div>
-					</li>
-					<@ww.textarea label="Mensagem (Utilize a expressão #NOMECOLABORADOR#, caso queira exibir o nome do Aniversariante)" id="mensagemCartaoAniversariante" name="empresa.mensagemCartaoAniversariante" cssStyle="height:40px;"/>
-				</ul>
+				<h2>Cartões</h2>
+				<@ww.div cssClass="divInfoInterna">
+					<h2>Aniversário</h2>	
+					<ul>
+						<@ww.file label="Imagem (400px x 570px)" name="cartaoAniversario.file" id="imgCartaoAniversariante" liClass="liLeft"/>
+						<li>
+							<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
+								<#if empresa.id?exists && cartaoAniversario.imgUrl?exists && cartaoAniversario.imgUrl != "">
+									<a href="previewCartao.action?cartao.id=${cartaoAniversario.id}" ><img title="Visualizar cartão dos aniversariantes." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgCartao.action?cartao.imgUrl=${cartaoAniversario.imgUrl}"/>"></a>
+								</#if>
+							</@ww.div>
+						</li>
+						<@ww.textarea label="Mensagem (Utilize a expressão #NOMECOLABORADOR#, caso queira exibir o nome do Aniversariante)" id="mensagemCartaoAniversariante" name="cartaoAniversario.mensagem" cssStyle="height:40px;"/>
+					</ul>
+				</@ww.div>
+				
+				<@ww.div cssClass="divInfoInterna">
+					<h2>Ano de Empresa</h2>	
+					<ul>
+						<@ww.file label="Imagem (400px x 570px)" name="cartaoAnoDeEmpresa.file" id="imgCartaoAnoDeEmpresa" liClass="liLeft"/>
+						<li>
+							<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
+								<#if empresa.id?exists && cartaoAnoDeEmpresa.imgUrl?exists && cartaoAnoDeEmpresa.imgUrl != "">
+									<a href="previewCartao.action?cartao.id=${cartaoAnoDeEmpresa.id}" ><img title="Visualizar cartão de parabenizar por ano de empresa." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgCartao.action?cartao.imgUrl=${cartaoAnoDeEmpresa.imgUrl}"/>"></a>
+								</#if>
+							</@ww.div>
+						</li>
+						<@ww.textarea label="Mensagem (Utilize a expressão #NOMECOLABORADOR#, caso queira exibir o nome do colaborador que completa ano de empresa)" id="mensagemCartaoAnoEmpresa" name="cartaoAnoDeEmpresa.mensagem" cssStyle="height:40px;"/>
+					</ul>
+				</@ww.div>
 			</@ww.div>
 		</li>
 		
@@ -416,8 +440,16 @@
 		<@ww.hidden name="empresa.id" />
 		<@ww.hidden name="empresa.logoUrl" />
 		<@ww.hidden name="empresa.logoCertificacaoUrl" />
-		<@ww.hidden name="empresa.imgAniversarianteUrl" />
 		<@ww.hidden name="empresa.codigoAC" id="codigoAC" />
+		
+		<@ww.hidden name="cartaoAniversario.empresa.id" />
+		<@ww.hidden name="cartaoAniversario.tipoCartao" value="A" />
+		<@ww.hidden name="cartaoAniversario.id" />
+		<@ww.hidden name="cartaoAniversario.imgUrl" />
+		
+		<@ww.hidden name="cartaoAnoDeEmpresa.id" />
+		<@ww.hidden name="cartaoAnoDeEmpresa.tipoCartao" value="E" />
+		<@ww.hidden name="cartaoAnoDeEmpresa.imgUrl"/>
 	<@ww.token/>
 	</@ww.form>
 

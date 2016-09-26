@@ -257,7 +257,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findComAnoDeEmpresa(Long empresaId, Date data) 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, "); 
+		hql.append("select new Colaborador(co.id, co.nome, co.contato.email, "); 
 		hql.append(" ( date_part('year', cast(:data AS date) ) - date_part('year', co.dataAdmissao) ) ) "); 
 		hql.append("from Colaborador as co ");
 		hql.append("where ");

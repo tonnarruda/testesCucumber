@@ -394,4 +394,13 @@
       <ref bean="usuarioNoticiaDaoTarget" />
     </property>
   </bean>
+  <bean id="cartaoDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.CartaoDao</value>
+    </property>
+    <property name="target">
+      <ref bean="cartaoDaoTarget" />
+    </property>
+  </bean>
+  
 </beans>
