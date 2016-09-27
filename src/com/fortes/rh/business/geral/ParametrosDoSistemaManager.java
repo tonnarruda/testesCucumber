@@ -9,6 +9,7 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 public interface ParametrosDoSistemaManager extends GenericManager<ParametrosDoSistema>
 {
 	public ParametrosDoSistema findByIdProjection(Long id);
+	public ParametrosDoSistema findByIdProjectionSession(Long id);
 	public boolean getSistemaAtualizado();
 	public boolean verificaCompatibilidadeComWebServiceAC(String versaoAC, String versaoMinimaCompativel);
 	public String getVersaoWebServiceAC(Empresa empresa) throws Exception;

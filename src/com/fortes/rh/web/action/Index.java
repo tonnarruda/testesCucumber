@@ -118,7 +118,7 @@ public class Index extends MyActionSupport
 		response.setHeader("Cache-Control", "no-cache");
 		response.setDateHeader("Expires", 0);
 
-		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+		parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 		ServletActionContext.getRequest().getSession().setMaxInactiveInterval(parametrosDoSistema.getSessionTimeout());
 		if(ActionContext.getContext().getSession().get("primeiraExecucao") == null)
 		{

@@ -9,6 +9,9 @@
 		<property name="colaboradorManager">
 			<ref bean="colaboradorManager" />
 		</property>
+		<property name="parametrosDoSistemaManager">
+			<ref bean="parametrosDoSistemaManager" />
+		</property>
 	</bean>
 
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

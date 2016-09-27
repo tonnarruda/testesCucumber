@@ -64,7 +64,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private Boolean compartilharCursos;
     private boolean inibirGerarRelatorioPesquisaAnonima;
     private int quantidadeColaboradoresRelatorioPesquisaAnonima;
-    private boolean suporteVeica;
     private boolean bancoConsistente;
     private int quantidadeConstraints;
     private boolean versaoAcademica;
@@ -370,16 +369,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setTelaInicialModuloExterno(char telaInicialModuloExterno)
 	{
 		this.telaInicialModuloExterno = telaInicialModuloExterno;
-	}
-
-	public boolean isSuporteVeica() 
-	{
-		return suporteVeica;
-	}
-	
-	public void setSuporteVeica(boolean suporteVeica) 
-	{
-		this.suporteVeica = suporteVeica;
 	}
 	
 	public int getQuantidadeColaboradoresRelatorioPesquisaAnonima() 

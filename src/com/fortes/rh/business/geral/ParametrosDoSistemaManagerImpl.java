@@ -21,6 +21,11 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 	{
 		return getDao().findByIdProjection(id);
 	}
+	
+	public ParametrosDoSistema findByIdProjectionSession(Long id)
+	{
+		return getDao().findByIdProjectionSession(id);
+	}
 
 	public boolean getSistemaAtualizado()
 	{

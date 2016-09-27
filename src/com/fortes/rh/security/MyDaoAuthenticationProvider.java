@@ -125,6 +125,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 			((UserDetailsImpl)userDetails).setAuthorities(arrayAuths);
 			((UserDetailsImpl)userDetails).setMenuFormatado(menu);
 			((UserDetailsImpl)userDetails).setVersao(versao);
+			((UserDetailsImpl)userDetails).setParametrosDoSistema(parametrosDoSistemaManager.findByIdProjectionSession(1L));
 		}
 		else
 		{

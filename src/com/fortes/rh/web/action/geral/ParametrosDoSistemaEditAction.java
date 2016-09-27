@@ -181,7 +181,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 				Autenticador.setDemo(false);
 		}
 
-		parametrosDoSistema.setSuporteVeica(parametrosDoSistemaAux.isSuporteVeica());
 		parametrosDoSistema.setHorariosBackup(StringUtil.converteCollectionToString(horariosBackup));
 		
 		ServletActionContext.getRequest().getSession().setMaxInactiveInterval(parametrosDoSistema.getSessionTimeout());

@@ -7,6 +7,7 @@ import org.acegisecurity.userdetails.UserDetails;
 
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -28,10 +29,11 @@ public class UserDetailsImpl implements UserDetails
 	private Empresa empresa;
 	private Colaborador colaborador;
 	private String versao = "";
+	private ParametrosDoSistema parametrosDoSistema;
 
 	public UserDetailsImpl(Long id, String nome, String username, String password, boolean superAdmin, Date ultimoLogin, 
 			GrantedAuthority[] authorities, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, 
-			String menuFormatado, Empresa empresa, Colaborador colaborador)
+			String menuFormatado, Empresa empresa, Colaborador colaborador, ParametrosDoSistema parametrosDoSistema)
 	{
 		this.id = id;
 		this.nome = nome;
@@ -47,6 +49,7 @@ public class UserDetailsImpl implements UserDetails
 		this.menuFormatado = menuFormatado;
 		this.empresa = empresa;
 		this.colaborador = colaborador;
+		this.parametrosDoSistema = parametrosDoSistema;
 	}
 
 	public GrantedAuthority[] getAuthorities()
@@ -179,5 +182,13 @@ public class UserDetailsImpl implements UserDetails
 
 	public void setVersao(String versao) {
 		this.versao = versao;
+	}
+
+	public ParametrosDoSistema getParametrosDoSistema() {
+		return parametrosDoSistema;
+	}
+
+	public void setParametrosDoSistema(ParametrosDoSistema parametrosDoSistema) {
+		this.parametrosDoSistema = parametrosDoSistema;
 	}
 }

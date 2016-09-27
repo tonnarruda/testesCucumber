@@ -19,7 +19,7 @@ public class UserDetailsImplTest extends TestCase
 		empresa.setNome("empresa");
 		empresa.setControlaRiscoPor('A');
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		UserDetailsImpl userDetailsImpl = new UserDetailsImpl(id, "nome", "username", "1234", false, new Date(), null, false, false, false, false, "menu", empresa, colaborador);
+		UserDetailsImpl userDetailsImpl = new UserDetailsImpl(id, "nome", "username", "1234", false, new Date(), null, false, false, false, false, "menu", empresa, colaborador, null);
 		
 		assertEquals(id, userDetailsImpl.getId());
 		assertEquals("nome", userDetailsImpl.getNome());

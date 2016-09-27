@@ -12,6 +12,7 @@ import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.xwork.ActionContext;
 
@@ -169,6 +170,15 @@ public class SecurityUtil
 		}
 	}
 
+	public static ParametrosDoSistema getParametrosDoSistemaSession(Map session)
+	{
+		SecurityContext sc = getSecurityContext(session);
+		if(sc == null)
+			return null;
+		
+		return ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getParametrosDoSistema();
+	}
+	
 	public static void removeSessaoFiltrosConfiguracoes() 
 	{
 		Map<Object, Object> session = ActionContext.getContext().getSession();
@@ -180,4 +190,5 @@ public class SecurityUtil
 			}
 		}
 	}
+	
 }

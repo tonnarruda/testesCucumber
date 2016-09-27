@@ -56,10 +56,24 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		p.add(Projections.property("p.id"), "projectionPerfilPadraoId");
 		p.add(Projections.property("p.nome"), "projectionPerfilPadraoNome");
 		p.add(Projections.property("ps.proximaVersao"), "proximaVersao");
-		p.add(Projections.property("ps.suporteVeica"), "suporteVeica");
 		p.add(Projections.property("ps.versaoAcademica"), "versaoAcademica");
 		p.add(Projections.property("ps.autorizacaoGestorNaSolicitacaoPessoal"), "autorizacaoGestorNaSolicitacaoPessoal");
 		p.add(Projections.property("ps.compartilharCandidatos"), "compartilharCandidatos");
+		criteria.setProjection(p);
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ParametrosDoSistema.class));
+
+		return (ParametrosDoSistema) criteria.add(Expression.eq("ps.id", id)).uniqueResult();
+	}
+	
+	public ParametrosDoSistema findByIdProjectionSession(Long id)
+	{
+		Criteria criteria = getSession().createCriteria(ParametrosDoSistema.class,"ps");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ps.id"), "id");
+		p.add(Projections.property("ps.codEmpresaSuporte"), "codEmpresaSuporte");
+		p.add(Projections.property("ps.codClienteSuporte"), "codClienteSuporte");
 		criteria.setProjection(p);
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ParametrosDoSistema.class));

@@ -10,6 +10,7 @@ import com.fortes.rh.business.geral.NoticiaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Noticia;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
@@ -28,6 +29,7 @@ public abstract class MyActionSupport extends ActionSupport
 	private String actionMsg = null;
 	private String versao = null;
 	private String msgHelp = null;
+	private ParametrosDoSistema parametrosDoSistemaSession;
 	
 	public static final String MESSAGE = "message";
 	
@@ -37,16 +39,21 @@ public abstract class MyActionSupport extends ActionSupport
 	public static String actionWarningsSessionKey = "__MessageStoreInterceptor_ActionWarnings_SessionKey";
     public static String actionSuccessSessionKey = "__MessageStoreInterceptor_ActionSuccess_SessionKey";
 
-	public Empresa getEmpresaSistema()
-	{
+	public Empresa getEmpresaSistema(){
 		if (empresaSistema == null)
 			empresaSistema = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession());
 		return empresaSistema;
 	}
-	
+
 	public void setEmpresaSistema(Empresa empresaSistema)
 	{
 		this.empresaSistema = empresaSistema;
+	}
+	
+	public ParametrosDoSistema getParametrosDoSistemaSession() {
+		if(parametrosDoSistemaSession == null)
+			parametrosDoSistemaSession = SecurityUtil.getParametrosDoSistemaSession(ActionContext.getContext().getSession());
+		return parametrosDoSistemaSession;
 	}
 	
 	public Usuario getUsuarioLogado()

@@ -42,6 +42,17 @@ public class ParametrosDoSistemaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(ps.getId(), parametrosDoSistema.getId());
 	}
 	
+	public void testFindByIdProjectionSession()
+	{
+		ParametrosDoSistema ps = ParametrosDoSistemaFactory.getEntity();
+
+		ps = parametrosDoSistemaDao.save(ps);
+
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaDao.findByIdProjectionSession(ps.getId());
+
+		assertNotNull(parametrosDoSistema);
+	}
+	
 	public void testUpdateServidorRemprot()
 	{
 		ParametrosDoSistema ps = ParametrosDoSistemaFactory.getEntity();

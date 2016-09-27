@@ -11,7 +11,7 @@
 	<meta http-equiv="Expires" content="0" />
 	<title>${title}</title>
 
-	<script>
+	<script type="text/javascript">
 		var baseUrl = '<@ww.url includeParams="none" value="/"/>';
 		var sessionMaxInactiveInterval = ${session.maxInactiveInterval * 1000};
 		
@@ -35,6 +35,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/init.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/page.js?version=${versao}"/>'></script>
 
 	<style type="text/css">
 		<#if pgInicial?exists && pgInicial>
@@ -52,6 +53,18 @@
 		.buttonGroupRelative { position: relative; }
 		.buttonGroupFixed { position: fixed; bottom: 0px; background: url('<@ww.url includeParams="none" value="/imgs/branco_70.png"/>'); }
 		.buttonGroupFixed button { margin: 5px 0px; }
+		#topDiv, #menuDropDown { min-width: 1070px; }
+		
+		@media screen and (max-width: 1200px) {
+		    .a2a_floating_style.a2a_vertical_style {
+		    	position: absolute;
+			    top: 16px !important;
+			    right: -60px !important;
+			    left: initial !important;
+			    margin-left: 0 !important;
+			    margin-top: 0 !important;
+		    }
+		}
 	</style>
 	
 	${head}
@@ -98,6 +111,20 @@
 	
 	<div style="clear: both"></div>
 	<div id="waDiv">
+		 <div id="icones" class="a2a_kit a2a_floating_style a2a_vertical_style" style="top:100px; left:100%; margin-left:-100px; margin-top: -14px;">
+	        <#if parametrosDoSistemaSession.codEmpresaSuporte?exists && parametrosDoSistemaSession.codClienteSuporte?exists && parametrosDoSistemaSession.codClienteSuporte != "" && parametrosDoSistemaSession.codClienteSuporte != "">
+	        	<a href="http://chatonline.grupofortes.com.br/cliente/MATRIZ/${parametrosDoSistemaSession.codClienteSuporte}/${parametrosDoSistemaSession.codEmpresaSuporte}" target="_blank" title="Fortes Chat"><img src="<@ww.url includeParams="none" value="/imgs/chat_fortes.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
+	        </#if>
+	        
+	        <a href='http://www.logmein123.com' title='LogMeIn'><img src="<@ww.url includeParams="none" value="/imgs/logmeinrescue.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
+	        <a href='videoteca.action' title='Videoteca'><img src="<@ww.url includeParams="none" value="/imgs/video.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
+	        <a href='http://blog.fortesinformatica.com.br/categoria/ente-rh/?utm_source=sistema&utm_medium=icone-barra-lateral&utm_content=ente-rh&utm_campaign=clique-blog' target='_blank' title='Blog'><img src="<@ww.url includeParams="none" value="/imgs/blog.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
+	        <a href="contatos.action" title="Contatos"><img src="<@ww.url includeParams="none" value="/imgs/telefone.gif"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
+	        <a href='https://twitter.com/fortestec' title='Twitter'><img src="<@ww.url includeParams="none" value="/imgs/twitter.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
+	        <a href="https://www.facebook.com/fortestecnologia" title="Facebook"><img src="<@ww.url includeParams="none" value="/imgs/facebook.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
+	        <a href="https://www.linkedin.com/company/fortes-informatica" title="Linkedin" id="teste"><img src="<@ww.url includeParams="none" value="/imgs/linkedin.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
+	    </div>
+		
 		<br>
 		<#if !pgInicial?exists || !pgInicial>
 			<#if title != "">

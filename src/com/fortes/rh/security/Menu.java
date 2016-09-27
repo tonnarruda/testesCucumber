@@ -3,8 +3,6 @@ package com.fortes.rh.security;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.axis.utils.StringUtils;
-
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -86,35 +84,6 @@ public abstract class Menu
 		menu.append("<li><a href='" + contexto + "/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
 
 		menu.append("<li style='float: right; line-height: 0.8em;'><a href='" + contexto + "/geral/documentoVersao/list.action' class='versao'> Versão: "  +  parametros.getAppVersao() +"</a></li>\n");
-		
-		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='contatos.action' title='Contatos'>" +
-				"<img src='"+ contexto + "/imgs/telefone.gif' style='vertical-align: middle;'></a></li>\n");
-
-		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='http://twitter.com/#!/fortesinfo' target='_blank' title='Twitter'>" +
-				"<img src='"+ contexto + "/imgs/twitter.png' style='vertical-align: middle;'></a></li>\n");
-		
-		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='http://blog.fortesinformatica.com.br/categoria/ente-rh/?utm_source=sistema&utm_medium=icone-barra-lateral&utm_content=ente-rh&utm_campaign=clique-blog' target='_blank' title='Blog'>" +
-				"<img src='"+ contexto + "/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
-		
-		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='videoteca.action' title='Videoteca'>" +
-				"<img src='"+ contexto + "/imgs/video.png' style='vertical-align: middle;'></a></li>\n");
-		
-		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='http://www.logmein123.com'  target='_blank' title='LogMeIn'>" +
-				"<img src='"+ contexto + "/imgs/logmeinrescue.png' style='vertical-align: middle;'></a></li>\n");
-		
-		if (parametros.isSuporteVeica())
-			menu.append("<li style='float: right; line-height: 0.8em'>" 
-					+ "<a href='http://184.106.249.85' target='_blank' title='Fortes Chat'>" 
-					+ "<img src='" + contexto + "/imgs/chat_fortes.png' style='vertical-align: middle;'></a></li>\n");
-		else if (!StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
-			menu.append("<li style='float: right; line-height: 0.8em'>" 
-				+ "<a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/" + parametros.getCodClienteSuporte() + "/" + parametros.getCodEmpresaSuporte() + "' target='_blank' title='Fortes Chat'>" 
-				+ "<img src='" + contexto + "/imgs/chat_fortes.png' style='vertical-align: middle;'></a></li>\n");
 		
 		menu.append("</ul>\n\n");
 
