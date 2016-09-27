@@ -49,7 +49,7 @@
 		<td colspan="3">
 			<strong>Vagas Abertas:</strong> 
 			
-			<#if !SESSION_CANDIDATO_ID?exists>
+			<#if !SESSION_CANDIDATO_ID?exists && empresaId?exists>
 				<div style="float:right">
 					<a href="logoutExterno.action?empresaId=${empresaId}">Efetuar login</a>
 				</div>

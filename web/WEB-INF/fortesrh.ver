@@ -19,6 +19,7 @@
 		<Item visivel="S" motivo="S16050000146"><![CDATA[SESMT > Relatórios > Mapa de Risco: Inserção de vídeo de ajuda na tela de gerar mapa de risco.]]></Item>
 		<Item visivel="S" motivo="S16070000313"><![CDATA[Utilitários > Importar Cadastros: Nova opção de importar cadastros de ambientes entre empresas.]]></Item>
 		<Item visivel="S" motivo="S16080000348"><![CDATA[Tela inicial: Inserção de ajuda para deixar mais intuitivo a ação de clicar em cada período para visualizar a progressão.]]></Item>
+		<Item visivel="S" motivo="S16070000328"><![CDATA[Módulo Externo: Nova opção para exibir vagas de outras empresas quando o sistema compartilha candidatos e vagas entre empresas.]]></Item>
 	</Versao>
 	<Versao id="1.1.171.203" db="" data="30/08/2016">
 		<Item visivel="S" motivo="S16050000285"><![CDATA[R&S > Cadastros > Candidatos > Documentos do Candidato: Ajuste de inconsistência na listagem e inserção de anexos do candidato.]]></Item>

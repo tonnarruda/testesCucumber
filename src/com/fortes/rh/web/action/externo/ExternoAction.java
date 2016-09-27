@@ -197,27 +197,21 @@ public class ExternoAction extends MyActionSupport
 
 		candidato.setId(id);
 
-		if (candidato.getNovaSenha() == null || candidato.getNovaSenha().equals(""))
-		{
+		if (candidato.getNovaSenha() == null || candidato.getNovaSenha().equals("")){
 			msg = MSG_SENHA_VAZIA;
 			return Action.INPUT;
 		}
 
-		if (senhaSessao.equals(StringUtil.encodeString(candidato.getSenha())))
-		{
-			if (candidato.getNovaSenha().equals(candidato.getConfNovaSenha()))
-			{
+		if (senhaSessao.equals(StringUtil.encodeString(candidato.getSenha()))){
+			if (candidato.getNovaSenha().equals(candidato.getConfNovaSenha())){
 				candidatoManager.updateSenha(candidato);
 				session.put("SESSION_CANDIDATO_SENHA", StringUtil.encodeString(candidato.getNovaSenha()));
 			}
-			else
-			{
+			else{
 				msg = MSG_SENHA_NAO_CONFIRMADA;
 				return Action.INPUT;
 			}
-		}
-		else
-		{
+		}else{
 			msg = MSG_SENHA_DIF;
 			return Action.INPUT;
 		}
@@ -225,27 +219,20 @@ public class ExternoAction extends MyActionSupport
 		return Action.SUCCESS;
 	}
 
-	public String prepareListAnuncio() throws Exception
-	{
+	public String prepareListAnuncio() throws Exception {
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		if (session.get("SESSION_CANDIDATO_ID") != null)
-		{
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+		
+		if (session.get("SESSION_CANDIDATO_ID") != null){
 			Long sessionEmpresaId = (Long) session.get("SESSION_EMPRESA");
 			Long sessionCandidatoId = (Long) session.get("SESSION_CANDIDATO_ID");
 			
-			empresaId = sessionEmpresaId;
-		
-			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-			
-			anuncios = anuncioManager.findAnunciosModuloExterno(parametrosDoSistema.getCompartilharCandidatos() ? null : empresaId, sessionCandidatoId);
-		}
-		else
-		{
-			anuncios = anuncioManager.findAnunciosSolicitacaoAberta(empresaId);
+			anuncios = anuncioManager.findAnunciosModuloExterno(parametrosDoSistema.getCompartilharCandidatos() ? null : sessionEmpresaId, sessionCandidatoId);
+		}else{
+			anuncios = anuncioManager.findAnunciosSolicitacaoAberta(parametrosDoSistema.getCompartilharCandidatos() ? null : empresaId);
 		}
 
-		if (msg != null)
-		{
+		if (msg != null){
 			if (msg.equals(MSG_COD_CAD_SUCCESS))
 				msg = MSG_CAD_SUCCESS;
 			else if (msg.equals(MSG_COD_ATU_SUCCESS))

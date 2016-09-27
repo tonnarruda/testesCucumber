@@ -35,7 +35,11 @@
     
     function enviarAnuncioEmail(anuncioId)
     {
-    	var empresaId 	= ${empresaId};
+    	var empresaId = null;
+    	<#if empresaId?exists>
+    		var empresaId 	= ${empresaId};
+    	</#if>
+    	
 		var nomeFrom 	= $('#nomeFrom').val();
 		var emailFrom 	= $('#emailFrom').val();
 		var nomeTo 		= $('#nomeTo').val();

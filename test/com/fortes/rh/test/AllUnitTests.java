@@ -685,6 +685,7 @@ import com.fortes.rh.test.web.dwr.TurmaDWRTest;
 import com.fortes.rh.test.web.dwr.UsuarioMensagemDWRTest;
 import com.fortes.rh.test.web.dwr.UtilDWRTest;
 import com.fortes.rh.web.action.exportacao.ExportacaoActionTest;
+import com.fortes.rh.web.action.externo.ExternoActionTest;
 import com.fortes.test.web.tags.LinkTagTest;
 
 @RunWith(Suite.class)
@@ -1530,8 +1531,10 @@ import com.fortes.test.web.tags.LinkTagTest;
 
     //SERVICES
 	RHServiceTest.class,
-	RHServiceIntranetTest.class
+	RHServiceIntranetTest.class,
 	
+	//EXTERNO
+	ExternoActionTest.class
 	
 })
 public class AllUnitTests { }
