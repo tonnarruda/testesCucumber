@@ -40,13 +40,9 @@
 			<classpath refid="project.classpath.ireport"/>
 		</taskdef>
 		
-		<jaspercompile destdir="${report_dir}">
-			<src>
-				<fileset dir="${report_dir}">
-					<include name="*.jrxml" />
-	                <date datetime="${trintaCincoDiasAtras} 01:00 AM" when="after"/>
-				</fileset>
-			</src>
+		<jaspercompile destdir="${report_dir}" srcdir="${report_dir}">
+			<include name="*.jrxml" />
+        	<date datetime="${trintaCincoDiasAtras} 01:00 AM" when="after"/>
 		</jaspercompile>
 	</target>
 	
@@ -274,7 +270,7 @@
 	<!-- Gera Atualizador -->
 	<target name="build_atualizador">
 		<ant dir="EquipeRH/FortesRH_Atualizador" antfile="gera_atualizador_build.xml">
-			<property name="tomcat.versao" value="Tomcat6" /> <!-- Versão do tomcat -->
+			<property name="tomcat.versao" value="Tomcat7" /> <!-- Versão do tomcat -->
 			<property name="fortesrh.war.file" location="${ant.project.name}/dist/fortesrh.war" /> <!-- Origem -->
 			<property name="fortesrh.pack.dir" location="${ant.project.name}/dist" /> <!-- Destino -->
 		</ant>
