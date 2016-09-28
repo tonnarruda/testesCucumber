@@ -203,7 +203,9 @@
 				/gerarBD.action*=ROLE_ANONYMOUS,ROLE_USER
 				/grafico.jsp*=ROLE_USER
 				/robots.txt=ROLE_ANONYMOUS,ROLE_USER
-
+				
+				/geral/colaborador/findJson.action*=ROLE_ANONYMOUS,ROLE_USER
+				/captacao/candidato/findJson.action*=ROLE_ANONYMOUS,ROLE_USER
 				/imgs/**=ROLE_ANONYMOUS,ROLE_USER
 				/css/**=ROLE_ANONYMOUS,ROLE_USER
 				/js/**=ROLE_ANONYMOUS,ROLE_USER

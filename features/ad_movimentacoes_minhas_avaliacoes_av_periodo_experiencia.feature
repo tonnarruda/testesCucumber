@@ -50,7 +50,7 @@ Funcionalidade: Minhas Avaliações - Período de Experiência
 
     Quando eu acesso o menu "Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência"
     E eu clico no botão "Pesquisar"
-    E eu seleciono "Samuel" de "Colaborador"
+    E eu seleciono "Samuel - 123.213.623-91" de "Colaborador"
     E eu espero 2 segundos
     E eu clico no botão "Inserir"
 

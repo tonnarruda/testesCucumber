@@ -17,7 +17,7 @@ Funcionalidade: Configurações do Sistema
     E eu preencho "Configuração do autenticador" com "v1.14"
     E eu seleciono "Usuário" de "Perfil padrão"
     E eu marco "Forçar caixa alta nos campos do módulo externo"
-    E eu desmarco "Compartilhar candidatos entre empresas."
+    E eu desmarco "Compartilhar candidatos e vagas entre empresas."
     E eu desmarco "Compartilhar colaboradores entre empresas."
     E eu preencho "E-mail do suporte técnico" com "teste@abc.com.br"
     

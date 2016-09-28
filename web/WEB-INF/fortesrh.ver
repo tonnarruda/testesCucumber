@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.17x.20x" db="" data="xx/xx/2016">
+	<Versao id="1.1.172.204" db="" data="30/09/2016">
 		<Item visivel="S" motivo="P16080000128"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao atualizar o status do candidato da solicitação de pessoal após cancelar o desligamento do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16020000134"><![CDATA[R&S > Movimentações > Autorizar Participação do Colaborador na Solicitação de Pessoal: Nova funcionalidade para autorizar a participação do colaborador em uma Solicitação de Pessoal.]]></Item>
 		<Item visivel="S" motivo="S16060000067"><![CDATA[R&S > Relatórios > Indicações de Candidatos: Novo relatório de indicações de candidatos.]]></Item>
@@ -10,12 +10,13 @@
 		<Item visivel="S" motivo="S16070000362"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competências do Colaborado: Novas colunas de "Nível Exigido"" e "Nível Atingido" ao gerar relatório resumido.]]></Item>
 		<Item visivel="S" motivo="P16080000291"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliação dos Alunos: Impossibilitando duplo clique no botão gravar, para impedir a duplicação de notas das avaliações.]]></Item>
 		<Item visivel="S" motivo="S16080000089"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações dos Alunos: Nova informação de média das notas.]]></Item>
-		<Item visivel="S" motivo="P16050000110"><![CDATA[T&D > Relatórios > Histórico de Treinamentos: Melhoria de perfomance ao gerar relatório.]]></Item>
+		<Item visivel="S" motivo="P16050000110"><![CDATA[T&D > Relatórios > Histórico de Treinamentos: Melhoria de performance ao gerar relatório.]]></Item>
 		<Item visivel="S" motivo="S16080000167"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Nova opção de "Especialização incompleta" para o campo de escolaridade.]]></Item>
 		<Item visivel="S" motivo="S16080000214"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Ajuste para possibilitar edição do vinculo do colaborador que não está integrado com o sistema Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="P16080000336"><![CDATA[Info. Funcionais > Cadastros > Atualizar Meus Dados: Ajuste para contemplar a configuração de campos do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16090000151"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção para exibir o UF do RG no relatório.]]></Item>
 		<Item visivel="S" motivo="P16090000024"><![CDATA[SESMT > Movimentações > Gerenciamento de EPIs: Melhoria na performance ao listar solicitações de EPIs.]]></Item>
+		<Item visivel="S" motivo="S16090000280"><![CDATA[SESMT > Movimentações > Ficha Médica: Ajuste de inconsistência ao tentar selecionar colaborador]]></Item>
 		<Item visivel="S" motivo="S16050000146"><![CDATA[SESMT > Relatórios > Mapa de Risco: Inserção de vídeo de ajuda na tela de gerar mapa de risco.]]></Item>
 		<Item visivel="S" motivo="S16070000313"><![CDATA[Utilitários > Importar Cadastros: Nova opção de importar cadastros de ambientes entre empresas.]]></Item>
 		<Item visivel="S" motivo="S16080000348"><![CDATA[Tela inicial: Inserção de ajuda para deixar mais intuitivo a ação de clicar em cada período para visualizar a progressão.]]></Item>

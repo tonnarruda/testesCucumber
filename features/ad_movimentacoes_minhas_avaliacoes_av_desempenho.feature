@@ -51,9 +51,11 @@ Funcionalidade: Minhas Avaliações - Avaliação Desempenho
     E eu marco "Samuel"
     E eu clico no botão "Gravar"
     E eu espero 1 segundos
-    E eu clico no botão de Id "selecionarTodosAvaliado"
+    E eu clico no botão de class "nome"
     E eu espero 1 segundos
     E eu clico no botão de Id "relacionar_selecionados"
+    E eu espero 1 segundos
+    E eu clico no botão de class "for-all"
     E eu espero 1 segundos
 
     Entao eu clico no botão de Id "btnGravar"

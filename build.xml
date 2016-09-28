@@ -44,7 +44,7 @@
 			<src>
 				<fileset dir="${report_dir}">
 					<include name="*.jrxml" />
-	                <date datetime="${vinteDiasAtras} 01:00 AM" when="after"/>
+	                <date datetime="${trintaCincoDiasAtras} 01:00 AM" when="after"/>
 				</fileset>
 			</src>
 		</jaspercompile>
@@ -58,13 +58,13 @@
 		</taskdef> 
 		
 		<tstamp>
-	        <format property="vinteDiasAtras" pattern="MM/dd/yyyy" offset="-20" unit="day"/>
+	        <format property="trintaCincoDiasAtras" pattern="MM/dd/yyyy" offset="-35" unit="day"/>
 	    </tstamp>
 
 		<for param="jrxml.file">  
             <fileset dir="${report_dir}">
                 <include name="*.jrxml" />
-                <date datetime="${vinteDiasAtras} 01:00 AM" when="after"/>
+                <date datetime="${trintaCincoDiasAtras} 01:00 AM" when="after"/>
             </fileset>	       
 			<sequential>  
 			    <propertyregex override="yes" property="jasper.file"  input="@{jrxml.file}" regexp=".jrxml" replace=".jasper"/>
