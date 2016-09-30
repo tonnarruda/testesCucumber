@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2016-10-03T14:07:32 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="performanceFuncional" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="f5bf1021-9960-4142-9856-02d50ce124e5">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -12,6 +14,10 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="ELEICAO_DESCRICAO" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="rodapePeriodoExperiencia" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="EXIBIR_SALARIO" class="java.lang.Boolean" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+	</parameter>
 	<field name="performance" class="java.lang.String"/>
 	<field name="respondidaEm" class="java.util.Date"/>
 	<field name="titulo" class="java.lang.String"/>
@@ -708,6 +714,9 @@
 					<reportElement key="subreport-7" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="1" width="782" height="13" uuid="cff0ba2d-7991-4688-b8fb-66fa988fe40b"/>
 					<subreportParameter name="REPORT_DATA_SOURCE">
 						<subreportParameterExpression><![CDATA[$F{historicoColaboradors}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="EXIBIR_SALARIO">
+						<subreportParameterExpression><![CDATA[$P{EXIBIR_SALARIO}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_trajetoriaProfissional.jasper"]]></subreportExpression>
 				</subreport>

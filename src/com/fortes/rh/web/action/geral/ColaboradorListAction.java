@@ -555,7 +555,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private void montaColunas() {
 		boolean existeEmpresaIntegradaAc = empresaManager.checkEmpresaIntegradaAc();
 		
-		colunas = ReportColumn.getColumns();
+		colunas = ReportColumn.getColumns(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"EXIBIR_SALARIO_CONTRATUAL_REL_COLAB"}));
 
 		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COMPROU_SESMT"}) ){
 			colunas.add(new ReportColumn("Função", "funcaoNome", "fun.nome", 100, false));

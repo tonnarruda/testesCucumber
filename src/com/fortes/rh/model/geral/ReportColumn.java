@@ -23,7 +23,7 @@ public class ReportColumn implements Serializable, Cloneable
 		this.resize = resize;
 	}
 
-	public static Collection<ReportColumn> getColumns()
+	public static Collection<ReportColumn> getColumns(boolean exibirSalarioContratual)
 	{
 		Collection<ReportColumn> columns = new ArrayList<ReportColumn>();
 		
@@ -31,7 +31,8 @@ public class ReportColumn implements Serializable, Cloneable
 		columns.add(new ReportColumn("Nome Comercial", "nomeComercial", "co.nomeComercial", 150, true));
 		columns.add(new ReportColumn("Matrícula", "matricula", "co.matricula", 40, false));
 		columns.add(new ReportColumn("Status", "desligadoDescricao", "co.desligado", 40, false));
-		columns.add(new ReportColumn("Salário Contratual", "salarioCalculadoString", "co.nome", 20, true));
+		if (exibirSalarioContratual) 
+			columns.add(new ReportColumn("Salário Contratual", "salarioCalculadoString", "co.nome", 20, true));
 		columns.add(new ReportColumn("Empresa", "empresaNome", "emp.nome", 80, false));
 		columns.add(new ReportColumn("Estabelecimento", "estabelecimentoNome", "es.nome", 120, false));
 		columns.add(new ReportColumn("Área Organizacional", "areaOrganizacional.nome", "col_3_0_", 200, false));//É col_3_0_ mesmo. blz

@@ -497,8 +497,9 @@
 						</@display.column>
 						<@display.column property="estabelecimento.nome" title="Estabelecimento" />
 						<@display.column property="areaOrganizacional.descricao" title="Área Organizacional" />
-						<@display.column property="descricaoTipoSalario" title="Tipo Salário" style="width:70px;"/>
-						<@display.column title="Salário" format="{0,number,currency}" style="width:80px">
+						<@authz.authorize ifAllGranted="EXIBIR_SALARIO_PERFORMANCE">
+							<@display.column property="descricaoTipoSalario" title="Tipo Salário" style="width:70px;"/>
+							<@display.column title="Salário" format="{0,number,currency}" style="width:80px">
 							<#if historicoColaboradors.salarioCalculado?exists>
 								${historicoColaboradors.salarioCalculado?string.currency}
 							<#else>
@@ -506,7 +507,8 @@
 									<img class="tooltipHelp" src="<@ww.url value="/imgs/iconWarning.gif"/>" />
 								</div>
 							</#if>
-						</@display.column>
+							</@display.column>
+						</@authz.authorize>
 					</@display.table>
 				</td>
 			</tr>

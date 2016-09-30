@@ -15,7 +15,7 @@ public class ReportColumnTest extends TestCase {
 	public void testResizeColumns() 
 	{
 		Collection<ReportColumn> colunas = new ArrayList<ReportColumn>();
-		colunas = ReportColumn.getColumns();
+		colunas = ReportColumn.getColumns(false);
 		
 		Collection<String> colunasMarcadas = new ArrayList<String>();
 		colunasMarcadas.add("nome");//150
@@ -37,7 +37,7 @@ public class ReportColumnTest extends TestCase {
 	public void testResizeColumnsResizeZero() 
 	{
 		Collection<ReportColumn> colunas = new ArrayList<ReportColumn>();
-		colunas = ReportColumn.getColumns();
+		colunas = ReportColumn.getColumns(true);
 		
 		Collection<String> colunasMarcadas = new ArrayList<String>();
 		colunasMarcadas.add("pessoal.rg");//70

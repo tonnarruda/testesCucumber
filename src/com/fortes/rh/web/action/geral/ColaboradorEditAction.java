@@ -1006,13 +1006,14 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		}
 	}
 	
+	// TODO: SEM TESTE
 	public String imprimirPerformanceFuncional() 
 	{
 		try
 		{
 			preparePerformanceFuncional();
-			String filtro = "Período : ";
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Admitidos ", getEmpresaSistema(), filtro);
+			parametros = RelatorioUtil.getParametrosRelatorio("Performance Profissional ", getEmpresaSistema(), null);
+			parametros.put("EXIBIR_SALARIO", SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"EXIBIR_SALARIO_PERFORMANCE"}));
 		}
 		catch (Exception e)
 		{
@@ -1029,7 +1030,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		}
 		return SUCCESS;
 	}
-
+	
 	public String showFoto() throws Exception
 	{
 		if (colaborador != null && colaborador.getId() != null)
