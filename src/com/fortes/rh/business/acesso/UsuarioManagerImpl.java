@@ -310,6 +310,10 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		return getDao().isResponsavelOrCoResponsavel(usuarioId);
 	}
 	
+	public String findEmailByUsuarioId(Long usuarioId) {
+		return getDao().findEmailByUsuarioId(usuarioId);
+	}
+
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;
@@ -326,9 +330,5 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 
 	public void setAreaOrganizacionalManager( AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public String findEmailByUsuarioId(Long usuarioId) {
-		return getDao().findEmailByUsuarioId(usuarioId);
 	}
 }

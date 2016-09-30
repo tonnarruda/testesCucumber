@@ -28,7 +28,6 @@ import com.fortes.rh.test.business.acesso.PapelManagerTest;
 import com.fortes.rh.test.business.acesso.PerfilManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioEmpresaManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioManagerTest;
-import com.fortes.rh.test.business.acesso.UsuarioManagerTest_Junit4;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest_Junit4;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoManagerTest;
@@ -702,7 +701,6 @@ import com.fortes.test.web.tags.LinkTagTest;
 	PerfilManagerTest.class,
 	UsuarioDaoHibernateTest.class,
 	UsuarioManagerTest.class,
-	UsuarioManagerTest_Junit4.class,
 	UsuarioEditActionTest.class,
 	UsuarioEmpresaDaoHibernateTest.class,
 	UsuarioEmpresaManagerTest.class,

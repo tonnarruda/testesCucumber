@@ -31,5 +31,14 @@ public class UsuarioEmpresaFactory
 		
 		return usuarioEmpresa;
 	}
+	
+	public static UsuarioEmpresa getEntity(Long id, Usuario usuario)
+	{
+		UsuarioEmpresa usuarioEmpresa = getEntity(id);
+		usuarioEmpresa.setUsuario(usuario);
+		
+		return usuarioEmpresa;
+	}
+
 
 }
