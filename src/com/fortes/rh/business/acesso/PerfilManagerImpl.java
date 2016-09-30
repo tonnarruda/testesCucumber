@@ -62,14 +62,12 @@ public class PerfilManagerImpl extends GenericManagerImpl<Perfil, PerfilDao> imp
 		
 		return perfis;
 	}
-
 	
+	public void removePerfilPapelByPapelId(Long papelId) {
+		getDao().removePerfilPapelByPapelId(papelId);
+	}
 	
 	public void setPapelManager(PapelManager papelManager) {
 		this.papelManager = papelManager;
-	}
-
-	public void removePerfilPapelByPapelId(Long papelId) {
-		getDao().removePerfilPapelByPapelId(papelId);
 	}
 }

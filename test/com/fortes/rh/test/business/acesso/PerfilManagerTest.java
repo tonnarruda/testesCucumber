@@ -1,13 +1,22 @@
 package com.fortes.rh.test.business.acesso;
 
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
 import mockit.Mockit;
 
-import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.fortes.rh.business.acesso.PapelManager;
 import com.fortes.rh.business.acesso.PerfilManagerImpl;
@@ -15,43 +24,68 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
-import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.test.factory.acesso.PapelFactory;
+import com.fortes.rh.test.factory.acesso.PerfilFactory;
+import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
 import com.fortes.rh.util.SpringUtil;
 
-public class PerfilManagerTest extends MockObjectTestCase
+public class PerfilManagerTest
 {
-	private Mock perfilDao;
-	private PerfilManagerImpl perfilManager;
-	private Mock colaboradorManager;
-	private Mock papelManager;
+	private static PerfilManagerImpl perfilManager = new PerfilManagerImpl();
+	private static PerfilDao perfilDao;
+	private static PapelManager papelManager;
+	private ColaboradorManager colaboradorManager;
 	
-	protected void setUp()
+	@BeforeClass
+	public static void setUpClass()
 	{
-		perfilManager = new PerfilManagerImpl();
-		
-		perfilDao = new Mock(PerfilDao.class);
-		perfilManager.setDao((PerfilDao) perfilDao.proxy());
-				
-		colaboradorManager = new Mock(ColaboradorManager.class);
+		perfilDao = mock(PerfilDao.class);
+		papelManager = mock(PapelManager.class);
 
-		papelManager = new Mock(PapelManager.class);
-		perfilManager.setPapelManager((PapelManager) papelManager.proxy());
-
-		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
+		perfilManager.setDao(perfilDao);
+		perfilManager.setPapelManager(papelManager);
 	}
-
+	
+	@Before
+	public void setUp(){
+		colaboradorManager = mock(ColaboradorManager.class);
+		MockSpringUtilJUnit4.mocks.put("colaboradorManager", colaboradorManager);
+		Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
+	}
+	
+	
+	@Test
+	public void testRemovePerfilPapelByPapelId() {
+		Long papelId = 680L;
+		
+		perfilManager.removePerfilPapelByPapelId(papelId);
+		verify(perfilDao, times(1)).removePerfilPapelByPapelId(papelId);
+	}
+	
+	@Test
+	public void testFindAll()
+	{
+		Integer page = 1;
+		Integer pagingSize = 15;
+		
+		perfilManager.findAll(page, pagingSize);
+		verify(perfilDao, times(1)).findAll(eq(page), eq(pagingSize));
+	}
+	
+	@Test
+	public void testGetCount()
+	{
+		perfilDao.getCount();
+		verify(perfilDao, times(1)).getCount();
+	}
+	
+	@Test
 	public void testMontaPermissoes()
 	{
-		Collection<Papel> papeis = new ArrayList<Papel>();
+		Papel p1 = PapelFactory.getEntity(1L);
+		Papel p2 = PapelFactory.getEntity(2L);
 
-		Papel p1 = new Papel();
-		p1.setId(1L);
-
-		Papel p2 = new Papel();
-		p2.setId(2L);
-
-		papeis.add(p1);
-		papeis.add(p2);
+		Collection<Papel> papeis = Arrays.asList(p1, p2);
 
 		Perfil perfil = new Perfil();
 		perfil.setPapeis(papeis);
@@ -60,60 +94,43 @@ public class PerfilManagerTest extends MockObjectTestCase
 		assertEquals("1", perfilManager.montaPermissoes(perfil)[0]);
 		assertEquals("2", perfilManager.montaPermissoes(perfil)[1]);
 	}
-
+	
+	@Test
 	public void testGetEmailsByRoleLiberaSolicitacao()
 	{
-		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
+		Perfil perfil1 = PerfilFactory.getEntity(1L, "Administrador");
+		Perfil perfil2 = PerfilFactory.getEntity(2L, "Gerente de RH");
 		
-		Perfil perfil = new Perfil();
-		perfil.setId(1L);
-		perfil.setNome("Administrador");
-		Perfil perfil2 = new Perfil();
-		perfil2.setId(2L);
-		perfil2.setNome("Gerente de RH");
-		
-		Collection<Perfil> perfis = new ArrayList<Perfil>();
-		perfis.add(perfil);
-		perfis.add(perfil2);
-		
-		String roleLiberarSolicitacao = "ROLE_LIBERA_SOLICITACAO";
-		perfilDao.expects(once()).method("findPerfisByCodigoPapel").with(eq(roleLiberarSolicitacao)).will(returnValue(perfis));
-		
+		Collection<Perfil> perfis = Arrays.asList(perfil1, perfil2);
 		Long empresaId = 1L;
 		Collection<String> emails = new ArrayList<String>();
 		emails.add("ze@empresa.com");
 		
-		colaboradorManager.expects(once()).method("findEmailsDeColaboradoresByPerfis").with(eq(perfis), eq(empresaId)).will(returnValue(emails));
+		when(perfilDao.findPerfisByCodigoPapel(eq("ROLE_LIBERA_SOLICITACAO"))).thenReturn(perfis);
+		when(colaboradorManager.findEmailsDeColaboradoresByPerfis(eq(perfis), eq(empresaId))).thenReturn(emails);
 		
 		assertEquals(1, perfilManager.getEmailsByRoleLiberaSolicitacao(empresaId).size());
-	}
+	}	
 	
+	@Test
 	public void testFindPapeis()
 	{
-		Collection<Papel> papeis = new ArrayList<Papel>();
+		Papel p1 = PapelFactory.getEntity(1L);
+		Papel p2 = PapelFactory.getEntity(2L);
+		Papel p3 = PapelFactory.getEntity(3L);
 
-		Papel p1 = new Papel();
-		p1.setId(1L);
-
-		Papel p2 = new Papel();
-		p2.setId(2L);
-		
-		Papel p3 = new Papel();
-		p2.setId(3L);
-
-		papeis.add(p1);
-		papeis.add(p2);
-		papeis.add(p3);
+		Collection<Papel> papeis = Arrays.asList(p1, p2, p3);
 
 		Perfil perfil = new Perfil();
 		perfil.setPapeis(papeis);
 		
 		Long[] perfisIds = new Long[] { p1.getId() };
 		
-		perfilDao.expects(once()).method("findByIds").with(eq(perfisIds)).will(returnValue(Arrays.asList(perfil)));
-		papelManager.expects(once()).method("montarArvore").with(ANYTHING);
-		papelManager.expects(once()).method("findByPerfil").with(eq(perfil.getId()));
+		when(perfilDao.findByIds(eq(perfisIds))).thenReturn(Arrays.asList(perfil));
+		when(papelManager.montarArvore(papeis)).thenReturn("");
+		when(papelManager.findByPerfil(eq(perfil.getId()))).thenReturn(papeis);
 		
 		assertEquals(1, perfilManager.findPapeis(perfisIds).size());
 	}
+
 }

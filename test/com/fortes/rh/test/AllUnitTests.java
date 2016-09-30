@@ -26,7 +26,6 @@ import com.fortes.rh.security.spring.aop.callback.crud.RemoveAuditorCallbackImpl
 import com.fortes.rh.security.spring.aop.callback.crud.UpdateAuditorCallbackImplTest;
 import com.fortes.rh.test.business.acesso.PapelManagerTest;
 import com.fortes.rh.test.business.acesso.PerfilManagerTest;
-import com.fortes.rh.test.business.acesso.PerfilManagerTest_Junit4;
 import com.fortes.rh.test.business.acesso.UsuarioEmpresaManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioManagerTest_Junit4;
@@ -701,7 +700,6 @@ import com.fortes.test.web.tags.LinkTagTest;
 	PapelDaoHibernateTest.class,
 	PerfilDaoHibernateTest.class,
 	PerfilManagerTest.class,
-	PerfilManagerTest_Junit4.class,
 	UsuarioDaoHibernateTest.class,
 	UsuarioManagerTest.class,
 	UsuarioManagerTest_Junit4.class,
