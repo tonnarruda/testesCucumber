@@ -1,9 +1,18 @@
 package com.fortes.rh.test.dao.hibernate.captacao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.fortes.dao.GenericDao;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
@@ -12,22 +21,29 @@ import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 
-public class AtitudeDaoHibernateTest extends GenericDaoHibernateTest<Atitude>
+@ContextConfiguration(locations = "classpath:applicationContext-test.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
+@Transactional
+public class AtitudeDaoHibernateTest 
 {
+	@Autowired
 	private AtitudeDao atitudeDao;
+	@Autowired
 	private EmpresaDao empresaDao;
+	@Autowired
 	private CargoDao cargoDao;
-	private Atitude atitude;
-	private Empresa empresa;
+	@Autowired
 	private AreaOrganizacionalDao areaOrganizacionalDao;
 	
-	public void testFindAllSelect()
+	private Empresa empresa;
+	
+	@Test
+	public void testFrindAllSelect()
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
 		Empresa empresa2 = EmpresaFactory.getEmpresa();
@@ -59,6 +75,7 @@ public class AtitudeDaoHibernateTest extends GenericDaoHibernateTest<Atitude>
 		assertEquals("teste3", ai3.getId(), retorno.toArray(new Atitude[]{})[0].getId());
 	}
 	
+	@Test
 	public void testFindSincronizarConhecimentos()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -73,6 +90,7 @@ public class AtitudeDaoHibernateTest extends GenericDaoHibernateTest<Atitude>
 		assertEquals(1, atitudeDao.findSincronizarAtitudes(empresa.getId()).size());
 	}
 	
+	@Test
 	public void testFindByCargo()
 	{
 		Cargo cargo = CargoFactory.getEntity();
@@ -80,7 +98,7 @@ public class AtitudeDaoHibernateTest extends GenericDaoHibernateTest<Atitude>
 		Atitude atitude1 = AtitudeFactory.getEntity();
 		atitude1 = atitudeDao.save(atitude1);
 		
-		Atitude atitude2 = getEntity();
+		Atitude atitude2 = AtitudeFactory.getEntity();
 		atitude2 = atitudeDao.save(atitude2);
 
 		Collection<Atitude> atitudes = new ArrayList<Atitude>();
@@ -95,6 +113,7 @@ public class AtitudeDaoHibernateTest extends GenericDaoHibernateTest<Atitude>
 		assertEquals(2, atitudesRetorno.size());
 	}
 	
+	@Test
 	public void testFindByAreasOrganizacionalIds()
 	{
 		empresa = EmpresaFactory.getEmpresa();
@@ -119,6 +138,7 @@ public class AtitudeDaoHibernateTest extends GenericDaoHibernateTest<Atitude>
 		
 	}
 	
+	@Test
 	public void testDeleteByAreaOrganizacional()
 	{
 		Exception exception = null;
@@ -132,50 +152,12 @@ public class AtitudeDaoHibernateTest extends GenericDaoHibernateTest<Atitude>
 		assertNull(exception);
 	}
 	
+	@Test
 	public void testFindByIdProjection()
 	{
-		Atitude atitude = getEntity();
+		Atitude atitude = AtitudeFactory.getEntity();
 		atitude = atitudeDao.save(atitude);
 
 		assertEquals(atitude, atitudeDao.findByIdProjection(atitude.getId()));
 	}
-
-
-	@Override
-	public Atitude getEntity()
-	{
-		return AtitudeFactory.getEntity();
-	}
-
-	@Override
-	public GenericDao<Atitude> getGenericDao()
-	{
-		return atitudeDao;
-	}
-
-	public void setAtitudeDao(AtitudeDao atitudeDao)
-	{
-		this.atitudeDao = atitudeDao;
-	}
-
-	public void setEmpresaDao(EmpresaDao empresaDao)
-	{
-		this.empresaDao = empresaDao;
-	}
-
-	public void setCargoDao(CargoDao cargoDao)
-	{
-		this.cargoDao = cargoDao;
-	}
-
-	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
-	{
-		this.areaOrganizacionalDao = areaOrganizacionalDao;
-	}
-
-	public Atitude getAtitude()
-	{
-		return atitude;
-	}
-
 }

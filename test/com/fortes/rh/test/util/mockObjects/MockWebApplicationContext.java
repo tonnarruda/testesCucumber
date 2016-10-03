@@ -10,6 +10,7 @@ import javax.servlet.ServletContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.MessageSourceResolvable;
@@ -149,6 +150,48 @@ public class MockWebApplicationContext implements WebApplicationContext
 
 	public Theme getTheme(String arg0)
 	{
+		return null;
+	}
+
+	@Override
+	public AutowireCapableBeanFactory getAutowireCapableBeanFactory() throws IllegalStateException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object getBean(String arg0, Object[] arg1) throws BeansException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isPrototype(String arg0) throws NoSuchBeanDefinitionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isTypeMatch(String arg0, Class arg1) throws NoSuchBeanDefinitionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean containsLocalBean(String arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ClassLoader getClassLoader() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }
