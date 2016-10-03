@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.172.204" db="" data="30/09/2016">
+		<Item visivel="S" motivo="S16070000009"><![CDATA[Página Inicial: Nova forma de exibir os ícones no sistema e novos ícones para acessar o twiter, facebook, chat e linkedin.]]></Item>
+	</Versao>
+	<Versao id="1.1.172.204" db="" data="30/09/2016">
 		<Item visivel="S" motivo="P16080000128"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao atualizar o status do candidato da solicitação de pessoal após cancelar o desligamento do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16020000134"><![CDATA[R&S > Movimentações > Autorizar Participação do Colaborador na Solicitação de Pessoal: Nova funcionalidade para autorizar a participação do colaborador em uma Solicitação de Pessoal.]]></Item>
 		<Item visivel="S" motivo="S16060000067"><![CDATA[R&S > Relatórios > Indicações de Candidatos: Novo relatório de indicações de candidatos.]]></Item>
