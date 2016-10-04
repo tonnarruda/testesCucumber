@@ -35,7 +35,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/init.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/page.js?version=${versao}"/>'></script>
+	
 
 	<style type="text/css">
 		<#if pgInicial?exists && pgInicial>
@@ -111,18 +111,20 @@
 	
 	<div style="clear: both"></div>
 	<div id="waDiv">
-		 <div id="icones" class="a2a_kit a2a_floating_style a2a_vertical_style" style="top:100px; left:100%; margin-left:-100px; margin-top: -14px;">
-	        <#if parametrosDoSistemaSession.codEmpresaSuporte?exists && parametrosDoSistemaSession.codClienteSuporte?exists && parametrosDoSistemaSession.codClienteSuporte != "" && parametrosDoSistemaSession.codClienteSuporte != "">
-	        	<a href="http://chatonline.grupofortes.com.br/cliente/MATRIZ/${parametrosDoSistemaSession.codClienteSuporte}/${parametrosDoSistemaSession.codEmpresaSuporte}" target="_blank" title="Fortes Chat"><img src="<@ww.url includeParams="none" value="/imgs/chat_fortes.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
-	        </#if>
-	        
-	        <a href='http://www.logmein123.com' title='LogMeIn'><img src="<@ww.url includeParams="none" value="/imgs/logmeinrescue.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
-	        <a href='videoteca.action' title='Videoteca'><img src="<@ww.url includeParams="none" value="/imgs/video.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
-	        <a href='http://blog.fortesinformatica.com.br/categoria/ente-rh/?utm_source=sistema&utm_medium=icone-barra-lateral&utm_content=ente-rh&utm_campaign=clique-blog' target='_blank' title='Blog'><img src="<@ww.url includeParams="none" value="/imgs/blog.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
-	        <a href="contatos.action" title="Contatos"><img src="<@ww.url includeParams="none" value="/imgs/telefone.gif"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
-	        <a href='https://twitter.com/fortestec' title='Twitter'><img src="<@ww.url includeParams="none" value="/imgs/twitter.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
-	        <a href="https://www.facebook.com/fortestecnologia" title="Facebook"><img src="<@ww.url includeParams="none" value="/imgs/facebook.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
-	        <a href="https://www.linkedin.com/company/fortes-informatica" title="Linkedin" id="teste"><img src="<@ww.url includeParams="none" value="/imgs/linkedin.png"/>" class="icon" onmouseover="this.style='opacity: 0.6'" onmouseout="this.style='opacity: 1'"/></a>
+	 	<div style="position:fixed">	
+			<div id="icones" style="top: 30px;margin-left: 1365px; margin-top:-16px; width: 33px; background: white; border-radius: 5px;padding: 10px;position: absolute;">
+		        <#if parametrosDoSistemaSession.codEmpresaSuporte?exists && parametrosDoSistemaSession.codClienteSuporte?exists && parametrosDoSistemaSession.codClienteSuporte != "" && parametrosDoSistemaSession.codClienteSuporte != "">
+		        	<a href="http://chatonline.grupofortes.com.br/cliente/MATRIZ/${parametrosDoSistemaSession.codClienteSuporte}/${parametrosDoSistemaSession.codEmpresaSuporte}" target="_blank" title="Fortes Chat"><img src="<@ww.url includeParams="none" value="/imgs/chat_fortes.png"/>" class="icon" onmouseover="this.style='opacity: 0.6;display: block; padding: 4px;'" onmouseout="this.style='opacity: 1;display: block; padding: 4px;'" style="display: block; padding: 4px;"/></a>
+		        </#if>
+		        
+		        <a href='http://www.logmein123.com' target='_blank' title='LogMeIn'><img src="<@ww.url includeParams="none" value="/imgs/logmeinrescue.png"/>" class="icon" onmouseover="this.style='opacity: 0.6;display: block; padding: 4px;'" onmouseout="this.style='opacity: 1;display: block; padding: 4px;'" style="display: block; padding: 4px;" /></a>
+		        <a href='videoteca.action' title='Videoteca'><img src="<@ww.url includeParams="none" value="/imgs/video.png"/>" class="icon" onmouseover="this.style='opacity: 0.6;display: block; padding: 4px;'" onmouseout="this.style='opacity: 1;display: block; padding: 4px;'" style="display: block; padding: 4px;" /></a>
+		        <a href="contatos.action" title="Contatos"><img src="<@ww.url includeParams="none" value="/imgs/telefone.gif"/>" class="icon" onmouseover="this.style='opacity: 0.6;display: block; padding: 4px;'" onmouseout="this.style='opacity: 1;display: block; padding: 4px;'" style="display: block; padding: 4px;" /></a>
+		        <a href='http://blog.fortesinformatica.com.br/categoria/ente-rh/?utm_source=sistema&utm_medium=icone-barra-lateral&utm_content=ente-rh&utm_campaign=clique-blog' target='_blank' title='Blog'><img src="<@ww.url includeParams="none" value="/imgs/blog.png"/>" class="icon" onmouseover="this.style='opacity: 0.6;display: block; padding: 4px;'" onmouseout="this.style='opacity: 1;display: block; padding: 4px;'" height="32" width="32" style="display: block; padding: 4px;" /></a>
+		        <a href='https://twitter.com/fortestec' target='_blank' title='Twitter'><img src="<@ww.url includeParams="none" value="/imgs/twitter.png"/>" class="icon" onmouseover="this.style='opacity: 0.6;display: block; padding: 4px;'" onmouseout="this.style='opacity: 1;display: block; padding: 4px;'" style="display: block; padding: 4px;" /></a>
+		        <a href="https://www.facebook.com/fortestecnologia" target='_blank' title="Facebook"><img src="<@ww.url includeParams="none" value="/imgs/facebook.png"/>" class="icon" onmouseover="this.style='opacity: 0.6;display: block; padding: 4px;'" onmouseout="this.style='opacity: 1;display: block; padding: 4px;'" style="display: block; padding: 4px;" /></a>
+		        <a href="https://www.linkedin.com/company/fortes-informatica" target='_blank' title="Linkedin" id="teste"><img src="<@ww.url includeParams="none" value="/imgs/linkedin.png"/>" class="icon" onmouseover="this.style='opacity: 0.6;display: block; padding: 4px;'" onmouseout="this.style='opacity: 1;display: block; padding: 4px;'" style="display: block; padding: 4px;" /></a>
+		    </div>
 	    </div>
 		
 		<br>
@@ -131,8 +133,8 @@
 				<div id="waDivTitulo">
 					${title}
 					<#if videoAjuda?exists>
-						<span>
-							<img title="Vídeo de ajuda" onclick="javascript:popupVideo(${videoAjuda}, '${calculoHash}');" src="<@ww.url includeParams="none" value="/imgs/video.png"/>" style="cursor:pointer;"/>
+						<span style="margin-top: -9px;">
+							<img title="Vídeo de ajuda" onclick="javascript:popupVideo(${videoAjuda}, '${calculoHash}');" src="<@ww.url includeParams="none" value="/imgs/video.png"/>" style="cursor:pointer;" />
 						</span>
 					</#if>
 					<#if msgHelp?exists>
