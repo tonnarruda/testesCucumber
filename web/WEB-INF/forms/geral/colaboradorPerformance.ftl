@@ -500,13 +500,13 @@
 						<@authz.authorize ifAllGranted="EXIBIR_SALARIO_PERFORMANCE">
 							<@display.column property="descricaoTipoSalario" title="Tipo Salário" style="width:70px;"/>
 							<@display.column title="Salário" format="{0,number,currency}" style="width:80px">
-							<#if historicoColaboradors.salarioCalculado?exists>
-								${historicoColaboradors.salarioCalculado?string.currency}
-							<#else>
-								<div style="width: 100%; text-align: center;">
-									<img class="tooltipHelp" src="<@ww.url value="/imgs/iconWarning.gif"/>" />
-								</div>
-							</#if>
+								<#if historicoColaboradors.salarioCalculado?exists>
+									${historicoColaboradors.salarioCalculado?string.currency}
+								<#else>
+									<div style="width: 100%; text-align: center;">
+										<img class="tooltipHelp" src="<@ww.url value="/imgs/iconWarning.gif"/>" />
+									</div>
+								</#if>
 							</@display.column>
 						</@authz.authorize>
 					</@display.table>
