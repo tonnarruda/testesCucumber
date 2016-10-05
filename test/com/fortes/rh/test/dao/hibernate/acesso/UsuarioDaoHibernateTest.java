@@ -370,7 +370,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 	}
 	
 	
-	public void testFindEmpresasUsuarioFortes()
+	public void testFindEmpresasUsuarioSOS()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setNome("Empresa 1");
@@ -380,7 +380,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		empresa2.setNome("Empresa 2");
 		empresaDao.save(empresa2);
 		
-		Collection<Empresa> empresas = usuarioDao.findEmpresas("fortes");
+		Collection<Empresa> empresas = usuarioDao.findEmpresas("SOS");
 		assertTrue(empresas.size() >= 2);
 	}
 	

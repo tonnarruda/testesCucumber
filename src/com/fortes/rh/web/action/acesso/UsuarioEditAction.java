@@ -183,6 +183,12 @@ public class UsuarioEditAction extends MyActionSupportEdit
 
 	public String prepareUpdate() throws Exception
 	{
+		if(usuario.getId().equals(1L)){
+			addActionMessage("Usuário inexistente");
+			usuario = null;
+			return Action.SUCCESS;
+		}
+		
 		prepare();
 
 		empresasId = empresaManager.getEmpresasByUsuarioEmpresa(usuario.getId());

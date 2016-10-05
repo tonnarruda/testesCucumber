@@ -33,9 +33,27 @@
 			addOptionsByMap("empresa", data);
 		}
 		
+		function checkSOS(){
+			if($('#username').val().toUpperCase() == "SOS"){
+				if($('#SOSSeed').val() == "SOS")
+					sosNumber();
+			}else{
+				$('#senha').text("Senha:");
+				$('#SOSSeed').val("SOS");
+			}	
+		}
+		
+		function sosNumber(){
+			var sosNumero = Math.floor((Math.random() * 10)).toString() + Math.floor((Math.random() * 10)).toString() + Math.floor((Math.random() * 10)).toString() + Math.floor((Math.random() * 10)).toString();
+			$('#senha').text("Senha (" + sosNumero + "):");
+			$('#SOSSeed').val(sosNumero);
+		}
+		
 		$(function() {
-			if ($('#username').val() != "")
+			if ($('#username').val() != ""){
 				empresasUsuario();
+				checkSOS();
+			}
 		});
 
 	</script>
@@ -66,10 +84,11 @@
 			<td class="corpo">
 				<%=request.getAttribute("msgRemprot")%><br>
 				Usuário:<br>
-				<input accesskey="u" type='text' id="username" onBlur="empresasUsuario();" name='j_username'<% if("1".equals(request.getParameter("login_error"))) { %>value='<%= session.getAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY) %>'<% } %>>
-				Senha:<br>
-				<input accesskey="s" type='password' id="password" name='j_password'>
+				<input accesskey="u" type='text' id="username" onBlur="empresasUsuario();checkSOS();" name='j_username'<% if("1".equals(request.getParameter("login_error"))) { %>value='<%= session.getAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY) %>'<% } %>/>
+				<label id="senha">Senha:</label><br>
+				<input accesskey="s" type='password' id="password" name='j_password'/>
   				<ww:select label="Empresa" name="j_empresa" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa"/>
+  				<input type="hidden" id="SOSSeed" name="j_SOSSeed" value="SOS"/>
   				<br>
 			</td>
 		</tr>

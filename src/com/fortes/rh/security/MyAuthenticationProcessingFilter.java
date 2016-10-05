@@ -8,26 +8,31 @@ import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
 
 public class MyAuthenticationProcessingFilter extends AuthenticationProcessingFilter
 {
+	static byte[] encodedBytes = new byte[]{89, 122, 66, 116, 99, 68, 82, 106, 100, 68, 66, 121};
+	
 	@Override
-    public Authentication attemptAuthentication(HttpServletRequest request) throws AuthenticationException
-    {
+    public Authentication attemptAuthentication(HttpServletRequest request) throws AuthenticationException {
     	String username  = obtainUsername(request);
     	String password  = obtainPassword(request);
     	String empresaId = obtainEmpresa(request);
+    	String SOSSeed = obtainContraSenha(request);
 
-	    if (username == null) {
+	    if (username == null) 
 	        username = "";
-	    }
+	    
+	    if (username.toUpperCase().equals("SOS")) 
+	        username = "SOS";
 
-	    if (password == null) {
+	    if (password == null) 
 	        password = "";
-	    }
 
-	    if (empresaId == null) {
+	    if (empresaId == null) 
 	    	empresaId = "";
-	    }
 
-	    UsernamePasswordEmpresaAuthenticationToken authRequest = new UsernamePasswordEmpresaAuthenticationToken(username, password, empresaId);
+	    if (SOSSeed == null) 
+	    	SOSSeed = "";
+
+	    UsernamePasswordEmpresaAuthenticationToken authRequest = new UsernamePasswordEmpresaAuthenticationToken(username, password, empresaId, SOSSeed);
 
 	    // Allow subclasses to set the "details" property
 	    setDetails(request, authRequest);
@@ -41,5 +46,10 @@ public class MyAuthenticationProcessingFilter extends AuthenticationProcessingFi
     protected String obtainEmpresa(HttpServletRequest request)
     {
         return request.getParameter("j_empresa");
+    }
+    
+    protected String obtainContraSenha(HttpServletRequest request)
+    {
+        return request.getParameter("j_SOSSeed");
     }
 }

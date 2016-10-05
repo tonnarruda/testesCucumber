@@ -156,7 +156,7 @@ public abstract class Menu
 	
 	private static boolean verificaPapeisUsuarioFortes(Papel papel, Long idDoUsuario) 
 	{
-		return !papel.getCodigo().equalsIgnoreCase("USUARIO_FORTES") || idDoUsuario.equals(1L);
+		return !papel.getCodigo().equalsIgnoreCase("USUARIO_SOS") || idDoUsuario.equals(1L);
 	}
 	
 	private static boolean verificaParametrosSistemaAutorizacaoSolicitacaoPessoal(Papel papel, ParametrosDoSistema parametros) 

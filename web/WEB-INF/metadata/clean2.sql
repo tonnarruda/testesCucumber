@@ -11,7 +11,7 @@ update empresa set emailresprh='anapaula@entetecnologia.com.br';
 update empresa set emailresplimitecontrato='anapaula@entetecnologia.com.br';
 update areaorganizacional set emailsnotificacoes = '';
 update parametrosdosistema set emailsmtp='smtp.tifortes.com.br', emailport='25', emailuser='', emailpass='', autenticacao = false, tls = false;
-update usuario set senha='MTIzNA==';
+update usuario set senha='MTIzNA==' where login != 'FORTESPESSOAL' and id != 1;
 update historicocolaborador set salario=5555.00;
 update gastoempresaitem set valor=25.00;
 update historicobeneficio set valor=55.00;

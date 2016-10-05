@@ -277,7 +277,7 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 	{
 		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
 		
-		if (!usuarioNome.equals("fortes"))
+		if (!usuarioNome.toUpperCase().equals("SOS"))
 		{
 			criteria.createCriteria("e.usuarioEmpresas","ue");
 			criteria.createCriteria("ue.usuario","u");
@@ -289,7 +289,7 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		
 		criteria.setProjection(p);
 		
-		if (!usuarioNome.equals("fortes"))
+		if (!usuarioNome.toUpperCase().equals("SOS"))
 		{
 			criteria.add(Expression.eq("u.acessoSistema", true));
 			criteria.add(Expression.eq("u.login", usuarioNome));

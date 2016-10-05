@@ -909,7 +909,15 @@ public class DateUtil
 		
 		return calendar.get(Calendar.MONTH) + 1;
 	}
-
+	
+	public static int getAnoInteger(Date data)
+	{  
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(data);
+		
+		return calendar.get(GregorianCalendar.YEAR);
+	}
+	
 	public static Date getUltimoDiaMesAnterior(Date data) 
 	{
 		return incrementaDias(data, -1);
