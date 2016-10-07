@@ -3,12 +3,11 @@ package com.fortes.rh.test.business.acesso;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -88,8 +87,8 @@ public class UsuarioManagerTest
 	public void testFindUsuarioProjection() 
 	{
 		Long usuarioId = 5L;
-		usuarioManager.findEmailByUsuarioId(usuarioId);
-		verify(usuarioDao, times(1)).findEmailByUsuarioId(usuarioId);
+		usuarioManager.findByIdProjection(usuarioId);
+		verify(usuarioDao, times(1)).findByIdProjection(usuarioId);
 	}
 	
 	@Test
@@ -102,13 +101,19 @@ public class UsuarioManagerTest
     }
 	
 	@Test
-	public void testUpdate()
+	public void testUpdateMantendoSenhaComParametroSenhaNula()
     {
-		Usuario usuario = UsuarioFactory.getEntity(1L, "senha");
-    	usuarioManager.update(usuario);
-    	verify(usuarioDao, times(1)).update(usuario);
+		Usuario usuarioTemp = UsuarioFactory.getEntity(1L,"senhaQueEstaNoBanco");
+		Usuario usuarioASerAtualizado = new Usuario();
+		usuarioASerAtualizado.setId(1L);
+		
+		when(usuarioDao.findById(eq(usuarioASerAtualizado.getId()))).thenReturn(usuarioTemp);
+		
+    	usuarioManager.update(usuarioASerAtualizado);
+    	verify(usuarioDao, times(1)).update(usuarioASerAtualizado);
+    	
     }
-
+	
 	@Test
 	public void testUpdateMantendoSenha()
 	{
@@ -117,6 +122,15 @@ public class UsuarioManagerTest
 		
 		when(usuarioDao.findById(eq(usuarioASerAtualizado.getId()))).thenReturn(usuarioTemp);
 		
+		usuarioManager.update(usuarioASerAtualizado);
+		verify(usuarioDao, times(1)).update(usuarioASerAtualizado);
+	}
+	
+	@Test
+	public void testUpdateAtualizandoSenha()
+	{
+		Usuario usuarioASerAtualizado = UsuarioFactory.getEntity(1L,"novaSenha");
+			
 		usuarioManager.update(usuarioASerAtualizado);
 		verify(usuarioDao, times(1)).update(usuarioASerAtualizado);
 	}
@@ -146,7 +160,24 @@ public class UsuarioManagerTest
 		usuarioManager.updateSenha(usuario);
 		verify(usuarioDao, never()).update(usuario);
 	}
+	
+	@Test
+	public void testUpdateSenhaComNovaSenhaNula()
+	{
+		Usuario usuarioComSenhaNula = preparaUpdateSenha("senha", null, null);
+		usuarioManager.updateSenha(usuarioComSenhaNula);
+		verify(usuarioDao, never()).update(usuarioComSenhaNula);
+	}
 
+	@Test
+	public void testUpdateSenhaComNovaSenhaVazia()
+	{
+		Usuario usuarioComSenhaNula = preparaUpdateSenha("", "", null);
+		
+		usuarioManager.updateSenha(usuarioComSenhaNula);
+		verify(usuarioDao, never()).update(usuarioComSenhaNula);
+	}
+	
 	private Usuario preparaUpdateSenha(String senhaAntiga, String novaSenha, String confNovaSenha){
 		Usuario usuario = UsuarioFactory.getEntity(1L, senhaAntiga);
 		usuario.setNovaSenha(novaSenha);
@@ -224,6 +255,14 @@ public class UsuarioManagerTest
 		verify(usuarioDao).remove(new Long[]{usuario.getId()});
 	}
 	
+	@Test(expected=Exception.class)
+	public void testRemoveUsuarioException() throws Exception
+	{
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		doThrow(Exception.class).when(usuarioDao).remove(new Long[]{usuario.getId()});
+		usuarioManager.removeUsuario(usuario);
+	}
+	
 	@Test
 	public void testExisteLoginComLoginNaoExistenteNoBanco()
 	{
@@ -264,6 +303,13 @@ public class UsuarioManagerTest
     	when(usuarioEmpresaManager.findAllBySelectUsuarioEmpresa(eq(empresa.getId()))).thenReturn(usuarioEmpresas);
     	assertEquals(1, usuarioManager.populaCheckOrderNome(empresa.getId()).size());
     }
+	@Test
+	public void testPopulaCheckOrderNomeException()
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	when(usuarioEmpresaManager.findAllBySelectUsuarioEmpresa(eq(empresa.getId()))).thenReturn(null);
+    	assertEquals(0, usuarioManager.populaCheckOrderNome(empresa.getId()).size());
+    }
 	
 	@Test
 	public void testRemoveAcessoSistema()
@@ -291,121 +337,103 @@ public class UsuarioManagerTest
 		verify(usuarioDao, (times(1))).desativaAcessoSistema(eq(false), eq(colaboradoresIds));
 	}
 	
-	@Test
-	public void testLoginExiste()
+	@Test(expected=LoginExisteException.class)
+	public void testLoginExiste() throws LoginExisteException, SenhaNaoConfereException, Exception
 	{
 		Usuario usuario = UsuarioFactory.getEntity(1L);
 		Usuario usuarioRetorno = UsuarioFactory.getUsuarioComLogin(2L, "milosa");
-		LoginExisteException loginExisteException = null;
 
-		try
-		{
-			when(usuarioDao.findByLogin(eq(usuario))).thenReturn(usuarioRetorno);
-			usuarioManager.save(usuario, null, null, null);
-		}
-		catch (LoginExisteException e)
-		{
-			loginExisteException = e;
-		}
-		catch (SenhaNaoConfereException e)
-		{
-			fail("Exception não esperada");
-		}
-		catch (Exception e)
-		{
-			fail("Exception não esperada");
-		}
-
-		assertNotNull(loginExisteException);
+		when(usuarioDao.findByLogin(eq(usuario))).thenReturn(usuarioRetorno);
+		usuarioManager.save(usuario, null, null, null);
 	}
 	
-	@Test
-    public void testConfirmaSenha()
+	@Test(expected=SenhaNaoConfereException.class)
+    public void testConfirmaSenha() throws LoginExisteException, SenhaNaoConfereException, Exception
     {
     	Usuario usuario = UsuarioFactory.getEntity(1L, "1234");
-    	SenhaNaoConfereException senhaNaoConfereException = null;
-    	try
-    	{
-    		when(usuarioDao.findByLogin(eq(usuario))).thenReturn(usuario);
-    		usuarioManager.save(usuario, null, null, null);
-    	}
-    	catch (LoginExisteException e)
-    	{
-    		fail("Exception não esperada");
-    	}
-    	catch (SenhaNaoConfereException e)
-    	{
-    		senhaNaoConfereException = e;
-    	}
-    	catch (Exception e)
-    	{
-    		fail("Exception não esperada");
-    	}
-
-    	assertNotNull(senhaNaoConfereException);
+    	
+    	when(usuarioDao.findByLogin(eq(usuario))).thenReturn(usuario);
+    	usuarioManager.save(usuario, null, null, null);
     }
 	
 	@Test
-	public void testCriaUsuario()
+	public void testCriaUsuarioSemColaborador() throws LoginExisteException, SenhaNaoConfereException, Exception
     {
     	Usuario usuario = UsuarioFactory.getEntity(1L, "1234");
     	usuario.setConfNovaSenha("1234");
+    	usuario.setColaborador(ColaboradorFactory.getEntity());
 
     	Long colaboradorId = null;
     	String[] empresasIds = new String[]{};
     	String[] perfils = new String[]{};
 
     	Usuario usuarioRetorno = null;
-    	try
-    	{
-    		when(usuarioDao.findByLogin(eq(usuario))).thenReturn(usuario);
-    		when(usuarioDao.save(eq(usuario))).thenReturn(usuario);
-    		usuarioRetorno = usuarioManager.save(usuario, colaboradorId, empresasIds, perfils);
-    	}
-    	catch (LoginExisteException e)
-    	{
-    		fail("Exception não esperada");
-    	}
-    	catch (SenhaNaoConfereException e)
-    	{
-    		fail("Exception não esperada");
-    	}
-    	catch (Exception e)
-    	{
-    		fail("Exception não esperada");
-    	}
+ 		when(usuarioDao.findByLogin(eq(usuario))).thenReturn(usuario);
+		when(usuarioDao.save(eq(usuario))).thenReturn(usuario);
+		usuarioRetorno = usuarioManager.save(usuario, colaboradorId, empresasIds, perfils);
+    	assertEquals(usuario, usuarioRetorno);
+    }
+	
+	@Test
+	public void testCriaUsuarioComColaborador() throws LoginExisteException, SenhaNaoConfereException, Exception
+    {
+    	Usuario usuario = UsuarioFactory.getEntity(1L, "1234");
+    	usuario.setConfNovaSenha("1234");
+    	usuario.setColaborador(ColaboradorFactory.getEntity(1L));
+    	usuario.setSuperAdmin(true);
 
+    	Long colaboradorId = 1L;
+    	String[] empresasIds = new String[]{};
+    	String[] perfils = new String[]{};
+
+    	Usuario usuarioRetorno = null;
+ 		when(usuarioDao.findByLogin(eq(usuario))).thenReturn(usuario);
+		when(usuarioDao.save(eq(usuario))).thenReturn(usuario);
+		usuarioRetorno = usuarioManager.save(usuario, colaboradorId, empresasIds, perfils);
     	assertEquals(usuario, usuarioRetorno);
     }
 	
 	@Test	
-	public void testAtualizaUsuario()
+	public void testAtualizaUsuarioComColaborador() throws LoginExisteException, SenhaNaoConfereException, Exception
     {
-    	Usuario usuario = UsuarioFactory.getEntity(1L, "1234");
-    	usuario.setConfNovaSenha("1234");
+    	Usuario usuario = prepareUpdateUsuario(true);
 
     	Long colaboradorId = null;
     	String[] empresasIds = new String[]{};
     	String[] perfils = new String[]{};
-
-    	try
-    	{
-    		when(usuarioDao.findByLogin(eq(usuario))).thenReturn(usuario);
-    		usuarioManager.update(usuario, colaboradorId, empresasIds, perfils);
-    	}
-    	catch (LoginExisteException e)
-    	{
-    		fail("Exception não esperada");
-    	}
-    	catch (SenhaNaoConfereException e)
-    	{
-    		fail("Exception não esperada");
-    	}
-    	catch (Exception e)
-    	{
-    		fail("Exception não esperada");
-    	}
+    	Integer statusRetornoAC = null;
+		usuarioManager.update(usuario, colaboradorId, empresasIds, perfils);
+		verify(usuarioDao, times(1)).update(usuario);
+		verify(usuarioDao, times(1)).desativaSuperAdmin();
+		verify(colaboradorManager, never()).findByIdDadosBasicos(colaboradorId, statusRetornoAC);
     }
+	
+	@Test	
+	public void testAtualizaUsuarioSemColaborador() throws LoginExisteException, SenhaNaoConfereException, Exception
+    {
+		Usuario usuario = prepareUpdateUsuario(false);
+		
+		Long colaboradorId = 1L;
+    	String[] empresasIds = new String[]{};
+    	String[] perfils = new String[]{};
+    	Integer statusRetornoAC = null;
+    	
+		usuarioManager.update(usuario, colaboradorId, empresasIds, perfils);
+		verify(usuarioDao, times(1)).update(usuario);
+		verify(usuarioDao, never()).desativaSuperAdmin();
+		verify(colaboradorManager, times(1)).findByIdDadosBasicos(colaboradorId, statusRetornoAC);
+    }
+	
+	private Usuario prepareUpdateUsuario(boolean superAdmin){
+		Usuario usuario = UsuarioFactory.getEntity(1L, "1234");
+    	usuario.setConfNovaSenha("1234");
+    	usuario.setSuperAdmin(superAdmin);
+    	
+    	when(usuarioDao.findByLogin(eq(usuario))).thenReturn(usuario);
+    	
+    	return usuario;
+	}
+	
 	
 	@Test(expected=ColecaoVaziaException.class)
 	public void testCreateAutoException() throws Exception
