@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.172.204" db="" data="30/09/2016">
+	<Versao id="1.1.173.205" db="" data="30/10/2016">
 		<Item visivel="S" motivo="S16070000009"><![CDATA[Página Inicial: Nova forma de exibir os ícones no sistema e novos ícones para acessar o twiter, facebook, linkedin, blog e chat.]]></Item>
-		<Item visivel="S" motivo="S16090000067"><![CDATA[Utilitários > Cadastros > Perfil: Novo perfil "Exibir "Salário" no quadro Trajetória Profissional na Empresa" ao exibir performance profissional do colaborador.]]></Item>
-		<Item visivel="S" motivo="S16090000270"><![CDATA[Utilitários > Cadastros > Perfil: Novo perfil "Exibir "Salário Contratual" na opção campos disponíveis" ao gerar o relatório em Info. Funcionais > Relatórios > Listagem de Colaboradores.]]></Item>
+		<Item visivel="S" motivo="S16090000067"><![CDATA[Utilitários > Cadastros > Perfil: Novo perfil "Exibir Salário" no quadro "Trajetória Profissional na Empresa" ao exibir performance profissional do colaborador.]]></Item>
+		<Item visivel="S" motivo="S16090000270"><![CDATA[Utilitários > Cadastros > Perfil: Novo perfil "Exibir Salário Contratual" na opção campos disponíveis ao gerar o relatório de listagem de colaboradores.]]></Item>
+		<Item visivel="S" motivo="S16060000322"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar > Cartões: Nova opção de configuração de cartão para colaborador que completa ano de empresa.]]></Item>
+		<Item visivel="S" motivo="S16060000322"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Novo gerenciador de comunicação para notificar por email o próprio colaborador e o responsável do RH quando um colaborador completa ano de empresa.]]></Item>
 	</Versao>
 	<Versao id="1.1.172.204" db="" data="30/09/2016">
 		<Item visivel="S" motivo="P16080000128"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao atualizar o status do candidato da solicitação de pessoal após cancelar o desligamento do colaborador.]]></Item>

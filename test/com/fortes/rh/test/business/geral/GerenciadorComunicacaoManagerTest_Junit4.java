@@ -2,12 +2,16 @@ package com.fortes.rh.test.business.geral;
 
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -327,6 +331,7 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 		when(empresaManager.findTodasEmpresas()).thenReturn(Arrays.asList(empresa));
 		when(gerenciadorComunicacaoDao.findByOperacaoId(eq(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId()),eq(empresa.getId()))).thenReturn(gerenciadorComunicacaos);
 		when(colaboradorManager.findComAnoDeEmpresa(eq(empresa.getId()), any(Date.class))).thenReturn(colaboradores);
+		
 		Exception ex = null;
 		try {
 			gerenciadorComunicacaoManager.enviaEmailQuandoColaboradorCompletaAnoDeEmpresa();
@@ -370,7 +375,8 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 		Collection<Colaborador> colaboradores = Arrays.asList(colaborador); 
 		
 		String subject = "Parabéns " + colaborador.getNome() + " por mais um ano de empresa";
-		String body = "Parabéns por mais um ano de sucessa na empresa.";
+		String body = "Parabéns por mais um ano de sucesso na empresa.";
+		
 		Empresa empresa = criaEmpresa();
 		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(null, empresa, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR);
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
@@ -386,6 +392,65 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 		verify(mail).send(empresa, subject, files, body, colaborador.getContato().getEmail());		
 	}
 	
+	@Test
+	public void testEnviaEmailParaColaboradorQuandoCompletarAnoDeEmpresaSemCartaoConfiguradoException() throws AddressException, MessagingException {
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setQtdAnosDeEmpresa(1.0);
+		colaborador.setEmailColaborador("email@email.com.br");
+		Collection<Colaborador> colaboradores = Arrays.asList(colaborador); 
+		
+		String subject = "Parabéns " + colaborador.getNome() + " por mais um ano de empresa";
+		String body = "Parabéns por mais um ano de sucesso na empresa.";
+		
+		Empresa empresa = criaEmpresa();
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(null, empresa, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		DataSource[] files = null;
+		
+		when(empresaManager.findTodasEmpresas()).thenReturn(Arrays.asList(empresa));
+		when(gerenciadorComunicacaoDao.findByOperacaoId(eq(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId()),eq(empresa.getId()))).thenReturn(gerenciadorComunicacaos);
+		
+		when(colaboradorManager.findComAnoDeEmpresa(eq(empresa.getId()), any(Date.class))).thenReturn(colaboradores);
+		when(cartaoManager.findByEmpresaIdAndTipo(eq(empresa.getId()), eq(TipoCartao.ANO_DE_EMPRESA))).thenReturn(null);
+		doThrow(AddressException.class).when(mail).send(empresa, subject, files, body, colaborador.getContato().getEmail());
+		
+		gerenciadorComunicacaoManager.enviaEmailQuandoColaboradorCompletaAnoDeEmpresa();
+		verify(mail).send(empresa, subject, files, body, colaborador.getContato().getEmail());		
+	}
+	
+	@Test
+	public void testEnviaEmailParaResponsavelDoRHQuandoColaboradorCompletaAnoDeEmpresaExceptionGerenciadorNulo() throws AddressException, MessagingException 
+	{
+		Empresa empresa = criaEmpresa();
+		
+		when(empresaManager.findTodasEmpresas()).thenReturn(Arrays.asList(empresa));
+		when(gerenciadorComunicacaoDao.findByOperacaoId(eq(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId()),eq(empresa.getId()))).thenReturn(null);
+	
+		gerenciadorComunicacaoManager.enviaEmailQuandoColaboradorCompletaAnoDeEmpresa();
+		
+		verify(colaboradorManager, never()).findComAnoDeEmpresa(eq(empresa.getId()), any(Date.class));		
+	}
+	
+	@Test
+	public void testEnviaEmailParaResponsavelDoRHQuandoColaboradorCompletaAnoDeEmpresaAddressException() throws AddressException, MessagingException 
+	{
+		Collection<Colaborador> colaboradores = null; 
+		
+		Empresa empresa = criaEmpresa();
+		String[] emails = empresa.getEmailRespRH().split(";");
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(null, empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
+		gerenciadorComunicacao.setQtdDiasLembrete("1");
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		when(empresaManager.findTodasEmpresas()).thenReturn(Arrays.asList(empresa));
+		when(gerenciadorComunicacaoDao.findByOperacaoId(eq(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId()),eq(empresa.getId()))).thenReturn(gerenciadorComunicacaos);
+		when(colaboradorManager.findComAnoDeEmpresa(eq(empresa.getId()), any(Date.class))).thenReturn(colaboradores);
+		
+		gerenciadorComunicacaoManager.enviaEmailQuandoColaboradorCompletaAnoDeEmpresa();
+		verify(mail, never()).send(eq(empresa), anyString(), anyString(), any(File[].class), eq(emails));
+	}	
 	private Empresa criaEmpresa()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);

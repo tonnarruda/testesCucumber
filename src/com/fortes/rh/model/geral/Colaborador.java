@@ -2310,6 +2310,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		inicializaFuncao();
 		funcao.setNome(funcaoNome);
 	}
+	
 	public void setFuncaoHistoricoFuncaoAtualId(Long historicoFuncaoId){
 		inicializaFuncao();
 		funcao.setHistoricoAtualId(historicoFuncaoId);
@@ -2329,10 +2330,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		return historicoColaboradors;
 	}
+
 	public void setHistoricoColaboradors(Collection<HistoricoColaborador> historicoColaboradors)
 	{
 		this.historicoColaboradors = historicoColaboradors;
 	}
+
+	@NaoAudita
 	public Estabelecimento getEstabelecimento()
 	{
 		return estabelecimento;
@@ -2425,6 +2429,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.historicoColaborador = historicoColaborador;
 	}
 
+	@NaoAudita
 	public ReajusteColaborador getReajusteColaborador()
 	{
 		return reajusteColaborador;
@@ -2516,6 +2521,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.respondeuEntrevista = respondeuEntrevista;
 	}
 
+	@NaoAudita
 	public Collection<ColaboradorTurma> getColaboradorTurmas()
 	{
 		return colaboradorTurmas;
@@ -2593,6 +2599,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			return "Ativo";
 	}
 
+	@NaoAudita
 	public Collection<SolicitacaoExame> getSolicitacaoExames()
 	{
 		return solicitacaoExames;
@@ -2603,6 +2610,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.solicitacaoExames = solicitacaoExames;
 	}
 
+	@NaoAudita
 	public Collection<Cat> getCats() {
 		return cats;
 	}
@@ -2658,6 +2666,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return "";
 	}
 	
+	@NaoAudita
 	public Solicitacao getSolicitacao() {
 		return solicitacao;
 	}
@@ -2666,6 +2675,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.solicitacao = solicitacao;
 	}
 
+	@NaoAudita
 	public Collection<ColaboradorAfastamento> getColaboradorAfastamento() {
 		return colaboradorAfastamento;
 	}
@@ -2690,6 +2700,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return diasDeEmpresa + " dias";
 	}
 	
+	@NaoAudita
 	public String getSugestaoPeriodoAcompanhamentoExperiencia() {
 		return sugestaoPeriodoAcompanhamentoExperiencia;
 	}
@@ -2698,6 +2709,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.sugestaoPeriodoAcompanhamentoExperiencia = sugestaoPeriodoAcompanhamentoExperiencia;
 	}
 
+	@NaoAudita
 	public Integer getDiasDeEmpresa() {
 		return diasDeEmpresa;
 	}
@@ -2706,6 +2718,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.diasDeEmpresa = diasDeEmpresa;
 	}
 
+	@NaoAudita
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
 		return colaboradorQuestionarios;
 	}
@@ -2714,6 +2727,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.colaboradorQuestionarios = colaboradorQuestionarios;
 	}
 
+	@NaoAudita
 	public Date getAvaliacaoRespondidaEm() {
 		return avaliacaoRespondidaEm;
 	}
@@ -2734,6 +2748,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.datasDeAvaliacao += datasDeAvaliacao;
 	}
 
+	@NaoAudita
 	public Long getAvaliacaoDesempenhoId() {
 		return avaliacaoDesempenhoId;
 	}
@@ -2742,6 +2757,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return avaliacaoTitulo;
 	}
 
+	@NaoAudita
 	public Date getRespondidaEm() {
 		return respondidaEm;
 	}
@@ -2752,8 +2768,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		NumberFormat formata = new DecimalFormat("#0.00");
 		return formata.format(result).toString() + " %"; 
 	}
+
 	@NaoAudita
-	
 	public Double getPerformanceDouble() 
 	{
 		return performance ; 
@@ -2787,6 +2803,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.observacaoDemissao = observacaoDemissao;
 	}
 
+	@NaoAudita
 	public Integer getQtdDiasRespondeuAvExperiencia() {
 		return qtdDiasRespondeuAvExperiencia;
 	}
@@ -2853,18 +2870,22 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.areaOrganizacionalMatriarca = areaOrganizacionalMatriarca;
 	}
 
+	@NaoAudita
 	public String getNomeAvaliador() {
 		return nomeAvaliador;
 	}
 
+	@NaoAudita
 	public Ambiente getAmbiente() {
 		return ambiente;
 	}
 
+	@NaoAudita
 	public String getAvaliacaoDesempenhoTitulo() {
 		return avaliacaoDesempenhoTitulo;
 	}
 
+	@NaoAudita
 	public String getStatusAvaliacao() {
 		return statusAvaliacao;
 	}
@@ -2902,6 +2923,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.exibePerformanceProficional = exibePerformanceProficional;
 	}
 
+	@NaoAudita
 	public int getSomaCompetencias() {
 		return somaCompetencias;
 	}
@@ -2910,6 +2932,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.somaCompetencias = somaCompetencias;
 	}
 
+	@NaoAudita
 	public Collection<ConfiguracaoNivelCompetenciaColaborador> getConfiguracaoNivelCompetenciaColaboradors() {
 		return configuracaoNivelCompetenciaColaboradors;
 	}
@@ -2918,6 +2941,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.configuracaoNivelCompetenciaColaboradors = configuracaoNivelCompetenciaColaboradors;
 	}
 
+	@NaoAudita
 	public double getPercentualCompatibilidade() {
 		return percentualCompatibilidade;
 	}
@@ -2926,12 +2950,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.percentualCompatibilidade = percentualCompatibilidade;
 	}
 
-	
+	@NaoAudita
 	public Double getMediaPerformance()
 	{
 		return mediaPerformance;
 	}
 	
+	@NaoAudita
 	public String getMediaPerformanceFormatada()
 	{
 		Double result = 0.0;
@@ -2955,6 +2980,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.mediaPerformance = mediaPerformance;
 	}
 
+	@NaoAudita
 	public Integer getTempoServico() {
 		return tempoServico;
 	}
@@ -2963,6 +2989,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.tempoServico = tempoServico;
 	}
 
+	@NaoAudita
 	public String getIntervaloTempoServico() {
 		return intervaloTempoServico;
 	}
@@ -2985,6 +3012,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.membroComissaoCipa = membroComissaoCipa;
 	}
 
+	@NaoAudita
 	public Date getDataFimComissaoCipa() {
 		return dataFimComissaoCipa;
 	}
@@ -3003,6 +3031,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.dataEncerramentoContrato = dataEncerramentoContrato;
 	}
 
+	@NaoAudita
 	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradorPeriodoExperienciaAvaliacaos() 
 	{
 		return colaboradorPeriodoExperienciaAvaliacaos;
@@ -3013,6 +3042,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.colaboradorPeriodoExperienciaAvaliacaos = colaboradorPeriodoExperienciaAvaliacaos;
 	}
 
+	@NaoAudita
 	public Long getAvaliacaoId() {
 		return avaliacaoId;
 	}
@@ -3022,6 +3052,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.avaliacaoId = avaliacaoId;
 	}
 
+	@NaoAudita
 	public String getTempoServicoString() 
 	{
 		return tempoServicoString;
@@ -3032,10 +3063,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.tempoServicoString = tempoServicoString;
 	}
 
+	@NaoAudita
 	public String getAfastadoString() {
 		return afastado ? "Sim" : "Não";
 	}
 
+	@NaoAudita
 	public Boolean getAfastado() {
 		return afastado;
 	}
@@ -3059,6 +3092,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return naoIntegraAc ? "Não" : "Sim";
 	}
 	
+	@NaoAudita
 	public String getCodigoACRelatorio() {
 		if (empresa == null || !empresa.isAcIntegra())
 			return "-";
@@ -3066,6 +3100,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return codigoAC;
 	}
 
+	@NaoAudita
 	public Colaborador getSolicitanteDemissao() {
 		return solicitanteDemissao;
 	}
@@ -3107,6 +3142,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return dependencias; 
 	}
 
+	@NaoAudita
 	public Character getDemissaoGerouSubstituicao() {
 		return demissaoGerouSubstituicao;
 	}
@@ -3115,6 +3151,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.demissaoGerouSubstituicao = demissaoGerouSubstituicao;
 	}
 	
+	@NaoAudita
 	public String getDescricaoDemissaoGerouSubstituicao() {
 		if(demissaoGerouSubstituicao == null || demissaoGerouSubstituicao == 'I') 
 			return "Indiferente";
@@ -3124,6 +3161,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			return "Não";		
 	}
 
+	@NaoAudita
 	public BigDecimal getNota()
 	{
 		return nota;
@@ -3134,6 +3172,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.nota = nota;
 	}
 
+	@NaoAudita
 	public Indice getIndice() {
 		return indice;
 	}
@@ -3150,6 +3189,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.manterFoto = manterFoto;
 	}
 
+	@NaoAudita
 	public Double getQtdAnosDeEmpresa() {
 		return qtdAnosDeEmpresa;
 	}
@@ -3158,6 +3198,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.qtdAnosDeEmpresa = qtdAnosDeEmpresa;
 	}
 
+	@NaoAudita
 	public Collection<Colaborador> getAvaliados() {
 		return avaliados;
 	}
@@ -3166,6 +3207,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.avaliados = avaliados;
 	}
 
+	@NaoAudita
 	public Collection<FaixaSalarial> getFaixaSalariaisAvaliados() {
 		return faixaSalariaisAvaliados;
 	}
@@ -3175,6 +3217,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.faixaSalariaisAvaliados = faixaSalariaisAvaliados;
 	}
 
+	@NaoAudita
 	public ColaboradorQuestionario getColaboradorQuestionario() {
 		return colaboradorQuestionario;
 	}
@@ -3184,6 +3227,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.colaboradorQuestionario = colaboradorQuestionario;
 	}
 
+	@NaoAudita
 	public Integer getPesoAvaliador() {
 		return pesoAvaliador;
 	}
@@ -3192,6 +3236,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.pesoAvaliador = pesoAvaliador;
 	}
 
+	@NaoAudita
 	public Double getProdutividade() {
 		return produtividade == null ? 0 : produtividade;
 	}
@@ -3200,6 +3245,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.produtividade = produtividade;
 	}
 
+	@NaoAudita
 	public Collection<OrdemDeServico> getOrdensDeServico() {
 		return ordensDeServico;
 	}

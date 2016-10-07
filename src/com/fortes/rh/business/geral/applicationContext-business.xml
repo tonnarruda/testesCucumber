@@ -173,7 +173,7 @@
     <property name="solicitacaoExameManager">
       <ref bean="solicitacaoExameManager" />
     </property>
-     <property name="cartaoManager">
+    <property name="cartaoManager">
       <ref bean="cartaoManager" />
     </property>
   </bean>

@@ -82,4 +82,14 @@ public class ArquivoUtilTest extends TestCase
     {
     	assertNotNull(ArquivoUtil.getPathExterno());
     }
+    
+    public void testGetPathReport()
+    {
+    	assertNotNull(ArquivoUtil.getPathReport());
+    }
+    
+    public void testGetPathBackGroundRelatorio()
+    {
+    	assertNotNull(ArquivoUtil.getPathBackGroundCartao("teste"));
+    }
 }

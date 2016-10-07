@@ -72,7 +72,7 @@ public class ArquivoUtil
 	}
 	
 	public static String getLoggingPath() {
-		return ArquivoUtil.getRhHome() + java.io.File.separatorChar + "logging";
+		return getRhHome() + java.io.File.separatorChar + "logging";
 	}
 	
 	/**
@@ -88,11 +88,11 @@ public class ArquivoUtil
 	}
 	
 	public static String getDbBackupPath() {
-		return ArquivoUtil.getRhHome() + java.io.File.separatorChar + "backup_db";
+		return getRhHome() + java.io.File.separatorChar + "backup_db";
 	}
 	
 	public static Properties getSystemConf() {
-		String systemConfigPath = ArquivoUtil.getRhHome() + java.io.File.separatorChar + "system.conf";
+		String systemConfigPath = getRhHome() + java.io.File.separatorChar + "system.conf";
 		Properties configuracao = new Properties();
 		FileInputStream is = null;
 		try {
@@ -145,7 +145,7 @@ public class ArquivoUtil
 
 		if (file != null && !file.getName().equals(""))
 		{
-			java.io.File logoSalva = ArquivoUtil.salvaArquivo(pasta, file, true);
+			java.io.File logoSalva = salvaArquivo(pasta, file, true);
 
 			if (logoSalva != null)
 				url = logoSalva.getName();
@@ -283,12 +283,12 @@ public class ArquivoUtil
 
 	public static String getPathLogoEmpresa()
 	{
-		return ArquivoUtil.getPathAnexo("logoEmpresas");
+		return getPathAnexo("logoEmpresas");
 	}
 
 	public static String getPathAssinaturas()
 	{
-		return ArquivoUtil.getPathAnexo("assinaturas");
+		return getPathAnexo("assinaturas");
 	}
 	
 	public static String getPathAnexo(String pasta)
@@ -325,7 +325,7 @@ public class ArquivoUtil
 	
 	public static String convertToLatin1Compatible(byte[] bytes)
 	{
-		String charSetName = ArquivoUtil.retornaTipoCharSet(bytes);
+		String charSetName = retornaTipoCharSet(bytes);
 		Charset charsetFrom = Charset.defaultCharset();//Era assim Charset charsetFrom = Charset.forName(charSetName);
 													   //alterei para resolver o zig do Big5 no windows com java1.5_15
 		Charset charsetTo = Charset.forName("ISO-8859-1");
@@ -462,6 +462,7 @@ public class ArquivoUtil
 		}
 	}
 
+	// TODO: SEM TESTE
 	public static void geraPdfByBytes(HttpServletResponse response,	byte[] reciboBytes, String nomeDoArquivo) throws IOException 
 	{
 		response.addHeader("Expires", "0");
@@ -474,5 +475,19 @@ public class ArquivoUtil
 		response.getOutputStream().write(reciboBytes);		
 	}
 	
+	public static String getPathReport()
+	{
+		StringBuilder path = new StringBuilder(getSystemConf().getProperty("sys.path").trim());
+		path.append(java.io.File.separatorChar + "WEB-INF" + java.io.File.separatorChar + "report" + java.io.File.separatorChar);
+		
+		return path.toString();
+	}	
 	
+	public static String getPathBackGroundCartao(String imgUrl)
+	{
+		String pathLogo = getPathLogoEmpresa() + imgUrl;
+		java.io.File logo = new java.io.File(pathLogo);
+		
+		return (logo.exists() ? pathLogo : "");
+	}	
 }

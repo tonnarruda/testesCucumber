@@ -28,7 +28,6 @@ public class CartaoDaoHibernate extends GenericDaoHibernate<Cartao> implements C
 		return p;
 	}
 
-	@Override
 	public Cartao findByEmpresaIdAndTipo(Long empresaId, String tipoCartao) {
 		Criteria criteria = getSession().createCriteria(Cartao.class, "c");
 		criteria = criteria.createCriteria("c.empresa", "e");

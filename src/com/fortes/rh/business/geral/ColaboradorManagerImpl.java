@@ -162,6 +162,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private static final String RETIRAFOTO = "S";
 	private static final String NAORETIRAFOTO = "N";
 
+	// TODO: SEM TESTE
 	public void enviaEmailAniversariantes(Collection<Empresa> empresas) throws Exception
 	{
 		Date data = new Date();
@@ -170,23 +171,30 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Cartao cartao;
 
 		for (Empresa empresa : empresas) {
-			Collection<Colaborador> aniversariantes = getDao().findAniversariantesByEmpresa(empresa.getId(), dia, mes);
-			for (Colaborador aniversariante : aniversariantes)
-			{
-				DataSource[] files = null;
-				String subject = "Feliz Aniversário " + aniversariante.getNome();
-				String body = "Feliz Aniversário!";
+			try {
+				Collection<Colaborador> aniversariantes = getDao().findAniversariantesByEmpresa(empresa.getId(), dia, mes);
+				for (Colaborador aniversariante : aniversariantes) {
+					try {
+						DataSource[] files = null;
+						String subject = "Feliz Aniversário " + aniversariante.getNome();
+						String body = "Feliz Aniversário!";
 
-				cartao = cartaoManager.findByEmpresaIdAndTipo(empresa.getId(), TipoCartao.ANIVERSARIO);
-				if(cartao != null)
-					files =  cartaoManager.geraCartao(cartao, aniversariante);
-				
-				if(files != null)
-				  body += "<br><br>Cartão em anexo."; 
+						cartao = cartaoManager.findByEmpresaIdAndTipo(empresa.getId(), TipoCartao.ANIVERSARIO);
+						if(cartao != null)
+							files =  cartaoManager.geraCartao(cartao, aniversariante);
+						
+						if(files != null)
+						  body += "<br><br>Cartão em anexo."; 
 
-				if(StringUtils.isNotEmpty(aniversariante.getContato().getEmail())){
-					mail.send(empresa, subject, files, body, aniversariante.getContato().getEmail());		
+						if(StringUtils.isNotEmpty(aniversariante.getContato().getEmail()))
+							mail.send(empresa, subject, files, body, aniversariante.getContato().getEmail());		
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}

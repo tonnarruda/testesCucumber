@@ -1,6 +1,5 @@
 package com.fortes.rh.business.geral;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -475,16 +474,15 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 
 	private void montaPrametrosEnviaLembreteExamesPrevistos(Map<String, Object> parametros, Empresa empresa, Date ultimoDiaDoMesPosterior) throws NotConectAutenticationException {
-		char barra = File.separatorChar;
-		String path = ArquivoUtil.getSystemConf().getProperty("sys.path").trim();
-		path = path + barra + "WEB-INF" + barra +"report" + barra; 
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		String msgRegistro = Autenticador.getMsgAutenticado("");
 		String logo = ArquivoUtil.getPathLogoEmpresa() + empresa.getLogoUrl();
+		
 		Cabecalho cabecalho = new Cabecalho("Exames Previstos até " + DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior), empresa.getNome(), "", "[Envio Automático]", parametrosDoSistema.getAppVersao(), logo, msgRegistro, parametrosDoSistema.isVersaoAcademica());
 		cabecalho.setLicenciadoPara(empresa.getNome());
+		
 		parametros.put("CABECALHO", cabecalho);
-		parametros.put("SUBREPORT_DIR", path);
+		parametros.put("SUBREPORT_DIR", ArquivoUtil.getPathReport());
 	}
 	
 	public void enviaMensagemLembretePeriodoExperiencia(){
@@ -1191,6 +1189,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			mensagem.append("Quantidade de filhos: " + colaboradorOriginal.getPessoal().getQtdFilhos() == null ? 0 : colaboradorOriginal.getPessoal().getQtdFilhos() + "\n");
 	}
 	
+	// TODO: SEM TESTE
 	public void enviaEmailCartaoAniversariantes(){
 		try{
 			Collection<Empresa> empresas = getDao().findEmpresasByOperacaoId(Operacao.ENVIAR_CARTAO_ANIVERSARIANTES.getId());
@@ -1714,63 +1713,72 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	public void enviaEmailQuandoColaboradorCompletaAnoDeEmpresa(){
-		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		Collection<Integer> diasLembrete = new ArrayList<Integer>();
 		try{
 			Collection<Empresa> empresas = empresaManager.findTodasEmpresas();
 			for (Empresa empresa : empresas) {
 				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId(), empresa.getId());
-	    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-	    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId()))
-	    				montaEmailParaColaboradorComAnoDeEmpresa(empresa);
-	    			else{
-		    			diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
-						for (Integer diaLembrete : diasLembrete){
-							colaboradores = colaboradorManager.findComAnoDeEmpresa(empresa.getId(), DateUtil.incrementaDias(new Date(), diaLembrete));
-							if ( colaboradores.size() > 0 ) {
-								String subject = "[RH] - Falta(m) "+ diaLembrete + " dia(s) para colaboradores completarem ano de empresa";
-								StringBuilder body = new StringBuilder("Falta(m) "+ diaLembrete + " dia(s) para colaboradores completarem ano de empresa <br><br> ");
-								body.append("<b>Empresa:</b> "+ empresa.getNome() +" <br><br>");
-								body.append("Colaboradores que completarão ano de empresa: <br><br>");
-								body.append("<table><thead><tr><th>Colaborador</th><th></th><th>Qtd. anos</th></tr></thead><tbody>");
-								for (Colaborador colaborador : colaboradores){
-									body.append("<tr><td>" + colaborador.getNome() + "</td>");
-									body.append("<td></td><td align='center'>" + colaborador.getQtdAnosDeEmpresa().intValue() + "</td></tr>");
-								}
-								body.append("</tbody></table><br>");
-								body.append("<b>Total de colaboradores:</b> " + colaboradores.size());
-				    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
-				    				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
-				    				mail.send(empresa, subject, body.toString(), null, emails);
-				    			}
-							}
-						}
-	    			}
-	    		}
+				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+					if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId()))
+						enviaEmailParaColaboradorComAnoDeEmpresa(empresa);
+					else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())) {
+						enviaEmailParaResponsavelRhComAnoDeEmpresa(empresa, gerenciadorComunicacao.getQtdDiasLembrete());
+					}
+				}
 			}
-		}catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void montaEmailParaColaboradorComAnoDeEmpresa(Empresa empresa) {
+	private void enviaEmailParaColaboradorComAnoDeEmpresa(Empresa empresa) {
 		Collection<Colaborador> colaboradores = colaboradorManager.findComAnoDeEmpresa(empresa.getId(), new Date());
 		Cartao cartao = cartaoManager.findByEmpresaIdAndTipo(empresa.getId(), TipoCartao.ANO_DE_EMPRESA);
-		String body = "";
+		StringBuilder body = null;
 		
 		for (Colaborador colaborador : colaboradores) {
-			DataSource[] files = null;
-			if(cartao != null){
-				files = cartaoManager.geraCartao(cartao, colaborador);
-			}
-			String subject = "Parabéns " + colaborador.getNome() + " por mais um ano de empresa";
-			if(files != null)
-				body = "Parabéns por mais um ano de sucesso na empresa.<br><br>Cartão em anexo.";
-			else
-				body = "Parabéns por mais um ano de sucessa na empresa.";
 			try {
-				if(StringUtils.isNotEmpty(colaborador.getContato().getEmail())){
-					mail.send(empresa, subject, files, body, colaborador.getContato().getEmail());		
+				DataSource[] files = null;
+				if(cartao != null)
+					files = cartaoManager.geraCartao(cartao, colaborador);
+					
+				String subject = "Parabéns " + colaborador.getNome() + " por mais um ano de empresa";
+				body = new StringBuilder("Parabéns por mais um ano de sucesso na empresa.");
+				if(files != null)
+					body.append("<br><br>Cartão em anexo.");
+				
+				if(StringUtils.isNotEmpty(colaborador.getContato().getEmail()))
+					mail.send(empresa, subject, files, body.toString(), colaborador.getContato().getEmail());		
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void enviaEmailParaResponsavelRhComAnoDeEmpresa(Empresa empresa, String configuracaoDiasLembrete)
+	{
+		Collection<Colaborador> colaboradores;
+		Collection<Integer> diasLembrete;
+		diasLembrete = getIntervaloAviso(configuracaoDiasLembrete);
+		
+		for (Integer diaLembrete : diasLembrete){
+			try {
+				colaboradores = colaboradorManager.findComAnoDeEmpresa(empresa.getId(), DateUtil.incrementaDias(new Date(), diaLembrete));
+				if ( colaboradores.size() > 0 ) {
+					String subject = "[RH] - Falta(m) "+ diaLembrete + " dia(s) para colaboradores completarem ano de empresa";
+					StringBuilder body = new StringBuilder("Falta(m) "+ diaLembrete + " dia(s) para colaboradores completarem ano de empresa <br><br> ");
+					body.append("<b>Empresa:</b> "+ empresa.getNome() +" <br><br>");
+					body.append("Colaboradores que completarão ano de empresa: <br><br>");
+					body.append("<table><thead><tr><th>Colaborador</th><th></th><th>Qtd. anos</th></tr></thead><tbody>");
+					for (Colaborador colaborador : colaboradores){
+						body.append("<tr><td>" + colaborador.getNome() + "</td>");
+						body.append("<td></td><td align='center'>" + colaborador.getQtdAnosDeEmpresa().intValue() + "</td></tr>");
+					}
+					body.append("</tbody></table><br>");
+					body.append("<b>Total de colaboradores:</b> " + colaboradores.size());
+				
+					String[] emails = empresa.getEmailRespRH().split(";");
+					mail.send(empresa, subject, body.toString(), null, emails);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
