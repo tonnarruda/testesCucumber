@@ -154,6 +154,7 @@ import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
+import com.fortes.rh.test.model.geral.EnderecoFactory;
 import com.fortes.rh.test.util.mockObjects.MockCandidato;
 import com.fortes.rh.test.util.mockObjects.MockColaborador;
 import com.fortes.rh.util.DateUtil;
@@ -219,16 +220,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setObservacao("observação");
 		colaborador.setDataAdmissao(new Date());
 		colaborador.setMatricula("00001");
-
-		Endereco endereco = new Endereco();
-		endereco.setLogradouro("logradouro");
-		endereco.setNumero("00");
-		endereco.setComplemento("complemento");
-		endereco.setBairro("123456789012345678901");
-		endereco.setCidade(null);
-		endereco.setUf(null);
-		endereco.setCep("0000000");
-		colaborador.setEndereco(endereco);
+		colaborador.setEndereco(EnderecoFactory.getEntity());
 
 		Contato contato = new Contato();
 		contato.setEmail("mail@mail.com");
@@ -256,12 +248,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaborador = getEntity();
 		colaborador = colaboradorDao.save(colaborador);
 
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		FaixaSalarial faixaA = faixaSalarialDao.save(FaixaSalarialFactory.getEntity());
 
 		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
 		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.VALOR);
-		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico.setFaixaSalarial(faixaA);
 		faixaSalarialHistorico.setData(new Date());
 		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
 
@@ -270,7 +261,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setFaixaSalarial(faixaA);
 		historicoColaborador.setSalario(1000D);
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2008));
 		historicoColaborador.setMotivo("m");
@@ -397,12 +388,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setNome("nome");
 		colaborador = colaboradorDao.save(colaborador);
 
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		FaixaSalarial faixa = FaixaSalarialFactory.getEntity();
+		faixa = faixaSalarialDao.save(faixa);
 
 		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
 		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.VALOR);
-		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico.setFaixaSalarial(faixa);
 		faixaSalarialHistorico.setData(new Date());
 		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
 
@@ -411,7 +402,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setFaixaSalarial(faixa);
 		historicoColaborador.setSalario(1000D);
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2008));
 		historicoColaborador.setMotivo("m");
@@ -578,17 +569,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
 
-		Empresa empresa = new Empresa();
-		empresa.setNome("empresa");
-		empresa.setCnpj("21212121212");
-		empresa.setRazaoSocial("empresa");
-		empresa = empresaDao.save(empresa);
-
-		Empresa empresa2 = new Empresa();
-		empresa2.setNome("empresa");
-		empresa2.setCnpj("21212121212");
-		empresa2.setRazaoSocial("empresa");
-		empresa2 = empresaDao.save(empresa2);
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa("empresa", "21212121212", "empresa"));
+		Empresa empresa2 = empresaDao.save(EmpresaFactory.getEmpresa("empresa", "21212121212", "empresa"));
 
 		Colaborador c1 = getColaborador();
 		c1.setEmpresa(empresa);
@@ -613,31 +595,25 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
 
-		Empresa empresa = new Empresa();
-		empresa.setNome("empresa");
-		empresa.setRazaoSocial("empresa");
-		empresa = empresaDao.save(empresa);
-
-		Empresa empresa2 = new Empresa();
-		empresa2.setNome("empresa");
-		empresa2 = empresaDao.save(empresa2);
+		Empresa empresa_A = empresaDao.save(empresaDao.save(EmpresaFactory.getEmpresa("empresa", "", "empresa")));
+		Empresa empresa_B = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		Colaborador c1 = getColaborador();
-		c1.setEmpresa(empresa);
+		c1.setEmpresa(empresa_A);
 		c1.setDataAdmissao(DateUtil.criarDataMesAno(01, 01, 2015));
 		c1 = colaboradorDao.save(c1);
 
 		Colaborador c2 = getColaborador();
-		c2.setEmpresa(empresa);
+		c2.setEmpresa(empresa_A);
 		c2.setDataAdmissao(DateUtil.criarDataMesAno(01, 02, 2015));
 		c2 = colaboradorDao.save(c2);
 
 		Colaborador c3 = getColaborador();
-		c3.setEmpresa(empresa2);
+		c3.setEmpresa(empresa_B);
 		c3.setDataAdmissao(DateUtil.criarDataMesAno(02, 01, 2015));
 		c3 = colaboradorDao.save(c3);
 
-		Collection<Colaborador> colaboradores = colaboradorDao.findComAnoDeEmpresa(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2016));
+		Collection<Colaborador> colaboradores = colaboradorDao.findComAnoDeEmpresa(empresa_A.getId(), DateUtil.criarDataMesAno(01, 01, 2016));
 
 		assertFalse(colaboradores.isEmpty());
 		assertEquals(colaboradores.size(), 1);
@@ -648,17 +624,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
 
-		Empresa empresa = new Empresa();
-		empresa.setNome("empresa");
-		empresa.setCnpj("21212121212");
-		empresa.setRazaoSocial("empresa");
-		empresa = empresaDao.save(empresa);
-
-		Empresa empresa2 = new Empresa();
-		empresa2.setNome("empresa");
-		empresa2.setCnpj("21212121212");
-		empresa2.setRazaoSocial("empresa");
-		empresa2 = empresaDao.save(empresa2);
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
+		Empresa empresa2 = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		Colaborador c1 = getColaborador();
 		c1.setEmpresa(empresa);
@@ -678,47 +645,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(2, colaboradores.size());
 	}
 
-	// @SuppressWarnings("unchecked")
-	// public void testGetCountSQL()
-	// {
-	// Empresa empresa = new Empresa();
-	// empresa.setNome("empresa");
-	// empresa.setCnpj("21212121212");
-	// empresa.setRazaoSocial("empresa");
-	// empresaDao.save(empresa);
-	//
-	// insereAmbiente(empresa);
-	//
-	// Map parametros = new HashMap();
-	// parametros.put("empresaId", 4L);
-	// parametros.put("areaId", null);
-	//
-	// Collection<Object> colaboradors =
-	// colaboradorDao.findComHistoricoFuturoSQL(parametros, 5, 10);
-	// assertEquals(27, colaboradors.size());
-	//
-	// parametros.put("nomeBusca", "");
-	// parametros.put("cpfBusca", "1111");
-	//
-	// result = colaboradorDao.getCount(parametros,
-	// TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
-	// assertEquals(1, result);
-	//
-	// parametros.put("nomeBusca", "Chi");
-	// parametros.put("cpfBusca", "1111");
-	//
-	// result = colaboradorDao.getCount(parametros,
-	// TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
-	// assertEquals(1, result);
-	//
-	// }
-
 	public void testGetCount() {
-		Empresa empresa = new Empresa();
-		empresa.setNome("empresa");
-		empresa.setCnpj("21212121212");
-		empresa.setRazaoSocial("empresa");
-		empresa = empresaDao.save(empresa);
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		insereAmbiente(empresa);
 
@@ -747,11 +675,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	@SuppressWarnings("unchecked")
 	public void testFindList() {
-		Empresa empresa = new Empresa();
-		empresa.setNome("empresa");
-		empresa.setCnpj("21212121212");
-		empresa.setRazaoSocial("empresa");
-		empresa = empresaDao.save(empresa);
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		insereAmbiente(empresa);
 
@@ -784,11 +708,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	}
 
 	private void insereAmbiente(Empresa empresa) {
-		Empresa empresa2 = new Empresa();
-		empresa2.setNome("empresa");
-		empresa2.setCnpj("21212121212");
-		empresa2.setRazaoSocial("empresa");
-		empresa2 = empresaDao.save(empresa2);
+		Empresa empresa2 = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		AreaOrganizacional ao = AreaOrganizacionalFactory.getEntity();
 		ao = areaOrganizacionalDao.save(ao);
@@ -877,17 +797,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		area1.setNome("area 1");
 		area1 = areaOrganizacionalDao.save(area1);
 
-		Empresa empresa = new Empresa();
-		empresa.setNome("empresa");
-		empresa.setCnpj("21212121212");
-		empresa.setRazaoSocial("empresa");
-		empresa = empresaDao.save(empresa);
-
-		Empresa empresa2 = new Empresa();
-		empresa2.setNome("empresa");
-		empresa2.setCnpj("21212121212");
-		empresa2.setRazaoSocial("empresa");
-		empresa2 = empresaDao.save(empresa2);
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
+		Empresa empresa2 = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		Colaborador c1 = getColaborador();
 		c1.setEmpresa(empresa);
@@ -933,17 +844,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		area1.setNome("area 1");
 		area1 = areaOrganizacionalDao.save(area1);
 
-		Empresa empresa = new Empresa();
-		empresa.setNome("empresa");
-		empresa.setCnpj("21212121212");
-		empresa.setRazaoSocial("empresa");
-		empresa = empresaDao.save(empresa);
-
-		Empresa empresa2 = new Empresa();
-		empresa2.setNome("empresa");
-		empresa2.setCnpj("21212121212");
-		empresa2.setRazaoSocial("empresa");
-		empresa2 = empresaDao.save(empresa2);
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
+		Empresa empresa2 = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
@@ -992,17 +894,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void testFindColaboradorUsuarioByCpf() {
 
-		Empresa empresa = new Empresa();
-		empresa.setNome("empresa");
-		empresa.setCnpj("21212121212");
-		empresa.setRazaoSocial("empresa");
-		empresa = empresaDao.save(empresa);
-
-		Empresa empresa2 = new Empresa();
-		empresa2.setNome("empresa");
-		empresa2.setCnpj("21212121212");
-		empresa2.setRazaoSocial("empresa");
-		empresa2 = empresaDao.save(empresa2);
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
+		Empresa empresa2 = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario.setAcessoSistema(true);
@@ -1045,11 +938,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	}
 
 	public void testeFindbyCandidato() {
-		Empresa empresa = new Empresa();
-		empresa.setNome("empresa1");
-		empresa.setCnpj("1111212215225");
-		empresa.setRazaoSocial("razaoSocial1");
-		empresa = empresaDao.save(empresa);
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		Candidato candidato = getCandidato();
 		candidato.setEmpresa(empresa);
@@ -1969,11 +1858,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	}
 	
 	public void testFindByAreaEstabelecimento() {
-		Empresa empresa = new Empresa();
-		empresa.setNome("empresa");
-		empresa.setCnpj("21212121212");
-		empresa.setRazaoSocial("empresa");
-		empresa = empresaDao.save(empresa);
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		Colaborador colaborador = saveColaborador(empresa, "Junior", "", "", null);
 
@@ -2179,11 +2064,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	}
 
 	public void testFindByAreasOrganizacionaisEstabelecimentos() {
-		Empresa empresa = new Empresa();
-		empresa.setNome("empresa");
-		empresa.setCnpj("21212121212");
-		empresa.setRazaoSocial("empresa");
-		empresa = empresaDao.save(empresa);
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		Colaborador colaborador = getColaborador();
 		colaborador.setNome("francisco");
@@ -3789,12 +3670,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaborador = getEntity();
 		colaborador = colaboradorDao.save(colaborador);
 
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		FaixaSalarial faixaSalarialA = FaixaSalarialFactory.getEntity();
+		faixaSalarialA = faixaSalarialDao.save(faixaSalarialA);
 
 		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
 		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.VALOR);
-		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarialA);
 		faixaSalarialHistorico.setData(new Date());
 		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
 
@@ -3803,7 +3684,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setFaixaSalarial(faixaSalarialA);
 		historicoColaborador.setSalario(1000D);
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 3000));
 		historicoColaborador.setMotivo("m");

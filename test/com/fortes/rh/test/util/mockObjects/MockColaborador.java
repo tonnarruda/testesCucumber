@@ -4,8 +4,8 @@ import java.util.Date;
 
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
-import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.test.model.geral.EnderecoFactory;
 
 public class MockColaborador
 {
@@ -20,15 +20,7 @@ public class MockColaborador
 		colaborador.setObservacao("observação");
 		colaborador.setDataAdmissao(new Date());
 
-		Endereco endereco = new Endereco();
-		endereco.setLogradouro("logradouro");
-		endereco.setNumero("00");
-		endereco.setComplemento("complemento");
-		endereco.setBairro("bairro");
-		endereco.setCidade(null);
-		endereco.setUf(null);
-		endereco.setCep("0000000");
-		colaborador.setEndereco(endereco);
+		colaborador.setEndereco(EnderecoFactory.getEntity());
 
 		Contato contato = new Contato();
 		contato.setEmail("mail@mail.com");

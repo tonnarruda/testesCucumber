@@ -131,29 +131,17 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa e2 = EmpresaFactory.getEmpresa();
 		empresaDao.save(e2);
 		
-		Candidato c = getCandidato();
-		c.setNome("bobinho");
-		c.setEmpresa(e1);
-		c.getPessoal().setCpf("000000000");
+		Candidato c = getCandidatoDiponivel("chico", "00000000", e1);
 		candidatoDao.save(c);
-
-		Candidato c2 = getCandidato();
-		c2.setNome("bobinho2");
-		c2.setEmpresa(e1);
-		c2.getPessoal().setCpf("0000000000");
+		
+		Candidato c2 = getCandidatoDiponivel("bob", "0000000000", e1);
 		candidatoDao.save(c2);
-
-		Candidato c3 = getCandidato();
-		c3.setNome("bobinho3");
-		c3.setEmpresa(e2);
-		c3.getPessoal().setCpf("0000000000");
+		
+		Candidato c3 = getCandidatoDiponivel("bobinho", "0000000000", e2);
 		candidatoDao.save(c3);
 		
-		Candidato c4 = getCandidato();
-		c4.setNome("bobinho4");
-		c4.setEmpresa(e1);
+		Candidato c4 = getCandidatoDiponivel("bobinho2", "0000000000", e2);
 		c4.setContratado(true);
-		c4.getPessoal().setCpf("0000000000");
 		candidatoDao.save(c4);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
@@ -170,11 +158,11 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 		
-		Candidato c1 = getCandidato();
-		c1.setDataCadastro(DateUtil.criarDataMesAno(03, 02, 1984));
-		c1.setOrigem(OrigemCandidato.CADASTRADO);
-		c1.setEmpresa(empresa);
-		candidatoDao.save(c1);
+		Candidato cand1 = getCandidato();
+		cand1.setDataCadastro(DateUtil.criarDataMesAno(03, 02, 1984));
+		cand1.setOrigem(OrigemCandidato.CADASTRADO);
+		cand1.setEmpresa(empresa);
+		candidatoDao.save(cand1);
 		
 		Candidato c2 = getCandidato();
 		c2.setDataCadastro(DateUtil.criarDataMesAno(02, 03, 1984));
@@ -240,7 +228,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c3.setNome("bobinho2");
 		c3.getPessoal().setCpf("23423");
 
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Candidato candidato = candidatoDao.findByCandidatoId(c3.getId());
 		assertEquals(c3.getId(), candidato.getId());
@@ -254,24 +242,12 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa2 = EmpresaFactory.getEmpresa();
 		empresa2 = empresaDao.save(empresa2);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("11111111111");
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222222");
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa2);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		Candidato c1 = getCandidatoDiponivel("chico", "11111111111", empresa);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22226222221", empresa);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "73333333333", empresa2);
+		candidatoDao.save(c3);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
 		Collection<Candidato> candidatos = candidatoDao.find(1, 10, "", "", null, null, null, "", 'T',null, null, null, false, false, empresa.getId());
@@ -296,33 +272,19 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(c2.getId(), ((Candidato)(candidatos.toArray()[0])).getId(), 'T');
 	}
 
-
 	public void testFindVisualizar()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.setDisponivel(true);
-		c1.getPessoal().setCpf("11111111111");
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
+		Candidato c1 = getCandidatoDiponivel("chico", "11111111111", empresa);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22226222221", empresa);
 		c2.setDisponivel(false);
-		c2.getPessoal().setCpf("22222222221");
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "73333333333", empresa);
 		c3.setDisponivel(false);
-		c3.getPessoal().setCpf("3333333333");
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
 		Collection<Candidato> candidatos = candidatoDao.find(1, 10, "", "", null, null, null, "", 'T',null, null, null, false, false, empresa.getId());
@@ -426,7 +388,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c1.setCpf(cpfBusca);
 		c1.setEmpresa(empresa);
 		c1.setDisponivel(false);
-		c1 = candidatoDao.save(c1);
+		candidatoDao.save(c1);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
 		Integer count = candidatoDao.getCount(nomeBusca, cpfBusca, "", "", "", "", 'I',dataIni, dataFim, null, false, false, empresa.getId());
@@ -450,7 +412,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c1.setCpf(cpfBusca);
 		c1.setEmpresa(empresa);
 		c1.setDisponivel(true);
-		c1 = candidatoDao.save(c1);
+		candidatoDao.save(c1);
 
 		Integer count = candidatoDao.getCount(parametros, new Long[]{empresa.getId()});
 
@@ -478,7 +440,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c1.setCpf(cpfBusca);
 		c1.setEmpresa(empresa);
 		c1.setDisponivel(true);
-		c1 = candidatoDao.save(c1);
+		candidatoDao.save(c1);
 
 		Integer count = candidatoDao.getCount(parametros, new Long[]{empresa.getId()});
 
@@ -490,33 +452,12 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("1111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("22222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		Candidato c1 = getCandidatoDiponivel("chico", "1141111111", empresa);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22226222221", empresa);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "73333333333", empresa);
+		candidatoDao.save(c3);
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
@@ -526,6 +467,18 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		assertFalse(candidatos.isEmpty());
 		assertEquals(1, candidatos.size());
+	}
+	
+	private Candidato getCandidatoDiponivel(String nome, String cpf, Empresa empresa){
+		Candidato candidato = getCandidato();
+		candidato.setEmpresa(empresa);
+		candidato.setNome(nome);
+		candidato.getPessoal().setCpf(cpf);
+		candidato.setDisponivel(true);
+		candidato.setContratado(false);
+		candidato.setBlackList(false);
+		
+		return candidato;
 	}
 
 	public void testFindBuscaAreas() throws Exception
@@ -539,35 +492,16 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Collection<AreaInteresse> areaInteresses = new ArrayList<AreaInteresse>();
 		areaInteresses.add(areaInteresse);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("1111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111111111", empresa);
 		c1.setAreasInteresse(areaInteresses);
+		candidatoDao.save(c1);
 
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222222221", empresa);
+		candidatoDao.save(c2);
 
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33333333333", empresa);
 		c3.setAreasInteresse(areaInteresses);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
@@ -579,7 +513,6 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertFalse(candidatos.isEmpty());
 		assertEquals(2, candidatos.size());
 	}
-
 	
 	public void testFindBuscaBairros() throws Exception
 	{
@@ -594,36 +527,17 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		bairro2.setNome("bairro2");
 		bairro2 = bairroDao.save(bairro2);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111111111", empresa);
 		c1.getEndereco().setBairro(bairro.getNome());
+		candidatoDao.save(c1);
 
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222222221", empresa);
 		c2.getEndereco().setBairro(bairro.getNome());
+		candidatoDao.save(c2);
 
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33333333333", empresa);
 		c3.getEndereco().setBairro(bairro2.getNome());
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
@@ -639,27 +553,21 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	// 1:todas
 	// 2:qualquer
 	// 3:frase exata
-	public void testFindBuscapalavrasChaveCurriculoEscaneado() throws Exception
-	{
+	public void testFindBuscapalavrasChaveCurriculoEscaneado() throws Exception{
 		String palavra = "teste palavra";
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa = empresaDao.save(empresa);
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111111111", empresa);
 		c1.setOcrTexto(palavra);
+		candidatoDao.save(c1);
 
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
+		Candidato c2 = getCandidatoDiponivel("bla", "1111111111", empresa);
 		c2.setOcrTexto(palavra);
+		candidatoDao.save(c2);
 
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
+		Candidato c3 = getCandidatoDiponivel("x", "1111111111", empresa);
 		c3.setOcrTexto("erro");
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
@@ -735,12 +643,12 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		formacao2.setCandidato(c2);
 		formacaoDao.save(formacao2);
 		
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
-		c4 = candidatoDao.save(c4);
-		c5 = candidatoDao.save(c5);
-		c6 = candidatoDao.save(c6);
+		candidatoDao.save(c1);
+		candidatoDao.save(c2);
+		candidatoDao.save(c3);
+		candidatoDao.save(c4);
+		candidatoDao.save(c5);
+		candidatoDao.save(c6);
 		
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 		
@@ -782,34 +690,15 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111111111", empresa);
 		c1.setCargos(cargos);
+		candidatoDao.save(c1);
 
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222222421", empresa);
+		candidatoDao.save(c2);
 
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33334333333", empresa);
+		candidatoDao.save(c3);
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
@@ -840,37 +729,18 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Conhecimento> conhecimentos = new ArrayList<Conhecimento>();
 		conhecimentos.add(conhecimento);
-
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("1111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		
+		Candidato c1 = getCandidatoDiponivel("chico", "1111131111", empresa);
+		candidatoDao.save(c1);
 		c1.setConhecimentos(conhecimentos);
 
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222223221", empresa);
+		candidatoDao.save(c2);
 		c2.setConhecimentos(conhecimentos);
 
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "333w3333333", empresa);
+		candidatoDao.save(c3);
 		c3.setConhecimentos(conhecimentos);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
@@ -915,36 +785,17 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Collection<CandidatoIdioma> candidatoIdiomas3 = new ArrayList<CandidatoIdioma>();
 		candidatoIdiomas3.add(candidatoIdioma3);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111111111", empresa);
 		c1.setCandidatoIdiomas(candidatoIdiomas1);
+		candidatoDao.save(c1);
 
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222222221", empresa);
 		c2.setCandidatoIdiomas(candidatoIdiomas1);
+		candidatoDao.save(c2);
 
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33333333333", empresa);
 		c3.setCandidatoIdiomas(candidatoIdiomas2);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		candidatoIdioma.setCandidato(c1);
 		candidatoIdioma2.setCandidato(c2);
@@ -997,36 +848,17 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Collection<CandidatoIdioma> candidatoIdiomas3 = new ArrayList<CandidatoIdioma>();
 		candidatoIdiomas3.add(candidatoIdioma3);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1211111111", empresa);
 		c1.setCandidatoIdiomas(candidatoIdiomas1);
+		candidatoDao.save(c1);
 
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		Candidato c2 = getCandidatoDiponivel("bob", "21222222221", empresa);
 		c2.setCandidatoIdiomas(candidatoIdiomas1);
+		candidatoDao.save(c2);
 
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "36333333333", empresa);
 		c3.setCandidatoIdiomas(candidatoIdiomas2);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		candidatoIdioma.setCandidato(c1);
 		candidatoIdioma2.setCandidato(c2);
@@ -1053,33 +885,12 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111511111", empresa);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222252221", empresa);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33353333333", empresa);
+		candidatoDao.save(c3);
 
 		Map parametros = new HashMap();
 		parametros.put("nomeBusca", c1.getNome());
@@ -1096,36 +907,17 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111111111", empresa);
 		c1.setDataAtualizacao(DateUtil.criarDataMesAno(02, 01, 2008));
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		candidatoDao.save(c1);
+		
+		Candidato c2 = getCandidatoDiponivel("bob", "22222222221", empresa);
 		c2.setDataAtualizacao(DateUtil.criarDataMesAno(01, 01, 2007));
+		candidatoDao.save(c2);
 
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33333333333", empresa);
 		c3.setDataAtualizacao(DateUtil.criarDataMesAno(01, 01, 2006));
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Map parametros = new HashMap();
 		parametros.put("dataCadIni", DateUtil.criarDataMesAno(01, 01, 2008));
@@ -1142,36 +934,15 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111211111", empresa);
 		c1.setDataAtualizacao(DateUtil.criarDataMesAno(01, 01, 2008));
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222232221", empresa);
 		c2.setDataAtualizacao(DateUtil.criarDataMesAno(01, 01, 2007));
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33433333333", empresa);
 		c3.setDataAtualizacao(DateUtil.criarDataMesAno(01, 01, 2006));
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Map parametros = new HashMap();
 		parametros.put("dataCadFim", DateUtil.criarDataMesAno(01, 02, 2008));
@@ -1188,36 +959,15 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111111111", empresa);
 		c1.getPessoal().setSexo('M');
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222222221", empresa);
 		c2.getPessoal().setSexo('M');
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33333333333", empresa);
 		c3.getPessoal().setSexo('F');
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Map parametros = new HashMap();
 		parametros.put("sexo", String.valueOf(c1.getPessoal().getSexo()));
@@ -1234,42 +984,20 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111211111", empresa);
 		c1.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 03, 2009));
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222232221", empresa);
 		c2.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 03, 1982));
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33433333333", empresa);
 		c3.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 03, 1981));
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Map parametros = new HashMap();
 		parametros.put("idadeMin", "26");
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
-
 		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, new Long[]{empresa.getId()}, idsCandidatos, false, null, null);
 
 		assertEquals(2, candidatos.size());
@@ -1280,36 +1008,15 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111211111", empresa);
 		c1.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 03, 2009));
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222232221", empresa);
 		c2.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 03, 1982));
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33433333333", empresa);
 		c3.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 03, 1981));
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Map parametros = new HashMap();
 		parametros.put("idadeMax", "26");
@@ -1333,42 +1040,20 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		cidade.setUf(estado);
 		cidade = cidadeDao.save(cidade);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111211111", empresa);
 		c1.getEndereco().setCidade(cidade);
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222232221", empresa);
 		c2.getEndereco().setCidade(cidade);
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33433333333", empresa);
 		c3.getEndereco().setCidade(cidade);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Map parametros = new HashMap();
 		parametros.put("cidade", cidade.getId());
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
-
 		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, new Long[]{empresa.getId()}, idsCandidatos, false, null, null);
 
 		assertEquals(3, candidatos.size());
@@ -1382,35 +1067,15 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Estado estado = EstadoFactory.getEntity();
 		estado = estadoDao.save(estado);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111211111", empresa);
 		c1.getEndereco().setUf(estado);
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222232221", empresa);
+		c2.setDataAtualizacao(DateUtil.criarDataMesAno(01, 01, 2007));
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33433333333", empresa);
 		c3.getEndereco().setUf(estado);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Map parametros = new HashMap();
 		parametros.put("uf", estado.getId());
@@ -1427,43 +1092,20 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111211111", empresa);
 		c1.getPessoal().setEscolaridade("852");
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222232221", empresa);
 		c2.getPessoal().setEscolaridade("987");
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33433333333", empresa);
 		c3.getPessoal().setEscolaridade("654");
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Map parametros = new HashMap();
 		parametros.put("escolaridade", "987");
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
-
 		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, new Long[]{empresa.getId()}, idsCandidatos, false, null, null);
 
 		assertEquals(1, candidatos.size());
@@ -1474,36 +1116,15 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111211111", empresa);
 		c1.getSocioEconomica().setPossuiVeiculo(true);
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222232221", empresa);
 		c2.getSocioEconomica().setPossuiVeiculo(true);
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33433333333", empresa);
 		c3.getSocioEconomica().setPossuiVeiculo(false);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
@@ -1520,42 +1141,20 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111211111", empresa);
 		c1.getSocioEconomica().setPossuiVeiculo(true);
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222232221", empresa);
 		c2.getSocioEconomica().setPossuiVeiculo(true);
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33433333333", empresa);
 		c3.getSocioEconomica().setPossuiVeiculo(false);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Map parametros = new HashMap();
 		parametros.put("candidatosComExperiencia", new Long[]{c1.getId(),c2.getId()});
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
-
 		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, new Long[]{empresa.getId()}, idsCandidatos, false, null, null);
 
 		assertEquals(2, candidatos.size());
@@ -1574,34 +1173,13 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 		candidatoSolicitacaos.add(candidadatoSolicitacao);
 		
-		Candidato c1 = getCandidato();
-		c1.setCandidatoSolicitacaos(candidatoSolicitacaos);
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111211111", empresa);
 		c1.getSocioEconomica().setPossuiVeiculo(true);
 		candidatoDao.save(c1);
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222232221", empresa);
 		c2.getSocioEconomica().setPossuiVeiculo(true);
 		candidatoDao.save(c2);
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33433333333", empresa);
 		c3.getSocioEconomica().setPossuiVeiculo(false);
 		candidatoDao.save(c3);
 
@@ -1619,59 +1197,6 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(1, candidatos.size());
 	}
 
-	
-	//TODO: Pau na paginação - corrigir depois
-//	public void testGetCountParametros()
-//	{
-//		Empresa empresa = EmpresaFactory.getEmpresa();
-//		empresa = empresaDao.save(empresa);
-//
-//		Estado estado = EstadoFactory.getEntity();
-//		estado = estadoDao.save(estado);
-//
-//		Cidade cidade = CidadeFactory.getEntity();
-//		cidade.setUf(estado);
-//		cidade = cidadeDao.save(cidade);
-//
-//		Candidato c1 = getCandidato();
-//		c1.setEmpresa(empresa);
-//		c1.setNome("chico");
-//		c1.getPessoal().setCpf("11111111111");
-//		c1.setDisponivel(true);
-//		c1.setContratado(false);
-//		c1.setBlackList(false);
-//		c1.getEndereco().setCidade(cidade);
-//
-//		Candidato c2 = getCandidato();
-//		c2.setEmpresa(empresa);
-//		c2.setNome("bob");
-//		c2.getPessoal().setCpf("222222222221");
-//		c2.setDisponivel(true);
-//		c2.setContratado(false);
-//		c2.setBlackList(false);
-//		c2.getEndereco().setCidade(cidade);
-//
-//		Candidato c3 = getCandidato();
-//		c3.setEmpresa(empresa);
-//		c3.setNome("bobinho");
-//		c3.getPessoal().setCpf("3333333333333");
-//		c3.setDisponivel(true);
-//		c3.setContratado(false);
-//		c3.setBlackList(false);
-//		c3.getEndereco().setCidade(cidade);
-//
-//		c1 = candidatoDao.save(c1);
-//		c2 = candidatoDao.save(c2);
-//		c3 = candidatoDao.save(c3);
-//
-//		Map parametros = new HashMap();
-//		parametros.put("cidade", cidade.getId());
-//
-//		int countCandidatos = candidatoDao.getCount(parametros, empresa.getId());
-//
-//		assertEquals(3, countCandidatos);
-//	}
-
 	public void testFindCandidatosById()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -1684,39 +1209,17 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		cidade.setUf(estado);
 		cidade = cidadeDao.save(cidade);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111211111", empresa);
 		c1.getEndereco().setCidade(cidade);
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222232221", empresa);
 		c2.getEndereco().setCidade(cidade);
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33433333333", empresa);
 		c3.getEndereco().setCidade(cidade);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		Long[] ids = {c1.getId(),c2.getId(),c3.getId()};
-
 		Collection<Candidato> candidatos = candidatoDao.findCandidatosById(ids);
 
 		assertEquals(3, candidatos.size());
@@ -1733,19 +1236,11 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Collection<Conhecimento> conhecimentos = new ArrayList<Conhecimento>();
 		conhecimentos.add(conhecimento);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111211111", empresa);
 		c1.setConhecimentos(conhecimentos);
-
-		c1 = candidatoDao.save(c1);
+		candidatoDao.save(c1);
 
 		List conhecimentosRetorno  = candidatoDao.getConhecimentosByCandidatoId(c1.getId());
-
 		assertEquals(conhecimento.getNome(), conhecimentosRetorno.get(0));
 	}
 
@@ -1761,36 +1256,15 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		cidade.setUf(estado);
 		cidade = cidadeDao.save(cidade);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111241111", empresa);
 		c1.getEndereco().setCidade(cidade);
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.getPessoal().setCpf("2222222221");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222232521", empresa);
 		c2.getEndereco().setCidade(cidade);
-
-		Candidato c3 = getCandidato();
-		c3.setEmpresa(empresa);
-		c3.setNome("bobinho");
-		c3.getPessoal().setCpf("33333333333");
-		c3.setDisponivel(true);
-		c3.setContratado(false);
-		c3.setBlackList(false);
+		candidatoDao.save(c2);
+		Candidato c3 = getCandidatoDiponivel("bobinho", "33433633333", empresa);
 		c3.getEndereco().setCidade(cidade);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
+		candidatoDao.save(c3);
 
 		String[] cpfs = {c1.getPessoal().getCpf(),c2.getPessoal().getCpf(),c3.getPessoal().getCpf()};
 
@@ -1804,16 +1278,9 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
-
-		c1 = candidatoDao.save(c1);
-
+		Candidato c1 = getCandidatoDiponivel("chico", "1111241111", empresa);
+		candidatoDao.save(c1);
+		
 		Candidato candidatoRetorno = candidatoDao.findCandidatoCpf(c1.getPessoal().getCpf(), empresa.getId());
 
 		assertEquals(c1.getId(), candidatoRetorno.getId());
@@ -1827,14 +1294,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa2 = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa2);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
-
+		Candidato c1 = getCandidatoDiponivel("chico", "1111241111", empresa);
 		candidatoDao.save(c1);
 		
 		candidatoDao.updateSetContratado(c1.getId(), empresa2.getId());
@@ -1853,7 +1313,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c1.setEmpresa(empresa);
 		c1.setExamePalografico("?????--%%%á#%**&¨%$#@!");
 
-		c1 = candidatoDao.save(c1);
+		candidatoDao.save(c1);
 
 		Candidato candidatoRetorno = candidatoDao.findByIdProjection(c1.getId());
 
@@ -1867,15 +1327,8 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
-
-		c1 = candidatoDao.save(c1);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111241111", empresa);
+		candidatoDao.save(c1);
 
 		candidatoDao.atualizaSenha(c1.getId(),"novaSenha");
 
@@ -1889,16 +1342,9 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.getPessoal().setCpf("111111111");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111241111", empresa);
 		c1.setOcrTexto("texto ocr");
-
-		c1 = candidatoDao.save(c1);
+		candidatoDao.save(c1);
 
 		candidatoDao.atualizaTextoOcr(c1);
 
@@ -1970,7 +1416,6 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		List lista = candidatoDao.findAreaInteressesByCandidatoId(candidato.getId());
 
 		assertEquals(2, lista.size());
-
 	}
 
 	public void testGetCandidatoByNome()
@@ -1996,10 +1441,6 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidato = candidatoDao.save(candidato);
 
 		candidatoDao.updateSenha(candidato.getId(), candidato.getSenha(), StringUtil.encodeString("123456"));
-//TODO erro no teste findById não funciona no teste
-//		Candidato candidatoRetorno = candidatoDao.findById(candidato.getId());
-//
-//		assertEquals(StringUtil.encodeString("123456"), candidatoRetorno.getSenha());
 	}
 
 	public void testGetCandidatosByExperiencia()
@@ -2014,24 +1455,12 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		cidade.setUf(estado);
 		cidade = cidadeDao.save(cidade);
 
-		Candidato c1 = getCandidato();
-		c1.setEmpresa(empresa);
-		c1.setNome("chico");
-		c1.setDisponivel(true);
-		c1.setContratado(false);
-		c1.setBlackList(false);
+		Candidato c1 = getCandidatoDiponivel("chico", "1111241111", empresa);
 		c1.getEndereco().setCidade(cidade);
-
-		Candidato c2 = getCandidato();
-		c2.setEmpresa(empresa);
-		c2.setNome("bob");
-		c2.setDisponivel(true);
-		c2.setContratado(false);
-		c2.setBlackList(false);
+		candidatoDao.save(c1);
+		Candidato c2 = getCandidatoDiponivel("bob", "22222232521", empresa);
 		c2.getEndereco().setCidade(cidade);
-
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
+		candidatoDao.save(c2);
 
 		Cargo ca1 = CargoFactory.getEntity();
 		ca1 = cargoDao.save(ca1);
@@ -2190,17 +1619,10 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Empresa outraEmpresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(outraEmpresa);
-
-		Candidato candidato1 = getCandidato();
-		candidato1.setEmpresa(empresa);
-		candidato1.setNome("Chico");
-		candidato1.setCpf("4544565634");
+		
+		Candidato candidato1 = getCandidatoDiponivel("Cesar", "123456789", empresa);
 		candidatoDao.save(candidato1);
-
-		Candidato candidato2 = getCandidato();
-		candidato2.setEmpresa(empresa);
-		candidato2.setNome("Cesar");
-		candidato2.setCpf("123456789");
+		Candidato candidato2 = getCandidatoDiponivel("bob", "22222232521", empresa);
 		candidatoDao.save(candidato2);
 
 		Candidato candidato2OutraEmpresa = getCandidato();
@@ -2362,17 +1784,10 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		String nomeBusca = "chicó";
 		String cpfBusca = "4544565634";
 		String escolaridade = null;
-
-		Candidato candidato1 = getCandidato();
-		candidato1.setNome("Chico");
-		candidato1.setCpf("4544565634");
-		candidato1.setEmpresa(empresa);
+		
+		Candidato candidato1 = getCandidatoDiponivel("Chico", "4544565634", empresa);
 		candidatoDao.save(candidato1);
-
-		Candidato candidato2 = getCandidato();
-		candidato2.setNome("Chico");
-		candidato2.setCpf("4544565634");
-		candidato2.setEmpresa(empresa);
+		Candidato candidato2 = getCandidatoDiponivel("Chico", "4544565634", empresa);
 		candidatoDao.save(candidato2);
 
 		Collection<Long> candidatosJaSelecionados = new ArrayList<Long>();

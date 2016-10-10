@@ -50,7 +50,6 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.Pessoal;
@@ -76,6 +75,7 @@ import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.model.geral.EnderecoFactory;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 
@@ -948,16 +948,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		colaborador.setDataDesligamento(new Date());
 		colaborador.setObservacao("observação");
 		colaborador.setDataAdmissao(new Date());
-
-		Endereco endereco = new Endereco();
-		endereco.setLogradouro("logradouro");
-		endereco.setNumero("00");
-		endereco.setComplemento("complemento");
-		endereco.setBairro("bairro");
-		endereco.setCidade(null);
-		endereco.setUf(null);
-		endereco.setCep("0000000");
-		colaborador.setEndereco(endereco);
+		colaborador.setEndereco(EnderecoFactory.getEntity());
 
 		Contato contato = new Contato();
 		contato.setEmail("mail@mail.com");

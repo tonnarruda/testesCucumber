@@ -161,8 +161,8 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 		estabelecimentoManager = mock(EstabelecimentoManager.class);
 		MockSpringUtilJUnit4.mocks.put("estabelecimentoManager", estabelecimentoManager);
 
-        Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
-        Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
+//        Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
+//        Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
     }
 	
 	@Test

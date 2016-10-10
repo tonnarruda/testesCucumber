@@ -24,11 +24,20 @@ public class EmpresaFactory
 		return empresa;
 	}
 	
-	public static Empresa getEmpresa(Long id, String codigoAC, String grupoAC)
+	public static Empresa getEmpresa(Long id, String nome, String codigoAC, String grupoAC)
 	{
 		Empresa empresa = getEmpresa(id);
 		empresa.setCodigoAC(codigoAC);
 		empresa.setGrupoAC(grupoAC);
+
+		return empresa;
+	}
+
+	public static Empresa getEmpresa(String nome, String cnpj, String razaoSocial) {
+		Empresa empresa = new Empresa();
+		empresa.setNome(nome);
+		empresa.setCnpj(cnpj);
+		empresa.setRazaoSocial(razaoSocial);
 
 		return empresa;
 	}

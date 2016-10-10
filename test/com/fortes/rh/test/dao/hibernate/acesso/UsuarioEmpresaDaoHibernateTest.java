@@ -283,7 +283,7 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		perfil2.setPapeis(papeis);
 		perfil2 = perfilDao.save(perfil2);
 		
-		Empresa empresa = EmpresaFactory.getEmpresa(null, "01020304", grupoAC.getCodigo());
+		Empresa empresa = EmpresaFactory.getEmpresa(null, null, "01020304", grupoAC.getCodigo());
 		empresa = empresaDao.save(empresa);
 		
 		Usuario usuario1 = UsuarioFactory.getEntity(null, true);
