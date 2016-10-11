@@ -22,4 +22,14 @@ public class EleicaoFactory
 		
 		return eleicao;
 	}
+
+	public static Eleicao getEntity(long id, int votoBranco, int votoNulo, int somaVotos)
+	{
+		Eleicao eleicao = getEntity(id);
+		eleicao.setQtdVotoBranco(votoBranco);
+		eleicao.setQtdVotoNulo(votoNulo);
+		eleicao.setSomaVotos(somaVotos);
+		
+		return eleicao;
+	}
 }

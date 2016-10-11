@@ -83,7 +83,7 @@ public class CandidatoEleicaoListAction extends MyActionSupportList
 		try
 		{
 			candidatoEleicaoManager.saveVotosEleicao(eleitosIds, qtdVotos, idCandidatoEleicaos, eleicao);
-			addActionMessage("Resultado gravado com sucesso.");
+			addActionSuccess("Resultado gravado com sucesso.");
 		}
 		catch (Exception e)
 		{

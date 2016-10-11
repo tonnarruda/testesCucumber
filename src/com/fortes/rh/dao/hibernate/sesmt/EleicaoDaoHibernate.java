@@ -105,7 +105,7 @@ public class EleicaoDaoHibernate extends GenericDaoHibernate<Eleicao> implements
 	public Collection<CandidatoEleicao> findImprimirResultado(Long eleicaoId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new CandidatoEleicao(e.id, e.qtdVotoNulo, e.qtdVotoBranco, co.id, co.nome, co.nomeComercial, fu.nome, ce.qtdVoto, ce.eleito) ");
+		hql.append("select new CandidatoEleicao(e.id, e.qtdVotoNulo, e.qtdVotoBranco, co.id, co.nome, co.nomeComercial, co.dataAdmissao, fu.nome, ce.qtdVoto, ce.eleito) ");
 		hql.append("from Eleicao e ");
 		hql.append("join e.candidatoEleicaos ce ");
 		hql.append("join ce.candidato co ");

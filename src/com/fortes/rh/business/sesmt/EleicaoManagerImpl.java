@@ -203,7 +203,6 @@ public class EleicaoManagerImpl extends GenericManagerImpl<Eleicao, EleicaoDao> 
 
 		try
 		{
-//			candidatoEleicaoManager.removeByEleicao(id);
 			comissaoEleicaoManager.removeByEleicao(id);
 			etapaProcessoEleitoralManager.removeByEleicao(id);
 			remove(id);

@@ -106,7 +106,7 @@ public class EleicaoEditAction extends MyActionSupportEdit
 		}
 		catch (ColecaoVaziaException e)
 		{
-			addActionError(e.getMessage());
+			addActionMessage(e.getMessage());
 			return INPUT;
 		}
 	}

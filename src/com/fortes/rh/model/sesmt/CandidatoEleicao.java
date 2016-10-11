@@ -39,7 +39,7 @@ public class CandidatoEleicao extends AbstractModel implements Serializable
 		this.candidato = candidato;
 	}
 
-	public CandidatoEleicao(Long eleicaoId, Integer qtdVotoNulo,Integer qtdVotoBranco,Long candidatoId,String candidatoNome,String candidatoNomeComercial,String candidatoFuncaoNome,Integer qtdVoto, boolean eleito)
+	public CandidatoEleicao(Long eleicaoId, Integer qtdVotoNulo,Integer qtdVotoBranco,Long candidatoId,String candidatoNome,String candidatoNomeComercial, Date candidatoDataAdmissao,String candidatoFuncaoNome,Integer qtdVoto, boolean eleito)
 	{
 		eleicao =  new Eleicao();
 		eleicao.setId(eleicaoId);
@@ -49,6 +49,7 @@ public class CandidatoEleicao extends AbstractModel implements Serializable
 		candidato.setId(candidatoId);
 		candidato.setNome(candidatoNome);
 		candidato.setNomeComercial(candidatoNomeComercial);
+		candidato.setDataAdmissao(candidatoDataAdmissao);
 		setEleito(eleito);
 		Funcao funcao = new Funcao();
 		funcao.setNome(candidatoFuncaoNome);

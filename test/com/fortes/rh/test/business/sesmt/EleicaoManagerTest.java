@@ -96,23 +96,35 @@ public class EleicaoManagerTest extends MockObjectTestCase
 		eleicaoDao.expects(once()).method("findByIdProjection").with(eq(eleicao.getId())).will(returnValue(eleicao));
 		assertEquals(eleicao, eleicaoManager.findByIdProjection(1L));
 	}
+	
+	public void testMontaAtaDaEleicao() throws Exception
+	{
+		Eleicao eleicao = EleicaoFactory.getEntity(1L, 10, 0, 30);
+
+		CandidatoEleicao candidatoEleicao = CandidatoEleicaoFactory.getEntity(10, eleicao);
+		CandidatoEleicao candidatoEleicao2 = CandidatoEleicaoFactory.getEntity(10, eleicao);
+
+		Collection<CandidatoEleicao> candidatoEleicaos = Arrays.asList(candidatoEleicao, candidatoEleicao2);
+
+		eleicao.setCandidatoEleicaos(candidatoEleicaos);
+		eleicao.setTextoAtaEleicao("Texto da ata.");
+		
+		eleicaoDao.expects(once()).method("findByIdProjection").with(eq(eleicao.getId())).will(returnValue(eleicao));
+		eleicaoDao.expects(once()).method("findImprimirResultado").with(eq(eleicao.getId())).will(returnValue(candidatoEleicaos));
+		
+		Eleicao eleicaoResultado = eleicaoManager.montaAtaDaEleicao(eleicao.getId());
+		
+		assertEquals(eleicao.getTextoAtaEleicao(), eleicaoResultado.getTextoAtaEleicao());
+	}
 
 	public void testFindImprimirResultado()
 	{
-		Eleicao eleicao = EleicaoFactory.getEntity(1L);
-		eleicao.setQtdVotoBranco(10);
-		eleicao.setQtdVotoNulo(0);
-		eleicao.setSomaVotos(30);
+		Eleicao eleicao = EleicaoFactory.getEntity(1L, 10, 0, 30);
 
-		CandidatoEleicao candidatoEleicao = CandidatoEleicaoFactory.getEntity();
-		candidatoEleicao.setQtdVoto(10);
-		candidatoEleicao.setEleicao(eleicao);
-		CandidatoEleicao candidatoEleicao2 = CandidatoEleicaoFactory.getEntity();
-		candidatoEleicao2.setQtdVoto(10);
-		candidatoEleicao2.setEleicao(eleicao);
-		Collection<CandidatoEleicao> candidatoEleicaos = new ArrayList<CandidatoEleicao>();
-		candidatoEleicaos.add(candidatoEleicao);
-		candidatoEleicaos.add(candidatoEleicao2);
+		CandidatoEleicao candidatoEleicao = CandidatoEleicaoFactory.getEntity(10, eleicao);
+		CandidatoEleicao candidatoEleicao2 = CandidatoEleicaoFactory.getEntity(10, eleicao);
+
+		Collection<CandidatoEleicao> candidatoEleicaos = Arrays.asList(candidatoEleicao, candidatoEleicao2);
 
 		eleicao.setCandidatoEleicaos(candidatoEleicaos);
 

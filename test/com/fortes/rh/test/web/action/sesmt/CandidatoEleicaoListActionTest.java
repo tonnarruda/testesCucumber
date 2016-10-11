@@ -27,6 +27,7 @@ public class CandidatoEleicaoListActionTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock areaOrganizacionalManager;
 	private Mock eleicaoManager;
+	private Mock candidatoEleicaoManager;
 
 
     protected void setUp() throws Exception
@@ -59,7 +60,6 @@ public class CandidatoEleicaoListActionTest extends MockObjectTestCase
 
     public void testList() throws Exception
     {
-
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao");
     	manager.expects(once()).method("getColaboradoresByEleicao").will(returnValue(new ArrayList<CandidatoEleicao>()));
     	eleicaoManager.expects(once()).method("findByIdProjection").will(returnValue(action.getEleicao()));
@@ -81,11 +81,6 @@ public class CandidatoEleicaoListActionTest extends MockObjectTestCase
     	assertEquals(action.delete(), "success");
     }
 
-    public void testPrepareInsert() throws Exception
-    {
-    	assertEquals("success", action.prepareInsert());
-    }
-    
     public void testImprimirComprovanteInscricao() throws Exception
     {
     	CandidatoEleicao candidatoEleicao = CandidatoEleicaoFactory.getEntity(23L);
@@ -108,7 +103,4 @@ public class CandidatoEleicaoListActionTest extends MockObjectTestCase
     	assertEquals("Jéssica",action.getNomeBusca());
 
     }
-
-
-
 }
