@@ -20,12 +20,6 @@
 		    .info li { color: #00529B !important; }
 		    .success li { color: #4F8A10 !important; }
 		    
-		    .ui-widget-content.column {
-		    	position: relative;
-		    }
-		    /*ol.in-selection {
-		    	margin-top: 20px !important;
-		    }*/
 		    .selecteds {
 		    	/*margin: -5px -10px 5px;
 				position: absolute;*/
