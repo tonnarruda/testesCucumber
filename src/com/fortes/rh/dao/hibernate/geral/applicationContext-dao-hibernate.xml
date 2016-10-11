@@ -248,6 +248,11 @@
     </property>
   </bean>
   <bean id="cartaoDaoTarget" class="com.fortes.rh.dao.hibernate.geral.CartaoDaoHibernate">
+  	<property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="configuracaoCampoExtraVisivelObrigadotorioDaoTarget" class="com.fortes.rh.dao.hibernate.geral.ConfiguracaoCampoExtraVisivelObrigadotorioDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
     </property>

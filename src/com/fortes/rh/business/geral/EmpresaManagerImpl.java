@@ -29,6 +29,7 @@ import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.dicionario.TipoConfiguracaoCampoExtra;
 import com.fortes.rh.model.dicionario.TipoEntidade;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
@@ -50,7 +51,6 @@ import com.ibm.icu.text.SimpleDateFormat;
 public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> implements EmpresaManager
 {
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
@@ -67,7 +67,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	private RiscoManager riscoManager;
 	private EpiManager epiManager;
 	private Mail mail;
-
+	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
+	
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
 	{
 		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.find(new String[]{"usuario.id"}, new Object[]{usuarioId});
@@ -326,8 +327,12 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void atualizaCamposExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras, Empresa empresa, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato) 
 	{
-		if(empresa.getId() == null || empresa.getId().equals(-1L))//quanto for para aplicar para todas as empresa
+		Collection<Empresa> empresas = null;
+
+		if(empresa.getId() == null || empresa.getId().equals(-1L)){/**quando for para aplicar para todas as empresa**/
 			configuracaoCampoExtraManager.removeAllNotModelo();
+			empresas = getDao().findTodasEmpresas();
+		}
 	
 		Collection<String> camposExtras = new ArrayList<String>();
 		String camposVisivesisColaborador = "";
@@ -342,7 +347,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			}
 			
 			if(empresa.getId() == null || empresa.getId().equals(-1L)){
-				Collection<Empresa> empresas = getDao().findTodasEmpresas();
 				for (Empresa empresaTmp : empresas) 
 				{
 					ConfiguracaoCampoExtra campoExtraTmp = new ConfiguracaoCampoExtra();
@@ -360,8 +364,28 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 				camposVisivesisCandidato += campoExtra.getNome() + ",";
 		}
 
-		getDao().updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
-		parametrosDoSistemaManager.addCamposExtrasDoCamposVisivel(camposExtras, camposVisivesisColaborador, camposVisivesisCandidato);
+		if(empresa.getId() == null || empresa.getId().equals(-1L)){
+			for (Empresa emp : empresas) {
+				getDao().updateCampoExtra(emp.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+				decideRemoverOrAtualizarConfigCamposVisiveiAndObrigatorios(emp.getId(), camposVisivesisColaborador, camposVisivesisCandidato);
+			}
+		}
+		else{
+			getDao().updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+			decideRemoverOrAtualizarConfigCamposVisiveiAndObrigatorios(empresa.getId(), camposVisivesisColaborador, camposVisivesisCandidato);
+		}
+	}
+
+	private void decideRemoverOrAtualizarConfigCamposVisiveiAndObrigatorios( Long empresaId, String camposVisivesisColaborador, String camposVisivesisCandidato) {
+		if(camposVisivesisColaborador.isEmpty())
+			configuracaoCampoExtraVisivelObrigadotorioManager.removeByEmpresaAndTipoConfig(empresaId, new String[]{TipoConfiguracaoCampoExtra.COLABORADOR.getTipo()});
+		else 
+			configuracaoCampoExtraVisivelObrigadotorioManager.saveOrUpdateConfCamposExtras(empresaId, camposVisivesisColaborador, new String[]{TipoConfiguracaoCampoExtra.COLABORADOR.getTipo()});
+		
+		if(camposVisivesisCandidato.isEmpty())
+			configuracaoCampoExtraVisivelObrigadotorioManager.removeByEmpresaAndTipoConfig(empresaId, new String[]{TipoConfiguracaoCampoExtra.CANDIDATO_EXTERNO.getTipo(), TipoConfiguracaoCampoExtra.CANDIDATO.getTipo()});
+		else 
+			configuracaoCampoExtraVisivelObrigadotorioManager.saveOrUpdateConfCamposExtras(empresaId, camposVisivesisCandidato, new String[]{TipoConfiguracaoCampoExtra.CANDIDATO_EXTERNO.getTipo(), TipoConfiguracaoCampoExtra.CANDIDATO.getTipo()});
 	}
 	
 	public Collection<Empresa> findEmpresasPermitidas(Boolean compartilhar, Long empresId, Long usuarioId, String... roles) 
@@ -613,7 +637,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		this.mail = mail;
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	public void setConfiguracaoCampoExtraVisivelObrigadotorioManager(ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager) {
+		this.configuracaoCampoExtraVisivelObrigadotorioManager = configuracaoCampoExtraVisivelObrigadotorioManager;
 	}
 }

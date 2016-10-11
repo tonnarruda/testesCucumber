@@ -24,6 +24,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
+import com.fortes.rh.business.geral.ConfiguracaoCampoExtraVisivelObrigadotorioManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -35,9 +36,11 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.ModulosSistema;
 import com.fortes.rh.model.dicionario.Operacao;
+import com.fortes.rh.model.dicionario.TipoConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
+import com.fortes.rh.model.geral.ConfiguracaoCampoExtraVisivelObrigadotorio;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
@@ -70,6 +73,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private EmpresaManager empresaManager;
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
 
 	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<AreaOrganizacional> areaOrganizacionals;
@@ -79,6 +83,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private Collection<Ocorrencia> ocorrencias ;
 	private Collection<Perfil> perfils;
 	private Collection<Empresa> empresas;
+	private ConfiguracaoCampoExtraVisivelObrigadotorio campoExtraVisivelObrigadotorio;
 	
 	private Empresa empresa;
 	private ParametrosDoSistema parametrosDoSistema;
@@ -218,20 +223,49 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	
 	public String configCampos() throws Exception
 	{
-		String tipoCampoExtra = "ativoColaborador";
-		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CONFIG_CAMPOS_COLABORADOR"}) && 
-				(entidade == null || entidade.equals("colaborador")))
-			habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
-		else {
-			habilitaCampoExtra = getEmpresaSistema().isCampoExtraCandidato();
-			tipoCampoExtra = "ativoCandidato";
-		}
-		
-		if(habilitaCampoExtra)
-			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{tipoCampoExtra, "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});		
-				
 		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		return Action.SUCCESS + "_" + entidade;
+	}
+
+	public String listCamposExtras() throws Exception
+	{
+		if(empresa == null || empresa.getId() == null)
+			empresa = getEmpresaSistema();
+		return Action.SUCCESS;
+	}
+	
+	public String configCamposExtras() throws Exception
+	{
+		boolean compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresa.getId(), getUsuarioLogado().getId());
+		
+		String tipoCampoExtra = "ativoColaborador";
+		if((entidade == null || !entidade.equals(TipoConfiguracaoCampoExtra.COLABORADOR.getTipo())))
+			tipoCampoExtra = "ativoCandidato";
+				
+		configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{tipoCampoExtra, "empresa.id"}, new Object[]{true, empresa.getId()}, new String[]{"ordem"});
+		campoExtraVisivelObrigadotorio = configuracaoCampoExtraVisivelObrigadotorioManager.findByEmpresaId(empresa.getId(), entidade);
+		if(campoExtraVisivelObrigadotorio == null){
+			campoExtraVisivelObrigadotorio = new ConfiguracaoCampoExtraVisivelObrigadotorio();
+			campoExtraVisivelObrigadotorio.setEmpresa(empresa);
+			campoExtraVisivelObrigadotorio.setTipoConfiguracaoCampoExtra(entidade);
+		}
+		return Action.SUCCESS + "_" + entidade;
+	}
+	
+	public String updateConfigCamposExtras() throws Exception
+	{
+		entidade = campoExtraVisivelObrigadotorio.getTipoConfiguracaoCampoExtra();
+		empresa = campoExtraVisivelObrigadotorio.getEmpresa();
+		if(camposVisivels!= null && camposVisivels.length > 0){
+			campoExtraVisivelObrigadotorio.setCamposExtrasVisiveis(StringUtil.converteArrayToString(camposVisivels));
+			campoExtraVisivelObrigadotorio.setCamposExtrasObrigatorios(StringUtil.converteArrayToString(camposObrigatorios));
+			configuracaoCampoExtraVisivelObrigadotorioManager.saveOrUpdate(campoExtraVisivelObrigadotorio);
+		}
+		else{
+			configuracaoCampoExtraVisivelObrigadotorioManager.removeByEmpresaAndTipoConfig(campoExtraVisivelObrigadotorio.getEmpresa().getId(), new String[]{campoExtraVisivelObrigadotorio.getTipoConfiguracaoCampoExtra()});
+		}
+		return Action.SUCCESS;
 	}
 	
 	public String prepareDeleteSemCodigoAC() throws Exception
@@ -405,10 +439,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		return habilitaCampoExtra;
 	}
 
-	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
-		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
-	}
-
 	public Collection<ConfiguracaoCampoExtra> getConfiguracaoCampoExtras() {
 		return configuracaoCampoExtras;
 	}
@@ -538,8 +568,24 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		return modulosSistemaCheck;
 	}
 
-	public void setGerenciadorComunicacaoManager(
-			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+	public void setGerenciadorComunicacaoManager( GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
+		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
+	}
+
+	public ConfiguracaoCampoExtraVisivelObrigadotorio getCampoExtraVisivelObrigadotorio() {
+		return campoExtraVisivelObrigadotorio;
+	}
+
+	public void setCampoExtraVisivelObrigadotorio( ConfiguracaoCampoExtraVisivelObrigadotorio campoExtraVisivelObrigadotorio) {
+		this.campoExtraVisivelObrigadotorio = campoExtraVisivelObrigadotorio;
+	}
+
+	public void setConfiguracaoCampoExtraVisivelObrigadotorioManager(
+			ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager) {
+		this.configuracaoCampoExtraVisivelObrigadotorioManager = configuracaoCampoExtraVisivelObrigadotorioManager;
 	}
 }

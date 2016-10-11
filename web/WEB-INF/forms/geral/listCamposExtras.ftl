@@ -5,10 +5,17 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Configurar campos padrões o sistema para o cadastro de Colaborador e Candidato</title>
+	<title>Configurar campos extras para o cadastro de colaborador e candidato</title>
 </head>
 <body>
 	<style type="text/css">
+		#wwgrp_empresa{
+			display: -webkit-box;
+		}
+		#wwctrl_empresa{
+			margin-left: 5px;
+		}
+	
 		.configCampos {
 			margin: 8px 0;
 			width: 600px;
@@ -139,7 +146,7 @@
 			$("#box-candidato").html("");
 			$("#box-candidatoExterno").html("");
 			
-			$("#box-"+entity).load("configCampos.action?entidade="+entity);
+			$("#box-"+entity).load("configCamposExtras.action?entidade="+entity+"&empresa.id="+${empresa.id});
 			
 			$("#menuCadastro a").removeClass("ativa");
 			$("#menuCadastro a."+entity).addClass("ativa");
@@ -214,16 +221,29 @@
 			padding: 10px;
 			border: 1px solid #CCC;
 		}
+		.mini-info {
+			padding: 7px 12px;
+		    padding-left: 36px;
+		    margin-top: 5px;
+		    border-radius: 3px;
+		    color: #2b7bb5;
+		    width: 922px;
+		    background: #DCEBFC;
+		    background-image: url(/fortesrh/imgs/infoHelp.png);
+		    background-repeat: no-repeat;
+		    background-size: 17px 17px;
+			background-position: 10px center;
+		}
 	</style> 
 
 	<div id="menuCadastro">	
-		<@authz.authorize ifAllGranted="ROLE_CONFIG_CAMPOS_PADROES_DO_SISTEMA_PARA_COLABORADOR">			
+		<@authz.authorize ifAllGranted="ROLE_CONFIG_CAMPOS_EXTRAS_PARA_COLABORADOR">			
 			<a href="javascript:showBox('colaborador');" class="colaborador">Colaborador</a>
 		</@authz.authorize>
-		<@authz.authorize ifAllGranted="ROLE_CONFIG_CAMPOS_PADROES_DO_SISTEMA_PARA_CANDIDATO">			
+		<@authz.authorize ifAllGranted="ROLE_CONFIG_CAMPOS_EXTRAS_PARA_CANDIDATO">			
 			<a href="javascript:showBox('candidato');" class="candidato">Candidato</a>
 		</@authz.authorize>
-		<@authz.authorize ifAllGranted="ROLE_CONFIG_CAMPOS_PADROES_DO_SISTEMA_PARA_CANDIDATO_EXTERNO">			
+		<@authz.authorize ifAllGranted="ROLE_CONFIG_CAMPOS_EXTRAS_PARA_CANDIDATO_EXT">			
 			<a href="javascript:showBox('candidatoExterno');" class="candidatoExterno">Candidato pelo módulo externo</a>
 		</@authz.authorize>
 		<a style="border-right: none;">&nbsp;</a> <!-- Essa ultima serve só para deixar uma bordinha clara -->
@@ -234,6 +254,7 @@
 	<div id="box-candidato"></div>
 	<div id="box-candidatoExterno"></div>
 	
+	<div class="mini-info"> As configurações realizadas serão visíveis nos cadastros de colaborador e candidato, caso estejam habilitadas em: Utilitários > Configurações > Campos Extras </div>
 	<div class="buttonGroup">
 		<button onclick="enviaForm()" class="btnGravar" ></button>
 	</div>

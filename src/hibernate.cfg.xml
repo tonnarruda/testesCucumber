@@ -62,6 +62,7 @@
     <mapping class="com.fortes.rh.model.geral.Providencia" />
     <mapping class="com.fortes.rh.model.geral.GerenciadorComunicacao" />
     <mapping class="com.fortes.rh.model.geral.Cartao" />
+    <mapping class="com.fortes.rh.model.geral.ConfiguracaoCampoExtraVisivelObrigadotorio"/>
     <!-- CAPTACAO DE TALENTOS -->
     <mapping class="com.fortes.rh.model.captacao.Candidato" />
     <mapping class="com.fortes.rh.model.captacao.HistoricoCandidato" />

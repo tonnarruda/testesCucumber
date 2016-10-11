@@ -2,11 +2,16 @@ package com.fortes.rh.test.web.action.geral;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 import mockit.Mockit;
 
@@ -20,21 +25,27 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
+import com.fortes.rh.business.geral.ConfiguracaoCampoExtraVisivelObrigadotorioManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.dicionario.TipoConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
+import com.fortes.rh.model.geral.ConfiguracaoCampoExtraVisivelObrigadotorio;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoCampoExtraVisivelObrigadotorioFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
+import com.fortes.rh.test.factory.geral.ConfiguracaoCampoExtraFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
@@ -58,6 +69,7 @@ public class ParametrosDoSistemaEditActionTest
 	private IndiceManager indiceManager;
 	private OcorrenciaManager ocorrenciaManager;
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
+	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
 
 	@Before
 	public void setUp()
@@ -74,6 +86,7 @@ public class ParametrosDoSistemaEditActionTest
 		indiceManager = mock(IndiceManager.class);
 		ocorrenciaManager = mock(OcorrenciaManager.class);
 		colaboradorOcorrenciaManager = mock(ColaboradorOcorrenciaManager.class);
+		configuracaoCampoExtraVisivelObrigadotorioManager = mock(ConfiguracaoCampoExtraVisivelObrigadotorioManager.class);
 
 		action.setParametrosDoSistemaManager(manager);
 		action.setPerfilManager(perfilManager);
@@ -87,6 +100,7 @@ public class ParametrosDoSistemaEditActionTest
 		action.setOcorrenciaManager(ocorrenciaManager);
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		action.setColaboradorOcorrenciaManager(colaboradorOcorrenciaManager);
+		action.setConfiguracaoCampoExtraVisivelObrigadotorioManager(configuracaoCampoExtraVisivelObrigadotorioManager);
 		
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -141,7 +155,7 @@ public class ParametrosDoSistemaEditActionTest
 	
 	@Test
 	public void testConfigCamposColaborador() throws Exception{
-		MockSecurityUtil.roles = new String[]{"ROLE_CONFIG_CAMPOS_COLABORADOR"};
+		MockSecurityUtil.roles = new String[]{"ROLE_CONFIG_CAMPOS_PADROES_DO_SISTEMA_PARA_COLABORADOR"};
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setCampoExtraCandidato(true);
@@ -159,7 +173,7 @@ public class ParametrosDoSistemaEditActionTest
 	
 	@Test
 	public void testConfigCamposCandidato() throws Exception{
-		MockSecurityUtil.roles = new String[]{"ROLE_CONFIG_CAMPOS_COLABORADOR"};
+		MockSecurityUtil.roles = new String[]{"ROLE_CONFIG_CAMPOS_PADROES_DO_SISTEMA_PARA_COLABORADOR"};
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setCampoExtraCandidato(true);
@@ -208,7 +222,83 @@ public class ParametrosDoSistemaEditActionTest
 		assertEquals(Action.SUCCESS, action.deleteSemCodigoAC());
 		assertEquals("- Existem entidades sem código AC", ((String) action.getActionMessages().toArray()[0]));
 	}
+	
+	@Test
+	public void testListCamposExtras() throws Exception
+	{
+		assertEquals(Action.SUCCESS, action.listCamposExtras());
+	}
+	
+	@Test
+	public void testConfigCamposExtrasComConfiguracaoInexistenteNoBanco() throws Exception
+	{
+		inicializaConfiCamposExtras();
+		when(configuracaoCampoExtraVisivelObrigadotorioManager.findByEmpresaId(action.getEmpresa().getId(), action.getEntidade())).thenReturn(null);
+		
+		assertEquals(Action.SUCCESS + "_" + action.getEntidade(), action.configCamposExtras());
+	}
+	
+	@Test
+	public void testConfigCamposExtras() throws Exception
+	{
+		inicializaConfiCamposExtras();
+		ConfiguracaoCampoExtraVisivelObrigadotorio configuracaoCampoExtraVisivelObrigadotorio = ConfiguracaoCampoExtraVisivelObrigadotorioFactory.getEntity(action.getEmpresa().getId(), "texto1", TipoConfiguracaoCampoExtra.COLABORADOR.getTipo());
+		when(configuracaoCampoExtraVisivelObrigadotorioManager.findByEmpresaId(action.getEmpresa().getId(), action.getEntidade())).thenReturn(configuracaoCampoExtraVisivelObrigadotorio);
+		
+		assertEquals(Action.SUCCESS + "_" + action.getEntidade(), action.configCamposExtras());
+	}
+	
+	private void inicializaConfiCamposExtras(){
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+		action.setParametrosDoSistema(parametrosDoSistema);
+		action.setEmpresa(empresa);
+		action.setEntidade(TipoConfiguracaoCampoExtra.COLABORADOR.getTipo());
+				
+		Collection<Empresa> empresas = Arrays.asList(empresa);
+		Usuario usuarioLogado = UsuarioFactory.getEntity(2L);
+		action.setUsuarioLogado(usuarioLogado);
+		
+		
+		when(manager.findById(eq(1L))).thenReturn(parametrosDoSistema);
+		when(empresaManager.findEmpresasPermitidas(eq(parametrosDoSistema.getCompartilharColaboradores()), eq(action.getEmpresa().getId()), eq(action.getUsuarioLogado().getId()))).thenReturn(empresas);
+		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = ConfiguracaoCampoExtraFactory.getCollection();					
+		
+		when(configuracaoCampoExtraManager.find(eq(new String[]{"ativoColaborador", "empresa.id"}), eq(new Object[]{true, action.getEmpresa().getId()}),eq( new String[]{"ordem"}))).thenReturn(configuracaoCampoExtras);
+	}
 
+	
+	@Test
+	public void testUpdateConfigCamposExtras() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEntidade(TipoConfiguracaoCampoExtra.COLABORADOR.getTipo());
+		
+		ConfiguracaoCampoExtraVisivelObrigadotorio configuracaoCampoExtraVisivelObrigadotorio = ConfiguracaoCampoExtraVisivelObrigadotorioFactory.getEntity(empresa.getId(), "texto1", TipoConfiguracaoCampoExtra.COLABORADOR.getTipo());
+		action.setCamposVisivels(new String[]{"texto1"});
+		action.setCampoExtraVisivelObrigadotorio(configuracaoCampoExtraVisivelObrigadotorio);
+		action.updateConfigCamposExtras();
+		
+		verify(configuracaoCampoExtraVisivelObrigadotorioManager, times(1)).saveOrUpdate(configuracaoCampoExtraVisivelObrigadotorio);
+		
+		verify(configuracaoCampoExtraVisivelObrigadotorioManager, never())
+		.removeByEmpresaAndTipoConfig(configuracaoCampoExtraVisivelObrigadotorio.getEmpresa().getId(), new String[]{configuracaoCampoExtraVisivelObrigadotorio.getTipoConfiguracaoCampoExtra()});
+	}
+
+	@Test
+	public void testUpdateConfigCamposExtrasComCamposVisiveisVazio() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEntidade(TipoConfiguracaoCampoExtra.COLABORADOR.getTipo());
+		
+		ConfiguracaoCampoExtraVisivelObrigadotorio configuracaoCampoExtraVisivelObrigadotorio = ConfiguracaoCampoExtraVisivelObrigadotorioFactory.getEntity(empresa.getId(), "", TipoConfiguracaoCampoExtra.COLABORADOR.getTipo());
+		action.setCamposVisivels(new String[]{});
+		action.setCampoExtraVisivelObrigadotorio(configuracaoCampoExtraVisivelObrigadotorio);
+		action.updateConfigCamposExtras();
+		verify(configuracaoCampoExtraVisivelObrigadotorioManager, times(1))
+		.removeByEmpresaAndTipoConfig(configuracaoCampoExtraVisivelObrigadotorio.getEmpresa().getId(), new String[]{configuracaoCampoExtraVisivelObrigadotorio.getTipoConfiguracaoCampoExtra()});
+	}
+	
 	private void iniciaUpdateCampos() {
 		action.setParametrosDoSistema(ParametrosDoSistemaFactory.getEntity(1L));
 		

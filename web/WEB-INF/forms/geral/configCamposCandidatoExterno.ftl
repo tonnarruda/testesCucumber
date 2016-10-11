@@ -55,9 +55,6 @@
 	<div class="option-aba4 abaExperiencias" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(204, 204, 204); background: rgb(217, 217, 217);"><a href="javascript: abas(4)">Experiências</a></div>
 	<div class="option-aba5 abaDocumentos" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(204, 204, 204); background: rgb(217, 217, 217);"><a href="javascript: abas(5)">Documentos</a></div>
 	<div class="option-aba6 abaCurriculo" style="display: none;"><a href="javascript: abas(6)">Currículo</a></div>
-	<#if habilitaCampoExtra && configuracaoCampoExtras?exists && configuracaoCampoExtras?size != 0>
-		<div class="option-aba7 abaExtra"><a href="javascript: abas(7)">Extra</a></div>
-	</#if>
 </div>
 
 <@ww.form name="form" action="updateCamposCandidatoExterno.action"  method="POST">
@@ -541,31 +538,4 @@
 			</tr>
 		</table>
 	</div>
-
-	<#if habilitaCampoExtra && configuracaoCampoExtras?exists && configuracaoCampoExtras?size != 0>
-	<div class="content7">
-		<table id="abaExtra" cellspacing="0" class="configCampos">
-		   <thead>		
-			<tr>
-				<th>
-					<input id="marcarTodosCandidatoExt7" class="marcarTodos check-visivel" type="checkbox" />
-					<label for="marcarTodosCandidatoExt7" class="label-visivel"></label>
-				</th>
-				<th>Campos</th>
-				<th>Obrigatório</th>
-			</tr>
-		    </thead>		
-		    <#list configuracaoCampoExtras as campoExtra>
-			<tr>
-				<td>
-					<input id="visivel-candidatoExterno-${campoExtra.nome}" class="check-visivel" name="camposVisivels" value="${campoExtra.nome}" type="checkbox"/>
-					<label for="visivel-candidatoExterno-${campoExtra.nome}" class="label-visivel"></label>
-				</td>
-				<td class="campo">${campoExtra.titulo}</td>
-				<td><input type="checkbox" value="${campoExtra.nome}" name="camposObrigatorios"/></td>
-			</tr>
-			</#list>
-		</table>
-	</div>
-	</#if>
 </@ww.form>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
+import com.fortes.rh.model.geral.Empresa;
 
 public class ConfiguracaoCampoExtraFactory
 {
@@ -53,6 +54,14 @@ public class ConfiguracaoCampoExtraFactory
 		configuracaoCampoExtra.setDescricao(descricao);
 		configuracaoCampoExtra.setAtivoColaborador(ativoColaborador);
 		configuracaoCampoExtra.setAtivoCandidato(ativoCandidato);
+		return configuracaoCampoExtra;
+	}
+	
+	public static ConfiguracaoCampoExtra getEntity(Long id, Empresa empresa, String descricao, String nome, boolean ativoColaborador, boolean ativoCandidato )
+	{
+		ConfiguracaoCampoExtra configuracaoCampoExtra = getEntity(id, descricao, ativoColaborador, ativoCandidato);
+		configuracaoCampoExtra.setEmpresa(empresa);
+		configuracaoCampoExtra.setNome(nome);
 		return configuracaoCampoExtra;
 	}
 }

@@ -132,6 +132,9 @@ public class Empresa extends AbstractModel implements Serializable
 	private String procedimentoEmCasoDeAcidente;
 	@Lob
 	private String termoDeResponsabilidade;
+	
+	@OneToMany(mappedBy="empresa")
+	private Collection<ConfiguracaoCampoExtraVisivelObrigadotorio> configuracaoCamposExtrasVisiveisObrigadotorios;
     
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
@@ -716,5 +719,13 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setCartoes(Collection<Cartao> cartoes) {
 		this.cartoes = cartoes;
+	}
+	
+	public Collection<ConfiguracaoCampoExtraVisivelObrigadotorio> getConfiguracaoCamposExtrasVisiveisObrigadotorios() {
+		return configuracaoCamposExtrasVisiveisObrigadotorios;
+	}
+
+	public void setConfiguracaoCamposExtrasVisiveisObrigadotorios(Collection<ConfiguracaoCampoExtraVisivelObrigadotorio> configuracaoCamposExtrasVisiveisObrigadotorios) {
+		this.configuracaoCamposExtrasVisiveisObrigadotorios = configuracaoCamposExtrasVisiveisObrigadotorios;
 	}
 }

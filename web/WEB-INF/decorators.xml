@@ -4,6 +4,7 @@
 	<excludes>
 		<pattern>/geral/colaborador/formPrint.action</pattern>
 		<pattern>/geral/parametrosDoSistema/configCampos.action*</pattern>
+		<pattern>/geral/parametrosDoSistema/configCamposExtras.action*</pattern>
 		<pattern>*Json.action*</pattern>
 		<pattern>/webwork/richtexteditor/editor/*</pattern>
 		<pattern>/webwork/**</pattern>

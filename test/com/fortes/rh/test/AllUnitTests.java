@@ -11,6 +11,7 @@ import com.fortes.rh.config.backup.BackupCleanerJobTest;
 import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
 import com.fortes.rh.config.backup.RunAntScriptTest;
+import com.fortes.rh.dao.hibernate.geral.ConfiguracaoCampoExtraVisivelObrigadotorioDaoHibernateTest;
 import com.fortes.rh.security.spring.aop.AbstractModelJsonValueProcessorTest;
 import com.fortes.rh.security.spring.aop.AtributosDaAuditoriaTest;
 import com.fortes.rh.security.spring.aop.AuditoriaGeralAdviceTest;
@@ -97,6 +98,7 @@ import com.fortes.rh.test.business.geral.ColaboradorManagerTest_Junit4;
 import com.fortes.rh.test.business.geral.ColaboradorOcorrenciaManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManagerTest;
 import com.fortes.rh.test.business.geral.ComoFicouSabendoVagaManagerTest;
+import com.fortes.rh.test.business.geral.ConfiguracaoCampoExtraVisivelObrigadotorioManagerTest;
 import com.fortes.rh.test.business.geral.ConfiguracaoPerformanceManagerTest;
 import com.fortes.rh.test.business.geral.ConfiguracaoRelatorioDinamicoManagerTest;
 import com.fortes.rh.test.business.geral.DocumentoAnexoManagerTest;
@@ -477,6 +479,7 @@ import com.fortes.rh.test.web.action.backup.BackupActionTest;
 import com.fortes.rh.test.web.action.captacao.AnuncioListActionTest;
 import com.fortes.rh.test.web.action.captacao.AtitudeEditActionTest;
 import com.fortes.rh.test.web.action.captacao.CandidatoEditActionTest;
+import com.fortes.rh.test.web.action.captacao.CandidatoEditActionTest_JUnit4;
 import com.fortes.rh.test.web.action.captacao.CandidatoListActionTest;
 import com.fortes.rh.test.web.action.captacao.CandidatoSolicitacaoListActionTest;
 import com.fortes.rh.test.web.action.captacao.CandidatoSolicitacaoListActionTest_JUnit4;
@@ -536,6 +539,7 @@ import com.fortes.rh.test.web.action.geral.ClienteEditActionTest;
 import com.fortes.rh.test.web.action.geral.CodigoCBOEditActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorDesligaActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorEditActionTest;
+import com.fortes.rh.test.web.action.geral.ColaboradorEditActionTest_JUnit4;
 import com.fortes.rh.test.web.action.geral.ColaboradorListActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorReportActionTest;
 import com.fortes.rh.test.web.action.geral.ComoFicouSabendoVagaEditActionTest;
@@ -720,6 +724,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	CandidatoManagerTest.class,
 	CandidatoManagerTest_Junit4.class,
 	CandidatoEditActionTest.class,
+	CandidatoEditActionTest_JUnit4.class,
 	CandidatoListActionTest.class,
 	ConhecimentoEditActionTest.class,
 	ConhecimentoListActionTest.class,
@@ -820,6 +825,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	RelatorioListaFrequenciaTest.class,
 
 	ColaboradorEditActionTest.class,
+	ColaboradorEditActionTest_JUnit4.class,
 	ColaboradorListActionTest.class,
 	ColaboradorDesligaActionTest.class,
 
@@ -934,6 +940,8 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ImportadorGastosACTest.class,
 	EmpresaManagerTest.class,
 	EmpresaManagerTest_JUnit4.class,
+	ConfiguracaoCampoExtraVisivelObrigadotorioManagerTest.class,
+	ConfiguracaoCampoExtraVisivelObrigadotorioDaoHibernateTest.class,
 	EmpresaListActionTest.class,
 	EmpresaEditActionTest.class,
 	EstabelecimentoEditActionTest.class,

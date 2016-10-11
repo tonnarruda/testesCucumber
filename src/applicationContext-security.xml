@@ -302,7 +302,10 @@
 				/geral/gastoEmpresa/list*/**=ROLE_MOV_GASTO_GASTOEMPRESA
 				/geral/parametrosDoSistema/prepareUpdate.action*=ROLE_UTI_CONFIGURACAO
 				/geral/parametrosDoSistema/listCampos.action*=ROLE_CONFIG_CAMPOS
-				/geral/parametrosDoSistema/configCampos.action=ROLE_CONFIG_CAMPOS_COLABORADOR,ROLE_CONFIG_CAMPOS_CANDIDATO,ROLE_CONFIG_CAMPOS_CANDIDATO_EXT
+				/geral/parametrosDoSistema/configCampos.action=ROLE_CONFIG_CAMPOS_PADROES_DO_SISTEMA_PARA_COLABORADOR,ROLE_CONFIG_CAMPOS_PADROES_DO_SISTEMA_PARA_CANDIDATO,ROLE_CONFIG_CAMPOS_PADROES_DO_SISTEMA_PARA_CANDIDATO_EXTERNO
+				/geral/parametrosDoSistema/listCamposExtras.action*=ROLE_CONFIG_CAMPOS_EXTRAS
+				/geral/parametrosDoSistema/configCamposExtras.action*=ROLE_CONFIG_CAMPOS_EXTRAS_PARA_COLABORADOR,ROLE_CONFIG_CAMPOS_EXTRAS_PARA_CANDIDATO,ROLE_CONFIG_CAMPOS_EXTRAS_PARA_CANDIDATO_EXT
+				/geral/parametrosDoSistema/updateConfigCamposExtras.action*=ROLE_CONFIG_CAMPOS_EXTRAS_PARA_COLABORADOR,ROLE_CONFIG_CAMPOS_EXTRAS_PARA_CANDIDATO,ROLE_CONFIG_CAMPOS_EXTRAS_PARA_CANDIDATO_EXT
 				/geral/empresa/prepareImportarCadastros*/**=ROLE_IMPORTA_CADASTROS
 				/geral/empresa/importarCadastros*/**=ROLE_IMPORTA_CADASTROS
 				/geral/empresa/*/**=ROLE_UTI_EMPRESA

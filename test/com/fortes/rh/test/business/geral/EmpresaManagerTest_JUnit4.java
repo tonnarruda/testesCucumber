@@ -1,7 +1,16 @@
 package com.fortes.rh.test.business.geral;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.Collection;
+
 import mockit.Mockit;
 
 import org.junit.Before;
@@ -18,6 +27,8 @@ import com.fortes.rh.business.geral.AreaInteresseManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
+import com.fortes.rh.business.geral.ConfiguracaoCampoExtraVisivelObrigadotorioManager;
 import com.fortes.rh.business.geral.EmpresaManagerImpl;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
@@ -26,7 +37,12 @@ import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.dicionario.TipoConfiguracaoCampoExtra;
 import com.fortes.rh.model.dicionario.TipoEntidade;
+import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.ConfiguracaoCampoExtraFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
@@ -56,64 +72,53 @@ public class EmpresaManagerTest_JUnit4
 	private MotivoDemissaoManager motivoDemissaoManager;
 	private RiscoManager riscoManager;
 	private AmbienteManager ambienteManager;
-
+	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
+	
     @Before
 	public void setUp() throws Exception{
     	empresaDao = mock(EmpresaDao.class);
-        empresaManager.setDao(empresaDao);
-        
-        estabelecimentoManager = mock(EstabelecimentoManager.class);
+    	estabelecimentoManager = mock(EstabelecimentoManager.class);
+    	areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
+    	faixaSalarialManager = mock(FaixaSalarialManager.class);
+    	indiceManager = mock(IndiceManager.class);
+    	OcorrenciaManager = mock(OcorrenciaManager.class);
+    	cidadeManager = mock(CidadeManager.class);
+    	conhecimentoManager = mock(ConhecimentoManager.class);
+    	habilidadeManager = mock(HabilidadeManager.class);
+    	atitudeManager = mock(AtitudeManager.class);
+    	areaInteresseManager = mock(AreaInteresseManager.class);
+    	ocorrenciaManager = mock(OcorrenciaManager.class);
+    	motivoDemissaoManager = mock(MotivoDemissaoManager.class);
+    	riscoManager = mock(RiscoManager.class);
+    	ambienteManager = mock(AmbienteManager.class);
+    	turmaManager = mock(TurmaManager.class);
+    	epiManager = mock(EpiManager.class);
+    	colaboradorManager = mock(ColaboradorManager.class);
+    	cargoManager = mock(CargoManager.class);
+    	configuracaoCampoExtraManager = mock(ConfiguracaoCampoExtraManager.class);
+    	configuracaoCampoExtraVisivelObrigadotorioManager = mock(ConfiguracaoCampoExtraVisivelObrigadotorioManager.class);
+    	
+    	empresaManager.setDao(empresaDao);
         empresaManager.setEstabelecimentoManager(estabelecimentoManager);
-        
-        areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
         empresaManager.setAreaOrganizacionalManager(areaOrganizacionalManager);
-
-        faixaSalarialManager = mock(FaixaSalarialManager.class);
         empresaManager.setFaixaSalarialManager(faixaSalarialManager);
-
-        indiceManager = mock(IndiceManager.class);
         empresaManager.setIndiceManager(indiceManager);
-
-        OcorrenciaManager = mock(OcorrenciaManager.class);
         empresaManager.setOcorrenciaManager(OcorrenciaManager);
-
-        cidadeManager = mock(CidadeManager.class);
         empresaManager.setCidadeManager(cidadeManager);
-        
-        conhecimentoManager = mock(ConhecimentoManager.class);
         empresaManager.setConhecimentoManager(conhecimentoManager);
-        
-        habilidadeManager = mock(HabilidadeManager.class);
         empresaManager.setHabilidadeManager(habilidadeManager);
-        
-        atitudeManager = mock(AtitudeManager.class);
         empresaManager.setAtitudeManager(atitudeManager);
-        
-        areaInteresseManager = mock(AreaInteresseManager.class);
         empresaManager.setAreaInteresseManager(areaInteresseManager);
-
-        ocorrenciaManager = mock(OcorrenciaManager.class);
         empresaManager.setOcorrenciaManager(ocorrenciaManager);
-        
-        motivoDemissaoManager = mock(MotivoDemissaoManager.class);
         empresaManager.setMotivoDemissaoManager(motivoDemissaoManager);
-        
-        riscoManager = mock(RiscoManager.class);
         empresaManager.setRiscoManager(riscoManager);
-        
-        ambienteManager = mock(AmbienteManager.class);
+        empresaManager.setConfiguracaoCampoExtraManager(configuracaoCampoExtraManager);
+        empresaManager.setConfiguracaoCampoExtraVisivelObrigadotorioManager(configuracaoCampoExtraVisivelObrigadotorioManager);
         MockSpringUtilJUnit4.mocks.put("ambienteManager", ambienteManager);
-        
-        turmaManager = mock(TurmaManager.class);
         MockSpringUtilJUnit4.mocks.put("turmaManager", turmaManager);
-        
-        epiManager = mock(EpiManager.class);
         MockSpringUtilJUnit4.mocks.put("epiManager", epiManager);
-        
-        colaboradorManager = mock(ColaboradorManager.class);
         MockSpringUtilJUnit4.mocks.put("colaboradorManager", colaboradorManager);
-
-        cargoManager = mock(CargoManager.class);
         MockSpringUtilJUnit4.mocks.put("cargoManager", cargoManager);
         
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
@@ -142,5 +147,54 @@ public class EmpresaManagerTest_JUnit4
     {
     	assertEquals(12, empresaManager.populaCadastrosCheckBox().size());
     }
-
+    
+    @Test
+    public void testAtualizaCamposExtras() 
+	{
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	boolean habilitaCampoExtraCandidato = true;
+    	boolean habilitaCampoExtraColaborador = true;
+    	
+    	ConfiguracaoCampoExtra confText1 = ConfiguracaoCampoExtraFactory.getEntity(1L, empresa, "Campo de Texto 1", "texto1", true, true);
+    	confText1.setEmpresa(empresa);
+    	ConfiguracaoCampoExtra confData1 = ConfiguracaoCampoExtraFactory.getEntity(2L, empresa, "Campo de Data 1", "data1", true, false);
+    	confData1.setEmpresa(empresa);
+    	String camposVisivesisColaborador = "texto1,data1,";
+    	String camposVisivesisCandidato = "texto1,";
+    	
+    	Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = Arrays.asList(confText1, confData1); 
+    	empresaManager.atualizaCamposExtras(configuracaoCampoExtras, empresa, habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+    	
+    	verify(configuracaoCampoExtraManager, never()).removeAllNotModelo();
+    	verify(empresaDao, times(1)).updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+    	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisColaborador, new String[]{TipoConfiguracaoCampoExtra.COLABORADOR.getTipo()});
+    	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisCandidato, new String[]{TipoConfiguracaoCampoExtra.CANDIDATO_EXTERNO.getTipo(), TipoConfiguracaoCampoExtra.CANDIDATO.getTipo()});
+	}
+    
+    @Test
+    public void testAtualizaCamposExtrasTodasAsEmpresas() 
+	{
+    	Empresa empresa = EmpresaFactory.getEmpresa(null);
+    	boolean habilitaCampoExtraCandidato = true;
+    	boolean habilitaCampoExtraColaborador = false;
+    	
+    	ConfiguracaoCampoExtra confText1 = ConfiguracaoCampoExtraFactory.getEntity(1L, empresa, "Campo de Texto 1", "texto1", true, true);
+    	confText1.setEmpresa(empresa);
+    	ConfiguracaoCampoExtra confData1 = ConfiguracaoCampoExtraFactory.getEntity(2L, empresa, "Campo de Data 1", "data1", true, false);
+    	confData1.setEmpresa(empresa);
+    	String camposVisivesisColaborador = "texto1,data1,";
+    	String camposVisivesisCandidato = "texto1,";
+    	
+    	Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = Arrays.asList(confText1, confData1); 
+    	Collection<Empresa> empresas = Arrays.asList(empresa);
+    	
+    	when(empresaDao.findTodasEmpresas()).thenReturn(empresas);
+    	
+    	empresaManager.atualizaCamposExtras(configuracaoCampoExtras, empresa, habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+    	
+    	verify(configuracaoCampoExtraManager, times(1)).removeAllNotModelo();
+    	verify(empresaDao, times(1)).updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+    	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisColaborador, new String[]{TipoConfiguracaoCampoExtra.COLABORADOR.getTipo()});
+    	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisCandidato, new String[]{TipoConfiguracaoCampoExtra.CANDIDATO_EXTERNO.getTipo(), TipoConfiguracaoCampoExtra.CANDIDATO.getTipo()});
+	}
 }

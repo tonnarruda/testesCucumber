@@ -51,8 +51,8 @@
     <property name="mail">
       <ref bean="mail" />
     </property>
-    <property name="parametrosDoSistemaManager">
-      <ref bean="parametrosDoSistemaManager" />
+    <property name="configuracaoCampoExtraVisivelObrigadotorioManager">
+      <ref bean="configuracaoCampoExtraVisivelObrigadotorioManager" />
     </property>
   </bean>
   <bean id="empresaManager" parent="parentManager">
@@ -1020,6 +1020,19 @@
     </property>
 	<property name="target">
       <ref bean="usuarioNoticiaManagerTarget" />
+    </property>
+  </bean>
+  <bean id="configuracaoCampoExtraVisivelObrigadotorioManagerTarget" class="com.fortes.rh.business.geral.ConfiguracaoCampoExtraVisivelObrigadotorioManagerImpl">
+  	<property name="dao">
+      <ref bean="configuracaoCampoExtraVisivelObrigadotorioDao" />
+    </property>
+  </bean>
+  <bean id="configuracaoCampoExtraVisivelObrigadotorioManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.ConfiguracaoCampoExtraVisivelObrigadotorioManager</value>
+    </property>
+	<property name="target">
+      <ref bean="configuracaoCampoExtraVisivelObrigadotorioManagerTarget" />
     </property>
   </bean>
 </beans>

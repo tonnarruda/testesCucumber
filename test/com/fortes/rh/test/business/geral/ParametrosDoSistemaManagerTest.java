@@ -10,7 +10,6 @@ import com.fortes.rh.dao.geral.ParametrosDoSistemaDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.web.ws.AcPessoalClientSistema;
 
 public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
@@ -79,17 +78,6 @@ public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
     {
     	acPessoalClientSistema.expects(once()).method("idACIntegrado").with(eq(empresa)).will(returnValue(true));
     	assertTrue(parametrosDoSistemaManager.isACIntegrado(empresa));
-    }
-
-    public void testAjustaCamposExtras()
-    {
-    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
-    	parametrosDoSistema.setCamposCandidatoVisivel("nome,cep,texto1,data2");
-    	parametrosDoSistema.setCamposCandidatoObrigatorio("nome,texto1,data2");
-    	
-    	parametrosDoSistemaManager.ajustaCamposExtras(parametrosDoSistema, new String[]{"texto1", "data2"});
-    	assertEquals("nome,cep", parametrosDoSistema.getCamposCandidatoVisivel());
-    	assertEquals("nome", parametrosDoSistema.getCamposCandidatoObrigatorio());
     }
 
     public void testIsIdiomaCorreto()

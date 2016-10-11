@@ -30,6 +30,7 @@ import com.fortes.rh.business.geral.CamposExtrasManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ComoFicouSabendoVagaManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
+import com.fortes.rh.business.geral.ConfiguracaoCampoExtraVisivelObrigadotorioManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -46,6 +47,7 @@ import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.SexoCadastro;
+import com.fortes.rh.model.dicionario.TipoConfiguracaoCampoExtra;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
@@ -53,6 +55,7 @@ import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
+import com.fortes.rh.model.geral.ConfiguracaoCampoExtraVisivelObrigadotorio;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -93,6 +96,8 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	private CandidatoCurriculoManager candidatoCurriculoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ComoFicouSabendoVagaManager comoFicouSabendoVagaManager;
+	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
+	private ConfiguracaoCampoExtraVisivelObrigadotorio configCampoExtraVisivelObrigadotorio;
 
 	private Candidato candidato = new Candidato();
 
@@ -169,6 +174,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	private CamposExtras camposExtras;
 	private Solicitacao solicitacao;
 	
+	
 	private void prepare() throws Exception
 	{
 		String abaExtra = "";
@@ -182,8 +188,18 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		if(!moduloExterno)			
 		{
 			habilitaCampoExtra = getEmpresaSistema().isCampoExtraCandidato();
-			if(habilitaCampoExtra)
+			if(habilitaCampoExtra){
 				abaExtra = ",abaExtra";
+				configCampoExtraVisivelObrigadotorio = configuracaoCampoExtraVisivelObrigadotorioManager.findByEmpresaId(getEmpresaSistema().getId(), TipoConfiguracaoCampoExtra.CANDIDATO.getTipo());
+				if(configCampoExtraVisivelObrigadotorio != null){
+					if (configCampoExtraVisivelObrigadotorio.getCamposExtrasVisiveis() != null && !configCampoExtraVisivelObrigadotorio.getCamposExtrasVisiveis().isEmpty() ) {
+						parametrosDoSistema.setCamposCandidatoTabs(parametrosDoSistema.getCamposCandidatoTabs()+ abaExtra);
+						parametrosDoSistema.setCamposCandidatoVisivel(parametrosDoSistema.getCamposCandidatoVisivel()+ "," + configCampoExtraVisivelObrigadotorio.getCamposExtrasVisiveis());
+						if(configCampoExtraVisivelObrigadotorio.getCamposExtrasObrigatorios() != null && !configCampoExtraVisivelObrigadotorio.getCamposExtrasObrigatorios().isEmpty())
+							parametrosDoSistema.setCamposCandidatoObrigatorio(parametrosDoSistema.getCamposCandidatoObrigatorio()+ "," + configCampoExtraVisivelObrigadotorio.getCamposExtrasObrigatorios());
+					}
+				}
+			}
 
 			empresaId = getEmpresaSistema().getId();
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect("nomeMercado", null, Cargo.ATIVO, empresaId), "getId", "getNomeMercado");
@@ -197,17 +213,21 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			habilitaCampoExtra = empresaManager.findById(empresaId).isCampoExtraCandidato();
 			
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect("nomeMercado", true, Cargo.ATIVO, empresaId), "getId", "getNomeMercado");
-		
-			parametrosDoSistema.setCamposCandidatoVisivel(parametrosDoSistema.getCamposCandidatoExternoVisivel());
-			parametrosDoSistema.setCamposCandidatoObrigatorio(parametrosDoSistema.getCamposCandidatoExternoObrigatorio());
-			parametrosDoSistema.setCamposCandidatoTabs(parametrosDoSistema.getCamposCandidatoExternoTabs());
-
+			if(habilitaCampoExtra){
+				configCampoExtraVisivelObrigadotorio = configuracaoCampoExtraVisivelObrigadotorioManager.findByEmpresaId(empresaId, TipoConfiguracaoCampoExtra.CANDIDATO_EXTERNO.getTipo());
+				if(configCampoExtraVisivelObrigadotorio != null){
+					if (configCampoExtraVisivelObrigadotorio.getCamposExtrasVisiveis() != null && !configCampoExtraVisivelObrigadotorio.getCamposExtrasVisiveis().isEmpty() ) {
+						parametrosDoSistema.setCamposCandidatoExternoTabs(parametrosDoSistema.getCamposCandidatoExternoTabs()+ ",abaExtra");
+						parametrosDoSistema.setCamposCandidatoExternoVisivel(parametrosDoSistema.getCamposCandidatoExternoVisivel()+ "," + configCampoExtraVisivelObrigadotorio.getCamposExtrasVisiveis());
+						if(configCampoExtraVisivelObrigadotorio.getCamposExtrasObrigatorios() != null && !configCampoExtraVisivelObrigadotorio.getCamposExtrasObrigatorios().isEmpty())
+							parametrosDoSistema.setCamposCandidatoExternoObrigatorio(parametrosDoSistema.getCamposCandidatoExternoObrigatorio()+ "," + configCampoExtraVisivelObrigadotorio.getCamposExtrasObrigatorios());
+					}
+				}
+			}
 		}
 
 		if(habilitaCampoExtra)
 			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoCandidato", "empresa.id"}, new Object[]{true, empresaId}, new String[]{"ordem"});
-		else
-			parametrosDoSistemaManager.ajustaCamposExtras(parametrosDoSistema, configuracaoCampoExtraManager.findAllNomes());
 
 		sexos = new SexoCadastro();
 		deficiencias = new Deficiencia();
@@ -1419,6 +1439,23 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public void setSolicitacao(Solicitacao solicitacao) {
 		this.solicitacao = solicitacao;
+	}
+
+	public ConfiguracaoCampoExtraVisivelObrigadotorioManager getConfiguracaoCampoExtraVisivelObrigadotorioManager() {
+		return configuracaoCampoExtraVisivelObrigadotorioManager;
+	}
+
+	public void setConfiguracaoCampoExtraVisivelObrigadotorioManager(
+			ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager) {
+		this.configuracaoCampoExtraVisivelObrigadotorioManager = configuracaoCampoExtraVisivelObrigadotorioManager;
+	}
+
+	public ConfiguracaoCampoExtraVisivelObrigadotorio getConfigCampoExtraVisivelObrigadotorio() {
+		return configCampoExtraVisivelObrigadotorio;
+	}
+
+	public void setConfigCampoExtraVisivelObrigadotorio( ConfiguracaoCampoExtraVisivelObrigadotorio configCampoExtraVisivelObrigadotorio) {
+		this.configCampoExtraVisivelObrigadotorio = configCampoExtraVisivelObrigadotorio;
 	}
 	
 }

@@ -26,14 +26,8 @@ import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoCurriculo;
-import com.fortes.rh.model.captacao.CandidatoIdioma;
-import com.fortes.rh.model.captacao.Conhecimento;
-import com.fortes.rh.model.captacao.Experiencia;
-import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Cidade;
-import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -322,33 +316,6 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	assertEquals("input", action.updateCurriculo());
     }
     
-    public void testPrepareInsertPeloModuloExterno() throws Exception
-    {
-    	Candidato candidato = CandidatoFactory.getCandidato();
-    	action.setCandidato(candidato);
-    	
-    	Collection<Empresa> empresas = Arrays.asList(EmpresaFactory.getEmpresa(1L));
-    	
-    	action.setModuloExterno(true);
-    	
-    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
-    	parametrosDoSistema.setUpperCase(true);
-    	
-    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
-    	parametrosDoSistemaManager.expects(once()).method("ajustaCamposExtras").with(ANYTHING, ANYTHING);
-    	configuracaoCampoExtraManager.expects(once()).method("findAllNomes").will(returnValue(new String[]{}));
-    	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
-    	empresaManager.expects(once()).method("findToList").will(returnValue(empresas));
-    	empresaManager.expects(once()).method("findById").will(returnValue(EmpresaFactory.getEmpresa(1L)));
-    	cargoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Cargo>()));
-    	areaInteresseManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<AreaInteresse>()));
-    	conhecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Conhecimento>()));
-    	comoFicouSabendoVagaManager.expects(once()).method("findAllSemOutros").will(returnValue(new ArrayList<ComoFicouSabendoVagaManager>()));
-    	comoFicouSabendoVagaManager.expects(once()).method("findById").will(returnValue(new ComoFicouSabendoVaga(1L,"Outros")));
-    	
-    	assertEquals("success", action.prepareInsert());
-    }
-
     public void testInsertCurriculoException() throws Exception
     {
     	Collection<Empresa> empresas = Arrays.asList(EmpresaFactory.getEmpresa(1L));
@@ -367,41 +334,6 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	action.setCandidatoManager(null); 
     	
     	assertEquals("input", action.insertCurriculo());
-    }
-    
-    public void testPrepareUpdate() throws Exception
-    {
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	Candidato candidato = CandidatoFactory.getCandidato(1L);
-		candidato.setEmpresa(empresa);
-    	action.setCandidato(candidato);
-    	
-    	Collection<Empresa> empresas = Arrays.asList(empresa);
-    	
-    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
-    	parametrosDoSistema.setUpperCase(true);
-    	
-    	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
-    	manager.expects(once()).method("findByIdProjection").with(eq(candidato.getId())).will(returnValue(candidato));
-    	manager.expects(once()).method("getFoto").with(eq(candidato.getId()));
-    	manager.expects(once()).method("findConhecimentosByCandidatoId").with(eq(candidato.getId()));
-    	manager.expects(once()).method("findCargosByCandidatoId").with(eq(candidato.getId()));
-    	manager.expects(once()).method("findAreaInteressesByCandidatoId").with(eq(candidato.getId()));
-    	empresaManager.expects(once()).method("findToList").will(returnValue(empresas));
-    	cargoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Cargo>()));
-    	areaInteresseManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<AreaInteresse>()));
-    	conhecimentoManager.expects(atLeastOnce()).method("findAllSelect").with(eq(new Long[]{1L})).will(returnValue(new ArrayList<Conhecimento>()));
-    	formacaoManager.expects(once()).method("findByCandidato").will(returnValue(new ArrayList<Formacao>()));
-    	candidatoIdiomaManager.expects(once()).method("findByCandidato").will(returnValue(new ArrayList<CandidatoIdioma>()));
-    	experienciaManager.expects(once()).method("findByCandidato").will(returnValue(new ArrayList<Experiencia>()));
-    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
-    	comoFicouSabendoVagaManager.expects(once()).method("findAllSemOutros").will(returnValue(new ArrayList<ComoFicouSabendoVagaManager>()));
-    	comoFicouSabendoVagaManager.expects(once()).method("findById").will(returnValue(new ComoFicouSabendoVaga()));    	
-    	parametrosDoSistemaManager.expects(once()).method("ajustaCamposExtras").with(ANYTHING, ANYTHING);
-    	configuracaoCampoExtraManager.expects(once()).method("findAllNomes").will(returnValue(new String[]{}));
-
-    	
-    	assertEquals("success", action.prepareUpdate());
     }
     
     public void testGets() throws Exception

@@ -79,11 +79,17 @@
 	</#if>
 
 	<script type='text/javascript'>
-					
-		var camposCandidatoVisivel = "${parametrosDoSistema.camposCandidatoVisivel}";
-		var camposCandidatoObrigatorio = "${parametrosDoSistema.camposCandidatoObrigatorio}";
-
-		var abasVisiveis = "${parametrosDoSistema.camposCandidatoTabs}";
+		<#if !moduloExterno>
+			var camposCandidatoVisivel = "${parametrosDoSistema.camposCandidatoVisivel}";
+			var camposCandidatoObrigatorio = "${parametrosDoSistema.camposCandidatoObrigatorio}";
+	
+			var abasVisiveis = "${parametrosDoSistema.camposCandidatoTabs}";
+		<#else>
+			var camposCandidatoVisivel = "${parametrosDoSistema.camposCandidatoExternoVisivel}";
+			var camposCandidatoObrigatorio = "${parametrosDoSistema.camposCandidatoExternoObrigatorio}";
+	
+			var abasVisiveis = "${parametrosDoSistema.camposCandidatoExternoTabs}";
+		</#if>			
 		var arrayAbasVisiveis  = abasVisiveis.split(',');
 		qtdAbas = arrayAbasVisiveis.length;
 		var arrayObrigatorios = new Array();

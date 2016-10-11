@@ -27,8 +27,22 @@
 		</action>
 		<action name="updateCamposColaborador" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="updateCamposColaborador">
 			<result name="success" type="redirect">listCampos.action?entidade=colaborador</result>
+		</action>	
+		
+		
+		<action name="listCamposExtras" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="listCamposExtras">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/listCamposExtras.ftl</result>
 		</action>
-
+		<action name="configCamposExtras" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="configCamposExtras">
+			<result name="success_candidato" type="freemarker">/WEB-INF/forms/geral/configCamposExtrasCandidato.ftl</result>
+			<result name="success_candidatoExterno" type="freemarker">/WEB-INF/forms/geral/configCamposExtrasCandidatoExterno.ftl</result>
+			<result name="success_colaborador" type="freemarker">/WEB-INF/forms/geral/configCamposExtrasColaborador.ftl</result>
+		</action>
+			
+		<action name="updateConfigCamposExtras" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="updateConfigCamposExtras">
+			<result name="success" type="redirect"><![CDATA[/geral/parametrosDoSistema/listCamposExtras.action?entidade=${entidade}&empresa.id=${empresa.id}]]></result>
+		</action>
+		
 		<action name="prepareDeleteSemCodigoAC" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="prepareDeleteSemCodigoAC">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/listSemCodigoAC.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/semAcessoListSemCodigoAC.ftl</result>

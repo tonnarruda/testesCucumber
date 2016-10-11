@@ -38,6 +38,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
+import com.fortes.rh.business.geral.ConfiguracaoCampoExtraVisivelObrigadotorioManager;
 import com.fortes.rh.business.geral.ConfiguracaoPerformanceManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -79,6 +80,7 @@ import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.SexoCadastro;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.dicionario.TipoConfiguracaoCampoExtra;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -90,6 +92,7 @@ import com.fortes.rh.model.geral.ColaboradorIdioma;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
+import com.fortes.rh.model.geral.ConfiguracaoCampoExtraVisivelObrigadotorio;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -152,6 +155,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private UsuarioManager usuarioManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
 	
 	private Colaborador colaborador;
 	private AreaOrganizacional areaOrganizacional;
@@ -275,6 +279,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private String encerrarSolicitacao;
 	
 	private ParametrosDoSistema parametrosDoSistema;
+	private ConfiguracaoCampoExtraVisivelObrigadotorio campoExtraVisivelObrigadotorio;
 	
 	private void prepare() throws Exception
 	{
@@ -290,9 +295,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		
 		obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
-		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
-		if(habilitaCampoExtra)
-			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
+		configuraCamposExtras();
 			
 		indices = indiceManager.findAll(getEmpresaSistema());
 		
@@ -363,6 +366,22 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
 		
 		avaliacoes = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, null);
+	}
+	
+	private void configuraCamposExtras(){
+		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
+		if(habilitaCampoExtra){
+			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
+			campoExtraVisivelObrigadotorio = configuracaoCampoExtraVisivelObrigadotorioManager.findByEmpresaId(getEmpresaSistema().getId(), TipoConfiguracaoCampoExtra.COLABORADOR.getTipo());
+			if(campoExtraVisivelObrigadotorio != null){
+				if (campoExtraVisivelObrigadotorio.getCamposExtrasVisiveis() != null && !campoExtraVisivelObrigadotorio.getCamposExtrasVisiveis().isEmpty() ) {
+					parametrosDoSistema.setCamposColaboradorTabs(parametrosDoSistema.getCamposColaboradorTabs()+ ",abaExtra");
+					parametrosDoSistema.setCamposColaboradorVisivel(parametrosDoSistema.getCamposColaboradorVisivel()+ "," + campoExtraVisivelObrigadotorio.getCamposExtrasVisiveis());
+					if(campoExtraVisivelObrigadotorio.getCamposExtrasObrigatorios() != null && !campoExtraVisivelObrigadotorio.getCamposExtrasObrigatorios().isEmpty())
+						parametrosDoSistema.setCamposColaboradorObrigatorio(parametrosDoSistema.getCamposColaboradorObrigatorio()+ "," + campoExtraVisivelObrigadotorio.getCamposExtrasObrigatorios());
+				}
+			}
+		}
 	}
 
 	public String prepareInsert() throws Exception
@@ -1988,5 +2007,13 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setJson(String json) {
 		this.json = json;
+	}
+
+	public void setConfiguracaoCampoExtraVisivelObrigadotorioManager(ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager) {
+		this.configuracaoCampoExtraVisivelObrigadotorioManager = configuracaoCampoExtraVisivelObrigadotorioManager;
+	}
+
+	public ConfiguracaoCampoExtraVisivelObrigadotorio getCampoExtraVisivelObrigadotorio() {
+		return campoExtraVisivelObrigadotorio;
 	}
 }
