@@ -74,12 +74,11 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		}
 	}
 
-	public Collection<CatRelatorioAnual> getRelatorioAnual(Long estabelecimentoId, Date dataFim)
+	public Collection<CatRelatorioAnual> getRelatorioCat(Long estabelecimentoId, Date dataIni, Date dataFim)
 	{
-		Date inicio = DateUtil.incrementaAno(dataFim, -1);
 		Collection<CatRelatorioAnual> catsAnuais = new ArrayList<CatRelatorioAnual>();
 		
-		Collection<Object[]> lista = getDao().getCatsRelatorio(estabelecimentoId, inicio, dataFim);
+		Collection<Object[]> lista = getDao().getCatsRelatorio(estabelecimentoId, dataIni, dataFim);
 		
 		CatRelatorioAnual catAnual;
 		Map<String, CatRelatorioAnual> catsMap = new LinkedHashMap<String, CatRelatorioAnual>();

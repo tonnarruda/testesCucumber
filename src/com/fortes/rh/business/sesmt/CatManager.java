@@ -16,7 +16,7 @@ public interface CatManager extends GenericManager<Cat>
 	Collection<Cat> findByColaborador(Colaborador colaborador);
 	Collection<Cat> findCatsColaboradorByDate(Colaborador colaborador, Date data);
 	Collection<Cat> findAllSelect(Long empresaId, Date inicio, Date fim, String[] estabelecimentosCheck, String nomeBusca, String[] areasCheck);
-	Collection<CatRelatorioAnual> getRelatorioAnual(Long estabelecimentoId, Date dataFim);
+	Collection<CatRelatorioAnual> getRelatorioCat(Long estabelecimentoId, Date dataIni, Date dataFim);
 	public Collection<Cat> findRelatorioCats (Long empresaId, Date inicio, Date fim, String[] estabelecimentosCheck, String nomeBusca) throws ColecaoVaziaException;
 	int findQtdDiasSemAcidentes(Long empresaId);
 	Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataDe, Date dataAte);

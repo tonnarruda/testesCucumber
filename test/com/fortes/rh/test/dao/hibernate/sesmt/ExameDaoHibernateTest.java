@@ -582,7 +582,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		RealizacaoExame realizacaoExame1 = RealizacaoExameFactory.getEntity(dataDoisMesesAtras.getTime(), ResultadoExame.NORMAL.toString());
 		realizacaoExameDao.save(realizacaoExame1);
 		
-		RealizacaoExame realizacaoExame1Fora = RealizacaoExameFactory.getEntity(hoje, ResultadoExame.NAO_REALIZADO.toString());
+		RealizacaoExame realizacaoExame1Fora = RealizacaoExameFactory.getEntity(hoje, ResultadoExame.ANORMAL.toString());
 		realizacaoExameDao.save(realizacaoExame1Fora);
 
 		ExameSolicitacaoExame exameSolicitacaoExame1 = new ExameSolicitacaoExame();
@@ -610,7 +610,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		exameSolicitacaoExame2.setSolicitacaoExame(solicitacaoExame2);
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
 
-		assertEquals(1, exameDao.findExamesRealizadosColaboradores(empresa.getId(), null, dataDoisMesesAtras.getTime(), hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.NAO_REALIZADO.toString(), null, null, null).size());
+		assertTrue(exameDao.findExamesRealizadosColaboradores(empresa.getId(), null, dataDoisMesesAtras.getTime(), hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.NORMAL.toString(), null, null, null).size() > 1);
 	}
 	
 	public void testGetCount()

@@ -16,60 +16,26 @@ import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.ExameAnualRelatorio;
-import com.fortes.rh.util.DateUtil;
 
 public class RealizacaoExameManagerImpl extends GenericManagerImpl<RealizacaoExame, RealizacaoExameDao> implements RealizacaoExameManager
 {
 	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
 
-	public Collection<ExameAnualRelatorio> getRelatorioAnual(Long estabelecimentoId, Date data)
-	{
-		Date inicio = DateUtil.incrementaAno(data, -1);
-
+	public Collection<ExameAnualRelatorio> getRelatorioExame(Long estabelecimentoId, Date dataIni, Date dataFim){
 		Collection<ExameAnualRelatorio> examesAnuals = new ArrayList<ExameAnualRelatorio>();
+		Collection<Object[]> lista = getDao().getRelatorioExame(estabelecimentoId, dataIni, dataFim);
 
-		Collection<Object[]> lista = getDao().getRelatorioAnual(estabelecimentoId, inicio, data);
-
-		ExameAnualRelatorio exameAnual;
 		Map<String, ExameAnualRelatorio> examesMap = new LinkedHashMap<String, ExameAnualRelatorio>();
+		ExameAnualRelatorio exameAnual;
 
-		if(lista != null && !lista.isEmpty())
-		{
-			for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
-			{
+		if(lista != null && !lista.isEmpty()){
+			for (Iterator<Object[]> it = lista.iterator(); it.hasNext();){
 				Object[] exameRealizado = it.next();
-
-				String chave =  exameRealizado[1].toString();
-
-				if(examesMap.containsKey(chave))
-				{
-					exameAnual = examesMap.get(chave);
-					exameAnual.addTotalExame();
-					
-					if(exameRealizado[3].equals(ResultadoExame.ANORMAL.toString()))
-						exameAnual.addTotalExameAnormal();
-
-					examesMap.put(chave, exameAnual);
-				}
-				else
-				{
-					exameAnual = new ExameAnualRelatorio();
-					exameAnual.setExameId((Long) exameRealizado[0]);
-					exameAnual.setExameMotivo((String) exameRealizado[1]);
-					exameAnual.setExameNome((String) exameRealizado[2]);
-
-					exameAnual.addTotalExame();
-
-					if(exameRealizado[3].equals(ResultadoExame.ANORMAL.toString()))
-						exameAnual.setTotalExameAnormal(1F);
-
-					examesMap.put(chave, exameAnual);
-				}
+				populaExamesMap(examesMap, exameRealizado);
 			}
 		}
 
-		for (String chave : examesMap.keySet())
-		{
+		for (String chave : examesMap.keySet()){
 			exameAnual = examesMap.get(chave);
 			exameAnual.calculaAnormaisPorTotal();
 			examesAnuals.add(exameAnual);
@@ -78,6 +44,32 @@ public class RealizacaoExameManagerImpl extends GenericManagerImpl<RealizacaoExa
 		calculaExamesPrevistos(examesMap);
 		
 		return examesAnuals;
+	}
+
+	private void populaExamesMap(Map<String, ExameAnualRelatorio> examesMap, Object[] exameRealizado) {
+		ExameAnualRelatorio exameAnual;
+		String chave =  exameRealizado[1].toString();
+
+		if(examesMap.containsKey(chave)){
+			exameAnual = examesMap.get(chave);
+			exameAnual.addTotalExame();
+			
+			if(exameRealizado[3].equals(ResultadoExame.ANORMAL.toString()))
+				exameAnual.addTotalExameAnormal();
+
+			examesMap.put(chave, exameAnual);
+		}else{
+			exameAnual = new ExameAnualRelatorio();
+			exameAnual.setExameId((Long) exameRealizado[0]);
+			exameAnual.setExameMotivo((String) exameRealizado[1]);
+			exameAnual.setExameNome((String) exameRealizado[2]);
+			exameAnual.addTotalExame();
+
+			if(exameRealizado[3].equals(ResultadoExame.ANORMAL.toString()))
+				exameAnual.setTotalExameAnormal(1F);
+
+			examesMap.put(chave, exameAnual);
+		}
 	}
 
 	private void calculaExamesPrevistos(Map<String, ExameAnualRelatorio> examesMap) 

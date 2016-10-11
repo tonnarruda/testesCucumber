@@ -291,8 +291,9 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		
 		examinado.setJoins(hql);
 		
-		hql.append("where e.empresa.id = :empresaId ");
+		hql.append("where (e.empresa.id = :empresaId or e.empresa.id is null) ");
 		hql.append("and re.data between :inicio and :fim ");
+		hql.append("and re.resultado != 'NAO_REALIZADO'");
 		if (isNotBlank(nomeBusca))
 			hql.append("and lower(examinado.nome) like :nome ");
 		

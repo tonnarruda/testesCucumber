@@ -26,7 +26,7 @@ import com.fortes.rh.model.sesmt.RealizacaoExame;
 public class RealizacaoExameDaoHibernate extends GenericDaoHibernate<RealizacaoExame> implements RealizacaoExameDao
 {
 
-	public Collection<Object[]> getRelatorioAnual(Long estabelecimentoId, Date dataIni, Date dataFim)
+	public Collection<Object[]> getRelatorioExame(Long estabelecimentoId, Date dataIni, Date dataFim)
 	{
 		StringBuilder hql = new StringBuilder("select e.id, se.motivo, e.nome, re.resultado");
 		hql.append(" from HistoricoColaborador hc");
@@ -39,7 +39,7 @@ public class RealizacaoExameDaoHibernate extends GenericDaoHibernate<RealizacaoE
 		hql.append(" and hc.estabelecimento.id = :estabelecimentoId");
 		hql.append(" and hc.data = (select max(hc2.data)");
 		hql.append("				from HistoricoColaborador hc2");
-		hql.append(" 				where hc2.data <= re.data  and hc2.status = :status ");
+		hql.append(" 				where hc2.status = :status ");
 		hql.append(" 				and c.id = hc2.colaborador.id)");
 		hql.append(" and re.data >= :dataIni");
 		hql.append(" and re.data <= :dataFim");

@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.sesmt.CatManagerImpl;
@@ -22,22 +25,23 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 
-public class CatManagerTest extends MockObjectTestCase
+public class CatManagerTest
 {
 	private CatManagerImpl catManager = new CatManagerImpl();
-	private Mock catDao = null;
-	private Mock areaOrganizacionalManager;
+	private CatDao catDao;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
     {
-        super.setUp();
-        catDao = new Mock(CatDao.class);
-        catManager.setDao((CatDao) catDao.proxy());
+        catDao = mock(CatDao.class);
+        catManager.setDao(catDao);
         
-        areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
-        catManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+        areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
+        catManager.setAreaOrganizacionalManager(areaOrganizacionalManager);
     }
 
+	@Test
 	public void testFindCatsColaboradorByDate()throws Exception
 	{
 		Colaborador colaborador = new Colaborador();
@@ -49,36 +53,42 @@ public class CatManagerTest extends MockObjectTestCase
 		Collection<Cat> c1 = new ArrayList<Cat>();
 		c1.add(cat);
 
-		catDao.expects(once()).method("findCatsColaboradorByDate").with(new Constraint[]{ANYTHING,ANYTHING}).will(returnValue(c1));
-		Collection<Cat> catsRetorno = catManager.findCatsColaboradorByDate(colaborador,new Date());
+		Date hoje = new Date();
+		
+		when(catDao.findCatsColaboradorByDate(colaborador, hoje)).thenReturn(c1);
+		
+		Collection<Cat> catsRetorno = catManager.findCatsColaboradorByDate(colaborador,hoje);
 
 		assertEquals(c1, catsRetorno);
 	}
 
+	@Test
 	public void testFindByColaborador() throws Exception
 	{
 		Collection<Cat> catsList = new ArrayList<Cat>();
 
 		Colaborador colaborador = new Colaborador();
 		colaborador.setId(1L);
-		catDao.expects(once()).method("findByColaborador").with(eq(colaborador)).will(returnValue(catsList));
+		when(catDao.findByColaborador(colaborador)).thenReturn(catsList);
 		Collection<Cat> cats = catManager.findByColaborador(colaborador);
 
 		assertEquals(catsList, cats);
 	}
 	
+	@Test
 	public void testFindAllSelect()
 	{
 		Date hoje=new Date();
 		String[] estabelecimentosCheck = new String[]{"1","2"};
 		Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
 		
-		catDao.expects(once()).method("findAllSelect").with(new Constraint[]{eq(1L),eq(hoje),eq(hoje),eq(estabelecimentoIds), ANYTHING, ANYTHING}).will(returnValue(new ArrayList<Cat>()));
+		when(catDao.findAllSelect(1L, hoje, hoje, estabelecimentoIds, null, new Long[]{})).thenReturn(new ArrayList<Cat>());
 		
 		assertNotNull(catManager.findAllSelect(1L, hoje, hoje, estabelecimentosCheck, null, null));
 	}
 
-	public void testFindRelatorioCats() throws ColecaoVaziaException
+	@Test
+	public void testFindRelatorioCats() throws Exception
 	{
 		Date hoje=new Date();
 		String[] estabelecimentosCheck = new String[]{"1","2"};
@@ -93,14 +103,15 @@ public class CatManagerTest extends MockObjectTestCase
 		colecao.add(cat);
 		Collection<AreaOrganizacional> areaOrganizacionais = new ArrayList<AreaOrganizacional>();
 		
-		catDao.expects(once()).method("findAllSelect").with(new Constraint[]{eq(1L),eq(hoje),eq(hoje),eq(estabelecimentoIds), ANYTHING, ANYTHING}).will(returnValue(colecao));
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").will(returnValue(areaOrganizacionais ));
-		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionais));
-		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(areaOrganizacional));
+		when(catDao.findAllSelect(1L, hoje, hoje, estabelecimentoIds, null, new Long[]{})).thenReturn(colecao);
+		when(areaOrganizacionalManager.findAllListAndInativas(true, null, 1L)).thenReturn(areaOrganizacionais);
+		when(areaOrganizacionalManager.montaFamilia(areaOrganizacionais)).thenReturn(areaOrganizacionais);
+		when(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionais, areaOrganizacional.getId())).thenReturn(areaOrganizacional);
 		
 		assertNotNull(catManager.findRelatorioCats(1L, hoje, hoje, estabelecimentosCheck, null));
 	}
 	
+	@Test
 	public void testGetRelatorioAnual()
 	{
 		Date dataFim = new Date();
@@ -119,9 +130,9 @@ public class CatManagerTest extends MockObjectTestCase
 		Object[] retornoConsulta3 = new Object[]{dataMeio, false};
 		lista.add(retornoConsulta3);
 		
-		catDao.expects(once()).method("getCatsRelatorio").with(ANYTHING, eq(dataIni), eq(dataFim)).will(returnValue(lista));
+		when(catDao.getCatsRelatorio(2L, dataIni, dataFim)).thenReturn(lista);
 		
-		Collection<CatRelatorioAnual> resultado = catManager.getRelatorioAnual(2L, dataFim);
+		Collection<CatRelatorioAnual> resultado = catManager.getRelatorioCat(2L, dataIni, dataFim);
 		
 		assertEquals(2, resultado.size());
 		
@@ -136,6 +147,7 @@ public class CatManagerTest extends MockObjectTestCase
 		assertEquals(1, cat2.getTotalSemAfastamento().intValue());
 	}
 	
+	@Test
 	public void testFindQtdDiasSemAcidentes()
 	{
 		Date data = DateUtil.criarDataMesAno(1, 1, 2011);
@@ -145,7 +157,7 @@ public class CatManagerTest extends MockObjectTestCase
 		Cat cat = new Cat();
 		cat.setData(data);
 		
-		catDao.expects(once()).method("findUltimoCat").with(ANYTHING).will(returnValue(cat));
+		when(catDao.findUltimoCat(empresa.getId())).thenReturn(cat);
 
 		int qtdDiasSemAcidentes = DateUtil.diferencaEntreDatas(data, new Date(), false);
 		int qtdDiasSemAcidentesTeste = catManager.findQtdDiasSemAcidentes(empresa.getId());

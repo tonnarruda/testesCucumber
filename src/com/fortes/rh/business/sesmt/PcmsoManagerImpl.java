@@ -56,10 +56,10 @@ public class PcmsoManagerImpl implements PcmsoManager
 		StringBuilder msg = new StringBuilder("");
 		msg.append(montaAgenda(pcmso, dataIni, dataFim, estabelecimento, exibirAgenda));
 		msg.append(montaColaboradoresPorSetor(pcmso, dataFim, empresaId, estabelecimento, exibirDistColaboradorSetor));
-		msg.append(montaTabelaAnualExames(pcmso, dataIni, estabelecimento, exibirExames));
-		msg.append(montaTabelaAnualCats(pcmso, dataIni, estabelecimento, exibirAcidentes));
-		msg.append(montaEpisFuncao(pcmso, dataIni, estabelecimento, exibirEpis));
-		msg.append(montaRiscosAmbientais(pcmso, dataIni, estabelecimento, exibirRiscos));
+		msg.append(montaTabelaAnualExames(pcmso, dataIni, dataFim, estabelecimento, exibirExames));
+		msg.append(montaTabelaCats(pcmso, dataIni, dataFim, estabelecimento, exibirAcidentes));
+		msg.append(montaEpisFuncao(pcmso, dataFim, estabelecimento, exibirEpis));
+		msg.append(montaRiscosAmbientais(pcmso, dataFim, estabelecimento, exibirRiscos));
 		msg.append(montaComposicaoSesmt(pcmso, dataFim, empresaId, exibirComposicaoSesmt));
 		
 		if(!msg.toString().equals(""))
@@ -110,11 +110,11 @@ public class PcmsoManagerImpl implements PcmsoManager
 		return "";
 	}
 
-	private String montaTabelaAnualCats(PCMSO pcmso, Date data, Estabelecimento estabelecimento, boolean exibirAcidentes) throws ColecaoVaziaException
+	private String montaTabelaCats(PCMSO pcmso, Date dataIni, Date dataFim, Estabelecimento estabelecimento, boolean exibirAcidentes) throws ColecaoVaziaException
 	{
 		if (exibirAcidentes)
 		{
-			Collection<CatRelatorioAnual> cats = catManager.getRelatorioAnual(estabelecimento.getId(), data);
+			Collection<CatRelatorioAnual> cats = catManager.getRelatorioCat(estabelecimento.getId(), dataIni, dataFim);
 			
 			if (!cats.isEmpty())
 				pcmso.setCats(cats);
@@ -123,11 +123,11 @@ public class PcmsoManagerImpl implements PcmsoManager
 		return "";
 	}
 
-	private String montaTabelaAnualExames(PCMSO pcmso, Date data, Estabelecimento estabelecimento, boolean exibirExames) throws ColecaoVaziaException
+	private String montaTabelaAnualExames(PCMSO pcmso, Date dataIni, Date dataFim, Estabelecimento estabelecimento, boolean exibirExames) throws ColecaoVaziaException
 	{
 		if (exibirExames)
 		{
-			Collection<ExameAnualRelatorio> exames = realizacaoExameManager.getRelatorioAnual(estabelecimento.getId(), data);
+			Collection<ExameAnualRelatorio> exames = realizacaoExameManager.getRelatorioExame(estabelecimento.getId(), dataIni, dataFim);
 			
 			if (exames.isEmpty())
 				return "Não existem dados de exames para o período informado.<br>";

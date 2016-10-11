@@ -236,7 +236,7 @@ public class RealizacaoExameDaoHibernateTest extends GenericDaoHibernateTest<Rea
 		exameSolicitacaoExame2.setSolicitacaoExame(solicitacaoExameFora);
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
 		
-		Collection<Object[]> resultado = realizacaoExameDao.getRelatorioAnual(estabelecimento.getId(), inicio.getTime(), hoje);
+		Collection<Object[]> resultado = realizacaoExameDao.getRelatorioExame(estabelecimento.getId(), inicio.getTime(), hoje);
 		
 		assertEquals(1, resultado.size());
 		assertEquals(MotivoSolicitacaoExame.PERIODICO, ((Object[]) resultado.toArray()[0])[1].toString());

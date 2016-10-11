@@ -9,7 +9,7 @@ import com.fortes.rh.model.sesmt.RealizacaoExame;
 
 public interface RealizacaoExameDao extends GenericDao<RealizacaoExame>
 {
-	Collection<Object[]> getRelatorioAnual(Long estabelecimentoId, Date dataIni, Date dataFim);
+	Collection<Object[]> getRelatorioExame(Long estabelecimentoId, Date dataIni, Date dataFim);
 	Collection<RealizacaoExame> findRealizadosByColaborador(Long empresaId, Long colaboradorId);
 	Collection<Long> findIdsBySolicitacaoExame(long solicitacaoExameId);
 	void remove(Long[] realizacaoExameIds);
