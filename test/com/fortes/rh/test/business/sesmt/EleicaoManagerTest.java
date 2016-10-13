@@ -19,7 +19,6 @@ import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.EleicaoManagerImpl;
 import com.fortes.rh.business.sesmt.EtapaProcessoEleitoralManager;
 import com.fortes.rh.dao.sesmt.EleicaoDao;
-import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.RemoveCascadeException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -97,69 +96,6 @@ public class EleicaoManagerTest extends MockObjectTestCase
 		assertEquals(eleicao, eleicaoManager.findByIdProjection(1L));
 	}
 	
-	public void testMontaAtaDaEleicao() throws Exception
-	{
-		Eleicao eleicao = EleicaoFactory.getEntity(1L, 10, 0, 30);
-
-		CandidatoEleicao candidatoEleicao = CandidatoEleicaoFactory.getEntity(10, eleicao);
-		CandidatoEleicao candidatoEleicao2 = CandidatoEleicaoFactory.getEntity(10, eleicao);
-
-		Collection<CandidatoEleicao> candidatoEleicaos = Arrays.asList(candidatoEleicao, candidatoEleicao2);
-
-		eleicao.setCandidatoEleicaos(candidatoEleicaos);
-		eleicao.setTextoAtaEleicao("Texto da ata.");
-		
-		eleicaoDao.expects(once()).method("findByIdProjection").with(eq(eleicao.getId())).will(returnValue(eleicao));
-		eleicaoDao.expects(once()).method("findImprimirResultado").with(eq(eleicao.getId())).will(returnValue(candidatoEleicaos));
-		
-		Eleicao eleicaoResultado = eleicaoManager.montaAtaDaEleicao(eleicao.getId());
-		
-		assertEquals(eleicao.getTextoAtaEleicao(), eleicaoResultado.getTextoAtaEleicao());
-	}
-
-	public void testFindImprimirResultado()
-	{
-		Eleicao eleicao = EleicaoFactory.getEntity(1L, 10, 0, 30);
-
-		CandidatoEleicao candidatoEleicao = CandidatoEleicaoFactory.getEntity(10, eleicao);
-		CandidatoEleicao candidatoEleicao2 = CandidatoEleicaoFactory.getEntity(10, eleicao);
-
-		Collection<CandidatoEleicao> candidatoEleicaos = Arrays.asList(candidatoEleicao, candidatoEleicao2);
-
-		eleicao.setCandidatoEleicaos(candidatoEleicaos);
-
-		Eleicao resultado = null;
-
-		eleicaoDao.expects(once()).method("findImprimirResultado").with(eq(eleicao.getId())).will(returnValue(candidatoEleicaos));
-
-		try
-		{
-			resultado = eleicaoManager.findImprimirResultado(eleicao.getId());
-		}
-		catch (ColecaoVaziaException e)
-		{
-		}
-
-		assertNotNull(resultado);
-		assertEquals(eleicao.getSomaVotos(),resultado.getSomaVotos());
-	}
-
-	public void testFindImprimirResultadoException()
-	{
-		eleicaoDao.expects(once()).method("findImprimirResultado").with(eq(1L)).will(returnValue(new ArrayList<CandidatoEleicao>()));
-		Exception exception = null;
-		try
-		{
-			eleicaoManager.findImprimirResultado(1L);
-		}
-		catch (ColecaoVaziaException e)
-		{
-			exception = e;
-		}
-
-		assertNotNull(exception);
-	}
-
 	public void testRemoveCascade()
 	{
 		Eleicao eleicao = EleicaoFactory.getEntity(1L);

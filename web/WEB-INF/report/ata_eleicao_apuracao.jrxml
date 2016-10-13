@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2016-10-13T15:22:54 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ata_eleicao_apuracao" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="1e68b872-cac4-4e1b-92a1-2610dff8a901">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -20,6 +21,9 @@
 	<field name="percentualVotoFmt" class="java.lang.String"/>
 	<field name="candidato.funcao.nome" class="java.lang.String"/>
 	<field name="textoAtaEleicao" class="java.lang.String"/>
+	<field name="candidato.dataAdmissao" class="java.util.Date"/>
+	<sortField name="qtdVoto" order="Descending"/>
+	<sortField name="candidato.dataAdmissao"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{candidato.nome}]]></variableExpression>
 	</variable>
