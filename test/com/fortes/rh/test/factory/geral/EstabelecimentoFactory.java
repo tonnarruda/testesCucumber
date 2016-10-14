@@ -3,6 +3,7 @@ package com.fortes.rh.test.factory.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
 
@@ -49,6 +50,14 @@ public class EstabelecimentoFactory
 	{
 		Estabelecimento estabelecimento = getEntity();
 		estabelecimento.setNome(nome);
+
+		return estabelecimento;
+	}
+
+	public static Estabelecimento getEntity(String nome, Empresa empresa) {
+		Estabelecimento estabelecimento = getEntity();
+		estabelecimento.setNome(nome);
+		estabelecimento.setEmpresa(empresa);
 
 		return estabelecimento;
 	}

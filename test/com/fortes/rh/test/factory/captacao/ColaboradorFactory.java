@@ -27,15 +27,8 @@ public class ColaboradorFactory
 		colaborador.setObservacao("observação");
 		colaborador.setDataAdmissao(new Date());
 		colaborador.setVinculo(Vinculo.EMPREGO);
-
 		colaborador.setEndereco(EnderecoFactory.getEntity());
-
-		Contato contato = new Contato();
-		contato.setEmail("mail@mail.com");
-		contato.setFoneFixo("00000000");
-		contato.setFoneCelular("00000000");
-		colaborador.setContato(contato);
-
+		colaborador.setContato(ContatoFactory.getEntity());
 		Pessoal pessoal	= new Pessoal();
 		pessoal.setDataNascimento(new Date());
 		pessoal.setEstadoCivil("e");

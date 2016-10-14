@@ -48,7 +48,6 @@ import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
@@ -61,6 +60,7 @@ import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ContatoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
@@ -950,11 +950,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		colaborador.setDataAdmissao(new Date());
 		colaborador.setEndereco(EnderecoFactory.getEntity());
 
-		Contato contato = new Contato();
-		contato.setEmail("mail@mail.com");
-		contato.setFoneFixo("00000000");
-		contato.setFoneCelular("00000000");
-		colaborador.setContato(contato);
+		colaborador.setContato(ContatoFactory.getEntity());
 
 		Pessoal pessoal	= new Pessoal();
 		pessoal.setDataNascimento(new Date());

@@ -17,7 +17,6 @@ import com.fortes.rh.dao.geral.GrupoGastoDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Gasto;
 import com.fortes.rh.model.geral.GastoEmpresa;
@@ -26,6 +25,7 @@ import com.fortes.rh.model.geral.GrupoGasto;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ContatoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.GastoEmpresaFactory;
@@ -142,11 +142,7 @@ public class GastoEmpresaDaoHibernateTest extends GenericDaoHibernateTest<GastoE
 		colaborador.setDataAdmissao(new Date());
 		colaborador.setEndereco(EnderecoFactory.getEntity());
 
-		Contato contato = new Contato();
-		contato.setEmail("mail@mail.com");
-		contato.setFoneFixo("00000000");
-		contato.setFoneCelular("00000000");
-		colaborador.setContato(contato);
+		colaborador.setContato(ContatoFactory.getEntity());
 
 		Pessoal pessoal	= new Pessoal();
 		pessoal.setDataNascimento(new Date());
@@ -179,7 +175,7 @@ public class GastoEmpresaDaoHibernateTest extends GenericDaoHibernateTest<GastoE
 		colaborador2.setObservacao("observação");
 		colaborador.setDataAdmissao(new Date());
 		colaborador2.setEndereco(EnderecoFactory.getEntity());
-		colaborador2.setContato(contato);
+		colaborador2.setContato(ContatoFactory.getEntity());
 		colaborador2.setPessoal(pessoal);
 
 		colaborador2 = colaboradorDao.save(colaborador2);

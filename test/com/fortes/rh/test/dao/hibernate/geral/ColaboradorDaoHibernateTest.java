@@ -96,7 +96,6 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorJsonVO;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
-import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -124,6 +123,7 @@ import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ContatoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
@@ -222,11 +222,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setMatricula("00001");
 		colaborador.setEndereco(EnderecoFactory.getEntity());
 
-		Contato contato = new Contato();
-		contato.setEmail("mail@mail.com");
-		contato.setFoneFixo("00000000");
-		contato.setFoneCelular("00000000");
-		colaborador.setContato(contato);
+		colaborador.setContato(ContatoFactory.getEntity());
 
 		Pessoal pessoal = new Pessoal();
 		pessoal.setDataNascimento(new Date());
@@ -2086,15 +2082,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Long> areasIds = new ArrayList<Long>();
 		areasIds.add(areaOrganizacionalAtual.getId());
 
-		Estabelecimento estabelecimentoAtual = EstabelecimentoFactory.getEntity();
-		estabelecimentoAtual.setEmpresa(empresa);
-		estabelecimentoAtual.setNome("A");
-		estabelecimentoAtual = estabelecimentoDao.save(estabelecimentoAtual);
+		Estabelecimento estabelecimentoAtual = EstabelecimentoFactory.getEntity("A", empresa);
+		estabelecimentoDao.save(estabelecimentoAtual);
 
-		Estabelecimento estabelecimentoAntigo = EstabelecimentoFactory.getEntity();
-		estabelecimentoAntigo.setEmpresa(empresa);
-		estabelecimentoAntigo.setNome("B");
-		estabelecimentoAntigo = estabelecimentoDao.save(estabelecimentoAntigo);
+		Estabelecimento estabelecimentoAntigo = EstabelecimentoFactory.getEntity("B", empresa);
+		estabelecimentoDao.save(estabelecimentoAntigo);
 
 		Collection<Long> estabelecimentosIds = new ArrayList<Long>();
 		estabelecimentosIds.add(estabelecimentoAtual.getId());
@@ -2269,16 +2261,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Long> cargosIds = new ArrayList<Long>();
 		cargosIds.add(cargoAtual.getId());
+		
+		Estabelecimento estabelecimentoAtual = EstabelecimentoFactory.getEntity("A ", empresa );
+		estabelecimentoDao.save(estabelecimentoAtual);
 
-		Estabelecimento estabelecimentoAtual = EstabelecimentoFactory.getEntity();
-		estabelecimentoAtual.setEmpresa(empresa);
-		estabelecimentoAtual.setNome("A");
-		estabelecimentoAtual = estabelecimentoDao.save(estabelecimentoAtual);
-
-		Estabelecimento estabelecimentoAntigo = EstabelecimentoFactory.getEntity();
-		estabelecimentoAntigo.setEmpresa(empresa);
-		estabelecimentoAntigo.setNome("B");
-		estabelecimentoAntigo = estabelecimentoDao.save(estabelecimentoAntigo);
+		Estabelecimento estabelecimentoAntigo = EstabelecimentoFactory.getEntity("B ", empresa );
+		estabelecimentoDao.save(estabelecimentoAntigo);
 
 		Collection<Long> estabelecimentosIds = new ArrayList<Long>();
 		estabelecimentosIds.add(estabelecimentoAtual.getId());
@@ -2332,14 +2320,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		faixaSalarialAtual.setCargo(cargoAtual);
 		faixaSalarialAtual = faixaSalarialDao.save(faixaSalarialAtual);
 
-		Estabelecimento estabelecimentoAtual = EstabelecimentoFactory.getEntity();
-		estabelecimentoAtual.setEmpresa(empresa);
-		estabelecimentoAtual.setNome("A");
-		estabelecimentoAtual = estabelecimentoDao.save(estabelecimentoAtual);
+		Estabelecimento estabelecimentoAtual = EstabelecimentoFactory.getEntity(" A", empresa);
+		estabelecimentoDao.save(estabelecimentoAtual);
 
-		Estabelecimento estabelecimentoAntigo = EstabelecimentoFactory.getEntity();
-		estabelecimentoAntigo.setEmpresa(empresa);
-		estabelecimentoAntigo.setNome("B");
+		Estabelecimento estabelecimentoAntigo = EstabelecimentoFactory.getEntity(" B", empresa);
 		estabelecimentoAntigo = estabelecimentoDao.save(estabelecimentoAntigo);
 
 		Collection<Long> estabelecimentosIds = new ArrayList<Long>();
@@ -2383,9 +2367,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	}
 
 	public void testFindAreaOrganizacionalByGruposOrAreas() {
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("estabelecimento ");
+		estabelecimentoDao.save(estabelecimento );
 
 		Colaborador responsavel = getEntity();
 		responsavel = colaboradorDao.save(responsavel);
@@ -2445,9 +2428,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	}
 	
 	public void testFindAreaOrganizacionalByAreasAndPeriodoDataAdmissao() {
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("estabelecimento" );
+		estabelecimentoDao.save( estabelecimento);
 		
 		Colaborador responsavel = getEntity();
 		responsavel = colaboradorDao.save(responsavel);
@@ -2509,9 +2491,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	
 	public void testFindAreaOrganizacionalByAreasAndCargos() {
 		
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("estabelecimento");
+		estabelecimentoDao.save(estabelecimento);
 		
 		Colaborador responsavel = getEntity();
 		responsavel = colaboradorDao.save(responsavel);
@@ -2578,9 +2559,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	
 	public void testFindAreaOrganizacionalByAreasAndEnviadosParaAC() 
 	{
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("estabelecimento" );
+		estabelecimentoDao.save(estabelecimento);
 		
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
@@ -2655,9 +2635,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	
 	public void testFindAreaOrganizacionalBySemDeficiencia()
 	{
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimentoDao.save(estabelecimento);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("estabelecimento " );
+		estabelecimentoDao.save( estabelecimento);
 		
 		Colaborador responsavel = getEntity();
 		colaboradorDao.save(responsavel);
@@ -2729,9 +2708,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	
 	public void testFindAreaOrganizacionalByComDeficiencia()
 	{
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(" estabelecimento ");
+		estabelecimentoDao.save(estabelecimento );
 		
 		Colaborador responsavel = getEntity();
 		responsavel = colaboradorDao.save(responsavel);
@@ -2804,9 +2782,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	
 	public void testFindAreaOrganizacionalBySemDeficienciaComDeficiencia()
 	{
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity( "estabelecimento");
+		estabelecimentoDao.save(estabelecimento);
 		
 		Colaborador responsavel = getEntity();
 		responsavel = colaboradorDao.save(responsavel);
@@ -2881,9 +2858,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	}
 
 	public void testFindAreaOrganizacionalByGruposOrAreasCamposExtras() {
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(" estabelecimento" );
+		estabelecimentoDao.save(estabelecimento);
 
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
@@ -3135,9 +3111,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		colaboradors.add(colaborador);
 
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
+		Estabelecimento estabelecimento = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("estabelecimento"));
 
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
@@ -3197,9 +3171,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		colaboradors.add(colaborador);
 
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
+		Estabelecimento estabelecimento = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("estabelecimento" ));
 
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional.setNome("nome");
@@ -5751,10 +5723,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador1.setDataAdmissao(quarentaDiasAtras.getTime());
 		colaboradorDao.save(colaborador1);
 
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador1.setColaborador(colaborador1);
-		historicoColaborador1.setFuncao(funcao);
-		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		HistoricoColaborador historicoColaborador1 = criaHistoricoColaborador(funcao, colaborador1);
 		historicoColaboradorDao.save(historicoColaborador1);
 
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
@@ -5762,14 +5731,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setDataAdmissao(quarentaUmDiasAtras.getTime());
 		colaboradorDao.save(colaborador2);
 		
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador2.setColaborador(colaborador2);
-		historicoColaborador2.setFuncao(funcao);
-		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		HistoricoColaborador historicoColaborador2 = criaHistoricoColaborador(funcao, colaborador2);
 		historicoColaboradorDao.save(historicoColaborador2);
 		
 		assertEquals(1, colaboradorDao.findAdmitidosHaDiasSemEpi(Arrays.asList(40, 49), empresa.getId()).size());
 
+	}
+
+	private HistoricoColaborador criaHistoricoColaborador(Funcao funcao, Colaborador colaborador) {
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(null, colaborador, funcao, DateUtil.criarDataMesAno(01, 01, 2005));
+		return historicoColaborador2;
 	}
 	
 	public void testFindAdmitidosHaDiasSemEpiComEpi()
@@ -5803,10 +5774,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador1.setDataAdmissao(quarentaDiasAtras.getTime());
 		colaboradorDao.save(colaborador1);
 		
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador1.setColaborador(colaborador1);
-		historicoColaborador1.setFuncao(funcao);
-		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		HistoricoColaborador historicoColaborador1 = criaHistoricoColaborador(funcao, colaborador1);
 		historicoColaboradorDao.save(historicoColaborador1);
 		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
@@ -5814,10 +5782,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setDataAdmissao(quarentaUmDiasAtras.getTime());
 		colaboradorDao.save(colaborador2);
 		
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador2.setColaborador(colaborador2);
-		historicoColaborador2.setFuncao(funcao);
-		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		HistoricoColaborador historicoColaborador2 = criaHistoricoColaborador(funcao, colaborador2);
 		historicoColaboradorDao.save(historicoColaborador2);
 		
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();

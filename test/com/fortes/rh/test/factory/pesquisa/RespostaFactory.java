@@ -44,4 +44,16 @@ public class RespostaFactory
 
 		return resposta;
 	}
+	
+	public static Resposta getEntity(String texto, Pergunta pergunta, Integer ordem)
+	{
+		Resposta resposta = getEntity();
+		resposta.setTexto(texto);
+		resposta.setPergunta(pergunta);
+		
+		if(ordem != null)
+			resposta.setOrdem(ordem);
+
+		return resposta;
+	}
 }

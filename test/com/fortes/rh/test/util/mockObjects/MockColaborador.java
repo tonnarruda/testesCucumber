@@ -3,8 +3,8 @@ package com.fortes.rh.test.util.mockObjects;
 import java.util.Date;
 
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.test.factory.captacao.ContatoFactory;
 import com.fortes.rh.test.model.geral.EnderecoFactory;
 
 public class MockColaborador
@@ -21,12 +21,7 @@ public class MockColaborador
 		colaborador.setDataAdmissao(new Date());
 
 		colaborador.setEndereco(EnderecoFactory.getEntity());
-
-		Contato contato = new Contato();
-		contato.setEmail("mail@mail.com");
-		contato.setFoneFixo("00000000");
-		contato.setFoneCelular("00000000");
-		colaborador.setContato(contato);
+		colaborador.setContato(ContatoFactory.getEntity());
 
 		Pessoal pessoal	= new Pessoal();
 		pessoal.setDataNascimento(new Date());

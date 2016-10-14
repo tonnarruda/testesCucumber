@@ -118,16 +118,10 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		pergunta.setQuestionario(questionario);
 		pergunta = perguntaDao.save(pergunta);
 
-		Resposta respostaA = RespostaFactory.getEntity();
-		respostaA.setTexto("Sim");
-		respostaA.setOrdem(1);
-		respostaA.setPergunta(pergunta);
+		Resposta respostaA = RespostaFactory.getEntity("Sim", pergunta, 1);
 		respostaA = respostaDao.save(respostaA);
 
-		Resposta respostaB = RespostaFactory.getEntity();
-		respostaB.setTexto("Nao");
-		respostaB.setOrdem(2);
-		respostaB.setPergunta(pergunta);
+		Resposta respostaB = RespostaFactory.getEntity("Não", pergunta, 2);
 		respostaB = respostaDao.save(respostaB);
 
 		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, null, turma, null, null);
@@ -162,17 +156,12 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		pergunta.setQuestionario(questionario);
 		pergunta = perguntaDao.save(pergunta);
 
-		Resposta respostaA = RespostaFactory.getEntity();
-		respostaA.setTexto("Sim");
-		respostaA.setOrdem(1);
-		respostaA.setPergunta(pergunta);
+		Resposta respostaB = RespostaFactory.getEntity("Não", pergunta, 2);
+		respostaB = respostaDao.save(respostaB);
+
+		Resposta respostaA = RespostaFactory.getEntity("Sim", pergunta, 1);
 		respostaA = respostaDao.save(respostaA);
 
-		Resposta respostaB = RespostaFactory.getEntity();
-		respostaB.setTexto("Nao");
-		respostaB.setOrdem(2);
-		respostaB.setPergunta(pergunta);
-		respostaB = respostaDao.save(respostaB);
 
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
@@ -212,16 +201,10 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		pergunta.setTexto("Quais características?");
 		pergunta = perguntaDao.save(pergunta);
 		
-		Resposta respostaA = RespostaFactory.getEntity();
-		respostaA.setTexto("A");
-		respostaA.setOrdem(1);
-		respostaA.setPergunta(pergunta);
+		Resposta respostaA = RespostaFactory.getEntity("A", pergunta, 1);
 		respostaA = respostaDao.save(respostaA);
 		
-		Resposta respostaB = RespostaFactory.getEntity();
-		respostaB.setTexto("B");
-		respostaB.setOrdem(2);
-		respostaB.setPergunta(pergunta);
+		Resposta respostaB = RespostaFactory.getEntity("B", pergunta, 2);
 		respostaB = respostaDao.save(respostaB);
 		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
@@ -284,17 +267,11 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		pergunta.setQuestionario(questionario);
 		pergunta = perguntaDao.save(pergunta);
 		
-		Resposta respostaA = RespostaFactory.getEntity();
-		respostaA.setTexto("Sim");
-		respostaA.setOrdem(1);
-		respostaA.setPergunta(pergunta);
-		respostaA = respostaDao.save(respostaA);
+		Resposta respostaA = RespostaFactory.getEntity("Sim", pergunta, 1);
+		respostaDao.save(respostaA);
 		
-		Resposta respostaB = RespostaFactory.getEntity();
-		respostaB.setTexto("Nao");
-		respostaB.setOrdem(2);
-		respostaB.setPergunta(pergunta);
-		respostaB = respostaDao.save(respostaB);
+		Resposta respostaB = RespostaFactory.getEntity("Não", pergunta, 2);
+		respostaDao.save(respostaB);
 		
 		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, null, turma, null, null);
 		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, null, turma, null, null);
@@ -338,17 +315,11 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		pergunta.setTipo(TipoPergunta.OBJETIVA);
 		pergunta = perguntaDao.save(pergunta);
 		
-		Resposta respostaA = RespostaFactory.getEntity();
-		respostaA.setTexto("Sim");
-		respostaA.setOrdem(1);
-		respostaA.setPergunta(pergunta);
-		respostaA = respostaDao.save(respostaA);
-		
-		Resposta respostaB = RespostaFactory.getEntity();
-		respostaB.setTexto("Nao");
-		respostaB.setOrdem(2);
-		respostaB.setPergunta(pergunta);
-		respostaB = respostaDao.save(respostaB);
+		Resposta respostaB = RespostaFactory.getEntity("Não", pergunta, 2);
+		respostaDao.save(respostaB);
+
+		Resposta respostaA = RespostaFactory.getEntity("Sim", pergunta, 1);
+		respostaDao.save(respostaA);
 		
 		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, DateUtil.criarAnoMesDia(2008, 10, 10), null, DateUtil.criarAnoMesDia(2008, 10, 10), null);
 		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, DateUtil.criarAnoMesDia(2008, 11, 10), null, null, null);
@@ -734,9 +705,8 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		pergunta2.setQuestionario(questionario);
 		pergunta2 = perguntaDao.save(pergunta2);
 
-		Resposta resposta1 = RespostaFactory.getEntity();
-		resposta1.setPergunta(pergunta1);
-		resposta1 = respostaDao.save(resposta1);
+		Resposta resposta1 = RespostaFactory.getEntity("", pergunta1, null);
+		respostaDao.save(resposta1);
 
 		Resposta resposta2 = RespostaFactory.getEntity();
 		resposta2.setPergunta(pergunta2);
@@ -799,8 +769,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		resposta1.setPergunta(pergunta1);
 		respostaDao.save(resposta1);
 
-		Resposta resposta2 = RespostaFactory.getEntity();
-		resposta2.setPergunta(pergunta2);
+		Resposta resposta2 = RespostaFactory.getEntity("", pergunta2, null);
 		respostaDao.save(resposta2);
 
 		ColaboradorResposta colaboradorResposta1 = ColaboradorRespostaFactory.getEntity();
