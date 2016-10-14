@@ -85,6 +85,7 @@ public class ExameManagerTest_JUnit4
     	colecao.add(examesPrevistosColaborador1Exame1Atual);
     	
     	ExamesPrevistosRelatorio examesPrevistosColaborador1ExameNaoRealizado = new ExamesPrevistosRelatorio(1L,1L,1L,"Cargo","","","","",tresMesesAtras,null,1, "PERIODICO",1L,"EST");
+    	examesPrevistosColaborador1ExameNaoRealizado.setDataProximoExame(tresMesesAtras);
     	Collection<ExamesPrevistosRelatorio> examesNaoRealizados = new ArrayList<ExamesPrevistosRelatorio>();
     	examesNaoRealizados.add(examesPrevistosColaborador1ExameNaoRealizado);
     	

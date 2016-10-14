@@ -86,12 +86,17 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 
 		return query.list();
 	}
-	
+
+	/**
+	 * dataProximoExame: É a data da solicitação do exame, quando o exame não foi realizado.
+	 * */
 	public Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistosNaoRealizados(Long empresaId, Date dataInicio, Date dataFim, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados, boolean imprimirDesligados)
 	{
 		Criteria criteria = createCriteriaFindExamesPeriodicosPrevistos(imprimirAfastados);
-		criteria.setProjection(projectionFindExamesPeriodicosPrevistos());
-		
+		ProjectionList p = projectionFindExamesPeriodicosPrevistos();
+		p.add(Projections.property("se.data"), "dataProximoExame");
+
+		criteria.setProjection(p);
 		criteria.add(Expression.eq("se.empresa.id", empresaId));
 		criteria.add(Expression.le("se.data", dataFim));
 		criteria.add(Expression.ge("se.data", dataInicio));
@@ -125,7 +130,11 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 	
 	public Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistos(Long empresaId, Date dataInicio, Date dataFim, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados, boolean imprimirDesligados){
 		Criteria criteria = createCriteriaFindExamesPeriodicosPrevistos(imprimirAfastados);
-		criteria.setProjection(projectionFindExamesPeriodicosPrevistos());
+		ProjectionList p = projectionFindExamesPeriodicosPrevistos();
+		p.add(Projections.property("se.data"), "dataSolicitacaoExame");
+		p.add(Projections.property("re.data"), "dataRealizacaoExame");
+		p.add(Projections.sqlProjection("(re3_.data + (ese1_.periodicidade || ' month')::interval) as dataProximoExame", new String[]{"dataProximoExame"}, new Type[]{Hibernate.DATE}));
+		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("se.empresa.id", empresaId ));
 		criteria.add(Expression.le("se.data", dataFim ));
@@ -196,13 +205,10 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		p.add(Projections.property("co.nome"), "colaboradorNome");
 		p.add(Projections.property("co.nomeComercial"), "colaboradorNomeComercial");
 		p.add(Projections.property("e.nome"), "exameNome");
-		p.add(Projections.property("se.data"), "dataSolicitacaoExame");
-		p.add(Projections.property("re.data"), "dataRealizacaoExame");
 		p.add(Projections.property("ese.periodicidade"), "examePeriodicidade");
 		p.add(Projections.property("se.motivo"), "motivoSolicitacaoExame");
 		p.add(Projections.property("es.id"), "estabelecimentolId");
 		p.add(Projections.property("es.nome"), "estabelecimentolNome");
-		p.add(Projections.sqlProjection("(re3_.data + (ese1_.periodicidade || ' month')::interval) as dataProximoExame", new String[]{"dataProximoExame"}, new Type[]{Hibernate.DATE}));
 		return p;
 	}
 	

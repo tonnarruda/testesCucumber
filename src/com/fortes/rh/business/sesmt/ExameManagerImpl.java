@@ -100,7 +100,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		Collection<ExamesPrevistosRelatorio> examesPrevistos = getDao().findExamesPeriodicosPrevistos(empresaId, dataInicio, dataFim, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados);
 
 		if(exibirExamesNaoRealizados)
-			examesPrevistos.addAll(findExamesPeriodicosPrevistosNaoRealizados(empresaId, dataInicio, dataFim, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados));
+			examesPrevistos.addAll(getDao().findExamesPeriodicosPrevistosNaoRealizados(empresaId, dataInicio, dataFim, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados));
 		
 		if (examesPrevistos.isEmpty())
 			return examesPrevistos;
@@ -116,17 +116,6 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 			examesPrevistos = collectionUtil.sortCollectionStringIgnoreCase(examesPrevistos, "estabelecimento.nome");	
 		
 		return examesPrevistos;
-	}
-
-	private Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistosNaoRealizados(Long empresaId, Date dataInicio, Date dataFim, Long[] examesChecks, Long[] estabelecimentosChecks, Long[] areasChecks, Long[] colaboradoresChecks, boolean imprimirAfastados, boolean imprimirDesligados) {
-		Collection<ExamesPrevistosRelatorio> examesPrevistosNãoRealizados = getDao().findExamesPeriodicosPrevistosNaoRealizados(empresaId, dataInicio, dataFim, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados);
-		
-		for (ExamesPrevistosRelatorio examesPrevistosRelatorio : examesPrevistosNãoRealizados) {
-			examesPrevistosRelatorio.setDataProximoExame(examesPrevistosRelatorio.getDataRealizacaoExame());
-			examesPrevistosRelatorio.setDataRealizacaoExame(null);
-		}
-		
-		return examesPrevistosNãoRealizados;
 	}
 
 	public Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String motivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Character tipoPessoa) throws ColecaoVaziaException
