@@ -92,6 +92,15 @@ public class HistoricoColaboradorFactory
 		return historicoColaborador;
 	}
 	
+	public static HistoricoColaborador getEntity(Colaborador colaborador, Date data, Estabelecimento estabelecimento)
+	{
+		HistoricoColaborador historicoColaborador = getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(data);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		return historicoColaborador;
+	}
+	
 	public static HistoricoColaborador getEntity(Colaborador colaborador, FaixaSalarial faixaSalarial, Date data, Integer status)
 	{
 		HistoricoColaborador historicoColaborador = getEntity();
@@ -108,6 +117,13 @@ public class HistoricoColaboradorFactory
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setFuncao(funcao);
 		historicoColaborador.setData(data);
+		return historicoColaborador;
+	}
+
+	public static HistoricoColaborador getEntity(Colaborador colaborador, Date data, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional) {
+		HistoricoColaborador historicoColaborador = getEntity(colaborador, data, estabelecimento);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		
 		return historicoColaborador;
 	}
 }

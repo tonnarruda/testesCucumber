@@ -164,6 +164,7 @@ import com.fortes.rh.test.business.sesmt.EpiManagerTest;
 import com.fortes.rh.test.business.sesmt.EpiPcmatManagerTest;
 import com.fortes.rh.test.business.sesmt.EtapaProcessoEleitoralManagerTest;
 import com.fortes.rh.test.business.sesmt.ExameManagerTest;
+import com.fortes.rh.test.business.sesmt.ExameManagerTest_JUnit4;
 import com.fortes.rh.test.business.sesmt.ExameSolicitacaoExameManagerTest;
 import com.fortes.rh.test.business.sesmt.ExtintorInspecaoManagerTest;
 import com.fortes.rh.test.business.sesmt.ExtintorManagerTest;
@@ -611,6 +612,7 @@ import com.fortes.rh.test.web.action.sesmt.EtapaProcessoEleitoralEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.EventoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ExameEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ExameListActionTest;
+import com.fortes.rh.test.web.action.sesmt.ExameListActionTest_JUnit4;
 import com.fortes.rh.test.web.action.sesmt.ExtintorEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ExtintorInspecaoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ExtintorManutencaoEditActionTest;
@@ -1146,6 +1148,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 
 	SolicitacaoExameDaoHibernateTest.class,
 	SolicitacaoExameManagerTest.class,
+	ExameManagerTest_JUnit4.class,
 	SolicitacaoExameListActionTest.class,
 	SolicitacaoExameEditActionTest.class,
 	SolicitacaoExameDWRTest.class,
@@ -1157,6 +1160,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	RealizacaoExameManagerTest.class,
 
 	ExameListActionTest.class,
+	ExameListActionTest_JUnit4.class,
 	ExameEditActionTest.class,
 	ExameDaoHibernateTest.class,
 	ExameManagerTest.class,

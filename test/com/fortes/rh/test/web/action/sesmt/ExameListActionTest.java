@@ -2,7 +2,6 @@ package com.fortes.rh.test.web.action.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import mockit.Mockit;
 
@@ -20,8 +19,6 @@ import com.fortes.rh.business.sesmt.MedicoCoordenadorManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
-import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
-import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
@@ -29,8 +26,6 @@ import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.AsoRelatorio;
-import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
-import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -270,74 +265,6 @@ public class ExameListActionTest extends MockObjectTestCase
 
 		assertEquals("success", action.prepareRelatorioExamesPrevistos());
 	}
-
-	
-	public void testDeveriaGerarRelatorioDeExamesPrevitos() throws Exception {
-		
-		Long empresaId = 1L;
-		
-		ExamesPrevistosRelatorio examesPrevistosRelatorio = new ExamesPrevistosRelatorio();
-		Collection<ExamesPrevistosRelatorio> colecaoRelatorio = new ArrayList<ExamesPrevistosRelatorio>();
-		colecaoRelatorio.add(examesPrevistosRelatorio);
-
-		exameManager.expects(atLeastOnce())
-			.method("findRelatorioExamesPrevistos")
-			.with(new Constraint[]{eq(empresaId), ANYTHING, ANYTHING, 
-					eq(null),eq(null),eq(null),eq(null),ANYTHING,eq(false),eq(false)})
-			.will(returnValue(colecaoRelatorio));
-		
-		estabelecimentoManager.expects(never())
-			.method("nomeEstabelecimentos")
-			.with(ANYTHING);
-		
-		assertEquals("success", action.relatorioExamesPrevistos());
-	}
-	
-	public void testDeveriaGerarRelatorioDeExamesPrevitosQuandoTemParametros() throws Exception
-	{
-		Long empresaId = 1L;
-		Collection<ExamesPrevistosRelatorio> colecaoRelatorio = new ArrayList<ExamesPrevistosRelatorio>();
-		ExamesPrevistosRelatorio examesPrevistosRelatorio = new ExamesPrevistosRelatorio();
-		colecaoRelatorio.add(examesPrevistosRelatorio);
-
-		Long[] estabelecimentoIds = {1L};
-		
-		// Teste com os arrays de ids
-		String[] areasCheck={"1"}, estabelecimentosCheck={"1"}, colaboradoresCheck={"1"}, examesCheck = {"1"};
-		action.setAreasCheck(areasCheck);
-		action.setEstabelecimentosCheck(estabelecimentosCheck);
-		action.setExamesCheck(examesCheck);
-		action.setColaboradoresCheck(colaboradoresCheck);
-
-		exameManager.expects(atLeastOnce())
-			.method("findRelatorioExamesPrevistos")
-			.with(new Constraint[]{eq(empresaId), eq(null), eq(null), 
-					eq(new Long[]{1L}), eq(new Long[]{1L}), 
-					eq(new Long[]{1L}), eq(new Long[]{1L}), ANYTHING, ANYTHING,eq(false)})
-			.will(returnValue(colecaoRelatorio));
-		
-		estabelecimentoManager.expects(atLeastOnce())
-			.method("nomeEstabelecimentos")
-			.with(eq(estabelecimentoIds), eq(null))
-			.will(returnValue("Paizinho"));
-
-		assertEquals("success", action.relatorioExamesPrevistos());
-	}
-	
-	public void testRelatorioExamesPrevistosColecaoVaziaException() throws Exception
-	{
-		Long empresaId = 1L;
-		
-		exameManager.expects(once()).method("findRelatorioExamesPrevistos").with(new Constraint[]{eq(empresaId), ANYTHING, ANYTHING, eq(null),eq(null),eq(null),eq(null),ANYTHING,eq(false),eq(false)}).will(throwException(new ColecaoVaziaException("")));
-		
-		//prepare
-		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(empresaId)).will(returnValue(new ArrayList<CheckBox>()));
-		estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(empresaId)).will(returnValue(new ArrayList<CheckBox>()));
-		colaboradorManager.expects(once()).method("populaCheckBox").with(eq(empresaId)).will(returnValue(new ArrayList<CheckBox>()));
-		exameManager.expects(once()).method("populaCheckBox").with(eq(empresaId)).will(returnValue(new ArrayList<CheckBox>()));
-		
-		assertEquals("input", action.relatorioExamesPrevistos());
-	}
 	
 	public void testPrepareRelatorioExamesRealizados()
 	{
@@ -347,35 +274,6 @@ public class ExameListActionTest extends MockObjectTestCase
 		exameManager.expects(once()).method("populaCheckBox").with(eq(empresaId)).will(returnValue(new ArrayList<CheckBox>()));
 
 		assertEquals("success", action.prepareRelatorioExamesRealizados());
-	}
-
-	public void testRelatorioExamesRealizados()
-	{
-		Date inicio = new Date();
-		Date fim = new Date();
-		Long empresaId = 1L;
-		Collection<ExamesRealizadosRelatorio> colecaoRelatorio = new ArrayList<ExamesRealizadosRelatorio>();
-		ExamesRealizadosRelatorio examesRealizadosRelatorio = new ExamesRealizadosRelatorio();
-		colecaoRelatorio.add(examesRealizadosRelatorio);
-		
-		String[] estabelecimentosCheck={"1"}, examesCheck = {"1"};
-		action.setEstabelecimentosCheck(estabelecimentosCheck);
-		action.setExamesCheck(examesCheck);
-		action.setMotivo(MotivoSolicitacaoExame.ADMISSIONAL);
-		action.setResultado(ResultadoExame.ANORMAL.toString());
-		action.setInicio(inicio);
-		action.setFim(fim);
-		
-		Long[] estabelecimentoIds = {1L};
-		
-		exameManager.expects(once()).method("findRelatorioExamesRealizados").with(new Constraint[]{eq(empresaId), ANYTHING, eq(inicio), eq(fim), eq(MotivoSolicitacaoExame.ADMISSIONAL), eq(ResultadoExame.ANORMAL.toString()), eq(null), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecaoRelatorio));
-		
-		estabelecimentoManager.expects(atLeastOnce())
-			.method("nomeEstabelecimentos")
-			.with(eq(estabelecimentoIds), eq(null))
-			.will(returnValue("Paizinho"));
-		
-		assertEquals("success", action.relatorioExamesRealizados());
 	}
 
 	public void testRelatorioExamesRealizadosColecaoVaziaException()

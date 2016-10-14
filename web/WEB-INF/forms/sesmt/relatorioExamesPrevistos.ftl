@@ -44,6 +44,7 @@
 		<@ww.select label="Agrupar por" name="agruparPor" list=r"#{'N':'-','A':'Área Organizacional','E':'Estabelecimento'}"/>
 		<@ww.checkbox label="Não imprimir afastado(s)" id="imprimirAfastados" name="imprimirAfastados" labelPosition="left"/>
 		<@ww.checkbox label="Imprimir desligados" id="imprimirDesligados" name="imprimirDesligados" labelPosition="left"/>
+		<@ww.checkbox label="Exibir exames solicitados e não realizados" id="exibirExamesNaoRealizados" name="exibirExamesNaoRealizados" labelPosition="left"/>
 
 		<div class="buttonGroup">
 			<input type="button" value="" onclick="validaFormularioEPeriodo('form',new Array('dataIni','dataFim'),new Array('dataIni','dataFim'));" class="btnRelatorio" />

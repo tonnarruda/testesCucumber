@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 
 public class SolicitacaoExameFactory
@@ -23,6 +25,17 @@ public class SolicitacaoExameFactory
 		SolicitacaoExame solicitacaoExame = getEntity();
 		solicitacaoExame.setId(id);
 		
+
+		return solicitacaoExame;
+	}
+
+	public static SolicitacaoExame getEntity(Empresa empresa, Colaborador colaborador, String motivo, Date data)
+	{
+		SolicitacaoExame solicitacaoExame = getEntity();
+		solicitacaoExame.setEmpresa(empresa);
+		solicitacaoExame.setColaborador(colaborador);
+		solicitacaoExame.setMotivo(motivo);
+		solicitacaoExame.setData(data);
 
 		return solicitacaoExame;
 	}

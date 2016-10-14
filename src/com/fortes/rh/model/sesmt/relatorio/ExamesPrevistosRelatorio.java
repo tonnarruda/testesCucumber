@@ -76,16 +76,11 @@ public class ExamesPrevistosRelatorio {
 		return this.dataProximoExame;
 	}
 
-	/**
-	 * Formata e retorna data do último exame. Pode ser a data de realização, ou
-	 * data da solicitação (se ainda não tiver sido realizado)
-	 * 
-	 * @return dataUltimoExameFmt
-	 */
 	public String getDataUltimoExame()
 	{
 		String dataUltimoExameFmt = "-";
-		dataUltimoExameFmt = DateUtil.formataDiaMesAno(dataRealizacaoExame != null ? dataRealizacaoExame : dataSolicitacaoExame);
+		if(dataRealizacaoExame != null)
+			dataUltimoExameFmt = DateUtil.formataDiaMesAno(dataRealizacaoExame);
 		return dataUltimoExameFmt;
 	}
 

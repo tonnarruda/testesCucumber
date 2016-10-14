@@ -96,6 +96,7 @@ public class ExameListAction extends MyActionSupportList
 
 	private boolean imprimirAfastados = false;
 	private boolean imprimirDesligados = false;
+	private boolean exibirExamesNaoRealizados = false;
 	private String imprimirASOComRiscoPor = "AF";
 
 	private Character tipoPessoa = 'T';
@@ -215,7 +216,7 @@ public class ExameListAction extends MyActionSupportList
 
 		try
 		{
-			colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(getEmpresaSistema().getId(), inicio, fim, examesIds, estabelecimentosIds, areasIds, colaboradoresIds, agruparPor, imprimirAfastados, imprimirDesligados);
+			colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(getEmpresaSistema().getId(), inicio, fim, examesIds, estabelecimentosIds, areasIds, colaboradoresIds, agruparPor, imprimirAfastados, imprimirDesligados, exibirExamesNaoRealizados);
 			
 			if(colecaoExamesPrevistos == null || colecaoExamesPrevistos.size() == 0)
 				throw new ColecaoVaziaException();
@@ -602,8 +603,12 @@ public class ExameListAction extends MyActionSupportList
 		this.imprimirASOComRiscoPor = imprimirASOComRiscoPor;
 	}
 
-	public boolean isRelatorioExamesPrevistosResumido() {
-		return relatorioExamesPrevistosResumido;
+	public boolean isExibirExamesNaoRealizados() {
+		return exibirExamesNaoRealizados;
+	}
+
+	public void setExibirExamesNaoRealizados(boolean exibirExamesNaoRealizados) {
+		this.exibirExamesNaoRealizados = exibirExamesNaoRealizados;
 	}
 
 }

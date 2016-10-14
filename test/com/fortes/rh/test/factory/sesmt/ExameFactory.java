@@ -1,5 +1,6 @@
 package com.fortes.rh.test.factory.sesmt;
 
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Exame;
 
 public class ExameFactory
@@ -19,6 +20,23 @@ public class ExameFactory
 	{
 		Exame exame = getEntity();
 		exame.setId(id);
+		return exame;
+	}
+	
+	public static Exame getEntity(Empresa empresa)
+	{
+		Exame exame = getEntity();
+		exame.setEmpresa(empresa);
+		return exame;
+	}
+
+	public static Exame getEntity(boolean periodico, Integer periodicidade) {
+		Exame exame = getEntity();
+		exame.setPeriodico(periodico);
+		
+		if(periodicidade != null)
+			exame.setPeriodicidade(periodicidade);
+		
 		return exame;
 	}
 }
