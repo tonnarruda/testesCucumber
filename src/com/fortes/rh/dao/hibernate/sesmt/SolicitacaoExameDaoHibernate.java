@@ -168,7 +168,8 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		hql.append("and (s.data = (select max(s2.data) ");
 		hql.append("			    from CandidatoSolicitacao cas2 ");
 		hql.append("			    left join cas2.solicitacao s2 ");
-		hql.append("			    where cas2.candidato.id = ca.id) ");
+		hql.append("			    where cas2.candidato.id = ca.id ");
+		hql.append("			    and cas2.triagem = :triagem) ");
 		hql.append("	or s.data is null) ");
 		
 		hql.append("order by clinica.nome ");
@@ -176,6 +177,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("solicitacaoExameId", solicitacaoExameId);
 		query.setDate("hoje", new Date());
+		query.setBoolean("triagem", false);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		return query.list();
