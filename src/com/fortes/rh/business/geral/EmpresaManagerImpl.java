@@ -339,24 +339,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		String camposVisivesisCandidato = "";
 		
 		for (ConfiguracaoCampoExtra campoExtra : configuracaoCampoExtras){
-			camposExtras.add(campoExtra.getNome());
-			
-			if(campoExtra.getEmpresa().getId() == null){
-				campoExtra.setEmpresa(empresa);
-				campoExtra.setId(null);
-			}
-			
-			if(empresa.getId() == null || empresa.getId().equals(-1L)){
-				for (Empresa empresaTmp : empresas) 
-				{
-					ConfiguracaoCampoExtra campoExtraTmp = new ConfiguracaoCampoExtra();
-					campoExtraTmp = (ConfiguracaoCampoExtra) campoExtra.clone();
-					campoExtraTmp.setEmpresa(empresaTmp);
-					campoExtraTmp.setId(null);
-					configuracaoCampoExtraManager.save(campoExtraTmp);
-				}
-			}else
-				configuracaoCampoExtraManager.update(campoExtra);
+			saveOrUpdateConfigCamposExtras(empresa, empresas, camposExtras, campoExtra);
 			
 			if(campoExtra.getAtivoColaborador())
 				camposVisivesisColaborador += campoExtra.getNome() + ","; 			
@@ -374,6 +357,25 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			getDao().updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
 			decideRemoverOrAtualizarConfigCamposVisiveiAndObrigatorios(empresa.getId(), camposVisivesisColaborador, camposVisivesisCandidato);
 		}
+	}
+
+	private void saveOrUpdateConfigCamposExtras(Empresa empresa, Collection<Empresa> empresas, Collection<String> camposExtras, ConfiguracaoCampoExtra campoExtra) {
+		camposExtras.add(campoExtra.getNome());
+		
+		if(campoExtra.getEmpresa().getId() == null){
+			campoExtra.setEmpresa(empresa);
+			campoExtra.setId(null);
+		}
+		
+		if(empresa.getId() == null || empresa.getId().equals(-1L)){
+			for (Empresa empresaTmp : empresas){
+				ConfiguracaoCampoExtra campoExtraTmp = (ConfiguracaoCampoExtra) campoExtra.clone();
+				campoExtraTmp.setEmpresa(empresaTmp);
+				campoExtraTmp.setId(null);
+				configuracaoCampoExtraManager.save(campoExtraTmp);
+			}
+		}else
+			configuracaoCampoExtraManager.update(campoExtra);
 	}
 
 	private void decideRemoverOrAtualizarConfigCamposVisiveiAndObrigatorios( Long empresaId, String camposVisivesisColaborador, String camposVisivesisCandidato) {

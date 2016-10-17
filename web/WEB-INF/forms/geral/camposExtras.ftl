@@ -24,7 +24,7 @@
 			<@ww.datepicker id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" value="${data}" cssClass="mascaraData" />
 		</#if>
 		<#if configuracaoCampoExtra.tipo == "valor">
-			<@ww.textfield id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssClass="currency" cssStyle="width:85px; text-align:right;" />
+			<@ww.textfield id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssClass="currency" cssStyle="width:85px; text-align:right;" onkeypress = "return(somenteNumeros(event,''));" maxLength="250"/>
 		</#if>
 		<#if configuracaoCampoExtra.tipo == "numero">
 			<@ww.textfield id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssStyle="width: 79px;" onkeypress = "return(somenteNumeros(event,''));" maxLength="250" />

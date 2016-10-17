@@ -7,6 +7,7 @@
 		<Item visivel="S" motivo="S16090000067"><![CDATA[Utilitários > Cadastros > Perfil: Novo perfil "Exibir Salário" no quadro "Trajetória Profissional na Empresa" ao exibir performance profissional do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16090000270"><![CDATA[Utilitários > Cadastros > Perfil: Novo perfil "Exibir Salário Contratual" na opção campos disponíveis ao gerar o relatório de listagem de colaboradores.]]></Item>
 		<Item visivel="S" motivo="S16060000322"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar > Cartões: Nova opção de configuração de cartão para colaborador que completa ano de empresa.]]></Item>
+		<Item visivel="S" motivo="P16090000235"><![CDATA[Utilitários > Configurações > Configurar Cadastro de Colaborador e Candidato > Campos Extras: Novas opções de configuração complementar dos campos extras.]]></Item>
 		<Item visivel="S" motivo="S16060000322"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Novo gerenciador de comunicação para notificar por email o próprio colaborador e o responsável do RH quando um colaborador completa ano de empresa.]]></Item>
 		<Item visivel="S" motivo="S16070000009"><![CDATA[Página Inicial: Nova forma de exibir os ícones no sistema e novos ícones para acessar o twiter, facebook, linkedin, blog e chat.]]></Item>
 	</Versao>
