@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -113,9 +114,7 @@ public class ExameManagerTest_JUnit4
     } 
 
 	@Test
-    public void testFindRelatorioExamesPrevistosAgruparPorArea() throws Exception
-    {
-    	
+    public void testFindRelatorioExamesPrevistosAgruparPorArea() throws Exception{
     	boolean imprimirAfastados=true;
     	
     	Date hoje = new Date();
@@ -125,25 +124,17 @@ public class ExameManagerTest_JUnit4
     	tresMesesAtras.add(Calendar.MONTH, -3);
     	
     	Long[] areasCheck={1L}, estabelecimentosCheck={1L}, colaboradoresCheck={1L}, examesCheck = {1L};
-    	Collection<ExamesPrevistosRelatorio> colecao = new ArrayList<ExamesPrevistosRelatorio>();
-    	Collection<ExamesPrevistosRelatorio> colecaoFiltrada = new ArrayList<ExamesPrevistosRelatorio>();
     	
     	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1 = new ExamesPrevistosRelatorio(1L,1L,2L,"Cargo","","Colaborador1","","",tresMesesAtras.getTime(),tresMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
     	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame2 = new ExamesPrevistosRelatorio(1L,1L,1L,"Cargo","","Colaborador1","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
     	ExamesPrevistosRelatorio examesPrevistosColaborador2Exame2 = new ExamesPrevistosRelatorio(2L,2L,2L,"Cargo","","Colaborador2","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
-    	colecao.add(examesPrevistosColaborador1Exame1);
-    	colecao.add(examesPrevistosColaborador1Exame2);
-    	colecao.add(examesPrevistosColaborador2Exame2);
+    	Collection<ExamesPrevistosRelatorio> colecao = Arrays.asList(examesPrevistosColaborador1Exame1, examesPrevistosColaborador1Exame2, examesPrevistosColaborador2Exame2);
     	
-    	//setando nome das áreas para simular a ordenação
     	examesPrevistosColaborador1Exame1.getAreaOrganizacional().setNome("Financeiro");
     	examesPrevistosColaborador1Exame2.getAreaOrganizacional().setNome("Financeiro");
     	examesPrevistosColaborador2Exame2.getAreaOrganizacional().setNome("Administração");
     	
-    	// coleção após filtrar os resultados
-    	colecaoFiltrada.add(examesPrevistosColaborador1Exame1);
-    	colecaoFiltrada.add(examesPrevistosColaborador1Exame2);
-    	colecaoFiltrada.add(examesPrevistosColaborador2Exame2);
+    	Collection<ExamesPrevistosRelatorio> colecaoFiltrada = Arrays.asList(examesPrevistosColaborador1Exame1, examesPrevistosColaborador1Exame2,examesPrevistosColaborador2Exame2);
     	
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	
@@ -152,12 +143,9 @@ public class ExameManagerTest_JUnit4
     	Collection<ExamesPrevistosRelatorio> resultado = null;
     	
     	Exception exception = null;
-    	try
-    	{
+    	try{
     		resultado = exameManager.findRelatorioExamesPrevistos(empresa.getId(), doisMesesAtras.getTime(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, 'A', imprimirAfastados, false, false );
-    	}
-    	catch (ColecaoVaziaException e)
-    	{
+    	}catch (ColecaoVaziaException e){
     		exception = e;
     	}
     	
