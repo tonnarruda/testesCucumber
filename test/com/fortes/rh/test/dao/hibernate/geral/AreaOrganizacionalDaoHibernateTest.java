@@ -9,18 +9,23 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.AreaInteresseDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
@@ -29,7 +34,10 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.AreaInteresseFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("unused")
 public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<AreaOrganizacional>
@@ -42,6 +50,8 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 	private GrupoACDao grupoACDao;
 	private ColaboradorDao colaboradorDao;
 	private UsuarioDao usuarioDao;
+	private EstabelecimentoDao estabelecimentoDao;
+	private HistoricoColaboradorDao historicoColaboradorDao;
 
 	public AreaOrganizacional getEntity()
 	{
@@ -190,7 +200,7 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, null, null, empresa);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, null, true, empresa);
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
 		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalDao.findAllList(0, 0, null, null, AreaOrganizacional.TODAS, null, empresa.getId());
@@ -267,9 +277,70 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		assertEquals(2, areaOrganizacionalDao.findByConhecimento(conhecimento.getId()).size());
 	}
 	
-	public void testFindQtdColaboradorPorArea()
+	public void testFindQtdColaboradorPorAreaPorEstabelecimento()
 	{
-		Collection<AreaOrganizacional> colabAreaCount = areaOrganizacionalDao.findQtdColaboradorPorArea(4L, new Date());
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(false, DateUtil.incrementaMes(new Date(), -10), null);
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(false, DateUtil.incrementaMes(new Date(), -20), null);
+		colaboradorDao.save(colaborador2);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento2);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, DateUtil.incrementaAno(new Date(), -2), null, estabelecimento2, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		HistoricoColaborador historicoColaborador1_1 = HistoricoColaboradorFactory.getEntity(colaborador1, new Date(), null, estabelecimento1, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador1_1);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(colaborador2, new Date(), null, estabelecimento2, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		Collection<AreaOrganizacional> colabAreaCountHoje = areaOrganizacionalDao.findQtdColaboradorPorArea(estabelecimento1.getId(), new Date());
+		Collection<AreaOrganizacional> colabAreaCountUmAnoAtras = areaOrganizacionalDao.findQtdColaboradorPorArea(estabelecimento1.getId(), DateUtil.incrementaAno(new Date(), -1));
+		
+		assertEquals(0, colabAreaCountUmAnoAtras.size());
+		assertEquals(1, colabAreaCountHoje.size());
+		assertTrue(colabAreaCountHoje.iterator().next().getColaboradorCount() == 1);
+	}
+	
+	public void testFindQtdColaboradorPorAreaPorColaboradorDesligado()
+	{
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(true, DateUtil.incrementaMes(new Date(), -10), new Date());
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(true, DateUtil.incrementaMes(new Date(), -20), DateUtil.incrementaDias(new Date(), +1));
+		colaboradorDao.save(colaborador2);
+		
+		Colaborador colaborador3 = ColaboradorFactory.getEntity(false, DateUtil.incrementaMes(new Date(), -30), null);
+		colaboradorDao.save(colaborador3);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, new Date(), null, estabelecimento1, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(colaborador2, new Date(), null, estabelecimento1, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(colaborador3, new Date(), null, estabelecimento1, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		Collection<AreaOrganizacional> colabAreaCount = areaOrganizacionalDao.findQtdColaboradorPorArea(estabelecimento1.getId(), new Date());
+		
+		assertEquals(1, colabAreaCount.size());
+		assertTrue(((AreaOrganizacional)colabAreaCount.toArray()[0]).getColaboradorCount() == 2);
 	}
 	
 	public void testFindByEmpresasIds()
@@ -451,16 +522,10 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional1.setEmpresa(empresa);
-		areaOrganizacional1.setResponsavel(colaboradorResponsavel1);
-		areaOrganizacional1.setCoResponsavel(colaboradorCoResponsavel1);
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity(null, colaboradorResponsavel1, colaboradorCoResponsavel1, empresa);
 		areaOrganizacionalDao.save(areaOrganizacional1);
 		
-		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional2.setEmpresa(empresa);
-		areaOrganizacional2.setResponsavel(colaboradorResponsavel2);
-		areaOrganizacional2.setCoResponsavel(colaboradorCoResponsavel2);
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity(null, colaboradorResponsavel2, colaboradorCoResponsavel2, empresa);
 		areaOrganizacionalDao.save(areaOrganizacional2);
 		
 		assertNotNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional1.getId()).getResponsavel().getId());
@@ -573,5 +638,13 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 
 	public void setUsuarioDao(UsuarioDao usuarioDao) {
 		this.usuarioDao = usuarioDao;
+	}
+
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
+		this.estabelecimentoDao = estabelecimentoDao;
+	}
+
+	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
+		this.historicoColaboradorDao = historicoColaboradorDao;
 	}
 }

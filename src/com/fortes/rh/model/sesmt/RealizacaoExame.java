@@ -70,7 +70,7 @@ public class RealizacaoExame extends AbstractModel implements Serializable
     public String getDataFormatadaRelatorio()
     {
     	String dataFormatada = "____/____/____";
-    	if (data != null && !"NAO_REALIZADO".equals(resultado))
+    	if (data != null && !ResultadoExame.NAO_REALIZADO.toString().equals(resultado))
     	{
     		dataFormatada = DateUtil.formataDiaMesAno(data);
     	}

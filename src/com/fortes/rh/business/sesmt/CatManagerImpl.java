@@ -83,7 +83,6 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		CatRelatorioAnual catAnual;
 		Map<String, CatRelatorioAnual> catsMap = new LinkedHashMap<String, CatRelatorioAnual>();
 		
-		//cat.data, cat.gerouAfastamento
 		if(lista != null && !lista.isEmpty())
 		{
 			for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
@@ -129,6 +128,7 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		return ultimoCat != null ? DateUtil.diferencaEntreDatas(ultimoCat.getData(), new Date(), false) : 0;
 	}
 	
+	// TODO: SEM TESTE
 	public Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataIni, Date dataFim) 
 	{
 		Collection<DataGrafico> graficoCatsPorDiaSemana = new ArrayList<DataGrafico>();
@@ -140,6 +140,7 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		return graficoCatsPorDiaSemana;
 	}
 	
+	// TODO: SEM TESTE
 	public Collection<DataGrafico> findQtdCatsPorHorario(Long empresaId, Date dataIni, Date dataFim) 
 	{
 		Collection<DataGrafico> graficoCatsPorHorario = new ArrayList<DataGrafico>();
@@ -151,16 +152,19 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		return graficoCatsPorHorario;
 	}
 	
+	// TODO: SEM TESTE
 	public Cat findByIdProjectionSimples(Long catId) 
 	{
 		return getDao().findByIdProjectionSimples(catId);
 	}
 	
+	// TODO: SEM TESTE
 	public Cat findByIdProjectionDetalhada(Long catId) 
 	{
 		return getDao().findByIdProjectionDetalhada(catId);
 	}
 
+	// TODO: SEM TESTE
 	public void setFoto(Cat cat, boolean manterFoto, File foto, String local) 
 	{
 		if(!manterFoto)

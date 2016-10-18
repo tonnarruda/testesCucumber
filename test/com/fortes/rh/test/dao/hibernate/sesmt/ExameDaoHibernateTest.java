@@ -381,10 +381,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 	public void testFindExamesRealizadosCandidatos()
 	{
 		Date hoje = new Date();
-		Calendar dataDoisMesesAtras = Calendar.getInstance();
-    	dataDoisMesesAtras.add(Calendar.MONTH, -2);
-    	Calendar dataTresMesesAtras = Calendar.getInstance();
-    	dataTresMesesAtras.add(Calendar.MONTH, -3);
+		Date dataDoisMesesAtras = DateUtil.incrementaMes(hoje, -2);
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
@@ -395,87 +392,55 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
     	Candidato candidato2 = CandidatoFactory.getCandidato();
     	candidatoDao.save(candidato2);
     	
-    	Estabelecimento estabelecimentoFora = EstabelecimentoFactory.getEntity();
-		estabelecimentoFora.setNome("Est fora da consulta");
+    	Estabelecimento estabelecimentoFora = EstabelecimentoFactory.getEntity("Est fora da consulta");
 		estabelecimentoDao.save(estabelecimentoFora);
 
-		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
-		estabelecimento1.setNome("Estabelecimento 1");
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity("Estabelecimento 1");
 		estabelecimentoDao.save(estabelecimento1);
 
-    	Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
-    	solicitacao.setEstabelecimento(estabelecimento1);
-    	solicitacao.setData(hoje);
-    	solicitacao.setEmpresa(empresa);
+    	Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(empresa, estabelecimento1, hoje);
     	solicitacaoDao.save(solicitacao);
     	
-    	CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity();
-    	candidatoSolicitacao1.setSolicitacao(solicitacao);
-    	candidatoSolicitacao1.setCandidato(candidato1);
+    	CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity(candidato1, solicitacao, null);
     	candidatoSolicitacaoDao.save(candidatoSolicitacao1);
 
-    	CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
-    	candidatoSolicitacao2.setSolicitacao(solicitacao);
-    	candidatoSolicitacao2.setCandidato(candidato2);
+    	CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity(candidato2, solicitacao, null);
     	candidatoSolicitacaoDao.save(candidatoSolicitacao2);
     	
-		Exame exame1 = ExameFactory.getEntity();
-		exame1.setEmpresa(empresa);
+		Exame exame1 = ExameFactory.getEntity(empresa);
 		exameDao.save(exame1);
-		Exame exame2 = ExameFactory.getEntity();
-		exame2.setEmpresa(empresa);
+		
+		Exame exame2 = ExameFactory.getEntity(empresa);
 		exameDao.save(exame2);
 
-		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity();
-		solicitacaoExame1.setEmpresa(empresa);
-		solicitacaoExame1.setCandidato(candidato1);
-		solicitacaoExame1.setMotivo(MotivoSolicitacaoExame.PERIODICO);
-		solicitacaoExame1.setData(hoje);
+		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity(null, hoje, empresa, null, candidato1, MotivoSolicitacaoExame.PERIODICO);
 		solicitacaoExameDao.save(solicitacaoExame1);
 
-		RealizacaoExame realizacaoExame1 = RealizacaoExameFactory.getEntity();
-		realizacaoExame1.setData(dataDoisMesesAtras.getTime());
-		realizacaoExame1.setResultado(ResultadoExame.ANORMAL.toString());
+		RealizacaoExame realizacaoExame1 = RealizacaoExameFactory.getEntity(dataDoisMesesAtras, ResultadoExame.ANORMAL.toString());
 		realizacaoExameDao.save(realizacaoExame1);
 		
-		RealizacaoExame realizacaoExame1Fora = RealizacaoExameFactory.getEntity();
-		realizacaoExame1Fora.setData(hoje);
-		realizacaoExame1Fora.setResultado(ResultadoExame.NORMAL.toString());
+		RealizacaoExame realizacaoExame1Fora = RealizacaoExameFactory.getEntity(hoje, ResultadoExame.NORMAL.toString());
 		realizacaoExameDao.save(realizacaoExame1Fora);
 
-		ExameSolicitacaoExame exameSolicitacaoExame1 = new ExameSolicitacaoExame();
-		exameSolicitacaoExame1.setExame(exame1);
-		exameSolicitacaoExame1.setPeriodicidade(exame1.getPeriodicidade());
-		exameSolicitacaoExame1.setSolicitacaoExame(solicitacaoExame1);
-		exameSolicitacaoExame1.setRealizacaoExame(realizacaoExame1);
+		ExameSolicitacaoExame exameSolicitacaoExame1 = ExameSolicitacaoExameFactory.getEntity(exame1, solicitacaoExame1, realizacaoExame1, exame1.getPeriodicidade());
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame1);
 		
-		ExameSolicitacaoExame exameSolicitacaoExame1Fora = new ExameSolicitacaoExame();
-		exameSolicitacaoExame1Fora.setExame(exame1);
-		exameSolicitacaoExame1Fora.setSolicitacaoExame(solicitacaoExame1);
-		exameSolicitacaoExame1Fora.setRealizacaoExame(realizacaoExame1Fora);
+		ExameSolicitacaoExame exameSolicitacaoExame1Fora = ExameSolicitacaoExameFactory.getEntity(exame1, solicitacaoExame1, realizacaoExame1Fora, 0);
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame1Fora);
 
-		SolicitacaoExame solicitacaoExame2 = SolicitacaoExameFactory.getEntity();
-		solicitacaoExame2.setEmpresa(empresa);
-		solicitacaoExame2.setCandidato(candidato2);
-		solicitacaoExame2.setMotivo(MotivoSolicitacaoExame.PERIODICO);
-		solicitacaoExame2.setData(hoje);
+		SolicitacaoExame solicitacaoExame2 = SolicitacaoExameFactory.getEntity(null, hoje, empresa, null, candidato2, MotivoSolicitacaoExame.PERIODICO);
 		solicitacaoExameDao.save(solicitacaoExame2);
 
 		RealizacaoExame realizacaoExame2 = RealizacaoExameFactory.getEntity(hoje,ResultadoExame.ANORMAL.toString());
 		realizacaoExameDao.save(realizacaoExame2);
 
-		ExameSolicitacaoExame exameSolicitacaoExame2 = new ExameSolicitacaoExame();
-		exameSolicitacaoExame2.setExame(exame2);
-		exameSolicitacaoExame2.setSolicitacaoExame(solicitacaoExame2);
-		exameSolicitacaoExame2.setRealizacaoExame(realizacaoExame2);
+		ExameSolicitacaoExame exameSolicitacaoExame2 = ExameSolicitacaoExameFactory.getEntity(exame2, solicitacaoExame2, realizacaoExame2, 0);
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
 
 		Long[] estabelecimentoIds = {estabelecimento1.getId(), estabelecimentoFora.getId()};
 		Long[] exameIds = {exame1.getId(), exame2.getId()};
 		
-		assertEquals(2, exameDao.findExamesRealizadosCandidatos(empresa.getId(),null, dataDoisMesesAtras.getTime(), hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds).size());
+		assertEquals(2, exameDao.findExamesRealizadosCandidatos(empresa.getId(),null, dataDoisMesesAtras, hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds).size());
 	}
 
 	public void testFindExamesRealizadosRelatorioResumido()

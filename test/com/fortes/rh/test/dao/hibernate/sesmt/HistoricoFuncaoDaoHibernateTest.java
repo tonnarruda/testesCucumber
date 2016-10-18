@@ -19,6 +19,8 @@ import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoFuncaoFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
 import com.fortes.rh.util.DateUtil;
@@ -115,52 +117,33 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 
 	public void testFindEpisByData() throws Exception
 	{
-		Funcao f1 = new Funcao();
-		f1.setNome("FA");
-		
-		Funcao f2 = new Funcao();
-		f2.setNome("FB");
-		
+		Funcao f1 = FuncaoFactory.getEntity(null, "FA");
 		funcaoDao.save(f1);
+		
+		Funcao f2 = FuncaoFactory.getEntity(null, "FB");
 		funcaoDao.save(f2);
 		
-		Epi epi1 = EpiFactory.getEntity();
-		epi1.setNome("epi 1");
+		Epi epi1 = EpiFactory.getEntity(null, "epi 1");
 		epiDao.save(epi1);		
 
-		Epi epi2 = EpiFactory.getEntity();
-		epi2.setNome("epi 2");
+		Epi epi2 = EpiFactory.getEntity(null, "epi 2");
 		epiDao.save(epi2);		
 		
-		Collection<Epi> epis = new ArrayList<Epi>();
-		epis.add(epi1);
-		epis.add(epi2);
+		Collection<Epi> epis = Arrays.asList(epi1, epi2);
 		
-		HistoricoFuncao historicoFuncao1 = new HistoricoFuncao();
-		historicoFuncao1.setData(new Date("2007/05/01"));
-		historicoFuncao1.setEpis(epis);
-		historicoFuncao1.setFuncao(f1);
-		
-		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
-		historicoFuncao2.setData(new Date("2008/05/01"));
-		historicoFuncao2.setFuncao(f1);
-		
-		HistoricoFuncao historicoFuncao3 = new HistoricoFuncao();
-		historicoFuncao3.setData(new Date("2007/01/01"));
-		historicoFuncao3.setFuncao(f2);
-		
-		HistoricoFuncao historicoFuncao4 = new HistoricoFuncao();
-		historicoFuncao4.setData(new Date("2008/01/01"));
-		historicoFuncao4.setFuncao(f2);
-				
+		HistoricoFuncao historicoFuncao1 = HistoricoFuncaoFactory.getEntity(f1, DateUtil.criarDataDiaMesAno("01/05/2007"), epis);
 		historicoFuncaoDao.save(historicoFuncao1);
+		
+		HistoricoFuncao historicoFuncao2 = HistoricoFuncaoFactory.getEntity(f1, DateUtil.criarDataDiaMesAno("01/05/2008"), null);
 		historicoFuncaoDao.save(historicoFuncao2);
+		
+		HistoricoFuncao historicoFuncao3 = HistoricoFuncaoFactory.getEntity(f2, DateUtil.criarDataDiaMesAno("01/01/2007"), epis);
 		historicoFuncaoDao.save(historicoFuncao3);
+		
+		HistoricoFuncao historicoFuncao4 = HistoricoFuncaoFactory.getEntity(f2, DateUtil.criarDataDiaMesAno("01/01/2008"), null);
 		historicoFuncaoDao.save(historicoFuncao4);
 		
-		Collection<Long> funcaoIds = new ArrayList<Long>();
-		funcaoIds.add(f1.getId());
-		funcaoIds.add(f2.getId());
+		Collection<Long> funcaoIds = Arrays.asList(f1.getId(), f2.getId());
 		
 		Collection<HistoricoFuncao> historicoFuncaos = historicoFuncaoDao.findEpis(funcaoIds, new Date("2008/01/01"));
 		Collection<HistoricoFuncao> historicosVazios = historicoFuncaoDao.findEpis(null, new Date("2008/01/01"));

@@ -129,51 +129,40 @@ public class RiscoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<Risco
 	
 	public void testFindColaboradoresSem()
 	{
-		Date hoje = Calendar.getInstance().getTime();
-		Calendar doisMesesAntes = Calendar.getInstance();
-		doisMesesAntes.add(Calendar.MONTH, -2);
-		Calendar tresMesesAntes = Calendar.getInstance();
-		tresMesesAntes.add(Calendar.MONTH, -3);
+		Date hoje = new Date();
+		Date doisMesesAntes = DateUtil.incrementaMes(hoje, -2);
+		Date tresMesesAntes = DateUtil.incrementaMes(hoje, -3);
 		
 		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento1);
 		
-		Ambiente ambiente = AmbienteFactory.getEntity();
-		ambiente.setNome("recepcao");
+		Ambiente ambiente = AmbienteFactory.getEntity("Recepcao", null, null);
 		ambienteDao.save(ambiente);
 		
-		HistoricoAmbiente Historicoambiente = new HistoricoAmbiente();
-		Historicoambiente.setAmbiente(ambiente);
-		Historicoambiente.setData(hoje);
-		Historicoambiente.setDescricao("Piso metálico");
+		HistoricoAmbiente Historicoambiente = HistoricoAmbienteFactory.getEntity("Piso metálico", ambiente, hoje, null);
 		historicoAmbienteDao.save(Historicoambiente);
 		
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador1);
 		
-		criaHistoricoColaborador(colaborador1, tresMesesAntes.getTime(), ambiente, null, estabelecimento1); // Fora
+		criaHistoricoColaborador(colaborador1, tresMesesAntes, ambiente, null, estabelecimento1); // Fora
 		
-		criaHistoricoColaborador(colaborador1, doisMesesAntes.getTime(), ambiente, null, estabelecimento1); // Atual
+		criaHistoricoColaborador(colaborador1, doisMesesAntes, ambiente, null, estabelecimento1); // Atual
 		
-		Colaborador colaborador2 = ColaboradorFactory.getEntity();
-		colaborador2.setNome("teste");
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(null, "Colab2");
 		colaboradorDao.save(colaborador2);
 		
-		criaHistoricoColaborador(colaborador2, tresMesesAntes.getTime(), null, null, estabelecimento1); // Fora
+		criaHistoricoColaborador(colaborador2, tresMesesAntes, null, null, estabelecimento1); // Fora
 
-		Colaborador colaborador3 = ColaboradorFactory.getEntity();
-		colaborador3.setNome("teste3");
-		colaborador3.setDataDesligamento(hoje);
+		Colaborador colaborador3 = ColaboradorFactory.getEntity(null, "Colab3",null, null, hoje);
 		colaboradorDao.save(colaborador3);
 		
-		criaHistoricoColaborador(colaborador3, tresMesesAntes.getTime(), null, null, estabelecimento1); // Dentro com data desligamento anterior 
+		criaHistoricoColaborador(colaborador3, tresMesesAntes, null, null, estabelecimento1); // Dentro com data desligamento anterior 
 
-		Colaborador colaborador4 = ColaboradorFactory.getEntity();
-		colaborador4.setNome("teste3");
-		colaborador4.setDataDesligamento(tresMesesAntes.getTime());
+		Colaborador colaborador4 = ColaboradorFactory.getEntity(null, "Colab4",null, null, tresMesesAntes);
 		colaboradorDao.save(colaborador4);
 		
-		criaHistoricoColaborador(colaborador4, tresMesesAntes.getTime(), null, null, estabelecimento1); // Fora com data desligamento anterior
+		criaHistoricoColaborador(colaborador4, tresMesesAntes, null, null, estabelecimento1); // Fora com data desligamento anterior
 		
 		Collection<String> nomes = riscoAmbienteDao.findColaboradoresSemAmbiente(hoje, estabelecimento1.getId());
 		
@@ -189,13 +178,10 @@ public class RiscoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<Risco
 		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento1);
 		
-		Ambiente ambiente = AmbienteFactory.getEntity();
-		ambiente.setNome("recepcao");
+		Ambiente ambiente = AmbienteFactory.getEntity("Recepcao", null, null);
 		ambienteDao.save(ambiente);
 		
-		HistoricoAmbiente Historicoambiente = new HistoricoAmbiente();
-		Historicoambiente.setAmbiente(ambiente);
-		Historicoambiente.setData(hoje);
+		HistoricoAmbiente Historicoambiente = HistoricoAmbienteFactory.getEntity(ambiente, hoje);
 		historicoAmbienteDao.save(Historicoambiente);
 		
 		Ambiente ambiente2 = AmbienteFactory.getEntity();

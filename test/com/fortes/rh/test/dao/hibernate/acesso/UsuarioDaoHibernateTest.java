@@ -445,7 +445,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		AreaOrganizacional areaOrganizacionalMae = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(areaOrganizacionalMae);
 
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, colab, null);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, colab, null, null);
 		areaOrganizacionalDao.save(areaOrganizacional);
 		
 		Collection<AreaOrganizacional> areas = Arrays.asList(areaOrganizacionalMae, areaOrganizacional);
@@ -557,10 +557,10 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		Colaborador colab2 = ColaboradorFactory.getEntity("João", null, usuario2, "colab_2@gmail.com");
 		colaboradorDao.save(colab2);
 		
-		AreaOrganizacional areaOrganizacionalMae = AreaOrganizacionalFactory.getEntity(null, colab1, null);
+		AreaOrganizacional areaOrganizacionalMae = AreaOrganizacionalFactory.getEntity(null, colab1, null, null);
 		areaOrganizacionalDao.save(areaOrganizacionalMae);
 
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, colab2, null);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, colab2, null, null);
 		areaOrganizacionalDao.save(areaOrganizacional);
 		
 		Collection<AreaOrganizacional> areas = Arrays.asList(areaOrganizacionalMae, areaOrganizacional);

@@ -204,8 +204,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Colaborador colaborador = ColaboradorFactory.getEntity("João", empresa, solicitante, null);
 		colaborador = colaboradorDao.save(colaborador);
 
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L, colaborador,null);
-		areaOrganizacional.setEmpresa(empresa);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L, colaborador,null, empresa);
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
 		Solicitacao solicitacaoInvisivelParaGestor = SolicitacaoFactory.getSolicitacao(empresa, solicitante, areaOrganizacional, true, false, false);
@@ -235,8 +234,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Colaborador colaborador = ColaboradorFactory.getEntity("João", empresa, solicitante, null);
 		colaborador = colaboradorDao.save(colaborador);
 
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L, colaborador, null);
-		areaOrganizacional.setEmpresa(empresa);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L, colaborador, null, empresa);
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
 		Long cargoId = -1L;

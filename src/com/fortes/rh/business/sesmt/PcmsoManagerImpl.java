@@ -82,7 +82,7 @@ public class PcmsoManagerImpl implements PcmsoManager
 			Collection<HistoricoFuncao> historicoFuncaos = historicoFuncaoManager.findEpis(funcaoIds, data);
 			
 			if (historicoFuncaos == null || historicoFuncaos.isEmpty())
-				return "Não existem históricos de funções até a data inicial para o período informado.<br>";
+				return "Não existem históricos de funções até a data final do período informado.<br>";
 			
 			pcmso.setHistoricoFuncaos(historicoFuncaos);
 		}
@@ -98,11 +98,11 @@ public class PcmsoManagerImpl implements PcmsoManager
 			if(!colaboradores.isEmpty())
 				return "Não existe ambiente para os colaboradores: " + StringUtil.converteCollectionToString(colaboradores) + "<br>";
 			
-			Collection<Long> funcaoIds = riscoAmbienteManager.findAmbienteAtualDosColaboradores(data, estabelecimento.getId());
-			Collection<HistoricoAmbiente> historicoAmbiente = historicoAmbienteManager.findRiscosAmbientes(funcaoIds, data);
+			Collection<Long> ambienteIds = riscoAmbienteManager.findAmbienteAtualDosColaboradores(data, estabelecimento.getId());
+			Collection<HistoricoAmbiente> historicoAmbiente = historicoAmbienteManager.findRiscosAmbientes(ambienteIds, data);
 			
 			if (historicoAmbiente == null || historicoAmbiente.isEmpty())
-				return "Não existem históricos de ambientes até a data inicial para o período informado.<br>";
+				return "Não existem históricos de ambientes até a data final do período informado.<br>";
 			
 			pcmso.setHistoricoAmbientes(historicoAmbiente);
 		}

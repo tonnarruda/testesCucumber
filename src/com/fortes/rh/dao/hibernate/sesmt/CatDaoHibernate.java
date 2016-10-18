@@ -139,7 +139,6 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		return query.list();
-		
 	}
 
 	public Cat findUltimoCat(Long empresaId) 

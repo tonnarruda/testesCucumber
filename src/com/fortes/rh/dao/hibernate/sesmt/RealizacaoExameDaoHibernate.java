@@ -39,11 +39,11 @@ public class RealizacaoExameDaoHibernate extends GenericDaoHibernate<RealizacaoE
 		hql.append(" and hc.estabelecimento.id = :estabelecimentoId");
 		hql.append(" and hc.data = (select max(hc2.data)");
 		hql.append("				from HistoricoColaborador hc2");
-		hql.append(" 				where hc2.status = :status ");
+		hql.append(" 				where hc2.data <= re.data and hc2.status = :status ");
 		hql.append(" 				and c.id = hc2.colaborador.id)");
 		hql.append(" and re.data >= :dataIni");
 		hql.append(" and re.data <= :dataFim");
-		hql.append(" and re.resultado != 'NAO_REALIZADO'");
+		hql.append(" and re.resultado != :resultado");
 		hql.append(" order by se.motivo");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -51,10 +51,11 @@ public class RealizacaoExameDaoHibernate extends GenericDaoHibernate<RealizacaoE
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-
+		query.setString("resultado", ResultadoExame.NAO_REALIZADO.toString());
+		
 		return query.list();
 	}
-	
+	 
 	public Collection<RealizacaoExame> findRealizadosByColaborador(Long empresaId, Long colaboradorId)
 	{
 		StringBuilder hql = new StringBuilder("select new RealizacaoExame(re.data, exame.nome, re.resultado, re.observacao, se.motivo) ");

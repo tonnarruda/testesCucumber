@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -21,6 +22,7 @@ import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoAmbienteFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
@@ -148,58 +150,40 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 
 	public void testFindRiscosAmbientes() throws Exception
 	{
-		Ambiente a1 = new Ambiente();
-		a1.setNome("a1");
+		Ambiente a1 = AmbienteFactory.getEntity("A1", null, null);
 		ambienteDao.save(a1);
 		
-		Ambiente a2 = new Ambiente();
-		a2.setNome("a2");
+		Ambiente a2 = AmbienteFactory.getEntity("A2", null, null);
 		ambienteDao.save(a2);
 		
-		Risco risco1 = RiscoFactory.getEntity();
-		risco1.setDescricao("Risco 1");
+		Risco risco1 = RiscoFactory.getEntity(null, "Risco 1", null);
 		riscoDao.save(risco1);		
 
-		Risco risco2 = RiscoFactory.getEntity();
-		risco1.setDescricao("Risco 2");
+		Risco risco2 = RiscoFactory.getEntity(null, "Risco 2", null);
 		riscoDao.save(risco2);		
 
-		HistoricoAmbiente historico1 = new HistoricoAmbiente();
-		historico1.setData(new Date("2007/05/01"));
-		historico1.setAmbiente(a1);
+		HistoricoAmbiente historico1 = HistoricoAmbienteFactory.getEntity(a1, DateUtil.criarDataDiaMesAno("01/05/2007"));
 		historicoAmbienteDao.save(historico1);
 		
-		HistoricoAmbiente historico2 = new HistoricoAmbiente();
-		historico2.setData(new Date("2008/05/01"));
-		historico2.setAmbiente(a1);
+		HistoricoAmbiente historico2 = HistoricoAmbienteFactory.getEntity(a1, DateUtil.criarDataDiaMesAno("01/05/2008"));
 		historicoAmbienteDao.save(historico2);
 		
-		HistoricoAmbiente historico3 = new HistoricoAmbiente();
-		historico3.setData(new Date("2007/01/01"));
-		historico3.setAmbiente(a2);
+		HistoricoAmbiente historico3 = HistoricoAmbienteFactory.getEntity(a2, DateUtil.criarDataDiaMesAno("01/01/2007"));
 		historicoAmbienteDao.save(historico3);
 		
-		HistoricoAmbiente historico4 = new HistoricoAmbiente();
-		historico4.setData(new Date("2008/01/01"));
-		historico4.setAmbiente(a2);
+		HistoricoAmbiente historico4 = HistoricoAmbienteFactory.getEntity(a2, DateUtil.criarDataDiaMesAno("01/01/2008"));
 		historicoAmbienteDao.save(historico4);
 		
-		RiscoAmbiente riscoAmbiente1 = RiscoAmbienteFactory.getEntity();
-		riscoAmbiente1.setRisco(risco1);
-		riscoAmbiente1.setHistoricoAmbiente(historico2);
+		RiscoAmbiente riscoAmbiente1 = RiscoAmbienteFactory.getEntity(risco1, historico2, null);
 		riscoAmbienteDao.save(riscoAmbiente1);
 
-		RiscoAmbiente riscoAmbiente2 = RiscoAmbienteFactory.getEntity();
-		riscoAmbiente2.setRisco(risco2);
-		riscoAmbiente2.setHistoricoAmbiente(historico4);
+		RiscoAmbiente riscoAmbiente2 = RiscoAmbienteFactory.getEntity(risco2, historico4, null);
 		riscoAmbienteDao.save(riscoAmbiente2);
 		
-		Collection<Long> ambientesIds = new ArrayList<Long>();
-		ambientesIds.add(a1.getId());
-		ambientesIds.add(a2.getId());
+		Collection<Long> ambientesIds = Arrays.asList(a1.getId(), a2.getId());
 		
-		Collection<HistoricoAmbiente> historicoAmbientes = historicoAmbienteDao.findRiscosAmbientes(ambientesIds, new Date("2008/01/01"));
-		Collection<HistoricoAmbiente> historicosVazios = historicoAmbienteDao.findRiscosAmbientes(null, new Date("2008/01/01"));
+		Collection<HistoricoAmbiente> historicoAmbientes = historicoAmbienteDao.findRiscosAmbientes(ambientesIds, DateUtil.criarDataDiaMesAno("01/01/2008"));
+		Collection<HistoricoAmbiente> historicosVazios = historicoAmbienteDao.findRiscosAmbientes(null, DateUtil.criarDataDiaMesAno("01/01/2008"));
 		
 		assertEquals("Test 1", 1, historicoAmbientes.size());
 		assertNull("Test 2", historicosVazios);

@@ -130,7 +130,7 @@ public class PcmsoManagerTest extends MockObjectTestCase
     	}
     	
     	assertNotNull(excep);
-    	assertEquals("Não existem históricos de funções até a data inicial para o período informado.<br>", excep.getMessage());
+    	assertEquals("Não existem históricos de funções até a data final do período informado.<br>", excep.getMessage());
     }
 
     public void testMontaRelatorioEpis()

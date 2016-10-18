@@ -277,24 +277,7 @@ public class ExameListAction extends MyActionSupportList
 			else
 				examesRealizados = exameManager.findRelatorioExamesRealizados(getEmpresaSistema().getId(), nomeBusca, inicio, fim, motivo, resultado, clinicaAutorizada.getId(), examesIds, estabelecimentosIds, tipoPessoa);
 
-			StringBuffer filtros = new StringBuffer();
-			filtros.append("Período: " + DateUtil.formataDiaMesAno(inicio) + " - " + DateUtil.formataDiaMesAno(fim));
-			
-			if (!tipoPessoa.equals(TipoPessoa.TODOS))
-				filtros.append("\nVínculo: " + TipoPessoa.getDescricaoByChave(tipoPessoa));
-			
-			if (MotivoSolicitacaoExame.getInstance().get(motivo) != null)
-				filtros.append("\nMotivo: " + MotivoSolicitacaoExame.getInstance().get(motivo));
-			
-			if (clinicaAutorizada != null && clinicaAutorizada.getId() != null) {
-				ClinicaAutorizada clinica = clinicaAutorizadaManager.findEntidadeComAtributosSimplesById(clinicaAutorizada.getId());
-				filtros.append("\nClínica: " + clinica.getNome());
-			}
-			
-			if (resultado != null && StringUtils.isNotEmpty(resultado))
-				filtros.append("\nResultado: " + ResultadoExame.valueOf(resultado).getDescricao());
-			
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Exames Realizados", getEmpresaSistema(), filtros.toString());
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Exames Realizados", getEmpresaSistema(), getDescricaoFiltroRelatorio());
 			parametros.put("TIPO_PESSOA", tipoPessoa);
 			
 			if (relatorioExamesPrevistosResumido)
@@ -311,6 +294,27 @@ public class ExameListAction extends MyActionSupportList
 			
 			return INPUT;
 		}
+	}
+
+	private String getDescricaoFiltroRelatorio() {
+		StringBuffer filtros = new StringBuffer();
+		filtros.append("Período: " + DateUtil.formataDiaMesAno(inicio) + " - " + DateUtil.formataDiaMesAno(fim));
+		
+		if (!tipoPessoa.equals(TipoPessoa.TODOS))
+			filtros.append("\nVínculo: " + TipoPessoa.getDescricaoByChave(tipoPessoa));
+		
+		if (MotivoSolicitacaoExame.getInstance().get(motivo) != null)
+			filtros.append("\nMotivo: " + MotivoSolicitacaoExame.getInstance().get(motivo));
+		
+		if (clinicaAutorizada != null && clinicaAutorizada.getId() != null) {
+			ClinicaAutorizada clinica = clinicaAutorizadaManager.findEntidadeComAtributosSimplesById(clinicaAutorizada.getId());
+			filtros.append("\nClínica: " + clinica.getNome());
+		}
+		
+		if (resultado != null && StringUtils.isNotEmpty(resultado))
+			filtros.append("\nResultado: " + ResultadoExame.valueOf(resultado).getDescricao());
+		
+		return filtros.toString();
 	}
 
 	public Collection<Exame> getExames() {

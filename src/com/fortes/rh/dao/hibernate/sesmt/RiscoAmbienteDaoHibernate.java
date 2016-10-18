@@ -53,11 +53,10 @@ public class RiscoAmbienteDaoHibernate extends GenericDaoHibernate<RiscoAmbiente
 		StringBuilder hql = new StringBuilder();
 		hql.append("select co.nome ");
 		hql.append("from HistoricoColaborador as hc ");
-		hql.append("left join hc.ambiente a ");
 		hql.append("join hc.colaborador co ");
 		
 		hql.append("where hc.estabelecimento.id = :estabelecimentoId ");
-		hql.append("and a.id is null ");
+		hql.append("and hc.ambiente.id is null ");
 		hql.append("and hc.data = (select max(hc2.data) ");
 		hql.append("                from HistoricoColaborador as hc2 ");
 		hql.append("                where hc2.colaborador.id = co.id ");

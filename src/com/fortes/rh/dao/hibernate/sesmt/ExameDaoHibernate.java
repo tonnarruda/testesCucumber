@@ -29,6 +29,7 @@ import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
@@ -293,7 +294,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		
 		hql.append("where (e.empresa.id = :empresaId or e.empresa.id is null) ");
 		hql.append("and re.data between :inicio and :fim ");
-		hql.append("and re.resultado != 'NAO_REALIZADO'");
+
 		if (isNotBlank(nomeBusca))
 			hql.append("and lower(examinado.nome) like :nome ");
 		
@@ -523,12 +524,14 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		{
 			hql.append("and hc.data = ( select max(hc2.data) ");
 			hql.append("	        	from HistoricoColaborador as hc2 ");
-			hql.append("	   			where hc2.colaborador.id = examinado.id )");
+			hql.append("	   			where hc2.data <= re.data and hc2.status = :status ");
+			hql.append("	   			and hc2.colaborador.id = examinado.id )");
 		}
 
 		public void setParametros(Query query)
 		{
-			query.setCharacter("tipoPessoa", 'C');
+			query.setCharacter("tipoPessoa", TipoPessoa.COLABORADOR.getChave());
+			query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		}
 	}
 	
@@ -547,12 +550,14 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			hql.append("and (s.data = ( select max(s2.data) from CandidatoSolicitacao cs2 ");
 			hql.append("				inner join cs2.solicitacao as s2 ");
 			hql.append("				where cs2.candidato.id = examinado.id ");
-			hql.append("				and s2.empresa.id = :empresaId) or s.data is null) ");
+			hql.append("				and s2.data <= se.data ");
+			hql.append("				and s2.empresa.id = :empresaId) ");
+			hql.append("	or s.data is null) "); 
 		}
 
 		public void setParametros(Query query)
 		{
-			query.setCharacter("tipoPessoa", 'A');			
+			query.setCharacter("tipoPessoa", TipoPessoa.CANDIDATO.getChave());			
 		}
 	}
 }

@@ -115,7 +115,7 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 		assertEquals(1, colecao.size());
 	}
 	
-	public void testGetCountRelatorio()
+	public void testGetCatsRelatorio()
 	{
 		Date inicio = new Date();
 		Date fim = new Date();

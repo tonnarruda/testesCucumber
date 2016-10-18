@@ -51,40 +51,21 @@ public class RealizacaoExameManagerTest
 		Date dataFim = new Date();
 		Date dataIni = DateUtil.incrementaAno(dataFim, -1);
 		
-		Collection<Object[]> lista = new ArrayList<Object[]>();
+		Collection<Object[]> listaDeRetornoDeConsulta = new ArrayList<Object[]>();
 
 		// Exame Id, Tipo do Exame, Exame Nome, Resultado do exame
-		Object[] retornoConsulta1 = new Object[]{1L, MotivoSolicitacaoExame.ADMISSIONAL, "Exame01", ResultadoExame.NORMAL.toString()};
-		lista.add(retornoConsulta1);
-		
-		Object[] retornoConsulta8 = new Object[]{1L, MotivoSolicitacaoExame.ADMISSIONAL, "Exame03", ResultadoExame.ANORMAL.toString()};
-		lista.add(retornoConsulta8);
-		
-		Object[] retornoConsulta10 = new Object[]{1L, MotivoSolicitacaoExame.ADMISSIONAL, "Exame5", ResultadoExame.ANORMAL.toString()};
-		lista.add(retornoConsulta10);
+		listaDeRetornoDeConsulta.add(new Object[]{1L, MotivoSolicitacaoExame.ADMISSIONAL, "Exame01", ResultadoExame.NORMAL.toString()});
+		listaDeRetornoDeConsulta.add(new Object[]{1L, MotivoSolicitacaoExame.ADMISSIONAL, "Exame03", ResultadoExame.ANORMAL.toString()});
+		listaDeRetornoDeConsulta.add(new Object[]{1L, MotivoSolicitacaoExame.ADMISSIONAL, "Exame5", ResultadoExame.ANORMAL.toString()});
+		listaDeRetornoDeConsulta.add(new Object[]{1L, MotivoSolicitacaoExame.DEMISSIONAL, "Exame03", ResultadoExame.NORMAL.toString()});
+		listaDeRetornoDeConsulta.add(new Object[]{1L, MotivoSolicitacaoExame.DEMISSIONAL, "Exame03", ResultadoExame.NORMAL.toString()});
+		listaDeRetornoDeConsulta.add(new Object[]{1L, MotivoSolicitacaoExame.MUDANCA, "Exame03", ResultadoExame.ANORMAL.toString()});
+		listaDeRetornoDeConsulta.add(new Object[]{1L, MotivoSolicitacaoExame.PERIODICO, "Exame03", ResultadoExame.NORMAL.toString()});
+		listaDeRetornoDeConsulta.add(new Object[]{1L, MotivoSolicitacaoExame.PERIODICO, "Exame023", ResultadoExame.NORMAL.toString()});
+		listaDeRetornoDeConsulta.add(new Object[]{1L, MotivoSolicitacaoExame.PERIODICO, "Exame03", ResultadoExame.ANORMAL.toString()});
+		listaDeRetornoDeConsulta.add(new Object[]{1L, MotivoSolicitacaoExame.PERIODICO, "Exame53", ResultadoExame.ANORMAL.toString()});
 
-		Object[] retornoConsulta4 =  new Object[]{1L, MotivoSolicitacaoExame.DEMISSIONAL, "Exame03", ResultadoExame.NORMAL.toString()};
-		lista.add(retornoConsulta4);
-
-		Object[] retornoConsulta5 = new Object[]{1L, MotivoSolicitacaoExame.DEMISSIONAL, "Exame03", ResultadoExame.NORMAL.toString()};
-		lista.add(retornoConsulta5);
-
-		Object[] retornoConsulta6 = new Object[]{1L, MotivoSolicitacaoExame.MUDANCA, "Exame03", ResultadoExame.ANORMAL.toString()};
-		lista.add(retornoConsulta6);
-
-		Object[] retornoConsulta2 = new Object[]{1L, MotivoSolicitacaoExame.PERIODICO, "Exame03", ResultadoExame.NORMAL.toString()};
-		lista.add(retornoConsulta2);
-
-		Object[] retornoConsulta3 =  new Object[]{1L, MotivoSolicitacaoExame.PERIODICO, "Exame023", ResultadoExame.NORMAL.toString()};
-		lista.add(retornoConsulta3);
-		
-		Object[] retornoConsulta7 = new Object[]{1L, MotivoSolicitacaoExame.PERIODICO, "Exame03", ResultadoExame.ANORMAL.toString()};
-		lista.add(retornoConsulta7);
-		
-		Object[] retornoConsulta9 = new Object[]{1L, MotivoSolicitacaoExame.PERIODICO, "Exame53", ResultadoExame.ANORMAL.toString()};
-		lista.add(retornoConsulta9);
-
-		when(realizacaoExameDao.getRelatorioExame(null, dataIni, dataFim)).thenReturn(lista);
+		when(realizacaoExameDao.getRelatorioExame(null, dataIni, dataFim)).thenReturn(listaDeRetornoDeConsulta);
 
 		Collection<ExameAnualRelatorio> examesAnuals = realizacaoExameManager.getRelatorioExame(null, dataIni, dataFim);
 

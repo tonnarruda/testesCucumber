@@ -36,6 +36,7 @@ import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("unused")
 public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
@@ -195,11 +196,9 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
 	
 	public void testFindColaboradoresSemFuncao()
 	{
-		Date hoje = Calendar.getInstance().getTime();
-		Calendar doisMesesAntes = Calendar.getInstance();
-		doisMesesAntes.add(Calendar.MONTH, -2);
-		Calendar tresMesesAntes = Calendar.getInstance();
-		tresMesesAntes.add(Calendar.MONTH, -3);
+		Date hoje = new Date();
+		Date doisMesesAntes = DateUtil.incrementaMes(hoje, -2);
+		Date tresMesesAntes = DateUtil.incrementaMes(hoje, -3);
 		
 		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento1);
@@ -218,29 +217,24 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
 		colaboradorDao.save(colaborador1);
 		
 		//Não precisa apagar historicoColaborador1Fora, ..., serve para entender melhor o teste "Fora, Atual"
-		HistoricoColaborador historicoColaborador1Fora = criaHistoricoColaborador(colaborador1, tresMesesAntes.getTime(), null, funcao1, estabelecimento1);
+		HistoricoColaborador historicoColaborador1Fora = criaHistoricoColaborador(colaborador1, tresMesesAntes, null, funcao1, estabelecimento1);
 		
-		HistoricoColaborador historicoColaborador1Atual = criaHistoricoColaborador(colaborador1, doisMesesAntes.getTime(), null, funcao1, estabelecimento1);
+		HistoricoColaborador historicoColaborador1Atual = criaHistoricoColaborador(colaborador1, doisMesesAntes, null, funcao1, estabelecimento1);
 		
-		Colaborador colaborador2 = ColaboradorFactory.getEntity();
-		colaborador2.setNome("teste");
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(null, "Colab2");
 		colaboradorDao.save(colaborador2);
 		
-		HistoricoColaborador historicoColaborador2Fora = criaHistoricoColaborador(colaborador2, tresMesesAntes.getTime(), null, null, estabelecimento1);
+		HistoricoColaborador historicoColaborador2Fora = criaHistoricoColaborador(colaborador2, tresMesesAntes, null, null, estabelecimento1);
 
-		Colaborador colaborador3 = ColaboradorFactory.getEntity();
-		colaborador3.setNome("teste3");
-		colaborador3.setDataDesligamento(hoje);
+		Colaborador colaborador3 = ColaboradorFactory.getEntity(null, "Colab3", null, tresMesesAntes, hoje);
 		colaboradorDao.save(colaborador3);
 		
-		HistoricoColaborador historicoColaborador3DentroComDataDesligamentoAnterior = criaHistoricoColaborador(colaborador3, tresMesesAntes.getTime(), null, null, estabelecimento1);
+		HistoricoColaborador historicoColaborador3DentroComDataDesligamentoAnterior = criaHistoricoColaborador(colaborador3, tresMesesAntes, null, null, estabelecimento1);
 
-		Colaborador colaborador4 = ColaboradorFactory.getEntity();
-		colaborador4.setNome("teste3");
-		colaborador4.setDataDesligamento(tresMesesAntes.getTime());
+		Colaborador colaborador4 = ColaboradorFactory.getEntity(null, "Colab4", null, null, tresMesesAntes);
 		colaboradorDao.save(colaborador4);
 		
-		HistoricoColaborador historicoColaborador4ForaComDataDesligamentoAnterior = criaHistoricoColaborador(colaborador4, tresMesesAntes.getTime(), null, null, estabelecimento1);
+		HistoricoColaborador historicoColaborador4ForaComDataDesligamentoAnterior = criaHistoricoColaborador(colaborador4, tresMesesAntes, null, null, estabelecimento1);
 		
 		Collection<String> nomes = funcaoDao.findColaboradoresSemFuncao(hoje, estabelecimento1.getId());
 		

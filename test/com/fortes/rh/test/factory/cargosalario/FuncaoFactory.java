@@ -24,6 +24,14 @@ public class FuncaoFactory
 
 		return Funcao;
 	}
+	
+	public static Funcao getEntity(Long id, String nome)
+	{
+		Funcao Funcao = getEntity(id);
+		Funcao.setNome(nome);
+		
+		return Funcao;
+	}
 
 	public static Collection<Funcao> getCollection()
 	{

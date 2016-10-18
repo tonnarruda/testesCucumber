@@ -57,11 +57,12 @@ public class AreaOrganizacionalFactory
 		return areaOrganizacionals;
 	}
 	
-	public static AreaOrganizacional getEntity(Long id, Colaborador responsavel, Colaborador coResponsavel)
+	public static AreaOrganizacional getEntity(Long id, Colaborador responsavel, Colaborador coResponsavel, Empresa empresa)
 	{
 		AreaOrganizacional areaOrganizacional = getEntity(id);
 		areaOrganizacional.setResponsavel(responsavel);
 		areaOrganizacional.setCoResponsavel(coResponsavel);
+		areaOrganizacional.setEmpresa(empresa);
 		return areaOrganizacional;
 	}
 

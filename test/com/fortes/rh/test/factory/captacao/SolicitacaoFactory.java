@@ -109,4 +109,13 @@ public class SolicitacaoFactory
 		solicitacao.setEncerrada(encerrada);
 		return solicitacao;
 	}
+	
+	public static Solicitacao getSolicitacao(Empresa empresa, Estabelecimento estabelecimento, Date data){
+		Solicitacao solicitacao = getSolicitacao();
+		solicitacao.setEmpresa(empresa);
+		solicitacao.setEstabelecimento(estabelecimento);
+		solicitacao.setData(data);
+		
+		return solicitacao;
+	}
 }
