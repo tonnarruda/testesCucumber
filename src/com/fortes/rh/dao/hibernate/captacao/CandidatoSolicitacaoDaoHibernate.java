@@ -525,10 +525,10 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		
 		query.executeUpdate();
 	}
-
+	
 	public void setStatusBySolicitacaoAndCandidato(char status, Long candidatoId, Long solicitacaoId) 
 	{
-		String hql = "update CandidatoSolicitacao set status = :status where candidato.id = :candidatoId and solicitacao.id = :solicitacaoId ";
+		String hql = "update CandidatoSolicitacao set status = :status, dataContratacaoOrPromocao = null where candidato.id = :candidatoId and solicitacao.id = :solicitacaoId ";
 		
 		Query query = getSession().createQuery(hql);
 		query.setCharacter("status", status);

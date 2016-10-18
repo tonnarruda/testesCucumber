@@ -1381,6 +1381,94 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		assertEquals(2, nomesColabSubstituidos.size());
 	}
 	
+	public void testCalculaIndicadorVagasPreenchidasNoPrazoRetornoZero()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Solicitacao solicitacaoComPrevisaoDeEncerramento = SolicitacaoFactory.getSolicitacao(empresa, new Date(), DateUtil.incrementaMes(new Date(), 1), 2);
+		solicitacaoDao.save(solicitacaoComPrevisaoDeEncerramento);
+		
+		Solicitacao solicitacaoSemPrevisaoDeEncerramento = SolicitacaoFactory.getSolicitacao(empresa, new Date(), null, 1);
+		solicitacaoDao.save(solicitacaoSemPrevisaoDeEncerramento);
+		
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		CandidatoSolicitacao candidatoSolicitacaoSolicitacaoSemPrevisaoDeEncerramento = CandidatoSolicitacaoFactory.getEntity(candidato, solicitacaoSemPrevisaoDeEncerramento, new Date());
+		candidatoSolicitacaoDao.save(candidatoSolicitacaoSolicitacaoSemPrevisaoDeEncerramento);
+		
+		Double resultado = solicitacaoDao.calculaIndicadorVagasPreenchidasNoPrazo(empresa.getId(), null, null, null, new Date(), DateUtil.incrementaMes(new Date(), 1));
+		
+		assertEquals(0.0, resultado);
+	}
+	
+	public void testCalculaIndicadorVagasPreenchidaNoPrazoRetorno50PorCento()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Solicitacao solicitacaoComPrevisaoDeEncerramento = SolicitacaoFactory.getSolicitacao(empresa, DateUtil.criarDataMesAno(new Date()), DateUtil.incrementaMes(new Date(), 1), 2);
+		solicitacaoDao.save(solicitacaoComPrevisaoDeEncerramento);
+		
+		Solicitacao solicitacaoSemPrevisaoDeEncerramento = SolicitacaoFactory.getSolicitacao(empresa, DateUtil.criarDataMesAno(new Date()), null, 1);
+		solicitacaoDao.save(solicitacaoSemPrevisaoDeEncerramento);
+	
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		CandidatoSolicitacao candidatoSolicitacaoSolicitacaoSemPrevisaoDeEncerramento = CandidatoSolicitacaoFactory.getEntity(candidato, solicitacaoSemPrevisaoDeEncerramento, DateUtil.criarDataMesAno(new Date()));
+		candidatoSolicitacaoDao.save(candidatoSolicitacaoSolicitacaoSemPrevisaoDeEncerramento);
+		
+		CandidatoSolicitacao candidatoSolicitacaoSolicitacaoComPrevisaoDeEncerramento = CandidatoSolicitacaoFactory.getEntity(candidato, solicitacaoComPrevisaoDeEncerramento, DateUtil.criarDataMesAno(new Date()));
+		candidatoSolicitacaoDao.save(candidatoSolicitacaoSolicitacaoComPrevisaoDeEncerramento);
+		
+		candidatoSolicitacaoDao.getHibernateTemplateByGenericDao().flush();
+		Double resultado = solicitacaoDao.calculaIndicadorVagasPreenchidasNoPrazo(empresa.getId(), new Long[]{}, new Long[]{}, new Long[]{}, DateUtil.criarDataMesAno(new Date()), DateUtil.incrementaMes(new Date(), 1));
+		
+		assertEquals(50.0, resultado);
+	}
+	
+	public void testCalculaIndicadorVagasPreenchidaNoPrazoRetorno100PorCento()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("Estabelecimento", empresa);
+		estabelecimentoDao.save(estabelecimento);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L, "Area", true, empresa);
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Solicitacao solicitacaoComPrevisaoDeEncerramento = SolicitacaoFactory.getSolicitacao(empresa, estabelecimento, areaOrganizacional, DateUtil.criarDataMesAno(new Date()), DateUtil.incrementaMes(new Date(), 1), 2);
+		solicitacaoDao.save(solicitacaoComPrevisaoDeEncerramento);
+		
+		Solicitacao solicitacaoSemPrevisaoDeEncerramento = SolicitacaoFactory.getSolicitacao(empresa, estabelecimento, areaOrganizacional, DateUtil.criarDataMesAno(new Date()), null, 1);
+		solicitacaoDao.save(solicitacaoSemPrevisaoDeEncerramento);
+	
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		CandidatoSolicitacao candidatoSolicitacaoSolicitacaoSemPrevisaoDeEncerramento = CandidatoSolicitacaoFactory.getEntity(candidato, solicitacaoSemPrevisaoDeEncerramento, DateUtil.criarDataMesAno(new Date()));
+		candidatoSolicitacaoDao.save(candidatoSolicitacaoSolicitacaoSemPrevisaoDeEncerramento);
+		
+		CandidatoSolicitacao candidatoSolicitacaoSolicitacaoComPrevisaoDeEncerramento1 = CandidatoSolicitacaoFactory.getEntity(candidato, solicitacaoComPrevisaoDeEncerramento, DateUtil.criarDataMesAno(new Date()));
+		candidatoSolicitacaoDao.save(candidatoSolicitacaoSolicitacaoComPrevisaoDeEncerramento1);
+		
+		CandidatoSolicitacao candidatoSolicitacaoSolicitacaoComPrevisaoDeEncerramento2 = CandidatoSolicitacaoFactory.getEntity(candidato, solicitacaoComPrevisaoDeEncerramento, DateUtil.incrementaMes(new Date(), 1));
+		candidatoSolicitacaoDao.save(candidatoSolicitacaoSolicitacaoComPrevisaoDeEncerramento2);
+		
+		candidatoSolicitacaoDao.getHibernateTemplateByGenericDao().flush();
+		
+		Long[] establementosIds = new Long[]{estabelecimento.getId()};
+		Long[] areasIds = new Long[]{areaOrganizacional.getId()};
+		Long[] solicitacoesIds = new Long[]{solicitacaoComPrevisaoDeEncerramento.getId(), solicitacaoSemPrevisaoDeEncerramento.getId()};
+		
+		Double resultado = solicitacaoDao.calculaIndicadorVagasPreenchidasNoPrazo(empresa.getId(), establementosIds, areasIds, solicitacoesIds, DateUtil.criarDataMesAno(new Date()), DateUtil.incrementaMes(new Date(), 1));
+		
+		assertEquals(100.0, resultado);
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;

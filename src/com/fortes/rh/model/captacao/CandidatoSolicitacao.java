@@ -44,6 +44,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable,
 	private char status = StatusCandidatoSolicitacao.INDIFERENTE;
 	private Character statusAutorizacaoGestor; 
 	private Date dataAutorizacaoGestor;
+	private Date dataContratacaoOrPromocao;
 	private String obsAutorizacaoGestor;
 	@ManyToOne
 	private Usuario usuarioSolicitanteAutorizacaoGestor;
@@ -694,5 +695,13 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable,
 	   }catch (CloneNotSupportedException e) {
 	      throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto.");
 	   }
+	}
+
+	public Date getDataRealizacaoContratacaoOrPromocao() {
+		return dataContratacaoOrPromocao;
+	}
+
+	public void setDataContratacaoOrPromocao(Date dataContratacaoOrPromocao) {
+		this.dataContratacaoOrPromocao = dataContratacaoOrPromocao;
 	}
 }

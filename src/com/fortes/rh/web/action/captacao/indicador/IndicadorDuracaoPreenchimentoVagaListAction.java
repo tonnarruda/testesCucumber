@@ -68,6 +68,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private int qtdEtapasRealizadas;
 	private double qtdCandidatosAtendidosPorVaga;
 	private double indiceProcSeletivo;
+	private double indicadorVagasPreenchidasNoPrazo = 0;
 	private boolean indicadorResumido;
 	private boolean considerarContratacaoFutura;
 	
@@ -109,7 +110,8 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		qtdCandidatosAtendidosPorVaga = (qtdVagasPreenchidas > 0) ? (double)qtdCandidatosAtendidos/qtdVagasPreenchidas : 0; 
 		
 		indiceProcSeletivo = colaboradorManager.calculaIndiceProcessoSeletivo(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), dataAte);
-		
+		indicadorVagasPreenchidasNoPrazo = solicitacaoManager.calculaIndicadorVagasPreenchidasNoPrazo(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
+				
 		try {
 			indicadorDuracaoPreenchimentoVagas = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte,  LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), considerarContratacaoFutura);
 		} catch (Exception e) {
@@ -426,6 +428,11 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	public double getIndiceProcSeletivo()
 	{
 		return indiceProcSeletivo;
+	}
+	
+	public double getIndicadorVagasPreenchidasNoPrazo()
+	{
+		return indicadorVagasPreenchidasNoPrazo;
 	}
 
 	public Collection<CheckBox> getSolicitacaosCheck()

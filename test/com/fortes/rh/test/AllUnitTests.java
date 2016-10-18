@@ -60,6 +60,7 @@ import com.fortes.rh.test.business.captacao.HistoricoCandidatoManagerTest;
 import com.fortes.rh.test.business.captacao.NivelCompetenciaManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoBDSManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest;
+import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest_Junit4;
 import com.fortes.rh.test.business.cargosalario.CargoManagerTest;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialHistoricoManagerTest;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialManagerTest;
@@ -497,6 +498,7 @@ import com.fortes.rh.test.web.action.captacao.NivelCompetenciaEditActionTest;
 import com.fortes.rh.test.web.action.captacao.NivelCompetenciaHistoricoEditActionTest;
 import com.fortes.rh.test.web.action.captacao.SolicitacaoEditActionTest;
 import com.fortes.rh.test.web.action.captacao.SolicitacaoListActionTest;
+import com.fortes.rh.test.web.action.captacao.indicador.IndicadorDuracaoPreenchimentoVagaListActionTest;
 import com.fortes.rh.test.web.action.captacao.indicador.IndicadorTurnOverListActionTest;
 import com.fortes.rh.test.web.action.cargosalario.CargoEditActionTest;
 import com.fortes.rh.test.web.action.cargosalario.FaixaSalarialHistoricoEditActionTest;
@@ -748,6 +750,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	SolicitacaoDaoHibernateTest.class,
 	SolicitacaoAvaliacaoDaoHibernateTest.class,
 	SolicitacaoManagerTest.class,
+	SolicitacaoManagerTest_Junit4.class,
 	SolicitacaoListActionTest.class,
 	SolicitacaoBDSDaoHibernateTest.class,
 	CandidatoIdiomaTest.class,
@@ -802,6 +805,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ConfiguracaoNivelCompetenciaColaboradorManagerTest.class,
 
     //Indicadores
+	IndicadorDuracaoPreenchimentoVagaListActionTest.class,
 	IndicadorTurnOverListActionTest.class,
 
     //CARGOSALARIO

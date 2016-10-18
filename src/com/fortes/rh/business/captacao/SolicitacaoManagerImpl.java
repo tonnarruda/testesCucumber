@@ -322,6 +322,10 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		if(disponibilizarCandidato && colaborador.getCandidato() != null && colaborador.getCandidato().getId() != null)
 			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaborador.getId());
 	}
+	
+	public double calculaIndicadorVagasPreenchidasNoPrazo(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] solicitacoesIds, Date dataDe, Date dataAte) {
+		return getDao().calculaIndicadorVagasPreenchidasNoPrazo(empresaId, estabelecimentosIds, areasIds, solicitacoesIds, dataDe, dataAte);
+	}
 
 	public void setCandidatoSolicitacaoManager(	CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;

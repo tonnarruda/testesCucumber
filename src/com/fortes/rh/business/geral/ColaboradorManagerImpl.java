@@ -3055,5 +3055,4 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setCartaoManager(CartaoManager cartaoManager) {
 		this.cartaoManager = cartaoManager;
 	}
-
 }

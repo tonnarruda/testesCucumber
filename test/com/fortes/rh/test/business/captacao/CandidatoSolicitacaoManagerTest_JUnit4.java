@@ -1,11 +1,11 @@
 package com.fortes.rh.test.business.captacao;
 
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import mockit.Mockit;
 
@@ -156,5 +156,19 @@ public class CandidatoSolicitacaoManagerTest_JUnit4
 			exception = e;
 		}
     	assertNull(exception);
+	}
+	
+	@Test
+	public void testAtalizaStatusEDataContratacaoOrPromocao()
+	{
+		CandidatoSolicitacao csDoBanco = CandidatoSolicitacaoFactory.getEntity(1L, StatusCandidatoSolicitacao.CONTRATADO, new Date());
+		
+		CandidatoSolicitacao csAtualizado = csDoBanco;
+		csDoBanco.setStatus(StatusCandidatoSolicitacao.INDIFERENTE);
+		csDoBanco.setDataAutorizacaoGestor(null);
+
+		when(candidatoSolicitacaoDao.findById(eq(csDoBanco.getId()))).thenReturn(csDoBanco);
+		candidatoSolicitacaoManager.setStatusAndDataContratacaoOrPromocao(csDoBanco.getId(), StatusCandidatoSolicitacao.INDIFERENTE, null);
+		verify(candidatoSolicitacaoDao).update(csAtualizado);
 	}
 }

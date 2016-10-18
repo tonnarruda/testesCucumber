@@ -42,6 +42,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
 
@@ -225,7 +226,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 			if (candidatoSolicitacaoId != null)
 			{
-				candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.PROMOVIDO);
+				candidatoSolicitacaoManager.setStatusAndDataContratacaoOrPromocao(candidatoSolicitacaoId, StatusCandidatoSolicitacao.PROMOVIDO, getDataPromocao());
 				CandidatoSolicitacao candidatoSolicitacao = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacaoId);
 				historicoColaborador.setCandidatoSolicitacao(candidatoSolicitacao);
 			}
@@ -278,6 +279,13 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 			return Action.INPUT;
 		}
+	}
+	
+	private Date getDataPromocao(){
+		if(historicoColaborador.getData().after(DateUtil.criarDataMesAno(new Date()))){
+			return new Date();
+		}
+		return historicoColaborador.getData();
 	}
 
 	public String prepareUpdate() throws Exception

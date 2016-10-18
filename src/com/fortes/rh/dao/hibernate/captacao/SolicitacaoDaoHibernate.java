@@ -321,6 +321,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("s.remuneracao"), "remuneracao");
 		p.add(Projections.property("s.infoComplementares"), "infoComplementares");
 		p.add(Projections.property("s.data"), "data");
+		p.add(Projections.property("s.dataPrevisaoEncerramento"), "dataPrevisaoEncerramento");
 		p.add(Projections.property("s.liberador"), "liberador");
 		p.add(Projections.property("s.observacaoLiberador"), "observacaoLiberador");
 		p.add(Projections.property("s.dataStatus"), "dataStatus");
@@ -885,5 +886,50 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Solicitacao.class));
 		
 		return criteria.list();
+	}
+
+	public double calculaIndicadorVagasPreenchidasNoPrazo(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] solicitacoesIds, Date dataDe, Date dataAte) {
+		String addFiltros = "";
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			addFiltros += " and s.estabelecimento_id in(:estabelecimentosIds) ";
+		if(areasIds != null && areasIds.length > 0)
+			addFiltros += " and s.areaOrganizacional_id in(:areasIds) ";
+		if(solicitacoesIds != null && solicitacoesIds.length > 0)
+			addFiltros += " and s.id in(:solicitacoesIds) ";
+		
+		
+		StringBuilder consulta = new StringBuilder("");
+		consulta.append("select (");
+		consulta.append("		cast((select count(cs.id) from CandidatoSolicitacao cs join Solicitacao s on s.id = cs.solicitacao_id");
+		consulta.append("			where s.empresa_id = :empresaId ");
+		consulta.append("				and s.dataPrevisaoEncerramento is not null ");  
+		consulta.append("				and cs.dataContratacaoOrPromocao is not null ");
+		consulta.append("				and cs.dataContratacaoOrPromocao <= s.dataPrevisaoEncerramento");
+		consulta.append("			    and s.data between :dataDe and :dataAte");
+		consulta.append(			    addFiltros);
+		consulta.append("		) as double precision) / ");
+		
+		consulta.append("		cast((select coalesce(sum(s.quantidade), 1) from Solicitacao s ");
+		consulta.append("			where s.empresa_id = :empresaId  ");
+		consulta.append("				and s.dataPrevisaoEncerramento is not null "); 
+		consulta.append("			    and s.data between :dataDe and :dataAte");
+		consulta.append(				addFiltros);
+		consulta.append("		)as double precision)) * 100 as total " );
+		
+		Query query = getSession().createSQLQuery(consulta.toString());
+		query.setDate("dataDe", dataDe);
+		query.setDate("dataAte", dataAte);
+		query.setLong("empresaId", empresaId);
+
+		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds);
+		
+		if (areasIds != null && areasIds.length > 0)
+			query.setParameterList("areasIds", areasIds);
+		
+		if(solicitacoesIds != null && solicitacoesIds.length > 0)
+			query.setParameterList("solicitacoesIds", solicitacoesIds);
+		
+		return (Double) query.uniqueResult();
 	}
 }

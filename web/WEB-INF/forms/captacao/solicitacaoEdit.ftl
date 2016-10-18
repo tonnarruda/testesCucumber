@@ -8,6 +8,7 @@
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
 	<#assign DataSolicitacao = "${solicitacao.dataFormatada}"/>
+	<#assign DataPrevisaoEncerramento = "${solicitacao.dataPrevisaoEncerramentoFormatada}"/>
 <#else>
 	<title>Inserir Solicitação de Pessoal</title>
 	<#assign formAction="insert.action"/>
@@ -281,6 +282,7 @@
 	<@ww.form name="form" id="form" action="${formAction}" validate="true" onsubmit="${validarCampos}" method="POST">
 		<#if somenteLeitura>
 			<@ww.textfield readonly="true" label="Data" name="solicitacao.data" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData" cssStyle="background: #EBEBEB;"/>
+			<@ww.textfield readonly="true" label="Prazo de previsão para encerramento" name="solicitacao.dataPrevisaoEncerramento" id="dataPrevisaoEncerramento" value="${DataPrevisaoEncerramento}" cssClass="mascaraData" cssStyle="background: #EBEBEB;"/>
 			<@ww.textfield readonly="true" label="Descrição" name="solicitacao.descricao" id="descricao" cssClass="inputNome" cssStyle="background: #EBEBEB;" />
 			<@ww.textfield readonly="true" label="Horário de Trabalho" name="solicitacao.horarioComercial" id="horarioComercial" cssClass="inputNome" cssStyle="background: #EBEBEB;" />
 		<#else>
@@ -296,6 +298,7 @@
 				</@authz.authorize>
 			</#if>	
 			
+			<@ww.datepicker label="Prazo de previsão para encerramento" name="solicitacao.dataPrevisaoEncerramento" required="false" id="dataPrevisaoEncerramento" value="${DataPrevisaoEncerramento}" cssClass="mascaraData"/>
 			<@ww.textfield label="Descrição" name="solicitacao.descricao" id="descricao" cssClass="inputNome" maxlength="67" required="true"/>
 			<@ww.textfield label="Horário de Trabalho" name="solicitacao.horarioComercial" id="horarioComercial" cssClass="inputNome" maxlength="255" required="true"/>
 		</#if>

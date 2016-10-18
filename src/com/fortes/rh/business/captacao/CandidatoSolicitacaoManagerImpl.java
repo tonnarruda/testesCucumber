@@ -196,6 +196,13 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		cs.setStatus(status);
 		getDao().update(cs);
 	}
+	
+	public void setStatusAndDataContratacaoOrPromocao(Long candidatoSolicitacaoId, char status, Date dataContratacaoOrPromocao) {
+		CandidatoSolicitacao cs = getDao().findById(candidatoSolicitacaoId);
+		cs.setStatus(status);
+		cs.setDataContratacaoOrPromocao(dataContratacaoOrPromocao);
+		getDao().update(cs);
+	}
 
 	public void setStatusByColaborador(char status, Long... colaboradoresIds) 
 	{

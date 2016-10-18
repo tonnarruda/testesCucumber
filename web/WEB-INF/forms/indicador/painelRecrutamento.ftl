@@ -14,6 +14,9 @@
 		
 		#indicadores li { padding: 10px; }
 		.divFiltro { margin-left: 5px; }
+		
+		fieldset { background: inherit; width: 904px;}
+		fieldset select { background: #FFFFFF; }
 	</style>
 	
 	<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
@@ -38,6 +41,10 @@
 		
 			$('#tooltipHelp').qtip({
 				content: 'Esse índice servirá para que o RH avalie a eficiência no processo seletivo. Ele mostrará o resultado com o percentual de colaboradores que se mantiveram na empresa após o período de experiência. <br />Fórmula utilizada: 100 - (colab. desligados em até 90 dias / nº de admitidos em até 90 dias * 100). Apenas a data final do período é considerada para este cálculo.' 
+			});
+			
+			$('#tooltipHelpVagasPreenchidasNoPrazo').qtip({
+				content: 'Fórmula utilizada: (Nº de vagas preenchidas no prazo / Nº de vagas abertas) X 100. Só serão consideradas solicitações que estiverem com "Prazo de previsão para encerramento" preenchido.' 
 			});
 		
 			var totalVagas = 0;
@@ -154,12 +161,15 @@
 			<@ww.datepicker name="dataDe" id="dataDe"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.datepicker name="dataAte" id="dataAte" value="${dateFim}" cssClass="mascaraData validaDataFim" />
-			<@ww.select label="Referenciar o período acima com a data da" name="dataStatusAprovacaoSolicitacao" list="tiposDataStatusAprovacaoSolicitacao" cssStyle="width: 300px;" />
-			<@ww.hidden name="statusSolicitacao" value = 'S'/>			
 			<@ww.checkbox label="Considerar contratações futuras para estatística de preenchimento de vaga" id="considerarContratacaoFutura" name="considerarContratacaoFutura" labelPosition="left"/>
 			<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" filtro="true" width="460" liClass="liLeft"/>
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true" width="460" liClass="liLeft"/>
 			<@frt.checkListBox label="Solicitações de Pessoal" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="926" filtro="true"/>
+			<fieldset>
+				<legend>Vagas Disponíveis</legend>
+				<@ww.select label="Referenciar o período com a data da" name="dataStatusAprovacaoSolicitacao" list="tiposDataStatusAprovacaoSolicitacao" cssStyle="width: 300px;" />
+				<@ww.hidden name="statusSolicitacao" value = 'S'/>
+			</fieldset>			
 			
 			<button onclick="return validaForm();" class="btnPesquisar grayBGE"></button>
 		</@ww.form>
@@ -192,6 +202,9 @@
 		    			<li>Média de candidatos atendidos p/ preench. de uma vaga: ${qtdCandidatosAtendidosPorVaga?string(",##0.##")}</li>
 		    			<li>Índice de eficiência do processo seletivo: ${indiceProcSeletivo?string(",##0.##")}%
 		    				<img align='absMiddle' id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
+		    			</li>
+		    			<li>Índice de vagas preenchidas no prazo: ${indicadorVagasPreenchidasNoPrazo?string(",##0.##")}%
+		    				<img align='absMiddle' id="tooltipHelpVagasPreenchidasNoPrazo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
 		    			</li>
 		    		</ul>
 		    	</div>

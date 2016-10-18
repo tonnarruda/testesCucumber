@@ -19,6 +19,24 @@ public class SolicitacaoFactory
 		
 		return solicitacao;
 	}
+	
+	public static Solicitacao getSolicitacao(Empresa empresa, Date data, Date dataPrevisaoEncerramento, Integer qtdVagas)
+	{
+		Solicitacao solicitacao = new Solicitacao();
+		solicitacao.setEmpresa(empresa);
+		solicitacao.setData(data);
+		solicitacao.setDataPrevisaoEncerramento(dataPrevisaoEncerramento);
+		solicitacao.setQuantidade(qtdVagas);
+		return solicitacao;
+	}
+	
+	public static Solicitacao getSolicitacao(Empresa empresa, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Date data, Date dataPrevisaoEncerramento, Integer qtdVagas)
+	{
+		Solicitacao solicitacao = getSolicitacao(empresa, data, dataPrevisaoEncerramento, qtdVagas);
+		solicitacao.setEstabelecimento(estabelecimento);
+		solicitacao.setAreaOrganizacional(areaOrganizacional);
+		return solicitacao;
+	}
 
 	public static Solicitacao getSolicitacao(FaixaSalarial faixaSalarial, Date data)
 	{

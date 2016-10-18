@@ -37,6 +37,7 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 	Collection<Long> getCandidatosBySolicitacao(Long solicitacaoId);
 	Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca, Character status);
 	void setStatus(Long candidatoSolicitacaoId, char status);
+	void setStatusAndDataContratacaoOrPromocao(Long candidatoSolicitacaoId, char status, Date dataContratacaoOrPromocao);
 	void setStatusByColaborador(char status, Long... colaboradoresIds);
 	void removeCandidato(Long candidatoId);
 	Collection<ColaboradorQuestionario> findAvaliacoesCandidatoSolicitacao(Long solicitacaoId, Long candidatoId);

@@ -1,6 +1,7 @@
 package com.fortes.rh.test.factory.captacao;
 
-import com.fortes.rh.model.acesso.Usuario;
+import java.util.Date;
+
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
@@ -28,6 +29,14 @@ public class CandidatoSolicitacaoFactory
     	return candidatoSolicitacao;
 	}
 
+	public static CandidatoSolicitacao getEntity(Long id, char status, Date dataContratacaoOrPromocao)
+	{
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(id);
+		candidatoSolicitacao.setStatus(status);
+		candidatoSolicitacao.setDataContratacaoOrPromocao(dataContratacaoOrPromocao);
+		return candidatoSolicitacao;
+	}
+
 	public static CandidatoSolicitacao getEntity(Long id)
 	{
 
@@ -44,6 +53,15 @@ public class CandidatoSolicitacaoFactory
 		candidatoSolicitacao.setSolicitacao(solicitacao);
 		candidatoSolicitacao.setStatusAutorizacaoGestor(statusAutorizacaoGestor);
 
+		return candidatoSolicitacao;
+	}
+	
+	public static CandidatoSolicitacao getEntity(Candidato candidato, Solicitacao solicitacao, Date dataContrratacaoOrpromocao)
+	{
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao.setCandidato(candidato);
+		candidatoSolicitacao.setSolicitacao(solicitacao);
+		candidatoSolicitacao.setDataContratacaoOrPromocao(dataContrratacaoOrpromocao);
 		return candidatoSolicitacao;
 	}
 }

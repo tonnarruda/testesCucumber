@@ -60,4 +60,5 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	Collection<Solicitacao> findByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds);
 	Collection<String> getNomesColabSubstituidosSolicitacaoEncerrada(Long empresaId);
 	void atualizaStatusSolicitacaoByColaborador(Colaborador colaborador, char status, boolean disponibilizarCandidato);
+	public double calculaIndicadorVagasPreenchidasNoPrazo(Long empresaId,Long[] estabelecimentosIds, Long[] areasIds, Long[] solicitacoesIds, Date dataDe,  Date dataAte);
 }

@@ -51,6 +51,8 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	@Temporal(TemporalType.DATE)
 	private Date data;
 	@Temporal(TemporalType.DATE)
+	private Date dataPrevisaoEncerramento;
+	@Temporal(TemporalType.DATE)
 	private Date dataEncerramento;
 	@Temporal(TemporalType.DATE)
 	private Date dataStatus;
@@ -596,6 +598,21 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;
+	}
+
+	public Date getDataPrevisaoEncerramento()
+	{
+		return dataPrevisaoEncerramento;
+	}
+	
+	public String getDataPrevisaoEncerramentoFormatada()
+	{
+		return DateUtil.formataDiaMesAno(this.dataPrevisaoEncerramento);
+	}
+
+	public void setDataPrevisaoEncerramento(Date dataPrevisaoEncerramento)
+	{
+		this.dataPrevisaoEncerramento = dataPrevisaoEncerramento;
 	}
 
 	public Date getDataEncerramento()

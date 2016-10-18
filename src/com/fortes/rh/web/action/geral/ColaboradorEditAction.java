@@ -106,6 +106,7 @@ import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -628,7 +629,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				solicitacaoExameManager.transferirCandidatoToColaborador(getEmpresaSistema().getId(), idCandidato, colaborador.getId());
 				
 				if (candidatoSolicitacaoId != null)
-					candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.CONTRATADO);
+					candidatoSolicitacaoManager.setStatusAndDataContratacaoOrPromocao(candidatoSolicitacaoId, StatusCandidatoSolicitacao.CONTRATADO, getDataContratacao());
 				
 				colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
 				
@@ -701,6 +702,13 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		}
 	}
 
+	private Date getDataContratacao(){
+		if (colaborador.getDataAdmissao().after(DateUtil.criarDataMesAno(new Date()))) {
+			return new Date();
+		}
+		return colaborador.getDataAdmissao();
+	}
+	
 	private boolean verifyQtdCadastros() throws Exception {
 		try{
 			colaboradorManager.validaQtdCadastros(getEmpresaSistema().getId());
