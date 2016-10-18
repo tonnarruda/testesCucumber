@@ -630,7 +630,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	//findAreaOrganizacionalByAreas
 	public Colaborador(
 						Long esId, String esNome, Long aoId, String aoNome, String reNome, Long coId, String coNome, String cgNome, String fsNome, Long empresaId, String empresaNome, Boolean empresaAcIntegra, 
-						String nomeComercial, String matricula, String codigoAC, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc,  String cursos,
+						String nomeComercial, String matricula, String codigoAC, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc,  String cursos, Date dataEncerramentoContrato,
 						String estadoCivil, String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 						String rgOrgaoEmissor,  String rgUfSigla,  Character deficiencia, Date rgDataExpedicao, Character sexo, 
 						Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
@@ -644,7 +644,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		
 		this(esId, esNome, aoId, aoNome, reNome, coId, coNome, cgNome, fsNome, empresaId, empresaNome, empresaAcIntegra, nomeComercial,
-				matricula, codigoAC, desligado, dataAdmissao, dataDesligamento, vinculo, naoIntegraAc, cursos, estadoCivil, escolaridade, mae, pai,
+				matricula, codigoAC, desligado, dataAdmissao, dataDesligamento, vinculo, naoIntegraAc, cursos, dataEncerramentoContrato, estadoCivil, escolaridade, mae, pai,
 				cpf, pis, rg, rgOrgaoEmissor, rgUfSigla, deficiencia, rgDataExpedicao, sexo, dataNascimento, conjuge, qtdFilhos, ctpsNumero, ctpsSerie,
 				ctpsDv, numeroHab, emissao, vencimento, categoria, logradouro, complemento, numero, bairro, cep, email, foneCelular, foneFixo, 
 				funcaoNome, ambienteNome, cidadeNome, ufSigla, afastamentoInicio, afastamentoFim, candIndicadoPor,
@@ -674,7 +674,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	//findAreaOrganizacionalByAreas
 	public Colaborador(
 			Long esId, String esNome, Long aoId, String aoNome, String reNome, Long coId, String coNome, String cgNome, String fsNome, Long empresaId, String empresaNome, Boolean empresaAcIntegra, 
-			String nomeComercial,  String matricula, String codigoAC, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc, String cursos,
+			String nomeComercial,  String matricula, String codigoAC, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc, String cursos, Date dataEncerramentoContrato, 
 			String estadoCivil, String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 			String rgOrgaoEmissor, String rgUfSigla, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 			Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
@@ -687,7 +687,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this(coId, coNome, esId, esNome, aoId, aoNome, reNome, cgNome, fsNome,
 				empresaId, empresaNome, empresaAcIntegra, nomeComercial,
 				matricula, codigoAC, desligado, dataAdmissao, dataDesligamento, vinculo,
-				naoIntegraAc, cursos, estadoCivil, escolaridade, mae, pai, cpf,
+				naoIntegraAc, cursos, dataEncerramentoContrato, estadoCivil, escolaridade, mae, pai, cpf,
 				pis, rg, rgOrgaoEmissor, deficiencia, rgDataExpedicao, sexo,
 				dataNascimento, conjuge, qtdFilhos, ctpsNumero, ctpsSerie,
 				ctpsDv, numeroHab, emissao, vencimento, categoria, logradouro,
@@ -727,7 +727,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public Colaborador(Long coId, String coNome, Long esId, String esNome, Long aoId, String aoNome, String reNome, String cgNome,
 			String fsNome, Long empresaId, String empresaNome, Boolean empresaAcIntegra, String nomeComercial, String matricula,
-			String codigoAC, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc, String cursos,
+			String codigoAC, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc, String cursos, Date dataEncerramentoContrato,
 			String estadoCivil, String escolaridade, String mae, String pai, String cpf, String pis, String rg, String rgOrgaoEmissor,
 			Character deficiencia, Date rgDataExpedicao, Character sexo, Date dataNascimento, String conjuge, Integer qtdFilhos,
 			String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, Date vencimento, String categoria,
@@ -747,6 +747,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setEmpresaId(empresaId);
 		this.setEmpresaNome(empresaNome);
 		this.setEmpresaAcIntegra(empresaAcIntegra);
+		this.setDataEncerramentoContrato(dataEncerramentoContrato);
 		
 		this.nomeComercial = nomeComercial;
 		this.matricula = matricula;
@@ -3029,6 +3030,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setDataEncerramentoContrato(Date dataEncerramentoContrato)
 	{
 		this.dataEncerramentoContrato = dataEncerramentoContrato;
+	}
+	
+	@NaoAudita
+	public String getDataEncerramentoContratoFormatada()
+	{
+		return DateUtil.formataDate(this.dataEncerramentoContrato, "dd/MM/yyyy");
 	}
 
 	@NaoAudita

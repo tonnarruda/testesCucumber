@@ -1037,7 +1037,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		StringBuilder hql = new StringBuilder();
 		hql.append("select distinct new Colaborador(es.id, es.nome, ao.id, cast(monta_familia_area(ao.id), text) as col_3_0_, re.nome, co.id, co.nome, cg.nome, fs.nome, emp.id, emp.nome, emp.acIntegra, " +
-				"co.nomeComercial, co.matricula, co.codigoAC, co.desligado, co.dataAdmissao, co.dataDesligamento, co.vinculo, co.naoIntegraAc, co.cursos,  " +
+				"co.nomeComercial, co.matricula, co.codigoAC, co.desligado, co.dataAdmissao, co.dataDesligamento, co.vinculo, co.naoIntegraAc, co.cursos, co.dataEncerramentoContrato, " +
 				"co.pessoal.estadoCivil, co.pessoal.escolaridade, co.pessoal.mae, co.pessoal.pai, co.pessoal.cpf, co.pessoal.pis, co.pessoal.rg,  " +
 				"co.pessoal.rgOrgaoEmissor, rgUf.sigla, co.pessoal.deficiencia, co.pessoal.rgDataExpedicao, co.pessoal.sexo,  " +
 				"co.pessoal.dataNascimento, co.pessoal.conjuge, co.pessoal.qtdFilhos, co.pessoal.ctps.ctpsNumero, co.pessoal.ctps.ctpsSerie, co.pessoal.ctps.ctpsDv,  " +
