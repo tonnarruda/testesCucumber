@@ -11,7 +11,6 @@ import com.fortes.rh.config.backup.BackupCleanerJobTest;
 import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
 import com.fortes.rh.config.backup.RunAntScriptTest;
-import com.fortes.rh.dao.hibernate.geral.ConfiguracaoCampoExtraVisivelObrigadotorioDaoHibernateTest;
 import com.fortes.rh.security.spring.aop.AbstractModelJsonValueProcessorTest;
 import com.fortes.rh.security.spring.aop.AtributosDaAuditoriaTest;
 import com.fortes.rh.security.spring.aop.AuditoriaGeralAdviceTest;
@@ -278,6 +277,7 @@ import com.fortes.rh.test.dao.hibernate.geral.ColaboradorOcorrenciaDaoHibernateT
 import com.fortes.rh.test.dao.hibernate.geral.ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ComoFicouSabendoVagaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoCampoExtraDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoCampoExtraVisivelObrigadotorioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoLimiteColaboradorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoPerformanceDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoRelatorioDinamicoDaoHibernateTest;

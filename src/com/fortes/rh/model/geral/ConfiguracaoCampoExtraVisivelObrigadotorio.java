@@ -22,6 +22,16 @@ public class ConfiguracaoCampoExtraVisivelObrigadotorio extends AbstractModel im
     @ManyToOne
     private Empresa empresa;
 
+	public ConfiguracaoCampoExtraVisivelObrigadotorio() {
+		super();
+	}
+    
+	public ConfiguracaoCampoExtraVisivelObrigadotorio(Long empresaId, String camposVisivesis, String tipo) {
+		setEmpresaId(empresaId);
+		setCamposExtrasVisiveis(camposVisivesis);
+		setTipoConfiguracaoCampoExtra(tipo);
+	}
+
 	public String getCamposExtrasVisiveis() {
 		return camposExtrasVisiveis;
 	}

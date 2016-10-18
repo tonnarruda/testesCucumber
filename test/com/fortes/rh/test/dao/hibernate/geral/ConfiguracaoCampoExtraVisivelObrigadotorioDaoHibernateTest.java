@@ -1,4 +1,4 @@
-package com.fortes.rh.dao.hibernate.geral;
+package com.fortes.rh.test.dao.hibernate.geral;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.ConfiguracaoCampoExtraVisivelObrigadotorioDao;

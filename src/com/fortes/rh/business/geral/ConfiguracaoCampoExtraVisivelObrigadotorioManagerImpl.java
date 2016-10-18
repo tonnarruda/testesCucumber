@@ -9,7 +9,6 @@ import org.apache.commons.lang.StringUtils;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.ConfiguracaoCampoExtraVisivelObrigadotorioDao;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtraVisivelObrigadotorio;
-import com.fortes.rh.test.factory.captacao.ConfiguracaoCampoExtraVisivelObrigadotorioFactory;
 
 public class ConfiguracaoCampoExtraVisivelObrigadotorioManagerImpl extends GenericManagerImpl<ConfiguracaoCampoExtraVisivelObrigadotorio, ConfiguracaoCampoExtraVisivelObrigadotorioDao> implements ConfiguracaoCampoExtraVisivelObrigadotorioManager
 {
@@ -41,11 +40,12 @@ public class ConfiguracaoCampoExtraVisivelObrigadotorioManagerImpl extends Gener
 	private void salvaConfigCampos(Long empresaId, String camposVisivesis, String[] tiposConfiguracao) {
 		for (String tipo : tiposConfiguracao) {
 			camposVisivesis = (camposVisivesis.substring(0, camposVisivesis.length() -1));
-			ConfiguracaoCampoExtraVisivelObrigadotorio configCamposColaborador = ConfiguracaoCampoExtraVisivelObrigadotorioFactory.getEntity(empresaId, camposVisivesis, tipo);
+			ConfiguracaoCampoExtraVisivelObrigadotorio configCamposColaborador = new ConfiguracaoCampoExtraVisivelObrigadotorio(empresaId, camposVisivesis, tipo);
 			getDao().save(configCamposColaborador);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void ajustaCamposObrigatorios(ConfiguracaoCampoExtraVisivelObrigadotorio configCampo, String camposVisivesis) {
 		String camposObrigatorios = configCampo.getCamposExtrasObrigatorios() != null ?  configCampo.getCamposExtrasObrigatorios():"";
 		Collection<String> obrigatorios = CollectionUtils.intersection(Arrays.asList(camposObrigatorios.split(",")) , Arrays.asList(camposVisivesis.split(",")));
