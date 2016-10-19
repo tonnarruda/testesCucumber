@@ -1,5 +1,6 @@
 package com.fortes.rh.test.factory.sesmt;
 
+import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
@@ -7,7 +8,6 @@ import com.fortes.rh.model.sesmt.SolicitacaoExame;
 
 public class ExameSolicitacaoExameFactory
 {
-
 	public static ExameSolicitacaoExame getEntity(){
 		ExameSolicitacaoExame exameSolicitacaoExame = new ExameSolicitacaoExame();
 		exameSolicitacaoExame.setId(null);
@@ -34,4 +34,10 @@ public class ExameSolicitacaoExameFactory
 		return exameSolicitacaoExame;
 	}
 	
+	public static ExameSolicitacaoExame getEntity(Exame exame, SolicitacaoExame solicitacaoExame, ClinicaAutorizada clinicaAutorizada, RealizacaoExame realizacaoExame, Integer periodicidade)
+	{
+		ExameSolicitacaoExame exameSolicitacaoExame = getEntity(exame, solicitacaoExame, realizacaoExame, periodicidade);
+		exameSolicitacaoExame.setClinicaAutorizada(clinicaAutorizada);
+		return exameSolicitacaoExame;
+	}
 }

@@ -3,7 +3,9 @@
 	<Versao id="1.1.173.205" db="" data="30/10/2016">
 		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > Cipa > Eleições > Editar > Resultado > Imprimir resultado: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação]]></Item>
 		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > Cipa > Eleições > Editar > Atas e Comunicados > Imprimir Ata da Eleição: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação.]]></Item>
+		<Item visivel="S" motivo="P16100000025"><![CDATA[SESMT > Relatórios > PCMSO:  Ajuste de inconsistência na contagem de exames realizados.]]></Item>
 		<Item visivel="S" motivo="S16100000128"><![CDATA[SESMT > Relatórios > Exames > Exames Previstos: Nova opção para exibir exames solicitados e não realizados.]]></Item>
+		<Item visivel="S" motivo="P16090000368"><![CDATA[SESMT > Relatórios > Exames > Exames Realizados: Ajuste de inconsistência ao gerar relatório quando marcados os exames "Avaliação Clínica e Anaminese Ocupacional" e "Exame de Aptidões Física e Mental".]]></Item>
 		<Item visivel="S" motivo="S16090000067"><![CDATA[Utilitários > Cadastros > Perfil: Novo perfil "Exibir Salário" no quadro "Trajetória Profissional na Empresa" ao exibir performance profissional do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16090000270"><![CDATA[Utilitários > Cadastros > Perfil: Novo perfil "Exibir Salário Contratual" na opção campos disponíveis ao gerar o relatório de listagem de colaboradores.]]></Item>
 		<Item visivel="S" motivo="S16060000322"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar > Cartões: Nova opção de configuração de cartão para colaborador que completa ano de empresa.]]></Item>

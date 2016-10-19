@@ -54,6 +54,38 @@ public class SolicitacaoExameFactory
 		return solicitacaoExame;
 	}
 	
+	public static SolicitacaoExame getSolitacaoExameColaborador(Date data, Empresa empresa, Colaborador colaborador, String motivo)
+	{
+		SolicitacaoExame solicitacaoExame = getEntity();
+		solicitacaoExame.setData(data);
+		solicitacaoExame.setEmpresa(empresa);
+		solicitacaoExame.setColaborador(colaborador);
+		solicitacaoExame.setMotivo(motivo);
+		
+		return solicitacaoExame;
+	}
+	
+	public static SolicitacaoExame getSolitacaoExameCandidato(Date data, Empresa empresa, Candidato candidato, String motivo)
+	{
+		SolicitacaoExame solicitacaoExame = getEntity();
+		solicitacaoExame.setData(data);
+		solicitacaoExame.setEmpresa(empresa);
+		solicitacaoExame.setCandidato(candidato);
+		solicitacaoExame.setMotivo(motivo);
+		
+		return solicitacaoExame;
+	}
+	
+	public static SolicitacaoExame getEntity(Date data, Empresa empresa, String motivo)
+	{
+		SolicitacaoExame solicitacaoExame = getEntity();
+		solicitacaoExame.setData(data);
+		solicitacaoExame.setEmpresa(empresa);
+		solicitacaoExame.setMotivo(motivo);
+		
+		return solicitacaoExame;
+	}
+	
 	public static Collection<SolicitacaoExame> getCollection()
 	{
 		SolicitacaoExame solicitacaoExame = getEntity();

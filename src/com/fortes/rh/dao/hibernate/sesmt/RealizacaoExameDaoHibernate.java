@@ -16,6 +16,7 @@ import org.springframework.dao.DataAccessException;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RealizacaoExameDao;
+import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.Exame;
@@ -37,14 +38,24 @@ public class RealizacaoExameDaoHibernate extends GenericDaoHibernate<RealizacaoE
 		hql.append(" join ese.realizacaoExame re");
 		hql.append(" where c.id = se.colaborador.id");
 		hql.append(" and hc.estabelecimento.id = :estabelecimentoId");
-		hql.append(" and hc.data = (select max(hc2.data)");
-		hql.append("				from HistoricoColaborador hc2");
-		hql.append(" 				where hc2.data <= re.data and hc2.status = :status ");
-		hql.append(" 				and c.id = hc2.colaborador.id)");
-		hql.append(" and re.data >= :dataIni");
-		hql.append(" and re.data <= :dataFim");
-		hql.append(" and re.resultado != :resultado");
-		hql.append(" order by se.motivo");
+		hql.append(" and ( ");
+		hql.append("	  ( se.motivo = :motivoSolicitacaoExame ");
+		hql.append("		and hc.data = (select min(hc2.data) ");
+		hql.append("	        	from HistoricoColaborador as hc2 ");
+		hql.append("	   			where hc2.status = :status ");
+		hql.append("	   			and hc2.colaborador.id = c.id ) ");
+		hql.append("	  ) ");
+		hql.append("	  or ( se.motivo != :motivoSolicitacaoExame ");
+		hql.append("		   and hc.data = ( select max(hc2.data) ");
+		hql.append("	        	from HistoricoColaborador as hc2 ");
+		hql.append("	   			where hc2.data <= re.data and hc2.status = :status ");
+		hql.append("	   			and hc2.colaborador.id = c.id )");
+		hql.append("	  	 ) ");
+		hql.append("	) ");
+		hql.append(" and re.data >= :dataIni ");
+		hql.append(" and re.data <= :dataFim ");
+		hql.append(" and re.resultado != :resultado  ");
+		hql.append(" order by se.motivo ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("estabelecimentoId", estabelecimentoId);
@@ -52,6 +63,7 @@ public class RealizacaoExameDaoHibernate extends GenericDaoHibernate<RealizacaoE
 		query.setDate("dataFim", dataFim);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setString("resultado", ResultadoExame.NAO_REALIZADO.toString());
+		query.setString("motivoSolicitacaoExame", MotivoSolicitacaoExame.ADMISSIONAL);
 		
 		return query.list();
 	}

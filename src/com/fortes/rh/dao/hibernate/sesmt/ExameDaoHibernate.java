@@ -27,6 +27,7 @@ import org.springframework.dao.DataAccessResourceFailureException;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoPessoa;
@@ -226,11 +227,12 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 	{
 		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id, e.nome, clinica.id, clinica.nome, count(*)) ");
 		hql.append("from ExameSolicitacaoExame ese ");
+		hql.append("join ese.solicitacaoExame se ");
 		hql.append("join ese.realizacaoExame re ");
 		hql.append("left join ese.clinicaAutorizada clinica ");
 		hql.append("join ese.exame e ");
 
-		hql.append(" where e.empresa.id = :empresaId ");
+		hql.append("where se.empresa.id = :empresaId ");
 		hql.append(" and re.data between :dataInicio and :dataFim ");
 		
 		if (clinicaAutorizada != null && clinicaAutorizada.getId() != null)
@@ -292,7 +294,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		
 		examinado.setJoins(hql);
 		
-		hql.append("where (e.empresa.id = :empresaId or e.empresa.id is null) ");
+		hql.append("where se.empresa.id = :empresaId ");
 		hql.append("and re.data between :inicio and :fim ");
 
 		if (isNotBlank(nomeBusca))
@@ -522,16 +524,27 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 
 		public void setWhereMaxData(StringBuilder hql)
 		{
-			hql.append("and hc.data = ( select max(hc2.data) ");
+			hql.append("and ( ");
+			hql.append("	  ( se.motivo = :motivoSolicitacaoExame ");
+			hql.append("		and hc.data = (select min(hc2.data) ");
+			hql.append("	        	from HistoricoColaborador as hc2 ");
+			hql.append("	   			where hc2.status = :status ");
+			hql.append("	   			and hc2.colaborador.id = examinado.id ) ");
+			hql.append("	  ) ");
+			hql.append("	  or ( se.motivo != :motivoSolicitacaoExame ");
+			hql.append("		   and hc.data = ( select max(hc2.data) ");
 			hql.append("	        	from HistoricoColaborador as hc2 ");
 			hql.append("	   			where hc2.data <= re.data and hc2.status = :status ");
 			hql.append("	   			and hc2.colaborador.id = examinado.id )");
+			hql.append("	  	 ) ");
+			hql.append("	) ");
 		}
 
 		public void setParametros(Query query)
 		{
 			query.setCharacter("tipoPessoa", TipoPessoa.COLABORADOR.getChave());
 			query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+			query.setString("motivoSolicitacaoExame", MotivoSolicitacaoExame.ADMISSIONAL);
 		}
 	}
 	

@@ -242,8 +242,8 @@ public class RealizacaoExameDaoHibernateTest extends GenericDaoHibernateTest<Rea
 		
 		Collection<Object[]> resultado = realizacaoExameDao.getRelatorioExame(estabelecimento1.getId(), inicio, hoje);
 		
-		assertEquals(1, resultado.size());
-		assertEquals(MotivoSolicitacaoExame.PERIODICO, ((Object[]) resultado.toArray()[0])[1].toString());
+		assertEquals(2, resultado.size());
+		assertEquals(MotivoSolicitacaoExame.ADMISSIONAL, ((Object[]) resultado.toArray()[0])[1].toString());
 	}
 	
 	public void testFindQtdRealizados()
