@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="P16080000128"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao atualizar o status do candidato da solicitação de pessoal após cancelar o desligamento do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > Cipa > Eleições > Editar > Resultado > Imprimir resultado: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação]]></Item>
 		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > Cipa > Eleições > Editar > Atas e Comunicados > Imprimir Ata da Eleição: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação.]]></Item>
+		<Item visivel="S" motivo="P16100000145"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitação de Exames: Ajuste na informação da função do candidato.]]></Item>
 		<Item visivel="S" motivo="P16100000025"><![CDATA[SESMT > Relatórios > PCMSO:  Ajuste de inconsistência na contagem de exames realizados.]]></Item>
 		<Item visivel="S" motivo="S16100000128"><![CDATA[SESMT > Relatórios > Exames > Exames Previstos: Nova opção para exibir exames solicitados e não realizados.]]></Item>
 		<Item visivel="S" motivo="P16090000368"><![CDATA[SESMT > Relatórios > Exames > Exames Realizados: Ajuste de inconsistência ao gerar relatório quando marcados os exames "Avaliação Clínica e Anaminese Ocupacional" e "Exame de Aptidões Física e Mental".]]></Item>
