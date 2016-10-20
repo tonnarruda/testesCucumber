@@ -1186,4 +1186,20 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		return criteria.list();
 	}
+
+	public boolean isRespondeuPesquisaByColaboradorIdAndQuestionarioId(Long colaboradorId, Long questionarioId) {
+		
+		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
+		criteria.createCriteria("cq.questionario", "q", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cq.respondida"), "respondida");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));
+		criteria.add(Expression.eq("q.id", questionarioId));
+		criteria.add(Expression.eq("q.tipo", TipoQuestionario.PESQUISA));
+		
+		return (Boolean) criteria.uniqueResult();
+	}
 }

@@ -66,4 +66,5 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	public void updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho);
 	boolean existeColaboradorQuestionarioRespondidoParcialmente(Long avaliacaoDesepenhoId, Long avaliadorId);
 	void ajustaColaboradorQuestionarioByAvDesempenho(Long avaliacaoDesempenhoId, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
+	boolean isRespondeuPesquisaByColaboradorIdAndQuestionarioId(Long colaboradorId,Long questionarioId);
 }

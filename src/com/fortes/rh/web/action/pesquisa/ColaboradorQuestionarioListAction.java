@@ -207,6 +207,11 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		try {
 			ColaboradorQuestionario colaboradorQuestionarioTemp = colaboradorQuestionarioManager.findById(colaboradorQuestionario.getId());
 			
+			if(colaboradorQuestionarioTemp.getQuestionario() != null && colaboradorQuestionarioTemp.getQuestionario().getTipo() == TipoQuestionario.PESQUISA && colaboradorQuestionarioTemp.getRespondida()){
+				addActionMessage("Não é possível excluir esse colaborador, pois o colaborador já respondeu essa pesquisa.");
+				return Action.SUCCESS;
+			}
+				
 			colaboradorRespostaManager.removeFicha(colaboradorQuestionario.getId());
 			
 			if(colaboradorQuestionarioTemp.getAvaliacao() != null  && TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA == colaboradorQuestionarioTemp.getAvaliacao().getTipoModeloAvaliacao()){

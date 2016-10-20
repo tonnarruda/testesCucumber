@@ -203,27 +203,30 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 
     public String salvaQuestionarioRespondido() throws Exception
     {
+    	String actionMsgTemp = null;
     	Long colaboradorQuestionarioId = null;
     	if(colaboradorQuestionario != null && colaboradorQuestionario.getId() != null)
     		colaboradorQuestionarioId = colaboradorQuestionario.getId();
     	
-    	colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), turmaId, vinculo, respondidaEm, colaboradorQuestionarioId, inserirFichaMedica);
+    	if(questionario != null && questionario.getTipo() == TipoQuestionario.PESQUISA && colaboradorQuestionarioManager.isRespondeuPesquisaByColaboradorIdAndQuestionarioId(colaborador.getId(), questionario.getId())){
+    		actionMsgTemp = "Não foi possível gravar as respostas, pois a pesquisa já possui resposta.";
+    	}else{
+    		colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), turmaId, vinculo, respondidaEm, colaboradorQuestionarioId, inserirFichaMedica);
+    	}
 
-        if (tela.equals("index"))
-        {
-        	actionMsg = "Respostas gravadas com sucesso.";
+        if (tela.equals("index")) {
+        	if(actionMsgTemp == null)
+        		actionMsg = "Respostas gravadas com sucesso.";
         	retorno = "../../index.action?actionMsg="+actionMsg;
             return Action.SUCCESS;
-        }
-        else if(voltarPara.equals("../../sesmt/fichaMedica/prepareInsertFicha.action") || voltarPara.equals("../../sesmt/fichaMedica/listPreenchida.action"))
-        {
+        } else if(voltarPara.equals("../../sesmt/fichaMedica/prepareInsertFicha.action") || voltarPara.equals("../../sesmt/fichaMedica/listPreenchida.action"))  {
         	actionMsg = "Respostas gravadas com sucesso.";
         	retorno = voltarPara + "?actionMsg=" +actionMsg;
         	return Action.SUCCESS;
-        }
-        else
-        {
+        } else {
         	retorno = voltarPara;
+        	if(actionMsgTemp != null)
+        		retorno += "&actionMsg=" + actionMsgTemp;
             return "colaboradorQuestionario";
         }
     }

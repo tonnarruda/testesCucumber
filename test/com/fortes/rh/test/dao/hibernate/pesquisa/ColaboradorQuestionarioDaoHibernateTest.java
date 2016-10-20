@@ -1449,6 +1449,28 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(new Integer(1), ((ColaboradorQuestionario)retorno.toArray()[0]).getQtdAvaliacaoDesempenho());
 	}
 	
+	public void testIsRespondeuPesquisaByColaboradorIdAndQuestionarioId()
+	{
+		Colaborador joao = ColaboradorFactory.getEntity();
+		colaboradorDao.save(joao);
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		colaboradorDao.save(maria);
+		
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionario.setTipo(TipoQuestionario.PESQUISA);
+		questionarioDao.save(questionario);
+		
+		ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(joao, questionario, true);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity(maria, questionario, false);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		assertTrue(colaboradorQuestionarioDao.isRespondeuPesquisaByColaboradorIdAndQuestionarioId(joao.getId(), questionario.getId()));
+		assertFalse(colaboradorQuestionarioDao.isRespondeuPesquisaByColaboradorIdAndQuestionarioId(maria.getId(), questionario.getId()));
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;

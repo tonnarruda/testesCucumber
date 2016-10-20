@@ -9,6 +9,7 @@ import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.pesquisa.Questionario;
 
 public class ColaboradorQuestionarioFactory
 {
@@ -66,6 +67,14 @@ public class ColaboradorQuestionarioFactory
 		colaboradorQuestionario.setPerformance(performance);
 		colaboradorQuestionario.setRespondida(true);
 		
+		return colaboradorQuestionario;
+	}
+
+	public static ColaboradorQuestionario getEntity(Colaborador colaborador, Questionario questionario, boolean respondida) {
+		ColaboradorQuestionario colaboradorQuestionario = getEntity();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionario.setRespondida(respondida);
 		return colaboradorQuestionario;
 	}
 }

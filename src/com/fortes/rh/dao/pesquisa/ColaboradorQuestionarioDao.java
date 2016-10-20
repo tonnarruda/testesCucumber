@@ -52,4 +52,5 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 	Collection<ColaboradorQuestionario> findAutoAvaliacao(Long colaboradorId);
 	Collection<ColaboradorQuestionario> findByAvaliacaoComQtdDesempenhoEPeriodoExperiencia(Long avaliacaoId);
 	public void updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho);
+	boolean isRespondeuPesquisaByColaboradorIdAndQuestionarioId(Long colaboradorId, Long questionarioId);
 }

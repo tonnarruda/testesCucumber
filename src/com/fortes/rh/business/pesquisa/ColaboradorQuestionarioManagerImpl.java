@@ -546,4 +546,8 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		colaboradorQuestionarios.removeAll(colaboradorQuestionariosExistentesAvDesempenho);
 		getDao().saveOrUpdate(colaboradorQuestionarios);
 	}
+
+	public boolean isRespondeuPesquisaByColaboradorIdAndQuestionarioId(Long colaboradorId, Long questionarioId) {
+		return getDao().isRespondeuPesquisaByColaboradorIdAndQuestionarioId(colaboradorId, questionarioId);
+	}
 }
