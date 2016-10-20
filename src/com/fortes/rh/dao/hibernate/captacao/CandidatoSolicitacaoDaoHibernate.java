@@ -577,6 +577,8 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		Query query = getSession().createQuery(hql);
 		query.setCharacter("status", StatusCandidatoSolicitacao.CONTRATADO);
 		query.setLong("colaboradorId", colaboradorId);
+		
+		query.executeUpdate();
 	}
 
 	public Collection<CandidatoSolicitacao> findColaboradorParticipantesDaSolicitacaoByAreas(Long[] areasOrganizacionaisId, String solicitacaoDescricaoBusca, String colaboradorNomeBusca, char statusBusca, Integer page, Integer pagingSize){

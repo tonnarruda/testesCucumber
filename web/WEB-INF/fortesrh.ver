@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.173.205" db="" data="30/10/2016">
+		<Item visivel="S" motivo="P16080000128"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao atualizar o status do candidato da solicitação de pessoal após cancelar o desligamento do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > Cipa > Eleições > Editar > Resultado > Imprimir resultado: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação]]></Item>
 		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > Cipa > Eleições > Editar > Atas e Comunicados > Imprimir Ata da Eleição: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação.]]></Item>
 		<Item visivel="S" motivo="P16100000025"><![CDATA[SESMT > Relatórios > PCMSO:  Ajuste de inconsistência na contagem de exames realizados.]]></Item>
