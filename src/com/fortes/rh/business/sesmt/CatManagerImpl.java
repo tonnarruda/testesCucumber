@@ -83,20 +83,15 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		CatRelatorioAnual catAnual;
 		Map<String, CatRelatorioAnual> catsMap = new LinkedHashMap<String, CatRelatorioAnual>();
 		
-		if(lista != null && !lista.isEmpty())
-		{
-			for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
-			{
+		if(lista != null && !lista.isEmpty()){
+			for (Iterator<Object[]> it = lista.iterator(); it.hasNext();){
 				Object[] cat = it.next();
 
 				String chave =  DateUtil.formataMesAno((Date)cat[0]);
 
 				if(catsMap.containsKey(chave))
-				{
 					catAnual = catsMap.get(chave);
-				}
-				else
-				{
+				else{
 					catAnual = new CatRelatorioAnual();
 					catAnual.setData((Date)cat[0]);
 				}
@@ -112,8 +107,7 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 			}
 		}
 
-		for (String chave : catsMap.keySet())
-		{
+		for (String chave : catsMap.keySet()){
 			catAnual = catsMap.get(chave);
 			catsAnuais.add(catAnual);
 		}

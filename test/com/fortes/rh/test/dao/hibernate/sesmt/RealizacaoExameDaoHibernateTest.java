@@ -183,67 +183,62 @@ public class RealizacaoExameDaoHibernateTest extends GenericDaoHibernateTest<Rea
 		Date inicio = DateUtil.incrementaAno(hoje, -1);
 		Date seisMesesAtras = DateUtil.incrementaMes(hoje, -6);
 		
-		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
-		estabelecimentoDao.save(estabelecimento1);
-		
-		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
-		estabelecimentoDao.save(estabelecimento2);
-		
-		Estabelecimento estabelecimento3 = EstabelecimentoFactory.getEntity();
-		estabelecimentoDao.save(estabelecimento3);
+		Estabelecimento estabelecimento1 = criaEstabelecimento();
+		Estabelecimento estabelecimento2 = criaEstabelecimento();
+		Estabelecimento estabelecimento3 = criaEstabelecimento();
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador);
-		
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador, inicio, null, estabelecimento1, null, null, null,StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(historicoColaborador1);
-		
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(colaborador, DateUtil.incrementaDias(hoje, -10), null, estabelecimento2, null, null, null,StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(historicoColaborador2);
-		
-		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(colaborador, DateUtil.incrementaDias(hoje, 1), null, estabelecimento3, null, null, null,StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(historicoColaborador3);
-		
-		Exame exame = ExameFactory.getEntity();
-		exameDao.save(exame);
-		
-		Exame exame2 = ExameFactory.getEntity();
-		exameDao.save(exame2);
-		
-		Exame exame3 = ExameFactory.getEntity();
-		exameDao.save(exame3);
+		criaHistoricoColaborador(colaborador, inicio, estabelecimento1, StatusRetornoAC.CONFIRMADO);
+		criaHistoricoColaborador(colaborador, DateUtil.incrementaDias(hoje, -10), estabelecimento2, StatusRetornoAC.CONFIRMADO);
+		criaHistoricoColaborador(colaborador, DateUtil.incrementaDias(hoje, 1), estabelecimento3, StatusRetornoAC.CONFIRMADO);
+
+		Exame exame = criaExame();
+		Exame exame2 = criaExame();
+		Exame exame3 = criaExame();
 		
 		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(null, seisMesesAtras, null, colaborador, null, MotivoSolicitacaoExame.PERIODICO);
 		solicitacaoExameDao.save(solicitacaoExame);
+		montaSolicitacaoExame(solicitacaoExame, seisMesesAtras, ResultadoExame.ANORMAL.toString(), exame, 0);
 
 		SolicitacaoExame solicitacaoExameForaOutroEstabelecimento = SolicitacaoExameFactory.getEntity(null, seisMesesAtras, null, colaborador, null, MotivoSolicitacaoExame.ADMISSIONAL);
 		solicitacaoExameDao.save(solicitacaoExameForaOutroEstabelecimento);
+		montaSolicitacaoExame(solicitacaoExameForaOutroEstabelecimento, DateUtil.incrementaDias(hoje, -10), ResultadoExame.NORMAL.toString(), exame3, 0);
 		
 		SolicitacaoExame solicitacaoExameForaNaoRealizado = SolicitacaoExameFactory.getEntity(null, seisMesesAtras, null, colaborador, null, MotivoSolicitacaoExame.DEMISSIONAL);
 		solicitacaoExameDao.save(solicitacaoExameForaNaoRealizado);
+		montaSolicitacaoExame(solicitacaoExameForaNaoRealizado, seisMesesAtras, ResultadoExame.NAO_REALIZADO.toString(), exame2, 0);
 
-		RealizacaoExame realizacaoExame = RealizacaoExameFactory.getEntity(seisMesesAtras, ResultadoExame.ANORMAL.toString());
-		realizacaoExameDao.save(realizacaoExame);
-
-		RealizacaoExame realizacaoExameForaNaoRealizado = RealizacaoExameFactory.getEntity(seisMesesAtras, ResultadoExame.NAO_REALIZADO.toString());
-		realizacaoExameDao.save(realizacaoExameForaNaoRealizado);
-
-		RealizacaoExame realizacaoExameForaOutroEstabelecimento = RealizacaoExameFactory.getEntity(DateUtil.incrementaDias(hoje, -10), ResultadoExame.NORMAL.toString());
-		realizacaoExameDao.save(realizacaoExameForaOutroEstabelecimento);
-		
-		ExameSolicitacaoExame exameSolicitacaoExame = ExameSolicitacaoExameFactory.getEntity(exame, solicitacaoExame, realizacaoExame, 0);
-		exameSolicitacaoExameDao.save(exameSolicitacaoExame);
-
-		ExameSolicitacaoExame exameSolicitacaoExame2 = ExameSolicitacaoExameFactory.getEntity(exame2, solicitacaoExameForaNaoRealizado, realizacaoExameForaNaoRealizado, 0);
-		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
-		
-		ExameSolicitacaoExame exameSolicitacaoExame3 = ExameSolicitacaoExameFactory.getEntity(exame3, solicitacaoExameForaOutroEstabelecimento, realizacaoExameForaOutroEstabelecimento, 0);
-		exameSolicitacaoExameDao.save(exameSolicitacaoExame3);
-		
 		Collection<Object[]> resultado = realizacaoExameDao.getRelatorioExame(estabelecimento1.getId(), inicio, hoje);
 		
 		assertEquals(2, resultado.size());
 		assertEquals(MotivoSolicitacaoExame.ADMISSIONAL, ((Object[]) resultado.toArray()[0])[1].toString());
+	}
+	
+	private void montaSolicitacaoExame(SolicitacaoExame solicitacaoExame, Date dataRealizacaoExame, String resultadoExame, Exame exame, Integer periodicidade){
+		RealizacaoExame realizacaoExame = RealizacaoExameFactory.getEntity(dataRealizacaoExame, resultadoExame);
+		realizacaoExameDao.save(realizacaoExame);
+		
+		ExameSolicitacaoExame exameSolicitacaoExame = ExameSolicitacaoExameFactory.getEntity(exame, solicitacaoExame, null, realizacaoExame, periodicidade);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame);
+	}
+	
+	private void criaHistoricoColaborador(Colaborador colaborador, Date data, Estabelecimento estabelecimento, Integer status){
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, data, estabelecimento);
+		historicoColaborador.setStatus(status);
+		historicoColaboradorDao.save(historicoColaborador);
+	}
+	
+	private Estabelecimento criaEstabelecimento(){
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		return estabelecimento;
+	}
+	
+	private Exame criaExame(){
+		Exame exame = ExameFactory.getEntity();
+		exameDao.save(exame);
+		return exame;
 	}
 	
 	public void testFindQtdRealizados()
