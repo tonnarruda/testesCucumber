@@ -10,6 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.acesso.PerfilDao;
@@ -114,7 +118,7 @@ import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
@@ -160,50 +164,93 @@ import com.fortes.rh.test.util.mockObjects.MockColaborador;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 
-public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colaborador> 
+public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Colaborador> 
 {
+	@Autowired
 	private ColaboradorDao colaboradorDao;
+	@Autowired
 	private TurmaDao turmaDao;
+	@Autowired
 	private ColaboradorTurmaDao colaboradorTurmaDao;
+	@Autowired
 	private AreaOrganizacionalDao areaOrganizacionalDao;
+	@Autowired
 	private EmpresaDao empresaDao;
+	@Autowired
 	private UsuarioDao usuarioDao;
+	@Autowired
 	private UsuarioEmpresaDao usuarioEmpresaDao;
+	@Autowired
 	private CandidatoDao candidatoDao;
+	@Autowired
 	private HistoricoColaboradorDao historicoColaboradorDao;
+	@Autowired
 	private AvaliacaoDao avaliacaoDao;
+	@Autowired
 	private EstabelecimentoDao estabelecimentoDao;
+	@Autowired
 	private FaixaSalarialDao faixaSalarialDao;
+	@Autowired
 	private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
+	@Autowired
 	private CargoDao cargoDao;
+	@Autowired
 	private GrupoOcupacionalDao grupoOcupacionalDao;
+	@Autowired
 	private MotivoDemissaoDao motivoDemissaoDao;
+	@Autowired
 	private TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao;
+	@Autowired
 	private ReajusteColaboradorDao reajusteColaboradorDao;
+	@Autowired
 	private AmbienteDao ambienteDao;
+	@Autowired
 	private FuncaoDao funcaoDao;
+	@Autowired
 	private BairroDao bairroDao;
+	@Autowired
 	private PerfilDao perfilDao;
+	@Autowired
 	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
+	@Autowired
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
+	@Autowired
 	private QuestionarioDao questionarioDao;
+	@Autowired
 	private CamposExtrasDao camposExtrasDao;
+	@Autowired
 	private GrupoACDao grupoACDao;
+	@Autowired
 	private MotivoSolicitacaoDao motivoSolicitacaoDao;
+	@Autowired
 	private SolicitacaoDao solicitacaoDao;
+	@Autowired
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
+	@Autowired
 	private OcorrenciaDao ocorrenciaDao;
+	@Autowired
 	private ColaboradorOcorrenciaDao colaboradorOcorrenciaDao;
+	@Autowired
 	private HistoricoFuncaoDao historicoFuncaoDao;
+	@Autowired
 	private EpiDao epiDao;
+	@Autowired
 	private SolicitacaoEpiDao solicitacaoEpiDao;
+	@Autowired
 	private ProvidenciaDao providenciaDao;
+	@Autowired
 	private PeriodoExperienciaDao periodoExperienciaDao;
+	@Autowired
 	private ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao;
+	@Autowired
 	private CursoDao cursoDao;
+	@Autowired
 	private DiaTurmaDao diaTurmaDao;
+	@Autowired
 	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao; 
+	@Autowired
 	private AvaliacaoCursoDao avaliacaoCursoDao;
+	@Autowired
 	private EstadoDao estadoDao;
 
 	private Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
@@ -240,6 +287,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	}
 
 	@Override
+	public GenericDao<Colaborador> getGenericDao() {
+		return colaboradorDao;
+	}
+
+	@Override
 	public void testFindById() throws Exception {
 		Colaborador colaborador = getEntity();
 		colaborador = colaboradorDao.save(colaborador);
@@ -265,10 +317,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaboradorRetorno = colaboradorDao.findById(colaborador.getId());
 
-		assertNotNull(colaborador);
-		assertEquals(colaboradorRetorno.getId(), colaborador.getId());
+		Assert.assertNotNull(colaborador);
+		Assert.assertEquals(colaboradorRetorno.getId(), colaborador.getId());
 	}
 
+	@Test
 	public void testGetAutoComplete() throws Exception {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -298,9 +351,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorForaDaConsulta.setEmpresa(empresa);
 		colaboradorForaDaConsulta = colaboradorDao.save(colaboradorForaDaConsulta);
 
-		assertEquals(4, colaboradorDao.getAutoComplete("milos", empresa.getId()).size());
+		Assert.assertEquals(4, colaboradorDao.getAutoComplete("milos", empresa.getId()).size());
 	}
 	
+	@Test
 	public void testGetColaboradoresJsonVO() throws Exception 
 	{
 		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
@@ -325,10 +379,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<ColaboradorJsonVO> colaboradorJsonVOs = colaboradorDao.getColaboradoresJsonVO(new Long[]{areaOrganizacional1.getId()});
 		
-		assertEquals(1, colaboradorJsonVOs.size());
-		assertEquals(colaborador1.getEndereco().getLogradouro()+", 00", ((ColaboradorJsonVO) colaboradorJsonVOs.toArray()[0]).getAddress());
+		Assert.assertEquals(1, colaboradorJsonVOs.size());
+		Assert.assertEquals(colaborador1.getEndereco().getLogradouro()+", 00", ((ColaboradorJsonVO) colaboradorJsonVOs.toArray()[0]).getAddress());
 	}
 	
+	@Test
 	public void testFindByAvaliacao() throws Exception 
 	{
 		Colaborador colaboradorMaria = ColaboradorFactory.getEntity(1L);
@@ -375,7 +430,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorQuestionarioEmOutraAvaliacao.setAvaliacaoDesempenho(avaliacaoDesempenhoFora);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioEmOutraAvaliacao);
 		
-		assertEquals(2, colaboradorDao.findByAvaliacoes(avaliacaoDesempenho.getId()).size());
+		Assert.assertEquals(2, colaboradorDao.findByAvaliacoes(avaliacaoDesempenho.getId()).size());
 	}
 
 	@Override
@@ -408,9 +463,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaboradorRetorno = colaboradorDao.findById(colaborador.getId());
 
-		assertEquals(colaborador.getNome(), colaboradorRetorno.getNome());
+		Assert.assertEquals(colaborador.getNome(), colaboradorRetorno.getNome());
 	}
 
+	@Test
 	public void testUpdateDataDesligamentoByCodigo() throws Exception 
 	{
 		Empresa empresa = new Empresa();
@@ -422,20 +478,21 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		colaboradorDao.save(colaborador);
 
-		assertTrue(colaboradorDao.desligaByCodigo(empresa, new Date(), "010203"));
+		Assert.assertTrue(colaboradorDao.desligaByCodigo(empresa, new Date(), "010203"));
 
 		Colaborador colDesligado = colaboradorDao.findByCodigoAC("010203", empresa);
-		assertNotNull(colDesligado.getDataDesligamento());
-		assertTrue(colDesligado.isDesligado());
+		Assert.assertNotNull(colDesligado.getDataDesligamento());
+		Assert.assertTrue(colDesligado.isDesligado());
 
-		assertTrue(colaboradorDao.desligaByCodigo(empresa, null, "010203"));
+		Assert.assertTrue(colaboradorDao.desligaByCodigo(empresa, null, "010203"));
 
 		Colaborador colReligado = colaboradorDao.findByCodigoAC("010203", empresa);
-		assertNull(colReligado.getDataDesligamento());
-		assertFalse(colReligado.isDesligado());
+		Assert.assertNull(colReligado.getDataDesligamento());
+		Assert.assertFalse(colReligado.isDesligado());
 
 	}
 	
+	@Test
 	public void testUpdateDataDesligamentoByCodigos() throws Exception 
 	{
 		Empresa empresa = new Empresa();
@@ -451,27 +508,28 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setEmpresa(empresa);
 		colaboradorDao.save(colaborador2);
 		
-		assertTrue(colaboradorDao.desligaByCodigo(empresa, new Date(), new String[]{"010203","010204"}));
+		Assert.assertTrue(colaboradorDao.desligaByCodigo(empresa, new Date(), new String[]{"010203","010204"}));
 		
 		Colaborador colDesligado = colaboradorDao.findByCodigoAC("010203", empresa);
-		assertNotNull(colDesligado.getDataDesligamento());
-		assertTrue(colDesligado.isDesligado());
+		Assert.assertNotNull(colDesligado.getDataDesligamento());
+		Assert.assertTrue(colDesligado.isDesligado());
 
 		Colaborador colDesligado2 = colaboradorDao.findByCodigoAC("010204", empresa);
-		assertNotNull(colDesligado2.getDataDesligamento());
-		assertTrue(colDesligado2.isDesligado());
+		Assert.assertNotNull(colDesligado2.getDataDesligamento());
+		Assert.assertTrue(colDesligado2.isDesligado());
 		
-		assertTrue(colaboradorDao.desligaByCodigo(empresa, null, new String[]{"010203","010204"}));
+		Assert.assertTrue(colaboradorDao.desligaByCodigo(empresa, null, new String[]{"010203","010204"}));
 		
 		Colaborador colReligado = colaboradorDao.findByCodigoAC("010203", empresa);
-		assertNull(colReligado.getDataDesligamento());
-		assertFalse(colReligado.isDesligado());
+		Assert.assertNull(colReligado.getDataDesligamento());
+		Assert.assertFalse(colReligado.isDesligado());
 
 		Colaborador colReligado2 = colaboradorDao.findByCodigoAC("010204", empresa);
-		assertNull(colReligado2.getDataDesligamento());
-		assertFalse(colReligado2.isDesligado());
+		Assert.assertNull(colReligado2.getDataDesligamento());
+		Assert.assertFalse(colReligado2.isDesligado());
 	}
 
+	@Test
 	public void testUpdateUsuarioColaborador() throws Exception {
 		Colaborador colaborador = getEntity();
 		colaborador.setNome("nome");
@@ -484,13 +542,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		colaboradorDao.atualizarUsuario(colaborador.getId(), usuario.getId());
 		Colaborador colaboradorRetorno = colaboradorDao.findByIdProjectionUsuario(colaborador.getId());
-		assertEquals(usuario.getId(), colaboradorRetorno.getUsuario().getId());
+		Assert.assertEquals(usuario.getId(), colaboradorRetorno.getUsuario().getId());
 
 		colaboradorDao.atualizarUsuario(colaborador.getId(), null);
 		colaboradorRetorno = colaboradorDao.findByIdProjectionUsuario(colaborador.getId());
-		assertNull(colaboradorRetorno.getUsuario().getId());
+		Assert.assertNull(colaboradorRetorno.getUsuario().getId());
 	}
 	
+	@Test
 	public void testFindAniversariantesByEmpresa() throws Exception 
 	{
 		Empresa empresa = new Empresa();
@@ -505,8 +564,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.findAniversariantesByEmpresa(empresa.getId(), 7, 4);
 		
-		assertEquals(1, colaboradores.size());
-		assertEquals("jose@email.com", ((Colaborador)colaboradores.toArray()[0]).getContato().getEmail());
+		Assert.assertEquals(1, colaboradores.size());
+		Assert.assertEquals("jose@email.com", ((Colaborador)colaboradores.toArray()[0]).getContato().getEmail());
 	}
 
 	private void criaColaboradorPara(Date dataAniversario, String email, boolean desligado, Empresa empresa)
@@ -520,6 +579,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.save(colaborador);
 	}
 
+	@Test
 	public void testFindByUsuarioProjection() throws Exception 
 	{
 		Usuario usuario = UsuarioFactory.getEntity();
@@ -542,11 +602,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.save(colaborador2);
 
 		Colaborador retorno = colaboradorDao.findByUsuarioProjection(usuario.getId(), null);
-		assertEquals("João", retorno.getNome());
-		assertEquals("João Batista", retorno.getUsuario().getNome());
+		Assert.assertEquals("João", retorno.getNome());
+		Assert.assertEquals("João Batista", retorno.getUsuario().getNome());
 		
 		retorno = colaboradorDao.findByUsuarioProjection(usuario2.getId(), true);
-		assertNull(retorno);
+		Assert.assertNull(retorno);
 	}
 
 	@Override
@@ -558,9 +618,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		colaborador = getGenericDao().findById(colaborador.getId());
 
-		assertNull(colaborador);
+		Assert.assertNull(colaborador);
 	}
 
+	@Test
 	public void testFindSemUsuarios() {
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
@@ -583,10 +644,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findSemUsuarios(empresa.getId(), null);
 
-		assertFalse(colaboradores.isEmpty());
-		assertEquals(c1.getId(), ((Colaborador) colaboradores.toArray()[0]).getId());
+		Assert.assertFalse(colaboradores.isEmpty());
+		Assert.assertEquals(c1.getId(), ((Colaborador) colaboradores.toArray()[0]).getId());
 	}
 	
+	@Test
 	public void testFindComAnoDeEmpresa() {
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
@@ -611,11 +673,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findComAnoDeEmpresa(empresa_A.getId(), DateUtil.criarDataMesAno(01, 01, 2016));
 
-		assertFalse(colaboradores.isEmpty());
-		assertEquals(colaboradores.size(), 1);
-		assertEquals(c1.getId(), ((Colaborador) colaboradores.toArray()[0]).getId());
+		Assert.assertFalse(colaboradores.isEmpty());
+		Assert.assertEquals(colaboradores.size(), 1);
+		Assert.assertEquals(c1.getId(), ((Colaborador) colaboradores.toArray()[0]).getId());
 	}
 
+	@Test
 	public void testFindSemUsuariosComUsuario() {
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
@@ -638,9 +701,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findSemUsuarios(empresa.getId(), usuario);
 
-		assertEquals(2, colaboradores.size());
+		Assert.assertEquals(2, colaboradores.size());
 	}
 
+	@Test
 	public void testGetCount() {
 		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
 
@@ -654,22 +718,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		parametros.put("matriculaBusca", "554");
 
 		int result = colaboradorDao.getCount(parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
-		assertEquals(2, result);
+		Assert.assertEquals(2, result);
 
 		parametros.put("nomeBusca", "");
 		parametros.put("cpfBusca", "1111");
 
 		result = colaboradorDao.getCount(parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
-		assertEquals(1, result);
+		Assert.assertEquals(1, result);
 
 		parametros.put("nomeBusca", "Chi");
 		parametros.put("cpfBusca", "1111");
 
 		result = colaboradorDao.getCount(parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
-		assertEquals(1, result);
+		Assert.assertEquals(1, result);
 	}
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testFindList() {
 		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
 
@@ -682,25 +747,25 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		parametros.put("areaId", null);
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findList(1, 10, parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
-		assertEquals("só chi", 2, colaboradores.size());
+		Assert.assertEquals("só chi", 2, colaboradores.size());
 
 		parametros.put("nomeBusca", "");
 		parametros.put("cpfBusca", "1111");
 
 		colaboradores = colaboradorDao.findList(1, 10, parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
-		assertEquals("só 1111", 1, colaboradores.size());
+		Assert.assertEquals("só 1111", 1, colaboradores.size());
 
 		parametros.put("nomeBusca", "Chi");
 		parametros.put("cpfBusca", "1111");
 
 		colaboradores = colaboradorDao.findList(1, 10, parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
-		assertEquals("os 2", 1, colaboradores.size());
+		Assert.assertEquals("os 2", 1, colaboradores.size());
 
 		colaboradores = colaboradorDao.findList(1, 10, parametros, TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO);
 
 		parametros.clear();
 
-		assertEquals("Histórico futuro", 1, colaboradores.size());
+		Assert.assertEquals("Histórico futuro", 1, colaboradores.size());
 	}
 
 	private void insereAmbiente(Empresa empresa) {
@@ -788,6 +853,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	}
 
+	@Test
 	public void testFindColaboradorPesquisa() {
 		AreaOrganizacional area1 = new AreaOrganizacional();
 		area1.setNome("area 1");
@@ -828,13 +894,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaborador = colaboradorDao.findColaboradorPesquisa(c1.getId(), empresa.getId());
 
-		assertEquals("equals", c1.getId(), colaborador.getId());
+		Assert.assertEquals("equals", c1.getId(), colaborador.getId());
 
 		colaborador = colaboradorDao.findColaboradorPesquisa(c1.getId(), empresa2.getId());
 
-		assertNull("null", colaborador.getId());
+		Assert.assertNull("null", colaborador.getId());
 	}
 
+	@Test
 	public void testFindByUsuario() {
 		AreaOrganizacional area1 = new AreaOrganizacional();
 		area1.setNome("area 1");
@@ -882,12 +949,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		hc2 = historicoColaboradorDao.save(hc2);
 
 		Colaborador colaborador = colaboradorDao.findByUsuario(usuario, empresa.getId());
-		assertEquals("equals", c1.getId(), colaborador.getId());
+		Assert.assertEquals("equals", c1.getId(), colaborador.getId());
 
 		colaborador = colaboradorDao.findByUsuario(usuario, empresa2.getId());
-		assertNull("null", colaborador.getId());
+		Assert.assertNull("null", colaborador.getId());
 	}
 
+	@Test
 	public void testFindColaboradorUsuarioByCpf() {
 
 		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
@@ -926,13 +994,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		c3 = colaboradorDao.save(c3);
 
 		Colaborador colaborador = colaboradorDao.findColaboradorUsuarioByCpf("11111111111", empresa2.getId());
-		assertEquals("equals", c3.getId(), colaborador.getId());
+		Assert.assertEquals("equals", c3.getId(), colaborador.getId());
 
 		colaborador = colaboradorDao.findColaboradorUsuarioByCpf("11111111111", empresa.getId());
-		assertEquals("equals2", c1.getId(), colaborador.getId());
+		Assert.assertEquals("equals2", c1.getId(), colaborador.getId());
 
 	}
 
+	@Test
 	public void testeFindbyCandidato() {
 		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
 
@@ -956,9 +1025,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaboradorRetorno = colaboradorDao.findByCandidato(candidato.getId(), empresa.getId());
 
-		assertEquals(colaborador.getId(), colaboradorRetorno.getId());
+		Assert.assertEquals(colaborador.getId(), colaboradorRetorno.getId());
 	}
 
+	@Test
 	public void testSetCandidatoNull() {
 		Empresa empresa = new Empresa();
 		empresa.setNome("empresa1");
@@ -975,7 +1045,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		colaboradorDao.setCandidatoNull(candidato.getId());
 
-		assertNull(colaboradorDao.findByCandidato(candidato.getId(), empresa.getId()));
+		Assert.assertNull(colaboradorDao.findByCandidato(candidato.getId(), empresa.getId()));
 	}
 
 	private Candidato getCandidato() 
@@ -988,6 +1058,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		return MockColaborador.getColaborador();
 	}
 	
+	@Test
 	public void testCountSexo() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -1031,28 +1102,29 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('F', false, DateUtil.criarDataMesAno(02, 03, 2005), outraEmpresa, "01", null, Deficiencia.SEM_DEFICIENCIA, null, null, Vinculo.EMPREGO, area, faixa1, estabelecimento1);// outra empresa
 		
 		Collection<DataGrafico> data = colaboradorDao.countSexo(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, new Long[]{cargo1.getId()}, new String[]{Vinculo.EMPREGO});
-		assertEquals(2, data.size());
+		Assert.assertEquals(2, data.size());
 
 		DataGrafico fem = (DataGrafico) data.toArray()[0];
 		DataGrafico mas = (DataGrafico) data.toArray()[1];
 
-		assertEquals("Feminino", fem.getLabel());
-		assertEquals(2.0, fem.getData());
+		Assert.assertEquals("Feminino", fem.getLabel());
+		Assert.assertEquals(new Float(2.0), new Float(fem.getData()));
 
-		assertEquals("Masculino", mas.getLabel());
-		assertEquals(1.0, mas.getData());
+		Assert.assertEquals("Masculino", mas.getLabel());
+		Assert.assertEquals(new Float(1.0), new Float(mas.getData()));
 		
 
 		data = colaboradorDao.countSexo(DateUtil.criarDataMesAno(01, 02, 2008), null,  new Long[]{estabelecimento1.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, null, new String[]{Vinculo.SOCIO});
-		assertEquals(1, data.size());
+		Assert.assertEquals(1, data.size());
 		
 		data = colaboradorDao.countSexo(DateUtil.criarDataMesAno(01, 02, 2008), null,  new Long[]{estabelecimento1.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, null, new String[]{Vinculo.EMPREGO});
-		assertEquals(2, data.size());
+		Assert.assertEquals(2, data.size());
 		
 		data = colaboradorDao.countSexo(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()),  new Long[]{estabelecimento1.getId(), estabelecimento2.getId()}, new Long[]{}, null, new String[]{Vinculo.EMPREGO});
-		assertEquals(2, data.size());
+		Assert.assertEquals(2, data.size());
 	}
 
+	@Test
 	public void testCountVinculo() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -1093,27 +1165,28 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2009), null, null, area, faixa1, estabelecimento2);// desligado
 		saveColaborador('F', false, DateUtil.criarDataMesAno(02, 03, 2005), outraEmpresa, "01", null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixa1, estabelecimento1);// outra empresa
 
-		assertEquals(2,colaboradorDao.countColocacao(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), new Long[]{estabelecimento2.getId()}, null, null, null).size());
-		assertEquals(3,colaboradorDao.countColocacao(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId()}, null, null, null).size());
+		Assert.assertEquals(2,colaboradorDao.countColocacao(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), new Long[]{estabelecimento2.getId()}, null, null, null).size());
+		Assert.assertEquals(3,colaboradorDao.countColocacao(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId()}, null, null, null).size());
 
-		assertEquals(4, colaboradorDao.countColocacao(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), null, null, null, null).size());
+		Assert.assertEquals(4, colaboradorDao.countColocacao(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), null, null, null, null).size());
 		
 		Collection<DataGrafico> data = colaboradorDao.countColocacao(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, new Long[]{cargo1.getId()}, null);
-		assertEquals(4, data.size());
+		Assert.assertEquals(4, data.size());
 
 		DataGrafico empregado = (DataGrafico) data.toArray()[0];
 		DataGrafico aprendiz = (DataGrafico) data.toArray()[1];
 
-		assertEquals(1.0, empregado.getData());
-		assertEquals(1.0, aprendiz.getData());
+		Assert.assertEquals(new Float(1.0), new Float(empregado.getData()));
+		Assert.assertEquals(new Float(1.0), new Float(aprendiz.getData()));
 		
 		data = colaboradorDao.countColocacao(DateUtil.criarDataMesAno(01, 02, 2008), null, null, new Long[]{area.getId()}, null, new String[]{Vinculo.EMPREGO});
-		assertEquals(1, data.size());
+		Assert.assertEquals(1, data.size());
 		
 		data = colaboradorDao.countColocacao(DateUtil.criarDataMesAno(01, 02, 2008), null, null, new Long[]{area.getId()}, null, null);
-		assertEquals(4, data.size());
+		Assert.assertEquals(4, data.size());
 	}
 
+	@Test
 	public void testCountEstadoCivil() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -1159,31 +1232,32 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('F', false, DateUtil.criarDataMesAno(02, 03, 2005), empresa, EstadoCivil.VIUVO, null, Deficiencia.SEM_DEFICIENCIA, null, null, Vinculo.EMPREGO, area, faixa1, estabelecimento1);
 
 		Collection<DataGrafico> data = colaboradorDao.countEstadoCivil(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId()}, new Long[]{area.getId()}, new Long[]{cargo1.getId()}, new String[]{Vinculo.EMPREGO});
-		assertEquals(4, data.size());
+		Assert.assertEquals(4, data.size());
 
 		DataGrafico casado = (DataGrafico) data.toArray()[0];
 		DataGrafico divorciado = (DataGrafico) data.toArray()[1];
 		DataGrafico solteiro = (DataGrafico) data.toArray()[2];
 		DataGrafico viuvo = (DataGrafico) data.toArray()[3];
 
-		assertEquals("Casado", casado.getLabel());
-		assertEquals(4.0, casado.getData());
+		Assert.assertEquals("Casado", casado.getLabel());
+		Assert.assertEquals(new Float(4.0), new Float(casado.getData()));
 
-		assertEquals("Divorciado", divorciado.getLabel());
-		assertEquals(2.0, divorciado.getData());
+		Assert.assertEquals("Divorciado", divorciado.getLabel());
+		Assert.assertEquals(new Float(2.0), new Float(divorciado.getData()));
 
-		assertEquals("Solteiro", solteiro.getLabel());
-		assertEquals(2.0, solteiro.getData());
+		Assert.assertEquals("Solteiro", solteiro.getLabel());
+		Assert.assertEquals(new Float(2.0), new Float(solteiro.getData()));
 
-		assertEquals("Viúvo", viuvo.getLabel());
-		assertEquals(1.0, viuvo.getData());
+		Assert.assertEquals("Viúvo", viuvo.getLabel());
+		Assert.assertEquals(new Float(1.0), new Float(viuvo.getData()));
 
 		data = colaboradorDao.countEstadoCivil(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId(), estabelecimento2.getId()}, new Long[]{}, new Long[]{cargo1.getId()}, new String[]{Vinculo.EMPREGO});
-		assertEquals(4, data.size());
+		Assert.assertEquals(4, data.size());
 		data = colaboradorDao.countEstadoCivil(DateUtil.criarDataMesAno(01, 02, 2008), null, null, new Long[]{area.getId()}, new Long[]{cargo1.getId()}, new String[]{Vinculo.EMPREGO});
-		assertEquals(4, data.size());
+		Assert.assertEquals(4, data.size());
 	}
 
+	@Test
 	public void testCountFaixaEtaria() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -1235,30 +1309,31 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		DataGrafico faixa5 = (DataGrafico) data.toArray()[4];
 		DataGrafico faixa6 = (DataGrafico) data.toArray()[5];
 
-		assertEquals("Até 19", faixa1.getLabel());
-		assertEquals(1.0, faixa1.getData());
+		Assert.assertEquals("Até 19", faixa1.getLabel());
+		Assert.assertEquals(new Float(1.0), new Float(faixa1.getData()));
 
-		assertEquals("20 a 29", faixa2.getLabel());
-		assertEquals(3.0, faixa2.getData());
+		Assert.assertEquals("20 a 29", faixa2.getLabel());
+		Assert.assertEquals(new Float(3.0), new Float(faixa2.getData()));
 
-		assertEquals("30 a 39", faixa3.getLabel());
-		assertEquals(1.0, faixa3.getData());
+		Assert.assertEquals("30 a 39", faixa3.getLabel());
+		Assert.assertEquals(new Float(1.0), new Float(faixa3.getData()));
 
-		assertEquals("40 a 49", faixa4.getLabel());
-		assertEquals(1.0, faixa4.getData());
+		Assert.assertEquals("40 a 49", faixa4.getLabel());
+		Assert.assertEquals(new Float(1.0), new Float(faixa4.getData()));
 
-		assertEquals("50 a 59", faixa5.getLabel());
-		assertEquals(1.0, faixa5.getData());
+		Assert.assertEquals("50 a 59", faixa5.getLabel());
+		Assert.assertEquals(new Float(1.0), new Float(faixa5.getData()));
 
-		assertEquals("Acima de 60", faixa6.getLabel());
-		assertEquals(1.0, faixa6.getData());
+		Assert.assertEquals("Acima de 60", faixa6.getLabel());
+		Assert.assertEquals(new Float(1.0), new Float(faixa6.getData()));
 		
 		data = colaboradorDao.countFaixaEtaria(DateUtil.criarDataMesAno(01, 02, 2008), null, new Long[]{estabelecimento1.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, new Long[]{cargo.getId()}, new String[]{Vinculo.EMPREGO});
-		assertEquals(6, data.size());
+		Assert.assertEquals(6, data.size());
 		data = colaboradorDao.countFaixaEtaria(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), null, new Long[]{area.getId()}, new Long[]{cargo.getId()}, new String[]{Vinculo.EMPREGO});
-		assertEquals(6, data.size());
+		Assert.assertEquals(6, data.size());
 	}
 
+	@Test
 	public void testCountMotivoDemissao() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -1307,24 +1382,25 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('M', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2010), motivoPediuPraSair, null, area, faixaSalarial, estabelecimento2);
 
 		Collection<DataGrafico> motivos = colaboradorDao.countMotivoDesligamento(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId()}, null, null, 2);
-		assertEquals(2, motivos.size());
+		Assert.assertEquals(2, motivos.size());
 		//passando area e cargo
 		motivos = colaboradorDao.countMotivoDesligamento(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId()}, new Long[]{area.getId()}, new Long[]{cargo.getId()}, 2);
-		assertEquals(2, motivos.size());
+		Assert.assertEquals(2, motivos.size());
 
 		DataGrafico motivo1 = (DataGrafico) motivos.toArray()[0];
 		DataGrafico motivo2 = (DataGrafico) motivos.toArray()[1];
 
-		assertEquals("Falta", motivo1.getLabel());
-		assertEquals(1.0, motivo1.getData());
+		Assert.assertEquals("Falta", motivo1.getLabel());
+		Assert.assertEquals(new Float(1.0), new Float(motivo1.getData()));
 
-		assertEquals("Pediu pra Sair", motivo2.getLabel());
-		assertEquals(1.0, motivo2.getData());
+		Assert.assertEquals("Pediu pra Sair", motivo2.getLabel());
+		Assert.assertEquals(new Float(1.0), new Float(motivo2.getData()));
 		
 		motivos = colaboradorDao.countMotivoDesligamento(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), null, new Long[]{estabelecimento1.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, null, 2);
-		assertEquals(2, motivos.size());
+		Assert.assertEquals(2, motivos.size());
 	}
 
+	@Test
 	public void testCountAdmitidos() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -1362,12 +1438,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2009), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixaSalarial, estabelecimento2);
 
 		int count = colaboradorDao.countAdmitidosDemitidosTurnover(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa, new Long[]{estabelecimento1.getId()}, null, null, true);
-		assertEquals(2, count);
+		Assert.assertEquals(2, count);
 		
 		count = colaboradorDao.countAdmitidosDemitidosTurnover(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa, new Long[]{estabelecimento2.getId()}, new Long[]{area.getId()}, new Long[]{cargo.getId()}, true);
-		assertEquals(1, count);
+		Assert.assertEquals(1, count);
 	}
 
+	@Test
 	public void testCountDemitidos() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -1405,10 +1482,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('F', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2009), null, null, area, faixaSalarial, estabelecimento2);
 
 		int count = colaboradorDao.countAdmitidosDemitidosTurnover(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa, new Long[]{estabelecimento1.getId()}, null, null, false);
-		assertEquals(1, count);
+		Assert.assertEquals(1, count);
 		
 		count = colaboradorDao.countAdmitidosDemitidosTurnover(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa, new Long[]{estabelecimento2.getId()}, new Long[]{area.getId()}, new Long[]{cargo.getId()}, false);
-		assertEquals(2, count);
+		Assert.assertEquals(2, count);
 	}
 
 	private void saveColaborador(char sexo, boolean desligado, Date dataAdmissao, Empresa empresa, String estadoCivil, Date dataNascimento, char deficiencia, Date dataDesligamento,
@@ -1439,6 +1516,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(historicoColaboradorAtual);
 	}
 
+	@Test
 	public void testFindByIdSobrescrito() {
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador = colaboradorDao.save(colaborador);
@@ -1468,20 +1546,22 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaboradorRetorno = colaboradorDao.findById(colaborador.getId());
 
-		assertEquals(colaborador.getId(), colaboradorRetorno.getId());
-		assertEquals(areaOrganizacional.getId(), colaboradorRetorno.getAreaOrganizacional().getId());
-		assertEquals(areaOrganizacional.getNome(), colaboradorRetorno.getAreaOrganizacional().getNome());
+		Assert.assertEquals(colaborador.getId(), colaboradorRetorno.getId());
+		Assert.assertEquals(areaOrganizacional.getId(), colaboradorRetorno.getAreaOrganizacional().getId());
+		Assert.assertEquals(areaOrganizacional.getNome(), colaboradorRetorno.getAreaOrganizacional().getNome());
 	}
 
+	@Test
 	public void testFindColaboradorByIdProjection() {
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador = colaboradorDao.save(colaborador);
 
 		Colaborador colaboradorRetorno = colaboradorDao.findColaboradorByIdProjection(colaborador.getId());
 
-		assertEquals(colaborador.getId(), colaboradorRetorno.getId());
+		Assert.assertEquals(colaborador.getId(), colaboradorRetorno.getId());
 	}
 
+	@Test
 	public void testDesligaColaborador() {
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setDataDesligamento(null);
@@ -1500,13 +1580,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaboradorRetorno = colaboradorDao.findColaboradorById(colaborador.getId());
 
-		assertEquals(true, colaboradorRetorno.isDesligado());
-		assertEquals("desligado", colaboradorRetorno.getObservacaoDemissao());
-		assertEquals(DateUtil.formataDiaMesAno(dataDesligamento), DateUtil.formataDiaMesAno(colaboradorRetorno.getDataDesligamento()));
-		assertEquals(motivo.getId(), colaboradorRetorno.getMotivoDemissao().getId());
-		assertEquals((Character)'I', colaboradorRetorno.getDemissaoGerouSubstituicao());
+		Assert.assertEquals(true, colaboradorRetorno.isDesligado());
+		Assert.assertEquals("desligado", colaboradorRetorno.getObservacaoDemissao());
+		Assert.assertEquals(DateUtil.formataDiaMesAno(dataDesligamento), DateUtil.formataDiaMesAno(colaboradorRetorno.getDataDesligamento()));
+		Assert.assertEquals(motivo.getId(), colaboradorRetorno.getMotivoDemissao().getId());
+		Assert.assertEquals((Character)'I', colaboradorRetorno.getDemissaoGerouSubstituicao());
 	}
 	
+	@Test
 	public void testDesligaMultiplosColaboradores() {
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
 		colaborador1.setDataDesligamento(null);
@@ -1534,21 +1615,21 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaboradorRetorno1 = colaboradorDao.findColaboradorById(colaborador1.getId());
 		Colaborador colaboradorRetorno2 = colaboradorDao.findColaboradorById(colaborador2.getId());
 		
-		assertEquals(true, colaboradorRetorno1.isDesligado());
-		assertEquals("desligado", colaboradorRetorno1.getObservacaoDemissao());
-		assertEquals(DateUtil.formataDiaMesAno(dataDesligamento), DateUtil.formataDiaMesAno(colaboradorRetorno1.getDataDesligamento()));
-		assertEquals(motivo.getId(), colaboradorRetorno1.getMotivoDemissao().getId());
-		assertEquals((Character)'S', colaboradorRetorno1.getDemissaoGerouSubstituicao());
+		Assert.assertEquals(true, colaboradorRetorno1.isDesligado());
+		Assert.assertEquals("desligado", colaboradorRetorno1.getObservacaoDemissao());
+		Assert.assertEquals(DateUtil.formataDiaMesAno(dataDesligamento), DateUtil.formataDiaMesAno(colaboradorRetorno1.getDataDesligamento()));
+		Assert.assertEquals(motivo.getId(), colaboradorRetorno1.getMotivoDemissao().getId());
+		Assert.assertEquals((Character)'S', colaboradorRetorno1.getDemissaoGerouSubstituicao());
 		
 		
-		assertEquals(true, colaboradorRetorno2.isDesligado());
-		assertEquals("desligado", colaboradorRetorno2.getObservacaoDemissao());
-		assertEquals(DateUtil.formataDiaMesAno(dataDesligamento), DateUtil.formataDiaMesAno(colaboradorRetorno2.getDataDesligamento()));
-		assertEquals(motivo.getId(), colaboradorRetorno2.getMotivoDemissao().getId());
-		assertEquals((Character)'S', colaboradorRetorno2.getDemissaoGerouSubstituicao());
+		Assert.assertEquals(true, colaboradorRetorno2.isDesligado());
+		Assert.assertEquals("desligado", colaboradorRetorno2.getObservacaoDemissao());
+		Assert.assertEquals(DateUtil.formataDiaMesAno(dataDesligamento), DateUtil.formataDiaMesAno(colaboradorRetorno2.getDataDesligamento()));
+		Assert.assertEquals(motivo.getId(), colaboradorRetorno2.getMotivoDemissao().getId());
+		Assert.assertEquals((Character)'S', colaboradorRetorno2.getDemissaoGerouSubstituicao());
 	}
 
-	public void testFindByIdProjectionEmpresa() {
+	@Test public void testFindByIdProjectionEmpresa() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
@@ -1558,10 +1639,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaboradorRetorno = colaboradorDao.findByIdProjectionEmpresa(colaborador.getId());
 
-		assertEquals(colaborador.getId(), colaboradorRetorno.getId());
+		Assert.assertEquals(colaborador.getId(), colaboradorRetorno.getId());
 	}
 
-	public void testFindByNomeCpfMatricula() {
+	@Test public void testFindByNomeCpfMatricula() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -1584,15 +1665,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(colaborador3, DateUtil.incrementaDias(new Date(), 1), null, null, null, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
-		assertEquals(0, colaboradorDao.findByNomeCpfMatricula(colaborador1, false, new String[]{"teste"}, null, new Long[]{empresa.getId()}).size());
-		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(colaborador1, false, null, null, new Long[]{empresa.getId()}).size());
-		assertEquals(2, colaboradorDao.findByNomeCpfMatricula(null, false, new String[]{"Eva"}, null, new Long[]{empresa.getId()}).size());
-		assertEquals(3, colaboradorDao.findByNomeCpfMatricula(null, false, null, null, new Long[]{empresa.getId()}).size());
-		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(null, false, null, StatusRetornoAC.CONFIRMADO, new Long[]{empresa.getId()}).size());
-		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(null, false, null, StatusRetornoAC.AGUARDANDO, new Long[]{empresa.getId()}).size());
+		Assert.assertEquals(0, colaboradorDao.findByNomeCpfMatricula(colaborador1, false, new String[]{"teste"}, null, new Long[]{empresa.getId()}).size());
+		Assert.assertEquals(1, colaboradorDao.findByNomeCpfMatricula(colaborador1, false, null, null, new Long[]{empresa.getId()}).size());
+		Assert.assertEquals(2, colaboradorDao.findByNomeCpfMatricula(null, false, new String[]{"Eva"}, null, new Long[]{empresa.getId()}).size());
+		Assert.assertEquals(3, colaboradorDao.findByNomeCpfMatricula(null, false, null, null, new Long[]{empresa.getId()}).size());
+		Assert.assertEquals(1, colaboradorDao.findByNomeCpfMatricula(null, false, null, StatusRetornoAC.CONFIRMADO, new Long[]{empresa.getId()}).size());
+		Assert.assertEquals(1, colaboradorDao.findByNomeCpfMatricula(null, false, null, StatusRetornoAC.AGUARDANDO, new Long[]{empresa.getId()}).size());
 	}
 
-	public void testFindByNomeCpfMatriculaComHistoricoComfirmado() 
+	@Test public void testFindByNomeCpfMatriculaComHistoricoComfirmado() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
@@ -1646,12 +1727,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador3.setStatus(StatusRetornoAC.AGUARDANDO);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
-		assertEquals(2, colaboradorDao.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador1, empresa.getId(), null).size());
-		assertEquals(1, colaboradorDao.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador1, empresa.getId(), new Long[]{areaOrganizacional1.getId()}).size());
-		assertEquals(0, colaboradorDao.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador3, empresa.getId(), null).size());
+		Assert.assertEquals(2, colaboradorDao.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador1, empresa.getId(), null).size());
+		Assert.assertEquals(1, colaboradorDao.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador1, empresa.getId(), new Long[]{areaOrganizacional1.getId()}).size());
+		Assert.assertEquals(0, colaboradorDao.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador3, empresa.getId(), null).size());
 	}
 
-	public void testSetCodigoColaboradorAC() {
+	@Test public void testSetCodigoColaboradorAC() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
@@ -1660,10 +1741,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setCodigoAC("");
 		colaborador = colaboradorDao.save(colaborador);
 
-		assertEquals(true, colaboradorDao.setCodigoColaboradorAC("codigo", colaborador.getId()));
+		Assert.assertEquals(true, colaboradorDao.setCodigoColaboradorAC("codigo", colaborador.getId()));
 	}
 
-	public void testFindByCodigoAC() {
+	@Test public void testFindByCodigoAC() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
@@ -1672,10 +1753,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setCodigoAC("12345678");
 		colaborador = colaboradorDao.save(colaborador);
 
-		assertEquals(colaborador, colaboradorDao.findByCodigoAC(colaborador.getCodigoAC(), empresa));
+		Assert.assertEquals(colaborador, colaboradorDao.findByCodigoAC(colaborador.getCodigoAC(), empresa));
 	}
 
-	public void testFindByCodigoACUsuario() {
+	@Test public void testFindByCodigoACUsuario() {
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuarioDao.save(usuario);
 
@@ -1688,10 +1769,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setUsuario(usuario);
 		colaborador = colaboradorDao.save(colaborador);
 
-		assertEquals(colaborador, colaboradorDao.findByCodigoAC(colaborador.getCodigoAC(), empresa));
+		Assert.assertEquals(colaborador, colaboradorDao.findByCodigoAC(colaborador.getCodigoAC(), empresa));
 	}
 
-	public void testFindByCodigoACEmpresaString() {
+	@Test public void testFindByCodigoACEmpresaString() {
 		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
 		grupoACDao.save(grupoAC);
 
@@ -1705,10 +1786,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setCodigoAC("12345678");
 		colaborador = colaboradorDao.save(colaborador);
 
-		assertEquals(colaborador, colaboradorDao.findByCodigoAC(colaborador.getCodigoAC(), empresa.getCodigoAC(), "XXX"));
+		Assert.assertEquals(colaborador, colaboradorDao.findByCodigoAC(colaborador.getCodigoAC(), empresa.getCodigoAC(), "XXX"));
 	}
 
-	public void testFindByFuncaoAmbiente() {
+	@Test public void testFindByFuncaoAmbiente() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
@@ -1731,14 +1812,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findByFuncaoAmbiente(funcao.getId(), ambiente.getId());
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 
 		Colaborador colaboradorTmp = (Colaborador) colaboradores.toArray()[0];
-		assertEquals(colaborador.getId(), colaboradorTmp.getId());
-		assertEquals(colaborador.getNomeComercial(), colaboradorTmp.getNomeComercial());
+		Assert.assertEquals(colaborador.getId(), colaboradorTmp.getId());
+		Assert.assertEquals(colaborador.getNomeComercial(), colaboradorTmp.getNomeComercial());
 	}
 	
-	public void testFindFuncaoAmbiente() {
+	@Test public void testFindFuncaoAmbiente() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -1764,13 +1845,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador retorno = colaboradorDao.findFuncaoAmbiente(colaborador.getId());
 
-		assertEquals(retorno.getId(), colaborador.getId());
-		assertEquals(retorno.getNomeComercial(), colaborador.getNomeComercial());
-		assertEquals(retorno.getAmbiente().getNome(), historicoColaborador.getAmbiente().getNome());
-		assertEquals(retorno.getFuncao().getNome(), historicoColaborador.getFuncao().getNome());
+		Assert.assertEquals(retorno.getId(), colaborador.getId());
+		Assert.assertEquals(retorno.getNomeComercial(), colaborador.getNomeComercial());
+		Assert.assertEquals(retorno.getAmbiente().getNome(), historicoColaborador.getAmbiente().getNome());
+		Assert.assertEquals(retorno.getFuncao().getNome(), historicoColaborador.getFuncao().getNome());
 	}
 
-	public void testFindByAreaOrganizacionalIds() {
+	@Test public void testFindByAreaOrganizacionalIds() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -1798,29 +1879,29 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorBusca.getPessoal().setCpf("000");
 		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(areaIds, null, null, 1, 10, colaboradorBusca, null, null, empresa.getId(), false, false, null);
 
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 		Colaborador retorno = (Colaborador) colaboradores.toArray()[0];
-		assertEquals(faixaSalarial, retorno.getFaixaSalarial());
-		assertEquals(cargo, retorno.getFaixaSalarial().getCargo());
-		assertEquals(grupoOcupacional, retorno.getFaixaSalarial().getCargo().getGrupoOcupacional());
-		assertEquals(areaOrganizacional, retorno.getAreaOrganizacional());
-		assertEquals("Pedro Jose", retorno.getNome());
+		Assert.assertEquals(faixaSalarial, retorno.getFaixaSalarial());
+		Assert.assertEquals(cargo, retorno.getFaixaSalarial().getCargo());
+		Assert.assertEquals(grupoOcupacional, retorno.getFaixaSalarial().getCargo().getGrupoOcupacional());
+		Assert.assertEquals(areaOrganizacional, retorno.getAreaOrganizacional());
+		Assert.assertEquals("Pedro Jose", retorno.getNome());
 
 		// Teste findByAreaOrganizacionalIds
 		Long[] areasIds = new Long[] { areaOrganizacional.getId() };
 		colaboradores = colaboradorDao.findByAreaOrganizacionalIds(1, 10, areasIds, null, null, null, null, null, empresa.getId(), false, false, null);
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 
 		// Teste findByAreaOrganizacionalIds
 		colaboradores = colaboradorDao.findByAreaOrganizacionalIds(areasIds);
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 
 		// Teste findByArea
 		colaboradores = colaboradorDao.findByArea(areaOrganizacional);
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 	}
 
-	public void testFindByAreaOrganizacionalIdsPorPeriodoAdmissao() {
+	@Test public void testFindByAreaOrganizacionalIdsPorPeriodoAdmissao() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -1849,11 +1930,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Date dataAdmissaoFim = DateUtil.criarDataMesAno(8, 8, 2011);
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(Arrays.asList(areaOrganizacional.getId()), Arrays.asList(estabelecimento.getId()),null, null, null, colaboradorBusca, dataAdmissaoIni, dataAdmissaoFim, empresa.getId(), false, false, null);
-		assertEquals(1, colaboradores.size());
-		assertEquals(joao, colaboradores.toArray()[0]);
+		Assert.assertEquals(1, colaboradores.size());
+		Assert.assertEquals(joao, colaboradores.toArray()[0]);
 	}
 	
-	public void testFindByAreaEstabelecimento() {
+	@Test public void testFindByAreaEstabelecimento() {
 		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		Colaborador colaborador = saveColaborador(empresa, "Junior", "", "", null);
@@ -1869,14 +1950,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaEstabelecimento(areaOrganizacionalAtual.getId(), estabelecimentoAtual.getId());
 
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 
 		Colaborador colaboradorDoBanco = (Colaborador) colaboradores.toArray()[0];
-		assertEquals(areaOrganizacionalAtual, colaboradorDoBanco.getAreaOrganizacional());
-		assertEquals(estabelecimentoAtual, colaboradorDoBanco.getEstabelecimento());
+		Assert.assertEquals(areaOrganizacionalAtual, colaboradorDoBanco.getAreaOrganizacional());
+		Assert.assertEquals(estabelecimentoAtual, colaboradorDoBanco.getEstabelecimento());
 	}
 
-	public void testFindByEstabelecimento() {
+	@Test public void testFindByEstabelecimento() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
@@ -1892,13 +1973,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findByEstabelecimento(new Long[] { estabelecimentoAtual.getId() });
 
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 
 		Colaborador colaboradorDoBanco = (Colaborador) colaboradores.toArray()[0];
-		assertEquals(estabelecimentoAtual, colaboradorDoBanco.getEstabelecimento());
+		Assert.assertEquals(estabelecimentoAtual, colaboradorDoBanco.getEstabelecimento());
 	}
 
-	public void testGetCountAtivosByEstabelecimento() {
+	@Test public void testGetCountAtivosByEstabelecimento() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
@@ -1912,10 +1993,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveHistoricoColaborador(colaborador, estabelecimentoAtual, null, null, DateUtil.criarDataMesAno(1, 1, 2008), StatusRetornoAC.CONFIRMADO);
 		saveHistoricoColaborador(colaborador, estabelecimentoAntigo, null, null, DateUtil.criarDataMesAno(1, 1, 2007), StatusRetornoAC.CONFIRMADO);
 
-		assertEquals((Integer) 1, colaboradorDao.getCountAtivosByEstabelecimento(estabelecimentoAtual.getId()));
+		Assert.assertEquals((Integer) 1, colaboradorDao.getCountAtivosByEstabelecimento(estabelecimentoAtual.getId()));
 	}
 
-	public void testFindByIdHistoricoProjection() {
+	@Test public void testFindByIdHistoricoProjection() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -1935,12 +2016,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
  
  		Colaborador colaboradorTmp = colaboradorDao.findByIdHistoricoProjection(colaborador.getId());
  
- 		assertEquals(colaborador, colaboradorTmp);
- 		assertEquals(colaborador.getMatricula(), colaboradorTmp.getMatricula());
-		assertEquals(faixaSalarial1.getDescricao(), colaboradorTmp.getHistoricoColaborador().getFaixaSalarial().getDescricao());
+ 		Assert.assertEquals(colaborador, colaboradorTmp);
+ 		Assert.assertEquals(colaborador.getMatricula(), colaboradorTmp.getMatricula());
+		Assert.assertEquals(faixaSalarial1.getDescricao(), colaboradorTmp.getHistoricoColaborador().getFaixaSalarial().getDescricao());
 	}
 
-	public void testFindByIdHistoricoAtualIds() {
+	@Test public void testFindByIdHistoricoAtualIds() {
 		Colaborador colaborador = getColaborador();
 		colaborador.setNome("TESTE");
 		colaboradorDao.save(colaborador);
@@ -1960,15 +2041,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		ids.add(colaborador.getId());
 
 		Collection<Colaborador> colaboradors = colaboradorDao.findByIdHistoricoAtual(ids);
-		assertEquals(1, colaboradors.size());
+		Assert.assertEquals(1, colaboradors.size());
 
 		Colaborador colaboradorTmp = (Colaborador) colaboradors.toArray()[0];
-		assertEquals(colaborador.getNome(), colaboradorTmp.getNome());
-		assertEquals(faixaSalarial1.getDescricao(), colaboradorTmp.getFaixaSalarial().getDescricao());
-		assertEquals(areaOrganizacional, colaboradorTmp.getAreaOrganizacional());
+		Assert.assertEquals(colaborador.getNome(), colaboradorTmp.getNome());
+		Assert.assertEquals(faixaSalarial1.getDescricao(), colaboradorTmp.getFaixaSalarial().getDescricao());
+		Assert.assertEquals(areaOrganizacional, colaboradorTmp.getAreaOrganizacional());
 	}
 
-	public void testFindColaboradorByDataHistorico() {
+	@Test public void testFindColaboradorByDataHistorico() {
 		Colaborador colaborador = getColaborador();
 		colaborador.setNome("Maria João");
 		colaboradorDao.save(colaborador);
@@ -2007,12 +2088,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaboradorComHistoricoAtual = colaboradorDao.findColaboradorByDataHistorico(colaborador.getId(), historicoColaboradorAtual.getData());
 		Colaborador colaboradorFindDataAtual = colaboradorDao.findColaboradorByDataHistorico(colaborador.getId(), new Date());
 		
-		assertEquals(faixaSalarial1.getDescricao(), colaboradorComHistoricoAntigo.getFaixaSalarial().getDescricao());
-		assertEquals(faixaSalarial2.getDescricao(), colaboradorComHistoricoAtual.getFaixaSalarial().getDescricao());
-		assertEquals(faixaSalarial2.getDescricao(), colaboradorFindDataAtual.getFaixaSalarial().getDescricao());
+		Assert.assertEquals(faixaSalarial1.getDescricao(), colaboradorComHistoricoAntigo.getFaixaSalarial().getDescricao());
+		Assert.assertEquals(faixaSalarial2.getDescricao(), colaboradorComHistoricoAtual.getFaixaSalarial().getDescricao());
+		Assert.assertEquals(faixaSalarial2.getDescricao(), colaboradorFindDataAtual.getFaixaSalarial().getDescricao());
 	}
 	
-	public void testFindByIdHistoricoAtual() {
+	@Test public void testFindByIdHistoricoAtual() {
 		Colaborador colaborador = getColaborador();
 		colaborador.setNome("TESTE");
 		colaboradorDao.save(colaborador);
@@ -2054,12 +2135,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaboradorResult = colaboradorDao.findByIdHistoricoAtual(colaborador.getId(), exibirSomenteAtivos);
 		
 		Colaborador colaboradorTmp = colaboradorResult;
-		assertEquals(colaboradorResult.getNome(), colaboradorTmp.getNome());
-		assertEquals("Teste I", colaboradorTmp.getFaixaSalarial().getDescricao());
-		assertEquals(areaOrganizacional, colaboradorTmp.getAreaOrganizacional());
+		Assert.assertEquals(colaboradorResult.getNome(), colaboradorTmp.getNome());
+		Assert.assertEquals("Teste I", colaboradorTmp.getFaixaSalarial().getDescricao());
+		Assert.assertEquals(areaOrganizacional, colaboradorTmp.getAreaOrganizacional());
 	}
 
-	public void testFindByAreasOrganizacionaisEstabelecimentos() {
+	@Test public void testFindByAreasOrganizacionaisEstabelecimentos() {
 		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
 
 		Colaborador colaborador = getColaborador();
@@ -2114,14 +2195,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findByAreasOrganizacionaisEstabelecimentos(areasIds, estabelecimentosIds, "francisco", null);
 
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 
 		Colaborador colaboradorDoBanco = (Colaborador) colaboradores.toArray()[0];
-		assertEquals(areaOrganizacionalAtual, colaboradorDoBanco.getAreaOrganizacional());
-		assertEquals(estabelecimentoAtual, colaboradorDoBanco.getEstabelecimento());
+		Assert.assertEquals(areaOrganizacionalAtual, colaboradorDoBanco.getAreaOrganizacional());
+		Assert.assertEquals(estabelecimentoAtual, colaboradorDoBanco.getEstabelecimento());
 	}
 	
-	public void testFindByAreaOrganizacionalEstabelecimento() 
+	@Test public void testFindByAreaOrganizacionalEstabelecimento() 
 	{
 		Empresa empresa = new Empresa();
 		empresaDao.save(empresa);
@@ -2154,21 +2235,21 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Colaborador> colaboradoresDesligados = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.DESLIGADO, null, false);
 		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.TODOS, null, false);
 		
-		assertEquals(3, colaboradores.size());
-		assertEquals(2, colaboradoresIngtegradosComAC.size());
+		Assert.assertEquals(3, colaboradores.size());
+		Assert.assertEquals(2, colaboradoresIngtegradosComAC.size());
 		
 		Colaborador colaboradorAtivo = (Colaborador) colaboradoresAtivos.toArray()[0];
 		
-		assertEquals(2, colaboradoresAtivos.size());
-		assertEquals(colaborador.getId(), colaboradorAtivo.getId());
+		Assert.assertEquals(2, colaboradoresAtivos.size());
+		Assert.assertEquals(colaborador.getId(), colaboradorAtivo.getId());
 		
 		Colaborador colaboradorInativo = (Colaborador) colaboradoresDesligados.toArray()[0];
 		
-		assertEquals(1, colaboradoresDesligados.size());
-		assertEquals(colaborador2.getId(), colaboradorInativo.getId());
+		Assert.assertEquals(1, colaboradoresDesligados.size());
+		Assert.assertEquals(colaborador2.getId(), colaboradorInativo.getId());
 	}
 	
-	public void testFindByAreaOrganizacionalEstabelecimentoIntegradosComAC() 
+	@Test public void testFindByAreaOrganizacionalEstabelecimentoIntegradosComAC() 
 	{
 		Empresa empresa = new Empresa();
 		empresaDao.save(empresa);
@@ -2197,19 +2278,19 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Colaborador> colaboradoresDesligados = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.DESLIGADO, null, false);
 		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.TODOS, null, false);
 		
-		assertEquals(2, colaboradores.size());
+		Assert.assertEquals(2, colaboradores.size());
 		
 		Colaborador colaboradorAtivo = (Colaborador) colaboradoresAtivos.toArray()[0];
 		
-		assertEquals(1, colaboradoresAtivos.size());
-		assertEquals(colaborador.getId(), colaboradorAtivo.getId());
+		Assert.assertEquals(1, colaboradoresAtivos.size());
+		Assert.assertEquals(colaborador.getId(), colaboradorAtivo.getId());
 		Colaborador colaboradorInativo = (Colaborador) colaboradoresDesligados.toArray()[0];
 		
-		assertEquals(1, colaboradoresDesligados.size());
-		assertEquals(colaborador2.getId(), colaboradorInativo.getId());
+		Assert.assertEquals(1, colaboradoresDesligados.size());
+		Assert.assertEquals(colaborador2.getId(), colaboradorInativo.getId());
 	}
 	
-	public void testFindByAreaOrganizacionalEstabelecimentoComNotUsuarioId() 
+	@Test public void testFindByAreaOrganizacionalEstabelecimentoComNotUsuarioId() 
 	{
 		Empresa empresa = new Empresa();
 		empresaDao.save(empresa);
@@ -2238,12 +2319,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.TODOS, usuario.getId(), false);
 		
-		assertEquals(1, colaboradores.size());
-		assertEquals(colaborador2.getId(), ((Colaborador) colaboradores.toArray()[0]).getId());
+		Assert.assertEquals(1, colaboradores.size());
+		Assert.assertEquals(colaborador2.getId(), ((Colaborador) colaboradores.toArray()[0]).getId());
 	}
 
 
-	public void testFindByCargoIdsEstabelecimentoIds() {
+	@Test public void testFindByCargoIdsEstabelecimentoIds() {
 		Empresa empresa = new Empresa();
 		empresaDao.save(empresa);
 
@@ -2292,13 +2373,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds, "franci", null);
 
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 
 		Colaborador colaboradorDoBanco = (Colaborador) colaboradores.toArray()[0];
-		assertEquals(estabelecimentoAtual, colaboradorDoBanco.getEstabelecimento());
+		Assert.assertEquals(estabelecimentoAtual, colaboradorDoBanco.getEstabelecimento());
 	}
 
-	public void testFindByGrupoOcupacionalIdsEstabelecimentoIds() {
+	@Test public void testFindByGrupoOcupacionalIdsEstabelecimentoIds() {
 		Empresa empresa = new Empresa();
 		empresa = empresaDao.save(empresa);
 
@@ -2350,23 +2431,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findByGrupoOcupacionalIdsEstabelecimentoIds(grupoOcupacionalIds, estabelecimentosIds);
 
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 
 		Colaborador colaboradorDoBanco = (Colaborador) colaboradores.toArray()[0];
-		assertEquals(estabelecimentoAtual, colaboradorDoBanco.getEstabelecimento());
+		Assert.assertEquals(estabelecimentoAtual, colaboradorDoBanco.getEstabelecimento());
 	}
 
-	public void testFindByIdProjectionUsuario() throws Exception {
+	@Test public void testFindByIdProjectionUsuario() throws Exception {
 		Colaborador colaborador = getEntity();
 		colaborador = colaboradorDao.save(colaborador);
 
 		Colaborador colaboradorRetorno = colaboradorDao.findByIdProjectionUsuario(colaborador.getId());
 
-		assertNotNull(colaborador);
-		assertEquals(colaboradorRetorno.getId(), colaborador.getId());
+		Assert.assertNotNull(colaborador);
+		Assert.assertEquals(colaboradorRetorno.getId(), colaborador.getId());
 	}
 
-	public void testFindAreaOrganizacionalByGruposOrAreas() {
+	@Test public void testFindAreaOrganizacionalByGruposOrAreas() {
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("estabelecimento ");
 		estabelecimentoDao.save(estabelecimento );
 
@@ -2424,10 +2505,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaOrganizacionalIds, null, null, null, null, null, Sexo.FEMININO, null, null, null, SituacaoColaborador.ATIVO, null, null);
 
-		assertEquals(1, colaboradors.size());
+		Assert.assertEquals(1, colaboradors.size());
 	}
 	
-	public void testFindAreaOrganizacionalByAreasAndPeriodoDataAdmissao() {
+	@Test public void testFindAreaOrganizacionalByAreasAndPeriodoDataAdmissao() {
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("estabelecimento" );
 		estabelecimentoDao.save( estabelecimento);
 		
@@ -2486,10 +2567,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Colaborador> colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaOrganizacionalIds, null, null, null, DateUtil.criarDataMesAno(01, 02, 2011), DateUtil.criarDataMesAno(01, 02, 2012), null, null, null, null, SituacaoColaborador.ATIVO, null, null);
 		
-		assertEquals(1, colaboradors.size());
+		Assert.assertEquals(1, colaboradors.size());
 	}
 	
-	public void testFindAreaOrganizacionalByAreasAndCargos() {
+	@Test public void testFindAreaOrganizacionalByAreasAndCargos() {
 		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("estabelecimento");
 		estabelecimentoDao.save(estabelecimento);
@@ -2553,11 +2634,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(false, null, null, cargoIds, null, null, DateUtil.criarDataMesAno(01, 02, 2011), DateUtil.criarDataMesAno(01, 02, 2012), null, null, null, null, SituacaoColaborador.ATIVO, null, null);
 		
-		assertEquals(1, colaboradors.size());
-		assertEquals(colaborador1.getNome(), ((Colaborador)colaboradors.toArray()[0]).getNome());
+		Assert.assertEquals(1, colaboradors.size());
+		Assert.assertEquals(colaborador1.getNome(), ((Colaborador)colaboradors.toArray()[0]).getNome());
 	}
 	
-	public void testFindAreaOrganizacionalByAreasAndEnviadosParaAC() 
+	@Test public void testFindAreaOrganizacionalByAreasAndEnviadosParaAC() 
 	{
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("estabelecimento" );
 		estabelecimentoDao.save(estabelecimento);
@@ -2624,16 +2705,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Colaborador> retorno2 = colaboradorDao.findAreaOrganizacionalByAreas(false, null, null, cargoIds, null, null, DateUtil.criarDataMesAno(01, 02, 2011), DateUtil.criarDataMesAno(01, 02, 2012), null, null, null, null, SituacaoColaborador.ATIVO, colaboradoresNaoEnviadosParaAC, null);
 		Collection<Colaborador> retorno3 = colaboradorDao.findAreaOrganizacionalByAreas(false, null, null, cargoIds, null, null, DateUtil.criarDataMesAno(01, 02, 2011), DateUtil.criarDataMesAno(01, 02, 2012), null, null, null, null, SituacaoColaborador.ATIVO, colaboradoresEnviadosParaAC, null);
 		
-		assertEquals(2, retorno1.size());
+		Assert.assertEquals(2, retorno1.size());
 		
-		assertEquals(1, retorno2.size());
-		assertEquals(colaborador2.getNome(), ((Colaborador)retorno2.toArray()[0]).getNome());
+		Assert.assertEquals(1, retorno2.size());
+		Assert.assertEquals(colaborador2.getNome(), ((Colaborador)retorno2.toArray()[0]).getNome());
 
-		assertEquals(1, retorno3.size());
-		assertEquals(colaborador1.getNome(), ((Colaborador)retorno3.toArray()[0]).getNome());
+		Assert.assertEquals(1, retorno3.size());
+		Assert.assertEquals(colaborador1.getNome(), ((Colaborador)retorno3.toArray()[0]).getNome());
 	}
 	
-	public void testFindAreaOrganizacionalBySemDeficiencia()
+	@Test public void testFindAreaOrganizacionalBySemDeficiencia()
 	{
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("estabelecimento " );
 		estabelecimentoDao.save( estabelecimento);
@@ -2702,11 +2783,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Colaborador> colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaOrganizacionalIds, null, null, null, DateUtil.criarDataMesAno(01, 02, 2011), DateUtil.criarDataMesAno(01, 02, 2012), null, "3", null, null, SituacaoColaborador.ATIVO, null, null);
 		
-		assertEquals(1, colaboradors.size());
-		assertEquals(colaborador2.getNome(), ((Colaborador)colaboradors.toArray()[0]).getNome());
+		Assert.assertEquals(1, colaboradors.size());
+		Assert.assertEquals(colaborador2.getNome(), ((Colaborador)colaboradors.toArray()[0]).getNome());
 	}
 	
-	public void testFindAreaOrganizacionalByComDeficiencia()
+	@Test public void testFindAreaOrganizacionalByComDeficiencia()
 	{
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(" estabelecimento ");
 		estabelecimentoDao.save(estabelecimento );
@@ -2776,11 +2857,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Colaborador> colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaOrganizacionalIds, null, null, null, DateUtil.criarDataMesAno(01, 02, 2011), DateUtil.criarDataMesAno(01, 02, 2012), null, "2", null, null, SituacaoColaborador.ATIVO, null, null);
 		
-		assertEquals(1, colaboradors.size());
-		assertEquals(colaborador.getNome(), ((Colaborador)colaboradors.toArray()[0]).getNome());
+		Assert.assertEquals(1, colaboradors.size());
+		Assert.assertEquals(colaborador.getNome(), ((Colaborador)colaboradors.toArray()[0]).getNome());
 	}
 	
-	public void testFindAreaOrganizacionalBySemDeficienciaComDeficiencia()
+	@Test public void testFindAreaOrganizacionalBySemDeficienciaComDeficiencia()
 	{
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity( "estabelecimento");
 		estabelecimentoDao.save(estabelecimento);
@@ -2853,11 +2934,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Colaborador> colaboradors1 = colaboradorDao.findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaOrganizacionalIds, null, null, null, DateUtil.criarDataMesAno(31, 01, 2011), DateUtil.criarDataMesAno(01, 02, 2012), null, "1", null, null, SituacaoColaborador.ATIVO, null, null);
 		Collection<Colaborador> colaboradors2 = colaboradorDao.findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaOrganizacionalIds, null, null, null, DateUtil.criarDataMesAno(01, 02, 2011), DateUtil.criarDataMesAno(01, 02, 2012), null, "1", null, null, SituacaoColaborador.ATIVO, null, null);
 		
-		assertEquals("Admissao a partir de 31/01/11",3, colaboradors1.size());
-		assertEquals("Admissao a partir de 01/02/11",2, colaboradors2.size());
+		Assert.assertEquals("Admissao a partir de 31/01/11",3, colaboradors1.size());
+		Assert.assertEquals("Admissao a partir de 01/02/11",2, colaboradors2.size());
 	}
 
-	public void testFindAreaOrganizacionalByGruposOrAreasCamposExtras() {
+	@Test public void testFindAreaOrganizacionalByGruposOrAreasCamposExtras() {
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(" estabelecimento" );
 		estabelecimentoDao.save(estabelecimento);
 
@@ -2908,7 +2989,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		areaOrganizacionalIds.add(areaOrganizacional.getId());
 
 		Collection<Colaborador> colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(true, estabelecimentoIds, areaOrganizacionalIds, null, camposExtras, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null, null);
-		assertEquals(1, colaboradors.size());
+		Assert.assertEquals(1, colaboradors.size());
 
 		CamposExtras camposExtrasBusca = new CamposExtras();
 
@@ -2931,7 +3012,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		camposExtrasBusca.setNumero1Fim(60);
 
 		colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(true, estabelecimentoIds, areaOrganizacionalIds, null, camposExtrasBusca, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null, null);
-		assertEquals(1, colaboradors.size());
+		Assert.assertEquals(1, colaboradors.size());
 
 		// Parâmetros do find
 		camposExtrasBusca = CamposExtrasFactory.getEntity();
@@ -2946,10 +3027,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		camposExtrasBusca.setNumero1Fim(60);
 
 		colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(true, estabelecimentoIds, areaOrganizacionalIds, null, camposExtrasBusca, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null, null);
-		assertEquals(1, colaboradors.size());
+		Assert.assertEquals(1, colaboradors.size());
 	}
 
-	public void testFindColaboradoresMotivoDemissao() {
+	@Test public void testFindColaboradoresMotivoDemissao() {
 		prepareFindColaboradoresMotivo();
 
 		Date dataIni = DateUtil.criarDataMesAno(01, 01, 1945);
@@ -2961,10 +3042,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> retorno = colaboradorDao.findColaboradoresMotivoDemissao(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, "M", null);
 
-		assertEquals(1, retorno.size());
+		Assert.assertEquals(1, retorno.size());
 	}
 
-	public void testFindColaboradoresMotivoDemissaoQuantidade() {
+	@Test public void testFindColaboradoresMotivoDemissaoQuantidade() {
 		prepareFindColaboradoresMotivo();
 
 		Date dataIni = DateUtil.criarDataMesAno(01, 01, 1945);
@@ -2976,7 +3057,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		List<Object[]> retorno = colaboradorDao.findColaboradoresMotivoDemissaoQuantidade(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, null);
 
-		assertEquals(1, retorno.size());
+		Assert.assertEquals(1, retorno.size());
 	}
 
 	private void prepareFindColaboradoresMotivo() {
@@ -3100,7 +3181,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		hc6 = historicoColaboradorDao.save(hc6);
 	}
 
-	public void testFindProjecaoSalarialByHistoricoColaborador() {
+	@Test public void testFindProjecaoSalarialByHistoricoColaborador() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
@@ -3154,10 +3235,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> retorno = colaboradorDao.findProjecaoSalarialByHistoricoColaborador(new Date(), estabelecimentoIds, null, grupoIds, cargoIds, "2", empresa.getId());
 
-		assertEquals(colaboradors.size(), retorno.size());
+		Assert.assertEquals(colaboradors.size(), retorno.size());
 	}
 
-	public void testFindProjecaoSalarialByTabelaReajusteColaborador() {
+	@Test public void testFindProjecaoSalarialByTabelaReajusteColaborador() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -3214,10 +3295,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Colaborador> retorno = colaboradorDao.findProjecaoSalarialByTabelaReajusteColaborador(tabelaReajusteColaborador.getId(), new Date(), estabelecimentoIds, areaIds, null, null, "1",
 				empresa.getId());
 
-		assertEquals(colaboradors.size(), retorno.size());
+		Assert.assertEquals(colaboradors.size(), retorno.size());
 	}
 
-	public void testSetRespondeuEntrevista() {
+	@Test public void testSetRespondeuEntrevista() {
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 
 		colaborador = colaboradorDao.save(colaborador);
@@ -3225,7 +3306,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.setRespondeuEntrevista(colaborador.getId());
 	}
 
-	public void testFindAllSelect() {
+	@Test public void testFindAllSelect() {
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
 		empresa1 = empresaDao.save(empresa1);
 		
@@ -3292,12 +3373,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.findAllSelect(empresa1.getId(), "nome");
 		
-		assertEquals(2, colaboradores.size());
-		assertEquals(colaborador2.getNome(), ((Colaborador)colaboradores.toArray()[0]).getNome());
-		assertEquals(colaborador1.getNome(), ((Colaborador)colaboradores.toArray()[1]).getNome());
+		Assert.assertEquals(2, colaboradores.size());
+		Assert.assertEquals(colaborador2.getNome(), ((Colaborador)colaboradores.toArray()[0]).getNome());
+		Assert.assertEquals(colaborador1.getNome(), ((Colaborador)colaboradores.toArray()[1]).getNome());
 	}
 	
-	public void testFindAllSelectByIds() {
+	@Test public void testFindAllSelectByIds() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -3311,13 +3392,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setDesligado(false);
 		colaboradorDao.save(colaborador2);
 		
-		assertEquals(1, colaboradorDao.findAllSelect(Arrays.asList(colaborador1.getId(), colaborador2.getId()) , true).size());
+		Assert.assertEquals(1, colaboradorDao.findAllSelect(Arrays.asList(colaborador1.getId(), colaborador2.getId()) , true).size());
 	}
 	
-	public void testFindComNotaDoCurso() 
+	@Test public void testFindComNotaDoCurso() 
 	{
 		testePorTipoAvaliacao(TipoAvaliacaoCurso.NOTA, true, 8.00);
-		testePorTipoAvaliacao(TipoAvaliacaoCurso.PORCENTAGEM, true, 9.56);
+		testePorTipoAvaliacao(TipoAvaliacaoCurso.PORCENTAGEM, true, 9.57);
 		testePorTipoAvaliacao(TipoAvaliacaoCurso.AVALIACAO, true, 0.78);
 		testePorTipoAvaliacao(TipoAvaliacaoCurso.NOTA, false, null);
 	}
@@ -3377,12 +3458,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaboradorRetorno = ((Colaborador)(colaboradoresRetorno.toArray())[0]);
 		
 		if(comResposta)
-			assertEquals(nota, colaboradorRetorno.getNota().doubleValue());
+			Assert.assertEquals(nota, colaboradorRetorno.getNota().doubleValue(), 0);
 		else
-			assertNull(colaboradorRetorno.getNota());
+			Assert.assertNull(colaboradorRetorno.getNota());
 	}
 	
-	public void testReligaColaborador() {
+	@Test public void testReligaColaborador() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
@@ -3402,15 +3483,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.religaColaborador(colaborador.getId());
 		Colaborador colaboradorReligado = colaboradorDao.findColaboradorById(colaborador.getId());
 		
-		assertNull("Data desligamento", colaboradorReligado.getDataDesligamento());
-		assertNull("Data solicitação desligamento", colaboradorReligado.getDataSolicitacaoDesligamento());
-		assertNull("Data solicitação desligamento AC", colaboradorReligado.getDataSolicitacaoDesligamentoAc());
-		assertNull("Motivo demissão", colaboradorReligado.getMotivoDemissao().getId());
-		assertEquals("Observação demissão", "", colaboradorReligado.getObservacaoDemissao());
-		assertFalse("Está desligado", colaboradorReligado.isDesligado());
+		Assert.assertNull("Data desligamento", colaboradorReligado.getDataDesligamento());
+		Assert.assertNull("Data solicitação desligamento", colaboradorReligado.getDataSolicitacaoDesligamento());
+		Assert.assertNull("Data solicitação desligamento AC", colaboradorReligado.getDataSolicitacaoDesligamentoAc());
+		Assert.assertNull("Motivo demissão", colaboradorReligado.getMotivoDemissao().getId());
+		Assert.assertEquals("Observação demissão", "", colaboradorReligado.getObservacaoDemissao());
+		Assert.assertFalse("Está desligado", colaboradorReligado.isDesligado());
 	}
 
-	public void testFindByIdDadosBasicos() 
+	@Test public void testFindByIdDadosBasicos() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
@@ -3444,11 +3525,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Colaborador colabRetorno = colaboradorDao.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO);
 		
-		assertEquals(colaborador, colabRetorno);
-		assertEquals("Função", colabRetorno.getFuncao().getNome());
+		Assert.assertEquals(colaborador, colabRetorno);
+		Assert.assertEquals("Função", colabRetorno.getFuncao().getNome());
 	}
 	
-	public void testFindColaboradoresByArea() 
+	@Test public void testFindColaboradoresByArea() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
@@ -3475,12 +3556,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		historicoColaboradorDao.save(historicoColaborador);
 		
-		assertEquals(1, colaboradorDao.findColaboradoresByArea(new Long[]{area.getId()}, "joao", "123456", empresa.getId(), null).size());
-		assertEquals(1, colaboradorDao.findColaboradoresByArea(null, null, null, empresa.getId(), "comercial").size());
-		assertEquals(0, colaboradorDao.findColaboradoresByArea(null, null, null, empresa.getId(), "suporte").size());
+		Assert.assertEquals(1, colaboradorDao.findColaboradoresByArea(new Long[]{area.getId()}, "joao", "123456", empresa.getId(), null).size());
+		Assert.assertEquals(1, colaboradorDao.findColaboradoresByArea(null, null, null, empresa.getId(), "comercial").size());
+		Assert.assertEquals(0, colaboradorDao.findColaboradoresByArea(null, null, null, empresa.getId(), "suporte").size());
 	}
 
-	public void testFindAllSelects() {
+	@Test public void testFindAllSelects() {
 		Empresa vega = EmpresaFactory.getEmpresa();
 		empresaDao.save(vega);
 
@@ -3502,12 +3583,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Long[] empresaIds = new Long[] { vega.getId(), urbana.getId() };
 
-		assertEquals(2, colaboradorDao.findAllSelect(SituacaoColaborador.ATIVO, null, empresaIds).size());
-		assertEquals(1, colaboradorDao.findAllSelect(SituacaoColaborador.DESLIGADO,null, empresaIds).size());
-		assertEquals(3, colaboradorDao.findAllSelect(SituacaoColaborador.TODOS, null, empresaIds).size());
+		Assert.assertEquals(2, colaboradorDao.findAllSelect(SituacaoColaborador.ATIVO, null, empresaIds).size());
+		Assert.assertEquals(1, colaboradorDao.findAllSelect(SituacaoColaborador.DESLIGADO,null, empresaIds).size());
+		Assert.assertEquals(3, colaboradorDao.findAllSelect(SituacaoColaborador.TODOS, null, empresaIds).size());
 	}
 
-	public void testFindAllSelectsNotusuarioId() {
+	@Test public void testFindAllSelectsNotusuarioId() {
 		Empresa vega = EmpresaFactory.getEmpresa();
 		empresaDao.save(vega);
 
@@ -3528,10 +3609,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Long[] empresaIds = new Long[] { vega.getId(), urbana.getId() };
 
-		assertEquals(1, colaboradorDao.findAllSelect(SituacaoColaborador.ATIVO, usuario.getId(), empresaIds).size());
+		Assert.assertEquals(1, colaboradorDao.findAllSelect(SituacaoColaborador.ATIVO, usuario.getId(), empresaIds).size());
 	}
 	
-	public void testSetMatriculaColaborador() {
+	@Test public void testSetMatriculaColaborador() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
@@ -3545,10 +3626,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.setMatriculaColaborador(empresa.getId(), colaborador.getCodigoAC(), matricula);
 
 		Colaborador colaboradorTmp = colaboradorDao.findByIdProjectionEmpresa(colaborador.getId());
-		assertEquals(matricula, colaboradorTmp.getMatricula());
+		Assert.assertEquals(matricula, colaboradorTmp.getMatricula());
 	}
 
-	public void testSetMatriculaColaboradorPorId() {
+	@Test public void testSetMatriculaColaboradorPorId() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
@@ -3561,10 +3642,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.setMatriculaColaborador(colaborador.getId(), matricula);
 
 		Colaborador colaboradorTmp = colaboradorDao.findByIdProjectionEmpresa(colaborador.getId());
-		assertEquals(matricula, colaboradorTmp.getMatricula());
+		Assert.assertEquals(matricula, colaboradorTmp.getMatricula());
 	}
 
-	public void testFindByCodigoACEmpresaCodigoAC() {
+	@Test public void testFindByCodigoACEmpresaCodigoAC() {
 		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
 		grupoACDao.save(grupoAC);
 
@@ -3578,11 +3659,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setCodigoAC("123ASDF55");
 		colaborador = colaboradorDao.save(colaborador);
 
-		assertEquals(colaborador, colaboradorDao.findByCodigoACEmpresaCodigoAC(colaborador.getCodigoAC(), colaborador.getEmpresa().getCodigoAC(), "XXX"));
-		assertNull(colaboradorDao.findByCodigoACEmpresaCodigoAC("998", "889", "YYY"));//o ac depende desse null
+		Assert.assertEquals(colaborador, colaboradorDao.findByCodigoACEmpresaCodigoAC(colaborador.getCodigoAC(), colaborador.getEmpresa().getCodigoAC(), "XXX"));
+		Assert.assertNull(colaboradorDao.findByCodigoACEmpresaCodigoAC("998", "889", "YYY"));//o ac depende desse null
 	}
 
-	public void testFindColaboradorById() {
+	@Test public void testFindColaboradorById() {
 		Estado estado = EstadoFactory.getEntity(1L);
 		estado.setSigla("CE");
 
@@ -3599,12 +3680,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.save(colaborador);
 
 		Colaborador colaboradorRetorno = colaboradorDao.findColaboradorById(colaborador.getId());
-		assertEquals(colaborador, colaboradorRetorno);
-		assertEquals(habilitacao.getNumeroHab(), colaboradorRetorno.getHabilitacao().getNumeroHab());
-		assertEquals(endereco.getCep(), colaboradorRetorno.getEndereco().getCep());
+		Assert.assertEquals(colaborador, colaboradorRetorno);
+		Assert.assertEquals(habilitacao.getNumeroHab(), colaboradorRetorno.getHabilitacao().getNumeroHab());
+		Assert.assertEquals(endereco.getCep(), colaboradorRetorno.getEndereco().getCep());
 	}
 
-	public void testUpdateInfoPessoais() {
+	@Test public void testUpdateInfoPessoais() {
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.getEndereco().setLogradouro("logradouro");
 		colaborador = colaboradorDao.save(colaborador);
@@ -3617,10 +3698,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaboradorTmp = colaboradorDao.findColaboradorById(colaborador.getId());
 
-		assertEquals("teste", colaboradorTmp.getEndereco().getLogradouro());
+		Assert.assertEquals("teste", colaboradorTmp.getEndereco().getLogradouro());
 	}
 
-	public void testFindByUsuarioColaborador() {
+	@Test public void testFindByUsuarioColaborador() {
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
 
@@ -3628,17 +3709,17 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setUsuario(usuario);
 		colaborador = colaboradorDao.save(colaborador);
 
-		assertEquals(colaborador.getId(), colaboradorDao.findByUsuario(usuario.getId()));
+		Assert.assertEquals(colaborador.getId(), colaboradorDao.findByUsuario(usuario.getId()));
 	}
 
-	public void testFindByUsuarioColaboradorNull() {
+	@Test public void testFindByUsuarioColaboradorNull() {
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador = colaboradorDao.save(colaborador);
 
-		assertEquals(null, colaboradorDao.findByUsuario(15984441L));
+		Assert.assertEquals(null, colaboradorDao.findByUsuario(15984441L));
 	}
 
-	public void testFindByIdComHistorico() {
+	@Test public void testFindByIdComHistorico() {
 		Colaborador colaborador = getEntity();
 		colaborador = colaboradorDao.save(colaborador);
 
@@ -3664,10 +3745,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaboradorRetorno = colaboradorDao.findByIdComHistorico(colaborador.getId(), null);
 
-		assertEquals(colaboradorRetorno.getId(), colaborador.getId());
+		Assert.assertEquals(colaboradorRetorno.getId(), colaborador.getId());
 	}
 
-	public void testGetCountAtivos() {
+	@Test public void testGetCountAtivos() {
 		Date hoje = new Date();
 		Calendar dataDoisMesesAtras = Calendar.getInstance();
 		dataDoisMesesAtras.add(Calendar.MONTH, -2);
@@ -3733,12 +3814,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador4.setEstabelecimento(estabelecimento2);
 		historicoColaboradorDao.save(historicoColaborador4);
 
-		assertEquals(new Integer(2), colaboradorDao.getCountAtivosQualquerStatus(dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}, null, new Long[]{estabelecimento1.getId()}));
-		assertEquals(new Integer(1), colaboradorDao.getCountAtivosQualquerStatus(dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}, null, new Long[]{estabelecimento2.getId()}));
+		Assert.assertEquals(new Integer(2), colaboradorDao.getCountAtivosQualquerStatus(dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}, null, new Long[]{estabelecimento1.getId()}));
+		Assert.assertEquals(new Integer(1), colaboradorDao.getCountAtivosQualquerStatus(dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}, null, new Long[]{estabelecimento2.getId()}));
 
 	}
 
-	public void testCountAdmitidosSemTurnover() {
+	@Test public void testCountAdmitidosSemTurnover() {
 		
 		Calendar dataDoisMesesAtras = Calendar.getInstance();
 		dataDoisMesesAtras.add(Calendar.MONTH, -2);
@@ -3776,11 +3857,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		histColaboradorDentroDaConsulta2.setData(dataTresMesesAtras.getTime());
 		historicoColaboradorDao.save(histColaboradorDentroDaConsulta2);
 		
-		assertEquals(new Integer(2), colaboradorDao.countAdmitidosDemitidosTurnover(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa, null, null, null, true));
-		assertEquals(new Integer(1), colaboradorDao.countAdmitidosDemitidosTurnover(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa, new Long[]{estabelecimento.getId()}, null, null, true));
+		Assert.assertEquals(new Integer(2), colaboradorDao.countAdmitidosDemitidosTurnover(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa, null, null, null, true));
+		Assert.assertEquals(new Integer(1), colaboradorDao.countAdmitidosDemitidosTurnover(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa, new Long[]{estabelecimento.getId()}, null, null, true));
 	}
 
-	public void testCountAdmitidosComTurnover() {
+	@Test public void testCountAdmitidosComTurnover() {
 		
 		Calendar dataDoisMesesAtras = Calendar.getInstance();
 		dataDoisMesesAtras.add(Calendar.MONTH, -2);
@@ -3859,10 +3940,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		histColaboradorDentroDaConsulta2.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(histColaboradorDentroDaConsulta2);
 		
-		assertEquals(new Integer(1), colaboradorDao.countAdmitidosDemitidosTurnover(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa, new Long[]{estabelecimento.getId()}, null, null, true));
+		Assert.assertEquals(new Integer(1), colaboradorDao.countAdmitidosDemitidosTurnover(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa, new Long[]{estabelecimento.getId()}, null, null, true));
 	}
 	
-	public void testGetCountAtivosDataBase() {
+	@Test public void testGetCountAtivosDataBase() {
 		Date dataBase = DateUtil.criarDataMesAno(01, 02, 2011);
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -3896,14 +3977,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2012), empresa, EstadoCivil.CASADO_COMUNHAO_PARCIAL, null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixaSalarial, estabelecimento2);
 		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2012), empresa2, EstadoCivil.CASADO_COMUNHAO_PARCIAL, null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixaSalarial, estabelecimento1);
 
-		assertEquals(2, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), null, null, null));
-		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId()}, new Long[]{area.getId()}, null));
-		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), new Long[]{estabelecimento2.getId()}, null, new Long[]{cargo.getId()}));
-		assertEquals(0, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), null, null, new Long[]{cargoFora.getId()}));
-		assertEquals(2, colaboradorDao.getCountAtivos(dataBase, new ArrayList<Long>(), new Long[]{estabelecimento1.getId(),estabelecimento2.getId()}, new Long[]{area.getId()}, null));
+		Assert.assertEquals(2, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), null, null, null));
+		Assert.assertEquals(1, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId()}, new Long[]{area.getId()}, null));
+		Assert.assertEquals(1, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), new Long[]{estabelecimento2.getId()}, null, new Long[]{cargo.getId()}));
+		Assert.assertEquals(0, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), null, null, new Long[]{cargoFora.getId()}));
+		Assert.assertEquals(2, colaboradorDao.getCountAtivos(dataBase, new ArrayList<Long>(), new Long[]{estabelecimento1.getId(),estabelecimento2.getId()}, new Long[]{area.getId()}, null));
 	}
 
-	public void testFindAniversariantes() {
+	@Test public void testFindAniversariantes() {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresaDao.save(empresa);
 
@@ -3939,10 +4020,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(historicoColaboradorAniversariante);
 
 		Collection<Colaborador> aniversariantes = colaboradorDao.findAniversariantes(new Long[] { empresa.getId() }, mes, null, new Long[] { estabelecimento.getId() });
-		assertEquals(1, aniversariantes.size());
+		Assert.assertEquals(1, aniversariantes.size());
 	}
 
-	public void testCountSemMotivos() {
+	@Test public void testCountSemMotivos() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -3958,10 +4039,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 1977));
 		historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
 
-		assertEquals(new Integer(1), colaboradorDao.countSemMotivos(null, null, null, DateUtil.criarDataMesAno(1, 1, 1980), DateUtil.criarDataMesAno(3, 1, 1980), null));
+		Assert.assertEquals(new Integer(1), colaboradorDao.countSemMotivos(null, null, null, DateUtil.criarDataMesAno(1, 1, 1980), DateUtil.criarDataMesAno(3, 1, 1980), null));
 	}
 
-	public void testMigrarBairro() {
+	@Test public void testMigrarBairro() {
 		Bairro bairro = new Bairro();
 		bairro.setNome("bairro novo");
 		bairroDao.save(bairro);
@@ -3983,10 +4064,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		colaboradorDao.migrarBairro(bairro.getNome(), bairroDestino.getNome());
 		Colaborador colaboradorTmp = colaboradorDao.findColaboradorById(colaborador.getId());
-		assertEquals(colaboradorTmp.getEndereco().getBairro(), bairroDestino.getNome());
+		Assert.assertEquals(colaboradorTmp.getEndereco().getBairro(), bairroDestino.getNome());
 	}
 
-	public void testFindEmailsDeColaboradoresByPerfis() {
+	@Test public void testFindEmailsDeColaboradoresByPerfis() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -3999,10 +4080,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Perfil perfil = new Perfil();
 		perfilDao.save(perfil);
 
-		assertEquals(0, colaboradorDao.findEmailsDeColaboradoresByPerfis(new Long[] { perfil.getId() }, empresa.getId()).size());
+		Assert.assertEquals(0, colaboradorDao.findEmailsDeColaboradoresByPerfis(new Long[] { perfil.getId() }, empresa.getId()).size());
 	}
 
-	public void testFindAdmitidosHaDiasPeriodoExperiencia() {
+	@Test public void testFindAdmitidosHaDiasPeriodoExperiencia() {
 		Calendar trintaNoveDiasAtras = Calendar.getInstance();
 		trintaNoveDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
 		
@@ -4094,12 +4175,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colabRetorno = (Colaborador) colabsRetorno.toArray()[0];
 		Collection<Colaborador> colabs = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
 		
-		assertEquals(avaliacao.getId(), colabRetorno.getAvaliacaoId());
-		assertEquals(1, colabs.size());
-		assertEquals(estabelecimento.getNome(), colabRetorno.getEstabelecimento().getNome());
+		Assert.assertEquals(avaliacao.getId(), colabRetorno.getAvaliacaoId());
+		Assert.assertEquals(1, colabs.size());
+		Assert.assertEquals(estabelecimento.getNome(), colabRetorno.getEstabelecimento().getNome());
 	}
 	
-	public void testFindAdmitidosHaDiasPeriodoExperienciaEmpresaComConfiguracaoNotificarSomentePeriodosConfigurados() {
+	@Test public void testFindAdmitidosHaDiasPeriodoExperienciaEmpresaComConfiguracaoNotificarSomentePeriodosConfigurados() {
 		Calendar trintaNoveDiasAtras = Calendar.getInstance();
 		trintaNoveDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
 		
@@ -4130,11 +4211,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colabRetorno = (Colaborador) colabsRetorno.toArray()[0];
 		Collection<Colaborador> colabs = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
 		
-		assertEquals(avaliacao.getId(), colabRetorno.getAvaliacaoId());
-		assertEquals(1, colabs.size());
+		Assert.assertEquals(avaliacao.getId(), colabRetorno.getAvaliacaoId());
+		Assert.assertEquals(1, colabs.size());
 	}
 	
-	public void testFindAdmitidosHaDiasPeriodoExperienciaEmpresaSemConfiguracaoNotificarSomentePeriodosConfigurados() {
+	@Test public void testFindAdmitidosHaDiasPeriodoExperienciaEmpresaSemConfiguracaoNotificarSomentePeriodosConfigurados() {
 		Calendar trintaNoveDiasAtras = Calendar.getInstance();
 		trintaNoveDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
 		
@@ -4162,10 +4243,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.getHibernateTemplateByGenericDao().flush();
 		
 		Collection <Colaborador> colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
-		assertEquals(2, colabsRetorno.size());
+		Assert.assertEquals(2, colabsRetorno.size());
 	}
 
-	public void testFindAdmitidosNoPeriodo() {
+	@Test public void testFindAdmitidosNoPeriodo() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -4190,15 +4271,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findAdmitidosNoPeriodo(DateUtil.criarDataMesAno(01, 06, 2009), DateUtil.criarDataMesAno(31, 05, 2010), empresa, null, null, null);
 		Colaborador colabRetorno = (Colaborador) colaboradores.toArray()[0];
-		assertEquals(1, colaboradores.size());
-		assertEquals("areaMae > area", colabRetorno.getAreaOrganizacional().getDescricao());
+		Assert.assertEquals(1, colaboradores.size());
+		Assert.assertEquals("areaMae > area", colabRetorno.getAreaOrganizacional().getDescricao());
 		
 
 		Colaborador colaboradorTmp = (Colaborador) colaboradores.toArray()[0];
-		assertEquals(new Integer(31), colaboradorTmp.getDiasDeEmpresa());
+		Assert.assertEquals(new Integer(31), colaboradorTmp.getDiasDeEmpresa());
 	}
 
-	public void testCountAtivosPeriodo() 
+	@Test public void testCountAtivosPeriodo() 
 	{
 		Empresa vega = EmpresaFactory.getEmpresa();
 		empresaDao.save(vega);
@@ -4224,10 +4305,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador maria = montaColaboradorDoTestCountAtivo(vega, data_21_07_2011);
 		montaHistoricoDoTestCountAtivo(data_21_07_2011, dentista01, maria);
 		
-		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, Arrays.asList(vega.getId()), null, null, null, Arrays.asList(Vinculo.EMPREGO), null, false, null, false));
+		Assert.assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, Arrays.asList(vega.getId()), null, null, null, Arrays.asList(Vinculo.EMPREGO), null, false, null, false));
 	}
 	
-	public void testCountAtivosPeriodoComAbsenteismo() 
+	@Test public void testCountAtivosPeriodoComAbsenteismo() 
 	{
 		Empresa vega = EmpresaFactory.getEmpresa();
 		empresaDao.save(vega);
@@ -4257,7 +4338,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		montaHistoricoDoTestCountAtivo(data_21_07_2011, dentista01, maria);
 		criaColaboradorOcorrenciaComAbseteismo(maria);
 		
-		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, Arrays.asList(vega.getId()), null, null, null, null, null, true, null, true));
+		Assert.assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, Arrays.asList(vega.getId()), null, null, null, null, null, true, null, true));
 	}
 
 	private void criaColaboradorOcorrenciaComAbseteismo(Colaborador joao) 
@@ -4290,7 +4371,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		return joao;
 	}
 
-	public void testCountDesligados() {
+	@Test public void testCountDesligados() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -4298,20 +4379,20 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		longs.add(1L);
 
 		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, null, false);
-		assertEquals(0, colaboradores.size());
+		Assert.assertEquals(0, colaboradores.size());
 	}
 
-	public void testCountAdmitidosPeriodoTurnover() {
+	@Test public void testCountAdmitidosPeriodoTurnover() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
 		Collection<Long> longs = new ArrayList<Long>();
 		longs.add(1L);
 		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, Arrays.asList(Vinculo.EMPREGO), true);
-		assertEquals(0, colaboradores.size());
+		Assert.assertEquals(0, colaboradores.size());
 	}
 
-	public void testCountAdmitidosPeriodoTurnoverSolicitacao() {
+	@Test public void testCountAdmitidosPeriodoTurnoverSolicitacao() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setTurnoverPorSolicitacao(true);
 		empresaDao.save(empresa);
@@ -4319,10 +4400,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Long> longs = new ArrayList<Long>();
 		longs.add(1L);
 		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, Arrays.asList(Vinculo.EMPREGO), true);
-		assertEquals(0, colaboradores.size());
+		Assert.assertEquals(0, colaboradores.size());
 	}
 
-	public void testFindComAvaliacoesExperiencias() {
+	@Test public void testFindComAvaliacoesExperiencias() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -4351,13 +4432,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioPesquisa);
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findComAvaliacoesExperiencias(null, DateUtil.criarDataMesAno(01, 06, 2010), empresa, null, null);
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 
 		Colaborador colaboradorTmp = (Colaborador) colaboradores.toArray()[0];
-		assertEquals(new Integer(15), colaboradorTmp.getQtdDiasRespondeuAvExperiencia());
+		Assert.assertEquals(new Integer(15), colaboradorTmp.getQtdDiasRespondeuAvExperiencia());
 	}
 
-	public void testFindAdmitidos() {
+	@Test public void testFindAdmitidos() {
 		Date dataAdmissao = DateUtil.montaDataByString("20/01/2010");
 		Date dataAdmissaoFora = DateUtil.montaDataByString("13/03/2010");
 
@@ -4429,30 +4510,30 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Long[] estabelecimentosIds = new Long[] { estabelecimento1.getId() };
 
 		Collection<Colaborador> colaboradorRetornadoArray = colaboradorDao.findAdmitidos(Vinculo.EMPREGO, dataIni, dataFim, areasIds, estabelecimentosIds, false);
-		assertEquals(1, colaboradorRetornadoArray.size());
-		assertEquals(historicoColaborador1_1.getAreaOrganizacional().getId(), ((Colaborador)colaboradorRetornadoArray.toArray()[0]).getAreaOrganizacional().getId());
+		Assert.assertEquals(1, colaboradorRetornadoArray.size());
+		Assert.assertEquals(historicoColaborador1_1.getAreaOrganizacional().getId(), ((Colaborador)colaboradorRetornadoArray.toArray()[0]).getAreaOrganizacional().getId());
 		
 		estabelecimentosIds = new Long[] { estabelecimento1.getId(), estabelecimento2.getId() };
 		
 		colaboradorRetornadoArray = colaboradorDao.findAdmitidos(Vinculo.EMPREGO, dataIni, dataFim, areasIds, estabelecimentosIds, false);
-		assertEquals(2, colaboradorRetornadoArray.size());
+		Assert.assertEquals(2, colaboradorRetornadoArray.size());
 		
 		Colaborador colaboradorRetornado1 = (Colaborador)colaboradorRetornadoArray.toArray()[0];
 		Colaborador colaboradorRetornado2 = (Colaborador)colaboradorRetornadoArray.toArray()[1];
 		
-		assertEquals(historicoColaborador1_1.getAreaOrganizacional().getId(), colaboradorRetornado1.getAreaOrganizacional().getId());
-		assertEquals(historicoColaborador2_1.getAreaOrganizacional().getId(), colaboradorRetornado2.getAreaOrganizacional().getId());
+		Assert.assertEquals(historicoColaborador1_1.getAreaOrganizacional().getId(), colaboradorRetornado1.getAreaOrganizacional().getId());
+		Assert.assertEquals(historicoColaborador2_1.getAreaOrganizacional().getId(), colaboradorRetornado2.getAreaOrganizacional().getId());
 		
-		assertEquals(solicitacao.getMotivoSolicitacao().getDescricao(), colaboradorRetornado1.getSolicitacao().getMotivoSolicitacao().getDescricao());
-		assertNull(colaboradorRetornado2.getSolicitacao().getMotivoSolicitacao().getDescricao());
-		assertEquals(solicitacao.getMotivoSolicitacao().isTurnover(), colaboradorRetornado1.getSolicitacao().getMotivoSolicitacao().isTurnover());
-		assertFalse(colaboradorRetornado2.getSolicitacao().getMotivoSolicitacao().isTurnover());
+		Assert.assertEquals(solicitacao.getMotivoSolicitacao().getDescricao(), colaboradorRetornado1.getSolicitacao().getMotivoSolicitacao().getDescricao());
+		Assert.assertNull(colaboradorRetornado2.getSolicitacao().getMotivoSolicitacao().getDescricao());
+		Assert.assertEquals(solicitacao.getMotivoSolicitacao().isTurnover(), colaboradorRetornado1.getSolicitacao().getMotivoSolicitacao().isTurnover());
+		Assert.assertFalse(colaboradorRetornado2.getSolicitacao().getMotivoSolicitacao().isTurnover());
 		
 		colaboradorRetornadoArray = colaboradorDao.findAdmitidos(Vinculo.ESTAGIO, dataIni, dataFim, areasIds, estabelecimentosIds, false);
-		assertEquals(0, colaboradorRetornadoArray.size());
+		Assert.assertEquals(0, colaboradorRetornadoArray.size());
 	}
 
-	public void testFindHistoricoByColaboradors() {
+	@Test public void testFindHistoricoByColaboradors() {
 		Colaborador colaborador1 = getColaborador();
 		colaborador1.setNome("A TESTE");
 		colaborador1.setNomeComercial("A TESTE");
@@ -4499,15 +4580,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		ids.add(colaborador2.getId());
 
 		Collection<Colaborador> colaboradors = colaboradorDao.findByIdHistoricoAtual(ids);
-		assertEquals(2, colaboradors.size());
+		Assert.assertEquals(2, colaboradors.size());
 
 		Colaborador colaboradorTmp = (Colaborador) colaboradors.toArray()[0];
-		assertEquals(colaborador1.getNome(), colaboradorTmp.getNome());
-		assertEquals("Teste I", colaboradorTmp.getFaixaSalarial().getDescricao());
-		assertEquals(areaOrganizacional.getNome(), colaboradorTmp.getAreaOrganizacional().getNome());
+		Assert.assertEquals(colaborador1.getNome(), colaboradorTmp.getNome());
+		Assert.assertEquals("Teste I", colaboradorTmp.getFaixaSalarial().getDescricao());
+		Assert.assertEquals(areaOrganizacional.getNome(), colaboradorTmp.getAreaOrganizacional().getNome());
 	}
 
-	public void testFindByCpf() {
+	@Test public void testFindByCpf() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -4530,12 +4611,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador3.setDesligado(true);
 		colaboradorDao.save(colaborador3);
 
-		assertEquals("Todos", 3, colaboradorDao.findByCpf("26745534304", empresa.getId(), null, null).size());
-		assertEquals("Excluindo desligados", 2, colaboradorDao.findByCpf("26745534304", empresa.getId(), null, false).size());
-		assertEquals("Excluindo a si mesmo", 1, colaboradorDao.findByCpf("26745534304", empresa.getId(), colaborador2.getId(), false).size());
+		Assert.assertEquals("Todos", 3, colaboradorDao.findByCpf("26745534304", empresa.getId(), null, null).size());
+		Assert.assertEquals("Excluindo desligados", 2, colaboradorDao.findByCpf("26745534304", empresa.getId(), null, false).size());
+		Assert.assertEquals("Excluindo a si mesmo", 1, colaboradorDao.findByCpf("26745534304", empresa.getId(), colaborador2.getId(), false).size());
 	}
 
-	public void testUpdateInfoPessoaisByCpf() {
+	@Test public void testUpdateInfoPessoaisByCpf() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -4547,7 +4628,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.updateInfoPessoaisByCpf(colaborador, empresa.getId());
 	}
 	
-	public void testCountFormacaoEscolar() 
+	@Test public void testCountFormacaoEscolar() 
 	{
 		Date hoje = new Date();
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -4602,14 +4683,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Long> empresaIds = Arrays.asList(empresa.getId());
 		
-		assertEquals(1, colaboradorDao.countFormacaoEscolar(hoje, empresaIds, null, null, null, new String[]{Vinculo.EMPREGO}).size());
-		assertEquals(1, colaboradorDao.countFormacaoEscolar(hoje, empresaIds, new Long[]{estabelecimento1.getId()}, new Long[]{area.getId()}, null, new String[]{Vinculo.EMPREGO}).size());
-		assertEquals(1, colaboradorDao.countFormacaoEscolar(hoje, empresaIds, new Long[]{estabelecimento1.getId()}, null, new Long[]{cargo.getId()}, new String[]{Vinculo.EMPREGO}).size());
+		Assert.assertEquals(1, colaboradorDao.countFormacaoEscolar(hoje, empresaIds, null, null, null, new String[]{Vinculo.EMPREGO}).size());
+		Assert.assertEquals(1, colaboradorDao.countFormacaoEscolar(hoje, empresaIds, new Long[]{estabelecimento1.getId()}, new Long[]{area.getId()}, null, new String[]{Vinculo.EMPREGO}).size());
+		Assert.assertEquals(1, colaboradorDao.countFormacaoEscolar(hoje, empresaIds, new Long[]{estabelecimento1.getId()}, null, new Long[]{cargo.getId()}, new String[]{Vinculo.EMPREGO}).size());
 	
-		assertEquals(1, colaboradorDao.countFormacaoEscolar(hoje, null, new Long[]{estabelecimento1.getId()}, new Long[]{area.getId()}, new Long[]{cargo.getId()}, new String[]{Vinculo.EMPREGO}).size());
+		Assert.assertEquals(1, colaboradorDao.countFormacaoEscolar(hoje, null, new Long[]{estabelecimento1.getId()}, new Long[]{area.getId()}, new Long[]{cargo.getId()}, new String[]{Vinculo.EMPREGO}).size());
 	}
 	
-	public void testCountDeficiencia() 
+	@Test public void testCountDeficiencia() 
 	{
 		Date hoje = new Date();
 		
@@ -4630,16 +4711,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<DataGrafico> graficos = colaboradorDao.countDeficiencia(hoje, Arrays.asList(empresa.getId()), null, null, null, new String[]{Vinculo.EMPREGO, Vinculo.ESTAGIO});
 		
-		assertEquals(2, graficos.size());
+		Assert.assertEquals(2, graficos.size());
 		
-		assertEquals(new Deficiencia().get(Deficiencia.FISICA), ((DataGrafico) graficos.toArray()[0]).getLabel());
-		assertEquals(2.0, ((DataGrafico) graficos.toArray()[0]).getData());
+		Assert.assertEquals(new Deficiencia().get(Deficiencia.FISICA), ((DataGrafico) graficos.toArray()[0]).getLabel());
+		Assert.assertEquals(new Float(2.0), new Float(((DataGrafico) graficos.toArray()[0]).getData()));
 		
-		assertEquals(new Deficiencia().get(Deficiencia.AUDITIVA), ((DataGrafico) graficos.toArray()[1]).getLabel());
-		assertEquals(1.0, ((DataGrafico) graficos.toArray()[1]).getData());
+		Assert.assertEquals(new Deficiencia().get(Deficiencia.AUDITIVA), ((DataGrafico) graficos.toArray()[1]).getLabel());
+		Assert.assertEquals(new Float(1.0), new Float(((DataGrafico) graficos.toArray()[1]).getData()));
 		
-		assertEquals(1, colaboradorDao.countDeficiencia(hoje, null, new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, null, new String[]{Vinculo.EMPREGO}).size());
-		assertEquals(1, colaboradorDao.countDeficiencia(hoje, Arrays.asList(empresa.getId()), new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, null, new String[]{Vinculo.EMPREGO}).size());
+		Assert.assertEquals(1, colaboradorDao.countDeficiencia(hoje, null, new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, null, new String[]{Vinculo.EMPREGO}).size());
+		Assert.assertEquals(1, colaboradorDao.countDeficiencia(hoje, Arrays.asList(empresa.getId()), new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, null, new String[]{Vinculo.EMPREGO}).size());
 	}
 
 	private void criaColaboradorHistoricoParaCountDeficiencia(Date hoje, Empresa empresa, Estabelecimento estabelecimento1, FaixaSalarial faixa, AreaOrganizacional area)
@@ -4666,7 +4747,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(historicoColaborador4);
 	}
 	
-	public void testFindEmailsByPapel() 
+	@Test public void testFindEmailsByPapel() 
 	{
 		Usuario teo = UsuarioFactory.getEntity();
 		usuarioDao.save(teo);
@@ -4699,10 +4780,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		String[] emails = colaboradorDao.findEmailsByPapel(usuarioEmpresaIds);
 		
-		assertEquals(1, emails.length);
+		Assert.assertEquals(1, emails.length);
 	}
 
-	public void testFindParticipantesByAvaliacaoDesempenho() {
+	@Test public void testFindParticipantesByAvaliacaoDesempenho() {
 		Colaborador avaliador = ColaboradorFactory.getEntity();
 		avaliador.setNome("Avaliador Carrasco");
 		colaboradorDao.save(avaliador);
@@ -4734,12 +4815,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioAvaliado2);
 
 		// avaliados
-		assertEquals(2, colaboradorDao.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null).size());
+		Assert.assertEquals(2, colaboradorDao.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null).size());
 		// avaliadores
-		assertEquals(1, colaboradorDao.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null).size());
+		Assert.assertEquals(1, colaboradorDao.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null).size());
 	}
 
-	public void testFindColaboradorDeAvaliacaoDesempenhoNaoRespondida() 
+	@Test public void testFindColaboradorDeAvaliacaoDesempenhoNaoRespondida() 
 	{
 		Date inicio = DateUtil.criarDataMesAno(01, 01, 2011);
 		Date fim = DateUtil.incrementaMes(new Date(), 1);
@@ -4805,11 +4886,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 				qtdColabErrado++;
 		}
 		
-		assertEquals(1, qtdColabCorreto);
-		assertEquals(0, qtdColabErrado);
+		Assert.assertEquals(1, qtdColabCorreto);
+		Assert.assertEquals(0, qtdColabErrado);
 	}
 	
-	public void testFindByQuestionarioNaoRespondido() {
+	@Test public void testFindByQuestionarioNaoRespondido() {
 		Colaborador joao = ColaboradorFactory.getEntity();
 		joao.setNome("Joao");
 		colaboradorDao.save(joao);
@@ -4833,10 +4914,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorQuestionarioRespondido.setAvaliacao(null);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioRespondido);
 		
-		assertEquals(1, colaboradorDao.findByQuestionarioNaoRespondido(questionario.getId()).size());
+		Assert.assertEquals(1, colaboradorDao.findByQuestionarioNaoRespondido(questionario.getId()).size());
 	}
 
-	public void testFindParticipantesDistinctByAvaliacaoDesempenho() {
+	@Test public void testFindParticipantesDistinctByAvaliacaoDesempenho() {
 		Colaborador avaliado = ColaboradorFactory.getEntity();
 		avaliado.setNome("Avaliado");
 		colaboradorDao.save(avaliado);
@@ -4859,10 +4940,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
 
-		assertEquals(1, colaboradorDao.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null, null, null).size());
+		Assert.assertEquals(1, colaboradorDao.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null, null, null).size());
 	}
 	
-	public void testQtdDemitidosEm90Dias() 
+	@Test public void testQtdDemitidosEm90Dias() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -4891,7 +4972,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorMaria.setColaborador(mariaNaoDesligada);
 		historicoColaboradorDao.save(historicoColaboradorMaria);
 		
-		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, null, dataAte));
+		Assert.assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, null, dataAte));
 		
 		Colaborador joaoDesligadoAntesDoPeriodo = ColaboradorFactory.getEntity();
 		joaoDesligadoAntesDoPeriodo.setEmpresa(empresa);
@@ -4904,7 +4985,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorJoao.setColaborador(joaoDesligadoAntesDoPeriodo);
 		historicoColaboradorDao.save(historicoColaboradorJoao);
 		
-		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, null, dataAte));
+		Assert.assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, null, dataAte));
 		
 		Colaborador marciaDesligadoDepoisPeriodo = ColaboradorFactory.getEntity();
 		marciaDesligadoDepoisPeriodo.setEmpresa(empresa);
@@ -4917,7 +4998,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorMarcia.setColaborador(marciaDesligadoDepoisPeriodo);
 		historicoColaboradorDao.save(historicoColaboradorMarcia);
 		
-		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, null, dataAte));
+		Assert.assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, null, dataAte));
 
 		Colaborador pedroDesligadoNoPeriodoForaDoPeriodoDe90Dias = ColaboradorFactory.getEntity();
 		pedroDesligadoNoPeriodoForaDoPeriodoDe90Dias.setEmpresa(empresa);
@@ -4957,12 +5038,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorBebel.setEstabelecimento(estabelecimento2);
 		historicoColaboradorDao.save(historicoColaboradorBebel);
 		
-		assertEquals("Sem considerar area nem estabelecimento", 2, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, null, dataAte));
-		assertEquals("Considerando estabelecimento", 1, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), new Long[] { estabelecimento1.getId() }, null, dataAte));
-		assertEquals("Considerando area organizacional", 1, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, new Long[] { area1.getId() }, dataAte));
+		Assert.assertEquals("Sem considerar area nem estabelecimento", 2, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, null, dataAte));
+		Assert.assertEquals("Considerando estabelecimento", 1, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), new Long[] { estabelecimento1.getId() }, null, dataAte));
+		Assert.assertEquals("Considerando area organizacional", 1, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, new Long[] { area1.getId() }, dataAte));
 	}
 	
-	public void testQtdAdmitidosPeriodo() 
+	@Test public void testQtdAdmitidosPeriodo() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -5006,7 +5087,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorBebel.setEstabelecimento(estabelecimento2);
 		historicoColaboradorDao.save(historicoColaboradorBebel);
 		
-		assertEquals(0, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), null, null, dataAte));
+		Assert.assertEquals(0, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), null, null, dataAte));
 		
 		Colaborador joaoFora = ColaboradorFactory.getEntity();
 		joaoFora.setEmpresa(empresa);
@@ -5044,12 +5125,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorPedro.setEstabelecimento(estabelecimento2);
 		historicoColaboradorDao.save(historicoColaboradorPedro);
 		
-		assertEquals("Sem considerar area nem estabelecimento", 2, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), null, null, dataAte));
-		assertEquals("Considerando estabelecimento", 1, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), new Long[] { estabelecimento1.getId() }, null, dataAte));
-		assertEquals("Considerando area organizacional", 1, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), null, new Long[] { area1.getId() }, dataAte));
+		Assert.assertEquals("Sem considerar area nem estabelecimento", 2, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), null, null, dataAte));
+		Assert.assertEquals("Considerando estabelecimento", 1, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), new Long[] { estabelecimento1.getId() }, null, dataAte));
+		Assert.assertEquals("Considerando area organizacional", 1, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), null, new Long[] { area1.getId() }, dataAte));
 	}
 	
-	public void testGetColaboradoresByTurmas() 
+	@Test public void testGetColaboradoresByTurmas() 
 	{
 		Date hoje = new Date();
 		
@@ -5110,10 +5191,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		diaTurma.setTurma(turma);
 		diaTurmaDao.save(diaTurma);
 
-		assertEquals(new Integer(1), colaboradorDao.qtdTotalDiasDaTurmaVezesColaboradoresInscritos(null, null, null, new Long[]{curso.getId()}, null, new Long[]{estabelecimentoA.getId()}));
+		Assert.assertEquals(new Integer(1), colaboradorDao.qtdTotalDiasDaTurmaVezesColaboradoresInscritos(null, null, null, new Long[]{curso.getId()}, null, new Long[]{estabelecimentoA.getId()}));
 	}
 
-	public void testFindParentesByNome() 
+	@Test public void testFindParentesByNome() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -5136,17 +5217,17 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador pedro = ColaboradorFactory.getEntity(null, "pedro rodrigues_", null, null, "maria rodrigues_", empresa);
 		colaboradorDao.save(pedro);
 		
-		assertEquals(0, colaboradorDao.findParentesByNome(joao.getId(),joao.getNome(), empresa.getId()).size());
-		assertEquals(0, colaboradorDao.findParentesByNome(maria.getId(),maria.getPessoal().getConjuge(), empresa.getId()).size());
-		assertEquals(1, colaboradorDao.findParentesByNome(pedro.getId(),joao.getPessoal().getPai(), empresa.getId()).size());
-		assertEquals(3, colaboradorDao.findParentesByNome(maria.getId(),maria.getNome(), empresa.getId()).size());
-		assertEquals(3, colaboradorDao.findParentesByNome(maria.getId(),maria.getNome(), null).size());
-		assertEquals(1, colaboradorDao.findParentesByNome(julia.getId(),julia.getPessoal().getPai(), empresa.getId()).size());
-		assertEquals(3, colaboradorDao.findParentesByNome(roberta.getId(),roberta.getPessoal().getMae(), null).size());
-		assertTrue(colaboradorDao.findParentesByNome(maria.getId(),null, null).size() >= 4);
+		Assert.assertEquals(0, colaboradorDao.findParentesByNome(joao.getId(),joao.getNome(), empresa.getId()).size());
+		Assert.assertEquals(0, colaboradorDao.findParentesByNome(maria.getId(),maria.getPessoal().getConjuge(), empresa.getId()).size());
+		Assert.assertEquals(1, colaboradorDao.findParentesByNome(pedro.getId(),joao.getPessoal().getPai(), empresa.getId()).size());
+		Assert.assertEquals(3, colaboradorDao.findParentesByNome(maria.getId(),maria.getNome(), empresa.getId()).size());
+		Assert.assertEquals(3, colaboradorDao.findParentesByNome(maria.getId(),maria.getNome(), null).size());
+		Assert.assertEquals(1, colaboradorDao.findParentesByNome(julia.getId(),julia.getPessoal().getPai(), empresa.getId()).size());
+		Assert.assertEquals(3, colaboradorDao.findParentesByNome(roberta.getId(),roberta.getPessoal().getMae(), null).size());
+		Assert.assertTrue(colaboradorDao.findParentesByNome(maria.getId(),null, null).size() >= 4);
 	}
 
-	public void testFindColabPeriodoExperiencia() 
+	@Test public void testFindColabPeriodoExperiencia() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -5207,7 +5288,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Colaborador> colaboradors = colaboradorDao.findColabPeriodoExperiencia(periodoIni, periodoFim, avaliacaoIds, areaIds, estabelecimentoIds, null, true, false, empresa.getId());
 
-		assertEquals(1, colaboradors.size());
+		Assert.assertEquals(1, colaboradors.size());
 	}
 
 	private Map<String, Object> setupFindCotmHistoricoFuturoSQL()
@@ -5285,7 +5366,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		 return retorno;
 	 }
 	
-	public void testFindCotmHistoricoFuturoSQLCpfEmpresa()
+	@Test public void testFindCotmHistoricoFuturoSQLCpfEmpresa()
 	{
 		Map<String, Object> objetos = setupFindCotmHistoricoFuturoSQL();
 		
@@ -5295,10 +5376,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		parametros.put("cpfBusca", "1232136239");
 		parametros.put("empresaId", ((Empresa)objetos.get("empresa")).getId());
 
-		assertEquals(4, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0, null).size());
+		Assert.assertEquals(4, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0, null).size());
 	 }
 	
-	public void testFindCotmHistoricoFuturoSQLCpfEmpresaFaixaSalarial()
+	@Test public void testFindCotmHistoricoFuturoSQLCpfEmpresaFaixaSalarial()
 	{
 		Map<String, Object> objetos = setupFindCotmHistoricoFuturoSQL();
 		
@@ -5309,10 +5390,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		parametros.put("empresaId", ((Empresa)objetos.get("empresa")).getId());
 		parametros.put("faixaSalarialId", ((FaixaSalarial)objetos.get("faixaSalarial")).getId());
 		
-		assertEquals(3, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0, 1L).size());
+		Assert.assertEquals(3, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0, 1L).size());
 	}
 	
-	public void testFindCotmHistoricoFuturoSQLCodigoAC()
+	@Test public void testFindCotmHistoricoFuturoSQLCodigoAC()
 	{
 		Map<String, Object> objetos = setupFindCotmHistoricoFuturoSQL();
 		
@@ -5326,11 +5407,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Object[] colab = (Object[]) colaboradores.iterator().next();
 		
-		assertEquals(1, colaboradores.size());
-		assertEquals(((Colaborador)objetos.get("maria")).getId(), (Long)((BigInteger)colab[0]).longValue());
+		Assert.assertEquals(1, colaboradores.size());
+		Assert.assertEquals(((Colaborador)objetos.get("maria")).getId(), (Long)((BigInteger)colab[0]).longValue());
 	}
 	
-	public void testFindByEstabelecimentoDataAdmissao()
+	@Test public void testFindByEstabelecimentoDataAdmissao()
 	{
 		Empresa fortes = EmpresaFactory.getEmpresa();
 		empresaDao.save(fortes);
@@ -5388,10 +5469,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoManoel.setData(DateUtil.criarDataMesAno(1, 1, 2011));
 		historicoColaboradorDao.save(historicoManoel);
 		
-		assertEquals(1, colaboradorDao.findByEstabelecimentoDataAdmissao(matriz.getId(), hoje, fortes.getId()).size());
+		Assert.assertEquals(1, colaboradorDao.findByEstabelecimentoDataAdmissao(matriz.getId(), hoje, fortes.getId()).size());
 	}
 	
-	public void testFindColaboradoresByIds()
+	@Test public void testFindColaboradoresByIds()
 	{
 		Estabelecimento matriz = EstabelecimentoFactory.getEntity(1L);
 		estabelecimentoDao.save(matriz);
@@ -5447,15 +5528,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(historicoManoel);
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.findColaboradoresByIds(new Long[] { joao.getId(), pedro.getId(), rui.getId(), manoel.getId() }); 
-		assertEquals(4, colaboradores.size());
+		Assert.assertEquals(4, colaboradores.size());
 		
 		Colaborador colabJoao = (Colaborador) colaboradores.toArray()[0];
-		assertEquals("joao", colabJoao.getNome());
-		assertEquals("001", colabJoao.getMatricula());
-		assertEquals(hoje, colabJoao.getDataAdmissao());
+		Assert.assertEquals("joao", colabJoao.getNome());
+		Assert.assertEquals("001", colabJoao.getMatricula());
+		Assert.assertEquals(hoje, colabJoao.getDataAdmissao());
 	}
 
-	public void testFindQtdVagasPreenchidas() {
+	@Test public void testFindQtdVagasPreenchidas() {
 		
 		Date hoje = DateUtil.criarDataMesAno(29, 8, 2011);
 		
@@ -5547,13 +5628,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		int qtd3 = colaboradorDao.findQtdVagasPreenchidas(empresa.getId(), estabelecimentoIds, null, null, hoje, hoje);
 		int qtd4 = colaboradorDao.findQtdVagasPreenchidas(empresa.getId(), null, areaIds, null, hoje, hoje);
 		
-		assertEquals("Com solicitação especificada", 2, qtd1);
-		assertEquals("Sem solicitação especificada", 3, qtd2);
-		assertEquals("Com estabelecimento especificado", 2, qtd3);
-		assertEquals("Com área organizacional especificada(solicitação not null)", 1, qtd4);
+		Assert.assertEquals("Com solicitação especificada", 2, qtd1);
+		Assert.assertEquals("Sem solicitação especificada", 3, qtd2);
+		Assert.assertEquals("Com estabelecimento especificado", 2, qtd3);
+		Assert.assertEquals("Com área organizacional especificada(solicitação not null)", 1, qtd4);
 	}
 	
-	public void testFindSemCodigoAC() {
+	@Test public void testFindSemCodigoAC() {
 		
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
 		empresa1 = empresaDao.save(empresa1);
@@ -5635,8 +5716,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		hist6.setStatus(StatusRetornoAC.AGUARDANDO);
 		historicoColaboradorDao.save(hist6);
 		
-		assertEquals(2, colaboradorDao.findSemCodigoAC(empresa1.getId()).size());
-		assertEquals(1, colaboradorDao.findSemCodigoAC(empresa2.getId()).size());
+		Assert.assertEquals(2, colaboradorDao.findSemCodigoAC(empresa1.getId()).size());
+		Assert.assertEquals(1, colaboradorDao.findSemCodigoAC(empresa2.getId()).size());
 	}
 	
 	private HistoricoColaborador inicializaHistorico(Date data, Colaborador colaborador, FaixaSalarial faixaSalarial) 
@@ -5648,14 +5729,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		return historicoColaborador;
 	}
 
-	public void testDependenciasApagarColaboradorNoImportador()
+	@Test public void testDependenciasApagarColaboradorNoImportador()
 	{
 		String qtdTabelasComColaborador = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col where col.column_name = 'colaborador_id' and col.table_schema = 'public' and is_updatable = 'YES';");
 		/**se esse quebrar, provavelmente tem que inserir uma linha de delete no Importador colaboradorJDBC.java método removerColaborador(); **/
-		assertEquals("26", qtdTabelasComColaborador);
+		Assert.assertEquals("26", qtdTabelasComColaborador);
 	}
 
-	public void testAtualizaSolicitacaoDesligamento() 
+	@Test public void testAtualizaSolicitacaoDesligamento() 
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador);
@@ -5672,10 +5753,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 			exception = e;
 		}
 		
-		assertNull(exception);
+		Assert.assertNull(exception);
 	}
 	
-	public void testFindPendenciasSolicitacaoDesligamentoAC() 
+	@Test public void testFindPendenciasSolicitacaoDesligamentoAC() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -5689,10 +5770,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setEmpresa(empresa);
 		colaboradorDao.save(colaborador2);
 		
-		assertEquals(1, colaboradorDao.findPendenciasSolicitacaoDesligamentoAC(empresa.getId()).size());
+		Assert.assertEquals(1, colaboradorDao.findPendenciasSolicitacaoDesligamentoAC(empresa.getId()).size());
 	}
 	
-	public void testFindAdmitidosHaDiasSemEpi()
+	@Test public void testFindAdmitidosHaDiasSemEpi()
 	{
 		Calendar quarentaDiasAtras = Calendar.getInstance();
 		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -40);
@@ -5734,7 +5815,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		HistoricoColaborador historicoColaborador2 = criaHistoricoColaborador(funcao, colaborador2);
 		historicoColaboradorDao.save(historicoColaborador2);
 		
-		assertEquals(1, colaboradorDao.findAdmitidosHaDiasSemEpi(Arrays.asList(40, 49), empresa.getId()).size());
+		Assert.assertEquals(1, colaboradorDao.findAdmitidosHaDiasSemEpi(Arrays.asList(40, 49), empresa.getId()).size());
 
 	}
 
@@ -5743,7 +5824,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		return historicoColaborador2;
 	}
 	
-	public void testFindAdmitidosHaDiasSemEpiComEpi()
+	@Test public void testFindAdmitidosHaDiasSemEpiComEpi()
 	{
 		Calendar quarentaDiasAtras = Calendar.getInstance();
 		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -40);
@@ -5789,11 +5870,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		solicitacaoEpi.setColaborador(colaborador1);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 		
-		assertEquals(0, colaboradorDao.findAdmitidosHaDiasSemEpi(Arrays.asList(40, 49), empresa.getId()).size());
+		Assert.assertEquals(0, colaboradorDao.findAdmitidosHaDiasSemEpi(Arrays.asList(40, 49), empresa.getId()).size());
 		
 	}
 	
-	public void testFindAguardandoEntregaEpi()
+	@Test public void testFindAguardandoEntregaEpi()
 	{
 		Calendar cincoDiasAtras = Calendar.getInstance();
 		cincoDiasAtras.add(Calendar.DAY_OF_YEAR, -5);
@@ -5837,10 +5918,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		solicitacaoEpi2.setData(cincoDiasAtras.getTime());
 		solicitacaoEpiDao.save(solicitacaoEpi2);
 		
-		assertEquals(1, colaboradorDao.findAguardandoEntregaEpi(Arrays.asList(1, 3), empresa.getId()).size());
+		Assert.assertEquals(1, colaboradorDao.findAguardandoEntregaEpi(Arrays.asList(1, 3), empresa.getId()).size());
 	}
 	
-	public void testFfindParaLembreteTerminoContratoTemporario()
+	@Test public void testFfindParaLembreteTerminoContratoTemporario()
 	{
 		Calendar cincoDiasAtras = Calendar.getInstance();
 		cincoDiasAtras.add(Calendar.DAY_OF_YEAR, 5);
@@ -5871,10 +5952,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2005));
 		historicoColaboradorDao.save(historicoColaborador2);
 		
-		assertEquals(1, colaboradorDao.findParaLembreteTerminoContratoTemporario(Arrays.asList(1, 3), empresa.getId()).size());
+		Assert.assertEquals(1, colaboradorDao.findParaLembreteTerminoContratoTemporario(Arrays.asList(1, 3), empresa.getId()).size());
 	}
 
-	public void testTriarColaboradorPorFaixasEspecificas() 
+	@Test public void testTriarColaboradorPorFaixasEspecificas() 
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
 		empresa1 = empresaDao.save(empresa1);
@@ -5917,14 +5998,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(hist2);
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.triar(new Long[]{empresa1.getId(), empresa2.getId()}, null, null, null, null, new String[]{faixaSalarial.getDescricaoComStatus()}, new Long[]{}, null, false, true);
-		assertEquals(2, colaboradores.size());
+		Assert.assertEquals(2, colaboradores.size());
 		
 		colaboradores = colaboradorDao.triar(new Long[]{empresa1.getId()}, null, null, null, null, new String[]{String.valueOf(faixaSalarial.getId())}, new Long[]{}, null, false, false);
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 		
 	}
 
-	public void testTriarColaboradorPorTodasAsFaixas() 
+	@Test public void testTriarColaboradorPorTodasAsFaixas() 
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
 		empresa1 = empresaDao.save(empresa1);
@@ -5964,10 +6045,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(hist2);
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.triar(new Long[]{empresa1.getId()}, null, null, null, null, new String[]{}, new Long[]{}, null, false, true);
-		assertEquals(1, colaboradores.size());		
+		Assert.assertEquals(1, colaboradores.size());		
 	}
 	
-	public void testCountOcorrencia() 
+	@Test public void testCountOcorrencia() 
 	{
 		Date hoje = new Date();
 		Date dataFim = DateUtil.incrementaMes(hoje, 1);
@@ -5993,11 +6074,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Long[] areasIds = {area.getId()};
 		Long[] cargosIds = {cargo.getId()};
 		
-		assertEquals(1, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), estabelecimentosIds, areasIds, cargosIds, new Long[]{ocorrencia1.getId()}, 2).size());
-		assertEquals(2, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), new Long[]{estabelecimento.getId()}, areasIds, cargosIds, new Long[]{}, 2).size());
+		Assert.assertEquals(1, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), estabelecimentosIds, areasIds, cargosIds, new Long[]{ocorrencia1.getId()}, 2).size());
+		Assert.assertEquals(2, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), new Long[]{estabelecimento.getId()}, areasIds, cargosIds, new Long[]{}, 2).size());
 	}
 	
-	public void testCountOcorrenciaComColaboradorDesligado() 
+	@Test public void testCountOcorrenciaComColaboradorDesligado() 
 	{
 		Date hoje = new Date();
 		Date dataFim = DateUtil.incrementaMes(hoje, 1);
@@ -6023,11 +6104,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Long[] areasIds = {area.getId()};
 		Long[] cargosIds = {cargo.getId()};
 		
-		assertEquals(1, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), estabelecimentosIds, areasIds, cargosIds, new Long[]{ocorrencia1.getId()}, 2).size());
-		assertEquals(2, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), new Long[]{estabelecimento.getId()}, areasIds, cargosIds, new Long[]{}, 2).size());
+		Assert.assertEquals(1, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), estabelecimentosIds, areasIds, cargosIds, new Long[]{ocorrencia1.getId()}, 2).size());
+		Assert.assertEquals(2, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), new Long[]{estabelecimento.getId()}, areasIds, cargosIds, new Long[]{}, 2).size());
 	}
 	
-	public void testCountOcorrenciaComDataInicioAntesDoPeriodoFiltrado() 
+	@Test public void testCountOcorrenciaComDataInicioAntesDoPeriodoFiltrado() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -6044,10 +6125,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaboradorOcorrencia(colaborador, ocorrencia1, DateUtil.criarDataMesAno(03, 1, 2015), DateUtil.criarDataMesAno(03, 1, 2015) );
 		
 		Collection<DataGrafico> graficoOcorrencias = colaboradorDao.countOcorrencia(DateUtil.criarDataMesAno(03, 1, 2015), DateUtil.criarDataMesAno(03, 1, 2015), Arrays.asList(empresa.getId()), null, null, null, null, 2);
-		assertEquals("Quantidade da mesma ocorrência no período filtrado", 2.0, ((DataGrafico) graficoOcorrencias.toArray()[0]).getData());
+		Assert.assertEquals("Quantidade da mesma ocorrência no período filtrado", new Float(2.0), new Float(((DataGrafico) graficoOcorrencias.toArray()[0]).getData()));
 	}
 	
-	public void testCountOcorrenciaComDataInicioAntesEDataFimDespoisDoPeriodoFiltrado() 
+	@Test public void testCountOcorrenciaComDataInicioAntesEDataFimDespoisDoPeriodoFiltrado() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -6066,12 +6147,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaboradorOcorrencia(colaborador, ocorrencia2, DateUtil.criarDataMesAno(04, 01, 2015), DateUtil.criarDataMesAno(04,01,2015));
 		
 		Collection<DataGrafico> graficoOcorrencias = colaboradorDao.countOcorrencia(DateUtil.criarDataMesAno(04, 1, 2015), DateUtil.criarDataMesAno(04, 1, 2015), Arrays.asList(empresa.getId()), null, null, null, null, 2);
-		assertEquals("Quantidade de ocorrências diferentes no período filtrado", 2, graficoOcorrencias.size());
-		assertEquals("Quantidade de ocorrências do tipo 'Atraso' no período filtrado", 1.0, ((DataGrafico) graficoOcorrencias.toArray()[0]).getData());
-		assertEquals("Quantidade de ocorrências do tipo 'Faltou Reunião' no período filtrado", 1.0, ((DataGrafico) graficoOcorrencias.toArray()[1]).getData());
+		Assert.assertEquals("Quantidade de ocorrências diferentes no período filtrado", 2, graficoOcorrencias.size());
+		Assert.assertEquals("Quantidade de ocorrências do tipo 'Atraso' no período filtrado", new Float(1.0), new Float(((DataGrafico) graficoOcorrencias.toArray()[0]).getData()));
+		Assert.assertEquals("Quantidade de ocorrências do tipo 'Faltou Reunião' no período filtrado", new Float(1.0), new Float(((DataGrafico) graficoOcorrencias.toArray()[1]).getData()));
 	}
 	
-	public void testCountProvidencia() 
+	@Test public void testCountProvidencia() 
 	{
 		Date hoje = new Date();
 		Date dataFim = DateUtil.incrementaMes(hoje, 1);
@@ -6096,11 +6177,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaboradorOcorrencia(colaborador, ocorrencia1, providencia1, hoje, dataFim);
 		saveColaboradorOcorrencia(colaborador, ocorrencia2, providencia2, hoje, dataFim);
 		
-		assertEquals(1, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, new Long[]{cargo.getId()}, new Long[]{ocorrencia1.getId()}, 2).size());
-		assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  null, null, null, null, 2).size());
+		Assert.assertEquals(1, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, new Long[]{cargo.getId()}, new Long[]{ocorrencia1.getId()}, 2).size());
+		Assert.assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  null, null, null, null, 2).size());
 	}
 	
-	public void testCountProvidencia1() 
+	@Test public void testCountProvidencia1() 
 	{
 		Date dataAdmissao = DateUtil.criarDataMesAno(01, 01, 2016);
 		Date dataDesligamento = DateUtil.criarDataMesAno(01, 04, 2016);
@@ -6123,15 +6204,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<DataGrafico> graficoProvidencias = colaboradorDao.countProvidencia(DateUtil.criarDataMesAno(01, 03, 2016), DateUtil.criarDataMesAno(31, 03, 2016), Arrays.asList(empresa.getId()), null, null, null, null, 2);
 		
-		assertEquals("Quantidade de providencias diferentes para o período filtrado", 2, graficoProvidencias.size());
-		assertEquals("Quantidade de providencias do tipo 'Abonar Hora' para o período filtrado", 1.0, ((DataGrafico) graficoProvidencias.toArray()[0]).getData());
-		assertEquals("Abonar Hora", ((DataGrafico) graficoProvidencias.toArray()[0]).getLabel());
-		assertEquals("Quantidade de providencias do tipo 'Desligamento' para o período filtrado", 1.0, ((DataGrafico) graficoProvidencias.toArray()[1]).getData());
-		assertEquals("Desligamento", ((DataGrafico) graficoProvidencias.toArray()[1]).getLabel());
+		Assert.assertEquals("Quantidade de providencias diferentes para o período filtrado", 2, graficoProvidencias.size());
+		Assert.assertEquals("Quantidade de providencias do tipo 'Abonar Hora' para o período filtrado", new Float(1.0), new Float(((DataGrafico) graficoProvidencias.toArray()[0]).getData()));
+		Assert.assertEquals("Abonar Hora", ((DataGrafico) graficoProvidencias.toArray()[0]).getLabel());
+		Assert.assertEquals("Quantidade de providencias do tipo 'Desligamento' para o período filtrado", new Float(1.0), new Float(((DataGrafico) graficoProvidencias.toArray()[1]).getData()));
+		Assert.assertEquals("Desligamento", ((DataGrafico) graficoProvidencias.toArray()[1]).getLabel());
 	}
 	
 	
-	public void testHabilitacaoAVencer()
+	@Test public void testHabilitacaoAVencer()
 	{
 		Calendar umDiasDepois = Calendar.getInstance();
 		umDiasDepois.add(Calendar.DAY_OF_YEAR, 1);
@@ -6186,14 +6267,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(historicoColaborador3);
 		
 		Collection<Colaborador> colaboradors = colaboradorDao.findHabilitacaAVencer(Arrays.asList(1, 2), empresa.getId());
-		assertEquals(2, colaboradors.size());
+		Assert.assertEquals(2, colaboradors.size());
 		
 		colaboradors = colaboradorDao.findHabilitacaAVencer(Arrays.asList(3), empresa.getId());
-		assertEquals(colaborador3.getId(), ((Colaborador)colaboradors.toArray()[0]).getId());
+		Assert.assertEquals(colaborador3.getId(), ((Colaborador)colaboradors.toArray()[0]).getId());
 
 	}
 	
-	public void testCountDemitidosTempoServico()
+	@Test public void testCountDemitidosTempoServico()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -6231,24 +6312,24 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<TurnOver> retorno = colaboradorDao.countDemitidosTempoServico(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), Arrays.asList(estabelecimento.getId()), Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
 		
-		assertEquals(2, retorno.size());
+		Assert.assertEquals(2, retorno.size());
 
 		TurnOver t1 = ((TurnOver) retorno.toArray()[0]);
 		TurnOver t2 = ((TurnOver) retorno.toArray()[1]);
 		
-		assertEquals(new Integer(2), t1.getQtdColaboradores());
-		assertEquals(new Integer(6), t1.getTempoServico());
+		Assert.assertEquals(new Integer(2), t1.getQtdColaboradores());
+		Assert.assertEquals(new Integer(6), t1.getTempoServico());
 		
-		assertEquals(new Integer(1), t2.getQtdColaboradores());
-		assertEquals(new Integer(25), t2.getTempoServico());
+		Assert.assertEquals(new Integer(1), t2.getQtdColaboradores());
+		Assert.assertEquals(new Integer(25), t2.getTempoServico());
 		
 		retorno = colaboradorDao.countDemitidosTempoServico(empresaTurnover, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), Arrays.asList(estabelecimento.getId()), Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
 
-		assertEquals(1, retorno.size());
+		Assert.assertEquals(1, retorno.size());
 		
 	}
 	
-	public void testCountColaboradoresPorTempoServico()
+	@Test public void testCountColaboradoresPorTempoServico()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -6279,10 +6360,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		int qtdColaboradoresPorTempoServico = colaboradorDao.countColaboradoresPorTempoServico(empresa, 1, 8, Arrays.asList(estabelecimento.getId()), Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
 		
-		assertEquals(3, qtdColaboradoresPorTempoServico);
+		Assert.assertEquals(3, qtdColaboradoresPorTempoServico);
 	}
 	
-	public void testFindDemitidosTurnover()
+	@Test public void testFindDemitidosTurnover()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -6319,16 +6400,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		criarColaboradorHistorico(null, null, empresaTurnover, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, md, null, a1, fs1, can1, null, false);
 		
 		Collection<Colaborador> retorno = colaboradorDao.findDemitidosTurnover(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), null, null, null, Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
-		assertEquals("Todos do intervalo", 3, retorno.size());
+		Assert.assertEquals("Todos do intervalo", 3, retorno.size());
 
 		retorno = colaboradorDao.findDemitidosTurnover(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), new Integer[] {0}, new Integer[] {6}, null, Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
-		assertEquals("Passando intervalos de tempo de servico", 2, retorno.size());
+		Assert.assertEquals("Passando intervalos de tempo de servico", 2, retorno.size());
 
 		retorno = colaboradorDao.findDemitidosTurnover(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), null, null, Arrays.asList(e1.getId()), Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
-		assertEquals("Filtro por estabelecimento", 1, retorno.size());
+		Assert.assertEquals("Filtro por estabelecimento", 1, retorno.size());
 
 		retorno = colaboradorDao.findDemitidosTurnover(empresaTurnover, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), null, null, null, Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
-		assertEquals("Empresa com turnover por solicitacao", 1, retorno.size());
+		Assert.assertEquals("Empresa com turnover por solicitacao", 1, retorno.size());
 	}
 	
 	private void criarColaboradorHistorico(String nomeColaborador, String codigoAc, Empresa empresa, Date dataAdmissao, Date dataDesligamento, Date dataSolicitacaoDesligamento, Date dataSolicitacaoDesligamentoAC, MotivoDemissao motivoDemissao, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, FaixaSalarial faixaSalarial, Candidato candidato, Usuario usuario, boolean naoIntegraAC)
@@ -6358,7 +6439,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(historicoColaborador);
 	}
 	
-	public void testFindByEmpresaAndStatusAC()
+	@Test public void testFindByEmpresaAndStatusAC()
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa1);
@@ -6393,16 +6474,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Colaborador> colaboradoresNaoIntegraAC = colaboradorDao.findByEmpresaAndStatusAC(empresa1.getId(), null, null, StatusRetornoAC.CONFIRMADO, true, true, null, true, "c.nome");
 		Collection<Colaborador> colaboradores = colaboradorDao.findByEmpresaAndStatusAC(empresa1.getId(), null, null, StatusRetornoAC.CONFIRMADO, true, false, null, true, "c.nome");
 
-		assertEquals(1, colaboradoresNaoIntegraAC.size());
-		assertEquals("Bruna", ((Colaborador)colaboradoresNaoIntegraAC.toArray()[0]).getNome());
+		Assert.assertEquals(1, colaboradoresNaoIntegraAC.size());
+		Assert.assertEquals("Bruna", ((Colaborador)colaboradoresNaoIntegraAC.toArray()[0]).getNome());
 		
-		assertEquals(2, colaboradores.size());
-		assertEquals("Airton", ((Colaborador)colaboradores.toArray()[0]).getNome());
-		assertEquals("Bruna", ((Colaborador)colaboradores.toArray()[1]).getNome());
-		assertEquals("Mãe > Filha", ((Colaborador)colaboradores.toArray()[0]).getAreaOrganizacional().getNome());
+		Assert.assertEquals(2, colaboradores.size());
+		Assert.assertEquals("Airton", ((Colaborador)colaboradores.toArray()[0]).getNome());
+		Assert.assertEquals("Bruna", ((Colaborador)colaboradores.toArray()[1]).getNome());
+		Assert.assertEquals("Mãe > Filha", ((Colaborador)colaboradores.toArray()[0]).getAreaOrganizacional().getNome());
 	}
 	
-	public void testDesvinculaCandidato() 
+	@Test public void testDesvinculaCandidato() 
 	{
 		Candidato candidato = CandidatoFactory.getCandidato();
 		candidatoDao.save(candidato);
@@ -6412,14 +6493,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.save(colaborador);
 		
 		Colaborador colaboradorRetorno = colaboradorDao.findByCandidato(candidato.getId(), null);
-		assertNotNull(colaboradorRetorno);
+		Assert.assertNotNull(colaboradorRetorno);
 
 		colaboradorDao.desvinculaCandidato(candidato.getId());
 		colaboradorRetorno = colaboradorDao.findByCandidato(candidato.getId(), null);
-		assertNull(colaboradorRetorno);
+		Assert.assertNull(colaboradorRetorno);
 	}
 	
-	public void testFindAguardandoDesligamento()
+	@Test public void testFindAguardandoDesligamento()
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa1);
@@ -6449,11 +6530,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.findAguardandoDesligamento(empresa1.getId(), areas, null);
 		
-		assertEquals(1, colaboradores.size());
-		assertEquals("Demosval Pede Pra Sair", ((Colaborador)colaboradores.toArray()[0]).getNome());
+		Assert.assertEquals(1, colaboradores.size());
+		Assert.assertEquals("Demosval Pede Pra Sair", ((Colaborador)colaboradores.toArray()[0]).getNome());
 	}
 	
-	public void testRemoveComDependencias()
+	@Test public void testRemoveComDependencias()
 	{	
 		Colaborador colaborador = ColaboradorFactory.getEntity(-1L);
 		colaboradorDao.save(colaborador);
@@ -6463,13 +6544,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia);
 		
 		colaboradorDao.removeComDependencias(-1L);
-		assertNull(colaboradorDao.findEntidadeComAtributosSimplesById(-1L));
+		Assert.assertNull(colaboradorDao.findEntidadeComAtributosSimplesById(-1L));
 		
 		String qtdTabelasComColaborador = JDBCConnection.executeQuery("SELECT COUNT(kcu.column_name) FROM information_schema.table_constraints AS tc INNER JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name INNER JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND ccu.table_name = 'colaborador'");
-		assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em ColaboradorDaoHibernate.removeComDependencias", "35", qtdTabelasComColaborador);
+		Assert.assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em ColaboradorDaoHibernate.removeComDependencias", "35", qtdTabelasComColaborador);
 	}
 	
-	public void testFindUsuarioByAreaEstabelecimento()
+	@Test public void testFindUsuarioByAreaEstabelecimento()
 	{
 		Usuario usuario1 = UsuarioFactory.getEntity();
 		usuarioDao.save(usuario1);
@@ -6495,11 +6576,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Usuario> usuarios = colaboradorDao.findUsuarioByAreaEstabelecimento(new Long[] {area2.getId()}, new Long[] {estab2.getId()});
 		
-		assertEquals(1, usuarios.size());
-		assertEquals(usuario2.getId(), ((Usuario)usuarios.toArray()[0]).getId());
+		Assert.assertEquals(1, usuarios.size());
+		Assert.assertEquals(usuario2.getId(), ((Usuario)usuarios.toArray()[0]).getId());
 	}
 	
-	public void testFindColaboradoresByCodigoAC() 
+	@Test public void testFindColaboradoresByCodigoAC() 
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa1);
@@ -6522,15 +6603,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		criarColaboradorHistorico("Demosval", "000012", empresa1, DateUtil.criarDataMesAno(1, 5, 2009), null, DateUtil.criarDataMesAno(1, 11, 2010), null, null, e1, a1, fs1, null, null, false);
 		
-		assertEquals(1, colaboradorDao.findColaboradoresByCodigoAC(empresa1.getId(), true, "000012").size());
+		Assert.assertEquals(1, colaboradorDao.findColaboradoresByCodigoAC(empresa1.getId(), true, "000012").size());
 		
 		criarColaboradorHistorico("Xuxa", "000013", empresa1, DateUtil.criarDataMesAno(1, 5, 2009), null, DateUtil.criarDataMesAno(1, 11, 2010), null, null, e1, a1, fs1, null, null, false);
 		criarColaboradorHistorico("Angelica", "000014", empresa2, DateUtil.criarDataMesAno(1, 5, 2009), null, DateUtil.criarDataMesAno(1, 11, 2010), null, null, e1, a1, fs1, null, null, false);
 		
-		assertEquals(2, colaboradorDao.findColaboradoresByCodigoAC(empresa1.getId(), true, new String[]{"000012","000013","000014"}).size());
+		Assert.assertEquals(2, colaboradorDao.findColaboradoresByCodigoAC(empresa1.getId(), true, new String[]{"000012","000013","000014"}).size());
 	}
 	
-	public void testFindByEstadosCelularOitoDigitos(){
+	@Test public void testFindByEstadosCelularOitoDigitos(){
 		Estado estado = EstadoFactory.getEntity(50L);
 		estadoDao.save(estado);
 		
@@ -6538,11 +6619,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.getEndereco().setUf(estado);
 		colaborador = colaboradorDao.save(colaborador);
 		
-		assertEquals(1, colaboradorDao.findByEstadosCelularOitoDigitos(new Long[]{estado.getId()}).size());
+		Assert.assertEquals(1, colaboradorDao.findByEstadosCelularOitoDigitos(new Long[]{estado.getId()}).size());
 		
 	}
 	
-	public void testListColaboradorComDataSolDesligamentoAcAndCodigoAc()
+	@Test public void testListColaboradorComDataSolDesligamentoAcAndCodigoAc()
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa1);
@@ -6574,10 +6655,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.save(colaborador);
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.listColaboradorComDataSolDesligamentoAC(empresa1.getId());
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 	}
 	
-	public void testCountDemitidosPeriodo()
+	@Test public void testCountDemitidosPeriodo()
 	{
 		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
 		Date dataFim = DateUtil.getUltimoDiaMes(dataIni);
@@ -6655,14 +6736,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorcomMotivoDesligamentoReducaoQuadro.setAreaOrganizacional(area);
 		historicoColaboradorDao.save(historicoColaboradorcomMotivoDesligamentoReducaoQuadro);
 		
-		assertEquals(new Integer(2), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento2.getId()), Arrays.asList(area.getId()), null, Arrays.asList(colaborador2.getVinculo()), false));
-		assertEquals("Vinculos nulos", new Integer(3), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento1.getId(), estabelecimento2.getId()), Arrays.asList(area.getId()), null, null, false));
-		assertEquals("Os dois Vinculos", new Integer(3), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento1.getId(), estabelecimento2.getId()), Arrays.asList(area.getId()), null, Arrays.asList(colaborador1.getVinculo(), colaborador2.getVinculo() ), false));
-		assertEquals("Vinculos nulos e um único estabelecimento", new Integer(1), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento1.getId()), Arrays.asList(area.getId()), null, null, false));
-		assertEquals("Colaborador com Motivo de desligamento de Redução de quadro", new Integer(1), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), null, null, null, null, true));
+		Assert.assertEquals(new Integer(2), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento2.getId()), Arrays.asList(area.getId()), null, Arrays.asList(colaborador2.getVinculo()), false));
+		Assert.assertEquals("Vinculos nulos", new Integer(3), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento1.getId(), estabelecimento2.getId()), Arrays.asList(area.getId()), null, null, false));
+		Assert.assertEquals("Os dois Vinculos", new Integer(3), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento1.getId(), estabelecimento2.getId()), Arrays.asList(area.getId()), null, Arrays.asList(colaborador1.getVinculo(), colaborador2.getVinculo() ), false));
+		Assert.assertEquals("Vinculos nulos e um único estabelecimento", new Integer(1), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento1.getId()), Arrays.asList(area.getId()), null, null, false));
+		Assert.assertEquals("Colaborador com Motivo de desligamento de Redução de quadro", new Integer(1), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), null, null, null, null, true));
 	}
 	
-	public void testGetOcorrenciasByPeriodo(){
+	@Test public void testGetOcorrenciasByPeriodo(){
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		Date dataAdmissao = DateUtil.criarDataMesAno(1, 01, 2015);
@@ -6680,11 +6761,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Ocorrencia> ocorrencias = colaboradorDao.getOcorrenciasByPeriodo(DateUtil.criarDataMesAno(1, 01, 2016), DateUtil.criarDataMesAno(01, 02, 2016),  LongUtil.arrayLongToCollectionLong(new Long[]{empresa.getId()}), null, null, null, 20);
 		
-		assertEquals(2, ocorrencias.size());
-		assertEquals("Atestado médico", ((Ocorrencia)ocorrencias.toArray()[0]).getDescricao());
+		Assert.assertEquals(2, ocorrencias.size());
+		Assert.assertEquals("Atestado médico", ((Ocorrencia)ocorrencias.toArray()[0]).getDescricao());
 	}
 	
-	public void testGetOcorrenciasByPeriodoComOcorrenciaIniciandoAntesEFinalizandoDepoisDoPeriodoFiltrado(){
+	@Test public void testGetOcorrenciasByPeriodoComOcorrenciaIniciandoAntesEFinalizandoDepoisDoPeriodoFiltrado(){
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		Date dataAdmissao = DateUtil.criarDataMesAno(1, 01, 2014);
@@ -6701,11 +6782,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Ocorrencia> ocorrencias = colaboradorDao.getOcorrenciasByPeriodo(DateUtil.criarDataMesAno(15, 01, 2016), DateUtil.criarDataMesAno(31, 01, 2016),  LongUtil.arrayLongToCollectionLong(new Long[]{empresa.getId()}), null, null, null, 20);
 		
-		assertEquals(1, ocorrencias.size());
-		assertEquals("Afastamento", ((Ocorrencia)ocorrencias.toArray()[0]).getDescricao());
+		Assert.assertEquals(1, ocorrencias.size());
+		Assert.assertEquals("Afastamento", ((Ocorrencia)ocorrencias.toArray()[0]).getDescricao());
 	}
 	
-	public void testGetOcorrenciasByPeriodoComOcorrenciaIniciandoAntesDoPeriodoFiltrado(){
+	@Test public void testGetOcorrenciasByPeriodoComOcorrenciaIniciandoAntesDoPeriodoFiltrado(){
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -6723,11 +6804,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Ocorrencia> ocorrencias = colaboradorDao.getOcorrenciasByPeriodo(DateUtil.criarDataMesAno(15, 01, 2016), DateUtil.criarDataMesAno(01, 02, 2016),  LongUtil.arrayLongToCollectionLong(new Long[]{empresa.getId()}), null, null, null, 20);
 		
-		assertEquals(1, ocorrencias.size());
-		assertEquals("Falta", ((Ocorrencia)ocorrencias.toArray()[0]).getDescricao());
+		Assert.assertEquals(1, ocorrencias.size());
+		Assert.assertEquals("Falta", ((Ocorrencia)ocorrencias.toArray()[0]).getDescricao());
 	}
 	
-	public void testGetOcorrenciasByPeriodoComTodosOsFiltros(){
+	@Test public void testGetOcorrenciasByPeriodoComTodosOsFiltros(){
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		Date dataAdmissao = DateUtil.criarDataMesAno(1, 01, 2015);
@@ -6753,55 +6834,55 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Ocorrencia> ocorrencias = colaboradorDao.getOcorrenciasByPeriodo(DateUtil.criarDataMesAno(1, 01, 2016), DateUtil.criarDataMesAno(01, 02, 2016),  LongUtil.arrayLongToCollectionLong(new Long[]{empresa.getId()}), estabelecimentosId, areaOrganizacionaisId, cargosId, 20);
 		
-		assertEquals(2, ocorrencias.size());
-		assertEquals("Atestado médico", ((Ocorrencia)ocorrencias.toArray()[0]).getDescricao());
-		assertEquals("Falta", ((Ocorrencia)ocorrencias.toArray()[1]).getDescricao());
+		Assert.assertEquals(2, ocorrencias.size());
+		Assert.assertEquals("Atestado médico", ((Ocorrencia)ocorrencias.toArray()[0]).getDescricao());
+		Assert.assertEquals("Falta", ((Ocorrencia)ocorrencias.toArray()[1]).getDescricao());
 	}
 	
-	public void testExisteColaboradorAtivoTrue(){
+	@Test public void testExisteColaboradorAtivoTrue(){
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setPessoalCpf("12345678912");
 		colaboradorDao.save(colaborador);
 		
-		assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
+		Assert.assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
 	}
 	
-	public void testExisteColaboradorAtivoCPFNaoConfere(){
+	@Test public void testExisteColaboradorAtivoCPFNaoConfere(){
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setPessoalCpf("12345678912");
 		colaboradorDao.save(colaborador);
 		
-		assertFalse(colaboradorDao.existeColaboradorAtivo("1234567892", new Date()));
+		Assert.assertFalse(colaboradorDao.existeColaboradorAtivo("1234567892", new Date()));
 	}
 	
-	public void testExisteColaboradorAtivoComDataDesligamentoFuturaTrue(){
+	@Test public void testExisteColaboradorAtivoComDataDesligamentoFuturaTrue(){
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setPessoalCpf("12345678912");
 		colaborador.setDataDesligamento(DateUtil.incrementaDias(new Date(), 2));
 		colaboradorDao.save(colaborador);
 		
-		assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
+		Assert.assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
 	}
 	
-	public void testExisteColaboradorAtivoComDataDesligamentoIgualAInformadaTrue(){
+	@Test public void testExisteColaboradorAtivoComDataDesligamentoIgualAInformadaTrue(){
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setPessoalCpf("12345678912");
 		colaborador.setDataDesligamento(new Date());
 		colaboradorDao.save(colaborador);
 		
-		assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
+		Assert.assertTrue(colaboradorDao.existeColaboradorAtivo("12345678912", new Date()));
 	}
 	
-	public void testExisteColaboradorAtivoCoboradorDesligado(){
+	@Test public void testExisteColaboradorAtivoCoboradorDesligado(){
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setPessoalCpf("12345678912");
 		colaborador.setDataDesligamento(DateUtil.criarDataMesAno(1, 04, 2016));
 		colaboradorDao.save(colaborador);
 		
-		assertFalse(colaboradorDao.existeColaboradorAtivo("12345678912", DateUtil.criarDataMesAno(02, 04, 2016)));
+		Assert.assertFalse(colaboradorDao.existeColaboradorAtivo("12345678912", DateUtil.criarDataMesAno(02, 04, 2016)));
 	}
 	
-	public void testFindColaboradorComESemOrdemDeServico() {
+	@Test public void testFindColaboradorComESemOrdemDeServico() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -6818,10 +6899,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Long[] idsAreasDoGestor = {areaOrganizacional.getId()};
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findColaboradorComESemOrdemDeServico(colaboradorBusca, historicoColaborador, idsAreasDoGestor, SituacaoColaborador.ATIVO, FiltroOrdemDeServico.TODOS, 0, 0);
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 	}
 	
-	public void testFindColaboradorComESemOrdemDeServicoSemDadosDoHistorico() {
+	@Test public void testFindColaboradorComESemOrdemDeServicoSemDadosDoHistorico() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -6837,10 +6918,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findColaboradorComESemOrdemDeServico(colaboradorBusca, historicoColaborador, null, SituacaoColaborador.DESLIGADO, FiltroOrdemDeServico.TODOS, 1, 15);
-		assertEquals(0, colaboradores.size());
+		Assert.assertEquals(0, colaboradores.size());
 	}
 	
-	public void testFindColaboradorComESemOrdemDeServicoFiltrandoPelasAreasQueOGestorEResponsavel() {
+	@Test public void testFindColaboradorComESemOrdemDeServicoFiltrandoPelasAreasQueOGestorEResponsavel() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -6858,10 +6939,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findColaboradorComESemOrdemDeServico(colaboradorBusca, historicoColaborador, idsAreasDoGestor, SituacaoColaborador.TODOS, FiltroOrdemDeServico.SEM_ORDEM_DE_SERVICO, 0, 0);
-		assertEquals(1, colaboradores.size());
+		Assert.assertEquals(1, colaboradores.size());
 	}
 	
-	public void testFindColaboradorComESemOrdemDeServicoFiltrandoPelasAreasQueOGestorEResponsavelAreasSemColaborador() {
+	@Test public void testFindColaboradorComESemOrdemDeServicoFiltrandoPelasAreasQueOGestorEResponsavelAreasSemColaborador() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -6880,21 +6961,21 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findColaboradorComESemOrdemDeServico(colaboradorBusca, historicoColaborador, idsAreasDoGestor, SituacaoColaborador.TODOS, FiltroOrdemDeServico.COM_ORDEM_DE_SERVICO, 0, 0);
-		assertEquals(0, colaboradores.size());
+		Assert.assertEquals(0, colaboradores.size());
 	}
 	
-	public void testUpdateRespondeuEntrevistaDesligamento() 
+	@Test public void testUpdateRespondeuEntrevistaDesligamento() 
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador);
 		
 		Colaborador colaboradorRetorno = colaboradorDao.findColaboradorById(colaborador.getId());
-		assertFalse(colaboradorRetorno.isRespondeuEntrevista());
+		Assert.assertFalse(colaboradorRetorno.isRespondeuEntrevista());
 		
 		colaboradorDao.updateRespondeuEntrevistaDesligamento(colaborador.getId(), true);
 		
 		colaboradorRetorno = colaboradorDao.findColaboradorById(colaborador.getId());
-		assertTrue(colaboradorRetorno.isRespondeuEntrevista());
+		Assert.assertTrue(colaboradorRetorno.isRespondeuEntrevista());
 	}
 	
 	private FaixaSalarial saveFaixaSalarial(Cargo cargo){
@@ -7010,224 +7091,5 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		providencia.setDescricao(descricao);
 		providenciaDao.save(providencia);
 		return providencia;
-	}
-	
-	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
-	{
-		this.areaOrganizacionalDao = areaOrganizacionalDao;
-	}
-
-	public void setEmpresaDao(EmpresaDao empresaDao)
-	{
-		this.empresaDao = empresaDao;
-	}
-
-	public void setUsuarioDao(UsuarioDao usuarioDao)
-	{
-		this.usuarioDao = usuarioDao;
-	}
-
-	public GenericDao<Colaborador> getGenericDao()
-	{
-		return colaboradorDao;
-	}
-
-	public void setColaboradorDao(ColaboradorDao colaboradorDao)
-	{
-		this.colaboradorDao = colaboradorDao;
-	}
-
-	public void setCandidatoDao(CandidatoDao candidatoDao)
-	{
-		this.candidatoDao = candidatoDao;
-	}
-
-	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
-	{
-		this.historicoColaboradorDao = historicoColaboradorDao;
-	}
-
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
-	{
-		this.estabelecimentoDao = estabelecimentoDao;
-	}
-
-	public void setCargoDao(CargoDao cargoDao)
-	{
-		this.cargoDao = cargoDao;
-	}
-
-	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao)
-	{
-		this.faixaSalarialDao = faixaSalarialDao;
-	}
-
-	public void setGrupoOcupacionalDao(GrupoOcupacionalDao grupoOcupacionalDao)
-	{
-		this.grupoOcupacionalDao = grupoOcupacionalDao;
-	}
-
-	public void setMotivoDemissaoDao(MotivoDemissaoDao motivoDemissaoDao)
-	{
-		this.motivoDemissaoDao = motivoDemissaoDao;
-	}
-
-	public void setFaixaSalarialHistoricoDao(FaixaSalarialHistoricoDao faixaSalarialHistoricoDao)
-	{
-		this.faixaSalarialHistoricoDao = faixaSalarialHistoricoDao;
-	}
-
-	public void setTabelaReajusteColaboradorDao(TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao)
-	{
-		this.tabelaReajusteColaboradorDao = tabelaReajusteColaboradorDao;
-	}
-
-	public void setReajusteColaboradorDao(ReajusteColaboradorDao reajusteColaboradorDao)
-	{
-		this.reajusteColaboradorDao = reajusteColaboradorDao;
-	}
-
-	public void setAmbienteDao(AmbienteDao ambienteDao)
-	{
-		this.ambienteDao = ambienteDao;
-	}
-
-	public void setFuncaoDao(FuncaoDao funcaoDao)
-	{
-		this.funcaoDao = funcaoDao;
-	}
-
-	public void setBairroDao(BairroDao bairroDao)
-	{
-		this.bairroDao = bairroDao;
-	}
-
-	public void setPerfilDao(PerfilDao perfilDao)
-	{
-		this.perfilDao = perfilDao;
-	}
-
-	public void setAvaliacaoDesempenhoDao(AvaliacaoDesempenhoDao avaliacaoDesempenhoDao)
-	{
-		this.avaliacaoDesempenhoDao = avaliacaoDesempenhoDao;
-	}
-
-	public void setColaboradorQuestionarioDao(ColaboradorQuestionarioDao colaboradorQuestionarioDao)
-	{
-		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
-	}
-
-	public void setCamposExtrasDao(CamposExtrasDao camposExtrasDao)
-	{
-		this.camposExtrasDao = camposExtrasDao;
-	}
-
-	public void setTurmaDao(TurmaDao turmaDao)
-	{
-		this.turmaDao = turmaDao;
-	}
-
-	public void setColaboradorTurmaDao(ColaboradorTurmaDao colaboradorTurmaDao)
-	{
-		this.colaboradorTurmaDao = colaboradorTurmaDao;
-	}
-
-	public void setAvaliacaoDao(AvaliacaoDao avaliacaoDao)
-	{
-		this.avaliacaoDao = avaliacaoDao;
-	}
-
-	public void setGrupoACDao(GrupoACDao grupoACDao)
-	{
-		this.grupoACDao = grupoACDao;
-	}
-
-	public void setMotivoSolicitacaoDao(MotivoSolicitacaoDao motivoSolicitacaoDao)
-	{
-		this.motivoSolicitacaoDao = motivoSolicitacaoDao;
-	}
-
-	public void setSolicitacaoDao(SolicitacaoDao solicitacaoDao)
-	{
-		this.solicitacaoDao = solicitacaoDao;
-	}
-
-	public void setCandidatoSolicitacaoDao(CandidatoSolicitacaoDao candidatoSolicitacaoDao)
-	{
-		this.candidatoSolicitacaoDao = candidatoSolicitacaoDao;
-	}
-
-	public void setOcorrenciaDao(OcorrenciaDao ocorrenciaDao)
-	{
-		this.ocorrenciaDao = ocorrenciaDao;
-	}
-
-	public void setColaboradorOcorrenciaDao(ColaboradorOcorrenciaDao colaboradorOcorrenciaDao)
-	{
-		this.colaboradorOcorrenciaDao = colaboradorOcorrenciaDao;
-	}
-
-	public QuestionarioDao getQuestionarioDao()
-	{
-		return questionarioDao;
-	}
-
-	public void setQuestionarioDao(QuestionarioDao questionarioDao)
-	{
-		this.questionarioDao = questionarioDao;
-	}
-
-	public void setUsuarioEmpresaDao(UsuarioEmpresaDao usuarioEmpresaDao)
-	{
-		this.usuarioEmpresaDao = usuarioEmpresaDao;
-	}
-	
-	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao)
-	{
-		this.historicoFuncaoDao = historicoFuncaoDao;
-	}
-
-	public void setEpiDao(EpiDao epiDao)
-	{
-		this.epiDao = epiDao;
-	}
-	
-	public void setSolicitacaoEpiDao(SolicitacaoEpiDao solicitacaoEpiDao)
-	{
-		this.solicitacaoEpiDao = solicitacaoEpiDao;
-	}
-
-	public void setProvidenciaDao(ProvidenciaDao providenciaDao) {
-		this.providenciaDao = providenciaDao;
-	}
-
-	public void setPeriodoExperienciaDao(PeriodoExperienciaDao periodoExperienciaDao) {
-		this.periodoExperienciaDao = periodoExperienciaDao;
-	}
-
-	public void setColaboradorPeriodoExperienciaAvaliacaoDao(ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao) {
-		this.colaboradorPeriodoExperienciaAvaliacaoDao = colaboradorPeriodoExperienciaAvaliacaoDao;
-	}
-
-	public void setCursoDao(CursoDao cursoDao) {
-		this.cursoDao = cursoDao;
-	}
-
-	public void setDiaTurmaDao(DiaTurmaDao diaTurmaDao) {
-		this.diaTurmaDao = diaTurmaDao;
-	}
-
-	public void setAproveitamentoAvaliacaoCursoDao(AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao)
-	{
-		this.aproveitamentoAvaliacaoCursoDao = aproveitamentoAvaliacaoCursoDao;
-	}
-
-	public void setAvaliacaoCursoDao(AvaliacaoCursoDao avaliacaoCursoDao)
-	{
-		this.avaliacaoCursoDao = avaliacaoCursoDao;
-	}
-
-	public void setEstadoDao(EstadoDao estadoDao) {
-		this.estadoDao = estadoDao;
 	}
 }

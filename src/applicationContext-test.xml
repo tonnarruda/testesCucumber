@@ -22,7 +22,127 @@
     </property>
   </bean>
  
+  <bean id="colaboradorDao" class="com.fortes.rh.dao.hibernate.geral.ColaboradorDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+ 
+  <bean id="ocorrenciaDao" class="com.fortes.rh.dao.hibernate.geral.OcorrenciaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+ 
+  <bean id="colaboradorOcorrenciaDao" class="com.fortes.rh.dao.hibernate.geral.ColaboradorOcorrenciaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+ 
+  <bean id="colaboradorPeriodoExperienciaAvaliacaoDao" class="com.fortes.rh.dao.hibernate.geral.ColaboradorPeriodoExperienciaAvaliacaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+ 
+   <bean id="areaOrganizacionalDao" class="com.fortes.rh.dao.hibernate.geral.AreaOrganizacionalDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="estabelecimentoDao" class="com.fortes.rh.dao.hibernate.geral.EstabelecimentoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="motivoDemissaoDao" class="com.fortes.rh.dao.hibernate.geral.MotivoDemissaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="camposExtrasDao" class="com.fortes.rh.dao.hibernate.geral.CamposExtrasDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="grupoACDao" class="com.fortes.rh.dao.hibernate.geral.GrupoACDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="bairroDao" class="com.fortes.rh.dao.hibernate.geral.BairroDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="providenciaDao" class="com.fortes.rh.dao.hibernate.geral.ProvidenciaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="estadoDao" class="com.fortes.rh.dao.hibernate.geral.EstadoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="cidDao" class="com.fortes.rh.dao.hibernate.geral.CidDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="conhecimentoDao" class="com.fortes.rh.dao.hibernate.captacao.ConhecimentoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+
+  <bean id="competenciaDao" class="com.fortes.rh.dao.hibernate.captacao.CompetenciaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+    
+  <bean id="habilidadeDao" class="com.fortes.rh.dao.hibernate.captacao.HabilidadeDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
   <bean id="atitudeDao" class="com.fortes.rh.dao.hibernate.captacao.AtitudeDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="candidatoDao" class="com.fortes.rh.dao.hibernate.captacao.CandidatoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="motivoSolicitacaoDao" class="com.fortes.rh.dao.hibernate.captacao.MotivoSolicitacaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="solicitacaoDao" class="com.fortes.rh.dao.hibernate.captacao.SolicitacaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="candidatoSolicitacaoDao" class="com.fortes.rh.dao.hibernate.captacao.CandidatoSolicitacaoDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
     </property>
@@ -34,7 +154,151 @@
     </property>
   </bean>
   
-  <bean id="areaOrganizacionalDao" class="com.fortes.rh.dao.hibernate.geral.AreaOrganizacionalDaoHibernate">
+  <bean id="historicoColaboradorDao" class="com.fortes.rh.dao.hibernate.cargosalario.HistoricoColaboradorDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="faixaSalarialDao" class="com.fortes.rh.dao.hibernate.cargosalario.FaixaSalarialDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="faixaSalarialHistoricoDao" class="com.fortes.rh.dao.hibernate.cargosalario.FaixaSalarialHistoricoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="grupoOcupacionalDao" class="com.fortes.rh.dao.hibernate.cargosalario.GrupoOcupacionalDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="tabelaReajusteColaboradorDao" class="com.fortes.rh.dao.hibernate.cargosalario.TabelaReajusteColaboradorDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="reajusteColaboradorDao" class="com.fortes.rh.dao.hibernate.cargosalario.ReajusteColaboradorDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="turmaDao" class="com.fortes.rh.dao.hibernate.desenvolvimento.TurmaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="colaboradorTurmaDao" class="com.fortes.rh.dao.hibernate.desenvolvimento.ColaboradorTurmaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="cursoDao" class="com.fortes.rh.dao.hibernate.desenvolvimento.CursoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="diaTurmaDao" class="com.fortes.rh.dao.hibernate.desenvolvimento.DiaTurmaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="aproveitamentoAvaliacaoCursoDao" class="com.fortes.rh.dao.hibernate.desenvolvimento.AproveitamentoAvaliacaoCursoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="avaliacaoCursoDao" class="com.fortes.rh.dao.hibernate.desenvolvimento.AvaliacaoCursoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="avaliacaoDao" class="com.fortes.rh.dao.hibernate.avaliacao.AvaliacaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="avaliacaoDesempenhoDao" class="com.fortes.rh.dao.hibernate.avaliacao.AvaliacaoDesempenhoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="periodoExperienciaDao" class="com.fortes.rh.dao.hibernate.avaliacao.PeriodoExperienciaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="colaboradorQuestionarioDao" class="com.fortes.rh.dao.hibernate.pesquisa.ColaboradorQuestionarioDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="questionarioDao" class="com.fortes.rh.dao.hibernate.pesquisa.QuestionarioDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="usuarioDao" class="com.fortes.rh.dao.hibernate.acesso.UsuarioDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="usuarioEmpresaDao" class="com.fortes.rh.dao.hibernate.acesso.UsuarioEmpresaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="perfilDao" class="com.fortes.rh.dao.hibernate.acesso.PerfilDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="ambienteDao" class="com.fortes.rh.dao.hibernate.sesmt.AmbienteDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="funcaoDao" class="com.fortes.rh.dao.hibernate.sesmt.FuncaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="historicoFuncaoDao" class="com.fortes.rh.dao.hibernate.sesmt.HistoricoFuncaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="epiDao" class="com.fortes.rh.dao.hibernate.sesmt.EpiDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="solicitacaoEpiDao" class="com.fortes.rh.dao.hibernate.sesmt.SolicitacaoEpiDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
     </property>

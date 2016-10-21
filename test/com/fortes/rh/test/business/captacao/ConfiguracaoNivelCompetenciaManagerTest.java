@@ -315,9 +315,9 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 		Colaborador joao = ColaboradorFactory.getEntity(1L, "João");
 		Colaborador avaliador = ColaboradorFactory.getEntity(3L, "Avaliador");
 
-		Atitude atitude = AtitudeFactory.getEntity(1L, "Liderança");
-		Atitude atitude2 = AtitudeFactory.getEntity(2L, "Comunicação");
-		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(3L, "Delphi");
+		Atitude atitude = AtitudeFactory.getEntity(1L, "Liderança", null);
+		Atitude atitude2 = AtitudeFactory.getEntity(2L, "Comunicação", null);
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(3L, "Delphi", null);
 		
 		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(DateUtil.criarDataMesAno(1, 1, 2015), empresa);
 		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity("Pessimo", 1);
@@ -659,9 +659,9 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 		
 		HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity(1L, colaborador, faixaSalarial, DateUtil.criarDataDiaMesAno("01/06/2015"));
 		
-		Atitude atitude = AtitudeFactory.getEntity(1L, "Prestativo");
-		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(1L, "Java");
-		Habilidade habilidade= HabilidadeFactory.getEntity(6L, "Magica");
+		Atitude atitude = AtitudeFactory.getEntity(1L, "Prestativo", null);
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(1L, "Java", null);
+		Habilidade habilidade= HabilidadeFactory.getEntity(6L, "Magica", null);
 		
 		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity("Pessimo", 1);
 		NivelCompetencia nivelRuim = NivelCompetenciaFactory.getEntity("Ruim", 2);

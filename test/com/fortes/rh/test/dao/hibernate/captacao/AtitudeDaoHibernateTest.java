@@ -7,11 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
@@ -21,15 +17,13 @@ import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.test.dao.DaoHibernateAnnotationTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 
-@ContextConfiguration(locations = "classpath:applicationContext-test.xml")
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
-public class AtitudeDaoHibernateTest 
+public class AtitudeDaoHibernateTest extends DaoHibernateAnnotationTest 
 {
 	@Autowired
 	private AtitudeDao atitudeDao;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.model.geral.Empresa;
 
 public class HabilidadeFactory
 {
@@ -22,10 +23,12 @@ public class HabilidadeFactory
 		return habilidade;
 	}
 
-	public static Habilidade getEntity(Long id, String nome)
+	public static Habilidade getEntity(Long id, String nome, Empresa empresa)
 	{
 		Habilidade habilidade = getEntity(1L);
 		habilidade.setNome(nome);
+		habilidade.setEmpresa(empresa);
+		
 		return habilidade;
 	}
 	public static Collection<Habilidade> getCollection()

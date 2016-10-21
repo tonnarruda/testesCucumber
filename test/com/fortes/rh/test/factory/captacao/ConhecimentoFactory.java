@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.geral.Empresa;
 
 public class ConhecimentoFactory
 {
@@ -34,10 +35,12 @@ public class ConhecimentoFactory
 		return conhecimento;
 	}
 	
-	public static Conhecimento getConhecimento(Long id, String nome)
+	public static Conhecimento getConhecimento(Long id, String nome, Empresa empresa)
 	{
 		Conhecimento conhecimento = getConhecimento(id);
 		conhecimento.setNome(nome);
+		conhecimento.setEmpresa(empresa);
+		
 		return conhecimento;
 	}
 	

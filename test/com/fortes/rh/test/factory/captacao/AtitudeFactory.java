@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.model.captacao.Atitude;
+import com.fortes.rh.model.geral.Empresa;
 
 public class AtitudeFactory
 {
@@ -22,10 +23,11 @@ public class AtitudeFactory
 		return atitude;
 	}
 	
-	public static Atitude getEntity(Long id, String nome)
+	public static Atitude getEntity(Long id, String nome, Empresa empresa)
 	{
 		Atitude atitude = getEntity(id);
 		atitude.setNome(nome);
+		atitude.setEmpresa(empresa);
 
 		return atitude;
 	}
