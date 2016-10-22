@@ -225,8 +225,10 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         	return Action.SUCCESS;
         } else {
         	retorno = voltarPara;
-        	if(actionMsgTemp != null)
+        	if(actionMsgTemp != null){
         		retorno += "&actionMsg=" + actionMsgTemp;
+        		actionMsg = actionMsgTemp;
+        	}
             return "colaboradorQuestionario";
         }
     }
