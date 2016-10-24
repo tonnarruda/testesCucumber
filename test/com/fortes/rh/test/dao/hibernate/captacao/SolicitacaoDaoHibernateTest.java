@@ -1398,9 +1398,9 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		CandidatoSolicitacao candidatoSolicitacaoSolicitacaoSemPrevisaoDeEncerramento = CandidatoSolicitacaoFactory.getEntity(candidato, solicitacaoSemPrevisaoDeEncerramento, new Date());
 		candidatoSolicitacaoDao.save(candidatoSolicitacaoSolicitacaoSemPrevisaoDeEncerramento);
 		
-		Double resultado = solicitacaoDao.calculaIndicadorVagasPreenchidasNoPrazo(empresa.getId(), null, null, null, new Date(), DateUtil.incrementaMes(new Date(), 1));
+		Collection<Solicitacao> solicitacoes = solicitacaoDao.calculaIndicadorVagasPreenchidasNoPrazo(empresa.getId(), null, null, null, new Date(), DateUtil.incrementaMes(new Date(), 1));
 		
-		assertEquals(0.0, resultado);
+		assertEquals(0.0, calculaPercentualVagasPreenchidaNoPrazo(solicitacoes));
 	}
 	
 	public void testCalculaIndicadorVagasPreenchidaNoPrazoRetorno50PorCento()
@@ -1424,9 +1424,9 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		candidatoSolicitacaoDao.save(candidatoSolicitacaoSolicitacaoComPrevisaoDeEncerramento);
 		
 		candidatoSolicitacaoDao.getHibernateTemplateByGenericDao().flush();
-		Double resultado = solicitacaoDao.calculaIndicadorVagasPreenchidasNoPrazo(empresa.getId(), new Long[]{}, new Long[]{}, new Long[]{}, DateUtil.criarDataMesAno(new Date()), DateUtil.incrementaMes(new Date(), 1));
+		Collection<Solicitacao> solicitacoes =  solicitacaoDao.calculaIndicadorVagasPreenchidasNoPrazo(empresa.getId(), new Long[]{}, new Long[]{}, new Long[]{}, DateUtil.criarDataMesAno(new Date()), DateUtil.incrementaMes(new Date(), 1));
 		
-		assertEquals(50.0, resultado);
+		assertEquals(50.0, calculaPercentualVagasPreenchidaNoPrazo(solicitacoes));
 	}
 	
 	public void testCalculaIndicadorVagasPreenchidaNoPrazoRetorno100PorCento()
@@ -1463,10 +1463,23 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long[] establementosIds = new Long[]{estabelecimento.getId()};
 		Long[] areasIds = new Long[]{areaOrganizacional.getId()};
 		Long[] solicitacoesIds = new Long[]{solicitacaoComPrevisaoDeEncerramento.getId(), solicitacaoSemPrevisaoDeEncerramento.getId()};
+	
+		Collection<Solicitacao> solicitacoes = solicitacaoDao.calculaIndicadorVagasPreenchidasNoPrazo(empresa.getId(), establementosIds, areasIds, solicitacoesIds, DateUtil.criarDataMesAno(new Date()), DateUtil.incrementaMes(new Date(), 1));
 		
-		Double resultado = solicitacaoDao.calculaIndicadorVagasPreenchidasNoPrazo(empresa.getId(), establementosIds, areasIds, solicitacoesIds, DateUtil.criarDataMesAno(new Date()), DateUtil.incrementaMes(new Date(), 1));
+		assertEquals(100.0, calculaPercentualVagasPreenchidaNoPrazo(solicitacoes));
+	}
+
+	private Double calculaPercentualVagasPreenchidaNoPrazo(Collection<Solicitacao> solicitacoes) {
+		Double resultado = 0.0;
 		
-		assertEquals(100.0, resultado);
+		for (Solicitacao solicitacao : solicitacoes) {
+			if(solicitacao.getQtdVagasPreenchidas() >= solicitacao.getQuantidade())
+				resultado += 1.0;
+			else
+				resultado += new Double(solicitacao.getQtdVagasPreenchidas()) / solicitacao.getQuantidade(); 
+		}
+		
+		return resultado * 100.0;
 	}
 	
 	public void setEmpresaDao(EmpresaDao empresaDao)

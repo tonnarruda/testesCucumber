@@ -40,5 +40,5 @@ public interface SolicitacaoDao extends GenericDao<Solicitacao>
 	Collection<MotivoSolicitacao> findQtdContratadosMotivo(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	Collection<Solicitacao> findByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds);
 	Collection<Solicitacao> getNomesColabSubstituidosSolicitacaoEncerrada(Long empresaId);
-	double calculaIndicadorVagasPreenchidasNoPrazo(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] solicitacoesIds, Date dataDe, Date dataAte);
+	Collection<Solicitacao> calculaIndicadorVagasPreenchidasNoPrazo(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] solicitacoesIds, Date dataDe, Date dataAte);
 }

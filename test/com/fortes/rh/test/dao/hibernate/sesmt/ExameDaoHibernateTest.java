@@ -427,10 +427,10 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
     	Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(empresa, estabelecimento1, hoje);
     	solicitacaoDao.save(solicitacao);
     	
-    	CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity(candidato1, solicitacao, null);
+    	CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity(candidato1, solicitacao, DateUtil.criarDataMesAno(1, 2, 2015));
     	candidatoSolicitacaoDao.save(candidatoSolicitacao1);
 
-    	CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity(candidato2, solicitacao, null);
+    	CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity(candidato2, solicitacao, DateUtil.criarDataMesAno(2, 2, 2015));
     	candidatoSolicitacaoDao.save(candidatoSolicitacao2);
     	
 		Exame exame1 = ExameFactory.getEntity(empresa);

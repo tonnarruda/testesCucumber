@@ -324,7 +324,21 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	}
 	
 	public double calculaIndicadorVagasPreenchidasNoPrazo(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] solicitacoesIds, Date dataDe, Date dataAte) {
-		return getDao().calculaIndicadorVagasPreenchidasNoPrazo(empresaId, estabelecimentosIds, areasIds, solicitacoesIds, dataDe, dataAte);
+		
+		Collection<Solicitacao> solicitacoes = getDao().calculaIndicadorVagasPreenchidasNoPrazo(empresaId, estabelecimentosIds, areasIds, solicitacoesIds, dataDe, dataAte);
+
+		if(solicitacoes == null || solicitacoes.size() == 0)
+			return 0.0;
+		
+		Double totalPercentual = 0.0;
+		for (Solicitacao solicitacao : solicitacoes) {
+			if(solicitacao.getQtdVagasPreenchidas() >= solicitacao.getQuantidade())
+				totalPercentual += 1.0;
+			else
+				totalPercentual += new Double(solicitacao.getQtdVagasPreenchidas()) / solicitacao.getQuantidade(); 
+		}
+		
+		return (totalPercentual / solicitacoes.size()) * 100.0;
 	}
 
 	public void setCandidatoSolicitacaoManager(	CandidatoSolicitacaoManager candidatoSolicitacaoManager) {

@@ -888,35 +888,27 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 
-	public double calculaIndicadorVagasPreenchidasNoPrazo(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] solicitacoesIds, Date dataDe, Date dataAte) {
+	public Collection<Solicitacao> calculaIndicadorVagasPreenchidasNoPrazo(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] solicitacoesIds, Date dataDe, Date dataAte) {
 		String addFiltros = "";
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			addFiltros += " and s.estabelecimento_id in(:estabelecimentosIds) ";
+			addFiltros += " and s.estabelecimento.id in (:estabelecimentosIds) ";
 		if(areasIds != null && areasIds.length > 0)
-			addFiltros += " and s.areaOrganizacional_id in(:areasIds) ";
+			addFiltros += " and s.areaOrganizacional.id in (:areasIds) ";
 		if(solicitacoesIds != null && solicitacoesIds.length > 0)
-			addFiltros += " and s.id in(:solicitacoesIds) ";
-		
+			addFiltros += " and s.id in (:solicitacoesIds) ";
 		
 		StringBuilder consulta = new StringBuilder("");
-		consulta.append("select (");
-		consulta.append("		cast((select count(cs.id) from CandidatoSolicitacao cs join Solicitacao s on s.id = cs.solicitacao_id");
-		consulta.append("			where s.empresa_id = :empresaId ");
-		consulta.append("				and s.dataPrevisaoEncerramento is not null ");  
-		consulta.append("				and cs.dataContratacaoOrPromocao is not null ");
-		consulta.append("				and cs.dataContratacaoOrPromocao <= s.dataPrevisaoEncerramento");
-		consulta.append("			    and s.data between :dataDe and :dataAte");
-		consulta.append(			    addFiltros);
-		consulta.append("		) as double precision) / ");
+        consulta.append("select  new Solicitacao( s.id, s.quantidade, count(cs.id) ) ");
+        consulta.append("from Solicitacao s ");
+        consulta.append("left join s.candidatoSolicitacaos cs ");
+        consulta.append("where ");
+        consulta.append("    s.empresa.id = :empresaId ");
+        consulta.append("    and s.dataPrevisaoEncerramento is not null ");
+        consulta.append("    and s.data between :dataDe and :dataAte ");
+        consulta.append(	 addFiltros);
+        consulta.append("    group by s.id, s.quantidade ");
 		
-		consulta.append("		cast((select coalesce(sum(s.quantidade), 1) from Solicitacao s ");
-		consulta.append("			where s.empresa_id = :empresaId  ");
-		consulta.append("				and s.dataPrevisaoEncerramento is not null "); 
-		consulta.append("			    and s.data between :dataDe and :dataAte");
-		consulta.append(				addFiltros);
-		consulta.append("		)as double precision)) * 100 as total " );
-		
-		Query query = getSession().createSQLQuery(consulta.toString());
+		Query query = getSession().createQuery(consulta.toString());
 		query.setDate("dataDe", dataDe);
 		query.setDate("dataAte", dataAte);
 		query.setLong("empresaId", empresaId);
@@ -930,6 +922,6 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		if(solicitacoesIds != null && solicitacoesIds.length > 0)
 			query.setParameterList("solicitacoesIds", solicitacoesIds);
 		
-		return (Double) query.uniqueResult();
+		return query.list();
 	}
 }

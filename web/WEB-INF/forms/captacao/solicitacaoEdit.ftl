@@ -114,6 +114,9 @@
 	
 		function validacaoFormulario()
 		{
+			if($('#dataPrevisaoEncerramento').val() == "  /  /    ")
+				$('#dataPrevisaoEncerramento').val(null);
+			
 			var camposObg = new Array('descricao','horarioComercial','estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId');
 		
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">

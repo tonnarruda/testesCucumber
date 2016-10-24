@@ -160,6 +160,12 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		getFaixaSalarial().getCargo().setId(idCargo);
 		getFaixaSalarial().getCargo().setNome(nomeCargo);
 	}
+	
+	public Solicitacao(Long id, Integer quantidade, Integer qtdVagasPreenchidas){
+		setId(id);
+		setQuantidade(quantidade);
+		setQtdVagasPreenchidas(qtdVagasPreenchidas);
+	}
 
 	public String getObsSuspensao()
 	{
