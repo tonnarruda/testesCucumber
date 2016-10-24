@@ -325,7 +325,7 @@
 				<h2>Info. Funcionais</h2>
 				<ul>
 					<@ww.checkbox label="Solicitar confirmação de gestores ao desligar colaboradores. (Ao marcar esta opção, o usuário deverá sair e realizar novo login no sistema)" id="solicitarConfirmacaoDesligamento" name="empresa.solicitarConfirmacaoDesligamento" liClass="liLeft" labelPosition="left"/>
-					<@ww.checkbox label="Notificar somente os períodos de acompanhamento de experiência configurados no cadastro do colaborador na aba 'Modelos de Avaliação'." id="notificarSomentePeriodosConfigurados" name="empresa.notificarSomenteDiasConfigurados" liClass="liLeft" labelPosition="left"/>
+					<@ww.checkbox label="Notificar somente os períodos de acompanhamento de experiência configurados no cadastro do colaborador na aba 'Modelos de Avaliação'." id="notificarSomentePeriodosConfigurados" name="empresa.notificarSomentePeriodosConfigurados" liClass="liLeft" labelPosition="left"/>
 					<@ww.checkbox label="Criar usuário automaticamente ao cadastrar colaborador." id="criarUsuarioAutomaticamente" name="empresa.criarUsuarioAutomaticamente" liClass="liLeft" labelPosition="left"/>
 					<li id="wwgrp_update_empresa_senhaPadrao" class="wwgrp" style="margin-left: 25px;">
 						<div id="wwlbl_update_empresa_senhaPadrao" class="wwlbl" style="float:left; margin-right: 5px;">
