@@ -155,6 +155,7 @@ import com.fortes.rh.test.business.sesmt.ComissaoMembroManagerTest;
 import com.fortes.rh.test.business.sesmt.ComissaoPeriodoManagerTest;
 import com.fortes.rh.test.business.sesmt.ComissaoPlanoTrabalhoManagerTest;
 import com.fortes.rh.test.business.sesmt.ComissaoReuniaoManagerTest;
+import com.fortes.rh.test.business.sesmt.ComissaoReuniaoManagerTest_Junit4;
 import com.fortes.rh.test.business.sesmt.ComissaoReuniaoPresencaManagerTest;
 import com.fortes.rh.test.business.sesmt.EleicaoManagerTest;
 import com.fortes.rh.test.business.sesmt.EleicaoManagerTest_Junit4;
@@ -1257,6 +1258,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 
 	ComissaoReuniaoDaoHibernateTest.class,
 	ComissaoReuniaoManagerTest.class,
+	ComissaoReuniaoManagerTest_Junit4.class,
 	ComissaoReuniaoEditActionTest.class,
 	ComissaoReuniaoDWRTest.class,
 

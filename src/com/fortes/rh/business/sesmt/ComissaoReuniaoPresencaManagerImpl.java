@@ -32,8 +32,11 @@ public class ComissaoReuniaoPresencaManagerImpl extends GenericManagerImpl<Comis
 
 			if (colaboradoresPresentes.contains(colaborador))
 				comissaoReuniaoPresenca.setPresente(true);
-			else
-				comissaoReuniaoPresenca.setJustificativaFalta(justificativas[i]);
+			else{
+				if (justificativas != null && justificativas.length > i) {
+					comissaoReuniaoPresenca.setJustificativaFalta(justificativas[i]);
+				}
+			}
 
 			presencasARegistrar.add(comissaoReuniaoPresenca);
 			i++;

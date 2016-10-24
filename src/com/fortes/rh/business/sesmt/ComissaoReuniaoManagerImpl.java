@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.SpringUtil;
 
 public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuniao, ComissaoReuniaoDao> implements ComissaoReuniaoManager
 {
@@ -174,18 +176,28 @@ public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuni
 	
 	public void sugerirReuniao(Comissao comissao)
 	{
+		ComissaoManager comissaoManager = (ComissaoManager) SpringUtil.getBean("comissaoManager");
 		java.util.Date sugerirData = comissao.getDataIni();
-		for(int i = 1; i <= 12; i++)
-		{
-			ComissaoReuniao comissaoReuniao = new ComissaoReuniao();
-			comissaoReuniao.setComissao(comissao);
-			comissaoReuniao.setData(sugerirData);
-			sugerirData = DateUtil.setaMesPosterior(sugerirData);
-			comissaoReuniao.setHorario("10:00");
-			comissaoReuniao.setTipo("O");
-			comissaoReuniao.setDescricao(i + "a. Reunião Ordinária");
-			comissaoReuniao.setComissaoReuniaoPresencas(null);
-			save(comissaoReuniao);
+		try {
+			for(int i = 1; i <= 12; i++)
+			{
+				ComissaoReuniao comissaoReuniao = new ComissaoReuniao();
+				comissaoReuniao.setComissao(comissao);
+				comissaoReuniao.setData(sugerirData);
+				sugerirData = DateUtil.setaMesPosterior(sugerirData);
+				comissaoReuniao.setHorario("10:00");
+				comissaoReuniao.setTipo("O");
+				comissaoReuniao.setDescricao(i + "a. Reunião Ordinária");
+				comissaoReuniao.setComissaoReuniaoPresencas(null);
+				save(comissaoReuniao);
+				
+				List<Colaborador> colaboradores = comissaoManager.findColaboradoresByDataReuniao(comissaoReuniao.getData(), comissao.getId());
+				CollectionUtil<Colaborador> clu = new CollectionUtil<Colaborador>();
+				String [] colaboradoresIds =clu.convertCollectionToArrayIdsString(colaboradores);
+				comissaoReuniaoPresencaManager.saveOrUpdateByReuniao(comissaoReuniao.getId(), comissao.getId(), null, colaboradoresIds, null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
