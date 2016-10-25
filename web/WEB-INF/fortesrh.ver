@@ -7,6 +7,7 @@
 		<Item visivel="S" motivo="S16060000187"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção para exibir a data de encerramento do contrato no relatório.]]></Item>
 		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > Cipa > Eleições > Editar > Resultado > Imprimir resultado: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação]]></Item>
 		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > Cipa > Eleições > Editar > Atas e Comunicados > Imprimir Ata da Eleição: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação.]]></Item>
+		<Item visivel="S" motivo="P16090000330"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Reuniões > Frequência: Ajuste de inconsistência ao criar reuniões utilizando a funcionalidade "Sugerir reuniões ordinárias".]]></Item>
 		<Item visivel="S" motivo="P16100000145"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitação de Exames: Ajuste na informação da função do candidato.]]></Item>
 		<Item visivel="S" motivo="P16100000025"><![CDATA[SESMT > Relatórios > PCMSO:  Ajuste de inconsistência na contagem de exames realizados.]]></Item>
 		<Item visivel="S" motivo="S16100000128"><![CDATA[SESMT > Relatórios > Exames > Exames Previstos: Nova opção para exibir exames solicitados e não realizados.]]></Item>
