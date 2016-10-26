@@ -102,13 +102,21 @@ $(function() {
 		
 		$("#avaliadores-list > .portlet").toggleClass("ui-selectable");
 		
+		$(".peso").toggle();
 		$(".pesoAvaliador").toggle();
 		$(".portlet-toggle").toggle();
 	});
 	
-	$(".pesoAvaliador").live("keypress", function(event) {
+	$(".pesoAvaliador, .peso").live("keypress", function(event) {
 		return(somenteNumeros(event,''));
 	});
+	
+	$(".peso").live("keyup", function() {
+		$(this).parents("li").find("input").each(function(){
+			$(this).attr("name", $(this).attr("nameTmp"));
+		});
+	});
+	
 	$(".pesoAvaliador").live("keyup", function() {
 		if ( $(this).parents(".portlet").find(".peso").length == 0 )
 			$(this).parents(".portlet").find(".pesoAvaliador").val($(this).val());
@@ -118,7 +126,7 @@ $(function() {
 		});
 	});
 	
-	$(".pesoAvaliador").live("click", function(event) { event.stopPropagation(); });
+	$(".pesoAvaliador, .peso").live("click", function(event) { event.stopPropagation(); });
 	$(".portlet-header .pesoAvaliador").live("keyup", function(event) { 
 		$(this).parents(".portlet").find(".peso").val($(this).val());
 		$(this).parents(".portlet").find("input").each(function(){

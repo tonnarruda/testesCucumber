@@ -236,7 +236,7 @@
 		
 		function validForm() {
 			var validForm = true;
-			$(".pesoAvaliador").each(function(){
+			$(".pesoAvaliador, .peso").each(function(){
 				if( $(this).val() == "" ) {
 					$(this).css("background", "#FFEEC2");
 					validForm = false;
@@ -245,7 +245,7 @@
 				}
 			});
 			
-			$(".pesoAvaliador").toggle(!validForm);
+			$(".pesoAvaliador, .peso").toggle(!validForm);
 			$(".portlet-toggle").toggle(validForm);
 			if(validForm){
 				processando('${urlImgs}');
@@ -462,7 +462,7 @@
 								        		<#if avaliado.id == avaliador.colaborador.id >
 									        		<input type="text" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="pesoAvaliador" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> />
 								        		<#else>
-									        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="peso" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}"/>
+									        		<input type="text" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="peso" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}"/>
 								        		</#if>
 								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.id" value="${avaliado.id}"/>
 								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.nome" value="${avaliado.nome}"/>

@@ -36,7 +36,7 @@
 	float: left;
 }
 
-.pesoAvaliador, .notaProdutividade {
+.pesoAvaliador, .notaProdutividade, .peso {
 	float: right;
 	width: 30px;
 	text-align: right;
