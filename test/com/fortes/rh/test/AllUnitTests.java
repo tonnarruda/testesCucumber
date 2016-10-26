@@ -531,6 +531,7 @@ import com.fortes.rh.test.web.action.desenvolvimento.PrioridadeTreinamentoListAc
 import com.fortes.rh.test.web.action.desenvolvimento.RelatorioPresencaActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.TurmaEditActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.TurmaListActionTest;
+import com.fortes.rh.test.web.action.desenvolvimento.TurmaListActionTest_Junit4;
 import com.fortes.rh.test.web.action.geral.AreaFormacaoEditActionTest;
 import com.fortes.rh.test.web.action.geral.AreaFormacaoListActionTest;
 import com.fortes.rh.test.web.action.geral.AreaInteresseEditActionTest;
@@ -696,6 +697,7 @@ import com.fortes.rh.test.web.dwr.RiscosDWRTest;
 import com.fortes.rh.test.web.dwr.SolicitacaoDWRTest;
 import com.fortes.rh.test.web.dwr.SolicitacaoExameDWRTest;
 import com.fortes.rh.test.web.dwr.TurmaDWRTest;
+import com.fortes.rh.test.web.dwr.TurmaDWRTest_Junit4;
 import com.fortes.rh.test.web.dwr.UsuarioMensagemDWRTest;
 import com.fortes.rh.test.web.dwr.UtilDWRTest;
 import com.fortes.rh.web.action.exportacao.ExportacaoActionTest;
@@ -879,6 +881,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	TurmaDaoHibernateTest_JUnit4.class,
 	TurmaEditActionTest.class,
 	TurmaListActionTest.class,
+	TurmaListActionTest_Junit4.class,
 	TurmaManagerTest.class,
 	TurmaManagerTest_Junit4.class,
 	        
@@ -1494,6 +1497,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	PerguntaDWRTest.class,
 	RiscosDWRTest.class,
 	TurmaDWRTest.class,
+	TurmaDWRTest_Junit4.class,
 	UtilDWRTest.class,
 	FaixaSalarialDWRTest.class,
 	EnderecoDWRTest.class,

@@ -260,10 +260,15 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioCursosVencidosAVencer.ftl</result>
 		</action>
-		
+
 		<action name="getTurmasJson" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="getTurmasJson">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
 		    <param name="contentType">application/json</param>
+		</action>
+
+		<action name="clonarColaboradores" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="clonarColaboradores">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${curso.id}]]></result>
 		</action>
 	</package>
 </xwork>

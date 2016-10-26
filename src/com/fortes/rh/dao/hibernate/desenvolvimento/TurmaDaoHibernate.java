@@ -648,4 +648,24 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		
 		return query.list();
 	}
+
+	public Collection<Turma> getTurmasByCursoNotTurmaId(Long cursoId, Long notTurmaId) {
+		Criteria criteria = getSession().createCriteria(Turma.class,"t");
+
+        ProjectionList p = Projections.projectionList().create();
+
+        p.add(Projections.property("t.id"), "id");
+        p.add(Projections.property("t.descricao"), "descricao");
+		
+        criteria.setProjection(p);
+        criteria.add(Expression.eq("t.curso.id", cursoId));
+        criteria.add(Expression.ne("t.id", notTurmaId));
+
+        criteria.addOrder(Order.asc("t.descricao"));
+
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.setResultTransformer(new AliasToBeanResultTransformer(Turma.class));
+
+		return criteria.list();
+	}
 }

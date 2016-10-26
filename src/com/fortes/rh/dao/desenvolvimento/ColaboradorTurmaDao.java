@@ -58,4 +58,5 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	boolean aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId);
 	ColaboradorTurma findByProjection(Long colaboradorTurmaId);
 	Collection<ColaboradorTurma> findAprovadosByTurma(Long turmaId);
+	Collection<Colaborador> findColabodoresByTurmaId(Long turmaId);
 }

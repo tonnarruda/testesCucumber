@@ -2,7 +2,10 @@ package com.fortes.rh.test.business.desenvolvimento;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -116,6 +119,17 @@ public class ColaboradorTurmaManagerTest_Junit4
 			exception = e;
 		}
 		assertEquals("Não existem dados para o filtro informado.", exception.getMessage());
+	}
+	
+	@Test
+	public void testFindColabodoresByTurmaId() {
+		Long turmaId = 2L;
+		Collection<Colaborador> colaboradores = ColaboradorFactory.getCollection();
+		when(colaboradorTurmaDao.findColabodoresByTurmaId(turmaId)).thenReturn(colaboradores);
+		
+		Collection<Colaborador> retorno = colaboradorTurmaManager.findColabodoresByTurmaId(turmaId);
+		verify(colaboradorTurmaDao, times(1)).findColabodoresByTurmaId(eq(turmaId));
+		assertEquals(colaboradores.size(), retorno.size());
 	}
 	
 	private ColaboradorTurma montaColaboradorTurma(Colaborador colaborador, boolean certificado){

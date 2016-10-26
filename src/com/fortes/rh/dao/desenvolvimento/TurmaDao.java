@@ -31,4 +31,5 @@ public interface TurmaDao extends GenericDao<Turma>
 	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public Double somaCustos(Date dataIni, Date dataFim, Long[] empresaIds);
 	public Collection<TurmaJson> getTurmasJson(String baseCnpj, Long turmaId, char realizada);
+	public Collection<Turma> getTurmasByCursoNotTurmaId(Long cursoId, Long notTurmaId);
 }

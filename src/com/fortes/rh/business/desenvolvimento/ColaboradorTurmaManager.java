@@ -80,4 +80,5 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId);
 	public boolean aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId);
 	public ColaboradorTurma findByProjection(Long colaboradorTurmaId);
+	public Collection<Colaborador> findColabodoresByTurmaId(Long turmaId);
 }

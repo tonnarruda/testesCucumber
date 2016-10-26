@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -20,6 +21,7 @@ import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.json.TurmaJson;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -368,6 +370,27 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	public Collection<TurmaJson> getTurmasJson(String baseCnpj, Long turmaId, char realizada) {
 		return getDao().getTurmasJson(baseCnpj, turmaId, realizada);
 	}
+
+	public Collection<Turma> getTurmasByCursoNotTurmaId(Long cursoId, Long notTurmaId) {
+		return getDao().getTurmasByCursoNotTurmaId(cursoId, notTurmaId);
+	}
+	
+	public void clonarColaboradores(Long turmaId, Long cursoId, Long[] turmasCheck) throws Exception {
+		Collection<Colaborador> colaboradores = colaboradorTurmaManager.findColabodoresByTurmaId(turmaId);
+		for (Long turmaCheckId  : turmasCheck) {
+			Collection<Colaborador> colaboradoresJaInscritos = colaboradorTurmaManager.findColabodoresByTurmaId(turmaCheckId);
+			Collection<Colaborador> colaboradoresJaInscritosTemp = CollectionUtils.subtract(colaboradores, colaboradoresJaInscritos);
+			for (Colaborador colaborador : colaboradoresJaInscritosTemp) {
+				ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
+				colaboradorTurma.setId(null);
+				colaboradorTurma.setTurmaId(turmaCheckId);
+				colaboradorTurma.setCursoId(cursoId);
+				colaboradorTurma.setColaboradorId(colaborador.getId());
+				colaboradorTurma.setAprovado(false);
+				colaboradorTurmaManager.save(colaboradorTurma);
+			}
+		}
+	}
 	
 	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) 
 	{
@@ -406,8 +429,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		this.colaboradorPresencaManager = colaboradorPresencaManager;
 	}
 
-	public void setColaboradorCertificacaoManager(
-			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
 }

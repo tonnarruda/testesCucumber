@@ -524,6 +524,18 @@ public class TurmaListAction extends MyActionSupportList
 		else{
 			json = "token inválido";
 		}
+		
+		return Action.SUCCESS;
+	}
+
+	public String clonarColaboradores(){
+		try {
+			turmaManager.clonarColaboradores(turma.getId(), curso.getId(), StringUtil.stringToLong(turmasCheck));
+			addActionSuccess("Colaboradores clonados com sucesso para as turmas selecionadas.");
+		} catch (Exception e) {
+			addActionError("Não foi possível clonar os colaboradores para as turmas selecionadas.");
+			e.printStackTrace();
+		}
 		return Action.SUCCESS;
 	}
 	

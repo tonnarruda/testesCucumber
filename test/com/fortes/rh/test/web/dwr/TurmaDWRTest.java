@@ -286,5 +286,4 @@ public class TurmaDWRTest extends MockObjectTestCase
     	
     	assertEquals(new Long(1), turmaDWR.bloquear(turma.getId(), avaliacaoTurma.getId(), empresa.getId()));
     }
-	
 }

@@ -6,7 +6,7 @@
 <@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
-		
+		#divDialogClonarColaboradores { display: none; }
 		#alert { display: none; }
 		.popup { display: none; }
 		.popup ul { list-style: none; }
@@ -77,6 +77,28 @@
 							    }
 							}).load('<@ww.url includeParams="none" value="/desenvolvimento/turma/popUpTurmaAvaliacaoAcao.action"/>', { 'turma.id': turmaId });
 		}
+		
+		function clonarColaboradores(turmaId, descricao)
+		{
+			<#if turmas?exists && turmas.size() <=  1 >
+				jAlert("Não existem outras turmas para as quais os colaboradores possam ser clonados.");
+			<#else>
+				TurmaDWR.getTurmasByCursoNotTurmaId(createListTurmas, ${curso.id}, turmaId);
+				
+				$('#turmaId').val(turmaId);
+				$('#cursoId').val(${curso.id});
+				$('#divDialogClonarColaboradores').dialog({ modal: true, width: 530, title: 'Clonar colaboradores da turma: ' + descricao });
+			</#if>
+		}
+		
+		function createListTurmas(data)
+		{
+			addChecks('turmasCheck',data);
+		}
+		
+		function enviaFormClonarColaboradores (){
+			return validaFormulario('formClonarColaboradores', new Array('@turmasCheck'), null);
+		}
 	</script>
 	
 	<#include "../ftl/showFilterImports.ftl" />
@@ -99,7 +121,7 @@
 	<br>
 	
 	<@display.table name="turmas" id="turma" class="dados" >
-		<@display.column title="Ações" style="width:170px">
+		<@display.column title="Ações" style="width:172px">
 		
 			<@ww.hidden name="turma.id" value="" />
 			
@@ -139,6 +161,7 @@
 			<#else>
 				<a href="javascript:;"><img border="0" title="Não há avaliações nessa turma" src="<@ww.url includeParams="none" value="/imgs/form.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"></a>
 			</#if>
+			<a href="javascript:;" onclick="javascript:clonarColaboradores(${turma.id}, '${turma.descricao?html?replace("'","\\'")}')"><img border="0" title="Clonar Colaboradores" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
 			
 		</@display.column>
 		<@display.column property="descricao" title="Descrição"/>
@@ -170,6 +193,16 @@
 	<div class='popup'></div>
 	<div id='alert'>
 		<span id="texto"></span>
+	</div>
+	
+	<div id="divDialogClonarColaboradores">
+		<@ww.form name="formClonarColaboradores" id="formClonarColaboradores" action="clonarColaboradores.action" onsubmit="return enviaFormClonarColaboradores();" method="POST">
+			<@frt.checkListBox label="Selecione as turmas para as quais deseja clonar os colaboradores" list="turmasCheckList" name="turmasCheck" form="document.getElementById('formClonar')" filtro="true" required="true"/>
+			<@ww.hidden name="turma.id" id="turmaId"/>
+			<@ww.hidden name="curso.id" id="cursoId"/>
+			<br />
+			<button onclick="enviaFormClonarColaboradores();" class="btnClonar">
+		</@ww.form>
 	</div>
 </body>
 </html>

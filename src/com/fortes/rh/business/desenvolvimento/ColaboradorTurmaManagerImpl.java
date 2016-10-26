@@ -1130,6 +1130,14 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public boolean aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId) {
 		return getDao().aprovarOrReprovarColaboradorTurma(colaboradorTurmaId, turmaId, cursoId);
 	}
+	
+	public ColaboradorTurma findByProjection(Long colaboradorTurmaId) {
+		return getDao().findByProjection(colaboradorTurmaId);
+	}
+
+	public Collection<Colaborador> findColabodoresByTurmaId(Long turmaId) {
+		return getDao().findColabodoresByTurmaId(turmaId);
+	}
 
 	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
@@ -1173,9 +1181,5 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public void setEmpresaManager(EmpresaManager empresaManager) 
 	{
 		this.empresaManager = empresaManager;
-	}
-
-	public ColaboradorTurma findByProjection(Long colaboradorTurmaId) {
-		return getDao().findByProjection(colaboradorTurmaId);
 	}
 }

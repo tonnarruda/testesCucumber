@@ -26,6 +26,22 @@ public class TurmaFactory
 		return turma;
 	}
 	
+	public static Turma getEntity(Long id, String descricao)
+	{
+		Turma turma = getEntity();
+		turma.setId(id);
+		turma.setDescricao(descricao);
+		return turma;
+	}
+	
+	public static Turma getEntity(Curso curso, boolean realizada)
+	{
+		Turma turma = getEntity();
+		turma.setCurso(curso);
+		turma.setRealizada(realizada);
+		return turma;
+	}
+	
 	public static Turma getEntity(Date dataPrevIni, Date dataPrevFim, Curso curso)
 	{
 		Turma turma = getEntity();

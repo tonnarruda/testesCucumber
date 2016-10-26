@@ -999,6 +999,23 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		assertEquals("Empresa desconhecida",0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{999934L}, null));
 	}
 	
+	public void testGetTurmasByCursoNotTurmaId(){
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma1 = TurmaFactory.getEntity(curso, true);
+		turmaDao.save(turma1);
+		
+		Turma turma2 = TurmaFactory.getEntity(curso, false);
+		turmaDao.save(turma2);
+		
+		Turma turma3 = TurmaFactory.getEntity(curso, false);
+		turmaDao.save(turma3);
+		
+		Collection<Turma> turmas = turmaDao.getTurmasByCursoNotTurmaId(curso.getId(), turma3.getId());
+		assertEquals(2, turmas.size());
+	}
+	
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)
 	{
 		this.colaboradorDao = colaboradorDao;

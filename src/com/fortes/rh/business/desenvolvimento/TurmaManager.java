@@ -47,4 +47,6 @@ public interface TurmaManager extends GenericManager<Turma>
 	public void atualizar(Turma turma, String[] dias, String[] horasIni, String[] horasFim, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, Long[] documentoAnexoIds, boolean atualizaAvaliacao, boolean validarCertificacao, CertificacaoManager certificacaoManager, TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager, TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) throws Exception;
 	public Turma setAssinaturaDigital(boolean manterAssinaturaDigital, Turma turma, File assinaturaDigital, String local);
 	public Collection<TurmaJson> getTurmasJson(String baseCnpj, Long turmaId, char realizada);
+	public Collection<Turma> getTurmasByCursoNotTurmaId(Long cursoId, Long notTurmaId);
+	public void clonarColaboradores(Long turmaId, Long cursoId, Long[] turmasCheck)throws Exception;
 }

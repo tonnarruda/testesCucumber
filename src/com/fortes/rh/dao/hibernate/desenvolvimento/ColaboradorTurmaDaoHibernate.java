@@ -1988,6 +1988,19 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
 		
 	    return criteria.list();
-		
 	}		
+	
+	public Collection<Colaborador> findColabodoresByTurmaId(Long turmaId) {
+		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class,"ct");
+        ProjectionList p = Projections.projectionList().create();
+        p.add(Projections.property("ct.colaborador.id"), "id");
+		
+        criteria.setProjection(p);
+        criteria.add(Expression.eq("ct.turma.id", turmaId));
+
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return criteria.list();
+	}
 }

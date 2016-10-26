@@ -2688,6 +2688,26 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		assertEquals("Maria", colaboradoresTurma.iterator().next().getColaboradorNome());
 	}
 	
+	public void testFindColabodoresByTurmaId() {
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turmaDao.save(turma1);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, null, turma1);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turmaDao.save(turma2);
+		
+		Collection<Colaborador> colaboradoresTurma1 = colaboradorTurmaDao.findColabodoresByTurmaId(turma1.getId());
+		Collection<Colaborador> colaboradoresTurma2 = colaboradorTurmaDao.findColabodoresByTurmaId(turma2.getId());
+		
+		assertEquals(1, colaboradoresTurma1.size());
+		assertEquals(0, colaboradoresTurma2.size());
+	}
+	
 	private Colaborador setColaborador(String nome, Empresa empresa){
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNome(nome);

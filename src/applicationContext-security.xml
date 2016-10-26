@@ -540,6 +540,7 @@
 				/desenvolvimento/turma/relatorioInvestimentoPorColaborador*/**=ROLE_INVESTIMENTO_TREINAMENTO_COLAB
 				/desenvolvimento/turma/imprimirRelatorioInvestimentoPorColaborador*/**=ROLE_INVESTIMENTO_TREINAMENTO_COLAB
 				/desenvolvimento/turma/getTurmasJson.action* = ROLE_ANONYMOUS,ROLE_USER
+				/desenvolvimento/turma/clonarColaboradores.action*=ROLE_MOV_CURSO
 				
 				/desenvolvimento/colaboradorTurma/prepareRelatorioColaboradorCertificacao*/**=ROLE_REL_COLABORADORES_CERTIFICACOES
 				/desenvolvimento/colaboradorTurma/relatorioColaboradorCertificacao*/**=ROLE_REL_COLABORADORES_CERTIFICACOES
