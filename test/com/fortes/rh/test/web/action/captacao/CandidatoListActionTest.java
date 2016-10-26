@@ -910,7 +910,7 @@ public class CandidatoListActionTest
 		Long etapaSeletivaId = 1L;
 		action.setEtapaSeletivaId(etapaSeletivaId);
 		
-		CandidatoJsonVO candidatoJsonVO = new CandidatoJsonVO("1L", "candidato", "17/07/1979", "Maxo", "11.111.111-15", "Especialista", "60182455", "Rua a", "02", "-", "Messajana", "Fortaleza /CE", "s@s.com", "32323232", "985858585858", "Casado", "Mae", "11111", "2258855", new String[]{"Analista", "Desenvolvedor"}, "123456", "01/01/2000");
+		CandidatoJsonVO candidatoJsonVO = new CandidatoJsonVO("1L", "candidato", "17/07/1979", "Maxo", "11.111.111-15", "Especialista", "60182455", "Rua a", "02", "-", "Messajana", "Fortaleza", "CE", "s@s.com", "32323232", "985858585858", "Casado", "Mae", "11111", "2258855", new String[]{"Analista", "Desenvolvedor"}, "123456", "01/01/2000");
 		Collection<CandidatoJsonVO> candidatoJsonVOs = Arrays.asList(candidatoJsonVO);
 		
 		String json = StringUtil.toJSON(candidatoJsonVOs, new String[]{"id"});

@@ -19,7 +19,8 @@ public class CandidatoJsonVO
 	private String numero;
 	private String complemento;
 	private String bairro;
-	private String cidadeEstado;
+	private String cidade;
+	private String estado;
 	private String email;
 	private String foneFixo;
 	private String celular;
@@ -36,7 +37,7 @@ public class CandidatoJsonVO
     }
 
 	public CandidatoJsonVO(String id, String nome, String dataNascimento, String sexo, String cpf, String escolaridade, String cep, String logradouro, String numero, String complemento,
-			String bairro, String cidadeEstado, String email, String foneFixo, String celular, String estadoCivil,	String mae, String rg, String pis, String[] funcoesPretendidas,
+			String bairro, String cidade, String estado, String email, String foneFixo, String celular, String estadoCivil,	String mae, String rg, String pis, String[] funcoesPretendidas,
 			String registroProficional, String validadeRegistro) {
 		super();
 		this.id = id;
@@ -50,7 +51,8 @@ public class CandidatoJsonVO
 		this.numero = numero;
 		this.complemento = complemento;
 		this.bairro = bairro;
-		this.cidadeEstado = cidadeEstado;
+		this.cidade = cidade;
+		this.estado = estado;
 		this.email = email;
 		this.foneFixo = foneFixo;
 		this.celular = celular;
@@ -107,8 +109,12 @@ public class CandidatoJsonVO
 		return bairro;
 	}
 
-	public String getCidadeEstado() {
-		return cidadeEstado;
+	public String getCidade() {
+		return cidade;
+	}
+	
+	public String getEstado(){
+		return estado;
 	}
 
 	public String getEmail() {

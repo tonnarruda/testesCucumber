@@ -1328,7 +1328,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 				candidatoJsonVOs.add(new CandidatoJsonVO(cd.getId().toString(), cd.getNome(), dataNascimento, 
 						cd.getPessoal().getSexoDescricao(), cd.getPessoal().getCpfFormatado(), cd.getPessoal().getEscolaridadeDescricao(), 
 						cd.getEndereco().getCepFormatado(), cd.getEndereco().getLogradouro(), cd.getEndereco().getNumero(), 
-						cd.getEndereco().getComplemento(), cd.getEndereco().getBairro(), cd.getEndereco().getCidadeEstado(), 
+						cd.getEndereco().getComplemento(), cd.getEndereco().getBairro(), cd.getEndereco().getCidade().getNome(), cd.getEndereco().getUf().getSigla(), 
 						cd.getContato().getEmail(), cd.getContato().getFoneFixoFormatado(), cd.getContato().getFoneCelularFormatado(), 
 						cd.getPessoal().getEstadoCivilDescricao(), cd.getPessoal().getMae(), cd.getPessoal().getRg(), cd.getPessoal().getPis(), 
 						funcoesPretendidas, cd.getCamposExtras().getNumero1String(), cd.getCamposExtras().getData1String()));
