@@ -294,8 +294,10 @@
 					<legend>Avaliar as Competências do Colaborador para o Cargo</legend><br />
 					
 					<div id="legendas">
-						<span style='background-color: #BFC0C3;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência exigido para o Cargo/Faixa Salarial
-						<br /><br />
+						<#if colaboradorQuestionario.avaliacaoDesempenho.exibirNivelCompetenciaExigido >
+							<span style='background-color: #BFC0C3;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência exigido para o Cargo/Faixa Salarial
+							<br /><br />
+						</#if>
 						<span style='background-color: #E4F0FE;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador
 						<br /><br />
 						<span style='background-color: #A4E2DB;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador é igual ao nível exigido para o Cargo/Faixa Salarial
@@ -342,7 +344,7 @@
 									</td>
 									
 									<#list nivelCompetencias as nivel>
-										<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
+										<#if colaboradorQuestionario.avaliacaoDesempenho.exibirNivelCompetenciaExigido && configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
 											<#assign class="nivelFaixa"/>
 											<#assign bgcolor="background-color: #BFC0C3;"/>
 										<#else>

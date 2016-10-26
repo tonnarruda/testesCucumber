@@ -93,9 +93,9 @@
 			<@ww.checkbox label="Avaliar somente as competências (Sem utilização de modelo)" id="avaliarSomenteCompetencias" name="" labelPosition="left" onchange="exibirModeloAvaliacao()"/>
 			<@ww.select label="Modelo da Avaliação" name="avaliacaoDesempenho.avaliacao.id" id="modelo" required="true" list="avaliacaos" listKey="id" listValue="titulo" cssStyle="width: 450px;" headerKey="" headerValue="Selecione..." disabled="${desabilita}" />
 			<@ww.checkbox label="Exibir em Performance Profissional" id="exibirPerformanceProfissional" name="avaliacaoDesempenho.exibirPerformanceProfissional"  labelPosition="left"/>
+			<@ww.checkbox label="Exibir Nível de Competência exigido para o Cargo/Faixa Salarial" id="exibirNivelCompetenciaExigido" name="avaliacaoDesempenho.exibirNivelCompetenciaExigido"  labelPosition="left"/>
 			<@ww.select label="Permitir autoavaliação" name="avaliacaoDesempenho.permiteAutoAvaliacao" disabled="${desabilita}" id="permiteAutoAvaliacao" list=r"#{true:'Sim',false:'Não'}" required="true" headerKey="" headerValue=""/>
 			<@ww.select label="Anônima" name="avaliacaoDesempenho.anonima" id="anonima" list=r"#{true:'Sim',false:'Não'}" disabled="${desabilita}" required="true" headerKey="" headerValue="" onchange="habilitaExibirPerformanceProfissional();"/>
-			
 			
 			<@ww.hidden id="avaliacaoDesempnhoId" name="avaliacaoDesempenho.id" />
 			<@ww.hidden name="avaliacaoDesempenho.liberada" />

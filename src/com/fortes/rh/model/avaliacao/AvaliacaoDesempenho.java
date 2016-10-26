@@ -37,6 +37,7 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
     private boolean liberada;
     private boolean exibirPerformanceProfissional;
 	private boolean exibeResultadoAutoAvaliacao;
+	private boolean exibirNivelCompetenciaExigido;
 	
     @ManyToOne
 	private Empresa empresa;
@@ -217,5 +218,14 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
 
 	public void setPossuiResposta(boolean possuiResposta) {
 		this.possuiResposta = possuiResposta;
+	}
+
+	public boolean isExibirNivelCompetenciaExigido() {
+		return exibirNivelCompetenciaExigido;
+	}
+
+	public void setExibirNivelCompetenciaExigido(
+			boolean exibirNivelCompetenciaExigido) {
+		this.exibirNivelCompetenciaExigido = exibirNivelCompetenciaExigido;
 	}
 }

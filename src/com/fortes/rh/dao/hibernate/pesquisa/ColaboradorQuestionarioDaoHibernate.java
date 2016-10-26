@@ -403,6 +403,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("avaliacaoDesempenho.anonima"), "projectionAvaliacaoDesempenhoAnonima");
 		p.add(Projections.property("avaliacaoDesempenho.titulo"), "projectionAvaliacaoDesempenhoTitulo");
 		p.add(Projections.property("avaliacaoDesempenho.permiteAutoAvaliacao"), "projectionAvaliacaoDesempenhoPermiteAutoAvaliacao");
+		p.add(Projections.property("avaliacaoDesempenho.exibirNivelCompetenciaExigido"), "projectionAvaliacaoDesempenhoExibirNivelCompetenciaExigido");
 		p.add(Projections.property("avaliacaoDesempenho.inicio"), "projectionAvaliacaoDesempenhoInicio");
 		p.add(Projections.property("cq.avaliador.id"), "projectionAvaliadorId");
 		criteria.setProjection(p);
