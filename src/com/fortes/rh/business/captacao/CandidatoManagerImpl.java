@@ -38,6 +38,7 @@ import com.fortes.rh.exception.FormatoArquivoInvalidoException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoCurriculo;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
+import com.fortes.rh.model.captacao.CandidatoJsonVO;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
@@ -1305,5 +1306,38 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager) {
 		this.camposExtrasManager = camposExtrasManager;
+	}
+	
+	public Collection<CandidatoJsonVO> getCandidatosJsonVO(Long etapaSeletivaId) {
+		Collection<CandidatoJsonVO> candidatoJsonVOs = new ArrayList<CandidatoJsonVO>();
+		Collection<Candidato> candidatos = getDao().getCandidatosByEtapaSeletiva(etapaSeletivaId);
+		Map<Long, Collection<String>> funcoesPretendidasMap = getDao().getFuncoesPretendidasByEtapaSeletiva(etapaSeletivaId);
+		String[] funcoesPretendidas = null;
+		String dataNascimento = "";
+		
+		for (Candidato cd : candidatos) {
+			try {
+				if(funcoesPretendidasMap.containsKey(cd.getId()))
+					funcoesPretendidas = new CollectionUtil<String>().convertCollectionToArrayString(funcoesPretendidasMap.get(cd.getId()));
+				else
+					funcoesPretendidas = new String[]{};
+				
+				if(cd.getPessoal().getDataNascimento() != null)
+					dataNascimento = DateUtil.formataDiaMesAno(cd.getPessoal().getDataNascimento());
+				
+				candidatoJsonVOs.add(new CandidatoJsonVO(cd.getId().toString(), cd.getNome(), dataNascimento, 
+						cd.getPessoal().getSexoDescricao(), cd.getPessoal().getCpfFormatado(), cd.getPessoal().getEscolaridadeDescricao(), 
+						cd.getEndereco().getCepFormatado(), cd.getEndereco().getLogradouro(), cd.getEndereco().getNumero(), 
+						cd.getEndereco().getComplemento(), cd.getEndereco().getBairro(), cd.getEndereco().getCidadeEstado(), 
+						cd.getContato().getEmail(), cd.getContato().getFoneFixoFormatado(), cd.getContato().getFoneCelularFormatado(), 
+						cd.getPessoal().getEstadoCivilDescricao(), cd.getPessoal().getMae(), cd.getPessoal().getRg(), cd.getPessoal().getPis(), 
+						funcoesPretendidas, cd.getCamposExtras().getNumero1String(), cd.getCamposExtras().getData1String()));
+				
+			} catch (Exception e) {
+				System.out.println("Erro ao criar candidatoJsonVO - Id:" + cd.getId() + " Nome: " + cd.getNome());
+			}
+		}
+		
+		return candidatoJsonVOs;
 	}
 }

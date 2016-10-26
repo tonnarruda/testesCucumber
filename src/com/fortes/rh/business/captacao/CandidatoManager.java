@@ -8,6 +8,7 @@ import com.fortes.business.GenericManager;
 import com.fortes.model.type.File;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoJsonVO;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -80,4 +81,5 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public boolean existeCamposExtras(Long camposExtrasId);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 	public Collection<Candidato> findCandidatosIndicadosPor(Date dataIni, Date dataFim, Long[] empresasIds) throws ColecaoVaziaException;
+	public Collection<CandidatoJsonVO> getCandidatosJsonVO(Long etapaSeletivaId);
 }

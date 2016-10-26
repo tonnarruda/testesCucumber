@@ -64,4 +64,6 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public boolean existeCamposExtras(Long camposExtrasId);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 	public Collection<Candidato> findCandidatosIndicadosPor(Date dataIni, Date dataFim, Long[] empresasIds);
+	public Collection<Candidato> getCandidatosByEtapaSeletiva(Long etapaSeletivaId);
+	public Map<Long, Collection<String>> getFuncoesPretendidasByEtapaSeletiva(Long etapaSeletivaId);
 }

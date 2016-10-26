@@ -29,4 +29,14 @@ public class Sexo extends LinkedHashMap<String, String>
 
 		return "(" + masc + ") Masc.  (" + fem + ") Fem.";
 	}
+	
+	public static String getDescricao(char sexo){
+		
+		if(sexo == 'M')
+			return new Sexo().get(MASCULINO);
+		else if (sexo == 'F')
+			return new Sexo().get(FEMININO);
+		
+		return INDIFERENTE;
+	} 
 }

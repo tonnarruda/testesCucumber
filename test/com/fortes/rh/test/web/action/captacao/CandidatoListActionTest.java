@@ -18,8 +18,10 @@ import java.util.Date;
 
 import mockit.Mockit;
 
+import org.hibernate.ObjectNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.model.type.File;
 import com.fortes.rh.business.captacao.AnuncioManager;
@@ -53,6 +55,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoCurriculo;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
+import com.fortes.rh.model.captacao.CandidatoJsonVO;
 import com.fortes.rh.model.captacao.ConfiguracaoImpressaoCurriculo;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Experiencia;
@@ -90,6 +93,7 @@ import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.captacao.CandidatoListAction;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -900,5 +904,32 @@ public class CandidatoListActionTest
 		assertEquals(Action.SUCCESS, action.find());
 		assertEquals("[{\"id\":\"\",\"value\":\"\"}]", action.getJson());
 	}
+	
+	@Test
+	public void testCandidatosParticipantesEtapaSeletivaJSon(){
+		Long etapaSeletivaId = 1L;
+		action.setEtapaSeletivaId(etapaSeletivaId);
+		
+		CandidatoJsonVO candidatoJsonVO = new CandidatoJsonVO("1L", "candidato", "17/07/1979", "Maxo", "11.111.111-15", "Especialista", "60182455", "Rua a", "02", "-", "Messajana", "Fortaleza /CE", "s@s.com", "32323232", "985858585858", "Casado", "Mae", "11111", "2258855", new String[]{"Analista", "Desenvolvedor"}, "123456", "01/01/2000");
+		Collection<CandidatoJsonVO> candidatoJsonVOs = Arrays.asList(candidatoJsonVO);
+		
+		String json = StringUtil.toJSON(candidatoJsonVOs, new String[]{"id"});
+		
+		when(candidatoManager.getCandidatosJsonVO(etapaSeletivaId)).thenReturn(candidatoJsonVOs);
+		
+		assertEquals(Action.SUCCESS, action.candidatosParticipantesEtapaSeletivaJSon());
+		assertEquals(json, action.getJson());
+	}
 
+	@Test
+	public void testColaboradoresPorAreaException()
+	{
+		Long etapaSeletivaId = 1L;
+		action.setEtapaSeletivaId(etapaSeletivaId);
+		
+		when(candidatoManager.getCandidatosJsonVO(etapaSeletivaId)).thenThrow(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("","")));
+		
+		assertEquals(Action.SUCCESS, action.candidatosParticipantesEtapaSeletivaJSon());
+		assertEquals("error", action.getJson());
+	}
 }

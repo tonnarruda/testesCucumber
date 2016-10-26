@@ -40,6 +40,7 @@ import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoJsonVO;
 import com.fortes.rh.model.captacao.ConfiguracaoImpressaoCurriculo;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
@@ -261,6 +262,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 	private String reportTitle;
 	private String reportFilter;
+	
 	
 	public String find() throws Exception
 	{
@@ -940,6 +942,19 @@ public class CandidatoListAction extends MyActionSupportList
 	public String prepareExamePalografico() throws Exception 
 	{
 		return list();
+	}
+	
+	public String candidatosParticipantesEtapaSeletivaJSon()
+	{
+		try {
+			Collection<CandidatoJsonVO> candidatos = candidatoManager.getCandidatosJsonVO(etapaSeletivaId);
+			json = StringUtil.toJSON(candidatos, new String[]{"id"});
+		} catch (Exception e) {
+			json = "error";
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
 	}
 
 	public Collection<Candidato> getCandidatos()

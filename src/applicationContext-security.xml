@@ -388,6 +388,7 @@
 				/captacao/solicitacao/imprimirRelatorio*/**=ROLE_REL_SOLICITACAO
 				/captacao/solicitacao/list*/**=ROLE_MOV_SOLICITACAO
 				/captacao/produtividade/*/**=ROLE_REL_PRODUTIVIDADE
+				/captacao/candidato/candidatosParticipantesEtapaSeletivaJSon.action*=ROLE_ANONYMOUS,ROLE_USER
 				/captacao/candidato/prepareExamePalografico*/** = ROLE_MOV_PALOGRAFICO
 				/captacao/candidato/prepareUpdateExamePalografico*/** = ROLE_MOV_PALOGRAFICO
 				/captacao/candidato/updateExamePalografico*/** = ROLE_MOV_PALOGRAFICO

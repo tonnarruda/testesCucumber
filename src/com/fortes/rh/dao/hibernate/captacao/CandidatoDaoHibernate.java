@@ -42,9 +42,11 @@ import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Experiencia;
+import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
+import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Sexo;
@@ -1479,5 +1481,65 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		query.setString("descricao", "%" + descricao.toUpperCase() + "%");
 		
 		return query.list();
+	}
+
+	public Collection<Candidato> getCandidatosByEtapaSeletiva(Long etapaSeletivaId) 
+	{
+		Criteria criteria = getSession().createCriteria(HistoricoCandidato.class, "hc");
+		criteria.createCriteria("hc.candidatoSolicitacao", "cs", Criteria.INNER_JOIN);
+		criteria.createCriteria("cs.candidato", "c", Criteria.INNER_JOIN);
+		criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.camposExtras", "ce", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		projectionFindById(p);
+		p.add(Projections.property("ce.numero1"), "camposExtrasNumero1");
+		p.add(Projections.property("ce.data1"), "camposExtrasData1");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("hc.etapaSeletiva.id", etapaSeletivaId));
+		criteria.add(Expression.eq("hc.apto", Apto.SIM));
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
+		
+		return criteria.list();
+	}
+
+	public Map<Long, Collection<String>> getFuncoesPretendidasByEtapaSeletiva(Long etapaSeletivaId) {
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("select candidato_id, cg.id, cg.nome from candidato_cargo cc ");
+		sql.append("inner join cargo cg on cg.id = cc.cargos_id ");
+		sql.append("where candidato_id in ( ");
+		sql.append("	select distinct c.id ");
+		sql.append("	from historicoCandidato hc ");
+		sql.append("	inner join candidatosolicitacao cs on cs.id = hc.candidatosolicitacao_id ");
+		sql.append("	inner join candidato c on c.id = cs.candidato_id ");
+		sql.append("	where hc.etapaseletiva_id = :etapaSeletivaId ");
+		sql.append("	and hc.apto = :apto ");
+		sql.append(")   ");
+		sql.append("order by cc.candidato_id ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("etapaSeletivaId", etapaSeletivaId);
+		query.setCharacter("apto", Apto.SIM);
+		
+		Collection<Object[]> resultado = query.list();
+		Map<Long, Collection<String>> funcoesPretendidasCandidato = new HashMap<Long, Collection<String>>();
+		Long candidatoId;
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+			Object[] res = it.next();
+			candidatoId = ((BigInteger)res[0]).longValue();
+			
+			if(!funcoesPretendidasCandidato.containsKey(candidatoId))
+				funcoesPretendidasCandidato.put(candidatoId, new ArrayList<String>());
+
+			funcoesPretendidasCandidato.get(candidatoId).add((String) res[2]);
+		}
+		
+		return funcoesPretendidasCandidato;
 	}
 }

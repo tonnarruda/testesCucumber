@@ -705,7 +705,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 @Suite.SuiteClasses({
 	
 //	SOMENTE PARA O COVERAGE
-//	NoAllUnitTests.class,
+	NoAllUnitTests.class,
 //	IntegracaoACTests.class,
 	
 	CertificacaoManagerTest.class,

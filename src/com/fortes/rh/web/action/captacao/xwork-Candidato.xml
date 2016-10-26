@@ -217,5 +217,9 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/examePalograficoEdit.ftl</result>
 			<result name="success" type="redirect"><![CDATA[prepareExamePalografico.action?msgAlert=${msgAlert}]]></result>
 		</action>
+		<action name="candidatosParticipantesEtapaSeletivaJSon" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="candidatosParticipantesEtapaSeletivaJSon">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
+		    <param name="contentType">application/json</param>
+		</action>
 	</package>
 </xwork>

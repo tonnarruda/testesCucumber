@@ -172,6 +172,9 @@ public class Pessoal implements Serializable
 
 	public String getEstadoCivilDescricao()
 	{
+		if (estadoCivil == null)
+			return "";
+		
 		return (String) (new EstadoCivil()).get(estadoCivil);
 	}
 
@@ -184,10 +187,10 @@ public class Pessoal implements Serializable
 	{
 		this.sexo = sexo;
 	}
-
 	public String getSexoDescricao()
+
 	{
-		return (String) (new Sexo()).get(sexo);
+		return Sexo.getDescricao(sexo);
 	}
 
 	public String getEscolaridade()

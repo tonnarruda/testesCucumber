@@ -176,7 +176,6 @@ public class ColaboradorListActionTest
 		
 		assertEquals(Action.SUCCESS, action.colaboradoresPorArea());
 		assertEquals("error", action.getJson());
-		
 	}
 	
 	@Test

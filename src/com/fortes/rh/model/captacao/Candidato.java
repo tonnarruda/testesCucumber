@@ -1231,9 +1231,7 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	}
 	
 	public void setCamposExtrasId(Long camposExtrasId) {
-		if(camposExtras == null)
-			camposExtras = new CamposExtras();
-		
+		iniciaCamposExtras();
 		this.camposExtras.setId(camposExtrasId);
 	}
 
@@ -1243,5 +1241,22 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
+	}
+	
+	@NaoAudita
+	public void setCamposExtrasData1(Date camposExtrasData1) {
+		iniciaCamposExtras();
+		this.camposExtras.setData1(camposExtrasData1);
+	}
+	
+	@NaoAudita
+	public void setCamposExtrasNumero1(Integer camposExtrasNumero1) {
+		iniciaCamposExtras();
+		this.camposExtras.setNumero1(camposExtrasNumero1);
+	}
+
+	private void iniciaCamposExtras() {
+		if(camposExtras == null)
+			camposExtras = new CamposExtras();
 	}
 }

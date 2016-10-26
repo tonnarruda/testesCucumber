@@ -98,6 +98,7 @@
 	<mapping class="com.fortes.rh.model.captacao.NivelCompetenciaHistorico" />
 	<mapping class="com.fortes.rh.model.captacao.ConfigHistoricoNivel" />
     <mapping class="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCandidato" />
+    <mapping class="com.fortes.rh.model.captacao.CandidatoJsonVO" />
     <!-- CARGOS E SALARIOS -->
     <mapping class="com.fortes.rh.model.cargosalario.Cargo" />
     <mapping class="com.fortes.rh.model.cargosalario.HistoricoColaborador" />

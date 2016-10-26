@@ -85,6 +85,9 @@ public class Endereco implements Serializable
 	{
 		String cidadeEstado = "";
 		
+		if(this.cidade == null)
+			return cidadeEstado;
+			
 		if (StringUtils.isNotBlank(this.cidade.getNome()))
 			cidadeEstado = this.cidade.getNome();
 
