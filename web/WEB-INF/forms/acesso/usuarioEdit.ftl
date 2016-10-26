@@ -125,8 +125,7 @@
 				* Colaborador cadastrado para esse usuário não pertence a essa empresa que você está logado(a).<br/><br/>
 				<@ww.hidden name="colaboradorId" />
 			</#if>
-			
-			
+
 			<li>
 				<@ww.div cssClass="divInfo">
 					<ul>

@@ -3,8 +3,6 @@ package com.fortes.rh.security;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.util.Date;
 import java.util.Enumeration;
@@ -19,7 +17,7 @@ public class Access {
 
 	static byte[] encodedBytes = new byte[]{89, 122, 66, 116, 99, 68, 82, 106, 100, 68, 66, 121};
 	
-	public static String checkAccess(String password, String SOSSeed){
+	public static String check(String password, String SOSSeed) throws Exception{
 		String sysPassword = ArquivoUtil.getSystemConf().getProperty("sys.password");
 		
 		if(sysPassword != null){
@@ -33,23 +31,23 @@ public class Access {
 		return "";
 	}
 	
-	protected static boolean checaSenhaSOS(String password, String ContraSenha){
+	private static boolean checaSenhaSOS(String password, String contraSenha){
 		Date hoje = new Date();
 		Integer dia = DateUtil.getDia(hoje);
     	Integer ano = DateUtil.getAnoInteger(hoje);
 
-    	Integer char1 = ContraSenha.codePointAt(0);
-    	Integer char2 = ContraSenha.codePointAt(1);
-    	Integer char3 = ContraSenha.codePointAt(2);
-    	Integer char4 = ContraSenha.codePointAt(3);
+    	Integer char1 = contraSenha.codePointAt(0);
+    	Integer char2 = contraSenha.codePointAt(1);
+    	Integer char3 = contraSenha.codePointAt(2);
+    	Integer char4 = contraSenha.codePointAt(3);
     	
-    	String initContraSenha = StringUtils.leftPad(new Integer((char2 + (char4 * dia)) + ((char1*char3) + ano)).toString(),4," ");
-    	String contraSenha = (new StringBuffer(initContraSenha.substring(0, 2)).reverse().toString() + new StringBuffer(initContraSenha.substring(2, 4)).reverse().toString());
+    	String initContraSenhaFinal = StringUtils.leftPad(new Integer((char2 + (char4 * dia)) + ((char1*char3) + ano)).toString(),4," ");
+    	String contraSenhaFinal = (new StringBuffer(initContraSenhaFinal.substring(0, 2)).reverse().toString() + new StringBuffer(initContraSenhaFinal.substring(2, 4)).reverse().toString());
     	
-    	return password.equals(contraSenha);
+    	return password.equals(contraSenhaFinal);
     }
     
-	protected static boolean hiperAccess(String password, String sysPassword){
+	private static boolean hiperAccess(String password, String sysPassword) throws Exception{
 		if(sysPassword != null){
 			String enderecoMac = enderecoMac();
 			if(enderecoMac == null)
@@ -61,7 +59,7 @@ public class Access {
 		return false;
 	}
 
-	protected static String hashMD5(String encode){
+	private static String hashMD5(String encode){
 		String hashtext = null;
 	
 		try {
@@ -83,35 +81,29 @@ public class Access {
 		return hashtext;
 	}
 	
-	protected static String enderecoMac(){
-		try {
-	        byte[] mac = null;
-            if(System.getProperty("os.name").toLowerCase().contains("windows")){
-                InetAddress address = InetAddress.getLocalHost();  
-                NetworkInterface network = NetworkInterface.getByInetAddress(address);  
-                mac = network.getHardwareAddress();  
-            }else{
-                Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-                while(networkInterfaces.hasMoreElements()){
-                    NetworkInterface network = networkInterfaces.nextElement();
-                    mac = network.getHardwareAddress();
-                    if(mac != null) break;
-                }
-            }
-            
-            if(mac != null){
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < mac.length; i++)
-                    sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));        
-
-                return sb.toString();  
-            }
-	    } catch (SocketException e){
-	        e.printStackTrace();
-	    } catch (UnknownHostException e) {
-			e.printStackTrace();
+	private static String enderecoMac() throws Exception{
+		byte[] mac = null;
+		if(System.getProperty("os.name").toLowerCase().contains("windows")){
+			InetAddress address = InetAddress.getLocalHost();  
+			NetworkInterface network = NetworkInterface.getByInetAddress(address);  
+			mac = network.getHardwareAddress();  
+		}else{
+			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+			while(networkInterfaces.hasMoreElements()){
+				NetworkInterface network = networkInterfaces.nextElement();
+				mac = network.getHardwareAddress();
+				if(mac != null) break;
+			}
 		}
-		
+
+		if(mac != null){
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < mac.length; i++)
+				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));        
+
+			return sb.toString();  
+		}
+
 		return "";
 	}
 }

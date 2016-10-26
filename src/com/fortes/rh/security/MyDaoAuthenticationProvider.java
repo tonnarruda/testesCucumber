@@ -39,32 +39,35 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 		if (this.getSaltSource() != null)
 			salt = this.getSaltSource().getSalt(userDetails);
 		
-		String credentials = "";
-		if(authentication.getPrincipal().toString().toUpperCase().equals("SOS")){
-			credentials = Access.checkAccess(authentication.getCredentials().toString(), ((UsernamePasswordEmpresaAuthenticationToken)authentication).getSOSSeed());
-			if(credentials != null && !"".equals(credentials) && credentials.equals("Bad credentials"))
-				throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentialsSOS", "Bad credentials"), userDetails);
-	    }else{
-	    	credentials = authentication.getCredentials().toString();
-	    }
-		
-		if (!this.getPasswordEncoder().isPasswordValid(userDetails.getPassword(), credentials, salt))
-			throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
-
-		Long empresaId = Long.parseLong(((UsernamePasswordEmpresaAuthenticationToken)authentication).getEmpresa());
-		
 		try {
+			String credentials = "";
+			if(authentication.getPrincipal().toString().toUpperCase().equals("SOS")){
+				credentials = Access.check(authentication.getCredentials().toString(), ((UsernamePasswordEmpresaAuthenticationToken)authentication).getSOSSeed());
+				if(credentials != null && !"".equals(credentials) && credentials.equals("Bad credentials"))
+					throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentialsSOS", "Bad credentials"), userDetails);
+			}else{
+				credentials = authentication.getCredentials().toString();
+			}
+
+			if (!this.getPasswordEncoder().isPasswordValid(userDetails.getPassword(), credentials, salt))
+				throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
+
+			Long empresaId = Long.parseLong(((UsernamePasswordEmpresaAuthenticationToken)authentication).getEmpresa());
+
 			if( ((UserDetailsImpl)userDetails).getColaborador() != null && ((UserDetailsImpl)userDetails).getColaborador().getId() != null ) {
 				Colaborador colaborador = colaboradorManager.findByIdProjectionEmpresa(((UserDetailsImpl)userDetails).getColaborador().getId());
-				
+
 				if ( colaborador.getDataAdmissao().getTime() > new Date().getTime() )
 					throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
 			}
-			
+
 			configuraPapeis(userDetails, empresaId);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
+			if(e instanceof BadCredentialsException)
+				throw new BadCredentialsException(e.getMessage(), userDetails);
+			else
+				throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
 		}
 	}
 	
@@ -74,9 +77,6 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 
 		if(usuarioEmpresa != null || ((UserDetailsImpl)userDetails).getId() == 1L){
 			ParametrosDoSistema parametrosDoSistema =  parametrosDoSistemaManager.findByIdProjection(1L);
-			
-			// TODO remprot : Esta linha será desnecessária qdo não estiver mais utilizando o campo atualizaPapeisIdsAPartirDe(ParametrosDoSistema)
-//			papelManager.atualizarPapeis(parametrosDoSistema.getAtualizaPapeisIdsAPartirDe());
 			
 			String contexto = parametrosDoSistema.getAppContext();
 			String versao = parametrosDoSistema.getAppVersao();

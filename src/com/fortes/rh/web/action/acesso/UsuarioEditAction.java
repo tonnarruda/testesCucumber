@@ -201,8 +201,14 @@ public class UsuarioEditAction extends MyActionSupportEdit
 
 	public String prepareUpdateSenhaUsuario() throws Exception
 	{
-		usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
-		usuario.setSenha(null);
+		colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+		
+		if(colaborador == null || colaborador.getId() == null) 
+			addActionWarning("Sua conta de usuário não está vinculada à um colaborador.");
+		else{
+			usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
+			usuario.setSenha(null);
+		}
 		return Action.SUCCESS;
 	}
 
@@ -260,7 +266,7 @@ public class UsuarioEditAction extends MyActionSupportEdit
 	{
 		if(empresasId == null || empresasId.length == 0)
 		{
-			addActionError("Selecione pelo menos uma empresa para este colaborador");
+			addActionMessage("Selecione pelo menos uma empresa para este colaborador.");
 			prepareInsert();
 			return Action.INPUT;
 		}

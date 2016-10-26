@@ -110,7 +110,7 @@ public abstract class Menu
 					menuFilho.append("<li>");
 					
 					if (verificaPapeisParaEmpresasIntegradas(papel, empresaLogada) && verificaEmpresaComSolicitacaoDesligamento(papel, empresaLogada) 
-							&& verificaPapeisParaCursosOuCertificacaoVencidasAVencer(papel, empresaLogada) && verificaPapeisUsuarioFortes(papel, idDoUsuario)
+							&& verificaPapeisParaCursosOuCertificacaoVencidasAVencer(papel, empresaLogada) && verificaPapeisUsuarioSOS(papel, idDoUsuario)
 							&& verificaParametrosSistemaAutorizacaoSolicitacaoPessoal(papel, parametros)) 
 					{
 						menuFilho.append("<a href='" + url + "'>" + papel.getNome() + "</a>");
@@ -154,7 +154,7 @@ public abstract class Menu
 		return !papel.getCodigo().equalsIgnoreCase("ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO") || empresa.isSolicitarConfirmacaoDesligamento();
 	}
 	
-	private static boolean verificaPapeisUsuarioFortes(Papel papel, Long idDoUsuario) 
+	private static boolean verificaPapeisUsuarioSOS(Papel papel, Long idDoUsuario) 
 	{
 		return !papel.getCodigo().equalsIgnoreCase("USUARIO_SOS") || idDoUsuario.equals(1L);
 	}

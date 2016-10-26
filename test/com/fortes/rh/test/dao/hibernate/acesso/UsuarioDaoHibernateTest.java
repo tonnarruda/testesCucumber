@@ -372,16 +372,13 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 	
 	public void testFindEmpresasUsuarioSOS()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa.setNome("Empresa 1");
-		empresaDao.save(empresa);
-		
-		Empresa empresa2 = EmpresaFactory.getEmpresa();
-		empresa2.setNome("Empresa 2");
-		empresaDao.save(empresa2);
+		for (int i = 0; i < 10; i++) {
+			Empresa empresa = EmpresaFactory.getEmpresa("Empresa "+i, null, null);
+			empresaDao.save(empresa);
+		}
 		
 		Collection<Empresa> empresas = usuarioDao.findEmpresas("SOS");
-		assertTrue(empresas.size() >= 2);
+		assertTrue(empresas.size() >= 10);
 	}
 	
 	public void testSetUltimoLogin()
