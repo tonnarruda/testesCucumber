@@ -444,7 +444,6 @@ import com.fortes.rh.test.model.sesmt.EtapaProcessoEleitoralTest;
 import com.fortes.rh.test.model.sesmt.ExamesPrevistosRelatorioTest;
 import com.fortes.rh.test.model.sesmt.PppRelatorioTest;
 import com.fortes.rh.test.model.sesmt.SolicitacaoExameTest;
-import com.fortes.rh.test.security.AccessTest;
 import com.fortes.rh.test.security.MenuTest;
 import com.fortes.rh.test.security.UserDetailsImplTest;
 import com.fortes.rh.test.util.ArquivoUtilTest;
@@ -1520,7 +1519,6 @@ import com.fortes.test.web.tags.LinkTagTest;
 	AuditoriaManagerTest.class,
 	MenuTest.class,
 	UserDetailsImplTest.class,
-	AccessTest.class,
 
     //crud de Clientes somente para uso interno na Fortes Informática
 	ClienteDaoHibernateTest.class,

@@ -1,23 +1,21 @@
 package com.fortes.rh.test;
 
 
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 import com.fortes.rh.test.business.auditoria.ManagerAuditaTest;
+import com.fortes.rh.test.security.AccessTest;
 import com.fortes.rh.test.util.ImportacaoCSVUtilTest;
 import com.fortes.rh.test.util.MailSendRunnableTest;
 import com.fortes.rh.test.util.TestsNoIncludeAllUnitTest;
 
-public class NoAllUnitTests extends TestSuite
-{
-	public static TestSuite suite()
-    {
-        TestSuite suite = new TestSuite();
-        suite.addTestSuite(ManagerAuditaTest.class);
-        suite.addTestSuite(TestsNoIncludeAllUnitTest.class);
-        suite.addTestSuite(MailSendRunnableTest.class);
-        suite.addTestSuite(ImportacaoCSVUtilTest.class);
-
-        return suite;
-    }
-}
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+	ManagerAuditaTest.class,
+	TestsNoIncludeAllUnitTest.class,
+	MailSendRunnableTest.class,
+	ImportacaoCSVUtilTest.class,
+	AccessTest.class
+})
+public class NoAllUnitTests{}

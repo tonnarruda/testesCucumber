@@ -3,7 +3,7 @@
 	<Versao id="1.1.173.205" db="" data="31/10/2016">
 		<Item visivel="S" motivo="P16080000128"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao atualizar o status do candidato da solicitação de pessoal após cancelar o desligamento do colaborador.]]></Item>
 		<Item visivel="S" motivo="S15120000091"><![CDATA[R&S > Painel de Indicadores: Novo indicador "Índice de vagas preenchidas no prazo".]]></Item>
-		<Item visivel="S" motivo="P16100000180"><![CDATA[Pesquisas > Movimentações > Pesquisas: Ajuste na inconsistênca para que não seja mais possível responder a pesquisa mais de uma vez.]]></Item>
+		<Item visivel="S" motivo="P16100000180"><![CDATA[Pesquisas > Movimentações > Pesquisas: Ajuste na inconsistência para que não seja mais possível responder a pesquisa mais de uma vez.]]></Item>
 		<Item visivel="S" motivo="S16060000187"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção para exibir a data de encerramento do contrato no relatório.]]></Item>
 		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > Cipa > Eleições > Editar > Resultado > Imprimir resultado: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação]]></Item>
 		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > Cipa > Eleições > Editar > Atas e Comunicados > Imprimir Ata da Eleição: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação.]]></Item>
