@@ -3,7 +3,7 @@
 Funcionalidade: Relatório de colaboradores que fizeram um treinamento
 
   Cenário: Relatório de taxa de demissão
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     
     Quando eu acesso o menu "Info. Funcionais > Relatórios > Taxa de Demissão"
     Então eu devo ver o título "Taxa de Demissão"

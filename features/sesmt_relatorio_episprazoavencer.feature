@@ -7,7 +7,7 @@ Funcionalidade: Relatório de EPIs com Prazo a Vencer
     Dado que exista o EPI "oculos" da categoria "visao"
     Dado que exista a área organizacional "ambulatorio"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Relatórios > EPI > EPIs com Prazo a Vencer"
     Então eu devo ver o título "EPIs com Prazo a Vencer"
     E eu clico no botão "Relatorio"

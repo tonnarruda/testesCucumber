@@ -3,7 +3,7 @@
 Funcionalidade: Categorias de EPI/Fardamento
 
   Cenário: Cadastro de Categorias de EPI/Fardamento
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Categorias de EPI/Fardamento"
     Então eu devo ver o título "Categorias de EPI/Fardamento"
     E eu clico no botão "Inserir"

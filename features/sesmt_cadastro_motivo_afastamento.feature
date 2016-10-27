@@ -3,7 +3,7 @@
 Funcionalidade: Motivos de Afastamentos
 
   Cenário: Cadastro de Motivos de Afastamentos
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Motivos de Afastamentos"
     Então eu devo ver o título "Motivos de Afastamentos"
     E eu clico no botão "Inserir"

@@ -5,7 +5,7 @@ Funcionalidade: Relatório de PPP
   Cenário: Relatório de PPP
     Dado que exista um colaborador "geraldo", da area "desenvolvimento", com o cargo "desenvolvedor" e a faixa salarial "I"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Relatórios > PPP"
     Então eu devo ver o título "Lista de Colaboradores"
     E eu clico "Exibir Filtro"

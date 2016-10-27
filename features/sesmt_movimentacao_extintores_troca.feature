@@ -5,7 +5,7 @@ Funcionalidade: Manutenção de Extintores
   Cenário: Cadastro de Manutenção de Extintores
     Dado que exista um extintor localizado em "garagem"    
     
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Movimentações > Extintores > Troca de Localização"
     Então eu devo ver o título "Extintores - Troca de Localização"
     E eu clico no botão "TrocaExtintores"

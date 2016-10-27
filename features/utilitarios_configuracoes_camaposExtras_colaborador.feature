@@ -8,7 +8,7 @@ Funcionalidade: Campos Extras para Colaborador
     Dado que exista o cargo "Contador"
     Dado que exista a faixa salarial "I" no cargo "Contador"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
     E eu clico no botão "Inserir"

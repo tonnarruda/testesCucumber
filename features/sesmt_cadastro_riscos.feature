@@ -3,7 +3,7 @@
 Funcionalidade: Riscos
 
   Cenário: Cadastro de Riscos
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Riscos"
     Então eu devo ver o título "Riscos"
     E eu clico no botão "Inserir"

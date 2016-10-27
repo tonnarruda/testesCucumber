@@ -15,7 +15,7 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do
     Dado que exista uma configuracao de nivel de competencia com nivel "bom" no historico do nivel de data "01/01/2010" na ordem 3
     Dado que exista um conhecimento "Java"
     Dado que exista um conhecimento "Java" na area organizacional "Desenvolvimento"
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     
     Quando eu acesso o menu "C&S > Cadastros > Cargos e Faixas"
     E eu clico em editar "Desenvolvedor"

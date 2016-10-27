@@ -4,7 +4,7 @@ Funcionalidade: Relatório de PCMSO - Programa de Controle Médico de Saúde Ocu
 
   Cenário: Relatório de PCMSO - Programa de Controle Médico de Saúde Ocupacional
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Relatórios > PCMSO"
     Então eu devo ver o título "PCMSO - Programa de Controle Médico de Saúde Ocupacional"
     E eu clico no botão "Relatorio"

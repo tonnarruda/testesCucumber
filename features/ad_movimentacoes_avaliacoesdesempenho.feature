@@ -5,7 +5,7 @@ Funcionalidade: Cadastrar Avaliações de Desempenho
   Cenário: Cadastro de Avaliações de Desempenho
     Dado que exista um modelo avaliacao desempenho "Avaliacao de Desempenho"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "Aval. Desempenho > Movimentações > Avaliações de Desempenho"
     Então eu devo ver o título "Avaliações de Desempenho"
     E eu clico no botão "Inserir"

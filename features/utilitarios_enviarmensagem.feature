@@ -5,7 +5,7 @@ Funcionalidade: Enviar Mensagem
   Cenário: Enviar Mensagem
     Dado que exista um usuario "joao"
     
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Utilitários > Enviar Mensagem"
     Então eu devo ver o título "Enviar Mensagem"

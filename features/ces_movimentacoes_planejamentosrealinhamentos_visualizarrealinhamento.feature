@@ -4,7 +4,7 @@ Funcionalidade: Aplicar Planejamentos de Realinhamentos
     
   Cenário: Aplicação e Cancelamento de Planejamentos de Realinhamentos para Colaborador
     
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Dado que exista a tabela de reajuste "Reajuste colaborador 1" na data "01/07/2011" aprovada "false" com o tipo de reajuste "C"
     Dado que exista a tabela de reajuste "Reajuste colaborador 2" na data "02/07/2011" aprovada "false" com o tipo de reajuste "C"
@@ -37,7 +37,7 @@ Funcionalidade: Aplicar Planejamentos de Realinhamentos
     E eu devo ver "Cancelamento efetuado com sucesso."
 
   Cenário: Cadastro de Planejamentos de Realinhamentos para Faixa Salarial
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     
     Dado que exista a tabela de reajuste "Reajuste faixa salarial I" na data "01/01/2013" aprovada "false" com o tipo de reajuste "F"
     Dado que exista o cargo "Desenvolvedor"

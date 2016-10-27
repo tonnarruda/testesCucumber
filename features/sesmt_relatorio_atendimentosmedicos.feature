@@ -5,7 +5,7 @@ Funcionalidade: Relatório de Atendimentos Médicos
   Cenário: Relatório de Atendimentos Médicos
     Dado que exista um medico coordenador "eufrasio"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Relatórios > Atendimentos Médicos"
     Então eu devo ver o título "Atendimentos Médicos"
     E eu clico no botão "Relatorio"

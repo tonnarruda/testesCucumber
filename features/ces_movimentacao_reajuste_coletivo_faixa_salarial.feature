@@ -3,7 +3,7 @@
 Funcionalidade: Reajuste Coletivo/Dissídio Faixa Salarial
 
   Cenário: Reajuste Coletivo/Dissídio Faixa Salarial
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista a tabela de reajuste "ajustar" na data "01/01/2013" aprovada "false" com o tipo de reajuste "F"
     Dado que exista o cargo "Desenvolvedor"
     Dado que exista a faixa salarial "faixa 1" no cargo "Desenvolvedor"

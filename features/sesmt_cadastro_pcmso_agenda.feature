@@ -3,7 +3,7 @@
 Funcionalidade: Agenda
 
   Cenário: Cadastro de Agenda
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista o evento "Semana da Saude"
 
     Quando eu acesso o menu "SESMT > Cadastros > PCMSO > Agenda"

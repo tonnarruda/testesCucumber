@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Áreas Organizacionais
 
   Cenário: Cadastro de Áreas Organizacionais
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
 
     Quando eu acesso o menu "C&S > Cadastros > Áreas Organizacionais"

@@ -3,7 +3,7 @@
 Funcionalidade: Solicitação de Realinhamento por Colaborador
 
   Cenário: Reajuste Coletivo/Dissídio
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista a tabela de reajuste "ajustar" na data "01/02/2010" aprovada "false" com o tipo de reajuste "C"
     Dado que exista a tabela de reajuste "alinhar" na data "01/02/2012" aprovada "false" com o tipo de reajuste "C"
     Dado que exista a tabela de reajuste "bento aliamento" na data "01/02/2013" aprovada "false" com o tipo de reajuste "C"

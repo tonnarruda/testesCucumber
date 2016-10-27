@@ -7,7 +7,7 @@ Funcionalidade: Relatório Matriz de Treinamentos
     Dado que exista o cargo "motorista"
     Dado que exista a faixa salarial "I" no cargo "motorista"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     
     Quando eu acesso o menu "T&D > Relatórios > Matriz de Treinamentos"
     Então eu devo ver o título "Matriz de Treinamentos"

@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Estabelecimento
 
   Cenário: Empresa
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Utilitários > Cadastros > Estabelecimentos"
     Então eu devo ver o título "Estabelecimentos"

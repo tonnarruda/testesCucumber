@@ -3,7 +3,7 @@
 Funcionalidade: Áreas de Vivência
 
   Cenário: Cadastro de Áreas de Vivência
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > PCMAT > Áreas de Vivência"
 
     Então eu devo ver o título "Áreas de Vivência"

@@ -5,7 +5,7 @@ Funcionalidade: Configuração do limite de Colaboradores por Cargo
   Cenário: Configurando o limite de Colaboradores por Cargo
     Dado que exista a área organizacional "geral"
     Dado que exista o cargo "Fazendeiro"
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Utilitários > Configurações > Limite de Colab. por Cargo"
     Então eu devo ver o título "Configuração do limite de Colaboradores por Cargo"

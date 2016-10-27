@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Motivos de Solicitação
 
   Cenário: Cadastro de Motivos de Solicitação
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "R&S > Cadastros > Motivos de Solicitação de Pessoal"
     Então eu devo ver o título "Motivos de Solicitação"
     E eu clico no botão "Inserir"

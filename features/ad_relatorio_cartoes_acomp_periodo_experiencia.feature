@@ -3,7 +3,7 @@
 Funcionalidade: Cartões para Acompanhamento do Período de Experiência
 
   Cenário: Cartões para Acompanhamento do Período de Experiência
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista um colaborador "joao", da area "trafego", com o cargo "motorista" e a faixa salarial "motorista I"
     Dado que exista um periodo de experiencia "30 dias" de 30 dias
 

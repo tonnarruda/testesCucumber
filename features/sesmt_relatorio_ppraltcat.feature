@@ -4,7 +4,7 @@ Funcionalidade: Relatório de PPRA e LTCAT
 
   Cenário: Relatório de PPRA e LTCAT
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Relatórios > PPRA e LTCAT"
     Então eu devo ver o título "PPRA e LTCAT"
     E eu clico no botão "Relatorio"

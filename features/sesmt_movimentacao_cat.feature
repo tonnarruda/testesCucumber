@@ -5,7 +5,7 @@ Funcionalidade: CATs (Acidentes de Trabalho)
   Cenário: Cadastro de CATs
     Dado que exista um colaborador "geraldo", da area "administracao", com o cargo "desenvolvedor" e a faixa salarial "I"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Movimentações > Ficha de Investigação de Acidente(CAT)"
     Então eu devo ver o título "Ficha de Investigação de Acidente (CAT)"
     E eu clico no botão "Inserir"

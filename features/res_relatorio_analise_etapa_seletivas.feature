@@ -3,7 +3,7 @@
 Funcionalidade: Relatório Análise das Etapas Seletivas
 
   Cenário: Relatório Análise das Etapas Seletivas
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista o cargo "analista"
     Dado que exista a etapa seletiva "prova"
     Quando eu acesso o menu "R&S > Relatórios > Análise das Etapas Seletivas"

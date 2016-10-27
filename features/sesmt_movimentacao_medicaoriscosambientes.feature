@@ -5,7 +5,7 @@ Funcionalidade: Medição dos Riscos nos Ambientes
   Cenário: Cadastro de Medição dos Riscos
     Dado que exista um ambiente "laboratorio" com o risco "contaminacao"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Movimentações > Medição dos Riscos > Ambiente"
     Então eu devo ver o título "Medição dos Riscos do Ambiente"
     E eu clico no botão "Inserir"

@@ -3,7 +3,7 @@
 Funcionalidade: Relatório de Planejamento de Realinhamentos
 
   Cenário: Funcionalidade: Relatório de  Realinhamentos
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista o estabelecimento "estabelecimento"
     Dado que exista a área organizacional "geral"
     Dado que exista a tabela de reajuste "reajuste" na data "22/02/2016" aprovada "true" com o tipo de reajuste "C"

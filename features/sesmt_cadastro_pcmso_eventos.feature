@@ -3,7 +3,7 @@
 Funcionalidade: PCMSO Eventos
 
   Cenário: Cadastro de Eventos do PCMSO
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > PCMSO > Eventos"
     Então eu devo ver o título "Eventos"
     E eu clico no botão "Inserir"

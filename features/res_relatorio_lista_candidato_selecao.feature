@@ -3,7 +3,7 @@
 Funcionalidade: Lista de Candidatos da Seleção
 
   Cenário: Lista de Candidatos da Seleção
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista a etapa seletiva "prova"
     Quando eu acesso o menu "R&S > Relatórios > Lista de Candidatos da Seleção"
     Então eu devo ver o título "Lista de Candidatos da Seleção"

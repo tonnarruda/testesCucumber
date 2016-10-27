@@ -28,7 +28,7 @@ Funcionalidade: Cadastrar Colaborador
     Dado que exista uma connfiguracao de nivel de competencia "bom" no conhecimento "java" para connfiguracao de nivel de competencia da faixa salarial na data "01/01/2015"
     Dado que exista uma connfiguracao de nivel de competencia "bom" no conhecimento "testes" para connfiguracao de nivel de competencia da faixa salarial na data "01/01/2015"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
     Então eu devo ver o título "Colaboradores"

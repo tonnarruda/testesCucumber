@@ -8,7 +8,7 @@ Funcionalidade: Relatório de Lista de Frequência
     Dado que exista um colaborador "xica", da area "putaria", com o cargo "puta" e a faixa salarial "1"
     Dado que exista uma certificacao "cert. java" para o curso "java"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "T&D > Cadastros > Cursos/Treinamentos"
     E eu clico na linha "java" da imagem "Turmas"

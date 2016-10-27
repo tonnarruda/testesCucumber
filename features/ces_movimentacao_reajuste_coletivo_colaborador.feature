@@ -3,7 +3,7 @@
 Funcionalidade: Reajuste Coletivo/Dissídio Colaborador
 
   Cenário: Reajuste Coletivo/Dissídio Colaborador
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista a tabela de reajuste "ajustar" na data "01/01/2013" aprovada "false" com o tipo de reajuste "C"
     Dado que exista o estabelecimento "centro"
     Dado que exista a área organizacional "geral"

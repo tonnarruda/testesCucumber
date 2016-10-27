@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Pesquisas
 
   Cenário: Cadastro de Pesquisas
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Pesquisas > Movimentações > Pesquisas"
     Então eu devo ver o título "Pesquisas"

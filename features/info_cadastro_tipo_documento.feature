@@ -3,7 +3,7 @@
 Funcionalidade: Tipo do Documento
 
   Cenário: Cadastro de Tipo do Documento
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Tipo do Documento"
     Então eu devo ver o título "Tipo do Documento"
     E eu clico no botão "Inserir"

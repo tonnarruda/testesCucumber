@@ -3,7 +3,7 @@
 Funcionalidade: Relatório de Projeção Salarial
 
   Cenário: Relatório de Projeção Salarial
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista o estabelecimento "estabelecimento"
     Dado que exista a área organizacional "geral"
     Dado que exista a tabela de reajuste "reajuste" na data "28/07/2011" aprovada "false" com o tipo de reajuste "C"

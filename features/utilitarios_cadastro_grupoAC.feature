@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Grupo AC
 
   Cenário: Cadastro do Grupo AC
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Utilitários > Cadastros > Grupos AC"
     Então eu devo ver o título "Grupo AC (Utilizado no Fortes Pessoal)"

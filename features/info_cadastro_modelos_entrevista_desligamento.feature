@@ -3,7 +3,7 @@
 Funcionalidade: Modelos de Entrevistas de Desligamento
 
   Cenário: Cadastro de Modelos de Entrevistas de Desligamento
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Modelos de Entrevistas de Desligamento"
     Então eu devo ver o título "Modelos de Entrevistas de Desligamento"
     E eu clico no botão "Inserir"

@@ -9,7 +9,7 @@ Funcionalidade: Cadastrar Colaborador
     Dado que a opção de solicitação de confirmação de desligamento para a empresa seja "true"
     Dado que eu esteja deslogado
     
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento"
     E eu não devo ver "Loira do Tchan"

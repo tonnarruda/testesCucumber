@@ -3,7 +3,7 @@
 Funcionalidade: Medidas de Segurança
 
   Cenário: Cadastro de Medidaa de Segurança
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > PCMAT > Medidas de Segurança"
 
     Então eu devo ver o título "Medidas de Segurança"

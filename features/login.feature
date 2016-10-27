@@ -6,7 +6,7 @@ Funcionalidade: Logar no sistema
   Eu quero logar
   
   Cenário: Logar
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 #    Dado que eu esteja na pagina de login
 #    E eu preencho "username" com "fortes"
 #    E eu preencho "password" com "1234"

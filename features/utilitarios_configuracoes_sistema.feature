@@ -3,7 +3,7 @@
 Funcionalidade: Configurações do Sistema
 
   Cenário: Alterar Configurações do Sistema
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Utilitários > Configurações > Sistema"
     Então eu devo ver o título "Editar Configurações do Sistema"

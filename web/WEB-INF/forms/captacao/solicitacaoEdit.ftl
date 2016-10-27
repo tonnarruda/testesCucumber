@@ -14,6 +14,7 @@
 	<#assign formAction="insert.action"/>
 	<#assign accessKey="I"/>
 	<#assign DataSolicitacao = "${dataDoDia}"/>
+	<#assign DataPrevisaoEncerramento = ""/>
 </#if>
 
 <#if solicitacao.dataStatus?exists>

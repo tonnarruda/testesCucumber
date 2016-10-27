@@ -4,7 +4,7 @@ Funcionalidade: Cadastrar Area de Interesse
 
   Cenário: Cadastro de Area de Interesse
     Dado que exista a área organizacional "financeiro"
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "R&S > Cadastros > Áreas de Interesse"
     Então eu devo ver o título "Áreas de Interesse"
     E eu clico no botão "Inserir"

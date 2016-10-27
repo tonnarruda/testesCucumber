@@ -9,7 +9,7 @@ Funcionalidade: Providências
     Dado que haja uma providencia com id 1, descricao "Não Faltar", empresa_id 1
     Dado que haja uma colaboradorocorrencia com id 1, dataIni "2013-11-05", dataFim "2013-11-06", colaborador_id 1, ocorrencia_id 1
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "Info. Funcionais > Movimentações > Providências"
     Então eu devo ver o título "Providências"
     E eu devo ver "Rombona"

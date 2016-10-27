@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Modelos de Avaliação do Candidato
 
   Cenário: Cadastro de Modelos de Avaliação do Candidato
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "R&S > Cadastros > Modelos de Avaliação do Candidato"
     Então eu devo ver o título "Modelos de Avaliação do Candidato"
     E eu clico no botão "Inserir"

@@ -5,7 +5,7 @@ Funcionalidade: Promoção para Dissídio
   Cenário: Alteração de Promoção para Dissídio
     Dado que exista um colaborador "Davi", da area "Desenvolvimento", com o cargo "Diretor do Nada" e a faixa salarial "I"
     Dado que exista um novo historico para o colaborador "Davi", na area "Desenvolvimento", na faixa salarial "I"
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     
     Quando eu acesso o menu "C&S > Movimentações > Alteração de Promoção para Dissídio"
 

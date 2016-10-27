@@ -3,7 +3,7 @@
 Funcionalidade: Composição do SESMT
 
   Cenário: Cadastro de Composição do SESMT
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "SESMT > Cadastros > Composição do SESMT"
     Então eu devo ver o título "Composição do SESMT"

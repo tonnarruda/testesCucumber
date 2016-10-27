@@ -5,7 +5,7 @@ Funcionalidade: Funções
   Cenário: Cadastro de Funções
     Dado que exista o cargo "Contador"
     
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Funções"
     Então eu devo ver o título "Funções"
     E eu seleciono "Contador" de "Cargo"

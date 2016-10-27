@@ -3,7 +3,7 @@
 Funcionalidade: Extintor
 
   Cenário: Cadastro de Extintor
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Extintores"
     Então eu devo ver o título "Extintores"
     E eu clico no botão "Inserir"

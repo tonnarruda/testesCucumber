@@ -4,7 +4,7 @@ Funcionalidade: Relatório de Distribuição de Colaboradores por Função
 
   Cenário: Relatório de Distribuição de Colaboradores por Função
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Relatórios > Distribuição de Colaboradores por Função"
 
     Então eu devo ver o título "Distribuição de Colaboradores por Função"

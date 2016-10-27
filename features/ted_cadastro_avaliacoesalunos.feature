@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Avaliações dos Cursos
 
   Cenário: Avaliações dos Cursos
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista um modelo avaliacao aluno "Avaliacao de Aluno"
 
     Quando eu acesso o menu "T&D > Cadastros > Avaliações dos Alunos"

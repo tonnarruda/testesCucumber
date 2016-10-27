@@ -6,7 +6,7 @@ Funcionalidade: Resultado de Fichas Médicas
     Dado que exista um modelo de ficha medica "admissional" com a pergunta "alérgico?"
     Dado que exista a área organizacional "administração"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Relatórios > Resultado de Fichas Médicas"
     Então eu devo ver o título "Resultado da Ficha Médica"
     E eu clico no botão "Relatorio"

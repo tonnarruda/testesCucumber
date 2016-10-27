@@ -3,7 +3,7 @@
 Funcionalidade: Reajuste Coletivo/Dissídio Índice
 
   Cenário: Reajuste Coletivo/Dissídio Índice
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista a tabela de reajuste "ajustar" na data "01/02/2013" aprovada "false" com o tipo de reajuste "I"
     Dado que exista um indice "indice" com historico na data "01/01/2013" e valor "5000.00"
 

@@ -3,7 +3,7 @@
 Funcionalidade: Modelos de Fichas Médicas
 
   Cenário: Cadastro de Modelos de Fichas Médicas
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Modelos de Fichas Médicas"
     Então eu devo ver o título "Modelos de Fichas Médicas"
     E eu clico no botão "Inserir"

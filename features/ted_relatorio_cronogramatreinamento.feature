@@ -7,7 +7,7 @@ Funcionalidade: Relatório de Cronograma de Treinamento
     Dado que exista uma turma "turma1" para o curso "java"
     Dado que exista uma turma "turma2" para o curso "java"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     
     Quando eu acesso o menu "T&D > Relatórios > Cronograma de Treinamento"
     Então eu devo ver o título "Cronograma de Treinamento"

@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Modelos de Avaliação de Aluno
 
   Cenário: Modelos de Avaliação de Turma
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "T&D > Cadastros > Modelos de Avaliação de Aluno"
     Então eu devo ver o título "Modelos de Avaliação de Aluno"

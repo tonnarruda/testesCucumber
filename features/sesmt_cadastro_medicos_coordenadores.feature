@@ -3,7 +3,7 @@
 Funcionalidade: Médicos Coordenadores
 
   Cenário: Cadastro de Médicos Coordenadores
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Médicos Coordenadores"
     Então eu devo ver o título "Médicos Coordenadores"
     E eu clico no botão "Inserir"

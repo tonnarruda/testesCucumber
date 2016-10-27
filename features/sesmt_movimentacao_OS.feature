@@ -7,7 +7,7 @@ Funcionalidade: CATs (Acidentes de Trabalho)
     Dado que exista uma funcao "desenvolver" no cargo "desenvolvedor"
     Dado que exista um novo historico para o colaborador "Geraldo", na area "administracao", na faixa salarial "I", na funcao "desenvolver"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Movimentações > Gerenciamento de Ordem de Serviço"
     Então eu devo ver o título "Gerenciamento de Ordem de Serviço"
     Então eu devo ver "Geraldo"

@@ -4,7 +4,7 @@ Funcionalidade: Cadastrar Certificações dos Cursos
 
   Cenário: Certificações dos Cursos
     Dado que exista um curso "tdd"
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista um colaborador "Jose", da area "area1", com o cargo "cargo1" e a faixa salarial "faixa1"
 
     Quando eu acesso o menu "Utilitários > Cadastros > Empresas"

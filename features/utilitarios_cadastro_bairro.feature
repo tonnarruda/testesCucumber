@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Bairro
 
   Cenário: Cadastro de Bairro
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Utilitários > Cadastros > Bairros"
     Então eu devo ver o título "Bairros"

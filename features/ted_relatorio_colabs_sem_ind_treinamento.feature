@@ -3,7 +3,7 @@
 Funcionalidade: Relatório de Colaboradores Sem Indicação de Treinamento
 
   Cenário: Relatório de Colaboradores Sem Indicação de Treinamento
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     
     Dado que exista a área organizacional "trafego", filha de "operacional"
 

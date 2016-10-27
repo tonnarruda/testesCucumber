@@ -5,7 +5,7 @@ Funcionalidade: Cadastrar Certificações dos Cursos
   Cenário: Certificações dos Cursos
     Dado que exista um curso "tdd"
     
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "T&D > Cadastros > Certificações"
     Então eu devo ver o título "Certificações"

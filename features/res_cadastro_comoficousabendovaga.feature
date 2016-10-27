@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Forma Como Ficou Sabendo da Vaga
 
   Cenário: Cadastro de Como Ficou Sabendo da Vaga
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "R&S > Cadastros > Como Ficou Sabendo da Vaga"
     Então eu devo ver o título "Como Ficou Sabendo da Vaga"
     E eu clico no botão "Inserir"

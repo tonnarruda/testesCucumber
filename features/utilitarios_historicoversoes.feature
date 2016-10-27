@@ -3,7 +3,7 @@
 Funcionalidade: Histórico de Versões
 
   Cenário: Histórico de Versões
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Utilitários > Histórico de Versões"
     Então eu devo ver o título "Histórico de Versões"

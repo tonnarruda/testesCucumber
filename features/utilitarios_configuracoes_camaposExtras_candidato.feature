@@ -4,7 +4,7 @@ Funcionalidade: Campos Extras para Candidato
 
   @dev
   Cenário: Campos Extras para Candidato
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "R&S > Cadastros > Candidatos"
     E eu clico no botão "Inserir"
@@ -18,6 +18,12 @@ Funcionalidade: Campos Extras para Candidato
     E eu clico no botão "Gravar"
     Então eu devo ver "Essas configurações serão aplicadas para todas as empresas!"
     Quando eu aperto "OK"
+
+    Quando eu acesso o menu "Utilitários > Configurações > Configurar Cadastro de Colaborador e Candidato > Campos extras"
+    Entao eu clico na aba candidato de campo extra
+    E eu espero 2 segundos
+    E eu marco texto 1 da aba candidato
+    E eu clico no botão "Gravar"
 
     Quando eu acesso o menu "R&S > Cadastros > Candidatos"
     E eu clico no botão "Inserir"

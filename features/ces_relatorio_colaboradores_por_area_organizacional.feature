@@ -3,7 +3,7 @@
 Funcionalidade: Relatório de Colaboradores por Áreas Organizacionais
 
   Cenário: Relatório de Colaboradores por Áreas Organizacionais
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista o estabelecimento "estabelecimento"
     Dado que exista a área organizacional "geral"
     Quando eu acesso o menu "C&S > Relatórios > Colaboradores por Área Organizacional"

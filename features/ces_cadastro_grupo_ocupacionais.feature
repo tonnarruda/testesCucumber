@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Grupos Ocupacionais
 
   Cenário: Cadastro de Grupos Ocupacionais
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "C&S > Cadastros > Grupos Ocupacionais"
     Então eu devo ver o título "Grupos Ocupacionais"
     E eu clico no botão "Inserir"

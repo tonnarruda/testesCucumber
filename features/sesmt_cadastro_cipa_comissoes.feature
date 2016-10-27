@@ -3,7 +3,7 @@
 Funcionalidade: Comissões
 
   Cenário: Cadastro de Comissões
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > CIPA > Comissões"
     Então eu devo ver o título "Comissões"
     E eu clico no botão "Inserir"

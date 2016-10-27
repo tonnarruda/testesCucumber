@@ -3,7 +3,7 @@
 Funcionalidade: Relatório de Análise de Tabela Salarial
 
   Cenário: Relatório de Análise de Tabela Salarial
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista o grupo ocupacional "grupo"
 
     

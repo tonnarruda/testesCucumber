@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Usuário
 
   Cenário: Cadastro de Usuário
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Utilitários > Cadastros > Usuários"
     Então eu devo ver o título "Usuários"
@@ -30,7 +30,7 @@ Funcionalidade: Cadastrar Usuário
     E eu devo ver o título "Editar Usuário"
     E o campo "Nome" deve conter "joao"
     E eu preencho "Nome" com "jorge"
-    E eu preencho "Login" com "fortes"
+    E eu preencho "Login" com "SOS"
     Então eu clico no botão "Gravar"
     E eu devo ver "Este login já existe."
     E eu preencho "Nome" com "jorge"

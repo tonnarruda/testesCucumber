@@ -9,7 +9,7 @@ Funcionalidade: Relatório de Lista de Frequência
     Dado que haja um diaTurma com id 2, dia "03/01/2013", turma_id 1, turno "M"
     Dado que haja um diaTurma com id 3, dia "04/01/2013", turma_id 1, turno "N"
     Dado que haja um diaTurma com id 4, dia "05/01/2013", turma_id 1, turno "M"
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     
     Quando eu acesso o menu "T&D > Relatórios > Lista de Presença"
     Então eu devo ver o título "Lista de Presença"

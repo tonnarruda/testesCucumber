@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Planejamentos de Realinhamentos
 
   Cenário: Cadastro de Planejamentos de Realinhamentos
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "C&S > Movimentações > Planejamentos de Realinhamentos"
     Então eu devo ver o título "Planejamentos de Realinhamentos"
     E eu clico no botão "Inserir"

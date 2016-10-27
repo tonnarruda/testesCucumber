@@ -3,7 +3,7 @@
 Funcionalidade: Relatório de Duração para Preenchimento de Vagas
 
   Cenário: Relatório de Duração para Preenchimento de Vagas
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista o estabelecimento "centro"
     Dado que exista a área organizacional "geral"
     Quando eu acesso o menu "R&S > Relatórios > Duração para Preenchimento de Vagas"

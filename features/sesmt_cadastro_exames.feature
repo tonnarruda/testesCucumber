@@ -3,7 +3,7 @@
 Funcionalidade: Exames
 
   Cenário: Cadastro de Exames
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     
     Quando eu acesso o menu "SESMT > Cadastros > Exames"
     Então eu devo ver o título "Exames"

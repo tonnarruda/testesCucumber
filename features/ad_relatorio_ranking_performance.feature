@@ -3,7 +3,7 @@
 Funcionalidade:  Ranking de Performance das Avaliações de Desempenho
 
   Cenário:  Ranking de Performance das Avaliações de Desempenho
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista a área organizacional "geral"
     Dado que exista o estabelecimento "centro"
 

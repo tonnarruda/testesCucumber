@@ -3,7 +3,7 @@
 Funcionalidade: Etapas do Processo Eleitoral
 
   Cenário: Cadastro de Etapas do Processo Eleitoral
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > CIPA > Etapas do Processo Eleitoral"
     Então eu devo ver o título "CIPA - Etapas do Processo Eleitoral"
     E eu clico no botão "Inserir"

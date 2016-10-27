@@ -5,7 +5,7 @@ Funcionalidade: Inspeção de Extintores
   Cenário: Cadastro de Inspeção de Extintores
     Dado que exista um extintor localizado em "garagem"    
     
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Movimentações > Extintores > Inspeção"
     Então eu devo ver o título "Extintores - Inspeção"
     E eu clico no botão "Inserir"

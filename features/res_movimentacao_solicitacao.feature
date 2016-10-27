@@ -17,7 +17,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que exista uma configuracao de nivel de competencia com nivel "ruim" no historico do nivel de data "01/01/2010" na ordem 1
     Dado que exista uma configuracao de nivel de competencia com nivel "regular" no historico do nivel de data "01/01/2010" na ordem 2
     Dado que exista uma configuracao de nivel de competencia com nivel "bom" no historico do nivel de data "01/01/2010" na ordem 3
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista um candidato "Nikita"
     Dado que exista um bairro "Aldeota" na cidade de "Fortaleza"
     Dado que exista uma etapa seletiva "Entrevista"
@@ -190,7 +190,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu devo ver o título "Candidatos da Seleção"
     E eu devo ver "Área: Financeiro"
     E eu devo ver "Cargo: Contador"
-    E eu devo ver "Solicitante: Fortes"
+    E eu devo ver "Solicitante: SOS"
     E eu devo ver "Vagas: 1"
     E eu devo ver "Nikita"
     
@@ -198,7 +198,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu devo ver o título "Candidatos da Seleção - Triagem"
     E eu devo ver "Área: Financeiro"
     E eu devo ver "Cargo: Contador"
-    E eu devo ver "Solicitante: Fortes"
+    E eu devo ver "Solicitante: SOS"
     E eu devo ver "Vagas: 1"
     E eu clico no botão "InserirSelecionados"
     E eu clico no botão "Voltar"

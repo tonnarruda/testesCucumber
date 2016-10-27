@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Faturamento
 
   Cenário: Cadastro de Faturamentos
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "C&S > Movimentações > Faturamento Mensal"
     Então eu devo ver o título "Faturamentos"

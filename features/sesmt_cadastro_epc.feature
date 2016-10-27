@@ -3,7 +3,7 @@
 Funcionalidade: EPCs (Equipamentos de Proteção Coletiva)
 
   Cenário: Cadastro de EPCs (Equipamentos de Proteção Coletiva)
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > EPC"
     Então eu devo ver o título "EPCs (Equipamentos de Proteção Coletiva)"
     E eu clico no botão "Inserir"

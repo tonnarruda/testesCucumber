@@ -3,7 +3,7 @@
 Funcionalidade: Obras
 
   Cenário: Cadastro de Obras
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > PCMAT > Obras"
 
     Então eu devo ver o título "Obras"

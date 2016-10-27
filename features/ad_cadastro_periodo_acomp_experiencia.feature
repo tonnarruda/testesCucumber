@@ -3,7 +3,7 @@
 Funcionalidade: Período de Acompanhamento de Experiência
 
   Cenário: Cadastro de Período de Acompanhamento de Experiência
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "Aval. Desempenho > Cadastros > Dias do Acompanhamento do Período de Experiência"
     Então eu devo ver o título "Períodos de Acompanhamento de Experiência"
     E eu clico no botão "Inserir"

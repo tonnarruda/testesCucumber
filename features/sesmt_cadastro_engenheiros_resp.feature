@@ -3,7 +3,7 @@
 Funcionalidade: Engenheiros Responsáveis do Trabalho
 
   Cenário: Cadastro de Engenheiros Responsáveis do Trabalho
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Engenheiros Responsáveis"
     Então eu devo ver o título "Engenheiros Responsáveis do Trabalho"
     E eu clico no botão "Inserir"

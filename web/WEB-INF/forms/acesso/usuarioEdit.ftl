@@ -14,11 +14,17 @@
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
 	<#assign requerido="false"/>
+	<#if usuario.id == 1>
+		<#assign insertUpdate="false"/>
+	<#else>
+		<#assign insertUpdate="true"/>
+	</#if>
 <#else>
 	<title>Inserir Usuário</title>
 	<#assign formAction="insert.action"/>
 	<#assign accessKey="I"/>
 	<#assign requerido="true"/>
+	<#assign insertUpdate="true"/>
 
 	<#if origem == 'C'>
 		<#assign readonly="true"/>
@@ -102,7 +108,7 @@
 	<@ww.actionerror />
 	<@ww.actionmessage />
 	
-	<#if usuario?exists && usuario.id?exists && usuario.id != 1>	
+	<#if insertUpdate == "true">	
 		<@ww.form name="form" action="${formAction}" onsubmit="enviaForm();" method="POST">
 		
 			<#if origem?exists>

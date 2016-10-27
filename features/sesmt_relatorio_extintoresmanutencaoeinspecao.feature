@@ -4,7 +4,7 @@ Funcionalidade: Relatório de Extintores - Manutenção e Inspeção
 
   Cenário: Relatório de Extintores - Manutenção e Inspeção
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Relatórios > Extintores - Manutenção e Inspeção"
     Então eu devo ver o título "Extintores - Manutenção e Inspeção"
     E eu clico no botão "Relatorio"

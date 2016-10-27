@@ -6,7 +6,7 @@ Funcionalidade: Cadastrar Plano de Treinamento
     Dado que exista um curso "tdd"
     Dado que exista uma turma "a1" para o curso "tdd"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "T&D > Movimentações > Plano de Treinamento"
     Então eu devo ver o título "Plano de Treinamento"

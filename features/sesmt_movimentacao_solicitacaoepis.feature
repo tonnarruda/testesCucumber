@@ -6,7 +6,7 @@ Funcionalidade: Gerenciamento de EPIs
     Dado que exista o EPI "jaleco" da categoria "roupas"
     Dado que exista um colaborador "geraldo", da area "administracao", com o cargo "quimico" e a faixa salarial "I"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Movimentações > Gerenciamento de EPIs"
     Então eu devo ver o título "Gerenciamento de EPIs"
     E eu clico no botão "Inserir"

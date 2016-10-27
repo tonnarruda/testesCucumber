@@ -6,7 +6,7 @@ Funcionalidade: Fichas Médicas
     Dado que exista um colaborador "Geraldo", da area "administracao", com o cargo "desenvolvedor" e a faixa salarial "I"
     Dado que exista um modelo de ficha medica "admissional" com a pergunta "alérgico?"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
     E eu clico em editar "Geraldo"

@@ -3,7 +3,7 @@
 Funcionalidade: Relatório de Estatísticas de Vagas por Motivo
 
   Cenário: Relatório de Estatísticas de Vagas por Motivo
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista o estabelecimento "centro"
     Dado que exista a área organizacional "geral"
     Quando eu acesso o menu "R&S > Relatórios > Estatísticas de Vagas por Motivo"

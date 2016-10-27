@@ -362,6 +362,14 @@ Então /^o campo "([^"]*)" deve ter "([^"]*)" selecionado$/ do |field, value|
   Então %{o campo "#{field[:id]}" deve conter "#{value}"}
 end
 
+Então /^eu clico na aba candidato de campo extra$/ do
+  page.execute_script("showBox('candidato')")
+end
+
+Então /^eu marco texto 1 da aba candidato$/ do
+  page.execute_script("$('#visivel-candidato-texto1').click()")
+end
+
 Dado /^que exista o evento "([^"]*)"$/ do |nome_evento|
    insert :evento do
      nome nome_evento

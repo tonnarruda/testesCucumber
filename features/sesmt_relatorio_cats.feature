@@ -4,7 +4,7 @@ Funcionalidade: Relatório de CATs
 
   Cenário: Relatório de CATs
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Relatórios > Ficha de Investigação de Acidente(CAT)"
     Então eu devo ver o título "Ficha de Investigação de Acidente(CAT)"
 

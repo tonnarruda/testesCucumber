@@ -3,7 +3,7 @@
 Funcionalidade: Relatório Acompanhamento de Experiência Previsto
 
   Cenário: Relatório Acompanhamento de Experiência Previsto
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista a área organizacional "geral"
     Dado que exista o estabelecimento "centro"
 

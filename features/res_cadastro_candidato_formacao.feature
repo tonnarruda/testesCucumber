@@ -4,7 +4,7 @@ Funcionalidade: Cadastrar Candidato
 
   @dev
   Cenário: Cadastro de Formação do Candidato
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "R&S > Cadastros > Candidatos"
     Então eu devo ver o título "Candidatos"

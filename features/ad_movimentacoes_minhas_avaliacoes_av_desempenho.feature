@@ -4,7 +4,7 @@ Funcionalidade: Minhas Avaliações - Avaliação Desempenho
 
   Cenário: Minhas Avaliações - Avaliação Desempenho
     Dado que exista um colaborador "Samuel", da area "Desenvolvimento", com o cargo "Desenvolvedor" e a faixa salarial "3"
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência"
     Então eu devo ver o título "Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência"

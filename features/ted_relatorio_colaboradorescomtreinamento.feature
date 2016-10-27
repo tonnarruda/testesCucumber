@@ -8,7 +8,7 @@ Funcionalidade: Relatório de colaboradores que fizeram um treinamento
     Dado que exista a área organizacional "adm"
     Dado que exista o estabelecimento "matriz"
 
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     
     Quando eu acesso o menu "T&D > Relatórios > Colaboradores com Treinamentos"
     Então eu devo ver o título "Colaboradores que fizeram o treinamento"

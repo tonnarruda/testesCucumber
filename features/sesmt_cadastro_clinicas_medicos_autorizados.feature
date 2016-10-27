@@ -3,7 +3,7 @@
 Funcionalidade: Clínicas e Médicos Autorizados
 
   Cenário: Cadastro de Clínicas e Médicos Autorizados
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Clínicas e Médicos Autorizados"
     Então eu devo ver o título "Clínicas e Médicos Autorizados"
     E eu clico no botão "Inserir"

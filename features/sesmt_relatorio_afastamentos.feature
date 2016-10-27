@@ -5,7 +5,7 @@ Funcionalidade: Relatório de Afastamentos
   Cenário: Relatório de Afastamentos
     Dado que exista um colaborador "jackson", da area "desenvolvimento", com o cargo "desenvolvedor" e a faixa salarial "I"
     Dado que exista um afastamento "doença"
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 
     Quando eu acesso o menu "SESMT > Relatórios > Afastamentos > Afastamentos"
     Então eu devo ver o título "Afastamentos"

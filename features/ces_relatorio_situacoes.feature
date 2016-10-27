@@ -3,7 +3,7 @@
 Funcionalidade: Relatório de Situações
 
   Cenário: Relatório de Situações
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista o estabelecimento "estabelecimento"
     Dado que exista a área organizacional "geral"
 

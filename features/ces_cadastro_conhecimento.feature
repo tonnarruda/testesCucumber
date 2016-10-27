@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Conhecimentos
 
   Cenário: Cadastro de Conhecimentos
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Dado que exista a área organizacional "Administração"
     Dado que exista a área organizacional "Administração > Desenvolvimento"
 

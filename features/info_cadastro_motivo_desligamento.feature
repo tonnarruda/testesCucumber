@@ -3,7 +3,7 @@
 Funcionalidade: Motivos de Desligamento
 
   Cenário: Cadastro de Motivos de Desligamento
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Motivos de Desligamento"
     Então eu devo ver o título "Motivos de Desligamento"
     E eu clico no botão "Inserir"

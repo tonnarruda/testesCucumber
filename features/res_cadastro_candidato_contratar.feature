@@ -4,7 +4,7 @@ Funcionalidade: Cadastrar Candidato
 
   @dev
   Cenário: Cadastro de Experiência do Candidato
-    Dado que eu esteja logado com o usuário "fortes"
+    Dado que eu esteja logado com o usuário "SOS"
 	Dado que exista o cargo "baba"
 	
     Quando eu acesso o menu "R&S > Cadastros > Candidatos"
