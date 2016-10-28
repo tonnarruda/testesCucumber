@@ -2,6 +2,9 @@ package com.fortes.rh.business.acesso;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.acesso.PerfilDao;
@@ -9,9 +12,15 @@ import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class PerfilManagerImpl extends GenericManagerImpl<Perfil, PerfilDao> implements PerfilManager
 {
 	private PapelManager papelManager;
+	
+	@Autowired
+	PerfilManagerImpl(PerfilDao dao) {
+		setDao(dao);
+	}
 	
 	public Collection<Perfil> findAll(Integer page, Integer pagingSize)
 	{

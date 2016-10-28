@@ -7,11 +7,13 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.CompetenciaDao;
 import com.fortes.rh.model.captacao.Competencia;
 
+@Component
 public class CompetenciaDaoHibernate extends GenericDaoHibernate<Competencia> implements CompetenciaDao
 {
 	public boolean existeNome(String nome, Long competenciaId, Character tipo, Long empresaId) 

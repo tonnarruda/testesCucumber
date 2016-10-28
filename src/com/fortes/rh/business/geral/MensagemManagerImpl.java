@@ -2,6 +2,9 @@ package com.fortes.rh.business.geral;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.MensagemDao;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -11,8 +14,14 @@ import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.MathUtil;
 
+@Component
 public class MensagemManagerImpl extends GenericManagerImpl<Mensagem, MensagemDao> implements MensagemManager
 {
+	@Autowired
+	MensagemManagerImpl(MensagemDao dao) {
+		setDao(dao);
+	}
+	
 	@Override
 	public Mensagem save(Mensagem mensagem)
 	{

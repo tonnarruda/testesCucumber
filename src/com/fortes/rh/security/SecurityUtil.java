@@ -1,12 +1,13 @@
 package com.fortes.rh.security;
 
+import java.util.Collection;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.model.acesso.Usuario;
@@ -21,13 +22,13 @@ public class SecurityUtil
 	
 	public static boolean verifyRole(Map session, String[] rolesVerify)
 	{
-		SecurityContext sc = (SecurityContext) session.get("ACEGI_SECURITY_CONTEXT");
-		GrantedAuthority[] roles =  sc.getAuthentication().getAuthorities();
+		SecurityContext sc = (SecurityContext) session.get("SPRING_SECURITY_CONTEXT");
+		Collection<? extends GrantedAuthority> roles =  sc.getAuthentication().getAuthorities();
 
-		for (int i = 0; i < roles.length; i++)
+		for (int i = 0; i < roles.size(); i++)
 		{
 			for (int j = 0; j < rolesVerify.length; j++)
-				if (roles[i].getAuthority().equals(rolesVerify[j]))
+				if (((GrantedAuthority) roles.toArray()[i]).getAuthority().equals(rolesVerify[j]))
 					return true;
 		}
 
@@ -42,7 +43,7 @@ public class SecurityUtil
 		
 		Long id = ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getId();
 
-		return ((UsuarioManager) SpringUtil.getBean("usuarioManager")).findById(id);
+		return ((UsuarioManager) SpringUtil.getBean("usuarioManagerImpl")).findById(id);
 	}
 	
 	public static Long getIdUsuarioLoged(Map session)
@@ -82,7 +83,7 @@ public class SecurityUtil
 		if (session == null)
 			return null;
 		
-		SecurityContext sc = (SecurityContext) session.get("ACEGI_SECURITY_CONTEXT");
+		SecurityContext sc = (SecurityContext) session.get("SPRING_SECURITY_CONTEXT");
 		if(sc == null)
 			return null;
 		
@@ -94,7 +95,7 @@ public class SecurityUtil
 		if (session == null)
 			return false;
 
-		SecurityContext sc = (SecurityContext) session.get("ACEGI_SECURITY_CONTEXT");
+		SecurityContext sc = (SecurityContext) session.get("SPRING_SECURITY_CONTEXT");
 		if(sc == null)
 			return false;
 
@@ -108,7 +109,7 @@ public class SecurityUtil
 		if (session == null)
 			return false;
 		
-		SecurityContext sc = (SecurityContext) session.get("ACEGI_SECURITY_CONTEXT");
+		SecurityContext sc = (SecurityContext) session.get("SPRING_SECURITY_CONTEXT");
 		if(sc == null)
 			return false;
 		
@@ -122,7 +123,7 @@ public class SecurityUtil
 		if (session == null)
 			return null;
 		
-		SecurityContext sc = (SecurityContext) session.get("ACEGI_SECURITY_CONTEXT");
+		SecurityContext sc = (SecurityContext) session.get("SPRING_SECURITY_CONTEXT");
 		if(sc == null)
 			return null;
 		
@@ -135,7 +136,7 @@ public class SecurityUtil
 	}
 
 	public static String getNomeUsuarioLogedByDWR(HttpSession session) {
-		SecurityContext sc = (SecurityContext) session.getAttribute("ACEGI_SECURITY_CONTEXT");
+		SecurityContext sc = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
 		
 		if(sc == null)
 			return null;
@@ -144,7 +145,7 @@ public class SecurityUtil
 	}
 	
 	public static Empresa getEmpresaByDWR(HttpSession session) {
-		SecurityContext sc = (SecurityContext) session.getAttribute("ACEGI_SECURITY_CONTEXT");
+		SecurityContext sc = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
 		
 		if(sc == null)
 			return null;
@@ -157,7 +158,7 @@ public class SecurityUtil
 			if (session == null)
 				return "";
 
-			SecurityContext sc = (SecurityContext) session.get("ACEGI_SECURITY_CONTEXT");
+			SecurityContext sc = (SecurityContext) session.get("SPRING_SECURITY_CONTEXT");
 
 			if(sc == null)
 				return "";

@@ -37,7 +37,6 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	@Column(length=10)
 	private String cid;
 
-	@Lob
 	private String observacao;
 
 	@ManyToOne

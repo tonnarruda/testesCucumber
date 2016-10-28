@@ -8,6 +8,9 @@ package com.fortes.rh.business.acesso;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -29,12 +32,18 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> implements UsuarioManager
 {
 	private ColaboradorManager colaboradorManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	
+	@Autowired
+	UsuarioManagerImpl(UsuarioDao dao) {
+		setDao(dao);
+	}
 
 	@TesteAutomatico
 	public Usuario findByLogin(String login)

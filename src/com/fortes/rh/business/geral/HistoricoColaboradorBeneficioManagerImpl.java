@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -19,6 +21,7 @@ import com.fortes.rh.model.geral.HistoricoBeneficio;
 import com.fortes.rh.model.geral.HistoricoColaboradorBeneficio;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class HistoricoColaboradorBeneficioManagerImpl extends GenericManagerImpl<HistoricoColaboradorBeneficio, HistoricoColaboradorBeneficioDao> implements HistoricoColaboradorBeneficioManager
 {
 
@@ -26,6 +29,11 @@ public class HistoricoColaboradorBeneficioManagerImpl extends GenericManagerImpl
 	private HistoricoBeneficioManager historicoBeneficioManager;
 	private PlatformTransactionManager transactionManager;
 
+	@Autowired
+	HistoricoColaboradorBeneficioManagerImpl(HistoricoColaboradorBeneficioDao dao) {
+		setDao(dao);
+	}
+	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;

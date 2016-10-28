@@ -3,6 +3,9 @@ package com.fortes.rh.business.captacao;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
@@ -10,8 +13,14 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetenciaColaborador, ConfiguracaoNivelCompetenciaColaboradorDao> implements ConfiguracaoNivelCompetenciaColaboradorManager
 {
+	@Autowired
+	ConfiguracaoNivelCompetenciaColaboradorManagerImpl(ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao) {
+		setDao(configuracaoNivelCompetenciaColaboradorDao);
+	}
+	
 	public ConfiguracaoNivelCompetenciaColaborador findByIdProjection(Long configuracaoNivelCompetenciaColaboradorId) 
 	{
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = getDao().findByIdProjection(configuracaoNivelCompetenciaColaboradorId);

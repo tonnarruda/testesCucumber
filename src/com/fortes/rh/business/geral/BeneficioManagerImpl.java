@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -14,10 +16,16 @@ import com.fortes.rh.dao.geral.BeneficioDao;
 import com.fortes.rh.model.geral.Beneficio;
 import com.fortes.rh.model.geral.HistoricoBeneficio;
 
+@Component
 public class BeneficioManagerImpl extends GenericManagerImpl<Beneficio, BeneficioDao> implements BeneficioManager
 {
 	private PlatformTransactionManager transactionManager;
 	private HistoricoBeneficioManager historicoBeneficioManager;
+	
+	@Autowired
+	BeneficioManagerImpl(BeneficioDao dao) {
+		setDao(dao);
+	}
 
 	public Beneficio findBeneficioById(Long id)
 	{

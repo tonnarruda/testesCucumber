@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -22,6 +25,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.xwork.ActionContext;
 
+@Component
 public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, SolicitacaoDao> implements SolicitacaoManager
 {
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
@@ -30,6 +34,11 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	
+	@Autowired
+	SolicitacaoManagerImpl(SolicitacaoDao solicitacaoDao) {
+		setDao(solicitacaoDao);
+	}
 
 	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, 
 			String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim, boolean visualiazarTodasAsSolicitacoes, Date dataEncerramentoIni, Date dataEncerramentoFim)

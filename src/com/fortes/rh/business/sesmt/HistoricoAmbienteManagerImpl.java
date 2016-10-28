@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
 import com.fortes.rh.exception.FortesException;
@@ -15,9 +18,15 @@ import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteRisco;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAmbiente, HistoricoAmbienteDao> implements HistoricoAmbienteManager
 {
 	private RiscoAmbienteManager riscoAmbienteManager; 
+	
+	@Autowired
+	HistoricoAmbienteManagerImpl(HistoricoAmbienteDao historicoAmbienteDao) {
+			setDao(historicoAmbienteDao);
+	}
 	
 	@Override
 	public HistoricoAmbiente findById(Long id) 

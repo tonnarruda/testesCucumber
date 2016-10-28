@@ -29,12 +29,13 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
     private Date data;
 	@Transient
 	private Date dataProximoHistorico;
-    @Lob
+	
+	@Lob
     private String descricao;
     @ManyToOne
     private Funcao funcao;
 
-    @ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
+    @ManyToMany(cascade=CascadeType.REMOVE)
     private Collection<Exame> exames;
 
     @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
@@ -43,7 +44,7 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
     @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
     private Collection<Curso> cursos;
     
-    @OneToMany(mappedBy="historicoFuncao", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="historicoFuncao", cascade=CascadeType.ALL)
 	private Collection<RiscoFuncao> riscoFuncaos;
 
     @Lob

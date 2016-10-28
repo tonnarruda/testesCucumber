@@ -8,7 +8,8 @@ import mockit.Mockit;
 
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.jmock.MockObjectTestCase;
+import org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException;
 
 import com.fortes.model.type.File;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;

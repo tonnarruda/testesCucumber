@@ -5,14 +5,23 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.FasePcmatDao;
 import com.fortes.rh.model.sesmt.FasePcmat;
 import com.fortes.rh.model.sesmt.RiscoFasePcmat;
 
+@Component
 public class FasePcmatManagerImpl extends GenericManagerImpl<FasePcmat, FasePcmatDao> implements FasePcmatManager
 {
 	private RiscoFasePcmatManager riscoFasePcmatManager;
+	
+	@Autowired
+	FasePcmatManagerImpl(FasePcmatDao fasePcmatDao) {
+			setDao(fasePcmatDao);
+	}
 	
 	public Collection<FasePcmat> findByPcmat(Long pcmatId) 
 	{

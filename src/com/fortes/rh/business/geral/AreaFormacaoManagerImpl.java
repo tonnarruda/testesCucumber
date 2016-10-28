@@ -3,6 +3,9 @@ package com.fortes.rh.business.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.AreaFormacaoDao;
@@ -11,9 +14,14 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class AreaFormacaoManagerImpl extends GenericManagerImpl<AreaFormacao, AreaFormacaoDao> implements AreaFormacaoManager
 {
-
+	@Autowired
+	AreaFormacaoManagerImpl(AreaFormacaoDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<AreaFormacao> findByCargo(Long cargoId)
 	{
 		return getDao().findByCargo(cargoId);

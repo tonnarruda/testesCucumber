@@ -3,15 +3,21 @@ package com.fortes.rh.web.dwr;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class DiaTurmaDWR
 {
+	@Autowired
 	private DiaTurmaManager diaTurmaManager;
+	@Autowired
 	private TurmaManager turmaManager;
 
 	public Collection<DiaTurma> getDias(String dataIniStr, String dataFimStr, Boolean aplicarPorTurno) throws Exception

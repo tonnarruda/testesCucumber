@@ -67,9 +67,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	private String horarioComercial = "";
 	@Column(length=5)
 	private String sexo;
-	@Lob
 	private String infoComplementares;
-	@Lob
 	private String observacaoLiberador;
 	private boolean encerrada;
 	private char status = StatusAprovacaoSolicitacao.ANALISE;
@@ -97,7 +95,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	@OneToMany (mappedBy="solicitacao", fetch = FetchType.LAZY)
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	private Collection<Bairro> bairros;
 	
 	@ManyToOne
@@ -108,7 +106,6 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	
 	private boolean suspensa;
 	
-	@Lob
 	private String obsSuspensao;
 	
 	@OneToMany (mappedBy="solicitacao", fetch=FetchType.LAZY)

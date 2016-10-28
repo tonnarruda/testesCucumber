@@ -5,11 +5,14 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Usuario;
@@ -26,10 +29,16 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<CandidatoSolicitacao, CandidatoSolicitacaoDao> implements CandidatoSolicitacaoManager
 {
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+
+	@Autowired
+	CandidatoSolicitacaoManagerImpl(CandidatoSolicitacaoDao candidatoDao) {
+		setDao(candidatoDao);
+	}
 	
     public CandidatoSolicitacao findByCandidatoSolicitacao(CandidatoSolicitacao cand)
     {

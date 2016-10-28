@@ -3,20 +3,22 @@ package com.fortes.rh.dao.hibernate.pesquisa;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.AvaliacaoTurmaDao;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 
+@Component
 @SuppressWarnings("unchecked")
 public class AvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<AvaliacaoTurma> implements AvaliacaoTurmaDao
 {
@@ -179,7 +181,7 @@ public class AvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<AvaliacaoTur
 		p.add(Projections.property("q.titulo"), "projectionQuestionarioTitulo");
 		p.add(Projections.sqlProjection("(select count(*) from colaboradorquestionario cq where cq.questionario_id = q3_.id) as qtdColaboradorQuestionario" , 
 				                        new String[] {"qtdColaboradorQuestionario"}, 
-				                        new Type[] {Hibernate.INTEGER}));
+				                        new Type[] {StandardBasicTypes.INTEGER}));
 
 		criteria.setProjection(Projections.distinct(p));
 		criteria.add(Expression.eq("t.id", turmaId));

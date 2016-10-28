@@ -2,10 +2,15 @@ package com.fortes.rh.security;
 
 import java.util.Collection;
 
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UserDetailsService;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
+//import org.acegisecurity.userdetails.UserDetails;
+//import org.acegisecurity.userdetails.UserDetailsService;
+//import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -14,9 +19,12 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class UserDetailsServiceImpl implements UserDetailsService
 {
+	@Autowired
 	private UsuarioManager usuarioManager;
+	@Autowired
 	private ColaboradorManager colaboradorManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
@@ -25,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
  		Usuario user = usuarioManager.findByLogin(login);
 
 		if(user != null)
-		{
+		{ 
 			Collection<Colaborador> colaboradors =  colaboradorManager.findToList(new String[]{"id"}, new String[]{"id"}, new String[]{"usuario.id","desligado"}, new Object[]{user.getId(), true});
 
 			if(colaboradors == null || colaboradors.size() > 0)

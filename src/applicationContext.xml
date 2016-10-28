@@ -3,7 +3,7 @@
 
 <beans>
   <!-- Default manager transaction configuration -->
-  <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+  <!-- <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
     <property name="transactionManager">
       <ref bean="transactionManager" />
     </property>
@@ -26,23 +26,23 @@
         <value>.*\.update</value>
       </list>
     </property>
-  </bean>
+  </bean> -->
 
-  <!-- Auditoria Advice -->
+  <!-- Auditoria Advice 
   <bean id="auditoriaGeralAdvice" class="com.fortes.rh.security.spring.aop.AuditoriaGeralAdvice" >
 	<property name="auditoriaManager" ref="auditoriaManager" />
 	<property name="securityManager" ref="securityManager" />
-  </bean>
+  </bean> -->
   
-  <!-- Auditoria Static Advisor -->
+  <!-- Auditoria Static Advisor 
   <bean id="auditoriaGeralStaticAdvisor" class="com.fortes.rh.security.spring.aop.AuditoriaPointcut">
     <property name="advice">
       <ref local="auditoriaGeralAdvice" />
     </property>
-  </bean>
+  </bean> -->
 
   <!-- Default manager template -->
-  <bean id="parentManager" class="org.springframework.aop.framework.ProxyFactoryBean" abstract="true">
+  <!-- <bean id="parentManager" class="org.springframework.aop.framework.ProxyFactoryBean" abstract="true">
     <property name="interceptorNames">
       <list>
         <idref bean="securityInterceptor" />
@@ -51,27 +51,27 @@
         <value>auditoriaGeralStaticAdvisor</value>
       </list>
     </property>
-  </bean>
+  </bean> -->
 
    <!-- EMAILSENDRUNNABLE -->
-  <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" />
-  <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage" />
+  <!-- <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" />
+  <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage" /> -->
 
-  <!-- EMAIL -->
+  <!-- EMAIL 
   <bean id="mail" class="com.fortes.rh.util.Mail">
   	<property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
-  </bean>
+  </bean> -->
 
-  <!-- WS INTEGRAÇÃO Fortes Pessoal -->
-  <bean id="service" class="org.apache.axis.client.Service" />
+  <!--<bean id="service" class="org.apache.axis.client.Service" />
+   WS INTEGRAÇÃO Fortes Pessoal 
   <bean id="acPessoalClient" class="com.fortes.rh.web.ws.AcPessoalClientImpl">
     <property name="service" ref="service" />
     <property name="grupoACManager" ref="grupoACManager" />
-  </bean>
+  </bean> 
 
   <bean id="acPessoalClientCargo" class="com.fortes.rh.web.ws.AcPessoalClientCargo">
     <property name="acPessoalClient" ref="acPessoalClient" />
-  </bean>
+  </bean> 
   <bean id="acPessoalClientColaborador" class="com.fortes.rh.web.ws.AcPessoalClientColaboradorImpl">
     <property name="acPessoalClient" ref="acPessoalClient" />
   </bean>
@@ -94,11 +94,11 @@
   </bean>
   <bean id="acPessoalClientColaboradorOcorrencia" class="com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrenciaImpl">
     <property name="acPessoalClient" ref="acPessoalClient" />
-  </bean>
+  </bean> -->
 
   <!-- Tarefas agendadas -->
   
-  <bean name="lembretePesquisaJob" class="com.fortes.rh.business.pesquisa.LembretePesquisa">
+  <!-- <bean name="lembretePesquisaJob" class="com.fortes.rh.business.pesquisa.LembretePesquisa">
   </bean>
   <bean name="lembretePesquisa" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   	<property name="name" value="Enviar lembrete de pesquisas"/>
@@ -107,20 +107,20 @@
   </bean>
   
   <bean name="bancoConsistenteJob" class="com.fortes.rh.business.geral.BancoConsistente">
-  </bean>
+  </bean> 
   <bean name="bancoConsistente" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   	<property name="name" value="Verificar se o banco está consistente"/>
     <property name="targetObject" ref="bancoConsistenteJob"/>
     <property name="targetMethod" value="execute"/>
-  </bean>
+  </bean> -->
 
-  <bean name="lembreteExamesPrevistosJob" class="com.fortes.rh.business.sesmt.LembreteExamesPrevistos">
+  <!--  <bean name="lembreteExamesPrevistosJob" class="com.fortes.rh.business.sesmt.LembreteExamesPrevistos">
   	<property name="exameManager" ref="exameManager" />
 	<property name="empresaManager" ref="empresaManager" />
-  </bean>
+  </bean> 
   <bean name="lembreteExamesPrevistos" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   	<property name="name" value="Enviar lembrete de exames previstos"/>
-    <property name="targetObject" ref="lembreteExamesPrevistosJob"/>
+    <property name="targetObject" ref="LembreteExamesPrevistosJob"/>
     <property name="targetMethod" value="executeLembreteExamesPrevistos"/>
   </bean>
   
@@ -244,19 +244,19 @@
 
   <bean name="limpaDirTemp" class="org.springframework.scheduling.quartz.JobDetailBean">
     <property name="jobClass" value="com.fortes.rh.business.geral.LimpaDirTemp" />
-  </bean>
+  </bean> -->
   
-  <!-- Job Responsavel por limpar os arquivos de log antigos -->
+  <!-- Job Responsavel por limpar os arquivos de log antigos --><!--
   <bean name="logCleanerJob" class="org.springframework.scheduling.quartz.JobDetailBean">
   	<property name="name" value="Remover arquivos antigos de log" />
     <property name="jobClass" value="com.fortes.rh.config.LogCleanerJob" />
   </bean>
   <bean id="cronTriggerLogCleaner" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="logCleanerJob" />
-    <property name="cronExpression" value="0 0 6 15 * ?" /> <!-- Todo dia 15 de cada mes as 06:00h am -->
+    <property name="cronExpression" value="0 0 6 15 * ?" />  Todo dia 15 de cada mes as 06:00h am 
   </bean>
   
-  <!-- Job Responsavel pelo Backup do Banco -->
+   Job Responsavel pelo Backup do Banco 
   <bean name="backupJobBean" class="com.fortes.rh.config.backup.BackupJob">
     <property name="backupService" ref="backupService" />
   </bean>
@@ -303,17 +303,17 @@
 
   <bean id="cronTriggerBackup" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="backupJob" />
-    <property name="cronExpression" value="0 0 0/1 * * ?"/> <!-- A cada 1 hora --> 
+    <property name="cronExpression" value="0 0 0/1 * * ?"/>  A cada 1 hora  
   </bean>
   
-  <!-- Job Responsavel por limpar os arquivos de backup antigos -->
+   Job Responsavel por limpar os arquivos de backup antigos 
   <bean name="backupCleanerJob" class="org.springframework.scheduling.quartz.JobDetailBean">
   	<property name="name" value="Remover arquivos antigos de backup do banco de dados" />
     <property name="jobClass" value="com.fortes.rh.config.backup.BackupCleanerJob" />
   </bean>
   <bean id="cronTriggerBackupCleaner" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="backupCleanerJob" />
-    <property name="cronExpression" value="0 0 3 * * ?" /> <!-- Todos os dias as 03:00h am -->
+    <property name="cronExpression" value="0 0 3 * * ?" />  Todos os dias as 03:00h am 
   </bean>
 
   <bean id="cronTriggerImportadorGastosAC" class="org.springframework.scheduling.quartz.CronTriggerBean">
@@ -330,51 +330,55 @@
   </bean>
   <bean id="cronTriggerLembreteExamesPrevistos" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteExamesPrevistos" />
-	<property name="cronExpression" value="0 0 3 25 * ?" /> <!-- Todo dia 25 de cada mes as 03:00h am -->
+	<property name="cronExpression" value="0 0 3 25 * ?" />  Todo dia 25 de cada mes as 03:00h am 
   </bean>
   <bean id="cronTriggerLembretePeriodoExperiencia" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembretePeriodoExperiencia" />
-    <property name="cronExpression" value="0 0 7 * * ?" /> <!-- Todo os dias as 07:00h am -->
+    <property name="cronExpression" value="0 0 7 * * ?" />  Todo os dias as 07:00h am 
   </bean>
   <bean id="cronTriggerQuantidadeCurriculos" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="quantidadeCurriculos" />
-    <property name="cronExpression" value="0 10 7 1 * ?" /> <!-- Todo dia 1 de cada mes as 07:10h am -->
+    <property name="cronExpression" value="0 10 7 1 * ?" />  Todo dia 1 de cada mes as 07:10h am 
   </bean>
   <bean id="cronTriggerEmailCartaoAniversariantes" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="emailCartaoAniversariantes" />
-	<property name="cronExpression" value="0 20 6 * * ?" /> <!-- Todo os dias as 06:20h am -->
+	<property name="cronExpression" value="0 20 6 * * ?" />  Todo os dias as 06:20h am 
   </bean>
   <bean id="cronTriggerLembreteAberturaSolicitacaoEpi" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteAberturaSolicitacaoEpi" />
-	<property name="cronExpression" value="0 0 6 * * ?" /> <!-- Todo os dias as 06:00h am -->
+	<property name="cronExpression" value="0 0 6 * * ?" />  Todo os dias as 06:00h am 
   </bean>
   <bean id="cronTriggerLembreteEntregaEpi" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteEntregaEpi" />
-	<property name="cronExpression" value="0 10 6 * * ?" /> <!-- Todo os dias as 06:10h am -->
+	<property name="cronExpression" value="0 10 6 * * ?" />  Todo os dias as 06:10h am 
   </bean>
   <bean id="cronTriggerlembreteResponderAvaliacaoDesempenho" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteResponderAvaliacaoDesempenho" />
-	<property name="cronExpression" value="0 30 6 * * ?" /> <!-- Todo os dias as 06:30h am -->
+	<property name="cronExpression" value="0 30 6 * * ?" />  Todo os dias as 06:30h am 
   </bean>
   <bean id="cronTriggeremailQuandoColaboradorCompletaAnoDeEmpresa" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="emailQuandoColaboradorCompletaAnoDeEmpresa" />
-	<property name="cronExpression" value="0 50 6 * * ?" /> <!-- Todo os dias as 06:50h am -->
+	<property name="cronExpression" value="0 50 6 * * ?" /> Todo os dias as 06:50h am 
   </bean>
   <bean id="cronTriggerlembreteContratoTemporarioColaborador" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteContratoTemporarioColaborador" />
-	<property name="cronExpression" value="0 30 5 * * ?" /> <!-- Todo os dias as 05:30h am -->
+	<property name="cronExpression" value="0 30 5 * * ?" />  Todo os dias as 05:30h am 
   </bean>
   <bean id="cronTriggerlembreteHabilitacaoAVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteHabilitacaoAVencer" />
-	<property name="cronExpression" value="0 0 5 * * ?" /> <!-- Todo os dias as 05:00h am -->
+	<property name="cronExpression" value="0 0 5 * * ?" />  Todo os dias as 05:00h am 
   </bean>
   <bean id="cronTriggerImportarUltimasNoticias" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="importarUltimasNoticias" />
-	<property name="cronExpression" value="0 0 0/1 * * ?" /> <!-- A cada 1 hora -->
+	<property name="cronExpression" value="0 0 0/1 * * ?" />  A cada 1 hora 
   </bean>
   <bean id="cronTriggerenviarNotificacaoCursosOuCertificacoesAVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="enviarNotificacaoCursosOuCertificacoesAVencer" />
-    <property name="cronExpression" value="0 20 7 * * ?" /> <!-- Todo os dias as 07:20h am -->
+    <property name="cronExpression" value="0 20 7 * * ?" />  Todo os dias as 07:20h am 
+   </bean>
+  <bean id="cronTriggerEnviarNotificacaoCursosAVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="enviarNotificacaoCursosAVencer" />
+    <property name="cronExpression" value="0 20 7 * * ?" />  Todo os dias as 07:00h am 
   </bean>
   
   <bean id="cronTriggerenviaAvisoLntAutomatico" class="org.springframework.scheduling.quartz.CronTriggerBean">
@@ -407,5 +411,5 @@
       </list>
     </property>
   </bean>
-  <!-- Fim das tarefas agendadas -->
+  --><!-- Fim das tarefas agendadas -->
 </beans>

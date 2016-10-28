@@ -13,6 +13,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExtintorDao;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.dicionario.TipoExtintor;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.HistoricoExtintor;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ExtintorDaoHibernate extends GenericDaoHibernate<Extintor> implements ExtintorDao
 {

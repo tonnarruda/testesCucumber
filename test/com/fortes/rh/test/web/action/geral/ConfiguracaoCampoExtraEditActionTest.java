@@ -3,7 +3,7 @@ package com.fortes.rh.test.web.action.geral;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;

@@ -8,13 +8,11 @@ import java.util.Vector;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import org.acegisecurity.context.SecurityContext;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.exception.ExceptionUtils;
-import org.hibernate.validator.InvalidStateException;
-import org.hibernate.validator.InvalidValue;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.context.SecurityContext;
 
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -76,19 +74,19 @@ public class ValidationExceptionInterceptor implements Interceptor
 			
 			return Action.ERROR;
 		}		
-		catch (InvalidStateException e)
-		{
-			if (actionSuport != null)
-			{
-				InvalidValue[] invalidValues = e.getInvalidValues();
-				for (InvalidValue invalidValue : invalidValues)
-				{
-					actionSuport.addFieldError(invalidValue.getPropertyName(), invalidValue.getMessage());
-				}
-			}
-			this.logaErros(e);
-			return Action.INPUT;
-		}
+//		catch (InvalidStateException e)
+//		{
+//			if (actionSuport != null)
+//			{
+//				InvalidValue[] invalidValues = e.getInvalidValues();
+//				for (InvalidValue invalidValue : invalidValues)
+//				{
+//					actionSuport.addFieldError(invalidValue.getPropertyName(), invalidValue.getMessage());
+//				}
+//			}
+//			this.logaErros(e);
+//			return Action.INPUT;
+//		}
 		catch (ConstraintViolationException e)
 		{
 			String warnMessage = montaMensagemDependencias(e.getMessage());
@@ -147,16 +145,16 @@ public class ValidationExceptionInterceptor implements Interceptor
 	{
 		try {
 			String action = ServletActionContext.getRequest().getServletPath();
-			SecurityContext sc = (SecurityContext) ActionContext.getContext().getSession().get("ACEGI_SECURITY_CONTEXT");
+			SecurityContext sc = (SecurityContext) ActionContext.getContext().getSession().get("SPRING_SECURITY_CONTEXT");
 			
 			if(!actionSuport.toString().contains("com.fortes.rh.web.action.exportacao.ExportacaoACAction") && !action.contains("/contatos.action") 
 					&& sc != null && !sc.getAuthentication().getPrincipal().equals("anonymousUser"))
 			{
 				Empresa empresa = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession());
-				EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBean("empresaManager");
+				EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBean("empresaManagerImpl");
 				if(empresa != null && empresa.getId() != null && empresaManager.emProcessoExportacaoAC(empresa.getId()))
 				{
-					ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManager");
+					ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManagerImpl");
 
 					HttpServletResponse response = ServletActionContext.getResponse();
 					response.sendRedirect(parametrosDoSistemaManager.getContexto() + "/exportacao/prepareExportarAC.action");

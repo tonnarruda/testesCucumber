@@ -16,6 +16,8 @@ import java.util.Map;
 import javax.persistence.PersistenceException;
 
 import org.apache.commons.lang.Validate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -65,6 +67,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.rh.web.ws.AcPessoalClientTabelaReajusteInterface;
 
+@Component
 @SuppressWarnings({"unchecked"})
 public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<HistoricoColaborador, HistoricoColaboradorDao> implements HistoricoColaboradorManager
 {
@@ -84,6 +87,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private SolicitacaoManager solicitacaoManager;
+	
+	@Autowired
+	HistoricoColaboradorManagerImpl(HistoricoColaboradorDao dao) {
+		setDao(dao);
+	}
 	
 	@TesteAutomatico(metodoMock="findPromocaoByColaborador")
 	public Collection<HistoricoColaborador> getByColaboradorId(Long colaboradorId)

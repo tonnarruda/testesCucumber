@@ -8,12 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
@@ -22,6 +23,7 @@ import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteRisco;
 
+@Component
 @SuppressWarnings("unchecked")
 public class HistoricoAmbienteDaoHibernate extends GenericDaoHibernate<HistoricoAmbiente> implements HistoricoAmbienteDao
 {
@@ -122,7 +124,7 @@ public class HistoricoAmbienteDaoHibernate extends GenericDaoHibernate<Historico
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("dataHist", data);
-		query.setParameterList("ambienteIds", ambienteIds, Hibernate.LONG);
+		query.setParameterList("ambienteIds", ambienteIds, StandardBasicTypes.LONG);
 
 		Collection<HistoricoAmbiente> historicosDistinct = new ArrayList<HistoricoAmbiente>();
 		List<HistoricoAmbiente> historicos = query.list();

@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.DetachedCriteria;
@@ -21,6 +20,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
@@ -33,6 +34,7 @@ import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.json.TurmaJson;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements TurmaDao
 {
@@ -123,7 +125,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		query.setDate("dataFim", (Date)parametros.get("dataFim"));
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
-		query.setParameterList("areasId",(Collection<Long>)parametros.get("areas"), Hibernate.LONG);
+		query.setParameterList("areasId",(Collection<Long>)parametros.get("areas"), StandardBasicTypes.LONG);
 
 		return query.list();
 	}

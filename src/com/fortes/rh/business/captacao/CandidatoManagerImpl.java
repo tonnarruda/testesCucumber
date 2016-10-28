@@ -14,6 +14,8 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.NonUniqueResultException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -73,7 +75,7 @@ import com.fortes.rh.util.Zip;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-
+@Component
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, CandidatoDao> implements CandidatoManager
 {
@@ -99,6 +101,11 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	private CamposExtrasManager camposExtrasManager;
 	
 	private int totalSize;
+	
+	@Autowired
+	CandidatoManagerImpl(CandidatoDao candidatoDao) {
+		setDao(candidatoDao);
+	}
 
 	public int getTotalSize()
 	{

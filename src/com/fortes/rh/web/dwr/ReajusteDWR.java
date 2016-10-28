@@ -13,6 +13,9 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import uk.ltd.getahead.dwr.WebContextFactory;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -38,15 +41,24 @@ import com.fortes.rh.util.SalarioUtil;
 import com.fortes.web.tags.CheckBox;
 import com.fortes.web.tags.Option;
 
+@Component
 public class ReajusteDWR
 {
+	@Autowired
 	private ColaboradorManager colaboradorManager;
+	@Autowired
 	private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired
 	private FaixaSalarialManager faixaSalarialManager;
+	@Autowired
 	private IndiceManager indiceManager;
+	@Autowired
 	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	@Autowired
 	private ReajusteColaboradorManager reajusteColaboradorManager;
+	@Autowired
 	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager; 
+	@Autowired
 	private ReajusteIndiceManager reajusteIndiceManager; 
 
 	public Map<String, Object> getColaboradorSolicitacaoReajuste(Long colaboradorId) throws Exception

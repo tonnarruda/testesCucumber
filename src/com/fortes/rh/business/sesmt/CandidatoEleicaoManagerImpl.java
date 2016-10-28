@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -22,13 +24,19 @@ import com.fortes.rh.model.sesmt.Eleicao;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class CandidatoEleicaoManagerImpl extends GenericManagerImpl<CandidatoEleicao, CandidatoEleicaoDao> implements CandidatoEleicaoManager
 {
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorManager colaboradorManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EleicaoManager eleicaoManager;
-		
+	
+	@Autowired
+	CandidatoEleicaoManagerImpl(CandidatoEleicaoDao fooDao) {
+		setDao(fooDao);
+	}
+	
 	public Collection<CandidatoEleicao> findByEleicao(Long eleicaoId)
 	{
 		return getDao().findByEleicao(eleicaoId, false, false);

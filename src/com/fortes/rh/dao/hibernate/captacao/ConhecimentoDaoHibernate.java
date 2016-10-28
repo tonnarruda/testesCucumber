@@ -8,20 +8,22 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.model.captacao.Conhecimento;
 
+@Component
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class ConhecimentoDaoHibernate extends GenericDaoHibernate<Conhecimento> implements ConhecimentoDao
 {
@@ -118,7 +120,7 @@ public class ConhecimentoDaoHibernate extends GenericDaoHibernate<Conhecimento> 
 		Criteria criteria = getSession().createCriteria(Conhecimento.class, "c");
 		
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.sqlProjection("distinct on(nome) nome", new String[]{"nome"}, new Type[] {Hibernate.STRING}), "nome");
+		p.add(Projections.sqlProjection("distinct on(nome) nome", new String[]{"nome"}, new Type[] {StandardBasicTypes.STRING}), "nome");
 		p.add(Projections.property("c.id"), "id");
 		criteria.setProjection(p);
 		

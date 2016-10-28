@@ -3,18 +3,20 @@ package com.fortes.rh.dao.hibernate.pesquisa;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.RespostaDao;
 import com.fortes.rh.model.pesquisa.Resposta;
 
+@Component
 public class RespostaDaoHibernate extends GenericDaoHibernate<Resposta> implements RespostaDao
 {
 	@SuppressWarnings("unchecked")
@@ -73,7 +75,7 @@ public class RespostaDaoHibernate extends GenericDaoHibernate<Resposta> implemen
 
 		Query query = getSession().createQuery(queryHQL);
 
-		query.setParameterList("perguntaIds", perguntaIds, Hibernate.LONG);
+		query.setParameterList("perguntaIds", perguntaIds, StandardBasicTypes.LONG);
 
 		query.executeUpdate();
 

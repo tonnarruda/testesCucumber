@@ -6,13 +6,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.GastoEmpresaDao;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.GastoEmpresa;
 
+@Component
 public class GastoEmpresaDaoHibernate extends GenericDaoHibernate<GastoEmpresa> implements GastoEmpresaDao
 {
 	@SuppressWarnings("unchecked")
@@ -48,7 +50,7 @@ public class GastoEmpresaDaoHibernate extends GenericDaoHibernate<GastoEmpresa> 
 		query.setDate("dataIni", (Date) parametros.get("dataIni"));
 		query.setDate("dataFim", (Date) parametros.get("dataFim"));
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		query.setParameterList("areasId", (Collection<Long>) parametros.get("areas"), Hibernate.LONG);
+		query.setParameterList("areasId", (Collection<Long>) parametros.get("areas"), StandardBasicTypes.LONG);
 		query.setLong("empresaId", (Long) parametros.get("empresaId"));
 
 		return query.list();

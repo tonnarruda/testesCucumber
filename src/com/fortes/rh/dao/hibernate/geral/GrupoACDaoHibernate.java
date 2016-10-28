@@ -3,12 +3,14 @@ package com.fortes.rh.dao.hibernate.geral;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TGrupo;
 
+@Component
 public class GrupoACDaoHibernate extends GenericDaoHibernate<GrupoAC> implements GrupoACDao
 {
 

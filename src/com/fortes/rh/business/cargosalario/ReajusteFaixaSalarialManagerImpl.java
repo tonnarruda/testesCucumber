@@ -3,15 +3,24 @@ package com.fortes.rh.business.cargosalario;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.ReajusteFaixaSalarialDao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
 import com.fortes.rh.util.MathUtil;
 
+@Component
 public class ReajusteFaixaSalarialManagerImpl extends GenericManagerImpl<ReajusteFaixaSalarial, ReajusteFaixaSalarialDao> implements ReajusteFaixaSalarialManager
 {
 	private FaixaSalarialManager faixaSalarialManager;
+	
+	@Autowired
+	ReajusteFaixaSalarialManagerImpl(ReajusteFaixaSalarialDao dao) {
+		setDao(dao);
+	}
 	
 	public void insertReajustes(Long tabelaReajusteColaboradorId, Long[] faixasSalariaisIds, char dissidioPor, double valorDissidio) throws Exception 
 	{

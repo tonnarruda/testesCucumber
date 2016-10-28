@@ -6,12 +6,14 @@ import javax.xml.rpc.ParameterMode;
 import org.apache.axis.client.Call;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TOcorrencia;
 
+@Component
 public class AcPessoalClientOcorrenciaImpl implements AcPessoalClientOcorrencia
 {
 	private AcPessoalClient acPessoalClient;

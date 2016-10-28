@@ -29,7 +29,7 @@ public class EtapaProcessoEleitoral extends AbstractModel implements Serializabl
 	@ManyToOne
 	private Empresa empresa;
 
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	private Eleicao eleicao;
 
 	@Temporal(TemporalType.DATE)

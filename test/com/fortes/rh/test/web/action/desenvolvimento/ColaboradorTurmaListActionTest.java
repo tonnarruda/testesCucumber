@@ -497,7 +497,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
     	action.setColaboradorTurma(colaboradorTurma);
 
-    	colaboradorTurmaManager.expects(once()).method("remove").with(eq(colaboradorTurma)).will(throwException(new org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException(new ObjectNotFoundException(colaboradorTurma.getId(),""))));;
+    	colaboradorTurmaManager.expects(once()).method("remove").with(eq(colaboradorTurma)).will(throwException(new org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException(new ObjectNotFoundException(colaboradorTurma.getId(),""))));;
 
     	//list
     	Turma turma = TurmaFactory.getEntity(1L);

@@ -15,13 +15,13 @@ import com.fortes.rh.model.geral.Empresa;
 @SequenceGenerator(name = "sequence", sequenceName = "usuarioEmpresa_sequence", allocationSize = 1)
 public class UsuarioEmpresa extends AbstractModel implements Serializable
 {
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Usuario usuario;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Perfil perfil;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Empresa empresa;
 
 

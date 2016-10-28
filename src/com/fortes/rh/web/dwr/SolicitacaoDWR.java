@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
@@ -13,11 +16,15 @@ import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class SolicitacaoDWR {
 
+	@Autowired
 	private SolicitacaoManager solicitacaoManager;
+	@Autowired
 	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
+	@Autowired
 	private AnuncioManager anuncioManager;
 
 	public Map<Long, String> getSolicitacoes(Long empresaId) 

@@ -5,8 +5,14 @@ import java.util.Collection;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+
+@Component
 public class ListaPresencaDWR
 {
+	@Autowired
 	private ColaboradorPresencaManager colaboradorPresencaManager;
 	
 	public Collection<ColaboradorTurma> updateFrequencia(Long diaTurmaId, Long colaboradorTurmaId, boolean presenca, int controlarVencimentoCertificacaoPor, boolean certificadoEmTurmaPorterior) throws Exception

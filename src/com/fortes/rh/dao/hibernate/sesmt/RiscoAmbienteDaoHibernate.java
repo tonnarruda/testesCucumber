@@ -12,6 +12,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
 
+@Component
 @SuppressWarnings("unchecked")
 public class RiscoAmbienteDaoHibernate extends GenericDaoHibernate<RiscoAmbiente> implements RiscoAmbienteDao
 {

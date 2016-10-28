@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Expression;
@@ -16,6 +15,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
@@ -28,6 +29,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial> implements FaixaSalarialDao
 {
@@ -209,7 +211,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		Query query = getSession().createQuery(hql.toString());
 		
 		query.setDate("hoje", new Date());
-		query.setParameterList("faixasSalariaisIds", faixasSalariaisIds, Hibernate.LONG);
+		query.setParameterList("faixasSalariaisIds", faixasSalariaisIds, StandardBasicTypes.LONG);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		return query.list();
@@ -460,7 +462,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		Query query = getSession().createQuery(hql.toString());
 
 		query.setDate("hoje", new Date());
-		query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+		query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		return query.list();

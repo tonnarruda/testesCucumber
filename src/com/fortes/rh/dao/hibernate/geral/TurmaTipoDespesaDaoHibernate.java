@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.TurmaTipoDespesaDao;
@@ -17,6 +18,7 @@ import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class TurmaTipoDespesaDaoHibernate extends GenericDaoHibernate<TurmaTipoDespesa> implements TurmaTipoDespesaDao
 {

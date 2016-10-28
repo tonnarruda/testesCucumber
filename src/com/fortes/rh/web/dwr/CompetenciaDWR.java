@@ -5,16 +5,24 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class CompetenciaDWR
 {
+	@Autowired
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired
+	private SolicitacaoManager solicitacaoManager;
 
 	@SuppressWarnings("rawtypes")
 	public Map getCompetenciasColaboradorByFaixaSalarialAndData(Long faixaId, String data)

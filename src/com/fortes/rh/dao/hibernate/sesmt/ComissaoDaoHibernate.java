@@ -12,12 +12,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ComissaoDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Comissao;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ComissaoDaoHibernate extends GenericDaoHibernate<Comissao> implements ComissaoDao
 {

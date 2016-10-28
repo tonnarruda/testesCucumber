@@ -3,6 +3,8 @@ package com.fortes.rh.business.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -18,10 +20,16 @@ import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class BairroManagerImpl extends GenericManagerImpl<Bairro, BairroDao> implements BairroManager
 {
 	private PlatformTransactionManager transactionManager;
 	private SolicitacaoManager solicitacaoManager;
+	
+	@Autowired
+	BairroManagerImpl(BairroDao dao) {
+		setDao(dao);
+	}
 	
 	public Collection<Bairro> list(int page, int pagingSize, Bairro bairro)
 	{

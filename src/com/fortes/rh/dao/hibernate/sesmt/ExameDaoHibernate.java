@@ -9,7 +9,6 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -21,8 +20,10 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExameDao;
@@ -37,6 +38,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements ExameDao
 {
@@ -135,7 +137,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		ProjectionList p = projectionFindExamesPeriodicosPrevistos();
 		p.add(Projections.property("se.data"), "dataSolicitacaoExame");
 		p.add(Projections.property("re.data"), "dataRealizacaoExame");
-		p.add(Projections.sqlProjection("(re3_.data + (ese1_.periodicidade || ' month')::interval) as dataProximoExame", new String[]{"dataProximoExame"}, new Type[]{Hibernate.DATE}));
+		p.add(Projections.sqlProjection("(re3_.data + (ese1_.periodicidade || ' month')::interval) as dataProximoExame", new String[]{"dataProximoExame"}, new Type[]{StandardBasicTypes.DATE}));
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("se.empresa.id", empresaId ));
@@ -163,7 +165,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 	    criteria.add(Subqueries.propertyEq("hc.data", utimoHistoricoColaborador(dataFim)));
 	    criteria.add(Expression.ne("re.resultado",ResultadoExame.NAO_REALIZADO.toString() ));
 	    
-	    criteria.add(Expression.sqlRestriction("(re3_.data + (ese1_.periodicidade || ' month')::interval) between ? and ? ", new Date[]{dataInicio,dataFim}, new Type[]{Hibernate.DATE, Hibernate.DATE}));
+	    criteria.add(Expression.sqlRestriction("(re3_.data + (ese1_.periodicidade || ' month')::interval) between ? and ? ", new Date[]{dataInicio,dataFim}, new Type[]{StandardBasicTypes.DATE, StandardBasicTypes.DATE}));
 
 	    criteria.add(Expression.sqlRestriction("this_.data = (select se2.data from solicitacaoexame as se2 join examesolicitacaoexame ese2 on se2.id = ese2.solicitacaoexame_id " 
 																	+ "join realizacaoexame as re2 on re2.id = ese2.realizacaoexame_id "
@@ -171,8 +173,8 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 																			+ "select max(re4.data) from examesolicitacaoexame ese4 left join solicitacaoexame se4 on se4.id = ese4.solicitacaoexame_id "
 																			+ "left join realizacaoexame re4 on re4.id = ese4.realizacaoexame_id "
 																			+ "where se4.colaborador_id = co4_.id and re4.resultado<> ? and ese4.exame_id = e2_.id ) limit 1 ) "
-																	, new String[]{ResultadoExame.NAO_REALIZADO.toString()}, new Type[]{Hibernate.STRING}));
-	    
+																	, new String[]{ResultadoExame.NAO_REALIZADO.toString()}, new Type[]{StandardBasicTypes.STRING}));
+
 	    criteria.addOrder(Order.asc("co.nome")).setResultTransformer(new AliasToBeanResultTransformer(ExamesPrevistosRelatorio.class));
 		
 		return criteria.list();
@@ -201,7 +203,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		p.add(Projections.property("co.id"), "colaboradorId");
 		p.add(Projections.property("e.id"), "exameId");
 		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
-		p.add(Projections.sqlProjection("monta_familia_area(ao7_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome");
+		p.add(Projections.sqlProjection("monta_familia_area(ao7_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[]{StandardBasicTypes.TEXT}), "areaOrganizacionalNome");
 		p.add(Projections.property("ca.nome"), "cargoNome");
 		p.add(Projections.property("co.matricula"), "colaboradorMatricula");
 		p.add(Projections.property("co.nome"), "colaboradorNome");
@@ -264,7 +266,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			query.setLong("clinicaAutorizadaId", clinicaAutorizada.getId());
 		
 		if (examesIds != null && examesIds.length > 0)
-			query.setParameterList("exameIds", examesIds, Hibernate.LONG);
+			query.setParameterList("exameIds", examesIds, StandardBasicTypes.LONG);
 		
 		return query.list();
 	}
@@ -336,10 +338,10 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		query.setLong("empresaId", empresaId);
 		
 		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		
 		if (examesIds != null && examesIds.length > 0)
-			query.setParameterList("exameIds", examesIds, Hibernate.LONG);
+			query.setParameterList("exameIds", examesIds, StandardBasicTypes.LONG);
 		
 		if (clinicaAutorizadaId != null)
 			query.setLong("clinicaId", clinicaAutorizadaId);
@@ -358,7 +360,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			criteria.add(Expression.eq("e.empresa.id", empresaId));
 		
 		if (exame != null && isNotBlank(exame.getNome()))
-			criteria.add(Expression.sqlRestriction("normalizar({alias}.nome) ilike normalizar(?)", "%" + exame.getNome() + "%", Hibernate.STRING));
+			criteria.add(Expression.sqlRestriction("normalizar({alias}.nome) ilike normalizar(?)", "%" + exame.getNome() + "%", StandardBasicTypes.STRING));
 	}
 
 	public Integer getCount(Long empresaId, Exame exame) {

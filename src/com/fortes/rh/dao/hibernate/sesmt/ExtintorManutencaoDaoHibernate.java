@@ -4,12 +4,14 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Query;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExtintorManutencaoDao;
 import com.fortes.rh.model.dicionario.MotivoExtintorManutencao;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<ExtintorManutencao> implements ExtintorManutencaoDao
 {

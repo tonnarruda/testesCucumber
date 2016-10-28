@@ -5,14 +5,23 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.RiscoMedicaoRiscoDao;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 public class RiscoMedicaoRiscoManagerImpl extends GenericManagerImpl<RiscoMedicaoRisco, RiscoMedicaoRiscoDao> implements RiscoMedicaoRiscoManager
 {
+	@Autowired
+	RiscoMedicaoRiscoManagerImpl(RiscoMedicaoRiscoDao riscoMedicaoRiscoDao) {
+		setDao(riscoMedicaoRiscoDao);
+	}
+	
 	public boolean removeByMedicaoRisco(Long medicaoRiscoId) 
 	{
 		if (medicaoRiscoId != null)

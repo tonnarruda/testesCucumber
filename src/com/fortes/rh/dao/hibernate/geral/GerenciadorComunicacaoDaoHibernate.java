@@ -8,12 +8,14 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 
+@Component
 @SuppressWarnings("unchecked")
 public class GerenciadorComunicacaoDaoHibernate extends GenericDaoHibernate<GerenciadorComunicacao> implements GerenciadorComunicacaoDao
 {

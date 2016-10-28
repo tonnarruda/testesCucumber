@@ -8,11 +8,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.EpiPcmatDao;
 import com.fortes.rh.model.sesmt.EpiPcmat;
 
+@Component
 @SuppressWarnings("unchecked")
 public class EpiPcmatDaoHibernate extends GenericDaoHibernate<EpiPcmat> implements EpiPcmatDao
 {

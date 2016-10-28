@@ -3,7 +3,7 @@ package com.fortes.rh.test.web.action.sesmt;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.pesquisa.FichaMedicaManager;
 import com.fortes.rh.model.geral.Empresa;

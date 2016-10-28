@@ -3,6 +3,9 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.dao.sesmt.AnexoDao;
@@ -10,9 +13,14 @@ import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.sesmt.Anexo;
 import com.fortes.rh.util.ArquivoUtil;
 
+@Component
 public class AnexoManagerImpl extends GenericManagerImpl<Anexo, AnexoDao> implements AnexoManager
 {
-
+	@Autowired
+	AnexoManagerImpl(AnexoDao fooDao) {
+		setDao(fooDao);
+	}
+	
 	public Collection<Anexo> findByOrigem(Long origemId, char origem)
 	{
 		return getDao().findByOrigem(origemId, origem);

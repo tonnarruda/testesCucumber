@@ -3,12 +3,17 @@ package com.fortes.rh.web.dwr;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.sesmt.EtapaProcessoEleitoralManager;
 import com.fortes.rh.model.sesmt.EtapaProcessoEleitoral;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class EtapaProcessoEleitoralDWR
 {
+	@Autowired
 	private EtapaProcessoEleitoralManager etapaProcessoEleitoralManager;
 
 	public Map<String,Object> prepareDadosEtapa(Long id) throws Exception

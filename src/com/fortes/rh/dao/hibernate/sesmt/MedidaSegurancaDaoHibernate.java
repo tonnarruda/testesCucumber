@@ -4,18 +4,20 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.MedidaSegurancaDao;
 import com.fortes.rh.model.sesmt.MedidaSeguranca;
 
+@Component
 public class MedidaSegurancaDaoHibernate extends GenericDaoHibernate<MedidaSeguranca> implements MedidaSegurancaDao
 {
 	@SuppressWarnings("unchecked")
@@ -29,7 +31,7 @@ public class MedidaSegurancaDaoHibernate extends GenericDaoHibernate<MedidaSegur
 		criteria.setProjection(p);
 
 		if (StringUtils.isNotBlank(descricao))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.descricao) ilike  normalizar(?)", "%" + descricao + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.descricao) ilike  normalizar(?)", "%" + descricao + "%", StandardBasicTypes.STRING));
 
 		criteria.add(Expression.eq("empresa.id", empresaId));
 

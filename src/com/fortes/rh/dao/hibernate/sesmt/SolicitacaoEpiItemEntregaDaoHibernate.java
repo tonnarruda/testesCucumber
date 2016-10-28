@@ -8,11 +8,13 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemEntregaDao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 
+@Component
 public class SolicitacaoEpiItemEntregaDaoHibernate extends GenericDaoHibernate<SolicitacaoEpiItemEntrega> implements SolicitacaoEpiItemEntregaDao
 {
 	@SuppressWarnings("unchecked")

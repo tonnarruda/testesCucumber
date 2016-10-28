@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.Iterator;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -15,7 +14,8 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
-import org.hibernate.type.Type;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
@@ -25,6 +25,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrganizacional> implements AreaOrganizacionalDao
 {
@@ -133,7 +134,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 			criteria.add(Expression.eq("r.id", colaboradorResponsavelId));
 
 		if(nome != null && !nome.equals(""))
-			criteria.add(Restrictions.sqlRestriction("normalizar({alias}.nome) ilike  normalizar(?)", "%" + nome.trim() + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar({alias}.nome) ilike  normalizar(?)", "%" + nome.trim() + "%", StandardBasicTypes.STRING));
 
 		if(ativo != null)
 		{
@@ -477,7 +478,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 			query.setBoolean("ativo", ativo);
 		
 		if(areaInativaIds != null)
-			query.setParameterList("areaInativaIds", areaInativaIds, Hibernate.LONG);
+			query.setParameterList("areaInativaIds", areaInativaIds, StandardBasicTypes.LONG);
 		
 		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
 		

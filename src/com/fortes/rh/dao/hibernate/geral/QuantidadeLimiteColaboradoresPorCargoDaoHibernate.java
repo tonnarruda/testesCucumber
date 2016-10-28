@@ -3,13 +3,14 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.model.AbstractModel;
@@ -18,6 +19,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 
+@Component
 public class QuantidadeLimiteColaboradoresPorCargoDaoHibernate extends GenericDaoHibernate<QuantidadeLimiteColaboradoresPorCargo> implements QuantidadeLimiteColaboradoresPorCargoDao
 {
 	public void save(AreaOrganizacional areaOrganizacional, Cargo cargo, int limite)
@@ -62,7 +64,7 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernate extends GenericDa
 		String hql = "delete QuantidadeLimiteColaboradoresPorCargo where areaOrganizacional.id in (:areaId)";
 
 		Query query = getSession().createQuery(hql);
-		query.setParameterList("areaId", areaIds, Hibernate.LONG);
+		query.setParameterList("areaId", areaIds, StandardBasicTypes.LONG);
 
 		query.executeUpdate();
 	}

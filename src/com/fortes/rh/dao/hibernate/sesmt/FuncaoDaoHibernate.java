@@ -10,12 +10,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.Funcao;
 
+@Component
 @SuppressWarnings("unchecked")
 public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements FuncaoDao
 {

@@ -7,11 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ComoFicouSabendoVagaDao;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 
+@Component
 public class ComoFicouSabendoVagaDaoHibernate extends GenericDaoHibernate<ComoFicouSabendoVaga> implements ComoFicouSabendoVagaDao
 {
 

@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.GastoDao;
 import com.fortes.rh.model.geral.Gasto;
 
+@Component
 @SuppressWarnings("unchecked")
 public class GastoDaoHibernate extends GenericDaoHibernate<Gasto> implements GastoDao
 {
@@ -83,7 +85,7 @@ public class GastoDaoHibernate extends GenericDaoHibernate<Gasto> implements Gas
 		Query query = getSession().createQuery(hql);
 
 		query.setLong("grupoGastoId", grupoGastoId);
-		query.setParameterList("gastosIds", gastosIds, Hibernate.LONG);
+		query.setParameterList("gastosIds", gastosIds, StandardBasicTypes.LONG);
 
 		query.executeUpdate();
 	}

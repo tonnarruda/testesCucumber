@@ -3,6 +3,9 @@ package com.fortes.rh.business.acesso;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.acesso.PapelDao;
@@ -15,12 +18,18 @@ import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.StringUtil;
 import com.opensymphony.xwork.ActionContext;
 
+@Component
 public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implements PapelManager
 {
 	private static Long ROLE_CX_MENSAGEM = 495L;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ParametrosDoSistema parametrosDoSistema;
 	
+	@Autowired
+	PapelManagerImpl(PapelDao dao) {
+		setDao(dao);
+	}
+
 	public String getPerfilOrganizado(String[] marcados, Collection<Papel> papeisComHelp, Long idDoUsuario) throws NotConectAutenticationException, NotRegistredException
 	{
 		Collection<Long> modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados();

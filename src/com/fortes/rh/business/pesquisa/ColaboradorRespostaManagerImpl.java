@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -45,6 +47,7 @@ import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionario;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.ConverterUtil;
 
+@Component
 public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<ColaboradorResposta, ColaboradorRespostaDao> implements ColaboradorRespostaManager
 {
     private PlatformTransactionManager transactionManager;
@@ -55,8 +58,13 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     private CandidatoManager candidatoManager; // usado na auditoria
     private AvaliacaoManager avaliacaoManager;
     private UsuarioManager usuarioManager ;
-    private NivelCompetenciaManager nivelCompetenciaManager; 
     private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
+    private NivelCompetenciaManager nivelCompetenciaManager;
+    
+    @Autowired
+    ColaboradorRespostaManagerImpl(ColaboradorRespostaDao colaboradorRespostaDao) {
+		setDao(colaboradorRespostaDao);
+	}
 
 	public List<Object[]> countRespostas(Long perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId)
     {

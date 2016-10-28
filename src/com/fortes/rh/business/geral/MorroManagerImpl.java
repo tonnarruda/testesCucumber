@@ -6,13 +6,14 @@ import java.util.Date;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.util.Zip;
 
-
+@Component
 public class MorroManagerImpl implements MorroManager
 {
 	private static Logger logger = Logger.getLogger(MorroManagerImpl.class);

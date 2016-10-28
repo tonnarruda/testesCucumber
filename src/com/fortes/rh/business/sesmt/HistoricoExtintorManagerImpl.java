@@ -3,6 +3,8 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -14,9 +16,15 @@ import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.HistoricoExtintor;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class HistoricoExtintorManagerImpl extends GenericManagerImpl<HistoricoExtintor, HistoricoExtintorDao> implements HistoricoExtintorManager
 {
 	private PlatformTransactionManager transactionManager;
+	
+	@Autowired
+	HistoricoExtintorManagerImpl(HistoricoExtintorDao historicoExtintorDao) {
+			setDao(historicoExtintorDao);
+	}
 
 	public HistoricoExtintor save(HistoricoExtintor historicoExtintor) 
 	{

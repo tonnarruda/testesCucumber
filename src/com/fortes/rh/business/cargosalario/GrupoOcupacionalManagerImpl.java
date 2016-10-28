@@ -3,15 +3,24 @@ package com.fortes.rh.business.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.GrupoOcupacionalDao;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class GrupoOcupacionalManagerImpl extends GenericManagerImpl<GrupoOcupacional, GrupoOcupacionalDao> implements GrupoOcupacionalManager
 {
 	private CargoManager cargoManager;
+	
+	@Autowired
+	GrupoOcupacionalManagerImpl(GrupoOcupacionalDao dao) {
+		setDao(dao);
+	}
 	
 	public Integer getCount(Long empresaId)
 	{

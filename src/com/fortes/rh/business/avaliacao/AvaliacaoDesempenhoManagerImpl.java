@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
@@ -46,6 +48,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<AvaliacaoDesempenho, AvaliacaoDesempenhoDao> implements AvaliacaoDesempenhoManager
 {
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
@@ -62,6 +65,11 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	private ConfiguracaoNivelCompetenciaCriterioManager configuracaoNivelCompetenciaCriterioManager;
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
+	
+	@Autowired
+	AvaliacaoDesempenhoManagerImpl(AvaliacaoDesempenhoDao dao) {
+		setDao(dao);
+	}
 	
 	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) 
 	{

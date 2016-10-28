@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
@@ -12,11 +11,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 
+@Component
 public class TabelaReajusteColaboradorDaoHibernate extends GenericDaoHibernate<TabelaReajusteColaborador> implements TabelaReajusteColaboradorDao
 {
 	@Override
@@ -37,7 +39,7 @@ public class TabelaReajusteColaboradorDaoHibernate extends GenericDaoHibernate<T
 		if(tabelaReajusteColaborador.getEmpresa() != null && tabelaReajusteColaborador.getEmpresa().getId() != null)
 			query.setLong("empresaId", tabelaReajusteColaborador.getEmpresa().getId());
 		else
-			query.setParameter("empresaId", null, Hibernate.LONG);
+			query.setParameter("empresaId", null, StandardBasicTypes.LONG);
 
 		query.setLong("tabelaReajusteColaboradorId", tabelaReajusteColaborador.getId());
 

@@ -2,14 +2,23 @@ package com.fortes.rh.business.captacao;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.ExperienciaDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.geral.Colaborador;
 
+@Component
 public class ExperienciaManagerImpl extends GenericManagerImpl<Experiencia, ExperienciaDao> implements ExperienciaManager
 {
+	@Autowired
+	ExperienciaManagerImpl(ExperienciaDao experienciaDao) {
+		setDao(experienciaDao);
+	}
+	
 	public void removeCandidato(Candidato candidato)
 	{
 		getDao().removeCandidato(candidato);

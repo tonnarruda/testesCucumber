@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
@@ -14,12 +13,15 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.HistoricoColaboradorBeneficioDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.HistoricoColaboradorBeneficio;
 
+@Component
 public class HistoricoColaboradorBeneficioDaoHibernate extends GenericDaoHibernate<HistoricoColaboradorBeneficio> implements HistoricoColaboradorBeneficioDao
 {
 
@@ -49,8 +51,8 @@ public class HistoricoColaboradorBeneficioDaoHibernate extends GenericDaoHiberna
 		query.setDate("dataIni", (Date)parametros.get("dataIni"));
 		query.setDate("dataFim", (Date)parametros.get("dataFim"));
 
-		query.setParameterList("areasId",(Collection<Long>)parametros.get("areas"), Hibernate.LONG);
-		query.setParameterList("estabelecimentosId",(Collection<Long>)parametros.get("estabelecimentos"), Hibernate.LONG);
+		query.setParameterList("areasId",(Collection<Long>)parametros.get("areas"), StandardBasicTypes.LONG);
+		query.setParameterList("estabelecimentosId",(Collection<Long>)parametros.get("estabelecimentos"), StandardBasicTypes.LONG);
 
 		return query.list();
 	}

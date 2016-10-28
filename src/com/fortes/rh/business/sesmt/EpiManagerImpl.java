@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -33,6 +35,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements EpiManager
 {
 	private EpiHistoricoManager epiHistoricoManager;
@@ -40,6 +43,11 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorManager colaboradorManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	
+	@Autowired
+	EpiManagerImpl(EpiDao epiDao) {
+		setDao(epiDao);
+	}
 	
 	public Integer getCount(Long empresaId, String epiNome, Boolean ativo) 
 	{

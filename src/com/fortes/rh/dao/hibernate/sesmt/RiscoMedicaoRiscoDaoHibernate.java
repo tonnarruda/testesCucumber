@@ -7,12 +7,14 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RiscoMedicaoRiscoDao;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 
+@Component
 @SuppressWarnings("unchecked")
 public class RiscoMedicaoRiscoDaoHibernate extends GenericDaoHibernate<RiscoMedicaoRisco> implements RiscoMedicaoRiscoDao
 {

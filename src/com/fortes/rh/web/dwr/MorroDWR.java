@@ -1,6 +1,8 @@
 package com.fortes.rh.web.dwr;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import remprot.RPClient;
 import uk.ltd.getahead.dwr.WebContextFactory;
@@ -11,9 +13,12 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.Autenticador;
 
+@Component
 public class MorroDWR
 {
+	@Autowired
 	private MorroManager morroManager;
+	@Autowired
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	public String enviar(String mensagem, String classeExcecao, String stackTrace, String url, String browser) 

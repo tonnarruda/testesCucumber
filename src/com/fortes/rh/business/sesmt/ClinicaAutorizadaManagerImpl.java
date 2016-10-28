@@ -4,13 +4,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ClinicaAutorizadaDao;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class ClinicaAutorizadaManagerImpl extends GenericManagerImpl<ClinicaAutorizada, ClinicaAutorizadaDao> implements ClinicaAutorizadaManager
 {
+	@Autowired
+	ClinicaAutorizadaManagerImpl(ClinicaAutorizadaDao fooDao) {
+		setDao(fooDao);
+	}
+	
 	public Collection<ClinicaAutorizada> findByDataEmpresa(Long empresaId, Date data, Boolean vigentes)
 	{
 		return getDao().findByDataEmpresa(empresaId, data, vigentes);

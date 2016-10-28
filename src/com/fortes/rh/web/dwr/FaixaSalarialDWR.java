@@ -5,14 +5,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.web.tags.Option;
 
+@Component
 @SuppressWarnings("rawtypes")
 public class FaixaSalarialDWR
 {
+	@Autowired
 	private FaixaSalarialManager faixaSalarialManager;
 
 	public Map getFaixas(String cargoId)

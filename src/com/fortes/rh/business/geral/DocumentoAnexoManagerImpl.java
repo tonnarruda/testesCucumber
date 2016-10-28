@@ -3,6 +3,9 @@ package com.fortes.rh.business.geral;
 import java.io.File;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -12,11 +15,17 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.util.ArquivoUtil;
 
+@Component
 public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo, DocumentoAnexoDao> implements DocumentoAnexoManager
 {
 	private ColaboradorManager colaboradorManager;
 	private CandidatoManager candidatoManager;
 	private CursoManager cursoManager;
+	
+	@Autowired
+	DocumentoAnexoManagerImpl(DocumentoAnexoDao dao) {
+		setDao(dao);
+	}
 	
 	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(Boolean moduloExterno, char origem, Long origemId)
 	{

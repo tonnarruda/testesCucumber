@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.dao.sesmt.ExameDao;
@@ -21,10 +24,16 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implements ExameManager
 {
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	Map<String,Object> parametros = new HashMap<String, Object>();
+	
+	@Autowired
+	ExameManagerImpl(ExameDao exameDao) {
+		setDao(exameDao);
+	}
 	
 	public Exame findByIdProjection(Long exameId)
 	{

@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import org.acegisecurity.AuthenticationException;
-import org.acegisecurity.BadCredentialsException;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.acegisecurity.providers.dao.DaoAuthenticationProvider;
-import org.acegisecurity.userdetails.UserDetails;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fortes.rh.business.acesso.PapelManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -27,9 +28,13 @@ import com.fortes.rh.util.CollectionUtil;
 
 public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 {
+	@Autowired
 	private EmpresaManager empresaManager;
+	@Autowired
 	private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired
 	private PapelManager papelManager;
 	private ColaboradorManager colaboradorManager;
 

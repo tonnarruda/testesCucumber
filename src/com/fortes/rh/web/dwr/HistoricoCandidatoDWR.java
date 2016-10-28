@@ -4,14 +4,20 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 public class HistoricoCandidatoDWR
 {
+	@Autowired
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired
 	private HistoricoCandidatoManager historicoCandidatoManager;
 
 	public Map getCandidatoAptoByEtapa(Long etapaId, Long solicitacaoId)

@@ -8,7 +8,7 @@ import mockit.Mockit;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.TransactionUsageException;

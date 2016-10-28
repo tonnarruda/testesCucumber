@@ -3,14 +3,23 @@ package com.fortes.rh.business.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.TipoEPIDao;
 import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class TipoEPIManagerImpl extends GenericManagerImpl<TipoEPI, TipoEPIDao> implements TipoEPIManager
 {
+	@Autowired
+	TipoEPIManagerImpl(TipoEPIDao tipoEPIDao) {
+		setDao(tipoEPIDao);
+	}
+	
 	public Collection<TipoEPI> findCollectionTipoEPI(Long empresId)
 	{
 		return getDao().findCollectionTipoEPI(empresId);

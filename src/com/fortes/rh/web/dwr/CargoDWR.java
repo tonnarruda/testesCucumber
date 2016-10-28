@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CargoDWR
 {
+	@Autowired
 	private CargoManager cargoManager;
 
 	public Map getCargoByGrupo(String[] grupoOcupacionalIds, Long empresaId)

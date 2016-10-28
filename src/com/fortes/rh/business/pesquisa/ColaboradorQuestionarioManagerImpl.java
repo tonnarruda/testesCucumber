@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanComparator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManager;
@@ -29,11 +31,18 @@ import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.LongUtil;
 @SuppressWarnings("rawtypes")
+
+@Component
 public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<ColaboradorQuestionario, ColaboradorQuestionarioDao> implements ColaboradorQuestionarioManager
 {
 	private PerguntaManager perguntaManager;
 	private ColaboradorManager colaboradorManager;
 	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
+	
+	@Autowired
+	ColaboradorQuestionarioManagerImpl(ColaboradorQuestionarioDao colaboradorQuestionarioDao) {
+		setDao(colaboradorQuestionarioDao);
+	}
 	
 	public Collection<ColaboradorQuestionario> findByQuestionario(Long questionarioId)
 	{

@@ -13,12 +13,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.captacao.EtapaSeletivaDao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 
+@Component
 public class EtapaSeletivaDaoHibernate extends GenericDaoHibernate<EtapaSeletiva> implements EtapaSeletivaDao
 {
 	public void ordeneCrescentementeEntre(int ordemOriginal, int novaOrdem, EtapaSeletiva etapaSeletiva)

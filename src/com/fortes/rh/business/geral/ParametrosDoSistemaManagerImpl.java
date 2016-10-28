@@ -2,15 +2,24 @@ package com.fortes.rh.business.geral;
 
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.ParametrosDoSistemaDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.web.ws.AcPessoalClientSistema;
 
+@Component
 public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<ParametrosDoSistema, ParametrosDoSistemaDao> implements ParametrosDoSistemaManager
 {
 	private AcPessoalClientSistema acPessoalClientSistema;
+	
+	@Autowired
+	ParametrosDoSistemaManagerImpl(ParametrosDoSistemaDao dao) {
+		setDao(dao);
+	}
 	
 	public ParametrosDoSistema findByIdProjection(Long id)
 	{

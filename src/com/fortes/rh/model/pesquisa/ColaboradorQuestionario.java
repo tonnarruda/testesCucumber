@@ -65,7 +65,6 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     
     private Double performance; // desempenho de Avaliações
     private Double performanceNivelCompetencia;
-    @Lob
     private String observacao;
     
     // Vínculos para Avaliação de Desempenho

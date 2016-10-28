@@ -3,13 +3,18 @@ package com.fortes.rh.web.dwr;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class HabilidadeDWR
 {
+	@Autowired
 	private HabilidadeManager habilidadeManager;
 
 	@SuppressWarnings("deprecation")

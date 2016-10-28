@@ -8,11 +8,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.GrupoOcupacionalDao;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 
+@Component
 public class GrupoOcupacionalDaoHibernate extends GenericDaoHibernate<GrupoOcupacional> implements GrupoOcupacionalDao
 {
 	public Integer getCount(Long empresaId)

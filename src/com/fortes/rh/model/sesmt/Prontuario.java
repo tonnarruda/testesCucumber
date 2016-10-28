@@ -25,7 +25,6 @@ public class Prontuario extends AbstractModel implements Serializable
 	private Colaborador colaborador;
 	@Temporal(TemporalType.DATE)
 	private Date data;
-	@Lob
 	private String descricao;
 
 	@ManyToOne

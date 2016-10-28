@@ -8,11 +8,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.FasePcmatDao;
 import com.fortes.rh.model.sesmt.FasePcmat;
 
+@Component
 public class FasePcmatDaoHibernate extends GenericDaoHibernate<FasePcmat> implements FasePcmatDao
 {
 	@SuppressWarnings("unchecked")

@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -31,6 +34,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDao> implements AmbienteManager
 {
 	private HistoricoAmbienteManager historicoAmbienteManager;
@@ -46,6 +50,11 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 	
 	private boolean exibirPpra; 
 	private boolean exibirLtcat;
+	
+	@Autowired
+	AmbienteManagerImpl(AmbienteDao fooDao) {
+		setDao(fooDao);
+	}
 	
 	private Collection<Ambiente> getAmbientes(String[] ambienteCheck, Date data, Long estabelecimentoId) 
 	{

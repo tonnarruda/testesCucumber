@@ -8,6 +8,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.FormacaoDao;
@@ -15,6 +16,7 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.geral.Colaborador;
 
+@Component
 @SuppressWarnings("unchecked")
 public class FormacaoDaoHibernate extends GenericDaoHibernate<Formacao> implements FormacaoDao
 {

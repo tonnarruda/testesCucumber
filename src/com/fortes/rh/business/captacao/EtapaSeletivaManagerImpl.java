@@ -6,6 +6,9 @@ package com.fortes.rh.business.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.EtapaSeletivaDao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
@@ -15,8 +18,14 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class EtapaSeletivaManagerImpl extends GenericManagerImpl<EtapaSeletiva, EtapaSeletivaDao> implements EtapaSeletivaManager
 {
+	@Autowired
+	EtapaSeletivaManagerImpl(EtapaSeletivaDao etapaSeletivaDao) {
+		setDao(etapaSeletivaDao);
+	}
+	
 	public int sugerirOrdem(Long empresaId)
 	{
 		int result = getDao().findAllSelect(0, 0, empresaId).size();

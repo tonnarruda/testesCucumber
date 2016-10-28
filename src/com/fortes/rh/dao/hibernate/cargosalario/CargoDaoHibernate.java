@@ -10,13 +10,14 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
@@ -27,6 +28,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.ws.TCargo;
 
+@Component
 @SuppressWarnings("unchecked")
 public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements CargoDao
 {
@@ -333,7 +335,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		query.setDate("hoje", new Date());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
-		query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+		query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}
@@ -588,10 +590,10 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		query.setLong("empresaId", empresaId);
 		
 		if (areaOrganizacionalIds != null && areaOrganizacionalIds.length > 0)
-			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
+			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, StandardBasicTypes.LONG);
 		
 		if (grupoOcupacionalIds != null && grupoOcupacionalIds.length > 0)
-			query.setParameterList("grupoOcupacionalIds", grupoOcupacionalIds, Hibernate.LONG);
+			query.setParameterList("grupoOcupacionalIds", grupoOcupacionalIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}

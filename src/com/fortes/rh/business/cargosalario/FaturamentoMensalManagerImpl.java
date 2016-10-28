@@ -4,14 +4,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.FaturamentoMensalDao;
 import com.fortes.rh.model.cargosalario.FaturamentoMensal;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class FaturamentoMensalManagerImpl extends GenericManagerImpl<FaturamentoMensal, FaturamentoMensalDao> implements FaturamentoMensalManager
 {
-
+	@Autowired
+	FaturamentoMensalManagerImpl(FaturamentoMensalDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<FaturamentoMensal> findAllSelect(Long empresaId) 
 	{
 		return getDao().findAllSelect(empresaId);

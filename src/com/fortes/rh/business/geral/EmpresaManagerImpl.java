@@ -10,6 +10,8 @@ import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
@@ -48,6 +50,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 import com.ibm.icu.text.SimpleDateFormat;
 
+@Component
 public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> implements EmpresaManager
 {
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
@@ -69,6 +72,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	private Mail mail;
 	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
 	
+	@Autowired
+	EmpresaManagerImpl(EmpresaDao dao) {
+		setDao(dao);
+	}
+
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
 	{
 		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.find(new String[]{"usuario.id"}, new Object[]{usuarioId});

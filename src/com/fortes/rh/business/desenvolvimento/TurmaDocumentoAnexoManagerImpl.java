@@ -2,12 +2,21 @@ package com.fortes.rh.business.desenvolvimento;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.TurmaDocumentoAnexoDao;
 import com.fortes.rh.model.desenvolvimento.TurmaDocumentoAnexo;
 
+@Component
 public class TurmaDocumentoAnexoManagerImpl extends GenericManagerImpl<TurmaDocumentoAnexo, TurmaDocumentoAnexoDao> implements TurmaDocumentoAnexoManager
 {
+	@Autowired
+	TurmaDocumentoAnexoManagerImpl(TurmaDocumentoAnexoDao dao) {
+		setDao(dao);
+	}
+	
 	public void salvarDocumentoAnexos(Long turmaId, Long[] documentoAnexoIds) 
 	{
 		removeByTurma(turmaId);

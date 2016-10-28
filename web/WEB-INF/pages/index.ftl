@@ -179,17 +179,15 @@
 				minimizadas.push( $(this).val() );
 			});
 
-			UsuarioDWR.gravarLayoutCaixasMensagens(<@authz.authentication operation="id"/>, esquerda, direita, minimizadas, function() {  });
+			UsuarioDWR.gravarLayoutCaixasMensagens(<@authz.authentication property="principal.id"/>, esquerda, direita, minimizadas, function() {  });
 		}
 	</script>
 
 </head>
 <body>
-	<#assign usuarioId><@authz.authentication operation="id"/></#assign>
-
+	<#assign usuarioId><@authz.authentication property="principal.id"/></#assign>
 	<@ww.actionmessage />
 	<@ww.actionerror />	
-	
 	<div id="atualizacao" class="info">
 		<div style="float:right;"><a title="Ocultar" href="javascript:;" onclick="$(this).parent().parent().remove();">x</a></div>
 		<ul>

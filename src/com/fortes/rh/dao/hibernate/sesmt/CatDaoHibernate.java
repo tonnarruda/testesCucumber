@@ -9,13 +9,14 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.CatDao;
@@ -23,6 +24,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Cat;
 
+@Component
 @SuppressWarnings("unchecked")
 public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 {
@@ -108,10 +110,10 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 			query.setString("nome", "%" + nomeBusca.toLowerCase() + "%");
 
 		if (estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 		
 		if (areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		

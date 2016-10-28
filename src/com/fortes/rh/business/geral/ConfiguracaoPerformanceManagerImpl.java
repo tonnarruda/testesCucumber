@@ -3,13 +3,21 @@ package com.fortes.rh.business.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.ConfiguracaoPerformanceDao;
 import com.fortes.rh.model.geral.ConfiguracaoPerformance;
 
+@Component
 public class ConfiguracaoPerformanceManagerImpl extends GenericManagerImpl<ConfiguracaoPerformance, ConfiguracaoPerformanceDao> implements ConfiguracaoPerformanceManager
 {
+	@Autowired
+	ConfiguracaoPerformanceManagerImpl(ConfiguracaoPerformanceDao dao) {
+		setDao(dao);
+	}
 
 	public Collection<ConfiguracaoPerformance> gravaConfiguracao(Long usuarioId, String[] caixas, boolean[] caixasStatus) 
 	{

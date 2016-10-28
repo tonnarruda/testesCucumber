@@ -6,7 +6,6 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
@@ -17,7 +16,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
@@ -31,6 +32,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
+@Component
 @SuppressWarnings("unchecked")
 public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<CandidatoSolicitacao> implements CandidatoSolicitacaoDao
 {
@@ -104,7 +106,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         String hql = "update CandidatoSolicitacao set solicitacao = :solicitacao where id in (:ids)";
         Query query = getSession().createQuery(hql);
         query.setEntity("solicitacao", solicitacao);
-        query.setParameterList("ids", ids, Hibernate.LONG);
+        query.setParameterList("ids", ids, StandardBasicTypes.LONG);
         query.executeUpdate();
     }
 
@@ -116,7 +118,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 
         Query query = getSession().createQuery(hql);
         query.setEntity("solicitacao", solicitacao);
-        query.setParameterList("ids", candidatosSolicitacaoId, Hibernate.LONG);
+        query.setParameterList("ids", candidatosSolicitacaoId, StandardBasicTypes.LONG);
 
         return query.list();
     }
@@ -245,13 +247,13 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         	criteria.add(Expression.eq("e.id", etapaSeletivaId));
 
         if (StringUtils.isNotBlank(indicadoPor))
-        	criteria.add(Restrictions.sqlRestriction("normalizar(c1_.indicadoPor) ilike  normalizar(?)", "%" + indicadoPor + "%", Hibernate.STRING));
+        	criteria.add(Restrictions.sqlRestriction("normalizar(c1_.indicadoPor) ilike  normalizar(?)", "%" + indicadoPor + "%", StandardBasicTypes.STRING));
 
         if (StringUtils.isNotBlank(observacaoRH))
-			criteria.add(Restrictions.sqlRestriction("normalizar(c1_.observacaoRH) ilike  normalizar(?)", "%" + observacaoRH + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(c1_.observacaoRH) ilike  normalizar(?)", "%" + observacaoRH + "%", StandardBasicTypes.STRING));
         
         if (StringUtils.isNotBlank(nomeBusca))
-        	criteria.add(Restrictions.sqlRestriction("normalizar(c1_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", Hibernate.STRING));
+        	criteria.add(Restrictions.sqlRestriction("normalizar(c1_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", StandardBasicTypes.STRING));
 
         criteria.add(Expression.eq("cs.solicitacao.id", solicitacaoId));
         
@@ -367,7 +369,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         Query query = getSession().createQuery(hql);
 
         query.setBoolean("triagem", triagem);
-        query.setParameterList("candidatoSolicitacaoIdsSelecionados", candidatoSolicitacaoIdsSelecionados, Hibernate.LONG);
+        query.setParameterList("candidatoSolicitacaoIdsSelecionados", candidatoSolicitacaoIdsSelecionados, StandardBasicTypes.LONG);
 
         query.executeUpdate();
 
@@ -484,7 +486,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		p.add(Projections.property("hc.data"), "data");
 		p.add(Projections.property("hc.apto"), "apto");
 		p.add(Projections.property("c.nome"), "cargoNome");
-		p.add(Projections.sqlProjection("monta_familia_area(ao5_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome");
+		p.add(Projections.sqlProjection("monta_familia_area(ao5_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {StandardBasicTypes.TEXT}), "areaOrganizacionalNome");
 		p.add(Projections.property("s.observacaoLiberador"), "solicitacaoObservacaoLiberador");
 		p.add(Projections.property("ms.descricao"), "descricaoMotivoSolicitacao");
 		
@@ -522,7 +524,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 
 		Query query = getSession().createQuery(hql);
 		query.setCharacter("status", status);
-		query.setParameterList("colaboradorId", colaboradoresIds, Hibernate.LONG);
+		query.setParameterList("colaboradorId", colaboradoresIds, StandardBasicTypes.LONG);
 		
 		query.executeUpdate();
 	}
@@ -585,10 +587,10 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		criteria.setProjection(Projections.distinct(p));
 		
 		if(!StringUtils.isEmpty(solicitacaoDescricaoBusca))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.descricao) ilike  normalizar(?)", "%" + solicitacaoDescricaoBusca + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.descricao) ilike  normalizar(?)", "%" + solicitacaoDescricaoBusca + "%", StandardBasicTypes.STRING));
 		
 		if(!StringUtils.isEmpty(colaboradorNomeBusca))
-			criteria.add(Restrictions.sqlRestriction("normalizar(col7_.nome) ilike  normalizar(?)", "%" + colaboradorNomeBusca + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(col7_.nome) ilike  normalizar(?)", "%" + colaboradorNomeBusca + "%", StandardBasicTypes.STRING));
 		
 		if(statusBusca != 'T')
 			criteria.add(Expression.eq("cs.statusAutorizacaoGestor", statusBusca));
@@ -626,7 +628,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		p.add(Projections.property("fs.nome"), "faixaNome");
 		p.add(Projections.property("cg.nome"), "cargoNome");
 		p.add(Projections.property("est.nome"), "solicitacaoEstabelecimentoNome");
-		p.add(Projections.sqlProjection("monta_familia_area(aos1_.id) as solicitacaoNomeArea", new String[] {"solicitacaoNomeArea"}, new Type[] {Hibernate.TEXT}), "solicitacaoNomeArea");
+		p.add(Projections.sqlProjection("monta_familia_area(aos1_.id) as solicitacaoNomeArea", new String[] {"solicitacaoNomeArea"}, new Type[] {StandardBasicTypes.TEXT}), "solicitacaoNomeArea");
 		return p;
 	}
 	

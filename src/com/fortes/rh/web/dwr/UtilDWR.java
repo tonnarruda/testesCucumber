@@ -7,6 +7,9 @@ import java.util.regex.Pattern;
 
 import javax.mail.AuthenticationFailedException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import uk.ltd.getahead.dwr.WebContextFactory;
 
 import com.fortes.rh.business.geral.GrupoACManager;
@@ -19,11 +22,16 @@ import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClient;
 
+@Component
 public class UtilDWR
 {
+	@Autowired
 	private Mail mail;
+	@Autowired
 	private AcPessoalClient acPessoalClient;
+	@Autowired
 	private GrupoACManager grupoACManager;
+	@Autowired
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	public String getToken(String grupoAC)

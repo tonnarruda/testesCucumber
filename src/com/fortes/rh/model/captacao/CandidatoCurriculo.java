@@ -18,7 +18,6 @@ public class CandidatoCurriculo extends AbstractModel implements Serializable
 {
 	@ManyToOne
 	private Candidato candidato;
-	@Lob
 	private String curriculo;
 
 	public Candidato getCandidato()

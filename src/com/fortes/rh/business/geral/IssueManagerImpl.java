@@ -14,12 +14,13 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.github.Issue;
 import com.fortes.rh.util.StringUtil;
 
-
+@Component
 public class IssueManagerImpl implements IssueManager
 {
 	private static final String URL_ISSUES = "https://api.github.com/repos/fortesinformatica/FortesRH/issues";

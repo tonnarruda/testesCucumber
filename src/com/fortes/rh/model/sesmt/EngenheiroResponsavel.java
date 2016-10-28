@@ -34,7 +34,7 @@ public class EngenheiroResponsavel extends AbstractModel implements Serializable
 	@Column(length=20)
 	private String crea;
 
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	private Empresa empresa;
 
 

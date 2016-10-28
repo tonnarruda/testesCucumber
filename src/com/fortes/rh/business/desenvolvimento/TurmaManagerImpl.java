@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -31,6 +33,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implements TurmaManager
 {
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
@@ -43,6 +46,11 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	private PlatformTransactionManager transactionManager;
 	private DiaTurmaManager diaTurmaManager;
 	private CursoManager cursoManager;
+	
+	@Autowired
+	TurmaManagerImpl(TurmaDao dao) {
+		setDao(dao);
+	}
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
 	{

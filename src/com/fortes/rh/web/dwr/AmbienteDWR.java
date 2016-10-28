@@ -5,14 +5,19 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
+@Component
 public class AmbienteDWR
 {
+	@Autowired
 	private AmbienteManager ambienteManager;
 	
 	public Map<Object, Object> getAmbienteByEstabelecimento(Long estabelecimentoId)

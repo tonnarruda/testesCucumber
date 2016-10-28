@@ -24,7 +24,6 @@ public class FichaMedica extends AbstractModel implements Serializable, Cloneabl
 	@OneToOne
 	private Questionario questionario;
 	private boolean ativa = true;
-	@Lob
 	private String rodape;
 
 	@Transient

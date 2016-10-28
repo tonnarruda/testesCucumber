@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.acesso.Usuario;
@@ -22,8 +24,10 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
+@Component
 public class AreaOrganizacionalDWR
 {
+	@Autowired
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 

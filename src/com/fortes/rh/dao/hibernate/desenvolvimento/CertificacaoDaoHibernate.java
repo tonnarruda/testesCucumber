@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -12,6 +11,8 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
 
+@Component
 @SuppressWarnings("unchecked")
 public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> implements CertificacaoDao
 {
@@ -74,7 +76,7 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
         }
 		
 		if(StringUtils.isNotBlank(nomeBusca))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", StandardBasicTypes.STRING));
 		
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -115,7 +117,7 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		hql.append("order by cargo.nome, faixa.nome, cert.nome, curso.nome ");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameterList("faixasIds", faixaIds, Hibernate.LONG);
+		query.setParameterList("faixasIds", faixaIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}
@@ -146,7 +148,7 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 	
 		if(StringUtils.isNotBlank(nomeBusca))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", StandardBasicTypes.STRING));
 		
 		return (Integer) criteria.uniqueResult();
 	}

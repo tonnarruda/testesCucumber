@@ -3,14 +3,16 @@ package com.fortes.rh.dao.hibernate.captacao;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.SolicitacaoAvaliacaoDao;
 import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 
+@Component
 public class SolicitacaoAvaliacaoDaoHibernate extends GenericDaoHibernate<SolicitacaoAvaliacao> implements SolicitacaoAvaliacaoDao
 {
 	public void removeBySolicitacaoId(Long solicitacaoId) 
@@ -45,7 +47,7 @@ public class SolicitacaoAvaliacaoDaoHibernate extends GenericDaoHibernate<Solici
 		query.setLong("solicitacaoId", solicitacaoId);
 
 		if (solicitacaoAvaliacaoIds != null && solicitacaoAvaliacaoIds.length > 0)
-			query.setParameterList("solicitacaoAvaliacaoIds", solicitacaoAvaliacaoIds, Hibernate.LONG);
+			query.setParameterList("solicitacaoAvaliacaoIds", solicitacaoAvaliacaoIds, StandardBasicTypes.LONG);
 			
 		query.executeUpdate();
 	}

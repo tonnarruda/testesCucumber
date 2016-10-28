@@ -29,12 +29,11 @@ public class Atitude extends AbstractModel implements Serializable {
 	private String nome;
 	@ManyToOne
 	private Empresa empresa;
-	@Lob
 	private String observacao;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	private Collection<AreaOrganizacional> areaOrganizacionals;
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	private Collection<Curso> cursos;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="atitude", cascade=CascadeType.ALL)

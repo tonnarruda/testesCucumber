@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ExtintorManager;
@@ -133,7 +133,7 @@ public class ExtintorManutencaoEditActionTest extends MockObjectTestCase
 
 	public void testInsertException() throws Exception
 	{
-		manager.expects(once()).method("saveOrUpdate").will(throwException(new org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		manager.expects(once()).method("saveOrUpdate").will(throwException(new org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
 		extintorManutencaoServicoManager.expects(once()).method("findAll");
 		assertEquals("input", action.insert());

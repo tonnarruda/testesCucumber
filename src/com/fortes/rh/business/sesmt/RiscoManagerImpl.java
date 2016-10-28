@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.RiscoDao;
 import com.fortes.rh.model.sesmt.Epi;
@@ -13,8 +16,14 @@ import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
 
+@Component
 public class RiscoManagerImpl extends GenericManagerImpl<Risco, RiscoDao> implements RiscoManager
 {
+	@Autowired
+	RiscoManagerImpl(RiscoDao riscoDao) {
+		setDao(riscoDao);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Collection<Epi> findEpisByRisco(Long riscoId)
 	{

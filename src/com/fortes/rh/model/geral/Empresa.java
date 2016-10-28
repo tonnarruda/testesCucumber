@@ -109,7 +109,6 @@ public class Empresa extends AbstractModel implements Serializable
 	private boolean campoExtraColaborador;
 	private boolean campoExtraCandidato;
 	private boolean exibirLogoEmpresaPpraLtcat;
-	@Lob
     private String mailNaoAptos;
     
     private boolean turnoverPorSolicitacao;

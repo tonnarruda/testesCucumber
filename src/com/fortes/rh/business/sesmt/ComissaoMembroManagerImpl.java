@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ComissaoMembroDao;
 import com.fortes.rh.model.geral.Colaborador;
@@ -15,9 +18,15 @@ import com.fortes.rh.model.sesmt.ComissaoPeriodo;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class ComissaoMembroManagerImpl extends GenericManagerImpl<ComissaoMembro, ComissaoMembroDao> implements ComissaoMembroManager
 {
 	private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
+	
+	@Autowired
+	ComissaoMembroManagerImpl(ComissaoMembroDao fooDao) {
+		setDao(fooDao);
+	}
 	
 	public Collection<ComissaoMembro> findByComissaoPeriodo(Long[] comissaoPeriodoIds)
 	{

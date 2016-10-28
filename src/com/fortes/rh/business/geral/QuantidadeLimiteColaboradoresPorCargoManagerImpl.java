@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.dao.geral.QuantidadeLimiteColaboradoresPorCargoDao;
@@ -16,12 +19,18 @@ import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericManagerImpl<QuantidadeLimiteColaboradoresPorCargo, QuantidadeLimiteColaboradoresPorCargoDao> implements QuantidadeLimiteColaboradoresPorCargoManager
 {
 	private ColaboradorManager colaboradorManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager;
+	
+	@Autowired
+	QuantidadeLimiteColaboradoresPorCargoManagerImpl(QuantidadeLimiteColaboradoresPorCargoDao dao) {
+		setDao(dao);
+	}
 	
 	public void saveLimites(Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, AreaOrganizacional areaOrganizacional) 
 	{

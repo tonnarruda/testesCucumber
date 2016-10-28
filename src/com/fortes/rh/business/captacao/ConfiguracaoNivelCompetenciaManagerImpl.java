@@ -8,6 +8,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
@@ -41,6 +44,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetencia, ConfiguracaoNivelCompetenciaDao> implements ConfiguracaoNivelCompetenciaManager 
 {
 	private NivelCompetenciaManager nivelCompetenciaManager;
@@ -54,6 +58,11 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	private static Long AUTOAVALIACAO = 0L;
 	private static Long OUTROSAVALIADORES = -1L;
 
+	@Autowired
+	ConfiguracaoNivelCompetenciaManagerImpl(ConfiguracaoNivelCompetenciaDao configuracaoNivelCompetenciaDao) {
+		setDao(configuracaoNivelCompetenciaDao);
+	}
+	
 	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data) {
 		return getDao().findByFaixa(faixaSalarialId, data);
 	}

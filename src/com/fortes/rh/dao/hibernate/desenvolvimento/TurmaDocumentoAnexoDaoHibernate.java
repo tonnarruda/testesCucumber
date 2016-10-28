@@ -7,11 +7,13 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.TurmaDocumentoAnexoDao;
 import com.fortes.rh.model.desenvolvimento.TurmaDocumentoAnexo;
 
+@Component
 public class TurmaDocumentoAnexoDaoHibernate extends GenericDaoHibernate<TurmaDocumentoAnexo> implements TurmaDocumentoAnexoDao
 {
 	public void removeByTurma(Long turmaId) {

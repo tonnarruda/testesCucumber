@@ -8,11 +8,13 @@ import javax.xml.rpc.ParameterMode;
 import org.apache.axis.client.Call;
 import org.apache.axis.encoding.ser.ArrayDeserializerFactory;
 import org.apache.axis.encoding.ser.ArraySerializerFactory;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class AcPessoalImportadorGastos
 {
 	private AcPessoalClient acPessoalClient;

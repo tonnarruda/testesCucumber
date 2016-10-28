@@ -19,7 +19,7 @@ import com.fortes.rh.util.DateUtil;
 @SequenceGenerator(name="sequence", sequenceName="solicitacaoepiitementrega_sequence", allocationSize=1)
 public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializable
 {
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private SolicitacaoEpiItem solicitacaoEpiItem;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private EpiHistorico epiHistorico;

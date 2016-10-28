@@ -4,10 +4,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.sesmt.ComissaoPeriodoManager;
 
+@Component
 public class ComissaoPeriodoDWR
 {
+	@Autowired
 	private ComissaoPeriodoManager comissaoPeriodoManager;
 
 	public boolean validaDataDaComissao(String aPartirDe, Long comissaoPeriodoId)

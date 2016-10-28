@@ -10,12 +10,14 @@ import javax.xml.rpc.ServiceException;
 import org.apache.axis.client.Service;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 
+@Component
 public class AcPessoalClientImpl implements AcPessoalClient
 {
 	private Service service;

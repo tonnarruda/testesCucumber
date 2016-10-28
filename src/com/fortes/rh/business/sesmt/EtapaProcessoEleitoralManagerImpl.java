@@ -3,6 +3,9 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.EtapaProcessoEleitoralDao;
 import com.fortes.rh.model.geral.Empresa;
@@ -10,10 +13,16 @@ import com.fortes.rh.model.sesmt.Eleicao;
 import com.fortes.rh.model.sesmt.EtapaProcessoEleitoral;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class EtapaProcessoEleitoralManagerImpl extends GenericManagerImpl<EtapaProcessoEleitoral, EtapaProcessoEleitoralDao> implements EtapaProcessoEleitoralManager
 {
 	private EleicaoManager eleicaoManager;
 
+	@Autowired
+	EtapaProcessoEleitoralManagerImpl(EtapaProcessoEleitoralDao etapaProcessoEleitoralDao) {
+		setDao(etapaProcessoEleitoralDao);
+	}
+	
 	public Collection<EtapaProcessoEleitoral> findAllSelect(Long empresaId, Long eleicaoId)
 	{
 		String orderBy = (eleicaoId == null) ? "prazo" : "data";

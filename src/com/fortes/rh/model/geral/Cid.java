@@ -14,7 +14,6 @@ public class Cid implements Serializable
 	@Id
 	@Column(length=4)
 	private String codigo;
-	@Lob
 	private String descricao;
 	
 	public Cid() {}

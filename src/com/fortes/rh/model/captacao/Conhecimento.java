@@ -29,13 +29,12 @@ public class Conhecimento extends AbstractModel implements Serializable
 {
 	@Column(length=100)
 	private String nome;
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany
 	private Collection<AreaOrganizacional> areaOrganizacionals;
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany
 	private Collection<Curso> cursos;
 	@ManyToOne
 	private Empresa empresa;
-	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="conhecimento", cascade=CascadeType.ALL)
 	private Collection<CriterioAvaliacaoCompetencia> criteriosAvaliacaoCompetencia;
 	

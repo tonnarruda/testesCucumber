@@ -3,11 +3,13 @@ package com.fortes.rh.dao.hibernate.geral;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ConfiguracaoRelatorioDinamicoDao;
 import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 
+@Component
 public class ConfiguracaoRelatorioDinamicoDaoHibernate extends GenericDaoHibernate<ConfiguracaoRelatorioDinamico> implements ConfiguracaoRelatorioDinamicoDao
 {
 

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -18,11 +20,16 @@ import com.fortes.rh.model.sesmt.RealizacaoExame;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class SolicitacaoExameDWR 
 {
+	@Autowired
 	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
+	@Autowired
 	private RealizacaoExameManager realizacaoExameManager;
+	@Autowired
 	private SolicitacaoExameManager solicitacaoExameManager;
+	@Autowired
 	private PlatformTransactionManager transactionManager;
 	
 	public String[] marcarNaoInformadosComoNormal(Long solicitacaoExameId)

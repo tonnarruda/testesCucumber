@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
@@ -33,6 +35,7 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 
+@Component
 public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<ColaboradorAfastamento, ColaboradorAfastamentoDao> implements ColaboradorAfastamentoManager
 {
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -41,6 +44,11 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 	private CidManager cidManager;
 	
 	private Collection<ColaboradorAfastamento> colaboradorAfastamentos;
+	
+	@Autowired
+	ColaboradorAfastamentoManagerImpl(ColaboradorAfastamentoDao fooDao) {
+		setDao(fooDao);
+	}
 
 	public Integer getCount(Long empresaId, String matriculaBusca, String nomeBusca, String[] estabelecimentoCheck, ColaboradorAfastamento colaboradorAfastamento)
 	{

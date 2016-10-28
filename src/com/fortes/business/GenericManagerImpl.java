@@ -22,7 +22,7 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements GenericMa
 
 	public T save(T entity)
 	{
-		return dao.save(entity);
+		return (T) dao.save(entity);
 	}
 
 	public void update(T entity)
@@ -62,12 +62,12 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements GenericMa
 
 	public T findById(Long id)
 	{
-		return dao.findById(id);
+		return (T) dao.findById(id);
 	}
 
 	public T findById(Long id, String[] fetch)
 	{
-		return getDao().findById(id, fetch);
+		return (T) getDao().findById(id, fetch);
 	}
 
 	public Collection<T> findById(String[] ids)
@@ -184,12 +184,12 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements GenericMa
 
 	public T findRandom(String[] properties)
 	{
-		return getDao().findRandom(properties);
+		return (T) getDao().findRandom(properties);
 	}
 
 	public T findRandom(String[] properties, String[] key, Object[] value)
 	{
-		return getDao().findRandom(properties, key, value);
+		return (T) getDao().findRandom(properties, key, value);
 	}
 
 	public boolean verifyExists(String[] properties, Object[] value)
@@ -203,6 +203,6 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements GenericMa
 	}
 	
 	public T findEntidadeComAtributosSimplesById(Long id) {
-		return getDao().findEntidadeComAtributosSimplesById(id);
+		return (T) getDao().findEntidadeComAtributosSimplesById(id);
 	}
 }

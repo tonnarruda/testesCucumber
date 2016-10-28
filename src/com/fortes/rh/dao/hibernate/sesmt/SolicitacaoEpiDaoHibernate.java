@@ -10,7 +10,6 @@ import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Expression;
@@ -18,6 +17,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
@@ -36,6 +37,7 @@ import com.fortes.rh.util.LongUtil;
  * @author Tiago Lopes
  *
  */
+@Component
 @SuppressWarnings("unchecked")
 public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoEpi> implements SolicitacaoEpiDao
 {
@@ -151,7 +153,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			query.setString("nome", "%" + nomeBusca.toLowerCase() + "%");
 
 		if(LongUtil.arrayIsNotEmpty(estabelecimentoCheck))
-			query.setParameterList("estabelecimentoCheck", estabelecimentoCheck, Hibernate.LONG);
+			query.setParameterList("estabelecimentoCheck", estabelecimentoCheck, StandardBasicTypes.LONG);
 		
 		if (tipoEpi != null)
 			query.setLong("tipoEpi", tipoEpi);
@@ -217,13 +219,13 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		query.setLong("empresaId", empresaId);
 		
 		if(tipoEPIIds != null && tipoEPIIds.length > 0)
-			query.setParameterList("tipoEPIIds", tipoEPIIds, Hibernate.LONG);
+			query.setParameterList("tipoEPIIds", tipoEPIIds, StandardBasicTypes.LONG);
 		
 		if(areasIds != null && areasIds.length > 0)
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}
@@ -282,13 +284,13 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			query.setDate("dataFim", dataFim);
 		
 		if(epiIds != null && epiIds.length != 0)
-			query.setParameterList("epiCheck", epiIds, Hibernate.LONG);
+			query.setParameterList("epiCheck", epiIds, StandardBasicTypes.LONG);
 		
 		if (colaboradorCheck != null && colaboradorCheck.length != 0)
-			query.setParameterList("colaboradorCheck", colaboradorCheck, Hibernate.LONG);
+			query.setParameterList("colaboradorCheck", colaboradorCheck, StandardBasicTypes.LONG);
 		
 		if(areaIds != null && areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}

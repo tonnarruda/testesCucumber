@@ -11,11 +11,13 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.PcmatDao;
 import com.fortes.rh.model.sesmt.Pcmat;
 
+@Component
 public class PcmatDaoHibernate extends GenericDaoHibernate<Pcmat> implements PcmatDao
 {
 	@SuppressWarnings("unchecked")

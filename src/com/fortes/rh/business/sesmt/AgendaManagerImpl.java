@@ -3,6 +3,8 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.business.GenericManagerImpl;
@@ -12,9 +14,15 @@ import com.fortes.rh.model.sesmt.Agenda;
 import com.fortes.rh.model.sesmt.Evento;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class AgendaManagerImpl extends GenericManagerImpl<Agenda, AgendaDao> implements AgendaManager
 {
 	private PlatformTransactionManager transactionManager;
+	
+	@Autowired
+	AgendaManagerImpl(AgendaDao fooDao) {
+		setDao(fooDao);
+	}
 
 	public Collection<Agenda> findByPeriodo(Date dataIni, Date dataFim, Long empresaId, Estabelecimento estabelecimento)
 	{

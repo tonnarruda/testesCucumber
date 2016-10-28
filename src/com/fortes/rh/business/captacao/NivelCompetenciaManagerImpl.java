@@ -3,6 +3,9 @@ package com.fortes.rh.business.captacao;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
 import com.fortes.rh.exception.FortesException;
@@ -10,8 +13,14 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 
+@Component
 public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompetencia, NivelCompetenciaDao> implements NivelCompetenciaManager
 {
+	@Autowired
+	NivelCompetenciaManagerImpl(NivelCompetenciaDao nivelCompetenciaDao) {
+		setDao(nivelCompetenciaDao);
+	}
+
 	public Collection<NivelCompetencia> findAllSelect(Long empresaId, Long nivelCompetenciaHistoricoId, Date data)
 	{
 		return getDao().findAllSelect(empresaId, nivelCompetenciaHistoricoId, data);

@@ -7,13 +7,14 @@ import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.GastoEmpresaItemDao;
 import com.fortes.rh.model.geral.GastoEmpresa;
 import com.fortes.rh.model.geral.GastoEmpresaItem;
 
-
+@Component
 public class GastoEmpresaItemDaoHibernate extends GenericDaoHibernate<GastoEmpresaItem> implements GastoEmpresaItemDao
 {
 	public void removeGastos(GastoEmpresa gastoEmpresa)

@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ComissaoDao;
 import com.fortes.rh.model.dicionario.TipoMembroComissao;
@@ -16,6 +19,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class ComissaoManagerImpl extends GenericManagerImpl<Comissao, ComissaoDao> implements ComissaoManager
 {
 	private ComissaoReuniaoManager comissaoReuniaoManager;
@@ -23,6 +27,11 @@ public class ComissaoManagerImpl extends GenericManagerImpl<Comissao, ComissaoDa
 	private ComissaoPlanoTrabalhoManager comissaoPlanoTrabalhoManager;
 	private ComissaoMembroManager comissaoMembroManager;
 
+	@Autowired
+	ComissaoManagerImpl(ComissaoDao fooDao) {
+		setDao(fooDao);
+	}
+	
 	public Collection<Comissao> findByEleicao(Long eleicaoId)
 	{
 		return getDao().findByEleicao(eleicaoId);

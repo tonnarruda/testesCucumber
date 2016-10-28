@@ -5,12 +5,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.security.Auditoria;
 import com.fortes.rh.model.ws.TAuditoria;
 
+@Component
 public interface AuditoriaManager extends GenericManager<Auditoria>
 {
 	public Map findEntidade(Long empresaId);

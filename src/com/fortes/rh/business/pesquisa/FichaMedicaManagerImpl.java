@@ -2,6 +2,8 @@ package com.fortes.rh.business.pesquisa;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -15,6 +17,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.FichaMedica;
 import com.fortes.rh.model.pesquisa.Questionario;
 
+@Component
 public class FichaMedicaManagerImpl extends GenericManagerImpl<FichaMedica, FichaMedicaDao> implements FichaMedicaManager
 {
 	private final String EMPRESA_INVALIDA = "A Avaliação solicitada não existe nesta empresa.";
@@ -24,6 +27,11 @@ public class FichaMedicaManagerImpl extends GenericManagerImpl<FichaMedica, Fich
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 
+	@Autowired
+	FichaMedicaManagerImpl(FichaMedicaDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<FichaMedica> findToListByEmpresa(Long empresaId, int page, int pagingSize)
 	{
 		return getDao().findToList(empresaId, page, pagingSize);

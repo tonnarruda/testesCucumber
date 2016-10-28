@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
@@ -25,6 +27,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFuncao, HistoricoFuncaoDao> implements HistoricoFuncaoManager
 {
 	private FuncaoManager funcaoManager;
@@ -32,6 +35,11 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 	private ExameManager exameManager;
 	private EpiManager epiManager;
 	private RiscoFuncaoManager riscoFuncaoManager;
+	
+	@Autowired
+	HistoricoFuncaoManagerImpl(HistoricoFuncaoDao historicoFuncaoDao) {
+			setDao(historicoFuncaoDao);
+	}
 	
 	public void setTransactionManager(AbstractPlatformTransactionManager transactionManager)
 	{

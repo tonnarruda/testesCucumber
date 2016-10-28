@@ -29,13 +29,12 @@ public class TabelaReajusteColaborador extends AbstractModel implements Serializ
 {
 	//TODO CUIDADO ao alterar os atributos desse classe verificar o update na action(foi feito na mão por causa do EAGER)
 	
-    @OneToMany(fetch=FetchType.EAGER, mappedBy="tabelaReajusteColaborador")
+    @OneToMany(mappedBy="tabelaReajusteColaborador")
     private Collection<ReajusteColaborador> reajusteColaboradors;
     @Column(length=100)
     private String nome;
     @Temporal(TemporalType.DATE)
     private Date data;
-    @Lob
     private String observacao;
     private boolean aprovada;
     @ManyToOne

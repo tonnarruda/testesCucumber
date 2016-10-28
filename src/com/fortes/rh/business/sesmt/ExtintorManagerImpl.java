@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.dao.sesmt.ExtintorDao;
@@ -16,12 +19,18 @@ import com.fortes.rh.model.sesmt.relatorio.ManutencaoAndInspecaoRelatorio;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class ExtintorManagerImpl extends GenericManagerImpl<Extintor, ExtintorDao> implements ExtintorManager
 {
 	private HistoricoExtintorManager historicoExtintorManager;
 	private ExtintorInspecaoManager extintorInspecaoManager;
 	private ExtintorManutencaoManager extintorManutencaoManager;
 	private EstabelecimentoManager estabelecimentoManager;
+	
+	@Autowired
+	ExtintorManagerImpl(ExtintorDao extintorDao) {
+			setDao(extintorDao);
+	}
 	
 	public Integer getCount(Long empresaId, String tipoBusca, Integer numeroBusca, char ativo)
 	{

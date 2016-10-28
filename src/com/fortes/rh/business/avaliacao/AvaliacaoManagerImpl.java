@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
@@ -26,6 +28,7 @@ import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
 import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 
+@Component
 public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, AvaliacaoDao> implements AvaliacaoManager
 {
 	private RespostaManager respostaManager;
@@ -36,6 +39,11 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	private ColaboradorRespostaManager colaboradorRespostaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
+	
+	@Autowired
+	AvaliacaoManagerImpl(AvaliacaoDao dao) {
+		setDao(dao);
+	}
 	
 	public Collection<Avaliacao> findAllSelect(Integer page, Integer pagingSize, Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo) 
 	{	

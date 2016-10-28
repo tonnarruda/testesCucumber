@@ -22,6 +22,8 @@ import javax.mail.internet.AddressException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -127,6 +129,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, ColaboradorDao> implements ColaboradorManager
 {
@@ -163,6 +166,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	private static final String RETIRAFOTO = "S";
 	private static final String NAORETIRAFOTO = "N";
+	
+	@Autowired
+	ColaboradorManagerImpl(ColaboradorDao dao) {
+		setDao(dao);
+	}
 
 	// TODO: SEM TESTE
 	public void enviaEmailAniversariantes(Collection<Empresa> empresas) throws Exception

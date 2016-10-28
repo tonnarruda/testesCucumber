@@ -38,7 +38,6 @@ public class ExtintorManutencao extends AbstractModel implements Serializable
 	@Column(length=50)
 	private String outroMotivo;
 
-	@Lob
 	private String observacao;
 
 	@OneToOne(fetch=LAZY)

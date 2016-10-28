@@ -1,7 +1,4 @@
 <%@ taglib prefix='ww' uri='webwork' %>
-<%@ page import="org.acegisecurity.ui.AbstractProcessingFilter" %>
-<%@ page import="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter" %>
-<%@ page import="org.acegisecurity.AuthenticationException" %>
 <%@ page pageEncoding="UTF-8" %>
 <html>
 <head>
@@ -59,7 +56,7 @@
 	</script>
 </head>
 <body>
-<form name="form" action="<ww:url value='j_acegi_security_check'/>" onsubmit="validaCampos();" method="POST">
+<form name="form" action="<ww:url value='j_spring_security_check'/>" onsubmit="validaCampos();" method="POST">
 	<br><br><br>
 	<% if("1".equals(request.getParameter("login_error"))) { %>
 	<table width="344px" align="center">
@@ -67,7 +64,7 @@
 			<td valign="top" width="40"><img src='<ww:url includeParams="none" value="/imgs/erro_msg.gif"/>'></td>
 			<td class="msgErro" valign="top">
 				<span class="txtErro">
-				<%= ((AuthenticationException) session.getAttribute(AbstractProcessingFilter.ACEGI_SECURITY_LAST_EXCEPTION_KEY)).getMessage() %>
+				<%--= ((AuthenticationException) session.getAttribute(AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY)).getMessage() --%>
 				</span>
 			</td>
 		</tr>
@@ -84,9 +81,15 @@
 			<td class="corpo">
 				<%=request.getAttribute("msgRemprot")%><br>
 				Usuário:<br>
+<<<<<<< HEAD
 				<input accesskey="u" type='text' id="username" onBlur="empresasUsuario();checkSOS();" name='j_username'<% if("1".equals(request.getParameter("login_error"))) { %>value='<%= session.getAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY) %>'<% } %>/>
 				<label id="senha">Senha:</label><br>
 				<input accesskey="s" type='password' id="password" name='j_password'/>
+=======
+				<input accesskey="u" type='text' id="username" onBlur="empresasUsuario();" name='j_username'<% if("1".equals(request.getParameter("login_error"))) { %>value=''<% } %>>
+				Senha:<br>
+				<input accesskey="s" type='password' id="password" name='j_password'>
+>>>>>>> Atualização Spring e Hibernate
   				<ww:select label="Empresa" name="j_empresa" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa"/>
   				<input type="hidden" id="SOSSeed" name="j_SOSSeed" value="SOS"/>
   				<br>

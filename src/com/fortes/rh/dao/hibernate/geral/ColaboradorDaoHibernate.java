@@ -29,7 +29,9 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -66,6 +68,7 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> implements ColaboradorDao
 {
@@ -159,13 +162,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setBoolean("somenteDesligados", somenteDesligados);
 		
 		if(!whereAreaIds.equals(""))
-			query.setParameterList("ids", areaOrganizacionalIds, Hibernate.LONG);
+			query.setParameterList("ids", areaOrganizacionalIds, StandardBasicTypes.LONG);
 		
 		if(!wherecargosIds.equals(""))
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);
 		
 		if(!whereEstabelecimentosIds.equals(""))
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 
 		if(!whereCPF.equals(""))
 			query.setString("cpf", "%" + colaborador.getPessoal().getCpf() + "%");
@@ -779,7 +782,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		String hql = "update Colaborador set usuario.id = :usuarioId where id = :id";
 		Query query = getSession().createQuery(hql);
-		query.setParameter("usuarioId", usuarioId, Hibernate.LONG);
+		query.setParameter("usuarioId", usuarioId, StandardBasicTypes.LONG);
 		query.setLong("id", colaboradorId);
 		int result = query.executeUpdate();
 
@@ -917,9 +920,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(StringUtils.isNotBlank(colaboradorNome))
 			query.setString("colaboradorNome", "%" + colaboradorNome.toUpperCase() + "%");
 		if(areasOrganizacionaisIds != null && !areasOrganizacionaisIds.isEmpty())
-			query.setParameterList("areaIds", areasOrganizacionaisIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areasOrganizacionaisIds, StandardBasicTypes.LONG);
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
 
@@ -953,9 +956,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(StringUtils.isNotBlank(colaboradorNome))
 			query.setString("colaboradorNome", "%" + colaboradorNome.toUpperCase() + "%");
 		if(cargoIds != null && !cargoIds.isEmpty())
-			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+			query.setParameterList("cargoIds", cargoIds, StandardBasicTypes.LONG);
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
 		
@@ -984,8 +987,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("hoje", new Date());
-		query.setParameterList("grupoOcupacionalIds", grupoOcupacionalIds, Hibernate.LONG);
-		query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		query.setParameterList("grupoOcupacionalIds", grupoOcupacionalIds, StandardBasicTypes.LONG);
+		query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}
@@ -1007,7 +1010,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("hoje", new Date());
-		query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}
@@ -1211,13 +1214,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("empresasIds", empresasIds);
 
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
-			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
+			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, StandardBasicTypes.LONG);
 
 		if(cargoIds != null && !cargoIds.isEmpty())
-			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+			query.setParameterList("cargoIds", cargoIds, StandardBasicTypes.LONG);
 		
 		if(dataAdmissaoIni != null)
 			query.setDate("dataAdmissaoIni", dataAdmissaoIni);
@@ -1353,9 +1356,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("hoje", new Date());
 		
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
-			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
+			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, StandardBasicTypes.LONG);
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}
@@ -1444,13 +1447,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		if(areasIds != null && areasIds.size() > 0)
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		if(cargosIds != null && cargosIds.size() > 0)
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);
 		if(vinculos != null && vinculos.size() > 0)
-			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
+			query.setParameterList("vinculos", vinculos, StandardBasicTypes.STRING);
 		
 		List resultado = query.list();
 		
@@ -1517,16 +1520,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		if (estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		
 		if (areasIds != null && !areasIds.isEmpty())
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 			
 		if (cargosIds != null && !cargosIds.isEmpty())
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);
 		
 		if (vinculos != null && !vinculos.isEmpty())
-			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
+			query.setParameterList("vinculos", vinculos, StandardBasicTypes.STRING);
 		
 		return (Collection<TurnOver>) query.list();
 	}
@@ -1568,16 +1571,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setLong("empresaId", empresa.getId());
 		
 		if (estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		
 		if (areasIds != null && !areasIds.isEmpty())
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		
 		if (cargosIds != null && !cargosIds.isEmpty())
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);
 		
 		if (vinculos != null && !vinculos.isEmpty())
-			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
+			query.setParameterList("vinculos", vinculos, StandardBasicTypes.STRING);
 		
 		Collection count = query.list();
 
@@ -1638,16 +1641,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		if (estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 
 		if (areasIds != null && !areasIds.isEmpty())
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 			
 		if (cargosIds != null && !cargosIds.isEmpty())
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);
 		
 		if (vinculos != null && !vinculos.isEmpty())
-			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
+			query.setParameterList("vinculos", vinculos, StandardBasicTypes.STRING);
 		
 		return (Collection<Colaborador>) query.list();
 	}
@@ -1691,7 +1694,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("data", dataIni);
 		
 		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+			query.setParameterList("empresaIds", empresaIds, StandardBasicTypes.LONG);
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
@@ -1699,13 +1702,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setLong("colaboradorId", colaboradorId);
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		if(areasIds != null && areasIds.size() > 0)
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		if(cargosIds != null && cargosIds.size() > 0)
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);
 		if(vinculos != null && vinculos.size() > 0)
-			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
+			query.setParameterList("vinculos", vinculos, StandardBasicTypes.STRING);
 
 		return (Integer) query.uniqueResult();
 	}
@@ -1791,13 +1794,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setString("vinculo", vinculo);
 
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		if(areaIds != null && areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 
 		if(cargoIds != null && cargoIds.length > 0)
-			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+			query.setParameterList("cargoIds", cargoIds, StandardBasicTypes.LONG);
 
 		return query;
 	}
@@ -1810,7 +1813,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Query query = getSession().createQuery(hql);
 		query.setDate("data", data);
 		query.setBoolean("valor", data != null ? true : false);
-		query.setParameterList("codigos", codigosAC, Hibernate.STRING);
+		query.setParameterList("codigos", codigosAC, StandardBasicTypes.STRING);
 		query.setEntity("emp", empresa);
 		int result = query.executeUpdate();
 
@@ -1836,7 +1839,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.setString("observacaoDemissao", observacaoDemissao);
 		query.setLong("motivoDemissaoId", motivoDemissaoId);
-		query.setParameter("gerouSubstituicao", gerouSubstituicao, Hibernate.CHARACTER);
+		query.setParameter("gerouSubstituicao", gerouSubstituicao, StandardBasicTypes.CHARACTER);
 		query.setParameterList("colaboradoresIds", colaboradoresIds);
 
 		query.executeUpdate();
@@ -1969,16 +1972,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("data", data);
 
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		if(Integer.parseInt(filtro) == AREA_ORGANIZACIONAL && areaIds != null && !areaIds.isEmpty())
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 		else if(Integer.parseInt(filtro) == GRUPO_OCUPACIONAL && grupoIds != null && !grupoIds.isEmpty())
 		{
-			query.setParameterList("grupoIds", grupoIds, Hibernate.LONG);
+			query.setParameterList("grupoIds", grupoIds, StandardBasicTypes.LONG);
 
 			if(cargoIds != null && !cargoIds.isEmpty())
-				query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+				query.setParameterList("cargoIds", cargoIds, StandardBasicTypes.LONG);
 		}
 
 		query.setLong("empresaId", empresaId);
@@ -2114,12 +2117,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(colaborador.getEndereco().getUf() != null && colaborador.getEndereco().getUf().getId() != null)
 			query.setLong("ufId", colaborador.getEndereco().getUf().getId());
 		else
-			query.setParameter("ufId", null, Hibernate.LONG);
+			query.setParameter("ufId", null, StandardBasicTypes.LONG);
 
 		if(colaborador.getEndereco().getCidade() != null && colaborador.getEndereco().getCidade().getId() != null)
 			query.setLong("cidadeId", colaborador.getEndereco().getCidade().getId());
 		else
-			query.setParameter("cidadeId", null, Hibernate.LONG);
+			query.setParameter("cidadeId", null, StandardBasicTypes.LONG);
 
 		query.setString("bairro", colaborador.getEndereco().getBairro());
 		query.setString("cep", colaborador.getEndereco().getCep());
@@ -2510,11 +2513,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Query query = getSession().createQuery(hql.toString());
 		
 		if(LongUtil.arrayIsNotEmpty(estabelecimentosIds))
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		if(LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);	
 		if(LongUtil.arrayIsNotEmpty(cargosIds))
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);	
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);	
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setLong("empresaId", empresa.getId());
@@ -2543,16 +2546,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Query query = getSession().createQuery(hql.toString());
 		
 		if(LongUtil.arrayIsNotEmpty(estabelecimentosIds))
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);	
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);	
 		if(LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);	
 		if(LongUtil.arrayIsNotEmpty(cargosIds))
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);	
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);	
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setDate("data", dataBase);
 		
 		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+			query.setParameterList("empresaIds", empresaIds, StandardBasicTypes.LONG);
 		
 		query.setDate("dataBase", dataBase);
 
@@ -2621,7 +2624,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Query query = getSession().createQuery(hql.toString());
 
 		if(empresaIds != null && empresaIds.length > 0)
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+			query.setParameterList("empresaIds", empresaIds, StandardBasicTypes.LONG);
 
 		query.setDate("hoje", new Date());
 		if (mes > 0) {
@@ -2630,10 +2633,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		if(areaIds != null && areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}
@@ -2802,7 +2805,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	order by co.nomeComercial");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameterList("colaboradorIds", colaboradorIds, Hibernate.LONG);
+		query.setParameterList("colaboradorIds", colaboradorIds, StandardBasicTypes.LONG);
 		query.setDate("hoje", new Date());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
@@ -2908,13 +2911,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setString("vinculo", vinculo);
 		
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		if(areaIds != null && areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 
 		if(cargoIds != null && cargoIds.length > 0)
-			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+			query.setParameterList("cargoIds", cargoIds, StandardBasicTypes.LONG);
 
 		return (Integer) query.uniqueResult();
 	}
@@ -3054,10 +3057,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setString("motivo", MotivoHistoricoColaborador.CONTRATADO);
 		
-		query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 
 		if (LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 
 		if (!StringUtil.isBlank(vinculo))
 			query.setString("vinculo", vinculo);
@@ -3249,7 +3252,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(matricula != null && !matricula.trim().equals(""))
 			query.setString("matricula", "%" + matricula.toUpperCase() + "%");
 		if(areaIds != null && areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 
 		query.setLong("empresaId", empresaId);
 
@@ -3301,16 +3304,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setDate("dataPrevFim", dataPrevFim);
 		
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
-			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
+			query.setParameterList("cursoIds", cursoIds, StandardBasicTypes.LONG);
 
 		if (LongUtil.arrayIsNotEmpty(empresaIds))
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+			query.setParameterList("empresaIds", empresaIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		
 		return (Integer) query.uniqueResult();
 	}
@@ -4418,10 +4421,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(areaIds))
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 			
 		return (Integer) query.uniqueResult();
 	}
@@ -4452,10 +4455,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(areaIds))
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 
 		return (Integer) query.uniqueResult();
 	}
@@ -4496,10 +4499,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if(StringUtils.isNotBlank(nome))
 			criteria.add(Expression.or(
-							Expression.or(Restrictions.sqlRestriction("normalizar({alias}.nome) ilike  normalizar(?)", nome, Hibernate.STRING), 
-											Restrictions.sqlRestriction("normalizar({alias}.conjuge) ilike  normalizar(?)", nome, Hibernate.STRING)), 
-							Expression.or(Restrictions.sqlRestriction("normalizar({alias}.pai) ilike  normalizar(?)", nome, Hibernate.STRING), 
-											Restrictions.sqlRestriction("normalizar({alias}.mae) ilike  normalizar(?)", nome, Hibernate.STRING))
+							Expression.or(Restrictions.sqlRestriction("normalizar({alias}.nome) ilike  normalizar(?)", nome, StandardBasicTypes.STRING), 
+											Restrictions.sqlRestriction("normalizar({alias}.conjuge) ilike  normalizar(?)", nome, StandardBasicTypes.STRING)), 
+							Expression.or(Restrictions.sqlRestriction("normalizar({alias}.pai) ilike  normalizar(?)", nome, StandardBasicTypes.STRING), 
+											Restrictions.sqlRestriction("normalizar({alias}.mae) ilike  normalizar(?)", nome, StandardBasicTypes.STRING))
 						));
 
 		criteria.addOrder(Order.asc("c.nome"));
@@ -4518,7 +4521,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("where ue.id in (:usuarioEmpresaIds) ");
 
 		Query query = getSession().createSQLQuery(sql.toString());
-		query.setParameterList("usuarioEmpresaIds", usuarioEmpresaIds, Hibernate.LONG);
+		query.setParameterList("usuarioEmpresaIds", usuarioEmpresaIds, StandardBasicTypes.LONG);
 		
 		return StringUtil.converteCollectionToArrayString(query.list());
 	}
@@ -4532,9 +4535,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("dataSolicitacaoDesligamento", dataSolicitacaoDesligamento);
 		query.setDate("dataSolicitacaoDesligamentoAc", dataSolicitacaoDesligamentoAC);
 		query.setString("observacaoDemissao", observacaoDemissao);
-		query.setParameter("gerouSubstituicao", gerouSubstituicao, Hibernate.CHARACTER);
-		query.setParameter("motivoId", motivoId, Hibernate.LONG);
-		query.setParameter("solicitanteDemissaoId", solicitanteDemissaoId, Hibernate.LONG);
+		query.setParameter("gerouSubstituicao", gerouSubstituicao, StandardBasicTypes.CHARACTER);
+		query.setParameter("motivoId", motivoId, StandardBasicTypes.LONG);
+		query.setParameter("solicitanteDemissaoId", solicitanteDemissaoId, StandardBasicTypes.LONG);
 		query.setLong("colaboradorId", colaboradorId);
 		
 		query.executeUpdate();
@@ -4586,7 +4589,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		criteria.add(Expression.eq("c.desligado", false));
-		criteria.add(Expression.sqlRestriction("(? - dataAdmissao) in ("+dias.toString().replaceAll("[\\[\\]]","") +")", new Date(), Hibernate.DATE));
+		criteria.add(Expression.sqlRestriction("(? - dataAdmissao) in ("+dias.toString().replaceAll("[\\[\\]]","") +")", new Date(), StandardBasicTypes.DATE));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 
@@ -4605,7 +4608,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 		criteria.add(Expression.eq("c.desligado", false));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
-		criteria.add(Expression.sqlRestriction("(? - {alias}.data) in ("+diasLembrete.toString().replaceAll("[\\[\\]]","") +")", new Date(), Hibernate.DATE));
+		criteria.add(Expression.sqlRestriction("(? - {alias}.data) in ("+diasLembrete.toString().replaceAll("[\\[\\]]","") +")", new Date(), StandardBasicTypes.DATE));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 
@@ -4708,7 +4711,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 		criteria.add(Expression.eq("c.desligado", false));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
-		criteria.add(Expression.sqlRestriction("({alias}.dataEncerramentoContrato - ?) in ("+diasLembrete.toString().replaceAll("[\\[\\]]","") +")", new Date(), Hibernate.DATE));
+		criteria.add(Expression.sqlRestriction("({alias}.dataEncerramentoContrato - ?) in ("+diasLembrete.toString().replaceAll("[\\[\\]]","") +")", new Date(), StandardBasicTypes.DATE));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
@@ -4738,7 +4741,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 		criteria.add(Expression.eq("c.desligado", false));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
-		criteria.add(Expression.sqlRestriction("({alias}.vencimento - ?) in ("+diasLembrete.toString().replaceAll("[\\[\\]]","") +")", new Date(), Hibernate.DATE));
+		criteria.add(Expression.sqlRestriction("({alias}.vencimento - ?) in ("+diasLembrete.toString().replaceAll("[\\[\\]]","") +")", new Date(), StandardBasicTypes.DATE));
 		
 		criteria.addOrder(Order.asc("c.nome"));
 		
@@ -4835,7 +4838,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("hc.status"), "historicoColaboradorStatusProjection");
 		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
 		p.add(Projections.property("ao.codigoAC"), "areaOrganizacionalCodigoAC");
-		p.add(Projections.alias(Projections.sqlProjection("monta_familia_area(ao4_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome"));
+		p.add(Projections.alias(Projections.sqlProjection("monta_familia_area(ao4_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {StandardBasicTypes.TEXT}), "areaOrganizacionalNome"));
 		p.add(Projections.property("ca.id"), "cargoIdProjection");
 		p.add(Projections.property("fs.id"), "faixaSalarialIdProjection");
 		p.add(Projections.property("fs.codigoAC"), "faixaSalarialCodigoACProjection");

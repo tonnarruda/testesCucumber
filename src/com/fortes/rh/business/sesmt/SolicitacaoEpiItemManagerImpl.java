@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
@@ -16,11 +18,17 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TamanhoEPI;
 
+@Component
 public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<SolicitacaoEpiItem, SolicitacaoEpiItemDao> implements SolicitacaoEpiItemManager
 {
 	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
 	private SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager;
 	private EpiHistoricoManager epiHistoricoManager;
+	
+	@Autowired
+	SolicitacaoEpiItemManagerImpl(SolicitacaoEpiItemDao solicitacaoEpiItemDao) {
+		setDao(solicitacaoEpiItemDao);
+	}
 	
 	public Collection<SolicitacaoEpiItem> findBySolicitacaoEpi(Long solicitacaoEpiId)
 	{

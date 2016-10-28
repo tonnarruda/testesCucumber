@@ -4,14 +4,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.dao.sesmt.MedicoCoordenadorDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 
+@Component
 public class MedicoCoordenadorManagerImpl extends GenericManagerImpl<MedicoCoordenador, MedicoCoordenadorDao> implements MedicoCoordenadorManager
 {
+	@Autowired
+	MedicoCoordenadorManagerImpl(MedicoCoordenadorDao medicoCoordenadorDao) {
+			setDao(medicoCoordenadorDao);
+	}
+	
 	public MedicoCoordenador findByDataEmpresa(Long empresaId, Date data)
 	{
 		return getDao().findByDataEmpresa(empresaId, data);

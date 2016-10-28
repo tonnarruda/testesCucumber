@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
@@ -28,6 +31,7 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.HistoricoColaboradorUtil;
 import com.fortes.rh.web.ws.AcPessoalClientTabelaReajusteInterface;
 
+@Component
 public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<TabelaReajusteColaborador, TabelaReajusteColaboradorDao> implements TabelaReajusteColaboradorManager
 {
 	private ReajusteColaboradorManager reajusteColaboradorManager;
@@ -43,6 +47,11 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	//private final Boolean APROVADA = true;  - Descomentar se for necessário criar o método para encontrar tabelas aprovadas.
 	private final Boolean NAO_APROVADA = false;
 	private final Boolean TODAS = null;
+	
+	@Autowired
+	TabelaReajusteColaboradorManagerImpl(TabelaReajusteColaboradorDao dao) {
+		setDao(dao);
+	}
 	
 	@Override
 	public void update(TabelaReajusteColaborador tabelaReajusteColaborador)

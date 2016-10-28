@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -17,11 +20,16 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> implements AtitudeManager
 {
 	AreaOrganizacionalManager areaOrganizacionalManager;
-	
 	CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
+
+	@Autowired
+	AtitudeManagerImpl(AtitudeDao atitudeDao) {
+		setDao(atitudeDao);
+	}
 	
 	public Collection<Atitude> populaAtitudes(String[] atitudesCheck)
 	{

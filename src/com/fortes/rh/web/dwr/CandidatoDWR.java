@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
@@ -17,12 +20,17 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 
-@SuppressWarnings("unchecked")
+@Component
+@SuppressWarnings({"rawtypes"})
 public class CandidatoDWR
 {
+	@Autowired
 	private ConhecimentoManager conhecimentoManager;
+	@Autowired
 	private CandidatoManager candidatoManager;
+	@Autowired
 	private ColaboradorManager colaboradorManager;
+	@Autowired
 	private SolicitacaoManager solicitacaoManager;
 
 	public Map getConhecimentos(String[] areaIntereseIds, Long empresaId)

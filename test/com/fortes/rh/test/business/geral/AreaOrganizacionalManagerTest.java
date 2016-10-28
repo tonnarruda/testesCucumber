@@ -13,7 +13,7 @@ import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.core.Constraint;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.cargosalario.CargoManager;

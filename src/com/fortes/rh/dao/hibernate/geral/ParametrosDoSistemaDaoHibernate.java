@@ -8,11 +8,13 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ParametrosDoSistemaDao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 
+@Component
 public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<ParametrosDoSistema> implements ParametrosDoSistemaDao
 {
 	public ParametrosDoSistema findByIdProjection(Long id)
@@ -79,6 +81,13 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ParametrosDoSistema.class));
 
 		return (ParametrosDoSistema) criteria.add(Expression.eq("ps.id", id)).uniqueResult();
+		
+//		StringBuilder hql = new StringBuilder();
+//		hql.append("select ps.id as id, ps.appVersao as appVersao from ParametrosDoSistema ps");
+//
+//		Query query = getSession().createQuery(hql.toString()).setResultTransformer(Transformers.aliasToBean(ParametrosDoSistema.class));
+//		Collection<ParametrosDoSistema> ps = query.list();
+//		return (ParametrosDoSistema) query.uniqueResult();
 	}
 
 	public void updateServidorRemprot(String servidorRemprot) 

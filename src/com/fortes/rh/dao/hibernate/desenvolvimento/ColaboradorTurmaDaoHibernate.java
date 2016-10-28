@@ -26,8 +26,10 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
@@ -54,6 +56,8 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.ws.TAula;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
+
+@Component
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<ColaboradorTurma> implements ColaboradorTurmaDao
 {
@@ -308,10 +312,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			query.setString("nome", "%" + colaboradorNome.toLowerCase() + "%");
 		
 		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		if(LongUtil.arrayIsNotEmpty(cargoIds))
-			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+			query.setParameterList("cargoIds", cargoIds, StandardBasicTypes.LONG);
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = query.list();
 
@@ -428,8 +432,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setDate("dntData", (Date) parametros.get("data"));
 		query.setBoolean("origemDnt", true);
-		query.setParameterList("areasId", (Collection<Long>) parametros.get("areas"), Hibernate.LONG);
-		query.setParameterList("estabelecimentosId", (Collection<Long>) parametros.get("estabelecimentos"), Hibernate.LONG);
+		query.setParameterList("areasId", (Collection<Long>) parametros.get("areas"), StandardBasicTypes.LONG);
+		query.setParameterList("estabelecimentosId", (Collection<Long>) parametros.get("estabelecimentos"), StandardBasicTypes.LONG);
 
 		Collection<ColaboradorTurma> colaboradorTurmas = query.list();
 
@@ -482,8 +486,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			query.setLong("colaboradorId", (Long) parametros.get("colaboradorId"));
 		else
 			{
-				query.setParameterList("areasId", (Collection<Long>) parametros.get("areas"), Hibernate.LONG);
-				query.setParameterList("estabelecimentosId", (Collection<Long>) parametros.get("estabelecimentos"), Hibernate.LONG);
+				query.setParameterList("areasId", (Collection<Long>) parametros.get("areas"), StandardBasicTypes.LONG);
+				query.setParameterList("estabelecimentosId", (Collection<Long>) parametros.get("estabelecimentos"), StandardBasicTypes.LONG);
 			}
 
 		Collection<ColaboradorTurma> colaboradorTurmas = query.list();
@@ -528,10 +532,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		if (areas.length > 0)
-			query.setParameterList("areasId", areas, Hibernate.LONG);
+			query.setParameterList("areasId", areas, StandardBasicTypes.LONG);
 		
 		if (estabelecimentos.length > 0)
-			query.setParameterList("estabelecimentosId", estabelecimentos, Hibernate.LONG);
+			query.setParameterList("estabelecimentosId", estabelecimentos, StandardBasicTypes.LONG);
 		
 		query.setDate("data", data);
 		query.setLong("empresaId", empresaId);
@@ -617,10 +621,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			query.setString("nome", "%" + colaboradorNome.toLowerCase() + "%");
 		
 		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 		
 		if(LongUtil.arrayIsNotEmpty(cargoIds))
-			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+			query.setParameterList("cargoIds", cargoIds, StandardBasicTypes.LONG);
 
 		
 		return (Integer)query.list().size();
@@ -714,13 +718,13 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			query.setLong("empresaId", empresaId);
 		
 		if (LongUtil.arrayIsNotEmpty(cursosIds))
-			query.setParameterList("cursosIds", cursosIds, Hibernate.LONG);
+			query.setParameterList("cursosIds", cursosIds, StandardBasicTypes.LONG);
 
 		if (LongUtil.arrayIsNotEmpty(areaIds))
-			query.setParameterList("areasId", areaIds, Hibernate.LONG);
+			query.setParameterList("areasId", areaIds, StandardBasicTypes.LONG);
 
 		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
-			query.setParameterList("estabelecimentosId", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosId", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		List resultado = query.list();
@@ -879,7 +883,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("es.id"), "estabelecimentoId");
 		p.add(Projections.property("es.nome"), "estabelecimentoNome");
 		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
-		p.add(Projections.alias(Projections.sqlProjection("monta_familia_area(ao4_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome"));
+		p.add(Projections.alias(Projections.sqlProjection("monta_familia_area(ao4_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {StandardBasicTypes.TEXT}), "areaOrganizacionalNome"));
 		p.add(Projections.property("t.id"), "turmaId");
 		p.add(Projections.property("t.descricao"), "turmaDescricao");
 		p.add(Projections.property("t.dataPrevIni"), "projectionDataPrevIni");
@@ -892,7 +896,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("emp.nome"), "empresaNome");
 		p.add(Projections.property("fs.nome"), "faixaSalarialNome");
 		p.add(Projections.property("ca.nome"), "cargoNome");
-		p.add(Projections.alias(Projections.sqlProjection("carga_horaria_efetiva(c6_.id, t7_.id, this_.id)::text as cargaHorariaEfetiva", new String[] {"cargaHorariaEfetiva"}, new Type[] {Hibernate.TEXT}), "cargaHorariaEfetiva"));
+		p.add(Projections.alias(Projections.sqlProjection("carga_horaria_efetiva(c6_.id, t7_.id, this_.id)::text as cargaHorariaEfetiva", new String[] {"cargaHorariaEfetiva"}, new Type[] {StandardBasicTypes.TEXT}), "cargaHorariaEfetiva"));
 		return p;
 	}
 	
@@ -1023,16 +1027,16 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			query.setLong("certificacaoId", certificacao.getId());
 		
 		if(turmaIds != null && turmaIds.length > 0)
-			query.setParameterList("turmaId", turmaIds, Hibernate.LONG);
+			query.setParameterList("turmaId", turmaIds, StandardBasicTypes.LONG);
 		
 		if(cursosIds != null && cursosIds.length > 0)
 			query.setParameterList("cursosIds", cursosIds);
 		
 		if (areaIds != null && areaIds.length > 0)
-			query.setParameterList("areasId", areaIds, Hibernate.LONG);
+			query.setParameterList("areasId", areaIds, StandardBasicTypes.LONG);
 
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentosId", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosId", estabelecimentoIds, StandardBasicTypes.LONG);
 		
 		if (dataIni != null && dataFim != null) {
 			query.setDate("dataIni", dataIni);
@@ -1332,7 +1336,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			query.setParameterList("cursoIds", cursoIds);
 		
 		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds)){
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		}
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
@@ -1446,16 +1450,16 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 		query.setDate("hoje", new Date());
 		
-		query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
+		query.setParameterList("cursoIds", cursoIds, StandardBasicTypes.LONG);
 		
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentosIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentoIds, StandardBasicTypes.LONG);
 		
 		if (areaIds != null && areaIds.length > 0)
-			query.setParameterList("areasIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areaIds, StandardBasicTypes.LONG);
 		
 		if (turmaIds != null && turmaIds.length > 0)
-			query.setParameterList("turmasIds", turmaIds, Hibernate.LONG);
+			query.setParameterList("turmasIds", turmaIds, StandardBasicTypes.LONG);
 
 		Collection<ColaboradorTurma> colaboradorTurmas = query.list();
 
@@ -1558,10 +1562,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			hql.append("and ct.turma.id in (:turmasIds) ");
 		
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameterList("cursoIds", cursosIds, Hibernate.LONG);
+		query.setParameterList("cursoIds", cursosIds, StandardBasicTypes.LONG);
 
 		if (turmasIds != null && turmasIds.length > 0)
-			query.setParameterList("turmasIds", turmasIds, Hibernate.LONG);
+			query.setParameterList("turmasIds", turmasIds, StandardBasicTypes.LONG);
 
 		return query.list();	
 	}
@@ -1618,10 +1622,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("t.realizada"), "turmaRealizada");
 		p.add(Projections.property("ct.id"), "id");
 		p.add(Projections.property("ct.aprovado"), "aprovado");
-		p.add(Projections.sqlProjection("( t4_.dataprevfim + (c3_.periodicidade || ' month')::interval) as vencimento", new String[] {"vencimento"}, new Type[] {Hibernate.DATE}), "vencimento");
+		p.add(Projections.sqlProjection("( t4_.dataprevfim + (c3_.periodicidade || ' month')::interval) as vencimento", new String[] {"vencimento"}, new Type[] {StandardBasicTypes.DATE}), "vencimento");
 				
 		if(filtroSituacao ==FiltroSituacaoCurso.TODOS.getOpcao())
-		    p.add(Projections.sqlProjection("case when (t4_.dataprevfim + (c3_.periodicidade || ' month')::interval) < to_timestamp('"+ DateUtil.formataAnoMesDia(dataIni) +"', 'YYYY-MM-DD') then true else false end as vencido", new String[] {"vencido"}, new Type[] {Hibernate.BOOLEAN}), "vencido");
+		    p.add(Projections.sqlProjection("case when (t4_.dataprevfim + (c3_.periodicidade || ' month')::interval) < to_timestamp('"+ DateUtil.formataAnoMesDia(dataIni) +"', 'YYYY-MM-DD') then true else false end as vencido", new String[] {"vencido"}, new Type[] {StandardBasicTypes.BOOLEAN}), "vencido");
 		
 		criteria.setProjection(p);
 
@@ -1707,11 +1711,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("c.nome"), "cursoNome");
 		p.add(Projections.property("c.periodicidade"), "cursoPeriodicidade");
 		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
-		p.add(Projections.sqlProjection("monta_familia_area(ao8_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome");
+		p.add(Projections.sqlProjection("monta_familia_area(ao8_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {StandardBasicTypes.TEXT}), "areaOrganizacionalNome");
 		p.add(Projections.property("fs.nome"), "faixaSalarialNome");
 		p.add(Projections.property("ca.nome"), "cargoNome");
 		p.add(Projections.property("ct.id"), "id");
-		p.add(Projections.sqlProjection("( t4_.dataprevfim + (c3_.periodicidade || ' month')::interval) as vencimento", new String[] {"vencimento"}, new Type[] {Hibernate.DATE}), "vencimento");
+		p.add(Projections.sqlProjection("( t4_.dataprevfim + (c3_.periodicidade || ' month')::interval) as vencimento", new String[] {"vencimento"}, new Type[] {StandardBasicTypes.DATE}), "vencimento");
 		
 		criteria.setProjection(p);
 	}
@@ -1726,7 +1730,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			str.append("and not ct2.aprovado ");
 		
 		str.append(" ) " + operador + " ?");
-		return Expression.sqlRestriction(str.toString(), dataReferencia, Hibernate.DATE);
+		return Expression.sqlRestriction(str.toString(), dataReferencia, StandardBasicTypes.DATE);
 	}
 	
 	private Criterion criterionCursosVencidos(Date dataReferencia){
@@ -1738,7 +1742,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("                                      			from turma t join colaboradorturma ct on ct.turma_id = t.id ");
 		sql.append("                                           			where (t.dataprevfim + (c3_.periodicidade || ' month')::interval) >= ? and t.realizada = true and t.curso_id = c3_.id and ct.aprovado ");
 		sql.append("                               				) ");
-		return Expression.sqlRestriction(sql.toString(), new Date[] {dataReferencia, dataReferencia}, new Type[]{Hibernate.DATE, Hibernate.DATE});
+		return Expression.sqlRestriction(sql.toString(), new Date[] {dataReferencia, dataReferencia}, new Type[]{StandardBasicTypes.DATE, StandardBasicTypes.DATE});
 	}
 	
 	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long certificacaoId, Long colaboradorCertificacaoId, Long... colaboradoresId) 
@@ -1780,7 +1784,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("order by c.nome, t.descricao ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
-		query.setParameterList("colaboradorId", colaboradoresId, Hibernate.LONG);
+		query.setParameterList("colaboradorId", colaboradoresId, StandardBasicTypes.LONG);
 		query.setLong("certificacaoId", certificacaoId);
 		
 		if(colaboradorCertificacaoId != null)
@@ -1862,7 +1866,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		ProjectionList p  = Projections.projectionList().create();
 		p.add(Projections.property("co.id"), "colaboradorId");
 		p.add(Projections.property("co.nome"), "colaboradorNome");
-		p.add(Projections.sqlProjection("case when colabCert5_.id is not null then true else false end as certificado", new String[] {"certificado"}, new Type[] {Hibernate.BOOLEAN}), "certificado");
+		p.add(Projections.sqlProjection("case when colabCert5_.id is not null then true else false end as certificado", new String[] {"certificado"}, new Type[] {StandardBasicTypes.BOOLEAN}), "certificado");
 		
 		DetachedCriteria subSelect = DetachedCriteria.forClass(ColaboradorCertificacao.class, "cc2")
 	    		.setProjection(Projections.max("cc2.data"))

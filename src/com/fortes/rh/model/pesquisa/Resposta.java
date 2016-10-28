@@ -21,7 +21,6 @@ public class Resposta extends AbstractModel implements Serializable, Cloneable
 {
     @ManyToOne
     private Pergunta pergunta;
-    @Lob
     private String texto;
     private int ordem;
 

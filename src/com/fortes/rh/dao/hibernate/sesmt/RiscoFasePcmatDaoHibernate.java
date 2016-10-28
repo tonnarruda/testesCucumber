@@ -9,12 +9,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RiscoFasePcmatDao;
 import com.fortes.rh.model.sesmt.FasePcmat;
 import com.fortes.rh.model.sesmt.RiscoFasePcmat;
 
+@Component
 public class RiscoFasePcmatDaoHibernate extends GenericDaoHibernate<RiscoFasePcmat> implements RiscoFasePcmatDao
 {
 	@SuppressWarnings("unchecked")

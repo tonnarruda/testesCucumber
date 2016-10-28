@@ -4,6 +4,9 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
@@ -14,9 +17,15 @@ import com.fortes.rh.model.ws.TOcorrencia;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientOcorrencia;
 
+@Component
 public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, OcorrenciaDao> implements OcorrenciaManager
 {
 	private AcPessoalClientOcorrencia acPessoalClientOcorrencia;
+	
+	@Autowired
+	OcorrenciaManagerImpl(OcorrenciaDao dao) {
+		setDao(dao);
+	}
 
 	public void saveOrUpdate(Ocorrencia ocorrencia, Empresa empresa) throws Exception
 	{

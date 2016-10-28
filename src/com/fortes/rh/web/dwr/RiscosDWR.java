@@ -3,12 +3,17 @@ package com.fortes.rh.web.dwr;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 public class RiscosDWR
 {
+	@Autowired
 	private RiscoManager riscoManager;
 
 	public Map getRiscos(String grupoRisco)

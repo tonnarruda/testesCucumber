@@ -57,15 +57,10 @@ public class Eleicao extends AbstractModel implements Serializable
 	private String sindicato;
 	@Column(length=100)
 	private String descricao;
-	@Lob
 	private String textoAtaEleicao;
-	@Lob
 	private String textoEditalInscricao;
-	@Lob
 	private String textoChamadoEleicao;
-	@Lob
 	private String textoSindicato;
-	@Lob
 	private String textoDRT;
 
 	@Transient

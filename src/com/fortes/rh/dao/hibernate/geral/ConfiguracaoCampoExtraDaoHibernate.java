@@ -8,11 +8,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ConfiguracaoCampoExtraDao;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 
+@Component
 public class ConfiguracaoCampoExtraDaoHibernate extends GenericDaoHibernate<ConfiguracaoCampoExtra> implements ConfiguracaoCampoExtraDao
 {
 

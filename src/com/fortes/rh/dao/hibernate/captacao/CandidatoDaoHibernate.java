@@ -14,7 +14,6 @@ import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.ScrollMode;
@@ -29,7 +28,9 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.model.type.File;
@@ -52,6 +53,7 @@ import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 @SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
 public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implements CandidatoDao
 {
@@ -284,7 +286,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			query.setMaxResults(pagingSize);
 		}
 		else
-			query.addScalar("total", Hibernate.INTEGER);
+			query.addScalar("total", StandardBasicTypes.INTEGER);
 		
 		return query;
 	}
@@ -375,11 +377,11 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		//indicadoPor
 		if(isNotBlank((String)parametros.get("indicadoPor")))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.indicadoPor) ilike  normalizar(?)", "%" + parametros.get("indicadoPor") + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.indicadoPor) ilike  normalizar(?)", "%" + parametros.get("indicadoPor") + "%", StandardBasicTypes.STRING));
 
 		//nomeBUsca
 		if(isNotBlank((String)parametros.get("nomeBusca")))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + parametros.get("nomeBusca") + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + parametros.get("nomeBusca") + "%", StandardBasicTypes.STRING));
 
 		//CPF
 		if(isNotBlank((String)parametros.get("cpfBusca")))
@@ -483,7 +485,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 			for (int i = 0; i < palavrasExpressao.length; i++)
 			{
-				juncaoOr.add(Restrictions.sqlRestriction("normalizar("+campoComparado+") ilike  normalizar(?)", "%" + palavrasExpressao[i] + "%", Hibernate.STRING) );
+				juncaoOr.add(Restrictions.sqlRestriction("normalizar("+campoComparado+") ilike  normalizar(?)", "%" + palavrasExpressao[i] + "%", StandardBasicTypes.STRING) );
 			}
 			
 			return juncaoOr;
@@ -497,12 +499,12 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 				for (int i = 0; i < palavrasExpressao.length; i++)
 				{
-					juncaoAnd.add(Restrictions.sqlRestriction("normalizar("+campoComparado+") ilike  normalizar(?)", "%" + palavrasExpressao[i] + "%", Hibernate.STRING) );
+					juncaoAnd.add(Restrictions.sqlRestriction("normalizar("+campoComparado+") ilike  normalizar(?)", "%" + palavrasExpressao[i] + "%", StandardBasicTypes.STRING) );
 				}
 			} 
 			else if (tipo.equals(FRASE_EXATA))
 			{
-				juncaoAnd.add(Restrictions.sqlRestriction("normalizar("+campoComparado+") ilike  normalizar(?)", "%" + palavraChave.trim() + "%", Hibernate.STRING) );
+				juncaoAnd.add(Restrictions.sqlRestriction("normalizar("+campoComparado+") ilike  normalizar(?)", "%" + palavraChave.trim() + "%", StandardBasicTypes.STRING) );
 			}
 			
 			return juncaoAnd;
@@ -672,7 +674,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		query.setBoolean("blackList", blackList);
 		query.setBoolean("disponivel", !blackList);
 		query.setString("observacaoBlackList", observacao);
-		query.setParameterList("ids", candidatoIds, Hibernate.LONG);
+		query.setParameterList("ids", candidatoIds, StandardBasicTypes.LONG);
 
 		query.executeUpdate();
 	}
@@ -747,7 +749,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria.setProjection(p);
 
 		if (candidatoNome != null && !candidatoNome.trim().equals(""))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + candidatoNome.trim() + "%", Hibernate.STRING) );
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + candidatoNome.trim() + "%", StandardBasicTypes.STRING) );
 
 		criteria.addOrder(Order.asc("nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -859,13 +861,13 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		query.setDate("dataFim", dataFim);
 
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		if (areaIds != null && areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 
 		if (cargoIds != null && cargoIds.length > 0)
-			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+			query.setParameterList("cargoIds", cargoIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}
@@ -988,16 +990,16 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria.add(Expression.eq("c.blackList", false));
 
 		if(isNotBlank(indicadoPor))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.indicadoPor) ilike  normalizar(?)", "%" + indicadoPor + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.indicadoPor) ilike  normalizar(?)", "%" + indicadoPor + "%", StandardBasicTypes.STRING));
 
 		if(isNotBlank(nomeBusca))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", StandardBasicTypes.STRING));
 
 		if(isNotBlank(cpfBusca))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.cpf) ilike  normalizar(?)", "%" + cpfBusca + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.cpf) ilike  normalizar(?)", "%" + cpfBusca + "%", StandardBasicTypes.STRING));
 
 		if(isNotBlank(escolaridade))
-			criteria.add(Expression.sqlRestriction("cast(this_.escolaridade as integer) >= ?", Integer.parseInt(escolaridade), Hibernate.INTEGER)); 
+			criteria.add(Expression.sqlRestriction("cast(this_.escolaridade as integer) >= ?", Integer.parseInt(escolaridade), StandardBasicTypes.INTEGER)); 
 		
 		if(cidadesCheck != null && cidadesCheck.length > 0)
 			criteria.add(Expression.in("cd.id", cidadesCheck));
@@ -1028,10 +1030,10 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		p.add(Projections.property("c.experiencias"), "experiencias");
 		p.add(Projections.sqlProjection("(exists (select cs2.id from CandidatoSolicitacao cs2 where cs2.candidato_id=this_.id and cs2.triagem = false)) as inscritoSolicitacao",
         		new String []  {"inscritoSolicitacao"}, 
-        		new Type[] {Hibernate.BOOLEAN}), "inscritoSolicitacao");
+        		new Type[] {StandardBasicTypes.BOOLEAN}), "inscritoSolicitacao");
 		p.add(Projections.sqlProjection("(exists(select col.cpf from Colaborador col where col.cpf=this_.cpf and this_.cpf is not null and this_.cpf <> '')) as jaFoiColaborador ", 
 				new String []  {"jaFoiColaborador"}, 
-				new Type[] {Hibernate.BOOLEAN}), "jaFoiColaborador");
+				new Type[] {StandardBasicTypes.BOOLEAN}), "jaFoiColaborador");
 
 		criteria.setProjection(p);
 		return criteria;
@@ -1055,7 +1057,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		ScrollableResults candidatos = buscaTodosComFoto(session);
 		while (candidatos.next()) {
 			Candidato candidato = (Candidato) candidatos.get(0);
-			logger.info("[#" + ++count + "] Candidato (id:" + candidato.getId() + ")");
+//			logger.info("[#" + ++count + "] Candidato (id:" + candidato.getId() + ")");
 			converteFotoDo(candidato, true);
 			atualizaApenasAFoto(session, candidato.getId(), candidato.getFoto());
 		}
@@ -1077,8 +1079,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			if (tentaNovamenteEmCasoDeErro) {
 				esperaUmSegundo();
 				converteFotoDo(candidato, false);
-			} else
-				logger.error("Erro ao converter foto do candidato (id:" + candidato.getId() + "): " + e.getMessage(), e);
+			}
+//			else
+//				logger.error("Erro ao converter foto do candidato (id:" + candidato.getId() + "): " + e.getMessage(), e);
 		}
 	}
 
@@ -1129,7 +1132,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		Query query = getSession().createQuery(hql);
 		query.setBoolean("disponivel", disponivel);
 		query.setBoolean("contratado", contratado);
-		query.setParameterList("colaboradorId", colaboradoresIds, Hibernate.LONG);
+		query.setParameterList("colaboradorId", colaboradoresIds, StandardBasicTypes.LONG);
 		
 		query.executeUpdate();
 	}
@@ -1384,7 +1387,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		hql.append("order by col.nome");
 		
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameterList("candidatosCpfs", candidatosCpfs, Hibernate.STRING);
+		query.setParameterList("candidatosCpfs", candidatosCpfs, StandardBasicTypes.STRING);
 				
 		return query.list();
 	}
@@ -1404,7 +1407,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		String hql = "update Candidato set contato.foneCelular =  '9'||contato.foneCelular where endereco.uf.id in (:ufIds) and length(contato.foneCelular) = 8";
 		Query query = getSession().createQuery(hql);
-		query.setParameterList("ufIds", ufIds, Hibernate.LONG);
+		query.setParameterList("ufIds", ufIds, StandardBasicTypes.LONG);
 		
 		query.executeUpdate();
 	}

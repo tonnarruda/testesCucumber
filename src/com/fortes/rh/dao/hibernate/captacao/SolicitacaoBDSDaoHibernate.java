@@ -6,10 +6,13 @@
 */
 package com.fortes.rh.dao.hibernate.captacao;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.SolicitacaoBDSDao;
 import com.fortes.rh.model.captacao.SolicitacaoBDS;
 
+@Component
 public class SolicitacaoBDSDaoHibernate extends GenericDaoHibernate<SolicitacaoBDS> implements SolicitacaoBDSDao
 {
     /** add more methods here **/

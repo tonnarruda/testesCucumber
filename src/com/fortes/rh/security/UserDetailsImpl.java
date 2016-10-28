@@ -1,9 +1,11 @@
 package com.fortes.rh.security;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -20,7 +22,7 @@ public class UserDetailsImpl implements UserDetails
 	private Date ultimoLogin;
 	private boolean superAdmin;
 
-	private GrantedAuthority[] authorities;
+	private Collection<GrantedAuthority> authorities;
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired; 
@@ -32,7 +34,7 @@ public class UserDetailsImpl implements UserDetails
 	private ParametrosDoSistema parametrosDoSistema;
 
 	public UserDetailsImpl(Long id, String nome, String username, String password, boolean superAdmin, Date ultimoLogin, 
-			GrantedAuthority[] authorities, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, 
+			Collection<GrantedAuthority> authorities, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, 
 			String menuFormatado, Empresa empresa, Colaborador colaborador, ParametrosDoSistema parametrosDoSistema)
 	{
 		this.id = id;
@@ -52,9 +54,14 @@ public class UserDetailsImpl implements UserDetails
 		this.parametrosDoSistema = parametrosDoSistema;
 	}
 
-	public GrantedAuthority[] getAuthorities()
+	public Collection<? extends GrantedAuthority> getAuthorities()
 	{
 		return authorities;
+	}
+	
+	public GrantedAuthority[] getAuthoritiesArray()
+	{
+		return (GrantedAuthority[]) authorities.toArray();
 	}
 
 	public Long getId()
@@ -114,7 +121,7 @@ public class UserDetailsImpl implements UserDetails
 
 	public void setAuthorities(GrantedAuthority[] authorities)
 	{
-		this.authorities = authorities;
+		this.authorities = Arrays.asList(authorities);
 	}
 
 	public void setMenuFormatado(String menuFormatado)

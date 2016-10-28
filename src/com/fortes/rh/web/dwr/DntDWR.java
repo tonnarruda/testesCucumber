@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 public class DntDWR
 {
+	@Autowired
 	private TurmaManager turmaManager;
 
 	public Map getTurmas(String cursoIdString)

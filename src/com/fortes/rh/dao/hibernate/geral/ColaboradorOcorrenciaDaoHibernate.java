@@ -10,13 +10,14 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
@@ -26,6 +27,7 @@ import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<ColaboradorOcorrencia> implements ColaboradorOcorrenciaDao
 {
@@ -286,17 +288,17 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 
 		query.setDate("data", dataFim);
 		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+			query.setParameterList("empresaIds", empresaIds, StandardBasicTypes.LONG);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		if(areasIds != null && !areasIds.isEmpty())
-			query.setParameterList("areaIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areasIds, StandardBasicTypes.LONG);
 		if(cargosIds != null && !cargosIds.isEmpty())
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);
 		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
-			query.setParameterList("estabelecimentoIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		if(ocorrenciasIds != null && !ocorrenciasIds.isEmpty())
-			query.setParameterList("ocorrenciasIds", ocorrenciasIds, Hibernate.LONG);
+			query.setParameterList("ocorrenciasIds", ocorrenciasIds, StandardBasicTypes.LONG);
 		
 		Collection<Object[]> lista = query.list();
 		Collection<Absenteismo> absenteismos = new ArrayList<Absenteismo>();
@@ -317,7 +319,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 			String hql = "delete ColaboradorOcorrencia co where co.ocorrencia.id in (:ocorrenciaIds)";
 			Query query = getSession().createQuery(hql);
 	
-			query.setParameterList("ocorrenciaIds", ocorrenciaIds, Hibernate.LONG);
+			query.setParameterList("ocorrenciaIds", ocorrenciaIds, StandardBasicTypes.LONG);
 			query.executeUpdate();		
 		}
 	}
@@ -391,22 +393,22 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		if(colaboradorIds.isEmpty())
 		{
 			if(!areaIds.isEmpty())
-				query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+				query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 
 			if(!estabelecimentoIds.isEmpty())
-				query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+				query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 			
 			if(!situacao.equals(SituacaoColaborador.TODOS)){
 				query.setBoolean("desligado", situacao.equals(SituacaoColaborador.ATIVO) ? false : true);
 			}
 		}
 		else
-			query.setParameterList("colaboradorIds", colaboradorIds, Hibernate.LONG);
+			query.setParameterList("colaboradorIds", colaboradorIds, StandardBasicTypes.LONG);
 			
 		if(!ocorrenciaIds.isEmpty())
-			query.setParameterList("ocorrenciaIds", ocorrenciaIds, Hibernate.LONG);
+			query.setParameterList("ocorrenciaIds", ocorrenciaIds, StandardBasicTypes.LONG);
 		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+			query.setParameterList("empresaIds", empresaIds, StandardBasicTypes.LONG);
 		
 		if(notUsuarioId != null)
 			query.setLong("notUsuarioId", notUsuarioId);

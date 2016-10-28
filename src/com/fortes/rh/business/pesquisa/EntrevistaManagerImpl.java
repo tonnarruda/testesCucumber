@@ -2,12 +2,15 @@ package com.fortes.rh.business.pesquisa;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
 import com.fortes.rh.dao.pesquisa.EntrevistaDao;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Empresa;
@@ -16,6 +19,7 @@ import com.fortes.rh.model.pesquisa.Entrevista;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 
+@Component
 public class EntrevistaManagerImpl extends GenericManagerImpl<Entrevista, EntrevistaDao> implements EntrevistaManager
 {
 	private final String EMPRESA_INVALIDA = "A Entrevista solicitada não existe nesta empresa.";
@@ -25,6 +29,11 @@ public class EntrevistaManagerImpl extends GenericManagerImpl<Entrevista, Entrev
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 
+	@Autowired
+	EntrevistaManagerImpl(EntrevistaDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<Entrevista> findToListByEmpresa(Long empresaId, int page, int pagingSize)
 	{
 		return getDao().findToList(empresaId, page, pagingSize);

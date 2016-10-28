@@ -7,6 +7,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
@@ -19,9 +22,12 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.web.tags.Option;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
+@Component
 public class AvaliacaoDesempenhoDWR 
 {
+	@Autowired
 	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	@Autowired
 	private ColaboradorManager colaboradorManager;
 	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;

@@ -2,6 +2,8 @@ package com.fortes.rh.business.pesquisa;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -17,6 +19,7 @@ import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDao> implements PesquisaManager
 {
 	private final String EMPRESA_INVALIDA = "A Pesquisa solicitada não existe nesta empresa.";
@@ -25,6 +28,11 @@ public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDa
 	private PerguntaManager perguntaManager;
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	
+	@Autowired
+	PesquisaManagerImpl(PesquisaDao dao) {
+		setDao(dao);
+	}
 
 	public Collection<Pesquisa> findToListByEmpresa(Long empresaId, int page, int pagingSize, String questionarioTitulo, char questionarioLiberado)
 	{

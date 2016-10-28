@@ -14,10 +14,13 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 
+@Component
 public class Mail
 {
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;

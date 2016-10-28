@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -31,6 +33,7 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientCargo;
 
+@Component
 public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaSalarialHistorico, FaixaSalarialHistoricoDao> implements FaixaSalarialHistoricoManager
 {
 	IndiceHistoricoManager indiceHistoricoManager;
@@ -38,6 +41,11 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 	private AcPessoalClientCargo acPessoalClientCargo;
 	private PlatformTransactionManager transactionManager;
 
+	@Autowired
+	FaixaSalarialHistoricoManagerImpl(FaixaSalarialHistoricoDao dao) {
+		setDao(dao);
+	}
+	
 	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
 	{
 		this.indiceHistoricoManager = indiceHistoricoManager;

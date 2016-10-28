@@ -6,13 +6,14 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.SolicitacaoExameDao;
@@ -28,6 +29,7 @@ import com.fortes.rh.util.StringUtil;
  * @author Tiago Lopes
  *
  */
+@Component
 @SuppressWarnings("unchecked")
 public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<SolicitacaoExame> implements SolicitacaoExameDao
 {
@@ -111,7 +113,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 			query.setString("resultado", resultadoExame.toString());
 		
 		if (exameIds != null && exameIds.length > 0)
-			query.setParameterList("exameIds", exameIds, Hibernate.LONG);
+			query.setParameterList("exameIds", exameIds, StandardBasicTypes.LONG);
 
 		if (StringUtils.isNotBlank(motivo))
 			query.setString("motivo", motivo);
@@ -293,7 +295,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		query.setDate("fim", fim);
 		
 		if (motivos.length > 0)
-			query.setParameterList("motivos", motivos, Hibernate.STRING);
+			query.setParameterList("motivos", motivos, StandardBasicTypes.STRING);
 
 		if (medicoCoordenador!=null && medicoCoordenador.getId()!=null)
 			query.setLong("medicoId", medicoCoordenador.getId());

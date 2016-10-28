@@ -11,6 +11,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RiscoFuncaoDao;
@@ -18,6 +19,7 @@ import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
 
+@Component
 public class RiscoFuncaoDaoHibernate extends GenericDaoHibernate<RiscoFuncao> implements RiscoFuncaoDao
 {
 	public boolean removeByHistoricoFuncao(Long historicoFuncaoId) 

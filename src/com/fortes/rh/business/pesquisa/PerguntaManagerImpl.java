@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -26,11 +28,17 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDao> implements PerguntaManager
 {
 	private RespostaManager respostaManager;
 	private AspectoManager aspectoManager;
 	private PlatformTransactionManager transactionManager;
+	
+	@Autowired
+	PerguntaManagerImpl(PerguntaDao dao) {
+		setDao(dao);
+	}
 
 	public Collection<Pergunta> getPerguntasRespostaByQuestionario(Long questionarioId)
 	{

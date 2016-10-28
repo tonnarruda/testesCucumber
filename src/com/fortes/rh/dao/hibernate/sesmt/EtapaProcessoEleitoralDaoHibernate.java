@@ -11,12 +11,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.business.sesmt.EtapaProcessoEleitoralManagerImpl;
 import com.fortes.rh.dao.sesmt.EtapaProcessoEleitoralDao;
 import com.fortes.rh.model.sesmt.EtapaProcessoEleitoral;
 
+@Component
 @SuppressWarnings("unchecked")
 public class EtapaProcessoEleitoralDaoHibernate extends GenericDaoHibernate<EtapaProcessoEleitoral> implements EtapaProcessoEleitoralDao
 {

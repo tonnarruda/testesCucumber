@@ -4,11 +4,13 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoImpressaoCurriculoDao;
 import com.fortes.rh.model.captacao.ConfiguracaoImpressaoCurriculo;
 
+@Component
 public class ConfiguracaoImpressaoCurriculoDaoHibernate extends GenericDaoHibernate<ConfiguracaoImpressaoCurriculo> implements ConfiguracaoImpressaoCurriculoDao
 {
 

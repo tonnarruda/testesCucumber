@@ -7,12 +7,13 @@ import java.util.Date;
 import java.util.Iterator;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RealizacaoExameDao;
@@ -23,6 +24,7 @@ import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
 
+@Component
 @SuppressWarnings("unchecked")
 public class RealizacaoExameDaoHibernate extends GenericDaoHibernate<RealizacaoExame> implements RealizacaoExameDao
 {
@@ -108,7 +110,7 @@ public class RealizacaoExameDaoHibernate extends GenericDaoHibernate<RealizacaoE
 	{
 		String hql = "delete RealizacaoExame re where re.id in (:ids)";
 		Query query = getSession().createQuery(hql);
-		query.setParameterList("ids", realizacaoExameIds, Hibernate.LONG);
+		query.setParameterList("ids", realizacaoExameIds, StandardBasicTypes.LONG);
 		query.executeUpdate();
 	}
 
@@ -117,7 +119,7 @@ public class RealizacaoExameDaoHibernate extends GenericDaoHibernate<RealizacaoE
 		String hql = "update RealizacaoExame re set re.resultado = :result where re.id in (:ids) ";
 		Query query = getSession().createQuery(hql);
 		query.setString("result", ResultadoExame.NORMAL.toString());
-		query.setParameterList("ids", realizacaoExameIds, Hibernate.LONG);
+		query.setParameterList("ids", realizacaoExameIds, StandardBasicTypes.LONG);
 		query.executeUpdate();
 	}
 	

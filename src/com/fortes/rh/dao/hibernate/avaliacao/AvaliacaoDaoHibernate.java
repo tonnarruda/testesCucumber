@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -14,6 +13,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
@@ -24,6 +25,7 @@ import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implements AvaliacaoDao
 {
@@ -128,7 +130,7 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		q.setInteger("tipoPerguntaMultiplaEscolha", TipoPergunta.MULTIPLA_ESCOLHA);
 		
 		if(LongUtil.arrayIsNotEmpty(perguntaIds))
-			q.setParameterList("perguntaIds", perguntaIds, Hibernate.LONG);
+			q.setParameterList("perguntaIds", perguntaIds, StandardBasicTypes.LONG);
 	
 		Object[] somas = (Object[]) q.uniqueResult();
 		

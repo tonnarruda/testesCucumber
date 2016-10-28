@@ -3,13 +3,17 @@ package com.fortes.rh.web.dwr;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.CollectionUtil;
 
-
+@Component
 public class EstabelecimentoDWR
 {
+	@Autowired
 	private EstabelecimentoManager estabelecimentoManager;
 
 	public String calcularDV(String cnpj, String idEstabelecimento, String idEmpresa)

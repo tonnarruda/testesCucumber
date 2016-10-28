@@ -11,12 +11,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.model.captacao.Atitude;
 
+@Component
 public class AtitudeDaoHibernate extends GenericDaoHibernate<Atitude> implements AtitudeDao
 {
 	public Collection<Atitude> findAllSelect(Long empresaId)

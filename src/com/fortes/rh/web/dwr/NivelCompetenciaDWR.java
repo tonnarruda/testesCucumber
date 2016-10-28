@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
@@ -12,9 +15,10 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.util.DateUtil;
 
-
+@Component
 public class NivelCompetenciaDWR
 {
+	@Autowired
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private NivelCompetenciaManager nivelCompetenciaManager;
 	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;

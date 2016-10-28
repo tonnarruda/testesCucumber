@@ -3,11 +3,16 @@ package com.fortes.rh.web.dwr;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.sesmt.ComissaoPlanoTrabalhoManager;
 import com.fortes.rh.model.sesmt.ComissaoPlanoTrabalho;
 
+@Component
 public class ComissaoPlanoTrabalhoDWR
 {
+	@Autowired
 	private ComissaoPlanoTrabalhoManager comissaoPlanoTrabalhoManager;
 
 	public Map<String,Object> prepareDados(Long id) throws Exception

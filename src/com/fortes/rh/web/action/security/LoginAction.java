@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.security;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.config.SetupListener;
 import com.fortes.rh.config.backup.RunAntScript;
@@ -20,6 +22,7 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings("serial")
 public class LoginAction extends MyActionSupport
 {
+	@Autowired
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private Collection<Empresa> empresas = new ArrayList<Empresa>();
 	private String msgRemprot = "";

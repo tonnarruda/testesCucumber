@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ExameSolicitacaoExameDao;
@@ -13,8 +15,13 @@ import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 
+@Component
 public class ExameSolicitacaoExameManagerImpl extends GenericManagerImpl<ExameSolicitacaoExame, ExameSolicitacaoExameDao> implements ExameSolicitacaoExameManager
 {
+	@Autowired
+	ExameSolicitacaoExameManagerImpl(ExameSolicitacaoExameDao exameSolicitacaoExameDao) {
+		setDao(exameSolicitacaoExameDao);
+	}
 
 	public void removeAllBySolicitacaoExame(Long solicitacaoExameId)
 	{

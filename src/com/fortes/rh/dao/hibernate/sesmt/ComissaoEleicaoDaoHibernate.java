@@ -9,11 +9,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ComissaoEleicaoDao;
 import com.fortes.rh.model.sesmt.ComissaoEleicao;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ComissaoEleicaoDaoHibernate extends GenericDaoHibernate<ComissaoEleicao> implements ComissaoEleicaoDao
 {

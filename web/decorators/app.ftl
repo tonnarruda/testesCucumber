@@ -77,10 +77,10 @@
 			<span class="saudacao">
 				Bem-vindo(a)&nbsp;
 			</span>
-			<span class="nomeUsuario"><@authz.authentication operation="nome"/>&nbsp;</span>
-			<span class="nomeEmpresa">(<@authz.authentication operation="empresaNome"/>)&nbsp;&nbsp;</span>
+			<span class="nomeUsuario"><@authz.authentication property="principal.nome"/>&nbsp;</span>
+			<span class="nomeEmpresa">(<@authz.authentication property="principal.empresaNome"/>)&nbsp;&nbsp;</span>
 			<br clear="all"/>
-			<span class="nomeEmpresa"><@authz.authentication operation="ultimoLoginFormatado"/>&nbsp;&nbsp;-&nbsp;&nbsp; Expira em <span class="expira">00:00</span> &nbsp;&nbsp;</span>
+			<span class="nomeEmpresa"><@authz.authentication property="principal.ultimoLoginFormatado"/>&nbsp;&nbsp;-&nbsp;&nbsp; Expira em <span class="expira">00:00</span> &nbsp;&nbsp;</span>
 		</div>
 			
 		<div id="userDiv1">
@@ -104,7 +104,9 @@
 		</#if>
 	</div>
 	
-	<@authz.authentication operation="menuFormatado"/>
+	<#assign menu><@authz.authentication property="principal.menuFormatado"/></#assign>
+	
+	${menu}
 	
 	<div style="clear: both"></div>
 	<div id="waDiv">

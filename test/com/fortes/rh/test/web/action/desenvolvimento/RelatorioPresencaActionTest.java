@@ -13,7 +13,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;

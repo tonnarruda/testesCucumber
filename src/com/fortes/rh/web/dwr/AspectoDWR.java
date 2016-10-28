@@ -4,13 +4,17 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.util.CollectionUtil;
 
-
+@Component
 public class AspectoDWR
 {
+	@Autowired
 	private AspectoManager aspectoManager;
 	
 	// Só a descrição, Usado apenas para autocomplete

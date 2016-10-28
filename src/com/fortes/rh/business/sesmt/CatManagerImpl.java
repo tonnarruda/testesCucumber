@@ -7,6 +7,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -21,9 +24,15 @@ import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements CatManager
 {
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+
+	@Autowired
+	CatManagerImpl(CatDao fooDao) {
+		setDao(fooDao);
+	}
 	
 	public Collection<Cat> findByColaborador(Colaborador colaborador)
 	{

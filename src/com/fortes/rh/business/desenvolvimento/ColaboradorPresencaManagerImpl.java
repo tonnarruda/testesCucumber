@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
@@ -13,11 +16,17 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 
+@Component
 public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<ColaboradorPresenca, ColaboradorPresencaDao> implements ColaboradorPresencaManager
 {
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	private CertificacaoManager certificacaoManager;
+	
+	@Autowired
+	ColaboradorPresencaManagerImpl(ColaboradorPresencaDao dao) {
+		setDao(dao);
+	}
 
 	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager)
 	{

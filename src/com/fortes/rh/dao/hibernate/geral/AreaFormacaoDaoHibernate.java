@@ -4,18 +4,20 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.AreaFormacaoDao;
 import com.fortes.rh.model.geral.AreaFormacao;
 
+@Component
 @SuppressWarnings("unchecked")
 public class AreaFormacaoDaoHibernate extends GenericDaoHibernate<AreaFormacao> implements AreaFormacaoDao
 {
@@ -44,7 +46,7 @@ public class AreaFormacaoDaoHibernate extends GenericDaoHibernate<AreaFormacao> 
 		criteria.setProjection(p);
 		
 		if (areaFormacao != null && StringUtils.isNotBlank(areaFormacao.getNome()))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + areaFormacao.getNome() + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + areaFormacao.getNome() + "%", StandardBasicTypes.STRING));
 
 		criteria.setFirstResult(((page - 1) * pagingSize));
 		criteria.setMaxResults(pagingSize);
@@ -60,7 +62,7 @@ public class AreaFormacaoDaoHibernate extends GenericDaoHibernate<AreaFormacao> 
 		criteria.setProjection(Projections.rowCount());
 		
 		if (areaFormacao != null && StringUtils.isNotBlank(areaFormacao.getNome()))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + areaFormacao.getNome() + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + areaFormacao.getNome() + "%", StandardBasicTypes.STRING));
 	
 		return (Integer)criteria.uniqueResult();
 	}

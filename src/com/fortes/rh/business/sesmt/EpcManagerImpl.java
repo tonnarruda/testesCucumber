@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.EpcDao;
 import com.fortes.rh.model.sesmt.Epc;
@@ -11,8 +14,14 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class EpcManagerImpl extends GenericManagerImpl<Epc, EpcDao> implements EpcManager
 {
+	@Autowired
+	EpcManagerImpl(EpcDao epcDao) {
+		setDao(epcDao);
+	}
+	
 	public Epc findByIdProjection(Long epcId)
 	{
 		return getDao().findByIdProjection(epcId);

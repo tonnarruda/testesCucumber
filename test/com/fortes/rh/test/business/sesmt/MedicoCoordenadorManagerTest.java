@@ -8,7 +8,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException;
 
 import com.fortes.model.type.File;
 import com.fortes.rh.business.sesmt.MedicoCoordenadorManagerImpl;

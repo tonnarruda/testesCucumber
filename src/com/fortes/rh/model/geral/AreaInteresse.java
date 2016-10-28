@@ -24,9 +24,8 @@ public class AreaInteresse extends AbstractModel implements Serializable
 {
 	@Column(length=100)
 	private String nome;
-	@Lob
 	private String observacao;
-	@ManyToMany(fetch=FetchType.EAGER,targetEntity=AreaOrganizacional.class)
+	@ManyToMany(targetEntity=AreaOrganizacional.class)
 	private Collection<AreaOrganizacional> areasOrganizacionais;
 
 	@ManyToOne

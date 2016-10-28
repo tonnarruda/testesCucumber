@@ -3,13 +3,22 @@ package com.fortes.rh.business.captacao;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class ConfiguracaoNivelCompetenciaFaixaSalarialManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetenciaFaixaSalarial, ConfiguracaoNivelCompetenciaFaixaSalarialDao> implements ConfiguracaoNivelCompetenciaFaixaSalarialManager
 {
+	@Autowired
+	ConfiguracaoNivelCompetenciaFaixaSalarialManagerImpl(ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao) {
+		setDao(configuracaoNivelCompetenciaFaixaSalarialDao);
+	}
+	
 	public void deleteByFaixaSalarial(Long[] faixaIds)
 	{
 		deleteDependenciasByFaixaSalarial(faixaIds);

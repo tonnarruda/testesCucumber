@@ -2,6 +2,8 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -15,9 +17,15 @@ import com.fortes.rh.model.sesmt.Eleicao;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class ComissaoEleicaoManagerImpl extends GenericManagerImpl<ComissaoEleicao, ComissaoEleicaoDao> implements ComissaoEleicaoManager
 {
 	private PlatformTransactionManager transactionManager;
+	
+	@Autowired
+	ComissaoEleicaoManagerImpl(ComissaoEleicaoDao fooDao) {
+		setDao(fooDao);
+	}
 	
 	public Collection<ComissaoEleicao> findByEleicao(Long eleicaoId)
 	{

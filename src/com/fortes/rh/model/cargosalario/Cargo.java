@@ -48,25 +48,16 @@ public class Cargo extends AbstractModel implements Serializable
 	private String nome;
 	@Column(length=100)
 	private String nomeMercado;
-	@Lob
 	private String missao;
-	@Lob
 	private String competencias;
-	@Lob
 	private String responsabilidades;
 	@Column(length=5)
 	private String escolaridade;
-	@Lob
 	private String experiencia;
-	@Lob
 	private String recrutamento;
-	@Lob
 	private String selecao;
-	@Lob
 	private String atitude;
-	@Lob
 	private String complementoConhecimento;
-	@Lob
 	private String observacao;
 	@ManyToOne(fetch=FetchType.LAZY)
 	private GrupoOcupacional grupoOcupacional;

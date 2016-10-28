@@ -3,12 +3,14 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.util.Collection;
 
 import org.hibernate.Query;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.CodigoCBODao;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CodigoCBO;
 
+@Component
 public class CodigoCBODaoHibernate extends GenericDaoHibernate<CodigoCBO> implements CodigoCBODao
 {
 	public Collection<AutoCompleteVO> buscaCodigosCBO(String descricao)

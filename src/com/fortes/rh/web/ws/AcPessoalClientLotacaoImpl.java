@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 
 import org.apache.axis.client.Call;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -11,6 +12,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 
+@Component
 public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 {
 	private AcPessoalClient acPessoalClient;

@@ -7,6 +7,9 @@ import java.util.Date;
 
 import javax.persistence.PersistenceException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ComissaoPeriodoDao;
 import com.fortes.rh.model.sesmt.CandidatoEleicao;
@@ -16,12 +19,18 @@ import com.fortes.rh.model.sesmt.ComissaoPeriodo;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPeriodo, ComissaoPeriodoDao> implements ComissaoPeriodoManager
 {
 	private CandidatoEleicaoManager candidatoEleicaoManager;
 	private ComissaoMembroManager comissaoMembroManager;
 	private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
 
+	@Autowired
+	ComissaoPeriodoManagerImpl(ComissaoPeriodoDao fooDao) {
+		setDao(fooDao);
+	}
+	
 	public void save(Long comissaoId, Long eleicaoId, Date aPartirDe)
 	{
 		ComissaoPeriodo comissaoPeriodo = new ComissaoPeriodo(aPartirDe);

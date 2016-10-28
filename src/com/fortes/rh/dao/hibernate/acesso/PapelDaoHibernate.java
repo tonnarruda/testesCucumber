@@ -9,11 +9,13 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.model.acesso.Papel;
 
+@Component
 @SuppressWarnings("unchecked")
 public class PapelDaoHibernate extends GenericDaoHibernate<Papel> implements PapelDao
 {

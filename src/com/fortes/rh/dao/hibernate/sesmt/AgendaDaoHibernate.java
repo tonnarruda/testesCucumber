@@ -4,13 +4,14 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.AgendaDao;
@@ -18,6 +19,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Agenda;
 import com.fortes.rh.model.sesmt.Evento;
 
+@Component
 @SuppressWarnings("unchecked")
 public class AgendaDaoHibernate extends GenericDaoHibernate<Agenda> implements AgendaDao
 {
@@ -100,7 +102,7 @@ public class AgendaDaoHibernate extends GenericDaoHibernate<Agenda> implements A
 			String hql = "delete Agenda where estabelecimento.id in (:estabelecimentoIds)";
 			Query query = getSession().createQuery(hql);
 
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 			query.executeUpdate();		
 		}
 	}		

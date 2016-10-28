@@ -3,14 +3,23 @@ package com.fortes.rh.business.pesquisa;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.pesquisa.RespostaDao;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class RespostaManagerImpl extends GenericManagerImpl<Resposta, RespostaDao> implements RespostaManager
 {
+	@Autowired
+	RespostaManagerImpl(RespostaDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<Resposta> findByPergunta(Long perguntaId)
 	{
 		return getDao().findByPergunta(perguntaId);

@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
@@ -34,17 +36,23 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ColaboradorDWR
 {
-	private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
     private HistoricoColaboradorManager historicoColaboradorManager;
-	private ColaboradorManager colaboradorManager;
-    private SolicitacaoManager solicitacaoManager;
-    private EmpresaManager empresaManager;
-    private UsuarioManager usuarioManager;
     private AreaOrganizacionalManager areaOrganizacionalManager;
     private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired
+    private ColaboradorManager colaboradorManager;
+	@Autowired
+	private EmpresaManager empresaManager;
+	@Autowired
+	private UsuarioManager usuarioManager;
+	@Autowired
+	private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
+	@Autowired
+	private SolicitacaoManager solicitacaoManager;
 
 	public Map<Long, String> getColaboradores(String[] areaOrganizacionalIds, Long empresaId)
     {

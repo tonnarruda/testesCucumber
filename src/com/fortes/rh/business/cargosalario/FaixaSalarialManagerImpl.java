@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -30,6 +32,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientCargo;
 
+@Component
 @SuppressWarnings("unchecked")
 public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, FaixaSalarialDao> implements FaixaSalarialManager
 {
@@ -40,6 +43,11 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 
+	@Autowired
+	FaixaSalarialManagerImpl(FaixaSalarialDao dao) {
+		setDao(dao);
+	}
+	
 	@Override
 	@Deprecated
 	public Collection<FaixaSalarial> findAll()

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -18,6 +17,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
@@ -26,6 +27,7 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFuncao> implements HistoricoFuncaoDao
 {
@@ -45,7 +47,7 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		Query query = getSession().createQuery(hql);
 		query.setDate("dataIni", dataAdmissao);
 		query.setDate("dataFim", dataPpp);
-		query.setParameterList("funIds", idsFuncoes, Hibernate.LONG);
+		query.setParameterList("funIds", idsFuncoes, StandardBasicTypes.LONG);
 
 		return query.list();
 	}
@@ -79,7 +81,7 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		String hql = "delete HistoricoFuncao where funcao.id in (:funcaoIds)";
 
 		Query query = getSession().createQuery(hql);
-		query.setParameterList("funcaoIds", funcaoIds, Hibernate.LONG);
+		query.setParameterList("funcaoIds", funcaoIds, StandardBasicTypes.LONG);
 
 		query.executeUpdate();
 	}
@@ -134,7 +136,7 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("dataHist", data);
-		query.setParameterList("funcaoIds", funcaoIds, Hibernate.LONG);
+		query.setParameterList("funcaoIds", funcaoIds, StandardBasicTypes.LONG);
 
 		Collection<HistoricoFuncao> historicosDistinct = new ArrayList<HistoricoFuncao>();
 		List<HistoricoFuncao> historicos = query.list();

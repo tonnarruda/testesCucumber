@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
@@ -21,6 +20,8 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.Type;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
@@ -38,6 +39,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> implements SolicitacaoDao
 {
@@ -121,10 +123,10 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		}
 		
 		if(descricaoBusca != null && !descricaoBusca.equals(""))
-			criteria.add(Expression.sqlRestriction("normalizar({alias}.descricao) ilike normalizar(?)", "%"+descricaoBusca+"%", Hibernate.STRING)); 
+			criteria.add(Expression.sqlRestriction("normalizar({alias}.descricao) ilike normalizar(?)", "%"+descricaoBusca+"%", StandardBasicTypes.STRING)); 
 
 		if(codigoBusca != null && !codigoBusca.equals(""))
-			criteria.add(Expression.sqlRestriction("cast({alias}.id as character varying) ilike (?)", "%"+codigoBusca+"%", Hibernate.STRING)); 
+			criteria.add(Expression.sqlRestriction("cast({alias}.id as character varying) ilike (?)", "%"+codigoBusca+"%", StandardBasicTypes.STRING)); 
 		
 		if(statusBusca != 'T')
 			criteria.add(Expression.eq("s.status", statusBusca)); 
@@ -178,7 +180,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		sql.append("	) ");
 		sql.append(") ");
 
-		Criterion criterion = Expression.sqlRestriction(sql.toString(), new Long[] {usuarioLogadoId, empresaId}, new Type[]{Hibernate.LONG, Hibernate.LONG});
+		Criterion criterion = Expression.sqlRestriction(sql.toString(), new Long[] {usuarioLogadoId, empresaId}, new Type[]{StandardBasicTypes.LONG, StandardBasicTypes.LONG});
 		criteria.add(Expression.or(Expression.eq("s.invisivelParaGestor", false), Expression.conjunction().add(Expression.eq("s.invisivelParaGestor", true)).add(criterion)));
 	}
 	
@@ -258,7 +260,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		hql.append("where solicitacao.id = :solicitacaoId");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameterList("contratado", Arrays.asList(StatusCandidatoSolicitacao.CONTRATADO, StatusCandidatoSolicitacao.PROMOVIDO), Hibernate.CHARACTER);
+		query.setParameterList("contratado", Arrays.asList(StatusCandidatoSolicitacao.CONTRATADO, StatusCandidatoSolicitacao.PROMOVIDO), StandardBasicTypes.CHARACTER);
 		query.setLong("solicitacaoId", solcitacaoId);
 
 		return (Solicitacao) query.uniqueResult();

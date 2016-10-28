@@ -10,6 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManager;
 import com.fortes.business.GenericManagerImpl;
@@ -27,8 +29,13 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.xwork.ActionContext;
 
+@Component
 public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, AuditoriaDao> implements AuditoriaManager
 {
+	@Autowired
+	AuditoriaManagerImpl(AuditoriaDao auditoriaDao) {
+		setDao(auditoriaDao);
+	}
 	
 	public Map findEntidade(Long empresaId)
 	{

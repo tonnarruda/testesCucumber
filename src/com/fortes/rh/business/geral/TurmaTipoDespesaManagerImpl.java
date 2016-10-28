@@ -7,6 +7,9 @@ import java.util.Map;
 
 import net.sf.json.JSONException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.TurmaTipoDespesaDao;
 import com.fortes.rh.model.desenvolvimento.Turma;
@@ -14,8 +17,14 @@ import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class TurmaTipoDespesaManagerImpl extends GenericManagerImpl<TurmaTipoDespesa, TurmaTipoDespesaDao> implements TurmaTipoDespesaManager
 {
+	@Autowired
+	TurmaTipoDespesaManagerImpl(TurmaTipoDespesaDao dao) {
+		setDao(dao);
+	}
+	
 	public void save(Map<Long, String> despesas, Long turmaId) 
 	{
 		TurmaTipoDespesa turmaTipoDespesa;

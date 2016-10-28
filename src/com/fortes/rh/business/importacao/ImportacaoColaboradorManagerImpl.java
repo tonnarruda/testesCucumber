@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.dicionario.OpcaoImportacao;
@@ -11,6 +12,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 
+@Component
 public class ImportacaoColaboradorManagerImpl implements ImportacaoColaboradorManager {
 
 	private ColaboradorManager colaboradorManager;

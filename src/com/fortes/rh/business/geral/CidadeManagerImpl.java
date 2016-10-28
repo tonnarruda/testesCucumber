@@ -3,14 +3,23 @@ package com.fortes.rh.business.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Estado;
 
+@Component
 public class CidadeManagerImpl extends GenericManagerImpl<Cidade, CidadeDao> implements CidadeManager
 {
+	@Autowired
+	CidadeManagerImpl(CidadeDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<Cidade> findAllSelect(Long estadoId)
 	{
 		return getDao().findAllSelect(estadoId);

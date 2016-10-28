@@ -7,13 +7,14 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.HistoricoCandidatoDao;
@@ -23,6 +24,7 @@ import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<HistoricoCandidato> implements HistoricoCandidatoDao
 {
@@ -199,7 +201,7 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 			query.setLong("cargoId", cargoId);
 		
 		if(etapaIds != null && etapaIds.length != 0)
-			query.setParameterList("etapaIds", etapaIds, Hibernate.LONG);
+			query.setParameterList("etapaIds", etapaIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}

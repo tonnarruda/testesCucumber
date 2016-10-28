@@ -3,6 +3,9 @@ package com.fortes.rh.web.dwr;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.captacao.Candidato;
@@ -10,10 +13,13 @@ import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Pessoa;
 
+@Component
 public class PessoaDWR
 {
+	@Autowired
     private ColaboradorManager colaboradorManager;
-    private CandidatoManager candidatoManager;
+	@Autowired
+	private CandidatoManager candidatoManager;
 
 	public Collection<Pessoa> verificaCpfDuplicado(String cpf, Long empresaId, Long id) throws Exception
 	{

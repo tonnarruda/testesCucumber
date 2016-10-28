@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -16,6 +15,8 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
@@ -25,6 +26,7 @@ import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 
+@Component
 @SuppressWarnings("unchecked")
 public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<FaixaSalarialHistorico> implements FaixaSalarialHistoricoDao
 {
@@ -339,16 +341,16 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 			query.setParameter("data", data);
 
 		if(grupoOcupacionals != null && !grupoOcupacionals.isEmpty())
-			query.setParameterList("grupoOcupacionals", grupoOcupacionals, Hibernate.LONG);
+			query.setParameterList("grupoOcupacionals", grupoOcupacionals, StandardBasicTypes.LONG);
 		
 		if(cargoIds != null && !cargoIds.isEmpty())
-			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+			query.setParameterList("cargoIds", cargoIds, StandardBasicTypes.LONG);
 
 		if(cargoAtivo != null)
 			query.setBoolean("cargoAtivo", cargoAtivo);
 		
 		if(areaIds != null && !areaIds.isEmpty())
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
@@ -378,7 +380,7 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		String hql = "delete FaixaSalarialHistorico where faixaSalarial.id in (:faixaSalarialIds)";
 
 		Query query = getSession().createQuery(hql);
-		query.setParameterList("faixaSalarialIds", faixaSalarialIds, Hibernate.LONG);
+		query.setParameterList("faixaSalarialIds", faixaSalarialIds, StandardBasicTypes.LONG);
 
 		query.executeUpdate();
 	}
@@ -429,7 +431,7 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 			String hql = "delete FaixaSalarialHistorico where faixaSalarial.id in (:faixaIds)";
 			Query query = getSession().createQuery(hql);
 	
-			query.setParameterList("faixaIds", faixaIds, Hibernate.LONG);
+			query.setParameterList("faixaIds", faixaIds, StandardBasicTypes.LONG);
 			query.executeUpdate();		
 		}
 	}

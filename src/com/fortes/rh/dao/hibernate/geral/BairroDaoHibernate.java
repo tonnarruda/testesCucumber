@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -14,11 +13,14 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.BairroDao;
 import com.fortes.rh.model.geral.Bairro;
 
+@Component
 @SuppressWarnings("unchecked")
 public class BairroDaoHibernate extends GenericDaoHibernate<Bairro> implements BairroDao
 {
@@ -83,7 +85,7 @@ public class BairroDaoHibernate extends GenericDaoHibernate<Bairro> implements B
 		
 		if(bairro.getId() != null)
 			criteria.add(Restrictions.ne("bairro.id", bairro.getId()));
-		criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + bairro.getNome() + "%", Hibernate.STRING));
+		criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + bairro.getNome() + "%", StandardBasicTypes.STRING));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Bairro.class));

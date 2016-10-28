@@ -8,7 +8,8 @@ import java.util.Date;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.core.Constraint;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.jmock.MockObjectTestCase;
+import org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.acesso.UsuarioManager;

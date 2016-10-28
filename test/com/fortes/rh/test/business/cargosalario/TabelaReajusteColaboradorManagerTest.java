@@ -10,8 +10,8 @@ import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;

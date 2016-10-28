@@ -2,7 +2,7 @@ package com.fortes.rh.test.dao;
 
 import javax.sql.DataSource;
 
-import org.springframework.orm.hibernate3.HibernateTransactionManager;
+import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public abstract class BaseDaoHibernateTest extends AbstractTransactionalSpringContextTests

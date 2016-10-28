@@ -3,6 +3,8 @@ package com.fortes.rh.business.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -19,6 +21,7 @@ import com.fortes.rh.model.sesmt.EtapaProcessoEleitoral;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class EleicaoManagerImpl extends GenericManagerImpl<Eleicao, EleicaoDao> implements EleicaoManager
 {
 	private PlatformTransactionManager transactionManager;
@@ -27,6 +30,11 @@ public class EleicaoManagerImpl extends GenericManagerImpl<Eleicao, EleicaoDao> 
 	private EtapaProcessoEleitoralManager etapaProcessoEleitoralManager;
 	private ComissaoManager comissaoManager;
 
+	@Autowired
+	EleicaoManagerImpl(EleicaoDao eleicaoDao) {
+		setDao(eleicaoDao);
+	}
+	
 	public Collection<Eleicao> findAllSelect(Long empresaId)
 	{
 		return getDao().findAllSelect(empresaId);

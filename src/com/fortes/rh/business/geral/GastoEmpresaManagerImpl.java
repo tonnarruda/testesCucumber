@@ -19,6 +19,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.apache.commons.beanutils.BeanComparator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
@@ -45,7 +47,8 @@ import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.MathUtil;
 import com.opensymphony.xwork.ActionContext;
 
-@SuppressWarnings("deprecation")
+@Component
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class GastoEmpresaManagerImpl extends GenericManagerImpl<GastoEmpresa, GastoEmpresaDao> implements GastoEmpresaManager
 {
 	private GastoEmpresaItemManager gastoEmpresaItemManager;
@@ -57,8 +60,11 @@ public class GastoEmpresaManagerImpl extends GenericManagerImpl<GastoEmpresa, Ga
 	private AbstractPlatformTransactionManager transactionManager;
 	private Mail mail;
 
+	@Autowired
+	GastoEmpresaManagerImpl(GastoEmpresaDao dao) {
+		setDao(dao);
+	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<GastoRelatorio> filtroRelatorio(LinkedHashMap parametros) throws Exception
 	{
 		List objetosGastos = new LinkedList();
@@ -95,7 +101,6 @@ public class GastoEmpresaManagerImpl extends GenericManagerImpl<GastoEmpresa, Ga
 		return retorno;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Collection<GastoRelatorio> agruparGastosByArea(List objetosGastos, LinkedHashMap parametros)
 	{
 		Collection<GastoRelatorio> retorno = new LinkedList<GastoRelatorio>();
@@ -150,7 +155,6 @@ public class GastoEmpresaManagerImpl extends GenericManagerImpl<GastoEmpresa, Ga
 		return gastoRelatorioItem;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Collection<GastoRelatorio> agruparBeneficiosByArea(List objetosBeneficios, LinkedHashMap parametros)
 	{
 		Collection<GastoRelatorio> retorno = new LinkedList<GastoRelatorio>();
@@ -203,7 +207,6 @@ public class GastoEmpresaManagerImpl extends GenericManagerImpl<GastoEmpresa, Ga
 		return gastoRelatorioItem;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Collection<GastoRelatorio> agruparTreinamentosByArea(List objetosTreinamentos, LinkedHashMap parametros)
 	{
 		Collection<GastoRelatorio> retorno = new LinkedList<GastoRelatorio>();

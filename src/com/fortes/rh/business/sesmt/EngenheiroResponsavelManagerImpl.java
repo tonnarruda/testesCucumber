@@ -4,13 +4,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.EngenheiroResponsavelDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
 
+@Component
 public class EngenheiroResponsavelManagerImpl extends GenericManagerImpl<EngenheiroResponsavel, EngenheiroResponsavelDao> implements EngenheiroResponsavelManager
 {
+	@Autowired
+	EngenheiroResponsavelManagerImpl(EngenheiroResponsavelDao engenheiroResponsavelDao) {
+		setDao(engenheiroResponsavelDao);
+	}
+	
 	public EngenheiroResponsavel findByIdProjection(Long engenheiroResponsavelId)
 	{
 		return getDao().findByIdProjection(engenheiroResponsavelId);

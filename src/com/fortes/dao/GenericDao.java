@@ -2,8 +2,9 @@ package com.fortes.dao;
 
 import java.util.Collection;
 
+import org.hibernate.Session;
 import org.hibernate.criterion.ProjectionList;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+//import org.springframework.orm.hibernate4.HibernateTemplate;
 
 import com.fortes.model.type.File;
 
@@ -196,7 +197,7 @@ public interface GenericDao<T>
 	/**
 	 * @return HibernateTemplate para dar maior poder aos DAOs, permitindo controlar o flush por exemplo.
 	 */
-	public HibernateTemplate getHibernateTemplateByGenericDao();
+	public Session getHibernateTemplateByGenericDao();
 
 	/**
 	 * Verifica se existe registro com esses dados no banco.

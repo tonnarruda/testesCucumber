@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -18,11 +20,16 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.TipoTurno;
 import com.fortes.rh.util.DateUtil;
 
-@SuppressWarnings("deprecation")
+@Component
 public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDao> implements DiaTurmaManager
 {
 	private PlatformTransactionManager transactionManager;
 
+	@Autowired
+	DiaTurmaManagerImpl(DiaTurmaDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<DiaTurma> montaListaDias(Date dataPrevIni, Date dataPrevFim, Boolean aplicarPorTurno)
 	{
 		Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();

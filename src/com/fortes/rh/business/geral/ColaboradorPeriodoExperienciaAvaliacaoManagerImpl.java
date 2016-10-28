@@ -2,15 +2,24 @@ package com.fortes.rh.business.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.ColaboradorPeriodoExperienciaAvaliacaoDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 
+@Component
 public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericManagerImpl<ColaboradorPeriodoExperienciaAvaliacao, ColaboradorPeriodoExperienciaAvaliacaoDao> implements ColaboradorPeriodoExperienciaAvaliacaoManager 
 {
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	
+	@Autowired
+	ColaboradorPeriodoExperienciaAvaliacaoManagerImpl(ColaboradorPeriodoExperienciaAvaliacaoDao dao) {
+		setDao(dao);
+	}
 	
 	public void atualizaConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor)
 	{

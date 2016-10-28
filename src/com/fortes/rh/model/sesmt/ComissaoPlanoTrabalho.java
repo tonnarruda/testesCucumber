@@ -33,7 +33,6 @@ public class ComissaoPlanoTrabalho extends AbstractModel implements Serializable
 	private String parecer;
 	@Column(length=1)
 	private String prioridade;
-	@Lob
 	private String detalhes;
 
 	@ManyToOne

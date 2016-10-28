@@ -3,7 +3,6 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -11,12 +10,15 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class CidadeDaoHibernate extends GenericDaoHibernate<Cidade> implements CidadeDao
 {
@@ -112,7 +114,7 @@ public class CidadeDaoHibernate extends GenericDaoHibernate<Cidade> implements C
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("c.uf.id", estadoId));
-		criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", nome, Hibernate.STRING));
+		criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", nome, StandardBasicTypes.STRING));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cidade.class));

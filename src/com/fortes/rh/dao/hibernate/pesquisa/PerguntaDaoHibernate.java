@@ -15,12 +15,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.PerguntaDao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 
+@Component
 @SuppressWarnings("unchecked")
 public class PerguntaDaoHibernate extends GenericDaoHibernate<Pergunta> implements PerguntaDao
 {

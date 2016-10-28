@@ -29,7 +29,7 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 
 	
 	private void prepare() throws Exception
-	{
+	{ 
 		if(perfil != null && perfil.getId() != null)
 			perfil = (Perfil) perfilManager.findById(perfil.getId());
 	}

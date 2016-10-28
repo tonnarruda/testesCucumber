@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -29,6 +31,7 @@ import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrencia;
 
+@Component
 public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<ColaboradorOcorrencia, ColaboradorOcorrenciaDao> implements ColaboradorOcorrenciaManager
 {
 	private PlatformTransactionManager transactionManager;
@@ -41,6 +44,11 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 	private UsuarioManager usuarioManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 
+	@Autowired
+	ColaboradorOcorrenciaManagerImpl(ColaboradorOcorrenciaDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<ColaboradorOcorrencia> findByColaborador(Long id)
 	{
 		return getDao().findByColaborador(id);

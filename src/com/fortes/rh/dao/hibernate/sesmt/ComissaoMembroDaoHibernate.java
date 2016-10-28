@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Expression;
@@ -18,6 +17,8 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ComissaoMembroDao;
@@ -26,6 +27,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMembro> implements ComissaoMembroDao
 {
@@ -71,7 +73,7 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 		{
 			String hql = "delete from ComissaoMembro c where c.comissaoPeriodo.id in (:comissaoPeriodoId)";
 			Query query = getSession().createQuery(hql);
-			query.setParameterList("comissaoPeriodoId",comissaoPeriodoIds,Hibernate.LONG);
+			query.setParameterList("comissaoPeriodoId",comissaoPeriodoIds,StandardBasicTypes.LONG);
 			query.executeUpdate();
 		}
 	}

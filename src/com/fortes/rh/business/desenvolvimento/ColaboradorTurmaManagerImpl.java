@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -43,6 +46,7 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.ibm.icu.math.BigDecimal;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorTurma, ColaboradorTurmaDao> implements ColaboradorTurmaManager
 {
@@ -54,6 +58,11 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	private ColaboradorManager colaboradorManager;
 	private EmpresaManager empresaManager;
 	private CursoManager cursoManager;
+	
+	@Autowired
+	ColaboradorTurmaManagerImpl(ColaboradorTurmaDao dao) {
+		setDao(dao);
+	}
 
 	public Collection<ColaboradorTurma> filtrarColaboradores(int page, int pagingSize, String[] areasCheck, String[] cargosCheck, String[] estabelecimentosCheck, String[] gruposCheck, String[] colaboradoresCursosCheck, Turma turma, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId) throws ColecaoVaziaException
 	{

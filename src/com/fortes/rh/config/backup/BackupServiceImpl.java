@@ -4,10 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.util.ArquivoUtil;
 
+@Component
 public class BackupServiceImpl implements BackupService {
 
 	private static final String BACKUP_FILE = "backup.file";

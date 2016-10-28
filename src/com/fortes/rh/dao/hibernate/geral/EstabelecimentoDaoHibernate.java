@@ -9,11 +9,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.model.geral.Estabelecimento;
 
+@Component
 @SuppressWarnings("unchecked")
 public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecimento> implements EstabelecimentoDao
 {

@@ -52,7 +52,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String acVersaoWebServiceCompativel;
     @Column(length=200)
     private String caminhoBackup;
-    @Lob
     private String horariosBackup;
     @Temporal(TemporalType.DATE)
     private Date proximaVersao;

@@ -74,16 +74,13 @@ public class Cat extends AbstractModel implements Serializable
     private boolean gerouAfastamento;
     private Integer qtdDiasAfastado;
     
-    @Lob
     private String observacao;//descricao do acidente
     
-    @Lob
     private String conclusao;
     
     private String fotoUrl;
     private Integer qtdDiasDebitados;
     private boolean limitacaoFuncional;
-    @Lob
     private String obsLimitacaoFuncional;
     
     @OneToOne (fetch=FetchType.LAZY, cascade= {CascadeType.ALL, CascadeType.REMOVE})

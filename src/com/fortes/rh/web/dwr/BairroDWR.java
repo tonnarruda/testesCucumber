@@ -4,14 +4,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.util.CollectionUtil;
 
-
+@Component
+@SuppressWarnings({"rawtypes"})
 public class BairroDWR
 {
+	@Autowired
 	private BairroManager bairroManager;
 
 	public String[] getBairros(String cidadeId)

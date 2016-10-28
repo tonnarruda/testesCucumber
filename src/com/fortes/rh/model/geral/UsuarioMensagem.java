@@ -16,13 +16,13 @@ import com.fortes.rh.model.acesso.Usuario;
 @SequenceGenerator(name = "sequence", sequenceName = "usuarioMensagem_sequence", allocationSize = 1)
 public class UsuarioMensagem extends AbstractModel implements Serializable
 {
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Usuario usuario;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Mensagem mensagem;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Empresa empresa;
 
 	private boolean lida;

@@ -22,7 +22,7 @@ public class HistoricoColaboradorBeneficio extends AbstractModel implements Seri
 	@ManyToOne
 	private Colaborador colaborador;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	private Collection<Beneficio> beneficios;
 
 	@Temporal(TemporalType.DATE)

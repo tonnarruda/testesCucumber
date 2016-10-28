@@ -2,14 +2,23 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.RiscoFasePcmatDao;
 import com.fortes.rh.model.sesmt.MedidaRiscoFasePcmat;
 import com.fortes.rh.model.sesmt.RiscoFasePcmat;
 
+@Component
 public class RiscoFasePcmatManagerImpl extends GenericManagerImpl<RiscoFasePcmat, RiscoFasePcmatDao> implements RiscoFasePcmatManager
 {
 	private MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager;
+	
+	@Autowired
+	RiscoFasePcmatManagerImpl(RiscoFasePcmatDao riscoFasePcmatDao) {
+		setDao(riscoFasePcmatDao);
+	}
 	
 	public Collection<RiscoFasePcmat> findByFasePcmat(Long fasePcmatId) 
 	{

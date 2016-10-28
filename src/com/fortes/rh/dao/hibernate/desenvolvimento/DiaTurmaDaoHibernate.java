@@ -10,11 +10,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 
+@Component
 public class DiaTurmaDaoHibernate extends GenericDaoHibernate<DiaTurma> implements DiaTurmaDao
 {
 	public void deleteDiasTurma(Long turmaId)

@@ -2,6 +2,9 @@ package com.fortes.rh.business.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.ConfiguracaoLimiteColaboradorDao;
@@ -9,9 +12,15 @@ import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 
+@Component
 public class ConfiguracaoLimiteColaboradorManagerImpl extends GenericManagerImpl<ConfiguracaoLimiteColaborador, ConfiguracaoLimiteColaboradorDao> implements ConfiguracaoLimiteColaboradorManager
 {
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	
+	@Autowired
+	ConfiguracaoLimiteColaboradorManagerImpl(ConfiguracaoLimiteColaboradorDao dao) {
+		setDao(dao);
+	}
 	
 	@TesteAutomatico
 	public Collection<ConfiguracaoLimiteColaborador> findAllSelect(Long empresaId) 

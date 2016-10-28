@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ComissaoReuniaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -23,12 +26,18 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuniao, ComissaoReuniaoDao> implements ComissaoReuniaoManager
 {
 	private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
 	private ComissaoMembroManager comissaoMembroManager;
 	private ComissaoPeriodoManager comissaoPeriodoManager;
 
+	@Autowired
+	ComissaoReuniaoManagerImpl(ComissaoReuniaoDao fooDao) {
+		setDao(fooDao);
+	}
+	
 	public ComissaoReuniao findByIdProjection(Long id)
 	{
 		return getDao().findByIdProjection(id);

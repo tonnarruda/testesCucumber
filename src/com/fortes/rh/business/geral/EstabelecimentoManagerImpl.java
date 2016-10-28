@@ -3,6 +3,9 @@ package com.fortes.rh.business.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.sesmt.AgendaManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
@@ -13,9 +16,15 @@ import com.fortes.rh.util.CnpjUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimento, EstabelecimentoDao> implements EstabelecimentoManager
 {
 	private AgendaManager agendaManager;
+	
+	@Autowired
+	EstabelecimentoManagerImpl(EstabelecimentoDao dao) {
+		setDao(dao);
+	}
 
 	public boolean remove(String codigo, Long idEmpresa)
 	{

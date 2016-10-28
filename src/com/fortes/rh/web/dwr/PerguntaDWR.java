@@ -4,15 +4,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
-
+@Component
 @SuppressWarnings("unchecked")
 public class PerguntaDWR
 {
+	@Autowired
 	private PerguntaManager perguntaManager;
 
 	public Map<Object, Object> getPerguntas(Long questionarioId)

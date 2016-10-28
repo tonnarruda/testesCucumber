@@ -8,15 +8,24 @@ package com.fortes.rh.business.geral;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.geral.AreaInteresseDao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 
+@Component
 public class AreaInteresseManagerImpl extends GenericManagerImpl<AreaInteresse, AreaInteresseDao> implements AreaInteresseManager
 {
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	
+	@Autowired
+	AreaInteresseManagerImpl(AreaInteresseDao dao) {
+		setDao(dao);
+	}
 	
 	public Collection<AreaInteresse> findAreasInteresseByAreaOrganizacional(AreaOrganizacional areaOrganizacional)
 	{

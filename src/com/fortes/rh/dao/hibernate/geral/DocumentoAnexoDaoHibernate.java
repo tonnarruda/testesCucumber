@@ -8,6 +8,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.DocumentoAnexoDao;
@@ -15,6 +16,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 
+@Component
 public class DocumentoAnexoDaoHibernate extends GenericDaoHibernate<DocumentoAnexo> implements DocumentoAnexoDao
 {
 

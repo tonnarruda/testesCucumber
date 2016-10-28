@@ -8,7 +8,9 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.filter.ElementFilter;
 import org.jdom.input.SAXBuilder;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DocumentoVersaoManagerImpl implements DocumentoVersaoManager
 {
 	@SuppressWarnings("unchecked")

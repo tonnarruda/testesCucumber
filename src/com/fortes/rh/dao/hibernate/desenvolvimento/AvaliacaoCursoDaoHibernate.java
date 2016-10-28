@@ -4,13 +4,14 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
@@ -21,6 +22,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
+@Component
 public class AvaliacaoCursoDaoHibernate extends GenericDaoHibernate<AvaliacaoCurso> implements AvaliacaoCursoDao
 {
 	@SuppressWarnings("unchecked")
@@ -90,7 +92,7 @@ public class AvaliacaoCursoDaoHibernate extends GenericDaoHibernate<AvaliacaoCur
 		Criteria criteria = getSession().createCriteria(AvaliacaoCurso.class, "a");
 		
 		if (!StringUtils.isEmpty(titulo))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.titulo) ilike  normalizar(?)", "%" + titulo + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.titulo) ilike  normalizar(?)", "%" + titulo + "%", StandardBasicTypes.STRING));
 		
 		criteria.addOrder(Order.asc("a.titulo"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

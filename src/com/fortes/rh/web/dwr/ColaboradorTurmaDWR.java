@@ -2,11 +2,16 @@ package com.fortes.rh.web.dwr;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 
+@Component
 public class ColaboradorTurmaDWR
 {
+	@Autowired
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 
 	public String checaColaboradorInscritoEmOutraTurma(Long turmaId, Long cursoId, Long[] colaboradorIds) throws Exception

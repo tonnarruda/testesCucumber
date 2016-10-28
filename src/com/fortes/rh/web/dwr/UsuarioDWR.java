@@ -3,6 +3,9 @@ package com.fortes.rh.web.dwr;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.TipoMensagem;
@@ -12,8 +15,10 @@ import com.fortes.rh.util.ArrayUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class UsuarioDWR
 {
+	@Autowired
 	private UsuarioManager usuarioManager;
 	
 	public void gravarLayoutCaixasMensagens(Long usuarioId, Character[] caixasEsquerda, Character[] caixasDireita, Character[] caixasMinimizadas) throws Exception 

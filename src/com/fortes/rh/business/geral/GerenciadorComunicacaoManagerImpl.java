@@ -17,6 +17,8 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.acesso.PerfilManager;
@@ -88,6 +90,7 @@ import com.fortes.rh.util.ModelUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 @SuppressWarnings("deprecation")
 public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<GerenciadorComunicacao, GerenciadorComunicacaoDao> implements GerenciadorComunicacaoManager
 {
@@ -114,6 +117,10 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	LntManager lntManager;
 	Mail mail;
 	
+	@Autowired
+	GerenciadorComunicacaoManagerImpl(GerenciadorComunicacaoDao dao) {
+		setDao(dao);
+	}
 	
 	public void insereGerenciadorComunicacaoDefault(Empresa empresa) 
 	{

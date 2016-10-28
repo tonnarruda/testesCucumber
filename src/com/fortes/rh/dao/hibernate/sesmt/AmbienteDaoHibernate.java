@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -17,6 +16,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
@@ -24,6 +25,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 
+@Component
 @SuppressWarnings("unchecked")
 public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implements AmbienteDao
 {
@@ -71,7 +73,7 @@ public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implemen
 			criteria.add(Expression.eq("a.empresa.id", empresaId));
 		
 		if (ambiente != null && isNotBlank(ambiente.getNome()))
-			criteria.add(Expression.sqlRestriction("normalizar({alias}.nome) ilike normalizar(?)", "%" + ambiente.getNome() + "%", Hibernate.STRING));
+			criteria.add(Expression.sqlRestriction("normalizar({alias}.nome) ilike normalizar(?)", "%" + ambiente.getNome() + "%", StandardBasicTypes.STRING));
 	}
 
 	public Collection<Ambiente> findByEstabelecimento(Long... estabelecimentoIds)
@@ -129,7 +131,7 @@ public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implemen
 		Query query = getSession().createQuery(hql.toString());
 		
 		if(ambienteIds != null && !ambienteIds.isEmpty())
-			query.setParameterList("ambienteIds", ambienteIds, Hibernate.LONG);
+			query.setParameterList("ambienteIds", ambienteIds, StandardBasicTypes.LONG);
 
 		query.setLong("estabelecimentoId", estabelecimentoId);
 		query.setDate("data", data);
@@ -170,7 +172,7 @@ public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implemen
 			String hql = "delete Ambiente where estabelecimento.id in (:estabelecimentoIds)";
 			Query query = getSession().createQuery(hql);
 
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 			query.executeUpdate();		
 		}
 	}

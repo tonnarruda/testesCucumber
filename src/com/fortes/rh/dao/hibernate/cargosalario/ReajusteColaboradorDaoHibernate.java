@@ -4,12 +4,13 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.ReajusteColaboradorDao;
@@ -18,6 +19,7 @@ import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ReajusteColaboradorDaoHibernate extends GenericDaoHibernate<ReajusteColaborador> implements ReajusteColaboradorDao
 {
@@ -91,16 +93,16 @@ public class ReajusteColaboradorDaoHibernate extends GenericDaoHibernate<Reajust
 		query.setLong("status", StatusRetornoAC.CANCELADO);
 
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 		if(filtraPor == 1)
 		{
 			if(areaIds != null && !areaIds.isEmpty())
-				query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+				query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 		}
 		else if(filtraPor == 2)
 		{
 			if(grupoIds != null && !grupoIds.isEmpty())
-				query.setParameterList("grupoIds", grupoIds, Hibernate.LONG);
+				query.setParameterList("grupoIds", grupoIds, StandardBasicTypes.LONG);
 		}
 
 		return query.list();
@@ -191,7 +193,7 @@ public class ReajusteColaboradorDaoHibernate extends GenericDaoHibernate<Reajust
 
 		Query query = getSession().createQuery(queryHQL);
 		if(colaboradorIds != null && colaboradorIds.length > 0)
-			query.setParameterList("colaboradorIds", colaboradorIds, Hibernate.LONG);
+			query.setParameterList("colaboradorIds", colaboradorIds, StandardBasicTypes.LONG);
 
 		query.setLong("tabelaReajusteColaboradorId", tabelaReajusteColaboradorId);
 
@@ -266,18 +268,18 @@ public class ReajusteColaboradorDaoHibernate extends GenericDaoHibernate<Reajust
 		switch (historicoColaborador.getTipoSalario())
 		{
 			case TipoAplicacaoIndice.CARGO:
-				query.setParameter("salarioProposto", null, Hibernate.DOUBLE);
-				query.setParameter("indicePropostoId", null, Hibernate.LONG);
+				query.setParameter("salarioProposto", null, StandardBasicTypes.DOUBLE);
+				query.setParameter("indicePropostoId", null, StandardBasicTypes.LONG);
 				query.setDouble("quantidadeIndiceProposto", 0.0);
 				break;
 			case TipoAplicacaoIndice.INDICE:
-				query.setParameter("salarioProposto", null, Hibernate.DOUBLE);
+				query.setParameter("salarioProposto", null, StandardBasicTypes.DOUBLE);
 				query.setLong("indicePropostoId", historicoColaborador.getIndice().getId());
 				query.setDouble("quantidadeIndiceProposto", historicoColaborador.getQuantidadeIndice());
 				break;
 			case TipoAplicacaoIndice.VALOR:
 				query.setDouble("salarioProposto", historicoColaborador.getSalario());
-				query.setParameter("indicePropostoId", null, Hibernate.LONG);
+				query.setParameter("indicePropostoId", null, StandardBasicTypes.LONG);
 				query.setDouble("quantidadeIndiceProposto", 0.0);
 				break;
 		}
@@ -285,12 +287,12 @@ public class ReajusteColaboradorDaoHibernate extends GenericDaoHibernate<Reajust
 		if (historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getId() != null)
 			query.setLong("funcaoPropostaId", historicoColaborador.getFuncao().getId());
 		else
-			query.setParameter("funcaoPropostaId", null, Hibernate.LONG);
+			query.setParameter("funcaoPropostaId", null, StandardBasicTypes.LONG);
 
 		if (historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)
 			query.setLong("ambientePropostoId", historicoColaborador.getAmbiente().getId());
 		else
-			query.setParameter("ambientePropostoId", null, Hibernate.LONG);
+			query.setParameter("ambientePropostoId", null, StandardBasicTypes.LONG);
 
 		query.executeUpdate();
 	}

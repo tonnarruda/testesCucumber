@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -39,6 +42,7 @@ import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 import com.ibm.icu.util.Calendar;
 
+@Component
 @SuppressWarnings("unchecked")
 public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> implements FuncaoManager
 {
@@ -51,6 +55,11 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 	private MedicoCoordenadorManager medicoCoordenadorManager;
 	
 	HistoricoFuncaoManager historicoFuncaoManager = null;
+	
+	@Autowired
+	FuncaoManagerImpl(FuncaoDao funcaoDao) {
+			setDao(funcaoDao);
+	}
 	
 	// TODO refatorar esse código, não devia estar nesse manager
 	public Collection<PppRelatorio> populaRelatorioPpp(Colaborador colaborador, Empresa empresa, Date data, String nit, String cnae, String responsavel, String observacoes, String[] respostas) throws Exception
@@ -113,8 +122,6 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 			
 			if (i+1 < hist.size())
 				dataFim = hist.get(i+1).getData();
-			
-			
 			
 			List<DadosAmbienteRisco> dadosAmbientesRiscos = historicoAmbienteManager.findDadosNoPeriodo(hist.get(i).getAmbiente().getId(), dataHistColaboradorIni, dataFim);
 			

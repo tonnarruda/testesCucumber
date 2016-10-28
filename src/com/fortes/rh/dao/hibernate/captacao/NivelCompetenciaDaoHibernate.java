@@ -19,6 +19,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
@@ -29,6 +30,7 @@ import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 
 @SuppressWarnings("unchecked")
+@Component
 public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompetencia> implements NivelCompetenciaDao
 {
 	public Collection<NivelCompetencia> findAllSelect(Long empresaId, Long nivelCompetenciaHistoricoId, Date data) 

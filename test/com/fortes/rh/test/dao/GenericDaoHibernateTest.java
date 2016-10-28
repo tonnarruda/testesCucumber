@@ -3,7 +3,7 @@ package com.fortes.rh.test.dao;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.log4j.Logger;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException;
 
 import com.fortes.dao.GenericDao;
 

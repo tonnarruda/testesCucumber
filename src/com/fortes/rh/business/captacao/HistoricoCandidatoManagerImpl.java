@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -26,12 +28,18 @@ import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 @SuppressWarnings({"deprecation","unchecked"})
 public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoCandidato, HistoricoCandidatoDao> implements HistoricoCandidatoManager
 {
 	private EtapaSeletivaManager etapaSeletivaManager;
 	private PlatformTransactionManager transactionManager;
 	private CandidatoManager candidatoManager;
+	
+	@Autowired
+	HistoricoCandidatoManagerImpl(HistoricoCandidatoDao fooDao) {
+        setDao(fooDao);
+    }
 
 	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager)
 	{

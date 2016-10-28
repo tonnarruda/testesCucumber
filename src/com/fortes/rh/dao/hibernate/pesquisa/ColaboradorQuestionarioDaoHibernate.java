@@ -17,7 +17,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
@@ -31,6 +33,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<ColaboradorQuestionario> implements ColaboradorQuestionarioDao
 {
@@ -774,7 +777,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		Query query = getSession().createQuery(hql);
 		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
-		query.setParameterList("participanteId", participanteIds, Hibernate.LONG);
+		query.setParameterList("participanteId", participanteIds, StandardBasicTypes.LONG);
 		
 		query.executeUpdate();
 	}
@@ -1100,13 +1103,13 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		Query query = getSession().createQuery(hql.toString());
 		
 		if (cursosIds != null && cursosIds.length > 0)
-			query.setParameterList("cursosIds", cursosIds, Hibernate.LONG);
+			query.setParameterList("cursosIds", cursosIds, StandardBasicTypes.LONG);
 		
 		if (turmasIds != null && turmasIds.length > 0)
-			query.setParameterList("turmasIds", turmasIds, Hibernate.LONG);
+			query.setParameterList("turmasIds", turmasIds, StandardBasicTypes.LONG);
 		
 		if (avaliacaoCursosIds != null && avaliacaoCursosIds.length > 0)
-			query.setParameterList("avaliacaoCursosIds", avaliacaoCursosIds, Hibernate.LONG);
+			query.setParameterList("avaliacaoCursosIds", avaliacaoCursosIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}
@@ -1170,10 +1173,10 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.groupProperty("cq.avaliacao.id"), "projectionAvaliacaoId");
 		p.add(Projections.sqlProjection("sum(case when avaliacaodesempenho_id is null then 1 else 0 end) as qtdPeriodoExperiencia",
 				new String []  {"qtdPeriodoExperiencia"}, 
-        		new Type[] {Hibernate.INTEGER}), "qtdPeriodoExperiencia");
+        		new Type[] {StandardBasicTypes.INTEGER}), "qtdPeriodoExperiencia");
 		p.add(Projections.sqlProjection("sum(case when avaliacaodesempenho_id is not null then 1 else 0 end) as qtdAvaliacaoDesempenho",
 				new String []  {"qtdAvaliacaoDesempenho"}, 
-				new Type[] {Hibernate.INTEGER}), "qtdAvaliacaoDesempenho");
+				new Type[] {StandardBasicTypes.INTEGER}), "qtdAvaliacaoDesempenho");
 		
 		criteria.setProjection(p);
 		

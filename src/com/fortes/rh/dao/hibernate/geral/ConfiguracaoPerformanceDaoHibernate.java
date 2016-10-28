@@ -9,11 +9,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ConfiguracaoPerformanceDao;
 import com.fortes.rh.model.geral.ConfiguracaoPerformance;
 
+@Component
 public class ConfiguracaoPerformanceDaoHibernate extends GenericDaoHibernate<ConfiguracaoPerformance> implements ConfiguracaoPerformanceDao
 {
 

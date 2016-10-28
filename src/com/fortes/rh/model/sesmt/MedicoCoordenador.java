@@ -44,7 +44,7 @@ public class MedicoCoordenador extends AbstractModel implements Serializable
 
 	private File assinaturaDigital;
 
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	private Empresa empresa;
 	
 	//Utilizado no relatório de PPP

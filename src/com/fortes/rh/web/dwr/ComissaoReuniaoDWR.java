@@ -9,6 +9,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.ComissaoReuniaoManager;
 import com.fortes.rh.business.sesmt.ComissaoReuniaoPresencaManager;
@@ -17,10 +20,14 @@ import com.fortes.rh.model.sesmt.ComissaoReuniao;
 import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class ComissaoReuniaoDWR
 {
+	@Autowired
 	private ComissaoReuniaoManager comissaoReuniaoManager;
+	@Autowired
 	private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
+	@Autowired
 	private ComissaoManager comissaoManager;
 
 	public Map<String,Object> prepareDadosReuniao(Long id) throws Exception

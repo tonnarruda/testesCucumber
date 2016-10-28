@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -13,7 +12,9 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ComissaoReuniaoPresencaDao;
@@ -24,6 +25,7 @@ import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
  * @author Tiago Lopes
  *
  */
+@Component
 @SuppressWarnings("unchecked")
 public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<ComissaoReuniaoPresenca> implements ComissaoReuniaoPresencaDao
 {
@@ -134,7 +136,7 @@ public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<Com
 		p.add(Projections.property("cr.data"), "projectionComissaoReuniaoData");
 		p.add(Projections.property("crp.presente"), "presente");
 		p.add(Projections.property("crp.justificativaFalta"), "justificativaFalta");
-		p.add(Projections.sqlProjection("case when co3_.dataDesligamento is not null and co3_.dataDesligamento < cr4_.data then true else false end as desligado", new String[] {"desligado"}, new Type[] {Hibernate.BOOLEAN}), "desligado");
+		p.add(Projections.sqlProjection("case when co3_.dataDesligamento is not null and co3_.dataDesligamento < cr4_.data then true else false end as desligado", new String[] {"desligado"}, new Type[] {StandardBasicTypes.BOOLEAN}), "desligado");
 		
 		Criteria criteria = getSession().createCriteria(Comissao.class,"c");
 		criteria.createCriteria("c.comissaoPeriodos", "cp", Criteria.INNER_JOIN);

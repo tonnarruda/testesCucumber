@@ -21,16 +21,16 @@ import com.fortes.model.AbstractModel;
 @SequenceGenerator(name="sequence", sequenceName="solicitacaoepi_item_sequence", allocationSize=1)
 public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 {
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Epi epi;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private SolicitacaoEpi solicitacaoEpi;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private MotivoSolicitacaoEpi motivoSolicitacaoEpi;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private TamanhoEPI tamanhoEPI;
 	
 	private Integer qtdSolicitado=0;

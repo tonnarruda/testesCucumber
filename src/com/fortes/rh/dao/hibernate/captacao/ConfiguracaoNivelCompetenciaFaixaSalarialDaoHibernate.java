@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -13,11 +12,14 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 
+@Component
 public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetenciaFaixaSalarial> implements ConfiguracaoNivelCompetenciaFaixaSalarialDao
 {
 	public void deleteByFaixaSalarial(Long[] faixaIds)
@@ -26,7 +28,7 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate extends Gener
 			String hql = "delete ConfiguracaoNivelCompetenciaFaixaSalarial where faixaSalarial.id in (:faixaIds)";
 			Query query = getSession().createQuery(hql);
 
-			query.setParameterList("faixaIds", faixaIds, Hibernate.LONG);
+			query.setParameterList("faixaIds", faixaIds, StandardBasicTypes.LONG);
 			query.executeUpdate();
 		}
 	}

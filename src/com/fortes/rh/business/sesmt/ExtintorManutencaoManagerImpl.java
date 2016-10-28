@@ -3,6 +3,9 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ExtintorManutencaoDao;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
@@ -10,8 +13,14 @@ import com.fortes.rh.model.sesmt.ExtintorManutencaoServico;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class ExtintorManutencaoManagerImpl extends GenericManagerImpl<ExtintorManutencao, ExtintorManutencaoDao> implements ExtintorManutencaoManager
 {
+	@Autowired
+	ExtintorManutencaoManagerImpl(ExtintorManutencaoDao extintorManutencaoDao) {
+			setDao(extintorManutencaoDao);
+	}
+	
 	public Collection<ExtintorManutencao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean somenteSemRetorno, String localizacao)
 	{
 		Collection<ExtintorManutencao> consultaExtintorManutencao = getDao().findAllSelect(page, pagingSize, empresaId, estabelecimentoId,  extintorId, inicio, fim, somenteSemRetorno, localizacao);

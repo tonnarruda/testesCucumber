@@ -5,12 +5,17 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 public class CidadeDWR
 {
+	@Autowired
 	private CidadeManager cidadeManager;
 
 	public Map getCidades(String ufId)

@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.MotivoDemissaoDao;
 import com.fortes.rh.model.geral.Empresa;
@@ -11,9 +14,15 @@ import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 
+@Component
 public class MotivoDemissaoManagerImpl extends GenericManagerImpl<MotivoDemissao, MotivoDemissaoDao> implements MotivoDemissaoManager
 {
 	private EstabelecimentoManager estabelecimentoManager;
+	
+	@Autowired
+	MotivoDemissaoManagerImpl(MotivoDemissaoDao dao) {
+		setDao(dao);
+	}
 	
 	public Map<String, Object> getParametrosRelatorio(Empresa empresa, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasOrganizacionaisIds, Map<String, Object> parametros)
 	{

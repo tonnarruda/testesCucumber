@@ -3,18 +3,20 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ConfiguracaoLimiteColaboradorDao;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 
+@Component
 public class ConfiguracaoLimiteColaboradorDaoHibernate extends GenericDaoHibernate<ConfiguracaoLimiteColaborador> implements ConfiguracaoLimiteColaboradorDao
 {
 
@@ -61,7 +63,7 @@ public class ConfiguracaoLimiteColaboradorDaoHibernate extends GenericDaoHiberna
 			String hql = "delete ConfiguracaoLimiteColaborador where areaOrganizacional.id in (:areaIds)";
 			Query query = getSession().createQuery(hql);
 
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 			query.executeUpdate();		
 		}
 	}

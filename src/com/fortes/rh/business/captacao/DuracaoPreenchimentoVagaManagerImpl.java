@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -14,6 +16,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class DuracaoPreenchimentoVagaManagerImpl implements DuracaoPreenchimentoVagaManager
 {

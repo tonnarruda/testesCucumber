@@ -3,6 +3,9 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.pesquisa.FichaMedicaManager;
@@ -20,6 +23,7 @@ import com.fortes.rh.model.sesmt.RealizacaoExame;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 public class ProntuarioManagerImpl extends GenericManagerImpl<Prontuario, ProntuarioDao> implements ProntuarioManager
 {
 	private ColaboradorManager colaboradorManager;
@@ -28,6 +32,11 @@ public class ProntuarioManagerImpl extends GenericManagerImpl<Prontuario, Prontu
 	private SolicitacaoExameManager solicitacaoExameManager;
 	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
 
+	@Autowired
+	ProntuarioManagerImpl(ProntuarioDao prontuarioDao) {
+		setDao(prontuarioDao);
+	}
+	
 	public Collection<Prontuario> findByColaborador(Colaborador colaborador)
 	{
 		return getDao().findByColaborador(colaborador);

@@ -26,13 +26,13 @@ public class MedicaoRisco extends AbstractModel implements Serializable
 	@Temporal(TemporalType.DATE)
     private Date data;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	private Ambiente ambiente;
 
 	@ManyToOne
 	private Funcao funcao;
     
-	@OneToMany(mappedBy="medicaoRisco", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="medicaoRisco", cascade=CascadeType.ALL)
 	private Collection<RiscoMedicaoRisco> riscoMedicaoRiscos;
 
 	public MedicaoRisco() {}

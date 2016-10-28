@@ -1,7 +1,11 @@
 package com.fortes.rh.business.sesmt;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.geral.EmpresaManager;
 
+@Component
+@SuppressWarnings("deprecation")
 public class LembreteExamesPrevistos
 {
 	private ExameManager exameManager;

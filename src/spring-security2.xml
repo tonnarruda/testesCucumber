@@ -1,0 +1,624 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    
+	<!--<beans:bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+	    <beans:property name="userDetailsService" ref="userDetailsService"/>
+	    <beans:property name="saltSource">
+	        <beans:bean class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+	            <beans:property name="userPropertyToUse" value="username"/>
+	        </beans:bean>
+	    </beans:property>
+	    <beans:property name="passwordEncoder" ref="passwordEncoder"/>
+	</beans:bean>-->
+    
+    <authentication-manager>
+    	<authentication-provider ref="authenticationProvider"/>
+  	</authentication-manager>	
+  	<authentication-manager/>
+    
+    <beans:bean id="userdetail" class="com.fortes.rh.security.UserDetailsServiceImpl" />
+    
+    <beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<beans:property name="basename">
+			<beans:value>acegiMessages</beans:value>
+		</beans:property>
+	</beans:bean>
+	
+    <beans:bean id="authenticationProvider" class="com.fortes.rh.security.MyDaoAuthenticationProvider">
+		<beans:property name="userDetailsService">
+			<beans:ref local="userdetail" />
+		</beans:property>
+	</beans:bean>
+    
+    <beans:bean id="authenticationManager" class="com.fortes.rh.security.MyProviderManager">
+		<beans:property name="providers">
+			<beans:list>
+				<beans:ref bean="authenticationProvider" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+    <beans:bean id="anonymousAuthenticationProvider" class="org.springframework.security.authentication.AnonymousAuthenticationProvider">
+		<beans:property name="key">
+			<beans:value>foobar</beans:value>
+		</beans:property>
+	</beans:bean>
+	
+    <beans:bean id="authenticationFilterEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<beans:property name="loginFormUrl">
+			<beans:value>/login.action</beans:value>
+		</beans:property>
+		<beans:property name="forceHttps">
+			<beans:value>false</beans:value>
+		</beans:property>
+	</beans:bean>
+	
+    <http auto-config="false" entry-point-ref="authenticationFilterEntryPoint">
+        <intercept-url pattern="/dwr/**" access="ROLE_ANONYMOUS" />
+				<intercept-url pattern="/imgs/**" access="ROLE_ANONYMOUS,ROLE_USER" />
+
+				<intercept-url pattern="/webservice/**" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/updateConf.action*" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/gerarBD.action*" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/grafico.jsp*" access="ROLE_USER" />
+				<intercept-url pattern="/robots.txt" access="ROLE_ANONYMOUS,ROLE_USER" />
+
+				<intercept-url pattern="/css/**" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/js/**" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/webwork/**" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/backup/**" access="ROLE_USER" />
+				<intercept-url pattern="/login.action*" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/logout.action*" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/configAutenticador.action*" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/registraNovaLicenca.action*" access="ROLE_REGISTRAR_NOVA_LICENCA" />
+				<intercept-url pattern="/concurrentSessionError.jsp*" access="ROLE_ANONYMOUS" />
+				<intercept-url pattern="/codigoOperacional.action*" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/geraTicket.action*" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/validaTicket.action*" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/validaCodigoResposta.action*" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/browsersCompativeis.action*" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/javasCompativeis.action*" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/videoteca.action*" access="ROLE_USER" />
+				<intercept-url pattern="/contatos.action*" access="ROLE_USER" />
+				<intercept-url pattern="/geral/cartao/**" access="ROLE_USER" />
+				<intercept-url pattern="/*" access="ROLE_USER" />
+
+				<intercept-url pattern="/security/auditoria/*/**" access="ROLE_UTI_AUDITORIA" />
+
+				<intercept-url pattern="/indicador/duracaoPreenchimentoVaga/prepare*/**" access="ROLE_IND" />
+				<intercept-url pattern="/indicador/duracaoPreenchimentoVaga/painel.action*" access="ROLE_IND,ROLE_RES_PAINEL_IND" />
+				<intercept-url pattern="/indicador/indicadorTurnOver*/**" access="ROLE_REL_TURNOVER, ROLE_TAXA_DEMISSAO" />
+
+				<intercept-url pattern="/logging/*/**" access="ROLE_LOGGING" />
+				<intercept-url pattern="/externo/**" access="ROLE_ANONYMOUS,ROLE_USER" />
+
+				<intercept-url pattern="/acesso/usuario/prepareUpdateSenhaUsuario.action*/**" access="ROLE_USER" />
+				<intercept-url pattern="/acesso/usuario/updateSenhaUsuario.action*/**" access="ROLE_USER" />
+				<intercept-url pattern="/acesso/usuario/prepareRecuperaSenha*/**" access="ROLE_ANONYMOUS" />
+				<intercept-url pattern="/acesso/usuario/recuperaSenha*/**" access="ROLE_ANONYMOUS" />
+				<intercept-url pattern="/acesso/usuario/*/**" access="ROLE_CAD_USUARIO,ROLE_COLAB_LIST_CRIARUSUARIO" />
+				<intercept-url pattern="/acesso/perfil/*/**" access="ROLE_CAD_PERFIL" />
+				<intercept-url pattern="/geral/colaborador/prepareProjecaoSalarialFiltro*/** " access=" ROLE_REL_PROJECAO_SALARIAL" />
+				<intercept-url pattern="/geral/colaborador/gerarRelatorioProjecaoSalarial*/** " access=" ROLE_REL_PROJECAO_SALARIAL" />
+				<intercept-url pattern="/geral/colaborador/prepareRelatorioAdmitidos.action* " access=" ROLE_REL_ADMITIDOS" />
+				<intercept-url pattern="/geral/colaborador/relatorioAdmitidos*/**" access="ROLE_REL_ADMITIDOS" />
+				<intercept-url pattern="/geral/colaborador/prepareRelatorioDinamico.action* " access=" ROLE_REL_LISTA_COLAB" />
+				<intercept-url pattern="/geral/colaborador/relatorioDinamico*/** " access=" ROLE_REL_LISTA_COLAB" />
+				<intercept-url pattern="/geral/colaborador/prepareReciboPagamento.action* " access=" ROLE_REL_RECIBO_PAGAMENTO" />
+				<intercept-url pattern="/geral/colaborador/reciboPagamento.action* " access=" ROLE_REL_RECIBO_PAGAMENTO" />
+				<intercept-url pattern="/geral/colaborador/prepareReciboDeDecimoTerceiro.action* " access=" ROLE_REL_RECIBO_DECIMO_TERCEIRO" />
+				<intercept-url pattern="/geral/colaborador/reciboDeDecimoTerceiro.action* " access=" ROLE_REL_RECIBO_DECIMO_TERCEIRO" />
+				<intercept-url pattern="/geral/colaborador/prepareReciboDeFerias.action* " access=" ROLE_REL_RECIBO_FERIAS" />
+				<intercept-url pattern="/geral/colaborador/reciboDeFerias.action* " access=" ROLE_REL_RECIBO_FERIAS" />
+				<intercept-url pattern="/geral/colaborador/prepareDeclaracaoRendimentos.action* " access=" ROLE_REL_DECLARACAO_RENDIMENTOS" />
+				<intercept-url pattern="/geral/colaborador/declaracaoRendimentos.action* " access=" ROLE_REL_DECLARACAO_RENDIMENTOS" />
+				<intercept-url pattern="/geral/colaborador/prepareReciboPagamentoAdiantamentoDeFolha.action* " access=" ROLE_REL_ADIANTAMENTO_DE_FOLHA" />
+				<intercept-url pattern="/geral/colaborador/reciboPagamentoAdiantamentoDeFolha.action* " access=" ROLE_REL_ADIANTAMENTO_DE_FOLHA" />
+				<intercept-url pattern="/geral/colaborador/prepareReciboPagamentoComplementar.action* " access=" ROLE_REL_PAGAMENTO_COMPLEMENTAR" />
+				<intercept-url pattern="/geral/colaborador/reciboPagamentoComplementar.action* " access=" ROLE_REL_PAGAMENTO_COMPLEMENTAR" />
+				<intercept-url pattern="/geral/colaborador/prepareAtualizarModeloAvaliacao.action* " access=" ROLE_MOV_ATUALIZAR_MODELO_AVALIACAO_COLABORADOR" />
+				<intercept-url pattern="/geral/colaborador/atualizarModeloAvaliacao.action* " access=" ROLE_MOV_ATUALIZAR_MODELO_AVALIACAO_COLABORADOR" />
+				<intercept-url pattern="/geral/colaborador/colaboradoresPorAreaJson.action* " access=" ROLE_ANONYMOUS,ROLE_USER" />
+				
+				<intercept-url pattern="/geral/ocorrencia/list.action*" access="ROLE_CAD_OCORRENCIA" />
+				<intercept-url pattern="/geral/ocorrencia/prepareInsert.action*" access="ROLE_CAD_OCORRENCIA_INSERIR" />
+				<intercept-url pattern="/geral/ocorrencia/insert.action*" access="ROLE_CAD_OCORRENCIA_INSERIR" />
+				<intercept-url pattern="/geral/ocorrencia/prepareUpdate.action*" access="ROLE_CAD_OCORRENCIA_EDITAR" />
+				<intercept-url pattern="/geral/ocorrencia/update.action*" access="ROLE_CAD_OCORRENCIA_EDITAR" />
+				<intercept-url pattern="/geral/ocorrencia/delete.action*" access="ROLE_CAD_OCORRENCIA_EXCLUIR" />
+				<intercept-url pattern="/geral/ocorrencia/prepareRelatorioOcorrencia*/**" access="ROLE_REL_OCORRENCIA" />
+				<intercept-url pattern="/geral/ocorrencia/buscaOcorrencia*/**" access="ROLE_REL_OCORRENCIA" />
+				<intercept-url pattern="/geral/ocorrencia/*/**" access="ROLE_CAD_OCORRENCIA" />
+				
+				<intercept-url pattern="/geral/colaboradorOcorrencia/list.action*" access="ROLE_MOV_OCORRENCIA" />
+				<intercept-url pattern="/geral/colaboradorOcorrencia/prepareInsert.action*" access="ROLE_MOV_OCORRENCIA_INSERIR" />
+				<intercept-url pattern="/geral/colaboradorOcorrencia/insert.action*" access="ROLE_MOV_OCORRENCIA_INSERIR" />
+				<intercept-url pattern="/geral/colaboradorOcorrencia/prepareUpdate.action*" access="ROLE_MOV_OCORRENCIA_EDITAR" />
+				<intercept-url pattern="/geral/colaboradorOcorrencia/update.action*" access="ROLE_MOV_OCORRENCIA_EDITAR" />
+				<intercept-url pattern="/geral/colaboradorOcorrencia/delete.action*" access="ROLE_MOV_OCORRENCIA_EXCLUIR" />
+				<intercept-url pattern="/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action*" access="ROLE_REL_ABSENTEISMO" />
+				<intercept-url pattern="/geral/colaboradorOcorrencia/relatorioAbsenteismo.action*" access="ROLE_REL_ABSENTEISMO" />
+				<intercept-url pattern="/geral/colaboradorOcorrencia/*/**" access="ROLE_MOV_OCORRENCIA" />
+				
+				<intercept-url pattern="/geral/ocorrenciaProvidencia/list.action*" access="ROLE_MOV_PROVIDENCIA" />
+				<intercept-url pattern="/geral/ocorrenciaProvidencia/prepare.action*" access="ROLE_MOV_PROVIDENCIA" />
+				<intercept-url pattern="/geral/ocorrenciaProvidencia/update.action*" access="ROLE_MOV_PROVIDENCIA" />
+
+				<intercept-url pattern="/geral/gasto/*/**" access="ROLE_CAD_GASTO" />
+				<intercept-url pattern="/geral/conhecimento/*/**" access="ROLE_CAD_CONHECIMENTO" />
+				<intercept-url pattern="/geral/documentoVersao/**" access="ROLE_UTI_HISTORICO_VERSAO" />
+				<intercept-url pattern="/geral/gastoEmpresa/prepareImprimir*/**" access="ROLE_REL_GASTOEMPRESA" />
+				<intercept-url pattern="/geral/gastoEmpresa/list*/**" access="ROLE_MOV_GASTO_GASTOEMPRESA" />
+				<intercept-url pattern="/geral/parametrosDoSistema/prepareUpdate.action*" access="ROLE_UTI_CONFIGURACAO" />
+				<intercept-url pattern="/geral/parametrosDoSistema/listCamposCandidato.action*" access="ROLE_CONFIG_CANDIDATO_EXT" />
+				<intercept-url pattern="/geral/empresa/prepareImportarCadastros*/**" access="ROLE_IMPORTA_CADASTROS" />
+				<intercept-url pattern="/geral/empresa/importarCadastros*/**" access="ROLE_IMPORTA_CADASTROS" />
+				<intercept-url pattern="/geral/empresa/*/**" access="ROLE_UTI_EMPRESA" />
+				<intercept-url pattern="/geral/historicoBeneficio/*/**" access="ROLE_CAD_BENEFICIO" />
+				<intercept-url pattern="/geral/beneficio/*/**" access="ROLE_CAD_BENEFICIO" />
+				<intercept-url pattern="/geral/grupoGasto/*/**" access="ROLE_CAD_GRUPOGASTO" />
+				<intercept-url pattern="/geral/colaborador/prepareUpdateInfoPessoais.action* " access=" ROLE_CAD_INFO_PESSOAL" />
+				<intercept-url pattern="/geral/colaborador/updateInfoPessoais.action* " access=" ROLE_CAD_INFO_PESSOAL" />
+				<intercept-url pattern="/geral/colaborador/prepareRelatorioAniversariantes*/** " access=" ROLE_REL_ANIVERSARIANTES" />
+				<intercept-url pattern="/geral/colaborador/relatorioAniversariantes*/** " access=" ROLE_REL_ANIVERSARIANTES" />
+				
+				<intercept-url pattern="/geral/colaborador/list.action*" access="ROLE_COLAB_LIST" />
+				<intercept-url pattern="/geral/colaborador/prepareDesliga.action*" access="ROLE_COLAB_LIST_DESLIGAR" />
+				<intercept-url pattern="/geral/colaborador/prepareDesligaAC.action*" access="ROLE_COLAB_LIST_DESLIGAR" />				
+				<intercept-url pattern="/geral/colaborador/desliga*/**" access="ROLE_COLAB_LIST_DESLIGAR" />
+				<intercept-url pattern="/geral/colaborador/solicitacaoDesligamento*/**" access="ROLE_COLAB_LIST_DESLIGAR" />
+				<intercept-url pattern="/geral/colaborador/prepareAprovarReprovarSolicitacaoDesligamento.action*" access="ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO" />
+				<intercept-url pattern="/geral/colaborador/visualizarSolicitacaoDesligamento.action*" access="ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO" />
+				<intercept-url pattern="/geral/colaborador/reprovarSolicitacaoDesligamento.action*" access="ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO" />
+				<intercept-url pattern="/geral/colaborador/aprovarSolicitacaoDesligamento.action*" access="ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO" />
+				
+				<intercept-url pattern="/pesquisa/entrevista/prepareResponderEntrevista.action*" access="ROLE_COLAB_LIST_ENTREVISTA" />
+				<intercept-url pattern="/geral/colaborador/prepareUpdate.action*" access="ROLE_COLAB_LIST_EDITAR" />
+				<intercept-url pattern="/geral/colaborador/update.action*" access="ROLE_COLAB_LIST_EDITAR" />
+				<intercept-url pattern="/geral/colaborador/delete.action*" access="ROLE_COLAB_LIST_EXCLUIR" />
+				<intercept-url pattern="/geral/colaborador/preparePerformanceFuncional.action*" access="ROLE_COLAB_LIST_PERFORMANCE" />				
+				<intercept-url pattern="/captacao/nivelCompetencia/listCompetenciasColaborador.action*" access="ROLE_COLAB_LIST_NIVELCOMPETENCIA" />				
+				<intercept-url pattern="/geral/colaborador/prepareColaboradorSolicitacao*/**" access="ROLE_COLAB_LIST_SOLICITACAO" />
+				<intercept-url pattern="/captacao/solicitacao/verSolicitacoes*/**" access="ROLE_COLAB_LIST_SOLICITACAO,ROLE_MOV_SOLICITACAO" />
+				<intercept-url pattern="/captacao/solicitacao/gravarSolicitacoesCandidato*/**" access="ROLE_COLAB_LIST_SOLICITACAO,ROLE_MOV_SOLICITACAO" />
+								
+				<intercept-url pattern="/geral/historicoColaboradorBeneficio/*/**" access="ROLE_CAD_COLABORADOR" />
+				<intercept-url pattern="/geral/gastoEmpresa/*/**" access="ROLE_MOV_GASTO_GASTOEMPRESA" />
+				<intercept-url pattern="/geral/areaInteresse/*/**" access="ROLE_CAD_AREA_INTERESSE" />
+				<intercept-url pattern="/geral/motivoDemissao/*elatorioMotivoDemissao*/**" access="ROLE_REL_MOTIVO_DEMISSAO" />
+				<intercept-url pattern="/geral/motivoDemissao/*/**" access="ROLE_CAD_MOTIVO_DEMISSAO" />
+				<intercept-url pattern="/geral/areaOrganizacional/prepareInsert.action*" access="ROLE_CAD_AREA_INSERIR" />
+				<intercept-url pattern="/geral/areaOrganizacional/insert.action*" access="ROLE_CAD_AREA_INSERIR" />
+				<intercept-url pattern="/geral/areaOrganizacional/prepareUpdate.action*" access="ROLE_CAD_AREA_EDITAR" />
+				<intercept-url pattern="/geral/areaOrganizacional/update.action*" access="ROLE_CAD_AREA_EDITAR" />
+				<intercept-url pattern="/geral/areaOrganizacional/delete.action*" access="ROLE_CAD_AREA_EXCLUIR" />
+				<intercept-url pattern="/geral/areaOrganizacional/*/**" access="ROLE_CAD_AREA" />
+				<intercept-url pattern="/geral/estabelecimento/*/**" access="ROLE_CAD_ESTABELECIMENTO" />
+				<intercept-url pattern="/geral/bairro/*/**" access="ROLE_CAD_BAIRRO" />
+
+				<intercept-url pattern="/geral/documentoAnexo/prepareInsertColaborador*/**" access="ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO" />
+				<intercept-url pattern="/geral/documentoAnexo/prepareUpdateColaborador*/**" access="ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO" />
+				<intercept-url pattern="/geral/documentoAnexo/deleteColaborador*/**" access="ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO" />
+				<intercept-url pattern="/geral/documentoAnexo/insertColaborador*/**" access="ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO" />
+				<intercept-url pattern="/geral/documentoAnexo/updateColaborador*/**" access="ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO" />
+				<intercept-url pattern="/geral/documentoAnexo/prepareInsertCandidato*/**" access="ROLE_CAD_CANDIDATO" />
+				<intercept-url pattern="/geral/documentoAnexo/prepareUpdateCandidato*/**" access="ROLE_CAD_CANDIDATO" />
+				<intercept-url pattern="/geral/documentoAnexo/deleteCandidato*/**" access="ROLE_CAD_CANDIDATO" />
+				<intercept-url pattern="/geral/documentoAnexo/insertCandidato*/**" access="ROLE_CAD_CANDIDATO" />
+				<intercept-url pattern="/geral/documentoAnexo/updateCandidato*/**" access="ROLE_CAD_CANDIDATO" />
+				<intercept-url pattern="/geral/documentoAnexo/listCandidato.action*" access="ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO" />
+				<intercept-url pattern="/geral/documentoAnexo/listColaborador.action*" access="ROLE_COLAB_LIST_DOCUMENTOANEXO" />
+				
+				<intercept-url pattern="/geral/documentoAnexo/listCurso.action*" access="ROLE_MOV_CURSO" />
+				<intercept-url pattern="/geral/documentoAnexo/deleteCurso*/**" access="ROLE_MOV_CURSO" />
+				<intercept-url pattern="/geral/documentoAnexo/prepareInsertCurso*/**" access="ROLE_MOV_CURSO" />
+				<intercept-url pattern="/geral/documentoAnexo/prepareUpdateCurso*/**" access="ROLE_MOV_CURSO" />
+				<intercept-url pattern="/geral/documentoAnexo/insertCurso*/**" access="ROLE_MOV_CURSO" />
+				<intercept-url pattern="/geral/documentoAnexo/updateCurso*/**" access="ROLE_MOV_CURSO" />
+
+				<intercept-url pattern="/geral/areaFormacao/*/**" access="ROLE_AREAFORMACAO" />
+				<intercept-url pattern="/geral/configuracaoCampoExtra/*/**" access="ROLE_CAMPO_EXTRA" />
+				<intercept-url pattern="/geral/grupoAC/*/**" access="ROLE_CAD_GRUPOAC" />
+				<intercept-url pattern="/geral/configuracaoLimiteColaborador/*/**" access="ROLE_CONFIG_LIMITE_COLABORADOR" />
+				<intercept-url pattern="/geral/tipoDocumento/*/**" access="ROLE_TIPO_DOCUMENTO" />
+				<intercept-url pattern="/geral/tipoDespesa/*/**" access="ROLE_TIPO_DESPESA" />
+				<intercept-url pattern="/geral/providencia/*/**" access="ROLE_PROVIDENCIA" />
+				<intercept-url pattern="/geral/gerenciadorComunicacao/*/**" access="ROLE_CAD_GERENCIADOR_COMUNICACAO" />
+
+				<intercept-url pattern="/captacao/motivoSolicitacao/*/**" access="ROLE_MOTIVO_SOLICITACAO" />
+				<intercept-url pattern="/captacao/areaInteresse/*/**" access="ROLE_CAD_AREA_INTERESSE" />
+				<intercept-url pattern="/captacao/solicitacao/prepareRelatorioProcessoSeletivo*/**" access="ROLE_REL_PROCESSO_SELETIVO" />
+				<intercept-url pattern="/captacao/solicitacao/imprimirRelatorioProcessoSeletivo*/**" access="ROLE_REL_PROCESSO_SELETIVO" />
+				<intercept-url pattern="/captacao/solicitacao/prepareRelatorio*/**" access="ROLE_REL_SOLICITACAO" />
+				<intercept-url pattern="/captacao/solicitacao/imprimirRelatorio*/**" access="ROLE_REL_SOLICITACAO" />
+				<intercept-url pattern="/captacao/solicitacao/list*/**" access="ROLE_MOV_SOLICITACAO" />
+				<intercept-url pattern="/captacao/produtividade/*/**" access="ROLE_REL_PRODUTIVIDADE" />
+				<intercept-url pattern="/captacao/candidato/prepareExamePalografico*/** " access=" ROLE_MOV_PALOGRAFICO" />
+				<intercept-url pattern="/captacao/candidato/prepareUpdateExamePalografico*/** " access=" ROLE_MOV_PALOGRAFICO" />
+				<intercept-url pattern="/captacao/candidato/updateExamePalografico*/** " access=" ROLE_MOV_PALOGRAFICO" />
+				<intercept-url pattern="/captacao/candidato/showFoto*/**" access="ROLE_ANONYMOUS,ROLE_CAD_CANDIDATO" />
+				<intercept-url pattern="/captacao/formacao/*/**" access="ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL" />
+				<intercept-url pattern="/captacao/idioma/*/**" access="ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL" />
+				<intercept-url pattern="/captacao/experiencia/*/**" access="ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL" />
+				
+				<intercept-url pattern="/captacao/candidatoSolicitacao/list.action*" access="ROLE_CAND_SOLICITACAO_LISTA,ROLE_CAND_SOLICITACAO_HISTORICO,ROLE_CAND_SOLICITACAO_COMPETENCIAS,ROLE_CAND_SOLICITACAO_CONTRATAR,ROLE_CAND_SOLICITACAO_EXCLUIR,ROLE_CAND_SOLICITACAO_AVALIACOES,ROLE_CAND_SOLICITACAO_VISUALIZARCURRICULO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_IMPRIMIR,ROLE_CAND_SOLICITACAO_TRIAGEM,ROLE_CAND_SOLICITACAO_INSERIRETAPAGRUPO,ROLE_CAND_SOLICITACAO_RESULTADOAVALIACAO,ROLE_CAND_SOLICITACAO_TRANSFCANDIDATO,ROLE_CAND_SOLICITACAO_TRIAGEMMODULOEXTERNO" />
+				<intercept-url pattern="/captacao/historicoCandidato/list.action*" access="ROLE_CAND_SOLICITACAO_HISTORICO" />
+				<intercept-url pattern="/captacao/nivelCompetencia/prepareCompetenciasByCandidato.action*" access="ROLE_CAND_SOLICITACAO_COMPETENCIAS" />
+				<intercept-url pattern="/geral/colaborador/preparePromoverCandidato.action*" access="ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_COLABORADOR" />
+				<intercept-url pattern="/geral/colaborador/prepareContrata.action*" access="ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_COLABORADOR" />
+				<intercept-url pattern="/geral/colaborador/insert.action*" access="ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_COLABORADOR" />
+				<intercept-url pattern="/captacao/candidatoSolicitacao/delete.action*" access="ROLE_CAND_SOLICITACAO_EXCLUIR" />
+				<intercept-url pattern="/captacao/candidatoSolicitacao/popupAvaliacoesCandidatoSolicitacao.action*" access="ROLE_CAND_SOLICITACAO_AVALIACOES" />
+				<intercept-url pattern="/captacao/candidatoSolicitacao/prepareInsertAvaliacaoSolicitacao.action*" access="ROLE_CAND_SOLICITACAO_AVALIACOES" />
+				<intercept-url pattern="/captacao/candidatoSolicitacao/imprimirListagemCandidatoSolicitacao.action*" access="ROLE_CAND_SOLICITACAO_IMPRIMIR" />
+				<intercept-url pattern="/captacao/candidato/prepareBusca.action*" access="ROLE_CAND_SOLICITACAO_TRIAGEM" />
+				<intercept-url pattern="/captacao/historicoCandidato/prepareInsert.action*" access="ROLE_CAND_SOLICITACAO_INSERIRETAPAGRUPO" />
+				<intercept-url pattern="/captacao/candidatoSolicitacao/imprimeRankingAvaliacao.action*" access="ROLE_CAND_SOLICITACAO_RESULTADOAVALIACAO" />
+				<intercept-url pattern="/captacao/candidatoSolicitacao/prepareMover.action*" access="ROLE_CAND_SOLICITACAO_TRANSFCANDIDATO" />
+				<intercept-url pattern="/captacao/candidatoSolicitacao/listTriagem.action*" access="ROLE_CAND_SOLICITACAO_TRIAGEMMODULOEXTERNO" />
+				
+				<intercept-url pattern="/captacao/historicoCandidato/*/**" access="ROLE_MOV_SOLICITACAO" />
+				<intercept-url pattern="/captacao/candidatoSolicitacao/*/**" access="ROLE_MOV_SOLICITACAO_CANDIDATO,ROLE_INFORM_CANDIDATO_CURRICULO" />
+				
+				<intercept-url pattern="/captacao/candidato/prepareRelatorioAvaliacaoCandidatos*/** " access=" ROLE_REL_AVALIACAO_CANDIDATOS " />
+				<intercept-url pattern="/captacao/candidato/relatorioAvaliacaoCandidatos*/** " access=" ROLE_REL_AVALIACAO_CANDIDATOS" /> 
+				<intercept-url pattern="/captacao/candidato/infoCandidato*/**" access="ROLE_CAD_CANDIDATO,ROLE_MOV_SOLICITACAO,ROLE_INFORM_CANDIDATO_CURRICULO, ROLE_INFORM_CANDIDATO_HISTORICO, ROLE_INFORM_CANDIDATO_COMPETENCIA,ROLE_COLAB_LIST_VISUALIZARCURRICULO,ROLE_CAND_SOLICITACAO_VISUALIZARCURRICULO" />
+				<intercept-url pattern="/captacao/candidato/verCurriculo*/**" access="ROLE_INFORM_CANDIDATO_CURRICULO,ROLE_COLAB_LIST_VISUALIZARCURRICULO" />
+				<intercept-url pattern="/captacao/candidato/verHistoricoCandidato*/**" access="ROLE_INFORM_CANDIDATO_HISTORICO" />
+				<intercept-url pattern="/captacao/candidato/visualizarCandidato*/**" access="ROLE_INFORM_CANDIDATO_COMPETENCIA" />
+				<intercept-url pattern="/captacao/candidato/*/**" access="ROLE_CAD_CANDIDATO" />
+				<intercept-url pattern="/captacao/empresaBds/*/**" access="ROLE_CAD_BDS_EMPRESA" />
+				
+				<intercept-url pattern="/captacao/solicitacao/updateStatusSolicitacao*/**" access="ROLE_LIBERA_SOLICITACAO" />
+				<intercept-url pattern="/captacao/solicitacao/agenda*/**" access="ROLE_SOLICITACAO_AGENDA" />
+				<intercept-url pattern="/captacao/solicitacao/imprimirSolicitacaoPessoal*/**" access="ROLE_MOV_SOLICITACAO_IMPRIMIR" />
+				<intercept-url pattern="/captacao/solicitacao/prepareInsert*/**" access="ROLE_MOV_SOLICITACAO_INSERIR, ROLE_MOV_SOLICITACAO_CLONAR" />
+				<intercept-url pattern="/captacao/solicitacao/insert*/**" access="ROLE_MOV_SOLICITACAO_INSERIR, ROLE_MOV_SOLICITACAO_CLONAR" />
+				<intercept-url pattern="/captacao/solicitacao/prepareUpdate*/**" access="ROLE_MOV_SOLICITACAO_EDITAR,ROLE_LIBERA_SOLICITACAO" />
+				<intercept-url pattern="/captacao/solicitacao/update*/**" access="ROLE_MOV_SOLICITACAO_EDITAR,ROLE_LIBERA_SOLICITACAO" />
+				<intercept-url pattern="/captacao/solicitacao/delete*/**" access="ROLE_MOV_SOLICITACAO_EXCLUIR" />
+				<intercept-url pattern="/captacao/solicitacao/anuncio/*/**" access="ROLE_MOV_SOLICITACAO_ANUNCIAR" />
+				<intercept-url pattern="/captacao/solicitacao/encerrarSolicitacao*/**" access="ROLE_MOV_SOLICITACAO_ENCERRAR" />
+				<intercept-url pattern="/captacao/solicitacao/reabrirSolicitacao*/**" access="ROLE_MOV_SOLICITACAO_ENCERRAR" />
+				<intercept-url pattern="/captacao/solicitacao/suspenderSolicitacao*/**" access="ROLE_MOV_SOLICITACAO_SUSPENDER" />
+				<intercept-url pattern="/captacao/solicitacao/liberarSolicitacao*/**" access="ROLE_MOV_SOLICITACAO_SUSPENDER" />
+				<intercept-url pattern="/captacao/solicitacao/prepareClonar*/**" access="ROLE_MOV_SOLICITACAO_CLONAR" />
+				
+				<intercept-url pattern="/captacao/conhecimento/*/**" access="ROLE_CAD_CONHECIMENTO" />
+				<intercept-url pattern="/captacao/etapaSeletiva/*/**" access="ROLE_CAD_ETAPA" />
+				<intercept-url pattern="/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador*/** " access=" ROLE_REL_COLAB_NIVEL_COMPETENCIA" />
+				<intercept-url pattern="/captacao/nivelCompetencia/imprimirRelatorioCompetenciasColaborador*/** " access=" ROLE_REL_COLAB_NIVEL_COMPETENCIA" />
+				<intercept-url pattern="/captacao/nivelCompetencia/prepareRelatorioMatrizCompetenciasColaborador*/** " access=" ROLE_REL_COLAB_NIVEL_COMPETENCIA" />
+				<intercept-url pattern="/captacao/nivelCompetencia/imprimirMatrizCompetenciasColaborador*/** " access=" ROLE_REL_COLAB_NIVEL_COMPETENCIA" />
+				<intercept-url pattern="/captacao/nivelCompetencia/list.action*" access="ROLE_CAD_NIVEL_COMPETENCIA_CAD" />	
+				<intercept-url pattern="/captacao/nivelCompetencia/prepareInsert.action*" access="ROLE_CAD_NIVEL_COMPETENCIA_CAD" />	
+				<intercept-url pattern="/captacao/nivelCompetencia/insert.action*" access="ROLE_CAD_NIVEL_COMPETENCIA_CAD" />	
+				<intercept-url pattern="/captacao/nivelCompetencia/prepareUpdate.action*" access="ROLE_CAD_NIVEL_COMPETENCIA_CAD" />	
+				<intercept-url pattern="/captacao/nivelCompetencia/update.action*" access="ROLE_CAD_NIVEL_COMPETENCIA_CAD" />	
+				<intercept-url pattern="/captacao/nivelCompetencia/delete.action*" access="ROLE_CAD_NIVEL_COMPETENCIA_CAD" />	
+				<intercept-url pattern="/captacao/nivelCompetencia/*/**" access="ROLE_MOV_SOLICITACAO_CANDIDATO" />	
+				<intercept-url pattern="/captacao/nivelCompetenciaHistorico/*.action*" access="ROLE_CAD_NIVEL_COMPETENCIA_HIST" />	
+				
+				<intercept-url pattern="/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**" access="ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR,ROLE_DISSIDIO_COLABORADOR" />
+				<intercept-url pattern="/cargosalario/reajusteColaborador/prepareDissidio*/**" access="ROLE_DISSIDIO_COLABORADOR" />
+				<intercept-url pattern="/cargosalario/reajusteColaborador/aplicarDissidio*/**" access="ROLE_DISSIDIO_COLABORADOR" />
+				<intercept-url pattern="/cargosalario/reajusteColaborador/prepareUpdate*/**" access="ROLE_DISSIDIO_COLABORADOR" />
+				<intercept-url pattern="/cargosalario/reajusteColaborador/delete*/**" access="ROLE_DISSIDIO_COLABORADOR" />
+				<intercept-url pattern="/cargosalario/reajusteFaixaSalarial*/**" access="ROLE_DISSIDIO_FAIXASALARIAL" />
+				<intercept-url pattern="/cargosalario/reajusteIndice*/**" access="ROLE_DISSIDIO_INDICE" />
+				
+				<intercept-url pattern="/cargosalario/tabelaReajusteColaborador/aplicarPor*.action*" access="ROLE_MOV_APLICARREALINHAMENTO" />
+				<intercept-url pattern="/cargosalario/tabelaReajusteColaborador/*/**" access="ROLE_MOV_SIMULACAOREAJUSTE" />
+				<intercept-url pattern="/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional*/**" access="ROLE_REL_COLAB_GRUPOOCUPACIONAL" />
+				<intercept-url pattern="/cargosalario/cargo/relatorioColaboradorGrupoOcupacional*/**" access="ROLE_REL_COLAB_GRUPOOCUPACIONAL" />
+				<intercept-url pattern="/cargosalario/cargo/prepareRelatorioCargo.action*" access="ROLE_REL_CARGO" />
+				<intercept-url pattern="/cargosalario/cargo/relatorioCargo.action*" access="ROLE_REL_CARGO" />
+				<intercept-url pattern="/cargosalario/cargo/prepareRelatorioColaboradorCargo.action*" access="ROLE_REL_COLAB_CARGO" />
+				<intercept-url pattern="/cargosalario/cargo/relatorioColaboradorCargo.action*" access="ROLE_REL_COLAB_CARGO" />
+				<intercept-url pattern="/cargosalario/cargo/prepareInsert.action*" access="ROLE_CAD_CARGO_INSERIR" />
+				<intercept-url pattern="/cargosalario/cargo/insert.action*" access="ROLE_CAD_CARGO_INSERIR" />
+				<intercept-url pattern="/cargosalario/cargo/prepareUpdate.action*" access="ROLE_CAD_CARGO_EDITAR" />
+				<intercept-url pattern="/cargosalario/cargo/update.action*" access="ROLE_CAD_CARGO_EDITAR" />
+				<intercept-url pattern="/cargosalario/cargo/delete.action*" access="ROLE_CAD_CARGO_EXCLUIR" />
+				<intercept-url pattern="/cargosalario/cargo/imprimir.action*" access="ROLE_CAD_CARGO_IMPRIMIR" />
+				<intercept-url pattern="/cargosalario/cargo/prepareTransferirFaixasCargo.action*" access="ROLE_TRANSFERIR_FAIXAS_AC" />
+				<intercept-url pattern="/cargosalario/cargo/*/**" access="ROLE_CAD_CARGO" />
+				<intercept-url pattern="/cargosalario/faixaSalarial/*/**" access="ROLE_CAD_CARGO" />
+				<intercept-url pattern="/cargosalario/faixaSalarialHistorico/analiseTabelaSalarialFiltro*/**" access="ROLE_MOV_TABELA" />
+				<intercept-url pattern="/cargosalario/faixaSalarialHistorico/analiseTabelaSalarialList*/**" access="ROLE_MOV_TABELA" />
+				<intercept-url pattern="/cargosalario/faixaSalarialHistorico/relatorioAnaliseTabelaSalarial*/**" access="ROLE_MOV_TABELA" />
+				<intercept-url pattern="/cargosalario/faixaSalarialHistorico/*/**" access="ROLE_CAD_CARGO" />
+				<intercept-url pattern="/cargosalario/grupoOcupacional/*/**" access="ROLE_CAD_GRUPO" />
+				<intercept-url pattern="/cargosalario/reajusteRelatorio/formFiltro*/**" access="ROLE_REL_SIMULACAOREAJUSTE" />
+				<intercept-url pattern="/cargosalario/reajusteRelatorio/gerarRelatorio*/**" access="ROLE_REL_SIMULACAOREAJUSTE" />
+				<intercept-url pattern="/cargosalario/reajusteRelatorio/*/**" access="ROLE_MOV_SIMULACAOREAJUSTE" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes*/** " access=" ROLE_AMBIENTE" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/updateAmbientesEFuncoes*/** " access=" ROLE_AMBIENTE" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/prepareRelatorioPromocoes*/** " access=" ROLE_REL_PROMOCAO" /> 
+				<intercept-url pattern="/cargosalario/historicoColaborador/imprimirRelatorioPromocoes*/** " access=" ROLE_REL_PROMOCAO" /> 
+				<intercept-url pattern="/cargosalario/historicoColaborador/prepareAjusteDissidio.action*" access="ROLE_MOV_DISSIDIO" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action*" access="ROLE_CAD_AMBIENTE" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/updateAmbientesEFuncoes.action*" access="ROLE_CAD_AMBIENTE" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/prepareRelatorioSituacoes.action*" access="ROLE_REL_SITUACOES" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes*/**" access="ROLE_REL_COLAB_SEM_REAJUSTE" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/imprimirRelatorioUltimasPromocoes*/**" access="ROLE_REL_COLAB_SEM_REAJUSTE" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/relatorioSituacoes.action*" access="ROLE_REL_SITUACOES" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/painelIndicadores.action*" access="ROLE_INFO_PAINEL_IND" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/historicoColaboradorList.action*" access="ROLE_CAD_HISTORICOCOLABORADOR" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/list.action*" access="ROLE_CAD_HISTORICOCOLABORADOR" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/prepareInsert.action*" access="ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_HISTORICOCOLABORADOR" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/insert.action*" access="ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_HISTORICOCOLABORADOR" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/prepareUpdate.action*" access="ROLE_CAD_HISTORICOCOLABORADOR" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/update.action*" access="ROLE_CAD_HISTORICOCOLABORADOR" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/painelIndicadoresCargoSalario.action*" access="ROLE_CES_PAINEL_IND" />
+				<intercept-url pattern="/cargosalario/historicoColaborador/*/**" access="ROLE_CAD_COLABORADOR" />
+				<intercept-url pattern="/cargosalario/indice/*/**" access="ROLE_CAD_INDICE" />
+				<intercept-url pattern="/cargosalario/indiceHistorico/*/**" access="ROLE_CAD_INDICE" />
+				<intercept-url pattern="/cargosalario/faturamentoMensal/*/**" access="ROLE_FATURAMENTO" />
+				
+				<intercept-url pattern="/desenvolvimento/turma/prepareFrequencia*/**" access="ROLE_FREQUENCIA, ROLE_MOV_CURSO" />
+				<intercept-url pattern="/desenvolvimento/turma/verTurmasCurso*/**" access="ROLE_FREQUENCIA, ROLE_MOV_CURSO" />
+				<intercept-url pattern="/desenvolvimento/turma/preparePresenca*/**" access="ROLE_FREQUENCIA, ROLE_MOV_CURSO" />
+				<intercept-url pattern="/desenvolvimento/turma/prepareImprimirCertificado*/**" access="ROLE_CERTIFICADO_CURSO" />
+				<intercept-url pattern="/desenvolvimento/turma/imprimirCertifica*/**" access="ROLE_CERTIFICADO_CURSO" />
+				<intercept-url pattern="/desenvolvimento/turma/getColaboradoresByFiltro*/**" access="ROLE_CERTIFICADO_CURSO" />
+				<intercept-url pattern="/desenvolvimento/turma/preparePdi*/**" access="ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL" />
+				<intercept-url pattern="/desenvolvimento/turma/pdi*/**" access="ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL" />
+				<intercept-url pattern="/desenvolvimento/turma/imprimirPdi*/**" access="ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL" />
+				<intercept-url pattern="/desenvolvimento/turma/prepareAplicarPdi*/**" access="ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL" />
+				<intercept-url pattern="/desenvolvimento/turma/aplicarPdi*/**" access="ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL" />
+				<intercept-url pattern="/desenvolvimento/turma/prepareImprimirTurmaSemPlano*/**" access="ROLE_REL_SEM_INDICACAO" />
+				<intercept-url pattern="/desenvolvimento/turma/prepareImprimirTurma*/**" access="ROLE_REL_PLANO" />
+				<intercept-url pattern="/desenvolvimento/turma/prepareImprimirMatriz*/**" access="ROLE_REL_MATRIZ" />
+				<intercept-url pattern="/desenvolvimento/turma/filtroCronogramaTreinamento*/**" access="ROLE_CRONOGRAMA_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/turma/imprimirCronogramaTreinamento*/**" access="ROLE_CRONOGRAMA_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/turma/relatorioInvestimento*/**" access="ROLE_CRONOGRAMA_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/turma/imprimirRelatorioInvestimento*/**" access="ROLE_CRONOGRAMA_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/turma/relatorioInvestimentoPorColaborador*/**" access="ROLE_INVESTIMENTO_TREINAMENTO_COLAB" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/prepareFiltroHistoricoTreinamentos*/**" access="ROLE_REL_HISTORICO_TREINAMENTOS" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/filtroHistoricoTreinamentos*/**" access="ROLE_REL_HISTORICO_TREINAMENTOS" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/relatorioHistoricoTreinamentos*/**" access="ROLE_REL_HISTORICO_TREINAMENTOS" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/prepareRelatorioColaborador*/**" access="ROLE_REL_COLABORADOR_COM_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/relatorioColaboradorComTreinamento*/**" access="ROLE_REL_COLABORADOR_COM_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/prepareRelatorioColaborador*/**" access="ROLE_REL_COLABORADOR_SEM_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/relatorioColaboradorSemTreinamento*/**" access="ROLE_REL_COLABORADOR_SEM_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/prepareRelatorioColaboradorSemIndicacao*/**" access="ROLE_REL_SEM_INDICACAO" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/relatorioColaboradorSemIndicacaoTreinamento*/**" access="ROLE_REL_SEM_INDICACAO" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/*/**" access="ROLE_MOV_CURSO, ROLE_MOV_PLANO_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/relatorioColaboradorSemTreinamento.action*" access="ROLE_REL_COLABORADOR_SEM_TREINAMENTO,ROLE_REL_COLABORADOR_COM_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/prepareFiltroHistoricoTreinamentos.action*" access="ROLE_REL_HISTORICO_TREINAMENTOS" />
+				<intercept-url pattern="/desenvolvimento/curso/*/**" access="ROLE_MOV_CURSO" />
+				<intercept-url pattern="/desenvolvimento/avaliacaoCurso/*/**" access="ROLE_MOV_AVALIACAO_CURSO" />
+				<intercept-url pattern="/desenvolvimento/dnt/*/**" access="ROLE_MOV_CURSO_DNT,ROLE_MOV_CURSO_DNT_GESTOR" />
+				<intercept-url pattern="/desenvolvimento/turma/*/**" access="ROLE_MOV_TURMA,ROLE_REL_CERTIFICAD, ROLE_MOV_CURSO, ROLE_MOV_PLANO_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/turma/filtroPlanoTreinamento.action*" access="ROLE_MOV_PLANO_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/turma/preparePdi.action*" access="ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL" />
+				<intercept-url pattern="/desenvolvimento/turma/pdi.action*" access="ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL" />
+				<intercept-url pattern="/desenvolvimento/turma/relatorioInvestimentoPorColaborador.action*" access="ROLE_INVESTIMENTO_TREINAMENTO_COLAB" />
+				<intercept-url pattern="/desenvolvimento/relatorioPresenca/*/**" access="ROLE_REL_DESENVOLVIMENTO_LISTA_PRESENCA" />
+				<intercept-url pattern="/desenvolvimento/prioridadeTreinamento/*/**" access="ROLE_CAD_PRIORIDADETREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/certificacao/matrizTreinamento.action*" access="ROLE_REL_MATRIZ_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/certificacao/imprimirMatrizTreinamento.action*" access="ROLE_REL_MATRIZ_TREINAMENTO" />
+				<intercept-url pattern="/desenvolvimento/certificacao/prepareImprimirCertificadosVencidosAVencer*" access="ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER" />
+				<intercept-url pattern="/desenvolvimento/certificacao/imprimirCertificadosVencidosAVencer*" access="ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER" />
+				<intercept-url pattern="/desenvolvimento/certificacao/imprimirCertificadosVencidosAVencerXlS*" access="ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER" />
+				<intercept-url pattern="/desenvolvimento/certificacao/*/**" access="ROLE_CAD_CERTIFICACAO" />
+				<intercept-url pattern="/desenvolvimento/indicadores/*/**" access="ROLE_MOV_CURSO,ROLE_TED_PAINEL_IND" />
+				<intercept-url pattern="/desenvolvimento/turma/prepareImprimirCursosVencidosAVencer.action*" access="ROLE_REL_CURSOS_VENCIDOS_A_VENCER" />
+				<intercept-url pattern="/desenvolvimento/turma/imprimirCursosVencidosAVencer.action*" access="ROLE_REL_CURSOS_VENCIDOS_A_VENCER" />
+				<intercept-url pattern="/desenvolvimento/colaboradorAvaliacaoPratica/*/**" access="ROLE_COLABORADOR_AVALIACAO_PRATICA" />
+				<intercept-url pattern="/desenvolvimento/colaboradorAvaliacaoPratica/*/**" access="ROLE_COLABORADOR_AVALIACAO_PRATICA" />
+
+				<intercept-url pattern="/pesquisa/trafego/*/**" access="ROLE_ANONYMOUS,ROLE_USER" />
+				
+				<intercept-url pattern="/pesquisa/pesquisa/preview.action*" access=" ROLE_USER" />
+				<intercept-url pattern="/pesquisa/pesquisa/*/**" access=" ROLE_MOV_QUESTIONARIO" />
+				<intercept-url pattern="/pesquisa/entrevista/*/**" access=" ROLE_MOV_QUESTIONARIO" />
+				<intercept-url pattern="/pesquisa/pergunta/*/**" access=" ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA,ROLE_AVALIACAO_TURMA" />
+				
+				<intercept-url pattern="/pesquisa/questionario/aplicar*" access=" ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA,ROLE_AVALIACAO_TURMA" />
+				<intercept-url pattern="/pesquisa/questionario/prepareAplicar*" access=" ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA,ROLE_AVALIACAO_TURMA" />
+				<intercept-url pattern="/pesquisa/questionario/imprimir*" access=" ROLE_MOV_QUESTIONARIO,ROLE_AVALIACAO_TURMA" />
+				<intercept-url pattern="/pesquisa/questionario/*/**" access=" ROLE_MOV_QUESTIONARIO,ROLE_MOV_CURSO" />
+				
+				<intercept-url pattern="/pesquisa/resposta/*/**" access=" ROLE_MOV_QUESTIONARIO" />
+				
+				<intercept-url pattern="/pesquisa/aspecto/*/**" access="ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA,ROLE_CAD_AVALIACAO,ROLE_CAD_PERIODOEXPERIENCIA,ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO,ROLE_AVALIACAO_TURMA,ROLE_CAD_MOD_AVALIACAO_ALUNO" />
+				
+				<intercept-url pattern="/pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action*/**" access=" ROLE_MOV_QUESTIONARIO,ROLE_COLAB_LIST_PERFORMANCE" />
+				
+				<intercept-url pattern="/pesquisa/colaboradorQuestionario/*/**" access="ROLE_MOV_QUESTIONARIO" />
+				
+				<intercept-url pattern="/pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario*/**" access="ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO,ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO,ROLE_RESPONDER_AVALIACAO_TURMA_POR_OUTRO_USUARIO" />
+				<intercept-url pattern="/pesquisa/colaboradorResposta/prepareResponderQuestionario.action*/**" access="ROLE_USER" />
+				<intercept-url pattern="/pesquisa/colaboradorResposta/salvaQuestionarioRespondido.action*/**" access="ROLE_USER" />
+				<intercept-url pattern="/pesquisa/colaboradorResposta/prepareResponderEntrevista.action*" access="ROLE_COLAB_LIST_ENTREVISTA" />
+				<intercept-url pattern="/pesquisa/colaboradorResposta/*/**" access="ROLE_MOV_QUESTIONARIO, ROLE_CAD_COLABORADOR" />
+				<intercept-url pattern="/geral/colaborador/*/**" access="ROLE_CAD_COLABORADOR" />
+
+				<intercept-url pattern="/sesmt/fichaMedica/prepareResultadoFichaMedica*/**" access=" ROLE_REL_FICHAMEDICA" />
+				<intercept-url pattern="/sesmt/fichaMedica/imprimeResultadoFichaMedica*/**" access=" ROLE_REL_FICHAMEDICA" />
+				<intercept-url pattern="/sesmt/fichaMedica/*/**" access=" ROLE_CAD_FICHAMEDICA" />
+				<intercept-url pattern="/sesmt/funcao/*/**" access="ROLE_FUNCAO, ROLE_CAD_CARGO" />
+				<intercept-url pattern="/sesmt/naturezaLesao/*/**" access="ROLE_CAD_NATUREZALESAO" />
+				<intercept-url pattern="/sesmt/LTCAT/*/**" access="ROLE_LTCAT" />
+				<intercept-url pattern="/sesmt/ppra/*/**" access="ROLE_PPRA" />
+				<intercept-url pattern="/sesmt/ppp/*/**" access="ROLE_PPP" />
+				<intercept-url pattern="/sesmt/pcmso/*/**" access="ROLE_CAD_PCMSO" />
+				<intercept-url pattern="/sesmt/epi/imprimirVencimentoCa*/**" access="ROLE_REL_EPICAVENCER" />
+				<intercept-url pattern="/sesmt/epi/prepareImprimirVencimentoCa*/**" access="ROLE_REL_EPICAVENCER" />
+				<intercept-url pattern="/sesmt/epi/imprimirFicha*/**" access="ROLE_REL_FICHA_EPI" />
+				<intercept-url pattern="/sesmt/epi/filtroImprimirFicha*/**" access="ROLE_REL_FICHA_EPI" />
+				<intercept-url pattern="/sesmt/epi/prepareImprimirFicha*/**" access="ROLE_REL_FICHA_EPI" />
+				<intercept-url pattern="/sesmt/epi/*/**" access="ROLE_CAD_EPI" />
+				<intercept-url pattern="/sesmt/epiHistorico/*/**" access="ROLE_CAD_EPI" />
+				<intercept-url pattern="/sesmt/ambiente/prepareRelatorioMapaDeRisco.action*" access="ROLE_REL_MAPA_DE_RISCO" />
+				<intercept-url pattern="/sesmt/ambiente/imprimirRelatorioMapaDeRisco**" access="ROLE_REL_MAPA_DE_RISCO" />
+				<intercept-url pattern="/sesmt/ambiente/*/**" access="ROLE_CAD_AMBIENTE" />
+				<intercept-url pattern="/sesmt/historicoAmbiente/*/**" access="ROLE_CAD_AMBIENTE" />
+				<intercept-url pattern="/sesmt/risco/*/**" access="ROLE_CAD_RISCO" />
+				<intercept-url pattern="/sesmt/tipoEPI/*/**" access="ROLE_CAD_TIPO_EPI" />
+				<intercept-url pattern="/sesmt/tamanhoEPI/*/**" access="ROLE_CAD_TAMANHO_EPI" />
+				<intercept-url pattern="/sesmt/risco/*/**" access="ROLE_CAD_RISCO" />
+				<intercept-url pattern="/sesmt/epc/*/**" access="ROLE_CAD_EPC" />
+				<intercept-url pattern="/sesmt/exame/prepareRelatorioExamesRealizados*/**" access="ROLE_CAD_SOLICITACAOEXAME" />
+				<intercept-url pattern="/sesmt/exame/relatorioExamesRealizados*/**" access="ROLE_CAD_SOLICITACAOEXAME" />
+				<intercept-url pattern="/sesmt/exame/prepareRelatorioExamesPrevistos*/**" access="ROLE_REL_EXAMES_PREVISTOS" />
+				<intercept-url pattern="/sesmt/exame/relatorioExamesPrevistos*/**" access="ROLE_REL_EXAMES_PREVISTOS" />
+				<intercept-url pattern="/sesmt/exame/imprimirAso*/**" access="ROLE_CAD_SOLICITACAOEXAME, ROLE_CAD_EXAME" />
+				<intercept-url pattern="/sesmt/exame/*/**" access="ROLE_CAD_EXAME" />
+				<intercept-url pattern="/sesmt/engenheiroResponsavel/*/**" access="ROLE_CAD_ENGENHEIRO_TRABALHO" />
+				<intercept-url pattern="/sesmt/medicoCoordenador/*/**" access="ROLE_CAD_MEDICO_COORDENADOR" />
+				<intercept-url pattern="/sesmt/clinicaAutorizada/*/**" access="ROLE_CAD_CLINICA_AUTORIZADA" />
+				<intercept-url pattern="/sesmt/prontuario/prepareRelatorioProntuario*/**" access="ROLE_REL_PRONTUARIO" />
+				<intercept-url pattern="/sesmt/prontuario/relatorioProntuario*/**" access="ROLE_REL_PRONTUARIO" />
+				<intercept-url pattern="/sesmt/prontuario/list*/**" access="ROLE_REL_PRONTUARIO, ROLE_CAD_PRONTUARIO" />
+				<intercept-url pattern="/sesmt/prontuario/*/**" access="ROLE_CAD_PRONTUARIO" />
+				<intercept-url pattern="/sesmt/solicitacaoExame/*/**" access="ROLE_CAD_SOLICITACAOEXAME" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/relatorioVencimentoEpi*/**" access="ROLE_REL_EPIVENCIMENTO" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/prepareRelatorioVencimentoEpi*/**" access="ROLE_REL_EPIVENCIMENTO" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/relatorioEntregaEpi*/**" access="ROLE_REL_EPIVENCIMENTO" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/prepareRelatorioEntregaEpi*/**" access="ROLE_REL_EPIVENCIMENTO" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/list.action*" access="ROLE_CAD_ENTREGAEPI,ROLE_CAD_SOLICITACAOEPI,ROLE_GERENCIAMENTO_EPI_EDITAR_SOLICITACAO,ROLE_GERENCIAMENTO_EPI_EXCLUIR_SOLICITACAO" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/entrega.action*" access="ROLE_CAD_ENTREGAEPI" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/prepareEntrega.action*" access="ROLE_CAD_ENTREGAEPI" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/prepareInsert.action*" access="ROLE_CAD_SOLICITACAOEPI" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/filtroColaboradores.action*" access="ROLE_CAD_SOLICITACAOEPI" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/insert.action*" access="ROLE_CAD_SOLICITACAOEPI" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/prepareUpdate.action*" access="ROLE_GERENCIAMENTO_EPI_EDITAR_SOLICITACAO" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/update.action*" access="ROLE_GERENCIAMENTO_EPI_EDITAR_SOLICITACAO" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/delete.action*" access="ROLE_GERENCIAMENTO_EPI_EXCLUIR_SOLICITACAO" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/prepareRelatorioDevolucaoEpi*/**" access="ROLE_REL_EPI_DEVOLVIDO" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/relatorioDevolucaoEpi*/**" access="ROLE_REL_EPI_DEVOLVIDO" />
+				<intercept-url pattern="/sesmt/solicitacaoEpi/relatorioDevolucaoEpiXls*/**" access="ROLE_REL_EPI_DEVOLVIDO" />
+				<intercept-url pattern="/sesmt/motivoSolicitacaoEpi/*/**" access="ROLE_CAD_MOTIVO_SOLICITACAO_EPI" />
+				<intercept-url pattern="/sesmt/etapaProcessoEleitoral/*/**" access="ROLE_CAD_ETAPAPROCESSOELEITORAL" />
+				<intercept-url pattern="/sesmt/eleicao/*/**" access="ROLE_CAD_ELEICAO" />
+				<intercept-url pattern="/sesmt/candidatoEleicao/*/**" access="ROLE_CAD_ELEICAO" />
+				<intercept-url pattern="/sesmt/comissaoEleicao/*/**" access="ROLE_CAD_ELEICAO" />
+				<intercept-url pattern="/sesmt/comissao/*/**" access="ROLE_CAD_ELEICAO" />
+				<intercept-url pattern="/sesmt/comissaoPeriodo/*/**" access="ROLE_CAD_ELEICAO" />
+				<intercept-url pattern="/sesmt/comissaoReuniao/*/**" access="ROLE_CAD_ELEICAO" />
+				<intercept-url pattern="/sesmt/comissaoPlanoTrabalho/*/**" access="ROLE_CAD_ELEICAO" />
+				<intercept-url pattern="/sesmt/afastamento/*/**" access="ROLE_CAD_AFASTAMENTO" />
+				<intercept-url pattern="/sesmt/colaboradorAfastamento/prepareRelatorioResumoAfastamentos.action*" access="ROLE_REL_AFASTAMENTO" />
+				<intercept-url pattern="/sesmt/colaboradorAfastamento/relatorioResumoAfastamentos.action*" access="ROLE_REL_AFASTAMENTO" />
+				<intercept-url pattern="/sesmt/colaboradorAfastamento/*/**" access="ROLE_CAD_AFASTAMENTO" />
+				<intercept-url pattern="/sesmt/cat/*/**" access="ROLE_CAT" />
+				<intercept-url pattern="/sesmt/extintor/*/**" access="ROLE_CAD_EXTINTOR" />
+				<intercept-url pattern="/sesmt/historicoExtintor/*/**" access="ROLE_CAD_EXTINTOR" />
+				<intercept-url pattern="/sesmt/extintorInspecao/*/**" access="ROLE_CAD_EXTINTOR" />
+				<intercept-url pattern="/sesmt/extintorManutencao/*/**" access="ROLE_CAD_EXTINTOR" />
+				<intercept-url pattern="/sesmt/medicaoRisco/*/**" access="ROLE_CAD_MEDICAORISCO" />
+				<intercept-url pattern="/sesmt/evento/*/**" access="ROLE_CAD_EVENTO" />
+				<intercept-url pattern="/sesmt/agenda/*/**" access="ROLE_CAD_AGENDA" />
+				<intercept-url pattern="/sesmt/indicadores/painel.action*" access="ROLE_SESMT_PAINEL_IND" />
+				<intercept-url pattern="/sesmt/composicaoSesmt/*/**" access="ROLE_COMPOSICAO_SESMT" />
+				<intercept-url pattern="/sesmt/obra/*/**" access="ROLE_CAD_OBRA" />
+				<intercept-url pattern="/sesmt/fase/*/**" access="ROLE_CAD_FASE" />
+				<intercept-url pattern="/sesmt/medidaSeguranca/*/**" access="ROLE_CAD_MEDIDASEGURANCA" />
+				<intercept-url pattern="/sesmt/areaVivencia/*/**" access="ROLE_CAD_AREAVIVENCIA" />
+				<intercept-url pattern="/sesmt/fasePcmat/*/**" access="ROLE_MOV_PCMAT" />
+				<intercept-url pattern="/sesmt/riscoFasePcmat/*/**" access="ROLE_MOV_PCMAT" />
+				<intercept-url pattern="/sesmt/areaVivenciaPcmat/*/**" access="ROLE_MOV_PCMAT" />
+				<intercept-url pattern="/sesmt/atividadeSegurancaPcmat/*/**" access="ROLE_MOV_PCMAT" />
+				<intercept-url pattern="/sesmt/epiPcmat/*/**" access="ROLE_MOV_PCMAT" />
+				<intercept-url pattern="/sesmt/epcPcmat/*/**" access="ROLE_MOV_PCMAT" />
+				<intercept-url pattern="/sesmt/sinalizacaoPcmat/*/**" access="ROLE_MOV_PCMAT" />
+				
+				<intercept-url pattern="/avaliacao/periodoExperiencia/prepareRelatorioAcompanhamento**" access="ROLE_REL_ACOMP_EXPERIENCIA_PREVISTO, ROLE_REL_ACOMP_PERIODO_EXPERIENCIA" />
+				<intercept-url pattern="/avaliacao/periodoExperiencia/imprimeRelatorioPeriodoDeAcompanhamento**" access="ROLE_REL_ACOMP_PERIODO_EXPERIENCIA" />
+				<intercept-url pattern="/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action*" access="ROLE_REL_ACOMP_PERIODO_EXPERIENCIA" />
+				<intercept-url pattern="/avaliacao/periodoExperiencia/imprimeCartoesAcompanhamentoPeriodoExperiencia**" access="ROLE_REL_ACOMP_PERIODO_EXPERIENCIA" />
+				<intercept-url pattern="/avaliacao/periodoExperiencia/*/**" access="ROLE_CAD_PERIODOEXPERIENCIA" />
+				
+				<intercept-url pattern="/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action*" access="ROLE_MOV_PERIODOEXPERIENCIA,ROLE_USER" />
+				<intercept-url pattern="/avaliacao/avaliacaoExperiencia/respostasPeriodoExperienciaList.action*" access="ROLE_MOV_MINHASAVALIACOES" />
+				<intercept-url pattern="/avaliacao/avaliacaoExperiencia/prepareUpdateAvaliacaoExperiencia.action*" access="ROLE_MOV_MINHASAVALIACOES, ROLE_MOV_PERIODOEXPERIENCIA" />
+				<intercept-url pattern="/avaliacao/avaliacaoExperiencia/imprimirAvaliacaoRespondida*/**" access="ROLE_MOV_PERIODOEXPERIENCIA" />
+				<intercept-url pattern="/avaliacao/avaliacaoExperiencia/prepareInsertAvaliacaoExperiencia.action*" access="ROLE_MOV_PERIODOEXPERIENCIA,ROLE_USER" />
+				<intercept-url pattern="/avaliacao/avaliacaoExperiencia/insertAvaliacaoExperiencia.action*" access="ROLE_MOV_PERIODOEXPERIENCIA,ROLE_USER" />
+				<intercept-url pattern="/avaliacao/avaliacaoExperiencia/updateAvaliacaoExperiencia.action*" access="ROLE_MOV_PERIODOEXPERIENCIA,ROLE_USER" />
+				<intercept-url pattern="/avaliacao/avaliacaoExperiencia/*AvaliacaoExperiencia.action*" access="ROLE_MOV_PERIODOEXPERIENCIA" />
+				<intercept-url pattern="/avaliacao/avaliacaoExperiencia/*/**" access="ROLE_CAD_PERIODOEXPERIENCIA" />
+
+				<intercept-url pattern="/avaliacao/perguntaAvaliacao/*/**" access="ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO,ROLE_CAD_MOD_AVALIACAO_ALUNO" />
+				
+				<intercept-url pattern="/avaliacao/desempenho/prepareResponderAvaliacaoDesempenho*" access="ROLE_USER" />
+				<intercept-url pattern="/avaliacao/desempenho/responderAvaliacaoDesempenho*" access="ROLE_USER" />
+				<intercept-url pattern="/avaliacao/desempenho/avaliacaoDesempenhoQuestionarioList*" access="ROLE_USER" />
+				<intercept-url pattern="avaliacao/desempenho/avaliacaoDesempenhoRespostasList*" access="ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO" />
+				<intercept-url pattern="/avaliacao/desempenho/*/**" access="ROLE_MOV_AVALIACAO" />
+				
+				<intercept-url pattern="/avaliacao/modelo/minhasAvaliacoesList* " access=" ROLE_MOV_MINHASAVALIACOES" />
+				<intercept-url pattern="/avaliacao/modelo/imprimir*/** " access=" ROLE_MOV_AVALIACAO,ROLE_CAD_MOD_AVALIACAO_ALUNO" />
+				<intercept-url pattern="/avaliacao/modelo/list.action*" access="ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_CAD_MOD_AVALIACAO_ALUNO" />
+				<intercept-url pattern="/avaliacao/modeloCandidato/*/**" access="ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO" />
+				
+				<intercept-url pattern="/avaliacao/avaliacaoPratica/*/**" access="ROLE_AVALIACAO_PRATICA" />
+				
+				<intercept-url pattern="/geral/cliente/*/**" access="ROLE_CAD_CLIENTE" />
+				
+				<intercept-url pattern="/thumb/**" access="ROLE_ANONYMOUS,ROLE_USER" />
+				<intercept-url pattern="/geral/codigoCBO/find.action*" access="ROLE_USER" />
+				<intercept-url pattern="/geral/cid/find.action*" access="ROLE_USER" />
+				<intercept-url pattern="/desenvolvimento/colaboradorTurma/findNotas.action*" access="ROLE_USER" />
+				<intercept-url pattern="/importacao/prepareImportarAfastamentos.action*" access="ROLE_IMPORTACAO_AFASTAMENTO" />
+				<intercept-url pattern="/importacao/carregarAfastamentos.action*" access="ROLE_IMPORTACAO_AFASTAMENTO" />
+				
+				<intercept-url pattern="/backup/list.action" access="ROLE_BACKUP" />
+				
+				<custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER"/>
+        
+        <!--  <form-login login-page="/login.action" default-target-url="/index.jsp" authentication-failure-url="/login.action?login_error=1"/> -->
+        <logout logout-url="/logout" logout-success-url="/login.action"/>
+    </http>
+    
+    <!-- TESTE -->
+    
+    <!-- <beans:bean id="authenticationFilterEntryPoint" class="com.fortes.rh.security.MyAuthenticationProcessingFilter">
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+	</beans:bean>
+	
+     <beans:bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+	     <beans:constructor-arg>
+	         <beans:list>
+	             <security:filter-chain pattern="/j_spring_security_check*" filters="authenticationFilterEntryPoint"/>
+	         </beans:list>
+	     </beans:constructor-arg>
+	 </beans:bean> -->
+	 
+     <beans:bean id="authenticationFilter"
+	    class="com.fortes.rh.security.MyAuthenticationProcessingFilter">
+	    <!--  <beans:property name="filterProcessesUrl" value="/j_spring_security_check"/> -->
+	    <beans:property name="authenticationManager" ref="authenticationManager"/>
+	    <beans:property name="authenticationFailureHandler" ref="failureHandler"/>
+	    <beans:property name="authenticationSuccessHandler" ref="successHandler"/>
+	</beans:bean>
+	
+	<beans:bean id="successHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+	    <beans:property name="defaultTargetUrl" value="/index.jsp" />
+	</beans:bean>
+     
+     <beans:bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" >
+     	<beans:property name="defaultFailureUrl" value="/login.action?login_error=1" />
+     </beans:bean>
+	
+     <!-- 
+     <beans:bean id="successfulAuthenticationFilters" class="org.springframework.web.filter.CompositeFilter">
+	    <beans:property name="filters">
+	        <beans:list>
+	            <beans:ref bean="authenticationFilter"/>
+	        </beans:list>
+	    </beans:property>
+	</beans:bean>
+	-->
+
+</beans:beans>

@@ -10,12 +10,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.NoticiaDao;
 import com.fortes.rh.model.geral.Noticia;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class NoticiaDaoHibernate extends GenericDaoHibernate<Noticia> implements NoticiaDao
 {
 	@SuppressWarnings("unchecked")

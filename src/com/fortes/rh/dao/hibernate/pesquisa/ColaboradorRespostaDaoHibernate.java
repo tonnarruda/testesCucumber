@@ -20,6 +20,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
@@ -31,6 +33,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionario;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<ColaboradorResposta> implements ColaboradorRespostaDao
 {
@@ -149,19 +152,19 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		query.setInteger("tipoPergunta", TipoPergunta.OBJETIVA);
 
 		if(perguntasIds != null && perguntasIds.length > 0)
-			query.setParameterList("perguntasIds", perguntasIds, Hibernate.LONG);
+			query.setParameterList("perguntasIds", perguntasIds, StandardBasicTypes.LONG);
 
 		if(areasIds != null && areasIds.length > 0)
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		
 		if(cargosIds != null && cargosIds.length > 0)
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);
 
 		if(empresaId != null && empresaId != -1)
 			query.setLong("empresaId", empresaId);
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 
 		if(periodoIni != null)
 			query.setDate("periodoIni", periodoIni);
@@ -235,19 +238,19 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		query.setInteger("tipoPergunta", TipoPergunta.MULTIPLA_ESCOLHA);
 		
 		if(perguntasIds != null && perguntasIds.length > 0)
-			query.setParameterList("perguntasIds", perguntasIds, Hibernate.LONG);
+			query.setParameterList("perguntasIds", perguntasIds, StandardBasicTypes.LONG);
 		
 		if(areasIds != null && areasIds.length > 0)
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		
 		if(cargosIds != null && cargosIds.length > 0)
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);
 
 		if(empresaId != null && empresaId != -1)
 			query.setLong("empresaId", empresaId);
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		
 		if(periodoIni != null)
 			query.setDate("periodoIni", periodoIni);
@@ -466,7 +469,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		
 		Query query = getSession().createQuery(queryHQL);
 		
-		query.setParameterList("colaboradorQuestionarioIds", colaboradorQuestionarioIds, Hibernate.LONG);
+		query.setParameterList("colaboradorQuestionarioIds", colaboradorQuestionarioIds, StandardBasicTypes.LONG);
 		
 		query.executeUpdate();
 	}
@@ -697,25 +700,25 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		SQLQuery query = getSession().createSQLQuery(hql.toString());
 		query.setLong("colaboradorQuestionarioId", colaboradorQuestionarioId);
 		
-		query.addScalar("id", Hibernate.LONG);
-		query.addScalar("performance", Hibernate.DOUBLE);
-		query.addScalar("performanceNivelCompetencia", Hibernate.DOUBLE);
-		query.addScalar("pergunta_id", Hibernate.LONG);
-		query.addScalar("pergunta_ordem", Hibernate.INTEGER);
-		query.addScalar("pergunta_texto", Hibernate.STRING);
-		query.addScalar("pergunta_comentario", Hibernate.BOOLEAN);
-		query.addScalar("pergunta_textocomentario", Hibernate.STRING);
-		query.addScalar("pergunta_tipo", Hibernate.INTEGER);
-		query.addScalar("resposta_id", Hibernate.LONG);
-		query.addScalar("resposta_ordem", Hibernate.INTEGER);
-		query.addScalar("resposta_texto", Hibernate.STRING);
-		query.addScalar("resposta_peso", Hibernate.INTEGER);
-		query.addScalar("aspecto_id", Hibernate.LONG);
-		query.addScalar("aspecto_nome", Hibernate.STRING);
-		query.addScalar("observacao", Hibernate.STRING);
-		query.addScalar("cr_resposta_id", Hibernate.LONG);
-		query.addScalar("cr_resposta_valor", Hibernate.INTEGER);
-		query.addScalar("cr_comentario", Hibernate.STRING);
+		query.addScalar("id", StandardBasicTypes.LONG);
+		query.addScalar("performance", StandardBasicTypes.DOUBLE);
+		query.addScalar("performanceNivelCompetencia", StandardBasicTypes.DOUBLE);
+		query.addScalar("pergunta_id", StandardBasicTypes.LONG);
+		query.addScalar("pergunta_ordem", StandardBasicTypes.INTEGER);
+		query.addScalar("pergunta_texto", StandardBasicTypes.STRING);
+		query.addScalar("pergunta_comentario", StandardBasicTypes.BOOLEAN);
+		query.addScalar("pergunta_textocomentario", StandardBasicTypes.STRING);
+		query.addScalar("pergunta_tipo", StandardBasicTypes.INTEGER);
+		query.addScalar("resposta_id", StandardBasicTypes.LONG);
+		query.addScalar("resposta_ordem", StandardBasicTypes.INTEGER);
+		query.addScalar("resposta_texto", StandardBasicTypes.STRING);
+		query.addScalar("resposta_peso", StandardBasicTypes.INTEGER);
+		query.addScalar("aspecto_id", StandardBasicTypes.LONG);
+		query.addScalar("aspecto_nome", StandardBasicTypes.STRING);
+		query.addScalar("observacao", StandardBasicTypes.STRING);
+		query.addScalar("cr_resposta_id", StandardBasicTypes.LONG);
+		query.addScalar("cr_resposta_valor", StandardBasicTypes.INTEGER);
+		query.addScalar("cr_comentario", StandardBasicTypes.STRING);
 		
 		Collection<RespostaQuestionario> vos = new ArrayList<RespostaQuestionario>();
 		Collection<Object[]> lista = query.list();
@@ -767,18 +770,18 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		Query query = getSession().createQuery(queryHQL);
 		if(perguntasIds != null && perguntasIds.length > 0)
-			query.setParameterList("perguntasIds", perguntasIds, Hibernate.LONG);
+			query.setParameterList("perguntasIds", perguntasIds, StandardBasicTypes.LONG);
 		else
 			query.setLong("questionarioId", questionarioId);
 
 		if(areasIds != null && areasIds.length > 0)
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		
 		if(cargosIds != null && cargosIds.length > 0)
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		
 		query.setInteger("quantidadeColaboradoresRelatorioPesquisaAnonima", quantidadeColaboradoresRelatorioPesquisaAnonima);
 		

@@ -3,18 +3,20 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.CidDao;
 import com.fortes.rh.model.geral.Cid;
 
+@Component
 public class CidDaoHibernate extends GenericDaoHibernate<Cid> implements CidDao
 {
 	public Collection<Cid> buscaCids(String codigo, String descricao)
@@ -27,7 +29,7 @@ public class CidDaoHibernate extends GenericDaoHibernate<Cid> implements CidDao
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.ilike("c.codigo", "%" + codigo + "%"));
-		criteria.add(Restrictions.sqlRestriction("normalizar(this_.descricao) ilike  normalizar(?)", "%" + descricao + "%", Hibernate.STRING));
+		criteria.add(Restrictions.sqlRestriction("normalizar(this_.descricao) ilike  normalizar(?)", "%" + descricao + "%", StandardBasicTypes.STRING));
 		
 		criteria.addOrder(Order.asc("c.codigo"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cid.class));

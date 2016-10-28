@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -25,12 +27,18 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implements CursoManager
 {
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorManager colaboradorManager;
 	private CursoLntManager cursoLntManager;
+	
+	@Autowired
+	CursoManagerImpl(CursoDao dao) {
+		setDao(dao);
+	}
 
 	public Curso findByIdProjection(Long cursoId)
 	{

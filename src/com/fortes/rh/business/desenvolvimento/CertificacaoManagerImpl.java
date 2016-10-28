@@ -3,6 +3,9 @@ package com.fortes.rh.business.desenvolvimento;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -20,12 +23,18 @@ import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, CertificacaoDao> implements CertificacaoManager
 {
 	private FaixaSalarialManager faixaSalarialManager;
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager; 
 	private AvaliacaoPraticaManager avaliacaoPraticaManager;
+	
+	@Autowired
+	CertificacaoManagerImpl(CertificacaoDao dao) {
+		setDao(dao);
+	}
 	
 	public Collection<Certificacao> findAllSelect(Long empresaId)
 	{

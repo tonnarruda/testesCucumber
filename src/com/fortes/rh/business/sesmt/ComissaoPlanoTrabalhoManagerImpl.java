@@ -2,13 +2,22 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ComissaoPlanoTrabalhoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.sesmt.ComissaoPlanoTrabalho;
 
+@Component
 public class ComissaoPlanoTrabalhoManagerImpl extends GenericManagerImpl<ComissaoPlanoTrabalho, ComissaoPlanoTrabalhoDao> implements ComissaoPlanoTrabalhoManager
 {
+	@Autowired
+	ComissaoPlanoTrabalhoManagerImpl(ComissaoPlanoTrabalhoDao fooDao) {
+		setDao(fooDao);
+	}
+	
 	public Collection<ComissaoPlanoTrabalho> findByComissao(Long comissaoId, String situacao, Long responsavelId, Long corresponsavelId)
 	{
 		return getDao().findByComissao(comissaoId, situacao, responsavelId, corresponsavelId);

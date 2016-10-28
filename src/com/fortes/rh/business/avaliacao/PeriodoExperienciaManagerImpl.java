@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
@@ -16,8 +18,14 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExperiencia, PeriodoExperienciaDao> implements PeriodoExperienciaManager
 {
+	@Autowired
+	PeriodoExperienciaManagerImpl(PeriodoExperienciaDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean orderDiasDesc)
 	{
 		return getDao().findAllSelect(empresaId, orderDiasDesc, null);

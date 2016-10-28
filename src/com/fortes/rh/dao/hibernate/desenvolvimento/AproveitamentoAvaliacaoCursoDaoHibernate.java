@@ -4,12 +4,13 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
@@ -17,6 +18,7 @@ import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class AproveitamentoAvaliacaoCursoDaoHibernate extends GenericDaoHibernate<AproveitamentoAvaliacaoCurso> implements AproveitamentoAvaliacaoCursoDao
 {
@@ -182,7 +184,7 @@ public class AproveitamentoAvaliacaoCursoDaoHibernate extends GenericDaoHibernat
 		}
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameterList("id", cursoIds, Hibernate.LONG);
+		query.setParameterList("id", cursoIds, StandardBasicTypes.LONG);
 
 		if(aprovado)
 			query.setInteger("qtdAvaliacao", qtdAvaliacao);
@@ -212,7 +214,7 @@ public class AproveitamentoAvaliacaoCursoDaoHibernate extends GenericDaoHibernat
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 		if (cursoIds != null && cursoIds.size() > 0)
-			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
+			query.setParameterList("cursoIds", cursoIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}
@@ -249,7 +251,7 @@ public class AproveitamentoAvaliacaoCursoDaoHibernate extends GenericDaoHibernat
 		query.setLong("cursoId", cursoId);
 
 		if(avaliacaoCursoIds != null && avaliacaoCursoIds.length > 0)
-			query.setParameterList("avaliacaoCursoIds", LongUtil.arrayStringToCollectionLong(avaliacaoCursoIds), Hibernate.LONG);
+			query.setParameterList("avaliacaoCursoIds", LongUtil.arrayStringToCollectionLong(avaliacaoCursoIds), StandardBasicTypes.LONG);
 
 		query.executeUpdate();
 	}

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -59,14 +60,23 @@ import com.opensymphony.xwork.ActionContext;
 public class Index extends MyActionSupport
 {
 	private static final long serialVersionUID = 1L;
+	@Autowired
 	private ColaboradorManager colaboradorManager = null;
+	@Autowired
 	private UsuarioMensagemManager usuarioMensagemManager;
+	@Autowired
 	private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired
 	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
+	@Autowired
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired
 	private AvaliacaoManager avaliacaoManager;
+	@Autowired
 	private EmpresaManager empresaManager;
+	@Autowired
 	private NoticiaManager noticiaManager;
+	@Autowired
 	private UsuarioNoticiaManager usuarioNoticiaManager;
 
 	private Collection<Pesquisa> pesquisasAtrasadas;

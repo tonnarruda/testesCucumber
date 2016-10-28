@@ -67,13 +67,13 @@
 	</servlet-mapping>
 
 	<!-- Acegi Security Configuration -->
-	<listener>
+	<!-- <listener>
 		<listener-class>org.acegisecurity.ui.session.HttpSessionEventPublisher</listener-class>
-	</listener>
+	</listener> -->
 
 	<filter>
 		<filter-name>hibernateFilter</filter-name>
-		<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+		<filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
@@ -97,6 +97,7 @@
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<!--
 	<filter>
 		<filter-name>Acegi Authentication Processing Filter</filter-name>
 		<filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
@@ -105,6 +106,7 @@
 			<param-value>org.acegisecurity.util.FilterChainProxy</param-value>
 		</init-param>
 	</filter>
+	-->
 
 	<filter>
 		<filter-name>ResponseOverrideFilter</filter-name>
@@ -131,11 +133,21 @@
         <filter-name>webwork</filter-name>
         <filter-class>com.opensymphony.webwork.dispatcher.FilterDispatcher</filter-class>
     </filter>
-
-	<filter-mapping>
-		<filter-name>Acegi Authentication Processing Filter</filter-name>
-		<url-pattern>/*</url-pattern>
+    
+    <filter>  
+	  <filter-name>springSecurityFilterChain</filter-name>  
+	  <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>  
+	</filter>  
+	
+	<filter-mapping>  
+	  <filter-name>springSecurityFilterChain</filter-name>  
+	  <url-pattern>/*</url-pattern>  
 	</filter-mapping>
+	
+	<http auto-config="true">  
+    <intercept-url pattern="/**" access="ROLE_USER" />  
+  </http> 
+
     <filter-mapping>
         <filter-name>webwork-cleanup</filter-name>
         <url-pattern>/*</url-pattern>
@@ -195,70 +207,34 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			/WEB-INF/classes/applicationContext.xml,
-			/WEB-INF/classes/applicationContext-security.xml,
 			/WEB-INF/classes/applicationContext-datasource.xml,
+			/WEB-INF/classes/spring-security2.xml
 
-			/WEB-INF/classes/com/fortes/rh/dao/acesso/applicationContext-dao.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/cargosalario/applicationContext-dao.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/captacao/applicationContext-dao.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/desenvolvimento/applicationContext-dao.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/geral/applicationContext-dao.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/pesquisa/applicationContext-dao.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/security/applicationContext-dao.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/sesmt/applicationContext-dao.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/avaliacao/applicationContext-dao.xml,
-
-			/WEB-INF/classes/com/fortes/rh/dao/hibernate/acesso/applicationContext-dao-hibernate.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/hibernate/cargosalario/applicationContext-dao-hibernate.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/hibernate/captacao/applicationContext-dao-hibernate.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/hibernate/desenvolvimento/applicationContext-dao-hibernate.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/hibernate/geral/applicationContext-dao-hibernate.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/hibernate/pesquisa/applicationContext-dao-hibernate.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/hibernate/security/applicationContext-dao-hibernate.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/hibernate/sesmt/applicationContext-dao-hibernate.xml,
-			/WEB-INF/classes/com/fortes/rh/dao/hibernate/avaliacao/applicationContext-dao-hibernate.xml,
-
-			/WEB-INF/classes/com/fortes/rh/business/acesso/applicationContext-business.xml,
-			/WEB-INF/classes/com/fortes/rh/business/cargosalario/applicationContext-business.xml,
-			/WEB-INF/classes/com/fortes/rh/business/captacao/applicationContext-business.xml,
-			/WEB-INF/classes/com/fortes/rh/business/desenvolvimento/applicationContext-business.xml,
-			/WEB-INF/classes/com/fortes/rh/business/geral/applicationContext-business.xml,
-			/WEB-INF/classes/com/fortes/rh/business/pesquisa/applicationContext-business.xml,
-			/WEB-INF/classes/com/fortes/rh/business/security/applicationContext-business.xml,
-			/WEB-INF/classes/com/fortes/rh/business/sesmt/applicationContext-business.xml,
-			/WEB-INF/classes/com/fortes/rh/business/avaliacao/applicationContext-business.xml,
-			/WEB-INF/classes/com/fortes/rh/business/importacao/applicationContext-business.xml,
-
-			/WEB-INF/classes/applicationContext-xfire.xml,
-			/WEB-INF/classes/applicationContext-dwr.xml,
-			/WEB-INF/classes/com/fortes/rh/config/backup/applicationContext-backup.xml,
-			/WEB-INF/classes/com/fortes/rh/business/thumb/applicationContext-business.xml
 
 		</param-value>
 	</context-param>
 
-	<jsp-config>
-		<taglib>
-			<taglib-uri>webwork</taglib-uri>
-			<taglib-location>/WEB-INF/tlds/webwork.tld</taglib-location>
-			<!-- <taglib-location>/WEB-INF/lib/webwork-2.2.7.jar</taglib-location> -->
-		</taglib>
-	
-		<taglib>
-			<taglib-uri>http://acegisecurity.org/authz</taglib-uri>
-			<taglib-location>/WEB-INF/tlds/authz.tld</taglib-location>
-		</taglib>
-	
-	    <taglib>
-	        <taglib-uri>http://displaytag.sourceforge.net/</taglib-uri>
-	        <taglib-location>/WEB-INF/tlds/displaytag.tld</taglib-location>
-	    </taglib>
-	
-		<taglib>
-			<taglib-uri>fortes</taglib-uri>
-			<taglib-location>/WEB-INF/tlds/fortes.tld</taglib-location>
-		</taglib>
-	</jsp-config>
+	<taglib>
+		<taglib-uri>webwork</taglib-uri>
+		<taglib-location>/WEB-INF/lib/webwork-2.2.7.jar</taglib-location>
+	</taglib>
+
+	<!-- 
+	<taglib>
+		<taglib-uri>http://acegisecurity.org/authz</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/authz.tld</taglib-location>
+	</taglib>
+	-->
+
+    <taglib>
+        <taglib-uri>http://displaytag.sourceforge.net/</taglib-uri>
+        <taglib-location>/WEB-INF/tlds/displaytag.tld</taglib-location>
+    </taglib>
+
+	<taglib>
+		<taglib-uri>fortes</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/fortes.tld</taglib-location>
+	</taglib>
 
 	<!-- Página de erro personalizada  -->
 	<error-page>

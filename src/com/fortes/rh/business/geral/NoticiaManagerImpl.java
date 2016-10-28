@@ -11,6 +11,8 @@ import org.apache.commons.lang.ArrayUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.NoticiaDao;
@@ -23,8 +25,14 @@ import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.opensymphony.xwork.ActionContext;
 
+@Component
 public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> implements NoticiaManager
 {
+	@Autowired
+	NoticiaManagerImpl(NoticiaDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<Noticia> findByUsuario(Long usuarioId) 
 	{
 		return getDao().findByUsuario(usuarioId);

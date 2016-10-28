@@ -1,25 +1,52 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
-<beans>
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+						http://www.directwebremoting.org/schema/spring-dwr
+      					http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd">
+	
+	<!--Scans for @Repository, @Service and @Component -->
+	<context:component-scan base-package="com.fortes" />
+	
+	<!--  Activates scanning of @Autowired -->
+	<context:annotation-config />
+	
+	<!-- Enables @Transactional support -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+    <context:property-placeholder location="classpath:hibernate.properties" />
+    
+	<!--  DATA SOURCES -->
+	<bean id="dataSource" class = "com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${hibernate.connection.driverClass}"/>
+		<property name="user" value="${hibernate.connection.username}"/>
+		<property name="password" value="${hibernate.connection.password}"/>
+		<property name="jdbcUrl" value="${hibernate.connection.url}"/>
+		
+	<!--  C3P0 properties -->
+        <property name="acquireIncrement" value="10"  />
+        <property name="minPoolSize" value= "10" />
+        <property name="maxPoolSize" value="100" /> <!--  -->
+        <property name="maxIdleTime" value="20" /> <!-- O tempo que uma conexão pode permanecer ociosa antes de ser descartada -->
+        
+ 	</bean>
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	    <property name="dataSource" ref="dataSource"></property>
 		<property name="configLocation">
 			<value>classpath:hibernate.cfg.xml</value>
 		</property>
-		
-		<property name="eventListeners">
-			<map>
-				<entry key="pre-insert">
-					<bean class="org.hibernate.validator.event.ValidatePreInsertEventListener" />
-				</entry>
-				<entry key="pre-update">
-					<bean class="org.hibernate.validator.event.ValidatePreUpdateEventListener" />
-				</entry>
-			</map>
-		</property>
 	</bean>
 
-	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory">
 			<ref local="sessionFactory" />
 		</property>

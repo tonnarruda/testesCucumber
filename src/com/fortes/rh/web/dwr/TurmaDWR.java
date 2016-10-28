@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
@@ -17,16 +20,23 @@ import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class TurmaDWR
 {
 	private final Boolean LIBERADA = true;
 	private final Boolean BLOQUEADA = false;
 	
+	@Autowired
 	private TurmaManager turmaManager;
+	@Autowired
 	private DiaTurmaManager diaTurmaManager;
+	@Autowired
 	private AvaliacaoTurmaManager avaliacaoTurmaManager;
+	@Autowired
 	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
+	@Autowired
 	private TurmaTipoDespesaManager turmaTipoDespesaManager;
+	@Autowired
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	public Turma getTurma(Long turmaId)

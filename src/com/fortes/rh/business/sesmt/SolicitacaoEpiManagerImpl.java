@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.PersistenceException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -22,11 +24,16 @@ import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiVO;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi, SolicitacaoEpiDao> implements SolicitacaoEpiManager
 {
 	private PlatformTransactionManager transactionManager;
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 
+	@Autowired
+	SolicitacaoEpiManagerImpl(SolicitacaoEpiDao solicitacaoEpiDao) {
+		setDao(solicitacaoEpiDao);
+	}
 	public SolicitacaoEpiVO findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem)
 	{
 		SolicitacaoEpiVO solicitacaoEpiVO = getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, LongUtil.arrayStringToArrayLong(estabelecimentoCheck), ordem); 

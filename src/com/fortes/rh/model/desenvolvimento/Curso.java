@@ -34,9 +34,7 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
     private String nome;
     @Column(length=20)
     private Integer cargaHoraria;
-    @Lob
     private String conteudoProgramatico;
-    @Lob
     private String criterioAvaliacao;
     @ManyToMany(fetch=FetchType.LAZY)
     private Collection<AvaliacaoCurso> avaliacaoCursos;

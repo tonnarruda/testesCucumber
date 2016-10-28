@@ -3,19 +3,21 @@ package com.fortes.rh.dao.hibernate.pesquisa;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.PesquisaDao;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implements PesquisaDao
 {
@@ -102,7 +104,7 @@ public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implemen
 		criteria.add(Expression.eq("e.id", empresaId));
 		
 		if(questionarioTitulo != null && !StringUtil.isBlank(questionarioTitulo))
-			criteria.add(Restrictions.sqlRestriction("normalizar(q1_.titulo) ilike  normalizar(?)", "%" + questionarioTitulo.trim() + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(q1_.titulo) ilike  normalizar(?)", "%" + questionarioTitulo.trim() + "%", StandardBasicTypes.STRING));
 		
 		if(questionarioLiberado != null)
 			criteria.add(Expression.eq("q.liberado", questionarioLiberado));
@@ -172,7 +174,7 @@ public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implemen
 		criteria.add(Expression.eq("e.id", empresaId));
 		
 		if(questionarioTitulo != null &&!questionarioTitulo.equals(""))
-			criteria.add(Restrictions.sqlRestriction("normalizar(q1_.titulo) ilike  normalizar(?)", "%" + questionarioTitulo.trim() + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(q1_.titulo) ilike  normalizar(?)", "%" + questionarioTitulo.trim() + "%", StandardBasicTypes.STRING));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 

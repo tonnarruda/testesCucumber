@@ -3,6 +3,8 @@ package com.fortes.rh.business.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -16,10 +18,16 @@ import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class MedicaoRiscoManagerImpl extends GenericManagerImpl<MedicaoRisco, MedicaoRiscoDao> implements MedicaoRiscoManager
 {
 	private PlatformTransactionManager transactionManager;
 	private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
+	
+	@Autowired
+	MedicaoRiscoManagerImpl(MedicaoRiscoDao medicaoRiscoDao) {
+			setDao(medicaoRiscoDao);
+	}
 	
 	@Override
 	public MedicaoRisco findById(Long id) 

@@ -12,10 +12,10 @@ import com.fortes.rh.model.acesso.Usuario;
 @SequenceGenerator(name="sequence", sequenceName="usuarionoticia_sequence", allocationSize=1)
 public class UsuarioNoticia extends AbstractModel
 {
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Usuario usuario;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Noticia noticia;
 	
 	public UsuarioNoticia()

@@ -2,12 +2,20 @@ package com.fortes.rh.business.desenvolvimento;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 
+@Component
 public class AvaliacaoCursoManagerImpl extends GenericManagerImpl<AvaliacaoCurso, AvaliacaoCursoDao> implements AvaliacaoCursoManager
 {
+	@Autowired
+	AvaliacaoCursoManagerImpl(AvaliacaoCursoDao dao) {
+		setDao(dao);
+	}
 
 	public Collection<AvaliacaoCurso> findByCurso(Long cursoId)
 	{

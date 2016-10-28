@@ -8,12 +8,14 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ColaboradorIdiomaDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
 
+@Component
 public class ColaboradorIdiomaDaoHibernate extends GenericDaoHibernate<ColaboradorIdioma> implements ColaboradorIdiomaDao
 {
 	public void removeColaborador(Colaborador colaborador)

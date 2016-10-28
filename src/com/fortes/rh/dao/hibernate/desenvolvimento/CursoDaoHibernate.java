@@ -7,7 +7,6 @@ import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -17,6 +16,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
@@ -33,6 +34,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements CursoDao
 {
@@ -219,13 +221,13 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		query.setDate("dataFim", dataFim);
 		
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
-			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
+			query.setParameterList("cursoIds", cursoIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds)){
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		}
 		
 		Collection<Object[]> resultado = query.list();
@@ -264,7 +266,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		query.setParameterList("empresaIds", empresaIds);
 		
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
-			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
+			query.setParameterList("cursoIds", cursoIds, StandardBasicTypes.LONG);
 
 		return (Integer)query.uniqueResult();
 	}
@@ -370,7 +372,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 
 		criteria.add( Expression.or( Expression.eq("c.empresa.id", empresaId), Expression.eq("e.id", empresaId) ) );
 		if (curso != null && StringUtils.isNotBlank(curso.getNome()))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + curso.getNome() + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + curso.getNome() + "%", StandardBasicTypes.STRING));
 
 		return (Integer)criteria.uniqueResult();
 	}
@@ -390,7 +392,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		criteria.add( Expression.or( Expression.eq("c.empresa.id", empresaId), Expression.eq("e.id", empresaId) ) );
 		
 		if (curso != null && StringUtils.isNotBlank(curso.getNome()))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + curso.getNome() + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + curso.getNome() + "%", StandardBasicTypes.STRING));
 
 		if(page != null && pagingSize != null){
 			criteria.setFirstResult(((page - 1) * pagingSize));

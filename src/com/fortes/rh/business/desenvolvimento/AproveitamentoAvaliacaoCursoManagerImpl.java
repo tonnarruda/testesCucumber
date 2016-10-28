@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -16,11 +18,17 @@ import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<AproveitamentoAvaliacaoCurso, AproveitamentoAvaliacaoCursoDao> implements AproveitamentoAvaliacaoCursoManager
 {
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	private CertificacaoManager certificacaoManager;
+	
+	@Autowired
+	AproveitamentoAvaliacaoCursoManagerImpl(AproveitamentoAvaliacaoCursoDao dao) {
+		setDao(dao);
+	}
 
 	public void saveNotas(String[] colabTurmaId_notas, AvaliacaoCurso avaliacaoCurso, boolean controlaVencimentoPorCertificacao) throws Exception
 	{

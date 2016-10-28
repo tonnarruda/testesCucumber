@@ -8,12 +8,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.CandidatoIdiomaDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 
+@Component
 @SuppressWarnings("unchecked")
 public class CandidatoIdiomaDaoHibernate extends GenericDaoHibernate<CandidatoIdioma> implements CandidatoIdiomaDao
 {

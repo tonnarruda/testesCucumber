@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -15,7 +14,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
@@ -24,6 +25,7 @@ import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.ReajusteIndice;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHistorico> implements IndiceHistoricoDao
 {
@@ -139,7 +141,7 @@ public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHisto
 		
 		String sql = "coalesce(min(this0__.data), to_timestamp('"+ DateUtil.formataAnoMesDia(dataProximoHistorico) + "', 'YYYY-MM-DD') )";
 		DetachedCriteria subSelect = DetachedCriteria.forClass(FaixaSalarialHistorico.class, "fsh2")
-		    		.setProjection(Projections.sqlProjection(sql, new String[]{"data"}, new Type[] {Hibernate.DATE}))
+		    		.setProjection(Projections.sqlProjection(sql, new String[]{"data"}, new Type[] {StandardBasicTypes.DATE}))
 		    		.add(Restrictions.eq("fsh2.faixaSalarial.id", faixaSalarialId))
 		    		.add(Restrictions.gt("fsh2.data", data))
 		 			.add(Restrictions.le("fsh2.data", dataProximoHistorico));
@@ -216,7 +218,7 @@ public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHisto
 			String hql = "delete IndiceHistorico where indice.id in (:indiceIds)";
 			Query query = getSession().createQuery(hql);
 	
-			query.setParameterList("indiceIds", indiceIds, Hibernate.LONG);
+			query.setParameterList("indiceIds", indiceIds, StandardBasicTypes.LONG);
 			query.executeUpdate();		
 		}
 	}

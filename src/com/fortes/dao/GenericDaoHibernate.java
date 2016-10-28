@@ -1,5 +1,6 @@
 package com.fortes.dao;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
@@ -8,10 +9,12 @@ import java.util.List;
 
 import javax.persistence.Transient;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.EntityMode;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.MatchMode;
@@ -21,10 +24,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.fortes.model.type.File;
 
@@ -38,13 +40,24 @@ import com.fortes.model.type.File;
  *            The Entity Id class.
  */
 @SuppressWarnings("unchecked")
-public class GenericDaoHibernate<T> extends HibernateDaoSupport implements GenericDao<T>
+public class GenericDaoHibernate<T> implements GenericDao<T>
 {
 	private Class<T> entityClass;
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
 
 	public GenericDaoHibernate()
 	{
 		this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+	}
+	
+	public Session getSession() {
+		return sessionFactory.getCurrentSession();
 	}
 
 	public Class<T> getEntityClass()
@@ -89,8 +102,8 @@ public class GenericDaoHibernate<T> extends HibernateDaoSupport implements Gener
 	
 	public T save(T entity)
 	{
-		Long id = (Long) getHibernateTemplate().save(entity);
-		getSessionFactory().getClassMetadata(getEntityClass()).setIdentifier(entity, id, EntityMode.POJO);
+		Serializable id = getSession().save(entity);
+//		getSessionFactory().getClassMetadata(getEntityClass()).setIdentifier(entity, id, EntityMode.getS);
 		return entity;
 	}
 
@@ -99,17 +112,17 @@ public class GenericDaoHibernate<T> extends HibernateDaoSupport implements Gener
 		//Utilizado merge e não update para o objeto informado não ser colocado no first level cache
 		//evitando a exception:
 		//NonUniqueObjectException - a different object with the same identifier value was already associated with the session
-		getHibernateTemplate().merge(entity);
+		getSession().merge(entity);
 	}
 	
 	public void saveOrUpdate(T entity)
 	{
-		getHibernateTemplate().saveOrUpdate(entity);
+		getSession().saveOrUpdate(entity);
 	}
 
 	public void saveOrUpdate(Collection<T> entities)
 	{
-		getHibernateTemplate().saveOrUpdateAll(entities);
+		getSession().saveOrUpdate(entities);
 	}
 
 	public String[] findDependentTables(Long id)
@@ -139,7 +152,7 @@ public class GenericDaoHibernate<T> extends HibernateDaoSupport implements Gener
 		try
 		{
 			T entidade = (T) (Class.forName(getEntityClass().getName()).newInstance());
-			getSessionFactory().getClassMetadata(getEntityClass()).setIdentifier(entidade, id, EntityMode.POJO);
+//			getSessionFactory().getClassMetadata(getEntityClass()).setIdentifier(entidade, id, EntityMode.POJO);
 			remove(entidade);
 		}
 		catch (DataAccessException e)
@@ -155,10 +168,10 @@ public class GenericDaoHibernate<T> extends HibernateDaoSupport implements Gener
 	public void remove(T entity) throws DataAccessException
 	{
 		//Sincroniza o estado dos objetos na sessão
-		getHibernateTemplate().flush();
+		getSession().flush();
 		//Remove completamente todos os objetos do cache da sessão
-		getHibernateTemplate().clear();
-		getHibernateTemplate().delete(entity);
+		getSession().clear();
+		getSession().delete(entity);
 	}
 	
 	public T findRandom(String[] properties)
@@ -221,7 +234,7 @@ public class GenericDaoHibernate<T> extends HibernateDaoSupport implements Gener
 
 	public T findById(Long id)
 	{
-		return (T) getHibernateTemplate().get(getEntityClass(), id);
+		return (T) getSession().get(getEntityClass(), id);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -490,9 +503,9 @@ public class GenericDaoHibernate<T> extends HibernateDaoSupport implements Gener
 		return (Integer) result.get(0);
 	}
 
-	public HibernateTemplate getHibernateTemplateByGenericDao()
+	public Session getHibernateTemplateByGenericDao()
 	{
-		return getHibernateTemplate();
+		return getSession();
 	}
 
 	public boolean verifyExists(String[] key, Object[] value)

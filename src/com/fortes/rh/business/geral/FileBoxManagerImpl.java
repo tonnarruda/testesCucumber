@@ -6,8 +6,9 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.MultipartPostMethod;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
-
+@Component
 @SuppressWarnings("deprecation")
 public class FileBoxManagerImpl implements FileBoxManager
 {

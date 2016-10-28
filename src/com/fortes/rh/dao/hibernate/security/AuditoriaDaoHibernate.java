@@ -14,12 +14,14 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.security.AuditoriaDao;
 import com.fortes.rh.model.security.Auditoria;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class AuditoriaDaoHibernate extends GenericDaoHibernate<Auditoria> implements AuditoriaDao
 {
 	@SuppressWarnings("unchecked")

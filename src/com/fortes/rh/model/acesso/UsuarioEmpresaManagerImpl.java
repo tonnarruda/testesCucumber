@@ -2,12 +2,21 @@ package com.fortes.rh.model.acesso;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
 import com.fortes.rh.model.geral.Empresa;
 
+@Component
 public class UsuarioEmpresaManagerImpl extends GenericManagerImpl<UsuarioEmpresa, UsuarioEmpresaDao> implements UsuarioEmpresaManager
 {
+	@Autowired
+	UsuarioEmpresaManagerImpl(UsuarioEmpresaDao dao) {
+		setDao(dao);
+	}
+	
 	public void removeAllUsuario(Usuario usuario)
 	{
 		getDao().removeAllUsuario(usuario);

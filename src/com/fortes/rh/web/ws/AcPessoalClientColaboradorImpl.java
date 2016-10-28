@@ -13,6 +13,7 @@ import org.apache.axis.encoding.ser.ArrayDeserializerFactory;
 import org.apache.axis.encoding.ser.ArraySerializerFactory;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -28,6 +29,7 @@ import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborador {
 	private AcPessoalClient acPessoalClient;
 

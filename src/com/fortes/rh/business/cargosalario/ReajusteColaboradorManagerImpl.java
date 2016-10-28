@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -28,6 +30,7 @@ import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteColaborador, ReajusteColaboradorDao> implements ReajusteColaboradorManager
 {
@@ -38,6 +41,11 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	
+	@Autowired
+	ReajusteColaboradorManagerImpl(ReajusteColaboradorDao dao) {
+		setDao(dao);
+	}
 	
 	public Collection<ReajusteColaborador> findByGruposAreas(HashMap<Object, Object> parametros)
 	{

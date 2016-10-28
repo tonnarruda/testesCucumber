@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -14,6 +13,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
@@ -23,6 +24,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<ColaboradorPresenca> implements ColaboradorPresencaDao
 {
 	@SuppressWarnings("unchecked")
@@ -123,7 +125,7 @@ public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		Query q = getSession().createQuery(queryHQL.toString());
 		
-		q.setParameterList("colaboradorTurmaIds", colaboradorTurmaIds, Hibernate.LONG);
+		q.setParameterList("colaboradorTurmaIds", colaboradorTurmaIds, StandardBasicTypes.LONG);
 		q.executeUpdate();
 	}
 	
@@ -172,16 +174,16 @@ public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<Colabor
 			query.setDate("dataFim", dataFim);
 		
 		if (LongUtil.arrayIsNotEmpty(empresaIds))
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+			query.setParameterList("empresaIds", empresaIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
-			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
+			query.setParameterList("cursoIds", cursoIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		
 		return (Integer) query.uniqueResult();	
 	}

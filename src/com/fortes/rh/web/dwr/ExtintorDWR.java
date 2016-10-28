@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.sesmt.ExtintorManager;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 public class ExtintorDWR
 {
+	@Autowired
 	private ExtintorManager extintorManager;
 
 	@SuppressWarnings("unchecked")

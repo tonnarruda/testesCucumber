@@ -3,6 +3,9 @@ package com.fortes.rh.business.cargosalario;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.ReajusteIndiceDao;
 import com.fortes.rh.model.cargosalario.Indice;
@@ -10,9 +13,15 @@ import com.fortes.rh.model.cargosalario.ReajusteIndice;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.MathUtil;
 
+@Component
 public class ReajusteIndiceManagerImpl extends GenericManagerImpl<ReajusteIndice, ReajusteIndiceDao> implements ReajusteIndiceManager
 {
 	private IndiceManager indiceManager;
+	
+	@Autowired
+	ReajusteIndiceManagerImpl(ReajusteIndiceDao dao) {
+		setDao(dao);
+	}
 	
 	public void insertReajustes(Long tabelaReajusteColaboradorId, Long[] indicesIds, char dissidioPor, Double valorDissidio) throws Exception 
 	{

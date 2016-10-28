@@ -1,6 +1,6 @@
 package com.fortes.rh.security;
 
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 @SuppressWarnings("serial")
 public class UsernamePasswordEmpresaAuthenticationToken extends UsernamePasswordAuthenticationToken
@@ -13,8 +13,9 @@ public class UsernamePasswordEmpresaAuthenticationToken extends UsernamePassword
 		this.empresa = empresa;
 		this.SOSSeed = SOSSeed;
 	}
-
-	public String getEmpresa(){
+	
+	public String getEmpresa()
+	{
 		return empresa;
 	}
 

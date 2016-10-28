@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -52,11 +54,17 @@ import com.fortes.rh.web.ws.AcPessoalClientLotacao;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.ActionContext;
 
+@Component
 @SuppressWarnings("unchecked")
 public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrganizacional, AreaOrganizacionalDao> implements AreaOrganizacionalManager
 {
 	private AcPessoalClientLotacao acPessoalClientLotacao;
 	private PlatformTransactionManager transactionManager;
+	
+	@Autowired
+	AreaOrganizacionalManagerImpl(AreaOrganizacionalDao dao) {
+		setDao(dao);
+	}
 
 	public Collection<AreaOrganizacional> findAreasPossiveis(Collection<AreaOrganizacional> areas, Long id)
 	{

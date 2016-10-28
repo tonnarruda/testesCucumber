@@ -8,6 +8,8 @@ import java.util.Set;
 
 import javax.persistence.PersistenceException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -31,6 +33,7 @@ import com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoExame, SolicitacaoExameDao> implements SolicitacaoExameManager
 {
 	private PlatformTransactionManager transactionManager;
@@ -39,6 +42,11 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 	private RiscoAmbienteManager riscoAmbienteManager;
 	private RiscoFuncaoManager riscoFuncaoManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
+	
+	@Autowired
+	SolicitacaoExameManagerImpl(SolicitacaoExameDao solicitacaoExameDao) {
+		setDao(solicitacaoExameDao);
+	}
 
 	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, String[] examesCheck, ResultadoExame resultadoExame)
 	{

@@ -3,14 +3,23 @@ package com.fortes.rh.business.cargosalario;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class IndiceHistoricoManagerImpl extends GenericManagerImpl<IndiceHistorico, IndiceHistoricoDao> implements IndiceHistoricoManager
 {
+	@Autowired
+	IndiceHistoricoManagerImpl(IndiceHistoricoDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<IndiceHistorico> findAllSelect(Long indiceId)
 	{
 		return getDao().findAllSelect(indiceId);

@@ -5,12 +5,14 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.TurmaAvaliacaoTurmaDao;
 import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class TurmaAvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<TurmaAvaliacaoTurma> implements TurmaAvaliacaoTurmaDao
 {
 

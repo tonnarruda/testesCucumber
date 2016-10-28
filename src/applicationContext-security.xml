@@ -56,13 +56,13 @@
 		</property>
 	</bean>
 
-	<bean id="objectDefinitionSource" class="org.acegisecurity.intercept.method.MethodDefinitionAttributes">
+	<bean id="objectDefinitionSource" class="org.springframework.security.intercept.method.MethodDefinitionAttributes">
 		<property name="attributes">
-			<bean class="org.acegisecurity.annotation.SecurityAnnotationAttributes" />
+			<bean class="org.springframework.security.annotation.SecurityAnnotationAttributes" />
 		</property>
 	</bean>
 
-	<bean id="securityInterceptor" class="org.acegisecurity.intercept.method.aopalliance.MethodSecurityInterceptor">
+	<bean id="securityInterceptor" class="org.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor">
 		<property name="validateConfigAttributes">
 			<value>true</value>
 		</property>
@@ -77,9 +77,9 @@
 		</property>
 	</bean>
 
-	<bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter" />
+	<!-- <bean id="roleVoter" class="org.springframework.security.vote.RoleVoter" /> -->
 
-	<bean id="accessDecisionManager" class="org.acegisecurity.vote.AffirmativeBased">
+	<bean id="accessDecisionManager" class="org.springframework.security.vote.AffirmativeBased">
 		<property name="allowIfAllAbstainDecisions">
 			<value>false</value>
 		</property>
@@ -91,7 +91,7 @@
 	</bean>
 
 	<!-- 
-	<bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
+	<bean id="filterChainProxy" class="org.springframework.security.util.FilterChainProxy">
 		<property name="filterInvocationDefinitionSource">
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
@@ -102,7 +102,7 @@
 	</bean>
 	-->
 
-	<bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
+	<bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
 		<property name="filterInvocationDefinitionSource">
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
@@ -113,19 +113,19 @@
 		</property>
 	</bean>
 
-	<bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
+	<bean id="logoutFilter" class="org.springframework.security.ui.logout.LogoutFilter">
 		<constructor-arg value="/index.jsp" />
 		<!-- URL redirected to after logout -->
 		<constructor-arg>
 		    <list>
-				<bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler" />
+				<bean class="org.springframework.security.ui.logout.SecurityContextLogoutHandler" />
 		    </list>
 		</constructor-arg>
 	</bean>
 	
-	<bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter" />
+	<bean id="securityContextHolderAwareRequestFilter" class="org.springframework.security.wrapper.SecurityContextHolderAwareRequestFilter" />
 
-	<bean id="concurrentSessionController" class="org.acegisecurity.concurrent.ConcurrentSessionControllerImpl">
+	<bean id="concurrentSessionController" class="org.springframework.security.concurrent.ConcurrentSessionControllerImpl">
 		<property name="maximumSessions">
 			<value>1</value>
 		</property>
@@ -134,9 +134,9 @@
 		</property>
 	</bean>
 
-	<bean id="sessionRegistry" class="org.acegisecurity.concurrent.SessionRegistryImpl" />
+	<bean id="sessionRegistry" class="org.springframework.security.concurrent.SessionRegistryImpl" />
 
-	<bean id="concurrentSessionFilter" class="org.acegisecurity.concurrent.ConcurrentSessionFilter">
+	<bean id="concurrentSessionFilter" class="org.springframework.security.concurrent.ConcurrentSessionFilter">
 		<property name="sessionRegistry">
 			<ref local="sessionRegistry" />
 		</property>
@@ -145,7 +145,7 @@
 		</property>
 	</bean>
 
-	<bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"></bean>
+	<bean id="httpSessionContextIntegrationFilter" class="org.springframework.security.web.context.HttpSessionContextIntegrationFilter"></bean>
 
 	<bean id="authenticationProcessingFilter" class="com.fortes.rh.security.MyAuthenticationProcessingFilter">
 		<property name="authenticationManager">
@@ -162,13 +162,13 @@
 		</property>
 	</bean>
 
-	<bean id="anonymousAuthenticationProvider" class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+	<bean id="anonymousAuthenticationProvider" class="org.springframework.security.providers.anonymous.AnonymousAuthenticationProvider">
 		<property name="key">
 			<value>foobar</value>
 		</property>
 	</bean>
 
-	<bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
+	<bean id="anonymousProcessingFilter" class="org.springframework.security.providers.anonymous.AnonymousProcessingFilter">
 		<property name="key">
 			<value>foobar</value>
 		</property>
@@ -177,7 +177,7 @@
 		</property>
 	</bean>
 
-	<bean id="authenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+	<bean id="authenticationProcessingFilterEntryPoint" class="org.springframework.security.web.authentication.AuthenticationProcessingFilterEntryPoint">
 		<property name="loginFormUrl">
 			<value>/login.action</value>
 		</property>
@@ -186,11 +186,11 @@
 		</property>
 	</bean>
 	
-	<bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+	<bean id="exceptionTranslationFilter" class="org.springframework.security.ui.ExceptionTranslationFilter">
 		<property name="authenticationEntryPoint"><ref local="authenticationProcessingFilterEntryPoint"/></property>
 	</bean>
 
-	<bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+	<bean id="filterInvocationInterceptor" class="org.springframework.security.intercept.web.FilterSecurityInterceptor">
 		<property name="authenticationManager">
 			<ref bean="authenticationManager" />
 		</property>
@@ -463,6 +463,8 @@
 				/captacao/nivelCompetencia/listCompetenciasColaborador.action*=ROLE_COLAB_LIST_NIVELCOMPETENCIA
 				/captacao/nivelCompetencia/prepareCompetenciasByCandidato.action*=ROLE_CAND_SOLICITACAO_COMPETENCIAS	
 				/captacao/nivelCompetencia/*/**=ROLE_MOV_SOLICITACAO_CANDIDATO, ROLE_CAD_FAIXA_SALARIAL	
+				/captacao/nivelCompetencia/delete.action*=ROLE_CAD_NIVEL_COMPETENCIA_CAD	
+				/captacao/nivelCompetencia/*/**=ROLE_MOV_SOLICITACAO_CANDIDATO	
 				/captacao/nivelCompetenciaHistorico/*.action*=ROLE_CAD_NIVEL_COMPETENCIA_HIST	
 				
 				/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR,ROLE_DISSIDIO_COLABORADOR
@@ -759,7 +761,7 @@
 		</property>
 	</bean>
 
-	<bean id="httpRequestAccessDecisionManager" class="org.acegisecurity.vote.AffirmativeBased">
+	<bean id="httpRequestAccessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
 		<property name="allowIfAllAbstainDecisions">
 			<value>false</value>
 		</property>

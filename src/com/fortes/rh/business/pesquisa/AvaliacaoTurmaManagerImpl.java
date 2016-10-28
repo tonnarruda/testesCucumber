@@ -2,6 +2,8 @@ package com.fortes.rh.business.pesquisa;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -15,6 +17,7 @@ import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 
+@Component
 public class AvaliacaoTurmaManagerImpl extends GenericManagerImpl<AvaliacaoTurma, AvaliacaoTurmaDao> implements AvaliacaoTurmaManager
 {
 	private final String EMPRESA_INVALIDA = "A Avaliação solicitada não existe nesta empresa.";
@@ -24,6 +27,11 @@ public class AvaliacaoTurmaManagerImpl extends GenericManagerImpl<AvaliacaoTurma
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 
+	@Autowired
+	AvaliacaoTurmaManagerImpl(AvaliacaoTurmaDao avaliacaoTurmaDao) {
+		setDao(avaliacaoTurmaDao);
+	}
+	
 	public Collection<AvaliacaoTurma> findToListByEmpresa(Long empresaId, int page, int pagingSize)
 	{
 		return getDao().findToList(empresaId, page, pagingSize);

@@ -7,6 +7,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.RealizacaoExameDao;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
@@ -17,9 +20,15 @@ import com.fortes.rh.model.sesmt.RealizacaoExame;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.ExameAnualRelatorio;
 
+@Component
 public class RealizacaoExameManagerImpl extends GenericManagerImpl<RealizacaoExame, RealizacaoExameDao> implements RealizacaoExameManager
 {
 	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
+	
+	@Autowired
+	RealizacaoExameManagerImpl(RealizacaoExameDao realizacaoExameDao) {
+		setDao(realizacaoExameDao);
+	}
 
 	public Collection<ExameAnualRelatorio> getRelatorioExame(Long estabelecimentoId, Date dataIni, Date dataFim){
 		Collection<ExameAnualRelatorio> examesAnuals = new ArrayList<ExameAnualRelatorio>();

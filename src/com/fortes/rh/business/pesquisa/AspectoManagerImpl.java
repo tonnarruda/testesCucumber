@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.pesquisa.AspectoDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
@@ -14,8 +17,14 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class AspectoManagerImpl extends GenericManagerImpl<Aspecto, AspectoDao> implements AspectoManager
 {
+	@Autowired
+	AspectoManagerImpl(AspectoDao aspectoDao) {
+		setDao(aspectoDao);
+	}
+	
 	public Aspecto findByIdProjection(Long aspectoId)
 	{
 		return getDao().findByIdProjection(aspectoId);

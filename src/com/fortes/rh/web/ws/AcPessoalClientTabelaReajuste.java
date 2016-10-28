@@ -8,6 +8,7 @@ import javax.xml.rpc.ParameterMode;
 import org.apache.axis.client.Call;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -17,6 +18,7 @@ import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TItemTabelaEmpregados;
 import com.fortes.rh.model.ws.TSituacao;
 
+@Component
 public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReajusteInterface
 {
 	private AcPessoalClient acPessoalClient;

@@ -2,9 +2,11 @@ package com.fortes.rh.business.thumb;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.dao.captacao.CandidatoDao;
 
+@Component
 public class ThumbnailManagerImpl implements ThumbnailManager {
 
 	CandidatoDao dao;

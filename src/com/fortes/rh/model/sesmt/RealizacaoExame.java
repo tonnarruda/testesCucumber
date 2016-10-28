@@ -23,10 +23,9 @@ public class RealizacaoExame extends AbstractModel implements Serializable
 {
     @Temporal(DATE)
     private Date data;
-    @Lob
     private String observacao;
 
-    @OneToOne(fetch=EAGER, mappedBy="realizacaoExame")
+    @OneToOne(mappedBy="realizacaoExame")
     private ExameSolicitacaoExame exameSolicitacaoExame;
 
     private String resultado;

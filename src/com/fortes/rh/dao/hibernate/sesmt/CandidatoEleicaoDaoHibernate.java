@@ -4,19 +4,21 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.CandidatoEleicaoDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.CandidatoEleicao;
 
+@Component
 @SuppressWarnings("unchecked")
 public class CandidatoEleicaoDaoHibernate extends GenericDaoHibernate<CandidatoEleicao> implements CandidatoEleicaoDao
 {
@@ -114,7 +116,7 @@ public class CandidatoEleicaoDaoHibernate extends GenericDaoHibernate<CandidatoE
 
 		Query query = getSession().createQuery(hql);
 
-		query.setParameterList("ids", ids, Hibernate.LONG);
+		query.setParameterList("ids", ids, StandardBasicTypes.LONG);
 		query.setBoolean("eleito", eleito);
 
 		query.executeUpdate();

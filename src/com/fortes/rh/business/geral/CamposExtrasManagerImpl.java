@@ -2,14 +2,23 @@ package com.fortes.rh.business.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.CamposExtrasDao;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 
+@Component
 public class CamposExtrasManagerImpl extends GenericManagerImpl<CamposExtras, CamposExtrasDao> implements CamposExtrasManager
 {
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	
+	@Autowired
+	CamposExtrasManagerImpl(CamposExtrasDao dao) {
+		setDao(dao);
+	}
 	
 	public CamposExtras update(CamposExtras camposExtras, Long camposExtrasId, Long empresaId)
 	{

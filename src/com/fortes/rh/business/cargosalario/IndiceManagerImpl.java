@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
@@ -12,9 +14,15 @@ import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> implements IndiceManager
 {
 	private IndiceHistoricoManager indiceHistoricoManager;
+	
+	@Autowired
+	IndiceManagerImpl(IndiceDao dao) {
+		setDao(dao);
+	}
 
 	public void save(Indice indice, IndiceHistorico indiceHistorico) throws Exception
 	{

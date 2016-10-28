@@ -8,12 +8,14 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.TipoEPIDao;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.TipoEPI;
 
+@Component
 public class TipoEPIDaoHibernate extends GenericDaoHibernate<TipoEPI> implements TipoEPIDao
 {
 	public Collection<TipoEPI> findCollectionTipoEPI(Long empresId) 

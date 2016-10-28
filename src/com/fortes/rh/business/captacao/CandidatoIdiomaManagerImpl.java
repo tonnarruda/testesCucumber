@@ -3,6 +3,9 @@ package com.fortes.rh.business.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorIdiomaManager;
 import com.fortes.rh.dao.captacao.CandidatoIdiomaDao;
@@ -11,9 +14,15 @@ import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 public class CandidatoIdiomaManagerImpl extends GenericManagerImpl<CandidatoIdioma, CandidatoIdiomaDao> implements CandidatoIdiomaManager
 {
 	private ColaboradorIdiomaManager colaboradorIdiomaManager;
+	
+	@Autowired
+	CandidatoIdiomaManagerImpl(CandidatoIdiomaDao candidatoIdiomaDao) {
+		setDao(candidatoIdiomaDao);
+	}
 	
 	public void removeCandidato(Candidato candidato) throws Exception
 	{

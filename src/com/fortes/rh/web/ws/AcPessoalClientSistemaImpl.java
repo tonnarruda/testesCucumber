@@ -4,11 +4,14 @@ import javax.xml.namespace.QName;
 import javax.xml.rpc.Call;
 import javax.xml.rpc.ParameterMode;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 
+@Component
 public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
 {
 	private AcPessoalClient acPessoalClient;

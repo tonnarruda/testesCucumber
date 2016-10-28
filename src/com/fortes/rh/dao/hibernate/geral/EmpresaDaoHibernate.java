@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
@@ -16,6 +15,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
@@ -25,6 +26,7 @@ import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
+@Component
 @SuppressWarnings("unchecked")
 public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements EmpresaDao
 {
@@ -525,7 +527,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 	{
 		String hql = "select emp from Empresa as emp where emp.grupoAC in (:grupoAC) ";
 		Query query = getSession().createQuery(hql);
-		query.setParameterList("grupoAC", gruposAC, Hibernate.STRING);
+		query.setParameterList("grupoAC", gruposAC, StandardBasicTypes.STRING);
 		
 		return query.list();
 	}

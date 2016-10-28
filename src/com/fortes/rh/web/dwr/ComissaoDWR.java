@@ -3,12 +3,17 @@ package com.fortes.rh.web.dwr;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class ComissaoDWR
 {
+	@Autowired
 	private ComissaoMembroManager comissaoMembroManager;
 
 	public String dataEstabilidade(Long colaboradorId)

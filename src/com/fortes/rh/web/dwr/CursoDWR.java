@@ -6,6 +6,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
@@ -19,11 +22,16 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
+@Component
 public class CursoDWR
 {
+	@Autowired
 	private CursoManager cursoManager;
+	@Autowired
 	private EmpresaManager empresaManager;
+	@Autowired
 	private AvaliacaoCursoManager avaliacaoCursoManager;
+	@Autowired
 	private DocumentoAnexoManager documentoAnexoManager;
 
 	@SuppressWarnings("unchecked")

@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
@@ -18,6 +19,7 @@ import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 
+@Component
 @SuppressWarnings("unchecked")
 public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpresa> implements UsuarioEmpresaDao
 {

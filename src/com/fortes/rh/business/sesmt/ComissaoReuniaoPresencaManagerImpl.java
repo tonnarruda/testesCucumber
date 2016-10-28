@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.sesmt.ComissaoReuniaoPresencaDao;
@@ -12,8 +15,14 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 public class ComissaoReuniaoPresencaManagerImpl extends GenericManagerImpl<ComissaoReuniaoPresenca, ComissaoReuniaoPresencaDao> implements ComissaoReuniaoPresencaManager
 {
+	@Autowired
+	ComissaoReuniaoPresencaManagerImpl(ComissaoReuniaoPresencaDao fooDao) {
+		setDao(fooDao);
+	}
+	
 	public void saveOrUpdateByReuniao(Long comissaoReuniaoId, Long comissaoId, String[] colaboradorChecks, String[] colaboradorIds, String[] justificativas) throws Exception
 	{
 		Collection<ComissaoReuniaoPresenca> presencasJaRegistradas = getDao().findByReuniao(comissaoReuniaoId);

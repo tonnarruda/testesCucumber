@@ -4,9 +4,11 @@ import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.util.HttpUtil;
 
-
+@Component
 public class EnderecoDWR {
 
 	 //inserido dessa forma, pois a expresao que adiciona todos os caracter .(ponto) nao funciona neste caso.

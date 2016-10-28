@@ -3,13 +3,18 @@ package com.fortes.rh.web.dwr;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class AtitudeDWR
 {
+	@Autowired
 	private AtitudeManager atitudeManager;
 
 	public Map getAtitudes(String[] areaOrganizacionalIds, Long empresaId)

@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.Iterator;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Expression;
@@ -18,6 +17,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ColaboradorAfastamentoDao;
@@ -31,6 +32,7 @@ import com.fortes.rh.util.DateUtil;
  * @author Tiago Lopes
  *
  */
+@Component
 @SuppressWarnings("unchecked")
 public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<ColaboradorAfastamento> implements ColaboradorAfastamentoDao
 {
@@ -153,10 +155,10 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 			query.setString("nome", "%" + nomeBusca.toLowerCase() + "%");
 
 		if (estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 
 		if (areaIds != null && areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 		
 		return query;
 	}
@@ -318,13 +320,13 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 
 		if (areasIds != null && areasIds.length > 0)
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		
 		if (motivosIds != null && motivosIds.length > 0)
-			query.setParameterList("motivosIds", motivosIds, Hibernate.LONG);
+			query.setParameterList("motivosIds", motivosIds, StandardBasicTypes.LONG);
 		
 		return query.list();
 	}
@@ -376,17 +378,17 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 
 		query.setDate("data", dataFim);
 		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+			query.setParameterList("empresaIds", empresaIds, StandardBasicTypes.LONG);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		if(areasIds != null && !areasIds.isEmpty())
-			query.setParameterList("areaIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areasIds, StandardBasicTypes.LONG);
 		if(cargosIds != null && !cargosIds.isEmpty())
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			query.setParameterList("cargosIds", cargosIds, StandardBasicTypes.LONG);
 		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
-			query.setParameterList("estabelecimentoIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		if(afastamentosIds != null && !afastamentosIds.isEmpty())
-			query.setParameterList("afastamentosIds", afastamentosIds, Hibernate.LONG);
+			query.setParameterList("afastamentosIds", afastamentosIds, StandardBasicTypes.LONG);
 		
 		Collection<Object[]> lista = query.list();
 		Collection<Absenteismo> absenteismos = new ArrayList<Absenteismo>();

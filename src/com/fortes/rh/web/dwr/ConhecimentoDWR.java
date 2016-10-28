@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class ConhecimentoDWR
 {
+	@Autowired
 	private ConhecimentoManager conhecimentoManager;
 
 	@SuppressWarnings("rawtypes")

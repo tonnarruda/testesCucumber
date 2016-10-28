@@ -16,6 +16,8 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -36,6 +38,7 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.DocX;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implements PcmatManager
 {
 	private EmpresaManager empresaManager;
@@ -47,6 +50,11 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 	private EpiPcmatManager epiPcmatManager;
 	private EpcPcmatManager epcPcmatManager;
 	private SinalizacaoPcmatManager sinalizacaoPcmatManager;
+	
+	@Autowired
+	PcmatManagerImpl(PcmatDao pcmatDao) {
+			setDao(pcmatDao);
+	}
 	
 	public Collection<Pcmat> findByObra(Long obraId) 
 	{

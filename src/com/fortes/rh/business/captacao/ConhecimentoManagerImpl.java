@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -20,11 +23,16 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
-public class ConhecimentoManagerImpl  extends GenericManagerImpl<Conhecimento, ConhecimentoDao> implements ConhecimentoManager
+@Component
+public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, ConhecimentoDao> implements ConhecimentoManager
 {
 	AreaOrganizacionalManager areaOrganizacionalManager;
-	
 	CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
+	
+	@Autowired
+	ConhecimentoManagerImpl(ConhecimentoDao conhecimentoDao) {
+		setDao(conhecimentoDao);
+	}
 
 	public Collection<Conhecimento> findByAreasOrganizacionalIds(Long[] areasOrganizacionais, Long empresaId)
 	{

@@ -9,6 +9,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -42,6 +45,7 @@ import com.fortes.rh.util.GerenciadorComunicacaoRunnable;
 import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, QuestionarioDao> implements QuestionarioManager
 {
     private PerguntaManager perguntaManager;
@@ -51,6 +55,11 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     private ColaboradorManager colaboradorManager;
     private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
+    @Autowired
+    QuestionarioManagerImpl(QuestionarioDao dao) {
+		setDao(dao);
+	}
+    
     public Questionario findByIdProjection(Long questionarioId)
     {
         return getDao().findByIdProjection(questionarioId);

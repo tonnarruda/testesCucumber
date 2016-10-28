@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -18,7 +17,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
@@ -33,8 +34,8 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
 
-
 @SuppressWarnings("unchecked")
+@Component
 public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetencia> implements ConfiguracaoNivelCompetenciaDao
 {
 	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data){
@@ -191,7 +192,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		p.add(Projections.property("nc.descricao"), "projectionNivelCompetenciaDescricao");
 		p.add(Projections.property("chn.ordem"), "nivelCompetenciaOrdemProjection");
 		p.add(Projections.property("cnc.competenciaId"), "competenciaId");
-		p.add(Projections.sqlProjection("(select nome from competencia where id = {alias}.competencia_id and {alias}.tipoCompetencia = tipo) as competenciaDescricao", new String[] {"competenciaDescricao"}, new Type[] {Hibernate.STRING}), "competenciaDescricao");
+		p.add(Projections.sqlProjection("(select nome from competencia where id = {alias}.competencia_id and {alias}.tipoCompetencia = tipo) as competenciaDescricao", new String[] {"competenciaDescricao"}, new Type[] {StandardBasicTypes.STRING}), "competenciaDescricao");
 		p.add(Projections.property("cnc.tipoCompetencia"), "tipoCompetencia");
 		return p;
 	}
@@ -308,7 +309,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		query.setLong("faixaSalarialColaboradorId", faixaSalarialColaboradorId);
 		
 		if (competenciaIds != null)
-			query.setParameterList("competenciasIds", competenciaIds, Hibernate.LONG);
+			query.setParameterList("competenciasIds", competenciaIds, StandardBasicTypes.LONG);
 		
 		if(dataIni != null)
 			query.setDate("dataIni", dataIni);
@@ -328,13 +329,12 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return lista;				
 	}
 	
-
 	public void removeByFaixas(Long[] faixaSalarialIds) 
 	{
 		String hql = "delete ConfiguracaoNivelCompetencia where faixaSalarial.id in (:faixaSalarialIds)";
 
 		Query query = getSession().createQuery(hql);
-		query.setParameterList("faixaSalarialIds", faixaSalarialIds, Hibernate.LONG);
+		query.setParameterList("faixaSalarialIds", faixaSalarialIds, StandardBasicTypes.LONG);
 		query.executeUpdate();
 	}
 
@@ -373,7 +373,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	private void removeDependenciasComConfiguracaoNivelCompetencia(Long[] faixaIds, String queryHQL)
 	{
 		Query query = getSession().createQuery(queryHQL);
-		query.setParameterList("faixaIds", faixaIds, Hibernate.LONG);
+		query.setParameterList("faixaIds", faixaIds, StandardBasicTypes.LONG);
 		query.executeUpdate();
 	}
 
@@ -506,10 +506,10 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 			query.setLong("empresaId", empresaId);
 		
 		if (areaIds != null && areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 		
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 		
 		Collection<Object[]> resultado = query.list();
 		Collection<ConfiguracaoNivelCompetencia> lista = new ArrayList<ConfiguracaoNivelCompetencia>();
@@ -549,7 +549,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		query.setLong("configuracaoNivelCompetenciaFaixaSalarialId", configuracaoNivelCompetenciaFaixaSalarialId);
 
 		if (competenciaIds != null)
-			query.setParameterList("competenciasIds", competenciaIds, Hibernate.LONG);
+			query.setParameterList("competenciasIds", competenciaIds, StandardBasicTypes.LONG);
 		
 		Collection<Object[]> resultado = query.list();
 		

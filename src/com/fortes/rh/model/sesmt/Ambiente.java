@@ -30,7 +30,7 @@ public class Ambiente extends AbstractModel implements Serializable
 	@ManyToOne
 	private Estabelecimento estabelecimento;
 
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="ambiente", cascade=CascadeType.REMOVE)
+	@OneToMany(mappedBy="ambiente", cascade=CascadeType.REMOVE)
 	private Collection<HistoricoAmbiente> historicoAmbientes;
 	
 	@OneToMany(mappedBy="ambiente")

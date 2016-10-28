@@ -3,6 +3,9 @@ package com.fortes.rh.business.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.TamanhoEPIDao;
 import com.fortes.rh.model.sesmt.TamanhoEPI;
@@ -10,7 +13,14 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class TamanhoEPIManagerImpl extends GenericManagerImpl<TamanhoEPI, TamanhoEPIDao> implements TamanhoEPIManager {
+	
+	@Autowired
+	TamanhoEPIManagerImpl(TamanhoEPIDao tamanhoEPIDao) {
+		setDao(tamanhoEPIDao);
+	}
+	
 	public Collection<CheckBox> populaCheckOrderDescricao(Long tipoEPIId) {
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
 		

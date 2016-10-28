@@ -4,10 +4,12 @@ import java.lang.reflect.Method;
 
 import org.springframework.aop.support.AopUtils;
 import org.springframework.aop.support.StaticMethodMatcherPointcutAdvisor;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManager;
 import com.fortes.security.auditoria.Audita;
 
+@Component
 @SuppressWarnings("serial")
 public class AuditoriaPointcut extends StaticMethodMatcherPointcutAdvisor {
 

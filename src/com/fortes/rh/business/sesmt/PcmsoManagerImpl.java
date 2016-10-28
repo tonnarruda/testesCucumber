@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -24,7 +26,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
-
+@Component
 public class PcmsoManagerImpl implements PcmsoManager
 {
 	private AgendaManager agendaManager;

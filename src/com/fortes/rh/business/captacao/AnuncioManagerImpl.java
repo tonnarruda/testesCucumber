@@ -5,6 +5,9 @@ import java.util.Collection;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -20,12 +23,18 @@ import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> implements AnuncioManager
 {
 	private EmpresaManager empresaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private EmpresaBdsManager empresaBdsManager;
 	private Mail mail;
+	
+	@Autowired
+	AnuncioManagerImpl(AnuncioDao anuncioDao) {
+		setDao(anuncioDao);
+	}
 
 	public Collection<CheckBox> getEmpresasCheck(Long empresaId) throws Exception
 	{

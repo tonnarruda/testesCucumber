@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Expression;
@@ -16,6 +15,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.EpiDao;
@@ -23,6 +24,7 @@ import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 @SuppressWarnings("unchecked")
 public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 {
@@ -124,7 +126,7 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		query.setLong("empresaId", empresaId);
 		
 		if(tipoEPIIds != null && tipoEPIIds.length > 0)
-			query.setParameterList("tipoEPIIds", tipoEPIIds, Hibernate.LONG);
+			query.setParameterList("tipoEPIIds", tipoEPIIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}

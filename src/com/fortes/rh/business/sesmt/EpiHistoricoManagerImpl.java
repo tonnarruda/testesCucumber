@@ -5,14 +5,23 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.EpiHistoricoDao;
 import com.fortes.rh.model.geral.relatorio.PppFatorRisco;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
 
+@Component
 public class EpiHistoricoManagerImpl extends GenericManagerImpl<EpiHistorico, EpiHistoricoDao> implements EpiHistoricoManager
 {
+	@Autowired
+	EpiHistoricoManagerImpl(EpiHistoricoDao epiHistoricoDao) {
+		setDao(epiHistoricoDao);
+	}
+	
 	public Collection<EpiHistorico> findByData(Date data,  Long empresaId)
 	{
 		Collection<EpiHistorico> epiHistoricosRetorno = new ArrayList<EpiHistorico>();

@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ExtintorInspecaoDao;
@@ -12,8 +14,14 @@ import com.fortes.rh.model.sesmt.ExtintorInspecaoItem;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 
+@Component
 public class ExtintorInspecaoManagerImpl extends GenericManagerImpl<ExtintorInspecao, ExtintorInspecaoDao> implements ExtintorInspecaoManager
 {
+	@Autowired
+	ExtintorInspecaoManagerImpl(ExtintorInspecaoDao extintorInspecaoDao) {
+			setDao(extintorInspecaoDao);
+	}
+	
 	public Collection<ExtintorInspecao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade, String localizacao)
 	{
 		Collection<ExtintorInspecao> consultaExtintorInpecao = getDao().findAllSelect(page, pagingSize, empresaId, estabelecimentoId, extintorId, inicio, fim, regularidade, localizacao); 

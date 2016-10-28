@@ -3,7 +3,7 @@ package com.fortes.rh.security.spring.aop;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.log4j.Logger;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.security.SecurityManager;
@@ -12,6 +12,7 @@ import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
 
+@Component
 public class AuditoriaGeralAdvice implements MethodInterceptor {
 
 	private static final Logger logger = Logger.getLogger(AuditoriaGeralAdvice.class);

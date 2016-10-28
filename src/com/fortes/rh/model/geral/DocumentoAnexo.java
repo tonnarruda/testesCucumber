@@ -30,7 +30,6 @@ public class DocumentoAnexo extends AbstractModel implements Serializable
     private Date data;
     @ManyToOne
     private TipoDocumento tipoDocumento;
-	@Lob
 	private String observacao;
 	@Column(length=120)
 	private String url;

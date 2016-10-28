@@ -22,7 +22,7 @@ public class Perfil extends AbstractModel implements Serializable, Cloneable
 {
 	@Column(length=100)
 	private String nome;
-	@ManyToMany(fetch=FetchType.EAGER, targetEntity=Papel.class)
+	@ManyToMany(targetEntity=Papel.class)
 	@OrderBy("ordem")
 	private Collection<Papel> papeis;
 	@Transient

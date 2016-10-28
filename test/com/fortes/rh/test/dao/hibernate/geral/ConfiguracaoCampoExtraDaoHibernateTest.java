@@ -2,7 +2,7 @@ package com.fortes.rh.test.dao.hibernate.geral;
 
 import java.util.Collection;
 
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.ConfiguracaoCampoExtraDao;

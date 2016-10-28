@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -14,12 +13,15 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.HistoricoExtintorDao;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.HistoricoExtintor;
 
+@Component
 @SuppressWarnings("unchecked")
 public class HistoricoExtintorDaoHibernate extends GenericDaoHibernate<HistoricoExtintor> implements HistoricoExtintorDao
 {
@@ -113,7 +115,7 @@ public class HistoricoExtintorDaoHibernate extends GenericDaoHibernate<Historico
 		criteria.add(Subqueries.propertyEq("he.data", subQuery));
 
 		if(localizacao != null && !localizacao.equals(""))
-			criteria.add(Restrictions.sqlRestriction("normalizar(he1_.localizacao) ilike  normalizar(?)", "%" + localizacao.trim() + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar(he1_.localizacao) ilike  normalizar(?)", "%" + localizacao.trim() + "%", StandardBasicTypes.STRING));
 
 		if(extintorTipo != null && !extintorTipo.equals(""))
 			criteria.add(Expression.eq("e.tipo", extintorTipo));

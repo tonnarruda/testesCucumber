@@ -2,12 +2,14 @@ package com.fortes.rh.dao.hibernate.geral;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.geral.MensagemDao;
 import com.fortes.rh.model.geral.Mensagem;
 
+@Component
 public class MensagemDaoHibernate extends GenericDaoHibernate<Mensagem> implements MensagemDao
 {
 	public void removeMensagensColaborador(Long colaboradorId, Character tipo) 

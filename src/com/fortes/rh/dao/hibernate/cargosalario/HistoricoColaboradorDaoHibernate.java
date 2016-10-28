@@ -11,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -23,6 +22,8 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
@@ -37,6 +38,7 @@ import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 
+@Component
 @SuppressWarnings("unchecked")
 public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<HistoricoColaborador> implements HistoricoColaboradorDao
 {
@@ -348,12 +350,12 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		
 		
 		Query query = getSession().createSQLQuery(sql.toString());
-		query.setParameterList("empresaIds", empresasIds, Hibernate.LONG);
+		query.setParameterList("empresaIds", empresasIds, StandardBasicTypes.LONG);
 		
 		if(areaIds != null && areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		if (dataIni != null)
 			query.setDate("dataIni", dataIni);
 		if (dataFim != null)
@@ -533,15 +535,15 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		if(filtrarPor == '1' && areaOrganizacionalIds.length > 0)//Area Organizacional
 		{
-			query.setParameterList("areaIds", areaOrganizacionalIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaOrganizacionalIds, StandardBasicTypes.LONG);
 		}
 		else if(filtrarPor == '2' && grupoOcupacionalIds.length > 0)//Grupo Ocupacional
 		{
-			query.setParameterList("grupoIds", grupoOcupacionalIds, Hibernate.LONG);
+			query.setParameterList("grupoIds", grupoOcupacionalIds, StandardBasicTypes.LONG);
 		}
 
 		if(estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
@@ -1021,13 +1023,13 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		if(cargoIds != null && cargoIds.length > 0)
-			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+			query.setParameterList("cargoIds", cargoIds, StandardBasicTypes.LONG);
 
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 		
 		if(areaOrganizacionalIds != null && areaOrganizacionalIds.length>0)
-			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
+			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, StandardBasicTypes.LONG);
 		
 		if(dataAtualizacao != null)
 			query.setDate("dataAtualizacao", dataAtualizacao);
@@ -1120,10 +1122,10 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setDate("data", new Date());
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
-		query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		
 		if (areasIds != null && areasIds.length > 0)
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		
 		if (StringUtils.isNotBlank(origemSituacao) && !origemSituacao.equals("T"))
 			query.setString("motivo", MotivoHistoricoColaborador.IMPORTADO);
@@ -1361,7 +1363,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 			String hql = "delete HistoricoColaborador where colaborador.id in (:colaboradorIds)";
 			Query query = getSession().createQuery(hql);
 	
-			query.setParameterList("colaboradorIds", colaboradorIds, Hibernate.LONG);
+			query.setParameterList("colaboradorIds", colaboradorIds, StandardBasicTypes.LONG);
 			query.executeUpdate();		
 		}
 	}
@@ -1414,19 +1416,19 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		if(cargoIds != null && cargoIds.length > 0)
-			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+			query.setParameterList("cargoIds", cargoIds, StandardBasicTypes.LONG);
 
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, StandardBasicTypes.LONG);
 		
 		if(areasAtivas != null)
 			query.setBoolean("areasAtivas", areasAtivas);
 
 		if(areaIds != null && areaIds.length>0)
-			query.setParameterList("areaOrganizacionalIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaOrganizacionalIds", areaIds, StandardBasicTypes.LONG);
 		
 		if(grupoOcupacionalIds != null && grupoOcupacionalIds.length>0)
-			query.setParameterList("grupoOcupacionalIds", grupoOcupacionalIds, Hibernate.LONG);
+			query.setParameterList("grupoOcupacionalIds", grupoOcupacionalIds, StandardBasicTypes.LONG);
 
 		query.setParameterList("empresaIds", empresaIds);
 

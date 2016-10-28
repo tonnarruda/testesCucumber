@@ -164,7 +164,7 @@ public abstract class MyActionSupport extends ActionSupport
 		
 		if (session.get(Noticia.ULTIMAS_NOTICIAS) == null)
 		{
-			NoticiaManager noticiaManager = (NoticiaManager) SpringUtil.getBean("noticiaManager");
+			NoticiaManager noticiaManager = (NoticiaManager) SpringUtil.getBean("noticiaManagerImpl");
 			noticiaManager.carregarUltimasNoticias(getUsuarioLogado().getId()); 
 		}
 			

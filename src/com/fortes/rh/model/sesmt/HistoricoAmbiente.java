@@ -26,7 +26,6 @@ public class HistoricoAmbiente extends AbstractModel implements Serializable
 {
 	@ManyToOne
 	private Ambiente ambiente;
-	@Lob
 	private String descricao;
 	@Temporal(TemporalType.DATE)
 	private Date data;
@@ -36,10 +35,10 @@ public class HistoricoAmbiente extends AbstractModel implements Serializable
 	@Column(length=40)
 	private String tempoExposicao;
 	
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany
     private Collection<Epc> epcs;
 	
-	@OneToMany(mappedBy="historicoAmbiente", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="historicoAmbiente", cascade=CascadeType.ALL)
 	private Collection<RiscoAmbiente> riscoAmbientes;
 	
 	@Transient

@@ -1,11 +1,13 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
 import org.hibernate.Query;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.TipoTamanhoEPIDao;
 import com.fortes.rh.model.sesmt.TipoTamanhoEPI;
 
+@Component
 public class TipoTamanhoEPIDaoHibernate extends GenericDaoHibernate<TipoTamanhoEPI> implements TipoTamanhoEPIDao
 {
 	public void removeByTipoEPI(Long tipoEPIId) {

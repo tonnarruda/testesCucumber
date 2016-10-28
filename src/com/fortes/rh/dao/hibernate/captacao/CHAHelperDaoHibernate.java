@@ -6,10 +6,11 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.model.AbstractModel;
 
-
+@Component
 public class CHAHelperDaoHibernate {
 	
 	public static Criteria montafindByIdProjection(Long Id, Session session, Class<? extends AbstractModel> entity)

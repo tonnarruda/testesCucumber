@@ -1,223 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-
-<beans>
-	<bean id="avaliacaoDesempenhoDWR" class="com.fortes.rh.web.dwr.AvaliacaoDesempenhoDWR">
-		<property name="avaliacaoDesempenhoManager" ref="avaliacaoDesempenhoManager"/>
-		<property name="colaboradorManager" ref="colaboradorManager"/>
-		<property name="configuracaoCompetenciaAvaliacaoDesempenhoManager" ref="configuracaoCompetenciaAvaliacaoDesempenhoManager"/>
-		<property name="configuracaoNivelCompetenciaColaboradorManager" ref="configuracaoNivelCompetenciaColaboradorManager"/>
-	</bean>
-
-	<bean id="reajusteDWR" class="com.fortes.rh.web.dwr.ReajusteDWR">
-		<property name="colaboradorManager" ref="colaboradorManager"/>
-		<property name="faixaSalarialManager" ref="faixaSalarialManager"/>
-		<property name="indiceManager" ref="indiceManager"/>
-		<property name="historicoColaboradorManager" ref="historicoColaboradorManager"/>
-		<property name="tabelaReajusteColaboradorManager" ref="tabelaReajusteColaboradorManager"/>
-		<property name="reajusteColaboradorManager" ref="reajusteColaboradorManager"/>
-		<property name="reajusteFaixaSalarialManager" ref="reajusteFaixaSalarialManager"/>
-		<property name="reajusteIndiceManager" ref="reajusteIndiceManager"/>
-	</bean>
-	
-	<bean id="enderecoDWR" class="com.fortes.rh.web.dwr.EnderecoDWR">
-	</bean>
-	
-	<bean id="cargoDWR" class="com.fortes.rh.web.dwr.CargoDWR">
-		<property name="cargoManager" ref="cargoManager"/>
-	</bean>
-	
-	<bean id="competenciaDWR" class="com.fortes.rh.web.dwr.CompetenciaDWR">
-		<property name="configuracaoNivelCompetenciaManager" ref="configuracaoNivelCompetenciaManager"/>
-	</bean>
-	<bean id="grupoOcupacionalDWR" class="com.fortes.rh.web.dwr.GrupoOcupacionalDWR">
-		<property name="grupoOcupacionalManager" ref="grupoOcupacionalManager"/>
-	</bean>
-	<bean id="historicoCandidatoDWR" class="com.fortes.rh.web.dwr.HistoricoCandidatoDWR">
-		<property name="candidatoSolicitacaoManager" ref="candidatoSolicitacaoManager"/>
-		<property name="historicoCandidatoManager" ref="historicoCandidatoManager"/>
-	</bean>
-	<bean id="funcaoDWR" class="com.fortes.rh.web.dwr.FuncaoDWR">
-		<property name="funcaoManager" ref="funcaoManager"/>
-	</bean>
-	<bean id="ambienteDWR" class="com.fortes.rh.web.dwr.AmbienteDWR">
-		<property name="ambienteManager" ref="ambienteManager"/>
-	</bean>
-	<bean id="areaOrganizacionalDWR" class="com.fortes.rh.web.dwr.AreaOrganizacionalDWR">
-		<property name="areaOrganizacionalManager" ref="areaOrganizacionalManager"/>
-		<property name="usuarioEmpresaManager" ref="usuarioEmpresaManager"/>
-	</bean>
-	<bean id="colaboradorTurmaDWR" class="com.fortes.rh.web.dwr.ColaboradorTurmaDWR">
-		<property name="colaboradorTurmaManager" ref="colaboradorTurmaManager"/>
-	</bean>
-	<bean id="ocorrenciaDWR" class="com.fortes.rh.web.dwr.OcorrenciaDWR">
-		<property name="ocorrenciaManager" ref="ocorrenciaManager"/>
-	</bean>
-	<bean id="listaPresencaDWR" class="com.fortes.rh.web.dwr.ListaPresencaDWR">
-		<property name="colaboradorPresencaManager" ref="colaboradorPresencaManager"/>
-	</bean>
-	<bean id="diaTurmaDWR" class="com.fortes.rh.web.dwr.DiaTurmaDWR">
-		<property name="diaTurmaManager" ref="diaTurmaManager"/>
-		<property name="turmaManager" ref="turmaManager"/>
-	</bean>
-	<bean id="turmaDWR" class="com.fortes.rh.web.dwr.TurmaDWR">
-		<property name="turmaManager" ref="turmaManager"/>
-		<property name="diaTurmaManager" ref="diaTurmaManager"/>
-		<property name="avaliacaoTurmaManager" ref="avaliacaoTurmaManager"/>
-		<property name="turmaAvaliacaoTurmaManager" ref="turmaAvaliacaoTurmaManager"/>
-		<property name="gerenciadorComunicacaoManager" ref="gerenciadorComunicacaoManager"/>
-		<property name="turmaTipoDespesaManager" ref="turmaTipoDespesaManager"/>
-	</bean>
-	<bean id="participanteCursoLntDWR" class="com.fortes.rh.web.dwr.ParticipanteCursoLntDWR">
-		<property name="participanteCursoLntManager" ref="participanteCursoLntManager"/>
-		<property name="colaboradorTurmaManager" ref="colaboradorTurmaManager"/>
-	</bean>
-	<bean id="cursoDWR" class="com.fortes.rh.web.dwr.CursoDWR">
-		<property name="cursoManager" ref="cursoManager"/>
-		<property name="empresaManager" ref="empresaManager"/>
-		<property name="avaliacaoCursoManager" ref="avaliacaoCursoManager"/>
-		<property name="documentoAnexoManager" ref="documentoAnexoManager"/>
-	</bean>
-	<bean id="pessoaDWR" class="com.fortes.rh.web.dwr.PessoaDWR">
-		<property name="candidatoManager" ref="candidatoManager"/>
-		<property name="colaboradorManager" ref="colaboradorManager"/>
-	</bean>
-	<bean id="colaboradorDWR" class="com.fortes.rh.web.dwr.ColaboradorDWR">
-		<property name="configuracaoRelatorioDinamicoManager" ref="configuracaoRelatorioDinamicoManager"/>
-		<property name="historicoColaboradorManager" ref="historicoColaboradorManager"/>
-		<property name="colaboradorManager" ref="colaboradorManager"/>
-		<property name="solicitacaoManager" ref="solicitacaoManager"/>
-		<property name="empresaManager" ref="empresaManager"/>
-		<property name="usuarioManager" ref="usuarioManager"/>
-		<property name="areaOrganizacionalManager" ref="areaOrganizacionalManager"/>
-		<property name="usuarioEmpresaManager" ref="usuarioEmpresaManager"/>
-	</bean>
-	<bean id="candidatoDWR" class="com.fortes.rh.web.dwr.CandidatoDWR">
-		<property name="candidatoManager" ref="candidatoManager"/>
-		<property name="conhecimentoManager" ref="conhecimentoManager"/>
-		<property name="colaboradorManager" ref="colaboradorManager"/>
-		<property name="solicitacaoManager" ref="solicitacaoManager"/>
-	</bean>
-	<bean id="solicitacaoDWR" class="com.fortes.rh.web.dwr.SolicitacaoDWR">
-		<property name="solicitacaoManager" ref="solicitacaoManager"/>
-		<property name="solicitacaoAvaliacaoManager" ref="solicitacaoAvaliacaoManager"/>
-		<property name="anuncioManager" ref="anuncioManager"/>
-	</bean>
-	<bean id="conhecimentoDWR" class="com.fortes.rh.web.dwr.ConhecimentoDWR">
-		<property name="conhecimentoManager" ref="conhecimentoManager"/>
-	</bean>
-	<bean id="habilidadeDWR" class="com.fortes.rh.web.dwr.HabilidadeDWR">
-		<property name="habilidadeManager" ref="habilidadeManager"/>
-	</bean>
-	<bean id="atitudeDWR" class="com.fortes.rh.web.dwr.AtitudeDWR">
-		<property name="atitudeManager" ref="atitudeManager"/>
-	</bean>
-	<bean id="cidadeDWR" class="com.fortes.rh.web.dwr.CidadeDWR">
-		<property name="cidadeManager" ref="cidadeManager"/>
-	</bean>
-	<bean id="dntDWR" class="com.fortes.rh.web.dwr.DntDWR">
-		<property name="turmaManager" ref="turmaManager"/>
-	</bean>
-	<bean id="configuracaoPerformanceDWR" class="com.fortes.rh.web.dwr.ConfiguracaoPerformanceDWR">
-		<property name="configuracaoPerformanceManager" ref="configuracaoPerformanceManager"/>
-	</bean>
-	<bean id="riscosDWR" class="com.fortes.rh.web.dwr.RiscosDWR">
-		<property name="riscoManager" ref="riscoManager"/>
-	</bean>
-	<bean id="bairroDWR" class="com.fortes.rh.web.dwr.BairroDWR">
-		<property name="bairroManager" ref="bairroManager"/>
-	</bean>
-	<bean id="estabelecimentoDWR" class="com.fortes.rh.web.dwr.EstabelecimentoDWR">
-		<property name="estabelecimentoManager" ref="estabelecimentoManager"/>
-	</bean>
-	<bean id="aspectoDWR" class="com.fortes.rh.web.dwr.AspectoDWR">
-		<property name="aspectoManager" ref="aspectoManager"/>
-	</bean>
-	<bean id="perguntaDWR" class="com.fortes.rh.web.dwr.PerguntaDWR">
-		<property name="perguntaManager" ref="perguntaManager"/>
-	</bean>
-	<bean id="faixaSalarialDWR" class="com.fortes.rh.web.dwr.FaixaSalarialDWR">
-		<property name="faixaSalarialManager" ref="faixaSalarialManager"/>
-	</bean>
-	<bean id="usuarioMensagemDWR" class="com.fortes.rh.web.dwr.UsuarioMensagemDWR">
-		<property name="usuarioMensagemManager" ref="usuarioMensagemManager"/>
-	</bean>
-	<bean id="usuarioDWR" class="com.fortes.rh.web.dwr.UsuarioDWR">
-		<property name="usuarioManager" ref="usuarioManager"/>
-	</bean>
-	<bean id="etapaProcessoEleitoralDWR" class="com.fortes.rh.web.dwr.EtapaProcessoEleitoralDWR">
-		<property name="etapaProcessoEleitoralManager" ref="etapaProcessoEleitoralManager"/>
-	</bean>
-	<bean id="comissaoReuniaoDWR" class="com.fortes.rh.web.dwr.ComissaoReuniaoDWR">
-		<property name="comissaoReuniaoManager" ref="comissaoReuniaoManager"/>
-		<property name="comissaoManager" ref="comissaoManager"/>
-		<property name="comissaoReuniaoPresencaManager" ref="comissaoReuniaoPresencaManager"/>
-	</bean>
-	<bean id="comissaoPlanoTrabalhoDWR" class="com.fortes.rh.web.dwr.ComissaoPlanoTrabalhoDWR">
-		<property name="comissaoPlanoTrabalhoManager" ref="comissaoPlanoTrabalhoManager"/>
-	</bean>
-	<bean id="comissaoPeriodoDWR" class="com.fortes.rh.web.dwr.ComissaoPeriodoDWR">
-		<property name="comissaoPeriodoManager" ref="comissaoPeriodoManager"/>
-	</bean>
-	<bean id="comissaoDWR" class="com.fortes.rh.web.dwr.ComissaoDWR">
-		<property name="comissaoMembroManager" ref="comissaoMembroManager"/>
-	</bean>
-	<bean id="afastamentoDWR" class="com.fortes.rh.web.dwr.AfastamentoDWR">
-		<property name="afastamentoManager" ref="afastamentoManager"/>
-	</bean>
-	<bean id="extintorDWR" class="com.fortes.rh.web.dwr.ExtintorDWR">
-		<property name="extintorManager" ref="extintorManager"/>
-	</bean>
-	<bean id="riscoAmbienteDWR" class="com.fortes.rh.web.dwr.RiscoAmbienteDWR">
-		<property name="riscoAmbienteManager" ref="riscoAmbienteManager"/>
-	</bean>
-	<bean id="solicitacaoExameDWR" class="com.fortes.rh.web.dwr.SolicitacaoExameDWR">
-		<property name="exameSolicitacaoExameManager" ref="exameSolicitacaoExameManager"/>
-		<property name="realizacaoExameManager" ref="realizacaoExameManager"/>
-		<property name="solicitacaoExameManager" ref="solicitacaoExameManager"/>
-		<property name="transactionManager" ref="transactionManager"/>
-	</bean>
-	<bean id="utilDWR" class="com.fortes.rh.web.dwr.UtilDWR">
-		<property name="grupoACManager" ref="grupoACManager"/>
-		<property name="mail" ref="mail"/>
-		<property name="acPessoalClient" ref="acPessoalClient"/>
-		<property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
-	</bean>
-	<bean id="gerenciadorComunicacaoDWR" class="com.fortes.rh.web.dwr.GerenciadorComunicacaoDWR">
-	</bean>
-	<bean id="morroDWR" class="com.fortes.rh.web.dwr.MorroDWR">
-	  	<property name="morroManager" ref="morroManager" />
-	  	<property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
-	</bean>
-	<bean id="empresaDWR" class="com.fortes.rh.web.dwr.EmpresaDWR">
-		<property name="empresaManager" ref="empresaManager"/>
-	</bean>
-	<bean id="solicitacaoEpiDWR" class="com.fortes.rh.web.dwr.SolicitacaoEpiDWR">
-		<property name="solicitacaoEpiManager" ref="solicitacaoEpiManager"/>
-	</bean>
-	<bean id="colaboradorQuestionarioDWR" class="com.fortes.rh.web.dwr.ColaboradorQuestionarioDWR">
-		<property name="colaboradorQuestionarioManager" ref="colaboradorQuestionarioManager"/>
-	</bean>
-	<bean id="nivelCompetenciaDWR" class="com.fortes.rh.web.dwr.NivelCompetenciaDWR">
-		<property name="configuracaoNivelCompetenciaManager" ref="configuracaoNivelCompetenciaManager"/>
-		<property name="nivelCompetenciaManager" ref="nivelCompetenciaManager"/>
-		<property name="criterioAvaliacaoCompetenciaManager" ref="criterioAvaliacaoCompetenciaManager"/>
-		<property name="configuracaoNivelCompetenciaFaixaSalarialManager" ref="configuracaoNivelCompetenciaFaixaSalarialManager"/>
-	</bean>
-	<bean id="certificacaoDWR" class="com.fortes.rh.web.dwr.CertificacaoDWR">
-		<property name="colaboradorCertificacaoManager" ref="colaboradorCertificacaoManager"/>
-	</bean>
-	<bean id="colaboradorAvaliacaoPraticaDWR" class="com.fortes.rh.web.dwr.ColaboradorAvaliacaoPraticaDWR">
-		<property name="colaboradorCertificacaoManager" ref="colaboradorCertificacaoManager"/>
-		<property name="colaboradorAvaliacaoPraticaManager" ref="colaboradorAvaliacaoPraticaManager"/>
-	</bean>
-	<bean id="ordemDeServicoDWR" class="com.fortes.rh.web.dwr.OrdemDeServicoDWR">
-		<property name="ordemDeServicoManager" ref="ordemDeServicoManager"/>
-		<property name="empresaManager" ref="empresaManager"/>
-		<property name="historicoColaboradorManager" ref="historicoColaboradorManager"/>
-	</bean>
-	<bean id="lntDWR" class="com.fortes.rh.web.dwr.LntDWR">
-		<property name="participanteCursoLntManager" ref="participanteCursoLntManager"/>
-		<property name="lntManager" ref="lntManager"/>
-	</bean>		
+<beans xmlns="http://www.springframework.org/schema/beans"
+ 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 	xmlns:context="http://www.springframework.org/schema/context"
+ 	xmlns:p="http://www.springframework.org/schema/p"
+ 	xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+  						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  						http://www.directwebremoting.org/schema/spring-dwr
+      					http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd">
+ 
+ <!-- DWR will scan all Spring managed beans containing @RemoteProxy or 
+  @RemoteMethod annotations and register Creator proxies for them. 
+  This will NOT scan any classes not managed by Spring. -->
+ <dwr:annotation-config />
+ 
+ <!-- DWR will scan the classpath and search classes containing @RemoteProxy or 
+  @RemoteMethod annotations. This will register the beans and Creator proxies for these classes.-->
+ <dwr:annotation-scan base-package="org.krams.tutorial" scanDataTransferObject="true" scanRemoteProxy="true" />
+ 
+ <!-- DWR will map util.js and engine.js files to the dwrController.
+  You can then include this files as external Javascript references from your JSP -->
+ <dwr:url-mapping />
+ 
+ <!-- Defines the dwrController. During production, set the debug property to false -->
+ <dwr:controller id="dwr" debug="true" />
+ 
+ <!-- This is required if you want to configure any beans not managed by
+  Spring. Leaving it enabled doesn't do any negative effects. Here's a
+  sample config: 
+  <dwr:configuration> 
+   <dwr:convert type="bean" class="org.krams.tutorial.CustomClass" /> 
+  </dwr:configuration> -->
+ <dwr:configuration />
+ 
+ 
+ <!-- Some articles 
+  DWR 2.0.x, Spring 2.x, with Spring MVC
+  http://www.butterdev.com/dwr/2008/02/dwr-20x-spring-2x-with-spring-mvc/ -->
 </beans>
