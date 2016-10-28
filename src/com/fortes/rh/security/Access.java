@@ -53,7 +53,7 @@ public class Access {
 			if(enderecoMac == null)
 				return false;
 			
-			return hashMD5(enderecoMac + " - " + password).equals(sysPassword);
+			return hashMD5(enderecoMac.toLowerCase() + " - " + password).equals(sysPassword);
 		}
 		
 		return false;

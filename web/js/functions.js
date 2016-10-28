@@ -1007,7 +1007,7 @@ function verificaCpfDuplicado(valorCpf, empresaId, isModuloExterno, id, isCandid
 					}
 					else
 					{
-						link = (isCandidato ? "listColaborador.action?cpfBusca=" : "list.action?cpfBusca=") + valorCpf;
+						link = (isCandidato ? "../../geral/colaborador/list.action?cpfBusca=" : "list.action?cpfBusca=") + valorCpf;
 						msg += "Colaborador: <br /><a href='" + link + "'>" + pessoa.nome + "</a><br /><br />";
 					}
 				}

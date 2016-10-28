@@ -45,7 +45,7 @@
 		
 		function sosNumber(){
 			var sosNumero = Math.floor((Math.random() * 10)).toString() + Math.floor((Math.random() * 10)).toString() + Math.floor((Math.random() * 10)).toString() + Math.floor((Math.random() * 10)).toString();
-			$('#senha').text("Senha (" + sosNumero + "):");
+			$('#senha').text("Contra Senha (" + sosNumero + "):");
 			$('#SOSSeed').val(sosNumero);
 		}
 		
