@@ -55,14 +55,15 @@
 		.buttonGroupFixed button { margin: 5px 0px; }
 		#topDiv, #menuDropDown { min-width: 1070px; }
 		
-		@media screen and (max-width: 1200px) {
-		    .a2a_floating_style.a2a_vertical_style {
-		    	position: absolute;
-			    top: 16px !important;
-			    right: -60px !important;
-			    left: initial !important;
-			    margin-left: 0 !important;
-			    margin-top: 0 !important;
+		@media (max-width: 1150px) {
+		    .box_icones {
+		    	margin-left: 1005px;
+		    	position: absolute !important;
+		    }
+		}
+		@media (min-width: 1150px) {
+		    .box_icones {
+		    	margin-left: calc((1000px + (100% - 1000px)/2) - 60px);
 		    }
 		}
 	</style>
@@ -111,8 +112,8 @@
 	
 	<div style="clear: both"></div>
 	<div id="waDiv">
-	 	<div style="position:fixed">	
-			<div id="icones" style="top: 30px;margin-left: 1365px; margin-top:-16px; width: 33px; background: white; border-radius: 5px;padding: 10px;position: absolute;">
+	 	<div style="position:fixed;" class="box_icones">	
+			<div id="icones" style="top: 30px; margin-top:-16px; width: 33px; background: white; border-radius: 5px;padding: 10px;position: absolute;" class="icones">
 		        <#if parametrosDoSistemaSession.codEmpresaSuporte?exists && parametrosDoSistemaSession.codClienteSuporte?exists && parametrosDoSistemaSession.codClienteSuporte != "" && parametrosDoSistemaSession.codClienteSuporte != "">
 		        	<a href="http://chatonline.grupofortes.com.br/cliente/MATRIZ/${parametrosDoSistemaSession.codClienteSuporte}/${parametrosDoSistemaSession.codEmpresaSuporte}" target="_blank" title="Fortes Chat"><img src="<@ww.url includeParams="none" value="/imgs/chat_fortes.png"/>" class="icon" onmouseover="this.style='opacity: 0.6;display: block; padding: 4px;'" onmouseout="this.style='opacity: 1;display: block; padding: 4px;'" style="display: block; padding: 4px;"/></a>
 		        </#if>
