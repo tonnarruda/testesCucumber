@@ -362,7 +362,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 			hql.append("and co.ocorrencia.id in (:ocorrenciaIds) ");
 		
 		hql.append("and co.dataIni <= :dataFim ");
-		hql.append("and co.dataFim >= :dataIni ");
+		hql.append("and (co.dataFim >= :dataIni or co.dataIni >= :dataIni)");
 		
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			hql.append("and o.empresa.id in (:empresaIds) ");
@@ -402,7 +402,6 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		}
 		else
 			query.setParameterList("colaboradorIds", colaboradorIds, Hibernate.LONG);
-		
 			
 		if(!ocorrenciaIds.isEmpty())
 			query.setParameterList("ocorrenciaIds", ocorrenciaIds, Hibernate.LONG);
