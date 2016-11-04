@@ -20,8 +20,10 @@ import com.fortes.model.AbstractModel;
 @SequenceGenerator(name="sequence", sequenceName="riscomedicaorisco_sequence", allocationSize=1)
 public class RiscoMedicaoRisco extends AbstractModel implements Serializable
 {
+	@Lob
 	private String descricaoPpra = "";
 	
+	@Lob
 	private String descricaoLtcat = "";
 	
 	@Column(length=100)

@@ -81,8 +81,10 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	@NaoAudita
 	private boolean blackList = false;
     private boolean contratado = false;
-	private String observacao;
+    @Lob
+    private String observacao;
     @NaoAudita
+    @Lob
     private String observacaoBlackList;
     private String cursos;
     @Temporal(TemporalType.DATE)
@@ -115,8 +117,11 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	@OneToOne (mappedBy="candidato", fetch = FetchType.LAZY)
 	private Colaborador colaborador;
 
+	@Lob
 	private String ocrTexto;
+	@Lob
 	private String observacaoRH;
+	@Lob
 	private String examePalografico;
 	
 	@Transient

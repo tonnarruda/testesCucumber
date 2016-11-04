@@ -24,9 +24,13 @@ public class Cliente extends AbstractModel implements Serializable
 	private String versao;
 	@Temporal(TemporalType.DATE)
 	private Date dataAtualizacao;
+	@Lob
 	private String modulosAdquiridos;
+	@Lob
 	private String contatoGeral;
+	@Lob
 	private String contatoTI;
+	@Lob
 	private String observacao;
 	
 	

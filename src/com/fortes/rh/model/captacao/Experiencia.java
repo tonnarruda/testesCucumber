@@ -35,6 +35,7 @@ public class Experiencia extends AbstractModel implements Serializable
 	private Date dataAdmissao;
 	@Temporal(TemporalType.DATE)
 	private Date dataDesligamento;
+	@Lob
 	private String observacao;
 	@Column(length=100)
 	private String nomeMercado;

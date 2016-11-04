@@ -67,7 +67,9 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	private String horarioComercial = "";
 	@Column(length=5)
 	private String sexo;
+	@Lob
 	private String infoComplementares;
+	@Lob
 	private String observacaoLiberador;
 	private boolean encerrada;
 	private char status = StatusAprovacaoSolicitacao.ANALISE;
@@ -106,6 +108,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	
 	private boolean suspensa;
 	
+	@Lob
 	private String obsSuspensao;
 	
 	@OneToMany (mappedBy="solicitacao", fetch=FetchType.LAZY)

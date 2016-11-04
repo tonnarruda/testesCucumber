@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -24,6 +23,7 @@ public class AreaInteresse extends AbstractModel implements Serializable
 {
 	@Column(length=100)
 	private String nome;
+	@Lob
 	private String observacao;
 	@ManyToMany(targetEntity=AreaOrganizacional.class)
 	private Collection<AreaOrganizacional> areasOrganizacionais;

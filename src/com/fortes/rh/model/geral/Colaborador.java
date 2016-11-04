@@ -75,6 +75,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private String nome;
 	@Column(length=30)
 	private String nomeComercial;
+	@Lob
 	private String observacao;
 	@Temporal(TemporalType.DATE)
 	private Date dataAdmissao;
@@ -88,6 +89,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Date dataSolicitacaoDesligamentoAc;
 	@ManyToOne
 	private MotivoDemissao motivoDemissao;
+	@Lob
 	private String observacaoDemissao;
 	@ManyToOne
 	private Colaborador solicitanteDemissao;
@@ -113,6 +115,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Collection<Dependente> dependentes;
 	@Column(length=12)
 	private String codigoAC;
+	@Lob
     private String cursos;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<Formacao> formacao;

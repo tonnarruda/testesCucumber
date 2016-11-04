@@ -26,6 +26,7 @@ public class Competencia
 	private String nome;
 	@ManyToOne
 	private Empresa empresa;
+	@Lob
 	private String observacao;
 	private Character tipo;
 

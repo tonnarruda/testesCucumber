@@ -31,6 +31,7 @@ public class ColaboradorResposta extends AbstractModel implements Serializable
     private Pergunta pergunta;
     @ManyToOne
     private Resposta resposta;
+    @Lob
     private String comentario;
     private Integer valor;
     @ManyToOne

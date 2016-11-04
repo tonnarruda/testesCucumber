@@ -6,7 +6,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -35,6 +34,7 @@ public class TabelaReajusteColaborador extends AbstractModel implements Serializ
     private String nome;
     @Temporal(TemporalType.DATE)
     private Date data;
+    @Lob
     private String observacao;
     private boolean aprovada;
     @ManyToOne

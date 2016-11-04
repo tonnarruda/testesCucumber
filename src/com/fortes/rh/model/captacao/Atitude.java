@@ -29,6 +29,7 @@ public class Atitude extends AbstractModel implements Serializable {
 	private String nome;
 	@ManyToOne
 	private Empresa empresa;
+	@Lob
 	private String observacao;
 	
 	@ManyToMany

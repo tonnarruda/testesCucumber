@@ -24,6 +24,7 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
     private Date dataIni;
 	@Temporal(TemporalType.DATE)
     private Date dataFim;
+	@Lob
     private String observacao;
 
     @ManyToOne(fetch=FetchType.LAZY)

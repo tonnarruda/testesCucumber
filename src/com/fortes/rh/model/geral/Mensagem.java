@@ -37,6 +37,7 @@ public class Mensagem extends AbstractModel implements Serializable
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 
+	@Lob
 	private String texto;
 
 	public String getRemetente()

@@ -29,7 +29,6 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
     private Date data;
 	@Transient
 	private Date dataProximoHistorico;
-	
 	@Lob
     private String descricao;
     @ManyToOne

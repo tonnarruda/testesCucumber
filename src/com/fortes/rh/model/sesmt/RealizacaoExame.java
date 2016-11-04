@@ -1,6 +1,5 @@
 package com.fortes.rh.model.sesmt;
 
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.TemporalType.DATE;
 
 import java.io.Serializable;
@@ -23,6 +22,7 @@ public class RealizacaoExame extends AbstractModel implements Serializable
 {
     @Temporal(DATE)
     private Date data;
+    @Lob
     private String observacao;
 
     @OneToOne(mappedBy="realizacaoExame")

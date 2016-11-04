@@ -36,7 +36,9 @@ public class CamposExtras extends AbstractModel implements Serializable
 	private String texto7;
 	@Column(length=250)
 	private String texto8;
+	@Lob
 	private String textolongo1;
+	@Lob
 	private String textolongo2;
 	@Temporal(TemporalType.DATE)
     private Date data1;

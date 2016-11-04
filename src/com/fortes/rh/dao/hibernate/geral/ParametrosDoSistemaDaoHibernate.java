@@ -81,13 +81,6 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ParametrosDoSistema.class));
 
 		return (ParametrosDoSistema) criteria.add(Expression.eq("ps.id", id)).uniqueResult();
-		
-//		StringBuilder hql = new StringBuilder();
-//		hql.append("select ps.id as id, ps.appVersao as appVersao from ParametrosDoSistema ps");
-//
-//		Query query = getSession().createQuery(hql.toString()).setResultTransformer(Transformers.aliasToBean(ParametrosDoSistema.class));
-//		Collection<ParametrosDoSistema> ps = query.list();
-//		return (ParametrosDoSistema) query.uniqueResult();
 	}
 
 	public void updateServidorRemprot(String servidorRemprot) 

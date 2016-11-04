@@ -7,7 +7,6 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -26,6 +25,7 @@ public class HistoricoAmbiente extends AbstractModel implements Serializable
 {
 	@ManyToOne
 	private Ambiente ambiente;
+	@Lob
 	private String descricao;
 	@Temporal(TemporalType.DATE)
 	private Date data;

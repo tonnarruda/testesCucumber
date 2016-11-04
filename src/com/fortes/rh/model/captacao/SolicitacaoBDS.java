@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -31,10 +30,12 @@ public class SolicitacaoBDS extends AbstractModel implements Serializable
     private Date data;
     private char tipo;
     private char escolaridade;
+    @Lob
     private String experiencia;
     private char sexo;
     private int idadeMinima;
     private int idadeMaxima;
+    @Lob
     private String observacao;
 
     @ManyToMany

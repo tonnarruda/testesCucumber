@@ -25,7 +25,8 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	@Column(length=100)
 	@ChaveDaAuditoria
     private String titulo;
-	
+
+	@Lob
 	private String cabecalho;
 	
 	private Double percentualAprovacao;
