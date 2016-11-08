@@ -58,6 +58,14 @@ public class IndicadorTreinamento
 		this.somaCustos = somaCustos;
 	}
 
+	public IndicadorTreinamento(Integer qtdColaboradoresPrevistos, Integer qtdColaboradoresFiltrados, Integer qtdColaboradoresInscritos, Double somaHoras, Double somaCustos) {
+		this.qtdColaboradoresPrevistos = qtdColaboradoresPrevistos;
+		this.qtdColaboradoresFiltrados = qtdColaboradoresFiltrados;
+		this.qtdColaboradoresInscritos = qtdColaboradoresInscritos;
+		this.somaHoras = somaHoras;
+		this.somaCustos = somaCustos;
+	}
+
 	public String getCustoTotalFmt()
 	{
 		String retorno = "-";
@@ -307,5 +315,4 @@ public class IndicadorTreinamento
 	public void setSomaHorasRatiada(Double somaHorasRatiada) {
 		this.somaHorasRatiada = somaHorasRatiada;
 	}
-
 }

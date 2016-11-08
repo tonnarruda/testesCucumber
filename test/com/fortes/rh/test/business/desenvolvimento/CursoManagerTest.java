@@ -174,7 +174,7 @@ public class CursoManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-    		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(DateUtil.criarAnoMesDia(2010, 01, 01), DateUtil.criarAnoMesDia(2011, 02, 01), new Long[]{empresa.getId()}, new Long[]{}, new Long[]{}, new Long[]{});
+    		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(DateUtil.criarAnoMesDia(2010, 01, 01), DateUtil.criarAnoMesDia(2011, 02, 01), new Long[]{empresa.getId()}, new Long[]{}, new Long[]{}, new Long[]{}, false);
 		}
 		catch (Exception e)
 		{
@@ -187,6 +187,42 @@ public class CursoManagerTest extends MockObjectTestCase
 		assertEquals(indicadorTreinamento.getCustoPerCapita(), 10.0/8);
 		assertEquals(indicadorTreinamento.getHorasPerCapita(), 4.0/2);
 	}
+	
+	public void testMontaIndicadoresTreinamentosConsiderarDiaTurmaCompreendidoNoPeriodo() {
+		MockSpringUtil.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
+		MockSpringUtil.mocks.put("turmaManager", turmaManager);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		IndicadorTreinamento indicadorTreinamento = new IndicadorTreinamento();
+		indicadorTreinamento.setSomaHoras(5.0);
+		indicadorTreinamento.setSomaCustos(10.0);
+		indicadorTreinamento.setQtdColaboradoresFiltrados(8);
+		
+		cursoDao.expects(once()).method("findIndicadorTreinamentoCustos").withAnyArguments().will(returnValue(indicadorTreinamento));
+		cursoDao.expects(once()).method("findQtdHorasRatiada").withAnyArguments().will(returnValue(4.0));
+		cursoDao.expects(once()).method("findCargaHorariaTreinamentRatiada").withAnyArguments().will(returnValue(120));
+		colaboradorManager.expects(once()).method("getCountAtivosQualquerStatus").withAnyArguments().will(returnValue(2));
+		colaboradorTurmaManager.expects(once()).method("percentualFrequencia").withAnyArguments().will(returnValue(100.0));
+		turmaManager.expects(once()).method("getPercentualInvestimento").withAnyArguments().will(returnValue(100.0));
+		
+		Exception exception = null;
+		try
+		{
+    		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(DateUtil.criarAnoMesDia(2010, 01, 01), DateUtil.criarAnoMesDia(2011, 02, 01), new Long[]{empresa.getId()}, new Long[]{}, new Long[]{}, new Long[]{}, true);
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+		
+		assertNull(exception);
+		assertEquals(indicadorTreinamento.getCustoMedioHora(), 10.0/5.0);
+		assertEquals(indicadorTreinamento.getTotalHorasTreinamento(), "2:00");
+		assertEquals(indicadorTreinamento.getCustoPerCapita(), 10.0/8);
+		assertEquals(indicadorTreinamento.getHorasPerCapita(), 4.0/2);
+	}
+
 	
 	public void testClonarParaOutraEmpresa(){
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);

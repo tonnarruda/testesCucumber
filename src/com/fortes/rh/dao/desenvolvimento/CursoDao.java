@@ -35,4 +35,7 @@ public interface CursoDao extends GenericDao<Curso>
 	public Collection<Curso> somaDespesasPorCurso(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public Collection<Curso> findByHistoricoFuncaoId(Long historicoFuncaoId);
 	public boolean existePresenca(Long cursoId);
+	public IndicadorTreinamento findIndicadorTreinamentoCustos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cursoIds);
+	public Double findQtdHorasRatiada(Date dataIni, Date dataFim, Long[] empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cursosIds);
+	public Integer findCargaHorariaTreinamentRatiada(Long[] cursosIds, Long[] empresasIds, Long[] estabelecimentosIds, Long[] areasIds, Date dataInicio, Date dataFim, boolean realizada);
 }

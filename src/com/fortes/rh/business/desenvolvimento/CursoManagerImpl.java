@@ -64,21 +64,27 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().findAllByEmpresasParticipantes(empresasIds);
 	}
 	
-	// TODO: SEM TESTE
-	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds)
+	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds, boolean considerarDiaTurmaCompreendidoNoPeriodo)
 	{
-		IndicadorTreinamento indicadorTreinamento = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds);
+		IndicadorTreinamento indicadorTreinamento;
+		if(considerarDiaTurmaCompreendidoNoPeriodo){
+			indicadorTreinamento = getDao().findIndicadorTreinamentoCustos(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds);
+			indicadorTreinamento.setSomaHorasRatiada(getDao().findQtdHorasRatiada(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds));
+			indicadorTreinamento.setTotalHorasTreinamento(getDao().findCargaHorariaTreinamentRatiada(cursoIds, empresaIds, estabelecimentosIds, areasIds, dataIni, dataFim, true));
+		}
+		else{
+			indicadorTreinamento = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds);
+			indicadorTreinamento.setTotalHorasTreinamento(getDao().findCargaHorariaTotalTreinamento(cursoIds, empresaIds, estabelecimentosIds, areasIds, dataIni, dataFim, true));
+		}
+		
 		indicadorTreinamento.setDataIni(dataIni);
 		indicadorTreinamento.setDataFim(dataFim);
-		
+
 		Double qtdHoras = indicadorTreinamento.getSomaHoras();
 		Double qtdHorasRatiada = indicadorTreinamento.getSomaHorasRatiada();
 		Double somaCustos = indicadorTreinamento.getSomaCustos();
 
 		indicadorTreinamento.setCustoMedioHora( qtdHoras > 0 ? somaCustos / qtdHoras : 0);
-		
-		/**Indicador: Total de horas de treinamento (h:min)*/
-		indicadorTreinamento.setTotalHorasTreinamento(getDao().findCargaHorariaTotalTreinamento(cursoIds, empresaIds, estabelecimentosIds, areasIds, dataIni, dataFim, true));
 		
 		Double custoPerCapita = 0d;
 		Double horasPerCapita = 0d;

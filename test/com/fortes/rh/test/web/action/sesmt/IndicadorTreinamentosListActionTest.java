@@ -93,7 +93,7 @@ public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(compartilharCandidato), eq(empresaId), eq(usuarioLogado.getId()), ANYTHING).will(returnValue(Arrays.asList(empresa)));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
 		cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[]{empresa.getId()})).will(returnValue(new ArrayList<Curso>()));
-		cursoManager.expects(once()).method("montaIndicadoresTreinamentos").with(new Constraint[] { ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}),eq(null),eq(null), ANYTHING }).will(returnValue(indicadorTreinamento));
+		cursoManager.expects(once()).method("montaIndicadoresTreinamentos").with(new Constraint[] { ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}),eq(null),eq(null), ANYTHING, ANYTHING }).will(returnValue(indicadorTreinamento));
 		turmaManager.expects(once()).method("quantidadeParticipantesPresentes").with(new Constraint[] { ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}),eq(null),eq(null), ANYTHING }).will(returnValue(new Integer(2)));
 		turmaManager.expects(once()).method("somaCustosNaoDetalhados").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), eq(null)).will(returnValue(new Double(0.0)));
 		turmaTipoDespesaManager.expects(once()).method("somaDespesasPorTipo").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), eq(null)).will(returnValue(new ArrayList<TipoDespesa>()));

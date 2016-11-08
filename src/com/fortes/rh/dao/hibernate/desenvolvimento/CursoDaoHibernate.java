@@ -281,6 +281,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		hql.append("select  coalesce( sum(totalHorasTreinamento.cargahoraria * totalHorasTreinamento.qtdTurmaCursoId),0)  from (select distinct c.id,  c.cargahoraria, count(t.id) OVER( PARTITION BY c.id) AS qtdTurmaCursoId ");
 		hql.append("from Curso c ");
 		hql.append("inner join Turma t  on t.curso_id = c.id ");
+		hql.append("left join curso_empresa ce on ce.cursos_id = c.id ");
 		hql.append("inner join ColaboradorTurma ct on t.id = ct.turma_id ");
 		hql.append("inner join historicoColaborador hc on hc.colaborador_id = ct.colaborador_id and data = (select max(data) from historicoColaborador hc1 where hc1.colaborador_id = ct.colaborador_id and hc1.data <= t.dataPrevIni) ");
 		hql.append("where t.realizada = :realizada and t.dataPrevIni between :dataInicio and :dataFim " );
@@ -292,7 +293,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			hql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
 		if(empresasIds != null && empresasIds.length > 0)
-			hql.append("and c.empresa_id in(:empresasIds) ");								        
+			hql.append("and (c.empresa_id in(:empresasIds) or ce.empresasparticipantes_id in(:empresasIds))");								        
 
 		hql.append("group by c.id, t.id, c.cargahoraria) as totalHorasTreinamento "); 
 												
@@ -600,5 +601,205 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
 		
 		return criteria.list();
+	}
+
+	public IndicadorTreinamento findIndicadorTreinamentoCustos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cursoIds) {
+		getSession().flush();
+
+		StringBuilder sql = new StringBuilder("select coalesce(t.qtdparticipantesprevistos, 0), ");
+		sql.append("	cast(coalesce(count(ct.id), 0) as integer) as qtdeInscritosFiltrado, ct3.qtdeInscritosTotal, ");
+		sql.append("	cast(coalesce(round((c.cargaHoraria/60.0),1) * count(ct.id), 0) as double precision) as cargaHoraria, ");
+		sql.append("	coalesce((t.custo/ct3.qtdeInscritosTotal) * count(ct.id), 0) as custo ");
+		sql.append("	from ColaboradorTurma ct ");
+		sql.append("		inner join turma t on ct.turma_id = t.id "); 
+		sql.append("		inner join curso c on t.curso_id = c.id ");
+		sql.append("		inner join colaborador col on ct.colaborador_id = col.id ");
+		sql.append("		inner join historicoColaborador hc on hc.colaborador_id = col.id and data = ( ");
+		sql.append("												select max(data) from historicoColaborador hc1 ");
+		sql.append("													where hc1.colaborador_id = col.id and hc1.data <= t.dataPrevIni) ");
+		sql.append("		left join ( ");
+		sql.append("					select ct2.turma_id, cast(coalesce(count(ct2.id), 0) as integer) as qtdeInscritosTotal from colaboradorTurma ct2 group by ct2.turma_id ");
+		sql.append("		) as ct3 on ct3.turma_id = t.id ");
+		sql.append("	where col.empresa_id in (:empresaIds) ");
+		sql.append("		and t.dataPrevIni between :dataIni and :dataFim "); 
+		sql.append("		and t.realizada = true ");
+		
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
+			sql.append("and c.id in (:cursoIds) ");
+		
+		if (LongUtil.arrayIsNotEmpty(areasIds))
+			sql.append("and hc.areaOrganizacional_id in (:areasIds) ");
+		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds)){
+			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
+		}
+		
+		sql.append("group by t.id, t.qtdparticipantesprevistos, c.cargahoraria, t.custo, ct3.qtdeInscritosTotal ");
+		sql.append("order by t.id ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setParameterList("empresaIds", empresaIds);
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+		
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
+			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
+		
+		if (LongUtil.arrayIsNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds)){
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		}
+		
+		Collection<Object[]> resultado = query.list();
+		Object[] res;
+		Integer qtdColaboradoresPrevistos = 0, qtdColaboradoresFiltrados = 0, qtdColaboradoresInscritos = 0;
+		Double somaHoras = 0.0, somaCustos = 0.0;
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			res = it.next();
+			qtdColaboradoresPrevistos += (Integer)res[0];
+			qtdColaboradoresFiltrados += (Integer)res[1];
+			qtdColaboradoresInscritos += (Integer)res[2];
+			somaHoras += (Double)res[3];
+			somaCustos += (Double)res[4];
+		}
+		return new IndicadorTreinamento(qtdColaboradoresPrevistos, qtdColaboradoresFiltrados, qtdColaboradoresInscritos, somaHoras, somaCustos);
+	}
+
+	public Double findQtdHorasRatiada(Date dataIni, Date dataFim, Long[] empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cursosIds) {
+		StringBuilder sql = new StringBuilder("select coalesce(sum(horasRateadas.qtdParticipantes * horasRateadas.somaHoras), 0) ");
+		sql.append("	from( ");
+		sql.append("		select  distinct t.id, count(ct.id) OVER( PARTITION BY t.id) AS qtdParticipantes, cast(coalesce( ((c.cargahoraria/ dt.diasTurmaTotal)* dt2.diasTurmaRealizado), 0) as double precision) as somaHoras ");
+		sql.append("		from ColaboradorTurma ct ");
+		sql.append("		inner join turma t on ct.turma_id = t.id  ");
+		sql.append("		inner join curso c on t.curso_id = c.id ");
+		sql.append("		inner join colaborador col on ct.colaborador_id = col.id ");
+		sql.append("		inner join  historicoColaborador hc on hc.colaborador_id = col.id and data = ( ");
+		sql.append("						select max(data) from historicoColaborador hc1 ");
+		sql.append("							 where hc1.colaborador_id = col.id and hc1.data <= t.dataPrevIni ) ");
+		montaJoinDiaTurma(sql);
+		sql.append("		where ");
+		sql.append("			col.empresa_id in (:empresasIds) ");
+		sql.append("			and t.dataPrevIni <= :dataFim ");
+		sql.append("			and t.dataPrevFim >= :dataInicio ");
+		sql.append("			and t.realizada = true ");
+		sql.append("			and c.cargahoraria is not null ");
+		sql.append("			and dt.diasTurmaTotal > 0 ");
+		
+		if(cursosIds != null && cursosIds.length > 0)
+			sql.append("		and c.id in(:cursosIds) ");
+		if(areasIds != null && areasIds.length > 0)
+			sql.append("		and hc.areaorganizacional_id in (:areasIds) ");
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			sql.append("		and hc.estabelecimento_id in (:estabelecimentosIds) ");
+
+		sql.append("		group by t.id, c.cargahoraria, dt.diasTurmaTotal, dt2.diasTurmaRealizado, ct.id ");
+		sql.append(" 	) as horasRateadas ");
+
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setParameterList("empresasIds", empresaIds);
+		query.setDate("dataInicio", dataIni);
+		query.setDate("dataFim", dataFim);
+		
+		if (LongUtil.arrayIsNotEmpty(cursosIds))
+			query.setParameterList("cursosIds", cursosIds, Hibernate.LONG);
+		
+		if (LongUtil.arrayIsNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		
+		return (Double)query.uniqueResult();
+	}
+
+	public Integer findCargaHorariaTreinamentRatiada(Long[] cursosIds, Long[] empresasIds, Long[] estabelecimentosIds, Long[] areasIds, Date dataInicio, Date dataFim, boolean realizada) {
+		StringBuilder sql = new StringBuilder("");
+		sql.append("select cast( coalesce( sum( ( (totalHorasTreinamento.cargahoraria/totalHorasTreinamento.diasTurmaTotal)* totalHorasTreinamento.diasTurmaRealizado ) * totalHorasTreinamento.qtdTurmaCursoId), 0) as integer) ");
+		sql.append("	from (" );
+		sql.append("			select  c.id, t.id, c.cargahoraria,  ");
+		sql.append(" 				count(t.id) OVER( PARTITION BY c.id) AS qtdTurmaCursoId,");
+		sql.append("				dt2.diasTurmaRealizado, dt.diasTurmaTotal ");
+		sql.append("			from Curso c ");
+		sql.append("			inner join Turma t on t.curso_id = c.id  ");
+		sql.append("			left join curso_empresa ce on ce.cursos_id = c.id ");
+		montaJoinDiaTurma(sql);
+		sql.append(" 			inner join ColaboradorTurma ct on t.id = ct.turma_id " );
+		sql.append(" 			inner join colaborador col on ct.colaborador_id = col.id " );
+		sql.append(" 			inner join  historicoColaborador hc on hc.colaborador_id = col.id and data = ( " );
+		sql.append(" 											select max(data) from historicoColaborador hc1 ");
+		sql.append("												where hc1.colaborador_id = col.id and hc1.data <= t.dataPrevIni ) " );
+		sql.append(" 			where " );
+		sql.append("				t.dataPrevIni <= :dataFim ");
+		sql.append("				and t.dataPrevFim >= :dataInicio ");
+		sql.append(" 				and t.realizada = :realizada "); 
+		sql.append("				and c.cargahoraria is not null ");
+		sql.append("				and dt.diasTurmaTotal > 0 ");
+		
+		if(cursosIds != null && cursosIds.length > 0)
+			sql.append("			and c.id in(:cursosIds) ");
+		if(areasIds != null && areasIds.length > 0)
+			sql.append("			and hc.areaorganizacional_id in (:areasIds) ");
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			sql.append("			and hc.estabelecimento_id in (:estabelecimentosIds) ");
+		if(empresasIds != null && empresasIds.length > 0)
+			sql.append("			and (c.empresa_id in(:empresasIds) or ce.empresasparticipantes_id in(:empresasIds))");								        
+
+		sql.append("			group by c.id, t.id, c.cargahoraria, dt2.diasTurmaRealizado, dt.diasTurmaTotal ");
+		sql.append("		)as totalHorasTreinamento "); 
+												
+		Query query = getSession().createSQLQuery(sql.toString());
+		
+		if(cursosIds != null && cursosIds.length > 0)
+			query.setParameterList("cursosIds", cursosIds);
+			
+		if(areasIds != null && areasIds.length > 0)
+			query.setParameterList("areasIds", areasIds);
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds);
+		
+		if(empresasIds != null && empresasIds.length > 0)
+			query.setParameterList("empresasIds", empresasIds);
+		
+		query.setBoolean("realizada", realizada);
+		query.setDate("dataInicio", dataInicio);
+		query.setDate("dataFim", dataFim);
+		return (Integer)query.uniqueResult();
+	}
+	
+	private void montaJoinDiaTurma(StringBuilder hql){
+		hql.append("			inner join ( " );
+		hql.append(" 						select sum(case when dt.horaini is not null " );
+		hql.append("										then " );
+		hql.append("										( extract(hour from (cast(dt.dia || ' ' || coalesce(dt.horaFim, '00:00') as timestamp) ");
+		hql.append("											- cast(dt.dia || ' ' || coalesce(dt.horaini, '00:00') as timestamp))) * 60 ");
+		hql.append("										) " );
+		hql.append("										+ extract(minute from (cast(dt.dia || ' ' || coalesce(dt.horaFim, '00:00') as timestamp) " );
+		hql.append("											- cast(dt.dia || ' ' || coalesce(dt.horaini, '00:00') as timestamp)) ");
+		hql.append("										) " );
+		hql.append("									else 60 end) as diasTurmaTotal, " );
+		hql.append("								dt.turma_id as turma_id ");
+		hql.append("						from diaturma dt ");
+		hql.append("						group by turma_id " );
+		hql.append("			) as dt  on dt.turma_id = t.id " );
+		hql.append("			inner join ( " );
+		hql.append(" 						select sum(case when dt2.horaini is not null " );
+		hql.append(" 										then " );
+		hql.append("										(extract(hour from (cast(dt2.dia || ' ' || coalesce(dt2.horaFim, '00:00') as timestamp) " );
+		hql.append("											- cast(dt2.dia || ' ' || coalesce(dt2.horaini, '00:00') as timestamp))) * 60 " );
+		hql.append("										) ");
+		hql.append(" 										+ extract(minute from (cast(dt2.dia || ' ' || coalesce(dt2.horaFim, '00:00') as timestamp) " );
+		hql.append("											- cast(dt2.dia || ' ' || coalesce(dt2.horaini, '00:00') as timestamp)) ");
+		hql.append("										)");
+		hql.append("										else 60 end) as diasTurmaRealizado,  " );
+		hql.append("								dt2.turma_id as turma_id ");
+		hql.append("						from diaturma dt2 ");
+		hql.append("						where dt2.dia between :dataInicio and :dataFim ");
+		hql.append("						group by dt2.turma_id " );
+		hql.append("			) as dt2 on dt2.turma_id = t.id " );
 	}
 }

@@ -45,6 +45,8 @@
 			width: 350px;
 			height: 250px !important;
 		}
+		fieldset { background: inherit; width: 904px;}
+		fieldset select { background: #FFFFFF; }
 	</style>
 
 	<title>Painel de Indicadores de T&D</title>
@@ -127,12 +129,6 @@
 			
 	    	$('#tooltipHelpIndicadoresTeD').qtip({
 				content:'<strong>O resultado dos indicadores de T&D são obtidos através dos seguintes cálculos:</strong>'+
-						'<br/><br/><strong>- Total de horas de treinamento (h:min)</strong><br/>'+
-						'&nbsp&nbsp totalHorasTreinamento = &sum; ( CargaHorariaCurso * QtdTurmasRealizadas )<br/>'+
-						'&nbsp&nbsp * Este cálculo realiza o somatório da multiplicação entre CargaHorariaCurso e QtdTurmasRealizadas para todos os cursos filtrados.<br/><br/>'+
-						'&nbsp&nbsp CargaHorariaCurso: É a carga horária prevista para o curso.<br/>'+
-						'&nbsp&nbsp QtdTurmasRealizadas: É o número de turmas realizadas para cada curso.<br/>'+
-						'<br/>'+
 						'<strong>- Investimento médio da hora de treinamento (R$)</strong><br/>'+
 						'&nbsp&nbsp custoMedioHora = SomaCusto / SomaHoras<br/>'+
 						'&nbsp&nbsp SomaCusto: É a soma do custo de cada turma referente ao filtro.<br/>'+
@@ -142,14 +138,6 @@
 						'&nbsp&nbsp custoPerCapita (por pessoa) = CustoTotal / Qtd. Colaboradores Ativos e Inscritos<br/>'+
 						'&nbsp&nbsp Qtd. Colaboradores Ativos e inscritos: colaboradores ativos na empresa com data de admissão menor que a data fim do filtro e<br/>'+
 						'&nbsp&nbsp que não esteja desligado ou com data de desligamento depois da data fim do filtro.<br/>'+
-						'<br/>'+
-						'<strong>- Horas de treinamento per capita</strong><br/>'+
-						'&nbsp&nbsp horasPerCapita = (QtdHoras * QtdParticipantes) / QtdAtivos<br/><br/>'+
-						'&nbsp&nbsp QtdHoras: somatório das horas de cada dia da turma de acordo com o período.<br/>'+
-						'&nbsp&nbsp QtdParticipantes: colaboradores da(s) turma(s) que estejam dentro do período do filtro.<br/>'+
-						'&nbsp&nbsp QtdAtivos: colaboradores ativos na(s) empresa(s) selecionadas(*) com data de admissao menor que a data fim do filtro e<br/>'+
-						'&nbsp&nbsp que não esteja desligado ou com data de desligamento posterior a data fim do filtro.<br/>'+
-						'&nbsp&nbsp * Caso não seja selecionada nenhuma empresa o cálculo irá considerá todas as empresas listadas no filtro.<br/>'+
 						'<br/>'+
 						'<strong>- Total de investimentos dos treinamentos realizados (R$)</strong><br/>'+
 						'&nbsp&nbsp Soma de todos os custos lançados para os cursos em determinado período e empresa.<br/>'+
@@ -163,7 +151,29 @@
 						'&nbsp&nbsp Resultado = (QtdDiasPresentes / QtdDiasTotal ) * 100<br/><br/>'+
 						'&nbsp&nbsp QtdDiasTotal: quantidade de colaboradores na turma x a quantidade de dias de curso.<br/>'+
 						'&nbsp&nbsp QtdDiasPresentes: soma de todas as turmas do período selecionado.<br/><br/>'+
-						'&nbsp&nbsp * apenas das turmas realizadas<br/>'
+						'&nbsp&nbsp * apenas das turmas realizadas<br/><br/>'
+				,
+				style: {
+		        	 width: '100px'
+		        }
+			});
+			
+			$('#tooltipHelpIndicadoresHorasDeTreinamento').qtip({
+				content:'<strong>O resultado dos indicadores de T&D são obtidos através dos seguintes cálculos:</strong>'+
+						'<strong>- Horas de treinamento per capita</strong><br/>'+
+						'&nbsp&nbsp horasPerCapita = (QtdHoras * QtdParticipantes) / QtdAtivos<br/><br/>'+
+						'&nbsp&nbsp QtdHoras: somatório das horas de cada dia da turma de acordo com o período.<br/>'+
+						'&nbsp&nbsp QtdParticipantes: colaboradores da(s) turma(s) que estejam dentro do período do filtro.<br/>'+
+						'&nbsp&nbsp QtdAtivos: colaboradores ativos na(s) empresa(s) selecionadas(*) com data de admissao menor que a data fim do filtro e<br/>'+
+						'&nbsp&nbsp que não esteja desligado ou com data de desligamento posterior a data fim do filtro.<br/>'+
+						'&nbsp&nbsp * Caso não seja selecionada nenhuma empresa o cálculo irá considerá todas as empresas listadas no filtro.'+
+						'<br/>'+
+						'<br/><br/><strong>- Total de horas de treinamento (h:min)</strong><br/>'+
+						'&nbsp&nbsp totalHorasTreinamento = &sum; ( CargaHorariaCurso * QtdTurmasRealizadas )<br/>'+
+						'&nbsp&nbsp * Este cálculo realiza o somatório da multiplicação entre CargaHorariaCurso e QtdTurmasRealizadas para todos os cursos filtrados.<br/><br/>'+
+						'&nbsp&nbsp CargaHorariaCurso: É a carga horária prevista para o curso.<br/>'+
+						'&nbsp&nbsp QtdTurmasRealizadas: É o número de turmas realizadas para cada curso.<br/>'+
+						'<br/>'
 				,
 				style: {
 		        	 width: '100px'
@@ -377,6 +387,7 @@
 			<@ww.datepicker name="indicadorTreinamento.dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.datepicker name="indicadorTreinamento.dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
+			<@ww.checkbox label="Para os Indicadores de Horas de Treinamentos, considerar os dias de realização dos cursos que estão compreendidos no período especificado acima" id="considerarDiaTurmaCompreendidoNoPeriodo" name="considerarDiaTurmaCompreendidoNoPeriodo" labelPosition="left"/>
 			<@frt.checkListBox label="Empresas" id="empresasCheck" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" liClass="liLeft" onClick="populaCursos();populaAreas();populaEstabelecimentos();" width="465" filtro="true"/>
 			<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" liClass="liLeft" form="document.getElementById('formBusca')" width="465" filtro="true"/>
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" list="areasCheckList" form="document.getElementById('formBusca')" width="465" liClass="liLeft" filtro="true" selectAtivoInativo="true"/>
@@ -393,26 +404,38 @@
 				<tr>
 					<td id="gogDiv" class="grid-cell" colspan="2">
 						<div class="cell-title">
+								Indicadores de Horas de Treinamentos
+								<img id="tooltipHelpIndicadoresHorasDeTreinamento" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
+						</div>
+						<dl style="float:right;">
+							<dt>Total de horas de treinamento (h:min)</dt>
+							<dd>${indicadorTreinamento.totalHorasTreinamento}</dd>
+						</dl>
+						<dl>
+							<dt>Horas de treinamento per capita</dt>
+							<dd>${indicadorTreinamento.horasPerCapitaFmt}</dd>
+						</dl>
+					</td>
+				</tr>
+				<tr>
+					<td id="gogDiv" class="grid-cell" colspan="2">
+						<div class="cell-title">
 								Indicadores de T&D
 								<img id="tooltipHelpIndicadoresTeD" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
 						</div>
 						<dl style="float:right;">
+							<dt>Investimento médio da hora de treinamento (R$)</dt>
+							<dd>${indicadorTreinamento.custoMedioHoraFmt}</dd>
+							<dt>Investimento per capita (R$)</dt>
+							<dd>${indicadorTreinamento.custoPerCapitaFmt}</dd>
+						</dl>
+						<dl>
 							<dt>Total de investimentos dos treinamentos realizados (R$)</dt>
 							<dd>${indicadorTreinamento.custoTotalFmt}</dd>
 							<dt>Percentual de investimentos em relação ao faturamento</dt>
 							<dd>${indicadorTreinamento.percentualInvestimento?string(",##0.00")}%</dd>
 							<dt>Percentual de frequência (aprovados) </dt>
 							<dd>${indicadorTreinamento.percentualFrequencia?string(",##0.00")}%</dd>
-						</dl>
-						<dl>
-							<dt>Total de horas de treinamento (h:min)</dt>
-							<dd>${indicadorTreinamento.totalHorasTreinamento}</dd>
-							<dt>Investimento médio da hora de treinamento (R$)</dt>
-							<dd>${indicadorTreinamento.custoMedioHoraFmt}</dd>
-							<dt>Investimento per capita (R$)</dt>
-							<dd>${indicadorTreinamento.custoPerCapitaFmt}</dd>
-							<dt>Horas de treinamento per capita</dt>
-							<dd>${indicadorTreinamento.horasPerCapitaFmt}</dd>
 						</dl>
 					</td>
 				</tr>

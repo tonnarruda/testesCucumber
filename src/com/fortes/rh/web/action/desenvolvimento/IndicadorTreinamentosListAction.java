@@ -79,6 +79,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
 	private Long[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private boolean considerarDiaTurmaCompreendidoNoPeriodo;
 
 	public String list() throws Exception
 	{
@@ -104,7 +105,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(empresasCheck);
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, StringUtil.LongToString(estabelecimentosCheck));
    		
-		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, areasCheck, cursosCheck, estabelecimentosCheck);
+		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, areasCheck, cursosCheck, estabelecimentosCheck, considerarDiaTurmaCompreendidoNoPeriodo);
 
 		prepareGraficoFrequencia();
 		prepareGraficoCumprimentoPlanoTreinamento();
@@ -390,5 +391,13 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	public void setDataFim(Date dataFim) {
 		this.dataFim = dataFim;
+	}
+
+	public void setConsiderarDiaTurmaCompreendidoNoPeriodo(boolean considerarDiaTurmaCompreendidoNoPeriodo) {
+		this.considerarDiaTurmaCompreendidoNoPeriodo = considerarDiaTurmaCompreendidoNoPeriodo;
+	}
+
+	public boolean isConsiderarDiaTurmaCompreendidoNoPeriodo() {
+		return considerarDiaTurmaCompreendidoNoPeriodo;
 	}
 }

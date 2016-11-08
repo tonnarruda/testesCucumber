@@ -27,7 +27,7 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<Curso> findCursosSemTurma(Long empresaId);
 	public String somaCargaHoraria(Collection<Turma> turmas);
 	public Collection<Curso> findByIdProjection(Long[] cursoIds);
-	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds);
+	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds, boolean considerarDiaTurmaCompreendidoNoPeriodo);
 	public Collection<CheckBox> populaCheckOrderDescricao(Long empresaId);
 	public Collection<Curso> populaCursos(Long[] cursosCheckIds);
 	public Collection<Curso> findByCompetencia(Long conhecimentoId, Character tipoCompetencia);

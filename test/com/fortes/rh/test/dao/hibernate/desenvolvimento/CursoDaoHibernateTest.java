@@ -859,34 +859,6 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		assertFalse("Avaliação por avaliação sem resposta", existeAvaliacaoAluno8Respondida);
 	}
 	
-	private Curso criaCurso(char tipoAvaliacaoCurso, boolean comResposta, Double valorResposta)
-	{
-		Curso curso = CursoFactory.getEntity();
-		cursoDao.save(curso);
-
-		if(comResposta){
-			if(tipoAvaliacaoCurso == TipoAvaliacaoCurso.AVALIACAO){
-				Turma turma = TurmaFactory.getEntity();
-				turma.setCurso(curso);
-				turmaDao.save(turma);
-				
-				ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
-				colaboradorQuestionario.setTurma(turma);
-				colaboradorQuestionarioDao.save(colaboradorQuestionario);
-			} else {
-				ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
-				colaboradorTurma.setCurso(curso);
-				colaboradorTurmaDao.save(colaboradorTurma);
-				
-				AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
-				aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurma);
-				aproveitamentoAvaliacaoCurso.setValor(valorResposta);
-
-				aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
-			}
-		}
-		return curso;
-	}
 	
 	public void testFindByEmpresaIdAndCursosId()
 	{
@@ -990,6 +962,183 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		colaboradorPresenca2.setPresenca(true);
 		colaboradorPresencaDao.save(colaboradorPresenca2);
 		assertFalse(cursoDao.existePresenca(curso2.getId()));
+	}
+
+	public void testFindIndicadorTreinamentoCustos() {
+		Date dataHistorico = DateUtil.criarDataMesAno(1, 2, 2014); 
+    	Date dataMes4 = DateUtil.criarDataMesAno(1, 4, 2014);
+    	Date dataMes5 = DateUtil.criarDataMesAno(1, 5, 2014);
+    	Date dataMes6 = DateUtil.criarDataMesAno(1, 6, 2014);
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		AreaOrganizacional area = getAreaOrganizacional();
+		
+		Estabelecimento estabelecimento = getEstabelecimento();
+		Estabelecimento estabelecimento2 = getEstabelecimento();
+
+		Colaborador colaborador1 = getColaboradorComHistorico(empresa, estabelecimento, area, dataHistorico, StatusRetornoAC.CONFIRMADO);
+		Colaborador colaborador2 = getColaboradorComHistorico(empresa, estabelecimento2, area, dataHistorico, StatusRetornoAC.CONFIRMADO);
+
+		Curso curso1 = saveCurso("curso 1", empresa, 10*60);
+		Turma turma1 = saveTurma(curso1, dataMes4, dataMes5, true, 200.0);
+		
+		Curso curso2 = saveCurso("curso 2", empresa, 30*60);
+		Turma turma2 = saveTurma(curso2, dataMes4, dataMes6, true, 500.50);
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014)); 
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014));
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014));		
+
+		saveColaboradorTurma(curso1, turma1, colaborador1); 
+		saveColaboradorTurma(curso1, turma1, colaborador2);
+				
+		IndicadorTreinamento result = cursoDao.findIndicadorTreinamentoCustos(dataMes4, dataMes5, new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, null);
+		
+		assertEquals("Qtde de colaboradores filtrados", 1, (int)result.getQtdColaboradoresFiltrados());
+		assertEquals("Qtde de colaboradores inscritos", 2, (int)result.getQtdColaboradoresInscritos());
+		assertEquals("Carga horaria", 10.0, result.getSomaHoras());
+		assertEquals("Custos", Math.round(100.00), Math.round(result.getSomaCustos()));
+	}
+	
+	public void testFindIndicadorTreinamentoCustosComFiltroCurso() {
+		Date dataHistorico = DateUtil.criarDataMesAno(1, 2, 2014); 
+    	Date dataMes4 = DateUtil.criarDataMesAno(1, 4, 2014);
+    	Date dataMes5 = DateUtil.criarDataMesAno(1, 5, 2014);
+    	Date dataMes6 = DateUtil.criarDataMesAno(1, 6, 2014);
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		AreaOrganizacional area = getAreaOrganizacional();
+		
+		Estabelecimento estabelecimento = getEstabelecimento();
+		Estabelecimento estabelecimento2 = getEstabelecimento();
+
+		Colaborador colaborador1 = getColaboradorComHistorico(empresa, estabelecimento, area, dataHistorico, StatusRetornoAC.CONFIRMADO);
+		Colaborador colaborador2 = getColaboradorComHistorico(empresa, estabelecimento2, area, dataHistorico, StatusRetornoAC.CONFIRMADO);
+
+		Curso curso1 = saveCurso("curso 1", empresa, 10*60);
+		Turma turma1 = saveTurma(curso1, dataMes4, dataMes5, true, 200.0);
+		
+		Curso curso2 = saveCurso("curso 2", empresa, 30*60);
+		Turma turma2 = saveTurma(curso2, dataMes4, dataMes6, true, 500.50);
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014)); 
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014));
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014));		
+
+		saveColaboradorTurma(curso1, turma1, colaborador1); 
+		saveColaboradorTurma(curso2, turma2, colaborador2);
+				
+		IndicadorTreinamento result = cursoDao.findIndicadorTreinamentoCustos(dataMes4, dataMes5, new Long[]{empresa.getId()}, null, null, new Long[]{curso1.getId(), curso2.getId()});
+		
+		assertEquals("Qtde de colaboradores filtrados", 2, (int)result.getQtdColaboradoresFiltrados());
+		assertEquals("Qtde de colaboradores inscritos", 2, (int)result.getQtdColaboradoresInscritos());
+		assertEquals("Carga horaria", 40.0, result.getSomaHoras());
+		assertEquals("Custos", Math.round(701.00), Math.round(result.getSomaCustos()));
+	}
+	
+	public void testFindQtdHorasRatiada() {
+		Date dataHistorico = DateUtil.criarDataMesAno(1, 2, 2014); 
+    	Date dataMes4 = DateUtil.criarDataMesAno(1, 4, 2014);
+    	Date dataMes5 = DateUtil.criarDataMesAno(1, 5, 2014);
+    	Date dataMes6 = DateUtil.criarDataMesAno(1, 6, 2014);
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		AreaOrganizacional area = getAreaOrganizacional();
+		
+		Estabelecimento estabelecimento = getEstabelecimento();
+		Estabelecimento estabelecimento2 = getEstabelecimento();
+
+		Colaborador colaborador1 = getColaboradorComHistorico(empresa, estabelecimento, area, dataHistorico, StatusRetornoAC.CONFIRMADO);
+		Colaborador colaborador2 = getColaboradorComHistorico(empresa, estabelecimento2, area, dataHistorico, StatusRetornoAC.CONFIRMADO);
+
+		Curso curso1 = saveCurso("curso 1", empresa, 10*60);
+		Turma turma1 = saveTurma(curso1, dataMes4, dataMes5, true, 200.0);
+		
+		Curso curso2 = saveCurso("curso 2", empresa, 30*60);
+		Turma turma2 = saveTurma(curso2, dataMes4, dataMes6, true, 500.50);
+		
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014)); 
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014));
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014));		
+
+		saveColaboradorTurma(curso1, turma1, colaborador1); 
+		saveColaboradorTurma(curso2, turma2, colaborador1); 
+		saveColaboradorTurma(curso2, turma2, colaborador2);
+		
+		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+		
+		Double result = cursoDao.findQtdHorasRatiada(dataMes4, dataMes5, new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, new Long[]{curso1.getId(), curso2.getId()});
+		assertEquals(40.0, result/60);
+	}
+
+	public void testFindCargaHorariaTreinamentRatiada() {
+		Date dataHistorico = DateUtil.criarDataMesAno(1, 2, 2014); 
+    	Date dataMes4 = DateUtil.criarDataMesAno(1, 4, 2014);
+    	Date dataMes5 = DateUtil.criarDataMesAno(1, 5, 2014);
+    	Date dataMes6 = DateUtil.criarDataMesAno(1, 6, 2014);
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		AreaOrganizacional area = getAreaOrganizacional();
+		
+		Estabelecimento estabelecimento = getEstabelecimento();
+		Estabelecimento estabelecimento2 = getEstabelecimento();
+
+		Colaborador colaborador1 = getColaboradorComHistorico(empresa, estabelecimento, area, dataHistorico, StatusRetornoAC.CONFIRMADO);
+		Colaborador colaborador2 = getColaboradorComHistorico(empresa, estabelecimento2, area, dataHistorico, StatusRetornoAC.CONFIRMADO);
+
+		Curso curso1 = saveCurso("curso 1", empresa, 10*60);
+		Turma turma1 = saveTurma(curso1, dataMes4, dataMes5, true, 200.0);
+		
+		Curso curso2 = saveCurso("curso 2", empresa, 30*60);
+		Turma turma2 = saveTurma(curso2, dataMes4, dataMes6, true, 500.50);
+		
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014)); 
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014));
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014));		
+
+		saveColaboradorTurma(curso1, turma1, colaborador1); 
+		saveColaboradorTurma(curso1, turma1, colaborador2); 
+		saveColaboradorTurma(curso2, turma2, colaborador2);
+		
+		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+		
+		Integer result = cursoDao.findCargaHorariaTreinamentRatiada(new Long[]{curso1.getId(), curso2.getId()}, new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, dataMes4, dataMes5, true);
+		assertEquals(20, result/60);
+	}
+	
+	private Curso criaCurso(char tipoAvaliacaoCurso, boolean comResposta, Double valorResposta)
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		if(comResposta){
+			if(tipoAvaliacaoCurso == TipoAvaliacaoCurso.AVALIACAO){
+				Turma turma = TurmaFactory.getEntity();
+				turma.setCurso(curso);
+				turmaDao.save(turma);
+				
+				ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+				colaboradorQuestionario.setTurma(turma);
+				colaboradorQuestionarioDao.save(colaboradorQuestionario);
+			} else {
+				ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+				colaboradorTurma.setCurso(curso);
+				colaboradorTurmaDao.save(colaboradorTurma);
+				
+				AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
+				aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurma);
+				aproveitamentoAvaliacaoCurso.setValor(valorResposta);
+				
+				aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
+			}
+		}
+		return curso;
 	}
 
 	private Colaborador saveColaborador(Empresa empresa){
