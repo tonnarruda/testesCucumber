@@ -1,6 +1,7 @@
 package com.fortes.rh.test.util.mockObjects;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.ui.context.Theme;
 import org.springframework.web.context.WebApplicationContext;
@@ -68,26 +70,6 @@ public class MockWebApplicationContext implements WebApplicationContext
 		return null;
 	}
 
-	public String[] getBeanNamesForType(Class arg0)
-	{
-		return null;
-	}
-
-	public String[] getBeanNamesForType(Class arg0, boolean arg1, boolean arg2)
-	{
-		return null;
-	}
-
-	public Map getBeansOfType(Class arg0) throws BeansException
-	{
-		return null;
-	}
-
-	public Map getBeansOfType(Class arg0, boolean arg1, boolean arg2) throws BeansException
-	{
-		return null;
-	}
-
 	public boolean containsBean(String arg0)
 	{
 		return false;
@@ -101,11 +83,6 @@ public class MockWebApplicationContext implements WebApplicationContext
 	public Object getBean(String arg0) throws BeansException
 	{
 		return mapa.get(arg0);
-	}
-
-	public Object getBean(String arg0, Class arg1) throws BeansException
-	{
-		return null;
 	}
 
 	public Class getType(String arg0) throws NoSuchBeanDefinitionException
@@ -167,18 +144,11 @@ public class MockWebApplicationContext implements WebApplicationContext
 
 	@Override
 	public Object getBean(String arg0, Object[] arg1) throws BeansException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean isPrototype(String arg0) throws NoSuchBeanDefinitionException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isTypeMatch(String arg0, Class arg1) throws NoSuchBeanDefinitionException {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -193,5 +163,63 @@ public class MockWebApplicationContext implements WebApplicationContext
 	public ClassLoader getClassLoader() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Environment getEnvironment() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <A extends Annotation> A findAnnotationOnBean(String arg0,
+			Class<A> arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String[] getBeanNamesForType(Class<?> arg0) {
+		return null;
+	}
+
+	@Override
+	public String[] getBeanNamesForType(Class<?> arg0, boolean arg1,
+			boolean arg2) {
+		return null;
+	}
+
+	@Override
+	public <T> Map<String, T> getBeansOfType(Class<T> arg0) throws BeansException {
+		return null;
+	}
+
+	@Override
+	public <T> Map<String, T> getBeansOfType(Class<T> arg0, boolean arg1, boolean arg2) throws BeansException {
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getBeansWithAnnotation(
+			Class<? extends Annotation> arg0) throws BeansException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> T getBean(Class<T> arg0) throws BeansException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> T getBean(String arg0, Class<T> arg1) throws BeansException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isTypeMatch(String arg0, Class<?> arg1) throws NoSuchBeanDefinitionException {
+		return false;
 	}
 }

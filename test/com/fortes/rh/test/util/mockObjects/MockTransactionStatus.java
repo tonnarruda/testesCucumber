@@ -49,4 +49,9 @@ public class MockTransactionStatus implements TransactionStatus
 	{
 
 	}
+
+	@Override
+	public void flush() {
+		
+	}
 }
