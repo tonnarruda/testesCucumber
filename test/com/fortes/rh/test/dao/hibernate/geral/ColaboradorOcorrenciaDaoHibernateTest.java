@@ -194,6 +194,39 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		assertEquals("Não faltar mais", ((ColaboradorOcorrencia)colaboradorOcorrenciasDetalhados.toArray()[0]).getProvidencia().getDescricao());
 	}
 	
+	public void testFindColaboradorOcorrenciaSomenteCOmDataInicio()
+	{
+		Date dataFiltroInicio = DateUtil.criarDataMesAno(3, 3, 2015);
+		Date dataFiltroFim = DateUtil.criarDataMesAno(5, 5, 20115);
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		Colaborador joao = ColaboradorFactory.getEntity(null, "João");
+		colaboradorDao.save(joao);
+		
+		HistoricoColaborador historicoJoao = HistoricoColaboradorFactory.getEntity(joao, DateUtil.criarDataMesAno(15, 12, 2011), null, estabelecimento, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoJoao);
+		
+		Ocorrencia falta = OcorrenciaFactory.getEntity(empresa, "Falta", 5);
+		ocorrenciaDao.save(falta);
+
+		Providencia providencia = ProvidenciaFactory.getEntity("Não faltar mais");
+		providenciaDao.save(providencia);
+		
+		saveColaboradorOcorrencia(joao, falta, providencia, DateUtil.criarDataMesAno(2, 03, 2015), null);
+		saveColaboradorOcorrencia(joao, falta, providencia, DateUtil.criarDataMesAno(04, 03, 2015), null);
+		
+		Collection<ColaboradorOcorrencia> colaboradorOcorrenciasDetalhados = colaboradorOcorrenciaDao.findColaboradorOcorrencia(new ArrayList<Long>() , Arrays.asList(joao.getId()), dataFiltroInicio, dataFiltroFim, Arrays.asList(empresa.getId()), null, null, true, 'C', SituacaoColaborador.TODOS, null);
+		assertEquals(1, colaboradorOcorrenciasDetalhados.size());
+		assertEquals("Não faltar mais", ((ColaboradorOcorrencia)colaboradorOcorrenciasDetalhados.toArray()[0]).getProvidencia().getDescricao());
+	}
+	
 	public void testFindColaboradorOcorrenciaNotUsuarioId(){
 		Date data1 = DateUtil.criarDataMesAno(1, 1, 2011);
 		Date data2 = DateUtil.criarDataMesAno(1, 1, 2012);

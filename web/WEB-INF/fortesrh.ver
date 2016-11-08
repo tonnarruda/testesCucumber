@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.17X.206" db="" data="30/11/2016">
+		<Item visivel="S" motivo="P16100000082"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Ajuste de inconsitência ao gerar ralatório para ocorrências contendo apenas data de início.]]></Item>
+	</Versao>
 	<Versao id="1.1.173.205" db="" data="31/10/2016">
 		<Item visivel="S" motivo="P16080000128"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao atualizar o status do candidato da solicitação de pessoal após cancelar o desligamento do colaborador.]]></Item>
 		<Item visivel="S" motivo="S15120000091"><![CDATA[R&S > Painel de Indicadores: Novo indicador "Índice de vagas preenchidas no prazo".]]></Item>

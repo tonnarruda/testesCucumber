@@ -3988,7 +3988,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 	
-	public Criteria criteriaOcorrenciaByPeriodo(Date dataIni, Date dataFim, int qtdItens) {
+	private Criteria criteriaOcorrenciaByPeriodo(Date dataIni, Date dataFim, int qtdItens) {
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("c.colaboradorOcorrencia", "co", Criteria.LEFT_JOIN);
 		criteria.createCriteria("co.ocorrencia", "o", Criteria.LEFT_JOIN);
@@ -4002,7 +4002,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setProjection(projections);
 		
 		criteria.add(Expression.le("co.dataIni", dataFim));
-		criteria.add(Expression.ge("co.dataFim", dataIni));
+		criteria.add(Expression.or(Expression.ge("co.dataFim", dataIni), Expression.ge("co.dataIni", dataIni)));
 		
 		criteria.addOrder(OrderBySql.sql("2 desc"));
 		criteria.addOrder(Order.asc("o.descricao"));
@@ -4056,7 +4056,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setProjection(projections);
 		
 		criteria.add(Expression.le("co.dataIni", dataFim));
-		criteria.add(Expression.ge("co.dataFim", dataIni));
+		criteria.add(Expression.or(Expression.ge("co.dataFim", dataIni), Expression.ge("co.dataIni", dataIni)));
 
 		if (LongUtil.arrayIsNotEmpty(ocorrenciasIds))
 			criteria.add(Restrictions.in("co.ocorrencia.id", ocorrenciasIds));

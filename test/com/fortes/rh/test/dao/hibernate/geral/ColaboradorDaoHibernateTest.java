@@ -6108,7 +6108,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Assert.assertEquals(2, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), new Long[]{estabelecimento.getId()}, areasIds, cargosIds, new Long[]{}, 2).size());
 	}
 	
-	@Test public void testCountOcorrenciaComDataInicioAntesDoPeriodoFiltrado() 
+	@Test 
+	public void testCountOcorrenciaComDataInicioAntesDoPeriodoFiltrado() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -6128,7 +6129,29 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Assert.assertEquals("Quantidade da mesma ocorrência no período filtrado", new Float(2.0), new Float(((DataGrafico) graficoOcorrencias.toArray()[0]).getData()));
 	}
 	
-	@Test public void testCountOcorrenciaComDataInicioAntesEDataFimDespoisDoPeriodoFiltrado() 
+	@Test 
+	public void testCountOcorrenciaComDataFimNula() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = saveColaborador("Samuel", empresa, DateUtil.criarDataMesAno(1, 1, 2014), false, null, false);
+		
+		FaixaSalarial faixaSalarial = saveFaixaSalarial();
+		
+		saveHistoricoColaborador(colaborador, faixaSalarial, DateUtil.criarDataMesAno(1, 1, 2014), StatusRetornoAC.CONFIRMADO);
+		
+		Ocorrencia ocorrencia1 = saveOcorrencia("Falta");
+
+		saveColaboradorOcorrencia(colaborador, ocorrencia1, DateUtil.criarDataMesAno(1, 1, 2015), null);
+		saveColaboradorOcorrencia(colaborador, ocorrencia1, DateUtil.criarDataMesAno(03, 1, 2015), null);
+		
+		Collection<DataGrafico> graficoOcorrencias = colaboradorDao.countOcorrencia(DateUtil.criarDataMesAno(03, 1, 2015), DateUtil.criarDataMesAno(03, 1, 2015), Arrays.asList(empresa.getId()), null, null, null, null, 2);
+		Assert.assertEquals("Quantidade da mesma ocorrência no período filtrado", new Float(1.0), new Float(((DataGrafico) graficoOcorrencias.toArray()[0]).getData()));
+	}
+
+	@Test
+	public void testCountOcorrenciaComDataInicioAntesEDataFimDespoisDoPeriodoFiltrado() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -6152,7 +6175,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Assert.assertEquals("Quantidade de ocorrências do tipo 'Faltou Reunião' no período filtrado", new Float(1.0), new Float(((DataGrafico) graficoOcorrencias.toArray()[1]).getData()));
 	}
 	
-	@Test public void testCountProvidencia() 
+	@Test 
+	public void testCountProvidencia() 
 	{
 		Date hoje = new Date();
 		Date dataFim = DateUtil.incrementaMes(hoje, 1);
@@ -6176,6 +6200,39 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		
 		saveColaboradorOcorrencia(colaborador, ocorrencia1, providencia1, hoje, dataFim);
 		saveColaboradorOcorrencia(colaborador, ocorrencia2, providencia2, hoje, dataFim);
+		
+		Assert.assertEquals(1, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, new Long[]{cargo.getId()}, new Long[]{ocorrencia1.getId()}, 2).size());
+		Assert.assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  null, null, null, null, 2).size());
+	}
+	
+	@Test 
+	public void testCountProvidenciaOcorrenciComDataFimNula() 
+	{
+		Date hoje = new Date();
+		Date dataFim = DateUtil.incrementaMes(hoje, 1);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = saveColaborador("Samuel", empresa, hoje, false, null, false);
+		
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		
+		AreaOrganizacional area = saveAreaOrganizacional();
+		
+		Cargo cargo = saveCargo();
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
+		
+		saveHistoricoColaborador(colaborador, estabelecimento, area, faixaSalarial, DateUtil.criarDataMesAno(1, 1, 2008), StatusRetornoAC.CONFIRMADO);
+		
+		Ocorrencia ocorrencia1 = saveOcorrencia("Falta");
+		Ocorrencia ocorrencia2 = saveOcorrencia("Briga");
+		
+		Providencia providencia1 = saveProvidencia("Não faltar");
+		Providencia providencia2 = saveProvidencia("Não brigar");
+		
+		saveColaboradorOcorrencia(colaborador, ocorrencia1, providencia1, hoje, null);
+		saveColaboradorOcorrencia(colaborador, ocorrencia2, providencia2, DateUtil.incrementaMes(hoje, 1), null);
 		
 		Assert.assertEquals(1, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, new Long[]{cargo.getId()}, new Long[]{ocorrencia1.getId()}, 2).size());
 		Assert.assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  null, null, null, null, 2).size());
