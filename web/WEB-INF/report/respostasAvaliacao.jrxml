@@ -13,6 +13,7 @@
 	<parameter name="observacoes" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="observacoes_modelo" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="NOME_DO_CARGO" class="java.lang.String"/>
+	<parameter name="EXIBIR_NIVEL_COMPETENCIA_EXIGIDO" class="java.lang.Boolean"/>
 	<field name="respostasQuestionario" class="java.lang.Object"/>
 	<field name="matrizCompetecias" class="java.lang.Object"/>
 	<field name="colaboradorQuestionarioPerformance" class="java.lang.String"/>
@@ -145,11 +146,14 @@
 				<subreportParameter name="EXIBIR_COMPETENCIAS_COLABORADOR">
 					<subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="IS_AUTO_AVALIACAO">
+					<subreportParameterExpression><![CDATA[false]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="PERFORMANCENIVELCOMPETENCIA">
 					<subreportParameterExpression><![CDATA[$F{colaboradorQuestionarioPerformanceNivelCompetencia}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="IS_AUTO_AVALIACAO">
-					<subreportParameterExpression><![CDATA[false]]></subreportParameterExpression>
+				<subreportParameter name="EXIBIR_NIVEL_COMPETENCIA_EXIGIDO">
+					<subreportParameterExpression><![CDATA[$P{EXIBIR_NIVEL_COMPETENCIA_EXIGIDO}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="REPORT_DATA_SOURCE">
 					<subreportParameterExpression><![CDATA[$F{matrizCompetecias}]]></subreportParameterExpression>

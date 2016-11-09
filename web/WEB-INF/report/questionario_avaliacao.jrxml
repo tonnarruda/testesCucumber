@@ -14,6 +14,7 @@
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
 	<parameter name="IS_AUTO_AVALIACAO" class="java.lang.Boolean"/>
 	<parameter name="NOME_DO_CARGO" class="java.lang.String"/>
+	<parameter name="EXIBIR_NIVEL_COMPETENCIA_EXIGIDO" class="java.lang.Boolean"/>
 	<field name="questionarioRelatorio.avaliacaoExperiencia.titulo" class="java.lang.String"/>
 	<field name="questionarioRelatorio.avaliacaoExperiencia.dataInicio" class="java.util.Date"/>
 	<field name="questionarioRelatorio.avaliacaoExperiencia.dataFim" class="java.util.Date"/>
@@ -207,6 +208,9 @@
 				</subreportParameter>
 				<subreportParameter name="IS_AUTO_AVALIACAO">
 					<subreportParameterExpression><![CDATA[$P{IS_AUTO_AVALIACAO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="EXIBIR_NIVEL_COMPETENCIA_EXIGIDO">
+					<subreportParameterExpression><![CDATA[$P{EXIBIR_NIVEL_COMPETENCIA_EXIGIDO}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="REPORT_DATA_SOURCE">
 					<subreportParameterExpression><![CDATA[$F{matrizes}]]></subreportParameterExpression>

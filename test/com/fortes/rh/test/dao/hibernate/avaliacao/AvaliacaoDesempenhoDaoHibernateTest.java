@@ -236,6 +236,20 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(1, avaliacaoDesempenhoDao.findComCompetencia(empresa1.getId()).size());
 	}
 	
+	public void testIsExibiNivelCompetenciaExigido()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		avaliacaoDesempenho.setEmpresa(empresa);
+		avaliacaoDesempenho.setExibirNivelCompetenciaExigido(true);
+		avaliacaoDesempenho.setLiberada(true);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		assertTrue(avaliacaoDesempenhoDao.isExibiNivelCompetenciaExigido(avaliacaoDesempenho.getId()));
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao) {
 		this.empresaDao = empresaDao;
 	}

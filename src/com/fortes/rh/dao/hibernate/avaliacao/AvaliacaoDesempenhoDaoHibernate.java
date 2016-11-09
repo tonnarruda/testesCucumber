@@ -243,4 +243,13 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		
 		return criteria.list();
 	}
+
+	public boolean isExibiNivelCompetenciaExigido(Long avaliacaoDesempenhoId) {
+		String hql = "select avd.exibirNivelCompetenciaExigido from AvaliacaoDesempenho avd where avd.id = :avaliacaoDesempenhoId"; 
+
+		Query query = getSession().createQuery(hql);
+		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
+		
+		return (Boolean) query.uniqueResult();
+	}
 }

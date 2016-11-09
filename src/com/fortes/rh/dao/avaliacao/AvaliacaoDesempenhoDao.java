@@ -16,4 +16,5 @@ public interface AvaliacaoDesempenhoDao extends GenericDao<AvaliacaoDesempenho>
 	Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Integer page, Integer pagingSize, Date periodoInicial, Date periodoFinal, Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada);
 	Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId);
 	Collection<AvaliacaoDesempenho> findComCompetencia(Long empresaId);
+	boolean isExibiNivelCompetenciaExigido(Long avaliacaoDesempenhoId);
 }

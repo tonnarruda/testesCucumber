@@ -384,9 +384,13 @@
 						{
 							content += '<td style=" width: 100px; text-align: center;';
 	
-							if(dados[prop]["nivelCompetencia"]["id"] == dadosNiveis[propNivel]["id"])
-								content += 'background-color: #BFC0C3;" class="nivelFaixa';
-								
+							if(dados[prop]["nivelCompetencia"]["id"] == dadosNiveis[propNivel]["id"]){
+								var background = "";
+								<#if exibiNivelCompetenciaExigido>
+									background = 'background-color: "#BFC0C3;"';
+								</#if>
+								content += background + 'class="nivelFaixa';
+							}
 							content += '">	<input type="radio" disabled="disabled" name="niveisCompetenciaFaixaSalariais[' + contador + '].nivelCompetencia.id" value="' + dadosNiveis[propNivel]["id"] + '" nivelcolaborador="' + dadosNiveis[propNivel]["ordem"] + '" nivelfaixa="' + dados[prop]["nivelCompetencia"]["ordem"] + '" ';
 							
 							if(criteriosAvaliacaoCompetencia.length > 0)
@@ -527,9 +531,11 @@
 				<@ww.select label="Avaliador" id="avaliador" name="configuracaoNivelCompetenciaColaborador.avaliador.id" list="colaboradores"  listKey="id" listValue="nome"  headerKey="-1" headerValue="Selecione..." />
 			</#if>
 
-			<div id="legendas" style="float:right;">
-				<p><span style='background-color: #BFC0C3;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial</p>
-			</div>
+			<#if exibiNivelCompetenciaExigido>
+				<div id="legendas" style="float:right;">
+					<p><span style='background-color: #BFC0C3;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial</p>
+				</div>
+			</#if>
 			
 			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.id" />
 			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.faixaSalarial.id" value="${faixaSalarial.id}"/>
@@ -579,7 +585,9 @@
 								<#list nivelCompetencias as nivel>
 									<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
 										<#assign class="nivelFaixa"/>
-										<#assign bgcolor="background-color: #BFC0C3;"/>
+										<#if exibiNivelCompetenciaExigido>
+											<#assign bgcolor="background-color: #BFC0C3;"/>
+										</#if>
 									<#else>
 										<#assign class=""/>
 										<#assign bgcolor=""/>

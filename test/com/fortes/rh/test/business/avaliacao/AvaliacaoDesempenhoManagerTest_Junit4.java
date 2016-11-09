@@ -3,6 +3,7 @@ package com.fortes.rh.test.business.avaliacao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyCollectionOf;
@@ -478,6 +479,14 @@ public class AvaliacaoDesempenhoManagerTest_Junit4
 		assertEquals(new Double(50.0), resultado.getProdutividade());
 		assertEquals(new Double(70.0), ((Competencia) resultado.getCompetencias().toArray()[0]).getPerformance());
 	}
+	
+	@Test
+	public void testIsExibiNivelCompetenciaExigido() {
+		Long avaliacaoDesempenhoId = 2L;
+		when(avaliacaoDesempenhoDao.isExibiNivelCompetenciaExigido(avaliacaoDesempenhoId)).thenReturn(true);
+		assertTrue(avaliacaoDesempenhoManager.isExibiNivelCompetenciaExigido(avaliacaoDesempenhoId));
+	}
+	
 
 	private void mockTestGetResultadoAvaliacaoDesempenho(NivelCompetenciaHistorico nivelCompetenciaHistorico, ConfiguracaoNivelCompetenciaFaixaSalarial cncf, ConfiguracaoNivelCompetencia cncColab1, ConfiguracaoNivelCompetencia cncColab2, Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDoColaborador, Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDaFaixa, Collection<ConfiguracaoNivelCompetenciaCriterio> cncCriterios, AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId, Empresa empresa) {
 		when(configuracaoNivelCompetenciaManager.findCompetenciasAndPesos(avaliacaoDesempenho.getId(), avaliadoId)).thenReturn(configNiveisCompetenciasDoColaborador);

@@ -449,6 +449,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		parametros = RelatorioUtil.getParametrosRelatorio("Avaliação de Desempenho", getEmpresaSistema(), filtro);
 		parametros.put("observacoes", colaboradorQuestionario.getObservacao());
 		parametros.put("NOME_DO_CARGO", colaborador.getFaixaSalarial().getNomeDeCargoEFaixa());
+		parametros.put("EXIBIR_NIVEL_COMPETENCIA_EXIGIDO", colaboradorQuestionario.getAvaliacaoDesempenho().isExibirNivelCompetenciaExigido());
 		
 		if (colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getCabecalho() != null)
 			parametros.put("observacoes_modelo", colaboradorQuestionario.getAvaliacao().getCabecalho());
@@ -489,6 +490,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), filtro);
 		parametros.put("IS_AUTO_AVALIACAO", colaborador.getId().equals(avaliador.getId()));
 		parametros.put("NOME_DO_CARGO", colaborador.getFaixaSalarial().getNomeDeCargoEFaixa());
+		parametros.put("EXIBIR_NIVEL_COMPETENCIA_EXIGIDO", colaboradorQuestionario.getAvaliacaoDesempenho().isExibirNivelCompetenciaExigido());
 		
 		return Action.SUCCESS;
 	}

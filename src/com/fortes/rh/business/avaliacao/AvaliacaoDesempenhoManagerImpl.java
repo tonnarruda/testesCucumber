@@ -387,6 +387,10 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		return getDao().findComCompetencia(empresaId);
 	}
 
+	public boolean isExibiNivelCompetenciaExigido(Long avaliacaoDesempenhoId) {
+		return getDao().isExibiNivelCompetenciaExigido(avaliacaoDesempenhoId)   ;
+	}
+	
 	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
 		this.avaliacaoManager = avaliacaoManager;
 	}

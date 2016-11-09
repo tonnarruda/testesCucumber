@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.1029633968883545"/>
-	<property name="ireport.x" value="155"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -31,6 +31,7 @@
 	<parameter name="NOME_DO_CARGO" class="java.lang.String"/>
 	<parameter name="EXIBIR_COMPETENCIAS_COLABORADOR" class="java.lang.Boolean" isForPrompting="false"/>
 	<parameter name="PERFORMANCENIVELCOMPETENCIA" class="java.lang.String"/>
+	<parameter name="EXIBIR_NIVEL_COMPETENCIA_EXIGIDO" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="competencia" class="java.lang.String"/>
 	<field name="nivel" class="java.lang.String"/>
 	<field name="configuracaoFaixa" class="java.lang.Boolean"/>
@@ -73,6 +74,9 @@
 				<reportElement key="crosstab-1" mode="Opaque" x="0" y="56" width="535" height="20" uuid="a00533ba-b1b0-4f81-a359-ccb5b4959b1a"/>
 				<crosstabParameter name="IS_AUTO_AVALIACAO" class="java.lang.Boolean">
 					<parameterValueExpression><![CDATA[$P{IS_AUTO_AVALIACAO}]]></parameterValueExpression>
+				</crosstabParameter>
+				<crosstabParameter name="EXIBIR_NIVEL_COMPETENCIA_EXIGIDO" class="java.lang.Boolean">
+					<parameterValueExpression><![CDATA[$P{EXIBIR_NIVEL_COMPETENCIA_EXIGIDO}]]></parameterValueExpression>
 				</crosstabParameter>
 				<crosstabDataset isDataPreSorted="true"/>
 				<crosstabHeaderCell>
@@ -201,7 +205,7 @@
 						</box>
 						<rectangle>
 							<reportElement key="rectangle-1" stretchType="RelativeToBandHeight" mode="Opaque" x="1" y="1" width="26" height="24" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="2d35ff24-439e-41c9-a127-76d70a91f690">
-								<printWhenExpression><![CDATA[($V{isConfiguracaoFaixa} && !$P{IS_AUTO_AVALIACAO})]]></printWhenExpression>
+								<printWhenExpression><![CDATA[($V{isConfiguracaoFaixa} && !$P{IS_AUTO_AVALIACAO} && $P{EXIBIR_NIVEL_COMPETENCIA_EXIGIDO})]]></printWhenExpression>
 							</reportElement>
 						</rectangle>
 						<line>
@@ -312,7 +316,7 @@
 			</textField>
 			<frame>
 				<reportElement x="0" y="18" width="264" height="13" uuid="762e9ce9-220d-4dc1-83f8-61d487af87c2">
-					<printWhenExpression><![CDATA[!$P{IS_AUTO_AVALIACAO}]]></printWhenExpression>
+					<printWhenExpression><![CDATA[!$P{IS_AUTO_AVALIACAO} && $P{EXIBIR_NIVEL_COMPETENCIA_EXIGIDO}]]></printWhenExpression>
 				</reportElement>
 				<rectangle>
 					<reportElement x="0" y="0" width="12" height="12" forecolor="#000000" backcolor="#CCCCCC" uuid="99f9abc2-0a7b-4e2a-bffc-5385e26da7ec"/>

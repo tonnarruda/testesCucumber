@@ -224,8 +224,7 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
 		return exibirNivelCompetenciaExigido;
 	}
 
-	public void setExibirNivelCompetenciaExigido(
-			boolean exibirNivelCompetenciaExigido) {
+	public void setExibirNivelCompetenciaExigido(boolean exibirNivelCompetenciaExigido) {
 		this.exibirNivelCompetenciaExigido = exibirNivelCompetenciaExigido;
 	}
 }

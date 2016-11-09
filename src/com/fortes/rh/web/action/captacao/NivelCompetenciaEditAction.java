@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
@@ -42,15 +43,16 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
-	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager; 
-	private NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager;
-	private NivelCompetenciaManager nivelCompetenciaManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private ColaboradorManager colaboradorManager;
-	private SolicitacaoManager solicitacaoManager;
 	private CandidatoManager candidatoManager;
+	private SolicitacaoManager solicitacaoManager;
+	private ColaboradorManager colaboradorManager;
+	private FaixaSalarialManager faixaSalarialManager;
+	private NivelCompetenciaManager nivelCompetenciaManager;
+	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	private NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager; 
+	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 	
 	private NivelCompetencia nivelCompetencia;
 	private FaixaSalarial faixaSalarial;
@@ -92,6 +94,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	private Collection<ConfiguracaoNivelCompetenciaVO> configuracaoNivelCompetenciaVOs;
 	private Long nivelCompetenciaHistoricoId;
+	private boolean exibiNivelCompetenciaExigido = true;
 	
 	private void prepare() throws Exception
 	{
@@ -378,6 +381,9 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		
 		Long avaliadorId = configuracaoNivelCompetenciaColaborador.getAvaliador() != null ? configuracaoNivelCompetenciaColaborador.getAvaliador().getId() : null; 
 		Long avaliacaoDesempenhoId = configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho() != null ? configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho().getId() : null; 
+		
+		if(avaliacaoDesempenhoId != null)
+			exibiNivelCompetenciaExigido = avaliacaoDesempenhoManager.isExibiNivelCompetenciaExigido(avaliacaoDesempenhoId);
 		
 		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(null, null, configuracaoNivelCompetenciaFaixaSalarial.getId(), avaliadorId, avaliacaoDesempenhoId);
 		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId(), configuracaoNivelCompetenciaFaixaSalarial.getId());
@@ -786,5 +792,13 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public Long getNivelCompetenciaHistoricoId() {
 		return nivelCompetenciaHistoricoId;
+	}
+
+	public boolean isExibiNivelCompetenciaExigido() {
+		return exibiNivelCompetenciaExigido;
+	}
+
+	public void setAvaliacaoDesempenhoManager(AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {
+		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
 	}
 }
