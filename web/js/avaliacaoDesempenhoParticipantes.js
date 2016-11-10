@@ -101,11 +101,23 @@ $(function() {
 		$(this).toggleClass("active");
 		
 		$("#avaliadores-list > .portlet").toggleClass("ui-selectable");
+
+		togglePeso(".pesoAvaliador");
+		togglePeso(".portlet-header .help-peso");
+		togglePeso(".peso");
 		
-		$(".peso").toggle();
-		$(".pesoAvaliador").toggle();
-		$(".portlet-toggle").toggle();
+		if($(".pesoAvaliador").is(":visible"))
+			$(".portlet-toggle").hide();
+		else
+			$(".portlet-toggle").show();
 	});
+	
+	function togglePeso(className){
+		if($(className).is(":visible"))
+			$(className).hide();
+		else
+			$(className).show();
+	}
 	
 	$(".pesoAvaliador, .peso").live("keypress", function(event) {
 		return(somenteNumeros(event,''));
@@ -547,6 +559,7 @@ function createAvaliador(id, nome) {
       			 '<input type="hidden" name="participantesAvaliadores['+countParticipantesAvaliadores+'].avaliacaoDesempenho.id" value="'+avaliacaoDesempenhoId+'"/>' +
       			 '<input type="hidden" name="participantesAvaliadores['+countParticipantesAvaliadores+'].tipo" value="R"/>' +
 		  		 '<div class="portlet-header">' +
+		  		 '	<div class="help-peso">?</div>'+
 		  		 '	<input type="text" class="pesoAvaliador" value="1" />' +
       			 '	<div class="nome">' + nome + '</div>' + 
       			 '	<div style="clear: both;"></div>' +
@@ -573,6 +586,10 @@ function createAvaliador(id, nome) {
 		  		 '</div>' +
 		  	'</div>');
 		countParticipantesAvaliadores++;
+		
+		$('.help-peso').qtip({
+			content: 'Insere o mesmo peso para todos os avaliados. Exceto quando for autoavaliação.'
+		});
 	}
 }
 
@@ -597,7 +614,7 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
 	        			$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id') + " .pesoAvaliador").show();
         			
         	} else {
-        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].pesoAvaliador" class="peso" value="' + $(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val() + '"/>');
+        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="text" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].pesoAvaliador" class="peso" value="' + $(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val() + '"/>');
         	}
         		
         	$("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){

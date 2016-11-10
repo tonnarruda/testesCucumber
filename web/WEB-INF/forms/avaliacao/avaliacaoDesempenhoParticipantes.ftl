@@ -236,7 +236,7 @@
 		
 		function validForm() {
 			var validForm = true;
-			$(".pesoAvaliador, .peso").each(function(){
+			$(".portlet-content .pesoAvaliador, .portlet-content .peso").each(function(){
 				if( $(this).val() == "" ) {
 					$(this).css("background", "#FFEEC2");
 					validForm = false;
@@ -245,7 +245,7 @@
 				}
 			});
 			
-			$(".pesoAvaliador, .peso").toggle(!validForm);
+			$(".portlet-content .pesoAvaliador, .portlet-content .peso").toggle(!validForm);
 			$(".portlet-toggle").toggle(validForm);
 			if(validForm){
 				processando('${urlImgs}');
@@ -426,10 +426,11 @@
 						      	<input type="hidden" nametmp="participantesAvaliadores[${countParticipantesAvaliadores}].tipo" value="${avaliador.tipo}"/>
 					      	
 						  		 <div class="portlet-header">
-						  		 	<input type="text" class="pesoAvaliador" value="" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> />
+						  		 	<div class="help-peso">?</div>
+						  		 	<input type="text" class="pesoAvaliador" value="" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> style="margin-right: 3px;"/>
 						  		 	<div class="nome">${avaliador.colaborador.nome}</div>
 						  		 	<div class="faixa show-when-expand">${avaliador.colaborador.faixaSalarial.descricao}</div>
-						      		<div class="area show-when-expand">${avaliador.colaborador.areaOrganizacional.nome}</div>
+						      		<div class="area show-when-expand" style="width: 184px; margin-left: 6px;">${avaliador.colaborador.areaOrganizacional.nome}</div>
 						      		<div style="clear:both;float: none;"></div>
 						  		 </div>
 						  		 <div class="portlet-header mini-actions" style="background: #F3F3F3; padding: 0; display: none;">
@@ -462,7 +463,7 @@
 								        		<#if avaliado.id == avaliador.colaborador.id >
 									        		<input type="text" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="pesoAvaliador" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> />
 								        		<#else>
-									        		<input type="text" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="peso" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}"/>
+									        		<input type="text" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="peso" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> />
 								        		</#if>
 								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.id" value="${avaliado.id}"/>
 								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.nome" value="${avaliado.nome}"/>
@@ -503,17 +504,12 @@
 		
 		<script>
 			window.onload = function() {
-				$(".portlet-header .pesoAvaliador").each(function(){
-			    	$(this).val($(this).parents(".portlet").find(".peso:eq(0)").val());
-			    	if ($(this).val() == "")
-			    		$(this).val(1);
-			    	
-			    	if ( $(this).parents(".portlet").find(".peso").length == 0 && $(this).parents(".portlet").find(".portlet-content .pesoAvaliador").length > 0)
-			    		$(this).val($(this).parents(".portlet").find(".portlet-content .pesoAvaliador:eq(0)").val());
-			    });
-				
 				$('#tooltipHelp').qtip({
 					content: 'Gera uma nova avaliação para cada um dos colaboradores desta avaliação, na qual ele irá avaliar apenas a si próprio.'
+				});
+				
+				$('.help-peso').qtip({
+					content: 'Insere o mesmo peso para todos os avaliados. Exceto quando for autoavaliação.'
 				});
 				
 				if (!avaliacaoLiberada) {

@@ -191,6 +191,21 @@ i.fa {
 	background-image: url(../imgs/ui-icons_6da8d5_256x240.png);
 }
 
+.portlet-header .help-peso {
+    float: right;
+    border: 1px solid #BEBEBE;
+    font-size: 10px;
+    width: 9px;
+    height: 9px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 2px;
+    color: #919090;
+    display:none;
+}
+
+.portlet-header .help-peso:hover { color: #5C5C5A; border-color: #919191; }
+
 .portlet { margin: 5px;}
 .portlet-header, .portlet-content { padding: 5px; font-size: 11px; color: #5C5C5A; }
 .portlet-header {
