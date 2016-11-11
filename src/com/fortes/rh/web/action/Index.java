@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
-import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -105,7 +104,6 @@ public class Index extends MyActionSupport
 	
 	private boolean integradoAC;
 	private Collection<Solicitacao> solicitacaos = new ArrayList<Solicitacao>();
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager; 
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 	private MyDaoAuthenticationProvider authenticationProvider;
 	private Collection<Video> listaVideos = new ArrayList<Video>();
@@ -456,10 +454,6 @@ public class Index extends MyActionSupport
 		
 		return Action.SUCCESS;
 	}
-	
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
 
 	public Colaborador getColaborador()
 	{
@@ -526,11 +520,6 @@ public class Index extends MyActionSupport
 		this.questionarios = questionarios;
 	}
 
-	public void setUsuarioMensagemManager(UsuarioMensagemManager usuarioMensagemManager)
-	{
-		this.usuarioMensagemManager = usuarioMensagemManager;
-	}
-
 	public boolean isPgInicial()
 	{
 		return pgInicial;
@@ -539,16 +528,6 @@ public class Index extends MyActionSupport
 	public void setActionMsg(String actionMsg)
 	{
 		this.actionMsg = actionMsg;
-	}
-
-	public void setFaixaSalarialHistoricoManager(FaixaSalarialHistoricoManager faixaSalarialHistoricoManager)
-	{
-		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
-	}
-
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
 
 	public Collection<PendenciaAC> getPendenciaACs()
@@ -581,11 +560,6 @@ public class Index extends MyActionSupport
 		this.primeiraExecucao = primeiraExecucao;
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public ParametrosDoSistema getParametrosDoSistema()
 	{
 		return parametrosDoSistema;
@@ -593,10 +567,6 @@ public class Index extends MyActionSupport
 
 	public Collection<Solicitacao> getSolicitacaos() {
 		return solicitacaos;
-	}
-
-	public CandidatoSolicitacaoManager getCandidatoSolicitacaoManager() {
-		return candidatoSolicitacaoManager;
 	}
 
 	public Collection<CandidatoSolicitacao> getCandidatoSolicitacaos() {
@@ -613,14 +583,6 @@ public class Index extends MyActionSupport
 
 	public Collection<Avaliacao> getAvaliacaos() {
 		return avaliacaos;
-	}
-
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
-		this.avaliacaoManager = avaliacaoManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 
 	public void setAuthenticationProvider(MyDaoAuthenticationProvider authenticationProvider) {
@@ -675,14 +637,6 @@ public class Index extends MyActionSupport
 		this.noticia = noticia;
 	}
 	
-	public void setNoticiaManager(NoticiaManager noticiaManager) {
-		this.noticiaManager = noticiaManager;
-	}
-
-	public void setUsuarioNoticiaManager(UsuarioNoticiaManager usuarioNoticiaManager) {
-		this.usuarioNoticiaManager = usuarioNoticiaManager;
-	}
-
 	public void setColaboradorId(Long colaboradorId) {
 		this.colaboradorId = colaboradorId;
 	}
@@ -707,8 +661,7 @@ public class Index extends MyActionSupport
 		return historicoColaboradors;
 	}
 
-	public void setHistoricoColaboradors(
-			Collection<HistoricoColaborador> historicoColaboradors) {
+	public void setHistoricoColaboradors(Collection<HistoricoColaborador> historicoColaboradors) {
 		this.historicoColaboradors = historicoColaboradors;
 	}
 }
