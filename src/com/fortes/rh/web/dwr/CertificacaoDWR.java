@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
+@Component
 public class CertificacaoDWR
 {
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;

@@ -2,6 +2,8 @@ package com.fortes.rh.web.dwr;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.sesmt.OrdemDeServicoManager;
@@ -10,6 +12,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.OrdemDeServico;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class OrdemDeServicoDWR {
 	
 	private OrdemDeServicoManager ordemDeServicoManager;

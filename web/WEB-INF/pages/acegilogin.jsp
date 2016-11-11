@@ -64,7 +64,8 @@
 			<td valign="top" width="40"><img src='<ww:url includeParams="none" value="/imgs/erro_msg.gif"/>'></td>
 			<td class="msgErro" valign="top">
 				<span class="txtErro">
-				<%--= ((AuthenticationException) session.getAttribute(AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY)).getMessage() --%>
+				<%-- ((AuthenticationException) session.getAttribute(AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY)).getMessage() --%>
+				<%-- ((AuthenticationException) session.getAttribute(AbstractAuthenticationProcessingFilter.‌​SPRING_SECURITY_LAST‌​_EXCEPTION_KEY)).get‌​Message() --%>
 				</span>
 			</td>
 		</tr>
@@ -81,15 +82,10 @@
 			<td class="corpo">
 				<%=request.getAttribute("msgRemprot")%><br>
 				Usuário:<br>
-<<<<<<< HEAD
-				<input accesskey="u" type='text' id="username" onBlur="empresasUsuario();checkSOS();" name='j_username'<% if("1".equals(request.getParameter("login_error"))) { %>value='<%= session.getAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY) %>'<% } %>/>
+				<input accesskey="u" type='text' id="username" onBlur="empresasUsuario();checkSOS();" name='j_username'<% if("1".equals(request.getParameter("login_error"))) { %>value=''<% } %>/>
 				<label id="senha">Senha:</label><br>
 				<input accesskey="s" type='password' id="password" name='j_password'/>
-=======
-				<input accesskey="u" type='text' id="username" onBlur="empresasUsuario();" name='j_username'<% if("1".equals(request.getParameter("login_error"))) { %>value=''<% } %>>
-				Senha:<br>
-				<input accesskey="s" type='password' id="password" name='j_password'>
->>>>>>> Atualização Spring e Hibernate
+
   				<ww:select label="Empresa" name="j_empresa" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa"/>
   				<input type="hidden" id="SOSSeed" name="j_SOSSeed" value="SOS"/>
   				<br>

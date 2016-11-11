@@ -25,6 +25,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
@@ -94,15 +95,23 @@ import com.opensymphony.xwork.ActionContext;
 public class ColaboradorListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	
+	@Autowired
 	private ColaboradorManager colaboradorManager = null;
+	@Autowired
 	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired
 	private CargoManager cargoManager;
+	@Autowired
 	private EmpresaManager empresaManager;
+	@Autowired
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	@Autowired
 	private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
+	@Autowired
 	private UsuarioManager usuarioManager;
 	
 	private Collection<Colaborador> colaboradors = null;
@@ -1241,11 +1250,6 @@ public class ColaboradorListAction extends MyActionSupportList
 		this.colaborador=colaborador;
 	}
 	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager=colaboradorManager;
-	}
-
 	public String getCpfBusca()
 	{
 		return cpfBusca;
@@ -1284,21 +1288,6 @@ public class ColaboradorListAction extends MyActionSupportList
 	public void setPageAnt(int pageAnt)
 	{
 		this.pageAnt = pageAnt;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
 	}
 
 	public Map getSituacaos()
@@ -1483,11 +1472,6 @@ public class ColaboradorListAction extends MyActionSupportList
 		this.exibirSomenteAtivos = exibirSomenteAtivos;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
 	public Collection<Empresa> getEmpresas()
 	{
 		return empresas;
@@ -1550,10 +1534,6 @@ public class ColaboradorListAction extends MyActionSupportList
 		return parametrosDoSistemaManager;
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public Collection<ConfiguracaoCampoExtra> getConfiguracaoCampoExtras() {
 		return configuracaoCampoExtras;
 	}
@@ -1564,10 +1544,6 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public ConfiguracaoCampoExtraManager getConfiguracaoCampoExtraManager() {
 		return configuracaoCampoExtraManager;
-	}
-
-	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
-		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
 	}
 
 	public Collection<String> getColunasMarcadas() {
@@ -1589,11 +1565,6 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setColunas(Collection<ReportColumn> colunas) {
 		this.colunas = colunas;
-	}
-
-
-	public void setConfiguracaoRelatorioDinamicoManager(ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager) {
-		this.configuracaoRelatorioDinamicoManager = configuracaoRelatorioDinamicoManager;
 	}
 
 	public ConfiguracaoRelatorioDinamico getConfiguracaoRelatorioDinamico() {
@@ -1821,10 +1792,6 @@ public class ColaboradorListAction extends MyActionSupportList
 			colaboradorLogadoId = 0L;
 		
 		return colaboradorLogadoId;
-	}
-	
-	public void setUsuarioManager(UsuarioManager usuarioManager) {
-		this.usuarioManager = usuarioManager;
 	}
 
 	public Date getMesAnoDate() {

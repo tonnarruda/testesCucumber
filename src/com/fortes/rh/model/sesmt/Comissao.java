@@ -35,9 +35,9 @@ public class Comissao extends AbstractModel implements Serializable
 
 	@OneToMany(mappedBy="comissao")
 	private Collection<ComissaoReuniao> comissaoReunioes;
-	@Lob
+	
 	private String ataPosseTexto1;
-	@Lob
+	
 	private String ataPosseTexto2;
 	
 	public Comissao() {

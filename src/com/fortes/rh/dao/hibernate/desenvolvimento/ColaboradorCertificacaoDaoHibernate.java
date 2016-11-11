@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -20,6 +19,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -265,7 +265,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cg.id"), "cargoId");
 		p.add(Projections.property("cg.nome"), "cargoNome");
 		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
-		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome");
+		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {StandardBasicTypes.TEXT}), "areaOrganizacionalNome");
 		p.add(Projections.property("ct.id"), "colaboradorTurmaId");
 		p.add(Projections.property("ct.aprovado"), "colaboradorTurmaAprovado");
 		p.add(Projections.property("cu.id"), "colaboradorTurmaCursoId");
@@ -355,7 +355,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cc.certificacao.id"), "certificacaoId");
 		p.add(Projections.sqlProjection(" case when {alias}.data = (select max(data) from colaboradorcertificacao where colaborador_id = " + colaboradorId + "  and certificacao_id = "+ certificacaoId +" ) "
 				+ " and not exists(select * from colaboradoravaliacaopratica where colaborador_id = " + colaboradorId + "  and certificacao_id = "+ certificacaoId +" and colaboradorcertificacao_id is null )"
-				+ "then true else false end as ultimaCertificacao ", new String[] {"ultimaCertificacao"}, new Type[] {Hibernate.BOOLEAN}), "ultimaCertificacao");
+				+ "then true else false end as ultimaCertificacao ", new String[] {"ultimaCertificacao"}, new Type[] {StandardBasicTypes.BOOLEAN}), "ultimaCertificacao");
 	        
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("cc.colaborador.id", colaboradorId));
@@ -523,7 +523,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cg.id"), "cargoId");
 		p.add(Projections.property("cg.nome"), "cargoNome");
 		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
-		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome");
+		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {StandardBasicTypes.TEXT}), "areaOrganizacionalNome");
 		p.add(Projections.property("ct.id"), "colaboradorTurmaId");
 		p.add(Projections.property("ct.aprovado"), "colaboradorTurmaAprovado");
 		p.add(Projections.property("cu.id"), "colaboradorTurmaCursoId");

@@ -26,10 +26,10 @@ import com.fortes.security.auditoria.NaoAudita;
 public class Pergunta extends AbstractModel implements Serializable, Cloneable
 {
     private Integer ordem;
-    @Lob
+    
     private String texto;
     private boolean comentario;
-    @Lob
+    
     private String textoComentario;
     @OneToMany(fetch=FetchType.LAZY, mappedBy="pergunta")
     private Collection<Resposta> respostas;

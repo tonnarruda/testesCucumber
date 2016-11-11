@@ -4,13 +4,13 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -60,8 +60,8 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		p.add(Projections.property("ccncf.id"), "projectionConfiguracaoNivelCompetenciaFaixaSalarialId");
 		p.add(Projections.property("ccad.avaliador.id"), "projectionAvaliadorId");
 		p.add(Projections.property("ccad.competenciaId"), "competenciaId");
-		p.add(Projections.sqlProjection("(select nome from competencia where id = {alias}.competencia_id and {alias}.tipoCompetencia = tipo) as competenciaDescricao", new String[] {"competenciaDescricao"}, new Type[] {Hibernate.STRING}), "competenciaDescricao");
-		p.add(Projections.sqlProjection(existeResposta(), new String[] {"possuiResposta"}, new Type[] {Hibernate.BOOLEAN}), "possuiResposta");
+		p.add(Projections.sqlProjection("(select nome from competencia where id = {alias}.competencia_id and {alias}.tipoCompetencia = tipo) as competenciaDescricao", new String[] {"competenciaDescricao"}, new Type[] {StandardBasicTypes.STRING}), "competenciaDescricao");
+		p.add(Projections.sqlProjection(existeResposta(), new String[] {"possuiResposta"}, new Type[] {StandardBasicTypes.BOOLEAN}), "possuiResposta");
 		p.add(Projections.property("ccad.tipoCompetencia"), "tipoCompetencia");
 		//Nao aumentar a projection
 		criteria.setProjection(p);

@@ -22,7 +22,7 @@ public class RealizacaoExame extends AbstractModel implements Serializable
 {
     @Temporal(DATE)
     private Date data;
-    @Lob
+    
     private String observacao;
 
     @OneToOne(mappedBy="realizacaoExame")

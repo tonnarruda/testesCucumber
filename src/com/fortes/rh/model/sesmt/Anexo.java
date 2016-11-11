@@ -16,7 +16,7 @@ public class Anexo extends AbstractModel implements Serializable
 {
 	@Column(length=100)
 	private String nome;
-	@Lob
+	
 	private String observacao;
 	@Column(length=120)
 	private String url;

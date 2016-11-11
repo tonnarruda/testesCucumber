@@ -34,7 +34,7 @@ public class TabelaReajusteColaborador extends AbstractModel implements Serializ
     private String nome;
     @Temporal(TemporalType.DATE)
     private Date data;
-    @Lob
+    
     private String observacao;
     private boolean aprovada;
     @ManyToOne

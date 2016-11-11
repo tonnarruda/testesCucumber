@@ -25,9 +25,9 @@ public class Anuncio extends AbstractModel implements Serializable
 {
     @Column(length=100)
     private String titulo;
-    @Lob
+    
     private String cabecalho;
-    @Lob
+    
     private String informacoes;
 
     @OneToOne

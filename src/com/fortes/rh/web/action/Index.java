@@ -1,4 +1,3 @@
-
 package com.fortes.rh.web.action;
 
 import java.io.BufferedReader;

@@ -30,12 +30,12 @@ public class SolicitacaoBDS extends AbstractModel implements Serializable
     private Date data;
     private char tipo;
     private char escolaridade;
-    @Lob
+    
     private String experiencia;
     private char sexo;
     private int idadeMinima;
     private int idadeMaxima;
-    @Lob
+    
     private String observacao;
 
     @ManyToMany

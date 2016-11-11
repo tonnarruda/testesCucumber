@@ -50,23 +50,23 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	
 	private Integer revisao; 
 	
-	@Lob
+	
 	private String atividades;
-	@Lob
+	
 	private String riscos;
-	@Lob
+	
 	private String epis;
-	@Lob
+	
 	private String medidasPreventivas;
-	@Lob
+	
 	private String treinamentos;
-	@Lob
+	
 	private String normasInternas;
-	@Lob
+	
 	private String procedimentoEmCasoDeAcidente;
-	@Lob
+	
 	private String termoDeResponsabilidade;
-	@Lob
+	
 	private String informacoesAdicionais;
 	
 	private boolean impressa;

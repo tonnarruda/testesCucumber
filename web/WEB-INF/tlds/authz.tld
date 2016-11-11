@@ -61,7 +61,7 @@
         <attribute>
             <name>property</name>
             <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
+            <rtexprvalue>false</rtexprvalue>
             <description>
                 Property of the Authentication object which should be output. Supports nested
                 properties. For example if the principal object is an instance of UserDetails,

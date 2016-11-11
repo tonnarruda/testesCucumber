@@ -28,7 +28,7 @@ public class Habilidade extends AbstractModel implements Serializable
 	private String nome;
 	@ManyToOne
 	private Empresa empresa;
-	@Lob
+	
 	private String observacao;
 	@ManyToMany
 	private Collection<AreaOrganizacional> areaOrganizacionals;

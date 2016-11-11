@@ -37,7 +37,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 	private CandidatoSolicitacao candidatoSolicitacao;
 	@Column(length=100)
 	private String responsavel;
-	@Lob
+	
 	private String observacao;
 
 	private Character apto = Apto.INDIFERENTE;

@@ -34,9 +34,9 @@ public class ComissaoReuniao extends AbstractModel implements Serializable
 	private String descricao;
 	@Column(length=1)
 	private String tipo;
-	@Lob
+	
 	private String ata;
-	@Lob
+	
 	private String obsReuniaoAnterior;
 
 	@ManyToOne

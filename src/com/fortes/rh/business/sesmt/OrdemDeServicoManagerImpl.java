@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -20,6 +22,7 @@ import com.fortes.rh.model.sesmt.OrdemDeServico;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico, OrdemDeServicoDao> implements OrdemDeServicoManager
 {
 	private HistoricoFuncaoManager historicoFuncaoManager;
@@ -27,6 +30,11 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 	private RiscoFuncaoManager riscoFuncaoManager;
 	private CursoManager cursoManager;
 	private EpiManager epiManager;
+
+	@Autowired
+	OrdemDeServicoManagerImpl(OrdemDeServicoDao fooDao) {
+		setDao(fooDao);
+	}
 	
 	public OrdemDeServico findOrdemServicoProjection(Long id){
 		return getDao().findOrdemServicoProjection(id);

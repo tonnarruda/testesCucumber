@@ -2,7 +2,7 @@
 <%@ page contentType="text/html" %>
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib prefix='ww' uri='webwork' %>
-<%@ taglib prefix='authz' uri='http://acegisecurity.org/authz' %>
+<%@ taglib prefix='authz' uri='http://www.springframework.org/security/tags' %>
 <html>
 <head>
 	<title>Erro interno do servidor</title>

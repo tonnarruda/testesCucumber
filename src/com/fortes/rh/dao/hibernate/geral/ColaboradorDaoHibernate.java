@@ -14,7 +14,6 @@ import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -5218,7 +5217,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("co.pessoal.cpf"),"colaboradorCPF");
 		p.add(Projections.property("co.dataDesligamento"),"dataDesligamento");
 		p.add(Projections.property("hc.funcao.id"),"funcaoId");
-		p.add(Projections.sqlProjection("(select (count(*) > 0) from historicocolaborador where colaborador_id = co1_.id and funcao_id is not null ) as temFuncao", new String[] {"temFuncao"}, new Type[] {Hibernate.BOOLEAN}), "temFuncao");
+		p.add(Projections.sqlProjection("(select (count(*) > 0) from historicocolaborador where colaborador_id = co1_.id and funcao_id is not null ) as temFuncao", new String[] {"temFuncao"}, new Type[] {StandardBasicTypes.BOOLEAN}), "temFuncao");
 		
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "co", Criteria.INNER_JOIN);

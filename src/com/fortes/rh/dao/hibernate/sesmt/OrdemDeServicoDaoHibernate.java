@@ -8,11 +8,13 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.OrdemDeServicoDao;
 import com.fortes.rh.model.sesmt.OrdemDeServico;
 
+@Component
 public class OrdemDeServicoDaoHibernate extends GenericDaoHibernate<OrdemDeServico> implements OrdemDeServicoDao {
 	
 	public OrdemDeServico findOrdemServicoProjection(Long id) {

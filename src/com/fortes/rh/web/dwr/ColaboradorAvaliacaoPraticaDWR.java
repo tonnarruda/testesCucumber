@@ -1,9 +1,12 @@
 package com.fortes.rh.web.dwr;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.desenvolvimento.ColaboradorAvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 
+@Component
 public class ColaboradorAvaliacaoPraticaDWR
 {
 	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;

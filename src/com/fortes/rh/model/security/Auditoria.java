@@ -28,7 +28,7 @@ public class Auditoria extends AbstractModel implements Serializable
 	private String operacao;
 	@Column(length=50)
 	private String entidade;
-	@Lob
+	
 	private String dados;
 	@Column(length=255)
 	private String chave;

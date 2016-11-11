@@ -104,7 +104,7 @@
 		</#if>
 	</div>
 	
-	<#assign menu><@authz.authentication property="principal.menuFormatado"/></#assign>
+	<#assign menu><@authz.authentication property="principal.menuFormatado" htmlEscape="false" /></#assign>
 	
 	${menu}
 	

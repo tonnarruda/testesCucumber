@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -107,7 +106,8 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
 		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
 		
-		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as projectionAreaOrganizacionalNome", new String[] {"projectionAreaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "projectionAreaOrganizacionalNome");
+//		p.add(Projections.property("ao.nome"), "projectionAreaOrganizacionalNome");
+		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as projectionAreaOrganizacionalNome", new String[] {"projectionAreaOrganizacionalNome"}, new Type[] {StandardBasicTypes.TEXT}), "projectionAreaOrganizacionalNome");
 
 		p.add(Projections.property("e.nome"), "estabelecimentoNomeProjection");
 		
@@ -545,7 +545,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
 		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
 		p.add(Projections.property("ao.id"), "projectionAreaOrganizacionalId");
-		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as projectionAreaOrganizacionalNome", new String[] {"projectionAreaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "projectionAreaOrganizacionalNome");
+		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as projectionAreaOrganizacionalNome", new String[] {"projectionAreaOrganizacionalNome"}, new Type[] {StandardBasicTypes.TEXT}), "projectionAreaOrganizacionalNome");
 		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
 		p.add(Projections.property("ca.nome"), "projectionCargoNome");
 		p.add(Projections.property("es.nome"), "estabelecimentoNomeProjection");
@@ -1144,8 +1144,8 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cq.id"), "id");
 		p.add(Projections.property("cq.respondidaEm"), "respondidaEm");
 		p.add(Projections.property("cq.avaliacaoDesempenho.id"), "avaliacaoDesempenhoId");
-		p.add(Projections.sqlProjection("coalesce (avd2_.titulo, av1_.titulo) as titulo", new String []{"titulo"}, new Type[] {Hibernate.STRING}), "projectionAvaliacaoTitulo");
-		p.add(Projections.sqlProjection("coalesce (av1_.tipoModeloAvaliacao, 'D') as tipoModeloAvaliacao", new String []  {"tipoModeloAvaliacao"}, new Type[] {Hibernate.CHARACTER}), "projectionAvaliacaoTipoModelo");
+		p.add(Projections.sqlProjection("coalesce (avd2_.titulo, av1_.titulo) as titulo", new String []{"titulo"}, new Type[] {StandardBasicTypes.STRING}), "projectionAvaliacaoTitulo");
+		p.add(Projections.sqlProjection("coalesce (av1_.tipoModeloAvaliacao, 'D') as tipoModeloAvaliacao", new String []  {"tipoModeloAvaliacao"}, new Type[] {StandardBasicTypes.CHARACTER}), "projectionAvaliacaoTipoModelo");
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));

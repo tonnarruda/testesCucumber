@@ -66,7 +66,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 	private Double quantidadeIndiceProposto;
 	private int tipoSalarioProposto;
 	
-	@Lob
+	
 	private String observacao;
 
 	@Transient

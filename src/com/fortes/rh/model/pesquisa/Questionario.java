@@ -30,7 +30,7 @@ public class Questionario extends AbstractModel implements Serializable, Cloneab
 {
     @Column(length=100)
     private String titulo;
-    @Lob
+    
 	private String cabecalho;
 	
 	@OneToOne(mappedBy="questionario", fetch = FetchType.LAZY)

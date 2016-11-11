@@ -38,7 +38,7 @@ public class Conhecimento extends AbstractModel implements Serializable
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="conhecimento", cascade=CascadeType.ALL)
 	private Collection<CriterioAvaliacaoCompetencia> criteriosAvaliacaoCompetencia;
 	
-	@Lob
+	
 	private String observacao;
 
 	public Conhecimento()

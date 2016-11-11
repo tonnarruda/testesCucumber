@@ -29,7 +29,7 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
     private Date data;
 	@Transient
 	private Date dataProximoHistorico;
-	@Lob
+	
     private String descricao;
     @ManyToOne
     private Funcao funcao;
@@ -46,7 +46,7 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
     @OneToMany(mappedBy="historicoFuncao", cascade=CascadeType.ALL)
 	private Collection<RiscoFuncao> riscoFuncaos;
 
-    @Lob
+    
 	private String normasInternas;
     
     @Transient

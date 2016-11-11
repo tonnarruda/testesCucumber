@@ -350,13 +350,13 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			query.setDate("dataFim", dataFim);
 		
 		if(epiIds != null && epiIds.length != 0)
-			query.setParameterList("epiCheck", epiIds, Hibernate.LONG);
+			query.setParameterList("epiCheck", epiIds, StandardBasicTypes.LONG);
 		
 		if (colaboradorCheck != null && colaboradorCheck.length != 0)
-			query.setParameterList("colaboradorCheck", colaboradorCheck, Hibernate.LONG);
+			query.setParameterList("colaboradorCheck", colaboradorCheck, StandardBasicTypes.LONG);
 		
 		if(areaIds != null && areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.setParameterList("areaIds", areaIds, StandardBasicTypes.LONG);
 
 		return query.list();
 	}

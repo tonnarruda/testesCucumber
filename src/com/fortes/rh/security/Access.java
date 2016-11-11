@@ -9,10 +9,12 @@ import java.util.Enumeration;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Component;
 
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.DateUtil;
 
+@Component
 public class Access {
 
 	static byte[] encodedBytes = new byte[]{89, 122, 66, 116, 99, 68, 82, 106, 100, 68, 66, 121};

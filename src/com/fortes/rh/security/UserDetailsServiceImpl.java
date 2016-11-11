@@ -26,6 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
 	private UsuarioManager usuarioManager;
 	@Autowired
 	private ColaboradorManager colaboradorManager;
+	@Autowired
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException, DataAccessException
