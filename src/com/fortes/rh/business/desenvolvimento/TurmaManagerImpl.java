@@ -21,6 +21,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.json.TurmaJson;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.thread.certificaColaboradorThread;
 import com.fortes.rh.util.ArquivoUtil;
@@ -362,6 +363,10 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		}
 		
 		return turma;
+	}
+	
+	public Collection<TurmaJson> getTurmasJson(String baseCnpj, Long turmaId, char realizada) {
+		return getDao().getTurmasJson(baseCnpj, turmaId, realizada);
 	}
 	
 	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) 

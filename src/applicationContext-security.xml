@@ -270,6 +270,7 @@
 				/geral/colaborador/imprimeRelatorioFerias.action* = ROLE_REL_FERIAS
 				/geral/colaborador/imprimirPerformanceFuncional.action* = ROLE_CAD_COLABORADOR,ROLE_VISUALIZAR_PROGRESSAO
 				/geral/colaborador/showFoto.action* = ROLE_CAD_COLABORADOR,ROLE_VISUALIZAR_PROGRESSAO
+				/geral/colaborador/getColaboradoresJson.action* = ROLE_ANONYMOUS,ROLE_USER
 				
 				/geral/ocorrencia/list.action*=ROLE_CAD_OCORRENCIA
 				/geral/ocorrencia/prepareInsert.action*=ROLE_CAD_OCORRENCIA_INSERIR
@@ -309,6 +310,7 @@
 				/geral/empresa/prepareImportarCadastros*/**=ROLE_IMPORTA_CADASTROS
 				/geral/empresa/importarCadastros*/**=ROLE_IMPORTA_CADASTROS
 				/geral/empresa/*/**=ROLE_UTI_EMPRESA
+
 				/geral/historicoBeneficio/*/**=ROLE_CAD_BENEFICIO
 				/geral/beneficio/*/**=ROLE_CAD_BENEFICIO
 				/geral/grupoGasto/*/**=ROLE_CAD_GRUPOGASTO
@@ -537,6 +539,8 @@
 				/desenvolvimento/turma/imprimirRelatorioInvestimento*/**=ROLE_CRONOGRAMA_TREINAMENTO
 				/desenvolvimento/turma/relatorioInvestimentoPorColaborador*/**=ROLE_INVESTIMENTO_TREINAMENTO_COLAB
 				/desenvolvimento/turma/imprimirRelatorioInvestimentoPorColaborador*/**=ROLE_INVESTIMENTO_TREINAMENTO_COLAB
+				/desenvolvimento/turma/getTurmasJson.action* = ROLE_ANONYMOUS,ROLE_USER
+				
 				/desenvolvimento/colaboradorTurma/prepareRelatorioColaboradorCertificacao*/**=ROLE_REL_COLABORADORES_CERTIFICACOES
 				/desenvolvimento/colaboradorTurma/relatorioColaboradorCertificacao*/**=ROLE_REL_COLABORADORES_CERTIFICACOES
 				/desenvolvimento/colaboradorTurma/prepareFiltroHistoricoTreinamentos*/**=ROLE_REL_HISTORICO_TREINAMENTOS

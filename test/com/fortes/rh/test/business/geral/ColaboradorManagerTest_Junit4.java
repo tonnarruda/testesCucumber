@@ -27,7 +27,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.json.ColaboradorJson;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -134,4 +134,13 @@ public class ColaboradorManagerTest_Junit4
     	assertNull(ex);
     }
     
+    @Test
+    public void testGetColaboradoresJson() {
+    	String baseCnpj = null;
+    	Long colaboradorId = 1L;
+    	
+		Collection<ColaboradorJson> colaboradoresJson = Arrays.asList(new ColaboradorJson());
+		when(colaboradorDao.getColaboradoresJson(baseCnpj, colaboradorId)).thenReturn(colaboradoresJson);
+		assertEquals(colaboradoresJson, colaboradorManager.getColaboradoresJson(baseCnpj, colaboradorId));
+    }
 }

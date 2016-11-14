@@ -110,6 +110,7 @@ import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.Providencia;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
+import com.fortes.rh.model.json.ColaboradorJson;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.relatorio.DataGrafico;
@@ -7033,6 +7034,26 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		
 		colaboradorRetorno = colaboradorDao.findColaboradorById(colaborador.getId());
 		Assert.assertTrue(colaboradorRetorno.isRespondeuEntrevista());
+	}
+	
+	@Test
+	public void testGetColaboradoresJson(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		Cargo cargo = saveCargo();
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		
+		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, colaborador.getDataAdmissao(), StatusRetornoAC.CONFIRMADO);
+		
+		Collection<ColaboradorJson> colaboradoresJson = colaboradorDao.getColaboradoresJson(empresa.getCnpj(), colaborador.getId());
+		Assert.assertEquals(1, colaboradoresJson.size());
 	}
 	
 	private FaixaSalarial saveFaixaSalarial(Cargo cargo){

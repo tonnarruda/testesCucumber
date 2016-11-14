@@ -10,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
@@ -36,6 +38,8 @@ import com.fortes.rh.model.dicionario.StatusAprovacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TipoDespesa;
+import com.fortes.rh.model.json.Hash;
+import com.fortes.rh.model.json.TurmaJson;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.BooleanUtil;
@@ -44,8 +48,10 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
@@ -123,6 +129,10 @@ public class TurmaListAction extends MyActionSupportList
 	private char filtroAprovado;
 	private String descricao;
 
+	private String json;
+	private Long turmaId;
+	private String empresaBaseCnpj;
+	
 	public String filtroPlanoTreinamento() throws Exception
 	{
 		prepareDatas();
@@ -501,6 +511,20 @@ public class TurmaListAction extends MyActionSupportList
 			prepareImprimirCursosVencidosAVencer();
 			return Action.INPUT;
 		}
+	}
+	
+	public String getTurmasJson(){
+		ActionContext ctx = ActionContext.getContext();
+		HttpServletRequest req = (HttpServletRequest) ctx.get(ServletActionContext.HTTP_REQUEST);
+		String token = req.getHeader(Hash.getNomeParametro());
+		if(token != null && token.equals(Hash.getValorHash())){
+			Collection<TurmaJson> turmasJson = turmaManager.getTurmasJson(empresaBaseCnpj, turmaId, realizada);
+			json = StringUtil.toJSON(turmasJson, new String[]{});
+		}
+		else{
+			json = "token inválido";
+		}
+		return Action.SUCCESS;
 	}
 	
 	private String getPeriodoFormatado()
@@ -907,13 +931,35 @@ public class TurmaListAction extends MyActionSupportList
 		this.descricao = descricao;
 	}
 
-	public void setTurmaAvaliacaoTurmaManager(
-			TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) {
+	public void setTurmaAvaliacaoTurmaManager( TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) {
 		this.turmaAvaliacaoTurmaManager = turmaAvaliacaoTurmaManager;
 	}
 
-	public void setTurmaDocumentoAnexoManager(
-			TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) {
+	public void setTurmaDocumentoAnexoManager( TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) {
 		this.turmaDocumentoAnexoManager = turmaDocumentoAnexoManager;
+	}
+
+	public String getJson() {
+		return json;
+	}
+
+	public void setJson(String json) {
+		this.json = json;
+	}
+
+	public String getEmpresaBaseCnpj() {
+		return empresaBaseCnpj;
+	}
+
+	public void setEmpresaBaseCnpj(String empresaBaseCnpj) {
+		this.empresaBaseCnpj = empresaBaseCnpj;
+	}
+
+	public Long getTurmaId() {
+		return turmaId;
+	}
+
+	public void setTurmaId(Long turmaId) {
+		this.turmaId = turmaId;
 	}
 }

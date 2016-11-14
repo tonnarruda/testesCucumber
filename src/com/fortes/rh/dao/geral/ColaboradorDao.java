@@ -16,6 +16,7 @@ import com.fortes.rh.model.geral.ColaboradorJsonVO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
+import com.fortes.rh.model.json.ColaboradorJson;
 import com.fortes.rh.model.relatorio.DataGrafico;
 
 public interface ColaboradorDao extends GenericDao<Colaborador>
@@ -153,4 +154,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] areaIds, String situacao, String filtroOrdemDeServico, int page, int pagingSize);
 	public Colaborador findComDadosBasicosParaOrdemDeServico( Long colaboradorId, Date dataOrdemDeServico);
 	public void updateRespondeuEntrevistaDesligamento(Long colaboradorId, boolean respondeuEntrevistaDesligamento);
+	public Collection<ColaboradorJson> getColaboradoresJson(String baseCnpj, Long colaboradorId);
 }

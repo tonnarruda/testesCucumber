@@ -261,5 +261,9 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioCursosVencidosAVencer.ftl</result>
 		</action>
 		
+		<action name="getTurmasJson" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="getTurmasJson">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
+		    <param name="contentType">application/json</param>
+		</action>
 	</package>
 </xwork>

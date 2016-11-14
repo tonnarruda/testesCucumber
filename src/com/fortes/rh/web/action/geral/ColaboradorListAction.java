@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -70,6 +71,8 @@ import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ReportColumn;
+import com.fortes.rh.model.json.ColaboradorJson;
+import com.fortes.rh.model.json.Hash;
 import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
@@ -191,7 +194,6 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	private Collection<AutoCompleteVO> data;
 	private String descricao;
-	private String json;
 
 	private ByteArrayInputStream byteArrayInputStream;
 	private String mesAno;
@@ -202,6 +204,10 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private boolean imprimirFeriasGozadas;
 	private Collection<TPeriodoGozo> periodosGozo;
+
+	private String json;
+	private String baseCnpj;
+	private Long colaboradorId;
 
 	private enum Nomenclatura {
 		ENVIADO_FP("Enviado Fortes Pessoal"),
@@ -1002,6 +1008,21 @@ public class ColaboradorListAction extends MyActionSupportList
 		return retorno;
 	}
 
+	public String getColaboradoresJson(){
+		ActionContext ctx = ActionContext.getContext();
+		HttpServletRequest req = (HttpServletRequest) ctx.get(ServletActionContext.HTTP_REQUEST);
+		String token = req.getHeader(Hash.getNomeParametro());
+		if(token != null && token.equals(Hash.getValorHash())){
+			Collection<ColaboradorJson> colaboradoresJson = colaboradorManager.getColaboradoresJson(baseCnpj, colaboradorId);
+			json = StringUtil.toJSON(colaboradoresJson, new String[]{});
+		}
+		else{
+			json = "token inválido";
+		}
+		return Action.SUCCESS;
+	}
+
+	
 	private void prepareCabecalhoRelatorioFerias()
 	{
 		reportTitle = "Relatório de Férias";
@@ -1728,5 +1749,25 @@ public class ColaboradorListAction extends MyActionSupportList
 	public Collection<TPeriodoGozo> getPeriodosGozo()
 	{
 		return periodosGozo;
+	}
+
+	public String getBaseCnpj() {
+		return baseCnpj;
+	}
+
+	public void setBaseCnpj(String baseCnpj) {
+		this.baseCnpj = baseCnpj;
+	}
+
+	public void setJson(String json) {
+		this.json = json;
+	}
+
+	public Long getColaboradorId() {
+		return colaboradorId;
+	}
+
+	public void setColaboradorId(Long colaboradorId) {
+		this.colaboradorId = colaboradorId;
 	}
 }

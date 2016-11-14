@@ -83,6 +83,7 @@ import com.fortes.rh.test.business.desenvolvimento.DNTManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.DiaTurmaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.TurmaDocumentoAnexoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.TurmaManagerTest;
+import com.fortes.rh.test.business.desenvolvimento.TurmaManagerTest_Junit4;
 import com.fortes.rh.test.business.geral.AreaFormacaoManagerTest;
 import com.fortes.rh.test.business.geral.AreaInteresseManagerTest;
 import com.fortes.rh.test.business.geral.AreaOrganizacionalManagerTest;
@@ -261,6 +262,7 @@ import com.fortes.rh.test.dao.hibernate.desenvolvimento.CursoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.DNTDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.DiaTurmaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.TurmaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.desenvolvimento.TurmaDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.TurmaDocumentoAnexoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.AreaFormacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.AreaInteresseDaoHibernateTest;
@@ -874,9 +876,11 @@ import com.fortes.test.web.tags.LinkTagTest;
 
 	TurmaTest.class,
 	TurmaDaoHibernateTest.class,
+	TurmaDaoHibernateTest_JUnit4.class,
 	TurmaEditActionTest.class,
 	TurmaListActionTest.class,
 	TurmaManagerTest.class,
+	TurmaManagerTest_Junit4.class,
 	        
 	TurmaDocumentoAnexoDaoHibernateTest.class,
 	TurmaDocumentoAnexoManagerTest.class,

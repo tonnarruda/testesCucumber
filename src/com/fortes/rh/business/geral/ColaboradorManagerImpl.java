@@ -107,6 +107,7 @@ import com.fortes.rh.model.geral.relatorio.TaxaDemissao;
 import com.fortes.rh.model.geral.relatorio.TaxaDemissaoCollection;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
+import com.fortes.rh.model.json.ColaboradorJson;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
@@ -3013,6 +3014,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void updateRespondeuEntrevistaDesligamento(Long colaboradorId, boolean respondeuEntrevistaDesligamento) {
 		getDao().updateRespondeuEntrevistaDesligamento(colaboradorId, respondeuEntrevistaDesligamento);
+	}
+	
+	public Collection<ColaboradorJson> getColaboradoresJson(String baseCnpj, Long colaboradorId) {
+		return getDao().getColaboradoresJson(baseCnpj, colaboradorId);
 	}
 
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 

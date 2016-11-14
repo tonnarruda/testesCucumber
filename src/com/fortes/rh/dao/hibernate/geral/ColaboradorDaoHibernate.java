@@ -57,6 +57,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
+import com.fortes.rh.model.json.ColaboradorJson;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
@@ -5275,5 +5276,45 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setLong("colaboradorId", colaboradorId);
 		query.setBoolean("respondeuEntrevistaDesligamento", respondeuEntrevistaDesligamento);
 		query.executeUpdate();
+	}
+
+	public Collection<ColaboradorJson> getColaboradoresJson(String baseCnpj, Long colaboradorId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new com.fortes.rh.model.json.ColaboradorJson(c.id, c.nome, c.pessoal.dataNascimento, c.pessoal.sexo, c.pessoal.cpf, c.pessoal.rg, uf.sigla, cid.nome, c.endereco.cep, ");
+		hql.append(" c.endereco.logradouro, c.endereco.numero, c.endereco.bairro, c.contato.email, c.contato.ddd, c.contato.foneFixo, c.pessoal.escolaridade, c.pessoal.mae, c.pessoal.pai, c.matricula, c.vinculo, ");
+		hql.append("c.dataAdmissao, c.dataDesligamento, c.dataEncerramentoContrato, ca.nome ||' '|| fs.nome, cast(monta_familia_area(ao.id), text) as ao_nome, func.nome, e.id, e.nome, e.cnpj) ");
+
+		hql.append("from Colaborador as c ");
+		hql.append("inner join c.empresa e ");
+		hql.append("inner join c.historicoColaboradors hc ");
+		hql.append("inner join hc.areaOrganizacional ao ");
+		hql.append("left join hc.funcao func ");
+		hql.append("inner join hc.faixaSalarial fs ");
+		hql.append("inner join fs.cargo ca ");
+		hql.append("left join c.endereco.uf uf ");
+		hql.append("left join c.endereco.cidade cid ");
+		hql.append("where hc.data = (");
+		hql.append("		select max(hc2.data) ");
+		hql.append("		from HistoricoColaborador as hc2 ");
+		hql.append("			where hc2.colaborador.id = c.id ");
+		hql.append("			and hc2.data <= current_date ");
+		hql.append("			and hc2.status = :status ");
+		hql.append("		) ");
+		
+		if(baseCnpj != null && !baseCnpj.isEmpty())
+			hql.append("and e.cnpj = :baseCnpj ");
+		
+		if(colaboradorId != null)
+			hql.append("and c.id = :colaboradorId ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		if(baseCnpj != null && !baseCnpj.isEmpty())
+			query.setString("baseCnpj", baseCnpj);
+
+		if(colaboradorId != null)
+			query.setLong("colaboradorId", colaboradorId);
+
+		return query.list();
 	}
 }

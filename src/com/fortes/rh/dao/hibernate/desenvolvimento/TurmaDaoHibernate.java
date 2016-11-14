@@ -30,6 +30,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
+import com.fortes.rh.model.json.TurmaJson;
 import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
@@ -615,4 +616,36 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
     	return valor == null ? 0.0 : valor;
 	}
 
+	public Collection<TurmaJson> getTurmasJson(String baseCnpj, Long turmaId, char realizada) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new com.fortes.rh.model.json.TurmaJson(t.id, c.nome, t.descricao, t.dataPrevIni, t.dataPrevFim, t.realizada, t.qtdParticipantesPrevistos, ");
+		hql.append("e.id, e.nome, e.cnpj) ");
+		
+		hql.append("from Turma as t ");
+		hql.append("inner join t.curso c ");
+		hql.append("left join c.empresa e ");
+		hql.append("left join c.empresasParticipantes ep ");
+		hql.append("where 1=1");
+		
+		if(baseCnpj!= null && !baseCnpj.isEmpty())
+			hql.append(" and (e.cnpj = :baseCnpj or ep.cnpj = :baseCnpj) ");
+		
+		if(turmaId != null)
+			hql.append("and t.id = :turmaId ");
+		
+		if(realizada == 'S')
+			hql.append("and t.realizada = true");
+		else if(realizada == 'N')
+			hql.append("and t.realizada = false");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		if(baseCnpj!= null && !baseCnpj.isEmpty())
+			query.setString("baseCnpj", baseCnpj);
+
+		if(turmaId != null)
+			query.setLong("turmaId", turmaId);
+		
+		return query.list();
+	}
 }

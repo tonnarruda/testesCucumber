@@ -20,6 +20,8 @@ public class EmpresaListAction extends MyActionSupportList
 	private Collection<Empresa> empresas;
 	private Empresa empresa;
 	private boolean usuarioFortes;
+	private String json;
+	private Long empresaId;
 
 	public String execute() throws Exception {
 		return Action.SUCCESS;
@@ -58,8 +60,7 @@ public class EmpresaListAction extends MyActionSupportList
 	public Collection<Empresa> getEmpresas() {
 		return empresas;
 	}
-
-
+	
 	public Empresa getEmpresa(){
 		if(empresa == null){
 			empresa = new Empresa();
@@ -77,5 +78,21 @@ public class EmpresaListAction extends MyActionSupportList
 
 	public boolean isUsuarioFortes() {
 		return usuarioFortes;
+	}
+
+	public String getJson() {
+		return json;
+	}
+
+	public void setJson(String json) {
+		this.json = json;
+	}
+
+	public Long getEmpresaId() {
+		return empresaId;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
 	}
 }
