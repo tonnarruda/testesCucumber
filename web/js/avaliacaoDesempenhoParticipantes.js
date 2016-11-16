@@ -586,10 +586,6 @@ function createAvaliador(id, nome) {
 		  		 '</div>' +
 		  	'</div>');
 		countParticipantesAvaliadores++;
-		
-		$('.help-peso').qtip({
-			content: 'Insere o mesmo peso para todos os avaliados. Exceto quando for autoavaliação.'
-		});
 	}
 }
 
@@ -597,8 +593,9 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
 	if( ( !permiteAutoAvaliacao && avaliadorLiTag.attr('id') != avaliadorUlTag.attr('id') ) || permiteAutoAvaliacao ) {
         $( avaliadorUlTag ).find( ".placeholder" ).remove();
         if( $(avaliadorUlTag).find(".avaliado_"+ avaliadorLiTag.attr('id')).length == 0 ) {
-        	$("<li class='avaliado_"+avaliadorLiTag.attr('id')+"'></li>").text( avaliadorLiTag.find(".nome").text() ).appendTo( avaliadorUlTag );
-        	$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaborador.id" value="' + avaliadorLiTag.attr("id") + '"/>' +
+        	$("<li class='avaliado_"+avaliadorLiTag.attr('id')+"'></li>").appendTo( avaliadorUlTag );
+        	$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<div class="nome">'+avaliadorLiTag.find(".nome").text() + '</div>' +
+        												   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaborador.id" value="' + avaliadorLiTag.attr("id") + '"/>' +
         												   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaborador.nome" value="' + avaliadorLiTag.find(".nome").text() + '"/>' +
 					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(avaliadorUlTag).parents(".portlet").attr("id") + '"/>' +
         												   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.nome" value="' + $(avaliadorUlTag).parents(".portlet").find(".nome").text() + '"/>');
@@ -614,9 +611,12 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
 	        			$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id') + " .pesoAvaliador").show();
         			
         	} else {
-        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="text" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].pesoAvaliador" class="peso" value="' + $(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val() + '"/>');
-        	}
+        		var valorPeso = $(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val() == "" ? 1 :$(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val();
         		
+        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="text" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].pesoAvaliador" class="peso" value="' + valorPeso + '"/>');
+        	}
+        	$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<div style="clear: both;"></div>');
+        	
         	$("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){
 		    	if( $(this).parent().parent().find("li").length == 1 )
 		    		$(this).parent().parent().append('<li class="placeholder">Arraste os avaliados até aqui</li>');

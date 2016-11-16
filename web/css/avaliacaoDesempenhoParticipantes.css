@@ -204,7 +204,11 @@ i.fa {
     display:none;
 }
 
-.portlet-header .help-peso:hover { color: #5C5C5A; border-color: #919191; }
+.portlet-header .help-peso:hover { 
+	color: #5C5C5A; 
+	border-color: #919191;
+	background-color: white;
+}
 
 .portlet { margin: 5px;}
 .portlet-header, .portlet-content { padding: 5px; font-size: 11px; color: #5C5C5A; }
@@ -220,6 +224,7 @@ i.fa {
 	border-bottom: 1px solid #e7e7e7;
 	cursor: default;
 }
+
 .portlet-content li.placeholder {
 	border: none;
 }

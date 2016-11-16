@@ -458,7 +458,7 @@
 							        	</#if>
 							        	<#list avaliador.colaborador.avaliados as avaliado>
 								        	<li class="avaliado_${avaliado.id} avaliadoInterno">
-								        		${avaliado.nome}
+									        	<div class="nome">${avaliado.nome}</div>
 								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].id" class="colaboradorQuestionarioId" value="${avaliado.colaboradorQuestionario.id}"/>
 								        		<#if avaliado.id == avaliador.colaborador.id >
 									        		<input type="text" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="pesoAvaliador" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> />
@@ -477,6 +477,7 @@
 								        			<i class="fa fa-check respondida" title="Respondida"></i>
 								        		</#if>
 								        		<#assign countColaboradorQuestionarios = countColaboradorQuestionarios + 1/>
+								        		<div style="clear: both;"></div>
 								        	</li>
 							        	</#list>
 							      	</ul>
@@ -508,8 +509,13 @@
 					content: 'Gera uma nova avaliação para cada um dos colaboradores desta avaliação, na qual ele irá avaliar apenas a si próprio.'
 				});
 				
-				$('.help-peso').qtip({
-					content: 'Insere o mesmo peso para todos os avaliados. Exceto quando for autoavaliação.'
+				$('.help-peso').live("mouseover", function(){
+					var target = $(this);
+				    if (target.data('qtip')) { return false; }
+				    target.qtip({
+						content: 'Insere o mesmo peso para todos os avaliados. Exceto quando for autoavaliação.'
+					});
+				    target.trigger('mouseover');
 				});
 				
 				if (!avaliacaoLiberada) {
