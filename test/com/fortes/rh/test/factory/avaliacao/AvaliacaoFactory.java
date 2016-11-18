@@ -55,4 +55,15 @@ public class AvaliacaoFactory
 		avaliacao.setTipoModeloAvaliacao(tipoModeloAvaliacao);
 		return avaliacao;
 	}
+	
+	public static Avaliacao getEntity(Empresa empresa, String titulo, char tipoModeloAvaliacao, PeriodoExperiencia periodoExperiencia, boolean ativo)
+	{
+		Avaliacao avaliacao = new Avaliacao();
+		avaliacao.setEmpresa(empresa);
+		avaliacao.setTitulo(titulo);
+		avaliacao.setPeriodoExperiencia(periodoExperiencia);
+		avaliacao.setTipoModeloAvaliacao(tipoModeloAvaliacao);
+		avaliacao.setAtivo(ativo);
+		return avaliacao;
+	}
 }

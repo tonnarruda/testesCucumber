@@ -12,4 +12,5 @@ public interface AvaliacaoDao extends GenericDao<Avaliacao>
 	Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId, Long... perguntaIds);
 	Collection<Avaliacao> findPeriodoExperienciaIsNull(char acompanhamentoExperiencia, Long empresaId);
 	Collection<Avaliacao> findAllSelectComAvaliacaoDesempenho(Long empresaId, boolean ativa);
+	Collection<Avaliacao> findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(Long empresaId, Long colaboradorId);
 }

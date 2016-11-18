@@ -19,4 +19,6 @@ public interface PeriodoExperienciaManager extends GenericManager<PeriodoExperie
 	Collection<PeriodoExperiencia> findByIdsOrderDias(Long[] PeriodoExperienciaIds);
 	PeriodoExperiencia clonarPeriodoExperiencia(Long id, Empresa empresa);
 	Collection<PeriodoExperiencia> findAllAtivos();
+	Collection<PeriodoExperiencia> findPeriodosAtivosAndPeriodosConfiguradosParaColaborador(Long empresaId, Long colaboradorId);
+	Collection<PeriodoExperiencia> findPeriodosAtivosAndPeriodoDaAvaliacaoId(Long empresaId, Long avaliacaoId);
 }

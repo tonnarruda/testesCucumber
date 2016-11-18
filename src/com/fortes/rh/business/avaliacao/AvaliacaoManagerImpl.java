@@ -176,6 +176,10 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		super.remove(avaliacaoId);
 	}
 	
+	public Collection<Avaliacao> findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(Long empresaId, Long colaboradorId){
+		return getDao().findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(empresaId, colaboradorId);
+	}
+	
 	public void setQuestionarioManager(QuestionarioManager questionarioManager) {
 		this.questionarioManager = questionarioManager;
 	}

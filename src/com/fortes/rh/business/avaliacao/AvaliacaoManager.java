@@ -24,4 +24,5 @@ public interface AvaliacaoManager extends GenericManager<Avaliacao>
 	Collection<Avaliacao> findPeriodoExperienciaIsNull(char acompanhamentoExperiencia, Long empresaId);
 	Collection<Avaliacao> findAllSelectComAvaliacaoDesempenho(Long empresaId, boolean ativa);
 	void remove(Long avaliacaoId);
+	Collection<Avaliacao> findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(Long empresaId, Long colaboradorId);
 }

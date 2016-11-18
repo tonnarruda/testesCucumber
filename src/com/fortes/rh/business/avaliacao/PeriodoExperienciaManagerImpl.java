@@ -144,4 +144,12 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 	public Collection<PeriodoExperiencia> findAllAtivos() {
 		return getDao().findAllAtivos();
 	}
+	
+	public Collection<PeriodoExperiencia> findPeriodosAtivosAndPeriodosConfiguradosParaColaborador(Long empresaId, Long colaboradorId){
+		return getDao().findPeriodosAtivosAndPeriodosConfiguradosParaColaborador(empresaId, colaboradorId);
+	}
+	
+	public Collection<PeriodoExperiencia> findPeriodosAtivosAndPeriodoDaAvaliacaoId(Long empresaId, Long avaliacaoId){
+		return getDao().findPeriodosAtivosAndPeriodoDaAvaliacaoId(empresaId, avaliacaoId);
+	}
 }

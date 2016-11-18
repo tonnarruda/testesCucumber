@@ -94,4 +94,13 @@ public class AvaliacaoManagerTest_JUnit4
 		when(avaliacaoDao.findPeriodoExperienciaIsNull(eq(TipoModeloAvaliacao.DESEMPENHO), eq(empresaId))).thenReturn(avaliacaos);
 		assertEquals(avaliacaos, avaliacaoManager.findPeriodoExperienciaIsNull(TipoModeloAvaliacao.DESEMPENHO, empresaId));
 	}
+	@Test
+	public void testFindModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(){
+		Long empresaId = 2L;
+		Long colaboradorId = 1L;
+		Collection<Avaliacao> avaliacoes = AvaliacaoFactory.getCollection();
+		when(avaliacaoDao.findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(empresaId, colaboradorId)).thenReturn(avaliacoes);
+		
+		assertEquals(avaliacoes.size(), avaliacaoManager.findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(empresaId, colaboradorId).size());
+	}
 }

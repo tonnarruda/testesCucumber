@@ -36,6 +36,7 @@ import com.fortes.rh.test.business.avaliacao.AvaliacaoPraticaManagerTest;
 import com.fortes.rh.test.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.ParticipanteAvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.PeriodoExperienciaManagerTest;
+import com.fortes.rh.test.business.avaliacao.PeriodoExperienciaManagerTest_Junit4;
 import com.fortes.rh.test.business.captacao.AnuncioManagerTest;
 import com.fortes.rh.test.business.captacao.AtitudeManagerTest;
 import com.fortes.rh.test.business.captacao.CandidatoCurriculoManagerTest;
@@ -207,10 +208,12 @@ import com.fortes.rh.test.dao.hibernate.acesso.PerfilDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.acesso.UsuarioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.acesso.UsuarioEmpresaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.AvaliacaoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.avaliacao.AvaliacaoDaoHibernateTest_Junit4;
 import com.fortes.rh.test.dao.hibernate.avaliacao.AvaliacaoDesempenhoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.AvaliacaoPraticaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.PeriodoExperienciaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.avaliacao.PeriodoExperienciaDaoHibernateTest_Junit4;
 import com.fortes.rh.test.dao.hibernate.captacao.AnuncioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.AtitudeDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.CandidatoCurriculoDaoHibernateTest;
@@ -475,6 +478,7 @@ import com.fortes.rh.test.web.action.acesso.PerfilListActionTest;
 import com.fortes.rh.test.web.action.acesso.UsuarioEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.AvaliacaoDesempenhoEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.AvaliacaoEditActionTest;
+import com.fortes.rh.test.web.action.avaliacao.AvaliacaoEditActionTest_Junit4;
 import com.fortes.rh.test.web.action.avaliacao.AvaliacaoExperienciaEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.AvaliacaoPraticaEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.PerguntaAvaliacaoEditActionTest;
@@ -1404,14 +1408,18 @@ import com.fortes.test.web.tags.LinkTagTest;
 
     // Avaliacao
 	AvaliacaoDaoHibernateTest.class,
+	AvaliacaoDaoHibernateTest_Junit4.class,
 	AvaliacaoManagerTest.class,
 	AvaliacaoManagerTest_JUnit4.class,
 	AvaliacaoEditActionTest.class,
+	AvaliacaoEditActionTest_Junit4.class,
 	AvaliacaoTurmaDaoHibernateTest.class,
 	        
     // Avaliacao de Experiencia
 	PeriodoExperienciaDaoHibernateTest.class,
+	PeriodoExperienciaDaoHibernateTest_Junit4.class,
 	PeriodoExperienciaManagerTest.class,
+	PeriodoExperienciaManagerTest_Junit4.class,
 	PeriodoExperienciaEditActionTest.class,
 	AvaliacaoExperienciaEditActionTest.class,
 	PerguntaAvaliacaoEditActionTest.class,

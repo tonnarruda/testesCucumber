@@ -5,6 +5,7 @@
 <head>
 	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>" type="text/css">
 	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/colaborador.css?version=${versao}"/>" media="screen" type="text/css">
+	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/font-awesome.min.css?version=${versao}"/>" type="text/css">
 
 	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="Content-Language" content="pt-br" />
@@ -237,9 +238,13 @@
 			<#if avaliacoes?exists>
 				<#list avaliacoes as avaliacao>
 					<#if avaliacao.periodoExperiencia?exists && avaliacao.periodoExperiencia.id?exists>
-				    	$('#modeloPeriodo' + ${avaliacao.periodoExperiencia.id}).append("<option value='${avaliacao.id}'>${avaliacao.titulo}</option>");
-				    	$('#modeloPeriodoGestor' + ${avaliacao.periodoExperiencia.id}).append("<option value='${avaliacao.id}'>${avaliacao.titulo}</option>");
-					</#if>
+				    	$('#modeloPeriodo' + ${avaliacao.periodoExperiencia.id}).append("<option value='${avaliacao.id}'>${avaliacao.tituloComDescricaoInativo} </option>");
+				    	$('#modeloPeriodoGestor' + ${avaliacao.periodoExperiencia.id}).append("<option value='${avaliacao.id}'>${avaliacao.tituloComDescricaoInativo} </option>");
+		    			<#if !avaliacao.periodoExperiencia.ativo>
+		    				$('#modeloPeriodo' + ${avaliacao.periodoExperiencia.id}).attr('disabled', 'disabled');
+		    				$('#modeloPeriodoGestor' + ${avaliacao.periodoExperiencia.id}).attr('disabled', 'disabled');
+				    	</#if>
+				</#if>
 				</#list>
 			</#if>
 
@@ -817,7 +822,18 @@
 				<legend>Colaborador</legend>
 				<#assign i = 0 />
 				<@display.table name="periodoExperiencias" id="periodoExperiencia" class="dados">
-					<@display.column title="Dias" property="dias" style="width:80px;" />
+					<#if !periodoExperiencia.ativo>
+						<#assign style="color: #e36f6f;"/>
+					<#else>
+						<#assign style=""/>
+					</#if>
+					
+					<@display.column title="Dias" style="width:45px;${style}" >
+					${periodoExperiencia.dias}  
+					<#if !periodoExperiencia.ativo>
+						<i class="fa fa-ban" aria-hidden="true" title="Dia inativo" style="color: #e36f6f;"></i>
+					</#if>
+					</@display.column>
 					<@display.column title="Modelo do Acompanhamento do Período de Experiência">
 						<@ww.hidden name="colaboradorAvaliacoes[${i}].periodoExperiencia.id" value="${periodoExperiencia.id}" />
 						<@ww.select theme="simple" name="colaboradorAvaliacoes[${i}].avaliacao.id" cssClass="periodoExperiencia" id="modeloPeriodo${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
@@ -832,8 +848,19 @@
 			<fieldset>
 				<legend>Gestor</legend>
 				<#assign i = 0 />
+				<#assign style=""/>
 				<@display.table name="periodoExperiencias" id="periodoExperiencia" class="dados">
-					<@display.column title="Dias" property="dias" style="width:80px;" />
+					<#if !periodoExperiencia.ativo>
+						<#assign style="color: #e36f6f;"/>
+					<#else>
+						<#assign style=""/>
+					</#if>
+					<@display.column title="Dias" style="width:45px;${style}" >
+					${periodoExperiencia.dias}  
+					<#if !periodoExperiencia.ativo>
+						<i class="fa fa-ban" aria-hidden="true" title="Dia inativo" style="color: #e36f6f;"></i>
+					</#if>
+					</@display.column>
 					<@display.column title="Modelo do Acompanhamento do Período de Experiência">
 						<@ww.hidden name="colaboradorAvaliacoesGestor[${i}].periodoExperiencia.id" value="${periodoExperiencia.id}" />
 						<@ww.select theme="simple" name="colaboradorAvaliacoesGestor[${i}].avaliacao.id" cssClass="periodoExperiencia" id="modeloPeriodoGestor${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>

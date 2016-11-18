@@ -14,7 +14,6 @@ import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
-import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
@@ -92,28 +91,6 @@ public class AvaliacaoEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("save").with(eq(avaliacao)).will(returnValue(avaliacao));
 
 		assertEquals("success", action.insert());
-	}
-	
-	public void testPrepareInsert() throws Exception
-	{
-		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
-		avaliacao.setAtivo(false);
-		action.setAvaliacao(avaliacao);
-		
-		periodoExperienciaManager.expects(once()).method("findAllSelect").with(eq(1L), eq(false)).will(returnValue(new ArrayList<PeriodoExperiencia>()));
-		
-		assertEquals("success",action.prepareInsert());
-		assertTrue(action.getAvaliacao().isAtivo());
-	}
-	public void testPrepareUpdate() throws Exception
-	{
-		Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
-		action.setAvaliacao(avaliacao);
-		
-		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacao));
-		periodoExperienciaManager.expects(once()).method("findAllSelect").with(eq(1L), eq(false)).will(returnValue(new ArrayList<PeriodoExperiencia>()));
-		
-		assertEquals("success",action.prepareUpdate());
 	}
 	
 	public void testVisualizar() throws Exception

@@ -3,15 +3,22 @@ package com.fortes.rh.dao.hibernate.avaliacao;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 
 public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoExperiencia> implements PeriodoExperienciaDao
 {
@@ -21,12 +28,7 @@ public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoE
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "p");
 
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.id(),"id");
-		p.add(Projections.property("p.dias"),"dias");
-		p.add(Projections.property("p.descricao"),"descricao");
-		p.add(Projections.property("p.ativo"),"ativo");
-		p.add(Projections.property("p.empresa.id"),"empresaId");
+		ProjectionList p = montaProjection();
 		
 		if (ativo != null)
 			criteria.add(Expression.eq("p.ativo", ativo));
@@ -98,5 +100,55 @@ public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoE
 		criteria.addOrder(Order.asc("p.dias"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(PeriodoExperiencia.class));
 		return criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<PeriodoExperiencia> findPeriodosAtivosAndPeriodoDaAvaliacaoId(Long empresaId, Long avaliacaoId) {
+		Criteria criteria = getSession().createCriteria(PeriodoExperiencia.class, "p");
+		criteria.add(Expression.eq("p.empresa.id", empresaId));
+
+		if(avaliacaoId != null){
+			DetachedCriteria subquery =  DetachedCriteria.forClass(Avaliacao.class, "av")
+			.setProjection(Projections.property("periodoExperiencia.id"))
+			.add(Restrictions.eq("av.id", avaliacaoId));
+			criteria.add(Expression.or(Expression.eq("p.ativo",true), Subqueries.propertyEq("p.id",subquery)));
+		}
+		else
+			criteria.add(Expression.eq("p.ativo", true));
+		
+		criteria.addOrder(Order.asc("p.dias"));
+		criteria.setProjection(montaProjection());
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(PeriodoExperiencia.class));
+		return criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<PeriodoExperiencia> findPeriodosAtivosAndPeriodosConfiguradosParaColaborador(Long empresaId, Long colaboradorId) {
+		Criteria criteria = getSession().createCriteria(PeriodoExperiencia.class, "p");
+		criteria.add(Expression.eq("p.empresa.id", empresaId));
+		
+		if(colaboradorId != null){
+			DetachedCriteria subquery =  DetachedCriteria.forClass(ColaboradorPeriodoExperienciaAvaliacao.class, "cpa")
+			.setProjection(Projections.property("cpa.periodoExperiencia.id"))
+			.add(Restrictions.eq("cpa.colaborador.id", colaboradorId));
+			criteria.add(Expression.or(Expression.eq("p.ativo",true), Subqueries.propertyIn("p.id",subquery)));
+		}
+		else
+			criteria.add(Expression.eq("p.ativo", true));
+		
+		criteria.addOrder(Order.asc("p.dias"));
+		criteria.setProjection(montaProjection());
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(PeriodoExperiencia.class));
+		return criteria.list();
+	}
+
+	private ProjectionList montaProjection() {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.id(),"id");
+		p.add(Projections.property("p.dias"),"dias");
+		p.add(Projections.property("p.ativo"),"ativo");
+		p.add(Projections.property("p.empresa.id"),"empresaId");
+		p.add(Projections.property("p.descricao"),"descricao");
+		return p;
 	}
 }

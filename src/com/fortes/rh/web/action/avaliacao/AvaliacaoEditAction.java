@@ -101,10 +101,15 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	
 	private void prepare() throws Exception
 	{
-		if(avaliacao != null && avaliacao.getId() != null)
+		Long avaliacaoId = null;
+		if(avaliacao != null && avaliacao.getId() != null){
 			avaliacao = (Avaliacao) avaliacaoManager.findById(avaliacao.getId());
+			
+			if(avaliacao.getTipoModeloAvaliacao() == TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)
+				avaliacaoId = avaliacao.getId();
+		}
 		
-		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
+		periodoExperiencias = periodoExperienciaManager.findPeriodosAtivosAndPeriodoDaAvaliacaoId(getEmpresaSistema().getId(), avaliacaoId);
 	}
 	
 	public String clonar() throws Exception

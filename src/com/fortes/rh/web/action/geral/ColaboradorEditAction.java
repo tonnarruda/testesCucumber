@@ -363,10 +363,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		}
 		
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-		
-		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
-		
-		avaliacoes = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, null);
 	}
 	
 	private void configuraCamposExtras(){
@@ -397,6 +393,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		}
 		
 		prepare();
+		avaliacoes = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, null);
+		periodoExperiencias = periodoExperienciaManager.findPeriodosAtivosAndPeriodosConfiguradosParaColaborador(getEmpresaSistema().getId(), null);
+		
 		if(updateDados)
 		{
 			Map session = ActionContext.getContext().getSession();
@@ -443,7 +442,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
-
+		
 		if(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), null).size() > 1 || (getEmpresaSistema().isAcIntegra() && !"".equals(colaborador.getCodigoAC())))
 			editarHistorico = false;
 
@@ -461,6 +460,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		valorCalculado = historicoColaborador.getSalarioCalculado();
 
 		colaboradorAvaliacoes = colaboradorPeriodoExperienciaAvaliacaoManager.findByColaborador(colaborador.getId()); 
+		avaliacoes = avaliacaoManager.findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(getEmpresaSistema().getId(), colaborador.getId());
+		periodoExperiencias = periodoExperienciaManager.findPeriodosAtivosAndPeriodosConfiguradosParaColaborador(getEmpresaSistema().getId(), colaborador.getId());
 		
 		return Action.SUCCESS;
 	}

@@ -80,6 +80,13 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	public String getTitulo() {
 		return titulo;
 	}
+	
+	public String getTituloComDescricaoInativo() {
+		if(this.ativo)
+			return titulo;
+		else 
+			return "(Modelo Inativo) - " + titulo;
+	}
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
