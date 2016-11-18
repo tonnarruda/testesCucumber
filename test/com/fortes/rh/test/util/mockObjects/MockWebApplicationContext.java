@@ -222,4 +222,10 @@ public class MockWebApplicationContext implements WebApplicationContext
 	public boolean isTypeMatch(String arg0, Class<?> arg1) throws NoSuchBeanDefinitionException {
 		return false;
 	}
+
+	@Override
+	public String getApplicationName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
