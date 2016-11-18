@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="S16020000234"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Inserir/Editar: Possibilidade de não exibir nível de competência exigido pelo Cargo/Faixa Salarial.]]></Item>
 		<Item visivel="S" motivo="S16060000094"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes > Configurar pesos: Possibilidade de configurar peso por avaliado.]]></Item>
 		<Item visivel="S" motivo="S16110000089"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Responder Avaliação de Desempenho > Imprimir questionário/Imprimir respostas: Possibilidade de não exibir nível de competência exigido pelo Cargo/Faixa Salarial.]]></Item>
+		<Item visivel="N" motivo="S20161000140"><![CDATA[Sistema: URL's para retornar json de colaboradores e de turmas.]]></Item>
 	</Versao>
 	<Versao id="1.1.173.205" db="" data="31/10/2016">
 		<Item visivel="S" motivo="P16080000128"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao atualizar o status do candidato da solicitação de pessoal após cancelar o desligamento do colaborador.]]></Item>

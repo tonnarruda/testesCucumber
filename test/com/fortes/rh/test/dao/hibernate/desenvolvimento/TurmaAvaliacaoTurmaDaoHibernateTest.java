@@ -29,7 +29,6 @@ public class TurmaAvaliacaoTurmaDaoHibernateTest extends GenericDaoHibernateTest
 		return new TurmaAvaliacaoTurma();
 	}
 	
-
 	public void testVerificaAvaliacaoliberada()
 	{
 		AvaliacaoTurma avaliacaoTurma = AvaliacaoTurmaFactory.getEntity();
