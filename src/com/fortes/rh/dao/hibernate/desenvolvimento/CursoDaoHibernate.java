@@ -630,9 +630,8 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		if (LongUtil.arrayIsNotEmpty(areasIds))
 			sql.append("and hc.areaOrganizacional_id in (:areasIds) ");
 		
-		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds)){
-			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
-		}
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
+			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");		
 		
 		sql.append("group by t.id, t.qtdparticipantesprevistos, c.cargahoraria, t.custo, ct3.qtdeInscritosTotal ");
 		sql.append("order by t.id ");
@@ -716,7 +715,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return (Double)query.uniqueResult();
 	}
 
-	public Integer findCargaHorariaTreinamentRatiada(Long[] cursosIds, Long[] empresasIds, Long[] estabelecimentosIds, Long[] areasIds, Date dataInicio, Date dataFim, boolean realizada) {
+	public Integer findCargaHorariaTreinamentoRatiada(Long[] cursosIds, Long[] empresasIds, Long[] estabelecimentosIds, Long[] areasIds, Date dataInicio, Date dataFim, boolean realizada) {
 		StringBuilder sql = new StringBuilder("");
 		sql.append("select cast( coalesce( sum( ( (totalHorasTreinamento.cargahoraria/totalHorasTreinamento.diasTurmaTotal)* totalHorasTreinamento.diasTurmaRealizado ) * totalHorasTreinamento.qtdTurmaCursoId), 0) as integer) ");
 		sql.append("	from (" );

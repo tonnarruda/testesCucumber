@@ -70,7 +70,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		if(considerarDiaTurmaCompreendidoNoPeriodo){
 			indicadorTreinamento = getDao().findIndicadorTreinamentoCustos(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds);
 			indicadorTreinamento.setSomaHorasRatiada(getDao().findQtdHorasRatiada(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds));
-			indicadorTreinamento.setTotalHorasTreinamento(getDao().findCargaHorariaTreinamentRatiada(cursoIds, empresaIds, estabelecimentosIds, areasIds, dataIni, dataFim, true));
+			indicadorTreinamento.setTotalHorasTreinamento(getDao().findCargaHorariaTreinamentoRatiada(cursoIds, empresaIds, estabelecimentosIds, areasIds, dataIni, dataFim, true));
 		}
 		else{
 			indicadorTreinamento = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds);

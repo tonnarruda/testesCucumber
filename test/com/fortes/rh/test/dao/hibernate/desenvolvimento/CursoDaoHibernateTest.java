@@ -1108,7 +1108,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		
 		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
 		
-		Integer result = cursoDao.findCargaHorariaTreinamentRatiada(new Long[]{curso1.getId(), curso2.getId()}, new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, dataMes4, dataMes5, true);
+		Integer result = cursoDao.findCargaHorariaTreinamentoRatiada(new Long[]{curso1.getId(), curso2.getId()}, new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, dataMes4, dataMes5, true);
 		assertEquals(20, result/60);
 	}
 	
