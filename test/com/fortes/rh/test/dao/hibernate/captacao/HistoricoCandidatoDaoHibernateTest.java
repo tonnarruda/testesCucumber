@@ -191,9 +191,10 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		historicoCandidato2.setEtapaSeletiva(etapaSeletiva);
 		historicoCandidato2.setCandidatoSolicitacao(candidatoSolicitacao);
 		historicoCandidato2.setResponsavel("Francis");
+		historicoCandidato2.setExibirNaAgenda(false);
 		historicoCandidatoDao.save(historicoCandidato2);
 		
-		assertEquals(2, historicoCandidatoDao.getEventos("Fran", empresa.getId(), null, null).size());
+		assertEquals(1, historicoCandidatoDao.getEventos("Fran", empresa.getId(), null, null).size());
 	}
 
 	public void testFindQtdParticipantes()

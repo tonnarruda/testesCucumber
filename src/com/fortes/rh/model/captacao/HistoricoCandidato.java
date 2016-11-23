@@ -50,6 +50,8 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 	@Column(length=5)
 	private String horaFim;
 	
+	private boolean exibirNaAgenda = true;
+	
 	public HistoricoCandidato()
 	{
 
@@ -393,5 +395,13 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 			return true;
 		
 		return false;
+	}
+
+	public boolean isExibirNaAgenda() {
+		return exibirNaAgenda;
+	}
+
+	public void setExibirNaAgenda(boolean exibirNaAgenda) {
+		this.exibirNaAgenda = exibirNaAgenda;
 	}
 }

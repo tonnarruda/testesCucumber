@@ -216,6 +216,7 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		p.add(Projections.property("hc.observacao"), "observacao");
 		p.add(Projections.property("hc.horaIni"), "horaIni");
 		p.add(Projections.property("hc.horaFim"), "horaFim");
+		p.add(Projections.property("hc.exibirNaAgenda"), "exibirNaAgenda");
 		p.add(Projections.property("es.id"), "etapaSeletivaId");
 		p.add(Projections.property("es.nome"), "etapaSeletivaNome");
 
@@ -282,6 +283,8 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		
 		if(dataIni != null && dataFim != null)
 			criteria.add(Expression.between("hc.data", dataIni, dataFim));
+		
+		criteria.add(Expression.eq("hc.exibirNaAgenda", true));
 		
 		criteria.setProjection(p);
 		criteria.addOrder(Order.asc("hc.data"));
