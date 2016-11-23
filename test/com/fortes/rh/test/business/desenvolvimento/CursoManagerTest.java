@@ -201,7 +201,7 @@ public class CursoManagerTest extends MockObjectTestCase
 		
 		cursoDao.expects(once()).method("findIndicadorTreinamentoCustos").withAnyArguments().will(returnValue(indicadorTreinamento));
 		cursoDao.expects(once()).method("findQtdHorasRatiada").withAnyArguments().will(returnValue(4.0));
-		cursoDao.expects(once()).method("findCargaHorariaTreinamentRatiada").withAnyArguments().will(returnValue(120));
+		cursoDao.expects(once()).method("findCargaHorariaTreinamentoRatiada").withAnyArguments().will(returnValue(120));
 		colaboradorManager.expects(once()).method("getCountAtivosQualquerStatus").withAnyArguments().will(returnValue(2));
 		colaboradorTurmaManager.expects(once()).method("percentualFrequencia").withAnyArguments().will(returnValue(100.0));
 		turmaManager.expects(once()).method("getPercentualInvestimento").withAnyArguments().will(returnValue(100.0));
