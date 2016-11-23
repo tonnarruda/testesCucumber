@@ -19,6 +19,11 @@ public class ColaboradorTurmaDWR
 	{
 		return colaboradorTurmaManager.verificaColaboradorCertificado(colaboradorIds, cursoId);
 	}
+	
+	public boolean existeColaboradoresNaTurma(Long turmaId) throws Exception
+	{
+		return colaboradorTurmaManager.findColabodoresByTurmaId(turmaId).size() > 0;
+	}
 
 	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
 		this.colaboradorTurmaManager = colaboradorTurmaManager;

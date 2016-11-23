@@ -15,6 +15,7 @@
 	</style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorTurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 		
@@ -83,11 +84,17 @@
 			<#if turmas?exists && turmas.size() <=  1 >
 				jAlert("Não existem outras turmas para as quais os colaboradores possam ser clonados.");
 			<#else>
-				TurmaDWR.getTurmasByCursoNotTurmaId(createListTurmas, ${curso.id}, turmaId);
-				
-				$('#turmaId').val(turmaId);
-				$('#cursoId').val(${curso.id});
-				$('#divDialogClonarColaboradores').dialog({ modal: true, width: 530, title: 'Clonar colaboradores da turma: ' + descricao });
+				ColaboradorTurmaDWR.existeColaboradoresNaTurma(turmaId, function(existeColaboradoresNaTurma){
+					if(existeColaboradoresNaTurma){
+						TurmaDWR.getTurmasByCursoNotTurmaId(createListTurmas, ${curso.id}, turmaId);
+						
+						$('#turmaId').val(turmaId);
+						$('#cursoId').val(${curso.id});
+						$('#divDialogClonarColaboradores').dialog({ modal: true, width: 530, title: 'Clonar colaboradores da turma: ' + descricao });
+					}else{
+						jAlert("Não existem colaboradores a serem clonados nessa turma.");
+					}
+				});
 			</#if>
 		}
 		
@@ -197,7 +204,7 @@
 	
 	<div id="divDialogClonarColaboradores">
 		<@ww.form name="formClonarColaboradores" id="formClonarColaboradores" action="clonarColaboradores.action" onsubmit="return enviaFormClonarColaboradores();" method="POST">
-			<@frt.checkListBox label="Selecione as turmas para as quais deseja clonar os colaboradores" list="turmasCheckList" name="turmasCheck" form="document.getElementById('formClonar')" filtro="true" required="true"/>
+			<@frt.checkListBox label="Selecione as turmas para as quais deseja clonar os colaboradores" list="turmasCheckList" name="turmasCheck" form="document.getElementById('formClonarColaboradores')" filtro="true" required="true"/>
 			<@ww.hidden name="turma.id" id="turmaId"/>
 			<@ww.hidden name="curso.id" id="cursoId"/>
 			<br />

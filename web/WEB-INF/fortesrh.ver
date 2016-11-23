@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="S16020000234"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Inserir/Editar: Possibilidade de não exibir nível de competência exigido pelo Cargo/Faixa Salarial.]]></Item>
 		<Item visivel="S" motivo="S16060000094"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes > Configurar pesos: Possibilidade de configurar peso por avaliado.]]></Item>
 		<Item visivel="S" motivo="S16110000089"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Responder Avaliação de Desempenho > Imprimir questionário/Imprimir respostas: Possibilidade de não exibir nível de competência exigido pelo Cargo/Faixa Salarial.]]></Item>
+		<Item visivel="S" motivo="S16060000075"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Clonar Colaboradores: Nova opção para clonar colaboradores entre turmas do mesmo curso.]]></Item>
 		<Item visivel="N" motivo="S20161000140"><![CDATA[Sistema: URL's para retornar json de colaboradores e de turmas.]]></Item>
 	</Versao>
 	<Versao id="1.1.173.205" db="" data="31/10/2016">
