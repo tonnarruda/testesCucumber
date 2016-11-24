@@ -16,4 +16,13 @@ public class DocumentoAnexoFactory
 		documentoAnexo.setId(id);
 		return documentoAnexo;
 	}
+	
+	public static DocumentoAnexo getEntity(Long id, Long origemId, char origem )
+	{
+		DocumentoAnexo documentoAnexo = getEntity();
+		documentoAnexo.setId(id);
+		documentoAnexo.setOrigemId(origemId);
+		documentoAnexo.setOrigem(origem);
+		return documentoAnexo;
+	}
 }

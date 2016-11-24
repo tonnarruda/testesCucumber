@@ -19,7 +19,15 @@ public class ColaboradorTurmaFactory
 		colaboradorTurma.setId(id);
 		return colaboradorTurma;
 	}
-	
+
+	public static ColaboradorTurma getEntity(Long id, Colaborador colaborador)
+	{
+		ColaboradorTurma colaboradorTurma = getEntity();
+		colaboradorTurma.setId(id);
+		colaboradorTurma.setColaborador(colaborador);
+		return colaboradorTurma;
+	}
+
 	public static ColaboradorTurma getEntity(Colaborador colaborador, Curso curso, Turma turma)
 	{
 		ColaboradorTurma colaboradorTurma = getEntity();

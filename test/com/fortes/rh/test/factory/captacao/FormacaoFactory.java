@@ -1,6 +1,7 @@
 package com.fortes.rh.test.factory.captacao;
 
 import com.fortes.rh.model.captacao.Formacao;
+import com.fortes.rh.model.geral.Colaborador;
 
 public class FormacaoFactory
 {
@@ -20,5 +21,12 @@ public class FormacaoFactory
 		Formacao entity = getEntity();
 		entity.setId(id);
 		return entity;
+	}
+	
+	public static Formacao getEntity(Long id, Colaborador colaborador) {
+		Formacao formacao = getEntity();
+		formacao.setId(id);
+		formacao.setColaborador(colaborador);
+		return formacao;
 	}
 }

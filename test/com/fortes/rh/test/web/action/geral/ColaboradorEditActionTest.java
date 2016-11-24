@@ -42,38 +42,19 @@ import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.captacao.Candidato;
-import com.fortes.rh.model.captacao.Experiencia;
-import com.fortes.rh.model.captacao.Formacao;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
-import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
-import com.fortes.rh.model.dicionario.OrigemAnexo;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.ColaboradorIdioma;
-import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
-import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
-import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
-import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
-import com.fortes.rh.model.sesmt.Cat;
-import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.captacao.FormacaoFactory;
-import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
-import com.fortes.rh.test.factory.geral.ColaboradorIdiomaFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
-import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
@@ -271,139 +252,6 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		assertEquals("success", action.prepareUpdateInfoPessoais());
 		assertTrue(((String)action.getActionWarnings().toArray()[0]).equals("Sua conta de usuário não está vinculada à nenhum colaborador"));
-	}
-	
-	public void testPreparePerformanceFuncional()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setCampoExtraColaborador(true);
-		action.setEmpresaSistema(empresa);
-
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		colaborador.setEmpresa(empresa);
-		action.setColaborador(colaborador);
-
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador1.setId(1L);
-		historicoColaborador1.setColaborador(colaborador);
-
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador2.setId(2L);
-		historicoColaborador2.setColaborador(colaborador);
-
-		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
-
-		ColaboradorIdioma colaboradorIdioma = ColaboradorIdiomaFactory.getEntity();
-		colaboradorIdioma.setId(1L);
-		colaboradorIdioma.setColaborador(colaborador);
-
-		Collection<ColaboradorIdioma> colaboradorsIdioma = new ArrayList<ColaboradorIdioma>();
-		colaboradorsIdioma.add(colaboradorIdioma);
-
-		Formacao formacao = FormacaoFactory.getEntity();
-		formacao.setId(1L);
-		formacao.setColaborador(colaborador);
-
-		Collection<Formacao> formacaos = new ArrayList<Formacao>();
-		formacaos.add(formacao);
-
-		ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
-		colaboradorTurma.setId(1L);
-		colaboradorTurma.setColaborador(colaborador);
-
-		Collection<ColaboradorTurma> cursosColaborador = new ArrayList<ColaboradorTurma>();
-		cursosColaborador.add(colaboradorTurma);
-
-		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
-		ocorrencia.setDescricao("Abandono do local de trabalho");
-		ocorrencia.setPontuacao(10);
-		
-		ColaboradorOcorrencia colaboradorOcorrencia = new ColaboradorOcorrencia();
-		colaboradorOcorrencia.setId(1L);
-		colaboradorOcorrencia.setColaborador(colaborador);
-		colaboradorOcorrencia.setOcorrencia(ocorrencia);
-
-		Collection<ColaboradorOcorrencia> ocorrenciasColaborador = new ArrayList<ColaboradorOcorrencia>();
-		ocorrenciasColaborador.add(colaboradorOcorrencia);
-		
-		Collection<ColaboradorAfastamento> afastamentosColaborador = new ArrayList<ColaboradorAfastamento>();
-		Collection<Experiencia> experiencias = new ArrayList<Experiencia>();
-
-		DocumentoAnexo documentoAnexo = new DocumentoAnexo();
-		documentoAnexo.setId(1L);
-		documentoAnexo.setOrigemId(colaborador.getId());
-		documentoAnexo.setOrigem(OrigemAnexo.AnexoCandidato);
-
-		Collection<DocumentoAnexo> documentoAnexosColaborador = new ArrayList<DocumentoAnexo>();
-		documentoAnexosColaborador.add(documentoAnexo);
-
-		Collection<AreaOrganizacional> areas = AreaOrganizacionalFactory.getCollection();
-		
-		ConfiguracaoCampoExtra configuracaoCampoExtra = new ConfiguracaoCampoExtra();
-		configuracaoCampoExtra.setId(1L);
-		configuracaoCampoExtra.setAtivoColaborador(true);
-		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
-		configuracaoCampoExtras.add(configuracaoCampoExtra);
-	
-		action.setColaborador(colaborador);
-		
-		colaboradorManager.expects(once()).method("getFoto").with(eq(colaborador.getId())).will(returnValue(null));
-		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativoColaborador", "empresa.id"}),eq(new Object[]{true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
-		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
-		colaboradorQuestionarioManager.expects(once()).method("findAvaliacaoDesempenhoByColaborador").with(eq(colaborador.getId())).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
-		colaboradorQuestionarioManager.expects(once()).method("findAvaliacaoByColaborador").with(eq(colaborador.getId())).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
-		historicoColaboradorManager.expects(once()).method("progressaoColaborador").with(eq(colaborador.getId()), eq(empresa.getId())).will(returnValue(historicoColaboradors));
-		historicoColaboradorManager.expects(once()).method("getHistoricoAtual").with(eq(colaborador.getId())).will(returnValue(historicoColaborador1));
-		colaboradorIdiomaManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(colaboradorsIdioma));
-		formacaoManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(formacaos));
-		colaboradorTurmaManager.expects(once()).method("findHistoricoTreinamentosByColaborador").with(eq(empresa.getId()),ANYTHING,ANYTHING, ANYTHING).will(returnValue(cursosColaborador));
-		colaboradorOcorrenciaManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(ocorrenciasColaborador));
-		colaboradorAfastamentoManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(afastamentosColaborador));
-		experienciaManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(experiencias));
-		catManager.expects(once()).method("findByColaborador").with(eq(colaborador)).will(returnValue(new ArrayList<Cat>()));
-		comissaoManager.expects(once()).method("getParticipacoesDeColaboradorNaCipa").with(eq(colaborador.getId())).will(returnValue(new ArrayList<ParticipacaoColaboradorCipa>()));
-		colaboradorQuestionarioManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId()));
-		
-		documentoAnexoManager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq(null), ANYTHING, eq(colaborador.getId())).will(returnValue(documentoAnexosColaborador));
-
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(areas));
-		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areas)).will(returnValue(areas));
-		configuracaoPerformanceManager.expects(once()).method("findByUsuario").with(ANYTHING);
-		colaboradorManager.expects(once()).method("findByCpf").with(eq(colaborador.getPessoal().getCpf()), eq(null), eq(null), eq(null)).will(returnValue(new ArrayList<Colaborador>()));
-
-		String retorno = "";
-		Exception excep = null;
-
-		try
-		{
-			retorno = action.preparePerformanceFuncional();
-		}
-		catch (Exception e)
-		{
-			excep = e;
-		}
-
-		assertNull(excep);
-		assertEquals(retorno, "success");
-	}
-
-	public void testPreparePerformanceFuncionalException()
-	{
-		action.setColaborador(null);
-		String retorno = "";
-		Exception excep = null;
-
-		try
-		{
-			retorno = action.preparePerformanceFuncional();
-		}
-		catch (Exception e)
-		{
-			excep = e;
-		}
-
-		assertNull(excep);
-		assertEquals(retorno, "input");
 	}
 	
 	public void testPrepareColaboradorSolicitacaoTendoOutroColaboradorComMesmoCpf() throws Exception

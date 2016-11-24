@@ -268,7 +268,7 @@
 				/geral/colaborador/colaboradoresPorAreaJson.action* = ROLE_ANONYMOUS,ROLE_USER
 				/geral/colaborador/prepareRelatorioFerias.action* = ROLE_REL_FERIAS
 				/geral/colaborador/imprimeRelatorioFerias.action* = ROLE_REL_FERIAS
-				/geral/colaborador/imprimirPerformanceFuncional.action* = ROLE_CAD_COLABORADOR,ROLE_VISUALIZAR_PROGRESSAO
+				/geral/colaborador/imprimirPerformanceFuncional.action* = ROLE_VISUALIZAR_PROGRESSAO,ROLE_COLAB_LIST_PERFORMANCE
 				/geral/colaborador/showFoto.action* = ROLE_CAD_COLABORADOR,ROLE_VISUALIZAR_PROGRESSAO
 				/geral/colaborador/getColaboradoresJson.action* = ROLE_ANONYMOUS,ROLE_USER
 				

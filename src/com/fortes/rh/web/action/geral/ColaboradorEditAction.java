@@ -983,13 +983,16 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 			idiomasColaborador =  colaboradorIdiomaManager.findByColaborador(colaborador.getId());
 			formacaos = formacaoManager.findByColaborador(colaborador.getId());
-			
+
 			cursosColaborador = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(empresaDoColaborador.getId(), null, null, colaborador.getId());
 			
-			ocorrenciasColaborador = colaboradorOcorrenciaManager.findByColaborador(colaborador.getId());
 			pontuacao = 0;
-			for (ColaboradorOcorrencia colaboradorOcorrencia : ocorrenciasColaborador)
-				pontuacao += colaboradorOcorrencia.getOcorrencia().getPontuacao();
+			ocorrenciasColaborador = new ArrayList<ColaboradorOcorrencia>();
+			if(containsPermissaoVisualizarOcorrencias()){
+				ocorrenciasColaborador = colaboradorOcorrenciaManager.findByColaborador(colaborador.getId());
+				for (ColaboradorOcorrencia colaboradorOcorrencia : ocorrenciasColaborador)
+					pontuacao += colaboradorOcorrencia.getOcorrencia().getPontuacao();
+			}
 			
 			afastamentosColaborador = colaboradorAfastamentoManager.findByColaborador(colaborador.getId());
 			experiencias = experienciaManager.findByColaborador(colaborador.getId());
@@ -1032,6 +1035,14 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			addActionError("Colaborador não selecionado");
 			return Action.INPUT;
 		}
+	}
+	
+	private boolean containsPermissaoVisualizarOcorrencias(){
+		Colaborador colaboradorLogado = colaboradorManager.findByUsuario(getUsuarioLogado(), getEmpresaSistema().getId());
+		if(colaboradorLogado != null && colaborador.getId().equals(colaboradorLogado.getId()) && usuarioManager.isResponsavelOrCoResponsavel(getUsuarioLogado().getId())){
+			return usuarioEmpresaManager.containsRole(getUsuarioLogado().getId(), getEmpresaSistema().getId(), "ROLE_MOV_GESTOR_VISUALIZAR_PROPRIA_OCORRENCIA_PROVIDENCIA"); 
+		}
+		return true;
 	}
 	
 	// TODO: SEM TESTE
