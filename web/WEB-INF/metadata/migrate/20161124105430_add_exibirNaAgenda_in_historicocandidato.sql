@@ -1,0 +1,1 @@
+alter table historicocandidato add column exibirNaAgenda boolean default true;--.go
