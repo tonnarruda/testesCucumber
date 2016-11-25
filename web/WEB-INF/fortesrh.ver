@@ -3,6 +3,7 @@
 	<Versao id="1.1.174.206" db="" data="30/11/2016">
 		<Item visivel="S" motivo="S16110000264"><![CDATA[R&S > Movimentações > solicitação de Pessoal > Candidatos da Seleção > Inserir Etapas em Grupo: Nova opção "Exibir na Agenda".]]></Item>
 		<Item visivel="S" motivo="S16070000371"><![CDATA[R&S > Movimentações > solicitação de Pessoal > Candidatos da Seleção > Histórico > Inserir/Editar: Nova opção "Exibir na Agenda".]]></Item>
+		<Item visivel="S" motivo="S15100000333"><![CDATA[Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento > Visualizar solicitação de desligamento: Possibilidade de editar o campo de "Observação".]]></Item>
 		<Item visivel="S" motivo="P16100000082"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Ajuste de inconsitência ao gerar ralatório para ocorrências contendo apenas data de início.]]></Item>
 		<Item visivel="S" motivo="S16070000174"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Inserir: Exibindo somente os dias de acompanhamento do período de experiência ativos.]]></Item>
 		<Item visivel="S" motivo="S16020000234"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Inserir/Editar: Possibilidade de não exibir nível de competência exigido pelo Cargo/Faixa Salarial.]]></Item>
