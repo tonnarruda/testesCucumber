@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.captacao;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,6 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class AnuncioListAction extends MyActionSupportList
 {
+	@Autowired
 	private AnuncioManager anuncioManager;
 
 	private Collection<Anuncio> anuncios;
@@ -52,10 +55,5 @@ public class AnuncioListAction extends MyActionSupportList
 	public void setAnuncio(Anuncio anuncio)
 	{
 		this.anuncio = anuncio;
-	}
-
-	public void setAnuncioManager(AnuncioManager anuncioManager)
-	{
-		this.anuncioManager = anuncioManager;
 	}
 }

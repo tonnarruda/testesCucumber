@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
@@ -55,15 +57,25 @@ import com.opensymphony.xwork.ActionContext;
 public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
+	@Autowired
 	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	@Autowired
 	private AvaliacaoManager avaliacaoManager;
+	@Autowired
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired
 	private EmpresaManager empresaManager;
+	@Autowired
 	private ColaboradorManager colaboradorManager;
+	@Autowired
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired
 	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
+	@Autowired
 	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
+	@Autowired
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	
 	private AvaliacaoDesempenho avaliacaoDesempenho;
@@ -661,11 +673,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		this.avaliacaoDesempenho = avaliacaoDesempenho;
 	}
 
-	public void setAvaliacaoDesempenhoManager(AvaliacaoDesempenhoManager avaliacaoDesempenhoManager)
-	{
-		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
-	}
-	
 	public Collection<AvaliacaoDesempenho> getAvaliacaoDesempenhos()
 	{
 		return avaliacaoDesempenhos;
@@ -675,16 +682,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		return avaliacaos;
 	}
 
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
-		this.avaliacaoManager = avaliacaoManager;
-	}
-
 	public Collection<Colaborador> getParticipantes() {
 		return participantes;
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
 	public String[] getColaboradorsCheck() {
@@ -727,20 +726,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		return colaboradorsCheckList;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public boolean getIsAvaliados() {
 		return isAvaliados;
 	}
 
 	public void setIsAvaliados(boolean isAvaliados) {
 		this.isAvaliados = isAvaliados;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 
 	public Collection<Empresa> getEmpresas() {
@@ -761,10 +752,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setTemAvaliacoesRespondidas(boolean temAvaliacoesRespondidas) {
 		this.temAvaliacoesRespondidas = temAvaliacoesRespondidas;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
@@ -848,15 +835,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public void setAvaliador(Colaborador avaliador)
 	{
 		this.avaliador = avaliador;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
-	public void setParticipanteAvaliacaoDesempenhoManager(
-			ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager) {
-		this.participanteAvaliacaoDesempenhoManager = participanteAvaliacaoDesempenhoManager;
 	}
 
 	public Boolean getCompartilharColaboradores() {
@@ -979,11 +957,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		this.configuracaoCompetenciaAvaliacaoDesempenhos = configuracaoCompetenciaAvaliacaoDesempenhos;
 	}
 
-	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(
-			ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
-		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
-	}
-
 	public Collection<ParticipanteAvaliacaoDesempenho> getParticipantesAvaliados() {
 		return participantesAvaliados;
 	}
@@ -1048,10 +1021,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setRelatorioDetalhado(boolean relatorioDetalhado) {
 		this.relatorioDetalhado = relatorioDetalhado;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
 	public boolean isAgruparPorCargo() {

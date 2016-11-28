@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.avaliacao;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.util.ExceptionUtil;
@@ -12,6 +14,7 @@ import com.opensymphony.xwork.Action;
 public class AvaliacaoPraticaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
+	@Autowired
 	private AvaliacaoPraticaManager avaliacaoPraticaManager;
 	private AvaliacaoPratica avaliacaoPratica;
 	private Collection<AvaliacaoPratica> avaliacaoPraticas;
@@ -98,11 +101,6 @@ public class AvaliacaoPraticaEditAction extends MyActionSupportList
 		this.avaliacaoPratica = avaliacaoPratica;
 	}
 
-	public void setAvaliacaoPraticaManager(AvaliacaoPraticaManager avaliacaoPraticaManager)
-	{
-		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
-	}
-	
 	public Collection<AvaliacaoPratica> getAvaliacaoPraticas()
 	{
 		return avaliacaoPraticas;

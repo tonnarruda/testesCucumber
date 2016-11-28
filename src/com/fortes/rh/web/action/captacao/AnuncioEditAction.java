@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
@@ -36,8 +38,11 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings("serial")
 public class AnuncioEditAction extends MyActionSupportEdit implements ModelDriven
 {
+	@Autowired
 	private AnuncioManager anuncioManager;
+	@Autowired
 	private SolicitacaoManager solicitacaoManager;
+	@Autowired
 	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 
 	private Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos;
@@ -394,20 +399,10 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 	public void setAnuncio(Anuncio anuncio){
 		this.anuncio=anuncio;
 	}
-	
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) 
-	{
-		this.solicitacaoManager = solicitacaoManager;
-	}
 
 	public Object getModel()
 	{
 		return getAnuncio();
-	}
-
-
-	public void setAnuncioManager(AnuncioManager anuncioManager){
-		this.anuncioManager=anuncioManager;
 	}
 
 	public Solicitacao getSolicitacao()
@@ -443,11 +438,6 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 	public void setMail(Mail mail)
 	{
 		this.mail = mail;
-	}
-
-	public void setSolicitacaoAvaliacaoManager(SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) 
-	{
-		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
 	}
 
 	public Collection<SolicitacaoAvaliacao> getSolicitacaoAvaliacaos() 

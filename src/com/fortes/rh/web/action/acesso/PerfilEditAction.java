@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.acesso;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.acesso.PapelManager;
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.exception.NotConectAutenticationException;
@@ -17,7 +19,9 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 {
 	private static final long serialVersionUID = 1L;
 	
+	@Autowired
 	private PerfilManager perfilManager;
+	@Autowired
 	private PapelManager papelManager;
 
 	private Collection<Papel> papeisComHelp = new ArrayList<Papel>();
@@ -114,16 +118,6 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	public void setPerfil(Perfil perfil)
 	{
 		this.perfil=perfil;
-	}
-
-	public void setPerfilManager(PerfilManager perfilManager)
-	{
-		this.perfilManager=perfilManager;
-	}
-
-	public void setPapelManager(PapelManager papelManager)
-	{
-		this.papelManager = papelManager;
 	}
 
 	public String getExibirPerfil()

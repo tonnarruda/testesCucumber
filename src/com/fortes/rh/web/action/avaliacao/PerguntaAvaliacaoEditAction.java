@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -24,10 +25,15 @@ import com.opensymphony.xwork.Action;
 public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	
+	@Autowired
 	private PerguntaManager perguntaManager;
+	@Autowired
 	private AspectoManager aspectoManager;
+	@Autowired
 	private RespostaManager respostaManager;
+	@Autowired
+	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired
 	private ColaboradorRespostaManager colaboradorRespostaManager;
 	
 	private Avaliacao avaliacao;
@@ -191,10 +197,6 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 		this.avaliacao = avaliacao;
 	}
 
-	public void setPerguntaManager(PerguntaManager perguntaManager) {
-		this.perguntaManager = perguntaManager;
-	}
-
 	public Collection<Pergunta> getPerguntas() {
 		return perguntas;
 	}
@@ -223,14 +225,6 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 
 	public Map getTipoPerguntas() {
 		return tipoPerguntas;
-	}
-
-	public void setAspectoManager(AspectoManager aspectoManager) {
-		this.aspectoManager = aspectoManager;
-	}
-
-	public void setRespostaManager(RespostaManager respostaManager) {
-		this.respostaManager = respostaManager;
 	}
 
 	public String[] getRespostaObjetiva() {
@@ -304,9 +298,4 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 	public TipoModeloAvaliacao getTipoModeloAvaliacao() {
 		return tipoModeloAvaliacao;
 	}
-
-	public void setColaboradorRespostaManager(
-			ColaboradorRespostaManager colaboradorRespostaManager) {
-		this.colaboradorRespostaManager = colaboradorRespostaManager;
-	}	
 }

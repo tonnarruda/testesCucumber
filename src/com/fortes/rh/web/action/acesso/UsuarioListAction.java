@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.acesso.Perfil;
@@ -18,8 +20,11 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class UsuarioListAction extends MyActionSupportList
 {
+	@Autowired
 	private UsuarioManager usuarioManager;
+	@Autowired
 	private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired
 	private EmpresaManager empresaManager;
 
 	private Collection<Empresa> empresas;
@@ -94,10 +99,6 @@ public class UsuarioListAction extends MyActionSupportList
 		this.usuario=usuario;
 	}
 
-	public void setUsuarioManager(UsuarioManager usuarioManager){
-		this.usuarioManager=usuarioManager;
-	}
-
 	public void setUsuarios(Collection<Usuario> usuarios)
 	{
 		this.usuarios = usuarios;
@@ -113,16 +114,6 @@ public class UsuarioListAction extends MyActionSupportList
 		this.perfils = perfils;
 	}
 
-	public UsuarioEmpresaManager getUsuarioEmpresaManager()
-	{
-		return usuarioEmpresaManager;
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)
-	{
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
-
 	public UsuarioEmpresa getUsuarioEmpresa()
 	{
 		return usuarioEmpresa;
@@ -131,11 +122,6 @@ public class UsuarioListAction extends MyActionSupportList
 	public void setUsuarioEmpresa(UsuarioEmpresa usuarioEmpresa)
 	{
 		this.usuarioEmpresa = usuarioEmpresa;
-	}
-
-	public UsuarioManager getUsuarioManager()
-	{
-		return usuarioManager;
 	}
 
 	public Collection<UsuarioEmpresa> getUsuarioEmpresas()
@@ -156,11 +142,6 @@ public class UsuarioListAction extends MyActionSupportList
 	public void setEmpresas(Collection<Empresa> empresas)
 	{
 		this.empresas = empresas;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
 	}
 
 	public Empresa getEmpresa()

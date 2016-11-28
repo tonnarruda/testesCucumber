@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.util.LongUtil;
@@ -18,6 +20,7 @@ import com.opensymphony.xwork.Action;
 public class PerfilListAction extends MyActionSupportList {
 	private static final long serialVersionUID = 1L;
 
+	@Autowired
 	private PerfilManager perfilManager = null;
 
 	private Collection<Perfil> perfils = null;
@@ -71,11 +74,6 @@ public class PerfilListAction extends MyActionSupportList {
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
 	}
-
-	public void setPerfilManager(PerfilManager perfilManager) {
-		this.perfilManager = perfilManager;
-	}
-
 
 	public Map<String, Object> getParametros() {
 		return parametros;

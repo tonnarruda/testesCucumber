@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -49,17 +50,29 @@ import com.opensymphony.xwork.ActionContext;
 public class AvaliacaoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
+	@Autowired
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired
 	private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired
 	private PeriodoExperienciaManager periodoExperienciaManager;
+	@Autowired
 	private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired
 	private PlatformTransactionManager transactionManager;
+	@Autowired
 	private AvaliacaoCursoManager avaliacaoCursoManager;
+	@Autowired
 	private CertificacaoManager certificacaoManager;
+	@Autowired
 	private ColaboradorManager colaboradorManager;
+	@Autowired
 	private AvaliacaoManager avaliacaoManager;
+	@Autowired
 	private PerguntaManager perguntaManager;
+	@Autowired
 	private EmpresaManager empresaManager;
 	
 	private Avaliacao avaliacao;
@@ -315,11 +328,6 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	{
 		this.avaliacao = avaliacao;
 	}
-
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager)
-	{
-		this.avaliacaoManager = avaliacaoManager;
-	}
 	
 	public Collection<Avaliacao> getAvaliacaos()
 	{
@@ -334,11 +342,6 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public String getUrlVoltar()
 	{
 		return urlVoltar;
-	}
-
-	public void setPerguntaManager(PerguntaManager perguntaManager)
-	{
-		this.perguntaManager = perguntaManager;
 	}
 
 	public TipoPergunta getTipoPergunta()
@@ -384,10 +387,6 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		return periodoExperiencias;
 	}
 
-	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager) {
-		this.periodoExperienciaManager = periodoExperienciaManager;
-	}
-
 	public boolean isTelaInicial() {
 		return telaInicial;
 	}
@@ -420,20 +419,12 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		this.empresasCheck = empresasCheck;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
 	public char getAtivos() {
 		return ativos;
 	}
 
 	public void setAtivos(char ativos) {
 		this.ativos = ativos;
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
 	public Collection<ColaboradorResposta> getColaboradorRespostas() {
@@ -451,15 +442,6 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setColaboradorRespostaManager(
-			ColaboradorRespostaManager colaboradorRespostaManager) {
-		this.colaboradorRespostaManager = colaboradorRespostaManager;
 	}
 
 	public ColaboradorQuestionario getColaboradorQuestionario() {
@@ -498,10 +480,6 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public void setAvaliacaoCurso(AvaliacaoCurso avaliacaoCurso) {
 		this.avaliacaoCurso = avaliacaoCurso;
 	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
 	
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios()
 	{
@@ -520,14 +498,6 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		this.agruparPorAspecto = agruparPorAspecto;
 	}
 
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
-	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
-	}
-
 	public void setColaboradorTurmaId(Long colaboradorTurmaId) {
 		this.colaboradorTurmaId = colaboradorTurmaId;
 	}
@@ -536,20 +506,12 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		return colaboradorTurmaId;
 	}
 
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager) {
-		this.certificacaoManager = certificacaoManager;
-	}
-
 	public boolean isColaboradorCertificado() {
 		return colaboradorCertificado;
 	}
 
 	public void setColaboradorCertificado(boolean colaboradorCertificado) {
 		this.colaboradorCertificado = colaboradorCertificado;
-	}
-
-	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager) {
-		this.avaliacaoCursoManager = avaliacaoCursoManager;
 	}
 
 	public Integer getPontuacaoMaximaQuestionario() {

@@ -6,6 +6,8 @@ package com.fortes.rh.web.action.acesso;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -30,11 +32,17 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings("serial")
 public class UsuarioEditAction extends MyActionSupportEdit
 {
+	@Autowired
 	private UsuarioManager usuarioManager;
+	@Autowired
 	private PerfilManager perfilManager;
+	@Autowired
 	private ColaboradorManager colaboradorManager;
+	@Autowired
 	private EmpresaManager empresaManager;
+	@Autowired
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	private Usuario usuario;
@@ -358,11 +366,6 @@ public class UsuarioEditAction extends MyActionSupportEdit
 		this.usuario=usuario;
 	}
 
-	public void setUsuarioManager(UsuarioManager usuarioManager)
-	{
-		this.usuarioManager = usuarioManager;
-	}
-
 	public Collection<Perfil> getPerfils()
 	{
 		return perfils;
@@ -371,11 +374,6 @@ public class UsuarioEditAction extends MyActionSupportEdit
 	public void setPerfils(Collection<Perfil> perfils)
 	{
 		this.perfils = perfils;
-	}
-
-	public void setPerfilManager(PerfilManager perfilManager)
-	{
-		this.perfilManager = perfilManager;
 	}
 
 	public Colaborador getColaborador()
@@ -418,11 +416,6 @@ public class UsuarioEditAction extends MyActionSupportEdit
 		this.cpf = cpf;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Collection<Empresa> getEmpresas()
 	{
 		return empresas;
@@ -431,11 +424,6 @@ public class UsuarioEditAction extends MyActionSupportEdit
 	public void setEmpresas(Collection<Empresa> empresas)
 	{
 		this.empresas = empresas;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
 	}
 
 	public String[] getEmpresasId()
@@ -521,15 +509,6 @@ public class UsuarioEditAction extends MyActionSupportEdit
 	public void setColaboradorId(Long colaboradorId)
 	{
 		this.colaboradorId = colaboradorId;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-	
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
 	public void setPerfil(Perfil perfil)

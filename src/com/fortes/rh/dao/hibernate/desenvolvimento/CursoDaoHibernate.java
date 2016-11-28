@@ -671,13 +671,13 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		query.setDate("dataFim", dataFim);
 		
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
-			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
+			query.setParameterList("cursoIds", cursoIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds)){
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		}
 		
 		Collection<Object[]> resultado = query.list();
@@ -733,13 +733,13 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		query.setDate("dataFim", dataFim);
 		
 		if (LongUtil.arrayIsNotEmpty(cursosIds))
-			query.setParameterList("cursosIds", cursosIds, Hibernate.LONG);
+			query.setParameterList("cursosIds", cursosIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			query.setParameterList("areasIds", areasIds, StandardBasicTypes.LONG);
 		
 		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, StandardBasicTypes.LONG);
 		
 		return (Double)query.uniqueResult();
 	}

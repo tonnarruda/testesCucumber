@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
@@ -15,7 +17,6 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
@@ -41,14 +42,21 @@ import com.opensymphony.xwork.Action;
 public class PeriodoExperienciaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
+	@Autowired
 	private PeriodoExperienciaManager periodoExperienciaManager;
+	@Autowired
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired
 	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	@Autowired
 	private AvaliacaoManager avaliacaoManager;
+	@Autowired
 	private EstabelecimentoManager estabelecimentoManager;
-	private PerguntaManager perguntaManager;
+	@Autowired
 	private EmpresaManager empresaManager;
+	@Autowired
 	private ColaboradorManager colaboradorManager;
+	@Autowired
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private PeriodoExperiencia periodoExperiencia;
@@ -388,11 +396,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		this.periodoExperiencia = periodoExperiencia;
 	}
-
-	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager)
-	{
-		this.periodoExperienciaManager = periodoExperienciaManager;
-	}
 	
 	public Collection<PeriodoExperiencia> getPeriodoExperiencias()
 	{
@@ -439,28 +442,12 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		this.estabelecimentoCheckList = estabelecimentoCheckList;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public Pergunta getPergunta() {
 		return pergunta;
 	}
 	
-	public PerguntaManager getPerguntaManager() {
-		return perguntaManager;
-	}
-	
 	public Collection<Pergunta> getPerguntas() {
 		return perguntas;
-	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
 	}
 	
 	public Collection<Colaborador> getColaboradores() {
@@ -473,10 +460,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	
 	public void setPeriodoExperiencias(Collection<PeriodoExperiencia> periodoExperiencias) {
 		this.periodoExperiencias = periodoExperiencias;
-	}
-	
-	public PeriodoExperienciaManager getPeriodoExperienciaManager() {
-		return periodoExperienciaManager;
 	}
 	
 	public String[] getAreasCheck() {
@@ -520,18 +503,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		this.empresasPermitidas = empresasPermitidas;
 	}
 	
-	public EmpresaManager getEmpresaManager() {
-		return empresaManager;
-	}
-	
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-	
-	public ColaboradorManager getColaboradorManager() {
-		return colaboradorManager;
-	}
-	
 	public Integer getDiasDeAcompanhamento() {
 		return diasDeAcompanhamento;
 	}
@@ -554,10 +525,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	
 	public String getReportTitle() {
 		return reportTitle;
-	}
-	
-	public void setAvaliacaoDesempenhoManager(AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {
-		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
 	}
 	
 	public void setAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho) {
@@ -594,10 +561,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public void setAvaliacao(Avaliacao avaliacao) {
 		this.avaliacao = avaliacao;
-	}
-
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
-		this.avaliacaoManager = avaliacaoManager;
 	}
 
 	public String[] getColaboradorsCheck() {
@@ -662,11 +625,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public void setAvaliacaoCheckList(Collection<CheckBox> avaliacaoCheckList) {
 		this.avaliacaoCheckList = avaliacaoCheckList;
-	}
-
-	public void setParametrosDoSistemaManager(
-			ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public boolean isCompartilharColaboradores() {

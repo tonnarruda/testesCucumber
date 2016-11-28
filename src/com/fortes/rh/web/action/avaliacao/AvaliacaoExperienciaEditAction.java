@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -30,11 +32,17 @@ import com.opensymphony.xwork.Action;
 public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
+	@Autowired
 	private AvaliacaoManager avaliacaoManager;
+	@Autowired
 	private PerguntaManager perguntaManager;
+	@Autowired
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired
 	private EmpresaManager empresaManager;
+	@Autowired
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired
 	private ColaboradorRespostaManager colaboradorRespostaManager;
 	
 	private Avaliacao avaliacaoExperiencia;
@@ -158,11 +166,6 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 		this.avaliacaoExperiencia = avaliacaoExperiencia;
 	}
 
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager)
-	{
-		this.avaliacaoManager = avaliacaoManager;
-	}
-
 	public Collection<Pergunta> getPerguntas()
 	{
 		return perguntas;
@@ -171,11 +174,6 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	public String getUrlVoltar()
 	{
 		return urlVoltar;
-	}
-
-	public void setPerguntaManager(PerguntaManager perguntaManager)
-	{
-		this.perguntaManager = perguntaManager;
 	}
 
 	public TipoPergunta getTipoPergunta()
@@ -206,10 +204,6 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 
 	public Collection<CheckBox> getAreasCheckList() {
 		return areasCheckList;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public String[] getAspectosCheck() {
@@ -308,14 +302,6 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 		return empresas;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public Long[] getEmpresaIds() {
 		return empresaIds;
 	}
@@ -338,11 +324,6 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 
 	public void setExibirObsAvaliadores(boolean exibirObsAvaliadores) {
 		this.exibirObsAvaliadores = exibirObsAvaliadores;
-	}
-
-	public void setColaboradorRespostaManager(
-			ColaboradorRespostaManager colaboradorRespostaManager) {
-		this.colaboradorRespostaManager = colaboradorRespostaManager;
 	}
 
 	public void setTipoModeloAvaliacao(Character tipoModeloAvaliacao)
