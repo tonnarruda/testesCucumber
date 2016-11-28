@@ -24806,3 +24806,14 @@ update usuario  set nome = 'SOS', login = 'SOS', senha='YzBtcDRjdDBy' where id =
 update papel set nome = 'Usuário SOS', codigo='USUARIO_SOS' where id = 673;--.go
 insert into migrations values('20161026114435');--.go
 update parametrosdosistema set appversao = '1.1.173.205';--.go
+-- versao 1.1.174.206
+
+
+alter table avaliacaodesempenho add column exibirnivelcompetenciaexigido boolean; --.go
+update avaliacaodesempenho set exibirnivelcompetenciaexigido = true; --.go
+insert into migrations values('20161108182309');--.go
+alter table historicocandidato add column exibirNaAgenda boolean default true;--.go
+insert into migrations values('20161124105430');--.go
+update papel set nome = 'Permitir que o gestor visualize suas próprias ocorrências e providências nas movimentações, relatórios e performance profissional' where id = 672; --.go
+insert into migrations values('20161125134949');--.go
+update parametrosdosistema set appversao = '1.1.174.206';--.go

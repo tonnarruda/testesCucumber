@@ -13,6 +13,7 @@ Funcionalidade: Minhas Avaliações - Período de Experiência
     Então eu devo ver o título "Inserir Período de Acompanhamento de Experiência"
     E eu preencho "Qtd. de Dias" com "90"
     E eu preencho "Descrição" com "1ª Avaliação"
+    E eu seleciono "Sim" de "Ativo"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Períodos de Acompanhamento de Experiência"
     E eu devo ver "90"
@@ -23,7 +24,7 @@ Funcionalidade: Minhas Avaliações - Período de Experiência
     E eu devo ver o título "Inserir Modelo de Avaliação"
     E eu preencho "Título" com "Av. período experiência"
     E eu seleciono "Acompanhamento do Período de Experiência" de "Tipo de Avaliação"
-    E eu seleciono "90 - 1ª Avaliação" de "Períodos de Acompanhamento de Experiência"
+    E eu seleciono "90 dias (1ª Avaliação)" de "Períodos de Acompanhamento de Experiência"
     E eu clico no botão "Avancar"
 
     Então eu devo ver o título "Inserir Pergunta da Avaliação"

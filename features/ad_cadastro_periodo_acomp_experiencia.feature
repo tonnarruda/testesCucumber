@@ -25,17 +25,17 @@ Funcionalidade: Período de Acompanhamento de Experiência
     Entao eu clico em editar "9000"
     E eu devo ver o título "Editar Período de Acompanhamento de Experiência"
     E o campo "Qtd. de Dias" deve conter "9000"
-    E eu preencho "Qtd. de Dias" com "1000"
+    E eu preencho "Qtd. de Dias" com "9999"
     E eu preencho "Descrição" com "2ª Avaliação"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Períodos de Acompanhamento de Experiência"
     E eu não devo ver na listagem "9000"
-    E eu devo ver "1000"
+    E eu devo ver "9999"
 
-    Então eu clico em excluir "1000"
+    Então eu clico em excluir "9999"
     E eu devo ver o alert do confirmar exclusão e clico no ok
     Então eu devo ver "Período de Acompanhamento de Experiência excluído com sucesso."
-    E eu não devo ver "1000"
+    E eu não devo ver "9999"
 
 
 

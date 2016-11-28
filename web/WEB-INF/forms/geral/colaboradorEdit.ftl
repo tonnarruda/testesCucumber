@@ -822,7 +822,7 @@
 				<legend>Colaborador</legend>
 				<#assign i = 0 />
 				<@display.table name="periodoExperiencias" id="periodoExperiencia" class="dados">
-					<#if !periodoExperiencia.ativo>
+					<#if periodoExperiencia?exists && !periodoExperiencia.ativo>
 						<#assign style="color: #e36f6f;"/>
 					<#else>
 						<#assign style=""/>
@@ -830,7 +830,7 @@
 					
 					<@display.column title="Dias" style="width:45px;${style}" >
 					${periodoExperiencia.dias}  
-					<#if !periodoExperiencia.ativo>
+					<#if periodoExperiencia?exists && !periodoExperiencia.ativo>
 						<i class="fa fa-ban" aria-hidden="true" title="Dia inativo" style="color: #e36f6f;"></i>
 					</#if>
 					</@display.column>
@@ -850,14 +850,14 @@
 				<#assign i = 0 />
 				<#assign style=""/>
 				<@display.table name="periodoExperiencias" id="periodoExperiencia" class="dados">
-					<#if !periodoExperiencia.ativo>
+					<#if periodoExperiencia?exists && !periodoExperiencia.ativo>
 						<#assign style="color: #e36f6f;"/>
 					<#else>
 						<#assign style=""/>
 					</#if>
 					<@display.column title="Dias" style="width:45px;${style}" >
 					${periodoExperiencia.dias}  
-					<#if !periodoExperiencia.ativo>
+					<#if periodoExperiencia?exists && !periodoExperiencia.ativo>
 						<i class="fa fa-ban" aria-hidden="true" title="Dia inativo" style="color: #e36f6f;"></i>
 					</#if>
 					</@display.column>

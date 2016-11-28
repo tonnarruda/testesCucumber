@@ -17,7 +17,7 @@ public class AccessTest {
 	
 	@Test
 	public void testCheckAccessHiperAccess() throws Exception{
-		assertEquals("sys.password não configurado ou errado", "c0mp4ct0r", Access.check("c0mp4ct0r", "1234"));
+		assertEquals("sys.password não configurado ou errado", "c0mp4ct0r", Access.check("1234", "1234"));
 	}
 	
 	//OBS: DEVIDO A SEGURANÇA DE ACESSO OS MÉTODOS ESTÃO EM PROTECTED LOGO NÃO É POSSÍVEL EFETUAR INÚMEROS TESTES.
