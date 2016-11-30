@@ -614,6 +614,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	   	
 	   	candidato.setCandidatoIdiomas(candidatoIdiomaManager.montaCandidatoIdiomaByColaboradorIdioma(colaborador.getColaboradorIdiomas(), candidato));
 
+	   	/** Não remover está linha, pois setar o colaborador como nulo evita exceção ao gravar candidato.*/
+	   	candidato.setColaborador(null);
 	   	update(candidato);
 
 		return candidato;
