@@ -385,6 +385,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiItemDaoHibernateTest
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiItemDevolucaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiItemEntregaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoExameDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoExameDaoHibernateTest_Junit4;
 import com.fortes.rh.test.dao.hibernate.sesmt.TestemunhaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.TipoTamanhoEPIDaoHibernateTest;
 import com.fortes.rh.test.dicionario.AptoTest;
@@ -1199,6 +1200,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	EpcManagerTest.class,
 
 	SolicitacaoExameDaoHibernateTest.class,
+	SolicitacaoExameDaoHibernateTest_Junit4.class,
 	SolicitacaoExameManagerTest.class,
 	ExameManagerTest_JUnit4.class,
 	SolicitacaoExameListActionTest.class,

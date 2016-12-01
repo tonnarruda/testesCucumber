@@ -141,8 +141,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 			return solicitacaoExameIds.size();
 	}
 
-	public Collection<SolicitacaoExameRelatorio> findImprimirSolicitacaoExames(Long solicitacaoExameId)
-	{
+	public Collection<SolicitacaoExameRelatorio> findImprimirSolicitacaoExames(Long solicitacaoExameId){
 		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio(medico.nome, medico.crm, medico.assinaturaDigital, clinica.nome, clinica.tipo, clinica.outro, clinica.telefone, clinica.horarioAtendimento, clinica.endereco,exame.nome,co.nome,ca.nome,co.pessoal.dataNascimento,ca.pessoal.dataNascimento,se.motivo, co.matricula, f.nome, a.nome, fsol.nome, se.observacao) ");
 		hql.append("from ExameSolicitacaoExame exameSol ");
 		hql.append("join exameSol.solicitacaoExame se ");
@@ -153,25 +152,21 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		hql.append("left join hc.funcao f ");
 		hql.append("left join hc.ambiente a ");
 		hql.append("left join se.candidato ca ");
-		hql.append("left join ca.candidatoSolicitacaos cas  ");
+		
+		hql.append("left join ca.candidatoSolicitacaos cas with ");
+		hql.append(" 								cas.solicitacao.id = (select max(s2.id) from Solicitacao s2 where s2.data = (select max(s3.data) ");
+		hql.append("			    										from CandidatoSolicitacao cas2 left join cas2.solicitacao s3 ");
+		hql.append("			    										where cas2.candidato.id = ca.id and cas2.triagem = :triagem ))");
+		
 		hql.append("left join cas.solicitacao s  ");
 		hql.append("left join s.funcao fsol  ");
 		hql.append("left join exameSol.clinicaAutorizada clinica ");
 		hql.append("where se.id = :solicitacaoExameId ");
 		
-		hql.append("and (hc.data = (select max(hc2.data) ");
-		hql.append("				from HistoricoColaborador as hc2 ");
+		hql.append("and (hc.data = (select max(hc2.data) from HistoricoColaborador as hc2 ");
 		hql.append("				where hc2.colaborador.id = co.id ");
 		hql.append("				and hc2.data <= :hoje and hc2.status = :status ) ");
 		hql.append("	or hc.data is null) ");
-		
-		hql.append("and (s.data = (select max(s2.data) ");
-		hql.append("			    from CandidatoSolicitacao cas2 ");
-		hql.append("			    left join cas2.solicitacao s2 ");
-		hql.append("			    where cas2.candidato.id = ca.id ");
-		hql.append("			    and cas2.triagem = :triagem) ");
-		hql.append("	or s.data is null) ");
-		
 		hql.append("order by clinica.nome ");
 
 		Query query = getSession().createQuery(hql.toString());

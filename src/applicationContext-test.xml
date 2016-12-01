@@ -322,4 +322,33 @@
     </property>
   </bean>
   
+  <bean id="solicitacaoExameDao" class="com.fortes.rh.dao.hibernate.sesmt.SolicitacaoExameDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="medicoCoordenadorDao" class="com.fortes.rh.dao.hibernate.sesmt.MedicoCoordenadorDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="exameSolicitacaoExameDao" class="com.fortes.rh.dao.hibernate.sesmt.ExameSolicitacaoExameDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="exameDao" class="com.fortes.rh.dao.hibernate.sesmt.ExameDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="clinicaAutorizadaDao" class="com.fortes.rh.dao.hibernate.sesmt.ClinicaAutorizadaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>

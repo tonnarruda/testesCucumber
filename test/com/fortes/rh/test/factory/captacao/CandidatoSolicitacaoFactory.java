@@ -56,6 +56,15 @@ public class CandidatoSolicitacaoFactory
 		return candidatoSolicitacao;
 	}
 	
+	public static CandidatoSolicitacao getEntity(Candidato candidato, Solicitacao solicitacao, boolean triagem)
+	{
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao.setCandidato(candidato);
+		candidatoSolicitacao.setSolicitacao(solicitacao);
+		candidatoSolicitacao.setTriagem(triagem);
+		return candidatoSolicitacao;
+	}
+	
 	public static CandidatoSolicitacao getEntity(Candidato candidato, Solicitacao solicitacao, Date dataContrratacaoOrpromocao)
 	{
 		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();

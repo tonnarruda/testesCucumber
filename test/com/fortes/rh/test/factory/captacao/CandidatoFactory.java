@@ -88,4 +88,10 @@ public class CandidatoFactory
 		candidato.setNome(nome);
 		return candidato;
 	}
+	
+	public static Candidato getCandidato(String nome){
+		Candidato candidato = getCandidato();
+		candidato.setNome(nome);
+		return candidato;
+	}
 }
