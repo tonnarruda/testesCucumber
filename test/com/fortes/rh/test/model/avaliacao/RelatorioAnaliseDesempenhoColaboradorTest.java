@@ -66,12 +66,12 @@ public class RelatorioAnaliseDesempenhoColaboradorTest  {
 	
 	@Test
 	public void testGetNiveisCompetenciasDescricao(){
-		assertEquals("Ruim,Bom,Ótimo", relatorioAnaliseDesempenhoColaborador.getNiveisCompetenciasDescricao());
+		assertEquals("Ruim#;#Bom#;#Ótimo", relatorioAnaliseDesempenhoColaborador.getNiveisCompetenciasDescricao());
 	}
 	
 	@Test
 	public void testGetNiveisCompetenciasOrdem(){
-		assertEquals("1,2,3", relatorioAnaliseDesempenhoColaborador.getNiveisCompetenciasOrdem());
+		assertEquals("1#;#2#;#3", relatorioAnaliseDesempenhoColaborador.getNiveisCompetenciasOrdem());
 	}
 	
 	@Test

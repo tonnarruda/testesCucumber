@@ -8,6 +8,10 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanToPropertyValueTransformer;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
 import com.ibm.icu.text.DecimalFormat;
@@ -173,28 +177,26 @@ public class RelatorioAnaliseDesempenhoColaborador
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String getNiveisCompetenciasDescricao() {
-		String retorno = "";
-		if(niveisCompetencias != null)
-			for (NivelCompetencia nivelCompetencia : niveisCompetencias) 
-				retorno += nivelCompetencia.getDescricao() + ",";
-		
-		if(retorno != null && retorno.length() > 0)
-			return retorno.substring(0, retorno.length() - 1);
-		else
-			return "";
+		String retorno = null;
+		if (niveisCompetencias != null){
+			List<String> ordens = (List<String>) CollectionUtils.collect(niveisCompetencias, new BeanToPropertyValueTransformer("descricao", true));
+			retorno = StringUtils.join(ordens.toArray(), "#;#");
+		}
+
+		return StringUtils.defaultString(retorno);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String getNiveisCompetenciasOrdem() {
-		String retorno = "";
-		if(niveisCompetencias != null)
-			for (NivelCompetencia nivelCompetencia : niveisCompetencias) 
-				retorno += nivelCompetencia.getOrdem() + ",";
+		String retorno = null;
+		if (niveisCompetencias != null){
+			List<String> ordens = (List<String>) CollectionUtils.collect(niveisCompetencias, new BeanToPropertyValueTransformer("ordemComPercentual", true));
+			retorno = StringUtils.join(ordens.toArray(), "#;#");
+		}
 		
-		if(retorno != null && retorno.length() > 0)
-			return retorno.substring(0, retorno.length() - 1);
-		else
-			return "";
+		return StringUtils.defaultString(retorno);
 	}
 	
 	public String getLegenda() {

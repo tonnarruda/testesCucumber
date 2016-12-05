@@ -23,5 +23,12 @@ public class ConverterUtilTest extends TestCase
 	public void testConvertStringToDouble() throws ParseException{
 		assertEquals(2D, ConverterUtil.convertStringToDouble("2,00"));
 	}
+	
+	public void testFormataPercentual() throws ParseException{
+		assertEquals("0,25%", ConverterUtil.formataPercentual(0.25, "#.##%"));
+		assertEquals("(12,26%)", ConverterUtil.formataPercentual(12.26, "(#.##%)"));
+		assertEquals("0,00%",ConverterUtil.formataPercentual(0.0, "#.##%"));
+		assertNull(ConverterUtil.formataPercentual(null, "#.##%"));
+	}
 
 }

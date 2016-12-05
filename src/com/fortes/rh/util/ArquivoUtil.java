@@ -407,7 +407,7 @@ public class ArquivoUtil
 	{
 		try
 		{
-			JasperReport jasperReport = (JasperReport) JRLoader.loadObject(parametros.get("SUBREPORT_DIR") + jasperName);
+			JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(parametros.get("SUBREPORT_DIR") + jasperName);
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JRBeanCollectionDataSource(dataSource));
 
 			byte[] output = JasperExportManager.exportReportToPdf(jasperPrint);

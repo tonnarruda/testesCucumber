@@ -387,8 +387,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			parametros.put("NIVEISCOMPETENCIAORDEM", relatorioAnaliseDesempenhoColaborador.getNiveisCompetenciasOrdem());
 			parametros.put("LEGENDA", relatorioAnaliseDesempenhoColaborador.getLegenda());
 
-			//parametros.put("NIVEISCOMPETENCIA", new JRBeanCollectionDataSource(relatorioAnaliseDesempenhoColaborador.getNiveisCompetencias()));
-			
 		} catch (Exception e) {
 			addActionError("Problema ao gerar relatório.");
 			e.printStackTrace();

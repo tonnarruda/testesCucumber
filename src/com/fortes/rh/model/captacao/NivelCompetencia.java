@@ -11,8 +11,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.ConverterUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -48,17 +52,20 @@ public class NivelCompetencia extends AbstractModel implements Serializable
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+
 	public Empresa getEmpresa() {
 		return empresa;
 	}
+
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
 	}
+
 	public Collection<ConfigHistoricoNivel> getConfigHistoricoNiveis() {
 		return configHistoricoNiveis;
 	}
-	public void setConfigHistoricoNiveis(
-			Collection<ConfigHistoricoNivel> configHistoricoNiveis) {
+
+	public void setConfigHistoricoNiveis(Collection<ConfigHistoricoNivel> configHistoricoNiveis) {
 		this.configHistoricoNiveis = configHistoricoNiveis;
 	}
 
@@ -66,6 +73,7 @@ public class NivelCompetencia extends AbstractModel implements Serializable
 		return percentual;
 	}
 	
+	@NaoAudita
 	public String getPercentualString() {
 		if(percentual != null)
 			return percentual.toString().replace(",", ".");
@@ -83,5 +91,17 @@ public class NivelCompetencia extends AbstractModel implements Serializable
 
 	public void setOrdem(Integer ordem) {
 		this.ordem = ordem;
+	}
+	
+	// Usado no iReport
+	@NaoAudita
+	public String getOrdemComPercentual() {
+		try {
+			return (ordem == null ? "" : ordem)  +
+					StringUtils.defaultString(ConverterUtil.formataPercentual(percentual, " (#.##%)"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		} 	
 	}
 }

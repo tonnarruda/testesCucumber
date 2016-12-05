@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2016-12-05T15:39:07 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Competencia" printOrder="Horizontal" pageWidth="560" pageHeight="50" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="560" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="2496fb03-abc2-4584-871b-6b027461fe56">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -52,7 +54,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split(",")).get(4)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split("#;#")).get(4)]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="80" y="15" width="80" height="35" uuid="8173abfd-9977-4aaa-aeb3-c1d85c172204"/>
@@ -63,7 +65,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split(",")).get(1)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split("#;#")).get(1)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="160" y="0" width="80" height="15" uuid="f5a8f65d-87ca-4cd2-b9ca-d6199969f089"/>
@@ -74,7 +76,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split(",")).get(2)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split("#;#")).get(2)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="80" y="0" width="80" height="15" uuid="8f8b5700-b5cb-4e04-8d0d-66cd02f22e74"/>
@@ -85,7 +87,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split(",")).get(1)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split("#;#")).get(1)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="480" y="0" width="80" height="15" uuid="430edcda-2a35-4ecb-8478-933234bac42e"/>
@@ -96,7 +98,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split(",")).get(6)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split("#;#")).get(6)]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="480" y="15" width="80" height="35" uuid="a7ca61a7-6f18-49ed-8de6-d63fb83780b1"/>
@@ -107,7 +109,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split(",")).get(6)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split("#;#")).get(6)]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="400" y="15" width="80" height="35" uuid="f5a9447d-eb8e-4bf6-9ce4-7f0b4c0acdcb"/>
@@ -118,7 +120,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split(",")).get(5)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split("#;#")).get(5)]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="0" y="15" width="80" height="35" uuid="1658a6cd-b059-44b5-bb68-802eeb3cb627"/>
@@ -129,7 +131,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split(",")).get(0)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split("#;#")).get(0)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="400" y="0" width="80" height="15" uuid="22276162-7aa8-4fa5-ba25-621df7103ca3"/>
@@ -140,7 +142,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split(",")).get(5)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split("#;#")).get(5)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="80" height="15" uuid="b6a39b53-70ca-4c9c-8d39-1ca245266284"/>
@@ -151,7 +153,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split(",")).get(0)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split("#;#")).get(0)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="240" y="0" width="80" height="15" uuid="cfddf8f2-7b64-4c51-b200-8324b74844e6"/>
@@ -162,7 +164,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split(",")).get(3)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{VALOR}.split("#;#")).get(3)]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="160" y="15" width="80" height="35" uuid="ae89c148-f419-418e-b19d-f36e046b881d"/>
@@ -173,7 +175,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split(",")).get(2)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split("#;#")).get(2)]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="240" y="15" width="80" height="35" uuid="6af1d72e-f694-4789-9cf3-3e24f3a513c3"/>
@@ -184,7 +186,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split(",")).get(3)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split("#;#")).get(3)]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="320" y="15" width="80" height="35" uuid="bc607a1c-44b4-4a9e-898b-7a24cb453131"/>
@@ -195,7 +197,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split(",")).get(4)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Arrays.asList($P{NOME}.split("#;#")).get(4)]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

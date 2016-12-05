@@ -219,6 +219,7 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("nc.descricao"), "descricao");
 		p.add(Projections.property("chn.ordem"), "ordem");
+		p.add(Projections.property("chn.percentual"), "percentual");
 		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
