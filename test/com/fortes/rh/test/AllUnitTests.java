@@ -220,6 +220,7 @@ import com.fortes.rh.test.dao.hibernate.captacao.AnuncioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.AtitudeDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.CandidatoCurriculoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.CandidatoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.captacao.CandidatoDaoHibernateTest_Junit4;
 import com.fortes.rh.test.dao.hibernate.captacao.CandidatoIdiomaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.CandidatoSolicitacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.CompetenciaDaoHibernateTest;
@@ -747,6 +748,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	AnuncioManagerTest.class,
 	AnuncioDaoHibernateTest.class,
 	CandidatoDaoHibernateTest.class,
+	CandidatoDaoHibernateTest_Junit4.class,
 	CandidatoManagerTest.class,
 	CandidatoManagerTest_Junit4.class,
 	CandidatoEditActionTest.class,

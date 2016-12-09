@@ -5,6 +5,7 @@ import java.util.Date;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Habilitacao;
 import com.fortes.rh.model.geral.Contato;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
@@ -77,6 +78,12 @@ public class CandidatoFactory
 		return candidato;
 	}
 
+	public static Candidato getCandidao(Empresa empresa ){
+		Candidato candidato = getCandidato();
+		candidato.setEmpresa(empresa);
+		return candidato;
+	} 
+	
 	public static Candidato getCandidato(Long id) {
 		Candidato candidato = getCandidato();
 		candidato.setId(id);

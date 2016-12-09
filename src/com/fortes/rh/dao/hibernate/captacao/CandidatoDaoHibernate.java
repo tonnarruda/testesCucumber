@@ -297,12 +297,14 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 	public Collection<Candidato> findBusca(Map parametros, Long[] empresaId, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar) throws Exception
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+		criteria.createCriteria("c.experiencias", "ex", Criteria.LEFT_JOIN);
+		
+		if (isNotBlank((String)parametros.get("palavrasChaveOutrosCampos")))
+			criteria.createCriteria("c.formacao", "f", Criteria.LEFT_JOIN);
 		
 		if (somenteSemSolicitacao)
 			criteria.createCriteria("c.candidatoSolicitacaos", "cs", Criteria.LEFT_JOIN).add(Expression.isNull("cs.id"));
 		
-		if (isNotBlank((String)parametros.get("palavrasChaveOutrosCampos")))
-			criteria.createCriteria("c.formacao", "f", Criteria.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
 		criteria = montaProjectionGroup(criteria, p);
@@ -326,20 +328,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return criteria.list();
 	}
 
-	public Integer getCount(Map parametros, Long[] empresaIds)
-	{
-		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
-		criteria = criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
-		criteria = criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
-		criteria = criteria.createCriteria("c.experiencias", "ex", Criteria.LEFT_JOIN);
-
-		montaCriteriaFiltros(parametros, empresaIds, criteria);
-
-		criteria.setProjection(Projections.rowCount());
-
-		return (Integer) criteria.list().get(0);
-	}
-
 	private void montaCriteriaFiltros(Map parametros, Long[] empresaIds, Criteria criteria)
 	{
 	//	lista candidatos (disponivel = true , contratado = false)
@@ -360,8 +348,10 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			criteria.createCriteria("c.areasInteresse", "a", Criteria.LEFT_JOIN).add(Expression.in("a.id", (Long[])parametros.get("areasIds")));
 		
 		if(parametros.get("areasFormacaoIds")  != null && ((Long[])parametros.get("areasFormacaoIds")).length > 0){
-			criteria.createCriteria("c.formacao", "formacao", Criteria.LEFT_JOIN);
-			criteria.createCriteria("formacao.areaFormacao", "aFormacao", Criteria.LEFT_JOIN).add(Expression.in("aFormacao.id", (Long[])parametros.get("areasFormacaoIds")));
+			if (!isNotBlank((String)parametros.get("palavrasChaveOutrosCampos")))
+				criteria.createCriteria("c.formacao", "f", Criteria.LEFT_JOIN);
+			
+			criteria.createCriteria("f.areaFormacao", "aFormacao", Criteria.LEFT_JOIN).add(Expression.in("aFormacao.id", (Long[])parametros.get("areasFormacaoIds")));
 		}
 
 		if(parametros.get("cargosIds")  != null && ((Long[])parametros.get("cargosIds")).length > 0)
@@ -468,9 +458,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			
 			Junction juncaoOr = Expression.disjunction();
 			
-			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "f1_.curso", StringUtils.trimToEmpty((String) parametros.get("palavrasChaveOutrosCampos"))));
+			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "f2_.curso", StringUtils.trimToEmpty((String) parametros.get("palavrasChaveOutrosCampos"))));
 			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "this_.cursos", StringUtils.trimToEmpty((String) parametros.get("palavrasChaveOutrosCampos"))));
-			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "ex4_.nomeMercado", StringUtils.trimToEmpty((String) parametros.get("palavrasChaveOutrosCampos"))));
+			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "ex1_.nomeMercado", StringUtils.trimToEmpty((String) parametros.get("palavrasChaveOutrosCampos"))));
 			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "this_.observacao", StringUtils.trimToEmpty((String) parametros.get("palavrasChaveOutrosCampos"))));
 			
 			criteria.add(juncaoOr);
@@ -982,6 +972,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			String[] conhecimentosCheck, Collection<Long> candidatosJaSelecionados, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar, Long[] empresaIds, boolean todasEmpresasPermitidas)
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+		criteria.createCriteria("c.experiencias", "ex", Criteria.LEFT_JOIN);
 		
 		if (somenteSemSolicitacao)
 			criteria.createCriteria("c.candidatoSolicitacaos", "cs", Criteria.LEFT_JOIN).add(Expression.isNull("cs.id"));
@@ -1053,7 +1044,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 	{
 		criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
-		criteria.createCriteria("c.experiencias", "ex", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.empresa", "e", Criteria.LEFT_JOIN);
 
 		p.add(Projections.groupProperty("c.id"), "id");

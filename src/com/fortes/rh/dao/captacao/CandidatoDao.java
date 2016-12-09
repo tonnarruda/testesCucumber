@@ -41,7 +41,6 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public Collection<Candidato> getCandidatosByNome(String candidatoNome);
 	public Collection<Candidato> getCandidatosByExperiencia(Map parametros, Long[] empresaIds);
 	public void updateSenha(Long candidatoId, String senha, String novaSenha);
-	Integer getCount(Map parametros, Long[] empresaIds);
 	public Collection<AvaliacaoCandidatosRelatorio> findRelatorioAvaliacaoCandidatos(Date dataIni, Date dataFim, Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, char statusSolicitacao);
 	public Collection<Candidato> findByNomeCpf(Candidato candidato, Long empresaId);
 	public void migrarBairro(String bairro, String bairroDestino);

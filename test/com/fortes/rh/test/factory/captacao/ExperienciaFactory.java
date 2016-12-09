@@ -21,4 +21,10 @@ public class ExperienciaFactory
 		exp.setId(id);
 		return exp;
 	}
+	
+	public static Experiencia getEntity(String nome) {
+		Experiencia exp = getEntity();
+		exp.setNomeMercado(nome);
+		return exp;
+	}
 }
