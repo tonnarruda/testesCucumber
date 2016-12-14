@@ -30,7 +30,7 @@
 															        text: "Imprimir",
 															        click: function() {
 															        	setTimeout("checkProcessandoTime()",500);
-																		window.location='imprimir.action?ordemDeServico.id='+ordemDeServicoId;	
+																		executeLink('imprimir.action?ordemDeServico.id='+ordemDeServicoId);	
 															        	$(this).dialog("close");	
 															        }
 															    },
@@ -50,7 +50,6 @@
 			}
 			else{
 				setTimeout("checkProcessandoTime()",500);
-				console.log('teste');
 			}
 		};
 		
@@ -76,14 +75,14 @@
 
 	<@display.table name="ordensDeServico" id="ordemDeServico" class="dados">
 		<@display.column title="Ações" class="acao" style="width:95px";>
-			<@frt.link href="visualizar.action?ordemDeServico.id=${ordemDeServico.id}" id="editar${ordemDeServico.id}" imgTitle="Visualizar" imgName="olho.jpg"/>
+			<@frt.link href="javascript: executeLink('visualizar.action?ordemDeServico.id=${ordemDeServico.id}');" id="editar${ordemDeServico.id}" imgTitle="Visualizar" imgName="olho.jpg"/>
 			<#if ordemDeServico.impressa>
 				<@frt.link href="#" imgTitle="Não é permitida a edição pois a Ordem de Serviço já foi impressa." imgName="edit.gif" disabled=true />
 				<@frt.link href="#" imgTitle="Não é permitida a exclusão pois a Ordem de Serviço já foi impressa." imgName="delete.gif" disabled=true/>
-				<@frt.link href="imprimir.action?ordemDeServico.id=${ordemDeServico.id}" imgTitle="Imprimir" imgName="printer.gif"/>
+				<@frt.link href="javascript: executeLink('imprimir.action?ordemDeServico.id=${ordemDeServico.id}');" imgTitle="Imprimir" imgName="printer.gif"/>
 			<#else>
-				<@frt.link href="prepareUpdate.action?ordemDeServico.id=${ordemDeServico.id}" id="editar${ordemDeServico.id}" imgTitle="Editar" imgName="edit.gif"/>
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?ordemDeServico.id=${ordemDeServico.id}&colaborador.id=${colaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<@frt.link href="javascript: executeLink('prepareUpdate.action?ordemDeServico.id=${ordemDeServico.id}');" id="editar${ordemDeServico.id}" imgTitle="Editar" imgName="edit.gif"/>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){executeLink('delete.action?ordemDeServico.id=${ordemDeServico.id}&colaborador.id=${colaborador.id}');});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<@frt.link href="javascript:avisoAoImprimirOSPelaPrimeiraVez('${ordemDeServico.nomeColaborador}', '${ordemDeServico.nomeFuncao}', '${ordemDeServico.dataFormatada}', '${ordemDeServico.id}')" imgTitle="Imprimir" imgName="printer.gif"/>
 			</#if>
 		</@display.column>
@@ -98,14 +97,14 @@
 	
 	<div class="buttonGroup">
 		<#if (ordemDeServicoAtual?exists && ordemDeServicoAtual.impressa) || !ordemDeServicoAtual?exists && !dataDesligamentoInferiorADataAtual> 
-			<button class="btnInserir" onclick="window.location='prepareInsert.action?colaborador.id=${colaborador.id}'"></button>
+			<button class="btnInserir" onclick="javascript: executeLink('prepareInsert.action?colaborador.id=${colaborador.id}');"></button>
 		<#elseif (ordemDeServicoAtual?exists && !ordemDeServicoAtual.impressa) && !dataDesligamentoInferiorADataAtual>
 			<button class="btnInserir" disabled="disabled" style="opacity: 0.4" title="Não é possível inserir um novo registro, pois a última Ordem de Serviço criada ainda não foi impressa."></button>
 		<#else>	
 			<button class="btnInserir" disabled="disabled" style="opacity: 0.4" title="Colaborador desligado em ${colaborador.dataDesligamentoFormatada}. Não é possível inserir uma Ordem de Serviço para colaboradores desligados, cuja data de desligamento é inferior a data atual (${dataDoDia})."></button>
 		</#if>
 		
-		<button onclick="window.location='listGerenciamentoOS.action'" class="btnVoltar"></button>
+		<button onclick="javascript: executeLink('listGerenciamentoOS.action');" class="btnVoltar"></button>
 	</div>
 
 </body>

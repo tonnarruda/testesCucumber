@@ -251,8 +251,8 @@
 			<@ww.textarea name="ordemDeServico.termoDeResponsabilidade" id="termoDeResponsabilidadeOS" required="true"/>
 			
 			<div class="buttonGroup">
-				<button type="submit" class="btnGravar"></button>
-				<button onclick="window.location='list.action?colaborador.id=${ordemDeServico.colaborador.id}'" class="btnVoltar"></button>
+				<button type="submit" class="btnGravar"/>
+				<button onclick="javascript: executeLink('list.action?colaborador.id=${ordemDeServico.colaborador.id}');" class="btnVoltar"/>
 			</div>
 		</@ww.form>
 	

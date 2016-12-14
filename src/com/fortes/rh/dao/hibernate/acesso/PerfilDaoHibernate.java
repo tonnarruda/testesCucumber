@@ -59,16 +59,6 @@ public class PerfilDaoHibernate extends GenericDaoHibernate<Perfil> implements P
 	{
 		criteria.add(Expression.eq("c.acessoRestrito", false));
 	}
-
-	public Integer getCount() 
-	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
-		criteria.setProjection(Projections.rowCount());
-
-		montaWhereCriteriaList(criteria);
-		
-		return (Integer) criteria.uniqueResult();
-	}
 	
 	public Collection<Perfil> findByIds(Long[] perfisIds) {
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
@@ -92,6 +82,8 @@ public class PerfilDaoHibernate extends GenericDaoHibernate<Perfil> implements P
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 		criteria.setProjection(Projections.rowCount());
+
+		montaWhereCriteriaList(criteria);
 
 		return (Integer) criteria.uniqueResult();
 	}

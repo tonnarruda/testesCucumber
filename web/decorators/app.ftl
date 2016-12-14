@@ -21,7 +21,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/init.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 
-	<script type="text/javascript">>
+	<script type="text/javascript">
 		var baseUrl = '<@ww.url includeParams="none" value="/"/>';
 		var sessionMaxInactiveInterval = ${session.maxInactiveInterval * 1000};
 		
