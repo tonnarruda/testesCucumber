@@ -215,6 +215,107 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/relatorioAniversariantes.ftl</result>
 		</action>
+		
+		<action name="prepareRelatorioAniversariantesPorTempoDeEmpresa" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareRelatorioAniversariantesPorTempoDeEmpresa">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/relatorioAniversariantesPorTempoDeEmpresa.ftl</result>
+		</action>
+		<action name="relatorioAniversariantesPorTempoDeEmpresa" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="relatorioAniversariantesPorTempoDeEmpresa">
+			<result name="successAgrupadoPorArea" type="jasper">
+				<param name="location">WEB-INF/report/aniversariantesPorTempoDeEmpresaAgrupadoPorArea.jasper</param>
+				<param name="dataSource">colaboradors</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">relatorioAniversariantesPorTempoDeEmpresaAgrupadoPorArea.pdf</param>
+			</result>
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/aniversariantesPorTempoDeEmpresa.jasper</param>
+				<param name="dataSource">colaboradors</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">relatorioAniversariantesPorTempoDeEmpresa.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/relatorioAniversariantesPorTempoDeEmpresa.ftl</result>
+		</action>
+		<action name="relatorioAniversariantesPorTempoDeEmpresaXLS" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="relatorioAniversariantesPorTempoDeEmpresaXLS">
+			<result name="successXLSAgrupadoPorAreaComNomeColaborador" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">aniversariantesPorTempoDeEmpresa.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Empresa - Área Organizacional,Data,Tempo de Empresa,Matrícula,Nome,Cargo,Estabelecimento</param>
+				<param name="propertiesGroup">areaOrganizacional.id</param>
+				<param name="properties">areaOrganizacional.nomeComEmpresa,diaMesDataAdmissao,tempoDeServicoComAno,matricula,nome,faixaSalarial.descricao,estabelecimento.nome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successXLSAgrupadoPorAreaComNomeColaboradorTodosOsMeses" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">aniversariantesPorTempoDeEmpresa.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Empresa - Área Organizacional,Mês,Data,Tempo de Empresa,Matrícula,Nome,Cargo,Estabelecimento</param>
+				<param name="propertiesGroup">areaOrganizacional.id,mesAdmissaoPorExtenso</param>
+				<param name="properties">areaOrganizacional.nomeComEmpresa,mesAdmissaoPorExtenso,diaMesDataAdmissao,tempoDeServicoComAno,matricula,nome,faixaSalarial.descricao,estabelecimento.nome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successXLSAgrupadoPorAreaComNomeComercial" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">aniversariantesPorTempoDeEmpresa.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Empresa - Área Organizacional,Data,Tempo de Empresa,Matrícula,Nome Comercial,Cargo,Estabelecimento</param>
+				<param name="propertiesGroup">areaOrganizacional.id</param>
+				<param name="properties">areaOrganizacional.nomeComEmpresa,diaMesDataAdmissao,tempoDeServicoComAno,matricula,nomeComercial,faixaSalarial.descricao,estabelecimento.nome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successXLSAgrupadoPorAreaComNomeComercialTodosOsMeses" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">aniversariantesPorTempoDeEmpresa.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Empresa - Área Organizacional,Mês,Data,Tempo de Empresa,Matrícula,Nome Comercial,Cargo,Estabelecimento</param>
+				<param name="propertiesGroup">areaOrganizacional.id,mesAdmissaoPorExtenso</param>
+				<param name="properties">areaOrganizacional.nomeComEmpresa,mesAdmissaoPorExtenso,diaMesDataAdmissao,tempoDeServicoComAno,matricula,nomeComercial,faixaSalarial.descricao,estabelecimento.nome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successXLSComNomeColaborador" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">aniversariantesPorTempoDeEmpresa.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Data,Tempo de Empresa,Matrícula,Nome,Cargo,Área Organizacional,Estabelecimento</param>
+				<param name="properties">diaMesDataAdmissao,tempoDeServicoComAno,matricula,nome,faixaSalarial.descricao,areaOrganizacional.nome,estabelecimento.nome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successXLSComNomeColaboradorTodosOsMeses" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">aniversariantesPorTempoDeEmpresa.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Mês,Data,Tempo de Empresa,Matrícula,Nome,Cargo,Área Organizacional,Estabelecimento</param>
+				<param name="propertiesGroup">mesAdmissaoPorExtenso</param>
+				<param name="properties">mesAdmissaoPorExtenso,diaMesDataAdmissao,tempoDeServicoComAno,matricula,nome,faixaSalarial.descricao,areaOrganizacional.nome,estabelecimento.nome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successXLSComNomeComercial" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">aniversariantesPorTempoDeEmpresa.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Data,Tempo de Empresa,Matrícula,Nome Comercial,Cargo,Área Organizacional,Estabelecimento</param>
+				<param name="properties">diaMesDataAdmissao,tempoDeServicoComAno,matricula,nomeComercial,faixaSalarial.descricao,areaOrganizacional.nome,estabelecimento.nome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successXLSComNomeComercialTodosOsMeses" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">aniversariantesPorTempoDeEmpresa.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Mês,Data,Tempo de Empresa,Matrícula,Nome Comercial,Cargo,Área Organizacional,Estabelecimento</param>
+				<param name="propertiesGroup">mesAdmissaoPorExtenso</param>
+				<param name="properties">mesAdmissaoPorExtenso,diaMesDataAdmissao,tempoDeServicoComAno,matricula,nomeComercial,faixaSalarial.descricao,areaOrganizacional.nome,estabelecimento.nome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/relatorioAniversariantesPorTempoDeEmpresa.ftl</result>
+		</action>
+		
 		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="prepareInsert">
 			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorEdit.ftl</result>

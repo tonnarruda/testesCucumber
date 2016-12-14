@@ -200,6 +200,12 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		return descricao;
 	}
 
+	@NaoAudita
+	public String getNomeComEmpresa()
+	{
+		return this.empresa.getNome() + " - " + this.nome; 
+	}
+	
 	public void setDescricao(String descricao)
 	{
 		this.descricao = descricao;

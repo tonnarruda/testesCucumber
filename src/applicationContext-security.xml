@@ -318,6 +318,9 @@
 				/geral/colaborador/updateInfoPessoais.action* = ROLE_CAD_INFO_PESSOAL
 				/geral/colaborador/prepareRelatorioAniversariantes*/** = ROLE_REL_ANIVERSARIANTES
 				/geral/colaborador/relatorioAniversariantes*/** = ROLE_REL_ANIVERSARIANTES
+				/geral/colaborador/prepareRelatorioAniversariantesPorTempoDeEmpresa*/** = ROLE_REL_ANIVERSARIANTES_POR_TEMPO_DE_EMPRESA
+				/geral/colaborador/relatorioAniversariantesPorTempoDeEmpresa*/** = ROLE_REL_ANIVERSARIANTES_POR_TEMPO_DE_EMPRESA
+				/geral/colaborador/relatorioAniversariantesPorTempoDeEmpresaXLS*/** = ROLE_REL_ANIVERSARIANTES_POR_TEMPO_DE_EMPRESA
 				
 				/geral/colaborador/list.action*=ROLE_COLAB_LIST
 				/geral/colaborador/prepareDesliga.action*=ROLE_COLAB_LIST_DESLIGAR

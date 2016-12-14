@@ -5348,4 +5348,49 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return criteria.list();
 	}
+
+	public Collection<Colaborador> findAniversariantesPorTempoDeEmpresa(int mes, boolean agruparPorArea, Long[] empresaIds, Long[] estabelecimentoIds, Long[] areaIds) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Colaborador(c.id, c.nome, c.nomeComercial, c.matricula, emp.id, emp.nome, est.id, est.nome, ca.nome, fs.nome, ao.id, cast(monta_familia_area(ao.id), text) as col_10_0_,  ");
+		hql.append("c.dataAdmissao, extract(year from current_date()) - extract(year from c.dataAdmissao)) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("join hc.colaborador as c ");
+		hql.append("join c.empresa as emp ");
+		hql.append("join hc.estabelecimento as est ");
+		hql.append("join hc.areaOrganizacional as ao ");
+		hql.append("join hc.faixaSalarial as fs ");
+		hql.append("join fs.cargo as ca ");
+		hql.append("where c.empresa.id in(:empresasIds) ");
+		hql.append("and c.desligado = :desligado ");
+		hql.append("and extract(year from current_date()) - extract(year from c.dataAdmissao) > 0 ");
+		hql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 ");
+		hql.append("					where  hc2.colaborador.id = c.id ");
+		hql.append("						   and hc2.status = :status ");
+		hql.append("						   and hc2.data <= to_date( extract(day from c.dataAdmissao) || '-' || extract(month from c.dataAdmissao) || '-' || extract(year from current_date()), 'DD-MM-YYYY')) ");
+		if(mes != 0)
+			hql.append("and date_part('month', c.dataAdmissao) = :mes ");
+		
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			hql.append("and est.id in(:estabelecimentosIds) ");
+		if(areaIds != null && areaIds.length > 0)
+			hql.append("and ao.id in(:areasIds) ");
+		
+		if(agruparPorArea)
+			hql.append("order by emp.nome, col_10_0_, month(c.dataAdmissao), day(c.dataAdmissao), c.nome ");
+		else
+			hql.append("order by month(c.dataAdmissao), day(c.dataAdmissao), c.nome ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameterList("empresasIds",empresaIds);
+		query.setBoolean("desligado", false);
+		if(mes != 0)
+			query.setDouble("mes", new Integer(mes));
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			query.setParameterList("estabelecimentosIds",estabelecimentoIds);
+		if(areaIds != null && areaIds.length > 0)
+			query.setParameterList("areasIds",areaIds);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+	
+		return query.list();	
+	}		
 }

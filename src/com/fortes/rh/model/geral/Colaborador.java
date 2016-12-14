@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
@@ -1081,7 +1082,27 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.areaOrganizacional.setAreaMaeId(areaMaeId);
 		this.areaOrganizacional.setAreaMaeNome(areaMaeNome);
 	}
-
+	
+	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Long empresaId, String empresaNome, Long estabelecimentoId, String estabelecimentoNome, 
+			String cargoNome, String faixaNome, Long areaId, String areaNome, Date dataAdmissao, Integer tempoDeEmpresa)
+	{
+		this.setId(id);
+		this.setNome(nome);
+		this.setNomeComercial(nomeComercial);
+		this.setMatricula(matricula);
+		this.setEmpresaId(empresaId);
+		this.setEmpresaNome(empresaNome);
+		this.setEstabelecimentoIdProjection(estabelecimentoId);
+		this.setEstabelecimentoNomeProjection(estabelecimentoNome);
+		this.setFaixaSalarialNomeProjection(faixaNome);
+		this.faixaSalarial.setNomeCargo(cargoNome);
+		this.setAreaOrganizacionalId(areaId);
+		this.setAreaOrganizacionalNome(areaNome);
+		this.getAreaOrganizacional().setEmpresa(empresa);
+		this.setDataAdmissao(dataAdmissao);
+		this.setTempoServico(tempoDeEmpresa);
+	}	
+	
 	public Colaborador(String nome) {
 		this.nome = nome;
 	}
@@ -2407,6 +2428,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		
 		return tempoDeServico;
 	}
+	
+	@NaoAudita
+	public String getTempoDeServicoComAno()
+	{
+		return tempoServico > 1 ? tempoServico + " anos" : tempoServico + " ano" ;
+	}
 
 	public String toString()
 	{
@@ -2723,6 +2750,35 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public String getAdmitidoHa() 
 	{
 		return diasDeEmpresa + " dias";
+	}
+	
+	@NaoAudita
+	public String getDiaMesDataAdmissao()
+	{
+		String diaMes = "-";
+		if (this.dataAdmissao != null)
+		{
+			Integer tmp=0;
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(this.dataAdmissao);
+
+			tmp = calendar.get(Calendar.DAY_OF_MONTH);
+			diaMes = (tmp<10?"0"+tmp : tmp.toString()) + "/";
+			tmp = calendar.get(Calendar.MONTH)+1;
+			diaMes += (tmp<10?"0"+tmp : tmp.toString());
+		}
+		return diaMes;
+	}
+	
+	@NaoAudita
+	public String getMesAdmissaoPorExtenso(){
+		String mes = "-";
+		if (this.dataAdmissao != null){
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(this.dataAdmissao);
+			mes = DateUtil.getNomeMesCompleto(calendar.get(Calendar.MONTH)+1);
+		}
+		return mes;
 	}
 	
 	@NaoAudita

@@ -1108,4 +1108,52 @@ public class ColaboradorListActionTest
 		assertEquals(Action.INPUT ,action.declaracaoRendimentos());
 		assertEquals(action.getActionErrors().toArray()[1], "Houve um erro inesperado: null");
 	}
+	
+	@Test
+	public void testPrepareRelatorioAniversariantesPorTempoDeEmpresa()
+	{
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+
+		assertEquals("success",action.prepareRelatorioAniversariantesPorTempoDeEmpresa());
+	}
+	
+	@Test
+	public void testRelatorioAniversariantesPorTempoDeEmpresa() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresa(empresa);
+				
+		when(empresaManager.selecionaEmpresa(null, null, null)).thenReturn(new Long[]{});
+		when(colaboradorManager.findAniversariantesPorTempoDeEmpresa(0, true, null, null, null)).thenReturn(new ArrayList<Colaborador>());
+    	
+		assertEquals("success",action.relatorioAniversariantesPorTempoDeEmpresa());
+	}
+	
+	@Test
+	public void testRelatorioAniversariantesPorTempoDeEmpresaColecaoVazia() throws Exception
+	{
+		when(empresaManager.selecionaEmpresa(null, null, null)).thenReturn(new Long[]{});
+		when(colaboradorManager.findAniversariantesPorTempoDeEmpresa(0, true, null, new Long[]{}, new Long[]{})).thenThrow(new ColecaoVaziaException("Não existem dados"));
+		
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+    	when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+		
+		assertEquals("input",action.relatorioAniversariantesPorTempoDeEmpresa());
+	}
+	
+	@Test
+	public void testRelatorioAniversariantesPorTempoDeEmpresaException() throws Exception
+	{
+		when(empresaManager.selecionaEmpresa(null, null, null)).thenReturn(new Long[]{});
+		when(colaboradorManager.findAniversariantesPorTempoDeEmpresa(0, true, null, new Long[]{}, new Long[]{})).thenThrow(new Exception());
+		
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+    	when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+		
+		assertEquals("input",action.relatorioAniversariantesPorTempoDeEmpresa());
+	}
 }

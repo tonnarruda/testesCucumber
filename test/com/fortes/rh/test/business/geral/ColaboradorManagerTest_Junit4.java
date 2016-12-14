@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -21,6 +22,7 @@ import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManagerImpl;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -143,4 +145,27 @@ public class ColaboradorManagerTest_Junit4
 		when(colaboradorDao.getColaboradoresJson(baseCnpj, colaboradorId)).thenReturn(colaboradoresJson);
 		assertEquals(colaboradoresJson, colaboradorManager.getColaboradoresJson(baseCnpj, colaboradorId));
     }
+    
+    @Test(expected=ColecaoVaziaException.class)
+    public void testFindAniversariantesPorTempoDeEmpresaException() throws Exception {
+    	int mes = 2;
+    	Long[] empresaIds = new Long[]{1L};
+    	Long[] estabelecimentoIds = new Long[]{2L, 3L};
+    	Long[] areaIds = new Long[]{5L};
+    	
+		when(colaboradorDao.findAniversariantesPorTempoDeEmpresa(mes, true, empresaIds, estabelecimentoIds, areaIds)).thenReturn(new ArrayList<Colaborador>());
+		colaboradorManager.findAniversariantesPorTempoDeEmpresa(mes, true, empresaIds, estabelecimentoIds, areaIds);
+	}
+    
+    @Test
+    public void testFindAniversariantesPorTempoDeEmpresa() throws Exception {
+    	int mes = 2;
+    	Long[] empresaIds = new Long[]{1L};
+    	Long[] estabelecimentoIds = new Long[]{2L, 3L};
+    	Long[] areaIds = new Long[]{5L};
+    	
+		Collection<Colaborador> colaboradores = Arrays.asList(ColaboradorFactory.getEntity());
+		when(colaboradorDao.findAniversariantesPorTempoDeEmpresa(mes, false, empresaIds, estabelecimentoIds, areaIds)).thenReturn(colaboradores);
+		assertEquals(1, colaboradorManager.findAniversariantesPorTempoDeEmpresa(mes, false, empresaIds, estabelecimentoIds, areaIds).size());
+	}
 }

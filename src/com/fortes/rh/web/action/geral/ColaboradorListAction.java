@@ -208,6 +208,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	private String json;
 	private String baseCnpj;
 	private Long colaboradorId;
+	
+	private boolean agruparPorArea;
 
 	private enum Nomenclatura {
 		ENVIADO_FP("Enviado Fortes Pessoal"),
@@ -891,7 +893,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		}
 		return SUCCESS;
 	}
-
+	
 	public String prepareRelatorioAdmitidos()
 	{
 		prepareEmpresas("ROLE_REL_ADMITIDOS");
@@ -1022,7 +1024,86 @@ public class ColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
+	public String prepareRelatorioAniversariantesPorTempoDeEmpresa()
+	{
+		prepareEmpresas("ROLE_REL_ANIVERSARIANTES_POR_TEMPO_DE_EMPRESA");
+		Calendar hoje = Calendar.getInstance();
+		mes = hoje.get(Calendar.MONTH) + 1;
+		
+		return SUCCESS;
+	}
+
+	public String relatorioAniversariantesPorTempoDeEmpresa()
+	{
+		try{
+			populaRelatorioAniversariantesPorTempoDeEmpresa();
+			
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), null);
+			parametros.put("EXIBIR_NOME_COMERCIAL", exibirNomeComercial);
+			parametros.put("TODOS_OS_MESES", mes == 0 ? true : false);
+		}
+		catch (ColecaoVaziaException e){
+			addActionMessage(e.getMessage());
+			prepareRelatorioAniversariantesPorTempoDeEmpresa();
+			areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+			estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+			return Action.INPUT;
+		}
+		catch (Exception e){
+			addActionError("Erro ao gerar relatório. </br>" + e.getMessage() );
+			e.printStackTrace();
+			return Action.INPUT;
+		}
+		if(agruparPorArea)
+			return "successAgrupadoPorArea";
+		
+		return SUCCESS;
+	}
 	
+	public String relatorioAniversariantesPorTempoDeEmpresaXLS()
+	{
+		try{
+			populaRelatorioAniversariantesPorTempoDeEmpresa();
+		}
+		catch (ColecaoVaziaException e){
+			addActionMessage(e.getMessage());
+			prepareRelatorioAniversariantesPorTempoDeEmpresa();
+			areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+			estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+			return Action.INPUT;
+		}
+		catch (Exception e){
+			addActionError("Erro ao gerar relatório. </br>" + e.getMessage() );
+			e.printStackTrace();
+			return Action.INPUT;
+		}
+		if(agruparPorArea && !exibirNomeComercial && mes > 0)
+			return "successXLSAgrupadoPorAreaComNomeColaborador";
+		if(agruparPorArea && !exibirNomeComercial && mes == 0)
+			return "successXLSAgrupadoPorAreaComNomeColaboradorTodosOsMeses";
+		else if(agruparPorArea && exibirNomeComercial && mes > 0)
+			return "successXLSAgrupadoPorAreaComNomeComercial";
+		else if(agruparPorArea && exibirNomeComercial && mes == 0)
+			return "successXLSAgrupadoPorAreaComNomeComercialTodosOsMeses";
+		else if(!agruparPorArea && !exibirNomeComercial && mes > 0)
+			return "successXLSComNomeColaborador";
+		else if(!agruparPorArea && !exibirNomeComercial && mes == 0)
+			return "successXLSComNomeColaboradorTodosOsMeses";
+		else if (!agruparPorArea && !exibirNomeComercial && mes > 0)
+			return "successXLSComNomeComercial";
+		else
+			return "successXLSComNomeComercialTodosOsMeses";
+	}
+
+	private void populaRelatorioAniversariantesPorTempoDeEmpresa()
+			throws Exception {
+		colaboradors = colaboradorManager.findAniversariantesPorTempoDeEmpresa(mes, agruparPorArea, EmpresaUtil.empresasSelecionadas(empresa.getId(),empresasPermitidas), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck));
+		if (mes > 0) 
+			reportTitle="Aniversariantes por tempo de empresa do mês: " + meses.get(mes);
+		else 
+			reportTitle="Aniversariantes por tempo de empresa";
+	}
+
 	private void prepareCabecalhoRelatorioFerias()
 	{
 		reportTitle = "Relatório de Férias";
@@ -1769,5 +1850,13 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setColaboradorId(Long colaboradorId) {
 		this.colaboradorId = colaboradorId;
+	}
+
+	public boolean isAgruparPorArea() {
+		return agruparPorArea;
+	}
+
+	public void setAgruparPorArea(boolean agruparPorArea) {
+		this.agruparPorArea = agruparPorArea;
 	}
 }
