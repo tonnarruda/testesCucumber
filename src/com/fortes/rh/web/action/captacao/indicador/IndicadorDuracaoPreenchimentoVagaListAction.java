@@ -96,7 +96,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		solicitacaosCheck = CheckListBoxUtil.populaCheckListBox(solicitacoes, "getId", "getDescricaoFormatada");
+		solicitacaosCheck = CheckListBoxUtil.populaCheckListBox(solicitacoes, "getId", "getDescricaoFormatada", null);
 		
 		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);

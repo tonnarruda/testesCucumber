@@ -288,7 +288,27 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
 			areas = cu1.sortCollectionStringIgnoreCase(areas, "descricaoStatusAtivo");
 
-			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricaoStatusAtivo");
+			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricaoStatusAtivo", null);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return checks;
+	}
+	
+	public Collection<CheckBox> populaCheckComParameters(long empresaId)
+	{
+		Collection<CheckBox> checks = new ArrayList<CheckBox>();
+		try
+		{
+			Collection<AreaOrganizacional> areas = findByEmpresa(empresaId);
+			areas = montaFamilia(areas);
+			CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
+			areas = cu1.sortCollectionStringIgnoreCase(areas, "descricaoStatusAtivo");
+
+			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricaoComEmpresaStatusAtivo", new String[]{"getIdAreaMae"});
 		}
 		catch (Exception e)
 		{
@@ -308,7 +328,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
 			areas = cu1.sortCollectionStringIgnoreCase(areas, "descricaoStatusAtivo");
 			
-			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricaoStatusAtivo");
+			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricaoStatusAtivo", null);
 		}
 		catch (Exception e)
 		{
@@ -328,7 +348,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
 			areas = cu1.sortCollectionStringIgnoreCase(areas, "descricaoComEmpresaStatusAtivo");
 			
-			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricaoComEmpresaStatusAtivo");
+			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricaoComEmpresaStatusAtivo", null);
 		}
 		catch (Exception e)
 		{
@@ -791,6 +811,17 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return matriarca;
 	}
 
+	public Map<Long, AreaOrganizacional> findAllMapAreasIds(Long empresaId) {
+		Map<Long, AreaOrganizacional> mapAreasOrganizacionais = new HashMap<Long, AreaOrganizacional>();
+		Collection<AreaOrganizacional> areasOrganizacionais = getDao().findAllList(0, 0, null, null, null, null, empresaId);
+
+		for (AreaOrganizacional areaOrganizacional : areasOrganizacionais) 
+			mapAreasOrganizacionais.put(areaOrganizacional.getId(), areaOrganizacional);
+		
+		
+		return mapAreasOrganizacionais;
+	}
+	
 	@TesteAutomatico
 	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId) 
 	{
@@ -946,6 +977,29 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return StringUtil.converteCollectionToArrayString(emailsNotificacoes);
 	}
 	
+	public String[] getEmailsResponsaveis(Collection<AreaOrganizacional> areas, Long empresaId, int tipoResponsavel) throws Exception
+	{
+		Collection<String> emailsNotificacoes = new ArrayList<String>();
+		Collection<AreaOrganizacional> todasAsAreas = findAllListAndInativas(true, null, empresaId);
+		Collection<AreaOrganizacional> hierarquiaArea;
+		for (AreaOrganizacional area : areas) {
+			hierarquiaArea = getAncestrais(todasAsAreas, area.getId());
+		
+			for (AreaOrganizacional areaHieraquica : hierarquiaArea) 
+			{
+				if(tipoResponsavel == AreaOrganizacional.CORRESPONSAVEL){
+					if(areaHieraquica.getCoResponsavel() != null && areaHieraquica.getCoResponsavel().getContato() != null && areaHieraquica.getCoResponsavel().getContato().getEmail() != null && !areaHieraquica.getCoResponsavel().getContato().getEmail().equals(""))
+						emailsNotificacoes.add(areaHieraquica.getCoResponsavelEmail());
+				} else if(tipoResponsavel == AreaOrganizacional.RESPONSAVEL){
+					if(areaHieraquica.getResponsavel() != null && areaHieraquica.getResponsavel().getContato() != null && areaHieraquica.getResponsavel().getContato().getEmail() != null && !areaHieraquica.getResponsavel().getContato().getEmail().equals(""))
+						emailsNotificacoes.add(areaHieraquica.getResponsavelEmail());
+				}
+			}
+		}
+		
+		return StringUtil.converteCollectionToArrayString(emailsNotificacoes);
+	}
+	
 	// TODO: SEM TESTE
 	public void desvinculaResponsaveis(Long... colaboradoresIds)
 	{
@@ -1065,5 +1119,53 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	public String getEmailResponsavel(Long areaId) throws Exception {
 		AreaOrganizacional areaOrganizacional = getDao().findByIdProjection(areaId);
 		return areaOrganizacional.getResponsavelEmail();
+	}
+	
+	public Collection<AreaOrganizacional> findByLntIdComEmpresa(Long lntId, Long... empresaIdAreaOrganizacional){
+		
+		Collection<AreaOrganizacional> areas = findByLntId(lntId, empresaIdAreaOrganizacional);
+		
+		for (AreaOrganizacional area : areas) 
+			area.setNome(area.getEmpresa().getNome() + " - " + area.getNome());
+		
+		return new CollectionUtil<AreaOrganizacional>().sortCollectionStringIgnoreCase(areas, "nome");
+	}
+	
+	public Collection<AreaOrganizacional> findByLntId(Long lntId, Long... empresaIdAreaOrganizacional){
+		return getDao().findByLntId(lntId, empresaIdAreaOrganizacional);
+	}
+
+	public Map<Long, String> findMapResponsaveisIdsEmails(Long empresaId) {
+		Collection<AreaOrganizacional> areaOrganizacionals = getDao().findAllList(0, 0, null, null, null, null, empresaId);
+		Map<Long, String> mapResponsaveisIdsEmails = new HashMap<Long, String>();
+		
+		for (AreaOrganizacional area : areaOrganizacionals) {
+			if(area.getResponsavel() != null && area.getResponsavel().getId() != null && !mapResponsaveisIdsEmails.containsKey(area.getResponsavel().getId()) 
+					&& area.getResponsavel().getContato() != null && area.getResponsavel().getContato().getEmail() != null)
+				mapResponsaveisIdsEmails.put(area.getResponsavel().getId(), area.getResponsavel().getContato().getEmail());
+		}
+		
+		return mapResponsaveisIdsEmails;
+	}
+	
+	public Map<Long, String> findMapCoResponsaveisIdsEmails(Long empresaId) {
+		Collection<AreaOrganizacional> areaOrganizacionals = getDao().findAllList(0, 0, null, null, null, null, empresaId);
+		Map<Long, String> mapCoResponsaveisIdsEmails = new HashMap<Long, String>();
+		
+		for (AreaOrganizacional area : areaOrganizacionals) {
+			if(area.getCoResponsavel() != null && area.getCoResponsavel().getId() != null && !mapCoResponsaveisIdsEmails.containsKey(area.getCoResponsavel().getId()) 
+					&& area.getCoResponsavel().getContato() != null && area.getCoResponsavel().getContato().getEmail() != null)
+				mapCoResponsaveisIdsEmails.put(area.getCoResponsavel().getId(), area.getCoResponsavel().getContato().getEmail());
+		}
+		
+		return mapCoResponsaveisIdsEmails;
+	}
+	
+	public Collection<Long> getAncestraisIds (Long... areasIds){
+		return getDao().getAncestraisIds(areasIds);
+	}
+	
+	public Collection<Long> getDescendentesIds (Long... areasIds){
+		return getDao().getDescendentesIds(areasIds);
 	}
 }

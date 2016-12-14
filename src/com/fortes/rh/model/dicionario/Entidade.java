@@ -79,6 +79,7 @@ public class Entidade extends LinkedHashMap<String, String> {
 		put("configuracaoimpressaocurriculo", "configuração de impressão de currículo");
 		put("configuracaolimitecolaborador", "configuração de limite de colaborador por cargo");
 		put("configuracaonivelcompetencia", "configuração de nível de competência");
+		put("configuracaonivelcompetenciafaixasalarial", "competências da faixa salarial ");
 		put("configuracaonivelcompetenciacolaborador", "competência do colaborador");
 		put("configuracaoperformance", "configuração de performance");
 		put("configuracaorelatoriodinamico", "configuração de relatório dinâmico");
@@ -87,6 +88,7 @@ public class Entidade extends LinkedHashMap<String, String> {
 		put("conhecimento_areaorganizacional", "áreas organizacionais do conhecimento");
 		put("conhecimento_curso", "cursos sugeridos para o conhecimento");
 		put("curso", "curso");
+		put("cursolnt", "cursos da LNT");
 		put("curso_avaliacaocurso", "avaliações de aluno do curso");
 		put("curso_empresa", "empresas compartilhadas de um curso");
 		put("dependente", "dependente");
@@ -152,6 +154,7 @@ public class Entidade extends LinkedHashMap<String, String> {
 		put("idioma", "idioma");
 		put("indice", "índice");
 		put("indicehistorico", "histórico de índice");
+		put("lnt", "LNT");
 		put("medicaorisco", "medição de risco");
 		put("medicocoordenador", "médico coordenador");
 		put("medidariscofasepcmat", "medidas de segurança dos riscos da fase do PCMAT");
@@ -212,7 +215,6 @@ public class Entidade extends LinkedHashMap<String, String> {
 		put("usuarioempresa", "empresas do usuário");
 		put("usuariomensagem", "mensagens do usuário");
 		put("usuarionoticia", "notícias lidas pelo usuário");
-		put("configuracaonivelcompetenciafaixasalarial", "competências da faixa salarial ");
 	}
 	
 	public static String getDescricao(String tabela)

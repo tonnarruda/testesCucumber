@@ -246,7 +246,6 @@ public class BairroManagerTest extends MockObjectTestCaseManager<BairroManagerIm
 		assertEquals(0, manager.findByCidade(cidade).size());
 	}
 
-	@Override
 	public void testExecutaTesteAutomaticoDoManager() {
 		testeAutomatico(bairroDao);
 	}

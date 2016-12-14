@@ -28,9 +28,11 @@ import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
+import com.fortes.web.tags.CheckBox;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorDWR
@@ -167,6 +169,16 @@ public class ColaboradorDWR
             colaboradores = colaboradorManager.findAllSelect(empresaId, "nomeComercial");
 
         return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
+    }
+
+    public Collection<CheckBox> getColaboradoresByAreas(String[] areaOrganizacionalIds) throws Exception
+    {
+        Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+
+        if(areaOrganizacionalIds != null && areaOrganizacionalIds.length > 0)
+        	colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), null, SituacaoColaborador.ATIVO, null, false);        	
+        
+        return CheckListBoxUtil.populaCheckListBox(colaboradores, "getId", "getNomeMaisNomeComercial", new String[]{"getAreaOrganizacionalId"});
     }
     
     public Map<Long, String> getByAreaEstabelecimentoEmpresas(String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId, Long[] empresaIds, String situacao, boolean exibirNomeEmpresa)
@@ -415,6 +427,31 @@ public class ColaboradorDWR
 		
 		return new CollectionUtil<Ocorrencia>().convertCollectionToMap(ocorrencias,"getId","getDescricaoComEmpresa");
 	}
+    
+    public Collection<CheckBox> getByAreasIds(Long[] areasIds){
+    	Collection<CheckBox> checkBoxs = new ArrayList<CheckBox>();
+    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+    	
+    	if(areasIds != null && areasIds.length > 0)
+    		colaboradores = colaboradorManager.findByAreasIds(areasIds);
+    	
+    	CheckBox checkBox = null;
+    	for (Colaborador colaborador : colaboradores) {
+			checkBox = new CheckBox();
+			checkBox.setId(colaborador.getId());
+			checkBox.setNome(colaborador.getNomeMaisNomeComercial());
+			checkBox.setParameters(new HashMap<String, String>());
+			checkBox.getParameters().put("areaNome", colaborador.getAreaOrganizacional().getNome());
+			checkBox.getParameters().put("empresaNome", colaborador.getEmpresaNome());
+			checkBox.getParameters().put("estabelecimentoNome", colaborador.getEstabelecimentoNome());
+			checkBox.getParameters().put("areaorganizacionalid", colaborador.getAreaOrganizacionalId().toString());
+			checkBox.getParameters().put("matricula", colaborador.getMatricula());
+			
+			checkBoxs.add(checkBox);
+		}
+    	
+    	return checkBoxs;
+    }
     
     public boolean existeHistoricoAguardandoConfirmacaoNoFortesPessoal(Long colobaoradorId){
     	return (historicoColaboradorManager.findByColaboradorProjection(colobaoradorId, StatusRetornoAC.AGUARDANDO)).size() > 0;

@@ -69,7 +69,7 @@ public class FichaMedicaListAction extends MyActionSupportList
 		fichaMedicas = fichaMedicaManager.findToListByEmpresa(getEmpresaSistema().getId(), getPage(), getPagingSize());
 		
 		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_CAD_FICHAMEDICA");
-   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome", null);
 
 		return Action.SUCCESS;
 	}

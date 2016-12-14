@@ -25,7 +25,7 @@ public class AreaFormacaoManagerImpl extends GenericManagerImpl<AreaFormacao, Ar
 		try
 		{
 			Collection<AreaFormacao> areas = getDao().findAll();
-			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getNome");
+			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{

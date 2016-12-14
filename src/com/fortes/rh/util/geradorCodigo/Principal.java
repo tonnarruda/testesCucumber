@@ -6,10 +6,10 @@ import java.io.IOException;
 public class Principal
 {
 	//Refresh(F5) o projeto e Commit antes de rodar essa classe...
-	public static String NOME_CLASSE = "OrdemDeServico";
-	public static String NOME_CLASSE_MINUSCULO = "ordemDeServico";
-	public static String NOME_PACOTE = "sesmt";
-	public static boolean GERAR_TODOS_ARQUIVOS = true;//gera todos os arquivos ou somente entidade, manager e dao 
+	public static String NOME_CLASSE = "CursoLnt";
+	public static String NOME_CLASSE_MINUSCULO = "cursoLnt";
+	public static String NOME_PACOTE = "desenvolvimento";
+	public static boolean GERAR_TODOS_ARQUIVOS = false;//gera todos os arquivos ou somente entidade, manager e dao 
 	
 	private static final char separator = java.io.File.separatorChar;
 	
@@ -94,6 +94,9 @@ public class Principal
 			System.out.println("------------------------------------------------------------------------");
 			System.out.println("Edite a classe CoberturaGetSetTest.java:\n");
 			System.out.println("cobreGetSet(new " + NOME_CLASSE + "());");
+			System.out.println("------------------------------------------------------------------------");
+			System.out.println("Edite a classe Entidade.java:\n");
+			System.out.println("put(\""+NOME_CLASSE+"\", \""+NOME_CLASSE+"\");");
 		}
 		catch (IOException e)
 		{

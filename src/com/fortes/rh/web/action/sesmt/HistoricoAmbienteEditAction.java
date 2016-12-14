@@ -45,7 +45,7 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 			historicoAmbiente = historicoAmbienteManager.findById(historicoAmbiente.getId());
 		
 		ambiente = ambienteManager.findByIdProjection(ambiente.getId());
-		epcCheckList = CheckListBoxUtil.populaCheckListBox(epcManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getDescricao");
+		epcCheckList = CheckListBoxUtil.populaCheckListBox(epcManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getDescricao", null);
 	}
 
 	public String prepareInsert() throws Exception

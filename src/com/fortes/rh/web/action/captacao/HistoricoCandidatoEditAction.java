@@ -86,7 +86,7 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 		{
 			solicitacao = solicitacaoManager.getValor(solicitacao.getId());
 			Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoEtapasEmGrupo(solicitacao.getId(), null);
-			candidatosCheckList = CheckListBoxUtil.populaCheckListBox(candidatoSolicitacaos, "getId", "getCandidatoNome");
+			candidatosCheckList = CheckListBoxUtil.populaCheckListBox(candidatoSolicitacaos, "getId", "getCandidatoNome", null);
 		}
 
 		prepare();

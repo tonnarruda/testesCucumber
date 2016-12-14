@@ -234,16 +234,14 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 		
 		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', cursoId);
-		documentoAnexoCheckList = CheckListBoxUtil.populaCheckListBox(documentoAnexos, "getId", "getDescricao");
-		
-		
+		documentoAnexoCheckList = CheckListBoxUtil.populaCheckListBox(documentoAnexos, "getId", "getDescricao", null);
 	}
 
 	public String prepareInsert() throws Exception
 	{
 		prepare();
 		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(true, getEmpresaSistema().getId());
-		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo");
+		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo", null);
 		
 		if (filtroPlanoTreinamento != null && filtroPlanoTreinamento.getCursoId() != null)
 			turma.setCursoId(filtroPlanoTreinamento.getCursoId());
@@ -298,7 +296,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 				avaliacaoTurmasComIntaivasDaTurma.add(avaliacaoTurma);
 		}
 		
-		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmasComIntaivasDaTurma, "getId", "getQuestionarioTituloMaisStatus");
+		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmasComIntaivasDaTurma, "getId", "getQuestionarioTituloMaisStatus", null);
 		avaliacaoTurmasCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacaoTurmasCheckList, avaliacaoTurmasMarcadas, "getId");
 	}
 
@@ -310,7 +308,23 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 		return Action.SUCCESS;
 	}
+	
+	public String teste() {
+		return Action.SUCCESS;
+	}
 
+	public String insertByLnt() throws Exception
+	{
+		turma.setEmpresa(getEmpresaSistema());
+		
+		turma = turmaManager.setAssinaturaDigital(false, turma, assinaturaDigital, "assinaturas");
+		
+		turmaManager.inserir(turma, diasCheck, custos, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), LongUtil.arrayStringToArrayLong(documentoAnexoCheck), 
+				horariosIni, horariosFim, turmaAvaliacaoTurmaManager, turmaDocumentoAnexoManager);
+		
+		return Action.SUCCESS;
+	}
+	
 	public String insert() throws Exception
 	{
 		turma.setEmpresa(getEmpresaSistema());
@@ -440,7 +454,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		if(colaboradores.isEmpty())
 			addActionMessage("Não existem Colaboradores aprovados.");
 		else
-			colaboradoresCheckList = CheckListBoxUtil.populaCheckListBox(colaboradores, "getId", "getNome");
+			colaboradoresCheckList = CheckListBoxUtil.populaCheckListBox(colaboradores, "getId", "getNome", null);
 
 		cursos = cursoManager.findAllSelect(getEmpresaSistema().getId());
 		certificacaos = certificacaoManager.findAllSelect(getEmpresaSistema().getId());

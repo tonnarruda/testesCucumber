@@ -35,7 +35,7 @@ public class PerfilListAction extends MyActionSupportList {
 		perfils = perfilManager.findAll(getPage(),getPagingSize());
 		
 		Collection<Perfil> todosPerfis = perfilManager.findAll(null, null);
-		perfisCheckList = populaCheckListBox(todosPerfis, "getId", "getNome");
+		perfisCheckList = populaCheckListBox(todosPerfis, "getId", "getNome", null);
 
 		return Action.SUCCESS;
 	}

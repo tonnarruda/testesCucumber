@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="lnt" extends="default" namespace="/desenvolvimento/lnt">
+		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/lntList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="delete">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="redirect">list.action</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/lntEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/lntEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="insert">
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/lntEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="update">
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/lntEdit.ftl</result>
+		</action>
+		<action name="saveTurma" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="saveTurma">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/gerarCursosETurmas.ftl</result>
+			<result name="succesContinuarAdd" type="redirect"><![CDATA[/desenvolvimento/lnt/gerarCursosETurmas.action?lnt.id=${lnt.id}&cursoId=${cursoId}&cursoLntId=${cursoLntId}&turmaIdAnterior=${turmaIdAnterior}&continuarAdd=${continuarAdd}&msg=${msg}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/gerarCursosETurmas.ftl</result>
+		</action>
+		<action name="updateFilter" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
+		<action name="prepareParticipantes" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="prepareParticipantes">
+			<interceptor-ref name="defaultListStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/participantesCursoLnt.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/participantesCursoLnt.ftl</result>
+		</action>
+		<action name="saveParticipantesCursoLnt" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="saveParticipantes">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/participantesCursoLnt.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/participantesCursoLnt.ftl</result>
+		</action>
+		<action name="finalizar" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="finalizar">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/lntList.ftl</result>
+		</action>
+		<action name="reabrir" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="reabrir">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/lntList.ftl</result>
+		</action>
+		<action name="gerarCursosETurmas" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="gerarCursosETurmas">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/gerarCursosETurmas.ftl</result>
+		</action>
+		<action name="relatorioParticipantes" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="relatorioParticipantes">
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/lntList.ftl</result>
+			<result name="agrupadoPorArea" type="jasper">
+				<param name="location">WEB-INF/report/participantesLntAgrupadoPorArea.jasper</param>
+				<param name="dataSource">participantesCursosLnt</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">participantesLntAgrupadosPorArea.pdf</param>
+			</result>
+			<result name="agrupadoPorCursoLnt" type="jasper">
+				<param name="location">WEB-INF/report/participantesLntAgrupadoPorCursoLnt.jasper</param>
+				<param name="dataSource">participantesCursosLnt</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">participantesLntAgrupadosPorCursoLnt.pdf</param>
+			</result>
+		</action>
+		<action name="relatorioParticipantesByUsuarioMsg" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="relatorioParticipantesByUsuarioMsg">
+			<result name="input" type="redirect">../../index.action?actionMsg=${actionMsg}</result>
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/participantesLntAgrupadoPorArea.jasper</param>
+				<param name="dataSource">participantesCursosLnt</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">participantesLntAgrupadosPorArea.pdf</param>
+			</result>
+		</action>
+		<action name="visualizarParticipantesCursoLnt" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="visualizarParticipantesCursoLnt">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/visualizarParticipantesCursoLnt.ftl</result>
+		</action>
+	</package>
+</xwork>

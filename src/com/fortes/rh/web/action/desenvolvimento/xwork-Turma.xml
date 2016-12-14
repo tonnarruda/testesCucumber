@@ -241,6 +241,14 @@
 		</action>
 		<action name="showAssinatura" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="showAssinatura" />
 		
+		<action name="insertByLnt" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="insertByLnt">
+			<result name="success" type="redirect"><![CDATA[../colaboradorTurma/prepareInsert.action?turma.id=${turma.id}&turma.curso.id=${curso.id}&planoTreinamento=${planoTreinamento}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/turmaEdit.ftl</result>
+		</action>
+		<action name="teste" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="teste">
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="redirect">list.action</result>
+		</action>
 		<action name="prepareImprimirCursosVencidosAVencer" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="prepareImprimirCursosVencidosAVencer">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioCursosVencidosAVencer.ftl</result>
 		</action>

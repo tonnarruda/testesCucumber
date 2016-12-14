@@ -51,7 +51,7 @@ public class HistoricoExtintorEditAction extends MyActionSupportList
 	public String prepareInsertTroca() throws Exception
 	{
 		Collection<Extintor> extintors = extintorManager.findAllComHistAtual(null, null, getEmpresaSistema().getId());
-		extintorsCheckList = CheckListBoxUtil.populaCheckListBox(extintors, "getId", "getDescricaoMaisLocalizacao");
+		extintorsCheckList = CheckListBoxUtil.populaCheckListBox(extintors, "getId", "getDescricaoMaisLocalizacao", null);
 
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		localizacoes = extintorManager.getLocalizacoes(getEmpresaSistema().getId());

@@ -13,7 +13,7 @@ public class MockCheckListBoxUtil
 		return checkListBox;
 	}
 
-	public static Collection<CheckBox> populaCheckListBox(Collection list, String methodKey, String methodValue)
+	public static Collection<CheckBox> populaCheckListBox(Collection list, String methodKey, String methodValue, String[] parameters)
 	{
 		Collection<CheckBox> checkListBox = new ArrayList<CheckBox>();
 		return checkListBox;

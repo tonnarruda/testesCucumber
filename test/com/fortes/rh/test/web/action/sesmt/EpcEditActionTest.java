@@ -31,7 +31,7 @@ public class EpcEditActionTest extends MockObjectTestCase
 
 		try
 		{
-			ambientesCheckList = CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNome");
+			ambientesCheckList = CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{

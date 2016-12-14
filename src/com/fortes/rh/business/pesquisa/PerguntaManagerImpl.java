@@ -445,7 +445,7 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 		try
 		{
 			Collection<Pergunta> perguntas = getDao().findByQuestionario(questionarioId);
-			checks = CheckListBoxUtil.populaCheckListBox(perguntas, "getId", "getOrdemMaisTexto");
+			checks = CheckListBoxUtil.populaCheckListBox(perguntas, "getId", "getOrdemMaisTexto", null);
 		}
 		catch (Exception e)
 		{

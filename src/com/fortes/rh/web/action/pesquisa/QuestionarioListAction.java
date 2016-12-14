@@ -321,7 +321,7 @@ public class QuestionarioListAction extends MyActionSupportList
 
 		if(questionario.verificaTipo(TipoQuestionario.PESQUISA) || questionario.verificaTipo(TipoQuestionario.AVALIACAOTURMA)) {
 			Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
-			empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+			empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome", null);
 			empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);
 			empresaIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas);
 		}
@@ -335,7 +335,7 @@ public class QuestionarioListAction extends MyActionSupportList
 		perguntasCheckList = CheckListBoxUtil.marcaCheckListBox(perguntasCheckList, perguntasCheck);
 
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(empresaIds);
-		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getDescricaoComEmpresa");
+		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getDescricaoComEmpresa", null);
 		
 		urlVoltar = TipoQuestionario.getUrlVoltarList(questionario.getTipo(), cursoId);
 

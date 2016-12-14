@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
+import org.junit.Test;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -53,6 +55,7 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		return AmbienteFactory.getEntity();
 	}
 
+	@Test
 	public void testGetCount()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

@@ -203,7 +203,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 
     	solicitacaos = solicitacaoManager.findSolicitacaoList(empresa.getId(), false, StatusAprovacaoSolicitacao.APROVADO, false);
 
-    	solicitacaosCheck = CheckListBoxUtil.populaCheckListBox(solicitacaos, "getId", "getDescricaoFormatada");
+    	solicitacaosCheck = CheckListBoxUtil.populaCheckListBox(solicitacaos, "getId", "getDescricaoFormatada", null);
     	return Action.SUCCESS;
     }
 

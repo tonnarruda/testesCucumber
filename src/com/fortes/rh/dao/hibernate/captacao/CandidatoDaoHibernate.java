@@ -1437,7 +1437,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			String[] sql = new String[] {"delete from candidato_cargo where cargos_id in ("+StringUtils.join(cargosIds, ",")+");"};
 			JDBCConnection.executeQuery(sql);
 		}
-
 	}
 
 	public void inserirNonoDigitoCelular(Long[] ufIds) 

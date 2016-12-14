@@ -294,7 +294,6 @@ function validaCamposObrigatorios(campos, formulario)
 			nameCampo = 'listCheckBox' + nameCampoSemIdentificador;
 		}
 
-		console.log(nameCampo);
 		campo = document.getElementById(nameCampo);
 		campoClass = campo.className;
 

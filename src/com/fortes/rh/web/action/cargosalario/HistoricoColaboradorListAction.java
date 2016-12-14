@@ -177,7 +177,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	{
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), getUsuarioLogado().getId(), "ROLE_INFO_PAINEL_IND");
-   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome", null);
 		empresaIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas);
 		
 		vinculosCheckList = CheckListBoxUtil.populaCheckListBox(new Vinculo());
@@ -231,7 +231,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		}
 		
 		Collection<Ocorrencia> ocorrencias  = colaboradorManager.getOcorrenciasByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItensOcorrencia);
-		ocorrenciasCheckList = CheckListBoxUtil.populaCheckListBox(ocorrencias, "getId", "getDescricaoComEmpresa");
+		ocorrenciasCheckList = CheckListBoxUtil.populaCheckListBox(ocorrencias, "getId", "getDescricaoComEmpresa", null);
 		ocorrenciasCheckList = CheckListBoxUtil.marcaCheckListBox(ocorrenciasCheckList, ocorrenciasCheck);
 		
 		empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);

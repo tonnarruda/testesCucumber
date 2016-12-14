@@ -53,7 +53,7 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 		try
 		{
 			Collection<PeriodoExperiencia> periodos = getDao().findAllSelect(empresaId, false, true);
-			return CheckListBoxUtil.populaCheckListBox(periodos, "getId", "getDiasDescricao");
+			return CheckListBoxUtil.populaCheckListBox(periodos, "getId", "getDiasDescricao", null);
 		}
 		catch (Exception e)
 		{

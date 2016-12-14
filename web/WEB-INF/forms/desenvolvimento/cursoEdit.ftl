@@ -55,6 +55,10 @@
 		<#else>
 			<@ww.hidden name="curso.codigoTru" />
 		</#if>
+		
+		<#if cursoLntId?exists>
+			<@ww.hidden name="cursoLntId" value="${cursoLntId}" />
+		</#if>
 	
 		<@ww.textfield label="Carga Horária" name="curso.cargaHorariaMinutos" cssStyle="width:55px;text-align:right" maxLength="7" cssClass="hora"/>
 		
@@ -98,8 +102,11 @@
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}">
 		</button>
-		<button onclick="window.location='list.action?page=${page}${linkFiltro}'" class="btnCancelar" accesskey="V">
-		</button>
+		<#if lntId?exists>
+			<button onclick="window.location='../lnt/gerarCursosETurmas.action?lnt.id=${lntId}'" class="btnCancelar" accesskey="V"></button>
+		<#else>
+			<button onclick="window.location='list.action?page=${page}${linkFiltro}'" class="btnCancelar" accesskey="V"></button>
+		</#if>
 	</div>
 </body>
 </html>

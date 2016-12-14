@@ -23,6 +23,7 @@ import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.MathUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -342,7 +343,7 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	{
 		return realizada;
 	}
-	
+	@NaoAudita
 	public String getRealizadaFormatada()
 	{
 		if(realizada)
@@ -356,6 +357,7 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 		this.realizada = realizada;
 	}
 
+	@NaoAudita
 	public String getPeriodoFormatado()
 	{
 		String periodo = "";
@@ -366,7 +368,7 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 
 		return periodo;
 	}
-	
+	@NaoAudita
 	public String getVencimentoFormatado(){
 		String vencimento = "";
 		if (this.vencimento != null)
@@ -397,6 +399,7 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 		return nome;
 	}
 
+	@NaoAudita
 	public String getCustoFormatado()
 	{
 		String custoFmt = "";

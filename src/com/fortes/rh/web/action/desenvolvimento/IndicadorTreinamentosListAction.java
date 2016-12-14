@@ -86,7 +86,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		prepareDatas();
 		
 		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_TED_PAINEL_IND");
-   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome", null);
    		empresasCheckList =  CheckListBoxUtil.marcaCheckListBox(empresasCheckList, StringUtil.LongToString(empresasCheck));
    		
    		if (ArrayUtils.isEmpty(empresasCheck)) 
@@ -99,7 +99,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
    		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, StringUtil.LongToString(areasCheck));
    		
    		Collection<Curso> cursos = cursoManager.findAllByEmpresasParticipantes(empresasCheck);
-		cursosCheckList =  CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
+		cursosCheckList =  CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome", null);
 		cursosCheckList =  CheckListBoxUtil.marcaCheckListBox(cursosCheckList, StringUtil.LongToString(cursosCheck));
 		
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(empresasCheck);

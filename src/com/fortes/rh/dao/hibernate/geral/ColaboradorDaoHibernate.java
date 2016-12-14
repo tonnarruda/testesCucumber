@@ -1309,7 +1309,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao, Long notUsuarioId, boolean consideraSoIntegradosComAC)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.nome, co.nomeComercial, co.id, e.id, e.nome) ");
+		hql.append("select new Colaborador(co.nome, co.nomeComercial, co.id, e.id, e.nome, ao.id) ");
 		hql.append("from HistoricoColaborador as hc1 ");
 		hql.append("right join hc1.areaOrganizacional as ao ");
 		hql.append("right join hc1.estabelecimento as es ");
@@ -4884,6 +4884,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"UPDATE Candidato SET disponivel = true, contratado = false WHERE id IN (SELECT candidato.id FROM Colaborador WHERE id = :id)",
 				"UPDATE CandidatoSolicitacao SET status = '" + StatusCandidatoSolicitacao.INDIFERENTE + "' WHERE candidato.id IN (SELECT candidato.id from Colaborador WHERE id = :id)",
 				
+				"DELETE FROM ParticipanteCursoLnt WHERE colaborador.id = :id",
+				
 				"UPDATE AreaOrganizacional SET responsavel.id = NULL WHERE responsavel.id = :id",
 				"UPDATE AreaOrganizacional SET coResponsavel.id = NULL WHERE coResponsavel.id = :id",
 				"DELETE FROM CandidatoEleicao WHERE candidato.id = :id",
@@ -5316,5 +5318,34 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setLong("colaboradorId", colaboradorId);
 
 		return query.list();
+	}
+	
+	public Collection<Colaborador> findByAreasIds(Long... areasIds)
+	{
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.empresa", "e");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("hc.areaOrganizacional", "ao");
+		criteria.createCriteria("hc.estabelecimento", "es");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("c.matricula"), "matricula");
+		p.add(Projections.property("e.nome"), "empresaNome");
+		p.add(Projections.property("es.nome"), "estabelecimentoNomeProjection");
+		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
+		p.add(Projections.alias(Projections.sqlProjection("monta_familia_area(ao3_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome"));
+		
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.add(Subqueries.propertyEq("hc.data", montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO)));
+		criteria.add(Expression.in("ao.id", areasIds));
+		criteria.add(Expression.eq("c.desligado", false));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return criteria.list();
 	}
 }

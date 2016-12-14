@@ -46,6 +46,9 @@
 		<create creator="spring" javascript="TurmaDWR">
 			<param name="beanName" value="turmaDWR"/>
 		</create>
+		<create creator="spring" javascript="ParticipanteCursoLntDWR">
+			<param name="beanName" value="participanteCursoLntDWR"/>
+		</create>
 		<create creator="spring" javascript="CursoDWR">
 			<param name="beanName" value="cursoDWR"/>
 		</create>
@@ -169,6 +172,9 @@
 		<create creator="spring" javascript="OrdemDeServicoDWR">
 			<param name="beanName" value="ordemDeServicoDWR"/>
 		</create>
+		<create creator="spring" javascript="LntDWR">
+			<param name="beanName" value="lntDWR"/>
+		</create>
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
 		
@@ -185,7 +191,7 @@
 		<!-- GERAL -->
 		<convert converter="bean" match="com.fortes.rh.model.geral.Pessoa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.Colaborador">
-			<param name="include" value="id, nome, nomeComercial"/>
+			<param name="include" value="id, nome, nomeComercial, iscritoNaTurma"/>
 		</convert>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TipoDespesa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TurmaTipoDespesa"/>
@@ -217,7 +223,7 @@
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.Turma"/>
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.DiaTurma"/>
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.Curso">
-			<param name="include" value="id, nome"/>
+			<param name="include" value="id, nome, cargaHoraria, conteudoProgramatico"/>
 		</convert>
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.AvaliacaoCurso"/>
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao">
@@ -237,6 +243,10 @@
 		<convert converter="bean" match="com.fortes.rh.model.sesmt.OrdemDeServico">
 			<param name="exclude" value="colaborador"/>
 		</convert>
+		
+		<!-- T&D -->
+		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.Lnt">
+			<param name="include" value="id, descricao, selected"/>
+		</convert>
     </allow>
-
 </dwr>

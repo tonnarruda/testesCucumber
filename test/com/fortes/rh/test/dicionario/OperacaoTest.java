@@ -2,20 +2,27 @@ package com.fortes.rh.test.dicionario;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
-import com.opensymphony.xwork.interceptor.annotations.After;
 
 public class OperacaoTest
 {
-	private static int qtdDeOperacoesTestadas = 0;   // Utilizado para contar quantas operações estão sendo testadas
+	private static int qtdDeOperacoesTestadas;   // Utilizado para contar quantas operações estão sendo testadas
+	
+	@BeforeClass
+	public static void setUp() throws Exception
+    {
+		qtdDeOperacoesTestadas = 0;
+    }
 	
 	@Test
 	public void testQtdOperacoes()
 	{
-		assertEquals(40, Operacao.values().length);
+		assertEquals(43, Operacao.values().length);
 	}
 
 	@Test
@@ -70,6 +77,9 @@ public class OperacaoTest
 		assertEquals("Colaborador completar ano de empresa", Operacao.getDescricaoById(++i));
 		assertEquals("Existir colaborador aguardando autorização para participar de uma solicitação de pessoal", Operacao.getDescricaoById(++i));
 		assertEquals("Alterar status de autorização do colaborador para participar de uma solicitação de pessoal", Operacao.getDescricaoById(++i));
+		assertEquals("Iniciar o período da LNT", Operacao.getDescricaoById(++i));
+		assertEquals("Encerrar o período da LNT", Operacao.getDescricaoById(++i));
+		assertEquals("Finalizar LNT", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -128,6 +138,9 @@ public class OperacaoTest
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 38
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 39
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 40
+		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 41
+		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 42
+		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 43
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -176,7 +189,9 @@ public class OperacaoTest
 		assertEquals(++i, Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId());			    // 38
 		assertEquals(++i, Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_INCLUIR_COLAB.getId());	// 39
 		assertEquals(++i, Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_ALTERAR_STATUS_COLAB.getId());// 40
-		
+		assertEquals(++i, Operacao.INICIAR_PERIODO_LNT.getId());							// 41
+		assertEquals(++i, Operacao.ENCERRAR_PERIODO_LNT.getId());							// 42
+		assertEquals(++i, Operacao.FINALIZAR_LNT.getId());									// 43
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
 
@@ -670,8 +685,47 @@ public class OperacaoTest
 		assertEquals(5,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 	
-	@After
-	public void testQtdDeOperacoesTestadas() 
+	@Test
+	public void testIniciarPeriodoLnt(){
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.INICIAR_PERIODO_LNT;
+		
+		assertEquals(3, operacao.meioComunicação().size());
+		
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
+		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(4,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+	}
+	
+	@Test
+	public void testEncerrarPeriodoLnt(){
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.ENCERRAR_PERIODO_LNT;
+		
+		assertEquals(3, operacao.meioComunicação().size());
+		
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
+		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(4,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+	}
+	
+	@Test
+	public void testFinalizarLnt(){
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.FINALIZAR_LNT;
+		
+		assertEquals(3, operacao.meioComunicação().size());
+		
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
+		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(4,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+	}
+	
+	@AfterClass
+	public static void testQtdDeOperacoesTestadas() 
 	{
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, qtdDeOperacoesTestadas);		
 	}

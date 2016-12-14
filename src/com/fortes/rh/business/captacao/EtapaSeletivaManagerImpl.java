@@ -142,7 +142,7 @@ public class EtapaSeletivaManagerImpl extends GenericManagerImpl<EtapaSeletiva, 
 		try
 		{
 			Collection<EtapaSeletiva> etapaSeletiva = getDao().findAllSelect(0, 0, empresaId);
-			checks = CheckListBoxUtil.populaCheckListBox(etapaSeletiva, "getId", "getNome");
+			checks = CheckListBoxUtil.populaCheckListBox(etapaSeletiva, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{

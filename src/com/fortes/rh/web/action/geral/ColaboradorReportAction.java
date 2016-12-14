@@ -84,7 +84,7 @@ public class ColaboradorReportAction extends MyActionSupport
         tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(getEmpresaSistema().getId(), TipoReajuste.COLABORADOR);
 
 		grupoOcupacionals = grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId());
-		gruposCheckList = CheckListBoxUtil.populaCheckListBox(grupoOcupacionals, "getId", "getNome");
+		gruposCheckList = CheckListBoxUtil.populaCheckListBox(grupoOcupacionals, "getId", "getNome", null);
 
 		cargosCheckList = cargoManager.populaCheckBox(false, getEmpresaSistema().getId());
 

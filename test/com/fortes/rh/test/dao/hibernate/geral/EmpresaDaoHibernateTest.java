@@ -1,7 +1,9 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.config.JDBCConnection;
@@ -9,6 +11,7 @@ import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
+import com.fortes.rh.dao.desenvolvimento.LntDao;
 import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -20,6 +23,7 @@ import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -31,11 +35,13 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.desenvolvimento.LntFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.GrupoACFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 {
@@ -50,6 +56,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 	private PerfilDao perfilDao;
 	private PapelDao papelDao;
 	private GrupoACDao grupoACDao;
+	private LntDao lntDao;
 
 	public Empresa getEntity()
 	{
@@ -457,6 +464,47 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		
 		assertTrue(empresaDao.emProcessoExportacaoAC(empresa.getId()));
 	}
+	
+	public void testFindAreasIdsByLntId() 
+	{
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Collection<Empresa> empresas = Arrays.asList(empresa1, empresa2);
+		
+		Lnt lnt = LntFactory.getEntity(null, "LNT 1", new Date(), DateUtil.incrementaDias(new Date(), 1), null);
+		lnt.setEmpresas(empresas);
+		lntDao.save(lnt);
+		
+		Collection<Empresa> retorno = empresaDao.findByLntId(lnt.getId());
+		
+		assertEquals(lnt.getEmpresas().size(), retorno.size());
+	}
+	
+	public void testFindAreasIdsByLntIdRetornaCollectionVazia() 
+	{
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Collection<Empresa> empresas = Arrays.asList(empresa1, empresa2);
+		
+		Lnt lnt = LntFactory.getEntity(null, "LNT 1", new Date(), DateUtil.incrementaDias(new Date(), 1), null);
+		lnt.setEmpresas(empresas);
+		lntDao.save(lnt);
+		
+		Lnt lnt2 = LntFactory.getEntity(null, "LNT 2", new Date(), DateUtil.incrementaDias(new Date(), 1), null);
+		lntDao.save(lnt2);
+		
+		Collection<Empresa> retorno = empresaDao.findByLntId(lnt2.getId());
+		
+		assertEquals(0, retorno.size());
+	}
 
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{
@@ -502,5 +550,9 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 
 	public void setGrupoACDao(GrupoACDao grupoACDao) {
 		this.grupoACDao = grupoACDao;
+	}
+
+	public void setLntDao(LntDao lntDao) {
+		this.lntDao = lntDao;
 	}
 }

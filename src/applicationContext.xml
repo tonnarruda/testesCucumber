@@ -285,6 +285,21 @@
     <property name="targetObject" ref="enviarNotificacaoCursosOuCertificacoesAVencerJob"/>
     <property name="targetMethod" value="enviarNotificacaoCursosOuCertificacoesAVencer"/>
   </bean>
+  
+  <bean name="enviaAvisoLntAutomaticoJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
+    <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
+	<property name="areaOrganizacionalManager" ref="areaOrganizacionalManager" />
+	<property name="usuarioMensagemManager" ref="usuarioMensagemManager" />
+    <property name="usuarioEmpresaManager" ref="usuarioEmpresaManager" />
+	<property name="colaboradorManager" ref="colaboradorManager" />
+	<property name="lntManager" ref="lntManager" /> 
+	<property name="mail" ref="mail" />
+  </bean>
+  <bean name="enviaAvisoLntAutomatico" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Notifica início do período da LNT"/>
+    <property name="targetObject" ref="enviaAvisoLntAutomaticoJob"/>
+    <property name="targetMethod" value="enviaAvisoLntAutomatico"/>
+  </bean>
 
   <bean id="cronTriggerBackup" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="backupJob" />
@@ -362,6 +377,11 @@
     <property name="cronExpression" value="0 20 7 * * ?" /> <!-- Todo os dias as 07:20h am -->
   </bean>
   
+  <bean id="cronTriggerenviaAvisoLntAutomatico" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="enviaAvisoLntAutomatico" />
+    <property name="cronExpression" value="0 15 6 * * ?" /> <!-- Todo os dias as 06:15h am -->
+  </bean>
+  
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">
       <list>
@@ -383,6 +403,7 @@
 		<ref bean="cronTriggerlembreteHabilitacaoAVencer" />
 		<ref bean="cronTriggerImportarUltimasNoticias" />
 		<ref bean="cronTriggerenviarNotificacaoCursosOuCertificacoesAVencer" />
+		<ref bean="cronTriggerenviaAvisoLntAutomatico" />
       </list>
     </property>
   </bean>

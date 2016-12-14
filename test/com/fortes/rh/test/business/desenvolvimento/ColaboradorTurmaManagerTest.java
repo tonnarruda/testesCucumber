@@ -19,7 +19,6 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
-import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
@@ -73,7 +72,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	private Mock colaboradorCertificacaoManager;
 	private Mock colaboradorPresencaManager;
 	private Mock areaOrganizacionalManager;
-	private Mock avaliacaoCursoManager;
 	private Mock certificacaoManager;
 	private Mock colaboradorTurmaDao;
 	private Mock colaboradorManager;
@@ -91,9 +89,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		colaboradorTurmaManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
-
-		avaliacaoCursoManager = new Mock(AvaliacaoCursoManager.class);
-		colaboradorTurmaManager.setAvaliacaoCursoManager((AvaliacaoCursoManager) avaliacaoCursoManager.proxy());
 
 		aproveitamentoAvaliacaoCursoManager = new Mock(AproveitamentoAvaliacaoCursoManager.class);
 		colaboradorTurmaManager.setAproveitamentoAvaliacaoCursoManager((AproveitamentoAvaliacaoCursoManager) aproveitamentoAvaliacaoCursoManager.proxy());

@@ -88,7 +88,7 @@ public class AspectoManagerImpl extends GenericManagerImpl<Aspecto, AspectoDao> 
 		try
 		{
 			Collection<Aspecto> aspectos = getDao().findByQuestionario(questionarioId);
-			checks = CheckListBoxUtil.populaCheckListBox(aspectos, "getId", "getNome");
+			checks = CheckListBoxUtil.populaCheckListBox(aspectos, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{

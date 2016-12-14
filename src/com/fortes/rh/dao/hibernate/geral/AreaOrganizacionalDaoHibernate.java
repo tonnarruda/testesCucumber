@@ -1,6 +1,3 @@
-/* Autor: Bruno Bachiega
- * Data: 7/06/2006
- * Requisito: RFA004*/
 package com.fortes.rh.dao.hibernate.geral;
 
 import java.math.BigInteger;
@@ -18,10 +15,12 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
+import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.LongUtil;
@@ -613,5 +612,55 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
 		return criteria.list().size() > 0;
+	}
+	
+	public Collection<AreaOrganizacional> findByLntId(Long lntId, Long... empresaIdAreaOrganizacional) 
+	{
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.areaMae.id"), "areaMaeId");
+		p.add(Projections.property("e.id"), "empresaId");
+		p.add(Projections.property("e.nome"), "empresaNome");
+		p.add(Projections.sqlProjection("monta_familia_area(a1_.id) as nome", new String[] {"nome"}, new Type[] {Hibernate.TEXT}), "nome");
+
+		Criteria criteria = getSession().createCriteria(Lnt.class, "lnt");
+		criteria.createCriteria("lnt.areasOrganizacionais", "a");
+		criteria.createCriteria("a.empresa", "e");
+		criteria.add(Expression.eq("lnt.id", lntId));
+		
+		if(empresaIdAreaOrganizacional != null && empresaIdAreaOrganizacional.length > 0)
+			criteria.add(Expression.in("e.id", empresaIdAreaOrganizacional));
+
+		criteria.setProjection(p);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+		
+		return criteria.list();
+	}
+	
+	public Collection<Long> getAncestraisIds (Long... areasIds){
+		
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.sqlProjection("ancestrais_areas_ids(this_.id) as id", new String[] {"id"}, new Type[] {Hibernate.LONG}), "id");
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.add(Expression.in("ao.id", areasIds));
+
+		return criteria.list();
+	}
+	
+	public Collection<Long> getDescendentesIds (Long... areasIds){
+		
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.sqlProjection("descendentes_areas_ids(this_.id) as id", new String[] {"id"}, new Type[] {Hibernate.LONG}), "id");
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.add(Expression.in("ao.id", areasIds));
+
+		return criteria.list();
 	}
 }

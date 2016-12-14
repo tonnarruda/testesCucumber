@@ -45,7 +45,7 @@ public class RiscoFasePcmatEditAction extends MyActionSupportList
 		riscos = riscoManager.findAllSelect(getEmpresaSistema().getId());
 		
 		medidasSeguranca = medidaSegurancaManager.findAllSelect(null, getEmpresaSistema().getId());
-		medidasCheckList = CheckListBoxUtil.populaCheckListBox(medidasSeguranca, "getId", "getDescricao");
+		medidasCheckList = CheckListBoxUtil.populaCheckListBox(medidasSeguranca, "getId", "getDescricao", null);
 		
 		if (riscoFasePcmat != null && riscoFasePcmat.getId() != null)
 		{

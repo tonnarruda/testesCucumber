@@ -152,7 +152,7 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		try
 		{
 			Collection<Usuario> usuarios = findAllBySelectUsuarioEmpresa(empresaId);
-			checks = CheckListBoxUtil.populaCheckListBox(usuarios, "getId", "getNome");
+			checks = CheckListBoxUtil.populaCheckListBox(usuarios, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{

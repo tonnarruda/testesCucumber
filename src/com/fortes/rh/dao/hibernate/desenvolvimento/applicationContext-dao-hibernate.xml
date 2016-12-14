@@ -72,7 +72,24 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="lntDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.LntDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="cursoLntDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.CursoLntDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="participanteCursoLntDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.ParticipanteCursoLntDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
+
 
 
 

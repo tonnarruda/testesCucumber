@@ -1,5 +1,7 @@
 package com.fortes.web.tags;
 
+import java.util.Map;
+
 public class CheckBox
 {
 	private String id;
@@ -7,6 +9,7 @@ public class CheckBox
 	private String titulo;
 	private boolean selecionado;
 	private boolean desabilitado;
+	private Map<String, String> parameters;
 
 	public String getId()
 	{
@@ -62,5 +65,13 @@ public class CheckBox
 	public void setDesabilitado(boolean desabilitado) 
 	{
 		this.desabilitado = desabilitado;
+	}
+
+	public Map<String, String> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(Map<String, String> parameters) {
+		this.parameters = parameters;
 	}
 }

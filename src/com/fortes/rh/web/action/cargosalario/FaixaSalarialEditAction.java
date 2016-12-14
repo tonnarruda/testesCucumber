@@ -71,7 +71,7 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 		integradoAC = getEmpresaSistema().isAcIntegra();
 		
 		Collection<Certificacao> certificacaos = certificacaoManager.findAllSelect(getEmpresaSistema().getId());
-		certificacaosCheckList = CheckListBoxUtil.populaCheckListBox(certificacaos, "getId", "getNome");
+		certificacaosCheckList = CheckListBoxUtil.populaCheckListBox(certificacaos, "getId", "getNome", null);
 	}
 
 	public String prepareInsert() throws Exception

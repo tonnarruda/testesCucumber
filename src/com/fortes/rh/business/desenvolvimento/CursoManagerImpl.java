@@ -10,6 +10,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
@@ -17,6 +18,7 @@ import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -28,6 +30,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorManager colaboradorManager;
+	private CursoLntManager cursoLntManager;
 
 	public Curso findByIdProjection(Long cursoId)
 	{
@@ -134,6 +137,11 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	{
 		return getDao().findComAvaliacao(empresaId, dataIni, dataFim);
 	}
+	
+	@TesteAutomatico
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) {
+		return getDao().getAutoComplete(descricao, empresaId);
+	}
 
 	public void update(Curso curso, Empresa empresa, String[] avaliacaoCursoIds) throws Exception
 	{
@@ -150,6 +158,8 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 			curso.setAvaliacaoCursos(collectionUtil.convertArrayStringToCollection(AvaliacaoCurso.class, avaliacaoCursoIds));
 			update(curso);
 			transactionManager.commit(status);
+			
+			cursoLntManager.updateNomeNovoCurso(curso.getId(), curso.getNome());
 		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -193,7 +203,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 			CollectionUtil<Curso> cu1 = new CollectionUtil<Curso>();
 			cursos = cu1.sortCollectionStringIgnoreCase(cursos, "nome");
 
-			checks = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
+			checks = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{
@@ -322,7 +332,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		try
 		{
 			Collection<Curso> cursos = findAllByEmpresasParticipantes(empresaId);
-			checks = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
+			checks = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{
@@ -330,5 +340,9 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		}
 
 		return checks;
+	}
+
+	public void setCursoLntManager(CursoLntManager cursoLntManager) {
+		this.cursoLntManager = cursoLntManager;
 	}
 }

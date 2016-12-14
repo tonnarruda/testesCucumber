@@ -525,6 +525,10 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			e.printStackTrace();
 		} 
 	}
+	
+	public Collection<Empresa> findByLntId(Long lntId) {
+		return getDao().findByLntId(lntId);
+	}
 
 	@TesteAutomatico
 	public boolean isControlaRiscoPorAmbiente(Long empresaId) 

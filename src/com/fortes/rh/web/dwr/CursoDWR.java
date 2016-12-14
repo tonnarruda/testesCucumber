@@ -71,6 +71,10 @@ public class CursoDWR
 		return avaliacaoCursoManager.findByCursos(cursosIds);
 	}
 	
+	public Curso findDadosBasicosById(Long cursoId){
+		return cursoManager.findByIdProjection(cursoId);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Map<Long,String> getDocumentoAnexos(Long cursoId) 
 	{

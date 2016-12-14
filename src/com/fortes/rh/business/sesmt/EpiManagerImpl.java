@@ -57,7 +57,7 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 		try
 		{
 			Collection<Epi> epis = findEpis(0, 0, empresaId, null, epiAtivo);
-			checks = CheckListBoxUtil.populaCheckListBox(epis, "getId", "getNomeInativo");
+			checks = CheckListBoxUtil.populaCheckListBox(epis, "getId", "getNomeInativo", null);
 		}
 		catch (Exception e)
 		{

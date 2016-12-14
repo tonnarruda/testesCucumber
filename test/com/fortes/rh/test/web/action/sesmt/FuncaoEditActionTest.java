@@ -126,7 +126,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
     	action.setEmpresaSistema(empresa);
     	
     	Collection<CheckBox> examesCheckList = new ArrayList<CheckBox>();
-    	examesCheckList = MockCheckListBoxUtil.populaCheckListBox(null, null, null);
+    	examesCheckList = MockCheckListBoxUtil.populaCheckListBox(null, null, null, null);
 
     	cargoManager.expects(once()).method("findByIdProjection").with(eq(cargo.getId())).will(returnValue(cargo));
     	funcaoManager.expects(once()).method("findByIdProjection").with(eq(funcaoRetorno.getId())).will(returnValue(funcaoRetorno));
@@ -165,7 +165,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
     	action.setCargoTmp(cargo);
 
     	Collection<CheckBox> examesCheckList = new ArrayList<CheckBox>();
-    	examesCheckList = MockCheckListBoxUtil.populaCheckListBox(null, null, null);
+    	examesCheckList = MockCheckListBoxUtil.populaCheckListBox(null, null, null, null);
 
     	exameManager.expects(once()).method("findByEmpresaComAsoPadrao").with(ANYTHING).will(returnValue(new ArrayList<Exame>()));
     	epiManager.expects(once()).method("populaCheckToEpi").with(eq(empresa.getId()), ANYTHING).will(returnValue(new ArrayList<Epi>()));

@@ -55,7 +55,7 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 			else			
 				atitudes = getDao().findAllSelect(empresaId);
 			
-			checks = CheckListBoxUtil.populaCheckListBox(atitudes, "getId", "getNome");
+			checks = CheckListBoxUtil.populaCheckListBox(atitudes, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{

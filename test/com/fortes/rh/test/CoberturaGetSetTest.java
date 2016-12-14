@@ -68,10 +68,12 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.CursoLnt;
 import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
+import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.CertificacaoTreinamentosRelatorio;
@@ -985,6 +987,8 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new NivelCompetenciaHistorico());
 		cobreGetSet(new AreaOrganizacionalManagerImpl());
 		cobreGetSet(new OrdemDeServico());
+		cobreGetSet(new Lnt());
+		cobreGetSet(new CursoLnt());
 	}
 	
 	private void cobreGetSet(Object obj)

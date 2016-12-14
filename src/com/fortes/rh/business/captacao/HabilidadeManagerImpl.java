@@ -55,7 +55,7 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 			else
 				habilidades = getDao().findAllSelect(empresaId);
 			
-			checks = CheckListBoxUtil.populaCheckListBox(habilidades, "getId", "getNome");
+			checks = CheckListBoxUtil.populaCheckListBox(habilidades, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{

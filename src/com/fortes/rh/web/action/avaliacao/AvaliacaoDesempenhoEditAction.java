@@ -235,7 +235,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null, null, null);
 			
-			colaboradorsCheckList = populaCheckListBox(participantes, "getId", "getNome");
+			colaboradorsCheckList = populaCheckListBox(participantes, "getId", "getNome", null);
 			colaboradorsCheckList = CheckListBoxUtil.marcaCheckListBox(colaboradorsCheckList, colaboradorsCheck);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -469,7 +469,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(getPage(), getPagingSize(), periodoInicial, periodoFinal, getEmpresaSistema().getId(), nomeBusca, avaliacaoId, null);
 		
 		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
-   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome", null);
 		
 		return Action.SUCCESS;
 	}

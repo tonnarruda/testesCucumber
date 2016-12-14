@@ -323,20 +323,20 @@ public class CandidatoListAction extends MyActionSupportList
 		idiomas = idiomaManager.findAll(new String[]{"nome"});
 
 		Collection<Cargo> cargos = cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, EmpresaUtil.empresasSelecionadas(empresaId, empresas));
-		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercadoComStatus");
+		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercadoComStatus", null);
 		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 
 		Collection<AreaInteresse> areaInteressesAux = areaInteresseManager.findAllSelect(EmpresaUtil.empresasSelecionadas(empresaId, empresas));
-		areasCheckList = CheckListBoxUtil.populaCheckListBox(areaInteressesAux, "getId", "getNome");
+		areasCheckList = CheckListBoxUtil.populaCheckListBox(areaInteressesAux, "getId", "getNome", null);
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		
 		Collection<AreaFormacao> areaFormacaoAux = areaFormacaoManager.findAll();
-		areasFormacaoCheckList = CheckListBoxUtil.populaCheckListBox(areaFormacaoAux, "getId", "getNome");
+		areasFormacaoCheckList = CheckListBoxUtil.populaCheckListBox(areaFormacaoAux, "getId", "getNome", null);
 		areasFormacaoCheckList = CheckListBoxUtil.marcaCheckListBox(areasFormacaoCheckList, areasFormacaoCheck);
 		
 		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 
-		experienciasCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
+		experienciasCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado", null);
 		experienciasCheckList = CheckListBoxUtil.marcaCheckListBox(experienciasCheckList, experienciasCheck);
 
 		if(!filtro && solicitacao != null && solicitacao.getId() != null)
@@ -350,10 +350,10 @@ public class CandidatoListAction extends MyActionSupportList
 				uf = uf==null?solicitacao.getCidade().getUf().getId():uf;
 				cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
 				cidade = (cidade==null?solicitacao.getCidade().getId():cidade);
-				cidadesCheckList = CheckListBoxUtil.populaCheckListBox(cidadesList, "getId", "getNome");
+				cidadesCheckList = CheckListBoxUtil.populaCheckListBox(cidadesList, "getId", "getNome", null);
 				cidadesCheckList = CheckListBoxUtil.marcaCheckListBox(cidadesCheckList, StringUtil.LongToString(cidadesCheck));
 				Collection<Bairro> bairroList = bairroManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"cidade.id"}, new Object[]{solicitacao.getCidade().getId()}, new String[]{"nome"});
-            	bairrosCheckList = CheckListBoxUtil.populaCheckListBox(bairroList, "getId", "getNome");
+            	bairrosCheckList = CheckListBoxUtil.populaCheckListBox(bairroList, "getId", "getNome", null);
             	Collection<Bairro> marcados = bairroManager.getBairrosBySolicitacao(solicitacao.getId());
 				bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, marcados, "getId");
             }
@@ -467,7 +467,7 @@ public class CandidatoListAction extends MyActionSupportList
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		
 		Collection<FaixaSalarial> faixas = faixaSalarialManager.findAllSelectByCargo(getEmpresaSistema().getId());
-		faixasCheckList = CheckListBoxUtil.populaCheckListBox(faixas, "getId", "getDescricaoComStatus");
+		faixasCheckList = CheckListBoxUtil.populaCheckListBox(faixas, "getId", "getDescricaoComStatus", null);
 
 		populaEmpresas(COLABORADOR);
 		empresaId = getEmpresaSistema().getId();
@@ -511,7 +511,7 @@ public class CandidatoListAction extends MyActionSupportList
 			uf = solicitacao.getCidade().getUf().getId();
 			
 		Collection<Cidade> cidadesList = cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"});
-		cidadesCheckList = CheckListBoxUtil.populaCheckListBox(cidadesList, "getId", "getNome");
+		cidadesCheckList = CheckListBoxUtil.populaCheckListBox(cidadesList, "getId", "getNome", null);
 		
 		if(cidadesCheck == null || cidadesCheck.length == 0)
 		{
@@ -595,7 +595,7 @@ public class CandidatoListAction extends MyActionSupportList
 		else
 			conhecimentos =  conhecimentoManager.findByAreaInteresse(StringUtil.stringToLong(areasCheck),getEmpresaSistema().getId());
 
-		conhecimentosCheckList = CheckListBoxUtil.populaCheckListBox(conhecimentos, "getId", "getNome");
+		conhecimentosCheckList = CheckListBoxUtil.populaCheckListBox(conhecimentos, "getId", "getNome", null);
 		conhecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(conhecimentosCheckList, conhecimentosCheck);
 
 		return Action.SUCCESS;
@@ -817,7 +817,7 @@ public class CandidatoListAction extends MyActionSupportList
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome");
+		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome", null);
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 
 		gruposCheckList = grupoOcupacionalManager.populaCheckOrderNome(getEmpresaSistema().getId());
@@ -861,7 +861,7 @@ public class CandidatoListAction extends MyActionSupportList
 		boolean compartilharCandidatos = parametrosDoSistemaManager.findById(1L).getCompartilharCandidatos();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_CANDIDATOS_INDICADOS_POR");
 		
-		empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+		empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome", null);
 		
 		return Action.SUCCESS;
 	}

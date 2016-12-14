@@ -15,10 +15,18 @@ public class CursoFactory
 		return curso;
 	}
 
-	public static Curso getEntity(long id)
+	public static Curso getEntity(Long id)
 	{
 		Curso curso = getEntity();
 		curso.setId(id);
+		return curso;
+	}
+	
+	public static Curso getEntity(Long id, String nome)
+	{
+		Curso curso = getEntity();
+		curso.setId(id);
+		curso.setNome(nome);
 		return curso;
 	}
 }

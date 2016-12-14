@@ -43,7 +43,7 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	private void prepare() throws Exception
 	{
 		Collection<Usuario> usuarios = usuarioManager.findAllSelect(getEmpresaSistema().getId());
-		usuariosCheckList = CheckListBoxUtil.populaCheckListBox(usuarios, "getId", "getNome");
+		usuariosCheckList = CheckListBoxUtil.populaCheckListBox(usuarios, "getId", "getNome", null);
 
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox((getEmpresaSistema().getId()));
@@ -155,49 +155,37 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		return list();
 	}
 	
-	public int getEmailQuandoColaboradorCompletaAnoDeEmpresaId()
+	// Utilizado no ftl
+	public ArrayList<Integer> getOperacoesConfiguradasComLembrete()
 	{
+		ArrayList<Integer> operacoesIds = new ArrayList<Integer>();
+		operacoesIds.add(Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId());
+		operacoesIds.add(Operacao.PESQUISA_NAO_LIBERADA.getId());
+		operacoesIds.add(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
+		operacoesIds.add(Operacao.NAO_ABERTURA_SOLICITACAO_EPI.getId());
+		operacoesIds.add(Operacao.NAO_ENTREGA_SOLICITACAO_EPI.getId());
+		operacoesIds.add(Operacao.TERMINO_CONTRATO_COLABORADOR.getId());
+		operacoesIds.add(Operacao.HABILITACAO_A_VENCER.getId());
+		operacoesIds.add(Operacao.CURSOS_A_VENCER.getId());
+		operacoesIds.add(Operacao.CERTIFICACOES_A_VENCER.getId());
+		operacoesIds.add(Operacao.ENCERRAR_PERIODO_LNT.getId());
+		
+		return operacoesIds;
+	}
+	
+	// Utilizado no ftl
+	public ArrayList<Integer> getOperacoesComAvisoAposPrazo()
+	{
+		ArrayList<Integer> operacoesIds = new ArrayList<Integer>();
+		operacoesIds.add(Operacao.NAO_ABERTURA_SOLICITACAO_EPI.getId());
+		operacoesIds.add(Operacao.NAO_ENTREGA_SOLICITACAO_EPI.getId());
+		
+		return operacoesIds;
+	}
+	
+	// Utilizado no ftl
+	public int getEmailQuandoColaboradorCompletaAnoDeEmpresaId(){
 		return Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId();
-	}
-	
-	public int getLembreteQuestionarioNaoLiberadoId()
-	{
-		return Operacao.PESQUISA_NAO_LIBERADA.getId();
-	}
-
-	public int getAvaliacaoPeriodoExperienciaVencendoId()
-	{
-		return Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId();
-	}
-	
-	public int getLembreteAberturaSolicitacaoEpiId()
-	{
-		return Operacao.NAO_ABERTURA_SOLICITACAO_EPI.getId();
-	}
-	
-	public int getLembreteEntregaSolicitacaoEpiId()
-	{
-		return Operacao.NAO_ENTREGA_SOLICITACAO_EPI.getId();
-	}
-	
-	public int getLembreteTerminoContratoTemporarioColaboradorId()
-	{
-		return Operacao.TERMINO_CONTRATO_COLABORADOR.getId();
-	}
-	
-	public int getHabilitacaoAVencerId()
-	{
-		return Operacao.HABILITACAO_A_VENCER.getId();
-	}
-	
-	public int getNotificarCursosAVencer()
-	{
-		return Operacao.CURSOS_A_VENCER.getId();
-	}
-	
-	public int getNotificarCertificacoesAVencer()
-	{
-		return Operacao.CERTIFICACOES_A_VENCER.getId();
 	}
 	
 	public GerenciadorComunicacao getGerenciadorComunicacao()
@@ -276,8 +264,7 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
-	public void setParametrosDoSistemaManager(
-			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

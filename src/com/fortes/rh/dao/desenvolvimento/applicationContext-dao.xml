@@ -114,7 +114,33 @@
       <ref bean="colaboradorCertificacaoDaoTarget" />
     </property>
   </bean>
+  <bean id="lntDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.desenvolvimento.LntDao</value>
+    </property>
+    <property name="target">
+      <ref bean="lntDaoTarget" />
+    </property>
+  </bean>
+  <bean id="cursoLntDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.desenvolvimento.CursoLntDao</value>
+    </property>
+    <property name="target">
+      <ref bean="cursoLntDaoTarget" />
+    </property>
+  </bean>
+  <bean id="participanteCursoLntDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.desenvolvimento.ParticipanteCursoLntDao</value>
+    </property>
+    <property name="target">
+      <ref bean="participanteCursoLntDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
+
 
 
 

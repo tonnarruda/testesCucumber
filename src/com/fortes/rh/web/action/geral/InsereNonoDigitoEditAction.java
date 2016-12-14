@@ -26,7 +26,7 @@ public class InsereNonoDigitoEditAction extends MyActionSupportEdit
 	public String prepareInsert() throws Exception {
 		Collection<Estado> estados = estadoManager.findAll(new String[]{"nome"});
 		
-		estadosCheckList = CheckListBoxUtil.populaCheckListBox(estados, "getId", "getNome");
+		estadosCheckList = CheckListBoxUtil.populaCheckListBox(estados, "getId", "getNome", null);
 
 		return Action.SUCCESS;
 	}

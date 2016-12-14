@@ -169,7 +169,7 @@ public class CheckListBoxUtilTest extends TestCase
 		u4.setNome("u4");
 		list.add(u4);
 
-		Collection<CheckBox> checks = CheckListBoxUtil.populaCheckListBox(list, "getId", "getNome");
+		Collection<CheckBox> checks = CheckListBoxUtil.populaCheckListBox(list, "getId", "getNome", null);
 		assertEquals("Test 1", 4, checks.size());
 		assertEquals("Test 2", u1.getId().toString(), checks.toArray(new CheckBox[]{})[0].getId());
 		assertEquals("Test 3", u1.getNome(), checks.toArray(new CheckBox[]{})[0].getNome());

@@ -1,6 +1,3 @@
-/* Autor: Bruno Bachiega
- * Data: 7/06/2006
- * Requisito: RFA004 */
 package com.fortes.rh.dao.geral;
 
 import java.util.Collection;
@@ -36,4 +33,7 @@ public interface AreaOrganizacionalDao extends GenericDao<AreaOrganizacional>
 	public Collection<AreaOrganizacional> findAreasDoResponsavelCoResponsavel(Long usuarioId, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds);
 	public Long[] findAreasMaesIdsByEmpresaId(Long empresaId);
 	public boolean possuiAreaFilhasByCodigoAC(String codigoAC, Long empresaId);
+	public Collection<AreaOrganizacional> findByLntId(Long lntId, Long... empresaIdAreaOrganizacional);
+	public Collection<Long> getAncestraisIds (Long... areasIds);
+	public Collection<Long> getDescendentesIds (Long... areasIds);
 }

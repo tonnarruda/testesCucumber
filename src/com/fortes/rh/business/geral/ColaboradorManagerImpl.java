@@ -1775,7 +1775,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		try{
 			Collection<Colaborador> colaboradoresTmp = getDao().findAllSelect(empresaId, "nomeComercial");
-			return CheckListBoxUtil.populaCheckListBox(colaboradoresTmp, "getId", "getNomeMaisNomeComercial");
+			return CheckListBoxUtil.populaCheckListBox(colaboradoresTmp, "getId", "getNomeMaisNomeComercial", null);
 		}
 		catch (Exception e)
 		{
@@ -1829,6 +1829,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao, Long notUsuarioId, boolean consideraSoIntegradosComAC)
 	{
 		return getDao().findByAreaOrganizacionalEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, situacao, notUsuarioId, consideraSoIntegradosComAC);
+	}
+	
+	public Collection<Colaborador> findByAreasIds(Long... areasIds){
+		return getDao().findByAreasIds(areasIds);
 	}
 
 	public void validaQtdCadastros(Long empresaId) throws Exception

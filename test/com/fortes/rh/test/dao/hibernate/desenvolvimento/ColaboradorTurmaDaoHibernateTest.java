@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
@@ -21,8 +22,10 @@ import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
+import com.fortes.rh.dao.desenvolvimento.CursoLntDao;
 import com.fortes.rh.dao.desenvolvimento.DNTDao;
 import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
+import com.fortes.rh.dao.desenvolvimento.LntDao;
 import com.fortes.rh.dao.desenvolvimento.PrioridadeTreinamentoDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
@@ -42,8 +45,10 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.CursoLnt;
 import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
+import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.FiltroAgrupamentoCursoColaborador;
@@ -74,8 +79,10 @@ import com.fortes.rh.test.factory.desenvolvimento.ColaboradorCertificacaoFactory
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CursoLntFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DntFactory;
+import com.fortes.rh.test.factory.desenvolvimento.LntFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
@@ -104,6 +111,8 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 	private AvaliacaoDao avaliacaoDao;
 	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao;
 	private ColaboradorCertificacaoDao colaboradorCertificacaoDao;
+	private CursoLntDao cursoLntDao;
+	private LntDao lntDao;
 
     public ColaboradorTurma getEntity()
     {
@@ -2820,6 +2829,128 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		return aproveitamentoAvaliacaoCurso;
 	}
 	
+	public void testFindByCursoLntId() {
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(null, "Colab 1");
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(null, "Colab 2");
+		colaboradorDao.save(colaborador2);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Lnt lnt = LntFactory.getEntity(DateUtil.criarDataMesAno(1, 1, 2016), DateUtil.criarDataMesAno(1, 2, 2016));
+		lntDao.save(lnt);
+		
+		CursoLnt cursoLnt = CursoLntFactory.getEntity(curso, lnt);
+		cursoLntDao.save(cursoLnt);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turmaDao.save(turma);
+		
+		ColaboradorTurma colaboradorTurma1 = ColaboradorTurmaFactory.getEntity(colaborador1, null, turma);
+		colaboradorTurma1.setCursoLnt(cursoLnt);
+		colaboradorTurmaDao.save(colaboradorTurma1);
+		
+		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity(colaborador1, null, turma);
+		colaboradorTurma2.setCursoLnt(cursoLnt);
+		colaboradorTurmaDao.save(colaboradorTurma2);
+		
+		ColaboradorTurma colaboradorTurma3 = ColaboradorTurmaFactory.getEntity(colaborador2, null, turma);
+		colaboradorTurma3.setCursoLnt(cursoLnt);
+		colaboradorTurmaDao.save(colaboradorTurma3);
+		
+		Collection<ColaboradorTurma> colaboradoresTurma = colaboradorTurmaDao.findByCursoLntId(cursoLnt.getId());
+		
+		assertEquals(2, colaboradoresTurma.size());
+	}
+	
+	public void testUpdateCursoLnt() {
+		Map<String, Long> mapIds = prepareUpdateCursoLnt();
+		
+		colaboradorTurmaDao.updateCursoLnt(mapIds.get("cursoId"), mapIds.get("colaboradorTurmaId"), mapIds.get("lntId"));
+		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+		
+		ColaboradorTurma colabTurmaRetorno = colaboradorTurmaDao.findByProjection(mapIds.get("colaboradorTurmaId"));
+		
+		assertEquals(mapIds.get("cursoLntId"), colabTurmaRetorno.getCursoLnt().getId());
+	}
+	
+	public void testUpdateCursoLntCursoLntId() {
+		Map<String, Long> mapIds = prepareUpdateCursoLnt();
+		
+		colaboradorTurmaDao.updateCursoLnt(mapIds.get("colaboradorTurmaId"), mapIds.get("cursoLntId"));
+		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+		
+		ColaboradorTurma colabTurmaRetorno = colaboradorTurmaDao.findByProjection(mapIds.get("colaboradorTurmaId"));
+		
+		assertEquals(mapIds.get("cursoLntId"), colabTurmaRetorno.getCursoLnt().getId());
+	}
+	
+	public void testRemoveCursoLnt() {
+		Map<String, Long> mapIds = prepareUpdateCursoLnt();
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(ColaboradorFactory.getEntity(mapIds.get("colaboradorId")), null, null);
+		colaboradorTurma.setCursoLntId(mapIds.get("cursoLntId"));
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		ColaboradorTurma colabTurmaRetorno = colaboradorTurmaDao.findByProjection(colaboradorTurma.getId());
+		
+		assertEquals(mapIds.get("cursoLntId"), colabTurmaRetorno.getCursoLnt().getId());
+		
+		colaboradorTurmaDao.removeCursoLnt(colaboradorTurma.getId());
+		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+		
+		colabTurmaRetorno = colaboradorTurmaDao.findByProjection(colaboradorTurma.getId());
+		
+		assertNull(colabTurmaRetorno.getCursoLnt().getId());
+	}
+
+	private Map<String, Long> prepareUpdateCursoLnt() {
+		Colaborador colaborador = ColaboradorFactory.getEntity(null, "Colab 1");
+		colaboradorDao.save(colaborador);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Lnt lnt = LntFactory.getEntity(DateUtil.criarDataMesAno(1, 1, 2016), DateUtil.criarDataMesAno(1, 2, 2016));
+		lntDao.save(lnt);
+		
+		CursoLnt cursoLnt = CursoLntFactory.getEntity(curso, lnt);
+		cursoLntDao.save(cursoLnt);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, null, null);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		ColaboradorTurma colabTurmaRetorno = colaboradorTurmaDao.findByProjection(colaboradorTurma.getId());
+		
+		assertNull(colabTurmaRetorno.getCursoLnt().getId());
+		
+		Map<String, Long> mapIds = new HashMap<String, Long>();
+		mapIds.put("colaboradorId", colaborador.getId());
+		mapIds.put("colaboradorTurmaId", colaboradorTurma.getId());
+		mapIds.put("cursoLntId", cursoLnt.getId());
+		mapIds.put("lntId", lnt.getId());
+		mapIds.put("cursoId", curso.getId());
+		return mapIds;
+	}
+	
+	public void testRemoveAllCursoLntByLnt() {
+		Map<String, Long> mapIds = prepareUpdateCursoLnt();
+		
+		colaboradorTurmaDao.updateCursoLnt(mapIds.get("colaboradorTurmaId"), mapIds.get("cursoLntId"));
+		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+		
+		ColaboradorTurma colabTurmaRetorno = colaboradorTurmaDao.findByProjection(mapIds.get("colaboradorTurmaId"));
+		assertEquals(mapIds.get("cursoLntId"), colabTurmaRetorno.getCursoLnt().getId());
+		
+		colaboradorTurmaDao.removeAllCursoLntByLnt(mapIds.get("lntId"));
+		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+		
+		colabTurmaRetorno = colaboradorTurmaDao.findByProjection(mapIds.get("colaboradorTurmaId"));
+		assertNull(colabTurmaRetorno.getCursoLnt().getId());
+	}
+	
     public GenericDao<ColaboradorTurma> getGenericDao()
     {
         return colaboradorTurmaDao;
@@ -2923,5 +3054,13 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 
 	public void setColaboradorCertificacaoDao( ColaboradorCertificacaoDao colaboradorCertificacaoDao) {
 		this.colaboradorCertificacaoDao = colaboradorCertificacaoDao;
+	}
+
+	public void setCursoLntDao(CursoLntDao cursoLntDao) {
+		this.cursoLntDao = cursoLntDao;
+	}
+
+	public void setLntDao(LntDao lntDao) {
+		this.lntDao = lntDao;
 	}
 }

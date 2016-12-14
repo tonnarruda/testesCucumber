@@ -41,7 +41,7 @@ public class TipoEPIManagerImpl extends GenericManagerImpl<TipoEPI, TipoEPIDao> 
 		try 
 		{
 			Collection<TipoEPI> tipoEpis = findCollectionTipoEPI(empresaId);
-			tipoEPICheckList = CheckListBoxUtil.populaCheckListBox(tipoEpis, "getId", "getNome");
+			tipoEPICheckList = CheckListBoxUtil.populaCheckListBox(tipoEpis, "getId", "getNome", null);
 		}
 		catch (Exception e) 
 		{

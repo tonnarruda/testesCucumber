@@ -10,6 +10,7 @@ import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.desenvolvimento.LntDao;
 import com.fortes.rh.dao.geral.AreaInteresseDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -35,6 +37,7 @@ import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.desenvolvimento.LntFactory;
 import com.fortes.rh.test.factory.geral.AreaInteresseFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
@@ -52,6 +55,7 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 	private UsuarioDao usuarioDao;
 	private EstabelecimentoDao estabelecimentoDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
+	private LntDao lntDao;
 
 	public AreaOrganizacional getEntity()
 	{
@@ -608,6 +612,54 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		assertFalse(areaOrganizacionalDao.possuiAreaFilhasByCodigoAC(areaOrganizacional4.getCodigoAC(), empresa.getId()));
 	}
 	
+	public void testFindAreasIdsByLntId() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional1= AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional1.setEmpresa(empresa);
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		AreaOrganizacional areaOrganizacional2= AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional2.setEmpresa(empresa);
+		areaOrganizacionalDao.save(areaOrganizacional2);
+		
+		Lnt lnt = LntFactory.getEntity(null, "LNT 1", new Date(), DateUtil.incrementaDias(new Date(), 1), null);
+		lnt.setAreasOrganizacionais(Arrays.asList(areaOrganizacional1, areaOrganizacional2));
+		lntDao.save(lnt);
+		
+		Collection<AreaOrganizacional> areas = areaOrganizacionalDao.findByLntId(lnt.getId(), empresa.getId());
+		
+		assertEquals(lnt.getAreasOrganizacionais().size(), areas.size());
+	}
+	
+	public void testFindAreasIdsByLntIdRetornaCollectionVazia() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional1= AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		AreaOrganizacional areaOrganizacional2= AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional2);
+		
+		Lnt lnt = LntFactory.getEntity(null, "LNT 1", new Date(), DateUtil.incrementaDias(new Date(), 1), null);
+		lnt.setAreasOrganizacionais(Arrays.asList(areaOrganizacional1, areaOrganizacional2));
+		lntDao.save(lnt);
+		
+		Lnt lnt2 = LntFactory.getEntity(null, "LNT 1", new Date(), DateUtil.incrementaDias(new Date(), 1), null);
+		lntDao.save(lnt2);
+		
+		Collection<AreaOrganizacional> areas = areaOrganizacionalDao.findByLntId(lnt2.getId(), null);
+		
+		assertEquals(0, areas.size());
+	}
+	
+	
+	
+	
 	public void setCargoDao(CargoDao cargoDao)
 	{
 		this.cargoDao = cargoDao;
@@ -646,5 +698,8 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
 		this.historicoColaboradorDao = historicoColaboradorDao;
+	}
+	public void setLntDao(LntDao lntDao) {
+		this.lntDao = lntDao;
 	}
 }

@@ -241,10 +241,10 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		
 		Collection<Ocorrencia> ocorrencia = ocorrenciaManager.findOcorrenciasComAbseteismo(getEmpresaSistema().getId());
-		ocorrenciasCheckList = CheckListBoxUtil.populaCheckListBox(ocorrencia, "getId", "getDescricao");		
+		ocorrenciasCheckList = CheckListBoxUtil.populaCheckListBox(ocorrencia, "getId", "getDescricao", null);		
 		
 		Collection<Afastamento> afastamentos = afastamentoManager.findToList(new String[]{"id", "descricao"}, new String[]{"id", "descricao"}, new String[]{"absenteismo"}, new Object[]{Boolean.TRUE});
-		afastamentosCheckList = CheckListBoxUtil.populaCheckListBox(afastamentos, "getId", "getDescricao");		
+		afastamentosCheckList = CheckListBoxUtil.populaCheckListBox(afastamentos, "getId", "getDescricao", null);		
 
 		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);

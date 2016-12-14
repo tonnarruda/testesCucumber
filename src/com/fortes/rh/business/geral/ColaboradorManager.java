@@ -246,4 +246,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<AreaOrganizacional> defineAreasPermitidasParaUsuario(Long empresaId, Long usuarioId, boolean verTodasAreas) throws Exception;
 	public void updateRespondeuEntrevistaDesligamento(Long colaboradorId, boolean respondeuEntrevistaDesligamento);
 	public Collection<ColaboradorJson> getColaboradoresJson(String baseCnpj, Long colaboradorId);
+	public Collection<Colaborador> findByAreasIds(Long... areasIds);
 }

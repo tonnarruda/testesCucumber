@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.17x.207" db="" data="xx/xx/2016">
+		<Item visivel="S" motivo="S16080000343"><![CDATA[T&D > Movimentações > Levantamentos de Necessidade de Treinamento (LNT): Nova funcionalidade.]]></Item>
 		<Item visivel="S" motivo="P16110000243"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Ajuste de inconsistência ao gravar os dados do colaborador.]]></Item>
 	</Versao>
 	<Versao id="1.1.174.206" db="" data="30/11/2016">

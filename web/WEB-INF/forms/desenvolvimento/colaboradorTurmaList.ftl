@@ -21,6 +21,8 @@
     <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
     
     <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
+    <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorTurmaDWR.js?version=${versao}"/>'></script>
+    <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/LntDWR.js?version=${versao}"/>'></script>
     <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
     <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
@@ -92,6 +94,45 @@
 		{
 			addChecks('estabelecimentosCheck',data);
 		}
+		
+		function inserirColaboradorLnt(cursoId, colaboradorId, colaboradorTurmaId){
+			LntDWR.findLntsColaborador(cursoId, colaboradorId, function(lnts){
+				if(lnts == null || lnts.length == 0){
+					jAlert('Não existem LNTs a serem relacionados para esse colaborador.');
+					return;
+				}
+				
+				$('#colaboradorTurmaId').val(colaboradorTurmaId);
+				$('#cursoId').val(cursoId);
+				
+				$("#lnt").html("<option value>Sem LNT</option>");
+				$.each(lnts, function(i, lnt) {
+					selecionado = "";
+					if(lnt.selected)
+						selecionado = "selected";
+					
+					$("#lnt").append("<option value='"+lnt.id+"' "+ selecionado +">"+lnt.descricao+"</option>");
+				});
+			
+				$('#dialogLnt').dialog({ modal: true, width: 555, title: 'Relacionar colaborador a LNT',
+													buttons: [
+																    {
+																        text: "Relacionar",
+																        click: function() {
+															        		document.formDialog.submit();
+																        }
+																    },
+																    {
+																        text: "Sair",
+																        click: function() {
+															        		$(this).dialog("close");
+																        }
+																    }
+																    
+																]
+															});
+			});
+		}
 
     </script>
 </head>
@@ -125,7 +166,11 @@
 	<#if turma?exists && turma.id?exists>
 		<@display.table name="colaboradorTurmas" id="colaboradorTurma" class="dados">
 			<@display.column title="Ações" class="acao">
-
+				<#if colaboradorTurma.possuiLntASerVinculado>
+					<@frt.link verifyRole="ROLE_MOV_LNT_GERAR_CURSOS_E_TURMAS" onclick="inserirColaboradorLnt(${colaboradorTurma.curso.id}, ${colaboradorTurma.colaborador.id},${colaboradorTurma.id});" imgTitle="Relacionar colaborador a LNT" imgName="icon_download.gif"/>
+				<#else>
+					<@frt.link verifyRole="ROLE_MOV_LNT_GERAR_CURSOS_E_TURMAS" imgTitle="Não existem LNTs a serem relacionados para esse colaborador" imgName="icon_download.gif" opacity=true/>
+				</#if>
 				<@authz.authorize ifAllGranted="ROLE_RESPONDER_AVALIACAO_TURMA_POR_OUTRO_USUARIO">
 					<#if turma.turmaAvaliacaoTurmas?exists && 0 < turma.turmaAvaliacaoTurmas?size>
 						<#if turma.turmaAvaliacaoTurmas?size == colaboradorTurma.qtdRespostasAvaliacaoTurma>
@@ -166,5 +211,15 @@
 	</div>
 	
 	<div class='avaliacoes' title='Respostas das avaliações'></div>
+	
+	<div id="dialogLnt" style="display: none;">
+		<@ww.form id="formDialog" name="formDialog" action="InserirColaboradorNaLnt.action" method="POST" >
+    		<@ww.hidden name="page" value="${page}" />
+	    	<@ww.hidden name="turma.id" value="${turma.id}"/>
+			<@ww.hidden name="colaboradorTurma.curso.id" id="cursoId" value=""/>
+			<@ww.hidden name="colaboradorTurma.id" id="colaboradorTurmaId" value=""/>
+			<@ww.select label="Lnt" id="lnt" name="lntId" headerKey="" headerValue="Sem Lnt" list="ltns" listKey="id" listValue="descricao" cssStyle="width: 520px;"/>	
+		</@ww.form>
+	</div>
 </body>
 </html>

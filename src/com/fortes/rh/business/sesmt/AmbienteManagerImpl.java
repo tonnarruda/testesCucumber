@@ -198,7 +198,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 
 	public Collection<CheckBox> getAmbientes(Empresa empresa) throws Exception
 	{
-		return CheckListBoxUtil.populaCheckListBox( find(new String[]{"empresa.id"},new Object[]{empresa.getId()}, new String[]{"nome"}), "getId", "getNome");
+		return CheckListBoxUtil.populaCheckListBox( find(new String[]{"empresa.id"},new Object[]{empresa.getId()}, new String[]{"nome"}), "getId", "getNome", null);
 	}
 
 	public Collection<Long> getIdsAmbientes(Collection<HistoricoColaborador> historicosColaborador)
@@ -224,7 +224,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		try
 		{
 			Collection<Ambiente> ambientes = getDao().findByEstabelecimento(estabelecimentoId);
-			return CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNome");
+			return CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{
@@ -238,7 +238,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		try
 		{
 			Collection<Ambiente> ambientes = getDao().findByEstabelecimento(estabelecimentoIds);
-			return CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNomeComEstabelecimento");
+			return CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNomeComEstabelecimento", null);
 		}
 		catch (Exception e)
 		{
@@ -252,7 +252,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		try
 		{
 			Collection<Ambiente> ambientes = getDao().findByEstabelecimento(estabelecimentoId);
-			return CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNome");
+			return CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{

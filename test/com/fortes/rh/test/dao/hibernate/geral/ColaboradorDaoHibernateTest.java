@@ -5734,7 +5734,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 	{
 		String qtdTabelasComColaborador = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col where col.column_name = 'colaborador_id' and col.table_schema = 'public' and is_updatable = 'YES';");
 		/**se esse quebrar, provavelmente tem que inserir uma linha de delete no Importador colaboradorJDBC.java método removerColaborador(); **/
-		Assert.assertEquals("26", qtdTabelasComColaborador);
+		Assert.assertEquals("27", qtdTabelasComColaborador);
 	}
 
 	@Test public void testAtualizaSolicitacaoDesligamento() 
@@ -6605,7 +6605,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Assert.assertNull(colaboradorDao.findEntidadeComAtributosSimplesById(-1L));
 		
 		String qtdTabelasComColaborador = JDBCConnection.executeQuery("SELECT COUNT(kcu.column_name) FROM information_schema.table_constraints AS tc INNER JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name INNER JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND ccu.table_name = 'colaborador'");
-		Assert.assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em ColaboradorDaoHibernate.removeComDependencias", "35", qtdTabelasComColaborador);
+		Assert.assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em ColaboradorDaoHibernate.removeComDependencias", "36", qtdTabelasComColaborador);
 	}
 	
 	@Test public void testFindUsuarioByAreaEstabelecimento()
@@ -7054,6 +7054,38 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		
 		Collection<ColaboradorJson> colaboradoresJson = colaboradorDao.getColaboradoresJson(empresa.getCnpj(), colaborador.getId());
 		Assert.assertEquals(1, colaboradoresJson.size());
+	}
+
+	public void testFindByAreasIds(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa);
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa);
+		colaborador2.setDesligado(true);
+		colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, DateUtil.criarDataMesAno(1, 1, 2000), estabelecimento, areaOrganizacional);
+		historicoColaborador1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(colaborador2, DateUtil.criarDataMesAno(1, 1, 2000), estabelecimento, areaOrganizacional);
+		historicoColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		Collection<Colaborador> retornoColab = colaboradorDao.findByAreasIds(areaOrganizacional.getId());
+		
+		Assert.assertEquals(1, retornoColab.size());
 	}
 	
 	private FaixaSalarial saveFaixaSalarial(Cargo cargo){

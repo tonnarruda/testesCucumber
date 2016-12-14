@@ -27,6 +27,7 @@ import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
@@ -43,6 +44,8 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.cargaHoraria"), "cargaHoraria");
+		p.add(Projections.property("c.conteudoProgramatico"), "conteudoProgramatico");
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.id", cursoId));
@@ -69,6 +72,29 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
 
 		return criteria.list();
+	}
+	
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new AutoCompleteVO(c.id, c.nome) ");
+		hql.append("from Curso as c ");
+
+		hql.append(" where normalizar(upper(c.nome)) like normalizar(:descricao) ");
+		
+		if(empresaId != null)
+			hql.append(" and c.empresa.id = :empresaId ");
+		
+		hql.append(" order by c.nome");
+
+		Query query = getSession().createQuery(hql.toString());
+		
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
+		
+		query.setString("descricao", "%" + descricao.toUpperCase() + "%");
+		
+		return query.list();
 	}
 
 	public Collection<Curso> findAllSelect(Long empresaId)

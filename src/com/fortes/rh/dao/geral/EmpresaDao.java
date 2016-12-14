@@ -33,4 +33,5 @@ public interface EmpresaDao extends GenericDao<Empresa>
 	String getCodigoGrupoAC(Long empresaId);
 	boolean emProcessoExportacaoAC(Long empresaId);
 	void setProcessoExportacaoAC(Long empresaId, boolean processoExportacaoAC);
+	Collection<Empresa> findByLntId(Long lntId);
 }

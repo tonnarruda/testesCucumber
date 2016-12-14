@@ -102,7 +102,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 		afastamentos = afastamentoManager.findAll(new String[] {"descricao"});
 
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome");
+		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome", null);
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
@@ -176,14 +176,14 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	public String prepareRelatorioResumoAfastamentos() throws Exception
 	{
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome");
+		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome", null);
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 
 		afastamentos = afastamentoManager.findAll(new String[] {"descricao"});
-		motivosCheckList = CheckListBoxUtil.populaCheckListBox(afastamentos, "getId", "getDescricao");
+		motivosCheckList = CheckListBoxUtil.populaCheckListBox(afastamentos, "getId", "getDescricao", null);
 		motivosCheckList = CheckListBoxUtil.marcaCheckListBox(motivosCheckList, motivosCheck);
 		
 		return SUCCESS;

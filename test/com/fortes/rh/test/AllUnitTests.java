@@ -79,9 +79,11 @@ import com.fortes.rh.test.business.desenvolvimento.ColaboradorCertificacaoManage
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorPresencaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorTurmaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorTurmaManagerTest_Junit4;
+import com.fortes.rh.test.business.desenvolvimento.CursoLntManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.CursoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.DNTManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.DiaTurmaManagerTest;
+import com.fortes.rh.test.business.desenvolvimento.LntManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.TurmaDocumentoAnexoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.TurmaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.TurmaManagerTest_Junit4;
@@ -262,8 +264,11 @@ import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorCertificacaoD
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorPresencaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorTurmaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.CursoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.desenvolvimento.CursoLntDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.DNTDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.DiaTurmaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.desenvolvimento.LntDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.desenvolvimento.ParticipanteCursoLntDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.TurmaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.TurmaDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.TurmaDocumentoAnexoDaoHibernateTest;
@@ -451,6 +456,7 @@ import com.fortes.rh.test.model.sesmt.PppRelatorioTest;
 import com.fortes.rh.test.model.sesmt.SolicitacaoExameTest;
 import com.fortes.rh.test.security.MenuTest;
 import com.fortes.rh.test.security.UserDetailsImplTest;
+import com.fortes.rh.test.thread.LntGerenciadorComunicacaoThreadTest;
 import com.fortes.rh.test.util.ArquivoUtilTest;
 import com.fortes.rh.test.util.AutenticadorTest;
 import com.fortes.rh.test.util.AuthenticatorImplTest;
@@ -530,6 +536,7 @@ import com.fortes.rh.test.web.action.desenvolvimento.DNTEditActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.DNTListActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.DiaTurmaEditActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.DiaTurmaListActionTest;
+import com.fortes.rh.test.web.action.desenvolvimento.LntEditActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.PrioridadeTreinamentoEditActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.PrioridadeTreinamentoListActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.RelatorioPresencaActionTest;
@@ -668,6 +675,7 @@ import com.fortes.rh.test.web.chart.ResultadoPesquisaTest;
 import com.fortes.rh.test.web.dwr.AfastamentoDWRTest;
 import com.fortes.rh.test.web.dwr.AmbienteDWRTest;
 import com.fortes.rh.test.web.dwr.AreaOrganizacionalDWRTest;
+import com.fortes.rh.test.web.dwr.AreaOrganizacionalDWRTest_JUnit4;
 import com.fortes.rh.test.web.dwr.AspectoDWRTest;
 import com.fortes.rh.test.web.dwr.AvaliacaoDesempenhoDWRTest;
 import com.fortes.rh.test.web.dwr.BairroDWRTest;
@@ -675,6 +683,7 @@ import com.fortes.rh.test.web.dwr.CandidatoDWRTest;
 import com.fortes.rh.test.web.dwr.CargoDWRTest;
 import com.fortes.rh.test.web.dwr.CidadeDWRTest;
 import com.fortes.rh.test.web.dwr.ColaboradorDWRTest;
+import com.fortes.rh.test.web.dwr.ColaboradorDWRTest_JUnit4;
 import com.fortes.rh.test.web.dwr.ComissaoPeriodoDWRTest;
 import com.fortes.rh.test.web.dwr.ComissaoPlanoTrabalhoDWRTest;
 import com.fortes.rh.test.web.dwr.ComissaoReuniaoDWRTest;
@@ -694,6 +703,7 @@ import com.fortes.rh.test.web.dwr.ListaPresencaDWRTest;
 import com.fortes.rh.test.web.dwr.MorroDWRTest;
 import com.fortes.rh.test.web.dwr.OcorrenciaDWRTest;
 import com.fortes.rh.test.web.dwr.OrdemDeServicoDWRTest;
+import com.fortes.rh.test.web.dwr.ParticipanteCursoLntDWRTest;
 import com.fortes.rh.test.web.dwr.PerguntaDWRTest;
 import com.fortes.rh.test.web.dwr.ReajusteDWRTest;
 import com.fortes.rh.test.web.dwr.RiscoAmbienteDWRTest;
@@ -704,6 +714,7 @@ import com.fortes.rh.test.web.dwr.TurmaDWRTest;
 import com.fortes.rh.test.web.dwr.TurmaDWRTest_Junit4;
 import com.fortes.rh.test.web.dwr.UsuarioMensagemDWRTest;
 import com.fortes.rh.test.web.dwr.UtilDWRTest;
+import com.fortes.rh.test.web.dwr.lntDWRTest;
 import com.fortes.rh.web.action.exportacao.ExportacaoActionTest;
 import com.fortes.rh.web.action.externo.ExternoActionTest;
 import com.fortes.test.web.tags.LinkTagTest;
@@ -715,7 +726,6 @@ import com.fortes.test.web.tags.LinkTagTest;
 //	NoAllUnitTests.class,
 //	IntegracaoACTests.class,
 	
-	CertificacaoManagerTest.class,
 	PapelManagerTest.class,
 
 	PapelDaoHibernateTest.class,
@@ -921,7 +931,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	AproveitamentoAvaliacaoCursoManagerTest.class,
 
 	CertificacaoDaoHibernateTest.class,
-	//CertificacaoManagerTest.class,
+	CertificacaoManagerTest.class,
 	CertificacaoListActionTest.class,
 	CertificadoTest.class,
 	        
@@ -931,6 +941,16 @@ import com.fortes.test.web.tags.LinkTagTest;
 	        
 	ColaboradorCertificacaoDaoHibernateTest.class,
 	ColaboradorCertificacaoManagerTest.class,
+	
+	LntDaoHibernateTest.class,
+	LntManagerTest.class,
+	LntEditActionTest.class,
+	LntGerenciadorComunicacaoThreadTest.class,
+	
+	CursoLntDaoHibernateTest.class,
+	CursoLntManagerTest.class,
+	ParticipanteCursoLntDaoHibernateTest.class,
+	
 
     // Backup
 	BackupActionTest.class,
@@ -1027,8 +1047,8 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ProvidenciaManagerTest.class,
 	ProvidenciaEditActionTest.class,
 	GerenciadorComunicacaoDaoHibernateTest.class,
-	GerenciadorComunicacaoManagerTest.class,
 	GerenciadorComunicacaoManagerTest_Junit4.class,
+	GerenciadorComunicacaoManagerTest.class,
 	GerenciadorComunicacaoEditActionTest.class,
 	OcorrenciaProvidenciaEditActionTest.class,
 	
@@ -1487,12 +1507,14 @@ import com.fortes.test.web.tags.LinkTagTest;
     //DWR
 	AmbienteDWRTest.class,
 	AreaOrganizacionalDWRTest.class,
+	AreaOrganizacionalDWRTest_JUnit4.class,
 	AspectoDWRTest.class,
 	BairroDWRTest.class,
 	CandidatoDWRTest.class,
 	CargoDWRTest.class,
 	CidadeDWRTest.class,
 	ColaboradorDWRTest.class,
+	ColaboradorDWRTest_JUnit4.class,
 	ConhecimentoDWRTest.class,
 	DiaTurmaDWRTest.class,
 	DntDWRTest.class,
@@ -1513,6 +1535,8 @@ import com.fortes.test.web.tags.LinkTagTest;
 	OcorrenciaDWRTest.class,
 	AvaliacaoDesempenhoDWRTest.class,
 	MorroDWRTest.class,
+	lntDWRTest.class,
+	ParticipanteCursoLntDWRTest.class,
 
     //MODEL
 	HistoricoColaboradorTest.class,

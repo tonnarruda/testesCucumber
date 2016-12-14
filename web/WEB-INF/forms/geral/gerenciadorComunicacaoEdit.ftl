@@ -37,7 +37,7 @@
 	  	</style>
 			
 		<script type="text/javascript">
-
+			
 			function validacoesGerenciadorComunicacao()
 			{
 				var valido = true;
@@ -72,9 +72,7 @@
 					}
 				}
 				
-				if($('#operacao').val() == ${lembreteQuestionarioNaoLiberadoId} || $('#operacao').val() == ${avaliacaoPeriodoExperienciaVencendoId} || $('#operacao').val() == ${habilitacaoAVencerId} ||
-				   $('#operacao').val() == ${lembreteAberturaSolicitacaoEpiId} || $('#operacao').val() == ${lembreteEntregaSolicitacaoEpiId} || $('#operacao').val() == ${lembreteTerminoContratoTemporarioColaboradorId} ||
-				   $('#operacao').val() == ${notificarCursosAVencer} || $('#operacao').val() == ${notificarCertificacoesAVencer} )
+				if(conteinInArray($('#operacao').val()))
 				{
 					if($('.dias').size() == 0  && $('#qtdDias').val() == "")
 					{
@@ -196,16 +194,24 @@
 			
 			function exibeCampoQtdDiasLembrete(operacaoId)
 			{
-				$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId} || operacaoId == ${avaliacaoPeriodoExperienciaVencendoId} || operacaoId == ${habilitacaoAVencerId} ||
-												   operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId} || operacaoId == ${lembreteTerminoContratoTemporarioColaboradorId} || 
-												   operacaoId == ${notificarCursosAVencer} || operacaoId == ${notificarCertificacoesAVencer} || (operacaoId == ${emailQuandoColaboradorCompletaAnoDeEmpresaId} && $('#enviarParas').val() != '6'));
-										   
-				var label = (operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId}) ? 'Dias de prazo para o aviso:' : 'Dias de antecedência para o aviso:';
+				$('#camposQtdDiasLembrete').toggle((conteinInArray(operacaoId) || (operacaoId == ${emailQuandoColaboradorCompletaAnoDeEmpresaId}) && $('#enviarParas').val() != '6'));
+				var label = ($.inArray(parseInt(operacaoId), ${operacoesComAvisoAposPrazo}) >= 0) ? 'Dias de prazo para o aviso:' : 'Dias de antecedência para o aviso:';
 				$('#camposQtdDiasLembrete label').text(label);
 			}
 			
+			var operacoesConfiguradasComLembrete = ${operacoesConfiguradasComLembrete};
+			function conteinInArray(operacaoId){
+				var i = operacoesConfiguradasComLembrete.length;
+			    while (i--) {
+			       if (operacoesConfiguradasComLembrete[i] == operacaoId) {
+			           return true;
+			       }
+			    }
+			    return false;
+			}
+			
 			function decideExibirCampoQtdDiasLembrete(){
-				$('#camposQtdDiasLembrete').toggle($('#operacao').val() == ${emailQuandoColaboradorCompletaAnoDeEmpresaId} && $('#enviarParas').val() != '6');
+				$('#camposQtdDiasLembrete').toggle((conteinInArray($('#operacao').val()) || $('#operacao').val() == ${emailQuandoColaboradorCompletaAnoDeEmpresaId}) && $('#enviarParas').val() != '6');
 			}
 			
 			function addDia(qtd)
@@ -334,7 +340,7 @@
 				<@ww.checkbox id="permitirResponderAvalicao" name="gerenciadorComunicacao.permitirResponderAvaliacao" label="Permitir os usuários marcados acima a responderem o acompanhamento do período de experiência pela caixa de mensagem." labelPosition="left"/>
 			</span>
 			<@ww.hidden name="gerenciadorComunicacao.id" />
-			<@ww.hidden name="gerenciadorComunicacao	.empresa.id" />
+			<@ww.hidden name="gerenciadorComunicacao.empresa.id" />
 			<@ww.token/>
 		</@ww.form>
 	

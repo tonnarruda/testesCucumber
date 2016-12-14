@@ -262,6 +262,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Double produtividade;
 	@Transient
 	private ColaboradorCertificacao colaboradorCertificacao;
+	@Transient
+	private boolean iscritoNaTurma;
 
 	public Colaborador()
 	{
@@ -955,6 +957,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setId(id);
 		setEmpresaId(empresaId);
 		setEmpresaNome(empresaNome);
+	}
+	
+	public Colaborador(String nome, String nomeComercial, Long id, Long empresaId, String empresaNome, Long areaId)
+	{
+		this(nome, nomeComercial, id, empresaId, empresaNome);
+		if(this.areaOrganizacional == null)
+			this.areaOrganizacional = new AreaOrganizacional();
+		this.areaOrganizacional.setId(areaId);
 	}
 
 	public Colaborador(String nome, String nomeComercial, String avaliacaoTitulo, Date respondidaEm, Double performance, String titulo)
@@ -1884,6 +1894,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		iniciaAreaOrganizacional();
 		areaOrganizacional.setId(id);
 	}
+	
+	public Long getAreaOrganizacionalId()
+	{
+		if(areaOrganizacional == null)
+			return null;
+			
+		return areaOrganizacional.getId();
+	}
 
 	public void setAreaOrganizacionalNome(String nome)
 	{
@@ -1909,6 +1927,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		areaOrganizacional.setDescricao(nome);
 	}
 	
+	public void setAreaOrganizacionalNomeComHierarquia(String nomeComHierarquia)
+	{
+		iniciaAreaOrganizacional();
+		areaOrganizacional.setNomeComHierarquia(nomeComHierarquia);
+	}
+
 	public void setAreaOrganizacionalAreaMaeId(Long areaMaeId)
 	{
 		iniciaAreaOrganizacional();
@@ -3298,5 +3322,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setTemFuncao(boolean temFuncao) {
 		this.temFuncao = temFuncao;
+	}
+
+	public boolean isIscritoNaTurma() {
+		return iscritoNaTurma;
+	}
+
+	public void setIscritoNaTurma(boolean iscritoNaTurma) {
+		this.iscritoNaTurma = iscritoNaTurma;
 	}
 }

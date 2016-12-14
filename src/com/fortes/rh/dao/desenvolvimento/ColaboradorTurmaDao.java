@@ -59,4 +59,11 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	ColaboradorTurma findByProjection(Long colaboradorTurmaId);
 	Collection<ColaboradorTurma> findAprovadosByTurma(Long turmaId);
 	Collection<Colaborador> findColabodoresByTurmaId(Long turmaId);
+	Collection<ColaboradorTurma> findByCursoLntId(Long cursoLntId);
+	void updateCursoLnt(Long cursoId, Long colaboradorTurmaId, Long lntId);
+	void removeCursoLnt(Long colaboradorTurmaId);
+	void updateCursoLnt(Long colaboradorTurmaId, Long cursoLnt);
+	Collection<ColaboradorTurma> findParticipantesCursoLnt(Long cursoLntId);
+	void removeAllCursoLntByLnt(Long lntId);
+	void removeCursoLntByParticipantesCursoLnt(Long[] participantesRemovidos);
 }

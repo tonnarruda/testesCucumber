@@ -82,6 +82,8 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	private int qtdContratados;
 	@Transient
 	private String mascara;
+	@Transient
+	private String nomeComHierarquia;
 	
 	public AreaOrganizacional(String nome){
 		this.nome = nome;
@@ -262,6 +264,13 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 		areaMae.setId(idMae);
 	}
+	
+	public Long getIdAreaMae(){
+		if(areaMae != null)
+			return areaMae.getId();
+		
+		return null;
+	}
 
 	public void setNomeResponsavel(String nomeResponsavel)
 	{
@@ -312,6 +321,16 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	public void setResponsavelNome(String nome) {
 		preparaResponsavel();
 		responsavel.setNome(nome);
+	}
+	
+	public void setResponsavelId(Long responsavelId) {
+		preparaResponsavel();
+		responsavel.setId(responsavelId);
+	}
+	
+	public void setCoResponsavelId(Long coResponsavelId) {
+		preparaCoResponsavel();
+		coResponsavel.setId(coResponsavelId);
 	}
 	
 	@NaoAudita
@@ -555,5 +574,20 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 	public void setMascara(String mascara) {
 		this.mascara = mascara;
+	}
+	
+	public String getAreaNomeTruncado() {
+		if(nome.length() > 45)
+			return nome.substring(0,45) + "...";
+		
+		return nome;
+	}
+
+	public String getNomeComHierarquia() {
+		return nomeComHierarquia;
+	}
+
+	public void setNomeComHierarquia(String nomeComHierarquia) {
+		this.nomeComHierarquia = nomeComHierarquia;
 	}
 }

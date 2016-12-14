@@ -9,6 +9,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.opensymphony.xwork.ActionContext;
 
+@SuppressWarnings("serial")
 public class LinkTag extends TagSupport
 {
 	private String href = "";
@@ -17,6 +18,7 @@ public class LinkTag extends TagSupport
 	private String imgTitleDisabled = "";
 	private String imgName = "";
 	private String verifyRole = "";
+	private String iconeClass = "";
 	private boolean opacity = false;
 	private boolean disabled = false;
 	
@@ -43,38 +45,68 @@ public class LinkTag extends TagSupport
 	{
 		if(verifyRole.equals("") || SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{verifyRole}))
 		{
-			link.append("<a");
-			
-			if(!disabled)
+			if(!iconeClass.equals(""))
 			{
+				link.append("<a onmouseover=\"$(this).find('i').addClass('fa-2x').css('color','#6965ec')\" onmouseout=\"$(this).find('i').removeClass('fa-2x').css('color','black')\"");
+
+				if(!disabled)
+				{
 					if(!href.equals(""))
 						link.append(" href=\"" + href + "\"");
-		
+
 					if(!onclick.equals(""))
 						link.append(" onclick=\"" + onclick + "\"");
-			}else
-				opacity = true;
-			
-			link.append(" >");
-			
-			if(!imgName.equals(""))
-			{
-				link.append("<img border=\"0\" ");
+				}else
+					opacity = true;
 				
+				link.append("><i ");
+
 				if(disabled && !imgTitleDisabled.equals(""))
 					link.append(" title=\"" + imgTitleDisabled + "\" ");
 				else if(!imgTitle.equals(""))
 					link.append(" title=\"" + imgTitle + "\" ");
-				
-				link.append(" src=\"/" +ArquivoUtil.getContextName()+"/imgs/" + imgName + "\"");	
-				
+
+				link.append(" class='fa " + iconeClass +" fa-lg'  aria-hidden='true'");
+
 				if(opacity)
 					link.append(" style=\"opacity:0.2;filter:alpha(opacity=20);\"");
 
+				link.append(" ></i>&nbsp;</a>");
+				
+			}else{
+				link.append("<a");
+
+				if(!disabled)
+				{
+					if(!href.equals(""))
+						link.append(" href=\"" + href + "\"");
+
+					if(!onclick.equals(""))
+						link.append(" onclick=\"" + onclick + "\"");
+				}else
+					opacity = true;
+
 				link.append(" >");
+
+				if(!imgName.equals(""))
+				{
+					link.append("<img border=\"0\" ");
+
+					if(disabled && !imgTitleDisabled.equals(""))
+						link.append(" title=\"" + imgTitleDisabled + "\" ");
+					else if(!imgTitle.equals(""))
+						link.append(" title=\"" + imgTitle + "\" ");
+
+					link.append(" src=\"/" +ArquivoUtil.getContextName()+"/imgs/" + imgName + "\"");	
+
+					if(opacity)
+						link.append(" style=\"opacity:0.2;filter:alpha(opacity=20);\"");
+
+					link.append(" >");
+				}
+
+				link.append("</a>");
 			}
-			
-			link.append("</a>");
 		}
 
 		return link;
@@ -158,5 +190,13 @@ public class LinkTag extends TagSupport
 	public void setImgTitleDisabled(String imgTitleDisabled)
 	{
 		this.imgTitleDisabled = imgTitleDisabled;
+	}
+
+	public String getIconeClass() {
+		return iconeClass;
+	}
+
+	public void setIconeClass(String iconeClass) {
+		this.iconeClass = iconeClass;
 	}
 }

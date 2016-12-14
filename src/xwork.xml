@@ -419,7 +419,9 @@
   <include file="/com/fortes/rh/web/action/captacao/xwork-NivelCompetenciaHistorico.xml" />
   <include file="/com/fortes/rh/web/action/captacao/xwork-ConfigHistoricoNivel.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-OrdemDeServico.xml" />
+  <include file="/com/fortes/rh/web/action/desenvolvimento/xwork-Lnt.xml" />
 </xwork>
+
 
 
 

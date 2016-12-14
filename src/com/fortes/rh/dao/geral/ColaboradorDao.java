@@ -155,4 +155,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findComDadosBasicosParaOrdemDeServico( Long colaboradorId, Date dataOrdemDeServico);
 	public void updateRespondeuEntrevistaDesligamento(Long colaboradorId, boolean respondeuEntrevistaDesligamento);
 	public Collection<ColaboradorJson> getColaboradoresJson(String baseCnpj, Long colaboradorId);
+	public Collection<Colaborador> findByAreasIds(Long... areasIds);
 }

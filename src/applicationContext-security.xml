@@ -577,6 +577,20 @@
 				/desenvolvimento/turma/imprimirCursosVencidosAVencer.action*=ROLE_REL_CURSOS_VENCIDOS_A_VENCER
 				/desenvolvimento/colaboradorAvaliacaoPratica/*/**=ROLE_COLABORADOR_AVALIACAO_PRATICA
 				/desenvolvimento/colaboradorAvaliacaoPratica/*/**=ROLE_COLABORADOR_AVALIACAO_PRATICA
+				
+				/desenvolvimento/lnt/list.action*=ROLE_MOV_LNT
+				/desenvolvimento/lnt/prepareInsert.action*=ROLE_MOV_LNT_INSERIR
+				/desenvolvimento/lnt/insert.action*=ROLE_MOV_LNT_INSERIR
+				/desenvolvimento/lnt/prepareUpdate.action*=ROLE_MOV_LNT_EDITAR
+				/desenvolvimento/lnt/update.action*=ROLE_MOV_LNT_EDITAR
+				/desenvolvimento/lnt/delete.action*=ROLE_MOV_LNT_EXCLUIR
+				/desenvolvimento/lnt/adicionarColaboradores.action*=ROLE_MOV_LNT_ADICIONAR_COLABORADORES
+				/desenvolvimento/lnt/analisar.action*=ROLE_MOV_LNT_ANALISAR
+				/desenvolvimento/lnt/finalizar.action*=ROLE_MOV_LNT_FINALIZAR
+				/desenvolvimento/lnt/imprimir.action*=ROLE_MOV_LNT_IMPRIMIR
+				/desenvolvimento/lnt/relatorioParticipantes.action*=ROLE_MOV_LNT_ADICIONAR_COLABORADORES,ROLE_MOV_LNT_IMPRIMIR
+				/desenvolvimento/lnt/gerarCursosETurmas.action*=ROLE_MOV_LNT_GERAR_CURSOS_E_TURMAS
+				/desenvolvimento/lnt/visualizarParticipantesCursoLnt.action*=ROLE_MOV_LNT_GERAR_CURSOS_E_TURMAS
 
 				/pesquisa/trafego/*/**=ROLE_ANONYMOUS,ROLE_USER
 				

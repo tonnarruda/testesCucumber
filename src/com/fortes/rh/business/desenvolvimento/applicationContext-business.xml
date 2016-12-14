@@ -37,9 +37,6 @@
     <property name="aproveitamentoAvaliacaoCursoManager">
       <ref bean="aproveitamentoAvaliacaoCursoManager" />
     </property>
-    <property name="avaliacaoCursoManager">
-      <ref bean="avaliacaoCursoManager" />
-    </property>
     <property name="certificacaoManager">
       <ref bean="certificacaoManager" />
     </property>
@@ -145,6 +142,9 @@
     </property>
     <property name="transactionManager">
       <ref bean="transactionManager" />
+    </property>
+    <property name="cursoLntManager">
+      <ref bean="cursoLntManager" />
     </property>
   </bean>
   <bean id="cursoManager" parent="parentManager">
@@ -298,7 +298,55 @@
       <ref bean="colaboradorCertificacaoManagerTarget" />
     </property>
   </bean>
+  <bean id="lntManagerTarget" class="com.fortes.rh.business.desenvolvimento.LntManagerImpl">
+    <property name="dao">
+      <ref bean="lntDao" />
+    </property>
+    <property name="participanteCursoLntManager">
+      <ref bean="participanteCursoLntManager" />
+    </property>
+    <property name="areaOrganizacionalManager">
+      <ref bean="areaOrganizacionalManager" />
+    </property>
+    <property name="empresaManager">
+      <ref bean="empresaManager" />
+    </property>
+  </bean>
+  <bean id="lntManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.LntManager</value>
+    </property>
+    <property name="target">
+      <ref bean="lntManagerTarget" />
+    </property>
+  </bean>
+  <bean id="participanteCursoLntManagerTarget" class="com.fortes.rh.business.desenvolvimento.ParticipanteCursoLntManagerImpl">
+    <property name="dao">
+      <ref bean="participanteCursoLntDao" />
+    </property>
+  </bean>
+  <bean id="participanteCursoLntManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.ParticipanteCursoLntManager</value>
+    </property>
+    <property name="target">
+      <ref bean="participanteCursoLntManagerTarget" />
+    </property>
+  </bean>
+  <bean id="cursoLntManagerTarget" class="com.fortes.rh.business.desenvolvimento.CursoLntManagerImpl">
+    <property name="dao">
+      <ref bean="cursoLntDao" />
+    </property>
+    <property name="participanteCursoLntManager">
+      <ref bean="participanteCursoLntManager" />
+    </property>
+  </bean>
+  <bean id="cursoLntManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.CursoLntManager</value>
+    </property>
+    <property name="target">
+      <ref bean="cursoLntManagerTarget" />
+    </property>
+  </bean>
 </beans>
-
-
-

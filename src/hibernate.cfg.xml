@@ -129,6 +129,9 @@
     <mapping class="com.fortes.rh.model.desenvolvimento.SituacaoAvaliacaoTurma" />
     <mapping class="com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica" />
     <mapping class="com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.Lnt" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.CursoLnt" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.ParticipanteCursoLnt" />
     <!-- PESQUISAS -->
     <mapping class="com.fortes.rh.model.pesquisa.Resposta" />
     <mapping class="com.fortes.rh.model.pesquisa.Pergunta" />
@@ -207,6 +210,7 @@
     <mapping class="com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi" />
     <mapping class="com.fortes.rh.model.sesmt.TipoTamanhoEPI" />
     <mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao" />
+    <mapping class="com.fortes.rh.model.sesmt.OrdemDeServico" />
 	<!-- AVALIAÇÃO -->
     <mapping class="com.fortes.rh.model.avaliacao.PeriodoExperiencia" />
     <mapping class="com.fortes.rh.model.avaliacao.Avaliacao" />
@@ -214,9 +218,7 @@
     <mapping class="com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho" />
 	<mapping class="com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho" />
     <mapping class="com.fortes.rh.model.avaliacao.AvaliacaoPratica" />
-    
-    <mapping class="com.fortes.rh.model.ws.Token" />
-    <mapping class="com.fortes.rh.model.sesmt.OrdemDeServico" />
-  </session-factory>
 
+    <mapping class="com.fortes.rh.model.ws.Token" />
+  </session-factory>
 </hibernate-configuration>

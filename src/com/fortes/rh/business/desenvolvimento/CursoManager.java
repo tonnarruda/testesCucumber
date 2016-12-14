@@ -7,6 +7,7 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.web.tags.CheckBox;
 
@@ -42,4 +43,5 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<Curso> findByHistoricoFuncaoId(Long historicoFuncaoId);
 	public Collection<CheckBox> populaCheckListCurso(Long empresaId);
 	public boolean existePresenca(Long cursoId);
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 }

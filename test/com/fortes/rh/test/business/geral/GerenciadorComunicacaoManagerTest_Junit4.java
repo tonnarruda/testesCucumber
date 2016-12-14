@@ -2,6 +2,8 @@ package com.fortes.rh.test.business.geral;
 
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyCollectionOf;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doThrow;
@@ -15,6 +17,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
@@ -33,6 +37,8 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
+import com.fortes.rh.business.desenvolvimento.LntManager;
+import com.fortes.rh.business.desenvolvimento.ParticipanteCursoLntManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CartaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -50,14 +56,19 @@ import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.desenvolvimento.CursoLnt;
+import com.fortes.rh.model.desenvolvimento.Lnt;
+import com.fortes.rh.model.desenvolvimento.ParticipanteCursoLnt;
 import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.StatusAutorizacaoGestor;
 import com.fortes.rh.model.dicionario.TipoCartao;
+import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cartao;
 import com.fortes.rh.model.geral.Colaborador;
@@ -72,22 +83,30 @@ import com.fortes.rh.test.factory.captacao.CartaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CursoLntFactory;
+import com.fortes.rh.test.factory.desenvolvimento.LntFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ParticipanteCursoLntFactory;
 import com.fortes.rh.test.factory.geral.GerenciadorComunicacaoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
+import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.SpringUtil;
 
-public class GerenciadorComunicacaoManagerTest_Junit4
+public class GerenciadorComunicacaoManagerTest_Junit4 
 {
 	private GerenciadorComunicacaoManagerImpl gerenciadorComunicacaoManager = new GerenciadorComunicacaoManagerImpl();
 	private GerenciadorComunicacaoDao gerenciadorComunicacaoDao;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
+	private ParticipanteCursoLntManager participanteCursoLntManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private PeriodoExperienciaManager periodoExperienciaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -107,6 +126,7 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 	private CartaoManager cartaoManager;
 	private ExameManager exameManager;
 	private CargoManager cargoManager;
+	private LntManager lntManager;
 	private Mail mail;
 	
 	@Before
@@ -147,6 +167,9 @@ public class GerenciadorComunicacaoManagerTest_Junit4
         
         cargoManager = mock(CargoManager.class);
         gerenciadorComunicacaoManager.setCargoManager(cargoManager);
+        
+        lntManager = mock(LntManager.class);
+        gerenciadorComunicacaoManager.setLntManager(lntManager);
 
         mail = mock(Mail.class);
         gerenciadorComunicacaoManager.setMail(mail);
@@ -162,6 +185,9 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 
 		providenciaManager = mock(ProvidenciaManager.class);
 		gerenciadorComunicacaoManager.setProvidenciaManager(providenciaManager);
+		
+		participanteCursoLntManager = mock(ParticipanteCursoLntManager.class);
+		gerenciadorComunicacaoManager.setParticipanteCursoLntManager(participanteCursoLntManager);
 		
 		colaboradorManager = mock(ColaboradorManager.class);
 		MockSpringUtilJUnit4.mocks.put("colaboradorManager", colaboradorManager);
@@ -182,8 +208,23 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 		estabelecimentoManager = mock(EstabelecimentoManager.class);
 		MockSpringUtilJUnit4.mocks.put("estabelecimentoManager", estabelecimentoManager);
 
-//        Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
-//        Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
+		gerenciadorComunicacaoDao = mock(GerenciadorComunicacaoDao.class);
+		areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
+		usuarioMensagemManager = mock(UsuarioMensagemManager.class);
+		usuarioEmpresaManager = mock(UsuarioEmpresaManager.class);
+		colaboradorManager = mock(ColaboradorManager.class);
+		mail = mock(Mail.class);
+		
+		gerenciadorComunicacaoManager.setDao(gerenciadorComunicacaoDao);;
+		gerenciadorComunicacaoManager.setAreaOrganizacionalManager(areaOrganizacionalManager);
+		gerenciadorComunicacaoManager.setUsuarioMensagemManager(usuarioMensagemManager);
+		gerenciadorComunicacaoManager.setUsuarioEmpresaManager(usuarioEmpresaManager);
+		gerenciadorComunicacaoManager.setColaboradorManager(colaboradorManager);
+		gerenciadorComunicacaoManager.setMail(mail);
+		
+        Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
+        Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
+        Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
     }
 	
 	@Test
@@ -460,4 +501,385 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 		
 		return empresa;
 	}
+
+	@Test
+	public void testEnviarNotificaInicioLntPorEmailParaResponsavelRH() throws AddressException, MessagingException
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setEmailRespRH("responsavelrh@email.com.br");
+		
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.INICIAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		gerenciadorComunicacaoManager.enviaAvisoInicioLnt(Arrays.asList(lnt));
+		
+		verify(mail, times(1)).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+	}	
+	
+	@Test
+	public void testEnviarNotificaInicioLntPorEmailParaUsuarios() throws AddressException, MessagingException
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.EMAIL, EnviarPara.USUARIOS);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.INICIAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		gerenciadorComunicacaoManager.enviaAvisoInicioLnt(Arrays.asList(lnt));
+		
+		verify(mail, times(1)).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+	}
+	
+	@Test
+	public void testEnviarNotificaInicioLntPorEmailParaGestor() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.EMAIL, EnviarPara.GESTOR_AREA);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+		
+		String[] emails = new String[]{"gestor@email.com.br"};
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.INICIAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		when(areaOrganizacionalManager.findByLntId(eq(lnt.getId()), new Long[]{})).thenReturn(areas);
+		when(areaOrganizacionalManager.getEmailsResponsaveis(eq(areas), eq(gerenciadorComunicacao.getEmpresa().getId()), eq(AreaOrganizacional.RESPONSAVEL))).thenReturn(emails);
+		gerenciadorComunicacaoManager.enviaAvisoInicioLnt(Arrays.asList(lnt));
+		
+		verify(mail, times(1)).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+	}
+	
+	@Test
+	public void testEnviarNotificaInicioLntPorEmailParaCoGestor() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.EMAIL, EnviarPara.COGESTOR_AREA);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+		
+		String[] emails = new String[]{"cogestor@email.com.br"};
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.INICIAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		when(areaOrganizacionalManager.findByLntId(eq(lnt.getId()), new Long[]{})).thenReturn(areas);
+		when(areaOrganizacionalManager.getEmailsResponsaveis(eq(areas), eq(gerenciadorComunicacao.getEmpresa().getId()), eq(AreaOrganizacional.CORRESPONSAVEL))).thenReturn(emails);
+		gerenciadorComunicacaoManager.enviaAvisoInicioLnt(Arrays.asList(lnt));
+		
+		verify(mail, times(1)).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+	}
+	
+	@Test
+	public void testEnviarNotificaInicioLntPorMensagemParaUsuarios() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.INICIAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		gerenciadorComunicacaoManager.enviaAvisoInicioLnt(Arrays.asList(lnt));
+		verify(mail, never()).send(eq(empresa), anyString(), anyString(), any(File[].class), any(String[].class));
+		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagem(anyString(), eq("RH"), anyString(), anyCollectionOf(UsuarioEmpresa.class), any(Colaborador.class), eq(TipoMensagem.TED), any(Avaliacao.class), anyLong());
+	}
+	
+	@Test
+	public void testEnviarNotificaInicioLntPorMensagemParaGestor() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.GESTOR_AREA);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+		Collection<Long> areasIds = LongUtil.collectionToCollectionLong(areas);
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.INICIAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		when(areaOrganizacionalManager.findByLntId(lnt.getId(), new Long[]{})).thenReturn(areas);
+		when(areaOrganizacionalManager.getAncestraisIds(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areas))).thenReturn(areasIds);
+		
+		gerenciadorComunicacaoManager.enviaAvisoInicioLnt(Arrays.asList(lnt));
+		verify(mail, never()).send(eq(empresa), anyString(), anyString(), any(File[].class), any(String[].class));
+		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagemRespAreaOrganizacional(anyString(), anyString(), anyString(), eq(areasIds), eq(TipoMensagem.TED), any(Avaliacao.class), anyLong());
+	}
+	
+	@Test
+	public void testEnviarNotificaInicioLntPorMensagemParaCoGestor() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.COGESTOR_AREA);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+		Collection<Long> areasIds = LongUtil.collectionToCollectionLong(areas);
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.INICIAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		when(areaOrganizacionalManager.findByLntId(eq(lnt.getId()), new Long[]{})).thenReturn(areas);
+		when(areaOrganizacionalManager.getAncestraisIds(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areas))).thenReturn(areasIds);
+		
+		gerenciadorComunicacaoManager.enviaAvisoInicioLnt(Arrays.asList(lnt));
+		verify(mail, never()).send(eq(empresa), anyString(), anyString(), any(File[].class), any(String[].class));
+		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(anyString(), anyString(), anyString(), eq(areasIds), eq(TipoMensagem.TED), any(Avaliacao.class), anyLong());
+	}
+	
+	@Test
+	public void testEnviaAvisoLntFinalizadaPorEmailParaResponsavelRH() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setEmailRespRH("responsavel_rh@grupofortes.com.br");
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.FINALIZAR_LNT, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
+		
+		setUpEnviaAvisoLntFinalizada(gerenciadorComunicacao, empresa);
+		
+		verify(mail, times(1)).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+	}
+	
+	@Test
+	public void testEnviaAvisoLntFinalizadaPorEmailParaUsuarios() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.FINALIZAR_LNT, MeioComunicacao.EMAIL, EnviarPara.USUARIOS);
+		gerenciadorComunicacao.setUsuarios(Arrays.asList(UsuarioFactory.getEntity(1L)));
+		
+		setUpEnviaAvisoLntFinalizada(gerenciadorComunicacao, empresa);
+		
+		when(usuarioEmpresaManager.findUsuariosAtivo(anyCollectionOf(Long.class), anyLong())).thenReturn(Arrays.asList(UsuarioEmpresaFactory.getEntity(2L)));
+		
+		verify(mail, times(1)).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+	}
+	
+	@Test
+	public void testEnviaAvisoLntFinalizadaPorEmailParaGestor() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.FINALIZAR_LNT, MeioComunicacao.EMAIL, EnviarPara.GESTOR_AREA);
+		
+		Map<Long, String> mapResponsaveisIdsEmails = new HashMap<Long, String>();
+		mapResponsaveisIdsEmails.put(1L, "teste@teste.com");
+		when(areaOrganizacionalManager.findMapResponsaveisIdsEmails(empresa.getId())).thenReturn(mapResponsaveisIdsEmails);
+
+		setUpEnviaAvisoLntFinalizada(gerenciadorComunicacao, empresa);
+		
+		verify(mail, times(1)).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+	}
+	
+	@Test
+	public void testEnviaAvisoLntFinalizadaPorEmailParaCoGestor() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.FINALIZAR_LNT, MeioComunicacao.EMAIL, EnviarPara.COGESTOR_AREA);
+		
+		Map<Long, String> mapResponsaveisIdsEmails = new HashMap<Long, String>();
+		mapResponsaveisIdsEmails.put(1L, "teste@teste.com");
+		when(areaOrganizacionalManager.findMapCoResponsaveisIdsEmails(empresa.getId())).thenReturn(mapResponsaveisIdsEmails);
+
+		setUpEnviaAvisoLntFinalizada(gerenciadorComunicacao, empresa);
+		
+		verify(mail, times(1)).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+	}
+	
+	@Test
+	public void testEnviaAvisoLntFinalizadaPorCaixaMensagemParaUsuarios() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.FINALIZAR_LNT, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
+		gerenciadorComunicacao.setUsuarios(Arrays.asList(UsuarioFactory.getEntity(1L)));
+		
+		when(usuarioEmpresaManager.findUsuariosAtivo(anyCollectionOf(Long.class), anyLong())).thenReturn(Arrays.asList(UsuarioEmpresaFactory.getEntity(2L)));
+
+		setUpEnviaAvisoLntFinalizada(gerenciadorComunicacao, empresa);
+
+		verify(mail, never()).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagem(anyString(), anyString(), anyString(), anyCollectionOf(UsuarioEmpresa.class), any(Colaborador.class), eq(TipoMensagem.TED), any(Avaliacao.class), anyLong());
+	}
+	
+	@Test
+	public void testEnviaAvisoLntFinalizadaPorCaixaMensagemParaGestor() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.FINALIZAR_LNT, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.GESTOR_AREA);
+		
+		setUpEnviaAvisoLntFinalizada(gerenciadorComunicacao, empresa);
+
+		verify(mail, never()).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagemRespAreaOrganizacional(anyString(), anyString(), anyString(), anyCollectionOf(Long.class), eq(TipoMensagem.TED), any(Avaliacao.class), anyLong());
+	}
+	
+	@Test
+	public void testEnviaAvisoLntFinalizadaPorCaixaMensagemParaCoGestor() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.FINALIZAR_LNT, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.COGESTOR_AREA);
+		
+		setUpEnviaAvisoLntFinalizada(gerenciadorComunicacao, empresa);
+		
+		verify(mail, never()).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(anyString(), anyString(), anyString(), anyCollectionOf(Long.class), eq(TipoMensagem.TED), any(Avaliacao.class), anyLong());
+	}
+
+	private Lnt setUpEnviaAvisoLntFinalizada(GerenciadorComunicacao gerenciadorComunicacao, Empresa empresa) throws Exception
+	{
+		Lnt lnt = LntFactory.getEntity(null, "LNT", DateUtil.incrementaDias(new Date(), -2), DateUtil.incrementaDias(new Date(), -1), null);
+		CursoLnt cursoLnt = CursoLntFactory.getEntity(null, lnt); 
+		
+		ParticipanteCursoLnt participanteCursoLnt1 = ParticipanteCursoLntFactory.getEntity(null, null, cursoLnt);
+		participanteCursoLnt1.setColaborador(ColaboradorFactory.getEntity(1L));
+		participanteCursoLnt1.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		
+		Map<Long, Collection<ParticipanteCursoLnt>> mapPerticipantesLNTPorResponsaveis = new HashMap<Long, Collection<ParticipanteCursoLnt>>();
+		mapPerticipantesLNTPorResponsaveis.put(1L, Arrays.asList(participanteCursoLnt1));
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.FINALIZAR_LNT.getId(), empresa.getId())).thenReturn(Arrays.asList(gerenciadorComunicacao));
+
+		gerenciadorComunicacaoManager.enviaAvisoLntFinalizada("subject", new StringBuilder("body"), "link", empresa.getId(), null, null, mapPerticipantesLNTPorResponsaveis, null);
+		
+		return lnt;
+	}
+	
+	@Test
+	public void testEnviaAvisoFimLntPorEmailParaCoGestor() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.EMAIL, EnviarPara.COGESTOR_AREA);
+		gerenciadorComunicacao.setQtdDiasLembrete("0");
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+		
+		String[] emails = new String[]{"cogestor@email.com.br"};
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ENCERRAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		when(areaOrganizacionalManager.findByLntId(eq(lnt.getId()), new Long[]{})).thenReturn(areas);
+		when(areaOrganizacionalManager.getEmailsResponsaveis(eq(areas), eq(gerenciadorComunicacao.getEmpresa().getId()), eq(AreaOrganizacional.CORRESPONSAVEL))).thenReturn(emails);
+		gerenciadorComunicacaoManager.enviaAvisoFimLnt(Arrays.asList(lnt));
+		
+		verify(mail, times(1)).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+	}
+	
+	@Test
+	public void testEnviarNotificaFimLntPorEmailParaResponsavelRH() throws AddressException, MessagingException
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setEmailRespRH("responsavelrh@email.com.br");
+		
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
+		gerenciadorComunicacao.setQtdDiasLembrete("0");
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ENCERRAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		gerenciadorComunicacaoManager.enviaAvisoFimLnt(Arrays.asList(lnt));
+		
+		verify(mail, times(1)).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+	}	
+	
+	@Test
+	public void testEnviarNotificaFimLntPorEmailParaUsuarios() throws AddressException, MessagingException
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.EMAIL, EnviarPara.USUARIOS);
+		gerenciadorComunicacao.setQtdDiasLembrete("0");
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ENCERRAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		gerenciadorComunicacaoManager.enviaAvisoFimLnt(Arrays.asList(lnt));
+		
+		verify(mail, times(1)).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+	}
+	
+	@Test
+	public void testEnviarNotificaFimLntPorEmailParaGestor() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.EMAIL, EnviarPara.GESTOR_AREA);
+		gerenciadorComunicacao.setQtdDiasLembrete("0");
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+		
+		String[] emails = new String[]{"gestor@email.com.br"};
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ENCERRAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		when(areaOrganizacionalManager.findByLntId(eq(lnt.getId()), new Long[]{})).thenReturn(areas);
+		when(areaOrganizacionalManager.getEmailsResponsaveis(eq(areas), eq(gerenciadorComunicacao.getEmpresa().getId()), eq(AreaOrganizacional.RESPONSAVEL))).thenReturn(emails);
+		gerenciadorComunicacaoManager.enviaAvisoFimLnt(Arrays.asList(lnt));
+		
+		verify(mail, times(1)).send(eq(empresa), anyString(), any(DataSource[].class), anyString(), any(String[].class));
+	}
+	
+	@Test
+	public void testEnviarNotificaFimLntPorMensagemParaUsuarios() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
+		gerenciadorComunicacao.setQtdDiasLembrete("0");
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ENCERRAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		gerenciadorComunicacaoManager.enviaAvisoFimLnt(Arrays.asList(lnt));
+		verify(mail, never()).send(eq(empresa), anyString(), anyString(), any(File[].class), any(String[].class));
+		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagem(anyString(), eq("RH"), anyString(), anyCollectionOf(UsuarioEmpresa.class), any(Colaborador.class), eq(TipoMensagem.TED), any(Avaliacao.class), anyLong());
+	}
+	
+	@Test
+	public void testEnviarNotificaFimLntPorMensagemParaGestor() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.GESTOR_AREA);
+		gerenciadorComunicacao.setQtdDiasLembrete("0");
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+		Collection<Long> areasIds = LongUtil.collectionToCollectionLong(areas);
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ENCERRAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		when(areaOrganizacionalManager.findByLntId(lnt.getId(), new Long[]{})).thenReturn(areas);
+		when(areaOrganizacionalManager.getAncestraisIds(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areas))).thenReturn(areasIds);
+		
+		gerenciadorComunicacaoManager.enviaAvisoFimLnt(Arrays.asList(lnt));
+		verify(mail, never()).send(eq(empresa), anyString(), anyString(), any(File[].class), any(String[].class));
+		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagemRespAreaOrganizacional(anyString(), anyString(), anyString(), eq(areasIds), eq(TipoMensagem.TED), any(Avaliacao.class), anyLong());
+	}
+	
+	@Test
+	public void testEnviarAvisoLntAutomaticoPorMensagemParaCoGestor() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Lnt lnt = LntFactory.getEntity(null, "LNT", new Date(), new Date(), null);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.COGESTOR_AREA);
+		gerenciadorComunicacao.setQtdDiasLembrete("0");
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+		Collection<Long> areasIds = LongUtil.collectionToCollectionLong(areas);
+		
+		when(lntManager.findLntsNaoFinalizadas(null)).thenReturn(Arrays.asList(lnt));
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ENCERRAR_PERIODO_LNT.getId(), null)).thenReturn(gerenciadorComunicacaos);
+		when(areaOrganizacionalManager.findByLntId(eq(lnt.getId()), new Long[]{})).thenReturn(areas);
+		when(areaOrganizacionalManager.getAncestraisIds(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areas))).thenReturn(areasIds);
+		
+		gerenciadorComunicacaoManager.enviaAvisoLntAutomatico();
+		verify(mail, never()).send(eq(empresa), anyString(), anyString(), any(File[].class), any(String[].class));
+		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(anyString(), anyString(), anyString(), eq(areasIds), eq(TipoMensagem.TED), any(Avaliacao.class), anyLong());
+	}
+	
 }

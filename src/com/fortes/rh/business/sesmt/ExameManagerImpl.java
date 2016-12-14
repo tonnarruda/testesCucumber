@@ -85,7 +85,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		try
 		{
 			Collection<Exame> examesTmp = findByEmpresaComAsoPadrao(empresaId);
-			return CheckListBoxUtil.populaCheckListBox(examesTmp, "getId", "getNome");
+			return CheckListBoxUtil.populaCheckListBox(examesTmp, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{

@@ -256,7 +256,7 @@ public class TurmaListAction extends MyActionSupportList
 
 		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, empresaIds, new String[]{"descricao"});
 		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(true, empresaIds);
-		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo");
+		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo", null);
 		
 		cursosColaboradores = new HashMap<Curso, Set<Colaborador>>();
 		String[] dados = null;
@@ -315,7 +315,7 @@ public class TurmaListAction extends MyActionSupportList
 							colaboradoresIds[j++] = cTurma.getColaborador().getId();
 						
 						Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null, false);
-						colaboradorTurmaManager.insereColaboradorTurmas(colaboradoresIds, colaboradoresTurmas, turma, null, 0, null, getEmpresaSistema().isControlarVencimentoPorCertificacao());
+						colaboradorTurmaManager.insereColaboradorTurmas(colaboradoresIds, colaboradoresTurmas, turma, null, 0, null, getEmpresaSistema().isControlarVencimentoPorCertificacao(), null);
 					}
 					else
 					{
@@ -433,7 +433,7 @@ public class TurmaListAction extends MyActionSupportList
 	public String relatorioInvestimento() throws Exception
 	{
 		cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
-		cursosCheckList = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
+		cursosCheckList = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome", null);
 		
 		return Action.SUCCESS;
 	}
@@ -467,7 +467,7 @@ public class TurmaListAction extends MyActionSupportList
 	public String prepareImprimirCursosVencidosAVencer() throws Exception
 	{
 		prepareEmpresas(true, "ROLE_REL_CURSOS_VENCIDOS_A_VENCER");
-		empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+		empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome", null);
 		CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);
 		
 		if(dataIni==null) dataIni = new Date();

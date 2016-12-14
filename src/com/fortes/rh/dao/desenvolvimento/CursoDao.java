@@ -6,6 +6,7 @@ import java.util.Date;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Empresa;
 
 public interface CursoDao extends GenericDao<Curso>
@@ -38,4 +39,5 @@ public interface CursoDao extends GenericDao<Curso>
 	public IndicadorTreinamento findIndicadorTreinamentoCustos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cursoIds);
 	public Double findQtdHorasRatiada(Date dataIni, Date dataFim, Long[] empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cursosIds);
 	public Integer findCargaHorariaTreinamentoRatiada(Long[] cursosIds, Long[] empresasIds, Long[] estabelecimentosIds, Long[] areasIds, Date dataInicio, Date dataFim, boolean realizada);
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 }

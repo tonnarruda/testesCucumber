@@ -231,8 +231,16 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 
 	public void testSaveMensagemAndUsuarioMensagemSemUsuarioDesconsiderado() throws Exception
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		
 		UsuarioEmpresa usuarioEmpresa1 = UsuarioEmpresaFactory.getEntity(1L);
+		usuarioEmpresa1.setEmpresa(empresa);
+		usuarioEmpresa1.setUsuario(usuario);
+		
 		UsuarioEmpresa usuarioEmpresa2 = UsuarioEmpresaFactory.getEntity(2L);
+		usuarioEmpresa2.setEmpresa(empresa);
+		usuarioEmpresa2.setUsuario(usuario);
 		
 		Mensagem mensagem = MensagemFactory.getEntity(1L);
 		mensagem.setTipo(TipoMensagem.INFO_FUNCIONAIS);

@@ -29,7 +29,7 @@ public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> 
 
 	public Collection<CheckBox> getEmpresasCheck(Long empresaId) throws Exception
 	{
-		return CheckListBoxUtil.populaCheckListBox( empresaBdsManager.findToList(new String[]{"id", "nome"},new String[]{"id", "nome"},new String[]{"empresa.id"},new Object[]{empresaId},new String[]{"nome"}), "getId", "getNome");
+		return CheckListBoxUtil.populaCheckListBox( empresaBdsManager.findToList(new String[]{"id", "nome"},new String[]{"id", "nome"},new String[]{"empresa.id"},new Object[]{empresaId},new String[]{"nome"}), "getId", "getNome", null);
 	}
 
 	public String[] montaEmails(String emailAvulso, String[] empresasCheck)

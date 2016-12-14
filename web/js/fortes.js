@@ -226,6 +226,7 @@ function addChecksByCollection(divName, dados, label, onClick)
 	var selecionado = '';
 	var desabilitado = '';
 	var titulo = '';
+	var parameters = '';
 	var label = label ? label : 'nome';
 
 	if (onClick != null && onClick != "")
@@ -235,10 +236,14 @@ function addChecksByCollection(divName, dados, label, onClick)
 	{
 		selecionado = dados[prop]['selecionado'] ? 'checked="checked"' : '';
 		desabilitado = dados[prop]['desabilitado'] ? 'disabled="disabled"' : '';
+		parameters = dados[prop]['parameters'] ? dados[prop]['parameters'] : '';
 		titulo = dados[prop]['titulo'] ? 'title="' + dados[prop]['titulo'] + '"' : '';
 		
 		result += "<label for=\"checkGroup"+ divName + dados[prop]['id'] +"\" >";
-		result += "<input name=\""+ divName +"\" value=\""+ dados[prop]['id'] +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + dados[prop]['id'] +"\" " + titulo + " " + selecionado + " " + desabilitado + " />" + dados[prop][label];
+		result += "<input name=\""+ divName +"\" value=\""+ dados[prop]['id'] +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + dados[prop]['id'] +"\" " + titulo + " " + selecionado + " " + desabilitado; 
+		for ( var i in parameters)
+			result += " "+i+"="+parameters[i];
+		result += " />" + dados[prop][label];
     	result += "</label>";
 	}
 
@@ -333,6 +338,55 @@ function addOptionsByMap(selectId, data, prompt)
 	}
 
 	$('#' + selectId).html(result);
+}
+
+
+function addChecksCheckBox(divName, data, marcados)
+{
+	var i = 0;
+	var result = "";
+	var qtdParamter = 0; 
+	var dados = new Array();
+
+	for (var key in data) {
+		dados[i] = new Array();
+		dados[i][0] = data[key].nome;
+		dados[i][1] = data[key].id;
+							
+		var j = 0;
+		var paramters = data[key].parameters; 
+		for (var keyPar in paramters){
+			dados[i][2+j] = keyPar + "=\"" + paramters[keyPar] + "\"";
+			j++;
+		}
+		
+		if(qtdParamter < j) qtdParamter = j;
+		i++;
+	}
+
+	dados.sort(function(a,b) {
+		if (a[0].toLowerCase() < b[0].toLowerCase()) return -1;
+	    if (a[0].toLowerCase() > b[0].toLowerCase()) return 1;
+	    return 0;
+	});
+	
+	for (var i = 0 ;i < dados.length; i++)
+	{
+		result += "<label for=\"checkGroup"+ divName + dados[i][1] +"\" >";
+		result += "<input name=\""+ divName +"\" value=\""+ dados[i][1] +"\" type=\"checkbox\" id=\"checkGroup"+ divName + dados[i][1] + "\"";
+
+		for (var j = 0;j < qtdParamter; j++)
+			if(dados[i][2 + j])
+				result += " " + dados[i][2 + j];	
+		
+		if(marcados && marcados.indexOf(parseInt(dados[i][1])) != -1) 
+			result += " checked ";
+		
+		result += "/>" + dados[i][0] + "</label>";
+	}
+
+	$('#listCheckBox'+ divName.replace("[","\\[").replace("]","\\]")).html(result);
+	$('#listCheckBoxFilter' + divName + ', #listCheckBoxActive' + divName).val('');
 }
 
 function compararData(dataInicio, dataFinal)

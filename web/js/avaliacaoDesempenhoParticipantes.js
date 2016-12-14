@@ -189,7 +189,7 @@ $(function() {
 				});
 				
 				$("#avaliadores .avaliado_" + $(this).attr("id")).remove();
-			});
+			}); 
 			
 			$(this).parents(".box").find(".ui-selected").remove();
 			$(this).parents(".box").find(".ui-widget-header.actions .only-selectables").addClass("disabled");

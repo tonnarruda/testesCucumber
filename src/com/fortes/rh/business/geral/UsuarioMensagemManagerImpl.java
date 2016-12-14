@@ -272,7 +272,8 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 
 		for (UsuarioEmpresa usuarioEmpresa : usuarioEmpresas)
 		{
-			if(usuarioIdDesconsiderado != null && usuarioIdDesconsiderado.equals(usuarioEmpresa.getUsuario().getId()))
+			if((usuarioIdDesconsiderado != null && usuarioIdDesconsiderado.equals(usuarioEmpresa.getUsuario().getId()))
+					|| ((usuarioEmpresa.getUsuario() == null || usuarioEmpresa.getUsuario().getId() == null) && (usuarioEmpresa.getEmpresa() == null || usuarioEmpresa.getId() == null)))
 				continue;
 			
 			UsuarioMensagem usuarioMensagem = new UsuarioMensagem();

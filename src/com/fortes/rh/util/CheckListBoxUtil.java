@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.apache.commons.collections.map.LinkedMap;
+
 import com.fortes.web.tags.CheckBox;
 
 /**
@@ -121,9 +123,10 @@ public final class CheckListBoxUtil
 	 * @param list
 	 * @param methodKey
 	 * @param methodValue
+	 * @param parameters TODO
 	 * @return Collection de ListCheckBox
 	 * @throws Exception */
-	public static Collection<CheckBox> populaCheckListBox(Collection list, String methodKey, String methodValue) throws Exception
+	public static Collection<CheckBox> populaCheckListBox(Collection list, String methodKey, String methodValue, String[] parameters) throws Exception
 	{
 		//Collection que retornará os CheckListBox
 		Collection<CheckBox> listBox = new ArrayList<CheckBox>();
@@ -131,6 +134,8 @@ public final class CheckListBoxUtil
 		Method mKey   = null;
 		//metodo que retornará value do check
 		Method mValue = null;
+		//metodo que retornará outros parametros para o check
+		Method mParameter = null;
 
 		//loop por elementos da Collection
 		for (Object itemTmp : list)
@@ -140,10 +145,22 @@ public final class CheckListBoxUtil
 			mKey   = itemTmp.getClass().getMethod(methodKey);
 			mValue = itemTmp.getClass().getMethod(methodValue);
 
+			if (parameters != null) {
+				Map<String, String> checkParameters = new LinkedMap();
+				for (String parameter : parameters) {
+					mParameter = itemTmp.getClass().getMethod(parameter);
+					Object parameterValue = mParameter.invoke(itemTmp, new Object[]{});
+					if(parameterValue != null)
+						checkParameters.put(parameter.replaceFirst("get", ""), (String) parameterValue.toString());
+				}
+				
+				checkBox.setParameters(checkParameters);
+			}
+			
 			checkBox.setId((Long) mKey.invoke(itemTmp, new Object[]{}));
 			checkBox.setNome((String) mValue.invoke(itemTmp, new Object[]{}));
 			checkBox.setSelecionado(false);
-
+			
 			listBox.add(checkBox);
 		}
 		return listBox;

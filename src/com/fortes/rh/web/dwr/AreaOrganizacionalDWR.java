@@ -19,6 +19,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
 public class AreaOrganizacionalDWR
@@ -67,6 +68,21 @@ public class AreaOrganizacionalDWR
 		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoComEmpresaStatusAtivo");
 
 		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo");
+	}
+
+	public Collection<AreaOrganizacional> getByEmpresasAndLnt(Long[] empresaIds, Long lntId) throws Exception{
+		return  areaOrganizacionalManager.findByLntIdComEmpresa(lntId, empresaIds);
+	}
+	
+	public Collection<CheckBox> getCheckboxByEmpresas(Long[] empresaIds) throws Exception
+	{
+		Collection<CheckBox> areas = new ArrayList<CheckBox>();
+		
+		for (Long empresaId : empresaIds) {
+			areas.addAll(areaOrganizacionalManager.populaCheckComParameters(empresaId));
+		}
+
+		return areas;
 	}
 	
 	public Map<Object, Object> getPemitidasByEmpresas(String naoApagar, HttpServletRequest request, Long empresaId, Long[] empresaIds) throws Exception

@@ -48,6 +48,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private Collection<AproveitamentoAvaliacaoCurso> aproveitamentoAvaliacaoCursos;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="colaboradorTurma")
 	private Collection<ColaboradorPresenca> colaboradorPresencas;
+	@ManyToOne
+	private CursoLnt cursoLnt;
 
 	private boolean origemDnt;
 	private boolean aprovado;
@@ -100,6 +102,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	@Transient
 	private String certificacoesNomes;
+	@Transient
+	private Boolean possuiLntASerVinculado;
 
 	public ColaboradorTurma() {	}
 
@@ -212,10 +216,12 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	}
 
 	// findByTurma
-	public ColaboradorTurma(Long id, Long prioridadeTreinamentoId, Long turmaId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, String colaboradorCPF,Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, Estabelecimento estabelecimento, String faixaSalarialNome, String cargoNome, Long empresaId, String empresaNome, String empresaRazaoSocial, String empresaCnpj, Integer qtdRespostasAvaliacaoTurma)
+	public ColaboradorTurma(Long id, Long cursoId, Long prioridadeTreinamentoId, Long turmaId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, String colaboradorCPF,Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, Estabelecimento estabelecimento, String faixaSalarialNome, String cargoNome, Long empresaId, String empresaNome, String empresaRazaoSocial, String empresaCnpj, Integer qtdRespostasAvaliacaoTurma, Boolean possuiLntASerVinculado)
 	{
 		this.setId(id);
+		this.setCursoId(cursoId);
 		this.setTurmaId(turmaId);
+		this.possuiLntASerVinculado = possuiLntASerVinculado;
 		
 		this.aprovado = aprovado;
 		this.qtdRespostasAvaliacaoTurma = qtdRespostasAvaliacaoTurma;
@@ -412,12 +418,31 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.diaPresente = diaPresente;
 	}
 	
+	public ColaboradorTurma(CursoLnt cursoLnt, Long colaboradorId, Long cursoId)
+	{
+		this.setCursoLnt(cursoLnt);
+		this.setColaboradorId(colaboradorId);
+		this.setCursoId(cursoId);
+	}
+	
 	public void setTurmaRealizada(Boolean turmaRealizada)
 	{
 		iniciaTurma();
 		this.turma.setRealizada(turmaRealizada);
 	}
 
+	public void setTurmaCusto(Double custo)
+	{
+		iniciaTurma();
+		this.turma.setCusto(custo);
+	}
+
+	public void setTurmaInstituicao(String turmaInstituicao)
+	{
+		iniciaTurma();
+		this.turma.setInstituicao(turmaInstituicao);
+	}
+	
 	public void setTurmaDataPrevIni(Date turmaDataPrevIni)
 	{
 		iniciaTurma();
@@ -935,16 +960,12 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	}
 	
 	public void setEmpresaId(Long empresaId){
-		if(this.colaborador == null)
-			this.colaborador = new Colaborador();
-		
+		inicializaColaborador();
 		this.colaborador.setEmpresaId(empresaId);
 	}
 	
 	public void setEmpresaNome(String empresaNome){
-		if(this.colaborador == null)
-			this.colaborador = new Colaborador();
-		
+		inicializaColaborador();
 		this.colaborador.setEmpresaNome(empresaNome);
 	}
 	
@@ -957,30 +978,27 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	}
 	
 	public void setAreaOrganizacionalId(Long areaOrganizacionalId){
-		if(this.colaborador == null)
-			this.colaborador = new Colaborador();
-		
+		inicializaColaborador();
 		this.colaborador.setAreaOrganizacionalId(areaOrganizacionalId);
 	}
 	
 	public void setAreaOrganizacionalNome(String areaOrganizacionalNome){
-		if(this.colaborador == null)
-			this.colaborador = new Colaborador();
-		
+		inicializaColaborador();
 		this.colaborador.setAreaOrganizacionalNome(areaOrganizacionalNome);
 	}
 	
+	public void setAreaOrganizacionalNomeComHierarquia(String areaNomeComHierarquia){
+		inicializaColaborador();
+		this.colaborador.setAreaOrganizacionalNomeComHierarquia(areaNomeComHierarquia);
+	}
+	
 	public void setFaixaSalarialNome(String faixaSalarialNome){
-		if(this.colaborador == null)
-			this.colaborador = new Colaborador();
-		
+		inicializaColaborador();		
 		this.colaborador.setFaixaSalarialNomeProjection(faixaSalarialNome);
 	}
 	
 	public void setCargoNome(String cargoNome){
-		if(this.colaborador == null)
-			this.colaborador = new Colaborador();
-		
+		inicializaColaborador();		
 		if(this.colaborador.getFaixaSalarial() == null)
 			this.colaborador.setFaixaSalarial(new FaixaSalarial());
 		
@@ -1038,5 +1056,28 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	public void setCertificacoesNomes(String certificacoesNomes) {
 		this.certificacoesNomes = certificacoesNomes;
+	}
+
+	public CursoLnt getCursoLnt() {
+		return cursoLnt;
+	}
+
+	public void setCursoLnt(CursoLnt cursoLnt) {
+		this.cursoLnt = cursoLnt;
+	}
+	
+	public void setCursoLntId(Long cursoLntId) {
+		if(this.cursoLnt ==null)
+			this.cursoLnt = new CursoLnt();
+		
+		this.cursoLnt.setId(cursoLntId);
+	}
+
+	public Boolean getPossuiLntASerVinculado() {
+		return possuiLntASerVinculado;
+	}
+
+	public void setPossuiLntASerVinculado(Boolean possuiLntASerVinculado) {
+		this.possuiLntASerVinculado = possuiLntASerVinculado;
 	}
 }

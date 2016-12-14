@@ -34,7 +34,7 @@ public class GrupoOcupacionalManagerImpl extends GenericManagerImpl<GrupoOcupaci
 		try
 		{
 			Collection<GrupoOcupacional> grupos = getDao().findAllSelect(0,0,empresaId);
-			checks = CheckListBoxUtil.populaCheckListBox(grupos, "getId", "getNome");
+			checks = CheckListBoxUtil.populaCheckListBox(grupos, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{

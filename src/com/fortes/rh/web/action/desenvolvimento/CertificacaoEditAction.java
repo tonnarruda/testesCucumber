@@ -87,10 +87,10 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			certificacao = (Certificacao) certificacaoManager.findById(certificacao.getId());
 		
 		Collection<Curso> cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
-		cursosCheckList = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
+		cursosCheckList = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome", null);
 		
 		Collection<AvaliacaoPratica> avaliacaoPraticas = avaliacaoPraticaManager.find(new String[] {"empresa.id"}, new Object[] { getEmpresaSistema().getId() }, new String[] { "titulo" });
-		avaliacoesPraticasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoPraticas, "getId", "getTitulo");
+		avaliacoesPraticasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoPraticas, "getId", "getTitulo", null);
 		
 		if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
 			certificacoes = certificacaoManager.findAllSelectNotCertificacaoIdAndCertificacaoPreRequisito(getEmpresaSistema().getId(), certificacao.getId());

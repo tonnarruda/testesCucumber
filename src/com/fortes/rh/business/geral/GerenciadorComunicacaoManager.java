@@ -3,6 +3,7 @@ package com.fortes.rh.business.geral;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.acesso.Usuario;
@@ -10,6 +11,8 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.Lnt;
+import com.fortes.rh.model.desenvolvimento.ParticipanteCursoLnt;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
@@ -70,4 +73,8 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviarAvisoAoInserirColaboradorSolicitacaoDePessoal(Empresa empresa, Usuario usuarioLogado, Long colaboradorId, Long solicitacaoId); 
 	void enviarAvisoAoAlterarStatusColaboradorSolPessoal(Usuario usuarioLogado, CandidatoSolicitacao candidatoSolicitacaoAnterior, CandidatoSolicitacao candidatoSolicitacao, Empresa empresa);
 	void removeByOperacao(Integer[] operacoes);
+	void enviaAvisoLntAutomatico();
+	void enviaAvisoInicioLnt(Collection<Lnt> lnts);
+	void enviaAvisoFimLnt(Collection<Lnt> lnts);
+	void enviaAvisoLntFinalizada(String subject, StringBuilder body, String link, Long empresaId, Collection<Long> areasIds, Map<String, Object> parametros, Map<Long, Collection<ParticipanteCursoLnt>> mapPerticipantesLNTPorResponsaveis, Collection<ParticipanteCursoLnt> participanteCursoLntsEmpresa);
 }

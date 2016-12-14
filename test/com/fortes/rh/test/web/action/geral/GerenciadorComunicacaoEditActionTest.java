@@ -156,4 +156,14 @@ public class GerenciadorComunicacaoEditActionTest extends MockObjectTestCase
 		assertNotNull(action.getGerenciadorComunicacao());
 		assertTrue(action.getGerenciadorComunicacao() instanceof GerenciadorComunicacao);
 	}
+	
+	public void testGetOperacoesConfiguradasComLembrete() throws Exception
+	{
+		assertEquals(10, action.getOperacoesConfiguradasComLembrete().size());
+	}
+	
+	public void testGetOperacoesComAvisoAposPrazo() throws Exception
+	{
+		assertEquals(2, action.getOperacoesComAvisoAposPrazo().size());
+	}
 }

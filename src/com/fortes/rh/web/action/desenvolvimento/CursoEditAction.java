@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
+import com.fortes.rh.business.desenvolvimento.CursoLntManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.CursoLnt;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -25,6 +27,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private EmpresaManager empresaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private CursoLntManager cursoLntManager;
 
 	private Curso curso;
 	private boolean codigoTRUCurso;
@@ -32,6 +35,8 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 	private boolean cursoCompartilhado;
 	private String nomeCursoBusca;
 	private int page;
+	private Long cursoLntId;
+	private Long lntId;
 	
 	private String[] avaliacaoCursoCheck;
 	private Collection<CheckBox> avaliacaoCursoCheckList = new ArrayList<CheckBox>();
@@ -54,11 +59,11 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		
 		codigoTRUCurso = getEmpresaSistema().isCodigoTruCurso();
 		Collection<AvaliacaoCurso> avaliacoes = avaliacaoCursoManager.findAll(new String[]{"titulo"});
-		avaliacaoCursoCheckList = CheckListBoxUtil.populaCheckListBox(avaliacoes, "getId", "getTitulo");
+		avaliacaoCursoCheckList = CheckListBoxUtil.populaCheckListBox(avaliacoes, "getId", "getTitulo", null);
 		
 		empresas = empresaManager.findEmpresasPermitidas(true, getEmpresaSistema().getId(), getUsuarioLogado().getId());
 		empresas.remove(getEmpresaSistema());
-		empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId","getNome");
+		empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId","getNome", null);
 		
 		compartilharCursos = parametrosDoSistemaManager.findById(1L).getCompartilharCursos();
 	}
@@ -101,7 +106,17 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 			curso.setPeriodicidade(0);
 		}
 		cursoManager.save(curso);
-
+		
+		if(cursoLntId != null) {
+			CursoLnt cursoLnt = cursoLntManager.findById(cursoLntId);
+			cursoLnt.setCurso(curso);
+			cursoLnt.setNomeNovoCurso(curso.getNome());
+			cursoLntManager.update(cursoLnt);
+			
+			lntId = cursoLnt.getLnt().getId();
+			return "success_lnt";
+		}
+		
 		return Action.SUCCESS;
 	}
 
@@ -230,5 +245,25 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 
 	public boolean isExisteFrequencia() {
 		return existeFrequencia;
+	}
+
+	public Long getCursoLntId() {
+		return cursoLntId;
+	}
+
+	public void setCursoLntId(Long cursoLntId) {
+		this.cursoLntId = cursoLntId;
+	}
+
+	public void setCursoLntManager(CursoLntManager cursoLntManager) {
+		this.cursoLntManager = cursoLntManager;
+	}
+
+	public Long getLntId() {
+		return lntId;
+	}
+
+	public void setLntId(Long lntId) {
+		this.lntId = lntId;
 	}
 }

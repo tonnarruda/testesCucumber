@@ -81,6 +81,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private int qtdMesesSemCurso = 0;
 
 	private Long dntId;
+	private Long lntId;
 	private Long areaFiltroId;
 
 	private boolean gestor;
@@ -198,12 +199,12 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		empresaId = getEmpresaSistema().getId();
 				
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null, false);
-		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricaoStatusAtivo");
+		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricaoStatusAtivo", null);
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 
-		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect("nome", null, Cargo.TODOS, getEmpresaSistema().getId()), "getId", "getNome");
+		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect("nome", null, Cargo.TODOS, getEmpresaSistema().getId()), "getId", "getNome", null);
 		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
-		gruposCheckList = populaCheckListBox(grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getNome");
+		gruposCheckList = populaCheckListBox(grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getNome", null);
 		gruposCheckList = CheckListBoxUtil.marcaCheckListBox(gruposCheckList, gruposCheck);
 		
 		return SUCCESS;
@@ -219,7 +220,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			prepareFiltroHistoricoTreinamentos();
 			return Action.INPUT;
 		}
-		colaboradoresCheckList = populaCheckListBox(colaboradors, "getId", "getNome");
+		colaboradoresCheckList = populaCheckListBox(colaboradors, "getId", "getNome", null);
 
 		
 		return prepareFiltroHistoricoTreinamentos();
@@ -474,6 +475,18 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	{
 		json = StringUtil.toJSON(aproveitamentoAvaliacaoCursoManager.findByColaboradorCurso(colaboradorId, cursoId), null);
 		return SUCCESS;
+	}
+	
+	public String InserirColaboradorNaLnt(){
+		try {
+			colaboradorTurmaManager.updateCursoLnt(colaboradorTurma.getCurso().getId(), colaboradorTurma.getId(), lntId);
+			list();
+			addActionSuccess("Colaborador vinculado a LNT com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Não foi possível o colaborador a LNT.");
+		}
+		return Action.SUCCESS;
 	}
 
 	public Collection<ColaboradorTurma> getColaboradorTurmas()
@@ -958,5 +971,13 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public void setExibeCargaHorariaEfetiva(boolean exibeCargaHorariaEfetiva) {
 		this.exibeCargaHorariaEfetiva = exibeCargaHorariaEfetiva;
+	}
+
+	public Long getLntId() {
+		return lntId;
+	}
+
+	public void setLntId(Long lntId) {
+		this.lntId = lntId;
 	} 
 }

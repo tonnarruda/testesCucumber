@@ -45,7 +45,7 @@ public class HistoricoColaboradorBeneficioEditAction extends MyActionSupportEdit
 		}else{
 			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 		}
-		beneficiosCheckList = CheckListBoxUtil.populaCheckListBox(beneficioManager.find(new String[]{"empresa.id"} , new Object[]{getEmpresaSistema().getId()},new String[]{"nome"}), "getId", "getNome");
+		beneficiosCheckList = CheckListBoxUtil.populaCheckListBox(beneficioManager.find(new String[]{"empresa.id"} , new Object[]{getEmpresaSistema().getId()},new String[]{"nome"}), "getId", "getNome", null);
 	}
 
 	public String prepareInsert() throws Exception

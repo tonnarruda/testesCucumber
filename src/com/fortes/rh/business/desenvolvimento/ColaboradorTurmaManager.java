@@ -12,6 +12,7 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.CursoLnt;
 import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRelatorio;
@@ -49,7 +50,7 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId);
 	public Collection<ColaboradorTurma> findByTurmaPresenteNoDiaTurmaId(Long turmaId, Long diaTurmaId);
 	public Collection<ColaboradorTurma> findRelatorioSemIndicacaoTreinamento(Long empresaId, Long[] areaIds, Long[] estabelecimentoIds, int qtdMeses) throws ColecaoVaziaException;
-	public String insereColaboradorTurmas(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Turma turma, DNT dnt, int filtrarPor, String[] selectPrioridades, boolean validarCertificacao);
+	public String insereColaboradorTurmas(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Turma turma, DNT dnt, int filtrarPor, String[] selectPrioridades, boolean validarCertificacao, CursoLnt cursoLnt);
 	public void remove(ColaboradorTurma colaboradorTurma);
 	public Collection<ColaboradorTurma> montaColunas(Collection<ColaboradorTurma> colaboradorTurmas, boolean exibirNomeComercial, boolean exibirCargo, boolean exibirEstabelecimento, boolean exibirAssinatura, boolean exibirArea, boolean exibirCPF);
 	public Collection<ColaboradorTurma> findRelatorioHistoricoTreinamentos(Long empresaId, Long[] colaboradoresCheck, Date dataIni, Date dataFim) throws ColecaoVaziaException, Exception;
@@ -81,4 +82,9 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public boolean aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId);
 	public ColaboradorTurma findByProjection(Long colaboradorTurmaId);
 	public Collection<Colaborador> findColabodoresByTurmaId(Long turmaId);
+	public Collection<ColaboradorTurma> findByCursoLntId(Long cursoLntId);
+	public void updateCursoLnt(Long cursoId, Long colaboradorTurmaId, Long lntId);
+	public Collection<Turma> findParticipantesCursoLntAgrupadoNaTurma(Long cursoLntId);
+	public void removeAllCursoLntByLnt(Long lntId);
+	public void removeCursoLntByParticipantesCursoLnt(Long[] participantesRemovidos);
 }

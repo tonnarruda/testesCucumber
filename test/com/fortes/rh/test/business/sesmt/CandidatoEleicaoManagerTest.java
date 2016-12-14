@@ -331,7 +331,6 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCaseManager<Candi
     	assertEquals(1, manager.findByColaborador(1L).size());
     }
 
-	@Override
 	public void testExecutaTesteAutomaticoDoManager() {
 		testeAutomatico(candidatoEleicaoDao);
 	}

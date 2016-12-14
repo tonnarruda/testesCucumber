@@ -121,7 +121,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		Collection<Long> grupoOcupacionalIds = LongUtil.arrayStringToCollectionLong(grupoOcupacionalsCheck);
 
 		areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		grupoOcupacionalsCheckList = CheckListBoxUtil.populaCheckListBox(grupoOcupacionals, "getId", "getNome");
+		grupoOcupacionalsCheckList = CheckListBoxUtil.populaCheckListBox(grupoOcupacionals, "getId", "getNome", null);
 
 		reajustes = reajusteColaboradorManager.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), null, areaOrganizacionalIds, grupoOcupacionalIds, Integer.parseInt(filtro));
 		if(reajustes == null || reajustes.isEmpty())

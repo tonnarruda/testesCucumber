@@ -9,6 +9,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
+import com.fortes.rh.business.desenvolvimento.CursoLntManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -23,6 +24,7 @@ public class CursoListActionTest extends MockObjectTestCase
 	private CursoListAction action;
 	private Mock cursoManager;
 	private Mock empresaManager;
+	private Mock cursoLntManager;
 	
 
     protected void setUp() throws Exception
@@ -31,8 +33,11 @@ public class CursoListActionTest extends MockObjectTestCase
         action = new CursoListAction();
         cursoManager = new Mock(CursoManager.class);
         empresaManager = new Mock(EmpresaManager.class);
+        cursoLntManager = new Mock(CursoLntManager.class);
+        
         action.setCursoManager((CursoManager) cursoManager.proxy());
         action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
+        action.setCursoLntManager((CursoLntManager) cursoLntManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
@@ -72,6 +77,7 @@ public class CursoListActionTest extends MockObjectTestCase
 
     	cursoManager.expects(once()).method("verifyExists").with(ANYTHING, ANYTHING).will(returnValue(true));
     	cursoManager.expects(once()).method("remove").with(eq(curso.getId()));
+    	cursoLntManager.expects(once()).method("removeCursoId").with(eq(curso.getId()));
 
     	assertEquals("success", action.delete());
     }

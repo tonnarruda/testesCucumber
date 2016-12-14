@@ -103,7 +103,7 @@ public class GastoEditAction extends MyActionSupportEdit implements ModelDriven
 	{
 		grupoGastoAgrupar = grupoGastoManager.findByIdProjection(grupoGastoAgrupar.getId());
 		gastoDoGrupos = gastoManager.findGastosDoGrupo(grupoGastoAgrupar.getId());
-		gastosCheckList = CheckListBoxUtil.populaCheckListBox(gastoManager.getGastosSemGrupo(getEmpresaSistema().getId()),"getId","getNome");
+		gastosCheckList = CheckListBoxUtil.populaCheckListBox(gastoManager.getGastosSemGrupo(getEmpresaSistema().getId()),"getId","getNome", null);
 
 		return Action.SUCCESS;
 	}

@@ -7,6 +7,11 @@
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>
 	
+	    <action name="findJson" class="com.fortes.rh.web.action.desenvolvimento.CursoListAction" method="find">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
+		    <param name="contentType">application/json</param>
+		</action>
+		
 		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.CursoListAction" method="list">
 			<interceptor-ref name="showFilterStack">
 	    		<param name="scope.session">nomeCursoBusca</param>
@@ -19,6 +24,8 @@
 			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="redirect">list.action</result>
 		</action>
+		
+		
 		
 		<action name="delete" class="com.fortes.rh.web.action.desenvolvimento.CursoListAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack">
@@ -39,6 +46,7 @@
 		<action name="insert" class="com.fortes.rh.web.action.desenvolvimento.CursoEditAction" method="insert">
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/cursoEdit.ftl</result>
+			<result name="success_lnt" type="redirect">/desenvolvimento/lnt/gerarCursosETurmas.action?lnt.id=${lntId}</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.desenvolvimento.CursoEditAction" method="update">
 			<result name="success" type="redirect">list.action</result>

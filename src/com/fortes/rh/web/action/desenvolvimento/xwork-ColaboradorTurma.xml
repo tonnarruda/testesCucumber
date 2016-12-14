@@ -197,5 +197,8 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
 		    <param name="contentType">application/json</param>
 		</action>
+		<action name="InserirColaboradorNaLnt" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="InserirColaboradorNaLnt">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorTurmaList.ftl</result>
+		</action>
 	</package>
 </xwork>

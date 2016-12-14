@@ -2,6 +2,7 @@ package com.fortes.web.tags;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
@@ -86,8 +87,8 @@ public class CheckListBoxTag extends TagSupport
 			
 			if(!readonly)
 			{
-				checkGroup.append("&nbsp;<span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',true); "+ onClick +"\">");
-				checkGroup.append("Marcar todos</span> | <span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',false); "+ onClick +"\">");
+				checkGroup.append("&nbsp;<span class='linkCheck' id='mt' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',true); "+ onClick +"\">");
+				checkGroup.append("Marcar todos</span> | <span class='linkCheck' id='dt' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',false); "+ onClick +"\">");
 				checkGroup.append("Desmarcar todos</span>\n");
 			}
 			else
@@ -129,7 +130,17 @@ public class CheckListBoxTag extends TagSupport
 				if(cb.isDesabilitado())
 					disabled += " disabled = \"disabled\" "; 
 
+				
 				checkGroup.append("<label for=\"checkGroup" + name + value + "\"><input name=\"" + name + "\" value=\"" + value + "\" type=\"checkbox\""+disabled+"");
+				
+				if(cb.getParameters() != null) {
+					String parameters = "";
+					for (Map.Entry<String, String> entry : cb.getParameters().entrySet()) {
+						parameters+=" "+entry.getKey()+"=\""+entry.getValue()+"\" ";
+					}
+					
+					checkGroup.append(parameters);
+				}
 				
 				if(cb.getTitulo() != null && !"".equals(cb.getTitulo()))
 					checkGroup.append(" title=\"" + cb.getTitulo() + "\" ");

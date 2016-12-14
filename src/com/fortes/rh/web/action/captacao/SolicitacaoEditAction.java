@@ -181,7 +181,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 		Long areaInativaId = null;
 		
 		avaliacoes = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.SOLICITACAO, null);
-        avaliacoesCheckList = CheckListBoxUtil.populaCheckListBox(avaliacoes, "getId", "getTitulo");
+        avaliacoesCheckList = CheckListBoxUtil.populaCheckListBox(avaliacoes, "getId", "getTitulo", null);
 		
     	if (solicitacao != null && solicitacao.getId() != null)
         {
@@ -200,7 +200,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             if(solicitacao.getCidade() != null && solicitacao.getCidade().getId() != null)
             {
             	Collection<Bairro> bairroList = bairroManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"cidade.id"}, new Object[]{solicitacao.getCidade().getId()}, new String[]{"nome"});
-            	bairrosCheckList = CheckListBoxUtil.populaCheckListBox(bairroList, "getId", "getNome");
+            	bairrosCheckList = CheckListBoxUtil.populaCheckListBox(bairroList, "getId", "getNome", null);
             }
             
             // Campos somente leitura se já houver candidatos na solicitação
@@ -385,7 +385,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     {
     	setVideoAjuda(785L);
         cargos = cargoManager.findAllSelect("nome", null, Cargo.TODOS, getEmpresaSistema().getId());
-        etapaSeletivaCheckList = CheckListBoxUtil.populaCheckListBox(etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getNome");
+        etapaSeletivaCheckList = CheckListBoxUtil.populaCheckListBox(etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getNome", null);
         return Action.SUCCESS;
     }
 
@@ -403,7 +403,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
     public String prepareRelatorio() throws Exception
     {
-        etapaSeletivaCheckList = CheckListBoxUtil.populaCheckListBox(etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getNome");
+        etapaSeletivaCheckList = CheckListBoxUtil.populaCheckListBox(etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getNome", null);
         return Action.SUCCESS;
     }
 
@@ -424,7 +424,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             ResourceBundle bundle = ResourceBundle.getBundle("application");
             addActionMessage(bundle.getString("error.relatorio.vazio"));
 
-            etapaSeletivaCheckList = CheckListBoxUtil.populaCheckListBox(etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getNome");
+            etapaSeletivaCheckList = CheckListBoxUtil.populaCheckListBox(etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getNome", null);
 
             return Action.INPUT;
         }

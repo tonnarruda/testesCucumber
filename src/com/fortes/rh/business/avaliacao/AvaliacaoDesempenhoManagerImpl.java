@@ -222,7 +222,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		try
 		{
 			Collection<AvaliacaoDesempenho> avaliacoesDesempenho = getDao().findAllSelect(empresaId, ativa, null);
-			return CheckListBoxUtil.populaCheckListBox(avaliacoesDesempenho, "getId", "getTitulo");
+			return CheckListBoxUtil.populaCheckListBox(avaliacoesDesempenho, "getId", "getTitulo", null);
 		}
 		catch (Exception e)
 		{

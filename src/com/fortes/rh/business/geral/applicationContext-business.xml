@@ -956,6 +956,12 @@
     <property name="cartaoManager">
       <ref bean="cartaoManager" />
     </property>
+    <property name="lntManager">
+      <ref bean="lntManager" />
+    </property>
+    <property name="participanteCursoLntManager">
+      <ref bean="participanteCursoLntManager" />
+    </property>
   </bean>
   <bean id="gerenciadorComunicacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

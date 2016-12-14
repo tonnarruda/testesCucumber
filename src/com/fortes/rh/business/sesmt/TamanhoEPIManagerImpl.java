@@ -16,7 +16,7 @@ public class TamanhoEPIManagerImpl extends GenericManagerImpl<TamanhoEPI, Tamanh
 		
 		try {
 			Collection<TamanhoEPI> tamanhoEPIs = getDao().findAll(new String[]{"descricao"});
-			checks = CheckListBoxUtil.populaCheckListBox(tamanhoEPIs, "getId", "getDescricao");
+			checks = CheckListBoxUtil.populaCheckListBox(tamanhoEPIs, "getId", "getDescricao", null);
 			
 			if ( tipoEPIId != null) {
 				SolicitacaoEpiItemManager solicitacaoEpiItemManager = (SolicitacaoEpiItemManager) SpringUtil.getBean("solicitacaoEpiItemManager");

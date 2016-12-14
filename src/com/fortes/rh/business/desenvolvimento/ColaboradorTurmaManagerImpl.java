@@ -22,6 +22,7 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.CursoLnt;
 import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRelatorio;
@@ -49,7 +50,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private CertificacaoManager certificacaoManager;
 	private ColaboradorManager colaboradorManager;
 	private EmpresaManager empresaManager;
@@ -436,23 +436,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return retorno;
 	}
 	
-	private void setReprovadosMaisNota(Long cursoOuTurmaId, Integer qtdAvaliacoes, String porCursoOuTurma, Collection<ColaboradorTurma> colaboradorTurmas)
-	{
-		Collection<ColaboradorTurma> reprovados = aproveitamentoAvaliacaoCursoManager.findColaboradorTurma(cursoOuTurmaId, qtdAvaliacoes, porCursoOuTurma, false);
-		
-		for (ColaboradorTurma colaboradorTurmaReprovado : reprovados) {
-			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
-			{
-				if (colaboradorTurma.equals(colaboradorTurmaReprovado))
-				{
-					colaboradorTurma.setAprovado(false);
-					colaboradorTurma.setValorAvaliacao(colaboradorTurmaReprovado.getValorAvaliacao());
-					break;
-				}
-			}
-		}
-	}
-
 	public Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId)
 	{
 		return getDao().findByTurmaSemPresenca(turmaId, diaTurmaId);
@@ -463,7 +446,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findByTurmaPresenteNoDiaTurmaId(turmaId, diaTurmaId);
 	}
 
-	public String insereColaboradorTurmas(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Turma turma, DNT dnt, int filtrarPor, String[] selectPrioridades, boolean validarCertificacao){
+	public String insereColaboradorTurmas(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Turma turma, DNT dnt, int filtrarPor, String[] selectPrioridades, boolean validarCertificacao, CursoLnt cursoLnt){
 		ColaboradorTurma colaboradorTurma = null;
 		String msgAlert = "";
 		boolean jaInscrito;
@@ -471,8 +454,12 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		for(int i = 0; i < colaboradoresId.length; i++){
 			jaInscrito = false;
 			for (ColaboradorTurma ccTemp : colaboradoresTurmas)
-				if(ccTemp.getColaborador().getId().equals(colaboradoresId[i]) && turma.getId().equals(ccTemp.getTurma().getId()))
+				if(ccTemp.getColaborador().getId().equals(colaboradoresId[i]) && turma.getId().equals(ccTemp.getTurma().getId())){
 					jaInscrito = true;
+					colaboradorTurma = ccTemp;
+					if(cursoLnt != null)
+						getDao().updateCursoLnt(colaboradorTurma.getId(), cursoLnt.getId());
+				}
 
 			if(!jaInscrito){
 				if(filtrarPor == 4)	{
@@ -485,10 +472,12 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 					colaboradorTurma.setTurma(turma);
 					colaboradorTurma.setDnt(dnt);
 					colaboradorTurma.setCurso(turma.getCurso());
+					colaboradorTurma.setCursoLnt(cursoLnt);
 					save(colaboradorTurma);
 				}
 			}
-			boolean colaboradorTurmaAprovado = aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), colaboradorTurma.getCurso().getId());
+			
+			boolean colaboradorTurmaAprovado = aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), turma.getCurso().getId());
 
 			if(validarCertificacao && colaboradorTurma.getId() != null){
 				getDao().getHibernateTemplateByGenericDao().flush();
@@ -843,70 +832,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		presenca = valor.doubleValue() * 100.00;
 		return presenca;
 	}
-
-	//BACALHAU Consulta muito grande quando muitos colaboradores
-	private void setAprovacoesDosColaboradoresTurmas(Collection<ColaboradorTurma> colaboradorTurmas) throws Exception 
-	{
-		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
-		{
-			Long turmaId = colaboradorTurma.getTurma().getId();
-			
-			if (turmaId == null)
-				continue;
-			
-			Integer qtdAvaliacoes = avaliacaoCursoManager.countAvaliacoes(turmaId, "T");
-
-			if(qtdAvaliacoes.equals(0) && colaboradorAprovadoByTurma(colaboradorTurma.getColaborador().getId(), colaboradorTurma.getTurma().getId()))
-			{
-					colaboradorTurma.setAprovado(true);
-					continue;
-			}
-			
-			Collection<ColaboradorTurma> aprovados = null;
-				
-			// consulta com nota apenas se tiver só uma avaliação
-			if (qtdAvaliacoes == 1)
-				aprovados = aproveitamentoAvaliacaoCursoManager.findColaboradorTurma(turmaId, qtdAvaliacoes, "T", true);
-			else
-			{
-				Collection<Long> colaboradorTurmaIds = aproveitamentoAvaliacaoCursoManager.find(turmaId, qtdAvaliacoes, "T", true);
-				aprovados = new CollectionUtil<ColaboradorTurma>().convertArrayLongToCollection(ColaboradorTurma.class, (Long[])colaboradorTurmaIds.toArray(new Long[colaboradorTurmaIds.size()]));
-			}
-
-			for (ColaboradorTurma colaboradorTurma2 : aprovados)
-			{
-				if (colaboradorTurma.getId().equals(colaboradorTurma2.getId()))
-				{
-					if(colaboradorAprovadoByTurma(colaboradorTurma.getColaborador().getId(), colaboradorTurma.getTurma().getId()))
-						colaboradorTurma.setAprovado(true);
-					
-					colaboradorTurma.setValorAvaliacao(colaboradorTurma2.getValorAvaliacao());
-					
-					break;
-				}
-			}
-			
-			if (qtdAvaliacoes == 1)
-			{
-				setReprovadosMaisNota(turmaId, qtdAvaliacoes, "T", colaboradorTurmas);
-			}
-		}
-	}
-	
-	private Boolean colaboradorAprovadoByTurma (Long colaboradorId, Long turmaId)
-	{
-		Collection<Long> turmaIds = new ArrayList<Long>();
-		turmaIds.add(turmaId);
-		Collection<Colaborador> colaboradorAprovados = findAprovadosByTurma(turmaIds);
-		
-		for (Colaborador colab : colaboradorAprovados) 
-		{
-			if (colaboradorId.equals(colab.getId()))
-					return true;
-		}
-			
-		return false;
-	}
 	
 	private void setColaboradoresDaCertificacao(Certificacao certificacao, Collection<Curso> cursos, Collection<ColaboradorTurma> colaboradorTurmas,
 			Collection<ColaboradorCertificacaoRelatorio> colaboradoresCertificacoes, Character tipoAgrupamento) {
@@ -1139,6 +1064,45 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findColabodoresByTurmaId(turmaId);
 	}
 
+	public Collection<ColaboradorTurma> findByCursoLntId(Long cursoLntId) {
+		return getDao().findByCursoLntId(cursoLntId);
+	}
+
+	public void removeAllCursoLntByLnt(Long lntId){
+		getDao().removeAllCursoLntByLnt(lntId);
+	}
+	
+	public void updateCursoLnt(Long cursoId, Long colaboradorTurmaId, Long lntId) {
+		if(lntId == null)
+			getDao().removeCursoLnt(colaboradorTurmaId);
+		else
+			getDao().updateCursoLnt(cursoId, colaboradorTurmaId, lntId);
+	}
+
+	public void removeCursoLntByParticipantesCursoLnt(Long[] participantesRemovidos) {
+		getDao().removeCursoLntByParticipantesCursoLnt(participantesRemovidos);
+	}
+	
+	public Collection<Turma> findParticipantesCursoLntAgrupadoNaTurma(Long cursoLntId) {
+		Collection<ColaboradorTurma> participantesCursoLnt = getDao().findParticipantesCursoLnt(cursoLntId); 
+		Map<Long, Turma> turmasComParticipantes = new HashMap<Long, Turma>();
+		
+		if(participantesCursoLnt != null && participantesCursoLnt.size() > 0){
+			for (ColaboradorTurma participanteCursoLnt : participantesCursoLnt) {
+				if(!turmasComParticipantes.containsKey(participanteCursoLnt.getTurma().getId()))
+					turmasComParticipantes.put(participanteCursoLnt.getTurma().getId(), participanteCursoLnt.getTurma());
+				
+				if(turmasComParticipantes.get(participanteCursoLnt.getTurma().getId()).getColaboradorTurmas() == null || turmasComParticipantes.get(participanteCursoLnt.getTurma().getId()).getColaboradorTurmas().size() == 0)
+					turmasComParticipantes.get(participanteCursoLnt.getTurma().getId()).setColaboradorTurmas(new ArrayList<ColaboradorTurma>());
+				
+				turmasComParticipantes.get(participanteCursoLnt.getTurma().getId()).getColaboradorTurmas().add(participanteCursoLnt);
+			}
+		}
+		
+		return turmasComParticipantes.values();
+	}
+
+	
 	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
@@ -1162,11 +1126,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
 	}
-
-	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager)
-	{
-		this.avaliacaoCursoManager = avaliacaoCursoManager;
-	}
 	
 	public void setCertificacaoManager(CertificacaoManager certificacaoManager) 
 	{
@@ -1182,4 +1141,5 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		this.empresaManager = empresaManager;
 	}
+
 }

@@ -12,10 +12,13 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.json.TurmaJson;
+import com.fortes.rh.security.spring.aop.callback.TurmaAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
 
 
 public interface TurmaManager extends GenericManager<Turma>
 {
+	@Audita(operacao="Remoção", auditor=TurmaAuditorCallbackImpl.class)
 	public void removeCascade(Long turmaId, TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager, TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) throws Exception;
 	public Turma findByIdProjection(Long turmaId);
 	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, String[] horasIni, String[] horasFim, String despesaJSON)throws Exception;
@@ -42,6 +45,7 @@ public interface TurmaManager extends GenericManager<Turma>
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmasCheck, Date dataIni, Date dataFim, Boolean realizada);
 	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public Double getPercentualInvestimento(Double somaCustos, Date dataIni, Date dataFim, Long[] empresaIds);
+	@Audita(operacao="Inserção", auditor=TurmaAuditorCallbackImpl.class)
 	public void salvarTurmaDiasCustosColaboradoresAvaliacoes(Turma turma, String[] dias, String custos, Collection<ColaboradorTurma> colaboradorTurmas, Long[] avaliacaoTurmasCheck, String[] horasIni, String[] horasFim, TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) throws Exception;
 	public void inserir(Turma turma, String[] dias, String custos, Long[] avaliacaoTurmaIds, Long[] documentoAnexoIds, String[] horasIni, String[] horasFim, TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager, TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) throws Exception;
 	public void atualizar(Turma turma, String[] dias, String[] horasIni, String[] horasFim, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, Long[] documentoAnexoIds, boolean atualizaAvaliacao, boolean validarCertificacao, CertificacaoManager certificacaoManager, TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager, TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) throws Exception;

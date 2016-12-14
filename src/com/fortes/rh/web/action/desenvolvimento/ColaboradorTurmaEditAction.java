@@ -170,18 +170,18 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		populaEmpresas();
 		
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome");
+		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome", null);
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.TODAS, null, false);
-		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricaoStatusAtivo");
+		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricaoStatusAtivo", null);
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		
 		cargosCheckList = cargoManager.populaCheckBox(true, empresaId);
 		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColaboradoresByCursoTurmaIsNull(turma.getCurso().getId());
-		colaboradoresCursosCheckList = populaCheckListBox(colaboradorTurmaManager.getListaColaboradores(colaboradorTurmas), "getId", "getNome");
+		colaboradoresCursosCheckList = populaCheckListBox(colaboradorTurmaManager.getListaColaboradores(colaboradorTurmas), "getId", "getNome", null);
 		colaboradoresCursosCheckList = CheckListBoxUtil.marcaCheckListBox(colaboradoresCursosCheckList, colaboradoresCursosCheck);
 
 		return SUCCESS;
@@ -252,7 +252,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 			DNT dnt = dNTManager.getUltimaDNT(getEmpresaSistema().getId());
 
 			try{
-				msgAlert = colaboradorTurmaManager.insereColaboradorTurmas(colaboradoresId, colaboradoresTurmas, turma, dnt, filtrarPor, selectPrioridades, getEmpresaSistema().isControlarVencimentoPorCertificacao());
+				msgAlert = colaboradorTurmaManager.insereColaboradorTurmas(colaboradoresId, colaboradoresTurmas, turma, dnt, filtrarPor, selectPrioridades, getEmpresaSistema().isControlarVencimentoPorCertificacao(), null);
 			}catch (Exception e){
 				msgAlert = "Erro ao inserir colaborador.";
 			}

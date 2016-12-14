@@ -186,7 +186,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
     	avaliacoes = avaliacaoManager.findAllSelectComAvaliacaoDesempenho(getEmpresaSistema().getId(), true);
     	
     	if(avaliacao != null  && avaliacao.getId() != null)
-    		colaboradorsCheckList = CheckListBoxUtil.populaCheckListBox(colaboradorManager.findByAvaliacoes(StringUtil.stringToLong(avaliacaoCheck)), "getId", "getNome");
+    		colaboradorsCheckList = CheckListBoxUtil.populaCheckListBox(colaboradorManager.findByAvaliacoes(StringUtil.stringToLong(avaliacaoCheck)), "getId", "getNome", null);
     	
 		return Action.SUCCESS;
 		

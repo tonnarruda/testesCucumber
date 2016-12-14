@@ -117,7 +117,6 @@ public class AreaInteresseManagerTest extends MockObjectTestCaseManager<AreaInte
 		assertEquals(3, areaInteresseIds.size());
     }
 
-	@Override
 	public void testExecutaTesteAutomaticoDoManager() {
 		testeAutomatico(areaInteresseDao);
 	}

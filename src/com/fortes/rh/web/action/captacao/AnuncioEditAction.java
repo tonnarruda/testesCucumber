@@ -59,7 +59,7 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 	private void prepare() throws Exception
 	{
 		solicitacaoAvaliacaos = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacao.getId(), null);
-		solicitacaoAvaliacaosCheckList = CheckListBoxUtil.populaCheckListBox(solicitacaoAvaliacaos, "getId", "getAvaliacaoTitulo");
+		solicitacaoAvaliacaosCheckList = CheckListBoxUtil.populaCheckListBox(solicitacaoAvaliacaos, "getId", "getAvaliacaoTitulo", null);
 	}
 
 	public String anunciar() throws Exception

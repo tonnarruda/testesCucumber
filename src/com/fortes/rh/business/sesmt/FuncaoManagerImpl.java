@@ -436,7 +436,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		try
 		{
 			Collection<Funcao> funcoesTmp = getDao().findAll();
-			return CheckListBoxUtil.populaCheckListBox(funcoesTmp, "getId", "getNome");
+			return CheckListBoxUtil.populaCheckListBox(funcoesTmp, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{

@@ -4,11 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Method;
-
-import net.vidageek.mirror.dsl.Mirror;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,12 +16,12 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.spring.aop.MetodoInterceptadoImpl;
 import com.fortes.rh.security.spring.aop.callback.ColaboradorRespostaAuditorCallbackImpl;
+import com.fortes.rh.security.spring.aop.callback.crud.helper.MethodInvocationDefault;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
-import com.fortes.security.auditoria.MetodoInterceptado;
 
 public class ColaboradorRespostaAuditorCallbackImplTest {
 
@@ -51,11 +46,11 @@ public class ColaboradorRespostaAuditorCallbackImplTest {
 		colaboradorQuestionario.setColaborador(colaborador);
 		colaboradorQuestionario.setQuestionario(questionario);
 		
-		
 		when(colaboradorRespostaManager.getColaboradorQuestionarioManager()).thenReturn(colaboradorQuestionarioManager);
 		when(colaboradorQuestionarioManager.findByIdProjection(1L)).thenReturn(colaboradorQuestionario);
 
-		Auditavel auditavel = callback.processa(this.mockaMetodoIntercepRemoveFicha());
+		MethodInvocation removeFicha = new MethodInvocationDefault<ColaboradorRespostaManager>("removeFicha", ColaboradorRespostaManager.class, new Object[]{1L}, colaboradorRespostaManager, null);
+		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(removeFicha));
 
 		assertEquals("Entrevista de Desligamento", auditavel.getModulo());
 		assertEquals("Remoção de Resposta", auditavel.getOperacao());
@@ -73,43 +68,15 @@ public class ColaboradorRespostaAuditorCallbackImplTest {
 		colaboradorQuestionario.setColaborador(colaborador);
 		colaboradorQuestionario.setQuestionario(questionario);
 		
-		
 		when(colaboradorRespostaManager.getColaboradorQuestionarioManager()).thenReturn(colaboradorQuestionarioManager);
 		when(colaboradorQuestionarioManager.findByIdProjection(1L)).thenReturn(colaboradorQuestionario);
 
-		Auditavel auditavel = callback.processa(this.mockaMetodoIntercepRemoveFicha());
+		MethodInvocation removeFicha = new MethodInvocationDefault<ColaboradorRespostaManager>("removeFicha", ColaboradorRespostaManager.class, new Object[]{1L}, colaboradorRespostaManager, null);
+		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(removeFicha));
 
 		assertEquals("Ficha Médica", auditavel.getModulo());
 		assertEquals("Remoção de Resposta", auditavel.getOperacao());
 		assertEquals("Ficha Médica - nome colaborador", auditavel.getChave());
 		assertEquals("[DADOS ATUALIZADOS]\n{\n  \"Colaborador\": \"nome colaborador\",\n  \"Ficha\": \"Admissional\"\n}", auditavel.getDados());
 	}
-	
-	private MetodoInterceptado mockaMetodoIntercepRemoveFicha() {
-		return new MetodoInterceptadoImpl(this.mockaMethodInvocationParaMetodoRemoveFicha());
-	}
-	
-	private MethodInvocation mockaMethodInvocationParaMetodoRemoveFicha() {
-		return new MethodInvocation() {
-			public Method getMethod() {
-				Method m = new Mirror().on(ColaboradorRespostaManager.class)
-								.reflect().method("removeFicha")
-								.withArgs(Long.class);
-				return m;
-			}
-			public Object[] getArguments() {
-				return new Object[]{1L};
-			}
-			public AccessibleObject getStaticPart() {
-				return null;
-			}
-			public Object getThis() {
-				return colaboradorRespostaManager;
-			}
-			public Object proceed() throws Throwable {
-				return null;
-			}
-		};
-	}
-	
 }

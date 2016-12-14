@@ -383,7 +383,6 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		return (Boolean) query.uniqueResult();
 	}
 
-	@Override
 	public String findEmailByUsuarioId(Long usuarioId) {
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.usuario", "u");

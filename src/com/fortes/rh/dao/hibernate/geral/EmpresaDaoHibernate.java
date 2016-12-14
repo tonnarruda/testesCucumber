@@ -21,6 +21,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
@@ -181,6 +182,14 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		JDBCConnection.executaTrigger(acao);
 		
 		String[] sqls = new String[]{
+				"delete from lnt_empresa where empresas_id = " + id + ";",
+				"delete from participanteCursoLnt where colaborador_id in (select id from colaborador where empresa_id = " + id + ");", 
+				"delete from participanteCursoLnt where cursoLnt_id in (select id from cursoLnt where lnt_id not in (select lnt_id from lnt_empresa));",
+				"delete from cursoLnt where curso_id in (select id from curso where empresa_id = " + id + ");",
+				"delete from cursoLnt where lnt_id not in (select lnt_id from lnt_empresa);",
+				"delete from lnt_areaorganizacional where areasOrganizacionais_id in (select id from areaorganizacional where empresa_id = " + id + ");",
+				"delete from lnt_areaorganizacional where lnt_id not in (select lnt_id from lnt_empresa);",
+				"delete from lnt where id not in (select lnt_id from lnt_empresa);",
 				"delete from gerenciadorcomunicacao_usuario where gerenciadorcomunicacao_id in (select id from gerenciadorcomunicacao where empresa_id = " + id + ");",
 				"delete from gerenciadorcomunicacao where empresa_id = " + id + ";",
 				"delete from faixasalarialhistorico where faixasalarial_id in (select Id from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + "));",
@@ -557,5 +566,22 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		query.setLong("empresaId", empresaId);
 
 		query.executeUpdate();
+	}
+
+	public Collection<Empresa> findByLntId(Long lntId) {
+		Criteria criteria = getSession().createCriteria(Lnt.class, "lnt");
+		criteria.createCriteria("lnt.empresas", "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.nome"), "nome");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("lnt.id", lntId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Empresa.class));
+		
+		return criteria.list();
 	}
 }

@@ -52,7 +52,7 @@ public class ConhecimentoManagerImpl  extends GenericManagerImpl<Conhecimento, C
 		try
 		{
 			Collection<Conhecimento> conhecimentos = getDao().findAllSelect(empresaIds);
-			checks = CheckListBoxUtil.populaCheckListBox(conhecimentos, "getId", "getNome");
+			checks = CheckListBoxUtil.populaCheckListBox(conhecimentos, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{
@@ -68,7 +68,7 @@ public class ConhecimentoManagerImpl  extends GenericManagerImpl<Conhecimento, C
 		try
 		{
 			Collection<Conhecimento> conhecimentos = getDao().findByAreaOrganizacionalIds(areasId, empresaId);
-			checks = CheckListBoxUtil.populaCheckListBox(conhecimentos, "getId", "getNome");
+			checks = CheckListBoxUtil.populaCheckListBox(conhecimentos, "getId", "getNome", null);
 		}
 		catch (Exception e)
 		{

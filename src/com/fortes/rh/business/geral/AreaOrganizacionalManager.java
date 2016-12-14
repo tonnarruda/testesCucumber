@@ -12,7 +12,6 @@ import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.AreaColaboradorException;
-import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -39,6 +38,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<AreaOrganizacional> findAllList(Long usuarioId, Long empresaId, Boolean ativo, Long areaInativaId);
 	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, String nome, Long empresaId, Boolean ativo);
 	public Collection<CheckBox> populaCheckOrderDescricao(long empresaId);
+	public Collection<CheckBox> populaCheckComParameters(long empresaId);
 	public Collection<CheckBox> populaCheckByAreasOrderDescricao(Long[] areaIds);
 	public Collection<AreaOrganizacional> populaAreas(String[] areasCheck);
 	public AreaOrganizacional findAreaOrganizacionalCodigoAc(Long idAreaOrganizacional);
@@ -77,6 +77,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<AreaOrganizacional> getFilhos(Collection<AreaOrganizacional> areas, Long id);
 	public String[] getEmailsResponsaveis(Long areaId, Long empresaId, int tipoResponsavel, String notEmail) throws Exception;
 	public String[] getEmailsResponsaveis(Long areaId, Collection<AreaOrganizacional> todasAreas, int tipoResponsavel) throws Exception;
+	public String[] getEmailsResponsaveis(Collection<AreaOrganizacional> areas, Long empresaId, int tipoResponsavel) throws Exception;
 	public String getEmailResponsavel(Long areaId) throws Exception;
 	public void desvinculaResponsaveis(Long... colaboradoresIds);
 	public boolean verificaAlteracaoStatusAtivo(Long areaId, Long areaMaeId);
@@ -92,4 +93,11 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public void transferirColabDaAreaMaeParaAreaFilha(AreaOrganizacional areaOrganizacional);
 	public boolean possuiAreaFilhasByCodigoAC(String codigoAC, Long empresaId);
 	public String[] filtraPermitidas(String[] areasIds, Long empresaId);
+	public Collection<AreaOrganizacional> findByLntId(Long lntId, Long... empresaIdAreaOrganizacional);
+	public Collection<AreaOrganizacional> findByLntIdComEmpresa(Long lntId, Long... empresaIdAreaOrganizacional);
+	public Map<Long, AreaOrganizacional> findAllMapAreasIds(Long empresaId);
+	public Map<Long, String> findMapResponsaveisIdsEmails(Long empresaId);
+	public Map<Long, String> findMapCoResponsaveisIdsEmails(Long empresaId);
+	public Collection<Long> getAncestraisIds (Long... areasIds);
+	public Collection<Long> getDescendentesIds (Long... areasIds);
 }
