@@ -40,17 +40,22 @@ import com.fortes.rh.util.LongUtil;
 @SuppressWarnings("unchecked")
 public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> implements SolicitacaoDao
 {
-	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim, boolean visualiazaTodasAsSolicitacoes)
+	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, 
+			String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim, 
+			boolean visualiazaTodasAsSolicitacoes, Date dataEncerramentoIni, Date dataEncerramentoFim)
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.setProjection(Projections.rowCount());
 
-		montaConsulta(criteria, visualizar, empresaId, usuarioId, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds, codigoBusca, dataInicio, dataFim, visualiazaTodasAsSolicitacoes);
+		montaConsulta(criteria, visualizar, empresaId, usuarioId, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds, 
+				codigoBusca, dataInicio, dataFim, visualiazaTodasAsSolicitacoes, dataEncerramentoIni, dataEncerramentoFim);
 
 		return (Integer) criteria.list().get(0);
 	}
 
-	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim, boolean visualiazaTodasAsSolicitacoes)
+	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, 
+			Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim, 
+			boolean visualiazaTodasAsSolicitacoes, Date dataEncerramentoIni, Date dataEncerramentoFim)
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.anuncio", "an", Criteria.LEFT_JOIN);
@@ -74,7 +79,8 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("ms.descricao"), "projectionMotivoSolicitacaoDescricao");
 		p.add(Projections.property("s.liberador"), "liberador");
 		
-		montaConsulta(criteria, visualizar, empresaId, usuarioId, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds, codigoBusca, dataInicio, dataFim, visualiazaTodasAsSolicitacoes);
+		montaConsulta(criteria, visualizar, empresaId, usuarioId, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds, 
+				codigoBusca, dataInicio, dataFim, visualiazaTodasAsSolicitacoes, dataEncerramentoIni, dataEncerramentoFim);
 
 		criteria.setProjection(p);
 		criteria.addOrder(Order.desc("s.data"));
@@ -88,7 +94,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 
-	private void montaConsulta(Criteria criteria, char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim, boolean visualiazaTodasAsSolicitacoes)
+	private void montaConsulta(Criteria criteria, char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim, boolean visualiazaTodasAsSolicitacoes, Date dataEncerramentoIni, Date dataEncerramentoFim)
 	{
 		criteria.createCriteria("s.areaOrganizacional", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.solicitante", "us", Criteria.LEFT_JOIN);
@@ -102,8 +108,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		montaCriterionInvisivelParaGestor(criteria, usuarioId, empresaId);
 			
-		if (visualizar == 'E')
+		if (visualizar == 'E'){
 			criteria.add(Expression.eq("s.encerrada", true));
+		}
 		else if(visualizar == 'A')
 		{
 			criteria.add(Expression.eq("s.encerrada", false));
@@ -128,6 +135,11 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 			criteria.add(Expression.ge("s.data", dataInicio));
 		if(dataFim != null)
 			criteria.add(Expression.le("s.data", dataFim));
+
+		if(dataEncerramentoIni != null)
+			criteria.add(Expression.ge("s.dataEncerramento", dataEncerramentoIni));
+		if(dataEncerramentoFim != null)
+			criteria.add(Expression.le("s.dataEncerramento", dataEncerramentoFim));
 		
 		if(areasIds != null && areasIds.length > 0)
 		{

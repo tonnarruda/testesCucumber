@@ -27,7 +27,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array(), new Array('dataIni','dataFim'), true)"/>
+	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array(), new Array('dataIni','dataFim','dataEncerramentoIni','dataEncerramentoFim'), true)"/>
 	
 	<#if dataIni?exists >
 		<#assign dateIni = dataIni?date/>
@@ -40,6 +40,17 @@
 		<#assign dateFim = ""/>
 	</#if>
 	
+	<#if dataEncerramentoIni?exists >
+		<#assign dataEncerramentoIni = dataEncerramentoIni?date/>
+	<#else>
+		<#assign dataEncerramentoIni = ""/>
+	</#if>
+	<#if dataEncerramentoFim?exists>
+		<#assign dataEncerramentoFim = dataEncerramentoFim?date/>
+	<#else>
+		<#assign dataEncerramentoFim = ""/>
+	</#if>
+	
 	<script type='text/javascript'>
 		$(function() {
 			var obj = document.getElementById("legendas");
@@ -48,6 +59,7 @@
 			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerradas";
 
 			toggleDataEncerramento($("#visualizacao").val());
+			togglePeriodoDeEncerramento($("#visualizacao").val());
 		});
 
 		function toggleDataEncerramento(visualizar){
@@ -56,7 +68,19 @@
 			else			
 				$('td:nth-child(9),th:nth-child(9)').show();
 		}
-
+		
+		function togglePeriodoDeEncerramento(visualizar){
+			if(visualizar == 'T' || visualizar == 'E'){
+				$('.divPeriodoEncerramento').show();
+			}
+			else{			
+				$('.divPeriodoEncerramento').hide();
+				$('#dataEncerramentoIni').val("  /  /    ");
+				$('#dataEncerramentoFim').val("  /  /    ");
+			}
+		}
+		
+		
 		function encerraSolicitacao(solicitacaoId, observacaoLiberador)
 		{
 			$('#obsAprova').val(observacaoLiberador.split('$#-').join("\""));
@@ -130,9 +154,17 @@
 					<@ww.datepicker name="dataIni" id="dataIni"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 					<@ww.label value="a" liClass="liLeft" />
 					<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
+					
+					<div class="divPeriodoEncerramento">
+						Período de Encerramento da Solicitação:<br/>
+						<@ww.datepicker name="dataEncerramentoIni" id="dataEncerramentoIni"  value="${dataEncerramentoIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
+						<@ww.label value="a" liClass="liLeft" />
+						<@ww.datepicker name="dataEncerramentoFim" id="dataEncerramentoFim" value="${dataEncerramentoFim}" cssClass="mascaraData validaDataFim" />
+					</div>
+					
 					<@ww.textfield label="Código" name="codigoBusca" id="codigoBusca" cssStyle="width: 465px;"/>
 					<@ww.textfield label="Descrição" name="descricaoBusca" id="descricaoBusca" cssStyle="width: 465px;"/>
-					<@ww.select id="visualizacao" label="Visualizar" name="visualizar" list=r"#{'T':'Todas','A':'Abertas em andamento','S':'Abertas suspensas','E':'Encerradas'}" cssStyle="width: 465px;"/>
+					<@ww.select id="visualizacao" label="Visualizar" name="visualizar" list=r"#{'T':'Todas','A':'Abertas em andamento','S':'Abertas suspensas','E':'Encerradas'}" cssStyle="width: 465px;" onchange="togglePeriodoDeEncerramento(this.value)"/>
 					<@ww.select id="status" label="Status" name="statusBusca" list="status" headerValue="Todos" headerKey="T" cssStyle="width: 465px;"/>
 				</div>
 				<div style="float: right;margin-top: -151px;"/>

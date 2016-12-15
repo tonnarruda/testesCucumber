@@ -41,7 +41,6 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.thread.EnviaEmailSolicitanteThread;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -108,6 +107,9 @@ public class SolicitacaoListAction extends MyActionSupportList
 	
 	private Date dataIni;
 	private Date dataFim;
+	
+	private Date dataEncerramentoIni;
+	private Date dataEncerramentoFim;
 
 	private String voltarPara;
 
@@ -118,14 +120,14 @@ public class SolicitacaoListAction extends MyActionSupportList
 		boolean roleMovSolicitacaoSelecao = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_SELECAO"});
 		
 		if(roleMovSolicitacaoSelecao){
-			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, null, codigoBusca, dataIni, dataFim, true));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, null, codigoBusca, dataIni, dataFim, true);
+			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, null, codigoBusca, dataIni, dataFim, true, dataEncerramentoIni, dataEncerramentoFim));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, null, codigoBusca, dataIni, dataFim, true, dataEncerramentoIni, dataEncerramentoFim);
 		}
 		else{
 			Long[] areasIdsComFilhas = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
-			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas, codigoBusca, dataIni, dataFim, false));
+			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas, codigoBusca, dataIni, dataFim, false, dataEncerramentoIni, dataEncerramentoFim));
 			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), getUsuarioLogado().getId(), estabelecimento.getId(),
-					areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas, codigoBusca, dataIni, dataFim, false);
+					areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas, codigoBusca, dataIni, dataFim, false, dataEncerramentoIni, dataEncerramentoFim);
 		}
 
 		if(solicitacaos == null || solicitacaos.size() == 0)
@@ -552,6 +554,22 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public Date getDataFim() {
 		return dataFim;
+	}
+	
+	public Date getDataEncerramentoIni() {
+		return dataEncerramentoIni;
+	}
+
+	public void setDataEncerramentoIni(Date dataEncerramentoIni) {
+		this.dataEncerramentoIni = dataEncerramentoIni;
+	}
+
+	public Date getDataEncerramentoFim() {
+		return dataEncerramentoFim;
+	}
+
+	public void setDataEncerramentoFim(Date dataEncerramentoFim) {
+		this.dataEncerramentoFim = dataEncerramentoFim;
 	}
 
 	public HashMap getStatus() {

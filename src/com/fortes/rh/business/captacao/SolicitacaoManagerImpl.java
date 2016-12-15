@@ -34,16 +34,17 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 
-	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim, boolean visualiazarTodasAsSolicitacoes)
+	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, 
+			String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim, boolean visualiazarTodasAsSolicitacoes, Date dataEncerramentoIni, Date dataEncerramentoFim)
 	{
-		return getDao().getCount(visualizar, empresaId, usuarioId, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds, codigoBusca, dataInicio, dataFim, visualiazarTodasAsSolicitacoes);
+		return getDao().getCount(visualizar, empresaId, usuarioId, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds, codigoBusca, dataInicio, dataFim, visualiazarTodasAsSolicitacoes, dataEncerramentoIni, dataEncerramentoFim);
 	}
 
 	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId,
-			String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim, boolean visualiazarTodasAsSolicitacoes)
+			String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim, boolean visualiazarTodasAsSolicitacoes, Date dataEncerramentoIni, Date dataEncerramentoFim)
 	{
 		return getDao().findAllByVisualizacao(page, pagingSize, visualizar, empresaId, usuarioId, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds, codigoBusca, 
-				dataInicio, dataFim, visualiazarTodasAsSolicitacoes);
+				dataInicio, dataFim, visualiazarTodasAsSolicitacoes, dataEncerramentoIni, dataEncerramentoFim);
 	}
 
 	@Override

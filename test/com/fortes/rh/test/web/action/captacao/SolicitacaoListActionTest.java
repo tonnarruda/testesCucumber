@@ -32,7 +32,6 @@ import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
-import com.fortes.rh.test.util.mockObjects.MockSecurityUtilVerifyRole;
 import com.fortes.rh.web.action.captacao.SolicitacaoListAction;
 import com.fortes.web.tags.CheckBox;
 
@@ -87,48 +86,6 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
         candidatoSolicitacaoManager = null;
         action = null;
     	MockSecurityUtil.verifyRole = false;
-    }
-
-    public void testList() throws Exception
-    {
-    	Solicitacao s1 = SolicitacaoFactory.getSolicitacao();
-    	s1.setId(1L);
-    	Solicitacao s2 = SolicitacaoFactory.getSolicitacao();
-    	s2.setId(2L);
-
-    	Collection<Solicitacao> solicitacaos = new ArrayList<Solicitacao>();
-    	solicitacaos.add(s1);
-    	solicitacaos.add(s2);
-    	
-    	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(2));
-    	areaorganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").withAnyArguments();
-    	areaorganizacionalManager.expects(once()).method("findAllSelectOrderDescricaoByUsuarioId").withAnyArguments();
-    	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(solicitacaos));
-    	cargoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Cargo>()));
-    	estabelecimentoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Estabelecimento>()));
-    	motivoSolicitacaoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<MotivoSolicitacao>()));
-    	
-    	assertEquals(action.list(), "success");
-    	manager.verify();
-    }
-    
-    public void testListRoleMovSolicitacaoSelecao() throws Exception
-    {
-    	Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtilVerifyRole.class);
-    	Solicitacao s1 = SolicitacaoFactory.getSolicitacao();
-    	s1.setId(1L);
-    	
-    	Collection<Solicitacao> solicitacaos = new ArrayList<Solicitacao>();
-    	solicitacaos.add(s1);
-    	
-    	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(1));
-    	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(solicitacaos));
-    	cargoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Cargo>()));
-    	estabelecimentoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Estabelecimento>()));
-    	areaorganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").withAnyArguments();
-    	motivoSolicitacaoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<MotivoSolicitacao>()));
-    	
-    	assertEquals(action.list(), "success");
     }
 
     public void testDelete() throws Exception
