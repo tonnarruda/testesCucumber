@@ -128,7 +128,7 @@
 				});
 			});
 			
-			$('#dialog').dialog({title: "Cadastro de Turma", resizable: false, modal: true, width: 955, close: function(ev, ui) { $('#continuarAdd').val('false'); $('#carregar').attr('disabled', true).css('opacity', '0.2'); $(this).dialog("close");  } });
+			$('#dialog').dialog({title: "Cadastro de Turma", resizable: false, modal: true, width: 960, close: function(ev, ui) { $('#continuarAdd').val('false'); $('#carregar').attr('disabled', true).css('opacity', '0.2'); $(this).dialog("close");  } });
 		}
 		
 		function populaDias()
@@ -410,7 +410,7 @@
 	
 	<div id="dialog" style="display: none;">
 		<@ww.form id="form" name="form" action="saveTurma.action" method="POST" >
-			<div style="float: left; width: 500px; height: 600px;">
+			<div style="float: left; width: 525px; height: 600px;">
 				<button onclick="carregaTurmaAnterior()" id="carregar" type="button">Carregar dados da turma anterior</button>
 				<@ww.hidden name="turma.curso.id" cssClass="cursoId" />
 				<@ww.hidden name="cursoLntId" id="cursoLntId" />
@@ -454,7 +454,7 @@
 
 			<div style="text-align: right;">
 				<button onclick="validarCampos();" type="button">Gravar</button>
-				<button onclick="$('#continuarAdd').val('true');validarCampos();" type="button" style="margin-right: 0px !important;">Gravar e criar nova</button>
+				<button style="margin-right:8px;" onclick="$('#continuarAdd').val('true');validarCampos();" type="button" style="margin-right: 0px !important;">Gravar e criar nova</button>
 			</div>
 		</@ww.form>
 		

@@ -14,6 +14,9 @@
 		.waDivFormulario table tbody tr td a{
 			padding-right: 3px !important
 		}
+		#botaoDialog{
+			height: 30px !important;	
+		}
 		
 	</style>
 
@@ -26,6 +29,7 @@
 									  		buttons: 
 											[
 											    {
+											    	id: "botaoDialog",
 											        text: "Gerar Relatório",
 											        click: function() { 
 											        	processando('<@ww.url includeParams="none" value="/imgs/"/>');
@@ -35,6 +39,7 @@
 											        }
 											    },
 											    {
+											    	id: "botaoDialog",
 											        text: "Cancelar",
 											        click: function() { $(this).dialog("close"); }
 											    }

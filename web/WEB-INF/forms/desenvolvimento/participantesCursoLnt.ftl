@@ -215,9 +215,9 @@
 					});
 					
 					if ( $("#listCheckBoxparticipantesCheck input:checked").length == 0 ) {
-						$('<div>Não existem participantes para relacionar.</div>').dialog({ modal: true, width: 310, height: 100, title: 'Relacionar cursos'});
+						jAlert('Não existem participantes para relacionar');
 					} else if ( $('.cursoNome[value!=""]').length == 0 ) {
-						$('<div>Não existem cursos para relacionar.</div>').dialog({ modal: true, width: 270, height: 100, title: 'Relacionar cursos'});
+						jAlert('Não existem cursos para relacionar');
 					} else {
 						$('#dialogCursos').dialog({ modal: true, width: 650, title: 'Relacionar cursos',
 													buttons: [
@@ -290,7 +290,8 @@
 							$("#cursosRemovidos").append("<input type='hidden' name='cursosRemovidos' value='" + $(this).find(".cursoLntId").val() + "' />");
 					});
 					
-					$(this).parents("#cursos").find(".participantes").find("li").each(function(){
+					$("#cursos .selected").find(".participantes").find("li").each(function(){
+						console.log($(this).find(".participanteCursoId"));
 						if($(this).find(".participanteCursoId").length > 0 )
 							$("#participantesRemovidos").append("<input type='hidden' name='participantesRemovidos' value='"+ $(this).parent().parent().parent().find('.cursoLntId').val()+ "_" + $(this).find(".participanteCursoId").val() + "' />");
 					});

@@ -46,70 +46,75 @@ public class LinkTag extends TagSupport
 		if(verifyRole.equals("") || SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{verifyRole}))
 		{
 			if(!iconeClass.equals(""))
-			{
-				link.append("<a onmouseover=\"$(this).find('i').addClass('fa-2x').css('color','#6965ec')\" onmouseout=\"$(this).find('i').removeClass('fa-2x').css('color','black')\"");
-
-				if(!disabled)
-				{
-					if(!href.equals(""))
-						link.append(" href=\"" + href + "\"");
-
-					if(!onclick.equals(""))
-						link.append(" onclick=\"" + onclick + "\"");
-				}else
-					opacity = true;
-				
-				link.append("><i ");
-
-				if(disabled && !imgTitleDisabled.equals(""))
-					link.append(" title=\"" + imgTitleDisabled + "\" ");
-				else if(!imgTitle.equals(""))
-					link.append(" title=\"" + imgTitle + "\" ");
-
-				link.append(" class='fa " + iconeClass +" fa-lg'  aria-hidden='true'");
-
-				if(opacity)
-					link.append(" style=\"opacity:0.2;filter:alpha(opacity=20);\"");
-
-				link.append(" ></i>&nbsp;</a>");
-				
-			}else{
-				link.append("<a");
-
-				if(!disabled)
-				{
-					if(!href.equals(""))
-						link.append(" href=\"" + href + "\"");
-
-					if(!onclick.equals(""))
-						link.append(" onclick=\"" + onclick + "\"");
-				}else
-					opacity = true;
-
-				link.append(" >");
-
-				if(!imgName.equals(""))
-				{
-					link.append("<img border=\"0\" ");
-
-					if(disabled && !imgTitleDisabled.equals(""))
-						link.append(" title=\"" + imgTitleDisabled + "\" ");
-					else if(!imgTitle.equals(""))
-						link.append(" title=\"" + imgTitle + "\" ");
-
-					link.append(" src=\"/" +ArquivoUtil.getContextName()+"/imgs/" + imgName + "\"");	
-
-					if(opacity)
-						link.append(" style=\"opacity:0.2;filter:alpha(opacity=20);\"");
-
-					link.append(" >");
-				}
-
-				link.append("</a>");
-			}
+				montaLinkFonteAwesome(link);
+			else
+				montLink(link);
 		}
 
 		return link;
+	}
+
+	private void montLink(StringBuffer link) {
+		link.append("<a");
+
+		if(!disabled)
+		{
+			if(!href.equals(""))
+				link.append(" href=\"" + href + "\"");
+
+			if(!onclick.equals(""))
+				link.append(" onclick=\"" + onclick + "\"");
+		}else
+			opacity = true;
+
+		link.append(" >");
+
+		if(!imgName.equals(""))
+		{
+			link.append("<img border=\"0\" ");
+
+			if(disabled && !imgTitleDisabled.equals(""))
+				link.append(" title=\"" + imgTitleDisabled + "\" ");
+			else if(!imgTitle.equals(""))
+				link.append(" title=\"" + imgTitle + "\" ");
+
+			link.append(" src=\"/" +ArquivoUtil.getContextName()+"/imgs/" + imgName + "\"");	
+
+			if(opacity)
+				link.append(" style=\"opacity:0.2;filter:alpha(opacity=20);\"");
+
+			link.append(" >");
+		}
+
+		link.append("</a>");
+	}
+
+	private void montaLinkFonteAwesome(StringBuffer link) {
+		link.append("<a onmouseover=\"$(this).find('i').addClass('fa-2x').css('color','#6965ec')\" onmouseout=\"$(this).find('i').removeClass('fa-2x').css('color','black')\"");
+
+		if(!disabled)
+		{
+			if(!href.equals(""))
+				link.append(" href=\"" + href + "\"");
+
+			if(!onclick.equals(""))
+				link.append(" onclick=\"" + onclick + "\"");
+		}else
+			opacity = true;
+		
+		link.append("><i ");
+
+		if(disabled && !imgTitleDisabled.equals(""))
+			link.append(" title=\"" + imgTitleDisabled + "\" ");
+		else if(!imgTitle.equals(""))
+			link.append(" title=\"" + imgTitle + "\" ");
+
+		link.append(" class='fa " + iconeClass +" fa-lg'  aria-hidden='true'");
+
+		if(opacity)
+			link.append(" style=\"opacity:0.2;filter:alpha(opacity=20);\"");
+
+		link.append(" ></i>&nbsp;</a>");
 	}
 
 	public String getHref()

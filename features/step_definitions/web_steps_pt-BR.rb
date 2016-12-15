@@ -59,8 +59,16 @@ Quando /^eu clico no botão "([^"]*)"$/ do |text|
     find('.btn' + text).click
 end
 
+Quando /^eu clico no botão novo "([^"]*)"$/ do |text|
+   page.execute_script("$(\"button:contains('#{text}')\").click()")
+end
+
 Quando /^eu clico no botão de Id "([^"]*)"$/ do |text|
     find('#' + text).click
+end
+
+Quando /^eu clico no input de name  "([^"]*)"$/ do |text|
+    page.execute_script("$('input[name=\"#{text}\"]').click()")
 end
 
 Quando /^eu clico no botão de class "([^"]*)"$/ do |text|
@@ -74,6 +82,22 @@ end
 
 Quando /^eu clico em editar "([^"]*)"$/ do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Editar']").click
+end
+
+Quando /^eu clico no icone "([^"]*)" da linha contendo "([^"]*)"$/ do |acao, text|
+   page.execute_script("$(\"tr  td:contains('#{text}')\").parent().find(\".acao > a > i[title='#{acao}']\").click()")
+end
+
+Quando /^eu clico no botão do dialog "([^"]*)"$/ do |text|
+   page.execute_script("$('.ui-button-text:contains(\"#{text}\")').click()")
+end
+
+Quando /^eu seleciono o curso LNT "([^"]*)"$/ do |text|
+   page.execute_script("$('.cursoNome[value=\"#{text}\"]').parent().parent().addClass('selected')")
+end
+
+Quando /^eu clico na ação de excluir cursos da LNT$/ do
+   page.execute_script("$('.actions .remove').click()")
 end
 
 Quando /^eu clico em imprimir "([^"]*)"$/ do |text|
@@ -96,6 +120,10 @@ Quando /^eu clico na imagem com o título "([^"]*)"$/ do |titulo|
   find(:xpath, "//img[@title='#{titulo}']").click
 end
 
+Quando /^eu clico no icone de visualizar participantes do curso da LNT$/ do
+  page.execute_script("$('.visualizar-participantes').click()")
+end
+
 Quando /^eu preencho campo pelo id "([^"]*)" com "([^"]*)"$/ do |desc, value|
   field = find(:xpath, "//input[contains(@id, '#{desc}')]")
   field.set(value)
@@ -112,6 +140,14 @@ end
 
 Quando /^eu preencho o campo pelo name "([^"]*)" com "([^"]*)"$/ do |field, value|
   page.execute_script("$(\"input[name='#{field}']\").val(\"#{value}\")")
+end
+
+Quando /^eu preencho o nome do curso da LNT "([^"]*)" com "([^"]*)"$/ do |item, value|
+  page.execute_script("$(\"input[name='cursosLnt[#{item}].nomeNovoCurso']\").val('#{value}')")
+end
+
+Quando /^eu seleciono a opçao de valor "([^"]*)" do rádio de id "([^"]*)"$/ do |item, id|
+  page.execute_script("$('##{id}[value=\"#{item}\"]').click()")
 end
 
 Quando /^eu clico no botão com o texto "([^"]*)"$/ do |label|
