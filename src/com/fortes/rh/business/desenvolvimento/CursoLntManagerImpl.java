@@ -55,11 +55,10 @@ public class CursoLntManagerImpl extends GenericManagerImpl<CursoLnt, CursoLntDa
 		return mapParticipantesCursoLntRemovidos;
 	} 
 	
-	public void saveOrUpdate(Lnt lnt, Collection<CursoLnt> cursosLnt, String[] participantesRemovidos, Long[] cursosRemovidos) throws Exception
-	{
+	public void saveOrUpdate(Lnt lnt, Collection<CursoLnt> cursosLnt, String[] participantesRemovidos, Long[] cursosRemovidos) throws Exception{
+		
 		Collection<ParticipanteCursoLnt> participanteCursoLntsASerSalvo = new ArrayList<ParticipanteCursoLnt>();
-		Long[] cursosLntIdExistentesArray = new CollectionUtil<CursoLnt>().convertCollectionToArrayIds(findByLntId(lnt.getId()));
-		Collection<Long> cursosLntIdExistentes = LongUtil.arrayLongToCollectionLong(cursosLntIdExistentesArray);
+		Collection<Long> cursosLntIdExistentes = LongUtil.arrayLongToCollectionLong(new CollectionUtil<CursoLnt>().convertCollectionToArrayIds(findByLntId(lnt.getId())));
 		
 		if(cursosLnt != null){
 			for (CursoLnt cursoLnt : cursosLnt){

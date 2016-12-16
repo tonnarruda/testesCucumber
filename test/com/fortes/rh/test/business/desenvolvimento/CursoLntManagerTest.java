@@ -121,8 +121,8 @@ public class CursoLntManagerTest
 	}
 	
 	@Test
-	public void testSaveOrUpdateInserirERemover() throws Exception
-	{
+	public void testSaveOrUpdateInserirERemover() throws Exception{
+		
 		Lnt lnt = LntFactory.getEntity(1L);
 		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity(1L);
 		
@@ -134,8 +134,6 @@ public class CursoLntManagerTest
 		
 		ParticipanteCursoLnt participanteCursoLnt1 = ParticipanteCursoLntFactory.getEntity(null, area, cursoLnt1);
 		participanteCursoLnt1.setId(1L);
-		ParticipanteCursoLnt participanteCursoLnt2 = ParticipanteCursoLntFactory.getEntity(null, area, cursoLnt1);
-		participanteCursoLnt2.setId(2L);
 		ParticipanteCursoLnt participanteCursoLnt3 = ParticipanteCursoLntFactory.getEntity(null, area, cursoLnt2);
 		participanteCursoLnt3.setId(3L);
 		ParticipanteCursoLnt participanteCursoLntRemovido1 = ParticipanteCursoLntFactory.getEntity(null, area, cursoLntRemovido1);
@@ -143,12 +141,12 @@ public class CursoLntManagerTest
 		ParticipanteCursoLnt participanteCursoLntRemovido2 = ParticipanteCursoLntFactory.getEntity(null, area, cursoLntRemovido1);
 		participanteCursoLntRemovido2.setId(5L);
 		
-		cursoLnt1.setParticipanteCursoLnts(Arrays.asList(participanteCursoLnt1, participanteCursoLnt2));
+		cursoLnt1.setParticipanteCursoLnts(Arrays.asList(participanteCursoLnt1));
 		cursoLnt2.setParticipanteCursoLnts(Arrays.asList(participanteCursoLnt3));
 		
 		Map<Long,Collection<ParticipanteCursoLnt>> participantesMap = new HashMap<Long, Collection<ParticipanteCursoLnt>>();
-		participantesMap.put(cursoLnt1.getId(), Arrays.asList(participanteCursoLnt1, participanteCursoLnt2));
-		participantesMap.put(cursoLntRemovido1.getId(), Arrays.asList(participanteCursoLntRemovido1, participanteCursoLnt2));
+		participantesMap.put(cursoLnt1.getId(), Arrays.asList(participanteCursoLnt1));
+		participantesMap.put(cursoLntRemovido1.getId(), Arrays.asList(participanteCursoLntRemovido1));
 		participantesMap.put(cursoLntRemovido2.getId(), new ArrayList<ParticipanteCursoLnt>());
 		
 		when(cursoLntDao.findByLntId(lnt.getId())).thenReturn(Arrays.asList(cursoLnt1));
@@ -158,7 +156,7 @@ public class CursoLntManagerTest
 		
 		verify(cursoLntDao, times(1)).update(eq(cursoLnt1));
 		verify(cursoLntDao, times(1)).save(eq(cursoLnt2));
-		verify(participanteCursoLntManager, times(3)).save(any(ParticipanteCursoLnt.class));
+		verify(participanteCursoLntManager, times(2)).save(any(ParticipanteCursoLnt.class));
 		verify(participanteCursoLntManager, times(1)).remove(new Long[]{participanteCursoLntRemovido1.getId()});
 		verify(cursoLntDao, times(1)).remove(cursoLntRemovido2.getId());
 	}
