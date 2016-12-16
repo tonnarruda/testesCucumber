@@ -213,7 +213,7 @@ li.placeholder {
 }
 .participantes ul li {
 	height: 18px;
-	width: 905px;
+	width: 910px;
 	border-bottom: 1px #eee solid;
 	/* padding-top: 2px; */
 	padding: 4px 0 0 7px;
@@ -221,11 +221,13 @@ li.placeholder {
 	list-style:none;
 }
 .participantes ul li span{
-	width: 223px; 
+	width: 233px; 
 	float: left;
+	font-family: arial;
+	font-size: 10px;
 }
 #tamanhoGrande{
-	width: 342px !important; 
+	width: 322px !important; 
 }
 #tamanhoPequeno{
 	width: 114px !important; 

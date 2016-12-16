@@ -49,18 +49,19 @@
 			
 			.legend {
 				height: 25px;
-				width: 910px;
+				width: 905px;
 				background: #f7f7f7;
 				color: #5C5C5A;
 			}		
 			
 			.legend div{
-				width: 220px;
+				width: 230px;
 				float: left;
 				border: 1px solid #e7e7e7;
 				padding: 5px 0;
 				text-align: center;
 				font-size: 11px;
+				font-family: arial;
 				font-weight: bold;
 			}
 			
@@ -359,8 +360,8 @@
 							var areaArray = areaCompleta.split('>');
 							var areaFolha = areaArray[areaArray.length - 1];
 							
-							if(areaFolha.length > 45)
-								areaFolha = areaFolha.substring(0,46) + "...";
+							if(areaFolha.length > 42)
+								areaFolha = areaFolha.substring(0,43) + "...";
 										
 							participante+='<span style="cursor: context-menu;" class="participanteColaboradorNomeComercial" href=# onmouseout="hideTooltip()" onmouseover="showTooltip(event,\''
 										+ nome + '\');return false">' + momeComercial + '</span>'
