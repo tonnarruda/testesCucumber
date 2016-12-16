@@ -5388,7 +5388,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("e.nome"), "empresaNome");
 		p.add(Projections.property("es.nome"), "estabelecimentoNomeProjection");
 		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
-		p.add(Projections.alias(Projections.sqlProjection("monta_familia_area(ao3_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome"));
+		p.add(Projections.alias(Projections.sqlProjection("monta_familia_area(ao3_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {StandardBasicTypes.TEXT}), "areaOrganizacionalNome"));
 		
 		criteria.setProjection(Projections.distinct(p));
 		

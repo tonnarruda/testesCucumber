@@ -3,13 +3,13 @@ package com.fortes.rh.dao.hibernate.desenvolvimento;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -39,7 +39,7 @@ public class CursoLntDaoHibernate extends GenericDaoHibernate<CursoLnt> implemen
 		stringBuffer.append("(select count(distinct(pcl.colaborador_id)) from participantecursolnt pcl inner join colaboradorTurma ct on ct.cursolnt_id = pcl.cursolnt_id and pcl.colaborador_id = ct.colaborador_Id where pcl.cursolnt_id = this_.id) ");
 		stringBuffer.append("then false else true end) as existePerticipanteASerRelacionado ");
 		
-		p.add(Projections.sqlProjection(stringBuffer.toString(), new String[] {"existePerticipanteASerRelacionado"}, new Type[] {Hibernate.BOOLEAN}), "existePerticipanteASerRelacionado");
+		p.add(Projections.sqlProjection(stringBuffer.toString(), new String[] {"existePerticipanteASerRelacionado"}, new Type[] {StandardBasicTypes.BOOLEAN}), "existePerticipanteASerRelacionado");
 		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.add(Expression.eq("cl.lnt.id", lntId));

@@ -15,6 +15,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.Type;
 import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -622,7 +623,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		p.add(Projections.property("a.areaMae.id"), "areaMaeId");
 		p.add(Projections.property("e.id"), "empresaId");
 		p.add(Projections.property("e.nome"), "empresaNome");
-		p.add(Projections.sqlProjection("monta_familia_area(a1_.id) as nome", new String[] {"nome"}, new Type[] {Hibernate.TEXT}), "nome");
+		p.add(Projections.sqlProjection("monta_familia_area(a1_.id) as nome", new String[] {"nome"}, new Type[] {StandardBasicTypes.TEXT}), "nome");
 
 		Criteria criteria = getSession().createCriteria(Lnt.class, "lnt");
 		criteria.createCriteria("lnt.areasOrganizacionais", "a");
@@ -644,7 +645,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
 
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.sqlProjection("ancestrais_areas_ids(this_.id) as id", new String[] {"id"}, new Type[] {Hibernate.LONG}), "id");
+		p.add(Projections.sqlProjection("ancestrais_areas_ids(this_.id) as id", new String[] {"id"}, new Type[] {StandardBasicTypes.LONG}), "id");
 		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.add(Expression.in("ao.id", areasIds));
@@ -657,7 +658,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
 
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.sqlProjection("descendentes_areas_ids(this_.id) as id", new String[] {"id"}, new Type[] {Hibernate.LONG}), "id");
+		p.add(Projections.sqlProjection("descendentes_areas_ids(this_.id) as id", new String[] {"id"}, new Type[] {StandardBasicTypes.LONG}), "id");
 		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.add(Expression.in("ao.id", areasIds));

@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -2095,7 +2094,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("c.nome"), "colaboradorNome");
 		p.add(Projections.property("c.nomeComercial"), "colaboradorNomeComercial");
 		p.add(Projections.property("ao.nome"), "areaOrganizacionalNome");
-		p.add(Projections.sqlProjection("monta_familia_area(ao5_.id) as areaOrganizacionalNomeComHierarquia", new String[] {"areaOrganizacionalNomeComHierarquia"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNomeComHierarquia");
+		p.add(Projections.sqlProjection("monta_familia_area(ao5_.id) as areaOrganizacionalNomeComHierarquia", new String[] {"areaOrganizacionalNomeComHierarquia"}, new Type[] {StandardBasicTypes.TEXT}), "areaOrganizacionalNomeComHierarquia");
 		p.add(Projections.property("est.nome"), "estabelecimentoNome");
 		p.add(Projections.property("emp.nome"), "empresaNome");
 		criteria.setProjection(Projections.distinct(p));

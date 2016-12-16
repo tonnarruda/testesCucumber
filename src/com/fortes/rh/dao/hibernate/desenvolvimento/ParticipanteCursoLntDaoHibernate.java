@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -13,6 +12,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -126,7 +126,7 @@ public class ParticipanteCursoLntDaoHibernate extends GenericDaoHibernate<Partic
 		p.add(Projections.property("c.nomeComercial"), "colaboradorNomeComercial");
 		p.add(Projections.property("a.id"), "areaId");
 		p.add(Projections.property("a.nome"), "areaNomeFolha");
-		p.add(Projections.sqlProjection("monta_familia_area(a3_.id) as areaNome", new String[] {"areaNome"}, new Type[] {Hibernate.TEXT}), "areaNome");
+		p.add(Projections.sqlProjection("monta_familia_area(a3_.id) as areaNome", new String[] {"areaNome"}, new Type[] {StandardBasicTypes.TEXT}), "areaNome");
 		p.add(Projections.property("e.id"), "empresaId");
 		p.add(Projections.property("e.nome"), "empresaNome");
 		p.add(Projections.property("est.nome"), "estabelecimentoNome");
