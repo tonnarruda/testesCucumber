@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="S16070000364"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competências do Colaborador > Relatório: Adição da informação do percentual do nível de competência no quadro de escala de desempenho para o relatório detalhado.]]></Item>
 		<Item visivel="S" motivo="S16080000343"><![CDATA[T&D > Movimentações > Levantamentos de Necessidade de Treinamento (LNT): Nova funcionalidade.]]></Item>
 		<Item visivel="S" motivo="P16110000243"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Ajuste de inconsistência ao gravar os dados do colaborador.]]></Item>
+		<Item visivel="S" motivo="S16120000045"><![CDATA[Sistema: Apresentar "Splash" somente para usuários com perfil de visualizar mensagem de atualização/inconsistência do sistema.]]></Item>
 	</Versao>
 	<Versao id="1.1.174.206" db="" data="30/11/2016">
 		<Item visivel="S" motivo="S16110000264"><![CDATA[R&S > Movimentações > solicitação de Pessoal > Candidatos da Seleção > Inserir Etapas em Grupo: Nova opção "Exibir na Agenda".]]></Item>
