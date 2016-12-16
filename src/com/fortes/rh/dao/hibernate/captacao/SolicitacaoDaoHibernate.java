@@ -105,19 +105,16 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.createCriteria("s.liberador", "l", Criteria.LEFT_JOIN);
 
 		criteria.add(Expression.eq("s.empresa.id",empresaId));
-		
 		montaCriterionInvisivelParaGestor(criteria, usuarioId, empresaId);
 			
 		if (visualizar == 'E'){
 			criteria.add(Expression.eq("s.encerrada", true));
 		}
-		else if(visualizar == 'A')
-		{
+		else if(visualizar == 'A'){
 			criteria.add(Expression.eq("s.encerrada", false));
 			criteria.add(Expression.eq("s.suspensa", false));
 		}
-		else if(visualizar == 'S')
-		{
+		else if(visualizar == 'S'){
 			criteria.add(Expression.eq("s.encerrada", false));
 			criteria.add(Expression.eq("s.suspensa", true));
 		}
@@ -141,13 +138,11 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		if(dataEncerramentoFim != null)
 			criteria.add(Expression.le("s.dataEncerramento", dataEncerramentoFim));
 		
-		if(areasIds != null && areasIds.length > 0)
-		{
+		if(areasIds != null && areasIds.length > 0){
 			Disjunction disjunction = Expression.disjunction();
 			disjunction.add(Expression.eq("s.solicitante.id", usuarioId));
 			disjunction.add(Expression.in("s.areaOrganizacional.id", areasIds));
 			criteria.add(disjunction);
-			
 		}else if(usuarioId != null && !visualiazaTodasAsSolicitacoes)
 			criteria.add(Expression.eq("s.solicitante.id", usuarioId));
 

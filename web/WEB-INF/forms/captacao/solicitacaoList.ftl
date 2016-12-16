@@ -26,6 +26,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	
 	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array(), new Array('dataIni','dataFim','dataEncerramentoIni','dataEncerramentoFim'), true)"/>
 	
@@ -58,6 +59,11 @@
 			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #002EB8;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Abertas suspensas";
 			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerradas";
 
+			$('#periodoEncerramentoHelp').qtip({
+				content: '<div style="text-align:justify">Esse período só será habilitado quando o filtro "Visualizar" estiver selecionado com a opção "Encerrada" ou "Todas".</div>',
+				style: { width: 300 }
+			});
+
 			toggleDataEncerramento($("#visualizacao").val());
 			togglePeriodoDeEncerramento($("#visualizacao").val());
 		});
@@ -71,15 +77,20 @@
 		
 		function togglePeriodoDeEncerramento(visualizar){
 			if(visualizar == 'T' || visualizar == 'E'){
-				$('.divPeriodoEncerramento').show();
+				$('#dataEncerramentoIni').css('background', '#FFF').removeAttr('disabled');
+				$('#dataEncerramentoFim').css('background', '#FFF').removeAttr('disabled');
+				$('#dataEncerramentoIni_button').show();
+				$('#dataEncerramentoFim_button').show();
+				$('#periodoEncerramentoHelp').hide();
 			}
 			else{			
-				$('.divPeriodoEncerramento').hide();
-				$('#dataEncerramentoIni').val("  /  /    ");
-				$('#dataEncerramentoFim').val("  /  /    ");
+				$('#dataEncerramentoIni').css('background', '#EFEFEF').attr('disabled', 'disabled');
+				$('#dataEncerramentoFim').css('background', '#EFEFEF').attr('disabled', 'disabled');
+				$('#dataEncerramentoIni_button').hide();
+				$('#dataEncerramentoFim_button').hide();
+				$('#periodoEncerramentoHelp').show();
 			}
 		}
-		
 		
 		function encerraSolicitacao(solicitacaoId, observacaoLiberador)
 		{
@@ -154,20 +165,20 @@
 					<@ww.datepicker name="dataIni" id="dataIni"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 					<@ww.label value="a" liClass="liLeft" />
 					<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
-					
-					<div class="divPeriodoEncerramento">
-						Período de Encerramento da Solicitação:<br/>
-						<@ww.datepicker name="dataEncerramentoIni" id="dataEncerramentoIni"  value="${dataEncerramentoIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
-						<@ww.label value="a" liClass="liLeft" />
-						<@ww.datepicker name="dataEncerramentoFim" id="dataEncerramentoFim" value="${dataEncerramentoFim}" cssClass="mascaraData validaDataFim" />
-					</div>
-					
 					<@ww.textfield label="Código" name="codigoBusca" id="codigoBusca" cssStyle="width: 465px;"/>
 					<@ww.textfield label="Descrição" name="descricaoBusca" id="descricaoBusca" cssStyle="width: 465px;"/>
 					<@ww.select id="visualizacao" label="Visualizar" name="visualizar" list=r"#{'T':'Todas','A':'Abertas em andamento','S':'Abertas suspensas','E':'Encerradas'}" cssStyle="width: 465px;" onchange="togglePeriodoDeEncerramento(this.value)"/>
 					<@ww.select id="status" label="Status" name="statusBusca" list="status" headerValue="Todos" headerKey="T" cssStyle="width: 465px;"/>
 				</div>
-				<div style="float: right;margin-top: -151px;"/>
+				<div style="float: right;margin-top: -194px;"/>
+					<div class="divPeriodoEncerramento">
+						Período de Encerramento da Solicitação:
+						<img id="periodoEncerramentoHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px; margin-bottom: -4px" />
+						<br/>
+						<@ww.datepicker name="dataEncerramentoIni" id="dataEncerramentoIni"  value="${dataEncerramentoIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
+						<@ww.label value="a" liClass="liLeft" />
+						<@ww.datepicker name="dataEncerramentoFim" id="dataEncerramentoFim" value="${dataEncerramentoFim}" cssClass="mascaraData validaDataFim" />
+					</div>
 					<@ww.select id="motivoSolicitacao" label="Motivo da Solicitação" name="motivoSolicitacao.id" list="motivosSolicitacoes" listKey="id" listValue="descricao" headerValue="Todos" headerKey="-1" cssStyle="width: 465px;" />
 					<@ww.select id="areaOrganizacional" label="Área Organizacional" name="areaOrganizacional.id" list="areasOrganizacionais" listKey="id" listValue="descricaoComCodigoAC" headerValue="Todos" headerKey="-1"cssStyle="width: 465px;" />
 					<@ww.select id="estabelecimento" label="Estabelecimento" name="estabelecimento.id" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1"cssStyle="width: 465px;" />
