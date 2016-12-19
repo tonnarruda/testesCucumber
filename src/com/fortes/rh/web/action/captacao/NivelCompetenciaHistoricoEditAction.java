@@ -1,7 +1,8 @@
 package com.fortes.rh.web.action.captacao;
 
-
 import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.captacao.NivelCompetenciaHistoricoManager;
 import com.fortes.rh.exception.FortesException;
@@ -13,7 +14,7 @@ import com.opensymphony.xwork.Action;
 public class NivelCompetenciaHistoricoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager;
+	@Autowired private NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager;
 	private NivelCompetenciaHistorico nivelCompetenciaHistorico;
 	private Collection<NivelCompetenciaHistorico> nivelCompetenciaHistoricos;
 
@@ -52,11 +53,6 @@ public class NivelCompetenciaHistoricoEditAction extends MyActionSupportList
 		this.nivelCompetenciaHistorico = nivelCompetenciaHistorico;
 	}
 
-	public void setNivelCompetenciaHistoricoManager(NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager)
-	{
-		this.nivelCompetenciaHistoricoManager = nivelCompetenciaHistoricoManager;
-	}
-	
 	public Collection<NivelCompetenciaHistorico> getNivelCompetenciaHistoricos()
 	{
 		return nivelCompetenciaHistoricos;

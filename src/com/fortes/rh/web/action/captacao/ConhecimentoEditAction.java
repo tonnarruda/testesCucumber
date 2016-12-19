@@ -6,6 +6,8 @@ package com.fortes.rh.web.action.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
@@ -25,11 +27,11 @@ import com.opensymphony.xwork.ModelDriven;
 public class ConhecimentoEditAction extends MyActionSupportEdit implements ModelDriven
 {
 	//	managers
-	private ConhecimentoManager conhecimentoManager = null;
-	private AreaOrganizacionalManager areaOrganizacionalManager = null;
-	private CompetenciaManager competenciaManager = null;
-	private CursoManager cursoManager;
-	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private CompetenciaManager competenciaManager;
+	@Autowired private ConhecimentoManager conhecimentoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
 
 	private String[] areasCheck;
 	private Long[] cursosCheck;
@@ -136,11 +138,6 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 		return getConhecimento();
 	}
 
-	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager)
-	{
-		this.conhecimentoManager=conhecimentoManager;
-	}
-
 	public AreaOrganizacional getAreaOrganizacional()
 	{
 		return areaOrganizacional;
@@ -149,17 +146,6 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 	public void setAreaOrganizacional(AreaOrganizacional areaOrganizacional)
 	{
 		this.areaOrganizacional = areaOrganizacional;
-	}
-
-	public AreaOrganizacionalManager getAreaOrganizacionalManager()
-	{
-		return areaOrganizacionalManager;
-	}
-
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public Collection<AreaOrganizacional> getAreaOrganizacionals()
@@ -171,11 +157,6 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 			Collection<AreaOrganizacional> areaOrganizacionals)
 	{
 		this.areaOrganizacionals = areaOrganizacionals;
-	}
-
-	public ConhecimentoManager getConhecimentoManager()
-	{
-		return conhecimentoManager;
 	}
 
 	public String[] getAreasCheck()
@@ -198,11 +179,6 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 		this.areasCheckList = areasCheckList;
 	}
 
-	public void setCompetenciaManager(CompetenciaManager competenciaManager)
-	{
-		this.competenciaManager = competenciaManager;
-	}
-
 	public Collection<CheckBox> getCursosCheckList()
 	{
 		return cursosCheckList;
@@ -213,18 +189,8 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 		this.cursosCheckList = cursosCheckList;
 	}
 
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
-	}
-
 	public void setCursosCheck(Long[] cursosCheck)
 	{
 		this.cursosCheck = cursosCheck;
-	}
-
-	public void setCriterioAvaliacaoCompetenciaManager(
-			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
-		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 }

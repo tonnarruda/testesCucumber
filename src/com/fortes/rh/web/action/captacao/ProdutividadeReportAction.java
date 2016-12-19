@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.captacao.relatorio.ProdutividadeRelatorio;
@@ -17,8 +19,8 @@ public class ProdutividadeReportAction extends MyActionSupport
 {
 	private Collection<ProdutividadeRelatorio> dataSource = new ArrayList<ProdutividadeRelatorio>();
 
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private HistoricoCandidatoManager historicoCandidatoManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private HistoricoCandidatoManager historicoCandidatoManager;
 
 	private ParametrosDoSistema parametrosDoSistema;
 	private Map parametros = new HashMap();
@@ -92,25 +94,5 @@ public class ProdutividadeReportAction extends MyActionSupport
 	public void setParametrosDoSistema(ParametrosDoSistema parametrosDoSistema)
 	{
 		this.parametrosDoSistema = parametrosDoSistema;
-	}
-
-	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager)
-	{
-		this.historicoCandidatoManager = historicoCandidatoManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
-	public HistoricoCandidatoManager getHistoricoCandidatoManager()
-	{
-		return historicoCandidatoManager;
-	}
-
-	public ParametrosDoSistemaManager getParametrosDoSistemaManager()
-	{
-		return parametrosDoSistemaManager;
 	}
 }

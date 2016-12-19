@@ -32,18 +32,12 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings("serial")
 public class UsuarioEditAction extends MyActionSupportEdit
 {
-	@Autowired
-	private UsuarioManager usuarioManager;
-	@Autowired
-	private PerfilManager perfilManager;
-	@Autowired
-	private ColaboradorManager colaboradorManager;
-	@Autowired
-	private EmpresaManager empresaManager;
-	@Autowired
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	@Autowired
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private UsuarioManager usuarioManager;
+	@Autowired private PerfilManager perfilManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	private Usuario usuario;
 	private UsuarioEmpresa usuarioEmpresa;

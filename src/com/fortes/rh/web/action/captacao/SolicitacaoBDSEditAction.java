@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.model.type.File;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.EmpresaBdsManager;
@@ -35,11 +37,11 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings("serial")
 public class SolicitacaoBDSEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private CandidatoManager candidatoManager;
-	private SolicitacaoBDSManager solicitacaoBDSManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private CargoManager cargoManager;
-	private EmpresaBdsManager empresaBdsManager = null;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private EmpresaBdsManager empresaBdsManager;
+	@Autowired private SolicitacaoBDSManager solicitacaoBDSManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	private String empresasBdsEnviadas;
 	private SolicitacaoBDS solicitacaoBDS;
@@ -222,11 +224,6 @@ public class SolicitacaoBDSEditAction extends MyActionSupportEdit implements Mod
 		return getSolicitacaoBDS();
 	}
 
-	public void setSolicitacaoBDSManager(SolicitacaoBDSManager solicitacaoBDSManager)
-	{
-		this.solicitacaoBDSManager = solicitacaoBDSManager;
-	}
-
 	public Collection<AreaOrganizacional> getAreas()
 	{
 		return areas;
@@ -245,16 +242,6 @@ public class SolicitacaoBDSEditAction extends MyActionSupportEdit implements Mod
 	public void setCargos(Collection<Cargo> cargos)
 	{
 		this.cargos = cargos;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
 	}
 
 	public Collection<Long> getEmpresasBDSIdNaoSelecionadas()
@@ -307,11 +294,6 @@ public class SolicitacaoBDSEditAction extends MyActionSupportEdit implements Mod
 		this.empresasBDS = empresasBDS;
 	}
 
-	public void setEmpresaBdsManager(EmpresaBdsManager empresaBdsManager)
-	{
-		this.empresaBdsManager = empresaBdsManager;
-	}
-
 	public Solicitacao getSolicitacao()
 	{
 		return solicitacao;
@@ -362,11 +344,6 @@ public class SolicitacaoBDSEditAction extends MyActionSupportEdit implements Mod
 		this.arquivoBDS = arquivoBDS;
 	}
 
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
-
 	public Map getVinculos()
 	{
 		return vinculos;
@@ -396,5 +373,4 @@ public class SolicitacaoBDSEditAction extends MyActionSupportEdit implements Mod
 	{
 		this.sexos = sexos;
 	}
-
 }

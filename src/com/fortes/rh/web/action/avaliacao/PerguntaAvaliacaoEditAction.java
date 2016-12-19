@@ -25,16 +25,11 @@ import com.opensymphony.xwork.Action;
 public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	@Autowired
-	private PerguntaManager perguntaManager;
-	@Autowired
-	private AspectoManager aspectoManager;
-	@Autowired
-	private RespostaManager respostaManager;
-	@Autowired
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	@Autowired
-	private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private AspectoManager aspectoManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private RespostaManager respostaManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	
 	private Avaliacao avaliacao;
 	

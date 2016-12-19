@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.captacao;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
@@ -13,9 +15,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class ConhecimentoListAction extends MyActionSupportList
 {
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
-	private ConhecimentoManager conhecimentoManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
+	@Autowired private ConhecimentoManager conhecimentoManager;
 	private Collection<Conhecimento> conhecimentos;
 	private Conhecimento conhecimento;
 
@@ -72,18 +74,5 @@ public class ConhecimentoListAction extends MyActionSupportList
 
 	public void setConhecimento(Conhecimento conhecimento){
 		this.conhecimento=conhecimento;
-	}
-
-	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager){
-		this.conhecimentoManager=conhecimentoManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
-	}
-
-	public void setCriterioAvaliacaoCompetenciaManager(
-			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
-		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 }

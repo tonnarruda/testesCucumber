@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -49,18 +50,18 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private IndiceManager indiceManager;
-	private FuncaoManager funcaoManager;
-	private AmbienteManager ambienteManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private ColaboradorManager colaboradorManager;
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-	private SolicitacaoManager solicitacaoManager;
-	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
-	private PlatformTransactionManager transactionManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private AmbienteManager ambienteManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
@@ -582,12 +583,6 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		return encerrarSolicitacao;
 	}
 
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
-	{
-		this.solicitacaoManager = solicitacaoManager;
-	}
-
-
 	public Solicitacao getSolicitacao()
 	{
 		return solicitacao;
@@ -597,11 +592,6 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	public void setSolicitacao(Solicitacao solicitacao)
 	{
 		this.solicitacao = solicitacao;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
 	}
 
 	public Boolean getSomenteAtivos() {

@@ -4,12 +4,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.desenvolvimento.LntManager;
 import com.fortes.rh.business.desenvolvimento.ParticipanteCursoLntManager;
 import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.model.desenvolvimento.ParticipanteCursoLnt;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class LntDWR {
 
 	private ParticipanteCursoLntManager participanteCursoLntManager;

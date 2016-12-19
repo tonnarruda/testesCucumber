@@ -42,22 +42,14 @@ import com.opensymphony.xwork.Action;
 public class PeriodoExperienciaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	@Autowired
-	private PeriodoExperienciaManager periodoExperienciaManager;
-	@Autowired
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	@Autowired
-	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
-	@Autowired
-	private AvaliacaoManager avaliacaoManager;
-	@Autowired
-	private EstabelecimentoManager estabelecimentoManager;
-	@Autowired
-	private EmpresaManager empresaManager;
-	@Autowired
-	private ColaboradorManager colaboradorManager;
-	@Autowired
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private PeriodoExperienciaManager periodoExperienciaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private PeriodoExperiencia periodoExperiencia;
 	private Collection<PeriodoExperiencia> periodoExperiencias;			

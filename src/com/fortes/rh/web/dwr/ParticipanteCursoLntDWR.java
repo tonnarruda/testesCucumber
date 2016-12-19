@@ -3,6 +3,8 @@ package com.fortes.rh.web.dwr;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.ParticipanteCursoLntManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -10,6 +12,7 @@ import com.fortes.rh.model.desenvolvimento.ParticipanteCursoLnt;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 public class ParticipanteCursoLntDWR
 {
 	private ParticipanteCursoLntManager participanteCursoLntManager;

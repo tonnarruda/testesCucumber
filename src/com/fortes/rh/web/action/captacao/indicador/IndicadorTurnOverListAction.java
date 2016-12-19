@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -46,12 +48,12 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> vinculosCheckList = new ArrayList<CheckBox>();
 
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private ColaboradorManager colaboradorManager;
-	private CargoManager cargoManager;
-	private EmpresaManager empresaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private Collection<TurnOverCollection> dataSource;
@@ -230,11 +232,6 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		this.areasCheckList = areasCheckList;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
@@ -250,11 +247,6 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		return estabelecimentosCheckList;
 	}
 
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public String[] getEstabelecimentosCheck()
 	{
 		return estabelecimentosCheck;
@@ -268,11 +260,6 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 	public void setEstabelecimentosCheckList(Collection<CheckBox> estabelecimentosCheckList)
 	{
 		this.estabelecimentosCheckList = estabelecimentosCheckList;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public String[] getCargosCheck()
@@ -293,11 +280,6 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 	public void setCargosCheckList(Collection<CheckBox> cargosCheckList)
 	{
 		this.cargosCheckList = cargosCheckList;
-	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
 	}
 
 	public Collection<TurnOverCollection> getDataSource()
@@ -328,14 +310,6 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public String[] getVinculosCheck() {

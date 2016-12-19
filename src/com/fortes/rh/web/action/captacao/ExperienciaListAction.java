@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -17,7 +19,7 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings({"serial", "unchecked"})
 public class ExperienciaListAction extends MyActionSupportList
 {
-	private ExperienciaManager experienciaManager;
+	@Autowired private ExperienciaManager experienciaManager;
 	private Collection<Experiencia> experiencias;
 	private Experiencia experiencia;
 	private Long candidatoId;
@@ -103,11 +105,6 @@ public class ExperienciaListAction extends MyActionSupportList
 	public void setExperiencia(Experiencia experiencia)
 	{
 		this.experiencia = experiencia;
-	}
-
-	public void setExperienciaManager(ExperienciaManager experienciaManager)
-	{
-		this.experienciaManager = experienciaManager;
 	}
 
 	public Long getCandidatoId()

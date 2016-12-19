@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.cargosalario;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
@@ -13,7 +15,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class FaixaSalarialHistoricoListAction extends MyActionSupportList
 {
-	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
+	@Autowired private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 
 	private FaixaSalarialHistorico faixaSalarialHistorico;
 	private FaixaSalarial faixaSalarialAux;
@@ -53,11 +55,6 @@ public class FaixaSalarialHistoricoListAction extends MyActionSupportList
 	public void setFaixaSalarialHistorico(FaixaSalarialHistorico faixaSalarialHistorico)
 	{
 		this.faixaSalarialHistorico = faixaSalarialHistorico;
-	}
-
-	public void setFaixaSalarialHistoricoManager(FaixaSalarialHistoricoManager faixaSalarialHistoricoManager)
-	{
-		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
 	}
 
 	public FaixaSalarial getFaixaSalarialAux()

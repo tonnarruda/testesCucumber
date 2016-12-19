@@ -57,26 +57,16 @@ import com.opensymphony.xwork.ActionContext;
 public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	@Autowired
-	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
-	@Autowired
-	private AvaliacaoManager avaliacaoManager;
-	@Autowired
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	@Autowired
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	@Autowired
-	private EmpresaManager empresaManager;
-	@Autowired
-	private ColaboradorManager colaboradorManager;
-	@Autowired
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	@Autowired
-	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
-	@Autowired
-	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
-	@Autowired
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
+	@Autowired private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;

@@ -383,7 +383,7 @@
   
   <bean id="cronTriggerenviaAvisoLntAutomatico" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="enviaAvisoLntAutomatico" />
-    <property name="cronExpression" value="0 15 6 * * ?" /> <!-- Todo os dias as 06:15h am -->
+    <property name="cronExpression" value="0 15 6 * * ?" /> Todo os dias as 06:15h am 
   </bean>
   
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

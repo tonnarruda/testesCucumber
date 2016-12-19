@@ -20,12 +20,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class UsuarioListAction extends MyActionSupportList
 {
-	@Autowired
-	private UsuarioManager usuarioManager;
-	@Autowired
-	private UsuarioEmpresaManager usuarioEmpresaManager;
-	@Autowired
-	private EmpresaManager empresaManager;
+	@Autowired private UsuarioManager usuarioManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
 
 	private Collection<Empresa> empresas;
 	private Collection<Usuario> usuarios;

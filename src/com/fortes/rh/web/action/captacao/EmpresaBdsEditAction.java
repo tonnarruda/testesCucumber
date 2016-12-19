@@ -3,6 +3,8 @@
  * Requisito: RFA020 */
 package com.fortes.rh.web.action.captacao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.EmpresaBdsManager;
 import com.fortes.rh.model.captacao.EmpresaBds;
 import com.fortes.rh.security.SecurityUtil;
@@ -14,7 +16,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings("serial")
 public class EmpresaBdsEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private EmpresaBdsManager empresaBdsManager;
+	@Autowired private EmpresaBdsManager empresaBdsManager;
 	private EmpresaBds empresaBds;
 
 	public String execute() throws Exception
@@ -67,9 +69,5 @@ public class EmpresaBdsEditAction extends MyActionSupportEdit implements ModelDr
 	public Object getModel()
 	{
 		return getEmpresaBds();
-	}
-
-	public void setEmpresaBdsManager(EmpresaBdsManager empresaBdsManager){
-		this.empresaBdsManager=empresaBdsManager;
 	}
 }

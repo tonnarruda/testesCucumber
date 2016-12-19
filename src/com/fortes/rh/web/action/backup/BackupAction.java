@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.geral.FileBoxManager;
 import com.fortes.rh.config.backup.BackupService;
@@ -29,8 +30,7 @@ public class BackupAction extends MyActionSupport {
 	private String backupPath = "";
 	private Collection<Arquivo> arquivos = new ArrayList<Arquivo>();
 	private boolean permiteDeleteSemCodigoAC;
-
-	private FileBoxManager fileBoxManager;
+	@Autowired private FileBoxManager fileBoxManager;
 	String dbBackupDir = ArquivoUtil.getDbBackupPath();
 
 	/**
@@ -162,10 +162,5 @@ public class BackupAction extends MyActionSupport {
 	public Collection<Arquivo> getArquivos()
 	{
 		return arquivos;
-	}
-	
-	public void setFileBoxManager(FileBoxManager fileBoxManager)
-	{
-		this.fileBoxManager = fileBoxManager;
 	}
 }

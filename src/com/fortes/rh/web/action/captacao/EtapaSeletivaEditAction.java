@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.captacao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -9,7 +11,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings("serial")
 public class EtapaSeletivaEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private EtapaSeletivaManager etapaSeletivaManager;
+	@Autowired private EtapaSeletivaManager etapaSeletivaManager;
 	private EtapaSeletiva etapaSeletiva;
 
 	public Object getModel()
@@ -68,10 +70,5 @@ public class EtapaSeletivaEditAction extends MyActionSupportEdit implements Mode
 	public void setEtapaSeletiva(EtapaSeletiva etapaSeletiva)
 	{
 		this.etapaSeletiva=etapaSeletiva;
-	}
-
-	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager)
-	{
-		this.etapaSeletivaManager=etapaSeletivaManager;
 	}
 }

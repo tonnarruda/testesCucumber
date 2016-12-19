@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.captacao;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class MotivoSolicitacaoListAction extends MyActionSupportList
 {
-	private MotivoSolicitacaoManager motivoSolicitacaoManager;
+	@Autowired private MotivoSolicitacaoManager motivoSolicitacaoManager;
 	private Collection<MotivoSolicitacao> motivoSolicitacaos;
 	private MotivoSolicitacao motivoSolicitacao;
 	
@@ -52,10 +54,6 @@ public class MotivoSolicitacaoListAction extends MyActionSupportList
 
 	public void setMotivoSolicitacao(MotivoSolicitacao motivoSolicitacao){
 		this.motivoSolicitacao = motivoSolicitacao;
-	}
-
-	public void setMotivoSolicitacaoManager(MotivoSolicitacaoManager motivoSolicitacaoManager){
-		this.motivoSolicitacaoManager = motivoSolicitacaoManager;
 	}
 
 	public boolean isExibeFlagTurnover() {

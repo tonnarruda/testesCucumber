@@ -5,6 +5,8 @@ package com.fortes.rh.web.action.captacao;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.SolicitacaoBDSManager;
 import com.fortes.rh.model.captacao.SolicitacaoBDS;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -13,7 +15,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class SolicitacaoBDSListAction extends MyActionSupportList
 {
-	private SolicitacaoBDSManager solicitacaoBDSManager;
+	@Autowired private SolicitacaoBDSManager solicitacaoBDSManager;
 	private Collection<SolicitacaoBDS> solicitacaoBDSs;
 	private SolicitacaoBDS solicitacaoBDS;
 
@@ -53,11 +55,5 @@ public class SolicitacaoBDSListAction extends MyActionSupportList
 	public void setSolicitacaoBDS(SolicitacaoBDS solicitacaoBDS)
 	{
 		this.solicitacaoBDS = solicitacaoBDS;
-	}
-
-	public void setSolicitacaoBDSManager(
-			SolicitacaoBDSManager solicitacaoBDSManager)
-	{
-		this.solicitacaoBDSManager = solicitacaoBDSManager;
 	}
 }

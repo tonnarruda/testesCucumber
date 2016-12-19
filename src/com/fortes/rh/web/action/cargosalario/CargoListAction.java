@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.acesso.PapelManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -21,9 +22,9 @@ public class CargoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private CargoManager cargoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private PapelManager papelManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private PapelManager papelManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	private Collection<Cargo> cargos;
 	private Cargo cargo = new Cargo();
@@ -116,19 +117,9 @@ public class CargoListAction extends MyActionSupportList
 		this.cargo = cargo;
 	}
 
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
 	public Collection<AreaOrganizacional> getAreas()
 	{		
 		return areas;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public AreaOrganizacional getAreaOrganizacional()
@@ -150,9 +141,5 @@ public class CargoListAction extends MyActionSupportList
 
 	public boolean isPossuiSESMT() {
 		return possuiSESMT;
-	}
-
-	public void setPapelManager(PapelManager papelManager) {
-		this.papelManager = papelManager;
 	}
 }

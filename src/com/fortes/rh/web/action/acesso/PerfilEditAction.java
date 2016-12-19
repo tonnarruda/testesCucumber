@@ -19,10 +19,8 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 {
 	private static final long serialVersionUID = 1L;
 	
-	@Autowired
-	private PerfilManager perfilManager;
-	@Autowired
-	private PapelManager papelManager;
+	@Autowired private PerfilManager perfilManager;
+	@Autowired private PapelManager papelManager;
 
 	private Collection<Papel> papeisComHelp = new ArrayList<Papel>();
 	private Perfil perfil = new Perfil();;

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.DuracaoPreenchimentoVagaManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
@@ -36,10 +38,13 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private Solicitacao solicitacao;
 	private Collection indicadorDuracaoPreenchimentoVagas;
 	private IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga;
-	private SolicitacaoManager solicitacaoManager;
-	private CandidatoManager candidatoManager;
-	private ColaboradorManager colaboradorManager;
-	private HistoricoCandidatoManager historicoCandidatoManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private HistoricoCandidatoManager historicoCandidatoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private DuracaoPreenchimentoVagaManager duracaoPreenchimentoVagaManager;
 
 	private Date dataDe;
 	private Date dataAte;
@@ -53,9 +58,6 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 	private String[] solicitacaosCheckIds;
 
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private DuracaoPreenchimentoVagaManager duracaoPreenchimentoVagaManager;
-	private EstabelecimentoManager estabelecimentoManager;
 
 	private Collection<IndicadorDuracaoPreenchimentoVaga> indicador;
 	private Map<String, Object> parametros = new HashMap<String, Object>();
@@ -285,11 +287,6 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		return solicitacao;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public void setIndicadorDuracaoPreenchimentoVagas(Collection indicadorDuracaoPreenchimentoVagas)
 	{
 		this.indicadorDuracaoPreenchimentoVagas = indicadorDuracaoPreenchimentoVagas;
@@ -305,19 +302,9 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		this.indicador = indicador;
 	}
 
-	public void setDuracaoPreenchimentoVagaManager(DuracaoPreenchimentoVagaManager duracaoPreenchimentoVagaManager)
-	{
-		this.duracaoPreenchimentoVagaManager = duracaoPreenchimentoVagaManager;
-	}
-
 	public Collection<CheckBox> getEstabelecimentosCheckList()
 	{
 		return estabelecimentosCheckList;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public String[] getEstabelecimentosCheck()
@@ -370,19 +357,9 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		return faixaSalarials;
 	}
 
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
-	{
-		this.solicitacaoManager = solicitacaoManager;
-	}
-
 	public int getQtdCandidatosCadastrados()
 	{
 		return qtdCandidatosCadastrados;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
 	}
 
 	public String getGrfContratadosFaixa()
@@ -413,11 +390,6 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	public int getQtdVagasPreenchidas()
 	{
 		return qtdVagasPreenchidas;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public double getQtdCandidatosAtendidosPorVaga()
@@ -458,11 +430,6 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	public int getQtdEtapasRealizadas()
 	{
 		return qtdEtapasRealizadas;
-	}
-
-	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager)
-	{
-		this.historicoCandidatoManager = historicoCandidatoManager;
 	}
 
 	public void setIndicadorResumido(boolean indicadorResumido) {

@@ -5,6 +5,8 @@ package com.fortes.rh.web.action.captacao;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.EmpresaBdsManager;
 import com.fortes.rh.model.captacao.EmpresaBds;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -13,7 +15,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class EmpresaBdsListAction extends MyActionSupportList
 {
-	private EmpresaBdsManager empresaBdsManager;
+	@Autowired private EmpresaBdsManager empresaBdsManager;
 	private Collection<EmpresaBds> empresaBdss;
 	private EmpresaBds empresaBds;
 
@@ -64,10 +66,5 @@ public class EmpresaBdsListAction extends MyActionSupportList
 	public void setEmpresaBds(EmpresaBds empresaBds)
 	{
 		this.empresaBds = empresaBds;
-	}
-
-	public void setEmpresaBdsManager(EmpresaBdsManager empresaBdsManager)
-	{
-		this.empresaBdsManager = empresaBdsManager;
 	}
 }

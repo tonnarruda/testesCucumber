@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
@@ -75,26 +77,26 @@ import com.opensymphony.xwork.ActionContext;
 public class SolicitacaoEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
-	private SolicitacaoManager solicitacaoManager;
-    private AreaOrganizacionalManager areaOrganizacionalManager;
-    private EtapaSeletivaManager etapaSeletivaManager;
-    private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-    private CargoManager cargoManager;
-    private HistoricoCandidatoManager historicoCandidatoManager;
-    private FaixaSalarialManager faixaSalarialManager;
-    private MotivoSolicitacaoManager motivoSolicitacaoManager;
-    private FuncaoManager funcaoManager;
-    private AmbienteManager ambienteManager;
-    private EstabelecimentoManager estabelecimentoManager;
-    private EstadoManager estadoManager;
-    private CidadeManager cidadeManager;
-    private BairroManager bairroManager;
-    private EmpresaManager empresaManager;
-    private AvaliacaoManager avaliacaoManager;
-    private ColaboradorManager colaboradorManager;
-    private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
-    private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-    private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private BairroManager bairroManager;
+	@Autowired private CidadeManager cidadeManager;
+	@Autowired private EstadoManager estadoManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private AmbienteManager ambienteManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private EtapaSeletivaManager etapaSeletivaManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private MotivoSolicitacaoManager motivoSolicitacaoManager;
+	@Autowired private HistoricoCandidatoManager historicoCandidatoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 
     private Solicitacao solicitacao = new Solicitacao();
     private MotivoSolicitacao motivoSolicitacao;
@@ -480,19 +482,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         this.faixaSalarials = faixaSalarials;
     }
 
-    public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-    {
-        this.areaOrganizacionalManager = areaOrganizacionalManager;
-    }
-
     public void setSolicitacao(Solicitacao solicitacao)
     {
         this.solicitacao = solicitacao;
-    }
-
-    public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
-    {
-        this.solicitacaoManager = solicitacaoManager;
     }
 
     public HashMap getSexos()
@@ -515,10 +507,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         this.vinculos = vinculos;
     }
 
-    public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager) {
-        this.etapaSeletivaManager = etapaSeletivaManager;
-    }
-
     public Collection<CheckBox> getEtapaSeletivaCheckList() {
         return etapaSeletivaCheckList;
     }
@@ -536,11 +524,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         this.etapaCheck = etapaCheck;
     }
 
-    public void setCandidatoSolicitacaoManager(
-            CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
-        this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-    }
-
     public List getDataSource()
     {
         return dataSource;
@@ -554,11 +537,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     public void setDataSource(List<SolicitacaoPessoalRelatorio> dataSource)
     {
         this.dataSource = dataSource;
-    }
-
-    public void setCargoManager(CargoManager cargoManager)
-    {
-        this.cargoManager = cargoManager;
     }
 
     public String getAno()
@@ -581,11 +559,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         this.parametrosDoSistema = parametrosDoSistema;
     }
 
-    public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager)
-    {
-        this.historicoCandidatoManager = historicoCandidatoManager;
-    }
-
     public Collection<Cargo> getCargos()
     {
         return cargos;
@@ -605,11 +578,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     {
         this.cargoId = cargoId;
     }
-
-	public void setMotivoSolicitacaoManager(MotivoSolicitacaoManager motivoSolicitacaoManager)
-	{
-		this.motivoSolicitacaoManager = motivoSolicitacaoManager;
-	}
 
 	public Collection<MotivoSolicitacao> getMotivoSolicitacaos()
 	{
@@ -640,26 +608,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         this.candidatoSolicitacaos = candidatoSolicitacaos;
     }
 
-	public FuncaoManager getFuncaoManager()
-	{
-		return funcaoManager;
-	}
-
-	public void setFuncaoManager(FuncaoManager funcaoManager)
-	{
-		this.funcaoManager = funcaoManager;
-	}
-
-	public AmbienteManager getAmbienteManager()
-	{
-		return ambienteManager;
-	}
-
-	public void setAmbienteManager(AmbienteManager ambienteManager)
-	{
-		this.ambienteManager = ambienteManager;
-	}
-
 	public Collection<Ambiente> getAmbientes()
 	{
 		return ambientes;
@@ -685,11 +633,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 		return estabelecimentos;
 	}
 
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public Collection<Cidade> getCidades()
 	{
 		return cidades;
@@ -708,16 +651,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	public void setEstados(Collection<Estado> estados)
 	{
 		this.estados = estados;
-	}
-
-	public void setEstadoManager(EstadoManager estadoManager)
-	{
-		this.estadoManager = estadoManager;
-	}
-
-	public void setCidadeManager(CidadeManager cidadeManager)
-	{
-		this.cidadeManager = cidadeManager;
 	}
 
 	public String[] getBairrosCheck()
@@ -760,11 +693,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 		this.estado = estado;
 	}
 
-	public void setBairroManager(BairroManager bairroManager)
-	{
-		this.bairroManager = bairroManager;
-	}
-
 	public HashMap getSituacoes()
 	{
 		return situacoes;
@@ -783,16 +711,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	public void setExibeSalario(boolean exibeSalario)
 	{
 		this.exibeSalario = exibeSalario;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
 	}
 
 	public boolean isClone()
@@ -839,10 +757,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 		return DateUtil.formataDiaMesAno(new Date());
 	}
 
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
-		this.avaliacaoManager = avaliacaoManager;
-	}
-
 	public Collection<Avaliacao> getAvaliacoes() {
 		return avaliacoes;
 	}
@@ -861,10 +775,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public void setStatus(HashMap status) {
 		this.status = status;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public String getNomeLiberador() {
@@ -908,16 +818,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 		return avaliacoesCheckList;
 	}
 
-	public void setSolicitacaoAvaliacaoManager(
-			SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) {
-		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
-	}
-
-	public void setColaboradorQuestionarioManager(
-			ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-	}
-
 	public int getQtdAvaliacoesRespondidas() {
 		return qtdAvaliacoesRespondidas;
 	}
@@ -954,11 +854,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public boolean isExisteCompetenciaRespondida() {
 		return existeCompetenciaRespondida;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(
-			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
 	public boolean isDataStatusSomenteLeitura() {

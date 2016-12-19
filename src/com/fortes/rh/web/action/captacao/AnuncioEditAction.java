@@ -38,12 +38,9 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings("serial")
 public class AnuncioEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	@Autowired
-	private AnuncioManager anuncioManager;
-	@Autowired
-	private SolicitacaoManager solicitacaoManager;
-	@Autowired
-	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
+	@Autowired private AnuncioManager anuncioManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 
 	private Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos;
 	

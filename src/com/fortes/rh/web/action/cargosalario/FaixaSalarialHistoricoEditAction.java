@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -29,12 +31,12 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 {
 	private static final long serialVersionUID = 1L;
 	
-	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private IndiceManager indiceManager;
-	private GrupoOcupacionalManager grupoOcupacionalManager;
-	private CargoManager cargoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 
 	private FaixaSalarial faixaSalarialAux;
 	private FaixaSalarialHistorico faixaSalarialHistorico;
@@ -232,16 +234,6 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 		this.faixaSalarialHistorico = faixaSalarialHistorico;
 	}
 
-	public void setFaixaSalarialHistoricoManager(FaixaSalarialHistoricoManager faixaSalarialHistoricoManager)
-	{
-		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
 	public Map getTipoAplicacaoIndices()
 	{
 		return tipoAplicacaoIndices;
@@ -262,11 +254,6 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 		this.faixaSalarialAux = faixaSalarialAux;
 	}
 
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
-	}
-
 	public Collection<Indice> getIndices()
 	{
 		return indices;
@@ -280,11 +267,6 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 	public void setGrupoOcupacionalsCheck(String[] grupoOcupacionalsCheck)
 	{
 		this.grupoOcupacionalsCheck = grupoOcupacionalsCheck;
-	}
-
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager)
-	{
-		this.grupoOcupacionalManager = grupoOcupacionalManager;
 	}
 
 	public void setData(Date data)
@@ -307,11 +289,6 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 		return cargos;
 	}
 
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
 	public Collection<CheckBox> getAreasCheckList() {
 		return areasCheckList;
 	}
@@ -322,10 +299,6 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 
 	public void setAreasCheck(String[] areasCheck) {
 		this.areasCheck = areasCheck;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public String[] getCargosCheck() {

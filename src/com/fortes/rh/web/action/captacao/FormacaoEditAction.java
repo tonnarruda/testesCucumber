@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.dicionario.SituacaoFormacao;
@@ -19,7 +21,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial", "unchecked"})
 public class FormacaoEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private AreaFormacaoManager areaFormacaoManager;
+	@Autowired private AreaFormacaoManager areaFormacaoManager;
 	private Collection<AreaFormacao> areaFormacaos;
 	private Formacao formacao;
 	private Map tiposFormacao;
@@ -130,11 +132,6 @@ public class FormacaoEditAction extends MyActionSupportEdit implements ModelDriv
 	public void setAreaFormacaos(Collection<AreaFormacao> areaFormacaos)
 	{
 		this.areaFormacaos = areaFormacaos;
-	}
-
-	public void setAreaFormacaoManager(AreaFormacaoManager areaFormacaoManager)
-	{
-		this.areaFormacaoManager = areaFormacaoManager;
 	}
 
 	public Map getTipoFormacao()

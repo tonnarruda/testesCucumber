@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
 import com.fortes.rh.business.captacao.IdiomaManager;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
@@ -18,8 +20,8 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings({"serial", "unchecked"})
 public class IdiomaListAction extends MyActionSupportList
 {
-	private CandidatoIdiomaManager candidatoIdiomaManager;
-	private IdiomaManager idiomaManager;
+	@Autowired private IdiomaManager idiomaManager;
+	@Autowired private CandidatoIdiomaManager candidatoIdiomaManager;
 	private Collection<CandidatoIdioma> idiomasCandidato;
 	private CandidatoIdioma candidatoIdioma;
 	private Long candidatoId;
@@ -103,11 +105,6 @@ public class IdiomaListAction extends MyActionSupportList
 		this.idiomasCandidato = idiomasCandidato;
 	}
 
-	public void setCandidatoIdiomaManager(CandidatoIdiomaManager candidatoIdiomaManager)
-	{
-		this.candidatoIdiomaManager = candidatoIdiomaManager;
-	}
-
 	public Long getCandidatoId()
 	{
 		return candidatoId;
@@ -116,10 +113,6 @@ public class IdiomaListAction extends MyActionSupportList
 	public void setCandidatoId(Long candidatoId)
 	{
 		this.candidatoId = candidatoId;
-	}
-
-	public void setIdiomaManager(IdiomaManager idiomaManager) {
-		this.idiomaManager = idiomaManager;
 	}
 
 	public Collection<Idioma> getIdiomas() {

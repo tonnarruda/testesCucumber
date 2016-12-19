@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
@@ -25,11 +27,11 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings("serial")
 public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private HistoricoCandidatoManager historicoCandidatoManager;
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-	private EtapaSeletivaManager etapaSeletivaManager;
-	private CandidatoManager candidatoManager;
-	private SolicitacaoManager solicitacaoManager;
+	@Autowired private HistoricoCandidatoManager historicoCandidatoManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private EtapaSeletivaManager etapaSeletivaManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
 
 	private CandidatoSolicitacao candidatoSol;
 	private HistoricoCandidato historicoCandidato;
@@ -197,11 +199,6 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 		this.historicoCandidatos = historicoCandidatos;
 	}
 
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
-	{
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
-
 	public CandidatoSolicitacao getCandidatoSol()
 	{
 		return candidatoSol;
@@ -222,16 +219,6 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 		this.etapas = etapas;
 	}
 
-	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager)
-	{
-		this.etapaSeletivaManager = etapaSeletivaManager;
-	}
-
-	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager)
-	{
-		this.historicoCandidatoManager = historicoCandidatoManager;
-	}
-
 	public boolean isBlacklist()
 	{
 		return blacklist;
@@ -242,19 +229,9 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 		this.blacklist = blacklist;
 	}
 
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
-
 	public Solicitacao getSolicitacao()
 	{
 		return solicitacao;
-	}
-
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
-	{
-		this.solicitacaoManager = solicitacaoManager;
 	}
 
 	public void setSolicitacao(Solicitacao solicitacao)
@@ -338,5 +315,4 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 	public Map getAptos() {
 		return aptos;
 	}
-	
 }

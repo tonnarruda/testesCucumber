@@ -58,24 +58,15 @@ import com.opensymphony.xwork.ActionContext;
 public class Index extends MyActionSupport
 {
 	private static final long serialVersionUID = 1L;
-	@Autowired
-	private ColaboradorManager colaboradorManager = null;
-	@Autowired
-	private UsuarioMensagemManager usuarioMensagemManager;
-	@Autowired
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	@Autowired
-	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
-	@Autowired
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	@Autowired
-	private AvaliacaoManager avaliacaoManager;
-	@Autowired
-	private EmpresaManager empresaManager;
-	@Autowired
-	private NoticiaManager noticiaManager;
-	@Autowired
-	private UsuarioNoticiaManager usuarioNoticiaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private NoticiaManager noticiaManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private ColaboradorManager colaboradorManager = null;
+	@Autowired private UsuarioNoticiaManager usuarioNoticiaManager;
+	@Autowired private UsuarioMensagemManager usuarioMensagemManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 
 	private Collection<Pesquisa> pesquisasAtrasadas;
 

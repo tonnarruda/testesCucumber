@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.captacao.ConfigHistoricoNivelManager;
@@ -19,13 +20,14 @@ import com.opensymphony.xwork.Action;
 public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private ConfigHistoricoNivelManager configHistoricoNivelManager;
+	@Autowired private ConfigHistoricoNivelManager configHistoricoNivelManager;
+	@Autowired private NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager;
+	@Autowired private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
+	@Autowired private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
+	
 	private ConfigHistoricoNivel configHistoricoNivel;
 	private Collection<ConfigHistoricoNivel> configHistoricoNivels;
 	private NivelCompetenciaHistorico nivelCompetenciaHistorico;
-	private NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager;
-	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
-	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 	
 	private boolean podeEditar;
 	private boolean obrigarPercentual;
@@ -122,11 +124,6 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 		this.configHistoricoNivel = configHistoricoNivel;
 	}
 
-	public void setConfigHistoricoNivelManager(ConfigHistoricoNivelManager configHistoricoNivelManager)
-	{
-		this.configHistoricoNivelManager = configHistoricoNivelManager;
-	}
-	
 	public Collection<ConfigHistoricoNivel> getConfigHistoricoNivels()
 	{
 		return configHistoricoNivels;
@@ -144,24 +141,11 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 		this.configHistoricoNivels = configHistoricoNivels;
 	}
 
-	public void setNivelCompetenciaHistoricoManager(NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager) {
-		this.nivelCompetenciaHistoricoManager = nivelCompetenciaHistoricoManager;
-	}
-
-	public void setCriterioAvaliacaoCompetenciaManager(
-			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
-		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
-	}
-
 	public boolean isPodeEditar() {
 		return podeEditar;
 	}
 
 	public boolean isObrigarPercentual() {
 		return obrigarPercentual;
-	}
-
-	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
-		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
 	}
 }

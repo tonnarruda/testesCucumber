@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.cargosalario;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.security.SecurityUtil;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings("serial")
 public class GrupoOcupacionalEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private GrupoOcupacionalManager grupoOcupacionalManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
 
 	private GrupoOcupacional grupoOcupacional;
 
@@ -68,9 +70,4 @@ public class GrupoOcupacionalEditAction extends MyActionSupportEdit implements M
 	{
 		return getGrupoOcupacional();
 	}
-
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager){
-		this.grupoOcupacionalManager=grupoOcupacionalManager;
-	}
-
 }

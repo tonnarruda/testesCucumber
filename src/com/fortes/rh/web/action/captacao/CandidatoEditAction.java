@@ -15,6 +15,7 @@ import javax.imageio.stream.FileImageInputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.NonUniqueResultException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.CandidatoCurriculoManager;
@@ -82,22 +83,22 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	private static final long serialVersionUID = 1L;
 
-	private CandidatoManager candidatoManager;
-	private EstadoManager estadoManager;
-	private CidadeManager cidadeManager;
-	private AreaInteresseManager areaInteresseManager;
-	private ConhecimentoManager conhecimentoManager;
-	private CargoManager cargoManager;
-	private FormacaoManager formacaoManager;
-	private ExperienciaManager experienciaManager;
-	private CandidatoIdiomaManager candidatoIdiomaManager;
-	private EmpresaManager empresaManager;
-	private BairroManager bairroManager;
-	private CandidatoCurriculoManager candidatoCurriculoManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private ComoFicouSabendoVagaManager comoFicouSabendoVagaManager;
-	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
-	private ConfiguracaoCampoExtraVisivelObrigadotorio configCampoExtraVisivelObrigadotorio;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private BairroManager bairroManager;
+	@Autowired private CidadeManager cidadeManager;
+	@Autowired private EstadoManager estadoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private FormacaoManager formacaoManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private ExperienciaManager experienciaManager;
+	@Autowired private ConhecimentoManager conhecimentoManager;
+	@Autowired private AreaInteresseManager areaInteresseManager;
+	@Autowired private CandidatoIdiomaManager candidatoIdiomaManager;
+	@Autowired private CandidatoCurriculoManager candidatoCurriculoManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private ComoFicouSabendoVagaManager comoFicouSabendoVagaManager;
+	@Autowired private ConfiguracaoCampoExtraVisivelObrigadotorio configCampoExtraVisivelObrigadotorio;
+	@Autowired private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
 
 	private Candidato candidato = new Candidato();
 
@@ -891,11 +892,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		this.candidato = candidato;
 	}
 
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
-
 	public Map getEscolaridades()
 	{
 		return escolaridades;
@@ -1001,37 +997,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		this.candidatosAchados = candidatosAchados;
 	}
 
-	public AreaInteresseManager getAreaInteresse()
-	{
-		return areaInteresseManager;
-	}
-
-	public AreaInteresseManager getAreaInteresseManager()
-	{
-		return areaInteresseManager;
-	}
-
-	public void setAreaInteresseManager(
-			AreaInteresseManager areaInteresseManager)
-	{
-		this.areaInteresseManager = areaInteresseManager;
-	}
-
-	public ConhecimentoManager getConhecimentoManager()
-	{
-		return conhecimentoManager;
-	}
-
-	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager)
-	{
-		this.conhecimentoManager = conhecimentoManager;
-	}
-
-	public CandidatoManager getCandidatoManager()
-	{
-		return candidatoManager;
-	}
-
 	public String getDestinatario()
 	{
 		return destinatario;
@@ -1058,11 +1023,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			return null;
 	}
 
-	public void setEstadoManager(EstadoManager estadoManager)
-	{
-		this.estadoManager = estadoManager;
-	}
-
 	public Collection<Cidade> getCidades()
 	{
 		return cidades;
@@ -1081,11 +1041,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	public void setUfs(Collection<Estado> ufs)
 	{
 		this.ufs = ufs;
-	}
-
-	public void setCidadeManager(CidadeManager cidadeManager)
-	{
-		this.cidadeManager = cidadeManager;
 	}
 
 	public String[] getAreasCheck()
@@ -1168,26 +1123,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		this.senha = senha;
 	}
 
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
-	public void setFormacaoManager(FormacaoManager formacaoManager)
-	{
-		this.formacaoManager = formacaoManager;
-	}
-
-	public void setExperienciaManager(ExperienciaManager experienciaManager)
-	{
-		this.experienciaManager = experienciaManager;
-	}
-
-	public void setCandidatoIdiomaManager(CandidatoIdiomaManager candidatoIdiomaManager)
-	{
-		this.candidatoIdiomaManager = candidatoIdiomaManager;
-	}
-
 	public boolean isManterFoto() {
 		return manterFoto;
 	}
@@ -1236,11 +1171,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		this.empresaId = empresaId;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
 	public int getMaxCandidataCargo()
 	{
 		return maxCandidataCargo;
@@ -1249,11 +1179,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	public void setMaxCandidataCargo(int maxCandidataCargo)
 	{
 		this.maxCandidataCargo = maxCandidataCargo;
-	}
-
-	public void setBairroManager(BairroManager bairroManager)
-	{
-		this.bairroManager = bairroManager;
 	}
 
 	public com.fortes.model.type.File[] getImagemEscaneada()
@@ -1274,11 +1199,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	public void setOcrTexto(com.fortes.model.type.File ocrTexto)
 	{
 		this.ocrTexto = ocrTexto;
-	}
-
-	public void setCandidatoCurriculoManager(CandidatoCurriculoManager candidatoCurriculoManager)
-	{
-		this.candidatoCurriculoManager = candidatoCurriculoManager;
 	}
 
 	public Map getSexos()
@@ -1361,11 +1281,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		this.indicadoPor = indicadoPor;
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public boolean isUpperCase()
 	{
 		return upperCase;
@@ -1390,11 +1305,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		return parametrosDoSistema;
 	}
 
-	public void setComoFicouSabendoVagaManager(
-			ComoFicouSabendoVagaManager comoFicouSabendoVagaManager) {
-		this.comoFicouSabendoVagaManager = comoFicouSabendoVagaManager;
-	}
-
 	public Collection<ComoFicouSabendoVaga> getComoFicouSabendoVagas() {
 		return comoFicouSabendoVagas;
 	}
@@ -1411,20 +1321,12 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		return configuracaoCampoExtras;
 	}
 
-	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
-		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
-	}
-
 	public CamposExtras getCamposExtras() {
 		return camposExtras;
 	}
 
 	public void setCamposExtras(CamposExtras camposExtras) {
 		this.camposExtras = camposExtras;
-	}
-
-	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager) {
-		this.camposExtrasManager = camposExtrasManager;
 	}
 
 	public Solicitacao getSolicitacao() {
@@ -1435,15 +1337,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		this.solicitacao = solicitacao;
 	}
 
-	public ConfiguracaoCampoExtraVisivelObrigadotorioManager getConfiguracaoCampoExtraVisivelObrigadotorioManager() {
-		return configuracaoCampoExtraVisivelObrigadotorioManager;
-	}
-
-	public void setConfiguracaoCampoExtraVisivelObrigadotorioManager(
-			ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager) {
-		this.configuracaoCampoExtraVisivelObrigadotorioManager = configuracaoCampoExtraVisivelObrigadotorioManager;
-	}
-
 	public ConfiguracaoCampoExtraVisivelObrigadotorio getConfigCampoExtraVisivelObrigadotorio() {
 		return configCampoExtraVisivelObrigadotorio;
 	}
@@ -1451,7 +1344,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	public void setConfigCampoExtraVisivelObrigadotorio( ConfiguracaoCampoExtraVisivelObrigadotorio configCampoExtraVisivelObrigadotorio) {
 		this.configCampoExtraVisivelObrigadotorio = configCampoExtraVisivelObrigadotorio;
 	}
-	
 }
 
 @SuppressWarnings("rawtypes")
@@ -1486,5 +1378,4 @@ class FileImageFilter implements FileFilter {
              }
              return ret;
          }
-
 }

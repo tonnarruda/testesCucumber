@@ -14,8 +14,7 @@ import com.opensymphony.xwork.Action;
 public class AvaliacaoPraticaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	@Autowired
-	private AvaliacaoPraticaManager avaliacaoPraticaManager;
+	@Autowired private AvaliacaoPraticaManager avaliacaoPraticaManager;
 	private AvaliacaoPratica avaliacaoPratica;
 	private Collection<AvaliacaoPratica> avaliacaoPraticas;
 

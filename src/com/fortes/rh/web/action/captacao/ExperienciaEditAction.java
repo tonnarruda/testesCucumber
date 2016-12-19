@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -21,7 +23,7 @@ public class ExperienciaEditAction extends MyActionSupportEdit
 	private Experiencia experiencia;
 	private Collection<Cargo> nomeCargos;
 	private Cargo cargo;
-	private CargoManager cargoManager;
+	@Autowired private CargoManager cargoManager;
 	private boolean checkNomeCargo = false;
 	private Long empresaId;
 
@@ -126,11 +128,6 @@ public class ExperienciaEditAction extends MyActionSupportEdit
 	public void setNomeCargos(Collection<Cargo> nomeCargos)
 	{
 		this.nomeCargos = nomeCargos;
-	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
 	}
 
 	public Cargo getCargo()

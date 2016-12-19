@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -57,17 +58,17 @@ public class SolicitacaoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 
-    private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-    private ParametrosDoSistemaManager parametrosDoSistemaManager;
-    private HistoricoCandidatoManager historicoCandidatoManager;
-    private AreaOrganizacionalManager areaOrganizacionalManager;
-    private MotivoSolicitacaoManager motivoSolicitacaoManager;
-    private EstabelecimentoManager estabelecimentoManager;
-    private PlatformTransactionManager transactionManager;
-    private SolicitacaoManager solicitacaoManager;
-    private CandidatoManager candidatoManager;
-    private CargoManager cargoManager;
-    private ColaboradorManager colaboradorManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private HistoricoCandidatoManager historicoCandidatoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private MotivoSolicitacaoManager motivoSolicitacaoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private CargoManager cargoManager;
     private Anuncio anuncio;
     
     private Map<String,Object> parametros = new HashMap<String, Object>();
@@ -354,10 +355,6 @@ public class SolicitacaoListAction extends MyActionSupportList
         this.solicitacao = solicitacao;
     }
 
-    public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager){
-        this.solicitacaoManager = solicitacaoManager;
-    }
-
     public char getVisualizar()
     {
         return visualizar;
@@ -398,16 +395,6 @@ public class SolicitacaoListAction extends MyActionSupportList
 		this.solicitacaosCheckIds = solicitacaosCheckIds;
 	}
 
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
-	{
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
-
 	public String getDataEncerramento()
 	{
 		return dataEncerramento;
@@ -416,11 +403,6 @@ public class SolicitacaoListAction extends MyActionSupportList
 	public void setDataEncerramento(String dataEncerramento)
 	{
 		this.dataEncerramento = dataEncerramento;
-	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
 	}
 
 	public MotivoSolicitacao getMotivoSolicitacao() {
@@ -492,24 +474,12 @@ public class SolicitacaoListAction extends MyActionSupportList
 		return empresas;
 	}
 
-	public EmpresaManager getEmpresaManager() {
-		return empresaManager;
-	}
-
 	public Empresa getEmpresa() {
 		return empresa;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
 	public boolean isPgInicial() {
 		return pgInicial;
-	}
-
-	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager) {
-		this.historicoCandidatoManager = historicoCandidatoManager;
 	}
 
 	public String getJson() {
@@ -522,10 +492,6 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setStatusCandSol(char statusCandSol) {
 		this.statusCandSol = statusCandSol;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public Boolean getCompartilharCandidatos() {
@@ -620,34 +586,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 		this.codigoBusca = codigoBusca;
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
-
-	public void setEstabelecimentoManager(
-			EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-	
-	public void setMotivoSolicitacaoManager(
-			MotivoSolicitacaoManager motivoSolicitacaoManager) {
-		this.motivoSolicitacaoManager = motivoSolicitacaoManager;
-	}
-
 	public void setDataStatusSolicitacaoAnterior(Date dataStatusSolicitacaoAnterior) {
 		this.dataStatusSolicitacaoAnterior = dataStatusSolicitacaoAnterior;
-	}
-
-	public ColaboradorManager getColaboradorManager() {
-		return colaboradorManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
 	}
 }

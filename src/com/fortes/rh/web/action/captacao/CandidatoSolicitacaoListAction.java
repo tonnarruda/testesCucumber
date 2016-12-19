@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
@@ -36,15 +38,15 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 
-	private SolicitacaoManager solicitacaoManager;
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-	private HistoricoCandidatoManager historicoCandidatoManager;
-	private EtapaSeletivaManager etapaSeletivaManager;
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private HistoricoCandidatoManager historicoCandidatoManager;
+	@Autowired private EtapaSeletivaManager etapaSeletivaManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
 	private Collection<Solicitacao> solicitacaos;
@@ -264,11 +266,6 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		this.solicitacao = solicitacao;
 	}
 
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
-	{
-		this.solicitacaoManager = solicitacaoManager;
-	}
-
 	public Collection<CandidatoSolicitacao> getCandidatoSolicitacaos()
 	{
 		return candidatoSolicitacaos;
@@ -277,11 +274,6 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	public void setCandidatoSolicitacaos(Collection<CandidatoSolicitacao> candidatoSolicitacaos)
 	{
 		this.candidatoSolicitacaos = candidatoSolicitacaos;
-	}
-
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
-	{
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
 	public CandidatoSolicitacao getCandidatoSolicitacao()
@@ -312,11 +304,6 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	public void setHistoricoCandidatos(Collection<HistoricoCandidato> historicoCandidatos)
 	{
 		this.historicoCandidatos = historicoCandidatos;
-	}
-
-	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager)
-	{
-		this.historicoCandidatoManager = historicoCandidatoManager;
 	}
 
 	public Collection<SolicitacaoHistoricoColaborador> getHistoricos()
@@ -355,10 +342,6 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public void setEtapas(Collection<EtapaSeletiva> etapas) {
 		this.etapas = etapas;
-	}
-
-	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager) {
-		this.etapaSeletivaManager = etapaSeletivaManager;
 	}
 
 	public Long getEtapaSeletivaId()
@@ -408,10 +391,6 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		return existeCompetenciaParaFaixa;
 	}
 
-	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
-	}
-
 	public Solicitacao getSolicitacaoDestino() {
 		return solicitacaoDestino;
 	}
@@ -420,11 +399,6 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		this.solicitacaoDestino = solicitacaoDestino;
 	}
 
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
-	
 	public Long[] getCandidatoSolicitacaoIdsSelecionados()
 	{
 		return candidatoSolicitacaoIdsSelecionados;
@@ -439,10 +413,6 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		return solicitacaoAvaliacaos;
 	}
 
-	public void setSolicitacaoAvaliacaoManager(SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) {
-		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
-	}
-
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
 		return colaboradorQuestionarios;
 	}
@@ -454,11 +424,6 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	public void setRelatorioCandidatoSolicitacaoList(
 			RelatorioCandidatoSolicitacaoList relatorioCandidatoSolicitacaoList) {
 		this.relatorioCandidatoSolicitacaoList = relatorioCandidatoSolicitacaoList;
-	}
-
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public HashMap getStatus() {
@@ -503,10 +468,5 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public void setVisualizar(char visualizar) {
 		this.visualizar = visualizar;
-	}
-
-	public void setGerenciadorComunicacaoManager(
-			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

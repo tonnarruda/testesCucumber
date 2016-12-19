@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.captacao;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
@@ -14,8 +16,8 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class HistoricoCandidatoListAction extends MyActionSupportList
 {
-	private HistoricoCandidatoManager historicoCandidatoManager;
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private HistoricoCandidatoManager historicoCandidatoManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 
 	private Collection<HistoricoCandidato> historicoCandidatos;
 	private HistoricoCandidato historicoCandidato;
@@ -63,11 +65,6 @@ public class HistoricoCandidatoListAction extends MyActionSupportList
 		return historicoCandidatos;
 	}
 
-	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager)
-	{
-		this.historicoCandidatoManager = historicoCandidatoManager;
-	}
-
 	public void setHistoricoCandidatos(Collection<HistoricoCandidato> historicoCandidatos)
 	{
 		this.historicoCandidatos = historicoCandidatos;
@@ -81,11 +78,6 @@ public class HistoricoCandidatoListAction extends MyActionSupportList
 	public void setCandidatoSolicitacao(CandidatoSolicitacao candidatoSolicitacao)
 	{
 		this.candidatoSolicitacao = candidatoSolicitacao;
-	}
-
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
-	{
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
 	public HistoricoCandidato getHistoricoCandidato()

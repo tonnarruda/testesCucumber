@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.IdiomaManager;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Idioma;
@@ -18,7 +20,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial", "unchecked"})
 public class IdiomaEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private IdiomaManager idiomaManager;
+	@Autowired private IdiomaManager idiomaManager;
 	private Collection<Idioma> idiomas;
 	private CandidatoIdioma candidatoIdioma;
 	private Map nivelIdioma;
@@ -114,11 +116,6 @@ public class IdiomaEditAction extends MyActionSupportEdit implements ModelDriven
 	public Object getModel()
 	{
 		return getCandidatoIdioma();
-	}
-
-	public void setIdiomaManager(IdiomaManager idiomaManager)
-	{
-		this.idiomaManager = idiomaManager;
 	}
 
 	public CandidatoIdioma getCandidatoIdioma()

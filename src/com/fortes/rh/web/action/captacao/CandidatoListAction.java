@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.AnuncioManager;
@@ -95,33 +96,33 @@ public class CandidatoListAction extends MyActionSupportList
 	private static final byte COLABORADOR = 1;
 	private static final byte CANDIDATO = 2;
 
-	private CandidatoManager candidatoManager;
-	private ColaboradorManager colaboradorManager;
-	private CargoManager cargoManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private AnuncioManager anuncioManager;
-	private AreaInteresseManager areaInteresseManager;
-	private AreaFormacaoManager areaFormacaoManager;
-	private ConhecimentoManager conhecimentoManager;
-	private IdiomaManager idiomaManager;
-	private EstadoManager estadoManager;
-	private CidadeManager cidadeManager;
-    private BairroManager bairroManager;
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-	private FormacaoManager formacaoManager;
-	private ExperienciaManager experienciaManager;
-	private CandidatoIdiomaManager candidatoIdiomaManager;
-	private HistoricoCandidatoManager historicoCandidatoManager;
-	private SolicitacaoManager solicitacaoManager;
-	private EmpresaManager empresaManager;
-	private CandidatoCurriculoManager candidatoCurriculoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private GrupoOcupacionalManager grupoOcupacionalManager;
-	private ConfiguracaoImpressaoCurriculoManager configuracaoImpressaoCurriculoManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
-	private CamposExtrasManager camposExtrasManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private AnuncioManager anuncioManager;
+	@Autowired private AreaInteresseManager areaInteresseManager;
+	@Autowired private AreaFormacaoManager areaFormacaoManager;
+	@Autowired private ConhecimentoManager conhecimentoManager;
+	@Autowired private IdiomaManager idiomaManager;
+	@Autowired private EstadoManager estadoManager;
+	@Autowired private CidadeManager cidadeManager;
+	@Autowired private BairroManager bairroManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private FormacaoManager formacaoManager;
+	@Autowired private ExperienciaManager experienciaManager;
+	@Autowired private CandidatoIdiomaManager candidatoIdiomaManager;
+	@Autowired private HistoricoCandidatoManager historicoCandidatoManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private CandidatoCurriculoManager candidatoCurriculoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
+	@Autowired private ConfiguracaoImpressaoCurriculoManager configuracaoImpressaoCurriculoManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	@Autowired private CamposExtrasManager camposExtrasManager;
 		
 	private Collection<HistoricoCandidato> historicoCandidatos;
 	private Collection<SolicitacaoHistoricoColaborador> historicos;
@@ -1013,11 +1014,6 @@ public class CandidatoListAction extends MyActionSupportList
 		this.areasCheckList = areasCheckList;
 	}
 
-	public void setAreaInteresseManager(AreaInteresseManager areaInteresseManager)
-	{
-		this.areaInteresseManager = areaInteresseManager;
-	}
-
 	public String[] getConhecimentosCheck()
 	{
 		return conhecimentosCheck;
@@ -1036,11 +1032,6 @@ public class CandidatoListAction extends MyActionSupportList
 	public void setConhecimentosCheckList(Collection<CheckBox> conhecimentosCheckList)
 	{
 		this.conhecimentosCheckList = conhecimentosCheckList;
-	}
-
-	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager)
-	{
-		this.conhecimentoManager = conhecimentoManager;
 	}
 
 	public Map<String, String> getEscolaridades()
@@ -1063,11 +1054,6 @@ public class CandidatoListAction extends MyActionSupportList
 		this.idiomas = idiomas;
 	}
 
-	public void setIdiomaManager(IdiomaManager idiomaManager)
-	{
-		this.idiomaManager = idiomaManager;
-	}
-
 	public Map getNivels()
 	{
 		return nivels;
@@ -1088,11 +1074,6 @@ public class CandidatoListAction extends MyActionSupportList
 		this.sexos = sexos;
 	}
 
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
 	public Map getUfs()
 	{
 		return ufs;
@@ -1101,11 +1082,6 @@ public class CandidatoListAction extends MyActionSupportList
 	public void setUfs(Map ufs)
 	{
 		this.ufs = ufs;
-	}
-
-	public void setEstadoManager(EstadoManager estadoManager)
-	{
-		this.estadoManager = estadoManager;
 	}
 
 	public Solicitacao getSolicitacao()
@@ -1218,11 +1194,6 @@ public class CandidatoListAction extends MyActionSupportList
 		this.cidades = cidades;
 	}
 
-	public void setCidadeManager(CidadeManager cidadeManager)
-	{
-		this.cidadeManager = cidadeManager;
-	}
-
 	public String[] getCandidatosId()
 	{
 		return candidatosId;
@@ -1231,26 +1202,6 @@ public class CandidatoListAction extends MyActionSupportList
 	public void setCandidatosId(String[] candidatosId)
 	{
 		this.candidatosId = candidatosId;
-	}
-
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
-	{
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
-
-	public void setCandidatoIdiomaManager(CandidatoIdiomaManager candidatoIdiomaManager)
-	{
-		this.candidatoIdiomaManager = candidatoIdiomaManager;
-	}
-
-	public void setExperienciaManager(ExperienciaManager experienciaManager)
-	{
-		this.experienciaManager = experienciaManager;
-	}
-
-	public void setFormacaoManager(FormacaoManager formacaoManager)
-	{
-		this.formacaoManager = formacaoManager;
 	}
 
 	public String getCpfBusca()
@@ -1337,11 +1288,6 @@ public class CandidatoListAction extends MyActionSupportList
 		this.historicos = historicos;
 	}
 
-	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager)
-	{
-		this.historicoCandidatoManager = historicoCandidatoManager;
-	}
-
 	public Collection<CurriculoCandidatoRelatorio> getDataSource()
 	{
 		return dataSource;
@@ -1370,11 +1316,6 @@ public class CandidatoListAction extends MyActionSupportList
 	public void setEmpresasCheckList(Collection<CheckBox> empresasCheckList)
 	{
 		this.empresasCheckList = empresasCheckList;
-	}
-
-	public void setAnuncioManager(AnuncioManager anuncioManager)
-	{
-		this.anuncioManager = anuncioManager;
 	}
 
 	public String getEmailAvulso()
@@ -1427,10 +1368,6 @@ public class CandidatoListAction extends MyActionSupportList
 		this.solicitacaos = solicitacaos;
 	}
 
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
-	{
-		this.solicitacaoManager = solicitacaoManager;
-	}
 	public boolean isFiltro()
 	{
 		return filtro;
@@ -1451,11 +1388,6 @@ public class CandidatoListAction extends MyActionSupportList
 		this.empresas = empresas;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
 	public String[] getBairrosCheck()
 	{
 		return bairrosCheck;
@@ -1474,16 +1406,6 @@ public class CandidatoListAction extends MyActionSupportList
 	public void setBairrosCheckList(Collection<CheckBox> bairrosCheckList)
 	{
 		this.bairrosCheckList = bairrosCheckList;
-	}
-
-	public void setBairroManager(BairroManager bairroManager)
-	{
-		this.bairroManager = bairroManager;
-	}
-
-	public void setCandidatoCurriculoManager(CandidatoCurriculoManager candidatoCurriculoManager)
-	{
-		this.candidatoCurriculoManager = candidatoCurriculoManager;
 	}
 
 	public String getPalavrasChaveCurriculoEscaneado()
@@ -1606,21 +1528,6 @@ public class CandidatoListAction extends MyActionSupportList
 		this.indicadoPor = indicadoPor;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager)
-	{
-		this.grupoOcupacionalManager = grupoOcupacionalManager;
-	}
-
 	public Collection<CheckBox> getEstabelecimentosCheckList()
 	{
 		return estabelecimentosCheckList;
@@ -1696,11 +1603,6 @@ public class CandidatoListAction extends MyActionSupportList
 		this.configuracaoImpressaoCurriculo = configuracaoImpressaoCurriculo;
 	}
 
-	public void setConfiguracaoImpressaoCurriculoManager(ConfiguracaoImpressaoCurriculoManager configuracaoImpressaoCurriculoManager)
-	{
-		this.configuracaoImpressaoCurriculoManager = configuracaoImpressaoCurriculoManager;
-	}
-
 	public boolean isExibeContratados() {
 		return exibeContratados;
 	}
@@ -1723,10 +1625,6 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setExibeExterno(boolean exibeExterno) {
 		this.exibeExterno = exibeExterno;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public Boolean getCompartilharCandidatos() {
@@ -1793,20 +1691,12 @@ public class CandidatoListAction extends MyActionSupportList
 		return colaboradores;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Long[] getColaboradoresIds() {
 		return colaboradoresIds;
 	}
 
 	public void setColaboradoresIds(Long[] colaboradoresIds) {
 		this.colaboradoresIds = colaboradoresIds;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
-		this.faixaSalarialManager = faixaSalarialManager;
 	}
 
 	public Collection<CheckBox> getFaixasCheckList() {
@@ -1876,11 +1766,6 @@ public class CandidatoListAction extends MyActionSupportList
 		this.palavrasChaveOutrosCampos = palavrasChaveOutrosCampos;
 	}
 	
-	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager)
-	{
-		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
-	}
-	
 	public Collection<ConfiguracaoCampoExtra> getConfiguracaoCampoExtras()
 	{
 		return configuracaoCampoExtras;
@@ -1891,11 +1776,6 @@ public class CandidatoListAction extends MyActionSupportList
 		return camposExtras;
 	}
 	
-	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager)
-	{
-		this.camposExtrasManager = camposExtrasManager;
-	}
-
 	public boolean isModoImpressao() {
 		return modoImpressao;
 	}
@@ -1934,10 +1814,6 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setFoneCelular(String foneCelular) {
 		this.foneCelular = foneCelular;
-	}
-
-	public void setAreaFormacaoManager(AreaFormacaoManager areaFormacaoManager) {
-		this.areaFormacaoManager = areaFormacaoManager;
 	}
 
 	public Collection<CheckBox> getAreasFormacaoCheckList() {

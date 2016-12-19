@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -13,8 +15,8 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class FaixaSalarialListAction extends MyActionSupportList
 {
-	private FaixaSalarialManager faixaSalarialManager;
-	private CargoManager cargoManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private FaixaSalarial faixaSalarial;
 	private Cargo cargo;
@@ -71,10 +73,6 @@ public class FaixaSalarialListAction extends MyActionSupportList
 		this.faixaSalarial=faixaSalarial;
 	}
 
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager){
-		this.faixaSalarialManager=faixaSalarialManager;
-	}
-
 	public Cargo getCargo()
 	{
 		return cargo;
@@ -89,10 +87,4 @@ public class FaixaSalarialListAction extends MyActionSupportList
 	{
 		this.faixaSalarials = faixaSalarials;
 	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
 }

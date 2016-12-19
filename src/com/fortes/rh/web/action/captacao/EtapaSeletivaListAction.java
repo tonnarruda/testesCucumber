@@ -5,6 +5,8 @@ package com.fortes.rh.web.action.captacao;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -13,7 +15,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class EtapaSeletivaListAction extends MyActionSupportList
 {
-	private EtapaSeletivaManager etapaSeletivaManager;
+	@Autowired private EtapaSeletivaManager etapaSeletivaManager;
 	private Collection<EtapaSeletiva> etapaSeletivas;
 	private EtapaSeletiva etapaSeletiva;
 
@@ -52,10 +54,5 @@ public class EtapaSeletivaListAction extends MyActionSupportList
 	public void setEtapaSeletiva(EtapaSeletiva etapaSeletiva)
 	{
 		this.etapaSeletiva=etapaSeletiva;
-	}
-
-	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager)
-	{
-		this.etapaSeletivaManager=etapaSeletivaManager;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
@@ -42,17 +43,17 @@ import com.opensymphony.xwork.Action;
 public class NivelCompetenciaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	
-	private CandidatoManager candidatoManager;
-	private SolicitacaoManager solicitacaoManager;
-	private ColaboradorManager colaboradorManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private NivelCompetenciaManager nivelCompetenciaManager;
-	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
-	private NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager;
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager; 
-	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
-	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
+
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private NivelCompetenciaManager nivelCompetenciaManager;
+	@Autowired private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	@Autowired private NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager; 
+	@Autowired private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	@Autowired private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 	
 	private NivelCompetencia nivelCompetencia;
 	private FaixaSalarial faixaSalarial;
@@ -557,11 +558,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		this.nivelCompetencia = nivelCompetencia;
 	}
-
-	public void setNivelCompetenciaManager(NivelCompetenciaManager nivelCompetenciaManager)
-	{
-		this.nivelCompetenciaManager = nivelCompetenciaManager;
-	}
 	
 	public Collection<NivelCompetencia> getNivelCompetencias()
 	{
@@ -587,15 +583,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		this.faixaSalarial = faixaSalarial;
 	}
-	
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
-	}
 
 	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisSalvos() {
 		return niveisCompetenciaFaixaSalariaisSalvos;
@@ -607,10 +594,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public void setCandidato(Candidato candidato) {
 		this.candidato = candidato;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager) {
-		this.candidatoManager = candidatoManager;
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisSugeridos() {
@@ -633,10 +616,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		this.colaborador = colaborador;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Date getData() {
 		return data;
 	}
@@ -651,10 +630,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public void setConfiguracaoNivelCompetenciaColaborador(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) {
 		this.configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaborador;
-	}
-
-	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
-		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
 	}
 
 	public Collection<ConfiguracaoNivelCompetenciaColaborador> getConfiguracaoNivelCompetenciaColaboradores() {
@@ -683,10 +658,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public void setSolicitacoes(Collection<Solicitacao> solicitacoes) {
 		this.solicitacoes = solicitacoes;
-	}
-
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
-		this.solicitacaoManager = solicitacaoManager;
 	}
 	
 	public Map<String, Object> getParametros() {
@@ -764,10 +735,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return configuracaoNivelCompetenciaFaixasSalariais;
 	}
 
-	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
-		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
-	}
-
 	public ConfiguracaoNivelCompetenciaFaixaSalarial getConfiguracaoNivelCompetenciaFaixaSalarial() {
 		return configuracaoNivelCompetenciaFaixaSalarial;
 	}
@@ -787,20 +754,11 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return solicitacoesNiveisCompetenciaFaixaSalariaisSalvos;
 	}
 
-	public void setNivelCompetenciaHistoricoManager(
-			NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager) {
-		this.nivelCompetenciaHistoricoManager = nivelCompetenciaHistoricoManager;
-	}
-
 	public Long getNivelCompetenciaHistoricoId() {
 		return nivelCompetenciaHistoricoId;
 	}
 
 	public boolean isExibiNivelCompetenciaExigido() {
 		return exibiNivelCompetenciaExigido;
-	}
-
-	public void setAvaliacaoDesempenhoManager(AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {
-		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
 	}
 }

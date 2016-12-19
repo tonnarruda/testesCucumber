@@ -20,8 +20,7 @@ import com.opensymphony.xwork.Action;
 public class PerfilListAction extends MyActionSupportList {
 	private static final long serialVersionUID = 1L;
 
-	@Autowired
-	private PerfilManager perfilManager = null;
+	@Autowired private PerfilManager perfilManager = null;
 
 	private Collection<Perfil> perfils = null;
 	

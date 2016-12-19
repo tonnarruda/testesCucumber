@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.cargosalario;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
 import com.fortes.rh.model.cargosalario.FaturamentoMensal;
 import com.fortes.rh.util.DateUtil;
@@ -12,7 +14,7 @@ import com.opensymphony.xwork.Action;
 public class FaturamentoMensalEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private FaturamentoMensalManager faturamentoMensalManager;
+	@Autowired private FaturamentoMensalManager faturamentoMensalManager;
 	private FaturamentoMensal faturamentoMensal;
 	private Collection<FaturamentoMensal> faturamentoMensals;
 
@@ -93,11 +95,6 @@ public class FaturamentoMensalEditAction extends MyActionSupportList
 	public void setFaturamentoMensal(FaturamentoMensal faturamentoMensal)
 	{
 		this.faturamentoMensal = faturamentoMensal;
-	}
-
-	public void setFaturamentoMensalManager(FaturamentoMensalManager faturamentoMensalManager)
-	{
-		this.faturamentoMensalManager = faturamentoMensalManager;
 	}
 	
 	public Collection<FaturamentoMensal> getFaturamentoMensals()

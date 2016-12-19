@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.cargosalario;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class GrupoOcupacionalListAction extends MyActionSupportList
 {
-	private GrupoOcupacionalManager grupoOcupacionalManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
 	private Collection<GrupoOcupacional> grupoOcupacionals;
 	private GrupoOcupacional grupoOcupacional;
 
@@ -47,9 +49,5 @@ public class GrupoOcupacionalListAction extends MyActionSupportList
 
 	public void setGrupoOcupacional(GrupoOcupacional grupoOcupacional){
 		this.grupoOcupacional=grupoOcupacional;
-	}
-
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager){
-		this.grupoOcupacionalManager=grupoOcupacionalManager;
 	}
 }

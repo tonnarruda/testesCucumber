@@ -4,6 +4,8 @@ package com.fortes.rh.web.action.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
@@ -23,12 +25,12 @@ import com.opensymphony.xwork.Action;
 public class HabilidadeEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private HabilidadeManager habilidadeManager;
-	private CompetenciaManager competenciaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager = null;
-	private CursoManager cursoManager;
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private HabilidadeManager habilidadeManager;
+	@Autowired private CompetenciaManager competenciaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
 
 	private Habilidade habilidade;
 	private Collection<Habilidade> habilidades;
@@ -158,25 +160,10 @@ public class HabilidadeEditAction extends MyActionSupportList
 	{
 		this.habilidade = habilidade;
 	}
-
-	public void setHabilidadeManager(HabilidadeManager habilidadeManager)
-	{
-		this.habilidadeManager = habilidadeManager;
-	}
 	
 	public Collection<Habilidade> getHabilidades()
 	{
 		return habilidades;
-	}
-
-	public AreaOrganizacionalManager getAreaOrganizacionalManager()
-	{
-		return areaOrganizacionalManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public String[] getAreasCheck()
@@ -219,11 +206,6 @@ public class HabilidadeEditAction extends MyActionSupportList
 		this.areaOrganizacionals = areaOrganizacionals;
 	}
 
-	public void setCompetenciaManager(CompetenciaManager competenciaManager)
-	{
-		this.competenciaManager = competenciaManager;
-	}
-
 	public void setCursosCheck(Long[] cursosCheck)
 	{
 		this.cursosCheck = cursosCheck;
@@ -237,20 +219,5 @@ public class HabilidadeEditAction extends MyActionSupportList
 	public Collection<CheckBox> getCursosCheckList()
 	{
 		return cursosCheckList;
-	}
-
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(
-			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
-	}
-
-	public void setCriterioAvaliacaoCompetenciaManager(
-			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
-		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 }

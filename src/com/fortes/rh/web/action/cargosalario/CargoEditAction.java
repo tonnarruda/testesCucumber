@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
@@ -47,19 +49,19 @@ public class CargoEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 	
-	private CargoManager cargoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private ConhecimentoManager conhecimentoManager;
-	private HabilidadeManager habilidadeManager;
-	private AtitudeManager atitudeManager;
-	private AreaFormacaoManager areaFormacaoManager;
-	private GrupoOcupacionalManager grupoOcupacionalManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
-    private EtapaSeletivaManager etapaSeletivaManager;
-    private EmpresaManager empresaManager;
-    private ParametrosDoSistemaManager parametrosDoSistemaManager;
-    private CodigoCBOManager codigoCBOManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ConhecimentoManager conhecimentoManager;
+	@Autowired private HabilidadeManager habilidadeManager;
+	@Autowired private AtitudeManager atitudeManager;
+	@Autowired private AreaFormacaoManager areaFormacaoManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private EtapaSeletivaManager etapaSeletivaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private CodigoCBOManager codigoCBOManager;
 
     private boolean exibirSalario;//padrão tem que ser falso
     private boolean exibirAreaOrganizacional;
@@ -515,16 +517,6 @@ public class CargoEditAction extends MyActionSupportEdit
 		this.cargo = cargo;
 	}
 
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public HashMap<String, String> getEscolaridades()
 	{
 		return escolaridades;
@@ -533,31 +525,6 @@ public class CargoEditAction extends MyActionSupportEdit
 	public void setEscolaridades(HashMap<String, String> escolaridades)
 	{
 		this.escolaridades = escolaridades;
-	}
-
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager)
-	{
-		this.grupoOcupacionalManager = grupoOcupacionalManager;
-	}
-
-	public ConhecimentoManager getConhecimentoManager()
-	{
-		return conhecimentoManager;
-	}
-
-	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager)
-	{
-		this.conhecimentoManager = conhecimentoManager;
-	}
-
-	public void setAreaFormacaoManager(AreaFormacaoManager areaFormacaoManager)
-	{
-		this.areaFormacaoManager = areaFormacaoManager;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
 	}
 
 	public String getFiltro()
@@ -763,11 +730,6 @@ public class CargoEditAction extends MyActionSupportEdit
 		this.relatorioResumido = relatorioResumido;
 	}
 
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
 	public Collection<HistoricoColaborador> getHistoricoColaboradors()
 	{
 		return historicoColaboradors;
@@ -805,16 +767,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	public void setEtapaCheck(String[] etapaCheck) {
 		this.etapaCheck = etapaCheck;
 	}
-
-	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager) {
-		this.etapaSeletivaManager = etapaSeletivaManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
+ 
 	public Collection<Empresa> getEmpresas()
 	{
 		return empresas;
@@ -929,32 +882,8 @@ public class CargoEditAction extends MyActionSupportEdit
 		this.atitudesCheckList = atitudesCheckList;
 	}
 
-	public void setAtitudeManager(AtitudeManager atitudeManager) {
-		this.atitudeManager = atitudeManager;
-	}
-
-	public HabilidadeManager getHabilidadeManager() {
-		return habilidadeManager;
-	}
-
-	public void setHabilidadeManager(HabilidadeManager habilidadeManager) {
-		this.habilidadeManager = habilidadeManager;
-	}
-
-	public AtitudeManager getAtitudeManager() {
-		return atitudeManager;
-	}
-
 	public String getDescricaoCBO() {
 		return descricaoCBO;
-	}
-
-	public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) {
-		this.codigoCBOManager = codigoCBOManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public Boolean getCompartilharColaboradores() {

@@ -32,18 +32,12 @@ import com.opensymphony.xwork.Action;
 public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	@Autowired
-	private AvaliacaoManager avaliacaoManager;
-	@Autowired
-	private PerguntaManager perguntaManager;
-	@Autowired
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	@Autowired
-	private EmpresaManager empresaManager;
-	@Autowired
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	@Autowired
-	private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager;
 	
 	private Avaliacao avaliacaoExperiencia;
 	

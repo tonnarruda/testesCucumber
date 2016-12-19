@@ -50,30 +50,18 @@ import com.opensymphony.xwork.ActionContext;
 public class AvaliacaoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	@Autowired
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	@Autowired
-	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
-	@Autowired
-	private ColaboradorRespostaManager colaboradorRespostaManager;
-	@Autowired
-	private PeriodoExperienciaManager periodoExperienciaManager;
-	@Autowired
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	@Autowired
-	private PlatformTransactionManager transactionManager;
-	@Autowired
-	private AvaliacaoCursoManager avaliacaoCursoManager;
-	@Autowired
-	private CertificacaoManager certificacaoManager;
-	@Autowired
-	private ColaboradorManager colaboradorManager;
-	@Autowired
-	private AvaliacaoManager avaliacaoManager;
-	@Autowired
-	private PerguntaManager perguntaManager;
-	@Autowired
-	private EmpresaManager empresaManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private PeriodoExperienciaManager periodoExperienciaManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private AvaliacaoCursoManager avaliacaoCursoManager;
+	@Autowired private CertificacaoManager certificacaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private EmpresaManager empresaManager;
 	
 	private Avaliacao avaliacao;
 	private boolean exibirPeso;

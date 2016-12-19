@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -16,7 +18,7 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings({"serial", "unchecked"})
 public class FormacaoListAction extends MyActionSupportList
 {
-	private FormacaoManager formacaoManager;
+	@Autowired private FormacaoManager formacaoManager;
 	private Collection<Formacao> formacaos;
 	private Formacao formacao;
 	private Long candidatoId;
@@ -88,10 +90,6 @@ public class FormacaoListAction extends MyActionSupportList
 
 	public void setFormacao(Formacao formacao){
 		this.formacao=formacao;
-	}
-
-	public void setFormacaoManager(FormacaoManager formacaoManager){
-		this.formacaoManager=formacaoManager;
 	}
 
 	public Long getCandidatoId()

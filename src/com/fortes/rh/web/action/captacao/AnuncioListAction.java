@@ -12,8 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class AnuncioListAction extends MyActionSupportList
 {
-	@Autowired
-	private AnuncioManager anuncioManager;
+	@Autowired private AnuncioManager anuncioManager;
 
 	private Collection<Anuncio> anuncios;
 

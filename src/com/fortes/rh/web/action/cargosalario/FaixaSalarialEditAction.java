@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -27,11 +29,11 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class FaixaSalarialEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private FaixaSalarialManager faixaSalarialManager;
-	private CargoManager cargoManager;
-	private IndiceManager indiceManager;
-	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
-	private CertificacaoManager certificacaoManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private CertificacaoManager certificacaoManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 
 	private FaixaSalarial faixaSalarialAux;
 	private FaixaSalarialHistorico faixaSalarialHistorico;
@@ -190,16 +192,6 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 		this.faixaSalarialAux = faixaSalarialAux;
 	}
 
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
 	public Cargo getCargoAux()
 	{
 		return cargoAux;
@@ -240,16 +232,6 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 		return faixaSalarialsHistoricos;
 	}
 
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
-	}
-
-	public void setFaixaSalarialHistoricoManager(FaixaSalarialHistoricoManager faixaSalarialHistoricoManager)
-	{
-		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
-	}
-
 	public Double getSalario()
 	{
 		return salario;
@@ -273,11 +255,6 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 	public StatusRetornoAC getStatusRetornoAC()
 	{
 		return statusRetornoAC;
-	}
-
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager)
-	{
-		this.certificacaoManager = certificacaoManager;
 	}
 
 	public Collection<CheckBox> getCertificacaosCheckList()
