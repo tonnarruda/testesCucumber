@@ -1134,8 +1134,11 @@ public class ColaboradorListActionTest
 	@Test
 	public void testRelatorioAniversariantesPorTempoDeEmpresaColecaoVazia() throws Exception
 	{
+		action.setMes(0);
+		action.setEmpresa(EmpresaFactory.getEmpresa(1L));
+		
 		when(empresaManager.selecionaEmpresa(null, null, null)).thenReturn(new Long[]{});
-		when(colaboradorManager.findAniversariantesPorTempoDeEmpresa(0, true, null, new Long[]{}, new Long[]{})).thenThrow(new ColecaoVaziaException("Não existem dados"));
+		when(colaboradorManager.findAniversariantesPorTempoDeEmpresa(0, false, new Long[]{1L}, new Long[]{}, new Long[]{})).thenThrow(new ColecaoVaziaException("Não existem dados"));
 		
 		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
     	parametrosDoSistema.setCompartilharCandidatos(true);
@@ -1156,4 +1159,65 @@ public class ColaboradorListActionTest
 		
 		assertEquals("input",action.relatorioAniversariantesPorTempoDeEmpresa());
 	}
+	
+	@Test
+	public void testRelatorioAniversariantesPorTempoDeEmpresaXLSTodosOsMeses() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresa(empresa);
+		
+		action.setAgruparPorArea(true);
+		action.setMes(0);
+				
+		when(empresaManager.selecionaEmpresa(null, null, null)).thenReturn(new Long[]{});
+		when(colaboradorManager.findAniversariantesPorTempoDeEmpresa(0, true, null, null, null)).thenReturn(new ArrayList<Colaborador>());
+    	
+		assertEquals("success",action.relatorioAniversariantesPorTempoDeEmpresaXLS());
+	}
+	
+	@Test
+	public void testRelatorioAniversariantesPorTempoDeEmpresaXLS() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresa(empresa);
+		
+		action.setMes(12);
+		action.setAgruparPorArea(true);
+		action.setExibirNomeComercial(true);
+		
+		when(empresaManager.selecionaEmpresa(null, null, null)).thenReturn(new Long[]{});
+		when(colaboradorManager.findAniversariantesPorTempoDeEmpresa(0, true, null, null, null)).thenReturn(new ArrayList<Colaborador>());
+    	
+		assertEquals("success",action.relatorioAniversariantesPorTempoDeEmpresaXLS());
+	}
+	
+	@Test
+	public void testRelatorioAniversariantesPorTempoDeEmpresaXLSColecaoVazia() throws Exception
+	{
+		action.setMes(0);
+		action.setEmpresa(EmpresaFactory.getEmpresa(1L));
+		
+		when(empresaManager.selecionaEmpresa(null, null, null)).thenReturn(new Long[]{});
+		when(colaboradorManager.findAniversariantesPorTempoDeEmpresa(0, false, new Long[]{1L}, new Long[]{}, new Long[]{})).thenThrow(new ColecaoVaziaException("Não existem dados"));
+		
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+    	when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+		
+		assertEquals("input",action.relatorioAniversariantesPorTempoDeEmpresaXLS());
+	}
+	
+	@Test
+	public void testRelatorioAniversariantesPorTempoDeEmpresaXLSException() throws Exception
+	{
+		when(empresaManager.selecionaEmpresa(null, null, null)).thenReturn(new Long[]{});
+		when(colaboradorManager.findAniversariantesPorTempoDeEmpresa(0, true, null, new Long[]{}, new Long[]{})).thenThrow(new Exception());
+		
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+    	when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+		
+		assertEquals("input",action.relatorioAniversariantesPorTempoDeEmpresaXLS());
+	}
+	
 }

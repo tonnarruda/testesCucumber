@@ -136,6 +136,10 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Collection<String> dinamicColumns;
 	private Collection<String> dinamicProperts;
 
+	private String dinColumns = "";
+	private String dinProperties = "";
+	private String dinPropertiesGroup = "";
+
 	private Map statusRetornoACs = new StatusRetornoAC();
 	private boolean integraAc;
 	private boolean agruparPorTempoServico;
@@ -1060,10 +1064,11 @@ public class ColaboradorListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
-	public String relatorioAniversariantesPorTempoDeEmpresaXLS()
-	{
+	public String relatorioAniversariantesPorTempoDeEmpresaXLS(){
 		try{
 			populaRelatorioAniversariantesPorTempoDeEmpresa();
+			montaColunasRelatorioAniversarianteTempoServicoXLS();
+			return Action.SUCCESS;
 		}
 		catch (ColecaoVaziaException e){
 			addActionMessage(e.getMessage());
@@ -1077,22 +1082,35 @@ public class ColaboradorListAction extends MyActionSupportList
 			e.printStackTrace();
 			return Action.INPUT;
 		}
-		if(agruparPorArea && !exibirNomeComercial && mes > 0)
-			return "successXLSAgrupadoPorAreaComNomeColaborador";
-		if(agruparPorArea && !exibirNomeComercial && mes == 0)
-			return "successXLSAgrupadoPorAreaComNomeColaboradorTodosOsMeses";
-		else if(agruparPorArea && exibirNomeComercial && mes > 0)
-			return "successXLSAgrupadoPorAreaComNomeComercial";
-		else if(agruparPorArea && exibirNomeComercial && mes == 0)
-			return "successXLSAgrupadoPorAreaComNomeComercialTodosOsMeses";
-		else if(!agruparPorArea && !exibirNomeComercial && mes > 0)
-			return "successXLSComNomeColaborador";
-		else if(!agruparPorArea && !exibirNomeComercial && mes == 0)
-			return "successXLSComNomeColaboradorTodosOsMeses";
-		else if (!agruparPorArea && !exibirNomeComercial && mes > 0)
-			return "successXLSComNomeComercial";
-		else
-			return "successXLSComNomeComercialTodosOsMeses";
+	}
+
+	private void montaColunasRelatorioAniversarianteTempoServicoXLS() {
+		dinColumns = "Empresa - Área Organizacional,";
+		dinProperties = "areaOrganizacional.nomeComEmpresa,";
+		
+		if(agruparPorArea)
+			dinPropertiesGroup = "areaOrganizacional.id,";
+		
+		if(mes == 0){
+			dinColumns += "Mês,";
+			dinProperties += "mesAdmissaoPorExtenso,";	
+			dinPropertiesGroup += "mesAdmissaoPorExtenso";
+		}else if(dinPropertiesGroup.length() > 0)
+			dinPropertiesGroup = dinPropertiesGroup.substring(0, dinPropertiesGroup.length() - 1);
+		
+		dinColumns += "Data,Tempo de Empresa,Matrícula,";
+		dinProperties += "diaMesDataAdmissao,tempoDeServicoComAno,matricula,";
+		
+		if(exibirNomeComercial){
+			dinColumns += "Nome Comercial,";
+			dinProperties += "nomeComercial,";
+		}else{
+			dinColumns += "Nome,";
+			dinProperties += "nome,";
+		}
+		
+		dinColumns += "Cargo,Estabelecimento";
+		dinProperties += "faixaSalarial.descricao,estabelecimento.nome";
 	}
 
 	private void populaRelatorioAniversariantesPorTempoDeEmpresa()
@@ -1858,5 +1876,17 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setAgruparPorArea(boolean agruparPorArea) {
 		this.agruparPorArea = agruparPorArea;
+	}
+
+	public String getDinColumns() {
+		return dinColumns;
+	}
+
+	public String getDinProperties() {
+		return dinProperties;
+	}
+
+	public String getDinPropertiesGroup() {
+		return dinPropertiesGroup;
 	}
 }

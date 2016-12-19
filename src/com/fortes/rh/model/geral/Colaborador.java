@@ -1082,7 +1082,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.areaOrganizacional.setAreaMaeId(areaMaeId);
 		this.areaOrganizacional.setAreaMaeNome(areaMaeNome);
 	}
-	
+
+	//findAniversariantesPorTempoDeEmpresa
 	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Long empresaId, String empresaNome, Long estabelecimentoId, String estabelecimentoNome, 
 			String cargoNome, String faixaNome, Long areaId, String areaNome, Date dataAdmissao, Integer tempoDeEmpresa)
 	{

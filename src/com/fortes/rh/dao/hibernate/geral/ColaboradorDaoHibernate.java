@@ -5360,7 +5360,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("join hc.areaOrganizacional as ao ");
 		hql.append("join hc.faixaSalarial as fs ");
 		hql.append("join fs.cargo as ca ");
-		hql.append("where c.empresa.id in(:empresasIds) ");
+		hql.append("where c.empresa.id in (:empresasIds) ");
 		hql.append("and c.desligado = :desligado ");
 		hql.append("and extract(year from current_date()) - extract(year from c.dataAdmissao) > 0 ");
 		hql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 ");
