@@ -603,6 +603,7 @@ import com.fortes.rh.test.web.action.pesquisa.PerguntaListActionTest;
 import com.fortes.rh.test.web.action.pesquisa.PesquisaEditActionTest;
 import com.fortes.rh.test.web.action.pesquisa.PesquisaListActionTest;
 import com.fortes.rh.test.web.action.pesquisa.QuestionarioListActionTest;
+import com.fortes.rh.test.web.action.pesquisa.QuestionarioListActionTest_Junit4;
 import com.fortes.rh.test.web.action.sesmt.AfastamentoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.AgendaEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.AmbienteEditActionTest;
@@ -1118,6 +1119,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	PesquisaDaoHibernateTest.class,
 	PesquisaManagerTest.class,
 	QuestionarioListActionTest.class,
+	QuestionarioListActionTest_Junit4.class,
 	PesquisaListActionTest.class,
 	PesquisaEditActionTest.class,
 	LembretePesquisaTest.class,

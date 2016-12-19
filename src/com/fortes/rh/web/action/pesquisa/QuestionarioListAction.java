@@ -283,7 +283,7 @@ public class QuestionarioListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	public String prepareResultadoEntrevista()
+	public String prepareResultadoEntrevista() 
 	{
 		questionario = new Questionario();
 		questionario.setTipo(TipoQuestionario.ENTREVISTA);
@@ -292,6 +292,14 @@ public class QuestionarioListAction extends MyActionSupportList
 
 		areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		areaOrganizacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(areaOrganizacionalsCheckList, areasCheck);
+		
+		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		try {
+			estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getDescricaoComEmpresa", null);
+			estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		urlVoltar = "menu";
 

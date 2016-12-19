@@ -486,31 +486,6 @@ public class QuestionarioListActionTest extends MockObjectTestCase
     	assertNotNull(action.getActionErr());
     }
 
-	public void testPrepareResultadoEntrevista()
-    {
-    	Questionario questionario = QuestionarioFactory.getEntity(1L);
-    	questionario.setTipo(TipoQuestionario.getENTREVISTA());
-    	action.setQuestionario(questionario);
-
-    	Entrevista entrevista1 = EntrevistaFactory.getEntity(1L);
-    	entrevista1.setQuestionario(questionario);
-
-    	Entrevista entrevista2 = EntrevistaFactory.getEntity(2L);
-    	entrevista2.setQuestionario(questionario);
-
-    	Collection<Entrevista> entrevistas = new ArrayList<Entrevista>();
-    	entrevistas.add(entrevista1);
-    	entrevistas.add(entrevista2);
-
-    	entrevistaManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(entrevistas));
-
-    	Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
-
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(areasCheckList));
-
-    	assertEquals("Teste prepare resultado da entrevista", "success", action.prepareResultadoEntrevista());
-    }
-	
 	public void testGetsSets() throws Exception
     {
     	Questionario questionario = QuestionarioFactory.getEntity(1L);

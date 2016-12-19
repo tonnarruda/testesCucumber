@@ -201,9 +201,9 @@
 				<#assign descricaoAreas = "Áreas Organizacionais" />
 			</#if>
 
-			<#if questionario.tipo != tipoQuestionario.getENTREVISTA()>
-				<@frt.checkListBox label="Empresa - Estabelecimento" name="estabelecimentosCheck" id="estabelecimentosCheck" list="estabelecimentosCheckList" filtro="true"/>
-			</#if>
+			
+			<@frt.checkListBox label="Empresa - Estabelecimento" name="estabelecimentosCheck" id="estabelecimentosCheck" list="estabelecimentosCheckList" filtro="true"/>
+			
 
 			<#if questionario.tipo == tipoQuestionario.getPESQUISA() >
 				<@frt.checkListBox label="${descricaoAreas}" name="areasCheck" id="areasCheck" list="areaOrganizacionalsCheckList" onClick="populaCargosByAreaVinculados();" filtro="true" selectAtivoInativo="true"/>
