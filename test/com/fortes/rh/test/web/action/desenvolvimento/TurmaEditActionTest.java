@@ -49,8 +49,6 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
-import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
@@ -453,67 +451,6 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	assertEquals("success", action.prepareRelatorio());
     }
     
-    public void testGetColaboradoresByFiltro() throws Exception
-    {
-    	Curso curso = CursoFactory.getEntity(1L);
-    	Turma turma = TurmaFactory.getEntity(10L);
-    	turma.setCurso(curso);
-    	action.setCurso(curso);
-    	action.setTurma(turma);
-    	action.setCertificadoDe('C');
-    	
-    	Certificacao certificacao = CertificacaoFactory.getEntity(1L);
-    	action.setCertificacao(certificacao);
-    	
-    	cursoManager.expects(once()).method("findByCertificacao").with(eq(1L)).will(returnValue(new ArrayList<Curso>()));
-    	colaboradorTurmaManager.expects(once()).method("findAprovadosByCertificacao").withAnyArguments().will(returnValue(new ArrayList<Colaborador>()));
-		certificacaoManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(certificacao));
-    	empresaManager.expects(once()).method("findCidade").with(eq(1L)).will(returnValue("Fortaleza"));
-    	
-    	cursoManager.expects(once()).method("findAllSelect").with(eq(1L)).will(returnValue(new ArrayList<Curso>()));
-    	certificacaoManager.expects(once()).method("findAllSelect").with(eq(1L)).will(returnValue(new ArrayList<Certificacao>()));
-    	
-    	turmaManager.expects(once()).method("findAllSelect").with(eq(1L)).will(returnValue(new ArrayList<Turma>()));
-    	
-    	assertEquals("success", action.getColaboradoresByFiltro());
-    }
-    
-    public void testGetColaboradoresByFiltroPorTurma() throws Exception
-    {
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	
-    	Curso curso = CursoFactory.getEntity(1L);
-    	Turma turma = TurmaFactory.getEntity(10L);
-    	turma.setCurso(curso);
-    	turma.setEmpresa(empresa);
-    	action.setCurso(curso);
-    	action.setTurma(turma);
-    	action.setCertificadoDe('T');
-    	
-    	Collection<Long> turmaIds = new ArrayList<Long>();
-    	turmaIds.add(turma.getId());
-    	
-    	Colaborador colaborador = ColaboradorFactory.getEntity(33L);
-    	Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
-    	colaboradors.add(colaborador);
-    	
-    	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(33L);
-    	colaboradorTurma.setColaborador(colaborador);
-    	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-    	colaboradorTurmas.add(colaboradorTurma);
-
-    	colaboradorTurmaManager.expects(once()).method("montaExibicaoAprovadosReprovados").with(ANYTHING, eq(turma.getId())).will(returnValue(colaboradors));
-    	turmaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(turma));
-    	empresaManager.expects(once()).method("findCidade").with(eq(1L)).will(returnValue("Fortaleza"));
-    	
-    	cursoManager.expects(once()).method("findAllSelect").with(eq(1L)).will(returnValue(new ArrayList<Curso>()));
-    	certificacaoManager.expects(once()).method("findAllSelect").with(eq(1L)).will(returnValue(new ArrayList<Certificacao>()));
-    	
-    	turmaManager.expects(once()).method("findAllSelect").with(eq(1L)).will(returnValue(new ArrayList<Turma>()));
-    	
-    	assertEquals("success", action.getColaboradoresByFiltro());
-    }
-
     public void testPrepareImprimirCertificado() throws Exception
     {
     	Collection<Curso> cursos = new ArrayList<Curso>();

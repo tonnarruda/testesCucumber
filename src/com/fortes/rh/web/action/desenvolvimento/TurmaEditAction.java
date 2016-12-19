@@ -456,7 +456,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		else
 			colaboradoresCheckList = CheckListBoxUtil.populaCheckListBox(colaboradores, "getId", "getNome", null);
 
-		cursos = cursoManager.findAllSelect(getEmpresaSistema().getId());
+		cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
 		certificacaos = certificacaoManager.findAllSelect(getEmpresaSistema().getId());
 
 

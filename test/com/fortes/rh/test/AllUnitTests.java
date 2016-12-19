@@ -545,6 +545,7 @@ import com.fortes.rh.test.web.action.desenvolvimento.PrioridadeTreinamentoEditAc
 import com.fortes.rh.test.web.action.desenvolvimento.PrioridadeTreinamentoListActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.RelatorioPresencaActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.TurmaEditActionTest;
+import com.fortes.rh.test.web.action.desenvolvimento.TurmaEditActionTest_Junit4;
 import com.fortes.rh.test.web.action.desenvolvimento.TurmaListActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.TurmaListActionTest_Junit4;
 import com.fortes.rh.test.web.action.geral.AreaFormacaoEditActionTest;
@@ -902,6 +903,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	TurmaDaoHibernateTest.class,
 	TurmaDaoHibernateTest_JUnit4.class,
 	TurmaEditActionTest.class,
+	TurmaEditActionTest_Junit4.class,
 	TurmaListActionTest.class,
 	TurmaListActionTest_Junit4.class,
 	TurmaManagerTest.class,
