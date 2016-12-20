@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -25,7 +25,7 @@ public class ReajusteColaboradorAuditorCallbackImpl implements AuditorCallback {
 		metodo.processa();
 		ReajusteColaborador reajusteComColaborador = carregaEntidade(metodo, reajuste);
 		
-		String dados = new GeraDadosAuditados(null, reajusteComColaborador).gera();
+		String dados = new DadosAuditados(null, reajusteComColaborador).gera();
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), reajusteComColaborador.getColaborador().getNome(), dados);
 	}
 	
@@ -36,7 +36,7 @@ public class ReajusteColaboradorAuditorCallbackImpl implements AuditorCallback {
 		metodo.processa();
 		ReajusteColaborador reajusteAnterior = carregaEntidade(metodo, reajuste);
 		
-		String dados = new GeraDadosAuditados(new ReajusteColaborador[]{reajusteAnterior}, reajuste).gera();
+		String dados = new DadosAuditados(new ReajusteColaborador[]{reajusteAnterior}, reajuste).gera();
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), reajusteAnterior.getColaborador().getNome(), dados);
 	}
 	

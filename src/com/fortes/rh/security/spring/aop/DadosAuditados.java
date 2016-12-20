@@ -11,7 +11,7 @@ import net.sf.json.util.CycleDetectionStrategy;
 import com.fortes.model.AbstractModel;
 import com.fortes.security.auditoria.NaoAudita;
 
-public class GeraDadosAuditados {
+public class DadosAuditados {
 
 	private JsonConfig jsonConfig;
 	
@@ -19,7 +19,7 @@ public class GeraDadosAuditados {
 	private Object[] parametros;
 	private String chave;
 	
-	private GeraDadosAuditados() {
+	private DadosAuditados() {
 		this.jsonConfig = new JsonConfig(); 
 //		this.jsonConfig.setExcludes(new String[]{"chaveParaAuditoria"}); // exclui atributos
 		this.jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.NOPROP); // evita referencia ciclica
@@ -29,7 +29,7 @@ public class GeraDadosAuditados {
 		this.jsonConfig.registerJsonValueProcessor(Date.class, new DateFormatJsonValueProcessor());
 		this.jsonConfig.registerJsonValueProcessor(AbstractModel.class, new AbstractModelJsonValueProcessor());
 		this.jsonConfig.setJsonValueProcessorMatcher(new JsonValueProcessorMatcher() {  
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
 			public Object getMatch(Class target, Set matches) {  
 				for(Object match : matches) {  
@@ -42,13 +42,13 @@ public class GeraDadosAuditados {
 		});
 	}
 	
-	public GeraDadosAuditados(Object[] parametros, Object resultado) {
+	public DadosAuditados(Object[] parametros, Object resultado) {
 		this();
 		this.parametros = parametros;
 		this.resultado = resultado;
 	}
 
-	public GeraDadosAuditados(Object[] parametros, Object resultado, String chave) {
+	public DadosAuditados(Object[] parametros, Object resultado, String chave) {
 		this();
 		this.parametros = parametros;
 		this.resultado = resultado;
@@ -65,8 +65,7 @@ public class GeraDadosAuditados {
 	}
 
 	private String concatena(String parametros, String resultado) {
-		if (!parametros.equals("")
-				&& !resultado.equals("")) {
+		if (!parametros.equals("") && !resultado.equals("")) {
 			resultado = "\n\n" + resultado;
 		}
 		return (parametros + resultado);

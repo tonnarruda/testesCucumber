@@ -12,6 +12,7 @@ import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.AsoRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio;
+import com.fortes.security.auditoria.MetodoCarregaEntidadeAuditoria;
 
 public interface SolicitacaoExameManager extends GenericManager<SolicitacaoExame>
 {
@@ -26,6 +27,7 @@ public interface SolicitacaoExameManager extends GenericManager<SolicitacaoExame
 	Collection<SolicitacaoExame> getRelatorioAtendimentos(Date inicio, Date fim, SolicitacaoExame solicitacaoExame, Empresa empresa, boolean agruparPorMotivo, boolean ordenarPorNome, String[] motivos, char situacao) throws ColecaoVaziaException;
 	AsoRelatorio montaRelatorioAso(Empresa empresa, SolicitacaoExame solicitacaoExame, String imprimirAsoComRiscoPor) throws ColecaoVaziaException;
 	MedicoCoordenador setMedicoByQuantidade(Collection<MedicoCoordenador> medicoCoordenadors);
+	@MetodoCarregaEntidadeAuditoria
 	SolicitacaoExame findByIdProjection(Long id);
 	void removeByCandidato(Long candidatoId);
 	void removeByColaborador(Long colaboradorId);

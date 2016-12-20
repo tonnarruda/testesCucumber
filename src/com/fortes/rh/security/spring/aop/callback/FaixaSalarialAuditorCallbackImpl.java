@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -23,7 +23,7 @@ public class FaixaSalarialAuditorCallbackImpl implements AuditorCallback {
 		try{
 			FaixaSalarial faixa = (FaixaSalarial) metodo.getParametros()[0];
 			metodo.processa();
-			String dados = new GeraDadosAuditados(null, faixa).gera();
+			String dados = new DadosAuditados(null, faixa).gera();
 
 			return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), faixa.getDescricao(), dados);
 		} catch (Exception e) {
@@ -39,7 +39,7 @@ public class FaixaSalarialAuditorCallbackImpl implements AuditorCallback {
 			FaixaSalarial faixa = new FaixaSalarial();
 			faixa.setId((Long)metodo.getParametros()[0]);
 			faixa = carregaEntidade(metodo, faixa);
-			String dados = new GeraDadosAuditados(new Object[]{faixa}, null).gera();
+			String dados = new DadosAuditados(new Object[]{faixa}, null).gera();
 
 			metodo.processa();
 			return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), faixa.getDescricao(), dados);

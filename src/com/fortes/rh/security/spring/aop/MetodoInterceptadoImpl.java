@@ -73,8 +73,4 @@ public class MetodoInterceptadoImpl implements MetodoInterceptado {
 		return auditaAnnotation.operacao();
 	}
 
-	public boolean isFetchMode() {
-		return auditaAnnotation.fetchEntity();
-	}
-
 }

@@ -23,7 +23,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
-import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidade;
+import com.fortes.rh.security.spring.aop.ChaveNaEntidade;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.security.auditoria.NaoAudita;
 
@@ -97,7 +97,7 @@ public class JavaToJsonTest extends TestCase {
 							AbstractModel entity = (AbstractModel) value;
 							return new JSONObject()
 								.element("id", entity.getId())
-								.element("chaveParaAuditoria", new ProcuraChaveNaEntidade(entity).procura());
+								.element("chaveParaAuditoria", new ChaveNaEntidade(entity).procura());
 						}
 						return new JSONObject(true);
 					}

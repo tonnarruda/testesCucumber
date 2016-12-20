@@ -83,7 +83,6 @@ public class MetodoInterceptadoImplTest extends TestCase {
 		// testa anotacoes
 		assertEquals("modulo", "Cadastro de Bugigangas", metodoInterceptado.getModulo());
 		assertEquals("operacao", "Atualização Customizada", metodoInterceptado.getOperacao());
-		assertFalse("fetch mode", metodoInterceptado.isFetchMode());
 	}
 
 	private void quandoReflectionsForamObtidasCorretamente() {

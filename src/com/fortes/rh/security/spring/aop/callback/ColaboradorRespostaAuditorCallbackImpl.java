@@ -22,7 +22,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -61,7 +61,7 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 		Collection<ColaboradorResposta> colaboradorResposta = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
 		
 		dados.append(".\n");
-		dados.append(new GeraDadosAuditados(new Object[]{}, colaboradorQuestionario).gera());
+		dados.append(new DadosAuditados(new Object[]{}, colaboradorQuestionario).gera());
 		dados.append(montaColaboradorRespostas(colaboradorResposta));
 
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "Resposta", dados.toString());
@@ -82,7 +82,7 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 		dados.append("\nAs respostas foram salvas pelo usuário ");
 		dados.append(usuario.getNome());
 		dados.append(".\n");
-		dados.append(new GeraDadosAuditados(new Object[]{}, colaboradorQuestionario).gera());
+		dados.append(new DadosAuditados(new Object[]{}, colaboradorQuestionario).gera());
 		dados.append("  [DADOS ANTERIORES]\n");
 		dados.append(montaColaboradorRespostas(colaboradorRespostaAnterior));
 		dados.append("\n");
@@ -173,7 +173,7 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 			dadosColab.put("Ficha", questionario.getTitulo());
 		}
 		
-		String dados = new GeraDadosAuditados(null, dadosColab).gera();
+		String dados = new DadosAuditados(null, dadosColab).gera();
 		
 		metodo.processa();
 		

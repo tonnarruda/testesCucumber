@@ -12,7 +12,6 @@ import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
 import com.fortes.rh.config.backup.RunAntScriptTest;
 import com.fortes.rh.security.spring.aop.AbstractModelJsonValueProcessorTest;
-import com.fortes.rh.security.spring.aop.AtributosDaAuditoriaTest;
 import com.fortes.rh.security.spring.aop.AuditoriaGeralAdviceTest;
 import com.fortes.rh.security.spring.aop.AuditoriaPointcutTest;
 import com.fortes.rh.security.spring.aop.DateFormatJsonValueProcessorTest;
@@ -20,7 +19,6 @@ import com.fortes.rh.security.spring.aop.GeraDadosAuditadosTest;
 import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidadeTest;
 import com.fortes.rh.security.spring.aop.callback.crud.CandidatoSolicitacaoAuditorCallbackImplTest;
 import com.fortes.rh.security.spring.aop.callback.crud.ColaboradorQuestionarioAuditorCallbackImplTest;
-import com.fortes.rh.security.spring.aop.callback.crud.CrudAuditorCallbackImplTest;
 import com.fortes.rh.security.spring.aop.callback.crud.InsertAuditorCallbackImplTest;
 import com.fortes.rh.security.spring.aop.callback.crud.RemoveAuditorCallbackImplTest;
 import com.fortes.rh.security.spring.aop.callback.crud.UpdateAuditorCallbackImplTest;
@@ -1589,12 +1587,10 @@ import com.fortes.test.web.tags.LinkTagTest;
 	RunAntScriptTest.class,
 
     // AUDITORIA
-	AtributosDaAuditoriaTest.class,
 	AuditoriaGeralAdviceTest.class,
 	AuditoriaPointcutTest.class,
 	GeraDadosAuditadosTest.class,
 	ProcuraChaveNaEntidadeTest.class,
-	CrudAuditorCallbackImplTest.class,
 	InsertAuditorCallbackImplTest.class,
 	RemoveAuditorCallbackImplTest.class,
 	UpdateAuditorCallbackImplTest.class,

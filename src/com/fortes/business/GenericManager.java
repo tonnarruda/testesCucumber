@@ -2,6 +2,9 @@ package com.fortes.business;
 
 import java.util.Collection;
 
+import com.fortes.rh.security.spring.aop.callback.crud.InsertAuditorCallbackImpl;
+import com.fortes.rh.security.spring.aop.callback.crud.RemoveAuditorCallbackImpl;
+import com.fortes.rh.security.spring.aop.callback.crud.UpdateAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
 
 /**
@@ -19,7 +22,7 @@ public interface GenericManager<T>
 	 * Create a new &lt;T&gt; entity instance.
 	 * </p>
 	 */
-	@Audita(operacao="Inserção")
+	@Audita(operacao="Inserção", auditor=InsertAuditorCallbackImpl.class)
 	public T save(T entity);
 
 	/**
@@ -27,7 +30,7 @@ public interface GenericManager<T>
 	 * Updates the entity instance.
 	 * </p>
 	 */
-	@Audita(operacao="Atualização")
+	@Audita(operacao="Atualização", auditor=UpdateAuditorCallbackImpl.class)
 	public void update(T entity);
 	
 	/**
@@ -58,7 +61,7 @@ public interface GenericManager<T>
 	 */
 	public void remove(Long[] ids);
 	
-	@Audita(operacao="Remoção", fetchEntity=true)
+	@Audita(operacao="Remoção", auditor=RemoveAuditorCallbackImpl.class)
 	public void remove(Long id);
 	
 	public void remove(T entity);

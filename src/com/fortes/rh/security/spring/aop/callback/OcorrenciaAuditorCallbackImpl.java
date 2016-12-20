@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -29,7 +29,7 @@ public class OcorrenciaAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(ocorrenciaAnterior.getId() != null ? new Object[]{ocorrenciaAnterior} : null, ocorrencia).gera();
+		String dados = new DadosAuditados(ocorrenciaAnterior.getId() != null ? new Object[]{ocorrenciaAnterior} : null, ocorrencia).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), ocorrenciaAnterior.getId() != null ? ocorrenciaAnterior.getDescricao() : ocorrencia.getDescricao(), dados);
 	}
@@ -41,7 +41,7 @@ public class OcorrenciaAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{ocorrenciaAnterior}, null).gera();
+		String dados = new DadosAuditados(new Object[]{ocorrenciaAnterior}, null).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), ocorrenciaAnterior.getDescricao(), dados);
 	}

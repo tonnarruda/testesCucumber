@@ -35,7 +35,7 @@ public class AbstractModelJsonValueProcessor implements JsonValueProcessor {
 	 * Retorna a chave da auditoria.
 	 */
 	private String getChaveDaAuditoria(AbstractModel entity) {
-		String chave = new ProcuraChaveNaEntidade(entity).procura();
+		String chave = new ChaveNaEntidade(entity).procura();
 		return StringUtils.defaultIfEmpty(chave, "");
 	}
 

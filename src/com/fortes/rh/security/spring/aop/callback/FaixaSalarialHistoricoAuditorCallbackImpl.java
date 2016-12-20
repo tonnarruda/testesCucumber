@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
@@ -25,7 +25,7 @@ public class FaixaSalarialHistoricoAuditorCallbackImpl implements AuditorCallbac
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(null, faixaSalarialHistorico).gera();
+		String dados = new DadosAuditados(null, faixaSalarialHistorico).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(),  DateUtil.formataDiaMesAno(faixaSalarialHistorico.getData()) + " tipo: " + faixaSalarialHistorico.getTipoSalarioDescricao() , dados);
 	}
@@ -37,7 +37,7 @@ public class FaixaSalarialHistoricoAuditorCallbackImpl implements AuditorCallbac
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{faixaSalarialHistoricoAnterior}, faixaSalarialHistorico).gera();
+		String dados = new DadosAuditados(new Object[]{faixaSalarialHistoricoAnterior}, faixaSalarialHistorico).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), DateUtil.formataDiaMesAno(faixaSalarialHistorico.getData()) + " tipo: " + faixaSalarialHistorico.getTipoSalarioDescricao(), dados);
 	}
@@ -52,7 +52,7 @@ public class FaixaSalarialHistoricoAuditorCallbackImpl implements AuditorCallbac
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{faixaSalarialHistoricoAnterior}, null).gera();
+		String dados = new DadosAuditados(new Object[]{faixaSalarialHistoricoAnterior}, null).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), DateUtil.formataDiaMesAno(faixaSalarialHistoricoAnterior.getData()) + " tipo: " + faixaSalarialHistoricoAnterior.getTipoSalarioDescricao(), dados);
 	}

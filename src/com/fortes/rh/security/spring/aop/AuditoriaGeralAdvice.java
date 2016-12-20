@@ -6,10 +6,8 @@ import org.apache.log4j.Logger;
 
 import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.security.SecurityManager;
-import com.fortes.rh.security.spring.aop.callback.crud.CrudAuditorCallbackImpl;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
-import com.fortes.security.auditoria.EmptyAuditorCallbackImpl;
 import com.fortes.security.auditoria.MetodoInterceptado;
 
 public class AuditoriaGeralAdvice implements MethodInterceptor {
@@ -43,7 +41,7 @@ public class AuditoriaGeralAdvice implements MethodInterceptor {
 
 	private Object audita(MetodoInterceptado metodo) throws Throwable {
 		
-		AuditorCallback callback = this.getAuditorCallback(metodo);
+		AuditorCallback callback = metodo.getAuditorCallback();
 		Auditavel auditavel = callback.processa(metodo);
 		
 		if(auditavel != null)
@@ -57,17 +55,6 @@ public class AuditoriaGeralAdvice implements MethodInterceptor {
 		}
 		
 		return metodo.getRetornoDoMetodo();
-	}
-	/**
-	 * Retorna a implementação de Callback do Auditor. Caso nenhum Callback
-	 * tenha sido informado então a implementação default,
-	 * CrudAuditorCallbackImpl, será utilizada.
-	 */
-	private AuditorCallback getAuditorCallback(MetodoInterceptado metodo) {
-		AuditorCallback callback = metodo.getAuditorCallback();
-		if (callback instanceof EmptyAuditorCallbackImpl)
-			callback = new CrudAuditorCallbackImpl();
-		return callback;
 	}
 	
 }

@@ -7,10 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Audita {
-	
-	String operacao();
-	
-	Class<? extends AuditorCallback> auditor() default EmptyAuditorCallbackImpl.class;
-	
+public @interface MetodoCarregaEntidadeAuditoria {
 }

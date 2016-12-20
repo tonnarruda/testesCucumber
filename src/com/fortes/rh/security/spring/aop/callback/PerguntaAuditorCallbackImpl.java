@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
@@ -25,7 +25,7 @@ public class PerguntaAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(null, pergunta).gera();
+		String dados = new DadosAuditados(null, pergunta).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), StringUtil.subStr(pergunta.getTexto(), 100), dados);
 	}
@@ -37,7 +37,7 @@ public class PerguntaAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{perguntaAnterior}, pergunta).gera();
+		String dados = new DadosAuditados(new Object[]{perguntaAnterior}, pergunta).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), StringUtil.subStr(pergunta.getTexto(), 100), dados);
 	}
@@ -49,7 +49,7 @@ public class PerguntaAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{perguntaAnterior}, null).gera();
+		String dados = new DadosAuditados(new Object[]{perguntaAnterior}, null).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), StringUtil.subStr(perguntaAnterior.getTexto(), 255), dados);
 	}

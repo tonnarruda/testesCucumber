@@ -3,7 +3,7 @@ package com.fortes.rh.security.spring.aop.callback;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -31,7 +31,7 @@ public class QuestionarioAuditorCallbackImpl implements AuditorCallback {
 	}
 
 	private String geraDados() {
-		return new GeraDadosAuditados(new Object[]{questionario}, null).gera();
+		return new DadosAuditados(new Object[]{questionario}, null).gera();
 	}
 
 	private void inicializa(MetodoInterceptado metodo) {

@@ -7,7 +7,7 @@ import java.util.Map;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -33,7 +33,7 @@ public class ColaboradorQuestionarioAuditorCallbackImpl implements AuditorCallba
 		dadosColab.put("Avaliado", colaboradorquestionario.getColaborador().getNome());
 		dadosColab.put("Avaliação Desempenho", colaboradorquestionario.getAvaliacaoDesempenho().getTitulo());
 		
-		String dados = new GeraDadosAuditados(null, dadosColab).gera();
+		String dados = new DadosAuditados(null, dadosColab).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaboradorquestionario.getPessoaNome(), dados);
 	}

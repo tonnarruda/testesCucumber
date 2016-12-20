@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -24,7 +24,7 @@ public class HistoricoColaboradorAuditorCallbackImpl implements AuditorCallback 
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(null, historico).gera();
+		String dados = new DadosAuditados(null, historico).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "", dados);
 	}
@@ -38,7 +38,7 @@ public class HistoricoColaboradorAuditorCallbackImpl implements AuditorCallback 
 		
 		HistoricoColaborador historicoAtual = (HistoricoColaborador) carregaEntidade(metodo, historico);
 		
-		String dados = new GeraDadosAuditados(new Object[]{historicoAnterior}, historicoAtual).gera();
+		String dados = new DadosAuditados(new Object[]{historicoAnterior}, historicoAtual).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "", dados);
 	}
@@ -50,7 +50,7 @@ public class HistoricoColaboradorAuditorCallbackImpl implements AuditorCallback 
 		hist.setId(historicoId);
 		HistoricoColaborador historico = carregaEntidade(metodo, hist);
 		
-		String dados = new GeraDadosAuditados(new Object[]{historico}, null).gera();
+		String dados = new DadosAuditados(new Object[]{historico}, null).gera();
 		
 		metodo.processa();
 		

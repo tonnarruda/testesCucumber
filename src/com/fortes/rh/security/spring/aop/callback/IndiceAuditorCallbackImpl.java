@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -24,7 +24,7 @@ public class IndiceAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(null, indice).gera();
+		String dados = new DadosAuditados(null, indice).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), indice.getNome(), dados);
 	}
@@ -38,7 +38,7 @@ public class IndiceAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{indice}, null).gera();
+		String dados = new DadosAuditados(new Object[]{indice}, null).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), indice.getNome(), dados);
 	}

@@ -1,54 +1,35 @@
 package com.fortes.rh.security.spring.aop.callback.crud;
 
-import com.fortes.business.GenericManager;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
-import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidade;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
+import com.fortes.rh.security.spring.aop.callback.AuditorCallbackImpl;
 import com.fortes.security.auditoria.Auditavel;
-import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
 
-public class UpdateAuditorCallbackImpl implements AuditorCallback {
+public class UpdateAuditorCallbackImpl extends AuditorCallbackImpl {
 
-	private AbstractModel entidade;
-	private AbstractModel entidadeAntesDaAtualizacao;
-	
-	private String modulo;
-	private String operacao;
-	private String dados;
-	private String chave;
-	
 	public Auditavel processa(MetodoInterceptado metodo) throws Throwable {
 		
 		inicializa(metodo);
 		metodo.processa();
 		
-		return new AuditavelImpl(modulo, operacao, chave, dados);
+		return new AuditavelImpl(getModulo(), getOperacao(), getChave(), getDados());
 	}
 
-	private String getChave() {
-		return new ProcuraChaveNaEntidade(entidade).procura();
-	}
-
-	private String geraDados() {
-		return new GeraDadosAuditados(new Object[]{entidadeAntesDaAtualizacao}, entidade).gera();
+	@Override
+	protected String geraDadosAuditados() {
+		return new DadosAuditados(new Object[]{getEntidadeAntesDaAtualizacao()}, getEntidade()).gera();
 	}
 	
-	private void inicializa(MetodoInterceptado metodo) {
-		entidade = (AbstractModel) metodo.getParametros()[0];
-		entidadeAntesDaAtualizacao = carregaEntidade(metodo);
-		modulo = metodo.getModulo();
-		operacao = metodo.getOperacao();
-		dados = geraDados();
-		chave = getChave();
+	@Override
+	protected void inicializa(MetodoInterceptado metodo) {
+		setEntidade((AbstractModel) metodo.getParametros()[0]);
+		setEntidadeAntesDaAtualizacao(carregaEntidade(metodo));
+		setModulo(metodo.getModulo());
+		setOperacao(metodo.getOperacao());
+		setDados(geraDadosAuditados());
+		setChave(getChaveNaEntidade());
 	}
-
-	@SuppressWarnings("unchecked")
-	private AbstractModel carregaEntidade(MetodoInterceptado metodo) {
-		GenericManager manager = (GenericManager) metodo.getComponente();
-		return (AbstractModel) manager.findEntidadeComAtributosSimplesById(entidade.getId());
-	}
-
 
 }

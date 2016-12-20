@@ -23,6 +23,7 @@ import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
@@ -358,5 +359,19 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
 
 	public void setMuitasClinicas(boolean muitasClinicas) {
 		this.muitasClinicas = muitasClinicas;
+	}
+	
+	@NaoAudita
+	@ChaveDaAuditoria
+	public String getChaveAuditoria() {
+		try{
+			if(colaborador != null && colaborador.getNome() != null)
+				return colaborador.getNome();
+			else
+				return candidato.getNome();
+		} catch (Exception e){
+			return "";
+		}
+		
 	}
 }

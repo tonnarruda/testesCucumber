@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -40,14 +40,14 @@ public class EmpresaAuditorCallbackImpl implements AuditorCallback {
 	
 	public Auditavel removeEmpresa(MetodoInterceptado metodo) throws Throwable {
 		Empresa empresa = (Empresa) metodo.getParametros()[0];
-		String dados = new GeraDadosAuditados(new Object[]{empresa}, null).gera();
+		String dados = new DadosAuditados(new Object[]{empresa}, null).gera();
 		metodo.processa();
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), empresa.getNome() + " (id: " + empresa.getId() + ")", dados);			
 	}
 	
 	public Auditavel remove(MetodoInterceptado metodo) throws Throwable {
 		Empresa empresa = (Empresa) metodo.getParametros()[0];
-		String dados = new GeraDadosAuditados(new Object[]{empresa}, null).gera();
+		String dados = new DadosAuditados(new Object[]{empresa}, null).gera();
 		metodo.processa();
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), empresa.getNome() + " (id: " + empresa.getId() + ")", dados);			
 	}

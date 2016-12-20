@@ -23,7 +23,7 @@ import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
@@ -48,7 +48,7 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		Map<String, String> dadosAtualizados = new LinkedHashMap<String, String>();
 		dadosAtualizados = geraDadosAtualizados(solicitacao, avaliacoesIds, emailsMarcados);
 		
-		String dados = new GeraDadosAuditados(null, dadosAtualizados).gera();
+		String dados = new DadosAuditados(null, dadosAtualizados).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), solicitacao.getDescricao(), dados);
 	}
@@ -78,7 +78,7 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		dadosAtualizados.put("liberadorNome", solicitacao.getLiberador().getNome());
 		dadosAtualizados.put("liberadorObservacao", solicitacao.getObservacaoLiberador());
 		
-		String dados = new GeraDadosAuditados(new Object[]{dadosAnteriores}, dadosAtualizados).gera();
+		String dados = new DadosAuditados(new Object[]{dadosAnteriores}, dadosAtualizados).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), solicitacaoAnterior.getDescricaoFormatada(), dados);
 	}
@@ -100,7 +100,7 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		dadosAtualizados.put("dataEncerramento", String.valueOf(solicitacao.getDataEncerramentoFormatada()));
 		dadosAtualizados.put("observacao", String.valueOf(solicitacao.getObservacaoLiberador()));
 		
-		String dados = new GeraDadosAuditados(new Object[]{}, dadosAtualizados).gera();
+		String dados = new DadosAuditados(new Object[]{}, dadosAtualizados).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), solicitacaoAnterior.getDescricaoFormatada(), dados);
 	}
@@ -184,7 +184,7 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		Map<String, String> dadosAtualizados = new LinkedHashMap<String, String>();
 		dadosAtualizados = geraDadosAtualizados(solicitacao, avaliacoesIds, null);
 		
-		String dados = new GeraDadosAuditados(new Object[]{dadosAnteriores}, dadosAtualizados).gera();
+		String dados = new DadosAuditados(new Object[]{dadosAnteriores}, dadosAtualizados).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), solicitacao.getDescricaoFormatada(), dados);
 	}

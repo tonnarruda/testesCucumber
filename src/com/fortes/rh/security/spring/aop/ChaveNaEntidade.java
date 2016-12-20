@@ -10,11 +10,11 @@ import net.vidageek.mirror.dsl.Mirror;
 import com.fortes.model.AbstractModel;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 
-public class ProcuraChaveNaEntidade {
+public class ChaveNaEntidade {
 
 	private final AbstractModel entidade;
 
-	public ProcuraChaveNaEntidade(AbstractModel entidade) {
+	public ChaveNaEntidade(AbstractModel entidade) {
 		this.entidade = entidade;
 	}
 	

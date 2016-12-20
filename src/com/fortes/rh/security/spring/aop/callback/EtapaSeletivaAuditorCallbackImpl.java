@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -25,7 +25,7 @@ public class EtapaSeletivaAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{etapaAnterior}, etapaSeletiva).gera();
+		String dados = new DadosAuditados(new Object[]{etapaAnterior}, etapaSeletiva).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), etapaSeletiva.getNome(), dados);
 	}
@@ -37,7 +37,7 @@ public class EtapaSeletivaAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{etapaAnterior}, null).gera();
+		String dados = new DadosAuditados(new Object[]{etapaAnterior}, null).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), etapaAnterior.getNome(), dados);
 	}

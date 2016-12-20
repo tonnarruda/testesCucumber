@@ -21,8 +21,8 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.security.Auditoria;
 import com.fortes.rh.model.ws.TAuditoria;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
-import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidade;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
+import com.fortes.rh.security.spring.aop.ChaveNaEntidade;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.xwork.ActionContext;
@@ -163,7 +163,7 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 
 		GenericManager<AbstractModel> manager = (GenericManager<AbstractModel>) SpringUtil.getBean(bean + "Manager");
 		entidade = (AbstractModel) manager.findEntidadeComAtributosSimplesById(Long.parseLong(id));
-		ProcuraChaveNaEntidade chaveNaEntidade = new ProcuraChaveNaEntidade(entidade);
+		ChaveNaEntidade chaveNaEntidade = new ChaveNaEntidade(entidade);
 		String chaveParaAuditoria = chaveNaEntidade.procura();
 		
 		if(StringUtils.isEmpty(chaveParaAuditoria))
@@ -178,7 +178,7 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 		cancelamentoContratacaoAC.put("Colaborador", colaborador.getNome());
 		cancelamentoContratacaoAC.put("Mensagem", "Contratação cancelada no Fortes Pessoal. Obs: "+mensagem);
 		
-		String dados = new GeraDadosAuditados(null, cancelamentoContratacaoAC).gera();
+		String dados = new DadosAuditados(null, cancelamentoContratacaoAC).gera();
 		Empresa empresa = colaborador.getEmpresa();
 		
 		Auditoria auditoria = new Auditoria();
@@ -196,7 +196,7 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 		for (Colaborador colaborador : colaboradores) 
 			desligamentoContratacaoAC.put(colaborador.getCodigoAC(), colaborador.getNome());
 		
-		String dados = new GeraDadosAuditados(null, desligamentoContratacaoAC).gera();
+		String dados = new DadosAuditados(null, desligamentoContratacaoAC).gera();
 		
 		Auditoria auditoria = new Auditoria();
 		auditoria.audita(null, empresa, "Colaborador", "Desligamento no AC", "", dados);
@@ -210,7 +210,7 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 		cancelamentoSolicitacaoAC.put("Colaborador", colaborador.getNome());
 		cancelamentoSolicitacaoAC.put("Mensagem", "Cancelamento da solicitação de desligamento no Fortes Pessoal. Obs: "+mensagem);
 		
-		String dados = new GeraDadosAuditados(null, cancelamentoSolicitacaoAC).gera();
+		String dados = new DadosAuditados(null, cancelamentoSolicitacaoAC).gera();
 		Empresa empresa = colaborador.getEmpresa();
 		
 		Auditoria auditoria = new Auditoria();
@@ -228,7 +228,7 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 		cancelamentoSolicitacaoAC.put("Operação Fortes Pessoal", tAuditoria.getOperacao());
 		cancelamentoSolicitacaoAC.put("Mensagem", "Colaborador Removido através do Fortes Pessoal.");
 		
-		String dados = new GeraDadosAuditados(null, cancelamentoSolicitacaoAC).gera();
+		String dados = new DadosAuditados(null, cancelamentoSolicitacaoAC).gera();
 
 		Auditoria auditoria = new Auditoria();
 		auditoria.audita(null, empresa, "Colaborador", "Remoção atraves do Fortes Pessoal.", colaborador.getNome(), dados);

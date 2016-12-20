@@ -59,7 +59,7 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 
 	public SolicitacaoExame save(SolicitacaoExame solicitacaoExame, String[] exameIds, String[] selectClinicas, Integer[] periodicidades) throws Exception
 	{
-		getDao().save(solicitacaoExame);
+		save(solicitacaoExame);
 		exameSolicitacaoExameManager.save(solicitacaoExame, exameIds, selectClinicas, periodicidades);
 		
 		return solicitacaoExame;
@@ -243,6 +243,7 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 			return null;
 	}
 
+	@Override
 	public SolicitacaoExame findByIdProjection(Long id)
 	{
 		return getDao().findByIdProjection(id);

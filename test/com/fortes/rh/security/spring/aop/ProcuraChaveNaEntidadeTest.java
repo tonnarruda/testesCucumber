@@ -7,7 +7,7 @@ import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 public class ProcuraChaveNaEntidadeTest extends MockObjectTestCase {
 
-	ProcuraChaveNaEntidade procuraChaveNaEntidade;
+	ChaveNaEntidade procuraChaveNaEntidade;
 	
 	protected void setUp() throws Exception {
 		// nothing
@@ -16,7 +16,7 @@ public class ProcuraChaveNaEntidadeTest extends MockObjectTestCase {
 	public void testDeveriaAcharChaveNoCampo() {
 		
 		AbstractModel entidade = this.criaEntidadeComChaveNoCampo();
-		procuraChaveNaEntidade = new ProcuraChaveNaEntidade(entidade);
+		procuraChaveNaEntidade = new ChaveNaEntidade(entidade);
 		
 		String chave = procuraChaveNaEntidade.procura();
 		assertEquals("chaveNoCampo", chave);
@@ -25,7 +25,7 @@ public class ProcuraChaveNaEntidadeTest extends MockObjectTestCase {
 	public void testDeveriaAcharChaveNoGetter() {
 		
 		AbstractModel entidade = this.criaEntidadeComChaveNoGetter();
-		procuraChaveNaEntidade = new ProcuraChaveNaEntidade(entidade);
+		procuraChaveNaEntidade = new ChaveNaEntidade(entidade);
 		
 		String chave = procuraChaveNaEntidade.procura();
 		assertEquals("chaveNoGetter", chave);
@@ -34,7 +34,7 @@ public class ProcuraChaveNaEntidadeTest extends MockObjectTestCase {
 	public void testDeveriaNaoAcharChaveNemNoCampoNemNoGetter() {
 		
 		AbstractModel entidade = this.criaEntidadeSemChave();
-		procuraChaveNaEntidade = new ProcuraChaveNaEntidade(entidade);
+		procuraChaveNaEntidade = new ChaveNaEntidade(entidade);
 		
 		String chave = procuraChaveNaEntidade.procura();
 		assertNull(chave);
@@ -43,7 +43,7 @@ public class ProcuraChaveNaEntidadeTest extends MockObjectTestCase {
 	public void testDeveriaAcharChaveNoCampoMesmoQuandoHouverAnotacaoNoGetter() {
 		
 		AbstractModel entidade = this.criaEntidadeComChaveNoCampoENoGetter();
-		procuraChaveNaEntidade = new ProcuraChaveNaEntidade(entidade);
+		procuraChaveNaEntidade = new ChaveNaEntidade(entidade);
 		
 		String chave = procuraChaveNaEntidade.procura();
 		assertEquals("chaveNoCampo", chave);

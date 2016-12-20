@@ -12,7 +12,7 @@ public interface ComponenteSemAnotacaoDeModuloManager extends GenericManager<Eve
 	@Audita(operacao="Atualização Customizada")
 	public void update(Evento entity);
 	
-	@Audita(operacao="Remoçao Customizada", fetchEntity=true)
+	@Audita(operacao="Remoçao Customizada")
 	public void remove(Long id);
 	
 }

@@ -10,7 +10,7 @@ import java.util.Map;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
@@ -46,7 +46,7 @@ public class CandidatoSolicitacaoAuditorCallbackImpl implements AuditorCallback 
 		candidatoSolicitacaoMapAnterior.put("Obs do Gestor", candidatoSolicitacaoAnterior.getObsAutorizacaoGestor() == null ? "Sem Obs" : candidatoSolicitacaoAnterior.getObsAutorizacaoGestor());
 		candidatoSolicitacaoAnteriorDados.add(candidatoSolicitacaoMapAnterior);
 		
-		String dados = new GeraDadosAuditados(candidatoSolicitacaoAnteriorDados.toArray(), candidatoSolicitacaoAtualDados.toArray()).gera();
+		String dados = new DadosAuditados(candidatoSolicitacaoAnteriorDados.toArray(), candidatoSolicitacaoAtualDados.toArray()).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), candidatoSolicitacaoAtual.getColaboradorNome(), dados);
 	}

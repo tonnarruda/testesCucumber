@@ -11,7 +11,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
@@ -31,7 +31,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{colaborador}, colaborador).gera();
+		String dados = new DadosAuditados(new Object[]{colaborador}, colaborador).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
 	}
@@ -43,7 +43,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{colaboradorAnterior}, colaborador).gera();
+		String dados = new DadosAuditados(new Object[]{colaboradorAnterior}, colaborador).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
 	}
@@ -53,7 +53,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		Colaborador colaborador = (Colaborador) metodo.getParametros()[0];
 		colaborador = carregaEntidade(metodo, colaborador);
 		
-		String dados = new GeraDadosAuditados(new Object[]{colaborador}, null).gera();
+		String dados = new DadosAuditados(new Object[]{colaborador}, null).gera();
 
 		metodo.processa();
 		
@@ -65,7 +65,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		Colaborador colaborador = new Colaborador("", (Long) metodo.getParametros()[0]);
 		colaborador = carregaEntidade(metodo, colaborador);
 		
-		String dados = new GeraDadosAuditados(new Object[]{colaborador}, null).gera();
+		String dados = new DadosAuditados(new Object[]{colaborador}, null).gera();
 
 		metodo.processa();
 		
@@ -101,7 +101,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 			colaboradoresDesligados += colaborador.getNome() + "  ";
 		}
 
-		String dados = new GeraDadosAuditados(null, desligamentos.toArray()).gera();
+		String dados = new DadosAuditados(null, desligamentos.toArray()).gera();
 			
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaboradoresDesligados, dados);
 	}
@@ -136,7 +136,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		
 		solicitacaoDesligamento.add(desligamento);
 		
-		String dados = new GeraDadosAuditados(null, solicitacaoDesligamento.toArray()).gera();
+		String dados = new DadosAuditados(null, solicitacaoDesligamento.toArray()).gera();
 			
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
 	}
@@ -158,7 +158,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		desligamento.put("Data de cancelamento", new Date());
 		desligamentos.add(desligamento);
 		
-		String dados = new GeraDadosAuditados(null, desligamentos.toArray()).gera();
+		String dados = new DadosAuditados(null, desligamentos.toArray()).gera();
 			
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
 	}
@@ -176,7 +176,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		dadosColab.put("Colaborador ID", colaborador.getId());
 		dadosColab.put("Colaborador", colaborador.getNome());
 		
-		String dados = new GeraDadosAuditados(null, dadosColab).gera();
+		String dados = new DadosAuditados(null, dadosColab).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
 	}
@@ -202,7 +202,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 			colabCodigoAcsDeslidos += colabCodigoAC + "  ";
 		}
 
-		String dados = new GeraDadosAuditados(null, desligamentos.toArray()).gera();
+		String dados = new DadosAuditados(null, desligamentos.toArray()).gera();
 			
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), empresa.getCodigoAC() + " " + colabCodigoAcsDeslidos, dados);
 	}
@@ -227,7 +227,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		
 		solicitacaoDesligamento.add(desligamento);
 		
-		String dados = new GeraDadosAuditados(null, solicitacaoDesligamento.toArray()).gera();
+		String dados = new DadosAuditados(null, solicitacaoDesligamento.toArray()).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
 	}
@@ -252,7 +252,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		solicitaDesligamento.put("Data do cancelamento da solicitação de desligamento", DateUtil.criarDataMesAno(new Date()));
 		solicitaDesligamento.put("Observação do cancelamento", obsservacao);
 		
-		String dados = new GeraDadosAuditados(null, solicitaDesligamento).gera();
+		String dados = new DadosAuditados(null, solicitaDesligamento).gera();
 		
 		return new AuditavelImpl("Colaborador", "Solicitação de desligamento cancelada", null, dados);
 	}

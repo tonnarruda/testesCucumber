@@ -43,12 +43,12 @@ public class GeraDadosAuditadosTest extends TestCase {
 		resultado.setNome("Carnaval");
 		parametro.getDependenciasDesconsideradasNaRemocao();
 		
-		String dados = new GeraDadosAuditados(new Object[]{parametro}, resultado).gera();
+		String dados = new DadosAuditados(new Object[]{parametro}, resultado).gera();
 		assertEquals(ENTIDADE_FORMATADA, dados);
 	}
 	
 	public void testDeveriaGerarJsonParaId() {
-		String dados = new GeraDadosAuditados(new Object[]{new Long(14)}, null).gera();
+		String dados = new DadosAuditados(new Object[]{new Long(14)}, null).gera();
 		assertEquals(ID_FORMATADO, dados);
 	}
 }

@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -25,7 +25,7 @@ public class CandidatoAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{candidatoAnterior}, candidato).gera();
+		String dados = new DadosAuditados(new Object[]{candidatoAnterior}, candidato).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), candidato.getNome(), dados);
 	}
@@ -37,7 +37,7 @@ public class CandidatoAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{candidatoAnterior}, null).gera();
+		String dados = new DadosAuditados(new Object[]{candidatoAnterior}, null).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), candidatoAnterior.getNome(), dados);
 	}

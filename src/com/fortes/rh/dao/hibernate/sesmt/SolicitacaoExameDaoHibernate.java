@@ -325,7 +325,6 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		projectionList.add(Projections.property("medico.id"), "medicoCoordenadorId");
 		projectionList.add(Projections.property("medico.nome"), "medicoCoordenadorNome");
 		projectionList.add(Projections.property("ca.id"), "candidatoId");
-		projectionList.add(Projections.property("col.id"), "colaboradorId");
 		projectionList.add(Projections.property("ca.nome"), "candidatoNome");
 		projectionList.add(Projections.property("col.id"), "colaboradorId");
 		projectionList.add(Projections.property("col.nome"), "colaboradorNome");

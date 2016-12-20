@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -25,7 +25,7 @@ public class TabelaReajusteColaboradorAuditorCallbackImpl implements AuditorCall
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{tabelaReajusteColaboradorAnterior}, tabelaReajusteColaborador).gera();
+		String dados = new DadosAuditados(new Object[]{tabelaReajusteColaboradorAnterior}, tabelaReajusteColaborador).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), tabelaReajusteColaborador.getNome(), dados);
 	}
@@ -37,7 +37,7 @@ public class TabelaReajusteColaboradorAuditorCallbackImpl implements AuditorCall
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{tabelaReajusteColaboradorAnterior}, null).gera();
+		String dados = new DadosAuditados(new Object[]{tabelaReajusteColaboradorAnterior}, null).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), tabelaReajusteColaboradorAnterior.getNome(), dados);
 	}
@@ -49,7 +49,7 @@ public class TabelaReajusteColaboradorAuditorCallbackImpl implements AuditorCall
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{tabelaReajusteColaborador}, null).gera();
+		String dados = new DadosAuditados(new Object[]{tabelaReajusteColaborador}, null).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), tabelaReajusteColaborador.getNome(), dados);
 	}
@@ -63,7 +63,7 @@ public class TabelaReajusteColaboradorAuditorCallbackImpl implements AuditorCall
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{tabelaReajusteColaborador}, null).gera();
+		String dados = new DadosAuditados(new Object[]{tabelaReajusteColaborador}, null).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), tabelaReajusteColaborador.getNome(), dados);
 	}

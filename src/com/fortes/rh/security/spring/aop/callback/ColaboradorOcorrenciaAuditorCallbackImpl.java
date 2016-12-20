@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -27,7 +27,7 @@ public class ColaboradorOcorrenciaAuditorCallbackImpl implements AuditorCallback
 		
 		colaboradorOcorrencia = carregaEntidade(metodo, colaboradorOcorrencia);
 		
-		String dados = new GeraDadosAuditados(new Object[]{colaboradorOcorrenciaAnterior}, colaboradorOcorrencia).gera();
+		String dados = new DadosAuditados(new Object[]{colaboradorOcorrenciaAnterior}, colaboradorOcorrencia).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaboradorOcorrencia.getOcorrencia().getDescricao(), dados);
 	}
@@ -39,7 +39,7 @@ public class ColaboradorOcorrenciaAuditorCallbackImpl implements AuditorCallback
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{colaboradorOcorrenciaAnterior}, null).gera();
+		String dados = new DadosAuditados(new Object[]{colaboradorOcorrenciaAnterior}, null).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaboradorOcorrenciaAnterior.getOcorrencia().getDescricao(), dados);
 	}

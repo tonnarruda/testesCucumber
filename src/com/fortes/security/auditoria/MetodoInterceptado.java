@@ -20,6 +20,4 @@ public interface MetodoInterceptado {
 	
 	public String getOperacao();
 	
-	public boolean isFetchMode();
-	
 }

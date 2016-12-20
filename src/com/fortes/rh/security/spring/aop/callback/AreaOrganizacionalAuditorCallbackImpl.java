@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -24,7 +24,7 @@ public class AreaOrganizacionalAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(null, area).gera();
+		String dados = new DadosAuditados(null, area).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), area.getDescricao(), dados);
 	}
@@ -36,7 +36,7 @@ public class AreaOrganizacionalAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{areaAnterior}, area).gera();
+		String dados = new DadosAuditados(new Object[]{areaAnterior}, area).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), area.getNome(), dados);
 	}
@@ -48,7 +48,7 @@ public class AreaOrganizacionalAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{area}, null).gera();
+		String dados = new DadosAuditados(new Object[]{area}, null).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), area.getNome(), dados);
 	}
@@ -59,7 +59,7 @@ public class AreaOrganizacionalAuditorCallbackImpl implements AuditorCallback {
 		area.setId((Long)metodo.getParametros()[0]);
 		AreaOrganizacionalManager manager = (AreaOrganizacionalManager) metodo.getComponente();
 		area = manager.findById(area.getId());
-		String dados = new GeraDadosAuditados(new Object[]{area}, null).gera();
+		String dados = new DadosAuditados(new Object[]{area}, null).gera();
 		metodo.processa();
 		
 		
