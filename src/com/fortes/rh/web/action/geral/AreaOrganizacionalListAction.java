@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.exception.FortesException;
@@ -27,7 +28,7 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 
-	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	private Collection<AreaOrganizacional> areaOrganizacionals;
 	private AreaOrganizacional areaOrganizacional = new AreaOrganizacional();
@@ -150,11 +151,6 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 	public void setAreaOrganizacional(AreaOrganizacional areaOrganizacional)
 	{
 		this.areaOrganizacional=areaOrganizacional;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager=areaOrganizacionalManager;
 	}
 
 	public boolean isIntegradoAC()

@@ -27,9 +27,8 @@ import com.opensymphony.webwork.dispatcher.SessionMap;
 @Component
 public class AreaOrganizacionalDWR
 {
-	@Autowired
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
 
 	public void verificaMaternidade(Long areaId) throws Exception
 	{
@@ -267,14 +266,5 @@ public class AreaOrganizacionalDWR
 		}
 		else  areas.addAll(areaOrganizacionalManager.findByEmpresasIds(empresaIds, null));
 			
-	}
-	
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 }

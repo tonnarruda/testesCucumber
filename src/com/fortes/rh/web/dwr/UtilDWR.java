@@ -25,14 +25,10 @@ import com.fortes.rh.web.ws.AcPessoalClient;
 @Component
 public class UtilDWR
 {
-	@Autowired
-	private Mail mail;
-	@Autowired
-	private AcPessoalClient acPessoalClient;
-	@Autowired
-	private GrupoACManager grupoACManager;
-	@Autowired
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private Mail mail;
+	@Autowired private AcPessoalClient acPessoalClient;
+	@Autowired private GrupoACManager grupoACManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	public String getToken(String grupoAC)
 	{ 
@@ -142,15 +138,5 @@ public class UtilDWR
 	public void setMail(Mail mail)
 	{
 		this.mail = mail;
-	}
-
-	public void setGrupoACManager(GrupoACManager grupoACManager) 
-	{
-		this.grupoACManager = grupoACManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) 
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

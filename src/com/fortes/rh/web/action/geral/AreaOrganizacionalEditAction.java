@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -24,9 +25,9 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 {
 	private static final long serialVersionUID = 1L;
 
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private ColaboradorManager colaboradorManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
 
 	private AreaOrganizacional areaOrganizacional;
 	private boolean podeEditarAreaMae;
@@ -168,11 +169,6 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 		this.areas = areas;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager=areaOrganizacionalManager;
-	}
-
 	public Collection<Colaborador> getResponsaveis()
 	{
 		return responsaveis;
@@ -206,11 +202,6 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 	public void setLimitado(boolean limitado)
 	{
 		this.limitado = limitado;
-	}
-
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
 
 	public String[] getEmailsNotificacoes() {
