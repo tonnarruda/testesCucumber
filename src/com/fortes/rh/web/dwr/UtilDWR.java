@@ -7,10 +7,12 @@ import java.util.regex.Pattern;
 
 import javax.mail.AuthenticationFailedException;
 
+import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import uk.ltd.getahead.dwr.WebContextFactory;
+//import uk.ltd.getahead.dwr.WebContextFactory;
+
 
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;

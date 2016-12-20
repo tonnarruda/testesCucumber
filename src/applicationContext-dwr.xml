@@ -8,7 +8,7 @@
   						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
   						http://www.directwebremoting.org/schema/spring-dwr
       					http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd">
- 
+      					
  <!-- DWR will scan all Spring managed beans containing @RemoteProxy or 
   @RemoteMethod annotations and register Creator proxies for them. 
   This will NOT scan any classes not managed by Spring. -->
@@ -30,7 +30,8 @@
   sample config: 
   <dwr:configuration> 
    <dwr:convert type="bean" class="org.krams.tutorial.CustomClass" /> 
-  </dwr:configuration> -->
+  </dwr:configuration> 
+  -->
  <dwr:configuration />
  
  

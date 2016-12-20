@@ -1,11 +1,11 @@
 package com.fortes.rh.web.dwr;
 
 import org.apache.commons.lang.StringUtils;
+import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import remprot.RPClient;
-import uk.ltd.getahead.dwr.WebContextFactory;
 
 import com.fortes.rh.business.geral.MorroManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;

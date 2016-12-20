@@ -13,10 +13,9 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
 
+import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import uk.ltd.getahead.dwr.WebContextFactory;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
