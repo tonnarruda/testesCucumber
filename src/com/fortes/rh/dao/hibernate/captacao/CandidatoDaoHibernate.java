@@ -1,14 +1,10 @@
-/*
- * autor: Moesio Medeiros
- * Data: 07/06/2006
- * Requisito: RFA013
- */
 package com.fortes.rh.dao.hibernate.captacao;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -304,7 +300,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		if (somenteSemSolicitacao)
 			criteria.createCriteria("c.candidatoSolicitacaos", "cs", Criteria.LEFT_JOIN).add(Expression.isNull("cs.id"));
-		
 		
 		ProjectionList p = Projections.projectionList().create();
 		criteria = montaProjectionGroup(criteria, p);
@@ -761,84 +756,59 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return criteria.list();
 	}
 
-	public Collection<Candidato> getCandidatosByExperiencia(Map parametros, Long[] empresaIds)
-	{
+	public Collection<Candidato> getCandidatosByExperiencia(Map parametros, Long[] empresaIds){
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		criteria.createCriteria("c.experiencias", "e", Criteria.LEFT_JOIN);
+		
+		if (isNotBlank((String)parametros.get("palavrasChaveOutrosCampos")))
+			criteria.createCriteria("c.formacao", "f", Criteria.LEFT_JOIN);
+		
 		criteria.createCriteria("e.cargo", "ca", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
 
+		criteria.setProjection(projectionGetCandidatosByExperiencia());
+		criteria.add(Expression.in("ca.id", (Long[])parametros.get("experiencias")));
+		criteria.addOrder(Order.asc("c.id"));
+
+		parametros.remove("experiencias");
+		montaCriteriaFiltros(parametros, empresaIds, criteria);
+		Collection<Candidato> result = new ArrayList<Candidato>();
+		
+		Collection lista = criteria.list();
+		Candidato candidatoAnterior = null;
+
+		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();){
+			Object[] array = it.next();
+
+			if(candidatoAnterior == null || !candidatoAnterior.getId().equals((Long) array[3])){
+				Candidato candidato = new Candidato((Long) array[3], null);
+				Collection<Experiencia> experiencias = new ArrayList<Experiencia>(); 
+				experiencias.add(new Experiencia((Long) array[0], (Date) array[1], (Date) array[2], (Long) array[4]));
+				candidato.setExperiencias(experiencias);
+				candidatoAnterior = candidato;
+				result.add(candidatoAnterior);
+			}else
+				candidatoAnterior.getExperiencias().add(new Experiencia((Long) array[0], (Date) array[1], (Date) array[2], (Long) array[4]));
+		}
+
+		return result;
+	}
+
+	private ProjectionList projectionGetCandidatosByExperiencia() {
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("e.id"), "id");
 		p.add(Projections.property("e.dataAdmissao"), "dataAdmissao");
 		p.add(Projections.property("e.dataDesligamento"), "dataDesligamento");
 		p.add(Projections.property("c.id"),"projectionCandidatoId");
 		p.add(Projections.property("ca.id"),"projectionCargoId");
-
 		p.add(Projections.groupProperty("c.id"));
 		p.add(Projections.groupProperty("ca.id"));
 		p.add(Projections.groupProperty("ca.nome"));
 		p.add(Projections.groupProperty("e.id"));
 		p.add(Projections.groupProperty("e.dataAdmissao"));
 		p.add(Projections.groupProperty("e.dataDesligamento"));
-
-		criteria.setProjection(p);
-
-		criteria.add(Expression.in("ca.id", (Long[])parametros.get("experiencias")));
-
-		criteria.addOrder(Order.asc("c.id"));
-
-		Map param = new HashMap();
-		param.putAll(parametros);
-		param.remove("experiencias");
-
-		montaCriteriaFiltros(param, empresaIds, criteria);
-
-		Collection<Candidato> result = new ArrayList<Candidato>();
-		
-		Collection lista = criteria.list();
-		Candidato candidatoAnterior = null;
-
-		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
-		{
-			Object[] array = it.next();
-
-			if(candidatoAnterior == null || !candidatoAnterior.getId().equals((Long) array[3]))
-			{
-				Candidato candidato = new Candidato();
-				candidato.setId((Long) array[3]);
-
-				Experiencia experiencia = new Experiencia();
-				experiencia.setId((Long) array[0]);
-				experiencia.setDataAdmissao((Date) array[1]);
-				experiencia.setDataDesligamento((Date) array[2]);
-				experiencia.setCargoId((Long) array[4]);
-
-				Collection<Experiencia> experiencias = new ArrayList<Experiencia>();
-				experiencias.add(experiencia);
-
-				candidato.setExperiencias(experiencias);
-
-				candidatoAnterior = candidato;
-
-				result.add(candidatoAnterior);
-
-			}
-			else
-			{
-				Experiencia experiencia = new Experiencia();
-				experiencia.setId((Long) array[0]);
-				experiencia.setDataAdmissao((Date) array[1]);
-				experiencia.setDataDesligamento((Date) array[2]);
-				experiencia.setCargoId((Long) array[4]);
-
-				candidatoAnterior.getExperiencias().add(experiencia);
-			}
-		}
-
-		return result;
-
+		return p;
 	}
 
 	public void updateSenha(Long candidatoId, String senha, String novaSenha)

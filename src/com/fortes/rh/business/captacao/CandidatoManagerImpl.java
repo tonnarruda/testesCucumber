@@ -105,39 +105,28 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return totalSize;
 	}
 	
-	//TODO refatorar
-	public Collection<Candidato> busca(Map<String, Object> parametros, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar, Long... empresaIds) throws Exception
-	{
-		Collection<Candidato> candidatos = null;
-		// Experiencia
-		if( parametros.get("experiencias") != null && !parametros.get("tempoExperiencia").equals("") && !parametros.get("tempoExperiencia").equals("0"))
-		{
+	public Collection<Candidato> busca(Map<String, Object> parametros, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar, Long... empresaIds) throws Exception{
+		if( parametros.get("experiencias") != null && !parametros.get("tempoExperiencia").equals("") && !parametros.get("tempoExperiencia").equals("0")){
 			Collection<Candidato> candidatosExperiencia;
 			candidatosExperiencia = getDao().getCandidatosByExperiencia(parametros, empresaIds);
-			
-			candidatos = new ArrayList<Candidato>();
+			Collection<Candidato> candidatos = new ArrayList<Candidato>();
 
 			for (Candidato candidato : candidatosExperiencia)
 				if(temExperiencia(candidato.getExperiencias(), (String)parametros.get("tempoExperiencia"), (Long[])parametros.get("experiencias")))
 					candidatos.add(candidato);
 
 			CollectionUtil<Candidato> cluCandidatos = new CollectionUtil<Candidato>();
-
 			parametros.put("candidatosComExperiencia", cluCandidatos.convertCollectionToArrayIds(candidatos));
 		}
 
-		if(parametros.get("bairrosIds") != null && ((Long[])parametros.get("bairrosIds")).length > 0)
-		{
+		if(parametros.get("bairrosIds") != null && ((Long[])parametros.get("bairrosIds")).length > 0){
 			Collection<Bairro> colBairros = bairroManager.getBairrosByIds((Long[])parametros.get("bairrosIds"));
 			CollectionUtil<Bairro> cluBairro = new CollectionUtil<Bairro>();
 			parametros.put("bairros", cluBairro.convertCollectionToArrayString(colBairros, "getNome"));
 		}
 
-		Collection<Candidato> retorno = null;
-
 		Collection<Long> idsCandidatos = candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacaoId);
-
-		retorno = getDao().findBusca(parametros, empresaIds, idsCandidatos, somenteSemSolicitacao, qtdRegistros, ordenar);
+		Collection<Candidato> retorno = getDao().findBusca(parametros, empresaIds, idsCandidatos, somenteSemSolicitacao, qtdRegistros, ordenar);
 		
 		return retorno;
 	}

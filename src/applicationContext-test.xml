@@ -304,37 +304,41 @@
     </property>
   </bean>
   
-<<<<<<< 6573c5dd06f70abc4ea202773500bbc818b089ad
   <bean id="cursoLntDao" class="com.fortes.rh.dao.hibernate.desenvolvimento.CursoLntDaoHibernate">
-=======
+  	<property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+
   <bean id="areaInteresseDao" class="com.fortes.rh.dao.hibernate.geral.AreaInteresseDaoHibernate">
->>>>>>> R&S> Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Triagem Avançada: Ajuste de inconsistência ao realizar a triagem de candidatos.
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
     </property>
   </bean>
   
-<<<<<<< 6573c5dd06f70abc4ea202773500bbc818b089ad
   <bean id="lntDao" class="com.fortes.rh.dao.hibernate.desenvolvimento.LntDaoHibernate">
-=======
-  <bean id="candidatoIdiomaDao" class="com.fortes.rh.dao.hibernate.captacao.CandidatoIdiomaDaoHibernate">
->>>>>>> R&S> Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Triagem Avançada: Ajuste de inconsistência ao realizar a triagem de candidatos.
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
     </property>
   </bean>
-<<<<<<< 6573c5dd06f70abc4ea202773500bbc818b089ad
+
+  <bean id="candidatoIdiomaDao" class="com.fortes.rh.dao.hibernate.captacao.CandidatoIdiomaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
   
   <bean id="participanteCursoLntDao" class="com.fortes.rh.dao.hibernate.desenvolvimento.ParticipanteCursoLntDaoHibernate">
-=======
- 
-  <bean id="idiomaDao" class="com.fortes.rh.dao.hibernate.captacao.IdiomaDaoHibernate">
->>>>>>> R&S> Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Triagem Avançada: Ajuste de inconsistência ao realizar a triagem de candidatos.
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
     </property>
   </bean>
-<<<<<<< 6573c5dd06f70abc4ea202773500bbc818b089ad
+ 
+  <bean id="idiomaDao" class="com.fortes.rh.dao.hibernate.captacao.IdiomaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
   
   <bean id="solicitacaoExameDao" class="com.fortes.rh.dao.hibernate.sesmt.SolicitacaoExameDaoHibernate">
     <property name="sessionFactory">

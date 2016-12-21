@@ -47,6 +47,17 @@ public class Experiencia extends AbstractModel implements Serializable
 	@Column(length=100)
 	private String motivoSaida;
 
+	public Experiencia() {
+		super();
+	}
+	
+	public Experiencia(Long id, Date dataAdmissao, Date dataDesligamento, Long cargoId) {
+		setId(id);
+		setDataAdmissao(dataAdmissao);
+		setDataDesligamento(dataDesligamento);
+		setCargoId(cargoId);
+	}
+
 	public void setProjectionCandidatoId(Long candidatoId)
 	{
 		if (this.candidato == null)

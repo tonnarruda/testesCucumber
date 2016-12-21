@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.17x.207" db="" data="xx/xx/2016">
 		<Item visivel="S" motivo="S16060000017"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novo filtro por "Período de Encerramento da Solicitação".]]></Item>
+		<Item visivel="S" motivo="P16120000081"><![CDATA[R&S> Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Triagem Avançada: Ajuste de inconsistência ao realizar a triagem de candidatos utilizando o filtro "Palavras chave em outros campos".]]></Item>
 		<Item visivel="S" motivo="S16070000364"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competências do Colaborador > Relatório: Adição da informação do percentual do nível de competência no quadro de escala de desempenho para o relatório detalhado.]]></Item>
 		<Item visivel="S" motivo="S16080000343"><![CDATA[T&D > Movimentações > Levantamentos de Necessidade de Treinamento (LNT): Nova funcionalidade.]]></Item>
 		<Item visivel="S" motivo="P16110000243"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Ajuste de inconsistência ao gravar os dados do colaborador.]]></Item>
