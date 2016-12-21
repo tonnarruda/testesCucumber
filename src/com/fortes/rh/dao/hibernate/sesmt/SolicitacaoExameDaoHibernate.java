@@ -142,7 +142,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 	}
 
 	public Collection<SolicitacaoExameRelatorio> findImprimirSolicitacaoExames(Long solicitacaoExameId){
-		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio(medico.nome, medico.crm, medico.assinaturaDigital, clinica.nome, clinica.tipo, clinica.outro, clinica.telefone, clinica.horarioAtendimento, clinica.endereco,exame.nome,co.nome,ca.nome,co.pessoal.dataNascimento,ca.pessoal.dataNascimento,se.motivo, co.matricula, f.nome, a.nome, fsol.nome, se.observacao) ");
+		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio(medico.nome, medico.crm, medico.assinaturaDigital, clinica.nome, clinica.tipo, clinica.outro, clinica.telefone, clinica.horarioAtendimento, clinica.endereco,exame.nome,co.nome,ca.nome,co.pessoal.dataNascimento,ca.pessoal.dataNascimento,se.motivo, co.matricula, f.nome, a.nome, fsol.nome, asol.nome, se.observacao, se.colaborador.id, se.candidato.id ) ");
 		hql.append("from ExameSolicitacaoExame exameSol ");
 		hql.append("join exameSol.solicitacaoExame se ");
 		hql.append("join se.medicoCoordenador medico ");
@@ -154,12 +154,14 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		hql.append("left join se.candidato ca ");
 		
 		hql.append("left join ca.candidatoSolicitacaos cas with ");
-		hql.append(" 								cas.solicitacao.id = (select max(s2.id) from Solicitacao s2 where s2.data = (select max(s3.data) ");
-		hql.append("			    										from CandidatoSolicitacao cas2 left join cas2.solicitacao s3 ");
-		hql.append("			    										where cas2.candidato.id = ca.id and cas2.triagem = :triagem ))");
+		hql.append(" 								cas.solicitacao.id = (select max(s2.id) from CandidatoSolicitacao cas2 left join cas2.solicitacao s2 where s2.data = (select max(s3.data) ");
+		hql.append("			    																from CandidatoSolicitacao cas3 left join cas3.solicitacao s3 ");
+		hql.append("			    																where cas3.candidato.id = ca.id and cas3.triagem = :triagem ) ");
+		hql.append("			    										and cas2.candidato.id = ca.id and cas2.triagem = :triagem )" );
 		
 		hql.append("left join cas.solicitacao s  ");
 		hql.append("left join s.funcao fsol  ");
+		hql.append("left join s.ambiente asol  ");
 		hql.append("left join exameSol.clinicaAutorizada clinica ");
 		hql.append("where se.id = :solicitacaoExameId ");
 		

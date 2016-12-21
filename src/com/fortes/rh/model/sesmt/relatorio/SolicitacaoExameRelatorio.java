@@ -22,11 +22,14 @@ public class SolicitacaoExameRelatorio
 	private String clinicaTipo;
 	private String clinicaTipoDescricao;
 	private String exameNome;
+	private Long colaboradorId;
 	private String colaboradorNome;
 	private String colaboradorMatricula;
 	private String colaboradorFuncao;
 	private String colaboradorAmbiente;
 	private String candidatoFuncao;
+	private String candidatoAmbiente;
+	private Long candidatoId;
 	private String candidatoNome;
 	private Date colaboradorDataNascimento;
 	private Date candidatoDataNascimento;
@@ -65,7 +68,8 @@ public class SolicitacaoExameRelatorio
 	{
 	}
 
-	public SolicitacaoExameRelatorio(String medicoNome, String medicoCrm, File medicoAssinatura, String clinicaNome, String clinicaTipo, String clinicaOutro, String clinicaTelefone, String clinicaHorario, String clinicaEndereco, String exameNome, String colaboradorNome, String candidatoNome, Date colaboradorDataNascimento, Date candidatoDataNascimento, String exameMotivo, String colaboradorMatricula, String colaboradorFuncao, String colaboradorAmbiente, String candidatoFuncao, String solicitacaoExameObs)
+	//findImprimirSolicitacaoExames
+	public SolicitacaoExameRelatorio(String medicoNome, String medicoCrm, File medicoAssinatura, String clinicaNome, String clinicaTipo, String clinicaOutro, String clinicaTelefone, String clinicaHorario, String clinicaEndereco, String exameNome, String colaboradorNome, String candidatoNome, Date colaboradorDataNascimento, Date candidatoDataNascimento, String exameMotivo, String colaboradorMatricula, String colaboradorFuncao, String colaboradorAmbiente, String candidatoFuncao, String candidatoAmbiente, String solicitacaoExameObs, Long colaboradorId, Long candidatoId)
 	{
 		this.medicoNome = medicoNome;
 		this.medicoCrm = medicoCrm;
@@ -81,7 +85,9 @@ public class SolicitacaoExameRelatorio
 		this.clinicaTelefone = clinicaTelefone != null ? clinicaTelefone : "";
 		this.clinicaHorario = clinicaHorario != null ? clinicaHorario : "";
 		this.exameNome = exameNome;
+		this.colaboradorId = colaboradorId;
 		this.colaboradorNome = colaboradorNome;
+		this.candidatoId = candidatoId;
 		this.candidatoNome = candidatoNome;
 		this.colaboradorDataNascimento = colaboradorDataNascimento;
 		this.candidatoDataNascimento = candidatoDataNascimento;
@@ -91,14 +97,16 @@ public class SolicitacaoExameRelatorio
 		this.colaboradorFuncao = colaboradorFuncao;
 		this.colaboradorAmbiente = colaboradorAmbiente;
 		this.candidatoFuncao = candidatoFuncao;
+		this.candidatoAmbiente = candidatoAmbiente;
 		this.solicitacaoExameObs = solicitacaoExameObs;
 	}
 
 	public String getPessoaNome()
 	{
-		if (StringUtils.isNotBlank(candidatoNome))
+		if (StringUtils.isNotBlank(candidatoNome) && candidatoId != null)
 			return candidatoNome;
-		else if (StringUtils.isNotBlank(colaboradorNome))
+		
+		if (StringUtils.isNotBlank(colaboradorNome) && colaboradorId != null)
 			return colaboradorNome;
 
 		return "";
@@ -107,10 +115,13 @@ public class SolicitacaoExameRelatorio
 	public Integer getPessoaIdade()
 	{
 		Date hoje = new Date();
-		if (candidatoDataNascimento != null)
+		if (candidatoDataNascimento != null && candidatoId != null)
 			return DateUtil.calcularIdade(candidatoDataNascimento, hoje);
-		else
+		
+		if(colaboradorDataNascimento != null && colaboradorId != null)
 			return DateUtil.calcularIdade(colaboradorDataNascimento, hoje);
+		
+		return null;
 	}
 
 	public String getMotivoDic()
@@ -228,9 +239,10 @@ public class SolicitacaoExameRelatorio
 	}
 
 	public String getFuncao() {
-		if (StringUtils.isNotBlank(candidatoFuncao))
+		if (StringUtils.isNotBlank(candidatoFuncao) && candidatoId != null)
 			return candidatoFuncao;
-		else if (StringUtils.isNotBlank(colaboradorFuncao))
+		
+		if (StringUtils.isNotBlank(colaboradorFuncao) && colaboradorId != null)
 			return colaboradorFuncao;
 
 		return "";
@@ -249,7 +261,10 @@ public class SolicitacaoExameRelatorio
 	}
 	
 	public String getAmbiente() {
-		if (StringUtils.isNotBlank(colaboradorAmbiente))
+		if (StringUtils.isNotBlank(candidatoAmbiente) && candidatoId != null)
+			return candidatoAmbiente;
+		
+		if (StringUtils.isNotBlank(colaboradorAmbiente) && colaboradorId != null)
 			return colaboradorAmbiente;
 
 		return "";
@@ -261,5 +276,13 @@ public class SolicitacaoExameRelatorio
 
 	public void setExamesCollection(List<Exame> examesCollection) {
 		this.examesCollection = examesCollection;
+	}
+
+	public String getCandidatoAmbiente() {
+		return candidatoAmbiente;
+	}
+
+	public void setCandidatoAmbiente(String candidatoAmbiente) {
+		this.candidatoAmbiente = candidatoAmbiente;
 	}
 }
