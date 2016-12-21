@@ -14,6 +14,25 @@
 			@import url('<@ww.url value="/css/font-awesome.min.css?version=${versao}"/>');
 			@import url('<@ww.url value="/css/visualizarParticipantesCursoLnt.css?version=${versao}"/>');
 			@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
+			
+			.legend {
+				height: 25px;
+				width: 905px;
+				background: #f7f7f7;
+				color: #5C5C5A;
+			}		
+			
+			.legend div{
+				width: 230px;
+				float: left;
+				border: 1px solid #e7e7e7;
+				padding: 5px 0;
+				text-align: center;
+				font-size: 11px;
+				font-family: arial;
+				font-weight: bold;
+			}
+			
 		</style>
 		
 		<script type="text/javascript">

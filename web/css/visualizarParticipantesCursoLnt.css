@@ -65,7 +65,7 @@
 	background-size: 25px;
 }
 .resizable {
-	height: 300px;
+	height: 610px;
 }
 
 #turmas .item .cabecalho {
@@ -76,7 +76,7 @@
 	font-weight: bold;
 	cursor: pointer;
 	padding: 5px;
-	font-size: 12px;
+	font-size: 11px;
 	vertical-align: text-bottom;
 	color: #5C5C5A;
 	
@@ -129,11 +129,13 @@
 	list-style:none;
 }
 .participantes ul li span{
-	width: 223px; 
+	width: 233px; 
 	float: left;
+	font-family: arial;
+	font-size: 10px;
 }
 #tamanhoGrande{
-	width: 342px !important; 
+	width: 322px !important; 
 }
 #tamanhoPequeno{
 	width: 114px !important; 
@@ -156,21 +158,4 @@
 	background: #448cbe;
 	border-radius: 3px;
 	color: white;
-}
-
-.legend {
-	height: 25px;
-	width: 910px;
-	background: #f7f7f7;
-	color: #5C5C5A;
-}		
-
-.legend div{
-	width: 223px;
-	float: left;
-	border: 1px solid #e7e7e7;
-	padding: 5px 0;
-	text-align: center;
-	font-size: 11px;
-	font-weight: bold;
-}
+}	
