@@ -276,7 +276,7 @@
 
 		<action name="clonarColaboradores" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="clonarColaboradores">
 			<interceptor-ref name="defaultDeleteStack"/>
-			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${curso.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${curso.id}&internalToken=${internalToken}]]></result>
 		</action>
 	</package>
 </xwork>

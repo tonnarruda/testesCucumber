@@ -120,6 +120,7 @@
 			var abasStr = $.map(abas, function (t){ return t.id; }).join(',');
 			
 			$('input[name=camposTabs]').val(abasStr);
+			$("input[name='internalToken']").appendTo($("form:visible"));
 			$("form:visible").submit();		
 		}
 	

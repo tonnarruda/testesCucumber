@@ -207,6 +207,7 @@
 			<@frt.checkListBox label="Selecione as turmas para as quais deseja clonar os colaboradores" list="turmasCheckList" name="turmasCheck" form="document.getElementById('formClonarColaboradores')" filtro="true" required="true"/>
 			<@ww.hidden name="turma.id" id="turmaId"/>
 			<@ww.hidden name="curso.id" id="cursoId"/>
+			<@ww.token/>
 			<br />
 			<button onclick="enviaFormClonarColaboradores();" class="btnClonar">
 		</@ww.form>

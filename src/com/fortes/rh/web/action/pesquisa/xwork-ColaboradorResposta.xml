@@ -37,7 +37,7 @@
 			</result>
 		</action>
 		<action name="excluirRespostasEntrevistaDesligamento" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="excluirRespostas">
-			<result name="success" type="redirect"><![CDATA[../avaliacaoTurma/prepareResponderEntrevista.action?colaborador.id=${colaborador.id}&validarFormulario=false&voltarPara=../../geral/colaborador/list.action]]></result>
+			<result name="success" type="redirect"><![CDATA[../avaliacaoTurma/prepareResponderEntrevista.action?internalToken=${internalToken}&colaborador.id=${colaborador.id}&validarFormulario=false&voltarPara=../../geral/colaborador/list.action]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/responderPesquisa.ftl</result>
 		</action>
 	</package>

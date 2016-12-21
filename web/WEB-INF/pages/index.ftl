@@ -308,8 +308,8 @@
 					</div> <!-- .timeline -->
 				</div>
 				
-				<a href="cargosalario/historicoColaborador/list.action?colaborador.id=${colaborador.id}&voltar=../../index.action" type="button" class="btn progressao"></a>
-				<a href="geral/colaborador/preparePerformanceFuncional.action?colaborador.id=${colaborador.id}" type="button" class="btn performance"></a>
+				<a href="javascript: executeLink('cargosalario/historicoColaborador/list.action?colaborador.id=${colaborador.id}&voltar=../../index.action');" type="button" class="btn progressao"></a>
+				<a href="javascript: executeLink('geral/colaborador/preparePerformanceFuncional.action?colaborador.id=${colaborador.id}');" type="button" class="btn performance"></a>
 			</div>
 			</div>
 			<br>

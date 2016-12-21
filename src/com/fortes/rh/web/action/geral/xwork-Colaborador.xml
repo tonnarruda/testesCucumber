@@ -3,6 +3,7 @@
 <xwork>
 	<package name="colaborador" extends="default" namespace="/geral/colaborador">
 		<action name="findJson" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="find">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
 		    <param name="contentType">application/json</param>
 		</action>
@@ -98,10 +99,12 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboComplementoDeFolhaComEncargos.ftl</result>
 		</action>
 		<action name="prepareRelatorioFerias" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareRelatorioFerias">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/relatorioFerias.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/pages/mensagemInfoWarnError.ftl</result>
 		</action>
 		<action name="imprimeRelatorioFerias" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="imprimeRelatorioFerias">
+		    <interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/ferias.jasper</param>
 				<param name="dataSource">periodosGozo</param>

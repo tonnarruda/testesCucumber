@@ -34,9 +34,11 @@
 		
 		
 		<action name="listCamposExtras" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="listCamposExtras">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/listCamposExtras.ftl</result>
 		</action>
 		<action name="configCamposExtras" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="configCamposExtras">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success_candidato" type="freemarker">/WEB-INF/forms/geral/configCamposExtrasCandidato.ftl</result>
 			<result name="success_candidatoExterno" type="freemarker">/WEB-INF/forms/geral/configCamposExtrasCandidatoExterno.ftl</result>
 			<result name="success_colaborador" type="freemarker">/WEB-INF/forms/geral/configCamposExtrasColaborador.ftl</result>

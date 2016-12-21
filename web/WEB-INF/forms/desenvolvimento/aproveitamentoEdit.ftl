@@ -162,7 +162,7 @@
 					<#assign valorNota = "" />
 
 					<#if avaliacaoCurso.tipo == 'a'>
-						<a href="../avaliacaoCurso/prepareResponderAvaliacaoAluno.action?colaborador.id=${colaboradorTurma.colaborador.id}&avaliacaoCurso.avaliacao.id=${avaliacaoCurso.avaliacao.id}&modeloAvaliacao=L&turma.id=${turma.id}&curso.id=${curso.id}&avaliacaoCurso.id=${avaliacaoCurso.id}&colaboradorTurmaId=${colaboradorTurma.id}">
+						<a href="javascript: executeLink('../avaliacaoCurso/prepareResponderAvaliacaoAluno.action?colaborador.id=${colaboradorTurma.colaborador.id}&avaliacaoCurso.avaliacao.id=${avaliacaoCurso.avaliacao.id}&modeloAvaliacao=L&turma.id=${turma.id}&curso.id=${curso.id}&avaliacaoCurso.id=${avaliacaoCurso.id}&colaboradorTurmaId=${colaboradorTurma.id}');">
 							<#if colaboradorTurma.respondeuAvaliacaoTurma>
 								<img border="0" title="Editar respostas" src="<@ww.url value="/imgs/page_edit.gif"/>">
 							<#else>
