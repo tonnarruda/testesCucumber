@@ -41,6 +41,7 @@
 		</action>
 		<action name="prepareResultadoEntrevista" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="prepareResultadoEntrevista">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/questionarioFiltroResultado.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/questionarioFiltroResultado.ftl</result>
 		</action>
 		<action name="imprimeResultado" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="imprimeResultado">
 			<result name="success" type="jasper">

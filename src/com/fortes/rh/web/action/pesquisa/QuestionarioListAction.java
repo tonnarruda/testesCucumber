@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -62,7 +61,6 @@ public class QuestionarioListAction extends MyActionSupportList
     private TurmaManager turmaManager;
     private CursoManager cursoManager;
     private ParametrosDoSistemaManager parametrosDoSistemaManager;
-    private CargoManager cargoManager;
 
 	private Questionario questionario;
 	private ColaboradorQuestionario colaboradorQuestionario;
@@ -285,25 +283,27 @@ public class QuestionarioListAction extends MyActionSupportList
 
 	public String prepareResultadoEntrevista() 
 	{
-		questionario = new Questionario();
-		questionario.setTipo(TipoQuestionario.ENTREVISTA);
-
-		entrevistas = entrevistaManager.findAllSelect(getEmpresaSistema().getId(), null);
-
-		areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		areaOrganizacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(areaOrganizacionalsCheckList, areasCheck);
-		
-		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		try {
+			questionario = new Questionario();
+			questionario.setTipo(TipoQuestionario.ENTREVISTA);
+	
+			entrevistas = entrevistaManager.findAllSelect(getEmpresaSistema().getId(), null);
+	
+			areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+			areaOrganizacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(areaOrganizacionalsCheckList, areasCheck);
+			
+			Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 			estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getDescricaoComEmpresa", null);
 			estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+			urlVoltar = "menu";
+
+			return Action.SUCCESS;
 		} catch (Exception e) {
+			setActionErr("Não foi possível carregar filtros.");
 			e.printStackTrace();
+			
+			return Action.INPUT;
 		}
-
-		urlVoltar = "menu";
-
-		return Action.SUCCESS;
 	}
 
     public String prepareResultado() throws Exception
@@ -834,10 +834,6 @@ public class QuestionarioListAction extends MyActionSupportList
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-	
-	public void setCargoManager(CargoManager cargoManager) {
-		this.cargoManager = cargoManager;
 	}
 
 	public void setCursoManager(CursoManager cursoManager) {
