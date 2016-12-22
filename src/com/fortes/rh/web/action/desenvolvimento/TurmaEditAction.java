@@ -459,7 +459,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
 		certificacaos = certificacaoManager.findAllSelect(getEmpresaSistema().getId());
 
-
 		if (curso != null && curso.getId() != null)
 			turmas = turmaManager.findAllSelect(curso.getId());
 

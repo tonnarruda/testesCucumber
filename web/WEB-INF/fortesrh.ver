@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="P16120000081"><![CDATA[R&S> Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Triagem Avançada: Ajuste de inconsistência ao realizar a triagem de candidatos utilizando o filtro "Palavras chave em outros campos".]]></Item>
 		<Item visivel="S" motivo="S16070000364"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competências do Colaborador > Relatório: Adição da informação do percentual do nível de competência no quadro de escala de desempenho para o relatório detalhado.]]></Item>
 		<Item visivel="S" motivo="S16080000343"><![CDATA[T&D > Movimentações > Levantamentos de Necessidade de Treinamento (LNT): Nova funcionalidade.]]></Item>
+		<Item visivel="S" motivo="P16100000332"><![CDATA[T&D > Relatórios > Certificados > Imprimir Verso: Ajuste de inconsistência ao apresentar o conteúdo programático do curso, quando o certificado é impresso na empresa para a qual o curso foi compartilhado.]]></Item>
 		<Item visivel="S" motivo="P16110000243"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Ajuste de inconsistência ao gravar os dados do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16100000199"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Novo filtro por estabelecimentos.]]></Item>
 		<Item visivel="S" motivo="S16090000159"><![CDATA[Info. Funcionais > Relatórios > Aniversariantes por tempo de empresa: Novo relatório de aniversariantes por tempo de empresa.]]></Item>
