@@ -56,7 +56,7 @@
 
 	<#include "../cargosalario/calculaSalarioInclude.ftl" />
 
-	<#assign totalAbas = 3/>
+	<#assign totalAbas = 4/>
 	
 	<script type="text/javascript">
 	
@@ -175,12 +175,32 @@
 	
 			arrayValidacao = arrayObrigatorios;
 			
-			return validaFormulario('form', arrayValidacao, new Array('ende','num','uf','cidade','ddd','fone','escolaridade','cep'))
+			return validaFormulario('form', arrayValidacao, new Array('ende','num','uf','cidade','ddd','fone','escolaridade','cep','emissao','vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis'));
 		}
 		
 		
 	</script>
+	<#if colaborador?exists && colaborador.pessoal?exists && colaborador.pessoal.rgDataExpedicao?exists>
+		<#assign rgDataExpedicao = colaborador.pessoal.rgDataExpedicao?date/>
+	<#else>
+		<#assign rgDataExpedicao = ""/>
+	</#if>
+	<#if colaborador?exists && colaborador.habilitacao?exists && colaborador.habilitacao.emissao?exists>
+		<#assign habEmissao = colaborador.habilitacao.emissao?date/>
+	<#else>
+		<#assign habEmissao = ""/>
+	</#if>
+	<#if colaborador?exists && colaborador.habilitacao?exists && colaborador.habilitacao.vencimento?exists>
+		<#assign dataVenc = colaborador.habilitacao.vencimento?date/>
+	<#else>
+		<#assign dataVenc = ""/>
+	</#if>
 	
+	<#if colaborador?exists && colaborador.pessoal?exists && colaborador.pessoal.ctps?exists && colaborador.pessoal.ctps.ctpsDataExpedicao?exists>
+		<#assign ctpsDataExpedicao = colaborador.pessoal.ctps.ctpsDataExpedicao?date/>
+	<#else>
+		<#assign ctpsDataExpedicao = ""/>
+	</#if>
 	<#assign validarCampos="validaFormularioDinamico();"/>
 	<@ww.head />
 </head>
@@ -193,6 +213,7 @@
 			<div id="aba1" class="abaDadosPessoais"><a href="javascript: abas(1, '', true, ${totalAbas})">Dados Pessoais</a></div>
 			<div id="aba2" class="abaFormacaoEscolar"><a href="javascript: abas(2, '', true, ${totalAbas})">Formação Escolar</a></div>
 			<div id="aba3" class="abaExperiencias"><a href="javascript: abas(3, '', true, ${totalAbas})">Experiências</a></div>
+			<div id="aba4" class="abaDocumentos"><a href="javascript: abas(4, '', true, ${totalAbas})">Documentos</a></div>
 		</div>
 	
 		<#-- Campos fora do formulário por causa do ajax.
@@ -238,6 +259,79 @@
 				<@ww.textfield label="Qtd. Filhos" onkeypress = "return(somenteNumeros(event,''));" maxLength="2" name="colaborador.pessoal.qtdFilhos" id="qtdFilhos" liClass="campo" cssStyle="width:25px; text-align:right;" maxLength="2" />
 				<div style="clear: both;"></div>
 			</div>
+			
+		<div id="content4" style="display: none;">
+			<li>
+				<@ww.div id="wwgrp_identidade" cssClass="campo">
+					<ul>
+					<b><@ww.label label="Identidade" /></b>
+			    	<@ww.textfield label="Número" name="colaborador.pessoal.rg" id="rg" cssStyle="width: 106px;" maxLength="15" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));" />
+			  	   	<@ww.textfield label="Órgão Emissor" name="colaborador.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="10" liClass="liLeft" />
+			       	<@ww.select label="Estado" name="colaborador.pessoal.rgUf.id" id="rgUf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
+			      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.rgDataExpedicao" id="rgDataExpedicao" cssClass="mascaraData" value="${rgDataExpedicao}"/>
+			      	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
+	         		</ul>
+				</@ww.div>
+			</li>	
+	       	<li>
+				<@ww.div id="wwgrp_carteiraHabilitacao" cssClass="campo">
+					<ul>
+				       	<b><@ww.label label="Carteira de Habilitação" /></b>
+						<@ww.textfield label="Nº de Registro" id="carteiraHabilitacao" name="colaborador.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+				      	<@ww.textfield label="Prontuário" name="colaborador.habilitacao.registro" cssStyle="" maxLength="15" liClass="liLeft"/>
+				      	<@ww.datepicker label="Emissão" name="colaborador.habilitacao.emissao" id="emissao" liClass="liLeft" cssClass="mascaraData" value="${habEmissao}"/>
+				      	<@ww.datepicker label="Vencimento" name="colaborador.habilitacao.vencimento" id="vencimento" liClass="liLeft" cssClass="mascaraData" value="${dataVenc}"/>
+				       	<@ww.textfield label="Categoria(s)" name="colaborador.habilitacao.categoria" cssStyle="width:25px" maxLength="3" />
+				       	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
+	        		</ul>
+				</@ww.div>
+			</li>	
+	  		<li>
+				<@ww.div id="wwgrp_tituloEleitoral" cssClass="campo">
+					<ul>
+						<b><@ww.label label="Título Eleitoral" /></b>
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.tituloEleitoral.titEleitNumero" id="titEleitNumero" cssStyle="width: 95px;" maxLength="13" liClass="liLeft"/>
+				    	<@ww.textfield label="Zona" name="colaborador.pessoal.tituloEleitoral.titEleitZona" id="titEleitZona" cssStyle="width: 95px;" maxLength="3" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+				    	<@ww.textfield label="Seção" name="colaborador.pessoal.tituloEleitoral.titEleitSecao" id="titEleitSecao" cssStyle="width: 95px;" maxLength="4" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+				    	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
+	        		</ul>
+				</@ww.div>
+			</li>	
+			
+		  	<li>
+				<@ww.div id="wwgrp_certificadoMilitar" cssClass="campo">
+					<ul>
+						<b><@ww.label label="Certificado Militar" /></b>
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.certificadoMilitar.certMilNumero" id="certMilNumero" cssStyle="width: 88px;" maxLength="12" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+				    	<@ww.textfield label="Tipo" name="colaborador.pessoal.certificadoMilitar.certMilTipo" id="certMilTipo" cssStyle="width: 38px;" maxLength="5" liClass="liLeft"/>
+				    	<@ww.textfield label="Série" name="colaborador.pessoal.certificadoMilitar.certMilSerie" id="certMilSerie" cssStyle="width: 88px;" maxLength="12"/>
+				    	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
+	        </ul>
+				</@ww.div>
+			</li>	
+	  		<li id="wwgrp_ctps" class="campo">
+				<@ww.div >
+					<ul>
+						<b><@ww.label label="CTPS - Carteira de Trabalho e Previdência Social" /></b>
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.ctps.ctpsNumero" id="ctpsNumero" cssStyle="width: 58px;" maxLength="8" liClass="liLeft"/>
+				    	<@ww.textfield label="Série" name="colaborador.pessoal.ctps.ctpsSerie" id="ctpsSerie" cssStyle="width: 38px;" maxLength="6" liClass="liLeft"/>
+				    	<@ww.textfield label="DV" name="colaborador.pessoal.ctps.ctpsDv" id="ctpsDv" cssStyle="width: 11px;" maxLength="1" liClass="liLeft"/>
+				       	<@ww.select label="Estado" name="colaborador.pessoal.ctps.ctpsUf.id" id="ctpsUf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
+				      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.ctps.ctpsDataExpedicao" id="ctpsDataExpedicao" cssClass="mascaraData" value="${ctpsDataExpedicao}"/>
+				      	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
+	        		</ul>
+				</@ww.div>
+			</li>	
+	  		<li id="wwgrp_pis" class="campo">
+				<@ww.div >
+					<ul>
+						<b><@ww.label label="PIS - Programa de Integração Social"/></b>
+						<@ww.textfield label="Número" name="colaborador.pessoal.pis" id="pis" cssClass="mascaraPis" cssStyle="width: 79px;" onkeypress = "return(somenteNumeros(event,'{,}'));" maxLength="11" />
+				    	<div style="clear: both;"></div>
+				 	</ul>
+				</@ww.div>
+			</li>
+	    </div>
 			
 			<@ww.hidden name="colaborador.cursos" id="colaborador.cursos" />
 			<@ww.hidden name="colaborador.observacao" id="colaborador.observacao" />

@@ -361,6 +361,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorInfoPessoaisEdit.ftl</result>
 		</action>
 		<action name="updateInfoPessoais" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="updateInfoPessoais">
+			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorInfoPessoaisEdit.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorInfoPessoaisEdit.ftl</result>
 		</action>

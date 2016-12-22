@@ -538,6 +538,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("ctpsUf.id"), "projectionCtpsUfId");
 		p.add(Projections.property("ctpsUf.sigla"), "projectionCtpsUfSigla");
 		p.add(Projections.property("c.habilitacao.numeroHab"), "projectionNumeroHabilitacao");
+		p.add(Projections.property("c.habilitacao.registro"), "projectionRegistroHabilitacao");
 		p.add(Projections.property("c.habilitacao.emissao"), "projectionEmissaoHabilitacao");
 		p.add(Projections.property("c.habilitacao.vencimento"), "projectionVencimentoHabilitacao");
 		p.add(Projections.property("c.habilitacao.categoria"), "projectionCategoriaHabilitacao");
@@ -2080,8 +2081,29 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append(" pessoal.qtdFilhos = :qtdFilhos ,");
 		hql.append(" cursos = :cursos ,");
 		hql.append(" observacao = :observacao ,");
-		hql.append(" dataAtualizacao = :dataAtualizacao ");
-		hql.append(" where id = :id");
+		hql.append(" dataAtualizacao = :dataAtualizacao , ");
+		hql.append(" pessoal.rg = :rg , ");
+		hql.append(" pessoal.rgOrgaoEmissor = :rgOrgaoEmissor , ");
+		hql.append(" pessoal.rgUf.id = :rgUfId , ");
+		hql.append(" pessoal.rgDataExpedicao = :rgDataExpedicao , ");
+		hql.append(" habilitacao.numeroHab = :numeroHab , ");
+		hql.append(" habilitacao.registro = :habilitacaoRegistro , ");
+		hql.append(" habilitacao.emissao = :habilitacaoEmissao , ");
+		hql.append(" habilitacao.vencimento = :habilitacaoVencimento , ");
+		hql.append(" habilitacao.categoria = :habilitacaoCategoria , ");
+		hql.append(" pessoal.tituloEleitoral.titEleitNumero = :titEleitNumero , ");
+		hql.append(" pessoal.tituloEleitoral.titEleitZona = :titEleitZona , ");
+		hql.append(" pessoal.tituloEleitoral.titEleitSecao = :titEleitSecao , ");
+		hql.append(" pessoal.certificadoMilitar.certMilNumero = :certMilNumero , ");
+		hql.append(" pessoal.certificadoMilitar.certMilTipo = :certMilTipo , ");
+		hql.append(" pessoal.certificadoMilitar.certMilSerie = :certMilSerie , ");
+		hql.append(" pessoal.ctps.ctpsNumero = :ctpsNumero , ");
+		hql.append(" pessoal.ctps.ctpsSerie = :ctpsSerie , ");
+		hql.append(" pessoal.ctps.ctpsDv = :ctpsDv , ");
+		hql.append(" pessoal.ctps.ctpsUf.id = :ctpsUfId , ");
+		hql.append(" pessoal.ctps.ctpsDataExpedicao = :ctpsDataExpedicao , ");
+		hql.append(" pessoal.pis = :pis ");
+		hql.append(" where id = :id ");
 
 		Query query = getSession().createQuery(hql.toString());
 
@@ -2114,6 +2136,43 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setString("cursos", colaborador.getCursos());
 		query.setString("observacao", colaborador.getObservacao());
 		query.setDate("dataAtualizacao", colaborador.getDataAtualizacao());
+		query.setString("rg", colaborador.getPessoal().getRg());
+		query.setString("rgOrgaoEmissor", colaborador.getPessoal().getRgOrgaoEmissor());
+
+		if(colaborador.getPessoal().getRgUf() != null && colaborador.getPessoal().getRgUf().getId() != null)
+			query.setLong("rgUfId", colaborador.getPessoal().getRgUf().getId());
+		else
+			query.setParameter("rgUfId", null, Hibernate.LONG);
+		
+		query.setDate("rgDataExpedicao", colaborador.getPessoal().getRgDataExpedicao());
+		query.setString("numeroHab", colaborador.getHabilitacao().getNumeroHab());
+		query.setString("habilitacaoRegistro", colaborador.getHabilitacao().getRegistro());
+		query.setDate("habilitacaoEmissao", colaborador.getHabilitacao().getEmissao());
+		query.setDate("habilitacaoVencimento", colaborador.getHabilitacao().getVencimento());
+		query.setString("habilitacaoCategoria", colaborador.getHabilitacao().getCategoria());
+		query.setString("titEleitNumero", colaborador.getPessoal().getTituloEleitoral().getTitEleitNumero());
+		query.setString("titEleitZona", colaborador.getPessoal().getTituloEleitoral().getTitEleitZona());
+		query.setString("titEleitSecao", colaborador.getPessoal().getTituloEleitoral().getTitEleitSecao());
+		query.setString("certMilNumero", colaborador.getPessoal().getCertificadoMilitar().getCertMilNumero());
+		query.setString("certMilTipo", colaborador.getPessoal().getCertificadoMilitar().getCertMilTipo());
+		query.setString("certMilSerie", colaborador.getPessoal().getCertificadoMilitar().getCertMilSerie());
+		query.setString("ctpsNumero", colaborador.getPessoal().getCtps().getCtpsNumero());
+		query.setString("ctpsSerie", colaborador.getPessoal().getCtps().getCtpsSerie());
+		
+		if(colaborador.getPessoal().getCtps().getCtpsDv() != null)
+			query.setCharacter("ctpsDv", colaborador.getPessoal().getCtps().getCtpsDv());
+		else{
+			query.setCharacter("ctpsDv", ' ');
+		}
+		
+		
+		if(colaborador.getPessoal().getCtps().getCtpsUf() != null && colaborador.getPessoal().getCtps().getCtpsUf().getId() != null)
+			query.setLong("ctpsUfId", colaborador.getPessoal().getCtps().getCtpsUf().getId());
+		else
+			query.setParameter("ctpsUfId", null, Hibernate.LONG);
+		
+		query.setDate("ctpsDataExpedicao", colaborador.getPessoal().getCtps().getCtpsDataExpedicao());
+		query.setString("pis", colaborador.getPessoal().getPis());
 		query.setLong("id", colaborador.getId());
 
 		query.executeUpdate();

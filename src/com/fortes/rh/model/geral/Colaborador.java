@@ -1821,6 +1821,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.pessoal.getTituloEleitoral().setTitEleitSecao(secao);
 	}
 
+	public void setProjectionRegistroHabilitacao(String registro)
+	{
+		inicializaHabilitacao();
+		this.habilitacao.setRegistro(registro);
+	}
+
 	public void setProjectionNumeroHabilitacao(String numeroHab)
 	{
 		inicializaHabilitacao();

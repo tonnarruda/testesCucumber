@@ -412,11 +412,11 @@
 			</thead>			
 			<tr>
 				<td>
-					<input id="visivel-identidade" class="check-visivel" name="camposVisivels" value="rg" type="checkbox"/>
+					<input id="visivel-identidade" class="check-visivel" name="camposVisivels" value="identidade" type="checkbox"/>
     				<label for="visivel-identidade" class="label-visivel"></label>
 				</td>
 				<td class="campo">Identidade</td>
-				<td><input type="checkbox" value="rg" name="camposObrigatorios" /></td>
+				<td><input type="checkbox" value="identidade" name="camposObrigatorios" /></td>
 			</tr>
 			<tr>
 				<td>
@@ -428,27 +428,27 @@
 			</tr>
 			<tr>
 				<td>
-					<input id="visivel-tituloEleitoral" class="check-visivel" name="camposVisivels" value="titEleitNumero" type="checkbox"/>
+					<input id="visivel-tituloEleitoral" class="check-visivel" name="camposVisivels" value="tituloEleitoral" type="checkbox"/>
     				<label for="visivel-tituloEleitoral" class="label-visivel"></label>
 				</td>
 				<td class="campo">Título Eleitoral</td>
-				<td><input type="checkbox" value="titEleitNumero" name="camposObrigatorios" /></td>
+				<td><input type="checkbox" value="tituloEleitoral" name="camposObrigatorios" /></td>
 			</tr>
 			<tr>
 				<td>
-					<input id="visivel-certificadoMilitar" class="check-visivel" name="camposVisivels" value="certMilNumero" type="checkbox"/>
+					<input id="visivel-certificadoMilitar" class="check-visivel" name="camposVisivels" value="certificadoMilitar" type="checkbox"/>
     				<label for="visivel-certificadoMilitar" class="label-visivel"></label>
 				</td>
 				<td class="campo">Certificado Militar</td>
-				<td><input type="checkbox" value="certMilNumero" name="camposObrigatorios" /></td>
+				<td><input type="checkbox" value="certificadoMilitar" name="camposObrigatorios" /></td>
 			</tr>
 			<tr>
 				<td>
-					<input id="visivel-ctps" class="check-visivel" name="camposVisivels" value="ctpsNumero" type="checkbox"/>
+					<input id="visivel-ctps" class="check-visivel" name="camposVisivels" value="ctps" type="checkbox"/>
     				<label for="visivel-ctps" class="label-visivel"></label>
 				</td>
 				<td class="campo">CTPS - Carteira de Trabalho e Previdência Social</td>
-				<td><input type="checkbox" value="ctpsNumero" name="camposObrigatorios" /></td>
+				<td><input type="checkbox" value="ctps" name="camposObrigatorios" /></td>
 			</tr>
 			<tr>
 				<td>
