@@ -118,6 +118,7 @@ public class ExperienciaDaoHibernate extends GenericDaoHibernate<Experiencia> im
 		projections.add(Projections.property("e.nomeMercado"), "nomeMercado");
 		projections.add(Projections.property("e.salario"), "salario");
 		projections.add(Projections.property("e.motivoSaida"), "motivoSaida");
+		projections.add(Projections.property("e.contatoEmpresa"), "contatoEmpresa");
 		
 		return projections;
 	}

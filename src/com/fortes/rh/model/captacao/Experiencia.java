@@ -46,6 +46,8 @@ public class Experiencia extends AbstractModel implements Serializable
 	
 	@Column(length=100)
 	private String motivoSaida;
+	@Column(length=15)
+	private String contatoEmpresa;
 
 	public Experiencia() {
 		super();
@@ -249,5 +251,13 @@ public class Experiencia extends AbstractModel implements Serializable
 
 	public boolean possuiCargo() {
 		return !(cargo == null || cargo.getId() == null);
+	}
+
+	public String getContatoEmpresa() {
+		return contatoEmpresa;
+	}
+
+	public void setContatoEmpresa(String contatoEmpresa) {
+		this.contatoEmpresa = contatoEmpresa;
 	}
 }
