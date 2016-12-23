@@ -350,7 +350,7 @@
 	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA">
 		<div id="splash" style="display: none;">
 			<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');" style="float: right; color: red;">FECHAR</a>
-			<img border="0" title="Atualização das tecnologias Java 7 e Tomcat 7"  src="<@ww.url includeParams="none" value="/imgs/splashAtualizacaoSistema.png"/>" />
+			<img border="0" title="Atualização das tecnologias Java 7 e Tomcat 7"  src="<@ww.url includeParams="none" value="/imgs/splashAtualizacaoSistema.jpg"/>" />
 			<input type="checkbox" id="naoExibirMsg" name="naoExibirMsg"/>
 			<label for="naoExibirMsg">Não exibir esta mensagem novamente</label>
 		</div>

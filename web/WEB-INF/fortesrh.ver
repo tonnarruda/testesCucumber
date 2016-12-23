@@ -11,6 +11,7 @@
 		<Item visivel="S" motivo="S16090000159"><![CDATA[Info. Funcionais > Relatórios > Aniversariantes por tempo de empresa: Novo relatório de aniversariantes por tempo de empresa.]]></Item>
 		<Item visivel="S" motivo="P16110000086"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitação de Exames: Ajuste de incosistência ao imprimir solicitação de exames de candidato.]]></Item>
 		<Item visivel="S" motivo="S16120000045"><![CDATA[Sistema: Apresentar "Splash" somente para usuários com perfil de visualizar mensagem de atualização/inconsistência do sistema.]]></Item>
+		<Item visivel="N" motivo=""><![CDATA[Página Inicial: Novo "Splash" de aviso da atualização do sistema para as novas tecnologias Java 7 e Tomcat 7".]]></Item>
 	</Versao>
 	<Versao id="1.1.174.206" db="" data="30/11/2016">
 		<Item visivel="S" motivo="S16110000264"><![CDATA[R&S > Movimentações > solicitação de Pessoal > Candidatos da Seleção > Inserir Etapas em Grupo: Nova opção "Exibir na Agenda".]]></Item>
