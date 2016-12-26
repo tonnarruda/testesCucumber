@@ -40,6 +40,31 @@ $_$;
 ALTER FUNCTION public.alter_trigger(character, character) OWNER TO postgres;
 
 --
+-- Name: ancestrais_areas_ids(bigint); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION ancestrais_areas_ids(area_id bigint) RETURNS TABLE(areas_id bigint)
+    LANGUAGE plpgsql
+    AS $$
+	DECLARE 
+	BEGIN 
+	    RETURN QUERY  
+	    WITH RECURSIVE areaorganizacional_recursiva AS ( 
+			SELECT id as areaid, areamae_id
+			FROM areaorganizacional WHERE id = area_id 
+			UNION ALL 
+			SELECT ao.id as areaid, ao.areamae_id 
+			FROM areaorganizacional ao 
+			INNER JOIN areaorganizacional_recursiva ao_r ON ao.id = ao_r.areamae_id 
+	    )
+	    SELECT distinct areaid FROM areaorganizacional_recursiva ORDER BY areaid; 
+	END; 
+$$;
+
+
+ALTER FUNCTION public.ancestrais_areas_ids(area_id bigint) OWNER TO postgres;
+
+--
 -- Name: carga_horaria_efetiva(bigint, bigint, bigint); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -108,6 +133,31 @@ $$;
 
 
 ALTER FUNCTION public.dependent_tables(tabela character varying, id bigint) OWNER TO postgres;
+
+--
+-- Name: descendentes_areas_ids(bigint); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION descendentes_areas_ids(area_id bigint) RETURNS TABLE(areas_id bigint)
+    LANGUAGE plpgsql
+    AS $$
+	DECLARE 
+	BEGIN 
+	    RETURN QUERY  
+	    WITH RECURSIVE areaorganizacional_recursiva AS ( 
+		SELECT id as areaid, areamae_id 
+		FROM areaorganizacional WHERE id = area_id 
+		UNION ALL 
+		SELECT ao.id as areaid, ao.areamae_id 
+		FROM areaorganizacional ao 
+		INNER JOIN areaorganizacional_recursiva ao_r ON ao.areamae_id = ao_r.areaid
+	    )
+	    SELECT distinct areaid FROM areaorganizacional_recursiva ORDER BY areaid; 
+	END; 
+$$;
+
+
+ALTER FUNCTION public.descendentes_areas_ids(area_id bigint) OWNER TO postgres;
 
 --
 -- Name: monta_familia_area(bigint); Type: FUNCTION; Schema: public; Owner: postgres
@@ -2412,7 +2462,8 @@ CREATE TABLE colaboradorturma (
     prioridadetreinamento_id bigint,
     turma_id bigint,
     curso_id bigint,
-    dnt_id bigint
+    dnt_id bigint,
+    cursolnt_id bigint
 );
 
 
@@ -3448,6 +3499,45 @@ SELECT pg_catalog.setval('curso_sequence', 1, false);
 
 
 --
+-- Name: cursolnt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE cursolnt (
+    id bigint NOT NULL,
+    nomenovocurso character varying(150),
+    conteudoprogramatico text,
+    justificativa text,
+    custo double precision,
+    cargahoraria integer,
+    lnt_id bigint NOT NULL,
+    curso_id bigint
+);
+
+
+ALTER TABLE public.cursolnt OWNER TO postgres;
+
+--
+-- Name: cursolnt_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE cursolnt_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cursolnt_sequence OWNER TO postgres;
+
+--
+-- Name: cursolnt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('cursolnt_sequence', 1, false);
+
+
+--
 -- Name: dependente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -4303,7 +4393,8 @@ CREATE TABLE experiencia (
     motivosaida character varying(100),
     candidato_id bigint,
     colaborador_id bigint,
-    cargo_id bigint
+    cargo_id bigint,
+    contatoempresa character varying(15)
 );
 
 
@@ -5589,6 +5680,66 @@ SELECT pg_catalog.setval('indicehistorico_sequence', 1, false);
 
 
 --
+-- Name: lnt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lnt (
+    id bigint NOT NULL,
+    descricao character varying(100),
+    datainicio date NOT NULL,
+    datafim date NOT NULL,
+    datafinalizada date
+);
+
+
+ALTER TABLE public.lnt OWNER TO postgres;
+
+--
+-- Name: lnt_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lnt_areaorganizacional (
+    lnt_id bigint NOT NULL,
+    areasorganizacionais_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.lnt_areaorganizacional OWNER TO postgres;
+
+--
+-- Name: lnt_empresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lnt_empresa (
+    lnt_id bigint NOT NULL,
+    empresas_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.lnt_empresa OWNER TO postgres;
+
+--
+-- Name: lnt_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE lnt_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lnt_sequence OWNER TO postgres;
+
+--
+-- Name: lnt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('lnt_sequence', 1, false);
+
+
+--
 -- Name: medicaorisco; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -6200,7 +6351,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 692, false);
+SELECT pg_catalog.setval('papel_sequence', 702, false);
 
 
 --
@@ -6314,6 +6465,41 @@ ALTER TABLE public.participanteavaliacaodesempenho_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('participanteavaliacaodesempenho_sequence', 1, false);
+
+
+--
+-- Name: participantecursolnt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE participantecursolnt (
+    id bigint NOT NULL,
+    colaborador_id bigint NOT NULL,
+    cursolnt_id bigint NOT NULL,
+    areaorganizacional_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.participantecursolnt OWNER TO postgres;
+
+--
+-- Name: participantecursolnt_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE participantecursolnt_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.participantecursolnt_sequence OWNER TO postgres;
+
+--
+-- Name: participantecursolnt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('participantecursolnt_sequence', 1, false);
 
 
 --
@@ -30964,6 +31150,12 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Data for Name: cursolnt; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: dependente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -31422,6 +31614,24 @@ INSERT INTO idioma (id, nome) VALUES (5, 'Italiano');
 
 --
 -- Data for Name: indicehistorico; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: lnt; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: lnt_areaorganizacional; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: lnt_empresa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -31948,6 +32158,9 @@ INSERT INTO migrations (name) VALUES ('20161026114435');
 INSERT INTO migrations (name) VALUES ('20161108182309');
 INSERT INTO migrations (name) VALUES ('20161124105430');
 INSERT INTO migrations (name) VALUES ('20161125134949');
+INSERT INTO migrations (name) VALUES ('20161214141240');
+INSERT INTO migrations (name) VALUES ('20161216140000');
+INSERT INTO migrations (name) VALUES ('20161226145507');
 
 
 --
@@ -32357,16 +32570,11 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (677, 'ROLE_CAD_MEDICAORISCO_FUNCAO', 'Função', '/sesmt/medicaoRisco/list.action?controlaRiscoPor=F', 2, true, NULL, 450, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (503, 'ROLE_CONFIG_CAMPOS', 'Configurar Cadastro de Colaborador e Candidato', '/geral/parametrosDoSistema/listCampos.action', 3, true, NULL, 41, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (450, 'ROLE_CAD_MEDICAORISCO', 'Medição dos Riscos', '#', 1, true, NULL, 386, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (472, 'ROLE_REL_ADMITIDOS', 'Admitidos', '/geral/colaborador/prepareRelatorioAdmitidos.action', 8, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (93, 'ROLE_REL_OCORRENCIA', 'Ocorrências', '/geral/ocorrencia/prepareRelatorioOcorrencia.action', 4, true, NULL, 377, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (506, 'ROLE_REL_LISTA_COLAB', 'Listagem de Colaboradores', '/geral/colaborador/prepareRelatorioDinamico.action', 11, true, NULL, 377, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (580, 'ROLE_REL_FORMACAOESCOLAR', 'Formação Escolar', '/geral/colaborador/prepareRelatorioFormacaoEscolar.action', 12, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (400, 'ROLE_REL_MOTIVO_DEMISSAO', 'Desligamentos', '/geral/motivoDemissao/prepareRelatorioMotivoDemissao.action', 5, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (472, 'ROLE_REL_ADMITIDOS', 'Admitidos', '/geral/colaborador/prepareRelatorioAdmitidos.action', 9, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (403, 'ROLE_MOV_QUESTIONARIO', 'Resultados das Entrevistas', '/pesquisa/questionario/prepareResultadoEntrevista.action', 6, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (423, 'ROLE_REL_ANIVERSARIANTES', 'Aniversariantes do mês', '/geral/colaborador/prepareRelatorioAniversariantes.action', 7, true, NULL, 377, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (398, 'ROLE_REL_TURNOVER', 'Turnover (rotatividade)', '/indicador/indicadorTurnOver/prepare.action', 9, true, NULL, 377, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (509, 'ROLE_REL_ABSENTEISMO', 'Absenteísmo', '/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action', 10, true, NULL, 377, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (646, 'ROLE_TAXA_DEMISSAO', 'Taxa de Demissão', '/indicador/indicadorTurnOver/prepareTaxaDeDemissao.action', 13, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (681, 'ROLE_REL_FERIAS', 'Férias', '/geral/colaborador/prepareRelatorioFerias.action', 3, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (682, 'ROLE_VISUALIZAR_PROGRESSAO', 'Visualizar progressão salarial na página inicial', '', 3, false, NULL, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (683, 'ROLE_REL_CANDIDATOS_INDICADOS_POR', 'Indicações de Candidatos', '/captacao/candidato/prepareRelatorioCandidatosIndicadosPor.action', 7, true, NULL, 360, NULL);
@@ -32385,17 +32593,38 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (691, 'ROLE_CONFIG_CAMPOS_EXTRAS_PARA_CANDIDATO_EXT', 'Cadastro de Candidato (Externo)', '#', 3, false, NULL, 688, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (673, 'USUARIO_SOS', 'Usuário SOS', '#', 17, true, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (672, 'ROLE_MOV_GESTOR_VISUALIZAR_PROPRIA_OCORRENCIA_PROVIDENCIA', 'Permitir que o gestor visualize suas próprias ocorrências e providências nas movimentações, relatórios e performance profissional', '#', 5, false, NULL, 373, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (692, 'ROLE_MOV_LNT', 'Levantamento de Necessidade de Treinamento (LNT)', '/desenvolvimento/lnt/list.action', 7, true, NULL, 367, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (693, 'ROLE_MOV_LNT_INSERIR', 'Inserir', '#', 1, false, NULL, 692, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (694, 'ROLE_MOV_LNT_EDITAR', 'Editar', '#', 2, false, NULL, 692, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (695, 'ROLE_MOV_LNT_EXCLUIR', 'Excluir', '#', 3, false, NULL, 692, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (696, 'ROLE_MOV_LNT_ADICIONAR_COLABORADORES', 'Adicionar Colaboradores', '#', 4, false, NULL, 692, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (697, 'ROLE_MOV_LNT_ANALISAR', 'Analisar', '#', 5, false, NULL, 692, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (698, 'ROLE_MOV_LNT_FINALIZAR', 'Finalizar', '#', 6, false, NULL, 692, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (699, 'ROLE_MOV_LNT_IMPRIMIR', 'Imprimir', '#', 7, false, NULL, 692, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (700, 'ROLE_MOV_LNT_GERAR_CURSOS_E_TURMAS', 'Gerar Cursos/Turmas', '#', 8, false, NULL, 692, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (506, 'ROLE_REL_LISTA_COLAB', 'Listagem de Colaboradores', '/geral/colaborador/prepareRelatorioDinamico.action', 12, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (580, 'ROLE_REL_FORMACAOESCOLAR', 'Formação Escolar', '/geral/colaborador/prepareRelatorioFormacaoEscolar.action', 13, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (398, 'ROLE_REL_TURNOVER', 'Turnover (rotatividade)', '/indicador/indicadorTurnOver/prepare.action', 10, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (509, 'ROLE_REL_ABSENTEISMO', 'Absenteísmo', '/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action', 11, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (646, 'ROLE_TAXA_DEMISSAO', 'Taxa de Demissão', '/indicador/indicadorTurnOver/prepareTaxaDeDemissao.action', 14, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (701, 'ROLE_REL_ANIVERSARIANTES_POR_TEMPO_DE_EMPRESA', 'Aniversariantes por tempo de empresa', '/geral/colaborador/prepareRelatorioAniversariantesPorTempoDeEmpresa.action', 8, true, NULL, 377, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs, autorizacaogestornasolicitacaopessoal) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.174.206', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.62.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', '2', false, 1, true, 0, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,vinculo,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,modelosAvaliacao', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,email,fone,dt_admissao', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs, autorizacaogestornasolicitacaopessoal) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.175.207', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.62.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', '2', false, 1, true, 0, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,vinculo,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,modelosAvaliacao', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,email,fone,dt_admissao', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao', false);
 
 
 --
 -- Data for Name: participanteavaliacaodesempenho; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: participantecursolnt; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -32720,6 +32949,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 676);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 677);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 681);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 686);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
@@ -33617,6 +33847,14 @@ ALTER TABLE ONLY curso
 
 
 --
+-- Name: cursolnt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY cursolnt
+    ADD CONSTRAINT cursolnt_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: dependente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -34049,6 +34287,14 @@ ALTER TABLE ONLY indicehistorico
 
 
 --
+-- Name: lnt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lnt
+    ADD CONSTRAINT lnt_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: medicaorisco_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -34190,6 +34436,14 @@ ALTER TABLE ONLY parametrosdosistema
 
 ALTER TABLE ONLY participanteavaliacaodesempenho
     ADD CONSTRAINT participanteavaliacaodesempenho_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: participantecursolnt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY participantecursolnt
+    ADD CONSTRAINT participantecursolnt_pkey PRIMARY KEY (id);
 
 
 --
@@ -34550,6 +34804,14 @@ ALTER TABLE ONLY empresa
 
 ALTER TABLE ONLY indice
     ADD CONSTRAINT unique_codigoac_grupoac_indice UNIQUE (codigoac, grupoac);
+
+
+--
+-- Name: unique_colaboradorid_cursolntid_participantecursolnt; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY participantecursolnt
+    ADD CONSTRAINT unique_colaboradorid_cursolntid_participantecursolnt UNIQUE (colaborador_id, cursolnt_id);
 
 
 --
@@ -35969,6 +36231,14 @@ ALTER TABLE ONLY colaboradorturma
 
 
 --
+-- Name: colaboradorturma_cursolnt_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY colaboradorturma
+    ADD CONSTRAINT colaboradorturma_cursolnt_fk FOREIGN KEY (cursolnt_id) REFERENCES cursolnt(id);
+
+
+--
 -- Name: colaboradorturma_dnt_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -36398,6 +36668,22 @@ ALTER TABLE ONLY curso_empresa
 
 ALTER TABLE ONLY curso_empresa
     ADD CONSTRAINT curso_empresa_empresa_fk FOREIGN KEY (empresasparticipantes_id) REFERENCES empresa(id);
+
+
+--
+-- Name: cursolnt_curso_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cursolnt
+    ADD CONSTRAINT cursolnt_curso_fk FOREIGN KEY (curso_id) REFERENCES curso(id);
+
+
+--
+-- Name: cursolnt_lnt_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cursolnt
+    ADD CONSTRAINT cursolnt_lnt_fk FOREIGN KEY (lnt_id) REFERENCES lnt(id);
 
 
 --
@@ -37241,6 +37527,38 @@ ALTER TABLE ONLY indicehistorico
 
 
 --
+-- Name: lnt_areaorganizacional_areasorganizacionais_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY lnt_areaorganizacional
+    ADD CONSTRAINT lnt_areaorganizacional_areasorganizacionais_fk FOREIGN KEY (areasorganizacionais_id) REFERENCES areaorganizacional(id);
+
+
+--
+-- Name: lnt_areaorganizacional_lnt_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY lnt_areaorganizacional
+    ADD CONSTRAINT lnt_areaorganizacional_lnt_fk FOREIGN KEY (lnt_id) REFERENCES lnt(id);
+
+
+--
+-- Name: lnt_empresa_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY lnt_empresa
+    ADD CONSTRAINT lnt_empresa_empresa_fk FOREIGN KEY (empresas_id) REFERENCES empresa(id);
+
+
+--
+-- Name: lnt_empresa_lnt_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY lnt_empresa
+    ADD CONSTRAINT lnt_empresa_lnt_fk FOREIGN KEY (lnt_id) REFERENCES lnt(id);
+
+
+--
 -- Name: medicaorisco_ambiente_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -37406,6 +37724,30 @@ ALTER TABLE ONLY participanteavaliacaodesempenho
 
 ALTER TABLE ONLY participanteavaliacaodesempenho
     ADD CONSTRAINT participanteavaliacaodesempenho_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
+
+
+--
+-- Name: participantecursolnt_area_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY participantecursolnt
+    ADD CONSTRAINT participantecursolnt_area_fk FOREIGN KEY (areaorganizacional_id) REFERENCES areaorganizacional(id);
+
+
+--
+-- Name: participantecursolnt_colaborador_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY participantecursolnt
+    ADD CONSTRAINT participantecursolnt_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
+
+
+--
+-- Name: participantecursolnt_cursolnt_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY participantecursolnt
+    ADD CONSTRAINT participantecursolnt_cursolnt_fk FOREIGN KEY (cursolnt_id) REFERENCES cursolnt(id);
 
 
 --

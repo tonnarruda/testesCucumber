@@ -209,18 +209,18 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     		colaboradorQuestionarioId = colaboradorQuestionario.getId();
     	
     	if(questionario != null && questionario.getTipo() == TipoQuestionario.PESQUISA && colaboradorQuestionarioManager.isRespondeuPesquisaByColaboradorIdAndQuestionarioId(colaborador.getId(), questionario.getId())){
-    		actionMsgTemp = "Não foi possível gravar as respostas, pois a pesquisa já possui resposta.";
+    		actionMsgTemp = "Não%20foi%20possível%20gravar%20as%20respostas,%20pois%20a%20pesquisa%20já%20possui%20resposta.";
     	}else{
     		colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), turmaId, vinculo, respondidaEm, colaboradorQuestionarioId, inserirFichaMedica);
     	}
 
         if (tela.equals("index")) {
         	if(actionMsgTemp == null)
-        		actionMsg = "Respostas gravadas com sucesso.";
+        		actionMsg = "Respostas%20gravadas%20com%20sucesso.";
         	retorno = "../../index.action?actionMsg="+actionMsg;
             return Action.SUCCESS;
         } else if(voltarPara.equals("../../sesmt/fichaMedica/prepareInsertFicha.action") || voltarPara.equals("../../sesmt/fichaMedica/listPreenchida.action"))  {
-        	actionMsg = "Respostas gravadas com sucesso.";
+        	actionMsg = "Respostas&nbsp;gravadas&nbsp;com&nbsp;sucesso.";
         	retorno = voltarPara + "?actionMsg=" +actionMsg;
         	return Action.SUCCESS;
         } else {

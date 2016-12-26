@@ -2075,7 +2075,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	public void enviaAvisoLntAutomatico(){
-		//enviaAvisoInicioLnt(lntManager.findLntsNaoFinalizadas(new Date()));
+		enviaAvisoInicioLnt(lntManager.findLntsNaoFinalizadas(new Date()));
 		enviaAvisoFimLnt(lntManager.findLntsNaoFinalizadas(null));
 	}
 	

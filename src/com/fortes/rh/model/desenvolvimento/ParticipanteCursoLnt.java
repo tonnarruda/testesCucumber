@@ -189,6 +189,9 @@ public class ParticipanteCursoLnt extends AbstractModel implements Serializable 
 	}
 	
 	public String getAreaNomeFolhaTruncado() {
+		if(areaNomeFolha == null || areaNomeFolha.length() == 0)
+			return "";
+		
 		if(areaNomeFolha.length() > 42)
 			return areaNomeFolha.substring(0,43) + "...";
 		

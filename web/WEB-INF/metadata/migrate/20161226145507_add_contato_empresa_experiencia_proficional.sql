@@ -1,0 +1,1 @@
+alter table experiencia add column contatoEmpresa character varying(15); --.go
