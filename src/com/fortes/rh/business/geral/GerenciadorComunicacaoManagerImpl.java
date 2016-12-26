@@ -1113,7 +1113,14 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void enviaAvisoAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado, Long empresaId){
 		StringBuffer mensagem = new StringBuffer("<b>" + colaboradorOriginal.getNome() + "</b> atualizou seus dados: \n\n");
 		mensagem.append("Dados originais: \n");
-		montaDadosOriginaisEnviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, mensagem);
+		StringBuffer dadosAlterados = new StringBuffer("");
+		montaDadosOriginaisEnviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, dadosAlterados);
+		
+		if(dadosAlterados.toString().length() == 0)
+			return;
+		else
+			mensagem.append(dadosAlterados.toString());
+		
 		mensagem.append("\n\n");
 		mensagem.append("Dados atualizados:\n");		
 		montaDadosAtualizadosEnviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, mensagem);
@@ -1134,64 +1141,164 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	private void montaDadosAtualizadosEnviaAvisoAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado,	StringBuffer mensagem) {
 		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getLogradouro()).equals(colaboradorAtualizado.getEndereco().getLogradouro()) ) 
-			mensagem.append("Logradouro: " + colaboradorAtualizado.getEndereco().getLogradouro() + "\n");
+			mensagem.append("Logradouro: " + (colaboradorAtualizado.getEndereco().getLogradouro()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getNumero()).equals(colaboradorAtualizado.getEndereco().getNumero()) ) 
-			mensagem.append("Número: " + colaboradorAtualizado.getEndereco().getNumero() + "\n");
+			mensagem.append("Número: " + (colaboradorAtualizado.getEndereco().getNumero()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getComplemento()).equals(colaboradorAtualizado.getEndereco().getComplemento()) ) 
-			mensagem.append("Complemento: " + colaboradorAtualizado.getEndereco().getComplemento() + "\n");
+			mensagem.append("Complemento: " + (colaboradorAtualizado.getEndereco().getComplemento()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getBairro()).equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
-			mensagem.append("Bairro: " + colaboradorAtualizado.getEndereco().getBairro() + "\n");
+			mensagem.append("Bairro: " + (colaboradorAtualizado.getEndereco().getBairro()) + "\n");
 		if(colaboradorAtualizado.getEndereco().getCidade() !=  null && !colaboradorAtualizado.getEndereco().getCidade().equals(colaboradorOriginal.getEndereco().getCidade()))
-			mensagem.append("Cidade: " + colaboradorAtualizado.getEndereco().getCidade().getNome() + "\n");
+			mensagem.append("Cidade: " + (colaboradorAtualizado.getEndereco().getCidade().getNome()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getUf().getSigla()).equals(colaboradorAtualizado.getEndereco().getUf().getSigla()) ) 
-			mensagem.append("UF: " + colaboradorAtualizado.getEndereco().getUf().getSigla() + "\n");
+			mensagem.append("UF: " + (colaboradorAtualizado.getEndereco().getUf().getSigla()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getCepFormatado()).equals(colaboradorAtualizado.getEndereco().getCepFormatado()) ) 
-			mensagem.append("CEP: " + colaboradorAtualizado.getEndereco().getCepFormatado() + "\n");
+			mensagem.append("CEP: " + (colaboradorAtualizado.getEndereco().getCepFormatado()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getEmail()).equals(colaboradorAtualizado.getContato().getEmail())) 
-			mensagem.append("Email: " + colaboradorAtualizado.getContato().getEmail() + "\n");
+			mensagem.append("Email: " + (colaboradorAtualizado.getContato().getEmail()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getFoneFixo()).equals(colaboradorAtualizado.getContato().getFoneFixo())) 
-			mensagem.append("Telefone Fixo: " + colaboradorAtualizado.getContato().getFoneFixo() + "\n");
+			mensagem.append("Telefone Fixo: " + (colaboradorAtualizado.getContato().getFoneFixo()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getFoneCelular()).equals(colaboradorAtualizado.getContato().getFoneCelular())) 
-			mensagem.append("Fone celular: " + colaboradorAtualizado.getContato().getFoneCelular() + "\n");
+			mensagem.append("Fone celular: " + (colaboradorAtualizado.getContato().getFoneCelular()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getEscolaridade()).equals((colaboradorAtualizado.getPessoal().getEscolaridade())) ) 
-			mensagem.append("Escolaridade: " + colaboradorAtualizado.getPessoal().getEscolaridadeDescricao() + "\n");
+			mensagem.append("Escolaridade: " + (colaboradorAtualizado.getPessoal().getEscolaridadeDescricao()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getEstadoCivil()).equals((colaboradorAtualizado.getPessoal().getEstadoCivil())) ) 
-			mensagem.append("Estado civil: " + colaboradorAtualizado.getPessoal().getEstadoCivilDescricao() + "\n");
+			mensagem.append("Estado civil: " + (colaboradorAtualizado.getPessoal().getEstadoCivilDescricao()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getConjuge()).equals((colaboradorAtualizado.getPessoal().getConjuge())) ) 
-			mensagem.append("Nome do conjuge: " + colaboradorAtualizado.getPessoal().getConjuge() + "\n");
+			mensagem.append("Nome do conjuge: " + (colaboradorAtualizado.getPessoal().getConjuge()) + "\n");
 		if(colaboradorOriginal.getPessoal().getQtdFilhos() != ((colaboradorAtualizado.getPessoal().getQtdFilhos())) ) 
-			mensagem.append("Quantidade de filhos: " + colaboradorOriginal.getPessoal().getQtdFilhos() == null ? 0 : colaboradorOriginal.getPessoal().getQtdFilhos() + "\n");
+			mensagem.append("Quantidade de filhos: " + ("" + colaboradorAtualizado.getPessoal().getQtdFilhos() == null ? 0 : colaboradorAtualizado.getPessoal().getQtdFilhos()) + "\n");
+		if(!colaboradorOriginal.getPessoal().getRg().equals(colaboradorAtualizado.getPessoal().getRg()))  
+			mensagem.append("RG - Número: " + (colaboradorAtualizado.getPessoal().getRg() == null ? "" : colaboradorAtualizado.getPessoal().getRg()) + "\n");
+		if(!colaboradorOriginal.getPessoal().getRgOrgaoEmissor().equals(colaboradorAtualizado.getPessoal().getRgOrgaoEmissor()))  
+			mensagem.append("RG - Órgão Emissor: " + (colaboradorAtualizado.getPessoal().getRgOrgaoEmissor() == null ? "" : colaboradorAtualizado.getPessoal().getRgOrgaoEmissor()) + "\n");
+		if(colaboradorOriginal.getPessoal().getRgUf() != null && colaboradorAtualizado.getPessoal().getRgUf() != null && 
+				!colaboradorOriginal.getPessoal().getRgUf().getId().equals(colaboradorAtualizado.getPessoal().getRgUf().getId()))  
+			mensagem.append("RG - Estado: " + (colaboradorAtualizado.getPessoal().getRgUf().getSigla() == null ? "" : colaboradorAtualizado.getPessoal().getRgUf().getSigla()) + "\n");
+		if(!colaboradorOriginal.getPessoal().getRgDataExpedicao().equals(colaboradorAtualizado.getPessoal().getRgDataExpedicao()))  
+			mensagem.append("RG - Data de Expedição: " + (colaboradorAtualizado.getPessoal().getRgDataExpedicao() == null ? "" : colaboradorAtualizado.getPessoal().getRgDataExpedicao()) + "\n");
+		if(!colaboradorOriginal.getHabilitacao().getNumeroHab().equals(colaboradorAtualizado.getHabilitacao().getNumeroHab()))  
+			mensagem.append("Carteira de Habilitação - Nº de Registro: " + (colaboradorAtualizado.getHabilitacao().getNumeroHab() == null ? "" : colaboradorAtualizado.getHabilitacao().getNumeroHab()) + "\n");
+		if(!colaboradorOriginal.getHabilitacao().getRegistro().equals(colaboradorAtualizado.getHabilitacao().getRegistro()))  
+			mensagem.append("Carteira de Habilitação - Prontuário: " + (colaboradorAtualizado.getHabilitacao().getRegistro() == null ? "" : colaboradorAtualizado.getHabilitacao().getRegistro()) + "\n");
+		if(!colaboradorOriginal.getHabilitacao().getEmissao().equals(colaboradorAtualizado.getHabilitacao().getEmissao()))  
+			mensagem.append("Carteira de Habilitação - Emissão: " + (colaboradorAtualizado.getHabilitacao().getEmissao() == null ? "" : colaboradorAtualizado.getHabilitacao().getEmissaoFormatada()) + "\n");
+		if(!colaboradorOriginal.getHabilitacao().getVencimento().equals(colaboradorAtualizado.getHabilitacao().getVencimento()))  
+			mensagem.append("Carteira de Habilitação - Vencimento: " + (colaboradorAtualizado.getHabilitacao().getVencimento() == null ? "" : colaboradorAtualizado.getHabilitacao().getVencimentoFormatada()) + "\n");
+		if(!colaboradorOriginal.getHabilitacao().getCategoria().equals(colaboradorAtualizado.getHabilitacao().getCategoria()))  
+			mensagem.append("Carteira de Habilitação - Categoria: " + (colaboradorAtualizado.getHabilitacao().getCategoria() == null ? "" : colaboradorAtualizado.getHabilitacao().getCategoria()) + "\n");
+		if( colaboradorOriginal.getPessoal().getTituloEleitoral() != null && colaboradorAtualizado.getPessoal().getTituloEleitoral() != null ){
+			if(!colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitNumero().equals(colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitNumero()))  
+				mensagem.append("Título Eleitoral - Número: " + (colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitNumero() == null ? "" : colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitNumero()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitZona().equals(colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitZona()))  
+				mensagem.append("Título Eleitoral - Zona: " + (colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitZona() == null ? "" : colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitZona()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitSecao().equals(colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitSecao()))  
+				mensagem.append("Título Eleitoral - Seção: " + (colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitSecao() == null ? "" : colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitSecao()) + "\n");
+		}
+		if( colaboradorOriginal.getPessoal().getCertificadoMilitar() != null && colaboradorAtualizado.getPessoal().getCertificadoMilitar() != null ){
+			if(!colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilNumero().equals(colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilNumero()))  
+				mensagem.append("Certificado Militar - Número: " + (colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilNumero() == null ? "" : colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilNumero()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilTipo().equals(colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilTipo()))  
+				mensagem.append("Certificado Militar - Tipo: " + (colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilTipo() == null ? "" : colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilTipo()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilSerie().equals(colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilSerie()))  
+				mensagem.append("Certificado Militar - Série: " + (colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilSerie() == null ? "" : colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilSerie()) + "\n");
+		}
+		if( colaboradorOriginal.getPessoal().getCtps() != null && colaboradorAtualizado.getPessoal().getCtps() != null ){
+			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsNumero().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsNumero()))  
+				mensagem.append("CTPS - Número: " + (colaboradorAtualizado.getPessoal().getCtps().getCtpsNumero() == null ? "" : colaboradorAtualizado.getPessoal().getCtps().getCtpsNumero()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsSerie().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsSerie()))  
+				mensagem.append("CTPS - Série: " + (colaboradorAtualizado.getPessoal().getCtps().getCtpsSerie() == null ? "" : colaboradorAtualizado.getPessoal().getCtps().getCtpsSerie()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsDv().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsDv()))  
+				mensagem.append("CTPS - DV: " + (colaboradorAtualizado.getPessoal().getCtps().getCtpsDv() == null ? "" : colaboradorAtualizado.getPessoal().getCtps().getCtpsDv()) + "\n");
+			if(colaboradorOriginal.getPessoal().getCtps().getCtpsUf() != null && colaboradorAtualizado.getPessoal().getCtps().getCtpsUf() != null &&
+					!colaboradorOriginal.getPessoal().getCtps().getCtpsUf().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsUf()))  
+				mensagem.append("CTPS - Estado: " + (colaboradorAtualizado.getPessoal().getCtps().getCtpsUf().getSigla() == null ? "" : colaboradorAtualizado.getPessoal().getCtps().getCtpsUf().getSigla()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsDataExpedicao().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsDataExpedicao()))  
+				mensagem.append("CTPS - DV: " + (colaboradorAtualizado.getPessoal().getCtps().getCtpsDataExpedicao() == null ? "" : colaboradorAtualizado.getPessoal().getCtps().getCtpsDataExpedicao()) + "\n");
+		}
+		if(!colaboradorOriginal.getPessoal().getPis().equals(colaboradorAtualizado.getPessoal().getPis()))  
+			mensagem.append("PIS - Número: " + (colaboradorAtualizado.getPessoal().getPis() == null ? "" : colaboradorAtualizado.getPessoal().getPis()) + "\n");
 	}
 
 	private void montaDadosOriginaisEnviaAvisoAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado,StringBuffer mensagem){
 		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getLogradouro()).equals(colaboradorAtualizado.getEndereco().getLogradouro()) ) 
-			mensagem.append("Logradouro: " + colaboradorOriginal.getEndereco().getLogradouro() + "\n");
+			mensagem.append("Logradouro: " + (colaboradorOriginal.getEndereco().getLogradouro()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getNumero()).equals(colaboradorAtualizado.getEndereco().getNumero()) ) 
-			mensagem.append("Número: " + colaboradorOriginal.getEndereco().getNumero() + "\n");
+			mensagem.append("Número: " + (colaboradorOriginal.getEndereco().getNumero()) + "\n");
 		if (!StringUtils.defaultString(colaboradorOriginal.getEndereco().getComplemento()).equals(colaboradorAtualizado.getEndereco().getComplemento()) ) 
-			mensagem.append("Complemento: " + colaboradorOriginal.getEndereco().getComplemento() + "\n");
+			mensagem.append("Complemento: " + (colaboradorOriginal.getEndereco().getComplemento()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getBairro()).equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
-			mensagem.append("Bairro: " + colaboradorOriginal.getEndereco().getBairro()+ "\n");
+			mensagem.append("Bairro: " + (colaboradorOriginal.getEndereco().getBairro()) + "\n");
 		if(colaboradorAtualizado.getEndereco().getCidade() !=  null && !colaboradorAtualizado.getEndereco().getCidade().equals(colaboradorOriginal.getEndereco().getCidade()))
-			mensagem.append("Cidade: " + colaboradorOriginal.getEndereco().getCidade().getNome()+ "\n");
+			mensagem.append("Cidade: " + (colaboradorOriginal.getEndereco().getCidade().getNome()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getUf().getSigla()).equals(colaboradorAtualizado.getEndereco().getUf().getSigla())) 
-			mensagem.append("UF: " + colaboradorOriginal.getEndereco().getUf().getSigla() + "\n");
+			mensagem.append("UF: " + (colaboradorOriginal.getEndereco().getUf().getSigla()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getCepFormatado()).equals(colaboradorAtualizado.getEndereco().getCepFormatado()) ) 
-			mensagem.append("CEP: " + colaboradorOriginal.getEndereco().getCepFormatado() + "\n");
+			mensagem.append("CEP: " + (colaboradorOriginal.getEndereco().getCepFormatado()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getEmail()).equals(colaboradorAtualizado.getContato().getEmail())) 
-			mensagem.append("Email: " + colaboradorOriginal.getContato().getEmail() + "\n");
+			mensagem.append("Email: " + (colaboradorOriginal.getContato().getEmail()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getFoneFixo()).equals(colaboradorAtualizado.getContato().getFoneFixo())) 
-			mensagem.append("Telefone Fixo: " + colaboradorOriginal.getContato().getFoneFixo() + "\n");
+			mensagem.append("Telefone Fixo: " + (colaboradorOriginal.getContato().getFoneFixo()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getFoneCelular()).equals(colaboradorAtualizado.getContato().getFoneCelular())) 
-			mensagem.append("Fone celular: " + colaboradorOriginal.getContato().getFoneCelular() + "\n");
+			mensagem.append("Fone celular: " + (colaboradorOriginal.getContato().getFoneCelular()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getEscolaridade()).equals((colaboradorAtualizado.getPessoal().getEscolaridade())) ) 
-			mensagem.append("Escolaridade: " + colaboradorOriginal.getPessoal().getEscolaridadeDescricao() + "\n");
+			mensagem.append("Escolaridade: " + (colaboradorOriginal.getPessoal().getEscolaridadeDescricao()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getEstadoCivil()).equals((colaboradorAtualizado.getPessoal().getEstadoCivil())) ) 
-			mensagem.append("Estado civil: " + colaboradorOriginal.getPessoal().getEstadoCivilDescricao() + "\n");
+			mensagem.append("Estado civil: " + (colaboradorOriginal.getPessoal().getEstadoCivilDescricao()) + "\n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getConjuge()).equals((colaboradorAtualizado.getPessoal().getConjuge())) ) 
-			mensagem.append("Nome do conjuge: " + colaboradorOriginal.getPessoal().getConjuge() + "\n");
+			mensagem.append("Nome do conjuge: " + (colaboradorOriginal.getPessoal().getConjuge()) + "\n");
 		if(colaboradorOriginal.getPessoal().getQtdFilhos() != ((colaboradorAtualizado.getPessoal().getQtdFilhos())) ) 
-			mensagem.append("Quantidade de filhos: " + colaboradorOriginal.getPessoal().getQtdFilhos() == null ? 0 : colaboradorOriginal.getPessoal().getQtdFilhos() + "\n");
+			mensagem.append("Quantidade de filhos: " + ("" + colaboradorOriginal.getPessoal().getQtdFilhos() == null ? 0 : colaboradorOriginal.getPessoal().getQtdFilhos()) + "\n");
+		if(!colaboradorOriginal.getPessoal().getRg().equals(colaboradorAtualizado.getPessoal().getRg()))  
+			mensagem.append("RG - Número: " + (colaboradorOriginal.getPessoal().getRg() == null ? "" : colaboradorOriginal.getPessoal().getRg()) + "\n");
+		if(!colaboradorOriginal.getPessoal().getRgOrgaoEmissor().equals(colaboradorAtualizado.getPessoal().getRgOrgaoEmissor()))  
+			mensagem.append("RG - Órgão Emissor: " + (colaboradorOriginal.getPessoal().getRgOrgaoEmissor() == null ? "" : colaboradorOriginal.getPessoal().getRgOrgaoEmissor()) + "\n");
+		if(colaboradorOriginal.getPessoal().getRgUf() != null && colaboradorAtualizado.getPessoal().getRgUf() != null && 
+				!colaboradorOriginal.getPessoal().getRgUf().getId().equals(colaboradorAtualizado.getPessoal().getRgUf().getId()))  
+			mensagem.append("RG - Estado: " + (colaboradorOriginal.getPessoal().getRgUf().getSigla() == null ? "" : colaboradorOriginal.getPessoal().getRgUf().getSigla()) + "\n");
+		if(!colaboradorOriginal.getPessoal().getRgDataExpedicao().equals(colaboradorAtualizado.getPessoal().getRgDataExpedicao()))  
+			mensagem.append("RG - Data de Expedição: " + (colaboradorOriginal.getPessoal().getRgDataExpedicao() == null ? "" : colaboradorOriginal.getPessoal().getRgDataExpedicao()) + "\n");
+		if(!colaboradorOriginal.getHabilitacao().getNumeroHab().equals(colaboradorAtualizado.getHabilitacao().getNumeroHab()))  
+			mensagem.append("Carteira de Habilitação - Nº de Registro: " + (colaboradorOriginal.getHabilitacao().getNumeroHab() == null ? "" : colaboradorOriginal.getHabilitacao().getNumeroHab()) + "\n");
+		if(!colaboradorOriginal.getHabilitacao().getRegistro().equals(colaboradorAtualizado.getHabilitacao().getRegistro()))  
+			mensagem.append("Carteira de Habilitação - Prontuário: " + (colaboradorOriginal.getHabilitacao().getRegistro() == null ? "" : colaboradorOriginal.getHabilitacao().getRegistro()) + "\n");
+		if(!colaboradorOriginal.getHabilitacao().getEmissao().equals(colaboradorAtualizado.getHabilitacao().getEmissao()))  
+			mensagem.append("Carteira de Habilitação - Emissão: " + (colaboradorOriginal.getHabilitacao().getEmissao() == null ? "" : colaboradorOriginal.getHabilitacao().getEmissaoFormatada()) + "\n");
+		if(!colaboradorOriginal.getHabilitacao().getVencimento().equals(colaboradorAtualizado.getHabilitacao().getVencimento()))  
+			mensagem.append("Carteira de Habilitação - Vencimento: " + (colaboradorOriginal.getHabilitacao().getVencimento() == null ? "" : colaboradorOriginal.getHabilitacao().getVencimentoFormatada()) + "\n");
+		if(!colaboradorOriginal.getHabilitacao().getCategoria().equals(colaboradorAtualizado.getHabilitacao().getCategoria()))  
+			mensagem.append("Carteira de Habilitação - Categoria: " + (colaboradorOriginal.getHabilitacao().getCategoria() == null ? "" : colaboradorOriginal.getHabilitacao().getCategoria()) + "\n");
+		if( colaboradorOriginal.getPessoal().getTituloEleitoral() != null && colaboradorAtualizado.getPessoal().getTituloEleitoral() != null ){
+			if(!colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitNumero().equals(colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitNumero()))  
+				mensagem.append("Título Eleitoral - Número: " + (colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitNumero() == null ? "" : colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitNumero()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitZona().equals(colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitZona()))  
+				mensagem.append("Título Eleitoral - Zona: " + (colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitZona() == null ? "" : colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitZona()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitSecao().equals(colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitSecao()))  
+				mensagem.append("Título Eleitoral - Seção: " + (colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitSecao() == null ? "" : colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitSecao()) + "\n");
+		}
+		if( colaboradorOriginal.getPessoal().getCertificadoMilitar() != null && colaboradorAtualizado.getPessoal().getCertificadoMilitar() != null ){
+			if(!colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilNumero().equals(colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilNumero()))  
+				mensagem.append("Certificado Militar - Número: " + (colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilNumero() == null ? "" : colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilNumero()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilTipo().equals(colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilTipo()))  
+				mensagem.append("Certificado Militar - Tipo: " + (colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilTipo() == null ? "" : colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilTipo()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilSerie().equals(colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilSerie()))  
+				mensagem.append("Certificado Militar - Série: " + (colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilSerie() == null ? "" : colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilSerie()) + "\n");
+		}
+		if( colaboradorOriginal.getPessoal().getCtps() != null && colaboradorAtualizado.getPessoal().getCtps() != null ){
+			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsNumero().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsNumero()))  
+				mensagem.append("CTPS - Número: " + (colaboradorOriginal.getPessoal().getCtps().getCtpsNumero() == null ? "" : colaboradorOriginal.getPessoal().getCtps().getCtpsNumero()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsSerie().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsSerie()))  
+				mensagem.append("CTPS - Série: " + (colaboradorOriginal.getPessoal().getCtps().getCtpsSerie() == null ? "" : colaboradorOriginal.getPessoal().getCtps().getCtpsSerie()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsDv().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsDv()))  
+				mensagem.append("CTPS - DV: " + (colaboradorOriginal.getPessoal().getCtps().getCtpsDv() == null ? "" : colaboradorOriginal.getPessoal().getCtps().getCtpsDv()) + "\n");
+			if(colaboradorOriginal.getPessoal().getCtps().getCtpsUf() != null && colaboradorAtualizado.getPessoal().getCtps().getCtpsUf() != null &&
+					!colaboradorOriginal.getPessoal().getCtps().getCtpsUf().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsUf()))  
+				mensagem.append("CTPS - Estado: " + (colaboradorOriginal.getPessoal().getCtps().getCtpsUf().getSigla() == null ? "" : colaboradorOriginal.getPessoal().getCtps().getCtpsUf().getSigla()) + "\n");
+			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsDataExpedicao().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsDataExpedicao()))  
+				mensagem.append("CTPS - DV: " + (colaboradorOriginal.getPessoal().getCtps().getCtpsDataExpedicao() == null ? "" : colaboradorOriginal.getPessoal().getCtps().getCtpsDataExpedicao()) + "\n");
+		}
+		if(!colaboradorOriginal.getPessoal().getPis().equals(colaboradorAtualizado.getPessoal().getPis()))  
+			mensagem.append("PIS - Número: " + (colaboradorOriginal.getPessoal().getPis() == null ? "" : colaboradorOriginal.getPessoal().getPis()) + "\n");
 	}
 	
 	// TODO: SEM TESTE

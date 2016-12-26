@@ -8,6 +8,7 @@
 		<Item visivel="S" motivo="S16080000343"><![CDATA[T&D > Movimentações > Levantamentos de Necessidade de Treinamento (LNT): Nova funcionalidade.]]></Item>
 		<Item visivel="S" motivo="P16100000332"><![CDATA[T&D > Relatórios > Certificados > Imprimir Verso: Ajuste de inconsistência ao apresentar o conteúdo programático do curso, quando o certificado é impresso na empresa para a qual o curso foi compartilhado.]]></Item>
 		<Item visivel="S" motivo="P16110000243"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Ajuste de inconsistência ao gravar os dados do colaborador.]]></Item>
+		<Item visivel="S" motivo="S16090000142"><![CDATA[Info. Funcionais > Cadastros > Atualizar meus dados: Nova aba "Documentos".]]></Item>
 		<Item visivel="S" motivo="S16100000199"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Novo filtro por estabelecimentos.]]></Item>
 		<Item visivel="S" motivo="S16090000159"><![CDATA[Info. Funcionais > Relatórios > Aniversariantes por tempo de empresa: Novo relatório de aniversariantes por tempo de empresa.]]></Item>
 		<Item visivel="S" motivo="P16110000086"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitação de Exames: Ajuste de incosistência ao imprimir solicitação de exames de candidato.]]></Item>
