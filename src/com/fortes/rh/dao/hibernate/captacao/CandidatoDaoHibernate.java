@@ -4,7 +4,6 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -1459,6 +1458,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		criteria.add(Expression.eq("hc.etapaSeletiva.id", etapaSeletivaId));
 		criteria.add(Expression.eq("hc.apto", Apto.SIM));
+		criteria.add(Expression.eq("c.contratado", false));
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));

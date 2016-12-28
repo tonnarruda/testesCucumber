@@ -1272,6 +1272,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals("Cand1", ((Candidato)candidatos.toArray()[0]).getNome());
 	}
 	
+	
 	public void testGetFuncoesPretendidasByEtapaSeletiva()
 	{
 		EtapaSeletiva etapaSeletiva1 = inicializaCandidatoSolicitacaoComEtapaSeletiva();
@@ -1282,6 +1283,51 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals("Develop", ((Collection<String>) funcoesPretendidas.values().toArray()[0]).toArray()[0]);
 	}
 
+	public void testGetCandidatosByEtapaSeletivaCandidatoAptoPoremContratado()
+	{
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao);
+		
+		Cargo funcaoPretendida1 = CargoFactory.getEntity("Develop");
+		cargoDao.save(funcaoPretendida1);
+		
+		Cargo funcaoPretendida2 = CargoFactory.getEntity("Analista");
+		cargoDao.save(funcaoPretendida2);
+		
+		EtapaSeletiva etapaSeletiva1 = EtapaSeletivaFactory.getEntity();
+		etapaSeletivaDao.save(etapaSeletiva1);
+		
+		Candidato candidato1 = saveCandidato("Cand1", false, funcaoPretendida1);
+		Candidato candidato2 = saveCandidato("Cand2", true, funcaoPretendida2);
+		
+		saveCandidatoSolicitacaoComHistorico(candidato1, solicitacao, etapaSeletiva1, DateUtil.criarDataMesAno(1, 1, 2016), Apto.SIM);
+		saveCandidatoSolicitacaoComHistorico(candidato2, solicitacao, etapaSeletiva1, DateUtil.criarDataMesAno(1, 1, 2016), Apto.SIM);
+		
+		Collection<Candidato> candidatos = candidatoDao.getCandidatosByEtapaSeletiva(etapaSeletiva1.getId());
+		
+		assertEquals(1, candidatos.size());
+		assertEquals("Cand1", ((Candidato)candidatos.toArray()[0]).getNome());
+	}
+	
+	private Candidato saveCandidato(String nome, boolean contratado, Cargo funcaoPretendida){
+		Candidato candidato = CandidatoFactory.getCandidato(nome);
+		candidato.setContratado(contratado);
+		candidato.setCargos(java.util.Arrays.asList(funcaoPretendida));
+		candidatoDao.save(candidato);
+		return candidato;
+	}
+	
+	private void saveCandidatoSolicitacaoComHistorico(Candidato candidato, Solicitacao solicitacao, EtapaSeletiva etapaSeletiva, Date data, char apto){
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao.setCandidato(candidato);
+		candidatoSolicitacao.setSolicitacao(solicitacao);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao);
+		
+		HistoricoCandidato historicoCandidato1 = HistoricoCandidatoFactory.getEntity(etapaSeletiva, data, candidatoSolicitacao);
+		historicoCandidato1.setApto(apto);
+		historicoCandidatoDao.save(historicoCandidato1);
+	}
+	
 	private EtapaSeletiva inicializaCandidatoSolicitacaoComEtapaSeletiva() {
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacaoDao.save(solicitacao);
@@ -1298,30 +1344,11 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		EtapaSeletiva etapaSeletiva2 = EtapaSeletivaFactory.getEntity();
 		etapaSeletivaDao.save(etapaSeletiva2);
 		
-		Candidato candidato1 = CandidatoFactory.getCandidato(null, "Cand1");
-		candidato1.setCargos(java.util.Arrays.asList(funcaoPretendida1));
-		candidatoDao.save(candidato1);
+		Candidato candidato1 = saveCandidato("Cand1", false, funcaoPretendida1);
+		Candidato candidato2 = saveCandidato("Cand2", false, funcaoPretendida2);
 		
-		Candidato candidato2 = CandidatoFactory.getCandidato();
-		candidato2.setCargos(java.util.Arrays.asList(funcaoPretendida2));
-		candidatoDao.save(candidato2);
-		
-		CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity();
-		candidatoSolicitacao1.setCandidato(candidato1);
-		candidatoSolicitacao1.setSolicitacao(solicitacao);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao1);
-		
-		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
-		candidatoSolicitacao2.setCandidato(candidato2);
-		candidatoSolicitacao2.setSolicitacao(solicitacao);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
-		
-		HistoricoCandidato historicoCandidato1 = HistoricoCandidatoFactory.getEntity(etapaSeletiva1, DateUtil.criarDataMesAno(1, 1, 2016), candidatoSolicitacao1);
-		historicoCandidato1.setApto(Apto.SIM);
-		historicoCandidatoDao.save(historicoCandidato1);
-		
-		HistoricoCandidato historicoCandidato2 = HistoricoCandidatoFactory.getEntity(etapaSeletiva2, DateUtil.criarDataMesAno(1, 1, 2016), candidatoSolicitacao2);
-		historicoCandidatoDao.save(historicoCandidato2);
+		saveCandidatoSolicitacaoComHistorico(candidato1, solicitacao, etapaSeletiva1, DateUtil.criarDataMesAno(1, 1, 2016), Apto.SIM);
+		saveCandidatoSolicitacaoComHistorico(candidato2, solicitacao, etapaSeletiva2, DateUtil.criarDataMesAno(1, 1, 2016), Apto.NAO);
 		
 		return etapaSeletiva1;
 	}
