@@ -10,7 +10,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
@@ -31,7 +31,7 @@ public class TurmaAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{turma}, null).gera();
+		String dados = new DadosAuditados(new Object[]{turma}, null).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), turma.getDescricao(), dados);
 	}

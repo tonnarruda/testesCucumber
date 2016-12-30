@@ -7,7 +7,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
-import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
@@ -27,7 +27,7 @@ public class LntAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(null, lnt).gera();
+		String dados = new DadosAuditados(null, lnt).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), lnt.getDescricao(), dados);
 	}
@@ -39,7 +39,7 @@ public class LntAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		String dados = new GeraDadosAuditados(new Object[]{lntAnterior}, lnt).gera();
+		String dados = new DadosAuditados(new Object[]{lntAnterior}, lnt).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), lnt.getDescricao(), dados);
 	}
@@ -51,7 +51,7 @@ public class LntAuditorCallbackImpl implements AuditorCallback {
 		lnt.setId(lntId); 
 		lnt = carregaEntidadeCompleta(metodo, lnt);
 		
-		String dados = new GeraDadosAuditados(new Object[]{lnt}, null).gera();
+		String dados = new DadosAuditados(new Object[]{lnt}, null).gera();
 
 		metodo.processa();
 		

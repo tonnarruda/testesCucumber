@@ -57,7 +57,7 @@ public class LntAuditorCallbackImplTest {
 	public void testSave() throws Throwable {
 		lntAtual = LntFactory.getEntity(1L,"Lnt 01",DateUtil.criarDataMesAno(DateUtil.criarDataDiaMesAno("08/12/2016")),DateUtil.criarDataMesAno(DateUtil.criarDataDiaMesAno("08/12/2016")), null);
 		
-		MethodInvocation metodoSave = new MethodInvocationDefault<LntManager>("save", LntManager.class, new Object[]{lntAtual}, lntManager, null);
+		MethodInvocation metodoSave = new MethodInvocationDefault<LntManager>("save", LntManager.class, new Object[]{lntAtual}, lntManager);
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(metodoSave));
 
 		String dados = "[DADOS ATUALIZADOS]\n{\n  \"areasOrganizacionais\": [],\n  \"cursoLnts\": [],\n  \"dataFim\": \"08/12/2016 00:00:00\",\n  \"dataFinalizada\": \"\","
@@ -78,7 +78,7 @@ public class LntAuditorCallbackImplTest {
 		when(areaOrganizacionalManager.findByLntIdComEmpresa(lntAnterior.getId(),new Long[]{})).thenReturn(null);
 		when(empresaManager.findByLntId(lntAnterior.getId())).thenReturn(null);
 
-		MethodInvocation metodoUpdate = new MethodInvocationDefault<LntManager>("update", LntManager.class, new Object[]{lntAtual}, lntManager, null);
+		MethodInvocation metodoUpdate = new MethodInvocationDefault<LntManager>("update", LntManager.class, new Object[]{lntAtual}, lntManager);
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(metodoUpdate));
 		
 		String dados = "[DADOS ANTERIORES]\n{\n  \"areasOrganizacionais\": [],\n  \"cursoLnts\": [],\n  \"dataFim\": \"08/12/2016 00:00:00\",\n  \"dataFinalizada\": \"\","
@@ -101,7 +101,7 @@ public class LntAuditorCallbackImplTest {
 		when(empresaManager.findByLntId(lntAtual.getId())).thenReturn(null);
 		
 		MethodInvocation removeComDependencias = new MethodInvocationDefault<LntManager>("removeComDependencias", LntManager.class, 
-				new Object[]{lntAtual.getId(), colaboradorTurmaManager, cursoLntManager}, lntManager, null);
+				new Object[]{lntAtual.getId(), colaboradorTurmaManager, cursoLntManager}, lntManager);
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(removeComDependencias));
 
 		String dados = "[DADOS ANTERIORES]\n{\n  \"areasOrganizacionais\": [],\n  \"cursoLnts\": [],\n  \"dataFim\": \"08/12/2016 00:00:00\",\n  \"dataFinalizada\": \"\","
@@ -119,7 +119,7 @@ public class LntAuditorCallbackImplTest {
 		
 		when(lntManager.findEntidadeComAtributosSimplesById(lntAtual.getId())).thenReturn(lntAtual);
 		
-		MethodInvocation finalizar = new MethodInvocationDefault<LntManager>("finalizar", LntManager.class, new Object[]{lntAtual.getId()}, lntManager, null);
+		MethodInvocation finalizar = new MethodInvocationDefault<LntManager>("finalizar", LntManager.class, new Object[]{lntAtual.getId()}, lntManager);
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(finalizar));
 		
 		StringBuilder dados = new StringBuilder();
@@ -141,7 +141,7 @@ public class LntAuditorCallbackImplTest {
 		
 		when(lntManager.findEntidadeComAtributosSimplesById(lntAtual.getId())).thenReturn(lntAtual);
 		
-		MethodInvocation reabrir = new MethodInvocationDefault<LntManager>("reabrir", LntManager.class, new Object[]{lntAtual.getId()}, lntManager, null);
+		MethodInvocation reabrir = new MethodInvocationDefault<LntManager>("reabrir", LntManager.class, new Object[]{lntAtual.getId()}, lntManager);
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(reabrir));
 		
 		StringBuilder dados = new StringBuilder();

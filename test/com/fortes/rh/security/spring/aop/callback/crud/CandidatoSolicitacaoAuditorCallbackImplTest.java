@@ -44,7 +44,7 @@ public class CandidatoSolicitacaoAuditorCallbackImplTest {
 		
 		when(candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacaoAnterior.getId())).thenReturn(candidatoSolicitacaoAnterior);
 
-		MethodInvocation updateStatusAutorizacaoGestor = new MethodInvocationDefault<CandidatoSolicitacaoManager>("updateStatusAutorizacaoGestor", CandidatoSolicitacaoManager.class, new Object[]{candidatoSolicitacaoAtual}, candidatoSolicitacaoManager, null);
+		MethodInvocation updateStatusAutorizacaoGestor = new MethodInvocationDefault<CandidatoSolicitacaoManager>("updateStatusAutorizacaoGestor", CandidatoSolicitacaoManager.class, new Object[]{candidatoSolicitacaoAtual}, candidatoSolicitacaoManager);
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(updateStatusAutorizacaoGestor));
 
 		assertEquals("Candidato na Solicitacao Pessoal", auditavel.getModulo());
@@ -70,7 +70,7 @@ public class CandidatoSolicitacaoAuditorCallbackImplTest {
 		
 		when(candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacaoAnterior.getId())).thenReturn(candidatoSolicitacaoAnterior);
 		
-		MethodInvocation updateStatusAutorizacaoGestor = new MethodInvocationDefault<CandidatoSolicitacaoManager>("updateStatusAutorizacaoGestor", CandidatoSolicitacaoManager.class, new Object[]{candidatoSolicitacaoAtual}, candidatoSolicitacaoManager, null);
+		MethodInvocation updateStatusAutorizacaoGestor = new MethodInvocationDefault<CandidatoSolicitacaoManager>("updateStatusAutorizacaoGestor", CandidatoSolicitacaoManager.class, new Object[]{candidatoSolicitacaoAtual}, candidatoSolicitacaoManager);
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(updateStatusAutorizacaoGestor));
 		
 		assertEquals("Candidato na Solicitacao Pessoal", auditavel.getModulo());

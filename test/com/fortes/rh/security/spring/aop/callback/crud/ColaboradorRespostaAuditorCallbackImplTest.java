@@ -49,7 +49,7 @@ public class ColaboradorRespostaAuditorCallbackImplTest {
 		when(colaboradorRespostaManager.getColaboradorQuestionarioManager()).thenReturn(colaboradorQuestionarioManager);
 		when(colaboradorQuestionarioManager.findByIdProjection(1L)).thenReturn(colaboradorQuestionario);
 
-		MethodInvocation removeFicha = new MethodInvocationDefault<ColaboradorRespostaManager>("removeFicha", ColaboradorRespostaManager.class, new Object[]{1L}, colaboradorRespostaManager, null);
+		MethodInvocation removeFicha = new MethodInvocationDefault<ColaboradorRespostaManager>("removeFicha", ColaboradorRespostaManager.class, new Object[]{1L}, colaboradorRespostaManager);
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(removeFicha));
 
 		assertEquals("Entrevista de Desligamento", auditavel.getModulo());
@@ -71,7 +71,7 @@ public class ColaboradorRespostaAuditorCallbackImplTest {
 		when(colaboradorRespostaManager.getColaboradorQuestionarioManager()).thenReturn(colaboradorQuestionarioManager);
 		when(colaboradorQuestionarioManager.findByIdProjection(1L)).thenReturn(colaboradorQuestionario);
 
-		MethodInvocation removeFicha = new MethodInvocationDefault<ColaboradorRespostaManager>("removeFicha", ColaboradorRespostaManager.class, new Object[]{1L}, colaboradorRespostaManager, null);
+		MethodInvocation removeFicha = new MethodInvocationDefault<ColaboradorRespostaManager>("removeFicha", ColaboradorRespostaManager.class, new Object[]{1L}, colaboradorRespostaManager);
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(removeFicha));
 
 		assertEquals("Ficha Médica", auditavel.getModulo());

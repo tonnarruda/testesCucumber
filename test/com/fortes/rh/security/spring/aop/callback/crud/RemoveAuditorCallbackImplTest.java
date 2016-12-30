@@ -27,7 +27,7 @@ public class RemoveAuditorCallbackImplTest extends TestCase {
 	
 	public void testDeveriaProcessar() throws Throwable {
 		
-		MethodInvocation metodoUpdate = new MethodInvocationDefault<SomeManager>("remove", SomeManager.class, new Object[]{new Long(2L)}, new SomeManagerImpl(), null);
+		MethodInvocation metodoUpdate = new MethodInvocationDefault<SomeManager>("remove", SomeManager.class, new Object[]{new Long(2L)}, new SomeManagerImpl());
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(metodoUpdate));
 		
 		assertEquals("Cadastro de Bugigangas", auditavel.getModulo());

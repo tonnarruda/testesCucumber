@@ -22,6 +22,7 @@ public class SomeManagerImpl extends GenericManagerImpl<Evento, EventoDao> imple
 	
 	@Override
 	public void update(Evento entity) {
+		Evento ev = entity;
 	}
 	
 	@Override

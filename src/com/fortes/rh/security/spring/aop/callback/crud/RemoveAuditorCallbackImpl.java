@@ -8,8 +8,10 @@ import com.fortes.security.auditoria.MetodoInterceptado;
 
 public class RemoveAuditorCallbackImpl extends AuditorCallbackImpl {
 
+	//MUITO CUIDADO AO MEXER NAS ORDENS DOS METODOS ABAIXO.
 	public Auditavel processa(MetodoInterceptado metodo) throws Throwable {
 		
+		setEntidade(carregaEntidade(metodo));
 		inicializa(metodo);
 		metodo.processa();
 		
@@ -20,14 +22,4 @@ public class RemoveAuditorCallbackImpl extends AuditorCallbackImpl {
 	protected String geraDadosAuditados() {
 		return new DadosAuditados(new Object[]{getEntidade()}, null).gera();
 	}
-	
-	@Override
-	protected void inicializa(MetodoInterceptado metodo) {
-		setEntidade(carregaEntidade(metodo));
-		setModulo(metodo.getModulo());
-		setOperacao(metodo.getOperacao());
-		setDados(geraDadosAuditados());
-		setChave(getChaveNaEntidade());
-	}
-
 }

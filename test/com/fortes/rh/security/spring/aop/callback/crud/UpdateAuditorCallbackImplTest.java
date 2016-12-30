@@ -37,7 +37,7 @@ public class UpdateAuditorCallbackImplTest extends TestCase {
 		evento.setId(2L);
 		evento.setNome("Minha Festa 2010");
 		
-		MethodInvocation metodoUpdate = new MethodInvocationDefault<SomeManager>("update", SomeManager.class, new Object[]{evento}, new SomeManagerImpl(), null);
+		MethodInvocation metodoUpdate = new MethodInvocationDefault<SomeManager>("update", SomeManager.class, new Object[]{evento}, new SomeManagerImpl());
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(metodoUpdate));
 		
 		assertEquals("Cadastro de Bugigangas", auditavel.getModulo());

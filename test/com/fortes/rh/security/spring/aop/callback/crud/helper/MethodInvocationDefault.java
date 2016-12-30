@@ -12,15 +12,13 @@ public class MethodInvocationDefault<M> implements MethodInvocation {
 	private Class<M> classManager;
 	private Object[] params;
 	private M manager;
-	private Object retorno;
 	
-	public MethodInvocationDefault(String metodo, Class<M> classManager, Object[] params, M manager, Object retorno) {
+	public MethodInvocationDefault(String metodo, Class<M> classManager, Object[] params, M manager) {
 		super();
 		this.metodo = metodo;
 		this.classManager = classManager;
 		this.params = params;
 		this.manager = manager;
-		this.retorno = retorno;
 	}
 	
 	public Method getMethod() {
@@ -36,7 +34,7 @@ public class MethodInvocationDefault<M> implements MethodInvocation {
 		return getManager();
 	}
 	public Object proceed() throws Throwable {
-		return getRetorno();
+		return null;
 	}
 
 	// Gets e Sets
@@ -70,13 +68,5 @@ public class MethodInvocationDefault<M> implements MethodInvocation {
 
 	public void setManager(M manager) {
 		this.manager = manager;
-	}
-
-	public Object getRetorno() {
-		return retorno;
-	}
-
-	public void setRetorno(Object retorno) {
-		this.retorno = retorno;
 	}
 }

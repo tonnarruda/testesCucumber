@@ -10,6 +10,7 @@ import net.vidageek.mirror.dsl.Mirror;
 import com.fortes.model.AbstractModel;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 
+@SuppressWarnings("deprecation")
 public class ChaveNaEntidade {
 
 	private final AbstractModel entidade;
@@ -40,8 +41,9 @@ public class ChaveNaEntidade {
 									}
 								});
 		
-		if (fields.isEmpty())
+		if (fields.isEmpty()){
 			return null;
+		}
 		
 		return (String) new Mirror()
 						.on(entidade)

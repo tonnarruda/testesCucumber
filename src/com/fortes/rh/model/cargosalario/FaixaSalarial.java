@@ -350,7 +350,11 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 
 	public String getDescricao()
 	{
-		descricao = this.cargo.getNome() + " " + this.nome;
+		if(this.cargo.getNome() != null)
+			descricao = this.cargo.getNome() + " " + this.nome;
+		else
+			descricao = this.nome;
+			
 		return descricao;
 	}
 	

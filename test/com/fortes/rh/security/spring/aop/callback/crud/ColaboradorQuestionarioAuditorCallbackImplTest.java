@@ -38,7 +38,7 @@ public class ColaboradorQuestionarioAuditorCallbackImplTest {
 		
 		when(colaboradorQuestionarioManager.findByIdProjection(1L)).thenReturn(colabQuestionario);
 
-		MethodInvocation deleteRespostaAvaliacaoDesempenho = new MethodInvocationDefault<ColaboradorQuestionarioManager>("deleteRespostaAvaliacaoDesempenho", ColaboradorQuestionarioManager.class, new Object[]{1L}, colaboradorQuestionarioManager, null);
+		MethodInvocation deleteRespostaAvaliacaoDesempenho = new MethodInvocationDefault<ColaboradorQuestionarioManager>("deleteRespostaAvaliacaoDesempenho", ColaboradorQuestionarioManager.class, new Object[]{1L}, colaboradorQuestionarioManager);
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(deleteRespostaAvaliacaoDesempenho));
 
 		assertEquals("ColaboradorQuestionario", auditavel.getModulo());

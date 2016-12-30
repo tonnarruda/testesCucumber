@@ -29,14 +29,10 @@ public class InsertAuditorCallbackImplTest extends TestCase {
 	@SuppressWarnings("rawtypes")
 	public void testDeveriaProcessar() throws Throwable {
 		Evento eventoParam = new Evento();
-		eventoParam.setId(null);
+		eventoParam.setId(2L);
 		eventoParam.setNome("Natal");
 		
-		Evento eventoRetorno = new Evento();
-		eventoRetorno.setId(2L);
-		eventoRetorno.setNome("Natal");
-		
-		MethodInvocation metodoMockado = new MethodInvocationDefault<GenericManager>("save", GenericManager.class, new Object[]{eventoParam}, new EventoManagerImpl(), eventoRetorno);
+		MethodInvocation metodoMockado = new MethodInvocationDefault<GenericManager>("save", GenericManager.class, new Object[]{eventoParam}, new EventoManagerImpl());
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(metodoMockado));
 		
 		assertEquals("Cadastro de Eventos", auditavel.getModulo());

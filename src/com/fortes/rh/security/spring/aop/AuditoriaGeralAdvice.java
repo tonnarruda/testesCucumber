@@ -26,17 +26,23 @@ public class AuditoriaGeralAdvice implements MethodInterceptor {
 	}
 	
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		
-		logger.info("Auditando o método: " + invocation.getMethod());
-		
-		boolean hasLoggedUser = securityManager.hasLoggedUser();
-		if(!hasLoggedUser)
-			return invocation.proceed(); // executa sem auditoria
-		
-		MetodoInterceptado metodo = new MetodoInterceptadoImpl(invocation);
-		
-		Object resultado = this.audita(metodo);
-		return resultado;
+		try {
+			logger.info("Auditando o método: " + invocation.getMethod());
+
+			boolean hasLoggedUser = securityManager.hasLoggedUser();
+			if(!hasLoggedUser)
+				return invocation.proceed(); // executa sem auditoria
+
+			MetodoInterceptado metodo = new MetodoInterceptadoImpl(invocation);
+
+			Object resultado = this.audita(metodo);
+			return resultado;
+
+		} catch (Exception e) {
+			System.out.println("Auditoria não funcionou.");
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	private Object audita(MetodoInterceptado metodo) throws Throwable {
