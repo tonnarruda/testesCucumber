@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.xxx.xxx" db="" data="xx/xx/2017">
+		<Item visivel="N" motivo="S16110000326"><![CDATA[Ajuste no Json de candidatos da tapa seletiva "LIBERADO PARA ESCALA" para retorna somente candidatos aptos e não contratados.]]></Item>
+	</Versao>
 	<Versao id="1.1.175.207" db="" data="29/12/2016">
 		<Item visivel="S" motivo="S16090000189"><![CDATA[R&S > Cadastros > Candidatos > Experiência > Experiência Profissional: Novo campo para inserir o contato da empresa]]></Item>
 		<Item visivel="S" motivo="S16060000017"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novo filtro por "Período de Encerramento da Solicitação".]]></Item>
