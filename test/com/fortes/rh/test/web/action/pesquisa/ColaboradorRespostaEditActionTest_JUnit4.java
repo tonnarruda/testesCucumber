@@ -52,8 +52,8 @@ public class ColaboradorRespostaEditActionTest_JUnit4
 		when(colaboradorQuestionarioManager.isRespondeuPesquisaByColaboradorIdAndQuestionarioId(colaborador.getId(), questionario.getId())).thenReturn(false);
 		
 		assertEquals(Action.SUCCESS, colaboradorRespostaEditAction.salvaQuestionarioRespondido());
-		assertEquals("Respostas gravadas com sucesso.", colaboradorRespostaEditAction.getActionMsg());
-		assertEquals("../../sesmt/fichaMedica/listPreenchida.action?actionMsg=Respostas gravadas com sucesso.", colaboradorRespostaEditAction.getRetorno());
+		assertEquals("Respostas&nbsp;gravadas&nbsp;com&nbsp;sucesso.", colaboradorRespostaEditAction.getActionMsg());
+		assertEquals("../../sesmt/fichaMedica/listPreenchida.action?actionMsg=Respostas&nbsp;gravadas&nbsp;com&nbsp;sucesso.", colaboradorRespostaEditAction.getRetorno());
 	}
 	
 	@Test
@@ -71,8 +71,8 @@ public class ColaboradorRespostaEditActionTest_JUnit4
 		when(colaboradorQuestionarioManager.isRespondeuPesquisaByColaboradorIdAndQuestionarioId(colaborador.getId(), questionario.getId())).thenReturn(false);
 		
 		assertEquals(Action.SUCCESS, colaboradorRespostaEditAction.salvaQuestionarioRespondido());
-		assertEquals("Respostas gravadas com sucesso.", colaboradorRespostaEditAction.getActionMsg());
-		assertEquals("../../index.action?actionMsg=Respostas gravadas com sucesso.", colaboradorRespostaEditAction.getRetorno());
+		assertEquals("Respostas%20gravadas%20com%20sucesso.", colaboradorRespostaEditAction.getActionMsg());
+		assertEquals("../../index.action?actionMsg=Respostas%20gravadas%20com%20sucesso.", colaboradorRespostaEditAction.getRetorno());
 	}
 	
 	@Test
@@ -88,6 +88,6 @@ public class ColaboradorRespostaEditActionTest_JUnit4
 		when(colaboradorQuestionarioManager.isRespondeuPesquisaByColaboradorIdAndQuestionarioId(colaborador.getId(), questionario.getId())).thenReturn(true);
 		
 		assertEquals("colaboradorQuestionario", colaboradorRespostaEditAction.salvaQuestionarioRespondido());
-		assertEquals("Não foi possível gravar as respostas, pois a pesquisa já possui resposta.", colaboradorRespostaEditAction.getActionMsg());
+		assertEquals("Não%20foi%20possível%20gravar%20as%20respostas,%20pois%20a%20pesquisa%20já%20possui%20resposta.", colaboradorRespostaEditAction.getActionMsg());
 	}
 }
