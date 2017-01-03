@@ -32,7 +32,7 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 			ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
 			for (int i=0; i<colaboradorTurmaIds.length; i++)
 			{
-				Double valor = 0.0;
+				Double valor = null;
 				if (!notas[i].equals(""))
 					valor = Double.parseDouble(notas[i].replace(',', '.'));
 				

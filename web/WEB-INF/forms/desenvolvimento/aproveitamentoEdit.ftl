@@ -21,7 +21,7 @@
 			
 			$('#helpMedia').qtip({
 				style: { width: true, height: true },
-				content: "Média = (Soma das notas dos participantes) / (qtd total de participantes)</br>Obs: Os participantes que estiverem sem nota serão considerado com nota </br> 0(zero) para o cálculo."
+				content: "Média = (Soma das notas dos participantes) / (qtd total de participantes)</br>Obs: Os participantes que estiverem sem nota não serão considerado para o cálculo."
 			});
 		});
 		
@@ -170,10 +170,16 @@
 							</#if>
 						</a>
 					<#else>
-						<#assign valorNota = -1/>
+						<#assign valorNota = "-1"/>
 						<#list aproveitamentos as aproveitamento>
 							<#if aproveitamento.colaboradorTurma.id == colaboradorTurma.id>
-								<#assign valorNota = aproveitamento.valor />
+								
+								<#if aproveitamento.valor?exists>
+									<#assign valorNota = aproveitamento.valor />
+								<#else>
+									<#assign valorNota = ""/>
+								</#if>
+								
 								<#if !colaboradorTurma.certificadoEmTurmaPosterior>
 									<@ww.textfield id="nota_${colaboradorTurma.id}" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value); calculaMediaDasNotas();"/>
 								<#else>
@@ -182,7 +188,7 @@
 								</#if>
 							</#if>
 						</#list>
-						<#if valorNota == -1 >
+						<#if valorNota?string == "-1" >
 							<@ww.textfield id="nota_${colaboradorTurma.id}" name="notas" value="" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value);"/>
 						</#if>
 					</#if>
