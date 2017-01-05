@@ -156,6 +156,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		setVideoAjuda(1292L);
+		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		return Action.SUCCESS;
 	}
@@ -235,6 +237,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	public String prepareCompetenciasByCandidato()
 	{
+		setVideoAjuda(1294L);
 		setVideoAjuda(571L);
 		
 		candidato = candidatoManager.findByCandidatoId(candidato.getId());

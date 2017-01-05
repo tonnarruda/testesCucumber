@@ -24,7 +24,7 @@ public abstract class MyActionSupport extends ActionSupport
 	
 	private Empresa empresaSistema = null;
 	private Usuario usuarioSistema = null;
-	private Long videoAjuda = null;
+	private Collection<Long> videosAjuda = null;
 	private String actionErr = null;
 	private String actionMsg = null;
 	private String versao = null;
@@ -109,14 +109,17 @@ public abstract class MyActionSupport extends ActionSupport
 		return StringUtil.encodeString(calculoHash.toString());
 	}
 
-	public Long getVideoAjuda() 
+	public Collection<Long> getVideosAjuda() 
 	{
-		return videoAjuda;
+		return videosAjuda;
 	}
 
 	public void setVideoAjuda(Long videoAjuda) 
 	{
-		this.videoAjuda = videoAjuda;
+		if(videosAjuda == null)
+			videosAjuda = new ArrayList<Long>();
+		
+		videosAjuda.add(videoAjuda);
 	}
 
 	public Collection<String> getActionWarnings() 

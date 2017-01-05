@@ -133,10 +133,12 @@
 			<#if title != "">
 				<div id="waDivTitulo">
 					${title}
-					<#if videoAjuda?exists>
-						<span style="margin-top: -9px;">
-							<img title="Vídeo de ajuda" onclick="javascript:popupVideo(${videoAjuda}, '${calculoHash}');" src="<@ww.url includeParams="none" value="/imgs/video.png"/>" style="cursor:pointer;" />
-						</span>
+					<#if videosAjuda?exists>
+						<#list videosAjuda as videoAjuda> 					
+							<span style="margin-top: -9px;">
+								<img title="Vídeo de ajuda" onclick="javascript:popupVideo(${videoAjuda}, '${calculoHash}');" src="<@ww.url includeParams="none" value="/imgs/video.png"/>" style="cursor:pointer;" />
+							</span>
+						</#list>
 					</#if>
 					<#if msgHelp?exists>
 						<img  id="tooltipHelp" height="17" width="17" align="right" src="<@ww.url includeParams="none" value="/imgs/infoHelp.png"/>" style="cursor:pointer;"/>
