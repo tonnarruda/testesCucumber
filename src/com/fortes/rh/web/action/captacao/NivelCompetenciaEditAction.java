@@ -238,7 +238,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public String prepareCompetenciasByCandidato()
 	{
 		setVideoAjuda(1294L);
-		setVideoAjuda(571L);
 		
 		candidato = candidatoManager.findByCandidatoId(candidato.getId());
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
