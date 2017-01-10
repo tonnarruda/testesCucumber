@@ -97,10 +97,6 @@
 			<div id="newsList" style="display:none">
 				<ul></ul>
 			</div>
-			
-			<div id="newsDetails" style="display:none">
-				<iframe width="960" height="480"></iframe>
-			</div>
 		</div>
 		
 		<#if REG_MSG?exists && REG_MSG != "">

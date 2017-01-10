@@ -72,6 +72,7 @@ $(function(){
 				if (i%2 != 0)
 					clss += ' even';
 				
+				$('#news').append('<div id="newsDetails-' + noticia.id + '" style="display:none"><iframe width="960" height="480"></iframe></div>');
 				$('#newsList ul:first').append('<li class="' + clss + '" id="noticia-' + noticia.id + '" link="' + noticia.link + '">' + noticia.texto + '</li>');
 			});
 			
@@ -84,13 +85,15 @@ $(function(){
 			
 			$('#newsList li').click(function(event) {
 				var that = $(this);
+				var id = that.attr('id').replace('noticia-','');
 				
-				$('#newsDetails').dialog({ 
+				$('#newsDetails-' + id ).dialog({ 
 					modal: true, 
 					width: 980, 
 					title: that.text(), 
 					open: function(event, ui) {
-						$('#newsDetails iframe').attr('src', baseUrl + 'detalheNoticia.action?noticia.id=' + that.attr('id').replace('noticia-','') + '&noticia.link=' + that.attr('link'));
+						console.log(baseUrl + 'detalheNoticia.action?noticia.id=' + id + '&noticia.link=' + that.attr('link'));
+						$('#newsDetails-' + id + ' iframe').attr('src', baseUrl + 'detalheNoticia.action?noticia.id=' + id + '&noticia.link=' + that.attr('link'));
 						$('#' + that.attr('id')).removeClass('unread');
 						showQtdNoticiasNaoLidas();
 					},
@@ -100,8 +103,15 @@ $(function(){
 				});
 			});
 			
-			if ( pgInicial && $('#newsList li').filter('.criticidade-0.unread').size() > 0 )
+			if ( pgInicial && ($('#newsList li').filter('.criticidade-0.unread').size() > 0 || $('#newsList li').filter('.criticidade--1.unread').size() > 0 ))
 				$('#newsIcon').click();
+			
+			if(pgInicial){
+				$(ultimasNoticias).each(function(i, noticia) {
+					if(!noticia.lida && (noticia.criticidade == 0 || noticia.criticidade == -1 ))
+						$('#noticia-' + noticia.id).click();
+				});
+			}
 		}
 	} catch(e) { console.log(e); }
 });
