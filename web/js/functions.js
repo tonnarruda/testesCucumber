@@ -295,10 +295,10 @@ function validaCamposObrigatorios(campos, formulario)
 		}
 
 		campo = document.getElementById(nameCampo);
-		campoClass = campo.className;
 
 		if(campo)
 		{
+			campoClass = campo.className;
 
 			// valida campos
 			if(campoClass == "listCheckBox" && qtdeChecksSelected(document.getElementsByName(formulario)[0], nameCampoSemIdentificador) != 0)

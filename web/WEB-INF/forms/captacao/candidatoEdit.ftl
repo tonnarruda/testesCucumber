@@ -566,7 +566,7 @@
 				<@ww.div id="wwgrp_endereco" cssClass="campo">
 					<ul>
 						<@ww.textfield label="CEP" name="candidato.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft" />
-						<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" id="ende" cssStyle="width: 300px;" maxLength="40" liClass="liLeft" onblur="${capitalizar}"/>
+						<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" id="endereco" cssStyle="width: 300px;" maxLength="40" liClass="liLeft" onblur="${capitalizar}"/>
 						<@ww.textfield label="Nº" name="candidato.endereco.numero" id="num" cssStyle="width:40px;" maxLength="8" liClass="liLeft" onblur="${capitalizar}"/>
 						<@ww.textfield label="Complemento" name="candidato.endereco.complemento" id="complemento" cssStyle="width: 250px;" maxLength="20" onblur="${capitalizar}" liClass="liLeft" />
 			

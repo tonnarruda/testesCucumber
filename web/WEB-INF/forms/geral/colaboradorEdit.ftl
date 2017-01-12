@@ -629,7 +629,7 @@
 			<@ww.div id="msgCPFDuplicado" cssStyle="display:none;"></@ww.div>
 			<@ww.div id="wwgrp_endereco" cssClass="campo">
 				<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft" />
-				<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="ende" cssStyle="width: 300px;" liClass="liLeft" maxLength="40"/>
+				<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="endereco" cssStyle="width: 300px;" liClass="liLeft" maxLength="40"/>
 				<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" cssStyle="width:40px;" liClass="liLeft" maxLength="10"/>
 				<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" id="complemento" cssStyle="width: 205px;" maxLength="20"/>
 				<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
@@ -785,7 +785,7 @@
 				<@ww.div id="wwgrp_identidade" cssClass="campo">
 					<ul>
 						<b><@ww.label label="Identidade" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.rg" id="rg" cssStyle="width: 106px;" maxLength="15" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));" />
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.rg" id="identidade" cssStyle="width: 106px;" maxLength="15" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));" />
 				  	   	<@ww.textfield label="Órgão Emissor" name="colaborador.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="10" liClass="liLeft" />
 				       	<@ww.select label="Estado" name="colaborador.pessoal.rgUf.id" id="rgUf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 				      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.rgDataExpedicao" id="rgDataExpedicao" cssClass="mascaraData" value="${rgDataExpedicao}"/>
@@ -810,7 +810,7 @@
 				<@ww.div id="wwgrp_tituloEleitoral" cssClass="campo">
 					<ul>
 						<b><@ww.label label="Título Eleitoral" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.tituloEleitoral.titEleitNumero" id="titEleitNumero" cssStyle="width: 95px;" maxLength="13" liClass="liLeft"/>
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.tituloEleitoral.titEleitNumero" id="tituloEleitoral" cssStyle="width: 95px;" maxLength="13" liClass="liLeft"/>
 				    	<@ww.textfield label="Zona" name="colaborador.pessoal.tituloEleitoral.titEleitZona" id="titEleitZona" cssStyle="width: 95px;" maxLength="3" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
 				    	<@ww.textfield label="Seção" name="colaborador.pessoal.tituloEleitoral.titEleitSecao" id="titEleitSecao" cssStyle="width: 95px;" maxLength="4" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
 				    	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
@@ -821,7 +821,7 @@
 				<@ww.div id="wwgrp_certificadoMilitar" cssClass="campo">
 					<ul>
 						<b><@ww.label label="Certificado Militar" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.certificadoMilitar.certMilNumero" id="certMilNumero" cssStyle="width: 88px;" maxLength="12" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.certificadoMilitar.certMilNumero" id="certificadoMilitar" cssStyle="width: 88px;" maxLength="12" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
 				    	<@ww.textfield label="Tipo" name="colaborador.pessoal.certificadoMilitar.certMilTipo" id="certMilTipo" cssStyle="width: 38px;" maxLength="5" liClass="liLeft"/>
 				    	<@ww.textfield label="Série" name="colaborador.pessoal.certificadoMilitar.certMilSerie" id="certMilSerie" cssStyle="width: 88px;" maxLength="12"/>
 				    	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
@@ -832,7 +832,7 @@
 				<@ww.div >
 					<ul>
 						<b><@ww.label label="CTPS - Carteira de Trabalho e Previdência Social" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.ctps.ctpsNumero" id="ctpsNumero" cssStyle="width: 58px;" maxLength="8" liClass="liLeft"/>
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.ctps.ctpsNumero" id="ctps" cssStyle="width: 58px;" maxLength="8" liClass="liLeft"/>
 				    	<@ww.textfield label="Série" name="colaborador.pessoal.ctps.ctpsSerie" id="ctpsSerie" cssStyle="width: 38px;" maxLength="6" liClass="liLeft"/>
 				    	<@ww.textfield label="DV" name="colaborador.pessoal.ctps.ctpsDv" id="ctpsDv" cssStyle="width: 11px;" maxLength="1" liClass="liLeft"/>
 				       	<@ww.select label="Estado" name="colaborador.pessoal.ctps.ctpsUf.id" id="ctpsUf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>

@@ -485,6 +485,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public String prepareContrata() throws Exception
 	{
+		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		if(idCandidato != null && (candidato == null || candidato.getId() == null))
 		{
 			candidato = new Candidato();
