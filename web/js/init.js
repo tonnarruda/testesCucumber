@@ -92,7 +92,6 @@ $(function(){
 					width: 980, 
 					title: that.text(), 
 					open: function(event, ui) {
-						console.log(baseUrl + 'detalheNoticia.action?noticia.id=' + id + '&noticia.link=' + that.attr('link'));
 						$('#newsDetails-' + id + ' iframe').attr('src', baseUrl + 'detalheNoticia.action?noticia.id=' + id + '&noticia.link=' + that.attr('link'));
 						$('#' + that.attr('id')).removeClass('unread');
 						showQtdNoticiasNaoLidas();
