@@ -5339,7 +5339,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.executeUpdate();
 	}
 
-	public Collection<ColaboradorJson> getColaboradoresJson(String baseCnpj, Long colaboradorId) {
+	public Collection<ColaboradorJson> getColaboradoresJson(String baseCnpj, Long colaboradorId, String colaboradorMatricula) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new com.fortes.rh.model.json.ColaboradorJson(c.id, c.nome, c.pessoal.dataNascimento, c.pessoal.sexo, c.pessoal.cpf, c.pessoal.rg, uf.sigla, cid.nome, c.endereco.cep, ");
 		hql.append(" c.endereco.logradouro, c.endereco.numero, c.endereco.bairro, c.contato.email, c.contato.ddd, c.contato.foneFixo, c.pessoal.escolaridade, c.pessoal.mae, c.pessoal.pai, c.matricula, c.vinculo, ");
@@ -5367,6 +5367,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		if(colaboradorId != null)
 			hql.append("and c.id = :colaboradorId ");
+		
+		if(colaboradorMatricula != null && !"".equals(colaboradorMatricula))
+			hql.append("and c.matricula = :colaboradorMatricula ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
@@ -5375,7 +5378,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if(colaboradorId != null)
 			query.setLong("colaboradorId", colaboradorId);
-
+		
+		if(colaboradorMatricula != null && !"".equals(colaboradorMatricula))
+			query.setString("colaboradorMatricula", colaboradorMatricula);
+		
 		return query.list();
 	}
 	

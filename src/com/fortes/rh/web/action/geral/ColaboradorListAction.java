@@ -212,6 +212,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private String json;
 	private String baseCnpj;
 	private Long colaboradorId;
+	private String colaboradorMatricula;
 	
 	private boolean agruparPorArea;
 
@@ -1019,7 +1020,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		HttpServletRequest req = (HttpServletRequest) ctx.get(ServletActionContext.HTTP_REQUEST);
 		String token = req.getHeader(Hash.getNomeParametro());
 		if(token != null && token.equals(Hash.getValorHash())){
-			Collection<ColaboradorJson> colaboradoresJson = colaboradorManager.getColaboradoresJson(baseCnpj, colaboradorId);
+			Collection<ColaboradorJson> colaboradoresJson = colaboradorManager.getColaboradoresJson(baseCnpj, colaboradorId, colaboradorMatricula);
 			json = StringUtil.toJSON(colaboradoresJson, new String[]{});
 		}
 		else{
@@ -1888,5 +1889,9 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public String getDinPropertiesGroup() {
 		return dinPropertiesGroup;
+	}
+
+	public void setColaboradorMatricula(String colaboradorMatricula) {
+		this.colaboradorMatricula = colaboradorMatricula;
 	}
 }

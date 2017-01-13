@@ -154,7 +154,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findColaboradorComESemOrdemDeServico(Colaborador colaborador, HistoricoColaborador historicoColaborador, Long[] areaIds, String situacao, String filtroOrdemDeServico, int page, int pagingSize);
 	public Colaborador findComDadosBasicosParaOrdemDeServico( Long colaboradorId, Date dataOrdemDeServico);
 	public void updateRespondeuEntrevistaDesligamento(Long colaboradorId, boolean respondeuEntrevistaDesligamento);
-	public Collection<ColaboradorJson> getColaboradoresJson(String baseCnpj, Long colaboradorId);
+	public Collection<ColaboradorJson> getColaboradoresJson(String baseCnpj, Long colaboradorId, String colaboradorMatricula);
 	public Collection<Colaborador> findByAreasIds(Long... areasIds);
 	public Collection<Colaborador> findAniversariantesPorTempoDeEmpresa(int mes, boolean agruparPorArea, Long[] empresaIds, Long[] estabelecimentoIds, Long[] areaIds);
 }

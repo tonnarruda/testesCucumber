@@ -142,8 +142,8 @@ public class ColaboradorManagerTest_Junit4
     	Long colaboradorId = 1L;
     	
 		Collection<ColaboradorJson> colaboradoresJson = Arrays.asList(new ColaboradorJson());
-		when(colaboradorDao.getColaboradoresJson(baseCnpj, colaboradorId)).thenReturn(colaboradoresJson);
-		assertEquals(colaboradoresJson, colaboradorManager.getColaboradoresJson(baseCnpj, colaboradorId));
+		when(colaboradorDao.getColaboradoresJson(baseCnpj, colaboradorId, null)).thenReturn(colaboradoresJson);
+		assertEquals(colaboradoresJson, colaboradorManager.getColaboradoresJson(baseCnpj, colaboradorId, null));
     }
     
     @Test(expected=ColecaoVaziaException.class)

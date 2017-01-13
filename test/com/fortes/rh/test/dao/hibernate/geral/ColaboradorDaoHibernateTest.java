@@ -7042,7 +7042,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 	}
 	
 	@Test
-	public void testGetColaboradoresJson(){
+	public void testGetColaboradoresJsonColabId(){
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -7057,7 +7057,28 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		
 		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, colaborador.getDataAdmissao(), StatusRetornoAC.CONFIRMADO);
 		
-		Collection<ColaboradorJson> colaboradoresJson = colaboradorDao.getColaboradoresJson(empresa.getCnpj(), colaborador.getId());
+		Collection<ColaboradorJson> colaboradoresJson = colaboradorDao.getColaboradoresJson(empresa.getCnpj(), colaborador.getId(), null);
+		assertEquals(1, colaboradoresJson.size());
+	}
+	
+	@Test
+	public void testGetColaboradoresJsonColabMatricula(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaborador.setMatricula("123456");
+		colaboradorDao.save(colaborador);
+		
+		Cargo cargo = saveCargo();
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		
+		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, colaborador.getDataAdmissao(), StatusRetornoAC.CONFIRMADO);
+		
+		Collection<ColaboradorJson> colaboradoresJson = colaboradorDao.getColaboradoresJson(empresa.getCnpj(), null, colaborador.getMatricula());
 		assertEquals(1, colaboradoresJson.size());
 	}
 	

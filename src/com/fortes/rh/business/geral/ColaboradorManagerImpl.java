@@ -3020,8 +3020,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().updateRespondeuEntrevistaDesligamento(colaboradorId, respondeuEntrevistaDesligamento);
 	}
 	
-	public Collection<ColaboradorJson> getColaboradoresJson(String baseCnpj, Long colaboradorId) {
-		return getDao().getColaboradoresJson(baseCnpj, colaboradorId);
+	public Collection<ColaboradorJson> getColaboradoresJson(String baseCnpj, Long colaboradorId, String colaboradorMatricula) {
+		return getDao().getColaboradoresJson(baseCnpj, colaboradorId, colaboradorMatricula);
 	}
 
 	public Collection<Colaborador> findAniversariantesPorTempoDeEmpresa(int mes, boolean agruparPorArea, Long[] empresaIds, Long[] estabelecimentoIds, Long[] areaIds) throws Exception {
