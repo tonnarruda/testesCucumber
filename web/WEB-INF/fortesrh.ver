@@ -10,6 +10,7 @@
 		<Item visivel="N" motivo="S16110000326"><![CDATA[Ajuste no Json de candidatos da tapa seletiva "LIBERADO PARA ESCALA" para retorna somente candidatos aptos e não contratados.]]></Item>
 		<Item visivel="N" motivo="S16120000286"><![CDATA[Contatos: Remover contato inexistente "Suporte RH - Segmento de Transporte: (85) 4005.1120".]]></Item>
 		<Item visivel="N" motivo="S16110000061"><![CDATA[Tela inicial: Abrir notícias do vitrine automaticamente caso estejam com prioridade alta ou altíssima.]]></Item>
+		<Item visivel="N" motivo="S17010000067"><![CDATA[Sistema: URL para retornar json de dados do colaborador passando a matricula do mesmo]]></Item>
 	</Versao>
 	<Versao id="1.1.175.207" db="" data="29/12/2016">
 		<Item visivel="S" motivo="S16090000189"><![CDATA[R&S > Cadastros > Candidatos > Experiência > Experiência Profissional: Novo campo para inserir o contato da empresa]]></Item>
