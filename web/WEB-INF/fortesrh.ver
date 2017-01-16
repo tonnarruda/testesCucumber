@@ -3,14 +3,14 @@
 	<Versao id="1.1.176.208" db="" data="18/01/2017">
 		<Item visivel="S" motivo="S17010000003"><![CDATA[R&S > Movimentações > solicitação de Pessoal > Candidatos da Seleção > Competências: Novo de vídeo de ajuda para avaliar as competências do candidato.]]></Item>
 		<Item visivel="S" motivo="S17010000004"><![CDATA[C&S > Cadastros > Níveis de Competência > Cadastro: Novo de vídeo de ajuda para cadastro de competências.]]></Item>
-		<Item visivel="N" motivo="P17010000027"><![CDATA[C&S > Relatórios > Matriz comparativa de competências de Colaborador X Cargo/Faixa: Ajuste de inconsistência ao gerar relatório.]]></Item>
+		<Item visivel="S" motivo="P17010000027"><![CDATA[C&S > Relatórios > Matriz comparativa de competências de Colaborador X Cargo/Faixa: Ajuste de inconsistência ao gerar relatório.]]></Item>
 		<Item visivel="S" motivo="P17010000030"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes > Inserir Avaliado/Inserir Avaliador: Ajuste na inconsistência ao visualizar a tela de inserir avaliados ou avaliadores.]]></Item>
 		<Item visivel="S" motivo="S16110000355"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações dos Alunos: Permitir manter a nota do colaborador em branco.]]></Item>
 		<Item visivel="S" motivo="S16120000208"><![CDATA[Utilitários > Auditoria: Ajuste na auditoria da exclusão de solicitação de atendimento médico.]]></Item>
 		<Item visivel="N" motivo="S16110000326"><![CDATA[Ajuste no json de candidatos da tapa seletiva "LIBERADO PARA ESCALA" para retorna somente candidatos aptos e não contratados.]]></Item>
 		<Item visivel="N" motivo="S16120000286"><![CDATA[Contatos: Remover contato inexistente "Suporte RH - Segmento de Transporte: (85) 4005.1120".]]></Item>
 		<Item visivel="N" motivo="S16110000061"><![CDATA[Tela inicial: Abrir notícias do vitrine automaticamente caso estejam com prioridade alta ou altíssima.]]></Item>
-		<Item visivel="N" motivo="S17010000067"><![CDATA[Sistema: URL para retornar json de dados do colaborador passando a matricula do mesmo]]></Item>
+		<Item visivel="N" motivo="S17010000067"><![CDATA[Sistema: URL para retornar json de dados do colaborador passando a matricula do mesmo.]]></Item>
 	</Versao>
 	<Versao id="1.1.175.207" db="" data="29/12/2016">
 		<Item visivel="S" motivo="S16090000189"><![CDATA[R&S > Cadastros > Candidatos > Experiência > Experiência Profissional: Novo campo para inserir o contato da empresa]]></Item>

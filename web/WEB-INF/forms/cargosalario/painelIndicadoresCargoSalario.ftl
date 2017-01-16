@@ -548,7 +548,7 @@
 					<li>&nbsp;</li>
 					<li><strong>Indicador de Salário por Área Organizacional</strong></li>
 					<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase"  cssClass="mascaraData" />
-					<@ww.select label="Área Organizacional" name="areaOrganizacioanal.id" list="areasCheckList" listKey="id" listValue="nome" headerValue="Selecione..." headerKey=""/>
+					<@ww.select label="Área Organizacional" name="areaOrganizacioanal.id" list="areasSelect" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey=""/>
 					<li>&nbsp;</li>
 					<li><strong>Indicadores de Evolução Salarial e Promoção</strong></li>
 				</div>

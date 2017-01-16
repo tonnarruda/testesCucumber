@@ -173,6 +173,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Long[] empresasPermitidas;
 	private String voltar;
 	
+	private Collection<AreaOrganizacional> areasSelect = new ArrayList<AreaOrganizacional>();
+	
 	public String painelIndicadores() throws Exception
 	{
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
@@ -292,6 +294,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+		
+		areasSelect = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.ATIVA, null, empresa.getId());
+		areasSelect = areaOrganizacionalManager.montaFamilia(areasSelect);
+		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
+		areasSelect = cu1.sortCollectionStringIgnoreCase(areasSelect, "descricao");
 		
 		areasPieChartCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
 		areasPieChartCheckList = CheckListBoxUtil.marcaCheckListBox(areasPieChartCheckList, areasPieChartCheck);
@@ -1304,5 +1311,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setVoltar(String voltar) {
 		this.voltar = voltar;
+	}
+
+	public Collection<AreaOrganizacional> getAreasSelect() {
+		return areasSelect;
 	}
 }
