@@ -24954,3 +24954,23 @@ insert into migrations values('20161216140000');--.go
 alter table experiencia add column contatoEmpresa character varying(15); --.go
 insert into migrations values('20161226145507');--.go
 update parametrosdosistema set appversao = '1.1.175.207';--.go
+-- versao 1.1.176.208
+
+
+CREATE OR REPLACE FUNCTION deixarTodasAsMensagensComoLidas() RETURNS integer AS $$   
+DECLARE  
+mv RECORD;  
+BEGIN  
+	FOR mv IN  
+		select id as usuarioId from usuario 
+	LOOP 	 
+		insert into usuarionoticia (id, usuario_id, noticia_id) select nextval('usuarionoticia_sequence'), mv.usuarioId, id from noticia where publicada = true;   
+	END LOOP;  
+	RETURN 1;  
+END;  
+$$ LANGUAGE plpgsql;--.go
+
+select deixarTodasAsMensagensComoLidas();--.go
+drop function deixarTodasAsMensagensComoLidas();--.go
+insert into migrations values('20170113094832');--.go
+update parametrosdosistema set appversao = '1.1.176.208';--.go

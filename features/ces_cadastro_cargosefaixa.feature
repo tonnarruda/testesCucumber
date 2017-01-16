@@ -109,4 +109,4 @@ Funcionalidade: Cadastrar Cargos e Faixas
 
     Então eu clico em excluir "_Analista"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "possui dependências em"
+    Então eu devo ver "Cargo excluído com sucesso"

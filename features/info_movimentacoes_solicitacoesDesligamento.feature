@@ -98,8 +98,9 @@ Funcionalidade: Cadastrar Colaborador
     Então eu devo ver o título "Colaboradores"
     E eu devo ver "Solicitação de desligamento cadastrada com sucesso."
 
-    Então eu clico na linha "Loira do Tchan" da imagem "Colaborador já desligado"
-    E eu devo ver o título "Colaborador Desligado"
+    Então eu clico na linha "Loira do Tchan (Desligado em 13/09/2013)" da imagem "Colaborador já desligado"
+    E eu espero 1 segundos
+    E eu devo ver "Colaborador Desligado"
     E eu devo ver "Loira do Tchan"
     E eu clico no botão "ImprimirPdf"
     E eu espero 2 segundos

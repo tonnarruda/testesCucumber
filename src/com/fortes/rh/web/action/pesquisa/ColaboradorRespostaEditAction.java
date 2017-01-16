@@ -220,7 +220,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         	retorno = "../../index.action?actionMsg="+actionMsg;
             return Action.SUCCESS;
         } else if(voltarPara.equals("../../sesmt/fichaMedica/prepareInsertFicha.action") || voltarPara.equals("../../sesmt/fichaMedica/listPreenchida.action"))  {
-        	actionMsg = "Respostas&nbsp;gravadas&nbsp;com&nbsp;sucesso.";
+        	actionMsg = "Respostas%20gravadas%20com%20sucesso.";
         	retorno = voltarPara + "?actionMsg=" +actionMsg;
         	return Action.SUCCESS;
         } else {
