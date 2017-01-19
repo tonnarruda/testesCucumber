@@ -24,8 +24,6 @@ public class GastoEmpresaItemEditAction extends MyActionSupportEdit implements M
 
 	private Collection<Gasto> gastos;
 
-	private String msgAlert = "";
-
 	public String execute() throws Exception
 	{
 		return Action.SUCCESS;
@@ -142,15 +140,5 @@ public class GastoEmpresaItemEditAction extends MyActionSupportEdit implements M
 	public void setGastos(Collection<Gasto> gastos)
 	{
 		this.gastos = gastos;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
 	}
 }

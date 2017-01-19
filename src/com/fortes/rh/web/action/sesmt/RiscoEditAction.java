@@ -29,7 +29,6 @@ public class RiscoEditAction extends MyActionSupportList
 	private String[] episCheck;
 	private Risco risco;
 	private Map<String, String> grupoRiscos;
-	private String msgAlert;
 	
 	private Collection<Risco> riscos;
 
@@ -224,16 +223,7 @@ public class RiscoEditAction extends MyActionSupportList
 		this.epis = epis;
 	}
 
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-	
 	public Collection<Risco> getRiscos() {
 		return riscos;
-	}
-
-	public void setMsgAlert(String msgAlert) {
-		this.msgAlert = msgAlert;
 	}
 }

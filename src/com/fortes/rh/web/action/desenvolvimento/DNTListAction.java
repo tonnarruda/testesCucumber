@@ -38,8 +38,6 @@ public class DNTListAction extends MyActionSupportList
 	private Collection<Estabelecimento> estabelecimentos;
 	private Estabelecimento estabelecimento;
 
-	private String msgAlert = "";
-
 	private DNT dnt;
 
 	private Usuario responsavelArea = null;
@@ -267,16 +265,6 @@ public class DNTListAction extends MyActionSupportList
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
 	}
 
 	public boolean isGestor()

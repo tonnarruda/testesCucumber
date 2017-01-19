@@ -38,8 +38,6 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 	
 	private String[] emailsNotificacoes;
 
-	private String msgAlert;
-
 	public String execute() throws Exception
 	{
 		prepare();
@@ -193,16 +191,6 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 	public void setPodeEditarAreaMae(boolean podeEditarAreaMae)
 	{
 		this.podeEditarAreaMae = podeEditarAreaMae;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
 	}
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)

@@ -20,18 +20,6 @@ public class HistoricoColaboradorBeneficioListAction extends MyActionSupportList
 	private HistoricoColaboradorBeneficio historicoColaboradorBeneficio;
 	private Colaborador colaborador;
 
-	private String msgAlert = "";
-
-	public String getMsgAlert()
-	{
-		return this.msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
-	}
-
 	public String execute() throws Exception
 	{
 		return Action.SUCCESS;

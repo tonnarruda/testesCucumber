@@ -12,8 +12,6 @@ public class TamanhoEPIEditAction extends MyActionSupportEdit
 
 	private TamanhoEPI tamanhoEPI;
 
-	private String msgAlert;
-
 	public String execute() throws Exception {
 		return Action.SUCCESS;
 	}
@@ -48,16 +46,6 @@ public class TamanhoEPIEditAction extends MyActionSupportEdit
 		if(tamanhoEPI == null)
 			tamanhoEPI = new TamanhoEPI();
 		return tamanhoEPI;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
 	}
 
 	public TamanhoEPIManager getTamanhoEPIManager() {

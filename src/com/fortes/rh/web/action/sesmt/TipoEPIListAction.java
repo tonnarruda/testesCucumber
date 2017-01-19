@@ -17,8 +17,6 @@ public class TipoEPIListAction extends MyActionSupportList
 
 	private TipoEPI tipoEPI;
 
-	private String msgAlert = "";
-
 	public String execute() throws Exception {
 		return Action.SUCCESS;
 	}
@@ -74,15 +72,4 @@ public class TipoEPIListAction extends MyActionSupportList
 	public void setTipoEPIManager(TipoEPIManager tipoEPIManager){
 		this.tipoEPIManager=tipoEPIManager;
 	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
-	}
-
 }

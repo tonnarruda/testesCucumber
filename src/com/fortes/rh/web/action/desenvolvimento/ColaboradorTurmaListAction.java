@@ -85,7 +85,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private Long areaFiltroId;
 
 	private boolean gestor;
-	private String msgAlert;
 	private Estabelecimento estabelecimento = new Estabelecimento();
 
 	private Collection<PrioridadeTreinamento> prioridadeTreinamentos;
@@ -144,16 +143,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private boolean exibeCargaHorariaEfetiva;
 	
 	private char filtroAgrupamento;
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
-	}
 
 	public String list() throws Exception
 	{

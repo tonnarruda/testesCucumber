@@ -38,6 +38,8 @@ public abstract class MyActionSupport extends ActionSupport
 	
 	public static String actionWarningsSessionKey = "__MessageStoreInterceptor_ActionWarnings_SessionKey";
     public static String actionSuccessSessionKey = "__MessageStoreInterceptor_ActionSuccess_SessionKey";
+    
+    public String msgAlert = "";
 
 	public Empresa getEmpresaSistema(){
 		if (empresaSistema == null)
@@ -70,7 +72,10 @@ public abstract class MyActionSupport extends ActionSupport
 
 	public String getActionMsg()
 	{
-		return actionMsg;
+		if(actionMsg != null)
+			return actionMsg.replace(" ", "%20");
+		else
+			return null;
 	}
 
 	public void setActionMsg(String actionMsg)
@@ -178,5 +183,18 @@ public abstract class MyActionSupport extends ActionSupport
 
 	public void setMsgHelp(String msgHelp) {
 		this.msgHelp = msgHelp;
+	}
+	
+	public String getMsgAlert()
+	{
+		if(msgAlert != null)
+			return msgAlert.replace(" ", "%20");
+		else
+			return null;
+	}
+
+	public void setMsgAlert(String msgAlert)
+	{
+		this.msgAlert = msgAlert;
 	}
 }

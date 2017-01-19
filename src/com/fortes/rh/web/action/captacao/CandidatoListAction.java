@@ -204,7 +204,6 @@ public class CandidatoListAction extends MyActionSupportList
 	// N - Não tem mensagem, E = Erro e O = Deu certo
 	private char msgDelete = 'N';
 	private String ordenar = "dataAtualizacao";
-	private String msgAlert = "";
 	private boolean BDS;
 
 	private Map<String, Object> parametros = new HashMap<String, Object>();
@@ -1351,16 +1350,6 @@ public class CandidatoListAction extends MyActionSupportList
 	public void setDataSource(Collection<CurriculoCandidatoRelatorio> dataSource)
 	{
 		this.dataSource = dataSource;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
 	}
 
 	public boolean isBDS()

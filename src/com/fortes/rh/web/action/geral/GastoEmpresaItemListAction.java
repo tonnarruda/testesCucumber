@@ -115,15 +115,4 @@ public class GastoEmpresaItemListAction extends MyActionSupportList
 	public void setGastoEmpresaItemManager(GastoEmpresaItemManager gastoEmpresaItemManager){
 		this.gastoEmpresaItemManager=gastoEmpresaItemManager;
 	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
-	}
-
 }

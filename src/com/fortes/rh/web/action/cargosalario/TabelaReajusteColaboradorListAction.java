@@ -19,7 +19,6 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors;
 
 	private TabelaReajusteColaborador tabelaReajusteColaborador;
-	private String msgAlert;
 
 	public String list() throws Exception 
 	{
@@ -107,15 +106,5 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 			ReajusteColaboradorManager reajusteColaboradorManager)
 	{
 		this.reajusteColaboradorManager = reajusteColaboradorManager;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
 	}
 }

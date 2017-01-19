@@ -40,8 +40,6 @@ public class EpiEditAction extends MyActionSupportEdit
 	private EpiHistorico epiHistorico;
 	private SolicitacaoEpi solicitacaoEpi;
 
-	private String msgAlert;
-
 	private Collection<TipoEPI> tipos;
 	private Collection<EpiHistorico> epiHistoricos;
 	private Collection<SolicitacaoEpiItemEntrega> dataSourceFichaEpi;
@@ -201,11 +199,6 @@ public class EpiEditAction extends MyActionSupportEdit
 	public void setEpiManager(EpiManager epiManager)
 	{
 		this.epiManager = epiManager;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
 	}
 
 	public void setTipoEPIManager(TipoEPIManager tipoEPIManager)

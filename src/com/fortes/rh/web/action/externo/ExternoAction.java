@@ -517,7 +517,10 @@ public class ExternoAction extends MyActionSupport
 
 	public String getMsg()
 	{
-		return msg;
+		if(msg != null)
+			return msg.replace(" ", "%20");
+		else
+			return null;
 	}
 
 	public void setMsg(String msg)

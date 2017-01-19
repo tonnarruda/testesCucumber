@@ -74,7 +74,6 @@ public class TurmaListAction extends MyActionSupportList
 
 	private Turma turma;
 	private Curso curso;
-	private String msgAlert = "";
 
 	private Collection<Turma> turmas;
 	private Collection<ColaboradorTurma> dataSource;
@@ -608,16 +607,6 @@ public class TurmaListAction extends MyActionSupportList
 	public void setCursoManager(CursoManager cursoManager)
 	{
 		this.cursoManager = cursoManager;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
 	}
 
 	public Collection<ColaboradorTurma> getDataSource()

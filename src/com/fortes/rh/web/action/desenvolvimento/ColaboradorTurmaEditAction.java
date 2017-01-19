@@ -107,7 +107,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	private static final int pagingSize = 10000;
 	private Integer totalSize;
 
-	private String msgAlert = "";
 	private char filtro;
 
 	private boolean gestor;
@@ -572,16 +571,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	public void setColaboradoresCursosCheck(String[] colaboradoresCursosCheck)
 	{
 		this.colaboradoresCursosCheck = colaboradoresCursosCheck;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
 	}
 
 	public void setDNTManager(DNTManager manager)

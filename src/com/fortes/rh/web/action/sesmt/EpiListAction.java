@@ -26,7 +26,6 @@ public class EpiListAction extends MyActionSupportList
 
 	private Collection<Epi> epis;
 	private Epi epi;
-	private String msgAlert = "";
 	
 	private String[] tipoEPICheck;
 	private Collection<CheckBox> tipoEPICheckList = new ArrayList<CheckBox>();
@@ -127,16 +126,6 @@ public class EpiListAction extends MyActionSupportList
 	public void setEpiManager(EpiManager epiManager)
 	{
 		this.epiManager=epiManager;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
 	}
 
 	public Date getVenc()

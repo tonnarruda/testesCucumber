@@ -229,15 +229,4 @@ public class HistoricoColaboradorBeneficioEditAction extends MyActionSupportEdit
 	{
 		this.beneficiosCheck = beneficiosCheck;
 	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
-	}
-
 }

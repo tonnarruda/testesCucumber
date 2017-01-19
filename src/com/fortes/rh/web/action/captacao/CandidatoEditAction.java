@@ -152,7 +152,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	private int page = 1;
 	private boolean moduloExterno;
-	private String msgAlert;
 	private int maxCandidataCargo;
 	
 	// utilizados pelo módulo externo
@@ -1045,12 +1044,18 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public String getMsgExportacao()
 	{
-		return msgExportacao;
+		if(msgExportacao != null)
+			return msgExportacao.replace(" ", "%20");
+		else
+			return null;
 	}
 
 	public String getMsgErroExportacao()
 	{
-		return msgErroExportacao;
+		if(msgErroExportacao != null)
+			return msgErroExportacao.replace(" ", "%20");
+		else
+			return null;
 	}
 
 	public void setEstadoManager(EstadoManager estadoManager)
@@ -1219,16 +1224,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	public void setModuloExterno(boolean moduloExterno)
 	{
 		this.moduloExterno = moduloExterno;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
 	}
 
 	public Long getEmpresaId()

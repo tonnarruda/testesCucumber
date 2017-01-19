@@ -29,8 +29,6 @@ public class TipoEPIEditAction extends MyActionSupportEdit
 	
 	private TamanhoEPI[] tamanhos;
 
-	private String msgAlert;
-	
 	private String[] tamanhosCheck;
 	private Collection<CheckBox> tamanhosCheckList = new ArrayList<CheckBox>();
 
@@ -107,16 +105,6 @@ public class TipoEPIEditAction extends MyActionSupportEdit
 	public void setTipoEPIManager(TipoEPIManager tipoEPIManager)
 	{
 		this.tipoEPIManager = tipoEPIManager;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
 	}
 
 	public String[] getTamanhosCheck() {
