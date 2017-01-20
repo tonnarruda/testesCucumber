@@ -10,6 +10,12 @@
        					   http://www.directwebremoting.org/schema/spring-dwr 
        					   http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd">
   
-   <dwr:configuration />   
-   <dwr:annotation-scan base-package="com.fortes.rh.web.dwr" scanDataTransferObject="true" scanRemoteProxy="true"/>   
+
+  <dwr:configuration>
+    <dwr:convert type="bean" class="com.fortes.rh.model.acesso.Empresa"/>
+  </dwr:configuration>
+  
+
+  <dwr:annotation-config id="dwrAnnotationConfig" />   		  
+  <dwr:annotation-scan base-package="com.fortes.rh.web.dwr" scanDataTransferObject="false" scanRemoteProxy="true"/>   
 </beans>

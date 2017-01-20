@@ -8,9 +8,12 @@
 	</style>
 	<script src='<ww:url includeParams="none" value="/js/functions.js"/>'></script>
 	<script src='<ww:url includeParams="none" value="/js/fortes.js"/>'></script>
-	<script src='<ww:url includeParams="none" value="/dwr/interface/UsuarioDWR.js"/>'></script>
+
 	<script src='<ww:url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script src='<ww:url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script src='<ww:url includeParams="none" value="/dwr/interface/UsuarioDWR.js"/>'></script>
+
+		
 	<script type='text/javascript'>
 		function validaCampos()
 		{
@@ -21,7 +24,7 @@
 		
 		function empresasUsuario()
 		{
-			UsuarioDWR.getEmpresaUsuario(createListEmpresa, $('#username').val());
+			UsuarioDWR.getEmpresaUsuario($('#username').val(), createListEmpresa);
 		}
 		
 		function createListEmpresa(data)

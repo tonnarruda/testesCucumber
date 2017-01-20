@@ -3,8 +3,10 @@ package com.fortes.rh.web.dwr;
 import java.util.Collection;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.ComponentScan;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.model.acesso.Usuario;
@@ -15,12 +17,14 @@ import com.fortes.rh.util.ArrayUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 
-@Component
+@ComponentScan
+@RemoteProxy(name="UsuarioDWR")
 public class UsuarioDWR
 {
 	@Autowired
 	private UsuarioManager usuarioManager;
 	
+	@RemoteMethod
 	public void gravarLayoutCaixasMensagens(Long usuarioId, Character[] caixasEsquerda, Character[] caixasDireita, Character[] caixasMinimizadas) throws Exception 
 	{
 		TipoMensagem tipoMensagem = new TipoMensagem();
@@ -63,21 +67,17 @@ public class UsuarioDWR
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
+	@RemoteMethod
 	public Map getEmpresaUsuario(String usuarioNome)
 	{
 		Collection<Empresa> empresas = usuarioManager.findEmpresas(usuarioNome);
 		return new CollectionUtil<Empresa>().convertCollectionToMap(empresas,"getId","getNome");
 	}
 	
+	@RemoteMethod
 	public Collection<Usuario> getByAreaOrganizacionalEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds)
 	{
 		Collection<Usuario> usuarios = usuarioManager.findByAreaEstabelecimento(areasIds, estabelecimentosIds);
 		return new CollectionUtil<Usuario>().sortCollectionStringIgnoreCase(usuarios, "nome"); 
-	}
-	
-	public void setUsuarioManager(UsuarioManager usuarioManager) 
-	{
-		this.usuarioManager = usuarioManager;
 	}
 }
