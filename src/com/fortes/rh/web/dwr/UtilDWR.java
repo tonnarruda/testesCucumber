@@ -8,11 +8,10 @@ import java.util.regex.Pattern;
 import javax.mail.AuthenticationFailedException;
 
 import org.directwebremoting.WebContextFactory;
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-//import uk.ltd.getahead.dwr.WebContextFactory;
-
 
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -25,6 +24,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClient;
 
 @Component
+@RemoteProxy(name="utilDWR")
 public class UtilDWR
 {
 	@Autowired private Mail mail;
@@ -32,6 +32,7 @@ public class UtilDWR
 	@Autowired private GrupoACManager grupoACManager;
 	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
+	@RemoteMethod
 	public String getToken(String grupoAC)
 	{ 
 		String token = "";
@@ -57,6 +58,7 @@ public class UtilDWR
 		return token;
 	}
 
+	@RemoteMethod
 	public String enviaEmail(String email, boolean autenticacao, boolean tls) throws Exception
 	{
 		try {
@@ -77,6 +79,7 @@ public class UtilDWR
 		return "Email enviado com sucesso.";
 	}
 	
+	@RemoteMethod
 	public String findUltimaVersaoPortal()
 	{
 		final String URL = "http://www.fortesinformatica.com.br/v3/downloadParserVer.php?system=6396";
@@ -132,11 +135,13 @@ public class UtilDWR
 		 return valor;
 	}
 	
+	@RemoteMethod
 	public void setAcPessoalClient(AcPessoalClient acPessoalClient)
 	{
 		this.acPessoalClient = acPessoalClient;
 	}
 
+	@RemoteMethod
 	public void setMail(Mail mail)
 	{
 		this.mail = mail;

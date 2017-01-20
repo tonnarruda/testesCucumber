@@ -46,7 +46,7 @@
 		<servlet-name>externoServlet</servlet-name>
 		<servlet-class>com.fortes.rh.web.action.externo.ExternoServlet</servlet-class>
 	</servlet>
-
+	
 	<servlet-mapping>
 		<servlet-name>externoServlet</servlet-name>
 		<url-pattern>/externo/layout/*</url-pattern>
@@ -209,8 +209,7 @@
 			/WEB-INF/classes/applicationContext.xml,
 			/WEB-INF/classes/applicationContext-datasource.xml,
 			/WEB-INF/classes/spring-security2.xml
-
-
+			/WEB-INF/classes/applicationContext-dwr.xml
 		</param-value>
 	</context-param>
 

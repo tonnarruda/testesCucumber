@@ -2144,7 +2144,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(colaborador.getPessoal().getRgUf() != null && colaborador.getPessoal().getRgUf().getId() != null)
 			query.setLong("rgUfId", colaborador.getPessoal().getRgUf().getId());
 		else
-			query.setParameter("rgUfId", null, Hibernate.LONG);
+			query.setParameter("rgUfId", null, StandardBasicTypes.LONG);
 		
 		query.setDate("rgDataExpedicao", colaborador.getPessoal().getRgDataExpedicao());
 		query.setString("numeroHab", colaborador.getHabilitacao().getNumeroHab());
@@ -2171,7 +2171,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(colaborador.getPessoal().getCtps().getCtpsUf() != null && colaborador.getPessoal().getCtps().getCtpsUf().getId() != null)
 			query.setLong("ctpsUfId", colaborador.getPessoal().getCtps().getCtpsUf().getId());
 		else
-			query.setParameter("ctpsUfId", null, Hibernate.LONG);
+			query.setParameter("ctpsUfId", null, StandardBasicTypes.LONG);
 		
 		query.setDate("ctpsDataExpedicao", colaborador.getPessoal().getCtps().getCtpsDataExpedicao());
 		query.setString("pis", colaborador.getPessoal().getPis());
