@@ -52,8 +52,8 @@ public class ColaboradorRespostaEditActionTest_JUnit4
 		when(colaboradorQuestionarioManager.isRespondeuPesquisaByColaboradorIdAndQuestionarioId(colaborador.getId(), questionario.getId())).thenReturn(false);
 		
 		assertEquals(Action.SUCCESS, colaboradorRespostaEditAction.salvaQuestionarioRespondido());
-		assertEquals("Respostas&nbsp;gravadas&nbsp;com&nbsp;sucesso.", colaboradorRespostaEditAction.getActionMsg());
-		assertEquals("../../sesmt/fichaMedica/listPreenchida.action?actionMsg=Respostas&nbsp;gravadas&nbsp;com&nbsp;sucesso.", colaboradorRespostaEditAction.getRetorno());
+		assertEquals("Respostas%20gravadas%20com%20sucesso.", colaboradorRespostaEditAction.getActionMsg());
+		assertEquals("../../sesmt/fichaMedica/listPreenchida.action?actionMsg=Respostas%20gravadas%20com%20sucesso.", colaboradorRespostaEditAction.getRetorno());
 	}
 	
 	@Test

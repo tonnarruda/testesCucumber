@@ -171,9 +171,7 @@
 
 		<dirname file="ci.xml" property="current.dir" />
 		
-		<junit haltonfailure="true" haltonerror="true"
-			fork="true" dir="${current.dir}" maxmemory="512m"
-			forkmode="once">
+		<junit showoutput="true" printsummary="on" enabletestlistenerevents="true" haltonfailure="true" haltonerror="true" fork="true" dir="${current.dir}" maxmemory="1024m" forkmode="once">
 			<jvmarg value="-javaagent:${jmockit.dir}" />
             <jvmarg value="-Xms40m" />
             <jvmarg value="-Xmx512m" />
@@ -182,9 +180,13 @@
 				<path refid="project.classpath" />
 				<pathelement path="${build.dir}" />
 			</classpath>
+			 <batchtest todir="${junit.xml.dir}" >
+                <fileset dir="${srcTeste.dir}">
+                    <include name="**/test/**/AllUnitTests.java" />
+                </fileset>
+            </batchtest>
+			
 			<formatter type="xml"/>
-
-            <test name="${allTests.class}" todir="${junit.xml.dir}"/>
 		</junit>
 	</target>
 	
