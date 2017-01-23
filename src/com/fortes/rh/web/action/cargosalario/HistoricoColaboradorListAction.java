@@ -429,6 +429,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	@SuppressWarnings("unchecked")
 	public String imprimirRelatorioPromocoes() throws Exception
 	{
+		if(empresa == null)
+			empresa = getEmpresaSistema();
+		
 		Collection<RelatorioPromocoes> promocoes = historicoColaboradorManager.getPromocoes(LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
 		
 		if (promocoes.isEmpty())
