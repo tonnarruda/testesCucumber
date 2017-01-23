@@ -12,7 +12,10 @@
   
 
   <dwr:configuration>
-    <dwr:convert type="bean" class="com.fortes.rh.model.acesso.Empresa"/>
+    <dwr:convert type="bean" class="com.fortes.rh.model.acesso.Empresa">
+    	<dwr:include method="nome"/>
+        <dwr:include method="id"/>
+    </dwr:convert>
   </dwr:configuration>
   
 
