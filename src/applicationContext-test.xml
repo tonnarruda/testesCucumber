@@ -327,8 +327,20 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+
+  <bean id="historicoCandidatoDao" class="com.fortes.rh.dao.hibernate.captacao.HistoricoCandidatoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
   
   <bean id="participanteCursoLntDao" class="com.fortes.rh.dao.hibernate.desenvolvimento.ParticipanteCursoLntDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+
+  <bean id="etapaSeletivaDao" class="com.fortes.rh.dao.hibernate.captacao.EtapaSeletivaDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
     </property>
@@ -387,5 +399,4 @@
 		<ref bean="sessionFactory" />
 	</property>
   </bean>
-  
 </beans>

@@ -173,6 +173,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         p.add(Projections.property("e.nome"), "projectionEtapaNome");
         p.add(Projections.property("emp.id"), "projectionCandidatoEmpresaId");
         p.add(Projections.property("emp.nome"), "projectionCandidatoEmpresaNome");
+        
         criteria.setProjection(p);
         
         montaConsulta(criteria, solicitacaoId, etapaSeletivaId, indicadoPor, visualizar, contratado, semHistorico, observacaoRH, nomeBusca, status);
@@ -257,7 +258,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         Disjunction any = Expression.disjunction();
         any.add(Expression.isNull("h.id"));
         any.add(Expression.sql("h2_.id = (select hcand.id from HistoricoCandidato hcand left join EtapaSeletiva e2 on e2.id = hcand.etapaSeletiva_id "
-        		+ "where hcand.candidatoSolicitacao_id = this_.id order by hcand.data desc, e2.ordem desc limit 1) "));
+        		+ "where hcand.candidatoSolicitacao_id = this_.id order by (TO_TIMESTAMP(to_char(hcand.data, 'DDMMYYYY') || (coalesce(hcand.horaini, '00:00')), 'DDMMYYYYHH24:MI')::timestamp) desc, e2.ordem desc limit 1) "));
         criteria.add(any);
         
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

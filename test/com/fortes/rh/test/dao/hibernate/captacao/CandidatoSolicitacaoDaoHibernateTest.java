@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
@@ -83,7 +82,6 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
 	private EstabelecimentoDao estabelecimentoDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
-	private UsuarioDao usuarioDao;
 
 	private Candidato candidato;
 	private Solicitacao solicitacao;
@@ -314,60 +312,6 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 
 		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.findByFiltroSolicitacaoTriagem(true);
 		assertNotNull(candidatoSolicitacaos);
-	}
-	
-	public void testGetCandidatoSolicitacaoList()
-	{
-		EtapaSeletiva etapaSeletiva1 = EtapaSeletivaFactory.getEntity();
-		etapaSeletiva1.setOrdem(1);
-		etapaSeletivaDao.save(etapaSeletiva1);
-
-		EtapaSeletiva etapaSeletiva2 = EtapaSeletivaFactory.getEntity();
-		etapaSeletiva2.setOrdem(4);
-		etapaSeletivaDao.save(etapaSeletiva2);
-
-		candidatoSolicitacao = prepareFindCandidatoSolicitacao();
-		candidatoSolicitacao = candidatoSolicitacaoDao.save(candidatoSolicitacao);
-
-		HistoricoCandidato historicoCandidato1 = HistoricoCandidatoFactory.getEntity(etapaSeletiva1, DateUtil.criarDataMesAno(01, 02, 2009), candidatoSolicitacao);
-		historicoCandidatoDao.save(historicoCandidato1);
-
-		HistoricoCandidato historicoCandidato2 = HistoricoCandidatoFactory.getEntity(etapaSeletiva2, DateUtil.criarDataMesAno(01, 02, 2009), candidatoSolicitacao);
-		historicoCandidatoDao.save(historicoCandidato2);
-
-		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), null, null, null, false, true, null, null, null);
-		assertEquals(1, candidatoSolicitacaos.size());
-
-		CandidatoSolicitacao candidatoSolicitacaoTmp = (CandidatoSolicitacao) candidatoSolicitacaos.toArray()[0];
-		assertEquals(etapaSeletiva2, candidatoSolicitacaoTmp.getEtapaSeletiva());
-	}
-	
-	//TODO
-	public void testGetCandidatoSolicitacaoListComCondicoes()
-	{
-		EtapaSeletiva etapaSeletiva1 = EtapaSeletivaFactory.getEntity();
-		etapaSeletiva1.setOrdem(1);
-		etapaSeletivaDao.save(etapaSeletiva1);
-		
-		EtapaSeletiva etapaSeletiva2 = EtapaSeletivaFactory.getEntity();
-		etapaSeletiva2.setOrdem(4);
-		etapaSeletivaDao.save(etapaSeletiva2);
-		
-		candidatoSolicitacao = prepareFindCandidatoSolicitacao();
-		candidatoSolicitacao.setTriagem(false);
-		candidatoSolicitacao = candidatoSolicitacaoDao.save(candidatoSolicitacao);
-		
-		HistoricoCandidato historicoCandidato1 = HistoricoCandidatoFactory.getEntity(etapaSeletiva1, DateUtil.criarDataMesAno(01, 03, 2009), candidatoSolicitacao);
-		historicoCandidatoDao.save(historicoCandidato1);
-		
-		HistoricoCandidato historicoCandidato2 = HistoricoCandidatoFactory.getEntity(etapaSeletiva2, DateUtil.criarDataMesAno(01, 02, 2009), candidatoSolicitacao);
-		historicoCandidatoDao.save(historicoCandidato2);
-		
-		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), etapaSeletiva1.getId(), null, null, false, true, null, null, null);
-		assertEquals(1, candidatoSolicitacaos.size());
-		
-		CandidatoSolicitacao candidatoSolicitacaoTmp = (CandidatoSolicitacao) candidatoSolicitacaos.toArray()[0];
-		assertEquals(etapaSeletiva1, candidatoSolicitacaoTmp.getEtapaSeletiva());
 	}
 	
 	public void testGetCandidatoSolicitacaoEtapaSeletiva()
@@ -820,9 +764,5 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
 		this.historicoColaboradorDao = historicoColaboradorDao;
-	}
-
-	public void setUsuarioDao(UsuarioDao usuarioDao) {
-		this.usuarioDao = usuarioDao;
 	}
 }
