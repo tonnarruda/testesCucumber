@@ -103,9 +103,11 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareImprimirCertificadosVencidosAVencer.ftl</result>
 		</action>
 		<action name="prepareReprocessaCertificacao" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction" method="prepareReprocessaCertificacao">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/reprocessaCertificacao.ftl</result>
 		</action>
 		<action name="reprocessaCertificacao" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction" method="reprocessaCertificacao">
+			<interceptor-ref name="myDefaultWebStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/reprocessaCertificacao.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/reprocessaCertificacao.ftl</result>
 		</action>

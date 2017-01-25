@@ -127,7 +127,6 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 			((UserDetailsImpl)userDetails).setMenuFormatado(menu);
 			((UserDetailsImpl)userDetails).setVersao(versao);
 			((UserDetailsImpl)userDetails).setParametrosDoSistema(parametrosDoSistemaManager.findByIdProjectionSession(1L));
-			((UserDetailsImpl)userDetails).setHasAcessoRestrito(usuarioEmpresa.getPerfil().getAcessoRestrito());
 			((UserDetailsImpl)userDetails).setHasAcessoRestrito( (((UserDetailsImpl)userDetails).getId() == 1L ? false : usuarioEmpresa.getPerfil().getAcessoRestrito()));
 		}
 		else{

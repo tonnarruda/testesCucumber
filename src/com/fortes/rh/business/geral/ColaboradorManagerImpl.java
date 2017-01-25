@@ -1835,7 +1835,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		if (parametrosDoSistema.verificaLicenca()) {
 
-			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos();
+			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos(null);
 
 			if (AutenticadorJarvis.isRegistrado())
 			{
@@ -1850,7 +1850,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public String avisoQtdCadastros() throws Exception
 	{
-		int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos();
+		int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos(null);
 		
 		if (AutenticadorJarvis.isRegistrado()){
 			if (AutenticadorJarvis.getClient().getQtdColaboradores() > 0 && (AutenticadorJarvis.getClient().getQtdColaboradores() - (AutenticadorJarvis.getClient().getQtdColaboradores() * 0.05)) <= qtdColaboradorNoBanco)

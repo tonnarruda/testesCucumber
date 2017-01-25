@@ -1524,7 +1524,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	
     	Exception exception = null;
     	try {
-			manager.validaQtdCadastros();
+			manager.validaQtdCadastros(null);
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -1542,7 +1542,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	
     	Exception exception = null;
     	try {
-    		manager.validaQtdCadastros();
+    		manager.validaQtdCadastros(null);
     	} catch (Exception e) {
     		exception = e;
     	}
@@ -1561,7 +1561,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	
     	Exception exception = null;
     	try {
-    		manager.validaQtdCadastros();
+    		manager.validaQtdCadastros(null);
     	} catch (Exception e) {
     		exception = e;
     	}
@@ -1580,7 +1580,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	
     	Exception exception = null;
     	try {
-    		manager.validaQtdCadastros();
+    		manager.validaQtdCadastros(null);
     	} catch (Exception e) {
     		exception = e;
     	}
@@ -1600,7 +1600,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	
     	Exception exception = null;
     	try {
-    		manager.validaQtdCadastros();
+    		manager.validaQtdCadastros(null);
     	} catch (Exception e) {
     		exception = e;
     	}

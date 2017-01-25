@@ -22,7 +22,6 @@ import com.fortes.rh.exception.NotRegistredException;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockAutenticador;
-import com.fortes.rh.util.Autenticador;
 
 public class PapelManagerTest
 {

@@ -21,15 +21,6 @@
 		.tituloMensagem { width: 390px; white-space: nowrap; overflow: hidden; }
 		.remetenteHora { color: #069; }
 		
-		/* cria link sobre a parte "FECHAR" do splash do Chat */ 
-		#fecharSplash {
-			 color: red;
-			 font-weight: bold;	  
-			 cursor: pointer; 
-			 border: none; 
-			 text-decoration: none; 
-		}
-
 		#atualizacao { display: none; }
 		
 		.column { width: 50%; float: left; min-height: 50px; }
@@ -120,23 +111,6 @@
 		$(function () {
 			if (noticiasUrgentes.length > 0) {
 				mostraSplash(noticiasUrgentes[0]);
-			}
-			
-			$( "#splash" ).dialog({
-				autoOpen: false,
-				modal: true,
-				zIndex: 99999,
-				minWidth: 626,
-				create: function (event, ui) {  },
-			  	close: function() {
-			  		if ( $('#naoExibirMsg').is(':checked') ) 
-			  			$.cookie("pgInicialSplashMarca", false, { expires: 30 }); 
-			  	}
-			});
-
-			if($.cookie("pgInicialSplashMarca") != 'false')
-			{
-				$("#splash").dialog("open");
 			}
 			
 			if($.cookie("timeline_tooltip_explicative") != 'true')
@@ -396,13 +370,6 @@
 			</form>
 		</#if>
 	</@authz.authorize>
-	
-	<div id="splash" style="display: none;">
-		<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');" style="float: right; color: red;">FECHAR</a>
-		<img border="0" title="Atualização das tecnologias Java 7 e Tomcat 7"  src="<@ww.url includeParams="none" value="/imgs/splashAtualizacaoSistema.png"/>" />
-		<input type="checkbox" id="naoExibirMsg" name="naoExibirMsg"/>
-		<label for="naoExibirMsg">Não exibir esta mensagem novamente</label>
-	</div>
 	
 	<#if exibeNoticiaUrgente>
 		<div id="noticiaUrgente" style="display: none;">
