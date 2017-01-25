@@ -19,7 +19,6 @@ import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClient;
 
-
 public class UtilDWR
 {
 	private Mail mail;
@@ -86,7 +85,7 @@ public class UtilDWR
 			{
 				String pagina = StringUtil.getHTML(URL);
 				
-				Pattern pattern = Pattern.compile("1.1.[0-9]{1,3}.[0-9]{1,3}");
+				Pattern pattern = Pattern.compile("1.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}");
 				Matcher matcher = pattern.matcher(pagina);
 			    
 			    matcher.find();
@@ -95,17 +94,36 @@ public class UtilDWR
 			    ParametrosDoSistema parametrosDoSistema =  parametrosDoSistemaManager.findByIdProjection(1L);
 			    String versaoCliente = parametrosDoSistema.getAppVersao();
 			    
-			    if (Long.parseLong(versaoPortal.replace(".", "")) > Long.parseLong(versaoCliente.replace(".", "")))
+			    if (getValorParaComparacao(versaoPortal) > getValorParaComparacao(versaoCliente))
 			    	return "{\"sucesso\":\"1\", \"versao\":\"" + versaoPortal + "\"}";
 			}
 
 			return "{\"sucesso\":\"2\"}";
 		
-		} catch (Exception e) 
-		{
+		} catch (Exception e){
 			e.printStackTrace();
 			return "{\"sucesso\":\"0\"}";
 		}
+	}
+
+	private Long getValorParaComparacao(String versao) throws NumberFormatException {
+		Long valorParaComparacao = Long.parseLong(versao.replace(".", ""));
+		
+		if(versao.length() < 11){
+			String[] versaoSplit = versao.split("\\.");
+			valorParaComparacao = Long.parseLong(versaoSplit[0] + versaoSplit[1] + zeroAEsquerda(versaoSplit[2]) + zeroAEsquerda(versaoSplit[3])); 
+		}
+		
+		return valorParaComparacao;
+	}
+	
+	private String zeroAEsquerda(String valor){
+		int tamanho = valor.length();
+		 while(tamanho < 3){
+			 valor="0"+valor;
+			 tamanho++;
+		 }
+		 return valor;
 	}
 	
 	public void setAcPessoalClient(AcPessoalClient acPessoalClient)

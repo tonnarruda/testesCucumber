@@ -718,7 +718,6 @@ import com.fortes.rh.test.web.dwr.SolicitacaoExameDWRTest;
 import com.fortes.rh.test.web.dwr.TurmaDWRTest;
 import com.fortes.rh.test.web.dwr.TurmaDWRTest_Junit4;
 import com.fortes.rh.test.web.dwr.UsuarioMensagemDWRTest;
-import com.fortes.rh.test.web.dwr.UtilDWRTest;
 import com.fortes.rh.test.web.dwr.lntDWRTest;
 import com.fortes.rh.web.action.exportacao.ExportacaoActionTest;
 import com.fortes.rh.web.action.externo.ExternoActionTest;
@@ -1540,7 +1539,6 @@ import com.fortes.test.web.tags.LinkTagTest;
 	RiscosDWRTest.class,
 	TurmaDWRTest.class,
 	TurmaDWRTest_Junit4.class,
-	UtilDWRTest.class,
 	FaixaSalarialDWRTest.class,
 	EnderecoDWRTest.class,
 	SolicitacaoDWRTest.class,
