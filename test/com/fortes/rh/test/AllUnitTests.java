@@ -66,6 +66,7 @@ import com.fortes.rh.test.business.cargosalario.FaixaSalarialManagerTest;
 import com.fortes.rh.test.business.cargosalario.FaturamentoMensalManagerTest;
 import com.fortes.rh.test.business.cargosalario.GrupoOcupacionalManagerTest;
 import com.fortes.rh.test.business.cargosalario.HistoricoColaboradorManagerTest;
+import com.fortes.rh.test.business.cargosalario.HistoricoColaboradorManagerTest_Junit4;
 import com.fortes.rh.test.business.cargosalario.IndiceHistoricoManagerTest;
 import com.fortes.rh.test.business.cargosalario.IndiceManagerTest;
 import com.fortes.rh.test.business.cargosalario.ReajusteColaboradorManagerTest;
@@ -250,6 +251,7 @@ import com.fortes.rh.test.dao.hibernate.cargosalario.FaixaSalarialHistoricoDaoHi
 import com.fortes.rh.test.dao.hibernate.cargosalario.FaturamentoMensalDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.GrupoOcupacionalDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.HistoricoColaboradorDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.cargosalario.HistoricoColaboradorDaoHibernateTest_Junit4;
 import com.fortes.rh.test.dao.hibernate.cargosalario.IndiceDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.IndiceHistoricoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.ReajusteColaboradorDaoHibernateTest;
@@ -852,7 +854,9 @@ import com.fortes.test.web.tags.LinkTagTest;
 	GrupoOcupacionalDaoHibernateTest.class,
 
 	HistoricoColaboradorDaoHibernateTest.class,
+	HistoricoColaboradorDaoHibernateTest_Junit4.class,
 	HistoricoColaboradorManagerTest.class,
+	HistoricoColaboradorManagerTest_Junit4.class,
 	HistoricoColaboradorListActionTest.class,
 	HistoricoColaboradorEditActionTest.class,
 

@@ -13,7 +13,6 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.spring.aop.callback.SolicitacaoAuditorCallbackImpl;
@@ -59,6 +58,5 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	Collection<Solicitacao> findByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds);
 	Collection<String> getNomesColabSubstituidosSolicitacaoEncerrada(Long empresaId);
-	void atualizaStatusSolicitacaoByColaborador(Colaborador colaborador, char status, boolean disponibilizarCandidato);
 	public double calculaIndicadorVagasPreenchidasNoPrazo(Long empresaId,Long[] estabelecimentosIds, Long[] areasIds, Long[] solicitacoesIds, Date dataDe,  Date dataAte);
 }

@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.9230756500000017"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="53"/>
+	<property name="ireport.x" value="1622"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -21,8 +21,8 @@
 	<field name="estabelecimento.id" class="java.lang.Long"/>
 	<field name="desligado" class="java.lang.Boolean"/>
 	<field name="nomeComercialDesligado" class="java.lang.String"/>
-	<field name="solicitacao.motivoSolicitacao.descricao" class="java.lang.String"/>
-	<field name="solicitacao.motivoSolicitacao.turnoverFormatado" class="java.lang.String"/>
+	<field name="historicoColaborador.candidatoSolicitacao.solicitacao.motivoSolicitacao.descricao" class="java.lang.String"/>
+	<field name="historicoColaborador.candidatoSolicitacao.solicitacao.motivoSolicitacao.turnoverFormatado" class="java.lang.String"/>
 	<field name="matricula" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
@@ -257,7 +257,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.motivoSolicitacao.descricao}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{historicoColaborador.candidatoSolicitacao.solicitacao.motivoSolicitacao.descricao}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField" x="741" y="1" width="40" height="12" uuid="51bf323f-afc0-40fa-b5b1-273f34348897"/>
@@ -270,7 +270,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.motivoSolicitacao.turnoverFormatado}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{historicoColaborador.candidatoSolicitacao.solicitacao.motivoSolicitacao.turnoverFormatado}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField" x="401" y="1" width="48" height="12" uuid="39e44f43-8262-42d3-b141-49baa184706a"/>

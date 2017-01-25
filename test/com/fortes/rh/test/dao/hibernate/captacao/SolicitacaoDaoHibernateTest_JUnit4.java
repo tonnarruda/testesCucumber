@@ -2,6 +2,7 @@ package com.fortes.rh.test.dao.hibernate.captacao;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -10,20 +11,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
+import com.fortes.rh.dao.captacao.CandidatoDao;
+import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.dao.captacao.MotivoSolicitacaoDao;
+import com.fortes.rh.dao.captacao.PausaPreenchimentoVagasDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
+import com.fortes.rh.model.captacao.PausaPreenchimentoVagas;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -31,12 +42,15 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
@@ -60,6 +74,14 @@ public class SolicitacaoDaoHibernateTest_JUnit4 extends GenericDaoHibernateTest_
 	private ColaboradorDao colaboradorDao;
 	@Autowired
 	private MotivoSolicitacaoDao motivoSolicitacaoDao;
+	@Autowired
+	private CandidatoDao candidatoDao;
+	@Autowired
+	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
+	@Autowired
+	private HistoricoColaboradorDao historicoColaboradorDao;
+	@Autowired
+	private PausaPreenchimentoVagasDao pausaPreenchimentoVagasDao;
 
 	public Solicitacao getEntity()
 	{
@@ -484,6 +506,238 @@ public class SolicitacaoDaoHibernateTest_JUnit4 extends GenericDaoHibernateTest_
 		assertEquals(0, solicitacaoDao.findAllByVisualizacao(1, 10,'S', empresa.getId(), solicitante.getId(), estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, null, StatusAprovacaoSolicitacao.ANALISE, null, String.valueOf(solicitacao.getId()), new Date(), new Date(), false, null, null).size());
 	}
 	
+	@Test
+	public void testFindQtdContratadosFaixa(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = saveEstabelecimento(null);
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional(null);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo = cargoDao.save(cargo);
+		
+		FaixaSalarial faixa1 = saveFaixaSalarial(cargo);
+		FaixaSalarial faixa2 = saveFaixaSalarial(cargo);
+		
+		Date hoje = new Date();
+		
+		Solicitacao solicitacao1 = saveSolicitacao(empresa, hoje, estabelecimento, null, faixa1, null);
+		Solicitacao solicitacao2 = saveSolicitacao(empresa, hoje, null, areaOrganizacional, faixa2, null);
+		
+		Candidato candidato1 = saveCandidato(empresa);
+		Candidato candidato2 = saveCandidato(empresa);
+		Candidato candidato3 = saveCandidato(empresa);
+
+		CandidatoSolicitacao candidatoSolicitacao1 = saveCandidatoSolicitacao(candidato1, solicitacao1);
+		CandidatoSolicitacao candidatoSolicitacao2 = saveCandidatoSolicitacao(candidato2, solicitacao1);
+		CandidatoSolicitacao candidatoSolicitacao3 = saveCandidatoSolicitacao(candidato3, solicitacao2);
+
+		saveColaboradorComHistorico(empresa, candidato1, candidatoSolicitacao1, new Date(), StatusRetornoAC.CONFIRMADO);
+		saveColaboradorComHistorico(empresa, candidato2, candidatoSolicitacao2, new Date(), StatusRetornoAC.CONFIRMADO);
+		saveColaboradorComHistorico(empresa, candidato3, candidatoSolicitacao3, new Date(), StatusRetornoAC.CONFIRMADO);
+
+		
+		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
+		Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
+		Long[] areaIds = new Long[]{areaOrganizacional.getId()};
+		
+		Collection<FaixaSalarial> faixasSemSolicitacao = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), null, null, null, hoje, hoje);
+		Collection<FaixaSalarial> faixasComSolicitacao = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), null, null, solicitacaoIds, hoje, hoje);
+		Collection<FaixaSalarial> faixasComEstabelecimento = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), estabelecimentoIds, null, null, hoje, hoje);
+		Collection<FaixaSalarial> faixasComAreaOrganizacional = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), null, areaIds, null, hoje, hoje);
+		
+		assertEquals(2, faixasSemSolicitacao.size());
+		assertEquals(2, ((FaixaSalarial) (faixasSemSolicitacao.toArray()[0])).getQtdContratados());
+		assertEquals(1, ((FaixaSalarial) (faixasSemSolicitacao.toArray()[1])).getQtdContratados());
+		
+		assertEquals(1, faixasComSolicitacao.size());
+		assertEquals(2, ((FaixaSalarial) (faixasComSolicitacao.toArray()[0])).getQtdContratados());
+		
+		assertEquals(1, faixasComEstabelecimento.size());
+		assertEquals(faixa1.getId(), ((FaixaSalarial) (faixasComEstabelecimento.toArray()[0])).getId());
+		
+		assertEquals(1, faixasComAreaOrganizacional.size());
+		assertEquals(faixa2.getId(), ((FaixaSalarial) (faixasComAreaOrganizacional.toArray()[0])).getId());
+	}
+	
+	@Test
+	public void testFindQtdContratadosArea(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = saveEstabelecimento(null);
+		AreaOrganizacional area1 = saveAreaOrganizacional(null);
+		AreaOrganizacional area2 = saveAreaOrganizacional(null);
+		
+		Date hoje = new Date();
+		
+		Solicitacao solicitacao1 = saveSolicitacao(empresa, hoje, estabelecimento, area1, null, null);
+		Solicitacao solicitacao2 = saveSolicitacao(empresa, hoje, null, area2, null, null);
+		
+		Candidato candidato1 = saveCandidato(empresa);
+		Candidato candidato2 = saveCandidato(empresa);
+		Candidato candidato3 = saveCandidato(empresa);
+
+		CandidatoSolicitacao candidatoSolicitacao1 = saveCandidatoSolicitacao(candidato1, solicitacao1);
+		CandidatoSolicitacao candidatoSolicitacao2 = saveCandidatoSolicitacao(candidato2, solicitacao1);
+		CandidatoSolicitacao candidatoSolicitacao3 = saveCandidatoSolicitacao(candidato3, solicitacao2);
+		
+		saveColaboradorComHistorico(empresa, candidato1, candidatoSolicitacao1, new Date(), StatusRetornoAC.CONFIRMADO);
+		saveColaboradorComHistorico(empresa, candidato2, candidatoSolicitacao2, new Date(), StatusRetornoAC.CONFIRMADO);
+		saveColaboradorComHistorico(empresa, candidato3, candidatoSolicitacao3, new Date(), StatusRetornoAC.CONFIRMADO);
+		
+		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
+		Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
+		Long[] areaIds = new Long[]{area2.getId()};
+		
+		Collection<AreaOrganizacional> contratados = solicitacaoDao.findQtdContratadosArea(empresa.getId(), null, null, null, hoje, hoje);
+		Collection<AreaOrganizacional> contratadosPorSolicitacao = solicitacaoDao.findQtdContratadosArea(empresa.getId(), null, null, solicitacaoIds, hoje, hoje);
+		Collection<AreaOrganizacional> contratadosPorEstabelecimento = solicitacaoDao.findQtdContratadosArea(empresa.getId(), estabelecimentoIds, null, null, hoje, hoje);
+		Collection<AreaOrganizacional> contratadosPorAreaOrganizacional= solicitacaoDao.findQtdContratadosArea(empresa.getId(), null, areaIds, null, hoje, hoje);
+		
+		assertEquals(2, contratados.size());
+		assertEquals(2, ((AreaOrganizacional) (contratados.toArray()[0])).getQtdContratados());
+		assertEquals(1, ((AreaOrganizacional) (contratados.toArray()[1])).getQtdContratados());
+		
+		assertEquals(1, contratadosPorSolicitacao.size());
+		assertEquals(2, ((AreaOrganizacional) (contratadosPorSolicitacao.toArray()[0])).getQtdContratados());
+		
+		assertEquals(1, contratadosPorEstabelecimento.size());
+		assertEquals(area1.getId(), ((AreaOrganizacional) (contratadosPorEstabelecimento.toArray()[0])).getId());
+		
+		assertEquals(1, contratadosPorAreaOrganizacional.size());
+		assertEquals(area2.getId(), ((AreaOrganizacional) (contratadosPorAreaOrganizacional.toArray()[0])).getId());
+	}
+	
+	@Test
+	public void testFindQtdContratadosMotivo()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = saveEstabelecimento(null);
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional(null);
+		
+		MotivoSolicitacao motivo1 = saveMotivoSolicitacao();
+		MotivoSolicitacao motivo2 = saveMotivoSolicitacao();
+		
+		Date hoje = new Date();
+		
+		Solicitacao solicitacao1 = saveSolicitacao(empresa, hoje, null, areaOrganizacional, null, motivo1);
+		Solicitacao solicitacao2 = saveSolicitacao(empresa, hoje, estabelecimento, null, null, motivo2);
+		
+		Candidato candidato1 = saveCandidato(empresa);
+		Candidato candidato2 = saveCandidato(empresa);
+		Candidato candidato3 = saveCandidato(empresa);
+
+		CandidatoSolicitacao candidatoSolicitacao1 = saveCandidatoSolicitacao(candidato1, solicitacao1);
+		CandidatoSolicitacao candidatoSolicitacao2 = saveCandidatoSolicitacao(candidato2, solicitacao1);
+		CandidatoSolicitacao candidatoSolicitacao3 = saveCandidatoSolicitacao(candidato3, solicitacao2);
+		
+		saveColaboradorComHistorico(empresa, candidato1, candidatoSolicitacao1, new Date(), StatusRetornoAC.CONFIRMADO);
+		saveColaboradorComHistorico(empresa, candidato2, candidatoSolicitacao2, new Date(), StatusRetornoAC.CONFIRMADO);
+		saveColaboradorComHistorico(empresa, candidato3, candidatoSolicitacao3, new Date(), StatusRetornoAC.CONFIRMADO);
+		
+		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
+		Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
+		Long[] areaIds = new Long[]{areaOrganizacional.getId()};
+		
+		Collection<MotivoSolicitacao> motivosSemSolicitacao = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), null, null, null, hoje, hoje);
+		Collection<MotivoSolicitacao> motivosComSolicitacao = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), null, null, solicitacaoIds, hoje, hoje);
+		Collection<MotivoSolicitacao> motivosComEstabelecimento = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), estabelecimentoIds, null, null, hoje, hoje);
+		Collection<MotivoSolicitacao> motivosComAreaOrganizacional = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), null, areaIds, null, hoje, hoje);
+		
+		assertEquals(2, motivosSemSolicitacao.size());
+		assertEquals(2, ((MotivoSolicitacao) (motivosSemSolicitacao.toArray()[0])).getQtdContratados());
+		assertEquals(1, ((MotivoSolicitacao) (motivosSemSolicitacao.toArray()[1])).getQtdContratados());
+		
+		assertEquals(1, motivosComSolicitacao.size());
+		assertEquals(2, ((MotivoSolicitacao) (motivosComSolicitacao.toArray()[0])).getQtdContratados());
+		
+		assertEquals(1, motivosComEstabelecimento.size());
+		assertEquals(motivo2.getId(), ((MotivoSolicitacao) (motivosComEstabelecimento.toArray()[0])).getId());
+		
+		assertEquals(1, motivosComAreaOrganizacional.size());
+		assertEquals(motivo1.getId(), ((MotivoSolicitacao) (motivosComAreaOrganizacional.toArray()[0])).getId());
+	}
+
+	@Test
+	public void testGetIndicadorMediaDiasPreenchimentoVagas() {
+		Date data = DateUtil.criarDataMesAno(1, 3, 2010);
+		Date dataEncerramento = DateUtil.criarDataMesAno(15, 3, 2010);
+		
+		Date dataPausa = DateUtil.criarDataMesAno(7, 3, 2010);
+		Date dataReinicio = DateUtil.criarDataMesAno(10, 3, 2010);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargo = cargoDao.save(cargo);
+
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
+		Estabelecimento estabelecimento = saveEstabelecimento(empresa);
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional(empresa);
+		
+		Solicitacao solicitacao1 = saveSolicitacao(data, dataEncerramento, empresa, faixaSalarial, estabelecimento, areaOrganizacional, 1);
+		Solicitacao solicitacao2 = saveSolicitacao(data, dataEncerramento, empresa, faixaSalarial, estabelecimento, areaOrganizacional, 1);
+		Solicitacao solicitacaoComPausa = saveSolicitacao(data, dataEncerramento, empresa, faixaSalarial, estabelecimento, areaOrganizacional, 1);
+		
+		Candidato candidato1 = saveCandidato(empresa);
+		Candidato candidato2 = saveCandidato(empresa);
+		Candidato candidato3 = saveCandidato(empresa);
+		
+		CandidatoSolicitacao candidatoSolicitacao = saveCandidatoSolicitacao(candidato1, solicitacao2);
+		CandidatoSolicitacao candidatoSolicitacao2 = saveCandidatoSolicitacao(candidato2, solicitacaoComPausa);
+		CandidatoSolicitacao candidatoSolicitacao3 = saveCandidatoSolicitacao(candidato3, solicitacao1);
+		
+		savePausaPreenchimentoVagas(dataPausa, dataReinicio, solicitacaoComPausa);
+		// contratado 6 dias após início da solicitação
+		saveColaboradorComHistorico(empresa, candidato1, candidatoSolicitacao, DateUtil.criarDataMesAno(7, 3, 2010), StatusRetornoAC.CONFIRMADO); 
+		// contratado 14 dias após início da solicitação
+		saveColaboradorComHistorico(empresa, candidato2, candidatoSolicitacao2, DateUtil.criarDataMesAno(15, 3, 2010), StatusRetornoAC.CONFIRMADO); 
+		// Aguardando confirmação
+		saveColaboradorComHistorico(empresa, candidato3, candidatoSolicitacao3, DateUtil.criarDataMesAno(15, 3, 2010), StatusRetornoAC.AGUARDANDO); 
+		
+		Collection<Long> areasIds = Arrays.asList(areaOrganizacional.getId());
+		Collection<Long> estabelecimentosIds = Arrays.asList(estabelecimento.getId());
+		Long[] solicitacaoIds = new Long[]{solicitacao2.getId()};
+		Long[] solicitacaoIdComPausa = new Long[]{solicitacaoComPausa.getId()};
+		
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresSemSolicitacao = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, null, null, false );
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresSemSolicitacaoComHistoricoFuturo = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, null, null, true );
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresComSolicitacao = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, solicitacaoIds, null, false );
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresComPausa = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, solicitacaoIdComPausa, null, false );
+		
+		assertEquals(1, indicadoresSemSolicitacao.size());
+		
+		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga = (IndicadorDuracaoPreenchimentoVaga) indicadoresSemSolicitacao.toArray()[0];
+		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVagaComHistoricoFuturo = (IndicadorDuracaoPreenchimentoVaga) indicadoresSemSolicitacaoComHistoricoFuturo.toArray()[0];
+		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVagaComSolicitacao = (IndicadorDuracaoPreenchimentoVaga) indicadoresComSolicitacao.toArray()[0];
+		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVagaComPausa = (IndicadorDuracaoPreenchimentoVaga) indicadoresComPausa.toArray()[0];
+		
+		assertEquals("deve retornar a média de dias", new Double(11.0), indicadorDuracaoPreenchimentoVaga.getMediaDias());
+		assertEquals("deve retornar qtd contratados sem solicitação especificada", 2, indicadorDuracaoPreenchimentoVaga.getQtdContratados().intValue());
+		assertEquals("deve retornar qtd contratados sem solicitação especificada com histórico futuro", 3, indicadorDuracaoPreenchimentoVagaComHistoricoFuturo.getQtdContratados().intValue());
+		assertEquals("deve retornar qtd contratados com solicitação especificada", 1, indicadorDuracaoPreenchimentoVagaComSolicitacao.getQtdContratados().intValue());
+		assertEquals("deve retornar qtd contratados com solicitação especificada (com pausa)", new Double(11.0), indicadorDuracaoPreenchimentoVagaComPausa.getMediaDias());
+	}
+
+	private Solicitacao saveSolicitacao(Date dataSolicitacao, Date dataEncerramento, Empresa empresa, FaixaSalarial faixaSalarial, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Integer qtdVagas) {
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacao.setAreaOrganizacional(areaOrganizacional);
+		solicitacao.setEstabelecimento(estabelecimento);
+		solicitacao.setData(dataSolicitacao);
+		solicitacao.setDataEncerramento(dataEncerramento);
+		solicitacao.setEmpresa(empresa);
+		solicitacao.setFaixaSalarial(faixaSalarial);
+		solicitacao.setQuantidade(qtdVagas);
+		solicitacaoDao.save(solicitacao);
+		return solicitacao;
+	}
+	
+	
 	private Solicitacao saveSolicitacao(Empresa empresa, String descricao, boolean encerrada, Date dataSolicitacao, Date dataEncerramento){
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setDescricao(descricao);
@@ -505,5 +759,79 @@ public class SolicitacaoDaoHibernateTest_JUnit4 extends GenericDaoHibernateTest_
 		solicitacao.setDataEncerramento(dataEncerramento);
 		solicitacao = solicitacaoDao.save(solicitacao);
 		return solicitacao;
+	}
+	
+	private Solicitacao saveSolicitacao(Empresa empresa, Date date, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, FaixaSalarial faixa, MotivoSolicitacao motivoSolicitacao){
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacao.setData(date);
+		solicitacao.setEmpresa(empresa);		
+		solicitacao.setFaixaSalarial(faixa);
+		solicitacao.setEstabelecimento(estabelecimento);
+		solicitacao.setAreaOrganizacional(areaOrganizacional);
+		solicitacao.setMotivoSolicitacao(motivoSolicitacao);
+		solicitacaoDao.save(solicitacao);
+		return solicitacao;
+	}
+	
+	private FaixaSalarial saveFaixaSalarial(Cargo cargo){
+		FaixaSalarial faixa = FaixaSalarialFactory.getEntity();
+		faixa.setCargo(cargo);
+		faixa = faixaSalarialDao.save(faixa);
+		return faixa;
+	}
+	
+	private Candidato saveCandidato(Empresa empresa){
+		Candidato candidato = CandidatoFactory.getCandidao(empresa);
+		candidatoDao.save(candidato);
+		return candidato;
+	}
+	
+	private CandidatoSolicitacao saveCandidatoSolicitacao(Candidato candidato, Solicitacao solicitacao){
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(candidato, solicitacao, false);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao);
+		return candidatoSolicitacao;
+	}
+	
+	private void saveColaboradorComHistorico(Empresa empresa, Candidato candidato, CandidatoSolicitacao candidatoSolicitacao, Date dataHistorico, Integer status){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setCandidato(candidato);
+		colaborador.setDataAdmissao(dataHistorico);
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setCandidatoSolicitacao(candidatoSolicitacao);
+		historicoColaborador.setData(dataHistorico);
+		historicoColaborador.setStatus(status);
+		historicoColaboradorDao.save(historicoColaborador);
+	}
+	
+	private Estabelecimento saveEstabelecimento(Empresa empresa) {
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimento);
+		return estabelecimento;
+	}
+	
+	private AreaOrganizacional saveAreaOrganizacional(Empresa empresa) {
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setEmpresa(empresa);
+		areaOrganizacionalDao.save(areaOrganizacional);
+		return areaOrganizacional;
+	}
+	
+	private MotivoSolicitacao saveMotivoSolicitacao() {
+		MotivoSolicitacao motivo1 = MotivoSolicitacaoFactory.getEntity();
+		motivoSolicitacaoDao.save(motivo1);
+		return motivo1;
+	}
+	
+	private PausaPreenchimentoVagas savePausaPreenchimentoVagas(Date dataPausa, Date dataReinicio, Solicitacao solicitacao){
+		PausaPreenchimentoVagas pausaPreenchimentoVagas = new PausaPreenchimentoVagas();
+		pausaPreenchimentoVagas.setDataReinicio(dataReinicio);
+		pausaPreenchimentoVagas.setDataPausa(dataPausa);
+		pausaPreenchimentoVagas.setSolicitacao(solicitacao);
+		pausaPreenchimentoVagasDao.save(pausaPreenchimentoVagas);
+		return pausaPreenchimentoVagas;
 	}
 }

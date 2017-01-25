@@ -125,14 +125,10 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
         }
 		
 		return query.list();
-		
-//		return solicitacaoExames;
 	}
 	
 	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, Long[] exameIds, ResultadoExame resultadoExame)
 	{
-//		List<Long> solicitacaoExameIds = findDistinctSolicitacaoIds(empresaId, dataIni, dataFim, vinculo, nomeBusca, matriculaBusca, motivo, exameIds, resultadoExame);
-		
 		Collection<SolicitacaoExame> solicitacaoExameIds = findAllSelect(0,0, empresaId, dataIni, dataFim, vinculo, nomeBusca, matriculaBusca, motivo, exameIds, resultadoExame); 
 		
 		if (solicitacaoExameIds == null)

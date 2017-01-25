@@ -56,7 +56,7 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public List<RelatorioPromocoes> getRelatorioPromocoes(Long[] areaIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long... empresasIds);
 	public List<SituacaoColaborador> getUltimasPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataBase, Long empresaId);
 	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception;
-	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId);
+	public void removeVinculoCandidatoSolicitacao(Long candidatoSolicitacaoId);
 	public Collection<HistoricoColaborador> findByAreaGrupoCargo(Long[] empresaIds, Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Long[] areaIds, Boolean areasAtivas, Long[] grupoOcupacionalIds, String vinculo);
 	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long... colaboradoresIds);
 	boolean existeHistoricoPorIndice(Long empresaId);

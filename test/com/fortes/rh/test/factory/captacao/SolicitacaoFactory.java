@@ -37,6 +37,17 @@ public class SolicitacaoFactory
 		solicitacao.setAreaOrganizacional(areaOrganizacional);
 		return solicitacao;
 	}
+	
+	public static Solicitacao getSolicitacao(Empresa empresa, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Date data, Date dataEncerramento)
+	{
+		Solicitacao solicitacao = getSolicitacao();
+		solicitacao.setEstabelecimento(estabelecimento);
+		solicitacao.setAreaOrganizacional(areaOrganizacional);
+		solicitacao.setDataEncerramento(dataEncerramento);
+		solicitacao.setEmpresa(empresa);
+		solicitacao.setData(data);
+		return solicitacao;
+	}
 
 	public static Solicitacao getSolicitacao(FaixaSalarial faixaSalarial, Date data)
 	{

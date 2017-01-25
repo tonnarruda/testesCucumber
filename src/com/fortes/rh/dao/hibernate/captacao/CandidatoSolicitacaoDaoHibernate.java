@@ -108,7 +108,8 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         query.executeUpdate();
     }
 
-    public Collection findCandidatosAptosMover(Long[] candidatosSolicitacaoId, Solicitacao solicitacao)
+    @SuppressWarnings("rawtypes")
+	public Collection findCandidatosAptosMover(Long[] candidatosSolicitacaoId, Solicitacao solicitacao)
     {
         String hql = "select cs.id from CandidatoSolicitacao cs where cs.id in (:ids) and cs.candidato.id not in " +
             "(select cs2.candidato.id from CandidatoSolicitacao cs2 where cs2.solicitacao = :solicitacao)";
@@ -156,7 +157,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         p.add(Projections.property("cs.statusAutorizacaoGestor"), "statusAutorizacaoGestor");
         p.add(Projections.property("cs.dataAutorizacaoGestor"), "dataAutorizacaoGestor");
         p.add(Projections.property("cs.obsAutorizacaoGestor"), "obsAutorizacaoGestor");
-        p.add(Projections.property("col.solicitacao.id"), "solicitacaoId");//usado para regra de excluir em candidatosolicitacaoList
+        p.add(Projections.property("cs.solicitacao.id"), "solicitacaoId");//usado para regra de excluir em candidatosolicitacaoList
         p.add(Projections.property("c.id"), "candidatoId");
         p.add(Projections.property("c.nome"), "candidatoNome");
         p.add(Projections.property("c.contato.foneFixo"), "candidatoFoneFixo");
@@ -200,7 +201,6 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         criteria.createCriteria("cs.historicoCandidatos", "h", Criteria.LEFT_JOIN);
         criteria.createCriteria("h.etapaSeletiva", "e", Criteria.LEFT_JOIN);
         criteria.createCriteria("c.empresa", "emp", Criteria.LEFT_JOIN);
-        criteria.createCriteria("c.colaborador", "col", Criteria.LEFT_JOIN);
         
 		criteria.add(Expression.eq("cs.triagem", false));
 
@@ -527,14 +527,13 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		query.executeUpdate();
 	}
 	
-	public void setStatusBySolicitacaoAndCandidato(char status, Long candidatoId, Long solicitacaoId) 
+	public void updateStatusAndRemoveDataContratacaoOrPromocao(Long id, char status) 
 	{
-		String hql = "update CandidatoSolicitacao set status = :status, dataContratacaoOrPromocao = null where candidato.id = :candidatoId and solicitacao.id = :solicitacaoId ";
+		String hql = "update CandidatoSolicitacao set status = :status, dataContratacaoOrPromocao = null where id = :id ";
 		
 		Query query = getSession().createQuery(hql);
 		query.setCharacter("status", status);
-		query.setLong("candidatoId", candidatoId);
-		query.setLong("solicitacaoId", solicitacaoId);
+		query.setLong("id", id);
 		
 		query.executeUpdate();
 	}
@@ -571,17 +570,6 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		return query.list();
 	}
 	
-	public void atualizaCandidatoSolicitacaoStatusContratado(Long colaboradorId)
-	{
-		String hql = "update CandidatoSolicitacao set status = :status where solicitacao.id = (select solicitacao.id from Colaborador where id = :colaboradorId) and candidato.id = (select candidato.id from Colaborador where id = :colaboradorId) ";
-
-		Query query = getSession().createQuery(hql);
-		query.setCharacter("status", StatusCandidatoSolicitacao.CONTRATADO);
-		query.setLong("colaboradorId", colaboradorId);
-		
-		query.executeUpdate();
-	}
-
 	public Collection<CandidatoSolicitacao> findColaboradorParticipantesDaSolicitacaoByAreas(Long[] areasOrganizacionaisId, String solicitacaoDescricaoBusca, String colaboradorNomeBusca, char statusBusca, Integer page, Integer pagingSize){
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.areaOrganizacional", "aos");
@@ -663,6 +651,62 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		query.setCharacter("statusAutorizacaoGestor", candidatoSolicitacao.getStatusAutorizacaoGestor());
 		query.setString("obsAutorizacaoGestor", candidatoSolicitacao.getObsAutorizacaoGestor());
 		query.setLong("id", candidatoSolicitacao.getId());
+		
+		query.executeUpdate();
+	}
+
+	public CandidatoSolicitacao findByHistoricoColaboradorId(Long historicoColaboradorId) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cs.id"), "id");
+		p.add(Projections.property("cs.candidato.id"), "candidatoId");
+		p.add(Projections.property("cs.solicitacao.id"), "solicitacaoId");
+
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.candidatoSolicitacao", "cs");
+
+		criteria.add(Expression.eq("hc.id", historicoColaboradorId));
+		
+		criteria.setProjection(Projections.distinct(p));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(CandidatoSolicitacao.class));
+		
+		return  criteria.uniqueResult() != null ? (CandidatoSolicitacao) criteria.uniqueResult() : new CandidatoSolicitacao();
+	}
+
+	public void updateStatusParaIndiferenteEmSolicitacoesEmAndamento(Long candidatoId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("update CandidatoSolicitacao cs set cs.status = :status ");
+		hql.append("where cs.solicitacao.id in( ");
+		hql.append(								"( select cs2.solicitacao.id from CandidatoSolicitacao cs2 join cs2.solicitacao s with s.encerrada = :encerrada  ");
+		hql.append(								"  where cs2.candidato.id = :candidatoId ) ");
+		hql.append(							 ") ");
+		hql.append(" and cs.candidato.id = :candidatoId ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("candidatoId", candidatoId);
+		query.setCharacter("status", StatusCandidatoSolicitacao.INDIFERENTE);
+		query.setBoolean("encerrada", false);
+		
+		query.executeUpdate();
+	}
+	
+	public void updateStatusSolicitacoesEmAndamentoByColaboradorId(Character status, Long[] colaboradoresIds) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("update CandidatoSolicitacao cs set cs.status = :status ");
+		hql.append("where cs.solicitacao.id in( ");
+		hql.append(								"( select cs2.solicitacao.id from CandidatoSolicitacao cs2 join cs2.solicitacao s with s.encerrada = :encerrada  ");
+		hql.append(								"  where cs2.candidato.id in ( (select c.candidato.id from Colaborador c where c.id in(:colaboradoresIds)) ) ");
+		hql.append(							 "))");
+		hql.append(" and cs.candidato.id in( ( select c.candidato.id from Colaborador c where c.id in(:colaboradoresIds) ) ) ");
+		hql.append(" and cs.status != :contratado and cs.status != :promovido ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameterList("colaboradoresIds", colaboradoresIds);
+		query.setCharacter("status", status);
+		query.setCharacter("contratado", StatusCandidatoSolicitacao.CONTRATADO);
+		query.setCharacter("promovido", StatusCandidatoSolicitacao.PROMOVIDO);
+		query.setBoolean("encerrada", false);
 		
 		query.executeUpdate();
 	}

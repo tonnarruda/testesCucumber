@@ -189,7 +189,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
     	Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
     	
     	manager.expects(once()).method("findCandidatoSolicitacaoById").with(eq(candidatoSolicitacao.getId())).will(returnValue(candidatoSolicitacao));
-    	historicoColaboradorManager.expects(once()).method("removeCandidatoSolicitacao").with(eq(candidatoSolicitacao.getId())).isVoid();
+    	historicoColaboradorManager.expects(once()).method("removeVinculoCandidatoSolicitacao").with(eq(candidatoSolicitacao.getId())).isVoid();
     	historicoCandidatoManager.expects(once()).method("removeByCandidatoSolicitacao").with(eq(candidatoSolicitacao.getId())).isVoid();
     	configuracaoNivelCompetenciaManager.expects(once()).method("removeByCandidatoAndSolicitacao").with(eq(candidatoSolicitacao.getCandidato().getId()), eq(candidatoSolicitacao.getSolicitacao().getId())).isVoid();
     	manager.expects(once()).method("remove").with(eq(new Long[]{candidatoSolicitacao.getId()})).isVoid();

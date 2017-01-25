@@ -307,7 +307,7 @@ public class ColaboradorEditActionTest_JUnit4
 		action.setHistoricoColaborador(historicoColaborador);
 		
 		when(areaOrganizacionalManager.verificaMaternidade(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(ativa))).thenReturn(false);
-		when(colaboradorManager.insert(any(Colaborador.class), anyDouble(), anyLong(), anyCollection(), anyCollection(), anyCollection(), any(Solicitacao.class), any(Empresa.class))).thenReturn(true);
+		when(colaboradorManager.insert(any(Colaborador.class), anyDouble(), anyLong(), anyCollection(), anyCollection(), anyCollection(), any(Solicitacao.class), any(Empresa.class), anyLong())).thenReturn(true);
 				
 		when(usuarioManager.existeLogin(any(Usuario.class))).thenReturn(false);
 		when(parametrosDoSistemaManager.findByIdProjection(eq(1L))).thenReturn(ParametrosDoSistemaFactory.getEntity());
@@ -336,7 +336,7 @@ public class ColaboradorEditActionTest_JUnit4
 		action.setHistoricoColaborador(historicoColaborador);
 		
 		when(areaOrganizacionalManager.verificaMaternidade(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(ativa))).thenReturn(false);
-		when(colaboradorManager.insert(any(Colaborador.class), anyDouble(), anyLong(), anyCollection(), anyCollection(), anyCollection(), any(Solicitacao.class), any(Empresa.class))).thenReturn(false);
+		when(colaboradorManager.insert(any(Colaborador.class), anyDouble(), anyLong(), anyCollection(), anyCollection(), anyCollection(), any(Solicitacao.class), any(Empresa.class), anyLong())).thenReturn(false);
 		when(parametrosDoSistemaManager.findByIdProjection(eq(1L))).thenReturn(null);
 
 		assertEquals(Action.ERROR, action.insert());

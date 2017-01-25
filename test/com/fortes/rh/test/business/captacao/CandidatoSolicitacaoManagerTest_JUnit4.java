@@ -1,7 +1,11 @@
 package com.fortes.rh.test.business.captacao;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +16,7 @@ import mockit.Mockit;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -40,6 +45,7 @@ public class CandidatoSolicitacaoManagerTest_JUnit4
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ColaboradorManager colaboradorManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private CandidatoManager candidatoManager;
 
 	@Before
     public void setUp() throws Exception
@@ -55,6 +61,9 @@ public class CandidatoSolicitacaoManagerTest_JUnit4
 		
 		gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
 		MockSpringUtilJUnit4.mocks.put("gerenciadorComunicacaoManager", gerenciadorComunicacaoManager);
+		
+		candidatoManager = mock(CandidatoManager.class);
+		MockSpringUtilJUnit4.mocks.put("candidatoManager", candidatoManager);
 
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
     }
@@ -145,20 +154,6 @@ public class CandidatoSolicitacaoManagerTest_JUnit4
     }
 	
 	@Test
-	public void atualizaCandidatoSolicitacaoAoReligarColaborador() 
-	{
-		Long colaboradorId = 1L;
-    	Exception exception = null;
-
-    	try {
-			candidatoSolicitacaoManager.atualizaCandidatoSolicitacaoAoReligarColaborador(colaboradorId);
-		} catch (Exception e) {
-			exception = e;
-		}
-    	assertNull(exception);
-	}
-	
-	@Test
 	public void testAtalizaStatusEDataContratacaoOrPromocao()
 	{
 		CandidatoSolicitacao csDoBanco = CandidatoSolicitacaoFactory.getEntity(1L, StatusCandidatoSolicitacao.CONTRATADO, new Date());
@@ -170,5 +165,60 @@ public class CandidatoSolicitacaoManagerTest_JUnit4
 		when(candidatoSolicitacaoDao.findById(eq(csDoBanco.getId()))).thenReturn(csDoBanco);
 		candidatoSolicitacaoManager.setStatusAndDataContratacaoOrPromocao(csDoBanco.getId(), StatusCandidatoSolicitacao.INDIFERENTE, null);
 		verify(candidatoSolicitacaoDao).update(csAtualizado);
+	}
+	
+	@Test
+	public void testFindByHistoricoColaboradorId() {
+		Long historicoColaboradorId = 2L;
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1L);
+		when(candidatoSolicitacaoDao.findByHistoricoColaboradorId(historicoColaboradorId)).thenReturn(candidatoSolicitacao);
+		assertNotNull(candidatoSolicitacaoManager.findByHistoricoColaboradorId(historicoColaboradorId));
+	}
+	
+	@Test
+	public void testUpdateStatusCandidatoAoCancelarContratacao() {
+		Candidato candidato = CandidatoFactory.getCandidato(1L);
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1L);
+		candidatoSolicitacao.setCandidato(candidato);
+		Long colaboradorId = 2L;
+		
+		Exception exception = null;
+		try {
+			candidatoSolicitacaoManager.updateStatusCandidatoAoCancelarContratacao(candidatoSolicitacao, colaboradorId);
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		verify(candidatoSolicitacaoDao).updateStatusAndRemoveDataContratacaoOrPromocao(candidatoSolicitacao.getId(), StatusCandidatoSolicitacao.INDIFERENTE);
+		verify(candidatoSolicitacaoDao).updateStatusParaIndiferenteEmSolicitacoesEmAndamento(candidatoSolicitacao.getCandidato().getId());
+		assertNull(exception);
+	}
+	
+	@Test
+	public void testUpdateStatusSolicitacoesEmAndamentoByColaboradorId() {
+		Long[] colaboradoresIds = new Long[]{1L, 2L};
+		Character status = StatusCandidatoSolicitacao.INDIFERENTE;
+		Exception exception = null;
+		try {
+			candidatoSolicitacaoManager.updateStatusSolicitacoesEmAndamentoByColaboradorId(status, colaboradoresIds);
+		} catch (Exception e) {
+			exception = e;
+		}
+		verify(candidatoSolicitacaoDao).updateStatusSolicitacoesEmAndamentoByColaboradorId(status, colaboradoresIds);
+		assertNull(exception);
+	}
+	
+	@Test
+	public void testUpdateStatusAndRemoveDataContratacaoOrPromocao(){
+		Long candidatoSolicitacaoId = 1L; 
+		char status = StatusCandidatoSolicitacao.CONTRATADO;
+		Exception exception = null;
+		try {
+			candidatoSolicitacaoManager.updateStatusAndRemoveDataContratacaoOrPromocao(candidatoSolicitacaoId, status);
+		} catch (Exception e) {
+			exception = e;
+		}
+		verify(candidatoSolicitacaoDao).updateStatusAndRemoveDataContratacaoOrPromocao(candidatoSolicitacaoId, status);
+		assertNull(exception);
 	}
 }

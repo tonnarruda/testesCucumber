@@ -8,11 +8,13 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 
 import mockit.Mockit;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -51,6 +53,7 @@ public class ColaboradorManagerTest_Junit4
     private CidadeManager cidadeManager;
     private AcPessoalClientColaborador acPessoalClientColaborador;
     private HistoricoColaboradorManager historicoColaboradorManager;
+    private PlatformTransactionManager transactionManager;
 
     @Before
     public void setUp() throws Exception
@@ -62,6 +65,7 @@ public class ColaboradorManagerTest_Junit4
         cidadeManager = mock(CidadeManager.class);
         acPessoalClientColaborador = mock(AcPessoalClientColaborador.class);
         historicoColaboradorManager= mock(HistoricoColaboradorManager.class);
+        transactionManager = mock(PlatformTransactionManager.class);
         
         colaboradorManager.setDao(colaboradorDao);
         colaboradorManager.setCandidatoManager(candidatoManager);
@@ -70,6 +74,7 @@ public class ColaboradorManagerTest_Junit4
         colaboradorManager.setCidadeManager(cidadeManager);
         colaboradorManager.setAcPessoalClientColaborador(acPessoalClientColaborador);
         colaboradorManager.setHistoricoColaboradorManager(historicoColaboradorManager);
+        colaboradorManager.setTransactionManager(transactionManager);
         
         usuarioManager = mock(UsuarioManager.class);
         MockSpringUtilJUnit4.mocks.put("usuarioManager", usuarioManager);
@@ -168,4 +173,29 @@ public class ColaboradorManagerTest_Junit4
 		when(colaboradorDao.findAniversariantesPorTempoDeEmpresa(mes, false, empresaIds, estabelecimentoIds, areaIds)).thenReturn(colaboradores);
 		assertEquals(1, colaboradorManager.findAniversariantesPorTempoDeEmpresa(mes, false, empresaIds, estabelecimentoIds, areaIds).size());
 	}
+    
+    @Test
+    public void testSolicitacaoDesligamentoAc() throws Exception {
+        Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+        Exception exception = null;
+        try {
+        	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, 'I', true, true, colaborador.getId());
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+    }
+    @Test
+    public void testDesligaColaborador() throws Exception
+    {
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	Exception exception = null;
+        try {
+        	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, 'I', false, false, colaborador.getId());
+		} catch (Exception e) {
+			exception = e;
+		}
+    	assertNull(exception);
+    }
 }

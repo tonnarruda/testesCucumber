@@ -29,6 +29,7 @@ import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -504,12 +505,14 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long[] solicitacaoIds, Long empresaId, boolean considerarContratacaoFutura)
 	{
-		StringBuilder consulta = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga(s.estabelecimento.id, s.areaOrganizacional.id, fs.cargo.id,count(co.solicitacao.id), ");
+		StringBuilder consulta = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga(s.estabelecimento.id, s.areaOrganizacional.id, fs.cargo.id,count(s.id), ");
 		consulta.append("coalesce(avg(s.dataEncerramento - s.data),0) - coalesce(cast(sum(to_number(to_char(((case when (p.dataReinicio is null) then now() else p.dataReinicio end) - p.dataPausa), 'DDD'), '999')) as integer), 0)) ");
 		consulta.append("from Colaborador co ");
-		if(!considerarContratacaoFutura)
-			consulta.append("join co.historicoColaboradors hc ");
-		consulta.append("right join co.solicitacao s ");
+		
+		consulta.append("join co.historicoColaboradors hc ");
+		consulta.append("join hc.candidatoSolicitacao cs ");
+		consulta.append("join cs.solicitacao s ");
+		
 		consulta.append("left join s.pausasPreenchimentoVagas p ");
 		consulta.append("join s.faixaSalarial fs ");
 		consulta.append("where ");
@@ -762,7 +765,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 	public Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
-		criteria.createCriteria("c.solicitacao", "s");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("hc.candidatoSolicitacao", "cs");
+		criteria.createCriteria("cs.solicitacao", "s");
 		criteria.createCriteria("s.faixaSalarial", "f");
 		criteria.createCriteria("f.cargo", "ca");
 		
@@ -775,6 +780,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
+		criteria.add(Expression.eq("hc.motivo", MotivoHistoricoColaborador.CONTRATADO));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
 		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
@@ -797,7 +803,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 	public Collection<AreaOrganizacional> findQtdContratadosArea(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
-		criteria.createCriteria("c.solicitacao", "s");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("hc.candidatoSolicitacao", "cs");
+		criteria.createCriteria("cs.solicitacao", "s");
 		criteria.createCriteria("s.areaOrganizacional", "a");
 		
 		ProjectionList p = Projections.projectionList().create();
@@ -808,6 +816,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
+		criteria.add(Expression.eq("hc.motivo", MotivoHistoricoColaborador.CONTRATADO));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
 		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
@@ -830,7 +839,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 	public Collection<MotivoSolicitacao> findQtdContratadosMotivo(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
-		criteria.createCriteria("c.solicitacao", "s");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("hc.candidatoSolicitacao", "cs");
+		criteria.createCriteria("cs.solicitacao", "s");
 		criteria.createCriteria("s.motivoSolicitacao", "m");
 		
 		ProjectionList p = Projections.projectionList().create();
@@ -841,6 +852,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
+		criteria.add(Expression.eq("hc.motivo", MotivoHistoricoColaborador.CONTRATADO));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
 		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))

@@ -43,7 +43,6 @@ import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.dicionario.CodigoGFIP;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
-import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
@@ -1304,69 +1303,6 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCaseManager<H
 		}
 
 		assertNotNull(exception);
-	}
-
-	public void  testCancelarSituacaoRH_SEP() throws Exception
-	{
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
-		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.VALOR);
-		historicoColaborador.setSalario(200.0);
-
-		TSituacao situacao = new TSituacao();
-		situacao.setId(1);
-
-		String mensagem = "Teste";
-
-		historicoColaboradorDao.expects(once()).method("findByIdProjectionHistorico").with(ANYTHING).will(returnValue(historicoColaborador));
-		historicoColaboradorDao.expects(once()).method("setStatus").with(eq(historicoColaborador.getId()), eq(false)).will(returnValue(true));
-		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCancelamentoSituacao").with(eq(situacao), eq(mensagem), eq(historicoColaborador)).isVoid();
-		solicitacaoManager.expects(once()).method("atualizaStatusSolicitacaoByColaborador").with(eq(colaborador), eq(StatusCandidatoSolicitacao.APROMOVER), eq(false)).isVoid();
-		
-		HistoricoColaborador historicoColaboradorRetorno = manager.cancelarSituacao(situacao, mensagem);
-
-		assertEquals(historicoColaborador, historicoColaboradorRetorno);
-	}
-
-	public void  testCancelarSituacaoSEP() throws Exception
-	{
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
-		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.VALOR);
-		historicoColaborador.setSalario(200.0);
-
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
-
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
-
-		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L);
-		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.VALOR);
-		faixaSalarialHistorico.setValor(1000.00);
-
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
-		faixaSalarial.setFaixaSalarialHistoricoAtual(faixaSalarialHistorico);
-
-		String empresaCodigoAC = "001";
-		TSituacao situacao = new TSituacao();
-		situacao.setTipoSalario("C");
-		situacao.setEmpresaCodigoAC(empresaCodigoAC);
-		String mensagem = "Teste";
-
-		historicoColaboradorDao.expects(once()).method("findByAC").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(historicoColaborador));
-		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(estabelecimento));
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
-		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
-		historicoColaboradorDao.expects(once()).method("update").with(ANYTHING);
-		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCancelamentoSituacao").with(eq(situacao), eq(mensagem), eq(historicoColaborador)).isVoid();
-		solicitacaoManager.expects(once()).method("atualizaStatusSolicitacaoByColaborador").with(eq(colaborador), eq(StatusCandidatoSolicitacao.APROMOVER), eq(false)).isVoid();
-		
-		HistoricoColaborador historicoColaboradorRetorno = manager.cancelarSituacao(situacao, mensagem);
-
-		assertEquals(historicoColaborador, historicoColaboradorRetorno);
 	}
 
 	public void testFindPendenciasByHistoricoColaborador()

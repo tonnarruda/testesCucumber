@@ -3027,20 +3027,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc1.colaborador as co ");
 		hql.append("left join hc1.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as cg ");
-		hql.append("left join co.solicitacao as sol ");
+		hql.append("left join hc1.candidatoSolicitacao cs ");
+		hql.append("left join cs.solicitacao as sol ");
 		hql.append("left join sol.motivoSolicitacao as ms ");
 
 		hql.append("where ");
-		hql.append("		hc1.status = :status ");
-		hql.append("		and (hc1.data = (");
-		hql.append("			select min(hc2.data) ");
-		hql.append("			from HistoricoColaborador as hc2 ");
-		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.status = :status ");
-		hql.append("		) ");
-		hql.append("	) ");
-		hql.append("and	co.dataAdmissao between :dataIni and :dataFim ");
-		hql.append("and	es.id in (:estabelecimentosIds) ");
+		hql.append("	hc1.status = :status ");
+		hql.append("	and hc1.motivo = :motivo ");
+		hql.append("	and	co.dataAdmissao between :dataIni and :dataFim ");
+		hql.append("	and	es.id in (:estabelecimentosIds) ");
 		
 		if (LongUtil.arrayIsNotEmpty(areasIds))
 			hql.append("and	ao.id in (:areasIds) ");
@@ -3057,6 +3052,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		query.setString("motivo", MotivoHistoricoColaborador.CONTRATADO);
 		
 		query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
 
@@ -4316,20 +4312,18 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public int findQtdVagasPreenchidas(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim)
 	{
-		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
-
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.historicoColaboradors", "hc");
-		criteria.createCriteria("c.solicitacao", "s");
+		criteria.createCriteria("hc.candidatoSolicitacao", "cs");
+		criteria.createCriteria("cs.solicitacao", "s");
 		
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.count("c.id"));
+		p.add(Projections.countDistinct("c.id"));
 		
 		criteria.setProjection(p);
 	
 		criteria.add(Expression.between("s.dataEncerramento", dataIni, dataFim));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
-		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 	
 		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
@@ -4338,7 +4332,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			criteria.add(Expression.in("s.areaOrganizacional.id", areaIds));
 		
 		if (LongUtil.arrayIsNotEmpty(solicitacaoIds)) 
-			criteria.add(Expression.in("c.solicitacao.id", solicitacaoIds));
+			criteria.add(Expression.in("cs.solicitacao.id", solicitacaoIds));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		
@@ -5109,15 +5103,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setLong("empresaId", empresaId);
 		
 		return (Integer) query.uniqueResult();
-	}
-
-	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) {
-		Query query = getSession().createQuery("update Colaborador set solicitacao.id = :solicitacaoId where id = :colaboradorId ");
-		
-		query.setLong("colaboradorId", colaboradorId);
-		query.setLong("solicitacaoId", solicitacaoId);
-		
-		query.executeUpdate();
 	}
 
 	public Colaborador findColaboradorComTodosOsDados(Long id) {

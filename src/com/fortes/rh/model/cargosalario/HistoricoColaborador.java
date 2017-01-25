@@ -894,11 +894,6 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.salario = salario;
 	}
 	
-	public void setColaboradorSolicitacaoId(Long solicitacaoId){
-		inicializaColaborador();
-		colaborador.setSolicitacaoId(solicitacaoId);
-	}
-	
 	public void setColaboradorCandidatoId(Long candidatoId){
 		inicializaColaborador();
 		colaborador.setCandidatoId(candidatoId);
@@ -1172,6 +1167,13 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	public void setCandidatoSolicitacao(CandidatoSolicitacao candidatoSolicitacao) 
 	{
 		this.candidatoSolicitacao = candidatoSolicitacao;
+	}
+	
+	public void setcandidatoSolicitacaoId(Long candidatoSolicitacaoId){
+		if(this.candidatoSolicitacao == null)
+			candidatoSolicitacao = new CandidatoSolicitacao();
+		
+		candidatoSolicitacao.setId(candidatoSolicitacaoId);
 	}
 
 	public Date getDataSolicitacaoDesligamento()

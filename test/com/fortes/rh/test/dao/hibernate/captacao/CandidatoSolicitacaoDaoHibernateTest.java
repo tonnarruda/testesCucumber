@@ -471,33 +471,6 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(StatusCandidatoSolicitacao.INDIFERENTE, candidatoSolicitacao.getStatus());
 	}
 	
-	public void testSetStatusBySolicitacaoAndCandidato()
-	{
-		Candidato candidato = CandidatoFactory.getCandidato();
-		candidatoDao.save(candidato);
-		
-		Solicitacao solicitacao = new Solicitacao();
-		solicitacaoDao.save(solicitacao);
-		
-		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
-		candidatoSolicitacao.setCandidato(candidato);
-		candidatoSolicitacao.setSolicitacao(solicitacao);
-		candidatoSolicitacao.setStatus(StatusCandidatoSolicitacao.CONTRATADO);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setCandidato(candidato);
-		colaborador.setSolicitacao(solicitacao);
-		colaboradorDao.save(colaborador);
-		
-		assertEquals(StatusCandidatoSolicitacao.CONTRATADO, candidatoSolicitacao.getStatus());
-		
-		candidatoSolicitacaoDao.setStatusBySolicitacaoAndCandidato(StatusCandidatoSolicitacao.INDIFERENTE, candidato.getId(), solicitacao.getId());
-		candidatoSolicitacao = candidatoSolicitacaoDao.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());
-		
-		assertEquals(StatusCandidatoSolicitacao.INDIFERENTE, candidatoSolicitacao.getStatus());
-	}
-	
 	public void testRemoveByCandidato()
 	{
 		Candidato candidato1 = CandidatoFactory.getCandidato();
@@ -643,55 +616,6 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(candidato, solicitacao, statusAprovacaoSolicitaca);
 		candidatoSolicitacaoDao.save(candidatoSolicitacao);
 	}
-	
-	public void testUpdateStatusAprovacaoResponsavel(){
-		Candidato candidato = CandidatoFactory.getCandidato();
-		candidatoDao.save(candidato);
-		
-		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
-		solicitacaoDao.save(solicitacao);
-
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setCandidato(candidato);
-		colaborador.setSolicitacao(solicitacao);
-		colaboradorDao.save(colaborador);
-		
-		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
-		candidatoSolicitacao.setCandidato(candidato);
-		candidatoSolicitacao.setSolicitacao(solicitacao);
-		candidatoSolicitacao.setStatus(StatusCandidatoSolicitacao.INDIFERENTE);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao);
-		
-		Exception exeception = null;
-		try {
-			candidatoSolicitacaoDao.atualizaCandidatoSolicitacaoStatusContratado(colaborador.getId());
-		} catch (Exception e) {
-			exeception = e;
-		}
-		
-		assertNull(exeception);
-	} 
-		
-//		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(candidato, solicitacao, null);
-//		candidatoSolicitacaoDao.save(candidatoSolicitacao);
-//		
-//		Usuario uauarioSolicitante = UsuarioFactory.getEntity();
-//		usuarioDao.save(uauarioSolicitante);
-//		
-//		CandidatoSolicitacao candidatoSolicitacaoNew = CandidatoSolicitacaoFactory.getEntity();
-//		candidatoSolicitacaoNew.setId(candidatoSolicitacao.getId());
-//		candidatoSolicitacaoNew.setStatusAutorizacaoGestor(StatusAutorizacaoGestor.REPROVADO);
-//		candidatoSolicitacaoNew.setObsAutorizacaoGestor("obsAprovacaoResponsavel");
-//		candidatoSolicitacaoNew.setDataAutorizacaoGestor(new Date());
-//		
-//		candidatoSolicitacaoDao.updateStatusAutorizacaoGestor(candidatoSolicitacaoNew);
-//		candidatoSolicitacaoDao.getHibernateTemplateByGenericDao().flush();
-//		
-//		CandidatoSolicitacao candidatoSolicitacaoRetorno = candidatoSolicitacaoDao.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());
-//		
-//		assertTrue(StatusAutorizacaoGestor.REPROVADO.equals(candidatoSolicitacaoRetorno.getStatusAutorizacaoGestor()));
-//		assertEquals(candidatoSolicitacaoNew.getObsAutorizacaoGestor(), candidatoSolicitacaoRetorno.getObsAutorizacaoGestor());
-//	}
 	
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{

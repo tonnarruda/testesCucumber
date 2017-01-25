@@ -815,7 +815,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("c.id"), "colaboradorId");
 		p.add(Projections.property("c.nomeComercial"), "colaboradorNomeComercial");
 		p.add(Projections.property("c.nome"), "colaboradorNome");
-		p.add(Projections.property("c.solicitacao.id"), "colaboradorSolicitacaoId");
 		p.add(Projections.property("c.candidato.id"), "colaboradorCandidatoId");
 		p.add(Projections.property("e.id"), "empresaId");
 		p.add(Projections.property("fs.id"), "faixaSalarialId");
@@ -1337,7 +1336,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.executeUpdate();
 	}
 
-	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId) 
+	public void removeVinculoCandidatoSolicitacao(Long candidatoSolicitacaoId) 
 	{
 		Query query = getSession().createQuery("update HistoricoColaborador set candidatoSolicitacao.id = null where candidatoSolicitacao.id = :candidatoSolicitacaoId ");
 		query.setLong("candidatoSolicitacaoId", candidatoSolicitacaoId);
@@ -1521,7 +1520,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setParameterList("colaboradoresIds", colaboradoresIds);
 		
 		query.executeUpdate();
-		
 	}
 	
 	public void updateArea(Long areaIdMae, Long areaId) 

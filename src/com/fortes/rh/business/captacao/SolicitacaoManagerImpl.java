@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
@@ -17,7 +16,6 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
@@ -30,7 +28,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 	private AnuncioManager anuncioManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private EmpresaManager empresaManager;
 	private PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 
@@ -308,22 +305,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return getDao().findByEmpresaEstabelecimentosAreas(empresaId, estabelecimentosIds, areasIds);
 	}
 
-	@SuppressWarnings("deprecation")
-	public void atualizaStatusSolicitacaoByColaborador(Colaborador colaborador,	char status, boolean disponibilizarCandidato) 
-	{
-		if(colaborador.getSolicitacao() != null && colaborador.getSolicitacao().getId() != null)
-			candidatoSolicitacaoManager.setStatusBySolicitacaoAndCandidato(status, colaborador.getCandidato().getId(), colaborador.getSolicitacao().getId() );
-		
-		Empresa empresa = empresaManager.findByIdProjection(colaborador.getEmpresa().getId()); 
-		if(empresa.isSolPessoalReabrirSolicitacao() && colaborador.getSolicitacao() != null && colaborador.getSolicitacao().getId() != null){
-			updateEncerraSolicitacao(false, null, colaborador.getSolicitacao().getId());
-		}
-		
-		CandidatoManager candidatoManager = (CandidatoManager) SpringUtil.getBeanOld("candidatoManager");
-		if(disponibilizarCandidato && colaborador.getCandidato() != null && colaborador.getCandidato().getId() != null)
-			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaborador.getId());
-	}
-	
 	public double calculaIndicadorVagasPreenchidasNoPrazo(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] solicitacoesIds, Date dataDe, Date dataAte) {
 		
 		Collection<Solicitacao> solicitacoes = getDao().calculaIndicadorVagasPreenchidasNoPrazo(empresaId, estabelecimentosIds, areasIds, solicitacoesIds, dataDe, dataAte);
@@ -352,10 +333,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 
 	public void setSolicitacaoAvaliacaoManager(SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) {
 		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 
 	public void setPausaPreenchimentoVagasManager(PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager) {

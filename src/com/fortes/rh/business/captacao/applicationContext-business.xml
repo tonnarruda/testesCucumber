@@ -162,9 +162,6 @@
     <property name="gerenciadorComunicacaoManager">
       <ref bean="gerenciadorComunicacaoManager" />
     </property>
-    <property name="empresaManager">
-      <ref bean="empresaManager" />
-    </property>
     <property name="pausaPreenchimentoVagasManager">
       <ref bean="pausaPreenchimentoVagasManager" />
     </property>

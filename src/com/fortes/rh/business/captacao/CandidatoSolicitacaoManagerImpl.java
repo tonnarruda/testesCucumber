@@ -189,12 +189,9 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		return getDao().getCount(solicitacaoId, etapaSeletivaId, indicadoPor, visualizar, contratado, observacaoRH, nomeBusca, status, semHistorico);
 	}
 
-	//TODO BACALHAU, findById apenas para update no status
-	public void setStatus(Long candidatoSolicitacaoId, char status)
+	public void updateStatusAndRemoveDataContratacaoOrPromocao(Long candidatoSolicitacaoId, char status)
 	{
-		CandidatoSolicitacao cs = getDao().findById(candidatoSolicitacaoId);
-		cs.setStatus(status);
-		getDao().update(cs);
+		getDao().updateStatusAndRemoveDataContratacaoOrPromocao(candidatoSolicitacaoId, status);
 	}
 	
 	public void setStatusAndDataContratacaoOrPromocao(Long candidatoSolicitacaoId, char status, Date dataContratacaoOrPromocao) {
@@ -219,17 +216,6 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		return getDao().findAvaliacoesCandidatoSolicitacao(solicitacaoId, candidatoId);
 	}
 
-	public void setStatusBySolicitacaoAndCandidato(char status, Long candidatoId, Long solicitacaoId) 
-	{
-		getDao().setStatusBySolicitacaoAndCandidato(status, candidatoId, solicitacaoId);
-	}
-	
-	public void atualizaCandidatoSolicitacaoAoReligarColaborador(Long colaboradorId) 
-	{
-		getDao().setStatusByColaborador(StatusCandidatoSolicitacao.APROMOVER, colaboradorId);
-		getDao().atualizaCandidatoSolicitacaoStatusContratado(colaboradorId);
-	}
-	
 	public Collection<CandidatoSolicitacao> findColaboradorParticipantesDaSolicitacaoByAreas(Collection<AreaOrganizacional> areasOrganizacionais, String colaboradorNomeBusca, String solicitacaoDescricaoBusca, char statusBusca, Integer page, Integer pagingSize){
 		return getDao().findColaboradorParticipantesDaSolicitacaoByAreas(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areasOrganizacionais), colaboradorNomeBusca, solicitacaoDescricaoBusca, statusBusca, page, pagingSize);
 	}
@@ -240,5 +226,22 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public CandidatoSolicitacao findByHistoricoColaboradorId(Long historicoColaboradorId) {
+		return getDao().findByHistoricoColaboradorId(historicoColaboradorId);
+	}
+	
+	public void updateStatusCandidatoAoCancelarContratacao(CandidatoSolicitacao candidatoSolicitacao, Long colaboradorId) {
+		getDao().updateStatusAndRemoveDataContratacaoOrPromocao(candidatoSolicitacao.getId(), StatusCandidatoSolicitacao.INDIFERENTE);
+		
+		getDao().updateStatusParaIndiferenteEmSolicitacoesEmAndamento(candidatoSolicitacao.getCandidato().getId());
+		
+		CandidatoManager candidatoManager = (CandidatoManager) SpringUtil.getBeanOld("candidatoManager");
+		candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradorId);
+	}
+
+	public void updateStatusSolicitacoesEmAndamentoByColaboradorId(Character status, Long... colaboradoresIds) {
+		getDao().updateStatusSolicitacoesEmAndamentoByColaboradorId(status, colaboradoresIds);
 	}
 }

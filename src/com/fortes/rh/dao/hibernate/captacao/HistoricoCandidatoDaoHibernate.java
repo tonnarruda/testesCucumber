@@ -112,6 +112,7 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		return criteria.list();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Collection<HistoricoCandidato> findByPeriodo(Map parametros)
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoCandidato.class, "hc");

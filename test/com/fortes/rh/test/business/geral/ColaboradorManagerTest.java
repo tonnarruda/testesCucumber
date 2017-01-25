@@ -958,35 +958,6 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
         assertNotNull(manager.findColaboradoresMotivoDemissaoQuantidade(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), null));
     }
 
-    public void testSolicitacaoDesligamentoAc() throws Exception
-    {
-        Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-
-        candidatoManager.expects(once()).method("updateDisponivelAndContratadoByColaborador").with(eq(true),eq(false),eq(new Long[]{colaborador.getId()})).isVoid();
-    	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
-        transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
-        usuarioManager.expects(once()).method("removeAcessoSistema").with(eq(new Long[]{colaborador.getId()}));
-        historicoColaboradorManager.expects(once()).method("deleteHistoricosAguardandoConfirmacaoByColaborador").with(eq(new Long[]{colaborador.getId()}));
-        transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
-
-        manager.desligaColaborador(true, new Date(), "observacao", 1L, 'I', true, true, colaborador.getId());
-    }
-    
-    public void testDesligaColaborador() throws Exception
-    {
-    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-    	
-    	candidatoManager.expects(once()).method("updateDisponivelAndContratadoByColaborador").with(eq(true),eq(false),eq(new Long[]{colaborador.getId()})).isVoid();
-    	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
-    	transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
-    	usuarioManager.expects(once()).method("removeAcessoSistema").with(eq(new Long []{colaborador.getId()}));
-    	areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(new Long[]{colaborador.getId()}));
-    	mensagemManager.expects(once()).method("removerMensagensViculadasByColaborador").withAnyArguments().isVoid();
-    	colaboradorDao.expects(once()).method("desligaColaborador").withAnyArguments().isVoid();
-    	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
-    	
-    	manager.desligaColaborador(true, new Date(), "observacao", 1L, 'I', false, false, colaborador.getId());
-    }
     public void testFindByAreasOrganizacionalIds() throws Exception
     {
     	Long[] ids = new Long[]{1L};

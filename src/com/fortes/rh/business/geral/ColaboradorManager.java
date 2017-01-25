@@ -50,7 +50,7 @@ import com.fortes.web.tags.CheckBox;
 public interface ColaboradorManager extends GenericManager<Colaborador>
 {
 	@Audita(operacao="Inserção", auditor=ColaboradorAuditorCallbackImpl.class)
-	public boolean insert(Colaborador colaborador, Double salarioColaborador, Long idCandidato, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Solicitacao solicitacao, Empresa empresa) throws Exception;
+	public boolean insert(Colaborador colaborador, Double salarioColaborador, Long idCandidato, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Solicitacao solicitacao, Empresa empresa, Long candidatoSolicitacaoId) throws Exception;
 	@Audita(operacao="Atualização", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception;
 	@Audita(operacao="Remoção", auditor=ColaboradorAuditorCallbackImpl.class)
@@ -227,7 +227,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel, Long colaboradorId);
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);
 	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId, boolean joinComHistorico, String... codigosACColaboradores);
-	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);
 	public void populaEscolaridade(Colaborador colaborador, TEmpregado empregado);
 	public void insereNonoDigitoCelular(Long[] ufId) throws Exception;
 	public void reenviaAguardandoContratacao(Empresa empresa) throws Exception;

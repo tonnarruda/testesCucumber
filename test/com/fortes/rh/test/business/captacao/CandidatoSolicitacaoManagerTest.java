@@ -114,18 +114,6 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
 		candidatoSolicitacaoManager.getCandidatosBySolicitacao(etapaCheck, empresaId, StatusSolicitacao.TODAS, Apto.SIM, null, null);
     }
 
-    public void testPromover()
-    {
-    	CandidatoSolicitacao cs1 = new CandidatoSolicitacao();
-    	cs1.setId(1L);
-    	cs1.setStatus(StatusCandidatoSolicitacao.CONTRATADO);
-        	
-    	candidatoSolicitacaoDao.expects(once()).method("findById").with(eq(cs1.getId())).will(returnValue(cs1));
-    	candidatoSolicitacaoDao.expects(once()).method("update");
-    	
-    	candidatoSolicitacaoManager.setStatus(cs1.getId(), StatusCandidatoSolicitacao.CONTRATADO);
-    }
-
     public void testGetCandidatosBySolicitacaoIdCandidatosComHistorico(){
 
     	ArrayList<Long> idCandidatosComHistoricos = new ArrayList<Long>();

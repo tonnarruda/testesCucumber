@@ -104,7 +104,6 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
 		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
 		
-//		p.add(Projections.property("ao.nome"), "projectionAreaOrganizacionalNome");
 		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as projectionAreaOrganizacionalNome", new String[] {"projectionAreaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "projectionAreaOrganizacionalNome");
 
 		p.add(Projections.property("e.nome"), "estabelecimentoNomeProjection");

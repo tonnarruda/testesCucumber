@@ -30,6 +30,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.model.type.File;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.Ctps;
 import com.fortes.rh.model.captacao.Experiencia;
@@ -148,8 +149,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Collection<ColaboradorCertificacao> colaboradorCertificacaos;
 	@OneToOne(optional=true)
 	private Candidato candidato;
-	@OneToOne(optional=true)
-	private Solicitacao solicitacao; // solicitação de pessoal que contratou o colaborador.
+//	@OneToOne(optional=true)
+//	private Solicitacao solicitacao; // solicitação de pessoal que contratou o colaborador.
 	@Column(length=50)
 	private String regimeRevezamento;
 
@@ -474,12 +475,16 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.estabelecimento.setNome(estabelecimentoNome);
 		
 		this.estabelecimento.setProjectionEmpresaNome(empresaNome);
+
+		if(this.historicoColaborador == null)
+			this.historicoColaborador = new HistoricoColaborador();
 		
-		if(this.solicitacao == null)
-			this.solicitacao = new Solicitacao();
+		if(this.historicoColaborador.getCandidatoSolicitacao() == null)
+			this.historicoColaborador.setCandidatoSolicitacao(new CandidatoSolicitacao());
 		
-		this.solicitacao.setProjectionMotivoSolicitacaoDescricao(motivoSolicitacaoDescricao);
-		this.solicitacao.setProjectionMotivoSolicitacaoTurnover(motivoSolicitacaoTurnover != null && motivoSolicitacaoTurnover);
+		this.historicoColaborador.getCandidatoSolicitacao().setSolicitacao(new Solicitacao());
+		this.historicoColaborador.getCandidatoSolicitacao().getSolicitacao().setProjectionMotivoSolicitacaoDescricao(motivoSolicitacaoDescricao);
+		this.historicoColaborador.getCandidatoSolicitacao().getSolicitacao().setProjectionMotivoSolicitacaoTurnover(motivoSolicitacaoTurnover != null && motivoSolicitacaoTurnover);
 	}
 	
 	public Colaborador(Long id, String nome, String nomeComercial, Long historicoAreaId, Long historicoEstabelecimentoId)
@@ -615,7 +620,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.funcao = historicoColaborador.getFuncao();
 		this.naoIntegraAc = colaborador.isNaoIntegraAc();
 		this.camposExtras = colaborador.getCamposExtras();
-		this.solicitacao = colaborador.getSolicitacao();
+//		this.solicitacao = colaborador.getSolicitacao();
 		this.dataSolicitacaoDesligamento = colaborador.getDataSolicitacaoDesligamento();
 		this.dataSolicitacaoDesligamentoAc = colaborador.getDataSolicitacaoDesligamentoAc();
 	}
@@ -2725,14 +2730,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return "";
 	}
 	
-	@NaoAudita
-	public Solicitacao getSolicitacao() {
-		return solicitacao;
-	}
-
-	public void setSolicitacao(Solicitacao solicitacao) {
-		this.solicitacao = solicitacao;
-	}
+//	@NaoAudita
+//	public Solicitacao getSolicitacao() {
+//		return solicitacao;
+//	}
+//
+//	public void setSolicitacao(Solicitacao solicitacao) {
+//		this.solicitacao = solicitacao;
+//	}
 
 	@NaoAudita
 	public Collection<ColaboradorAfastamento> getColaboradorAfastamento() {
@@ -3210,12 +3215,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.solicitanteDemissao.setId(solicitanteDemissaoId);
 	}
 
-	public void setSolicitacaoId(Long solicitacaoId) {
-		if(this.solicitacao == null)
-			this.solicitacao = new Solicitacao();
-		
-		this.solicitacao.setId(solicitacaoId);
-	}
+//	public void setSolicitacaoId(Long solicitacaoId) {
+//		if(this.solicitacao == null)
+//			this.solicitacao = new Solicitacao();
+//		
+//		this.solicitacao.setId(solicitacaoId);
+//	}
 	
 	public boolean isStatusAcPessoalAguardandoConfirmacao() 
 	{

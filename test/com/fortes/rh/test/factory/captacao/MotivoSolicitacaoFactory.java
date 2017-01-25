@@ -12,4 +12,11 @@ public class MotivoSolicitacaoFactory
 
 		return motivoSolicitacao;
 	}
+	
+	public static MotivoSolicitacao getEntity(String descricao, boolean turnover){
+		MotivoSolicitacao motivo = MotivoSolicitacaoFactory.getEntity();
+		motivo.setDescricao("Aumento de quadro");
+		motivo.setTurnover(true);
+		return motivo;
+	}
 }

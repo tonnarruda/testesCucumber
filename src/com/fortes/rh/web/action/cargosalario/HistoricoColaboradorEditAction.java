@@ -24,7 +24,6 @@ import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
-import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -227,8 +226,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			if (candidatoSolicitacaoId != null)
 			{
 				candidatoSolicitacaoManager.setStatusAndDataContratacaoOrPromocao(candidatoSolicitacaoId, StatusCandidatoSolicitacao.PROMOVIDO, getDataPromocao());
-				CandidatoSolicitacao candidatoSolicitacao = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacaoId);
-				historicoColaborador.setCandidatoSolicitacao(candidatoSolicitacao);
+				historicoColaborador.setcandidatoSolicitacaoId(candidatoSolicitacaoId);
 			}
 
 			historicoColaboradorManager.insertHistorico(historicoColaborador, getEmpresaSistema());
@@ -240,7 +238,6 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 			if(solicitacao != null && solicitacao.getId() != null)
 			{
-				colaboradorManager.setSolicitacao(colaborador.getId(), solicitacao.getId());
 				addActionSuccess("Colaborador <strong>" + colaborador.getNome() + "</strong>  promovido com sucesso.");
 				return "successSolicitacao";
 			}else

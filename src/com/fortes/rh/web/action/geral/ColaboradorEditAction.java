@@ -625,7 +625,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				
 			setDadosHistoricoColaborador();
 
-			if (colaboradorManager.insert(colaborador, salarioColaborador, idCandidato, formacaos, idiomas, experiencias, solicitacao, getEmpresaSistema()))
+			if (colaboradorManager.insert(colaborador, salarioColaborador, idCandidato, formacaos, idiomas, experiencias, solicitacao, getEmpresaSistema(), candidatoSolicitacaoId))
 			{
 				// Transferindo solicitações médicas do candidato
 				solicitacaoExameManager.transferirCandidatoToColaborador(getEmpresaSistema().getId(), idCandidato, colaborador.getId());

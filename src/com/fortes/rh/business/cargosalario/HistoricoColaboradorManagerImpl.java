@@ -25,7 +25,6 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
-import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -838,7 +837,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		}
 		
 		if(historicoColaboradorTmp.getCandidatoSolicitacao() != null && historicoColaboradorTmp.getCandidatoSolicitacao().getId() != null)
-			candidatoSolicitacaoManager.setStatus(historicoColaboradorTmp.getCandidatoSolicitacao().getId(), StatusCandidatoSolicitacao.APROMOVER);
+			candidatoSolicitacaoManager.updateStatusAndRemoveDataContratacaoOrPromocao(historicoColaboradorTmp.getCandidatoSolicitacao().getId(), StatusCandidatoSolicitacao.APROMOVER);
 	}
 
 	private void verificaUnicoHistorico(Long colaboradorId, Empresa empresa, HistoricoColaborador historicoColaboradorTmp) throws Exception 
@@ -868,7 +867,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		try
 		{
 			Long reajusteColaboradorId = getDao().findReajusteByHistoricoColaborador(historicoColaborador.getId());
-
+			candidatoSolicitacaoManager.updateStatusAndRemoveDataContratacaoOrPromocao(historicoColaborador.getCandidatoSolicitacao().getId(), StatusCandidatoSolicitacao.APROMOVER);
 			remove(historicoColaborador.getId());
 
 			if(reajusteColaboradorId != null)
@@ -912,8 +911,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 				update(historicoColaborador);
 			}
 
-			SolicitacaoManager solicitacaoManager = (SolicitacaoManager) SpringUtil.getBeanOld("solicitacaoManager");
-			solicitacaoManager.atualizaStatusSolicitacaoByColaborador(historicoColaborador.getColaborador(), StatusCandidatoSolicitacao.APROMOVER, false);
+			if(historicoColaborador.getCandidatoSolicitacao() != null && historicoColaborador.getCandidatoSolicitacao().getId() != null){
+				candidatoSolicitacaoManager.updateStatusAndRemoveDataContratacaoOrPromocao(historicoColaborador.getCandidatoSolicitacao().getId(), StatusCandidatoSolicitacao.APROMOVER);
+				removeVinculoCandidatoSolicitacao(historicoColaborador.getCandidatoSolicitacao().getId());
+			}
 		}
 		
 		return historicoColaborador;
@@ -1484,8 +1485,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	}
 
 	@TesteAutomatico
-	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId) {
-		getDao().removeCandidatoSolicitacao(candidatoSolicitacaoId);		
+	public void removeVinculoCandidatoSolicitacao(Long candidatoSolicitacaoId) {
+		getDao().removeVinculoCandidatoSolicitacao(candidatoSolicitacaoId);		
 	}
 	
 	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, String[] areaOrganizacionalsCheck, Boolean areasAtivas, String[] gruposCheck, String vinculo, Long... empresaIds) throws Exception

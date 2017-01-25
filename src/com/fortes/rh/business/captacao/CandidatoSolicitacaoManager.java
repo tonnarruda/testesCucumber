@@ -36,14 +36,15 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 	Boolean isCandidatoSolicitacaoByCandidato(Long candidatoId);
 	Collection<Long> getCandidatosBySolicitacao(Long solicitacaoId);
 	Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca, Character status);
-	void setStatus(Long candidatoSolicitacaoId, char status);
+	void updateStatusAndRemoveDataContratacaoOrPromocao(Long candidatoSolicitacaoId, char status);
 	void setStatusAndDataContratacaoOrPromocao(Long candidatoSolicitacaoId, char status, Date dataContratacaoOrPromocao);
 	void setStatusByColaborador(char status, Long... colaboradoresIds);
 	void removeCandidato(Long candidatoId);
 	Collection<ColaboradorQuestionario> findAvaliacoesCandidatoSolicitacao(Long solicitacaoId, Long candidatoId);
-	void setStatusBySolicitacaoAndCandidato(char status, Long candidatoId, Long solicitacaoId);
-	public void atualizaCandidatoSolicitacaoAoReligarColaborador(Long colaboradoresIds);
 	Collection<CandidatoSolicitacao> findColaboradorParticipantesDaSolicitacaoByAreas(Collection<AreaOrganizacional> areasOrganizacionais, String colaboradorNomeBusca, String solicitacaoDescricaoBusca, char statusBusca, Integer page, Integer pagingSize);
 	@Audita(operacao="Alteração do Status Aprovação do Responsável", auditor=CandidatoSolicitacaoAuditorCallbackImpl.class)
 	void updateStatusAutorizacaoGestor(CandidatoSolicitacao candidatoSolicitacao);
+	CandidatoSolicitacao findByHistoricoColaboradorId(Long historicoColaboradorId);
+	void updateStatusCandidatoAoCancelarContratacao(CandidatoSolicitacao candidatoSolicitacao, Long colaboradorId);
+	public void updateStatusSolicitacoesEmAndamentoByColaboradorId(Character status, Long... colaboradorId);
 }
