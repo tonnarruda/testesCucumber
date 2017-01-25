@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.17X.209" db="" data="xx/02/2017">
+		<Item visivel="S" motivo="P16120000340"><![CDATA[Info. Funcionais > Relatórios > Recibos Pagamentos > Adiantamento de Folha: Ajuste no retorno da página quando não existe no sistema Fortes Pessoal o adiantamento de folha calculado para a competência solicitada.]]></Item>
+	</Versao>
 	<Versao id="1.1.176.208" db="" data="18/01/2017">
 		<Item visivel="S" motivo="S17010000003"><![CDATA[R&S > Movimentações > solicitação de Pessoal > Candidatos da Seleção > Competências: Novo de vídeo de ajuda para avaliar as competências do candidato.]]></Item>
 		<Item visivel="S" motivo="S17010000004"><![CDATA[C&S > Cadastros > Níveis de Competência > Cadastro: Novo de vídeo de ajuda para cadastro de competências.]]></Item>
