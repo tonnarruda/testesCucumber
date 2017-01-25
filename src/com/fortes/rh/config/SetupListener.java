@@ -91,6 +91,13 @@ public class SetupListener implements ServletContextListener
 		JDBCConnection jdbcConn = new JDBCConnection(configuracaoDoCliente);
 		String versao = jdbcConn.getVersao();
 		logger.info("Iniciando processo de atualização.");
+		
+		if(versao.split("\\.")[1].equals("1")){
+			String queries[] = ScriptReader.getComandos(new File(this.getUpdateSqlFullPathOld()), versao);
+			jdbcConn.execute(queries);
+			versao = "1.1.176.208";
+		}
+		
 		String queries[] = ScriptReader.getComandos(new File(this.getUpdateSqlFullPath()), versao);
 		jdbcConn.execute(queries);
 	}
@@ -234,6 +241,11 @@ public class SetupListener implements ServletContextListener
 	private String getUpdateSqlFullPath()
 	{
 		return syspath + File.separatorChar + "WEB-INF" + File.separatorChar + "metadata" + File.separatorChar + "update.sql";
+	}
+	
+	private String getUpdateSqlFullPathOld()
+	{
+		return syspath + File.separatorChar + "WEB-INF" + File.separatorChar + "metadata" + File.separatorChar + "updateOld.sql";
 	}
 
 	private String getMetadataSqlFullPath()
