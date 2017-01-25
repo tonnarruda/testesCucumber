@@ -29,7 +29,7 @@
 		
 		function createListEmpresa(data)
 		{
-			DWRUtil.removeAllOptions("empresa");
+			dwr.util.removeAllOptions("empresa");
 			addOptionsByMap("empresa", data);
 		}
 		
