@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.17X.209" db="" data="xx/02/2017">
+		<Item visivel="S" motivo="P17010000073"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao informar se o candidato está apto quando participa de mais de uma etapa seletiva na mesma data em horários diferentes.]]></Item>
 		<Item visivel="S" motivo="P17010000173"><![CDATA[C&S > Relatórios > Promoções: Ajuste de inconsistência ao gerar relatório quando o sistema não compartilha colaboradores entre empresas.]]></Item>
 		<Item visivel="S" motivo="P16120000340"><![CDATA[Info. Funcionais > Relatórios > Recibos Pagamentos > Adiantamento de Folha: Ajuste no retorno da página quando não existe no sistema Fortes Pessoal o adiantamento de folha calculado para a competência solicitada.]]></Item>
 	</Versao>
