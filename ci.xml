@@ -298,6 +298,12 @@
 	</target>
 	
 	<target name="getUltimoCommit">
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+	        <classpath>
+	            <pathelement location="web/WEB-INF/lib/ant-contrib-1.0b3.jar"/>
+	        </classpath>
+        </taskdef>
+		
 		<exec executable="git" outputproperty="commitCompleto">
 		    <arg value="log"/>
 		    <arg value="-1"/>
