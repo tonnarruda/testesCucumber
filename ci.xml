@@ -232,7 +232,7 @@
 		</jaspercompile>
 	</target>
 			
-	<target name="war" depends="jasper">
+	<target name="war" depends="jasper, build">
 		<mkdir dir="dist" />
 		<property name="tmpweb" value="dist/tmpweb" />
 		<property name="base" value="web" />
