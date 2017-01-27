@@ -208,8 +208,8 @@
 		<param-value>
 			/WEB-INF/classes/applicationContext.xml,
 			/WEB-INF/classes/applicationContext-datasource.xml,
-			/WEB-INF/classes/spring-security2.xml
 			/WEB-INF/classes/applicationContext-dwr.xml
+			/WEB-INF/classes/spring-security2.xml
 		</param-value>
 	</context-param>
 

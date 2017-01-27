@@ -60,7 +60,7 @@
 	</beans:bean>
 	
     <http auto-config="false" entry-point-ref="authenticationFilterEntryPoint">
-        <intercept-url pattern="/dwr/**" access="ROLE_ANONYMOUS" />
+        <intercept-url pattern="/dwr/**" access="ROLE_ANONYMOUS,ROLE_USER" />
 				<intercept-url pattern="/imgs/**" access="ROLE_ANONYMOUS,ROLE_USER" />
 
 				<intercept-url pattern="/webservice/**" access="ROLE_ANONYMOUS,ROLE_USER" />

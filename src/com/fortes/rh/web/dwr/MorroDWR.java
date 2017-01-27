@@ -2,6 +2,8 @@ package com.fortes.rh.web.dwr;
 
 import org.apache.commons.lang.StringUtils;
 import org.directwebremoting.WebContextFactory;
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.Autenticador;
 
 @Component
+@RemoteProxy(name="MorroDWR")
 public class MorroDWR
 {
 	@Autowired
@@ -21,6 +24,7 @@ public class MorroDWR
 	@Autowired
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
+	@RemoteMethod
 	public String enviar(String mensagem, String classeExcecao, String stackTrace, String url, String browser) 
 	{
 		String usuarioLogado = "";
@@ -48,13 +52,5 @@ public class MorroDWR
 		} catch (Exception e) {e.printStackTrace();}
 		
 		return "Enviado com sucesso";
-	}
-	
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
-	public void setMorroManager(MorroManager morroManager) {
-		this.morroManager = morroManager;
 	}
 }

@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,22 +28,26 @@ import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
 @Component
+@RemoteProxy(name="AreaOrganizacionalDWR")
 public class AreaOrganizacionalDWR
 {
 	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
 	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
 
+	@RemoteMethod
 	public void verificaMaternidade(Long areaId) throws Exception
 	{
 		if(areaOrganizacionalManager.verificaMaternidade(areaId, null))
 			throw new Exception("Não é possível alocar colaboradores em áreas que possuem sub-áreas.\nSelecione uma das sub-áreas desta área.");
 	}
 
+	@RemoteMethod
 	public boolean verificaAlteracaoStatusAtivo(Long areaId, Long areaMaeId) throws Exception
 	{
 		return areaOrganizacionalManager.verificaAlteracaoStatusAtivo(areaId, areaMaeId);
 	}
 	
+	@RemoteMethod
 	@SuppressWarnings("unchecked")
 	public Map<Object, Object> getByEmpresa(Long empresaId) throws Exception
 	{
@@ -56,6 +63,7 @@ public class AreaOrganizacionalDWR
 	}
 
 	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Object, Object> getByEmpresas(Long empresaId, Long[] empresaIds, Character ativa) throws Exception
 	{
 		Boolean areaAtiva = ativa != null ? BooleanUtil.getValueCombo(ativa) : null;
@@ -73,10 +81,12 @@ public class AreaOrganizacionalDWR
 		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo");
 	}
 
+	@RemoteMethod
 	public Collection<AreaOrganizacional> getByEmpresasAndLnt(Long[] empresaIds, Long lntId) throws Exception{
 		return  areaOrganizacionalManager.findByLntIdComEmpresa(lntId, empresaIds);
 	}
 	
+	@RemoteMethod
 	public Collection<CheckBox> getCheckboxByEmpresas(Long[] empresaIds) throws Exception
 	{
 		Collection<CheckBox> areas = new ArrayList<CheckBox>();
@@ -88,6 +98,7 @@ public class AreaOrganizacionalDWR
 		return areas;
 	}
 	
+	@RemoteMethod
 	public Map<Object, Object> getPemitidasByEmpresas(String naoApagar, HttpServletRequest request, Long empresaId, Long[] empresaIds) throws Exception
 	{
 		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
@@ -113,10 +124,12 @@ public class AreaOrganizacionalDWR
 		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo");
 	}
 	
+	@RemoteMethod
 	public Collection<Long> excluiFilhas(Long areasOrganizacionaisId) throws Exception{
 		return areaOrganizacionalManager.findIdsAreasFilhas(Arrays.asList(areasOrganizacionaisId));
 	}
 
+	@RemoteMethod
 	@SuppressWarnings("unchecked")
 	public Map<Long, String> findAllListAndInativas(Long empresaId, Long areaOrganizacionalInativaId) throws Exception
 	{
@@ -129,6 +142,7 @@ public class AreaOrganizacionalDWR
 		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricao");
 	}
 
+	@RemoteMethod
 	@SuppressWarnings("unchecked")
 	public Map<Object, Object> getEmailsResponsaveis(Long id, Long empresaId) throws Exception
 	{
@@ -156,6 +170,7 @@ public class AreaOrganizacionalDWR
 		return emailsResponsaveis;
 	}
 	
+	@RemoteMethod
 	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId, Boolean ativo) throws Exception
 	{
 		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0, null, empresaId, ativo);
@@ -167,6 +182,7 @@ public class AreaOrganizacionalDWR
 		return areaOrganizacionals;
 	}
 	
+	@RemoteMethod
 	public String getOrganogramaByEmpresaJson(Long empresaId, Long areaId, Boolean ativa) throws Exception
 	{
 		Collection<AreaOrganizacional> areaOrganizacionals 	= new ArrayList<AreaOrganizacional>();
@@ -210,6 +226,7 @@ public class AreaOrganizacionalDWR
 		return StringUtil.toJSON(dados, null);
 	}
 	
+	@RemoteMethod
 	public boolean areaSemColaboradores(Long areaOrganizacionalId) {
 		AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaOrganizacionalId);
 		return areaOrganizacionalManager.verificarColaboradoresAreaMae(areaOrganizacional);
@@ -234,6 +251,7 @@ public class AreaOrganizacionalDWR
 		}
 	}
 	
+	@RemoteMethod
 	@SuppressWarnings("unchecked")
 	public Map<Object, Object> getAreasPermitidas(Long usuarioId, Long empresaId, Long[] empresasIds) throws Exception
 	{		

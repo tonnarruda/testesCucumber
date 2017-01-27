@@ -60,7 +60,12 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 {
 	private AcPessoalClientLotacao acPessoalClientLotacao;
 	private PlatformTransactionManager transactionManager;
-	
+	@Autowired
+	private ColaboradorManager colaboradorManager;
+	@Autowired
+	private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired
+	private CargoManager cargoManager;
 	@Autowired
 	AreaOrganizacionalManagerImpl(AreaOrganizacionalDao dao) {
 		setDao(dao);
@@ -185,16 +190,13 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public void transferirColabDaAreaMaeParaAreaFilha(AreaOrganizacional areaOrganizacional) 
 	{
 		try {
 			if(areaOrganizacional.getAreaMae() != null && areaOrganizacional.getAreaMae().getId() != null)
 			{
-				HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
 				historicoColaboradorManager.updateArea(areaOrganizacional.getAreaMae().getId(), areaOrganizacional.getId());
 				
-				CargoManager cargoManager = (CargoManager) SpringUtil.getBeanOld("cargoManager");
 				cargoManager.insereAreaRelacionada(areaOrganizacional.getAreaMae().getId(), areaOrganizacional.getId());
 			}
 		} catch (Exception e) {
@@ -208,8 +210,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		if(areaMae == null)
 			return true;
 		
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
-
 		Collection<Colaborador> colaboradores = colaboradorManager.findByArea(areaMae);
 
 		if(colaboradores.size() > 0)

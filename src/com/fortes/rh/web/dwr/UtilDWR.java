@@ -24,7 +24,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClient;
 
 @Component
-@RemoteProxy(name="utilDWR")
+@RemoteProxy(name="UtilDWR")
 public class UtilDWR
 {
 	@Autowired private Mail mail;

@@ -62,11 +62,11 @@
 		}
 	</style>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.cookie.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/modernizr.js"/>'></script>
 	
@@ -147,8 +147,8 @@
 		
 		function marcarMensagemLida(usuarioMensagemId)
 		{
-			DWREngine.setErrorHandler(errorUsuarioMensagem);
-			UsuarioMensagemDWR.gravarMensagemLida(retorno, usuarioMensagemId, ${empresaId}, true);
+			dwr.engine.setErrorHandler(errorUsuarioMensagem);
+			UsuarioMensagemDWR.gravarMensagemLida(usuarioMensagemId, ${empresaId}, true, retorno);
 		}
 	
 		function retorno()
@@ -338,7 +338,7 @@
 								<@display.column property="statusDescricao" title="Status" style="width: 200px; text-align: center;"/>
 							</@display.table>
 							<#if usuario.usuarioFortes>
-								<button onclick="javascript: newConfirm('Confirma exclusão de todas as pendências selecionadas?', function(){$('.btnExcluir').css({ opacity: 0.4 }); $('.btnExcluir').attr('disabled', 'disabled'); $('#removerMultiplasPendenciasAC').submit(); DWRUtil.useLoadingMessage('Carregando...');});" class="btnExcluir" type="button" ></button>
+								<button onclick="javascript: newConfirm('Confirma exclusão de todas as pendências selecionadas?', function(){$('.btnExcluir').css({ opacity: 0.4 }); $('.btnExcluir').attr('disabled', 'disabled'); $('#removerMultiplasPendenciasAC').submit(); dwr.util.useLoadingMessage('Carregando...');});" class="btnExcluir" type="button" ></button>
 							</#if>
 						</#if>
 					</div>
