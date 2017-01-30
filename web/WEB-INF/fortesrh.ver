@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="P17010000073"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao informar se o candidato está apto quando participa de mais de uma etapa seletiva na mesma data em horários diferentes.]]></Item>
 		<Item visivel="S" motivo="P17010000173"><![CDATA[C&S > Relatórios > Promoções: Ajuste de inconsistência ao gerar relatório quando o sistema não compartilha colaboradores entre empresas.]]></Item>
 		<Item visivel="S" motivo="P16120000340"><![CDATA[Info. Funcionais > Relatórios > Recibos Pagamentos > Adiantamento de Folha: Ajuste no retorno da página quando não existe no sistema Fortes Pessoal o adiantamento de folha calculado para a competência solicitada.]]></Item>
+		<Item visivel="N" motivo="S17010000219"><![CDATA[Sistema: Nova forma de verificar se existe nova versão do Fortes RH disponível no Portal do Cliente.]]></Item>
 	</Versao>
 	<Versao id="1.1.176.208" db="" data="18/01/2017">
 		<Item visivel="S" motivo="S17010000003"><![CDATA[R&S > Movimentações > solicitação de Pessoal > Candidatos da Seleção > Competências: Novo de vídeo de ajuda para avaliar as competências do candidato.]]></Item>
