@@ -544,7 +544,8 @@ public class LntEditActionTest
 		when(areaOrganizacionalManager.getDescendentesIds(areasIds)).thenReturn(new ArrayList<Long>());
 		
 		assertEquals(Action.INPUT, action.relatorioParticipantesByUsuarioMsg());
-		assertEquals("Não existem participantes para esta LNT ou sua área organizacional, cujo é responsável ou corresponsável, não consta na LNT.", action.getActionMsg());
+		String retorno = "Não existem participantes para esta LNT ou sua área organizacional, cujo é responsável ou corresponsável, não consta na LNT.";
+		assertEquals(retorno.replace(" ", "%20"), action.getActionMsg());
 	}
 	
 	@Test
@@ -565,7 +566,8 @@ public class LntEditActionTest
 		when(participanteCursoLntManager.findByLntIdAndAreasParticipantesIdsAndEmpresasIds(lnt.getId(), areasIds, null, order)).thenReturn(new ArrayList<ParticipanteCursoLnt>());
 		
 		assertEquals(Action.INPUT, action.relatorioParticipantesByUsuarioMsg());
-		assertEquals("Não existem participantes para esta LNT.", action.getActionMsg());
+		String retorno = "Não existem participantes para esta LNT.";
+		assertEquals(retorno.replace(" ", "%20"), action.getActionMsg());
 	}
 	
 	@Test

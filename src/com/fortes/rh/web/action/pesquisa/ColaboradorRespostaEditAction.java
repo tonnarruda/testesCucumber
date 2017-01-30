@@ -56,7 +56,6 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     private TipoPergunta tipoPergunta = new TipoPergunta();
     private String respostas;
 
-    private String actionMsg;
     private String voltarPara;
     private String retorno;
     private String tela = "";
@@ -192,10 +191,10 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     {
     	try {			
     		colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), turmaId, vinculo, respondidaEm, null, false);
-    		actionMsg = "Respostas gravadas com sucesso.";
+    		setActionMsg("Respostas gravadas com sucesso.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			actionMsg = "Erro ao gravar Respostas.";
+			setActionMsg("Erro ao gravar Respostas.");
 		}
 		
 		return Action.SUCCESS;
@@ -209,25 +208,25 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     		colaboradorQuestionarioId = colaboradorQuestionario.getId();
     	
     	if(questionario != null && questionario.getTipo() == TipoQuestionario.PESQUISA && colaboradorQuestionarioManager.isRespondeuPesquisaByColaboradorIdAndQuestionarioId(colaborador.getId(), questionario.getId())){
-    		actionMsgTemp = "Não%20foi%20possível%20gravar%20as%20respostas,%20pois%20a%20pesquisa%20já%20possui%20resposta.";
+    		actionMsgTemp = "Não foi possível gravar as respostas, pois a pesquisa já possui resposta.";
     	}else{
     		colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), turmaId, vinculo, respondidaEm, colaboradorQuestionarioId, inserirFichaMedica);
     	}
 
         if (tela.equals("index")) {
         	if(actionMsgTemp == null)
-        		actionMsg = "Respostas%20gravadas%20com%20sucesso.";
-        	retorno = "../../index.action?actionMsg="+actionMsg;
+        		setActionMsg("Respostas gravadas com sucesso.");
+        	retorno = "../../index.action?actionMsg=" + getActionMsg();
             return Action.SUCCESS;
         } else if(voltarPara.equals("../../sesmt/fichaMedica/prepareInsertFicha.action") || voltarPara.equals("../../sesmt/fichaMedica/listPreenchida.action"))  {
-        	actionMsg = "Respostas%20gravadas%20com%20sucesso.";
-        	retorno = voltarPara + "?actionMsg=" +actionMsg;
+        	setActionMsg("Respostas gravadas com sucesso.");
+        	retorno = voltarPara + "?actionMsg=" + getActionMsg();
         	return Action.SUCCESS;
         } else {
         	retorno = voltarPara;
         	if(actionMsgTemp != null){
-        		retorno += "&actionMsg=" + actionMsgTemp;
-        		actionMsg = actionMsgTemp;
+        		setActionMsg(actionMsgTemp);
+        		retorno += "&actionMsg=" + getActionMsg();
         	}
             return "colaboradorQuestionario";
         }
@@ -463,11 +462,6 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 	public void setValidarFormulario(Boolean validarFormulario)
 	{
 		this.validarFormulario = validarFormulario;
-	}
-
-	public String getActionMsg()
-	{
-		return actionMsg;
 	}
 
 	public Long getTurmaId()

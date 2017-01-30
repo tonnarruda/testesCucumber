@@ -109,7 +109,6 @@ public class QuestionarioListAction extends MyActionSupportList
 	private String filtroQuestionario = "";
 	private Long turmaId;
 	private Long cursoId;
-	private String actionMsg;
 	private boolean imprimirFormaEconomica;
 	
 	private String assinatura1;
@@ -248,7 +247,7 @@ public class QuestionarioListAction extends MyActionSupportList
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			actionMsg = "Erro ao gerar resultado da ficha médica.";
+			setActionMsg("Erro ao gerar resultado da ficha médica.");
 
 			return Action.INPUT;
 		}
@@ -733,16 +732,6 @@ public class QuestionarioListAction extends MyActionSupportList
 	public void setColaboradorQuestionario(ColaboradorQuestionario colaboradorQuestionario)
 	{
 		this.colaboradorQuestionario = colaboradorQuestionario;
-	}
-
-	public String getActionMsg()
-	{
-		return actionMsg;
-	}
-
-	public void setActionMsg(String actionMsg)
-	{
-		this.actionMsg = actionMsg;
 	}
 
 	public void setFichaMedicaManager(FichaMedicaManager fichaMedicaManager) {

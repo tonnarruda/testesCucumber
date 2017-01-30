@@ -212,7 +212,8 @@ public class EmpresaEditActionTest
 		when(empresaManager.checkEmpresaCodACGrupoAC(empresa)).thenReturn(false);
 		when(empresaManager.verificaInconcistenciaIntegracaoAC(empresa)).thenReturn(true);
 		assertEquals("input", action.update());
-		assertEquals("Não foi possível habilitar a integração com o Fortes Pessoal devido a cadastros realizados no período desintegrado.<br />Entre em contato com o suporte técnico.", action.getActionMsg());
+		String retorno = "Não foi possível habilitar a integração com o Fortes Pessoal devido a cadastros realizados no período desintegrado.<br/>Entre em contato com o suporte técnico.";
+		assertEquals(retorno.replace(" ", "%20"), action.getActionMsg());
 	}
 	
 	@Test
