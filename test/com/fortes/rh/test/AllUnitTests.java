@@ -562,6 +562,7 @@ import com.fortes.rh.test.web.action.geral.ColaboradorDesligaActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorEditActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorEditActionTest_JUnit4;
 import com.fortes.rh.test.web.action.geral.ColaboradorListActionTest;
+import com.fortes.rh.test.web.action.geral.ColaboradorOcorrenciaEditActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorReportActionTest;
 import com.fortes.rh.test.web.action.geral.ComoFicouSabendoVagaEditActionTest;
 import com.fortes.rh.test.web.action.geral.ConfiguracaoRelatorioDinamicoEditActionTest;
@@ -980,6 +981,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ColaboradorManagerTest.class,
 	ColaboradorManagerTest_Junit4.class,
 	ColaboradorDaoHibernateTest.class,
+	ColaboradorOcorrenciaEditActionTest.class,
 	ColaboradorOcorrenciaDaoHibernateTest.class,
 	ColaboradorOcorrenciaManagerTest.class,
 	ColaboradorIdiomaManagerTest.class,

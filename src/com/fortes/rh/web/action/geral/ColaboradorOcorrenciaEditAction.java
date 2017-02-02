@@ -79,7 +79,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		if(colaboradorOcorrencia != null && colaboradorOcorrencia.getId() != null)
 			colaboradorOcorrencia = (ColaboradorOcorrencia) colaboradorOcorrenciaManager.findById(colaboradorOcorrencia.getId());
 		
-		if (colaboradorOcorrencia != null)
+		if (colaboradorOcorrencia != null && colaboradorOcorrencia.getColaborador() != null)
 			colaborador = colaboradorOcorrencia.getColaborador();
 		
 		if (colaborador != null && colaborador.getId() != null && colaborador.getNome() == null)
