@@ -362,7 +362,7 @@ EOF
 
 ultima_porcentagem_cobertura_src=$({
 psql -qtAU $username $dbname << EOF
-	SELECT val FROM ultimas_metricas WHERE 'metrica' = 'coverage' and data = (select max(data) from ultimas_metricas WHERE 'metrica' = 'coverage' and project = 'RH') limit 1;
+	SELECT val FROM ultimas_metricas WHERE 'metrica' = 'coverage' and data = (select max(data) from ultimas_metricas WHERE 'metrica' = 'coverage' and project = 'RH') and project = 'RH' limit 1;
 EOF
 })
 
@@ -387,7 +387,7 @@ EOF
 
 ultima_porcentagem_cobertura_test=$({
 psql -qtAU $username $dbname << EOF
-	SELECT val FROM ultimas_metricas WHERE 'metrica' = 'coverage' and data = (select max(data) from ultimas_metricas WHERE 'metrica' = 'coverage' and project = 'RHTest') limit 1;
+	SELECT val FROM ultimas_metricas WHERE 'metrica' = 'coverage' and data = (select max(data) from ultimas_metricas WHERE 'metrica' = 'coverage' and project = 'RHTest') and project = 'RHTest' limit 1;
 EOF
 })
 
@@ -412,7 +412,7 @@ EOF
 
 ultima_porcentagem_cod_dupicado_src=$({
 psql -qtAU $username $dbname << EOF
-	SELECT val FROM ultimas_metricas WHERE metrica = 'cod_duplicado' and data = (select max(data) from ultimas_metricas WHERE metrica = 'cod_duplicado' and project = 'RH');
+	SELECT val FROM ultimas_metricas WHERE metrica = 'cod_duplicado' and data = (select max(data) from ultimas_metricas WHERE metrica = 'cod_duplicado' and project = 'RH') and project = 'RH' limit 1;
 EOF
 })
 
@@ -437,7 +437,7 @@ EOF
 
 ultima_porcentagem_cod_dupicado_test=$({
 psql -qtAU $username $dbname << EOF
-	SELECT val FROM ultimas_metricas WHERE metrica = 'cod_duplicado' and data = (select max(data) from ultimas_metricas WHERE metrica = 'cod_duplicado' and project = 'RHTest');
+	SELECT val FROM ultimas_metricas WHERE metrica = 'cod_duplicado' and data = (select max(data) from ultimas_metricas WHERE metrica = 'cod_duplicado' and project = 'RHTest') and project = 'RHTest' limit 1;
 EOF
 })
 
@@ -473,7 +473,7 @@ then
 fi
 
 atual_porcentagem_cod_duplicado_src=$(awk 'BEGIN{print '$atual_porcentagem_cod_duplicado_src'}')
-compare_cod_duplicado_src=$(awk 'BEGIN{ print "'$ultima_porcentagem_cod_dupicado_src'">="'$atual_porcentagem_cod_duplicado_src'" }')
+compare_cod_duplicado_src=$(awk 'BEGIN{ print '$ultima_porcentagem_cod_dupicado_src' >= '$atual_porcentagem_cod_duplicado_src' }')
 if [[ "$compare_cod_duplicado_src" -ne 1 ]]
 then
 	echo $'\n\n - Porcentagem de cód. duplicado aumentou de '$ultima_porcentagem_cod_dupicado_src' para '$atual_porcentagem_cod_duplicado_src' no projeto principal.'
@@ -484,7 +484,7 @@ psql -qtAU $username $dbname << EOF
 EOF
 
 atual_porcentagem_cod_duplicado_test=$(awk 'BEGIN{print '$atual_porcentagem_cod_duplicado_test'}')
-compare_cod_duplicado_test=$(awk 'BEGIN{ print "'$ultima_porcentagem_cod_dupicado_test'">="'$atual_porcentagem_cod_duplicado_test'" }')
+compare_cod_duplicado_test=$(awk 'BEGIN{ print '$ultima_porcentagem_cod_dupicado_test' >= '$atual_porcentagem_cod_duplicado_test' }')
 if [[ "$compare_cod_duplicado_test" -ne 1  ]]
 then
 	echo $'\n\n - Porcentagem de cód. duplicado aumentou de '$ultima_porcentagem_cod_dupicado_test' para '$atual_porcentagem_cod_duplicado_test' no projeto de testes.'
