@@ -4,7 +4,7 @@
 
 <dwr>
     <allow>
-        <create creator="new" javascript="validator">
+       <!--  <create creator="new" javascript="validator">
             <param name="class" value="com.opensymphony.webwork.validators.DWRValidator"/>
         </create>
         <create creator="new" javascript="JDate">
@@ -174,7 +174,7 @@
 		</create>
 		<create creator="spring" javascript="LntDWR">
 			<param name="beanName" value="lntDWR"/>
-		</create>
+		</create> -->
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
 		

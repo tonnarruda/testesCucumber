@@ -10,15 +10,108 @@
        					   http://www.directwebremoting.org/schema/spring-dwr 
        					   http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd">
   
+  <dwr:annotation-config id="dwrAnnotationConfig" />   		  
+  <dwr:annotation-scan base-package="com.fortes.rh.web.dwr" scanDataTransferObject="false" scanRemoteProxy="true"/>   
 
   <dwr:configuration>
+  	 <!-- 
+  	 <dwr:create type="create" javascript="validator" class="com.opensymphony.webwork.validators.DWRValidator"/>
+     <dwr:create type="create" javascript="JDate" class="java.util.Date"/>
+
+  -->
     <dwr:convert type="bean" class="com.fortes.rh.model.acesso.Empresa">
     	<dwr:include method="nome"/>
         <dwr:include method="id"/>
     </dwr:convert>
-  </dwr:configuration>
-  
 
-  <dwr:annotation-config id="dwrAnnotationConfig" />   		  
-  <dwr:annotation-scan base-package="com.fortes.rh.web.dwr" scanDataTransferObject="false" scanRemoteProxy="true"/>   
+    <!-- UTIL -->
+	<dwr:convert type="bean" class="com.fortes.web.tags.CheckBox"></dwr:convert>
+	 
+	<dwr:convert type=bean" class="com.fortes.web.tags.Option"></dwr:convert>
+	
+	<dwr:convert type=bean" class="com.fortes.rh.model.acesso.Usuario">
+        <dwr:include method="id"/>
+		<dwr:include method="nome"/>
+	</dwr:convert>
+	
+	<!-- DICIONARIO -->
+	<dwr:convert type=bean" class="com.fortes.rh.model.dicionario.TipoPessoa"></dwr:convert>
+	
+	<!-- GERAL -->
+	<dwr:convert type=bean" class="com.fortes.rh.model.geral.Pessoa"></dwr:convert>
+	<dwr:convert type=bean" class="com.fortes.rh.model.geral.Colaborador">
+        <dwr:include method="id"/>
+		<dwr:include method="nome"/>
+		<dwr:include method="nomeComercial"/>
+		<dwr:include method="iscritoNaTurma"/>
+	</dwr:convert>
+	<dwr:convert type=bean" class="com.fortes.rh.model.geral.TipoDespesa"/>
+	<dwr:convert type=bean" class="com.fortes.rh.model.geral.TurmaTipoDespesa"/>
+	<dwr:convert type=bean" class="com.fortes.rh.model.geral.AreaOrganizacional">
+		<dwr:include method="id"/>
+		<dwr:include method="nome"/>
+		<dwr:include method="descricao"/>
+	</dwr:convert>
+	
+	<!-- CARGO E SALARIO -->
+	<dwr:convert type=bean" class="com.fortes.rh.model.cargosalario.Cargo"/>
+	<dwr:convert type=bean" class="com.fortes.rh.model.cargosalario.FaixaSalarial">
+		<dwr:include method="id"/>
+		<dwr:include method="descricao"/>
+	</dwr:convert>
+	
+	<!-- CAPTACAO -->
+	<dwr:convert type=bean" class="com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia"/>
+	<dwr:convert type=bean" class="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia"/>
+	<dwr:convert type=bean" class="com.fortes.rh.model.captacao.ConfigHistoricoNivel"/>
+	<dwr:convert type=bean" class="com.fortes.rh.model.captacao.NivelCompetencia"/>
+	<dwr:convert type=bean" class="com.fortes.rh.model.captacao.SolicitacaoAvaliacao"/>
+	<dwr:convert type=bean" class="com.fortes.rh.model.captacao.Solicitacao">
+		<dwr:include method="id"/>
+		<dwr:include method="descricao"/>
+	</dwr:convert>
+	
+	<!-- PESQUISA -->
+	<dwr:convert type=bean" class="com.fortes.rh.model.pesquisa.AvaliacaoTurma"/>
+	<dwr:convert type=bean" class="com.fortes.rh.model.pesquisa.Questionario"/>
+	
+	<!-- DESENVOLVIMENTO -->
+	<dwr:convert type=bean" class="com.fortes.rh.model.desenvolvimento.Turma"/>
+	<dwr:convert type=bean" class="com.fortes.rh.model.desenvolvimento.DiaTurma"/>
+	<dwr:convert type=bean" class="com.fortes.rh.model.desenvolvimento.Curso">
+		<dwr:include method="id"/>
+		<dwr:include method="nome"/>
+		<dwr:include method="cargaHoraria"/>
+		<dwr:include method="conteudoProgramatico"/>
+	</dwr:convert>
+	<dwr:convert type=bean" class="com.fortes.rh.model.desenvolvimento.AvaliacaoCurso"/>
+	<dwr:convert type=bean" class="com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao">
+		<dwr:include method="id"/>
+		<dwr:include method="dataString"/>
+		<dwr:include method="ultimaCertificacao"/>
+	</dwr:convert>
+	<dwr:convert type=bean" class="com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica">
+		<dwr:include method="dataString"/>
+		<dwr:include method="nota"/>
+		<dwr:include method="colaboradorCertificacao"/>
+	</dwr:convert>
+	<dwr:convert type=bean" class="com.fortes.rh.model.desenvolvimento.ColaboradorTurma">
+		<dwr:include method="id"/>
+		<dwr:include method="certificacoesNomes"/>
+	</dwr:convert>
+		<dwr:convert type=bean" class="com.fortes.rh.model.desenvolvimento.Lnt">
+		<dwr:include method="id"/>
+		<dwr:include method="descricao"/>
+		<dwr:include method="selected"/>
+	</dwr:convert>
+	
+	<!-- AVALIACAO -->
+	<dwr:convert type=bean" class="com.fortes.rh.model.avaliacao.Avaliacao"/>
+	
+	<!-- SESMT -->
+	<dwr:convert type=bean" class="com.fortes.rh.model.sesmt.OrdemDeServico">
+		<dwr:exclude method="colaborador"/>
+	</dwr:convert>
+
+  </dwr:configuration>
 </beans>
