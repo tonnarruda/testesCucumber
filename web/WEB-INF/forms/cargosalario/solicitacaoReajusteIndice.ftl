@@ -4,9 +4,9 @@
 <head>
 	<@ww.head/>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 	
 	<#if reajusteIndice?exists && reajusteIndice.id?exists>
 		<title>Editar Solicitação de Realinhamento de Cargos e Salários por Índice</title>

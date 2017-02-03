@@ -37,17 +37,19 @@ import com.fortes.rh.model.geral.relatorio.MensagemVO;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.util.ArrayUtil;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensagem, UsuarioMensagemDao> implements UsuarioMensagemManager
 {
-	@Autowired
-	private MensagemManager mensagemManager;
-	@Autowired
-	private UsuarioEmpresaManager usuarioEmpresaManager;
-	@Autowired
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private MensagemManager mensagemManager;
+	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private QuestionarioManager questionarioManager;
+	@Autowired private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private TurmaDocumentoAnexoManager turmaDocumentoAnexoManager;
 	
 	@Autowired
 	UsuarioMensagemManagerImpl(UsuarioMensagemDao dao) {
@@ -65,8 +67,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 			arrayTipos = (Character[]) ArrayUtil.add(arrayTipos, tipo);
 			caixasMensagens.put(tipo, new CaixaMensagem(tipo, new ArrayList<MensagemVO>(), 0));
 		}
-
-		ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManagerImpl");
 
 		addMensagensTipoRES(empresaId, caixasMensagens, tipoMensagemPermitidas);
 		
@@ -113,7 +113,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		MensagemVO vo;
 		if(colaboradorId != null && tipoMensagemPermitidas.containsKey(TipoMensagem.AVALIACAO_DESEMPENHO))
 		{
-			AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
 			Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(null, true, null);
 			for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacaoDesempenhos)
 			{
@@ -144,7 +143,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 			MensagemVO vo;
 			if(tipoMensagemPermitidas.containsKey(TipoMensagem.PESQUISAS))
 			{
-				QuestionarioManager questionarioManager = (QuestionarioManager) SpringUtil.getBean("questionarioManager");
 				Collection<Questionario> questionarios = questionarioManager.findQuestionarioPorUsuario(usuarioId);
 				for (Questionario questionario : questionarios) 
 				{
@@ -179,7 +177,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 					caixasMensagens.get(TipoMensagem.TED).incrementaNaoLidas();
 				}
 				
-				TurmaDocumentoAnexoManager turmaDocumentoAnexoManager = (TurmaDocumentoAnexoManager) SpringUtil.getBean("turmaDocumentoAnexoManager");
 				Collection<TurmaDocumentoAnexo> anexos = turmaDocumentoAnexoManager.findByColaborador(colaboradorId);
 				for (TurmaDocumentoAnexo anexo : anexos) {
 					vo = new MensagemVO();
@@ -200,8 +197,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		MensagemVO vo;
 		if (tipoMensagemPermitidas.containsKey(TipoMensagem.RES))
 		{
-			SolicitacaoManager solicitacaoManager = (SolicitacaoManager) SpringUtil.getBean("solicitacaoManagerImpl");
-
 			Collection<Solicitacao> solicitacaos = solicitacaoManager.findSolicitacaoList(empresaId, false, StatusAprovacaoSolicitacao.ANALISE, null);
 			if (solicitacaos != null && solicitacaos.size() > 0) 
 			{
@@ -213,8 +208,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 				caixasMensagens.get(TipoMensagem.RES).getMensagens().add(vo);
 				caixasMensagens.get(TipoMensagem.RES).incrementaNaoLidas();
 			}
-
-			GerenciadorComunicacaoManager gerenciadorComunicacaoManager = (GerenciadorComunicacaoManager) SpringUtil.getBean("gerenciadorComunicacaoManagerImpl");
 
 			if (gerenciadorComunicacaoManager.existeConfiguracaoParaCandidatosModuloExterno(empresaId))
 			{

@@ -3,9 +3,9 @@
 <head>
 	<@ww.head/>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	
 	<title>Análise de Tabela Salarial</title>
 	<#assign formAction="analiseTabelaSalarialList.action"/>
@@ -23,9 +23,9 @@
 	<script type='text/javascript'>
 		function populaCargos(frm, nameCheck, empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var gruposIds = getArrayCheckeds(frm, nameCheck);
-			CargoDWR.getCargoByGrupoAtivoInativo(createListCargos, gruposIds, empresaId, 'T');
+			CargoDWR.getCargoByGrupoAtivoInativo(gruposIds, empresaId, 'T', createListCargos);
 		}
 
 		function createListCargos(data)

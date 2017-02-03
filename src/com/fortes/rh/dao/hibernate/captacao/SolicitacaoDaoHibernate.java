@@ -19,8 +19,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
-import org.hibernate.type.Type;
 import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.Type;
 import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -53,7 +53,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		montaConsulta(criteria, visualizar, empresaId, usuarioId, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds, 
 				codigoBusca, dataInicio, dataFim, visualiazaTodasAsSolicitacoes, dataEncerramentoIni, dataEncerramentoFim);
 
-		return (Integer) criteria.list().get(0);
+		return ((Long) criteria.uniqueResult()).intValue();
 	}
 
 	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, 

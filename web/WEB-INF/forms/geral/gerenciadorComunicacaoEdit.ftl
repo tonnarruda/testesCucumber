@@ -17,10 +17,10 @@
 		<#include "../ftl/showFilterImports.ftl" />
 		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioDWR.js?version=${versao}"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/GerenciadorComunicacaoDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioDWR.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/GerenciadorComunicacaoDWR.js?version=${versao}"/>'></script>
 		
 		<style type="text/css">
 	    	@import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
@@ -125,16 +125,16 @@
 			
 			function populaMeioComunicacao(operacaoId)
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				GerenciadorComunicacaoDWR.getMeioComunicacao(createListMeioComunicacao, operacaoId);
+				dwr.util.useLoadingMessage('Carregando...');
+				GerenciadorComunicacaoDWR.getMeioComunicacao(operacaoId, createListMeioComunicacao);
 			}
 	
 			function createListMeioComunicacao(data)
 			{
 				$('#enviarParas').html('<option value="0">Selecione um meio de comunicação...</option>');
 				
-				DWRUtil.removeAllOptions("meioComunicacoes");
-				DWRUtil.addOptions("meioComunicacoes", data);
+				dwr.util.removeAllOptions("meioComunicacoes");
+				dwr.util.addOptions("meioComunicacoes", data);
 				if ($("#meioComunicacoes option").size() == 2)
 				{
 					$("#meioComunicacoes option:last").attr("selected", "selected");
@@ -144,14 +144,14 @@
 	
 			function populaEnviarPara(meioComunicacaoId)
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				GerenciadorComunicacaoDWR.getEnviarPara(createListEnviarPara, meioComunicacaoId);
+				dwr.util.useLoadingMessage('Carregando...');
+				GerenciadorComunicacaoDWR.getEnviarPara(meioComunicacaoId, createListEnviarPara);
 			}		
 	
 			function createListEnviarPara(data)
 			{
-				DWRUtil.removeAllOptions("enviarParas");
-				DWRUtil.addOptions("enviarParas", data);
+				dwr.util.removeAllOptions("enviarParas");
+				dwr.util.addOptions("enviarParas", data);
 				if ($("#enviarParas option").size() == 2)
 				{
 					$("#enviarParas option:last").attr("selected", "selected");
@@ -246,7 +246,7 @@
 				var estabelecimentosIds = getArrayCheckeds(document.getElementById('form'), 'estabelecimentosCheck');
 				
 				console.log(areasIds);
-				UsuarioDWR.getByAreaOrganizacionalEstabelecimento(createListUsuarios, areasIds, estabelecimentosIds);
+				UsuarioDWR.getByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, createListUsuarios);
 			}
 	
 			function createListUsuarios(data)

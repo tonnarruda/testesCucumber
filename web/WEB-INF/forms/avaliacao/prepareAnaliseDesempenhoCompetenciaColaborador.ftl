@@ -8,12 +8,12 @@
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/NivelCompetenciaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
 	<#assign validarCampos="return validaFormulario('form', new Array('avaliacao', 'avaliados'), null)"/>
 	
@@ -223,9 +223,9 @@
 			var areasIds   = getArrayCheckeds(document.form, 'areasCheck');
 			var cargosIds  = getArrayCheckeds(document.form, 'cargosCheck');
 			
-			DWREngine.setAsync(true);
-			DWRUtil.useLoadingMessage('Carregando...');
-			AvaliacaoDesempenhoDWR.getAvaliados(populaSelectAvaliados, $('#avaliacao').val(), ${empresaSistema.id}, areasIds, cargosIds);
+			dwr.engine.setAsync(true);
+			dwr.util.useLoadingMessage('Carregando...');
+			AvaliacaoDesempenhoDWR.getAvaliados($('#avaliacao').val(), ${empresaSistema.id}, areasIds, cargosIds, populaSelectAvaliados);
 		}
 			
 		function populaSelectAvaliados(data)
@@ -241,9 +241,9 @@
 		
 		function populaArea(empresaId)
 		{
-			DWREngine.setAsync(true);
-			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds, null);
+			dwr.engine.setAsync(true);
+			dwr.util.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getByEmpresas(empresaId, empresaIds, null, createListArea);
 		}
 		
 		function createListArea(data)
@@ -253,15 +253,15 @@
 	
 		function populaCargosByAreaVinculados()
 		{
-			DWREngine.setAsync(true);
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.engine.setAsync(true);
+			dwr.util.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 			var empresaId = ${empresaSistema.id};
 			
 			if ($('#cargosVinculadosAreas').is(":checked") && areasIds.length != 0)
-				CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
+				CargoDWR.getCargoByArea(areasIds, "getNomeMercadoComEmpresa", empresaId, createListCargosByArea);
 			else
-				CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
+				CargoDWR.getByEmpresas(empresaId, empresaIds, createListCargosByArea);
 		}
 		
 		function createListCargosByArea(data)
@@ -280,9 +280,9 @@
 		function populaCargosAvaliado()
 		{
 			if(($('input[name=relatorioDetalhado]:checked').val() == 'true') && ($('#avaliados').val() != 0) && ($('#avaliados').val() != -1)){
-				DWREngine.setAsync(true);
-				DWRUtil.useLoadingMessage('Carregando...');
-				AvaliacaoDesempenhoDWR.getAvaliadores(createListCargosAvaliadores, $('#avaliacao').val(), $('#avaliados').val());
+				dwr.engine.setAsync(true);
+				dwr.util.useLoadingMessage('Carregando...');
+				AvaliacaoDesempenhoDWR.getAvaliadores($('#avaliacao').val(), $('#avaliados').val(), createListCargosAvaliadores);
 			}else{
 				$("input[name=avaliadores]").parent().remove();
 				$("#listCheckBoxavaliadores > .info").remove();
@@ -304,9 +304,9 @@
 		function populaOrdensNivelCompetencia()
 		{
 			if(($('input[name=relatorioDetalhado]:checked').val() == 'true') && ($('#avaliacao').val() != 0) && ($('#avaliacao').val() != -1)){
-				DWREngine.setAsync(true);
-				DWRUtil.useLoadingMessage('Carregando...');
-				NivelCompetenciaDWR.findNiveisCompetenciaByAvDesempenho(populaRadiosNiveisCompetencia, $('#avaliacao').val());
+				dwr.engine.setAsync(true);
+				dwr.util.useLoadingMessage('Carregando...');
+				NivelCompetenciaDWR.findNiveisCompetenciaByAvDesempenho($('#avaliacao').val(), populaRadiosNiveisCompetencia);
 			}else{
 				$('#ordensNivelCompetencia').empty();
 				$('#ordensNivelCompetencia').append('<div class="info" style="width: 533px;"> <ul> <li>Utilize o filtro "Avaliação de desempenho que avaliam competência" para popular as competências.</li> </ul> </div>');

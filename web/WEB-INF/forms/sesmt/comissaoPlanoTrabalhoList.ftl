@@ -10,10 +10,10 @@
 	<title></title>
 
 	<script src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
-	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoPlanoTrabalhoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoPlanoTrabalhoDWR.js?version=${versao}"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 	<title></title>
 
 	<script type="text/javascript">
@@ -28,8 +28,8 @@
 
 		function preparaDadosUpdate(comissaoId)
 		{
-			DWREngine.setErrorHandler(errorPreparaDados);
-			ComissaoPlanoTrabalhoDWR.prepareDados(carregaDados,comissaoId)
+			dwr.engine.setErrorHandler(errorPreparaDados);
+			ComissaoPlanoTrabalhoDWR.prepareDados(comissaoId, carregaDados)
 		}
 
 		function errorPreparaDados(msg)

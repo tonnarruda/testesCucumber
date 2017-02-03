@@ -13,8 +13,8 @@
 	<script type='text/javascript'>
 		function populaCompetencia()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			CompetenciaDWR.getCompetenciasColaboradorByFaixaSalarialAndPeriodo(createListCompetencia, $('#faixa').val(), $('#dataIni').val(), $('#dataFim').val());
+			dwr.util.useLoadingMessage('Carregando...');
+			CompetenciaDWR.getCompetenciasColaboradorByFaixaSalarialAndPeriodo($('#faixa').val(), $('#dataIni').val(), $('#dataFim').val(), createListCompetencia);
 		}
 
 		function createListCompetencia(data)

@@ -22,12 +22,12 @@
 	</#if>
 
 					
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
 	<script type="text/javascript">
 		var empresaIds = new Array();
@@ -48,8 +48,8 @@
 		
 		function getAvaliacoes(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AvaliacaoDesempenhoDWR.getAvaliacoesByEmpresa(createListAvaliacoes, empresaId);
+			dwr.util.useLoadingMessage('Carregando...');
+			AvaliacaoDesempenhoDWR.getAvaliacoesByEmpresa(empresaId, createListAvaliacoes);
 			return false;
 		}
 		
@@ -60,8 +60,8 @@
 
 		function getEstabelecimentos(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresas(createListEstabelecimentos, empresaId,empresaIds);
+			dwr.util.useLoadingMessage('Carregando...');
+			EstabelecimentoDWR.getByEmpresas(empresaId, empresaIds, createListEstabelecimentos);
 			return false;
 		}
 		
@@ -72,8 +72,8 @@
 
 		function getAreasOrganizacionais(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(createListAreasOrganizacionais, empresaId, empresaIds, null);
+			dwr.util.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getByEmpresas(empresaId, empresaIds, null, createListAreasOrganizacionais);
 			return false;
 		}
 		
@@ -90,8 +90,8 @@
 				avaliacoesIds.push($(this).val());
 			});
 			
-			DWRUtil.useLoadingMessage('Carregando...');
-			ColaboradorDWR.getColaboradoresByAvaliacoes(createListColaboradorAvaliacoes, $(avaliacoesIds).toArray());
+			dwr.util.useLoadingMessage('Carregando...');
+			ColaboradorDWR.getColaboradoresByAvaliacoes($(avaliacoesIds).toArray(), createListColaboradorAvaliacoes);
 			return false;
 		}
 		

@@ -28,10 +28,10 @@
 	</#if>
 </#if>
 	
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HistoricoCandidatoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HistoricoCandidatoDWR.js?version=${versao}"/>'></script>
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
@@ -43,8 +43,8 @@
 
 		function getCandidatoAptoByEtapa(etapaId, solicitacaoId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			HistoricoCandidatoDWR.getCandidatoAptoByEtapa(createListCandidatos, etapaId, solicitacaoId);
+			dwr.util.useLoadingMessage('Carregando...');
+			HistoricoCandidatoDWR.getCandidatoAptoByEtapa(etapaId, solicitacaoId, createListCandidatos);
 		}
 
 		function createListCandidatos(data)

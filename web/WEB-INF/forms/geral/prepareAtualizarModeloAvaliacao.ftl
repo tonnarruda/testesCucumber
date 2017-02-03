@@ -5,11 +5,11 @@
 <html>
 <head>
 <@ww.head/>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
 	<title>Atualizar Modelo de Avaliação</title>
 	<style type="text/css">
@@ -19,11 +19,11 @@
 	<script type="text/javascript">
 		function populaColaboradores()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0], 'areaCheck');
 			var estabelecimentoIds = getArrayCheckeds(document.forms[0], 'estabelecimentoCheck');
 			
-			ColaboradorDWR.getByAreaEstabelecimentoEmpresas(createListcolaborador, areasIds, estabelecimentoIds, <@authz.authentication operation="empresaId"/>, null, "A", false);
+			ColaboradorDWR.getByAreaEstabelecimentoEmpresas(areasIds, estabelecimentoIds, <@authz.authentication operation="empresaId"/>, null, "A", false, createListcolaborador);
 		}
 
 		function createListcolaborador(data)
@@ -33,8 +33,8 @@
 		
 		function populaArea()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresa(createListArea, <@authz.authentication operation="empresaId"/>);
+			dwr.util.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getByEmpresa(<@authz.authentication operation="empresaId"/>, createListArea);
 		}
 
 		function createListArea(data)
@@ -47,7 +47,7 @@
 			$('#wwctrl_areaCheck [type="checkbox"]').attr('checked', false);
 			$('#wwctrl_estabelecimentoCheck [type="checkbox"]').attr('checked', false);
 			
-			DWREngine.setAsync(false);
+			dwr.engine.setAsync(false);
 			
 			populaArea();
 			populaColaboradores();

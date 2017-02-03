@@ -35,10 +35,10 @@ import com.fortes.web.tags.CheckBox;
 @Component
 public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> implements UsuarioManager
 {
-	private ColaboradorManager colaboradorManager;
-	private UsuarioEmpresaManager usuarioEmpresaManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
 	
 	@Autowired
 	UsuarioManagerImpl(UsuarioDao dao) {
@@ -321,23 +321,5 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 	
 	public String findEmailByUsuarioId(Long usuarioId) {
 		return getDao().findEmailByUsuarioId(usuarioId);
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-	
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)
-	{
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
-	public void setAreaOrganizacionalManager( AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

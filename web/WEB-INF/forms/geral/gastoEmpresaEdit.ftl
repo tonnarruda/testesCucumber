@@ -5,10 +5,10 @@
 
 	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>" type="text/css">
 
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
 
 	<@ww.head/>
 	<#if gastoEmpresa.id?exists>
@@ -29,20 +29,20 @@
 
 		function populaColaborador()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0], 'areasCheck');
 			var estabelecimentosIds = getArrayCheckeds(document.forms[0], 'estabelecimentosCheck');
 			if(areasIds.length == 0 && estabelecimentosIds.length == 0)
-				DWRUtil.removeAllOptions("colab");
+				dwr.util.removeAllOptions("colab");
 			else
-				ColaboradorDWR.getColaboradoresAreaEstabelecimento(createListColaborador, areasIds, estabelecimentosIds, <@authz.authentication operation="empresaId"/>);
+				ColaboradorDWR.getColaboradoresAreaEstabelecimento(areasIds, estabelecimentosIds, <@authz.authentication operation="empresaId"/>, createListColaborador);
 		}
 
 		function createListColaborador(data)
 		{
-			DWRUtil.removeAllOptions("colab");
+			dwr.util.removeAllOptions("colab");
 			document.getElementById("colab").options[0] = new Option("Selecione...", "");
-			DWRUtil.addOptions("colab", data);
+			dwr.util.addOptions("colab", data);
 		}
 
 		function prepareInsertItem()

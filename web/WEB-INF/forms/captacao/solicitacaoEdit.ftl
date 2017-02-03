@@ -27,6 +27,8 @@
 	<#assign formAction = formAction + "?visualizar=${visualizar}&cargo.id=${cargo.id}"/>
 </#if>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
@@ -35,8 +37,6 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 
@@ -50,8 +50,8 @@
 	<script type="text/javascript">
 		function populaEmails(id)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getEmailsResponsaveis(createListEmails, id, ${empresaId});
+			dwr.util.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getEmailsResponsaveis(id, ${empresaId}, createListEmails);
 		}
 	
 		function createListEmails(data)
@@ -61,30 +61,30 @@
 		
 		function populaCidades()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			if(document.getElementById('estado').value == "")
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				DWRUtil.removeAllOptions("cidade");
+				dwr.util.useLoadingMessage('Carregando...');
+				dwr.util.removeAllOptions("cidade");
 			}else{
-				CidadeDWR.getCidades(createListCidades, document.getElementById('estado').value);
+				CidadeDWR.getCidades(document.getElementById('estado').value, createListCidades);
 			}
 		}
 	
 		function createListCidades(data)
 		{
-			DWRUtil.removeAllOptions("cidade");
-			DWRUtil.addOptions("cidade", data);
+			dwr.util.removeAllOptions("cidade");
+			dwr.util.addOptions("cidade", data);
 		}
 	
 		function populaBairros()
 		{
 			if(document.getElementById('cidade').value == "")
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				DWRUtil.removeAllOptions("bairrosCheck");
+				dwr.util.useLoadingMessage('Carregando...');
+				dwr.util.removeAllOptions("bairrosCheck");
 			}else{
-				BairroDWR.getBairrosMap(createListBairros, document.getElementById('cidade').value);
+				BairroDWR.getBairrosMap(document.getElementById('cidade').value, createListBairros);
 			}
 		}
 	
@@ -105,7 +105,7 @@
 			quantidade      = 0;
 			salario         = 0;
 	
-			ReajusteDWR.calculaSalario(setSalarioCalculado, tipoSalario, faixaSalarialId, IndiceId, quantidade, salario);
+			ReajusteDWR.calculaSalario(tipoSalario, faixaSalarialId, IndiceId, quantidade, salario, setSalarioCalculado);
 		}
 	
 		function setSalarioCalculado(data)
@@ -153,8 +153,8 @@
 		{
 			if(faixaId != "null" && faixaId != "")
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				FuncaoDWR.getFuncaoByFaixaSalarial(createListFuncao, faixaId);
+				dwr.util.useLoadingMessage('Carregando...');
+				FuncaoDWR.getFuncaoByFaixaSalarial(faixaId, createListFuncao);
 			}
 		}
 
@@ -167,8 +167,8 @@
 		{
 			if(estabelecimentoId != "null")
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				AmbienteDWR.getAmbienteByEstabelecimento(createListAmbiente, estabelecimentoId);
+				dwr.util.useLoadingMessage('Carregando...');
+				AmbienteDWR.getAmbienteByEstabelecimento(estabelecimentoId, createListAmbiente);
 			}
 		}
 
@@ -196,7 +196,7 @@
 			$('#'+ colabSub).autocomplete({
 				minLength: 3,
 				source: function( request, response ) {
-					DWRUtil.useLoadingMessage('Carregando...');
+					dwr.util.useLoadingMessage('Carregando...');
 					ColaboradorDWR.findByNome(request.term, ${empresaId}, $('#incluirColaboradoresDesligados').is(":checked"), function(dados) {
 						
 						var resultado = new Array();
@@ -217,7 +217,7 @@
 					return false;
 				},
 				select: function( event, ui ) {
-					DWRUtil.useLoadingMessage('Carregando...');
+					dwr.util.useLoadingMessage('Carregando...');
 					ComissaoDWR.dataEstabilidade(ui.item.value, 
 												function(data) 
 												{

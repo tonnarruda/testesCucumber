@@ -7,9 +7,9 @@
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoExameDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoExameDWR.js?version=${versao}"/>'></script>
 
 	<style type="text/css">
 	<#-- não modifique os nomes. -->
@@ -130,7 +130,7 @@
 		function marcarComoNormal(solicitacaoExameId)
 		{
 			newConfirm('Marcar o resultado de todos os exames não informados como normal?', function(){
-				SolicitacaoExameDWR.marcarNaoInformadosComoNormal(mudaImagem, solicitacaoExameId);
+				SolicitacaoExameDWR.marcarNaoInformadosComoNormal(solicitacaoExameId, mudaImagem);
 			});
 		}
 		

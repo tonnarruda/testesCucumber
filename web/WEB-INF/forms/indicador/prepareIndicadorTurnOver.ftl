@@ -7,11 +7,11 @@
 <title>Turnover (rotatividade de colaboradores)</title>
 <#include "../ftl/mascarasImports.ftl" />
 
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 
 <script type='text/javascript'>
@@ -22,7 +22,7 @@
 			empresasFormulas[${key}] = '${empresasFormulas.get(key)}';
 		</#list>
 	
-		DWREngine.setAsync(false);
+		dwr.engine.setAsync(false);
 		
 		$('#agruparPorTempoServico').change(function() {
 			var marcado = $(this).is(":checked");
@@ -53,8 +53,8 @@
 	});
 
 	function populaEstabelecimento(empresaId){
-		DWRUtil.useLoadingMessage('Carregando...');
-		EstabelecimentoDWR.getByEmpresa(createListEstabelecimento, empresaId);
+		dwr.util.useLoadingMessage('Carregando...');
+		EstabelecimentoDWR.getByEmpresa(empresaId, createListEstabelecimento);
 	}
 
 	function createListEstabelecimento(data){
@@ -62,8 +62,8 @@
 	}
 	
 	function populaCargo(empresaId){
-		DWRUtil.useLoadingMessage('Carregando...');
-		CargoDWR.getByEmpresa(createListCargo, empresaId);
+		dwr.util.useLoadingMessage('Carregando...');
+		CargoDWR.getByEmpresa(empresaId, createListCargo);
 	}
 
 	function createListCargo(data){
@@ -71,8 +71,8 @@
 	}
 	
 	function populaArea(empresaId){
-		DWRUtil.useLoadingMessage('Carregando...');
-		AreaOrganizacionalDWR.getByEmpresa(createListArea, empresaId);
+		dwr.util.useLoadingMessage('Carregando...');
+		AreaOrganizacionalDWR.getByEmpresa(empresaId, createListArea);
 	}
 
 	function createListArea(data){

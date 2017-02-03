@@ -5,9 +5,9 @@
 	<@ww.head/>
 	<title>Colaboradores x Certificações</title>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CertificacaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CertificacaoDWR.js?version=${versao}"/>'></script>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
 	<script type="text/javascript">
@@ -55,15 +55,15 @@
 		{
 			$('#listCheckBoxcolaboradoresCheck tbody').remove();
 			$('#listCheckBoxcolaboradoresCheck label').remove();
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0], 'areasCheck');
 			var estabelecimentosIds = getArrayCheckeds(document.forms[0], 'estabelecimentosCheck');
 			var certificacoesIds = getArrayCheckeds(document.forms[0], 'certificacoesCheck');
 			
 			if(certificacoesIds.length > 0)
-				CertificacaoDWR.getColaboradores(createListColaborador, $('#dataIni').val(), $('#dataFim').val(),   
+				CertificacaoDWR.getColaboradores($('#dataIni').val(), $('#dataFim').val(),   
 												$('#colaboradorCertificado').is(':checked'), $('#colaboradorNaoCertificado').is(':checked'),  
-												$('#meses').val(), areasIds, estabelecimentosIds, certificacoesIds, $('#situacao').val());
+												$('#meses').val(), areasIds, estabelecimentosIds, certificacoesIds, $('#situacao').val(), createListColaborador);
 		}
 		
 		function createListColaborador(data)

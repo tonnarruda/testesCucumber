@@ -4,11 +4,11 @@
 <@ww.head/>
 	<title>Resultado da Avaliação de Desempenho (${avaliacaoDesempenho.titulo})</title>
 	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
 	<#assign validarCampos="return validaFormulario('form', new Array('@colaboradorsCheck'), null)"/>
 	
@@ -25,9 +25,9 @@
 			var areasIds   = getArrayCheckeds(document.form, 'areasCheck');
 			var cargosIds  = getArrayCheckeds(document.form, 'cargosCheck');
 			
-			DWREngine.setAsync(true);
-			DWRUtil.useLoadingMessage('Carregando...');
-			AvaliacaoDesempenhoDWR.getParticipantesByAvalEmpresaAreaCargo(populaListAvaliados, $('#avaliacaoDesempenhoId').val(), $('#empresa').val(), areasIds, cargosIds);
+			dwr.engine.setAsync(true);
+			dwr.util.useLoadingMessage('Carregando...');
+			AvaliacaoDesempenhoDWR.getParticipantesByAvalEmpresaAreaCargo($('#avaliacaoDesempenhoId').val(), $('#empresa').val(), areasIds, cargosIds, populaListAvaliados);
 		}
 		
 		function populaListAvaliados(data)
@@ -37,8 +37,8 @@
 		
 		function populaArea(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds, null);
+			dwr.util.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getByEmpresas(empresaId, empresaIds, null, createListArea);
 		}
 		
 		function createListArea(data)
@@ -56,7 +56,7 @@
 	
 		function verificaCargoSemAreaRelacionada(empresaId)
 		{
-			CargoDWR.verificaCargoSemAreaRelacionada(exibeCheckCargoSemArea, empresaId);
+			CargoDWR.verificaCargoSemAreaRelacionada(empresaId, exibeCheckCargoSemArea);
 		}
 		
 		function exibeCheckCargoSemArea(data)
@@ -66,14 +66,14 @@
 	
 		function populaCargosByAreaVinculados()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 			var empresaId = $('#empresa').val();
 			
 			if ($('#cargosVinculadosAreas').is(":checked") && areasIds.length != 0)
-				CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
+				CargoDWR.getCargoByArea(areasIds, "getNomeMercadoComEmpresa", empresaId, createListCargosByArea);
 			else
-				CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
+				CargoDWR.getByEmpresas(empresaId, empresaIds, createListCargosByArea);
 		}
 		
 		function createListCargosByArea(data)

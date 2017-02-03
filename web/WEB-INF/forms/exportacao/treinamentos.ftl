@@ -6,12 +6,12 @@
 
 <title>Exportar Curso/Turma como ocorrência para o TRU</title>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
 	<#assign validarCampos="return validaFormulario('form', new Array('@cursosCheck'), null)"/>
 	<#include "../ftl/mascarasImports.ftl" />
@@ -30,7 +30,7 @@
 		
 		function populaFiltros(empresaId)
 		{
-			DWREngine.setAsync(false);
+			dwr.engine.setAsync(false);
 			populaEstabelecimento(empresaId);
 			populaArea(empresaId);
 			populaCurso(empresaId);
@@ -39,9 +39,9 @@
 		
 		function populaEstabelecimento(empresaId)
 		{
-			DWREngine.setAsync(false);
-			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresa(createListEstabelecimento, empresaId);
+			dwr.engine.setAsync(false);
+			dwr.util.useLoadingMessage('Carregando...');
+			EstabelecimentoDWR.getByEmpresa(empresaId, createListEstabelecimento);
 		}
 	
 		function createListEstabelecimento(data)
@@ -52,8 +52,8 @@
 		function populaArea(empresaId)
 		{
 			
-			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresa(createListArea, empresaId);
+			dwr.util.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getByEmpresa(empresaId, createListArea);
 		}
 
 		function createListArea(data)
@@ -63,10 +63,10 @@
 		
 		function populaCurso(empresaId)
 		{
-			DWREngine.setAsync(false);
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.engine.setAsync(false);
+			dwr.util.useLoadingMessage('Carregando...');
 			
-			CursoDWR.getCursosByEmpresa(populaCursos, empresaId);
+			CursoDWR.getCursosByEmpresa(empresaId, populaCursos);
 		}
 
 		function populaCursos(data)
@@ -77,9 +77,9 @@
 		function populaTurma()
 		{
 			turmasCheck = $("input[name=turmasCheck]:checked").map(function(){ return $(this) });
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var cursoIds = getArrayCheckeds(document.forms[0], 'cursosCheck');
-			TurmaDWR.getTurmasByCursos(populaTurmas, cursoIds);
+			TurmaDWR.getTurmasByCursos(cursoIds, populaTurmas);
 		}
 
 		function populaTurmas(data)

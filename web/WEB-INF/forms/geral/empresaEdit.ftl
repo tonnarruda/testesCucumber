@@ -15,10 +15,10 @@
 		<#assign somenteLeitura="true" />
 	</#if>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 
 	<style type="text/css">
@@ -108,7 +108,7 @@
 				var grupoAC = document.getElementById("grupoAC").value;
 
 				document.getElementById("btnTransferir").src="<@ww.url includeParams="none" value="/imgs/conectando.gif"/>";
-				UtilDWR.getToken(apresenta_Msg, grupoAC);
+				UtilDWR.getToken(grupoAC, apresenta_Msg);
 			}
 			else
 			{
@@ -118,14 +118,14 @@
 		
 		function populaCidades()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			CidadeDWR.getCidades(createListCidades, document.getElementById("uf").value);
+			dwr.util.useLoadingMessage('Carregando...');
+			CidadeDWR.getCidades(document.getElementById("uf").value, createListCidades);
 		}
 
 		function createListCidades(data)
 		{
-			DWRUtil.removeAllOptions("cidade");
-			DWRUtil.addOptions("cidade", data);
+			dwr.util.removeAllOptions("cidade");
+			dwr.util.addOptions("cidade", data);
 		}
 
 		function apresenta_Msg(msg)

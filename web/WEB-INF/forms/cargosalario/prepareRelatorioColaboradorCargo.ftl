@@ -4,11 +4,11 @@
 <head>
 <@ww.head/>
 	<title>Colaboradores por Cargo</title>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/populaEstabAreaCargo.js?version=${versao}"/>"></script>
 	
 	<script type='text/javascript'>
@@ -56,9 +56,9 @@
 		
 		function populaAreaComfuncaoCargo(empresaId,empresaIds)
 		{
-			DWREngine.setAsync(true);
-			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getPemitidasByEmpresas(createListArea,false, empresaId, empresaIds);
+			dwr.engine.setAsync(true);
+			dwr.util.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getPemitidasByEmpresas(false, empresaId, empresaIds, createListArea);
 		}
 		
 		function createListArea(data)

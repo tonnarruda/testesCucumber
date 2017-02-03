@@ -10,9 +10,9 @@
 	<#assign formAction="insert.action"/>
 </#if>
 
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/NivelCompetenciaDWR.js"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/NivelCompetenciaDWR.js"/>'></script>
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/CHA.js?version=${versao}"/>"></script>
 	
 <#assign validarCampos="return validaFormulario('form', new Array('nome','@areasCheck'), null)"/>

@@ -10,10 +10,10 @@
 		@import url('<@ww.url value="/css/formModal.css?version=${versao}"/>');
 	</style>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoPeriodoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoPeriodoDWR.js?version=${versao}"/>'></script>
 
 	<#assign validarCampos="return validaFormulario('formComissaoPeriodo',new Array('aPartirDe'),new Array('aPartirDe'))"/>
 
@@ -25,8 +25,8 @@
 			var empresaId = <@authz.authentication operation="empresaId"/>;
 			var areasIds = getArrayCheckeds(document.getElementById('formPesquisa'), 'areasCheck');
 
-			DWRUtil.useLoadingMessage('Carregando...');
-			ColaboradorDWR.getColaboradoresByAreaNome(createListColaborador, areasIds, nome, matricula, empresaId);
+			dwr.util.useLoadingMessage('Carregando...');
+			ColaboradorDWR.getColaboradoresByAreaNome(areasIds, nome, matricula, empresaId, createListColaborador);
 
 			return false;
 		}
@@ -50,7 +50,7 @@
 		
 		function validaPeriodoClonado(aPartirDe)
 		{
-			ComissaoPeriodoDWR.validaDataDaComissao(processaValidacao, aPartirDe, ${comissaoPeriodo.id});
+			ComissaoPeriodoDWR.validaDataDaComissao(aPartirDe, ${comissaoPeriodo.id}, processaValidacao);
 		}
 		function processaValidacao(data)
 		{

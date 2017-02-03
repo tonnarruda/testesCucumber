@@ -11,13 +11,13 @@
 		<#assign data = historicoColaborador.data?date/>
 	</#if>
 
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>"></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>"></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/indice.js?version=${versao}"/>"></script>
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
@@ -29,16 +29,16 @@
 			funcId = funcaoId;
 			if(faixaId != "null" && faixaId != "")
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				FuncaoDWR.getFuncaoByFaixaSalarial(function(data){createListFuncao(data, funcaoId);
-											}, faixaId, funcaoId);
+				dwr.util.useLoadingMessage('Carregando...');
+				FuncaoDWR.getFuncaoByFaixaSalarial(faixaId, funcaoId, function(data){createListFuncao(data, funcaoId);
+											});
 			}
 		}
 
 		function createListFuncao(data, funcaoId)
 		{
-			DWRUtil.removeAllOptions("funcao");
-			DWRUtil.addOptions("funcao", data);
+			dwr.util.removeAllOptions("funcao");
+			dwr.util.addOptions("funcao", data);
 
 			if(funcaoId != null)
 				document.getElementById('funcao').value = funcaoId;
@@ -48,16 +48,16 @@
 		{
 			if(estabelecimentoId != "null")
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				AmbienteDWR.getAmbienteByEstabelecimento(function(data){createListAmbiente(data, ambienteId);
-															}, estabelecimentoId, ambienteId);
+				dwr.util.useLoadingMessage('Carregando...');
+				AmbienteDWR.getAmbienteByEstabelecimento(estabelecimentoId, ambienteId, function(data){createListAmbiente(data, ambienteId);
+															});
 			}
 		}
 
 		function createListAmbiente(data, ambId)
 		{
-			DWRUtil.removeAllOptions("ambiente");
-			DWRUtil.addOptions("ambiente", data);
+			dwr.util.removeAllOptions("ambiente");
+			dwr.util.addOptions("ambiente", data);
 
 			if(ambId != null)
 				document.getElementById('ambiente').value = ambId;
@@ -75,7 +75,7 @@
 
 			if(dataHistorico != "" && dataHistorico != "  /  /    " && dataHistorico.length == 10)
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
+				dwr.util.useLoadingMessage('Carregando...');
 				document.getElementById("salarioCalculado").value = "0,00";
 	
 				tipoSalario = document.getElementById("tipoSalario").value;
@@ -84,8 +84,8 @@
 				quantidade = document.getElementById("quantidade").value;
 				salario = document.getElementById("salario").value;
 	
-				DWREngine.setErrorHandler(error);
-				ReajusteDWR.calculaSalarioHistorico(setSalarioCalculado, tipoSalario, faixaSalarialId, indiceId, quantidade, salario, dataHistorico);
+				dwr.engine.setErrorHandler(error);
+				ReajusteDWR.calculaSalarioHistorico(tipoSalario, faixaSalarialId, indiceId, quantidade, salario, dataHistorico, setSalarioCalculado);
 			}
 			else
 			{

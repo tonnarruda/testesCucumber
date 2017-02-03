@@ -18,12 +18,12 @@
 	
 	<#include "../ftl/mascarasImports.ftl" />
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ConhecimentoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/buscaCandidatoSolicitacao.js?version=${versao}"/>'></script>
 
 	<script type='text/javascript'>
@@ -46,10 +46,10 @@
 	
 		function populaCargosConhecimentos(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos das empresas permitidas dando distinct pelo nomeMercado -->
-			CargoDWR.getByEmpresa(createListCargo, empresaId, empresaIds);
-			ConhecimentoDWR.getByEmpresa(createListConhecimentos, empresaId, empresaIds);
+			CargoDWR.getByEmpresa(empresaId, empresaIds, createListCargo);
+			ConhecimentoDWR.getByEmpresa(empresaId, empresaIds, createListConhecimentos);
 			$("#opcaoTodasEmpresas").val(empresaId == -1);
 		}
 		

@@ -3,7 +3,7 @@ function verificaSelecao(turmaId, cursoId, colaboradoresIds, vencimentoPorCertif
 {
 	if(colaboradoresIds.length > 0)
 	{
-		DWRUtil.useLoadingMessage('Carregando...');
+		dwr.util.useLoadingMessage('Carregando...');
 		ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma($("input[name='turma.id']").val(), $("input[name='turma.curso.id']").val(), colaboradoresIds,
 			function(retornoCallBack){
 				montaDialog(retornoCallBack, 400, 700, 'Os seguintes colaboradores já estão inscritos neste curso.<br />Deseja realmente incluí-los nesta turma?', vencimentoPorCertificacao);

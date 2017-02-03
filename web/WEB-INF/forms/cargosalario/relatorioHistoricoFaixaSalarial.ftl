@@ -3,9 +3,9 @@
 <head>
 	<@ww.head/>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	
 	<title>Históricos das Faixas Salariais</title>
 	
@@ -56,9 +56,9 @@
 		
 		function populaCargosByGrupo()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var gruposIds = getArrayCheckeds(document.forms[0], 'grupoOcupacionalsCheck');
-			CargoDWR.getCargoByGrupo(createListCargos, gruposIds, ${empresaId});
+			CargoDWR.getCargoByGrupo(gruposIds, ${empresaId}, createListCargos);
 			
 			if($('#cargoSemGrupo').is(":checked"))
 				addCheckCargoSemGrupo();
@@ -66,23 +66,23 @@
 		
 		function addCheckCargoSemGrupo()	
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var gruposIds = getArrayCheckeds(document.forms[0], 'grupoOcupacionalsCheck');
-			CargoDWR.getCargoByGruposMaisSemGruposRelacionado(createListCargos, gruposIds, ${empresaId});
+			CargoDWR.getCargoByGruposMaisSemGruposRelacionado(gruposIds, ${empresaId}, createListCargos);
 		}
 		
 		function addCheckCargoSemArea()	
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
-			CargoDWR.getCargoByAreaMaisSemAreaRelacionada(createListCargos, areasIds, "getNomeMercado", ${empresaId});
+			CargoDWR.getCargoByAreaMaisSemAreaRelacionada(areasIds, "getNomeMercado", ${empresaId}, createListCargos);
 		}
 		
 		function populaCargosByArea()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
-			CargoDWR.getCargoByArea(createListCargos, areasIds, "getNomeMercado", ${empresaId});
+			CargoDWR.getCargoByArea(areasIds, "getNomeMercado", ${empresaId}, createListCargos);
 			
 			if($('#cargoSemArea').is(":checked"))
 				addCheckCargoSemArea();

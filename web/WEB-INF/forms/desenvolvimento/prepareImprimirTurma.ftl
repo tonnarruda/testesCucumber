@@ -2,32 +2,32 @@
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 
 <@ww.head/>
 	<title>Relatório de Plano de Treinamentos</title>
 <script type='text/javascript'>
 	function populaColaborador()
 	{
-		DWRUtil.useLoadingMessage('Carregando...');
+		dwr.util.useLoadingMessage('Carregando...');
 		var areasIds = getArrayCheckeds(document.forms[0], 'areasCheck');
 		var estabelecimentosIds = getArrayCheckeds(document.forms[0], 'estabelecimentosCheck');
 		if(areasIds.length == 0 && estabelecimentosIds.length == 0)
 		{
-			DWRUtil.removeAllOptions("colaboradores");
+			dwr.util.removeAllOptions("colaboradores");
 			document.getElementById("colaboradores").options[0] = new Option("Todos", "");
 		}
 		else
-			ColaboradorDWR.getColaboradoresAreaEstabelecimento(createListColaborador, areasIds, estabelecimentosIds, <@authz.authentication operation="empresaId"/>);
+			ColaboradorDWR.getColaboradoresAreaEstabelecimento(areasIds, estabelecimentosIds, <@authz.authentication operation="empresaId"/>, createListColaborador);
 	}
 
 	function createListColaborador(data)
 	{
-		DWRUtil.removeAllOptions("colaboradores");
+		dwr.util.removeAllOptions("colaboradores");
 		document.getElementById("colaboradores").options[0] = new Option("Todos", "");
-		DWRUtil.addOptions("colaboradores", data);
+		dwr.util.addOptions("colaboradores", data);
 	}
 
 	function imprimir()

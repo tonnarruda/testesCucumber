@@ -14,30 +14,30 @@
 
 <#assign validarCampos="return validaFormulario('form', new Array('cargoOrigem','faixas','novaFaixa'), null)"/>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
 	<script language='javascript'>
 
 		function populaFaixas()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var cargoId = document.getElementById("cargoOrigem").value;
 
 			if (cargoId != "")
 			{
-				FaixaSalarialDWR.getFaixas(createListFaixas, cargoId);
+				FaixaSalarialDWR.getFaixas(cargoId, createListFaixas);
 			}
 			else
 			{
-				DWRUtil.removeAllOptions("faixas");
+				dwr.util.removeAllOptions("faixas");
 			}
 		}
 
 		function createListFaixas(data)
 		{
-			DWRUtil.removeAllOptions("faixas");
-			DWRUtil.addOptions("faixas", data);
+			dwr.util.removeAllOptions("faixas");
+			dwr.util.addOptions("faixas", data);
 		}
 
 	</script>

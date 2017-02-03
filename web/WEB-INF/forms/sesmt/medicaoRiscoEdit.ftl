@@ -18,10 +18,10 @@
 	
 	<#include "../ftl/mascarasImports.ftl" />
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
 	<script type="text/javascript">
 		var tecnicasUtilizadas = [${tecnicasUtilizadas}];
@@ -142,29 +142,29 @@
 	    {
 	      var estabelecimentoId = document.getElementById("estabelecimento").value;
 
-	      DWRUtil.useLoadingMessage('Carregando...');
-	      AmbienteDWR.getAmbienteByEstabelecimento(createListAmbientes, estabelecimentoId);
+	      dwr.util.useLoadingMessage('Carregando...');
+	      AmbienteDWR.getAmbienteByEstabelecimento(estabelecimentoId, createListAmbientes);
 	    }
 		
 	    function createListAmbientes(data)
 	    {
-	      DWRUtil.removeAllOptions("ambiente");
-	      DWRUtil.addOptions("ambiente", data);
+	      dwr.util.removeAllOptions("ambiente");
+	      dwr.util.addOptions("ambiente", data);
 	    }
 
 		function populaFuncoes()
 	    {
 	      var cargoId = document.getElementById("cargo").value;
 
-	      DWRUtil.useLoadingMessage('Carregando...');
-	      FuncaoDWR.getByCargo(createListCargos, cargoId);
+	      dwr.util.useLoadingMessage('Carregando...');
+	      FuncaoDWR.getByCargo(cargoId. createListCargos);
 	    }
 
 	    function createListCargos(data)
 	    {
-	      DWRUtil.removeAllOptions("funcao");
-	      DWRUtil.addOptions("funcao", [{id: -1, nome:'Nenhuma'}], "id", "nome");
-	      DWRUtil.addOptions("funcao", data);
+	      dwr.util.removeAllOptions("funcao");
+	      dwr.util.addOptions("funcao", [{id: -1, nome:'Nenhuma'}], "id", "nome");
+	      dwr.util.addOptions("funcao", data);
 	    }
 	    
 	    var desabilitarGravar ="${desabilitarGravar?string}";

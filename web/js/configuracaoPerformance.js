@@ -55,8 +55,8 @@ function gravarConfiguracao(usuarioId)
 		caixasStatus.push(jQuery("#box" + classNameCabecalho).css("display") == "block");
 	});
 	
-	DWREngine.setErrorHandler(errorGravarConfiguracaoPerformance);
-	ConfiguracaoPerformanceDWR.gravarConfiguracao(retorno, usuarioId, caixasOrdenadas, caixasStatus);
+	dwr.engine.setErrorHandler(errorGravarConfiguracaoPerformance);
+	ConfiguracaoPerformanceDWR.gravarConfiguracao(usuarioId, caixasOrdenadas, caixasStatus, retorno);
 }
 
 function retorno()

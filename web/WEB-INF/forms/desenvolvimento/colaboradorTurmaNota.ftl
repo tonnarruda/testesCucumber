@@ -27,15 +27,15 @@
 		
 		function populaColaborador()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			ColaboradorDWR.find(createListColaborador, $('#nome').val(), "", $('#matricula').val(), $('#empresaId').val(), true, empresaIds);
+			dwr.util.useLoadingMessage('Carregando...');
+			ColaboradorDWR.find($('#nome').val(), "", $('#matricula').val(), $('#empresaId').val(), true, empresaIds, createListColaborador);
 		}
 		
 		function createListColaborador(data)
 		{
-			DWRUtil.removeAllOptions('colaborador');
+			dwr.util.removeAllOptions('colaborador');
 			$('#colaborador').append('<option value=\"\">Selecione...</option>');
-			DWRUtil.addOptions("colaborador", data);
+			dwr.util.addOptions("colaborador", data);
 		}
 		
 		function populaNotas(colaboradorId)

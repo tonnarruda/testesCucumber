@@ -11,13 +11,13 @@
 		@import url('<@ww.url includeParams="none" value="/css/questionario.css?version=${versao}"/>');
 	</style>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AspectoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PerguntaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/populaEstabAreaCargo.js?version=${versao}"/>"></script>
 
 	<script type='text/javascript'>
@@ -29,7 +29,7 @@
 		</#if>
 		
 		$(function() {
-			DWREngine.setAsync(true);
+			dwr.engine.setAsync(true);
 			
 			<#if empresas?exists && 1 < empresas?size >
 				$('#empresa').val('');
@@ -53,12 +53,12 @@
 		});
 	
 		function populaEstabelecimentos() {
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var empresaCheckIds = getArrayCheckeds(document.forms[0], 'empresasCheck');
 			if(empresaCheckIds.length > 0)
-				EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, null, empresaCheckIds);
+				EstabelecimentoDWR.getByEmpresas(null, empresaCheckIds, createListEstabelecimento);
 			else
-				EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, null, empresaIds);
+				EstabelecimentoDWR.getByEmpresas(null, empresaIds, createListEstabelecimento);
 		}
 	
 		function createListEstabelecimento(data)
@@ -68,14 +68,14 @@
 	
 		function populaAreas()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var empresaCheckIds = getArrayCheckeds(document.forms[0], 'empresasCheck');
 			populaCargosByAreaVinculados();
 
 			if(empresaCheckIds.length > 0)
-				AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresaCheckIds, null);
+				AreaOrganizacionalDWR.getByEmpresas(null, empresaCheckIds, null, createListAreas);
 			else
-				AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresaIds, null);
+				AreaOrganizacionalDWR.getByEmpresas(null, empresaIds, null, createListAreas);
 				
 		}
 		
@@ -91,23 +91,23 @@
 		
 		function populaCargosByAreaVinculados()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 			var empresasIds = getArrayCheckeds(document.forms[0],'empresasCheck');
 			
 			if ($('#cargoSemArea').is(":checked"))
 			{
 				if(areasIds.length == 0)
-					CargoDWR.getByEmpresas(createListCargosByArea, 0, empresasIds);
+					CargoDWR.getByEmpresas(0, empresasIds, createListCargosByArea);
 				else {
-					CargoDWR.getCargoByAreaMaisSemAreaRelacionada(createListCargosByArea, areasIds, "getNomeMercado", 0);
+					CargoDWR.getCargoByAreaMaisSemAreaRelacionada(areasIds, "getNomeMercado", 0, createListCargosByArea);
 				}
 			}
 			else
 				if (areasIds.length == 0)
-					CargoDWR.getByEmpresas(createListCargosByArea, 0, empresasIds);
+					CargoDWR.getByEmpresas(0, empresasIds, createListCargosByArea);
 				else
-					CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", 0);
+					CargoDWR.getCargoByArea(areasIds, "getNomeMercadoComEmpresa", 0, createListCargosByArea);
 				
 		}
 		
@@ -118,17 +118,17 @@
 	
 		function populaPerguntasPorAspecto(questionarioId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var apectosIds = getArrayCheckeds(document.forms[0],'aspectosCheck');
-			PerguntaDWR.getPerguntasByAspecto(createListPerguntas, questionarioId, apectosIds);
+			PerguntaDWR.getPerguntasByAspecto(questionarioId, apectosIds, createListPerguntas);
 		}
 	
 		function populaPesquisaAspecto(questionarioId)
 		{
-			DWREngine.setAsync(true);
-			DWRUtil.useLoadingMessage('Carregando...');
-			PerguntaDWR.getPerguntas(createListPerguntas, questionarioId);
-			AspectoDWR.getAspectosId(createListAspectos, questionarioId);
+			dwr.engine.setAsync(true);
+			dwr.util.useLoadingMessage('Carregando...');
+			PerguntaDWR.getPerguntas(questionarioId, createListPerguntas);
+			AspectoDWR.getAspectosId(questionarioId, createListAspectos);
 		}
 
 		function createListPerguntas(data)

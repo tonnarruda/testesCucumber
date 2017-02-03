@@ -5,10 +5,10 @@ var AspectosArray = new Array();
 	var populaAspectos = function() {
 		var aspectoId = $("#questionario").val();
 		if(aspectoId != "")	{
-			AspectoDWR.getAspectos(function(data) {
+			AspectoDWR.getAspectos(aspectoId, function(data) {
 				AspectosArray = data;
 				$("#aspecto").autocomplete(AspectosArray);
-			}, aspectoId);
+			});
 		}
 	};
 	

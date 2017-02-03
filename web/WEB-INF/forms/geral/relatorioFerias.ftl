@@ -19,9 +19,9 @@
 	</#if>
 
 	<#include "../ftl/mascarasImports.ftl" />
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
@@ -37,10 +37,10 @@
 		
 		function populaColaboradores()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var situacao = $('#situacao').val();
 			
-			ColaboradorDWR.getPermitidosPorResponsavelCoresponsavel(createListcolaborador, ${usuarioLogado.id}, areasIds, ${empresaSistema.id}, situacao, true);
+			ColaboradorDWR.getPermitidosPorResponsavelCoresponsavel(${usuarioLogado.id}, areasIds, ${empresaSistema.id}, situacao, true, createListcolaborador);
 		}
 
 		function createListcolaborador(data)
@@ -55,7 +55,7 @@
 	
 		function populaChecks()
 		{
-			DWREngine.setAsync(false);
+			dwr.engine.setAsync(false);
 			populaColaboradores();
 		}
 			

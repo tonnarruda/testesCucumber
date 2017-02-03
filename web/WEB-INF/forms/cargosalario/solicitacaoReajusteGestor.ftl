@@ -9,13 +9,13 @@
 	<#include "tipoSalarioInclude.ftl" />
 	<#include "calculaSalarioInclude.ftl" />
 
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>"></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>"></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>"></script>
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/areaOrganizacional.js?version=${versao}"/>"></script>
@@ -24,8 +24,8 @@
 	<script type="text/javascript">
 		function verficaColaborador(tabelaId, colaboradorId)
 		{
-			DWREngine.setErrorHandler(errorVerificaColaborador);
-			ReajusteDWR.verificaColaborador(verificaColaborador, tabelaId, colaboradorId, <@authz.authentication operation="empresaAcIntegra"/>);
+			dwr.engine.setErrorHandler(errorVerificaColaborador);
+			ReajusteDWR.verificaColaborador(tabelaId, colaboradorId, <@authz.authentication operation="empresaAcIntegra"/>, verificaColaborador);
 		}
 
 		function verificaColaborador(data)
@@ -44,8 +44,8 @@
 		{
 			if(colaboradorId != "-1")
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				ReajusteDWR.getColaboradorSolicitacaoReajuste(exibeDados, colaboradorId);
+				dwr.util.useLoadingMessage('Carregando...');
+				ReajusteDWR.getColaboradorSolicitacaoReajuste(colaboradorId, exibeDados);
 			}
 			else
 			{
@@ -122,9 +122,9 @@
 
 		function populaAreasOrganizacionais(dados, areaOrganizacionalAtualId)
 		{
-			DWRUtil.removeAllOptions("areaOrganizacionalProposta");
+			dwr.util.removeAllOptions("areaOrganizacionalProposta");
 			$('#areaOrganizacionalProposta').prepend('<option value=\"\">Selecione...</option>');
-			DWRUtil.addOptions("areaOrganizacionalProposta", dados);
+			dwr.util.addOptions("areaOrganizacionalProposta", dados);
 			$('#areaOrganizacionalProposta').val(areaOrganizacionalAtualId);
 		}
 		
@@ -133,18 +133,18 @@
 			limpaDados();
 			if(areaId != "" && areaId != null && areaId != "null")
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				ReajusteDWR.getColaboradoresByAreaOrganizacional(exibeColaboradores, areaId);
+				dwr.util.useLoadingMessage('Carregando...');
+				ReajusteDWR.getColaboradoresByAreaOrganizacional(areaId, exibeColaboradores);
 			}
 			else
 			{
-				DWRUtil.removeAllOptions("colaborador");
+				dwr.util.removeAllOptions("colaborador");
 			}
 		}
 
 		function exibeColaboradores(data)
 		{
-			DWRUtil.removeAllOptions("colaborador");
+			dwr.util.removeAllOptions("colaborador");
 			addOptionsByMap("colaborador", data, "Selecione...");
 		}
 
@@ -210,16 +210,16 @@
 			funcId = funcaoId;
 			if(faixaId != "null" && faixaId != "")
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				FuncaoDWR.getFuncaoByFaixaSalarial(function(data){createListFuncao(data, funcaoId);
-											}, faixaId, funcaoId);
+				dwr.util.useLoadingMessage('Carregando...');
+				FuncaoDWR.getFuncaoByFaixaSalarial(faixaId, funcaoId, function(data){createListFuncao(data, funcaoId);
+											});
 			}
 		}
 
 		function createListFuncao(data, funcaoId)
 		{
-			DWRUtil.removeAllOptions("funcaoProposta");
-			DWRUtil.addOptions("funcaoProposta", data);
+			dwr.util.removeAllOptions("funcaoProposta");
+			dwr.util.addOptions("funcaoProposta", data);
 			
 			if(funcaoId != null)
 				document.getElementById('funcaoProposta').value = funcaoId;		
@@ -229,16 +229,16 @@
 		{
 			if(estabelecimentoId != "null")
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				AmbienteDWR.getAmbienteByEstabelecimento(function(data){createListAmbiente(data, ambienteId);
-															}, estabelecimentoId, ambienteId);
+				dwr.util.useLoadingMessage('Carregando...');
+				AmbienteDWR.getAmbienteByEstabelecimento( estabelecimentoId, ambienteId, function(data){createListAmbiente(data, ambienteId);
+															});
 			}
 		}
 
 		function createListAmbiente(data, ambId)
 		{
-			DWRUtil.removeAllOptions("ambienteProposto");
-			DWRUtil.addOptions("ambienteProposto", data);
+			dwr.util.removeAllOptions("ambienteProposto");
+			dwr.util.addOptions("ambienteProposto", data);
 
 			if(ambId != null)
 				document.getElementById('ambienteProposto').value = ambId;

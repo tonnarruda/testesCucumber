@@ -12,16 +12,16 @@
 
 <#assign formAction="insert.action"/>
 
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 
 <script type='text/javascript'>
 	function populaCargos(frm, nameCheck)
 	{
-		DWRUtil.useLoadingMessage('Carregando...');
+		dwr.util.useLoadingMessage('Carregando...');
 		var gruposIds = getArrayCheckeds(frm, nameCheck);
-		CargoDWR.getCargoByGrupo(createListCargos, gruposIds, <@authz.authentication operation="empresaId"/>);
+		CargoDWR.getCargoByGrupo(gruposIds, <@authz.authentication operation="empresaId"/>, createListCargos);
 	}
 
 	function createListCargos(data)

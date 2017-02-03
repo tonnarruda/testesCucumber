@@ -7,14 +7,14 @@
 	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 </style>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js?version=${versao}"/>'></script>
 
 	<script type='text/javascript'>
 	    function populaSolicitacoes(empresaId)
 	    {
-	      	SolicitacaoDWR.getSolicitacoes(createListSolicitacaos, empresaId);	
+	      	SolicitacaoDWR.getSolicitacoes(empresaId, createListSolicitacaos);	
 	    }
 	    
 	    function createListSolicitacaos(data)

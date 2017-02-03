@@ -11,10 +11,10 @@
 		@import url('<@ww.url includeParams="none" value="/css/questionario.css?version=${versao}"/>');
 	</style>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AspectoDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PerguntaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AspectoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PerguntaDWR.js?version=${versao}"/>'></script>
 
 	<#include "../ftl/mascarasImports.ftl" />
 
@@ -34,9 +34,9 @@
 	<script type='text/javascript'>
 		function populaPesquisaAspecto(questionarioId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			PerguntaDWR.getPerguntas(createListPerguntas, questionarioId);
-			AspectoDWR.getAspectosId(createListAspectos, questionarioId);
+			dwr.util.useLoadingMessage('Carregando...');
+			PerguntaDWR.getPerguntas(questionarioId, createListPerguntas);
+			AspectoDWR.getAspectosId(questionarioId, createListAspectos);
 		}
 		
 		function createListPerguntas(data)

@@ -6,23 +6,23 @@
 
 	<title>Ranking de Performance das Avaliações dos Alunos</title>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
 	
 	<#include "../ftl/mascarasImports.ftl" />
 	
 	<script type="text/javascript">
 		function getTurmas()
 		{
-			DWREngine.setAsync(true);
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.engine.setAsync(true);
+			dwr.util.useLoadingMessage('Carregando...');
 			
 			var cursoIds = getArrayCheckeds(document.forms[0], 'cursosCheck');
 			
-			TurmaDWR.getTurmasByCursos(populaTurmas, cursoIds);
-			CursoDWR.getAvaliacaoCursos(populaAvaliacaoCursos, cursoIds);
+			TurmaDWR.getTurmasByCursos(cursoIds, populaTurmas);
+			CursoDWR.getAvaliacaoCursos(cursoIds, populaAvaliacaoCursos);
 		}
 
 		function populaTurmas(data)

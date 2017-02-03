@@ -23,14 +23,14 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/gabelerner/canvg.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/gabelerner/rgbcolor.js"/>'></script>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	
     <script type='text/javascript'>
 		$(function() {
 			$('#ativa').change(function() {
-				AreaOrganizacionalDWR.findByEmpresa(montaAreas, <@authz.authentication operation="empresaId"/>, ($(this).val() == "" ? null : $(this).val()));
+				AreaOrganizacionalDWR.findByEmpresa(<@authz.authentication operation="empresaId"/>, ($(this).val() == "" ? null : $(this).val()), montaAreas);
 			});
 		
 			$('#ativa').change();
@@ -38,8 +38,8 @@
 			$('#areaOrganizacional').change(function() {
 				$('#organogramaAreas').empty();
 			
-				DWRUtil.useLoadingMessage('Carregando...');
-				AreaOrganizacionalDWR.getOrganogramaByEmpresaJson(montaOrganograma, <@authz.authentication operation="empresaId"/>, ($(this).val() == "" ? null : new Number($(this).val())), ($('#ativa').val() == "" ? null : $('#ativa').val()));
+				dwr.util.useLoadingMessage('Carregando...');
+				AreaOrganizacionalDWR.getOrganogramaByEmpresaJson(<@authz.authentication operation="empresaId"/>, ($(this).val() == "" ? null : new Number($(this).val())), ($('#ativa').val() == "" ? null : $('#ativa').val()), montaOrganograma);
 			});
 		});
 		

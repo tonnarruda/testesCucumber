@@ -9,26 +9,26 @@
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
 
 	<script type="text/javascript">
 		function populaCidades()
 		{
 			if(document.getElementById('estado').value == "")
 			{
-				DWRUtil.removeAllOptions("cidade");
+				dwr.util.removeAllOptions("cidade");
 			}else{
-				DWRUtil.useLoadingMessage('Carregando...');
-				CidadeDWR.getCidades(createListCidades, document.getElementById("estado").value);
+				dwr.util.useLoadingMessage('Carregando...');
+				CidadeDWR.getCidades(document.getElementById("estado").value, createListCidades);
 			}
 		}
 
 		function createListCidades(data)
 		{
-			DWRUtil.removeAllOptions("cidade");
-			DWRUtil.addOptions("cidade", data);
+			dwr.util.removeAllOptions("cidade");
+			dwr.util.addOptions("cidade", data);
 		}
 	</script>
 

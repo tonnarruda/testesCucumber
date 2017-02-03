@@ -10,11 +10,11 @@
 		<title>Colaboradores que não fizeram o treinamento</title>
 	</#if>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
@@ -35,8 +35,8 @@
 		
 		function populaCurso(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			CursoDWR.getCursosByEmpresa(createListCurso, empresaId);
+			dwr.util.useLoadingMessage('Carregando...');
+			CursoDWR.getCursosByEmpresa(empresaId, createListCurso);
 		}
 		
 		function createListCurso(data)
@@ -46,8 +46,8 @@
 		
 		function populaEstabelecimento(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
+			dwr.util.useLoadingMessage('Carregando...');
+			EstabelecimentoDWR.getByEmpresas(empresaId, empresaIds, createListEstabelecimento);
 		}
 	
 		function createListEstabelecimento(data)
@@ -57,8 +57,8 @@
 		
 		function populaArea(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds, null);
+			dwr.util.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getByEmpresas(empresaId, empresaIds, null, createListArea);
 		}
 
 		function createListArea(data)
@@ -94,7 +94,7 @@
 		{
 			var empresaValue = $('#empresaId').val();
 
-			DWREngine.setAsync(false);
+			dwr.engine.setAsync(false);
 			
 			populaCurso(empresaValue);
 			populaArea(empresaValue);

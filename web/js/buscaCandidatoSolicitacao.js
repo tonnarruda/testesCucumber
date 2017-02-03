@@ -2,25 +2,25 @@ function populaCidades()
 {
 	if(document.getElementById('uf').value == "")
 	{
-		DWRUtil.removeAllOptions("cidade");
+		dwr.util.removeAllOptions("cidade");
 	}else{
-		DWRUtil.useLoadingMessage('Carregando...');
-		CidadeDWR.getCidades(createListCidades, document.getElementById("uf").value);
+		dwr.util.useLoadingMessage('Carregando...');
+		CidadeDWR.getCidades(document.getElementById("uf").value, createListCidades);
 	}
 }
 
 function createListCidades(data)
 {
-	DWRUtil.removeAllOptions("cidade");
-	DWRUtil.addOptions("cidade", data);
+	dwr.util.removeAllOptions("cidade");
+	dwr.util.addOptions("cidade", data);
 }
 
 
 function populaCidadesCheckList()
 {
 	if(document.getElementById('uf').value != ""){
-		DWRUtil.useLoadingMessage('Carregando...');
-		CidadeDWR.getCidadesCheckList(createListCidadesCheck, document.getElementById("uf").value);
+		dwr.util.useLoadingMessage('Carregando...');
+		CidadeDWR.getCidadesCheckList(document.getElementById("uf").value, createListCidadesCheck);
 	}
 }
 

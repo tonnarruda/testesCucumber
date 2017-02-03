@@ -9,9 +9,9 @@
 	
 	<#assign statusInicialAutorizacaoGerstorNaSolicitacaoPessoal = "${parametrosDoSistema.autorizacaoGestorNaSolicitacaoPessoal?string}" />
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	
 	<script type="text/javascript">
@@ -22,9 +22,9 @@
 			{
 				if(email.trim() != "")
 				{
-					DWRUtil.useLoadingMessage('Enviando...');
-					DWREngine.setErrorHandler(error);				
-					UtilDWR.enviaEmail(apresentaMsg, email, $('#autenticacao').is(':checked'), $('#tls').is(':checked'));
+					dwr.util.useLoadingMessage('Enviando...');
+					dwr.engine.setErrorHandler(error);				
+					UtilDWR.enviaEmail(email, $('#autenticacao').is(':checked'), $('#tls').is(':checked'), apresentaMsg);
 				}
 				else
 					jAlert("Email Inválido!");

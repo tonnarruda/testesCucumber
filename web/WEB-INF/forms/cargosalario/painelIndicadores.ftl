@@ -47,12 +47,12 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js?version=${versao}"/>'></script>
 		
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 		
 		<#include "../ftl/showFilterImports.ftl" />
 		
@@ -138,7 +138,7 @@
 			var popup;
 			
 			function populaOcorrencias() {
-				DWRUtil.useLoadingMessage('Carregando...');
+				dwr.util.useLoadingMessage('Carregando...');
 				var dataIni = $("#dataIni").val();
 				var dataFim = $("#dataFim").val();
 				var qtdItens = $("#qtdItensOcorrencia").val();
@@ -147,7 +147,7 @@
 				var estabelecimentosIds =  getArrayCheckeds(document.forms[0],'estabelecimentosIds');
 				var cargosIds =  getArrayCheckeds(document.forms[0],'cargosIds');
 
-				ColaboradorDWR.getOcorrenciasByPeriodo(createListOcorrenciasByPeriodo, dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItens, "getDescricao", 0);
+				ColaboradorDWR.getOcorrenciasByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItens, "getDescricao", 0, createListOcorrenciasByPeriodo);
 			}
 			
 			function montaGraficoLinha(dados, obj, titulo, precisao)
@@ -236,12 +236,12 @@
 			
 			function populaAreas()
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
+				dwr.util.useLoadingMessage('Carregando...');
 				var empresaIds = getArrayCheckeds(document.forms[0], 'empresasCheck');
 				if(empresaIds.length > 0)
-					AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresaIds, null);
+					AreaOrganizacionalDWR.getByEmpresas(null, empresaIds, null, createListAreas);
 				else
-					AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresasPermitidasIds, null);
+					AreaOrganizacionalDWR.getByEmpresas(null, empresasPermitidasIds, null, createListAreas);
 					
 				populaCargosByAreaVinculados();
 			}
@@ -253,7 +253,7 @@
 			
 			function populaCargosByAreaVinculados()
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
+				dwr.util.useLoadingMessage('Carregando...');
 				var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 				var empresasIds = getArrayCheckeds(document.forms[0],'empresasCheck');
 				
@@ -261,13 +261,13 @@
 				{
 					if(areasIds.length == 0)
 					{
-						CargoDWR.getByEmpresas(createListCargosByArea, 0, empresasIds);
+						CargoDWR.getByEmpresas(0, empresasIds, createListCargosByArea);
 					}
 					else
-						CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", 0);
+						CargoDWR.getCargoByArea(areasIds, "getNomeMercadoComEmpresa", 0, createListCargosByArea);
 				}
 				else
-					CargoDWR.getByEmpresas(createListCargosByArea, 0, empresasIds);
+					CargoDWR.getByEmpresas(0, empresasIds, createListCargosByArea);
 			}
 			
 			function createListCargosByArea(data)

@@ -12,9 +12,9 @@
 	<#assign accessKey="I"/>
 </#if>
 
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DntDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DntDWR.js?version=${versao}"/>'></script>
 
 <script type='text/javascript'>
 	function populaTurmas()
@@ -22,12 +22,12 @@
 		var id = document.getElementById("curso").value;
 		if(id != "")
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			DntDWR.getTurmas(createListTurmas, document.getElementById("curso").value);
+			dwr.util.useLoadingMessage('Carregando...');
+			DntDWR.getTurmas(document.getElementById("curso").value, createListTurmas);
 		}
 		else
 		{
-			DWRUtil.removeAllOptions("turma");
+			dwr.util.removeAllOptions("turma");
 
 			var elOptNew = document.createElement('option');
 			elOptNew.text = '[Selecione o curso...]';
@@ -47,8 +47,8 @@
 
 	function createListTurmas(data)
 	{
-		DWRUtil.removeAllOptions("turma");
-		DWRUtil.addOptions("turma", data);
+		dwr.util.removeAllOptions("turma");
+		dwr.util.addOptions("turma", data);
 	}
 </script>
 

@@ -6,12 +6,12 @@
 		<title>Participantes LNT - ${lnt.descricao}</title>
 		<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
 		<script type="text/javascript" src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js?version=${versao}"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script><!-- Usado para o function.js cssClass=hora-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.cookie.js"/>'></script>
 		
@@ -328,7 +328,7 @@
 			
 			function getColaboradoresByArea() {
 				var areasIds = $("input[name='areasCheckDialog']:checked").map(function(){return $(this).val();}).get();
-				ColaboradorDWR.getByAreasIds(createListColaborador, areasIds);
+				ColaboradorDWR.getByAreasIds(areasIds, createListColaborador);
 			}
 			
 			function createListColaborador(data) {
@@ -470,7 +470,7 @@
 			
 			function populaAreas(dialog)
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
+				dwr.util.useLoadingMessage('Carregando...');
 				
 				var empresaName = 'empresasCheck';
 				var areaName = 'areasCheck';

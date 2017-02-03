@@ -22,13 +22,13 @@
 	</#if>
 
 	<#include "../ftl/mascarasImports.ftl" />
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OcorrenciaDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
@@ -43,12 +43,12 @@
 		
 		function populaColaboradores(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0], 'areaCheck');
 			var estabelecimentoIds = getArrayCheckeds(document.forms[0], 'estabelecimentoCheck');
 			var situacao = $('#situacao').val();
 			
-			ColaboradorDWR.getByAreaEstabelecimentoEmpresasResponsavel(createListcolaborador, ${usuarioLogado.id}, areasIds, estabelecimentoIds, empresaId, empresaIds, situacao, true);
+			ColaboradorDWR.getByAreaEstabelecimentoEmpresasResponsavel(${usuarioLogado.id}, areasIds, estabelecimentoIds, empresaId, empresaIds, situacao, true, createListcolaborador);
 		}
 
 		function createListcolaborador(data)
@@ -58,9 +58,8 @@
 		
 		function populaEstabelecimento(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresas(function(data){createListEstabelecimento(data, empresaId);
-									}, empresaId, empresaIds);
+			dwr.util.useLoadingMessage('Carregando...');
+			EstabelecimentoDWR.getByEmpresas(empresaId, empresaIds, function(data){createListEstabelecimento(data, empresaId);});
 		}
 
 		function createListEstabelecimento(data, empresaId)
@@ -70,7 +69,7 @@
 		
 		function populaOcorrencia(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			OcorrenciaDWR.getByEmpresas(createListOcorrencia, empresaId, empresaIds);
 		}
 
@@ -81,9 +80,9 @@
 		
 		function populaArea(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			
-			AreaOrganizacionalDWR.getAreasPermitidas(function(data){createListArea(data, empresaId);}, ${usuarioLogado.id}, empresaId, empresaIds);
+			AreaOrganizacionalDWR.getAreasPermitidas(${usuarioLogado.id}, empresaId, empresaIds, function(data){createListArea(data, empresaId);});
 		}
 
 		function createListArea(data, empresaId)
@@ -98,7 +97,7 @@
 			
 			var empresaId = $('#empresa').val() == 0 ? null : $('#empresa').val() ;
 			
-			DWREngine.setAsync(false);
+			dwr.engine.setAsync(false);
 			
 			populaArea(empresaId);
 			populaEstabelecimento(empresaId);

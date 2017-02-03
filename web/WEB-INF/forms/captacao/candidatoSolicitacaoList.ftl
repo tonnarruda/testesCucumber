@@ -20,9 +20,9 @@
 	
 	<#assign baseUrl><@ww.url includeParams="none" value="/"/></#assign>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	
 	<script type="text/javascript">
 		function contrataCandOutraEmpresa(candidatoId, candidatoSolicitacaoId, nomeCandidato)

@@ -65,7 +65,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>'></script>
 	
 	<script type='text/javascript'>
-		DWREngine.setAsync(true);
+		dwr.engine.setAsync(true);
 	
 		function enviaForm(opcao)
 		{

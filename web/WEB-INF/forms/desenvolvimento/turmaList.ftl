@@ -14,19 +14,19 @@
 		.popup ul li a { text-decoration: none; }
 	</style>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorTurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorTurmaDWR.js?version=${versao}"/>'></script>
 		
 	<script type="text/javascript">
 		var evt;
 	
 		function enviarEmail(turmaId)
 		{
-			DWRUtil.useLoadingMessage('Enviando...');
-			DWREngine.setErrorHandler(errorMsg);
-			TurmaDWR.enviarAviso(enviarAviso, turmaId, <@authz.authentication operation="empresaId"/>);
+			dwr.util.useLoadingMessage('Enviando...');
+			dwr.engine.setErrorHandler(errorMsg);
+			TurmaDWR.enviarAviso(turmaId, <@authz.authentication operation="empresaId"/>, enviarAviso);
 		}
 
 		function enviarAviso(data)
@@ -51,14 +51,14 @@
 		
 		function liberarAvaliacaoTurma(turmaId, avaliacaoTurmaId)
 		{
-			DWRUtil.useLoadingMessage('Liberando...');
+			dwr.util.useLoadingMessage('Liberando...');
 			TurmaDWR.liberar(retorno, turmaId, avaliacaoTurmaId, <@authz.authentication operation="empresaId"/>);
 		}
 
 		function bloquearAvaliacaoTurma(turmaId, avaliacaoTurmaId)
 		{
-			DWRUtil.useLoadingMessage('Bloqueando...');
-			TurmaDWR.bloquear(retorno, turmaId, avaliacaoTurmaId, <@authz.authentication operation="empresaId"/>);
+			dwr.util.useLoadingMessage('Bloqueando...');
+			TurmaDWR.bloquear(turmaId, avaliacaoTurmaId, <@authz.authentication operation="empresaId"/>, retorno);
 		}
 		
 		function retorno(turmaId)

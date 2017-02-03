@@ -24,12 +24,12 @@
 		.msgEnvio { text-align: justify; }
 	</style>
 	
-	<script type="text/javascript" src="<ww:url includeParams="none" value="/js/morro.js"/>"></script>
 	<script type="text/javascript" src="<ww:url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>"></script>
 	<script type="text/javascript" src='<ww:url includeParams="none" value="/js/syntaxhighlighter/shCore.js"/>'></script>
 	<script type="text/javascript" src='<ww:url includeParams="none" value="/js/syntaxhighlighter/shBrushPlain.js"/>'></script>
-	<script type="text/javascript" src="<ww:url includeParams="none" value="/dwr/interface/MorroDWR.js"/>"></script>
 	<script type="text/javascript" src="<ww:url includeParams="none" value="/dwr/engine.js"/>"></script>
+	<script type="text/javascript" src="<ww:url includeParams="none" value="/dwr/interface/MorroDWR.js"/>"></script>
+	<script type="text/javascript" src="<ww:url includeParams="none" value="/js/morro.js"/>"></script>
 	<script type="text/javascript">
 		
 		$(function(){

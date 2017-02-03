@@ -22,7 +22,7 @@
 
 		valorDiv = document.getElementById('novaResposta').innerHTML;
 
-		DWRUtil.setValue("novaResposta",valorDiv+campo);
+		dwr.util.setValue("novaResposta",valorDiv+campo);
 	}
 
 </script>

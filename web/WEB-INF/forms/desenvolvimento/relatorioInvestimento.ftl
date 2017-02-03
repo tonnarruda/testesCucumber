@@ -6,16 +6,16 @@
 <@ww.head/>
 	<title>Relatório de Investimentos de T&D</title>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
 
 	<script type="text/javascript">
 		function getTurmasByFiltro()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var cursoIds = getArrayCheckeds(document.forms[0], 'cursosCheck');
-			TurmaDWR.getTurmasByCursos(populaTurmas, cursoIds);
+			TurmaDWR.getTurmasByCursos(cursoIds, populaTurmas);
 		}
 
 		function populaTurmas(data)

@@ -9,9 +9,9 @@
 	</style>
 	
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CompetenciaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CompetenciaDWR.js"/>'></script>
 
 	<script type="text/javascript">
 		
@@ -111,7 +111,7 @@
 			}
 		
 			if(!$('#configuracaoNivelCompetenciaFaixaSalarialId').val())
-				CompetenciaDWR.findVinculosCompetencia(pendeciasCompetencias, ${faixaSalarial.id}, $('#data').val());
+				CompetenciaDWR.findVinculosCompetencia(${faixaSalarial.id}, $('#data').val(), pendeciasCompetencias);
 			else
 				pendeciasCompetencias();
 		}

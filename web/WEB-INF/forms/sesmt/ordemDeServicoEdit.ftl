@@ -40,9 +40,9 @@
 		</style>
 		
 		<#include "../ftl/mascarasImports.ftl" />
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OrdemDeServicoDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OrdemDeServicoDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>'></script>
 		
 		<script type="text/javascript">
@@ -62,8 +62,8 @@
 			{
 				var dataValida =  validaDate($('#dataOS')[0]) && $('#dataOS').val() != "  /  /    " &&  $('#dataOS').val() != "";
 				if(dataValida){
-					DWREngine.setErrorHandler(errorRecarregaDadosOrdemDeServico);
-					OrdemDeServicoDWR.recarregaDadosOrdemDeServico(repopularOrdemDeServicoByDados, ${ordemDeServico.colaborador.id}, ${empresaSistema.id}, $('#dataOS').val());
+					dwr.engine.setErrorHandler(errorRecarregaDadosOrdemDeServico);
+					OrdemDeServicoDWR.recarregaDadosOrdemDeServico(${ordemDeServico.colaborador.id}, ${empresaSistema.id}, $('#dataOS').val(), repopularOrdemDeServicoByDados);
 				}
 				else
 					jAlert("Informe uma data válida");
@@ -138,8 +138,8 @@
 			}
 			
 			function carregaDadosOrdemDeServicoAnterior(){
-				DWRUtil.useLoadingMessage('Carregando...');
-				OrdemDeServicoDWR.carregaUltimaOrdemDeServicoByColaborador(repopularDadosFormulario, ${ordemDeServico.colaborador.id});
+				dwr.util.useLoadingMessage('Carregando...');
+				OrdemDeServicoDWR.carregaUltimaOrdemDeServicoByColaborador(${ordemDeServico.colaborador.id}, repopularDadosFormulario);
 			}
 			
 			function submit_form(){

@@ -1,9 +1,9 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <html>
 <head>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 
 <@ww.head/>
@@ -168,11 +168,11 @@
 			});
 
 			$('#curso').change(function(){
-				DWRUtil.useLoadingMessage('Carregando...');
-				TurmaDWR.getTurmasFinalizadas(function(data) {
-					DWRUtil.removeAllOptions("turma");
-					DWRUtil.addOptions("turma", data);
-				}, $(this).val());
+				dwr.util.useLoadingMessage('Carregando...');
+				TurmaDWR.getTurmasFinalizadas( $(this).val(), function(data) {
+					dwr.util.removeAllOptions("turma");
+					dwr.util.addOptions("turma", data);
+				});
 			});
 
 			$('#help_conteudo').qtip({

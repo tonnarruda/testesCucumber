@@ -23,13 +23,13 @@
 	</#if>
 	
 	<#include "../ftl/mascarasImports.ftl" />
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EmpresaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.picklists.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.emulatedisabled.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
@@ -107,7 +107,7 @@
 				content: 'Este filtro está relacionado ao campo <strong>"Não enviar este colaborador para o Fortes Pessoal"</strong> contido na tela de cadastro dos colaboradores.'
 			});
 			
-			DWREngine.setAsync(false);
+			dwr.engine.setAsync(false);
 			$('#aviso').hide();
 		
 			var empresa = $('#empresa').val();
@@ -170,8 +170,8 @@
 		
 		function populaEstabelecimento(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
+			dwr.util.useLoadingMessage('Carregando...');
+			EstabelecimentoDWR.getByEmpresas(empresaId, empresaIds, createListEstabelecimento);
 		}
 
 		function createListEstabelecimento(data)
@@ -181,8 +181,8 @@
 		
 		function populaArea(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getPemitidasByEmpresas(createListArea,false, empresaId, empresaIds);
+			dwr.util.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getPemitidasByEmpresas(false, empresaId, empresaIds, createListArea);
 		}
 
 		function createListArea(data)
@@ -192,20 +192,20 @@
 	
 		function populaCargo()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var empresaId = $('#empresa').val();
 			
-			var areasIds   = getArrayCheckeds(document.form, 'areaOrganizacionalsCheck');
+			var areasIds  = getArrayCheckeds(document.form, 'areaOrganizacionalsCheck');
 			
 			if ($('#cargosVinculadosAreas').is(":checked"))
 			{
 				if(areasIds.length == 0)
-					CargoDWR.getByEmpresas(createListCargo, empresaId, empresaIds);
+					CargoDWR.getByEmpresas(empresaId, empresaIds, createListCargo);
 				else
-					CargoDWR.getCargoByArea(createListCargo, areasIds, "getNomeMercadoComEmpresa", empresaId);
+					CargoDWR.getCargoByArea(areasIds, "getNomeMercadoComEmpresa", empresaId, createListCargo);
 			}
 			else 
-				CargoDWR.getByEmpresas(createListCargo, empresaId, empresaIds);
+				CargoDWR.getByEmpresas(empresaId, empresaIds, createListCargo);
 		}
 
 		function createListCargo(data)
@@ -298,8 +298,8 @@
 			});
 			var campos = $.makeArray(values).join(',');
 			
-			DWRUtil.useLoadingMessage('Carregando...');
-			ColaboradorDWR.updateConfiguracaoRelatorioDinamico(resultadoConfiguracaoRelatorioDinamico, campos, $('#titulo').val(), ${usuarioLogado.id});
+			dwr.util.useLoadingMessage('Carregando...');
+			ColaboradorDWR.updateConfiguracaoRelatorioDinamico(campos, $('#titulo').val(), ${usuarioLogado.id}, resultadoConfiguracaoRelatorioDinamico);
 		}
 		
 		function resultadoConfiguracaoRelatorioDinamico(data) 

@@ -29,9 +29,9 @@
 		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/nivelCompetencia.js?version=${versao}"/>"></script>
 		
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/NivelCompetenciaDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/NivelCompetenciaDWR.js"/>'></script>
 		
 		<script type="text/javascript">
 			var niveis = [];
@@ -312,7 +312,7 @@
 				$('#btnGravar').removeAttr('disabled').removeClass('btnGravarDesabilitado').addClass('btnGravar');
 				
 				NivelCompetenciaDWR.findNiveisCompetencia($('#data').val(), ${faixaSalarial.id}, ${empresaSistema.id}, function(dataNiveis){dadosNiveis = dataNiveis;});				
-				NivelCompetenciaDWR.findCompetenciaByFaixaSalarialAndData(repopulaConfiguracaoNivelCompetenciaByDados, $('#data').val(), ${faixaSalarial.id});
+				NivelCompetenciaDWR.findCompetenciaByFaixaSalarialAndData($('#data').val(), ${faixaSalarial.id}, repopulaConfiguracaoNivelCompetenciaByDados);
 			}
 
 			function repopulaConfiguracaoNivelCompetenciaByDados(dados)

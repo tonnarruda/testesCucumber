@@ -977,7 +977,7 @@ function verificaCpfDuplicado(valorCpf, empresaId, isModuloExterno, id, isCandid
 	
 	if(valorCpf.length == 14)
 	{
-		DWRUtil.useLoadingMessage('Carregando...');
+		dwr.util.useLoadingMessage('Carregando...');
 		PessoaDWR.verificaCpfDuplicado(valorCpf, empresaId, id, function(pessoas) {
 			var msg = "";
 			var link = "";
@@ -1067,8 +1067,8 @@ function getCandidatosHomonimos(url)
 	link = url;
 	if(document.getElementById("nome").value.length >= 3)
 	{
-		DWRUtil.useLoadingMessage('Carregando...');
-		CandidatoDWR.getCandidatosHomonimos(createListCandidatosHomonimos, document.getElementById("nome").value);
+		dwr.util.useLoadingMessage('Carregando...');
+		CandidatoDWR.getCandidatosHomonimos(document.getElementById("nome").value, createListCandidatosHomonimos);
 	}
 	else
 		document.getElementById("homonimos").style.display = "none";
@@ -1190,8 +1190,8 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 
 jQuery(function() {		
 	//if (window.DWREngine != undefined)
-	if(typeof(DWREngine) !== 'undefined') 
-		DWREngine.setErrorHandler(function (msg, exc) {
+	if(typeof(dwr.engine) !== 'undefined') 
+		dwr.engine.setErrorHandler(function (msg, exc) {
 		  jAlert(msg);
 	});
 });

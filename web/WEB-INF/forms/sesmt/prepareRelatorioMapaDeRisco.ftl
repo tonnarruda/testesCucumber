@@ -5,9 +5,9 @@
 
 	<#include "../ftl/mascarasImports.ftl" />
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>'></script>
 	
 	<script type="text/javascript">
 		function populaAmbientes()
@@ -19,8 +19,8 @@
 		  	return;
 		  }
 		  
-	      DWRUtil.useLoadingMessage('Carregando...');
-	      AmbienteDWR.getAmbientesByEstabelecimentos(createListAmbientes, estabelecimentoIds);
+	      dwr.util.useLoadingMessage('Carregando...');
+	      AmbienteDWR.getAmbientesByEstabelecimentos(estabelecimentoIds, createListAmbientes);
 	    }
 
 	    function createListAmbientes(data)

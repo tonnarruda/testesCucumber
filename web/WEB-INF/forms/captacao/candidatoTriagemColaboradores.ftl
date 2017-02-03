@@ -16,10 +16,10 @@
 	
 	<#include "../ftl/mascarasImports.ftl" />
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 
 	<script type='text/javascript'>
 		var empresaIds = new Array();
@@ -39,11 +39,11 @@
 	
 		function populaFaixasAreas(empresaId)
 		{
-			DWREngine.setAsync(false);
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.engine.setAsync(false);
+			dwr.util.useLoadingMessage('Carregando...');
 			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
-			FaixaSalarialDWR.getByEmpresas(createListFaixa, empresaId, empresaIds);
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds);
+			FaixaSalarialDWR.getByEmpresas(empresaId, empresaIds, createListFaixa);
+			AreaOrganizacionalDWR.getByEmpresas(empresaId, empresaIds, createListArea);
 			$("#opcaoTodasEmpresas").val(empresaId == -1);
 		}
 		

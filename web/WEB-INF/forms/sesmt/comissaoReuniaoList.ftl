@@ -9,11 +9,11 @@
 	<style type="text/css">#menuComissao a.ativaReuniao{border-bottom: 2px solid #5292C0;}</style>
 
 	<script src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
-	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 	<script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoReuniaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoReuniaoDWR.js?version=${versao}"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 	<title></title>
 	<#assign validarCampos="return validaFormulario('form',new Array('reuniaoData','reuniaoHorario','reuniaoTipo'),new Array('reuniaoData'));"/>
 	<script type="text/javascript">
@@ -65,7 +65,7 @@
 		function validaDataReuniaoCampos()
 		{
 			var dataReuniao = document.getElementById("reuniaoData").value;
-			ComissaoReuniaoDWR.validaDataNoPeriodoDaComissao(processaValidacao,dataReuniao,${comissao.id});
+			ComissaoReuniaoDWR.validaDataNoPeriodoDaComissao(dataReuniao, ${comissao.id}, processaValidacao);
 		}
 		
 		function processaValidacao(data)
@@ -80,8 +80,8 @@
 
 		function preparaDadosUpdate(comissaoId)
 		{
-			DWREngine.setErrorHandler(errorPreparaDados);
-			ComissaoReuniaoDWR.prepareDadosReuniao(carregaDados,comissaoId)
+			dwr.engine.setErrorHandler(errorPreparaDados);
+			ComissaoReuniaoDWR.prepareDadosReuniao(comissaoId, carregaDados)
 		}
 
 		function carregaDados(data)
@@ -99,7 +99,7 @@
 			document.form.action="update.action";
 
 			if (validaDate(document.getElementById('reuniaoData')))
-				ComissaoReuniaoDWR.findPresencaColaboradoresByReuniao( populaColaboradores, data.comissaoReuniaoId, $('#reuniaoData').val() ); 
+				ComissaoReuniaoDWR.findPresencaColaboradoresByReuniao(data.comissaoReuniaoId, $('#reuniaoData').val(), populaColaboradores); 
 
 			openbox('Editar Reunião', 'reuniaoHorario');
 		}
@@ -109,7 +109,7 @@
 			$('#colaborador tbody').empty();
 			
 			if (validaDate(document.getElementById('reuniaoData')))
-				ComissaoReuniaoDWR.findColaboradoresByDataReuniao( populaColaboradores, $('#reuniaoData').val(), ${comissao.id} ); 
+				ComissaoReuniaoDWR.findColaboradoresByDataReuniao($('#reuniaoData').val(), ${comissao.id}, populaColaboradores); 
 		}
 		
 		function populaColaboradores(colaboradores)

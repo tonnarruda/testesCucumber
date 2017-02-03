@@ -9,22 +9,22 @@
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.alerts.js"/>'></script>
 
-<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
-<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js?version=${versao}"/>'></script>
+<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 
 <script type='text/javascript'>
 
 	function marcarMensagemLida(check, usuarioMensagemId, empresaId)
 	{
-		DWREngine.setErrorHandler(errorUsuarioMensagem);
+		dwr.engine.setErrorHandler(errorUsuarioMensagem);
 
 		if (check.checked)
-			UsuarioMensagemDWR.gravarMensagemLida(retorno, usuarioMensagemId, empresaId, true);
+			UsuarioMensagemDWR.gravarMensagemLida(usuarioMensagemId, empresaId, true, retorno);
 		else
-			UsuarioMensagemDWR.gravarMensagemLida(retorno, usuarioMensagemId, empresaId, false);
+			UsuarioMensagemDWR.gravarMensagemLida(usuarioMensagemId, empresaId, false, retorno);
 
 	}
 

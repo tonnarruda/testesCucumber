@@ -8,9 +8,9 @@
 	<#assign accessKey="I"/>
 	<#include "../ftl/mascarasImports.ftl" />
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 
 <script type="text/javascript">
 	
@@ -59,7 +59,7 @@
 		var cargosIds = getArrayCheckeds(document.forms[0],'cargosCheck');
 		if (cargosIds.length == 0)
 			cargosIds = [-1];
-		ReajusteDWR.getFaixasByCargosDesabilitandoPorIndiceSemPendencia(createListFaixas, cargosIds);
+		ReajusteDWR.getFaixasByCargosDesabilitandoPorIndiceSemPendencia(cargosIds, createListFaixas);
 	}
 	
 	function createListFaixas(data)
@@ -131,7 +131,7 @@
 	function carregaTipoReajuste() 
 	{
 		if ($('#optReajuste').val() != '') {
-			ReajusteDWR.getTipoReajuste(selecionaTipoReajuste, $('#optReajuste').val());
+			ReajusteDWR.getTipoReajuste($('#optReajuste').val(), selecionaTipoReajuste);
 		} else {
 			selecionaTipoReajuste();
 		}
@@ -147,13 +147,13 @@
 	
 	function findRealinhamentosByPeriodo()
 	{
-		ReajusteDWR.findRealinhamentosByPeriodo(repopulaListaRealinhamento, ${empresaSistema.id}, $('#inicio').val(), $('#fim').val() );
+		ReajusteDWR.findRealinhamentosByPeriodo(${empresaSistema.id}, $('#inicio').val(), $('#fim').val(), repopulaListaRealinhamento);
 	}
 	
 	function repopulaListaRealinhamento(data)
 	{
 		<#if !tabelaReajusteColaborador?exists>
-			DWRUtil.removeAllOptions("optReajuste");
+			dwr.util.removeAllOptions("optReajuste");
 			addOptionsByCollection('optReajuste', data, 'Selecione...');
 		</#if>
 	}

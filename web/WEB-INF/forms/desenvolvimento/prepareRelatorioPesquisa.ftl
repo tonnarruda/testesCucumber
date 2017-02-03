@@ -5,9 +5,9 @@
 	<title>Relatório de Pesquisa</title>
 	<#assign formAction="imprimirRelatorioColaboradoresPesquisa.action"/>
 	<#assign accessKey="I"/>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorPesquisaDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorPesquisaDWR.js?version=${versao}"/>'></script>
 <script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 <script>
 	function populaColaborador()
@@ -20,8 +20,8 @@
 		else
 		{
 		  var areasIds = getArrayCheckeds(document.forms[0], 'areasCheck');
-		  DWRUtil.useLoadingMessage('Carregando...');
-	 	  ColaboradorPesquisaDWR.getColaboradoresByPesquisa(createListColaborador, pesquisaId,areasIds);
+		  dwr.util.useLoadingMessage('Carregando...');
+	 	  ColaboradorPesquisaDWR.getColaboradoresByPesquisa(pesquisaId, areasIds, createListColaborador);
 		}
 	}
 

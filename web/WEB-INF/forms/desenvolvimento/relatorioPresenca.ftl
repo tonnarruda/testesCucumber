@@ -2,10 +2,10 @@
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 <head>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DiaTurmaDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DiaTurmaDWR.js?version=${versao}"/>'></script>
 
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
@@ -17,8 +17,8 @@
 			turmasList = document.getElementById('turma');
 			turmaId = turmasList.options[turmasList.selectedIndex].value
 	
-			DWRUtil.useLoadingMessage('Carregando...');
-			DiaTurmaDWR.getDiasPorTurma(montaListDias, turmaId, 'diasCheck');
+			dwr.util.useLoadingMessage('Carregando...');
+			DiaTurmaDWR.getDiasPorTurma(turmaId, 'diasCheck', montaListDias);
 		}
 	
 		function montaListDias(dias)
@@ -38,21 +38,21 @@
 	
 			if(!curso)
 			{
-				DWRUtil.removeAllOptions("turma");
+				dwr.util.removeAllOptions("turma");
 			}
 			else
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				TurmaDWR.getTurmas(fillSelectTurma, curso);
+				dwr.util.useLoadingMessage('Carregando...');
+				TurmaDWR.getTurmas(curso, fillSelectTurma);
 			}
 	
 		}
 	
 		function fillSelectTurma(turma)
 		{
-			DWRUtil.removeAllOptions("turma");
+			dwr.util.removeAllOptions("turma");
 			document.getElementById("turma").options[0] = new Option("Selecione...", "");
-			DWRUtil.addOptions("turma", turma);
+			dwr.util.addOptions("turma", turma);
 		}
 	
 		function validaQtdColunas(check, onclick)

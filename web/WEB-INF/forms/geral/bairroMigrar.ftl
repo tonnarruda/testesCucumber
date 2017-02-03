@@ -6,10 +6,10 @@
 
 	<#assign validarCampos="return validaFormulario('form', new Array('bairro','bairroDestino'), null)"/>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js?version=${versao}"/>'></script>
 
 	<style type="text/css">
 		#wwlbl_bairro
@@ -23,35 +23,35 @@
 		{
 			if(document.getElementById('estado').value == "")
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				DWRUtil.removeAllOptions("cidade");
+				dwr.util.useLoadingMessage('Carregando...');
+				dwr.util.removeAllOptions("cidade");
 			}
 			else
 			{
-				CidadeDWR.getCidades(createListCidades, document.getElementById("estado").value);
+				CidadeDWR.getCidades(document.getElementById("estado").value, createListCidades);
 			}
 		}
 
 		function createListCidades(data)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			DWRUtil.removeAllOptions("cidade");
-			DWRUtil.addOptions("cidade", data);
+			dwr.util.useLoadingMessage('Carregando...');
+			dwr.util.removeAllOptions("cidade");
+			dwr.util.addOptions("cidade", data);
 			populaBairros();
 		}
 
 		function populaBairros()
 		{
-			BairroDWR.getBairrosMap(createListBairros, document.getElementById("cidade").value);
+			BairroDWR.getBairrosMap(document.getElementById("cidade").value, createListBairros);
 		}
 
 		function createListBairros(data)
 		{
-			DWRUtil.removeAllOptions("bairro");
-			DWRUtil.addOptions("bairro", data);
+			dwr.util.removeAllOptions("bairro");
+			dwr.util.addOptions("bairro", data);
 			
-			DWRUtil.removeAllOptions("bairroDestino");
-			DWRUtil.addOptions("bairroDestino", data);
+			dwr.util.removeAllOptions("bairroDestino");
+			dwr.util.addOptions("bairroDestino", data);
 		}
 	</script>
 </head>

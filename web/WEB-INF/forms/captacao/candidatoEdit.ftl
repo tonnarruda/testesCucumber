@@ -48,14 +48,14 @@
   </style>
   <![endif]-->
 
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EnderecoDWR.js?version=${versao}"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PessoaDWR.js?version=${versao}"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js?version=${versao}"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js?version=${versao}"/>'></script>
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
   <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js?version=${versao}"/>"></script>
   <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
@@ -143,10 +143,10 @@
 
 		function populaConhecimento(frm, nameCheck)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(frm, nameCheck);
 		
-			CandidatoDWR.getConhecimentos(createListConhecimentos, areasIds, ${idDaEmpresa});
+			CandidatoDWR.getConhecimentos(areasIds, ${idDaEmpresa}, createListConhecimentos);
 		}
 		
 		function validarCamposCpf()
@@ -299,8 +299,8 @@
 		  {
 		    for (var prop in data)
 		    {
-		      DWRUtil.setValue("descricaoCargo",data[prop]);
-		      DWRUtil.setValue("funcaoId",prop);
+		      dwr.util.setValue("descricaoCargo",data[prop]);
+		      dwr.util.setValue("funcaoId",prop);
 		    }
 		  }
 		}

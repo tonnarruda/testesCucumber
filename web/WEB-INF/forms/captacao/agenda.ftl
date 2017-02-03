@@ -5,9 +5,9 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.dateFormat-1.0.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/weekcalendar.js"/>'></script>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HistoricoCandidatoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HistoricoCandidatoDWR.js?version=${versao}"/>'></script>
 	
 	
 	<style type="text/css">
@@ -21,8 +21,8 @@
 	
 		function updateAgenda(id, dataIni, dataFim, observacao)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			HistoricoCandidatoDWR.updateAgenda(verify, id, dataIni, $.format.date(dataIni, "HH:mm"), $.format.date(dataFim, "HH:mm"), observacao);
+			dwr.util.useLoadingMessage('Carregando...');
+			HistoricoCandidatoDWR.updateAgenda(id, dataIni, $.format.date(dataIni, "HH:mm"), $.format.date(dataFim, "HH:mm", verify), observacao);
 		}
 
 		function verify(success)

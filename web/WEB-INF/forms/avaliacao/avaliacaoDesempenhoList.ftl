@@ -19,9 +19,9 @@
 	
 	<#include "../ftl/showFilterImports.ftl" />
 	<#include "../ftl/mascarasImports.ftl" />
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript'>
 		function clonar(avaliacaoDesempenhoId, titulo)
 		{
@@ -31,8 +31,8 @@
 		
 		function buscarAvaliacoes()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AvaliacaoDesempenhoDWR.getAvaliacoesNaoLiberadasByTitulo(createListAvaliacaoDesmpenho, <@authz.authentication operation="empresaId"/>, $('#tituloBuscaEmLote').val());
+			dwr.util.useLoadingMessage('Carregando...');
+			AvaliacaoDesempenhoDWR.getAvaliacoesNaoLiberadasByTitulo(<@authz.authentication operation="empresaId"/>, $('#tituloBuscaEmLote').val(), createListAvaliacaoDesmpenho);
 		}
 		
 		function createListAvaliacaoDesmpenho(data)

@@ -20,9 +20,9 @@
 
 	<#include "../ftl/showFilterImports.ftl" />
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ExtintorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ExtintorDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	
 	<script type="text/javascript">
@@ -44,15 +44,15 @@
 	    {
 	      var estabelecimentoId = document.getElementById("estabelecimento").value;
 
-	      DWRUtil.useLoadingMessage('Carregando...');
-	      ExtintorDWR.getExtintorByEstabelecimento(createListExtintores, estabelecimentoId, "Todos");
+	      dwr.util.useLoadingMessage('Carregando...');
+	      ExtintorDWR.getExtintorByEstabelecimento(estabelecimentoId, "Todos", createListExtintores);
 	    }
 
 	    function createListExtintores(data)
 	    {
-	      DWRUtil.removeAllOptions("extintor");
+	      dwr.util.removeAllOptions("extintor");
 	      document.getElementById("extintor").options[0] = new Option("Todos", "");
-	      DWRUtil.addOptions("extintor", data);
+	      dwr.util.addOptions("extintor", data);
 	      marcarExtintor();
 	    }
 	    

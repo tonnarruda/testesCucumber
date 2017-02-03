@@ -18,15 +18,15 @@
 		.remetenteHora { color: #069; }
 	</style>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js?version=${versao}"/>'></script>
 	
 	<script type='text/javascript'>
 		function marcarMensagemLida(usuarioMensagemId)
 		{
-			DWREngine.setErrorHandler(errorUsuarioMensagem);
-			UsuarioMensagemDWR.gravarMensagemLida(retorno, usuarioMensagemId, ${empresaId}, true);
+			dwr.engine.setErrorHandler(errorUsuarioMensagem);
+			UsuarioMensagemDWR.gravarMensagemLida(usuarioMensagemId, ${empresaId}, true, retorno);
 		}
 	
 		function retorno(){}

@@ -70,9 +70,9 @@
 		<#assign msgSelecione = "Selecione..." />
 	</#if>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ExtintorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ExtintorDWR.js?version=${versao}"/>'></script>
 	
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.core.1.8.16.js"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.widget.1.8.16.js"/>"></script>
@@ -96,16 +96,16 @@
 	    {
 	      var estabelecimentoId = document.getElementById("estabelecimento").value;
 
-	      DWRUtil.useLoadingMessage('Carregando...');
-	      ExtintorDWR.getExtintorByEstabelecimento(createListExtintores, estabelecimentoId, "Selecione...");
+	      dwr.util.useLoadingMessage('Carregando...');
+	      ExtintorDWR.getExtintorByEstabelecimento(estabelecimentoId, "Selecione...", createListExtintores);
 	    }
 
 	    function createListExtintores(data)
 	    {
 	      $('.ui-autocomplete-input').eq(0).val($(data).data('-1'));
 	    
-	      DWRUtil.removeAllOptions("extintor");
-	      DWRUtil.addOptions("extintor", data);
+	      dwr.util.removeAllOptions("extintor");
+	      dwr.util.addOptions("extintor", data);
 	    }
 	    
 	    function gravar()

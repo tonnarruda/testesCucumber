@@ -14,9 +14,9 @@
 		}
 	</style>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ListaPresencaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ListaPresencaDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/presenca.js?version=${versao}"/>"></script>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
@@ -32,10 +32,10 @@
 
 		function marcarTodos(diaTurmaId, img)
 		{
-			DWREngine.setErrorHandler(errorListaPresenca);
+			dwr.engine.setErrorHandler(errorListaPresenca);
 			if(img.title == "${marcarTodos}"){
 				processando('${urlImgs}');
-				ListaPresencaDWR.marcarTodos(function(data){setImgCertificado(data);alteraImg(diaTurmaId, img);$('.processando').remove();}, diaTurmaId, ${turma.id}, ${empresaSistema.controlarVencimentoCertificacaoPor});
+				ListaPresencaDWR.marcarTodos(diaTurmaId, ${turma.id}, ${empresaSistema.controlarVencimentoCertificacaoPor}, function(data){setImgCertificado(data);alteraImg(diaTurmaId, img);$('.processando').remove();});
 			}else{
 				if(controlarVencimentoPorCertificacao && verificaExistenciaCertificacaoASerRemovido(diaTurmaId, img))
 					dialogCertificacaoLote(diaTurmaId, ${turma.id}, ${empresaSistema.controlarVencimentoCertificacaoPor}, img);
@@ -84,7 +84,7 @@
 		
 		function desmarcarTodos(diaTurmaId, turmaId, controlarVencimentoCertificacaoPor, img){
 			processando('${urlImgs}');
-			ListaPresencaDWR.desmarcarTodos(function(){alteraImg(diaTurmaId, img);$('.processando').remove();}, diaTurmaId, turmaId, controlarVencimentoCertificacaoPor);
+			ListaPresencaDWR.desmarcarTodos(diaTurmaId, turmaId, controlarVencimentoCertificacaoPor, function(){alteraImg(diaTurmaId, img);$('.processando').remove();});
 		}
 
 		function alteraImg(diaTurmaId, img)
@@ -179,15 +179,15 @@
 		function setFrequencia(diaTurmaId, colaboradorTurmaId, certificadoEmTurmaPosterior, img){
 			processando('${urlImgs}');
 			var presente = img.title != "${presente}";
-			DWREngine.setErrorHandler(errorListaPresenca);
-			ListaPresencaDWR.updateFrequencia(function(data){mudaImagem(data, presente, colaboradorTurmaId, img, certificadoEmTurmaPosterior);$('.processando').remove();}, diaTurmaId, colaboradorTurmaId, presente, ${empresaSistema.controlarVencimentoCertificacaoPor}, certificadoEmTurmaPosterior);
+			dwr.engine.setErrorHandler(errorListaPresenca);
+			ListaPresencaDWR.updateFrequencia(diaTurmaId, colaboradorTurmaId, presente, ${empresaSistema.controlarVencimentoCertificacaoPor}, certificadoEmTurmaPosterior, function(data){mudaImagem(data, presente, colaboradorTurmaId, img, certificadoEmTurmaPosterior);$('.processando').remove();});
 		}
 
 		function calculaFrequencia(colaboradorTurmaId, certificadoEmTurmaPosterior)
 		{
 			if(!certificadoEmTurmaPosterior){
-				DWREngine.setErrorHandler(errorListaPresenca);
-				ListaPresencaDWR.calculaFrequencia(function(data){alteraFrequencia(data, colaboradorTurmaId);}, colaboradorTurmaId, ${diaTurmas?size});
+				dwr.engine.setErrorHandler(errorListaPresenca);
+				ListaPresencaDWR.calculaFrequencia(colaboradorTurmaId, ${diaTurmas?size}, function(data){alteraFrequencia(data, colaboradorTurmaId);});
 			}
 		}
 		

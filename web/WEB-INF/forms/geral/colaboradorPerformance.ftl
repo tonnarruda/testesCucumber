@@ -90,9 +90,9 @@
 	<#assign usuarioId><@authz.authentication operation="id"/></#assign>
 	<#include "../ftl/showFilterImports.ftl" />
 
-	<script type="text/javascript" src='<@ww.url includeParams="none" value="/dwr/interface/ConfiguracaoPerformanceDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type="text/javascript" src='<@ww.url includeParams="none" value="/dwr/interface/ConfiguracaoPerformanceDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/configuracaoPerformance.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 	<script type="text/javascript">

@@ -6,16 +6,16 @@
 <@ww.head/>
 	<title>Cronograma de Treinamento</title>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
 
 	<script type="text/javascript">
 		function getTurmasByFiltro()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			DWREngine.setErrorHandler(errorMsg);
-			TurmaDWR.getTurmasByFiltro(populaTurmas, document.getElementById('dataIni').value, document.getElementById('dataFim').value, document.getElementById('realizada').value, <@authz.authentication operation="empresaId"/>);
+			dwr.util.useLoadingMessage('Carregando...');
+			dwr.engine.setErrorHandler(errorMsg);
+			TurmaDWR.getTurmasByFiltro(document.getElementById('dataIni').value, document.getElementById('dataFim').value, document.getElementById('realizada').value, <@authz.authentication operation="empresaId"/>, populaTurmas);
 		}
 
 		function populaTurmas(data)

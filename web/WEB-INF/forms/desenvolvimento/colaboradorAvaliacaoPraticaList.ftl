@@ -17,9 +17,9 @@
 
 	<title>Avaliação Prática - Notas em Lote</title>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorAvaliacaoPraticaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorAvaliacaoPraticaDWR.js?version=${versao}"/>'></script>
 	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
@@ -52,7 +52,7 @@
 		function verificaCertificacao(i, ColabAvPraticaId){
 			removeAtributos(i);
 			if(ColabAvPraticaId){
-				DWRUtil.useLoadingMessage('Carregando...');
+				dwr.util.useLoadingMessage('Carregando...');
 				ColaboradorAvaliacaoPraticaDWR.verificaUltimaCertificacao(ColabAvPraticaId, function(colabAvaliacaoPratica) {
 					$('#nota-' + i).val(colabAvaliacaoPratica.nota);
 					$('#data-' + i).val(colabAvaliacaoPratica.dataString);

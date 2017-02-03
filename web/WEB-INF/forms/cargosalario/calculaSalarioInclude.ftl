@@ -4,7 +4,7 @@
 
 		function calculaSalario()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			document.getElementById("salarioCalculado").value = "0,00";
 
 			tipoSalarioProposto = document.getElementById("tipoSalario").value;
@@ -13,7 +13,7 @@
 			quantidade      = document.getElementById("quantidade").value;
 			salario         = document.getElementById("salarioProposto").value;
 
-			DWREngine.setErrorHandler(error);
+			dwr.engine.setErrorHandler(error);
 			ReajusteDWR.calculaSalario(setSalarioCalculado, tipoSalarioProposto, faixaSalarialId, IndiceId, quantidade, salario);
 
 		}

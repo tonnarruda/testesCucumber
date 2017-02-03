@@ -9,7 +9,6 @@
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
-	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 
 	<script type="text/javascript">
@@ -18,23 +17,23 @@
 		{
 			var tipoFiltro = $('#optFiltro').val();
 			
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			
 			if(tipoFiltro == '1') {
 				var areaIds = getArrayCheckeds(document.forms[0], 'areasCheck');
 				
 				if ($('#exibirCargosVinculados').is(":checked")) {
-					CargoDWR.getCargoByArea(createListCargos, areaIds, 'getNomeMercado', ${empresaSistema.id});
+					CargoDWR.getCargoByArea(areaIds, 'getNomeMercado', ${empresaSistema.id}, createListCargos);
 				} else {
-					CargoDWR.getCargoByArea(createListCargos, null, 'getNomeMercado', ${empresaSistema.id});
+					CargoDWR.getCargoByArea(null, 'getNomeMercado', ${empresaSistema.id}, createListCargos);
 				}
 			} else {
 				var grupoIds = getArrayCheckeds(document.forms[0], 'gruposCheck');
 				
 				if ($('#exibirCargosVinculados').is(":checked")) {
-					CargoDWR.getCargoByGrupo(createListCargos, grupoIds, ${empresaSistema.id});
+					CargoDWR.getCargoByGrupo(grupoIds, ${empresaSistema.id}, createListCargos);
 				} else {
-					CargoDWR.getCargoByGrupo(createListCargos, null, ${empresaSistema.id});
+					CargoDWR.getCargoByGrupo(null, ${empresaSistema.id}, createListCargos);
 				}
 			}
 		}

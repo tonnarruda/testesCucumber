@@ -16,10 +16,10 @@
 		<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('descricao','dataInicio','dataFim','@areasCheck'), new Array('dataInicio','dataFim'))"/>
 		
 		<#include "../ftl/mascarasImports.ftl" />
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/LntDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/LntDWR.js?version=${versao}"/>'></script>
 		
 		<style type="text/css">
 			@import url('<@ww.url value="/css/lntList.css"/>');
@@ -165,10 +165,10 @@
 			}
 			
 			function populaAreas(){
-				DWRUtil.useLoadingMessage('Carregando...');
+				dwr.util.useLoadingMessage('Carregando...');
 				var empresaIds = $("input[name='empresasCheck']:checked:enabled").map(function(){return $(this).val();}).get(); 
 				if(empresaIds.length > 0)
-					AreaOrganizacionalDWR.getCheckboxByEmpresas(createListAreas, empresaIds);
+					AreaOrganizacionalDWR.getCheckboxByEmpresas(empresaIds, createListAreas);
 				else{
 					$('#listCheckBoxareasCheck > label').remove();
 					repopulaAreasDesabled();

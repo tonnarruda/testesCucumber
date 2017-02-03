@@ -12,9 +12,9 @@
 		
 	</style>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 
 	<script type="text/javascript">
 		function pesquisar()
@@ -24,8 +24,8 @@
 			var empresaId = <@authz.authentication operation="empresaId"/>;
 			var areasIds = getArrayCheckeds(document.getElementById('formPesquisa'), 'areasCheck');
 
-			DWRUtil.useLoadingMessage('Carregando...');
-			ColaboradorDWR.getColaboradoresByAreaNome(createListColaborador, areasIds, nome, matricula, empresaId);
+			dwr.util.useLoadingMessage('Carregando...');
+			ColaboradorDWR.getColaboradoresByAreaNome(areasIds, nome, matricula, empresaId, createListColaborador);
 
 			return false;
 		}

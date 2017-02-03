@@ -5,9 +5,9 @@
 <html>
 <head>
 	<@ww.head/>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
 	
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
@@ -23,7 +23,7 @@
 				var cargoId = $(this).val();
 					
 				if (cargoId)
-					FaixaSalarialDWR.findByCargo(createListFaixas, cargoId);
+					FaixaSalarialDWR.findByCargo(cargoId, createListFaixas);
 			});
 			
 			$('#cargo').change();

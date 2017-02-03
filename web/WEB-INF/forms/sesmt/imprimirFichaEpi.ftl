@@ -16,15 +16,15 @@
 		<#assign headerValue="Utilize o Filtro acima."/>
 	</#if>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoEpiDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoEpiDWR.js?version=${versao}"/>'></script>
 
 	<script type='text/javascript'>
 		function busaSolicitacao(colaboradorId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			SolicitacaoEpiDWR.getByColaboradorId(listSoliictacoes, colaboradorId);
+			dwr.util.useLoadingMessage('Carregando...');
+			SolicitacaoEpiDWR.getByColaboradorId(colaboradorId, listSoliictacoes);
 		}
 		
 		function listSoliictacoes(data)

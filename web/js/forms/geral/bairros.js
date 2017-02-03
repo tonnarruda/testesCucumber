@@ -6,21 +6,21 @@ window.jsonCEP = "";
 	
 	var populaCidades = function() {
 		if($("#uf").val() == "") {
-			DWRUtil.useLoadingMessage('Carregando...');
-			DWRUtil.removeAllOptions("cidade");
+			dwr.util.useLoadingMessage('Carregando...');
+			dwr.util.removeAllOptions("cidade");
 		} else {
-			CidadeDWR.getCidades(createListCidades,$("#uf").val());
+			CidadeDWR.getCidades($("#uf").val(), createListCidades);
 		}
 	};
 	
 	var populaBairros = function() {
-		BairroDWR.getBairros(createListBairros, $("#cidade").val());
+		BairroDWR.getBairros($("#cidade").val(), createListBairros);
 	};
 	
 	var createListCidades = function (data) {
-		DWRUtil.useLoadingMessage('Carregando...');
-		DWRUtil.removeAllOptions("cidade");
-		DWRUtil.addOptions("cidade", data);
+		dwr.util.useLoadingMessage('Carregando...');
+		dwr.util.removeAllOptions("cidade");
+		dwr.util.addOptions("cidade", data);
 		
 		
 		if (jQuery("#cidade").length && (jsonCEP != ''))

@@ -45,11 +45,11 @@
 									}
 </style>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DiaTurmaDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/json2.js"/>'></script>
@@ -89,7 +89,7 @@
 		}
 		
 		function getDocumentoAnexos(cursoId) {	
-			CursoDWR.getDocumentoAnexos(populaDocumentoAnexos, cursoId);
+			CursoDWR.getDocumentoAnexos(cursoId, populaDocumentoAnexos);
 		};
 		
 		function populaDocumentoAnexos(data)
@@ -110,8 +110,8 @@
 			{
 				if(dIni.value != "  /  /    " && dFim.value != "  /  /    ")
 				{
-					DWRUtil.useLoadingMessage('Carregando...');
-					DiaTurmaDWR.getDias(montaListDias, dIni.value, dFim.value, $('#porTurno').val());
+					dwr.util.useLoadingMessage('Carregando...');
+					DiaTurmaDWR.getDias(dIni.value, dFim.value, $('#porTurno').val(), montaListDias);
 				}
 			}
 		}

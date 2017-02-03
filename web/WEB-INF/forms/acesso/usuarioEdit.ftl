@@ -6,9 +6,9 @@
 	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 </style>
 
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 <#if usuario.id?exists>
 	<title>Editar Usuário</title>
 	<#assign formAction="update.action"/>

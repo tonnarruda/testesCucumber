@@ -11,23 +11,23 @@
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/GrupoOcupacionalDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
 	<script type="text/javascript">
 
 		function populaEstabelecimentosAreasGrupos(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			
-			EstabelecimentoDWR.getByEmpresa(createListEstabelecimentos, empresaId);
-			AreaOrganizacionalDWR.getByEmpresa(createListAreas, empresaId);
-			GrupoOcupacionalDWR.getByEmpresa(createListGrupos, empresaId);
-			CargoDWR.getByEmpresa(createListCargos, empresaId);
+			EstabelecimentoDWR.getByEmpresa(empresaId, createListEstabelecimentos);
+			AreaOrganizacionalDWR.getByEmpresa(empresaId, createListAreas);
+			GrupoOcupacionalDWR.getByEmpresa(empresaId, createListGrupos);
+			CargoDWR.getByEmpresa(empresaId, createListCargos);
 		}
 
 		function createListEstabelecimentos(data)
@@ -45,9 +45,9 @@
 		
 		function populaCargosByGrupo(frm, nameCheck)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var gruposIds = getArrayCheckeds(frm, nameCheck);
-			CargoDWR.getCargoByGrupo(createListCargos, gruposIds, $('#empresaSelect').val());
+			CargoDWR.getCargoByGrupo(gruposIds, $('#empresaSelect').val(), createListCargos);
 		}
 
 		function createListCargos(data)

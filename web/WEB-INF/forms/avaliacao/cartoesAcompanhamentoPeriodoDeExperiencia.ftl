@@ -6,9 +6,9 @@
 <@ww.head/>
 	<title>Cartões para Acompanhamento do Período de Experiência</title>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript'>
 		$(function() {
 			populaColaboradores();
@@ -17,7 +17,7 @@
 	
 		function populaColaboradores()
 		{
-			ColaboradorDWR.getColaboradoresByEstabelecimentoDataAdmissao(createListColaborador, $('#estabelecimentoId').val(), $('#data').val(), <@authz.authentication operation="empresaId"/>);
+			ColaboradorDWR.getColaboradoresByEstabelecimentoDataAdmissao($('#estabelecimentoId').val(), $('#data').val(), <@authz.authentication operation="empresaId"/>, createListColaborador);
 		}
 		
 		function createListColaborador(data)

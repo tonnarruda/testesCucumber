@@ -87,9 +87,9 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js?version=${versao}"/>'></script>
 		
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 		
 		<#include "../ftl/showFilterImports.ftl" />
 		
@@ -506,8 +506,8 @@
 
 			function populaAreas(empresaId)
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				AreaOrganizacionalDWR.getByEmpresa(createListAreas, empresaId);
+				dwr.util.useLoadingMessage('Carregando...');
+				AreaOrganizacionalDWR.getByEmpresa(empresaId, createListAreas);
 				$('.empresa').val(empresaId);
 			}
 	
@@ -517,8 +517,8 @@
 			}
 			
 			function populaAreasPieChart(empresaId)	{
-				DWRUtil.useLoadingMessage('Carregando...');
-				AreaOrganizacionalDWR.getByEmpresa(createListAreasPieChart, empresaId);
+				dwr.util.useLoadingMessage('Carregando...');
+				AreaOrganizacionalDWR.getByEmpresa(empresaId, createListAreasPieChart);
 				$('.empresa').val(empresaId);
 			}
 	

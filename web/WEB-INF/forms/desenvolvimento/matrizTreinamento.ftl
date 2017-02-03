@@ -4,17 +4,17 @@
 	<@ww.head/>
 		<title>Matriz de Treinamentos</title>
 	
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
 	
 		<script type="text/javascript">	
 			function populaCargosByArea()
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
+				dwr.util.useLoadingMessage('Carregando...');
 				var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
-				CargoDWR.getByAreaDoHistoricoColaborador(createListCargos, areasIds);
+				CargoDWR.getByAreaDoHistoricoColaborador(areasIds, createListCargos);
 			}
 	
 			function createListCargos(data)
@@ -28,12 +28,12 @@
 				if(cargosIds.length == 1)
 				{
 					document.getElementById("listCheckBoxfaixaSalarialsCheck").style.backgroundColor='#FFF';
-					FaixaSalarialDWR.getByCargo(createListFaixas, cargosIds[0]);
+					FaixaSalarialDWR.getByCargo(cargosIds[0], createListFaixas);
 				}
 				else if(cargosIds.length > 1)
 				{
 					document.getElementById("listCheckBoxfaixaSalarialsCheck").style.backgroundColor='#DEDEDE';
-					FaixaSalarialDWR.getByCargo(createListFaixas, "");
+					FaixaSalarialDWR.getByCargo("", createListFaixas);
 				}
 			}
 	

@@ -14,12 +14,12 @@
 </#if>
 	<#assign idEmpresa=empresaSistema.id>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EnderecoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
@@ -32,14 +32,14 @@
 	<script type='text/javascript'>
 		function populaCidades()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			CidadeDWR.getCidades(createListCidades, document.getElementById("uf").value);
+			dwr.util.useLoadingMessage('Carregando...');
+			CidadeDWR.getCidades(document.getElementById("uf").value, createListCidades);
 		}
 
 		function createListCidades(data)
 		{
-			DWRUtil.removeAllOptions("cidade");
-			DWRUtil.addOptions("cidade", data);
+			dwr.util.removeAllOptions("cidade");
+			dwr.util.addOptions("cidade", data);
 		}
 
 		var antigoComplemento = "";
@@ -54,8 +54,8 @@
 					return false;
 
 				var cnpj = document.getElementById("cnpj").value.substr(0,8) + "" + document.getElementById("complementoCnpj").value
-				DWRUtil.useLoadingMessage('Carregando...');
-				EstabelecimentoDWR.calcularDV(exibirDV, cnpj, ${idEstabelecimento}, ${idEmpresa});
+				dwr.util.useLoadingMessage('Carregando...');
+				EstabelecimentoDWR.calcularDV(cnpj, ${idEstabelecimento}, ${idEmpresa}, exibirDV);
 			}
 			else
 			{

@@ -5,9 +5,9 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/indice.js?version=${versao}"/>"></script>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 	
 	<script type="text/javascript">
 		function calculaValor()
@@ -17,7 +17,7 @@
 			IndiceId = document.getElementById("indice").value;
 			quantidade = document.getElementById("quantidade").value;
 
-			ReajusteDWR.calculaSalario(setSalarioCalculado, tipoSalarioProposto, "naoPodeSerVazia", IndiceId, quantidade, "");
+			ReajusteDWR.calculaSalario(tipoSalarioProposto, "naoPodeSerVazia", IndiceId, quantidade, "", setSalarioCalculado);
 		}
 		
 		function setSalarioCalculado(data)

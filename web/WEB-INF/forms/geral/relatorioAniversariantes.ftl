@@ -2,10 +2,10 @@
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript'>
 		var empresaIds = new Array();
 		<#if empresaIds?exists>
@@ -16,8 +16,8 @@
 		
 		function populaEstabelecimento(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
+			dwr.util.useLoadingMessage('Carregando...');
+			EstabelecimentoDWR.getByEmpresas(empresaId, empresaIds, createListEstabelecimento);
 		}
 
 		function createListEstabelecimento(data)
@@ -27,8 +27,8 @@
 		
 		function populaArea(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds, null);
+			dwr.util.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getByEmpresas(empresaId, empresaIds, null, createListArea);
 		}
 
 		function createListArea(data)
@@ -44,7 +44,7 @@
 		
 		$(document).ready(function($)
 		{
-			DWREngine.setAsync(false);
+			dwr.engine.setAsync(false);
 		
 			var empresa = $('#empresa').val();
 			

@@ -16,10 +16,10 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<#include "../ftl/showFilterImports.ftl" />
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js?version=${versao}"/>'></script>
 	
 	<script type="text/javascript">
 		var empresaIds = new Array();
@@ -37,26 +37,26 @@
 		
 		function populaAvaliador(avaliacaoDesempenhoId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			ColaboradorDWR.getAvaliadores(createListAvaliadores, avaliacaoDesempenhoId);
+			dwr.util.useLoadingMessage('Carregando...');
+			ColaboradorDWR.getAvaliadores(avaliacaoDesempenhoId, createListAvaliadores);
 		}
 
 		function createListAvaliadores(data)
 		{
-			DWRUtil.removeAllOptions("avaliador");
-			DWRUtil.addOptions("avaliador", data);
+			dwr.util.removeAllOptions("avaliador");
+			dwr.util.addOptions("avaliador", data);
 		}
 
 		function populaAvaliacaoDesempenho()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AvaliacaoDesempenhoDWR.getAvaliacoesByEmpresaPermitidas(createListAvaliacaoDesmpenho, false, ($('#empresaId').val() == ""  ? empresaIds : [$('#empresaId').val()]) );
+			dwr.util.useLoadingMessage('Carregando...');
+			AvaliacaoDesempenhoDWR.getAvaliacoesByEmpresaPermitidas(false, ($('#empresaId').val() == ""  ? empresaIds : [$('#empresaId').val()]), createListAvaliacaoDesmpenho );
 		}
 
 		function createListAvaliacaoDesmpenho(data)
 		{
-			DWRUtil.removeAllOptions("avaliacao");
-			DWRUtil.addOptions("avaliacao", data);
+			dwr.util.removeAllOptions("avaliacao");
+			dwr.util.addOptions("avaliacao", data);
 		}
 	</script>
 

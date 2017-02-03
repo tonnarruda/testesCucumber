@@ -10,13 +10,13 @@
 <#include "tipoSalarioInclude.ftl" />
 <#include "calculaSalarioInclude.ftl" />
 
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>'></script>
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>"></script>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/areaOrganizacional.js?version=${versao}"/>"></script>
@@ -26,29 +26,29 @@
 	{
 		if(faixaId != "null" && faixaId != "")
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			FuncaoDWR.getFuncaoByFaixaSalarial(createListFuncao, faixaId);
+			dwr.util.useLoadingMessage('Carregando...');
+			FuncaoDWR.getFuncaoByFaixaSalarial(faixaId, createListFuncao);
 		}
 	}
 
 	function createListFuncao(data)
 	{
-		DWRUtil.removeAllOptions("funcaoProposta");
-		DWRUtil.addOptions("funcaoProposta", data);
+		dwr.util.removeAllOptions("funcaoProposta");
+		dwr.util.addOptions("funcaoProposta", data);
 	}
 
 	function populaAmbiente(estabelecimentoId)
 	{
 		if(estabelecimentoId != "null")
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AmbienteDWR.getAmbienteByEstabelecimento(createListAmbiente, estabelecimentoId);
+			dwr.util.useLoadingMessage('Carregando...');
+			AmbienteDWR.getAmbienteByEstabelecimento(estabelecimentoId, createListAmbiente);
 		}
 	}
 	function createListAmbiente(data)
 	{
-		DWRUtil.removeAllOptions("ambienteProposto");
-		DWRUtil.addOptions("ambienteProposto", data);
+		dwr.util.removeAllOptions("ambienteProposto");
+		dwr.util.addOptions("ambienteProposto", data);
 	}
 
 	function enviaForm()

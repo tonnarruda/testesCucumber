@@ -8,11 +8,11 @@
 		#menuEleicao a.ativaCalendario{border-bottom: 2px solid #5292C0;}
 		#eleicao{height: 25px; }
 	</style>
-	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 	<script src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EtapaProcessoEleitoralDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EtapaProcessoEleitoralDWR.js?version=${versao}"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 
 	<title></title>
 
@@ -27,8 +27,8 @@
 
 		function preparaDadosUpdate(etapaId)
 		{
-			DWREngine.setErrorHandler(errorPreparaDados);
-			EtapaProcessoEleitoralDWR.prepareDadosEtapa(carregaDados,etapaId)
+			dwr.engine.setErrorHandler(errorPreparaDados);
+			EtapaProcessoEleitoralDWR.prepareDadosEtapa(etapaId, carregaDados)
 		}
 
 		function errorPreparaDados(msg)

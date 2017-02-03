@@ -4,12 +4,12 @@
 <head>
 <@ww.head/>
 	<title>Colaboradores por Grupo Ocupacional</title>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/GrupoOcupacionalDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript'>
 		var empresaIds = new Array();
 		<#if empresaIds?exists>
@@ -18,8 +18,8 @@
 			</#list>
 		</#if>
 		
-		DWRUtil.useLoadingMessage('Carregando...');
-		DWREngine.setAsync(false);
+		dwr.util.useLoadingMessage('Carregando...');
+		dwr.engine.setAsync(false);
 
 		$(function() {
 			var empresa = $('#empresa').val();
@@ -34,7 +34,7 @@
 		
 		function populaEstabelecimento(empresaId)
 		{
-			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
+			EstabelecimentoDWR.getByEmpresas(empresaId, empresaIds, createListEstabelecimento);
 		}
 
 		function createListEstabelecimento(data)
@@ -44,7 +44,7 @@
 		
 		function populaCargo(empresaId)
 		{
-			CargoDWR.getByEmpresas(createListCargo, empresaId, empresaIds);
+			CargoDWR.getByEmpresas(empresaId, empresaIds, createListCargo);
 		}
 		
 		function createListCargo(data)
@@ -54,7 +54,7 @@
 		
 		function populaArea()
 		{
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, $('#empresa').val(), empresaIds, 'T');
+			AreaOrganizacionalDWR.getByEmpresas($('#empresa').val(), empresaIds, 'T', createListArea);
 		}
 
 		function createListArea(data)
@@ -64,7 +64,7 @@
 		
 		function populaGrupo(empresaId)
 		{
-			GrupoOcupacionalDWR.getByEmpresas(createListGrupo, empresaId, empresaIds);
+			GrupoOcupacionalDWR.getByEmpresas(empresaId, empresaIds, createListGrupo);
 		}
 
 		function createListGrupo(data)
@@ -79,9 +79,9 @@
 			var grupoIds  = getArrayCheckeds(document.form, 'gruposCheck');
 			
 			if ($(areaIds).size() > 0 || $(grupoIds).size() > 0)
-				CargoDWR.getCargosByAreaGrupo(createListCargo, areaIds, grupoIds, empresaId);
+				CargoDWR.getCargosByAreaGrupo(areaIds, grupoIds, empresaId, createListCargo);
 			else
-				CargoDWR.getByEmpresas(createListCargo, empresaId, empresaIds);
+				CargoDWR.getByEmpresas(empresaId, empresaIds, createListCargo);
 		}
 	</script>
 </head>

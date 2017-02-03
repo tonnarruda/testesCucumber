@@ -10,11 +10,11 @@
 		ul.aviso { list-style-type: disc; list-style-position: outside; margin-left: 20px; }
 	</style>
 	
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>"></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>"></script>
 	
 	<#include "../ftl/mascarasImports.ftl" />
 
@@ -24,7 +24,7 @@
 				var cargoId = $(this).val();
 				
 				if (cargoId)
-					FaixaSalarialDWR.findByCargo(createListFaixas, cargoId);
+					FaixaSalarialDWR.findByCargo(cargoId, createListFaixas);
 			});
 			
 			$('#cargo').change();
@@ -70,7 +70,7 @@
 					
 				}
 				else{
-					DWRUtil.useLoadingMessage('Carregando...');
+					dwr.util.useLoadingMessage('Carregando...');
 					ComissaoDWR.dataEstabilidade(               function(data){
 																	resultComissaoByColaborador(data, colaboradorId, colaboradorNome, colaboradorNaoIntegraAc, colaboradorDesligado);
 																}, colaboradorId);

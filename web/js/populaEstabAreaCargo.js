@@ -1,42 +1,42 @@
 function populaCargosByArea()
 {
-	DWREngine.setAsync(true);
-	DWRUtil.useLoadingMessage('Carregando...');
+	dwr.engine.setAsync(true);
+	dwr.util.useLoadingMessage('Carregando...');
 	var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 	var empresaId = $('#empresa').val();
 	
 	if ($('#cargoSemArea').is(":checked"))
 	{
 		if(areasIds.length == 0)
-			CargoDWR.getByEmpresasMaisSemAreaRelacionada(createListCargosByArea, empresaId, empresaIds);
+			CargoDWR.getByEmpresasMaisSemAreaRelacionada(empresaId, empresaIds, createListCargosByArea);
 		else
-			CargoDWR.getCargoByAreaMaisSemAreaRelacionada(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
+			CargoDWR.getCargoByAreaMaisSemAreaRelacionada(areasIds, "getNomeMercadoComEmpresa", empresaId, createListCargosByArea);
 	}
 	else
 	{
 		if(areasIds.length == 0)
-			CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
+			CargoDWR.getByEmpresas(empresaId, empresaIds, createListCargosByArea);
 		else
-			CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
+			CargoDWR.getCargoByArea(areasIds, "getNomeMercadoComEmpresa", empresaId, createListCargosByArea);
 	}
 }
 
 function populaCargosByAreaVinculados(empresaId, empresaIds)
 {
-	DWREngine.setAsync(true);
-	DWRUtil.useLoadingMessage('Carregando...');
+	dwr.engine.setAsync(true);
+	dwr.util.useLoadingMessage('Carregando...');
 	var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 	var empresaId = $('#empresa').val();
 	
 	if ($('#cargosVinculadosAreas').is(":checked"))
 	{
 		if(areasIds.length == 0)
-			CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
+			CargoDWR.getByEmpresas(empresaId, empresaIds, createListCargosByArea);
 		else
-			CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresaEStatus", empresaId);
+			CargoDWR.getCargoByArea(areasIds, "getNomeMercadoComEmpresaEStatus", empresaId, createListCargosByArea);
 	}
 	else
-		CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
+		CargoDWR.getByEmpresas(empresaId, empresaIds, createListCargosByArea);
 }
 
 function createListCargosByArea(data)
@@ -46,7 +46,7 @@ function createListCargosByArea(data)
 
 function verificaCargoSemAreaRelacionada(empresaId)
 {
-	CargoDWR.verificaCargoSemAreaRelacionada(exibeCheckCargoSemArea, empresaId);
+	CargoDWR.verificaCargoSemAreaRelacionada(empresaId, exibeCheckCargoSemArea);
 }
 
 function exibeCheckCargoSemArea(data)
@@ -83,9 +83,9 @@ function newChangeEmpresa(empresaId)
 
 function populaEstabelecimento(empresaId, empresaIds)
 {
-	DWREngine.setAsync(true);
-	DWRUtil.useLoadingMessage('Carregando...');
-	EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
+	dwr.engine.setAsync(true);
+	dwr.util.useLoadingMessage('Carregando...');
+	EstabelecimentoDWR.getByEmpresas(empresaId, empresaIds, createListEstabelecimento);
 }
 
 function createListEstabelecimento(data)
@@ -95,9 +95,9 @@ function createListEstabelecimento(data)
 
 function populaArea(empresaId)
 {
-	DWREngine.setAsync(true);
-	DWRUtil.useLoadingMessage('Carregando...');
-	AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds);
+	dwr.engine.setAsync(true);
+	dwr.util.useLoadingMessage('Carregando...');
+	AreaOrganizacionalDWR.getByEmpresas(empresaId, empresaIds, createListArea);
 }
 
 function createListArea(data)
@@ -107,9 +107,9 @@ function createListArea(data)
 
 function populaAreaComCargoVinculado(empresaId,empresaIds)
 {
-	DWREngine.setAsync(true);
-	DWRUtil.useLoadingMessage('Carregando...');
-	AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds);
+	dwr.engine.setAsync(true);
+	dwr.util.useLoadingMessage('Carregando...');
+	AreaOrganizacionalDWR.getByEmpresas(empresaId, empresaIds, createListArea);
 }
 
 function createListArea(data)

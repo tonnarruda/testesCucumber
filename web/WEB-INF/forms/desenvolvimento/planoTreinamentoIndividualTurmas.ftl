@@ -21,10 +21,10 @@
 		.invalido { background-color: #FFEEC2 !important; }
 	</style>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DiaTurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DiaTurmaDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/json2.js"/>'></script>
@@ -35,7 +35,7 @@
 	
 	<script type="text/javascript">
 		$(function() {
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 		
 			$('.despesa').blur(function() {
 				var valor = somaDespesas();
@@ -120,7 +120,7 @@
 			{
 				if(dIni.value != "  /  /    " && dFim.value != "  /  /    ")
 				{
-					DWRUtil.useLoadingMessage('Carregando...');
+					dwr.util.useLoadingMessage('Carregando...');
 					DiaTurmaDWR.getDias(dIni.value, dFim.value, $('#porTurno' + indice).val(), function(dados) { montaListDias(dados, indice, turma); });
 				}
 			}

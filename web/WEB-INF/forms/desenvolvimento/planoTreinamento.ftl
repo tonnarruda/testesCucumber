@@ -14,21 +14,21 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('dataIni','dataFim'), new Array('dataIni','dataFim'), true)"/>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js?version=${versao}"/>'></script>
 
 	<script type="text/javascript">
 		var imgFlag;
 		function updateRealizada(turmaId, img)
 		{
-			DWRUtil.useLoadingMessage("Carregando...");
+			dwr.util.useLoadingMessage("Carregando...");
 			imgFlag = img;
 
 			var realizada = imgFlag.title != "Realizada"
-			DWREngine.setErrorHandler(errorUpdateRealizada);
-			TurmaDWR.updateRealizada(mudaImagem, turmaId, realizada);
+			dwr.engine.setErrorHandler(errorUpdateRealizada);
+			TurmaDWR.updateRealizada(turmaId, realizada, mudaImagem);
 		}
 
 		function mudaImagem(data)
@@ -69,9 +69,9 @@
 		
 		function enviarEmail(turmaId)
 		{
-			DWRUtil.useLoadingMessage('Enviando...');
-			DWREngine.setErrorHandler(errorMsg);
-			TurmaDWR.enviarAviso(enviarAviso, turmaId, <@authz.authentication operation="empresaId"/>);
+			dwr.util.useLoadingMessage('Enviando...');
+			dwr.engine.setErrorHandler(errorMsg);
+			TurmaDWR.enviarAviso(turmaId, <@authz.authentication operation="empresaId"/>, enviarAviso);
 		}
 
 		function enviarAviso(data)
@@ -86,8 +86,8 @@
 		
 		function populaCursos(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			CursoDWR.getCursosByEmpresa(createListCursos, empresaId);
+			dwr.util.useLoadingMessage('Carregando...');
+			CursoDWR.getCursosByEmpresa(empresaId, createListCursos);
 		}
 
 		function createListCursos(data)

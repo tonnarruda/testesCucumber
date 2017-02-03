@@ -25,10 +25,10 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js?version=${versao}"/>'></script>
 	
 	<#include "../ftl/showFilterImports.ftl" />
 	
@@ -127,11 +127,11 @@
 
 		function populaSolicitacaoByEstabelecimentosAreas()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 			var estabelecimentosIds = getArrayCheckeds(document.forms[0],'estabelecimentosCheck');
 			
-			SolicitacaoDWR.getByEmpresaEstabelecimentosAreas(createListSolicitacoesByAreas, ${empresaSistema.id}, estabelecimentosIds , areasIds);
+			SolicitacaoDWR.getByEmpresaEstabelecimentosAreas(${empresaSistema.id}, estabelecimentosIds , areasIds, createListSolicitacoesByAreas);
 		}
 		
 		function createListSolicitacoesByAreas(data)

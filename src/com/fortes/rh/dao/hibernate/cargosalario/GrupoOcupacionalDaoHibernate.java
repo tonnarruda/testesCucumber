@@ -26,8 +26,7 @@ public class GrupoOcupacionalDaoHibernate extends GenericDaoHibernate<GrupoOcupa
 			criteria.add(Expression.eq("g.empresa.id", empresaId));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
-		return (Integer) criteria.list().get(0);
+		return ((Long)criteria.list().get(0)).intValue();
 	}
 
 	@SuppressWarnings("unchecked")

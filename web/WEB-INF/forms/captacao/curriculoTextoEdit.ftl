@@ -5,12 +5,12 @@
 <@ww.head/>
 	<title>Currículo Digitado</title>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PessoaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js?version=${versao}"/>"></script>
 
@@ -38,22 +38,22 @@
 
 		function populaCidades()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			CidadeDWR.getCidades(createListCidades, document.getElementById("uf").value);
+			dwr.util.useLoadingMessage('Carregando...');
+			CidadeDWR.getCidades(document.getElementById("uf").value, createListCidades);
 		}
 
 		function createListCidades(data)
 		{
-			DWRUtil.removeAllOptions("cidade");
-			DWRUtil.addOptions("cidade", data);
+			dwr.util.removeAllOptions("cidade");
+			dwr.util.addOptions("cidade", data);
 		}
 
 		function getCandidatosHomonimos()
 		{
 			if(document.getElementById("nome").value.length >= 3)
 			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				CandidatoDWR.getCandidatosHomonimos(createListCandidatosHomonimos, document.getElementById("nome").value);
+				dwr.util.useLoadingMessage('Carregando...');
+				CandidatoDWR.getCandidatosHomonimos(document.getElementById("nome").value, createListCandidatosHomonimos);
 			}
 			else
 				document.getElementById("homonimos").style.display = "none";

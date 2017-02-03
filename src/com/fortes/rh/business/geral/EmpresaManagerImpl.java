@@ -56,7 +56,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
-	private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
 	private MotivoDemissaoManager motivoDemissaoManager;
 	private AreaInteresseManager areaInteresseManager;
 	private FaixaSalarialManager faixaSalarialManager;
@@ -584,11 +584,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setAreaInteresseManager(AreaInteresseManager areaInteresseManager) {
 		this.areaInteresseManager = areaInteresseManager;
-	}
-	
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)
-	{
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 	
 	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager) {

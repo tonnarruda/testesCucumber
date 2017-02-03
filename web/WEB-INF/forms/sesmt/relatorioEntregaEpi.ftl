@@ -3,9 +3,9 @@
 <head>
 <@ww.head/>
 	<#include "../ftl/mascarasImports.ftl" />
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	
 	<title>EPIs Entregues</title>
 
@@ -28,10 +28,10 @@
 		
 		function populaColaboradores(empresaId)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
+			dwr.util.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0], 'areasCheck');
 			
-			ColaboradorDWR.getColaboradoresByArea(createListcolaborador, areasIds, empresaId);
+			ColaboradorDWR.getColaboradoresByArea(areasIds, empresaId, createListcolaborador);
 		}
 
 		function createListcolaborador(data)

@@ -28,15 +28,11 @@ import com.fortes.rh.util.CollectionUtil;
 
 public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 {
-	@Autowired
-	private EmpresaManager empresaManager;
-	@Autowired
-	private UsuarioEmpresaManager usuarioEmpresaManager;
-	@Autowired
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	@Autowired
-	private PapelManager papelManager;
-	private ColaboradorManager colaboradorManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private PapelManager papelManager;
+	@Autowired private ColaboradorManager colaboradorManager;
 
 	@Override
 	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException{
@@ -136,28 +132,5 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 		else{
 			throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
 		}
-	}
-	
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)
-	{
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-	public void setPapelManager(PapelManager papelManager)
-	{
-		this.papelManager = papelManager;
 	}
 }

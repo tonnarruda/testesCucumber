@@ -20,12 +20,12 @@
     
     <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
     
+    <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
     <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
     <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorTurmaDWR.js?version=${versao}"/>'></script>
     <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/LntDWR.js?version=${versao}"/>'></script>
     <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
-    <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
     
     <script type="text/javascript">
     	var empresaIds = new Array();
@@ -85,9 +85,9 @@
 		
 		function populaEstabelecimento(empresaId)
 		{
-			DWREngine.setAsync(true);
-			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId,empresaIds);
+			dwr.engine.setAsync(true);
+			dwr.util.useLoadingMessage('Carregando...');
+			EstabelecimentoDWR.getByEmpresas(empresaId,empresaIds, createListEstabelecimento);
 		}
 
 		function createListEstabelecimento(data)
