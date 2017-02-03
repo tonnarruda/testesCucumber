@@ -14,10 +14,12 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.model.AbstractModel;
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
@@ -83,6 +85,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
+import com.fortes.rh.util.ModelUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -1111,6 +1114,10 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	public void enviaAvisoAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado, Long empresaId){
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.ATUALIZAR_INFO_PESSOAIS.getId(), empresaId);
+		if (gerenciadorComunicacaos.isEmpty())
+			return;
+		
 		StringBuffer mensagem = new StringBuffer("<b>" + colaboradorOriginal.getNome() + "</b> atualizou seus dados: \n\n");
 		mensagem.append("Dados originais: \n");
 		StringBuffer dadosAlterados = new StringBuffer("");
@@ -1125,180 +1132,73 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		mensagem.append("Dados atualizados:\n");		
 		montaDadosAtualizadosEnviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, mensagem);
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.ATUALIZAR_INFO_PESSOAIS.getId(), empresaId);
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
-				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", "geral/colaborador/prepareUpdate.action?colaborador.id=" + colaboradorOriginal.getId(), verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao), null, TipoMensagem.INFO_FUNCIONAIS, null, null);
-			}else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId()))
-			{
-				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
-				try {
+			try {
+				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
+					usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", "geral/colaborador/prepareUpdate.action?colaborador.id=" + colaboradorOriginal.getId(), verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao), null, TipoMensagem.INFO_FUNCIONAIS, null, null);
+				}else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
+					String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
 					mail.send(gerenciadorComunicacao.getEmpresa(), "[RH] - "+colaboradorOriginal.getNome() + " atualizou seus dados pessoais", mensagem.toString().replace("\n", "<br>"), null, emails);
-				} catch (Exception e) {	e.printStackTrace();}
-			}
+				}
+			} catch (Exception e) {	e.printStackTrace();}
 		}
-	}
-
-	private void montaDadosAtualizadosEnviaAvisoAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado,	StringBuffer mensagem) {
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getLogradouro()).equals(colaboradorAtualizado.getEndereco().getLogradouro()) ) 
-			mensagem.append("Logradouro: " + (colaboradorAtualizado.getEndereco().getLogradouro()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getNumero()).equals(colaboradorAtualizado.getEndereco().getNumero()) ) 
-			mensagem.append("Número: " + (colaboradorAtualizado.getEndereco().getNumero()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getComplemento()).equals(colaboradorAtualizado.getEndereco().getComplemento()) ) 
-			mensagem.append("Complemento: " + (colaboradorAtualizado.getEndereco().getComplemento()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getBairro()).equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
-			mensagem.append("Bairro: " + (colaboradorAtualizado.getEndereco().getBairro()) + "\n");
-		if(colaboradorAtualizado.getEndereco().getCidade() !=  null && !colaboradorAtualizado.getEndereco().getCidade().equals(colaboradorOriginal.getEndereco().getCidade()))
-			mensagem.append("Cidade: " + (colaboradorAtualizado.getEndereco().getCidade().getNome()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getUf().getSigla()).equals(colaboradorAtualizado.getEndereco().getUf().getSigla()) ) 
-			mensagem.append("UF: " + (colaboradorAtualizado.getEndereco().getUf().getSigla()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getCepFormatado()).equals(colaboradorAtualizado.getEndereco().getCepFormatado()) ) 
-			mensagem.append("CEP: " + (colaboradorAtualizado.getEndereco().getCepFormatado()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getEmail()).equals(colaboradorAtualizado.getContato().getEmail())) 
-			mensagem.append("Email: " + (colaboradorAtualizado.getContato().getEmail()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getFoneFixo()).equals(colaboradorAtualizado.getContato().getFoneFixo())) 
-			mensagem.append("Telefone Fixo: " + (colaboradorAtualizado.getContato().getFoneFixo()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getFoneCelular()).equals(colaboradorAtualizado.getContato().getFoneCelular())) 
-			mensagem.append("Fone celular: " + (colaboradorAtualizado.getContato().getFoneCelular()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getEscolaridade()).equals((colaboradorAtualizado.getPessoal().getEscolaridade())) ) 
-			mensagem.append("Escolaridade: " + (colaboradorAtualizado.getPessoal().getEscolaridadeDescricao()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getEstadoCivil()).equals((colaboradorAtualizado.getPessoal().getEstadoCivil())) ) 
-			mensagem.append("Estado civil: " + (colaboradorAtualizado.getPessoal().getEstadoCivilDescricao()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getConjuge()).equals((colaboradorAtualizado.getPessoal().getConjuge())) ) 
-			mensagem.append("Nome do conjuge: " + (colaboradorAtualizado.getPessoal().getConjuge()) + "\n");
-		if(colaboradorOriginal.getPessoal().getQtdFilhos() != ((colaboradorAtualizado.getPessoal().getQtdFilhos())) ) 
-			mensagem.append("Quantidade de filhos: " + ("" + colaboradorAtualizado.getPessoal().getQtdFilhos() == null ? 0 : colaboradorAtualizado.getPessoal().getQtdFilhos()) + "\n");
-		if(!colaboradorOriginal.getPessoal().getRg().equals(colaboradorAtualizado.getPessoal().getRg()))  
-			mensagem.append("RG - Número: " + (colaboradorAtualizado.getPessoal().getRg() == null ? "" : colaboradorAtualizado.getPessoal().getRg()) + "\n");
-		if(!colaboradorOriginal.getPessoal().getRgOrgaoEmissor().equals(colaboradorAtualizado.getPessoal().getRgOrgaoEmissor()))  
-			mensagem.append("RG - Órgão Emissor: " + (colaboradorAtualizado.getPessoal().getRgOrgaoEmissor() == null ? "" : colaboradorAtualizado.getPessoal().getRgOrgaoEmissor()) + "\n");
-		if(colaboradorOriginal.getPessoal().getRgUf() != null && colaboradorAtualizado.getPessoal().getRgUf() != null && 
-				!colaboradorOriginal.getPessoal().getRgUf().getId().equals(colaboradorAtualizado.getPessoal().getRgUf().getId()))  
-			mensagem.append("RG - Estado: " + (colaboradorAtualizado.getPessoal().getRgUf().getSigla() == null ? "" : colaboradorAtualizado.getPessoal().getRgUf().getSigla()) + "\n");
-		if(!colaboradorOriginal.getPessoal().getRgDataExpedicao().equals(colaboradorAtualizado.getPessoal().getRgDataExpedicao()))  
-			mensagem.append("RG - Data de Expedição: " + (colaboradorAtualizado.getPessoal().getRgDataExpedicao() == null ? "" : colaboradorAtualizado.getPessoal().getRgDataExpedicao()) + "\n");
-		if(!colaboradorOriginal.getHabilitacao().getNumeroHab().equals(colaboradorAtualizado.getHabilitacao().getNumeroHab()))  
-			mensagem.append("Carteira de Habilitação - Nº de Registro: " + (colaboradorAtualizado.getHabilitacao().getNumeroHab() == null ? "" : colaboradorAtualizado.getHabilitacao().getNumeroHab()) + "\n");
-		if(!colaboradorOriginal.getHabilitacao().getRegistro().equals(colaboradorAtualizado.getHabilitacao().getRegistro()))  
-			mensagem.append("Carteira de Habilitação - Prontuário: " + (colaboradorAtualizado.getHabilitacao().getRegistro() == null ? "" : colaboradorAtualizado.getHabilitacao().getRegistro()) + "\n");
-		if(!colaboradorOriginal.getHabilitacao().getEmissao().equals(colaboradorAtualizado.getHabilitacao().getEmissao()))  
-			mensagem.append("Carteira de Habilitação - Emissão: " + (colaboradorAtualizado.getHabilitacao().getEmissao() == null ? "" : colaboradorAtualizado.getHabilitacao().getEmissaoFormatada()) + "\n");
-		if(!colaboradorOriginal.getHabilitacao().getVencimento().equals(colaboradorAtualizado.getHabilitacao().getVencimento()))  
-			mensagem.append("Carteira de Habilitação - Vencimento: " + (colaboradorAtualizado.getHabilitacao().getVencimento() == null ? "" : colaboradorAtualizado.getHabilitacao().getVencimentoFormatada()) + "\n");
-		if(!colaboradorOriginal.getHabilitacao().getCategoria().equals(colaboradorAtualizado.getHabilitacao().getCategoria()))  
-			mensagem.append("Carteira de Habilitação - Categoria: " + (colaboradorAtualizado.getHabilitacao().getCategoria() == null ? "" : colaboradorAtualizado.getHabilitacao().getCategoria()) + "\n");
-		if( colaboradorOriginal.getPessoal().getTituloEleitoral() != null && colaboradorAtualizado.getPessoal().getTituloEleitoral() != null ){
-			if(!colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitNumero().equals(colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitNumero()))  
-				mensagem.append("Título Eleitoral - Número: " + (colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitNumero() == null ? "" : colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitNumero()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitZona().equals(colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitZona()))  
-				mensagem.append("Título Eleitoral - Zona: " + (colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitZona() == null ? "" : colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitZona()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitSecao().equals(colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitSecao()))  
-				mensagem.append("Título Eleitoral - Seção: " + (colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitSecao() == null ? "" : colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitSecao()) + "\n");
-		}
-		if( colaboradorOriginal.getPessoal().getCertificadoMilitar() != null && colaboradorAtualizado.getPessoal().getCertificadoMilitar() != null ){
-			if(!colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilNumero().equals(colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilNumero()))  
-				mensagem.append("Certificado Militar - Número: " + (colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilNumero() == null ? "" : colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilNumero()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilTipo().equals(colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilTipo()))  
-				mensagem.append("Certificado Militar - Tipo: " + (colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilTipo() == null ? "" : colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilTipo()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilSerie().equals(colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilSerie()))  
-				mensagem.append("Certificado Militar - Série: " + (colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilSerie() == null ? "" : colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilSerie()) + "\n");
-		}
-		if( colaboradorOriginal.getPessoal().getCtps() != null && colaboradorAtualizado.getPessoal().getCtps() != null ){
-			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsNumero().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsNumero()))  
-				mensagem.append("CTPS - Número: " + (colaboradorAtualizado.getPessoal().getCtps().getCtpsNumero() == null ? "" : colaboradorAtualizado.getPessoal().getCtps().getCtpsNumero()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsSerie().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsSerie()))  
-				mensagem.append("CTPS - Série: " + (colaboradorAtualizado.getPessoal().getCtps().getCtpsSerie() == null ? "" : colaboradorAtualizado.getPessoal().getCtps().getCtpsSerie()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsDv().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsDv()))  
-				mensagem.append("CTPS - DV: " + (colaboradorAtualizado.getPessoal().getCtps().getCtpsDv() == null ? "" : colaboradorAtualizado.getPessoal().getCtps().getCtpsDv()) + "\n");
-			if(colaboradorOriginal.getPessoal().getCtps().getCtpsUf() != null && colaboradorAtualizado.getPessoal().getCtps().getCtpsUf() != null &&
-					!colaboradorOriginal.getPessoal().getCtps().getCtpsUf().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsUf()))  
-				mensagem.append("CTPS - Estado: " + (colaboradorAtualizado.getPessoal().getCtps().getCtpsUf().getSigla() == null ? "" : colaboradorAtualizado.getPessoal().getCtps().getCtpsUf().getSigla()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsDataExpedicao().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsDataExpedicao()))  
-				mensagem.append("CTPS - DV: " + (colaboradorAtualizado.getPessoal().getCtps().getCtpsDataExpedicao() == null ? "" : colaboradorAtualizado.getPessoal().getCtps().getCtpsDataExpedicao()) + "\n");
-		}
-		if(!colaboradorOriginal.getPessoal().getPis().equals(colaboradorAtualizado.getPessoal().getPis()))  
-			mensagem.append("PIS - Número: " + (colaboradorAtualizado.getPessoal().getPis() == null ? "" : colaboradorAtualizado.getPessoal().getPis()) + "\n");
 	}
 
 	private void montaDadosOriginaisEnviaAvisoAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado,StringBuffer mensagem){
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getLogradouro()).equals(colaboradorAtualizado.getEndereco().getLogradouro()) ) 
-			mensagem.append("Logradouro: " + (colaboradorOriginal.getEndereco().getLogradouro()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getNumero()).equals(colaboradorAtualizado.getEndereco().getNumero()) ) 
-			mensagem.append("Número: " + (colaboradorOriginal.getEndereco().getNumero()) + "\n");
-		if (!StringUtils.defaultString(colaboradorOriginal.getEndereco().getComplemento()).equals(colaboradorAtualizado.getEndereco().getComplemento()) ) 
-			mensagem.append("Complemento: " + (colaboradorOriginal.getEndereco().getComplemento()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getBairro()).equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
-			mensagem.append("Bairro: " + (colaboradorOriginal.getEndereco().getBairro()) + "\n");
-		if(colaboradorAtualizado.getEndereco().getCidade() !=  null && !colaboradorAtualizado.getEndereco().getCidade().equals(colaboradorOriginal.getEndereco().getCidade()))
-			mensagem.append("Cidade: " + (colaboradorOriginal.getEndereco().getCidade().getNome()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getUf().getSigla()).equals(colaboradorAtualizado.getEndereco().getUf().getSigla())) 
-			mensagem.append("UF: " + (colaboradorOriginal.getEndereco().getUf().getSigla()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getCepFormatado()).equals(colaboradorAtualizado.getEndereco().getCepFormatado()) ) 
-			mensagem.append("CEP: " + (colaboradorOriginal.getEndereco().getCepFormatado()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getEmail()).equals(colaboradorAtualizado.getContato().getEmail())) 
-			mensagem.append("Email: " + (colaboradorOriginal.getContato().getEmail()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getFoneFixo()).equals(colaboradorAtualizado.getContato().getFoneFixo())) 
-			mensagem.append("Telefone Fixo: " + (colaboradorOriginal.getContato().getFoneFixo()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getFoneCelular()).equals(colaboradorAtualizado.getContato().getFoneCelular())) 
-			mensagem.append("Fone celular: " + (colaboradorOriginal.getContato().getFoneCelular()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getEscolaridade()).equals((colaboradorAtualizado.getPessoal().getEscolaridade())) ) 
-			mensagem.append("Escolaridade: " + (colaboradorOriginal.getPessoal().getEscolaridadeDescricao()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getEstadoCivil()).equals((colaboradorAtualizado.getPessoal().getEstadoCivil())) ) 
-			mensagem.append("Estado civil: " + (colaboradorOriginal.getPessoal().getEstadoCivilDescricao()) + "\n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getConjuge()).equals((colaboradorAtualizado.getPessoal().getConjuge())) ) 
-			mensagem.append("Nome do conjuge: " + (colaboradorOriginal.getPessoal().getConjuge()) + "\n");
-		if(colaboradorOriginal.getPessoal().getQtdFilhos() != ((colaboradorAtualizado.getPessoal().getQtdFilhos())) ) 
-			mensagem.append("Quantidade de filhos: " + ("" + colaboradorOriginal.getPessoal().getQtdFilhos() == null ? 0 : colaboradorOriginal.getPessoal().getQtdFilhos()) + "\n");
-		if(!colaboradorOriginal.getPessoal().getRg().equals(colaboradorAtualizado.getPessoal().getRg()))  
-			mensagem.append("RG - Número: " + (colaboradorOriginal.getPessoal().getRg() == null ? "" : colaboradorOriginal.getPessoal().getRg()) + "\n");
-		if(!colaboradorOriginal.getPessoal().getRgOrgaoEmissor().equals(colaboradorAtualizado.getPessoal().getRgOrgaoEmissor()))  
-			mensagem.append("RG - Órgão Emissor: " + (colaboradorOriginal.getPessoal().getRgOrgaoEmissor() == null ? "" : colaboradorOriginal.getPessoal().getRgOrgaoEmissor()) + "\n");
-		if(colaboradorOriginal.getPessoal().getRgUf() != null && colaboradorAtualizado.getPessoal().getRgUf() != null && 
-				!colaboradorOriginal.getPessoal().getRgUf().getId().equals(colaboradorAtualizado.getPessoal().getRgUf().getId()))  
-			mensagem.append("RG - Estado: " + (colaboradorOriginal.getPessoal().getRgUf().getSigla() == null ? "" : colaboradorOriginal.getPessoal().getRgUf().getSigla()) + "\n");
-		if(!colaboradorOriginal.getPessoal().getRgDataExpedicao().equals(colaboradorAtualizado.getPessoal().getRgDataExpedicao()))  
-			mensagem.append("RG - Data de Expedição: " + (colaboradorOriginal.getPessoal().getRgDataExpedicao() == null ? "" : colaboradorOriginal.getPessoal().getRgDataExpedicao()) + "\n");
-		if(!colaboradorOriginal.getHabilitacao().getNumeroHab().equals(colaboradorAtualizado.getHabilitacao().getNumeroHab()))  
-			mensagem.append("Carteira de Habilitação - Nº de Registro: " + (colaboradorOriginal.getHabilitacao().getNumeroHab() == null ? "" : colaboradorOriginal.getHabilitacao().getNumeroHab()) + "\n");
-		if(!colaboradorOriginal.getHabilitacao().getRegistro().equals(colaboradorAtualizado.getHabilitacao().getRegistro()))  
-			mensagem.append("Carteira de Habilitação - Prontuário: " + (colaboradorOriginal.getHabilitacao().getRegistro() == null ? "" : colaboradorOriginal.getHabilitacao().getRegistro()) + "\n");
-		if(!colaboradorOriginal.getHabilitacao().getEmissao().equals(colaboradorAtualizado.getHabilitacao().getEmissao()))  
-			mensagem.append("Carteira de Habilitação - Emissão: " + (colaboradorOriginal.getHabilitacao().getEmissao() == null ? "" : colaboradorOriginal.getHabilitacao().getEmissaoFormatada()) + "\n");
-		if(!colaboradorOriginal.getHabilitacao().getVencimento().equals(colaboradorAtualizado.getHabilitacao().getVencimento()))  
-			mensagem.append("Carteira de Habilitação - Vencimento: " + (colaboradorOriginal.getHabilitacao().getVencimento() == null ? "" : colaboradorOriginal.getHabilitacao().getVencimentoFormatada()) + "\n");
-		if(!colaboradorOriginal.getHabilitacao().getCategoria().equals(colaboradorAtualizado.getHabilitacao().getCategoria()))  
-			mensagem.append("Carteira de Habilitação - Categoria: " + (colaboradorOriginal.getHabilitacao().getCategoria() == null ? "" : colaboradorOriginal.getHabilitacao().getCategoria()) + "\n");
-		if( colaboradorOriginal.getPessoal().getTituloEleitoral() != null && colaboradorAtualizado.getPessoal().getTituloEleitoral() != null ){
-			if(!colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitNumero().equals(colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitNumero()))  
-				mensagem.append("Título Eleitoral - Número: " + (colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitNumero() == null ? "" : colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitNumero()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitZona().equals(colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitZona()))  
-				mensagem.append("Título Eleitoral - Zona: " + (colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitZona() == null ? "" : colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitZona()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitSecao().equals(colaboradorAtualizado.getPessoal().getTituloEleitoral().getTitEleitSecao()))  
-				mensagem.append("Título Eleitoral - Seção: " + (colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitSecao() == null ? "" : colaboradorOriginal.getPessoal().getTituloEleitoral().getTitEleitSecao()) + "\n");
+		montaDadosEnviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, mensagem, colaboradorOriginal);
+	}
+	
+	private void montaDadosAtualizadosEnviaAvisoAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado,StringBuffer mensagem){
+		montaDadosEnviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, mensagem, colaboradorAtualizado);
+	}
+	
+	private void montaDadosEnviaAvisoAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado,StringBuffer mensagem, Colaborador colaboradorMensagem){
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getLogradouro()", mensagem, "Logradouro:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getNumero()", mensagem, "Número:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getComplemento()", mensagem, "Complemento:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getBairro()", mensagem, "Bairro:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getCidade().getNome()", mensagem, "Cidade:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getCepFormatado()", mensagem, "CEP:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getEmail()", mensagem, "Email:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getDdd()", mensagem, "DDD:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getFoneFixo()", mensagem, "Telefone Fixo:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getFoneCelular()", mensagem, "Telefone Celular:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getEscolaridade()", mensagem, "Escolaridade:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getEstadoCivil()", mensagem, "Estado Civil:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getConjuge()", mensagem, "Nome do Cônjuge:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getQtdFilhos()", mensagem, "Quantidade de filhos:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getRg()", mensagem, "RG - Número:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getRgOrgaoEmissor()", mensagem, "RG - Órgão Emissor:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getRgUf().getSigla()", mensagem, "RG - Estado:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getRgDataExpedicao()", mensagem, "RG - Data de Expedição:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getHabilitacao().getNumeroHab()", mensagem, "Carteira de Habilitação - Nº de Registro:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getHabilitacao().getRegistro()", mensagem, "Carteira de Habilitação - Prontuário:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getHabilitacao().getEmissao()", mensagem, "Carteira de Habilitação - Emissão:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getHabilitacao().getVencimento()", mensagem, "Carteira de Habilitação - Vencimento:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getHabilitacao().getCategoria()", mensagem, "Carteira de Habilitação - Categoria:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getTituloEleitoral().getTitEleitNumero()", mensagem, "Título Eleitoral - Número:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getTituloEleitoral().getTitEleitZona()", mensagem, "Título Eleitoral - Zona:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getTituloEleitoral().getTitEleitSecao()", mensagem, "Título Eleitoral - Seção:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getCertificadoMilitar().getCertMilNumero()", mensagem, "Certificado Militar - Número:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getCertificadoMilitar().getCertMilTipo()", mensagem, "Certificado Militar - Tipo:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getCertificadoMilitar().getCertMilSerie()", mensagem, "Certificado Militar - Série:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getCtps().getCtpsNumero()", mensagem, "CTPS - Número:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getCtps().getCtpsSerie()", mensagem, "CTPS - Série:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getCtps().getCtpsDv()", mensagem, "CTPS - DV:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getCtps().getCtpsUf().getSigla()", mensagem, "CTPS - Estado:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getCtps().getCtpsDataExpedicao()", mensagem, "CTPS - Data Expedição:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getPis()", mensagem, "PIS - Número:", colaboradorMensagem);
+	}
+	
+	private void verificaDadoAtualizado(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado,String metodos, StringBuffer mensagem, String campo, Colaborador colaboradorMensagem){
+		Object valorOriginal = ModelUtil.getValor(colaboradorOriginal, metodos, true);
+		Object valorAtualizado = ModelUtil.getValor(colaboradorAtualizado, metodos, true);
+		
+		if((valorOriginal != null && valorAtualizado == null) ||
+				(valorOriginal == null && valorAtualizado != null) ||
+				(valorOriginal != null && valorAtualizado != null && !valorOriginal.equals(valorAtualizado))){
+			mensagem.append(campo + " " + ObjectUtils.defaultIfNull(ModelUtil.getValor(colaboradorMensagem, metodos, true), "") + "\n");
 		}
-		if( colaboradorOriginal.getPessoal().getCertificadoMilitar() != null && colaboradorAtualizado.getPessoal().getCertificadoMilitar() != null ){
-			if(!colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilNumero().equals(colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilNumero()))  
-				mensagem.append("Certificado Militar - Número: " + (colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilNumero() == null ? "" : colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilNumero()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilTipo().equals(colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilTipo()))  
-				mensagem.append("Certificado Militar - Tipo: " + (colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilTipo() == null ? "" : colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilTipo()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilSerie().equals(colaboradorAtualizado.getPessoal().getCertificadoMilitar().getCertMilSerie()))  
-				mensagem.append("Certificado Militar - Série: " + (colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilSerie() == null ? "" : colaboradorOriginal.getPessoal().getCertificadoMilitar().getCertMilSerie()) + "\n");
-		}
-		if( colaboradorOriginal.getPessoal().getCtps() != null && colaboradorAtualizado.getPessoal().getCtps() != null ){
-			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsNumero().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsNumero()))  
-				mensagem.append("CTPS - Número: " + (colaboradorOriginal.getPessoal().getCtps().getCtpsNumero() == null ? "" : colaboradorOriginal.getPessoal().getCtps().getCtpsNumero()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsSerie().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsSerie()))  
-				mensagem.append("CTPS - Série: " + (colaboradorOriginal.getPessoal().getCtps().getCtpsSerie() == null ? "" : colaboradorOriginal.getPessoal().getCtps().getCtpsSerie()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsDv().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsDv()))  
-				mensagem.append("CTPS - DV: " + (colaboradorOriginal.getPessoal().getCtps().getCtpsDv() == null ? "" : colaboradorOriginal.getPessoal().getCtps().getCtpsDv()) + "\n");
-			if(colaboradorOriginal.getPessoal().getCtps().getCtpsUf() != null && colaboradorAtualizado.getPessoal().getCtps().getCtpsUf() != null &&
-					!colaboradorOriginal.getPessoal().getCtps().getCtpsUf().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsUf()))  
-				mensagem.append("CTPS - Estado: " + (colaboradorOriginal.getPessoal().getCtps().getCtpsUf().getSigla() == null ? "" : colaboradorOriginal.getPessoal().getCtps().getCtpsUf().getSigla()) + "\n");
-			if(!colaboradorOriginal.getPessoal().getCtps().getCtpsDataExpedicao().equals(colaboradorAtualizado.getPessoal().getCtps().getCtpsDataExpedicao()))  
-				mensagem.append("CTPS - DV: " + (colaboradorOriginal.getPessoal().getCtps().getCtpsDataExpedicao() == null ? "" : colaboradorOriginal.getPessoal().getCtps().getCtpsDataExpedicao()) + "\n");
-		}
-		if(!colaboradorOriginal.getPessoal().getPis().equals(colaboradorAtualizado.getPessoal().getPis()))  
-			mensagem.append("PIS - Número: " + (colaboradorOriginal.getPessoal().getPis() == null ? "" : colaboradorOriginal.getPessoal().getPis()) + "\n");
 	}
 	
 	// TODO: SEM TESTE

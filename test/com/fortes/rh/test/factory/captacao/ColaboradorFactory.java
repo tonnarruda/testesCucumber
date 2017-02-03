@@ -39,6 +39,7 @@ public class ColaboradorFactory
 		colaborador.setPessoal(pessoal);
 
 		Habilitacao habilitacao = new Habilitacao();
+		habilitacao.setEmissao(new Date());
 		colaborador.setHabilitacao(habilitacao);
 		
 		colaborador.setDependentes(null);

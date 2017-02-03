@@ -14,6 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -73,6 +74,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cartao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
@@ -880,6 +882,112 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 		gerenciadorComunicacaoManager.enviaAvisoLntAutomatico();
 		verify(mail, never()).send(eq(empresa), anyString(), anyString(), any(File[].class), any(String[].class));
 		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(anyString(), anyString(), anyString(), eq(areasIds), eq(TipoMensagem.TED), any(Avaliacao.class), anyLong());
+	}
+	
+	@Test
+	public void testenviaAvisoAtualizacaoInfoPessoaisNaoConfigurado() throws Exception
+	{
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ATUALIZAR_INFO_PESSOAIS.getId(), null)).thenReturn(new ArrayList<GerenciadorComunicacao>());
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Colaborador colaboradorOriginal = ColaboradorFactory.getEntity();
+		Colaborador colaboradorAtualizado = ColaboradorFactory.getEntity();
+		
+		gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
+
+		verify(usuarioMensagemManager, never()).saveMensagemAndUsuarioMensagem(anyString(), anyString(), anyString(), anyCollectionOf(UsuarioEmpresa.class), any(Colaborador.class), any(Character.class) , any(Avaliacao.class), any(Long.class));
+		verify(mail, never()).send(eq(empresa), anyString(), anyString(), any(File[].class), any(String[].class));
+	}
+	
+	@Test
+	public void testenviaAvisoAtualizacaoInfoPessoaisSemDadosAlterados() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
+
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ATUALIZAR_INFO_PESSOAIS.getId(), empresa.getId())).thenReturn(Arrays.asList(gerenciadorComunicacao));
+		
+		Colaborador colaboradorOriginal = ColaboradorFactory.getEntity();
+		Colaborador colaboradorAtualizado = colaboradorOriginal;
+		
+		gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
+		
+		verify(usuarioMensagemManager, never()).saveMensagemAndUsuarioMensagem(anyString(), anyString(), anyString(), anyCollectionOf(UsuarioEmpresa.class), any(Colaborador.class), any(Character.class) , any(Avaliacao.class), any(Long.class));
+		verify(mail, never()).send(eq(empresa), anyString(), anyString(), any(File[].class), any(String[].class));
+	}
+	
+	@Test
+	public void testenviaAvisoAtualizacaoInfoPessoais() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
+		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity(2L, empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ATUALIZAR_INFO_PESSOAIS.getId(), empresa.getId())).thenReturn(Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2));
+		
+		Colaborador colaboradorOriginal = ColaboradorFactory.getEntity();
+		Colaborador colaboradorAtualizado = getColaboradorAtualizado();
+		
+		gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
+		
+		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagem(anyString(), anyString(), anyString(), anyCollectionOf(UsuarioEmpresa.class), any(Colaborador.class), any(Character.class) , any(Avaliacao.class), any(Long.class));
+		verify(mail, times(1)).send(eq(empresa), anyString(), anyString(), any(File[].class), any(String[].class));
+	}
+	
+	@Test
+	public void testenviaAvisoAtualizacaoInfoPessoaisDoisGerenciadoresException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
+		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity(2L, empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ATUALIZAR_INFO_PESSOAIS.getId(), empresa.getId())).thenReturn(Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2));
+		doThrow(AddressException.class).when(usuarioMensagemManager).saveMensagemAndUsuarioMensagem(anyString(), anyString(), anyString(), anyCollectionOf(UsuarioEmpresa.class), any(Colaborador.class), any(Character.class) , any(Avaliacao.class), any(Long.class));
+				
+				Colaborador colaboradorOriginal = ColaboradorFactory.getEntity();
+		Colaborador colaboradorAtualizado = getColaboradorAtualizado();
+		
+		gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
+		
+		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagem(anyString(), anyString(), anyString(), anyCollectionOf(UsuarioEmpresa.class), any(Colaborador.class), any(Character.class) , any(Avaliacao.class), any(Long.class));
+		verify(mail, times(1)).send(eq(empresa), anyString(), anyString(), any(File[].class), any(String[].class));
+	}
+	
+	@Test
+	public void testenviaAvisoAtualizacaoInfoPessoaisUmGerenciadoresException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
+		
+		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ATUALIZAR_INFO_PESSOAIS.getId(), empresa.getId())).thenReturn(Arrays.asList(gerenciadorComunicacao1));
+		doThrow(AddressException.class).when(usuarioMensagemManager).saveMensagemAndUsuarioMensagem(anyString(), anyString(), anyString(), anyCollectionOf(UsuarioEmpresa.class), any(Colaborador.class), any(Character.class) , any(Avaliacao.class), any(Long.class));
+		
+		Colaborador colaboradorOriginal = ColaboradorFactory.getEntity();
+		Colaborador colaboradorAtualizado = getColaboradorAtualizado();
+		
+		gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
+		
+		verify(usuarioMensagemManager, times(1)).saveMensagemAndUsuarioMensagem(anyString(), anyString(), anyString(), anyCollectionOf(UsuarioEmpresa.class), any(Colaborador.class), any(Character.class) , any(Avaliacao.class), any(Long.class));
+		verify(mail, never()).send(eq(empresa), anyString(), anyString(), any(File[].class), any(String[].class));
+	}
+	
+	private Colaborador getColaboradorAtualizado() {
+		Estado uf = new Estado();
+		uf.setSigla("RN");
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.getEndereco().setUf(uf);
+		colaborador.getPessoal().setQtdFilhos(5);
+		colaborador.getPessoal().setRgUf(uf);
+		colaborador.getHabilitacao().setEmissao(null);
+		colaborador.getPessoal().getCtps().setCtpsNumero("123499");
+		colaborador.getPessoal().getCtps().setCtpsDataExpedicao(new Date());
+		
+		return colaborador;
 	}
 	
 }
