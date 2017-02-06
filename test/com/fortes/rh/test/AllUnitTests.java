@@ -479,6 +479,7 @@ import com.fortes.rh.test.util.MathUtilTest;
 import com.fortes.rh.test.util.MontaRelatorioItextTest;
 import com.fortes.rh.test.util.SpringUtilTest;
 import com.fortes.rh.test.util.StringUtilTest;
+import com.fortes.rh.test.util.ModelUtilTest;
 import com.fortes.rh.test.util.ZipTest;
 import com.fortes.rh.test.web.action.IndexTest;
 import com.fortes.rh.test.web.action.MyActionSupportEditTest;
@@ -1438,6 +1439,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	MontaRelatorioItextTest.class,
 	SpringUtilTest.class,
 	StringUtilTest.class,
+	ModelUtilTest.class,
 	BooleanUtilTest.class,
 	ZipTest.class,
 	ArquivoUtilTest.class,

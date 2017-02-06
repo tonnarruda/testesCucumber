@@ -20,13 +20,13 @@ public class ModelUtil
 	 */
 	public static Object getValor(AbstractModel model, String metodos, boolean consideraBrancoComoNulo) {
 		
-		String[] s = metodos.replaceAll("\\(\\)","").split("\\.");
+		String[] metodosGet = metodos.replaceAll("\\(\\)","").split("\\.");
 
 		try {
 			Object retorno = null;
 			Object objeto = model;
-			for (String string : s) {
-				retorno = new Mirror().on(objeto).invoke().method(string).withoutArgs();
+			for (String metodo : metodosGet) {
+				retorno = new Mirror().on(objeto).invoke().method(metodo).withoutArgs();
 				if((retorno == null) || 
 						(consideraBrancoComoNulo && retorno != null && retorno.toString().equals(""))) {
 					return null;					

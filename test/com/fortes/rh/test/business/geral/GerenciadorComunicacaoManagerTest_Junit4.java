@@ -947,7 +947,7 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 		when(gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ATUALIZAR_INFO_PESSOAIS.getId(), empresa.getId())).thenReturn(Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2));
 		doThrow(AddressException.class).when(usuarioMensagemManager).saveMensagemAndUsuarioMensagem(anyString(), anyString(), anyString(), anyCollectionOf(UsuarioEmpresa.class), any(Colaborador.class), any(Character.class) , any(Avaliacao.class), any(Long.class));
 				
-				Colaborador colaboradorOriginal = ColaboradorFactory.getEntity();
+		Colaborador colaboradorOriginal = ColaboradorFactory.getEntity();
 		Colaborador colaboradorAtualizado = getColaboradorAtualizado();
 		
 		gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
