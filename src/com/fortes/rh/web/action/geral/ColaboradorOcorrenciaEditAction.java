@@ -126,7 +126,6 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			}
 			
 			colaboradorOcorrencia.setColaborador(colaborador);
-			//boolean jaExisteOcorrenciaNoMesmoDia = colaboradorOcorrenciaManager.verifyExistsMesmaData(colaboradorOcorrencia.getId(), colaboradorOcorrencia.getColaborador().getId(), colaboradorOcorrencia.getOcorrencia().getId(), getEmpresaSistema().getId(), colaboradorOcorrencia.getDataIni(), null);
 			Collection<ColaboradorOcorrencia> ocorrenciasNaMesmaData = colaboradorOcorrenciaManager.verifyOcorrenciasMesmaData(colaboradorOcorrencia.getId(), colaboradorOcorrencia.getColaborador().getId(), colaboradorOcorrencia.getOcorrencia().getId(), getEmpresaSistema().getId(), colaboradorOcorrencia.getDataIni(), colaboradorOcorrencia.getDataFim());
 
 			if (ocorrenciasNaMesmaData.size() > 0)
