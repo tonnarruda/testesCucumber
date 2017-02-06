@@ -15,23 +15,28 @@ import org.junit.Test;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
@@ -49,6 +54,8 @@ public class HistoricoColaboradorManagerTest_Junit4
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private EstabelecimentoManager estabelecimentoManager;
 	private FaixaSalarialManager faixaSalarialManager;
+	private SolicitacaoManager solicitacaoManager;
+	private EmpresaManager empresaManager;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -70,6 +77,12 @@ public class HistoricoColaboradorManagerTest_Junit4
 
 		estabelecimentoManager = mock(EstabelecimentoManager.class);
 		historicoColaboradorManagerImpl.setEstabelecimentoManager(estabelecimentoManager);
+
+		solicitacaoManager = mock(SolicitacaoManager.class);
+		historicoColaboradorManagerImpl.setSolicitacaoManager(solicitacaoManager);
+		
+		empresaManager = mock(EmpresaManager.class);
+		historicoColaboradorManagerImpl.setEmpresaManager(empresaManager);
 		
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
 		Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
@@ -101,13 +114,19 @@ public class HistoricoColaboradorManagerTest_Junit4
 	@Test
 	public void  testCancelarSituacaoSEP() throws Exception
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setSolPessoalReabrirSolicitacao(true);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
 
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1L);
+		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.VALOR);
 		historicoColaborador.setSalario(200.0);
-		historicoColaborador.setCandidatoSolicitacao(CandidatoSolicitacaoFactory.getEntity(1L));
+		historicoColaborador.setCandidatoSolicitacao(candidatoSolicitacao);
 
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
 
@@ -130,6 +149,8 @@ public class HistoricoColaboradorManagerTest_Junit4
 		when(estabelecimentoManager.findEstabelecimentoByCodigoAc(anyString(), anyString(), anyString())).thenReturn(estabelecimento);
 		when(areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(anyString(), anyString(), anyString())).thenReturn(areaOrganizacional);
 		when(faixaSalarialManager.findFaixaSalarialByCodigoAc(anyString(), anyString(), anyString())).thenReturn(faixaSalarial);
+		when(empresaManager.findByIdProjection(historicoColaborador.getColaborador().getEmpresa().getId())).thenReturn(empresa);
+		when(candidatoSolicitacaoManager.findByCandidatoSolicitacao(historicoColaborador.getCandidatoSolicitacao())).thenReturn(candidatoSolicitacao);
 
 		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManagerImpl.cancelarSituacao(situacao, mensagem);
 		assertEquals(historicoColaborador, historicoColaboradorRetorno);

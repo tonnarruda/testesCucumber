@@ -45,6 +45,9 @@
     <property name="gerenciadorComunicacaoManager">
       <ref bean="gerenciadorComunicacaoManager" />
     </property>
+    <property name="solicitacaoManager">
+      <ref bean="solicitacaoManager" />
+    </property>
   </bean>
   <bean id="historicoColaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

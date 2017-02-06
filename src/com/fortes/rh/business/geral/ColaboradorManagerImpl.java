@@ -1703,14 +1703,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception
 	{
-		CandidatoSolicitacao candidatoSolicitacao = candidatoSolicitacaoManager.findByHistoricoColaboradorId(historicoColaborador.getId());
-		if(candidatoSolicitacao != null && candidatoSolicitacao.getId() != null){
-			candidatoSolicitacaoManager.updateStatusCandidatoAoCancelarContratacao(candidatoSolicitacao, colaborador.getId());
-			Empresa empresa = empresaManager.findByIdProjection(colaborador.getEmpresa().getId()); 
-			if(empresa.isSolPessoalReabrirSolicitacao()){
-				solicitacaoManager.updateEncerraSolicitacao(false, null, candidatoSolicitacao.getSolicitacao().getId());
-			}
-		}
+		atualizarStatusCandidatoSolicitacao(colaborador, historicoColaborador);
 		
 		historicoColaboradorManager.remove(historicoColaborador);
 		
@@ -1728,6 +1721,23 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		gerenciadorComunicacaoManager.enviaMensagemCancelamentoContratacao(colaborador, mensagem);
 		auditoriaManager.auditaCancelarContratacaoNoAC(colaborador, mensagem);
+	}
+
+	private void atualizarStatusCandidatoSolicitacao(Colaborador colaborador, HistoricoColaborador historicoColaborador) 
+	{
+		try {
+			CandidatoSolicitacao candidatoSolicitacao = candidatoSolicitacaoManager.findByHistoricoColaboradorId(historicoColaborador.getId());
+			if(candidatoSolicitacao != null && candidatoSolicitacao.getId() != null){
+				candidatoSolicitacaoManager.updateStatusCandidatoAoCancelarContratacao(candidatoSolicitacao, colaborador.getId());
+				Empresa empresa = empresaManager.findByIdProjection(colaborador.getEmpresa().getId()); 
+				if(empresa.isSolPessoalReabrirSolicitacao()){
+					solicitacaoManager.updateEncerraSolicitacao(false, null, candidatoSolicitacao.getSolicitacao().getId());
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Inconsistência ao mudar status do candidato solicitação.");
+			e.printStackTrace();
+		}
 	}
 
 	private String[] verificaDependencias(Colaborador colaborador) throws Exception {

@@ -25,6 +25,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -82,6 +83,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private SolicitacaoManager solicitacaoManager;
 	
 	@TesteAutomatico(metodoMock="findPromocaoByColaborador")
 	public Collection<HistoricoColaborador> getByColaboradorId(Long colaboradorId)
@@ -911,13 +913,27 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 				update(historicoColaborador);
 			}
 
-			if(historicoColaborador.getCandidatoSolicitacao() != null && historicoColaborador.getCandidatoSolicitacao().getId() != null){
-				candidatoSolicitacaoManager.updateStatusAndRemoveDataContratacaoOrPromocao(historicoColaborador.getCandidatoSolicitacao().getId(), StatusCandidatoSolicitacao.APROMOVER);
-				removeVinculoCandidatoSolicitacao(historicoColaborador.getCandidatoSolicitacao().getId());
-			}
+			atualizaStatusCandidatoSolicitacao(historicoColaborador);
 		}
 		
 		return historicoColaborador;
+	}
+
+	private void atualizaStatusCandidatoSolicitacao(HistoricoColaborador historicoColaborador) {
+		try {
+			if(historicoColaborador.getCandidatoSolicitacao() != null && historicoColaborador.getCandidatoSolicitacao().getId() != null){
+				candidatoSolicitacaoManager.updateStatusAndRemoveDataContratacaoOrPromocao(historicoColaborador.getCandidatoSolicitacao().getId(), StatusCandidatoSolicitacao.APROMOVER);
+				removeVinculoCandidatoSolicitacao(historicoColaborador.getCandidatoSolicitacao().getId());
+				if(historicoColaborador.getColaborador().getEmpresa() != null ){
+					Empresa empresa = empresaManager.findByIdProjection(historicoColaborador.getColaborador().getEmpresa().getId()); 
+						if(empresa.isSolPessoalReabrirSolicitacao())
+							solicitacaoManager.updateEncerraSolicitacao(false, null, candidatoSolicitacaoManager.findByCandidatoSolicitacao(historicoColaborador.getCandidatoSolicitacao()).getSolicitacao().getId());
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Ocorreu uma inconsistência ao atualizar status de candidato solicitação.");
+			e.printStackTrace();
+		}
 	}
 	
 	public Collection<PendenciaAC> findPendenciasByHistoricoColaborador(Long empresaId)
@@ -1599,5 +1615,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	@TesteAutomatico
 	public HistoricoColaborador findHistoricoColaboradorByData(Long colaboradorId, Date data) {
 		return getDao().findHistoricoColaboradorByData(colaboradorId, data);
+	}
+
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
+		this.solicitacaoManager = solicitacaoManager;
 	}
 }
