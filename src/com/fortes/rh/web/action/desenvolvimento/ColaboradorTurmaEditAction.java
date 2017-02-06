@@ -141,8 +141,15 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	{
 		try
 		{
-			colaboradorTurmaManager.saveColaboradorTurmaNota(turma, colaborador, avaliacaoCursoIds, notas, getEmpresaSistema().isControlarVencimentoPorCertificacao());
-			addActionSuccess("Colaborador e notas inseridos com sucesso.");
+			if(colaborador != null && colaborador.getId() != null){
+				colaboradorTurmaManager.saveColaboradorTurmaNota(turma, colaborador, avaliacaoCursoIds, notas, getEmpresaSistema().isControlarVencimentoPorCertificacao());
+				addActionSuccess("Colaborador e notas inseridos com sucesso.");
+			}
+			else{
+				addActionWarning("Selecione um colaborador.");
+				prepareInsertNota();
+				return SUCCESS;
+			}
 		}
 		catch (FortesException e)
 		{
@@ -254,6 +261,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 				msgAlert = colaboradorTurmaManager.insereColaboradorTurmas(colaboradoresId, colaboradoresTurmas, turma, dnt, filtrarPor, selectPrioridades, getEmpresaSistema().isControlarVencimentoPorCertificacao(), null);
 			}catch (Exception e){
 				msgAlert = "Erro ao inserir colaborador.";
+				e.printStackTrace();
 			}
 		}
 

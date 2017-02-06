@@ -476,13 +476,14 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 					save(colaboradorTurma);
 				}
 			}
-			
-			boolean colaboradorTurmaAprovado = aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), turma.getCurso().getId());
+			if(colaboradorTurma != null && colaboradorTurma.getId() != null){
+				boolean colaboradorTurmaAprovado = aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), colaboradorTurma.getTurma().getId(), turma.getCurso().getId());
 
-			if(validarCertificacao && colaboradorTurma.getId() != null){
-				getDao().getHibernateTemplateByGenericDao().flush();
-				if(colaboradorTurmaAprovado)
-					new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
+				if(validarCertificacao && colaboradorTurma.getId() != null){
+					getDao().getHibernateTemplateByGenericDao().flush();
+					if(colaboradorTurmaAprovado)
+						new certificaColaboradorThread(colaboradorCertificacaoManager, colaboradorTurma.getId(), certificacaoManager).start();
+				}
 			}
 		}
 

@@ -140,6 +140,9 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
     	turma.setCurso(curso);
     	action.setTurma(turma);
     	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	action.setColaborador(colaborador);
+    	
     	manager.expects(once()).method("saveColaboradorTurmaNota").with(new Constraint[]{eq(turma),ANYTHING,ANYTHING,ANYTHING,ANYTHING});
     	empresaManager.expects(once()).method("ajustaCombo").with(eq(empresa.getId()),ANYTHING).will(returnValue(empresa.getId()));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(Arrays.asList(empresa)));
@@ -166,6 +169,9 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
     	turma.setCurso(curso);
     	action.setTurma(turma);
     	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	action.setColaborador(colaborador);
+    	
     	manager.expects(once()).method("saveColaboradorTurmaNota").will(throwException(new Exception()));
     	empresaManager.expects(once()).method("ajustaCombo").with(eq(empresa.getId()),ANYTHING).will(returnValue(empresa.getId()));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(Arrays.asList(empresa)));
@@ -174,6 +180,32 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
     	
     	action.insertColaboradorNota();
     	assertEquals("Ocorreu um erro ao inserir o colaborador e as notas.", action.getActionErrors().toArray()[0]);
+    }
+    
+    public void testInsertColaboradorNotaComColaboradorIdNull() throws Exception
+    {
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+    	parametrosDoSistema.setCompartilharColaboradores(true);
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setId(1L);
+    	action.setEmpresaSistema(empresa);
+    	action.setEmpresaId(empresa.getId());
+    	
+    	Curso curso = CursoFactory.getEntity();
+    	curso.setId(1L);
+    	
+    	Turma turma = TurmaFactory.getEntity();
+    	turma.setCurso(curso);
+    	action.setTurma(turma);
+    	
+    	empresaManager.expects(once()).method("ajustaCombo").with(eq(empresa.getId()),ANYTHING).will(returnValue(empresa.getId()));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(Arrays.asList(empresa)));
+    	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+    	avaliacaoCursoManager.expects(once()).method("findByCurso").with(eq(turma.getCurso().getId())).will(returnValue(Arrays.asList(AvaliacaoCursoFactory.getEntity())));
+    	
+    	action.insertColaboradorNota();
+    	assertEquals("Selecione um colaborador.", action.getActionWarnings().toArray()[0]);
     }
     
     public void testPrepareInsert() throws Exception
