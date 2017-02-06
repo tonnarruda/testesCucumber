@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.model.AbstractModel;
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
@@ -1153,18 +1152,21 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	private void montaDadosEnviaAvisoAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado,StringBuffer mensagem, Colaborador colaboradorMensagem){
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getCepFormatado()", mensagem, "CEP:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getLogradouro()", mensagem, "Logradouro:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getNumero()", mensagem, "Número:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getComplemento()", mensagem, "Complemento:", colaboradorMensagem);
-		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getBairro()", mensagem, "Bairro:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getUf().getSigla()", mensagem, "UF:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getCidade().getNome()", mensagem, "Cidade:", colaboradorMensagem);
-		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getCepFormatado()", mensagem, "CEP:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getBairro()", mensagem, "Bairro:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getEmail()", mensagem, "Email:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getDdd()", mensagem, "DDD:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getFoneFixo()", mensagem, "Telefone Fixo:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getFoneCelular()", mensagem, "Telefone Celular:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getEscolaridade()", mensagem, "Escolaridade:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getEstadoCivil()", mensagem, "Estado Civil:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getPai()", mensagem, "Nome do Pai:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getMae()", mensagem, "Nome da Mãe:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getConjuge()", mensagem, "Nome do Cônjuge:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getQtdFilhos()", mensagem, "Quantidade de filhos:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getRg()", mensagem, "RG - Número:", colaboradorMensagem);
