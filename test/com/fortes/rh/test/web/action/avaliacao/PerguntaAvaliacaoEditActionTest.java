@@ -1,12 +1,18 @@
 package com.fortes.rh.test.web.action.avaliacao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
-import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -17,65 +23,51 @@ import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.PerguntaFactory;
 import com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction;
 
-public class PerguntaAvaliacaoEditActionTest extends MockObjectTestCase
+public class PerguntaAvaliacaoEditActionTest
 {
 	private PerguntaAvaliacaoEditAction action;
-	private Mock perguntaManager;
-	private Mock colaboradorQuestionarioManager;
+	private PerguntaManager perguntaManager;
+	private ColaboradorRespostaManager colaboradorRespostaManager;
 
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
 		action = new PerguntaAvaliacaoEditAction();
 
 		perguntaManager = mock(PerguntaManager.class); 
-		action.setPerguntaManager((PerguntaManager) perguntaManager.proxy());
+		action.setPerguntaManager(perguntaManager);
 		
-		colaboradorQuestionarioManager = mock(ColaboradorQuestionarioManager.class);
-		action.setColaboradorQuestionarioManager((ColaboradorQuestionarioManager) colaboradorQuestionarioManager.proxy());
-		
+		colaboradorRespostaManager = mock(ColaboradorRespostaManager.class);
+		action.setColaboradorRespostaManager(colaboradorRespostaManager);
 		
 		action.setAvaliacao(new Avaliacao());
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}
 
-	protected void tearDown() throws Exception
-	{
-		action = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testList() throws Exception
 	{
 		Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 		colaboradorQuestionarios.add(ColaboradorQuestionarioFactory.getEntity(3L));
 		action.setAvaliacao(AvaliacaoFactory.getEntity(1L));
 		
-		perguntaManager.expects(once()).method("findByQuestionario").with(eq(1L)).will(returnValue(new ArrayList<Pergunta>()));
-		colaboradorQuestionarioManager.expects(once()).method("findByQuestionario").with(eq(1L)).will(returnValue(colaboradorQuestionarios));
+		when(perguntaManager.findByQuestionario(1L)).thenReturn(new ArrayList<Pergunta>());
+		when(colaboradorRespostaManager.countColaboradorAvaliacaoRespondida(1L)).thenReturn(1);
 		
 		assertEquals("success", action.list());
 		assertEquals("Esta avaliação já possui perguntas respondidas. Só é possível visualizá-las.", action.getActionMessages().toArray()[0]);
 	}
 
+	@Test
 	public void testDelete() throws Exception
 	{
 		Pergunta pergunta = PerguntaFactory.getEntity(33L);
 		action.setPergunta(pergunta);
-		perguntaManager.expects(once()).method("removerPergunta").with(eq(pergunta)).isVoid();
 		
 		assertEquals(action.delete(), "success");
 	}
-	
-	public void testInsert() throws Exception
-	{
 
-	}
-
-	public void testUpdate() throws Exception
-	{
-
-	}
-
+	@Test
 	public void testGetSet() throws Exception
 	{
 		assertNotNull(action.getAvaliacao());

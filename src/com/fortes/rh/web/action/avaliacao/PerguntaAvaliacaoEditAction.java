@@ -9,21 +9,18 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.pesquisa.AspectoManager;
-import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
-import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.util.IntegerUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
-@SuppressWarnings("unchecked")
 public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
@@ -31,7 +28,6 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 	private PerguntaManager perguntaManager;
 	private AspectoManager aspectoManager;
 	private RespostaManager respostaManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private ColaboradorRespostaManager colaboradorRespostaManager;
 	
 	private Avaliacao avaliacao;
@@ -161,20 +157,7 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 	
 	private void setTemCriterioRespondido()
 	{
-		if (avaliacao != null && avaliacao.getId() != null)
-		{
-			if(modeloAvaliacao == 'S')
-			{
-				Integer qtdCandidatosResponderam = colaboradorRespostaManager.countColaboradorAvaliacaoRespondida(avaliacao.getId());
-				if (qtdCandidatosResponderam > 0)
-					temCriterioRespondido = true;
-			}else
-			{
-				Collection<ColaboradorQuestionario> colabQuestionarios = colaboradorQuestionarioManager.findByQuestionario(avaliacao.getId());
-				if (colabQuestionarios != null && !colabQuestionarios.isEmpty())
-					temCriterioRespondido = true;
-			}
-		}
+		temCriterioRespondido = avaliacao != null && avaliacao.getId() != null && colaboradorRespostaManager.countColaboradorAvaliacaoRespondida(avaliacao.getId()) > 0; 
 		
 		if (temCriterioRespondido)
 			addActionMessage("Esta avaliação já possui perguntas respondidas. Só é possível visualizá-las.");
@@ -308,10 +291,6 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 
 	public boolean getTemCriterioRespondido() {
 		return temCriterioRespondido;
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
 	public char getModeloAvaliacao() {
