@@ -2,7 +2,8 @@ CREATE OR REPLACE FUNCTION insertCandidatoSolicitacaoInHistoricoColaborador() RE
 DECLARE  
 mv RECORD;  
 BEGIN  
-	FOR mv IN  
+	IF '20170201083928' NOT IN (SELECT name FROM migrations) THEN
+		FOR mv IN  
 		select sub.id as candidatoSolicitacao_id,   
 		case  
 		when sub.status = 'C' then (select hc.id from historicocolaborador hc where hc.motivo = 'C' and hc.colaborador_id = sub.colab_id) 
@@ -76,10 +77,13 @@ BEGIN
 		order by sub.sol_id 
 		LOOP  
 			UPDATE historicocolaborador hc set candidatosolicitacao_id = mv.candidatoSolicitacao_id where hc.id = mv.historico_id; 
-		END LOOP; 
+		END LOOP;  
+	ELSE
+		RAISE NOTICE 'Já possui migrate 20170201083928';
+	END IF;
 END;  
 $$ LANGUAGE plpgsql;--.go
 select insertCandidatoSolicitacaoInHistoricoColaborador();--.go
 drop FUNCTION insertCandidatoSolicitacaoInHistoricoColaborador();--.go
 
-ALTER TABLE colaborador DROP COLUMN  solicitacao_id; --.go
+ALTER TABLE colaborador DROP COLUMN IF EXISTS solicitacao_id; --.go
