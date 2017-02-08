@@ -8,6 +8,7 @@
 		<Item visivel="S" motivo="P17020000018"><![CDATA[Info. Funcionais > Movimentações > Ocorrências: Ajuste de inconsistência ao tentar inserir uma ocorrência com data inferior a data de admissão do colaborador.]]></Item>
 		<Item visivel="S" motivo="P16120000340"><![CDATA[Info. Funcionais > Relatórios > Recibos Pagamentos > Adiantamento de Folha: Ajuste no retorno da página quando não existe no sistema Fortes Pessoal o adiantamento de folha calculado para a competência solicitada.]]></Item>
 		<Item visivel="N" motivo="S17010000219"><![CDATA[Sistema: Nova forma de verificar se existe nova versão do Fortes RH disponível no Portal do Cliente.]]></Item>
+		<Item visivel="N" motivo="S16120000108"><![CDATA[Sistema: Atualização da imagem de rodapé dos e-mails enviados pelo sistema]]></Item>
 	</Versao>
 	<Versao id="1.1.176.208" db="" data="18/01/2017">
 		<Item visivel="S" motivo="S17010000003"><![CDATA[R&S > Movimentações > solicitação de Pessoal > Candidatos da Seleção > Competências: Novo de vídeo de ajuda para avaliar as competências do candidato.]]></Item>

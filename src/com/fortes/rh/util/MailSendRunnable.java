@@ -202,7 +202,7 @@ public class MailSendRunnable implements Runnable {
 							footer.append("<tfoot>");
 								footer.append("<tr>");
 									footer.append("<td>");
-										footer.append("<a href='http://www.fortestecnologia.com.br'><img src='http://www.fortesinformatica.com.br/fortesrh/images/assinatura.gif' /></a>");
+										footer.append("<a href='http://www.fortestecnologia.com.br'><img src='https://puu.sh/tTTOB/c2695d6eaf.png' /></a>");
 									footer.append("</td>");
 								footer.append("</tr>");
 							footer.append("</tfoot>");
