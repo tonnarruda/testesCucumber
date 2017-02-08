@@ -62,16 +62,14 @@
 	</target>
 
 	<target name="recreate-bd">
-		<exec failonerror="true" executable="ruby"
-			output="reload_db.log">
+		<exec failonerror="true" executable="ruby">
 			<arg value="${project.dir}/features/support/reload_db.rb" />
 			<arg value=" --start" />
 		</exec>
 	</target>
 	
 	<target name="recreate-and-update-bd" depends="recreate-bd">
-		<exec failonerror="true" executable="ruby"
-			output="migration.log">
+		<exec failonerror="true" executable="ruby">
 			<arg value="${project.dir}/migrate.rb" />
 		</exec>
 	</target>
