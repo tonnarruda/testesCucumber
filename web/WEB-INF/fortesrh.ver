@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.177.209" db="" data="15/02/2017">
 		<Item visivel="S" motivo="P17010000073"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao informar se o candidato está apto quando participa de mais de uma etapa seletiva na mesma data em horários diferentes.]]></Item>
+		<Item visivel="S" motivo="S16110000065"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da seleção > Status do candidato: Guardar históricos dos status do candidato em cada solicitação que o mesmo participar.]]></Item>
 		<Item visivel="S" motivo="P17010000173"><![CDATA[C&S > Relatórios > Promoções: Ajuste de inconsistência ao gerar relatório quando o sistema não compartilha colaboradores entre empresas.]]></Item>
 		<Item visivel="S" motivo="P17010000118"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Ajuste da inconsistência ao retornar mensagem pela URL que contenha caractere com espaço.]]></Item>
 		<Item visivel="S" motivo="P17010000240"><![CDATA[Info. Funcionais > Cadastros > Atualizar meus dados: Ajuste de inconsistência ao atualizar os dados do colaborador.]]></Item>
@@ -9,6 +10,7 @@
 		<Item visivel="S" motivo="P16120000340"><![CDATA[Info. Funcionais > Relatórios > Recibos Pagamentos > Adiantamento de Folha: Ajuste no retorno da página quando não existe no sistema Fortes Pessoal o adiantamento de folha calculado para a competência solicitada.]]></Item>
 		<Item visivel="N" motivo="S17010000219"><![CDATA[Sistema: Nova forma de verificar se existe nova versão do Fortes RH disponível no Portal do Cliente.]]></Item>
 		<Item visivel="N" motivo="S16120000108"><![CDATA[Sistema: Atualização da imagem de rodapé dos e-mails enviados pelo sistema]]></Item>
+		<Item visivel="N" motivo=""><![CDATA[Sistema: Novo atualizador para o tomcat 7]]></Item>
 	</Versao>
 	<Versao id="1.1.176.208" db="" data="18/01/2017">
 		<Item visivel="S" motivo="S17010000003"><![CDATA[R&S > Movimentações > solicitação de Pessoal > Candidatos da Seleção > Competências: Novo de vídeo de ajuda para avaliar as competências do candidato.]]></Item>
