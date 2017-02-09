@@ -3,6 +3,7 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -370,7 +371,7 @@ CREATE TABLE afastamento (
 );
 
 
-ALTER TABLE public.afastamento OWNER TO postgres;
+ALTER TABLE afastamento OWNER TO postgres;
 
 --
 -- Name: afastamento_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -384,14 +385,7 @@ CREATE SEQUENCE afastamento_sequence
     CACHE 1;
 
 
-ALTER TABLE public.afastamento_sequence OWNER TO postgres;
-
---
--- Name: afastamento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('afastamento_sequence', 1, false);
-
+ALTER TABLE afastamento_sequence OWNER TO postgres;
 
 --
 -- Name: agenda; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -405,7 +399,7 @@ CREATE TABLE agenda (
 );
 
 
-ALTER TABLE public.agenda OWNER TO postgres;
+ALTER TABLE agenda OWNER TO postgres;
 
 --
 -- Name: agenda_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -419,14 +413,7 @@ CREATE SEQUENCE agenda_sequence
     CACHE 1;
 
 
-ALTER TABLE public.agenda_sequence OWNER TO postgres;
-
---
--- Name: agenda_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('agenda_sequence', 1, false);
-
+ALTER TABLE agenda_sequence OWNER TO postgres;
 
 --
 -- Name: ambiente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -440,7 +427,7 @@ CREATE TABLE ambiente (
 );
 
 
-ALTER TABLE public.ambiente OWNER TO postgres;
+ALTER TABLE ambiente OWNER TO postgres;
 
 --
 -- Name: ambiente_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -454,14 +441,7 @@ CREATE SEQUENCE ambiente_sequence
     CACHE 1;
 
 
-ALTER TABLE public.ambiente_sequence OWNER TO postgres;
-
---
--- Name: ambiente_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('ambiente_sequence', 1, false);
-
+ALTER TABLE ambiente_sequence OWNER TO postgres;
 
 --
 -- Name: anexo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -477,7 +457,7 @@ CREATE TABLE anexo (
 );
 
 
-ALTER TABLE public.anexo OWNER TO postgres;
+ALTER TABLE anexo OWNER TO postgres;
 
 --
 -- Name: anexo_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -491,14 +471,7 @@ CREATE SEQUENCE anexo_sequence
     CACHE 1;
 
 
-ALTER TABLE public.anexo_sequence OWNER TO postgres;
-
---
--- Name: anexo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('anexo_sequence', 1, false);
-
+ALTER TABLE anexo_sequence OWNER TO postgres;
 
 --
 -- Name: anuncio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -521,7 +494,7 @@ CREATE TABLE anuncio (
 );
 
 
-ALTER TABLE public.anuncio OWNER TO postgres;
+ALTER TABLE anuncio OWNER TO postgres;
 
 --
 -- Name: anuncio_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -535,14 +508,7 @@ CREATE SEQUENCE anuncio_sequence
     CACHE 1;
 
 
-ALTER TABLE public.anuncio_sequence OWNER TO postgres;
-
---
--- Name: anuncio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('anuncio_sequence', 1, false);
-
+ALTER TABLE anuncio_sequence OWNER TO postgres;
 
 --
 -- Name: aproveitamentoavaliacaocurso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -556,7 +522,7 @@ CREATE TABLE aproveitamentoavaliacaocurso (
 );
 
 
-ALTER TABLE public.aproveitamentoavaliacaocurso OWNER TO postgres;
+ALTER TABLE aproveitamentoavaliacaocurso OWNER TO postgres;
 
 --
 -- Name: aproveitamentoavaliacaocurso_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -570,14 +536,7 @@ CREATE SEQUENCE aproveitamentoavaliacaocurso_sequence
     CACHE 1;
 
 
-ALTER TABLE public.aproveitamentoavaliacaocurso_sequence OWNER TO postgres;
-
---
--- Name: aproveitamentoavaliacaocurso_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('aproveitamentoavaliacaocurso_sequence', 1, false);
-
+ALTER TABLE aproveitamentoavaliacaocurso_sequence OWNER TO postgres;
 
 --
 -- Name: areaformacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -589,7 +548,7 @@ CREATE TABLE areaformacao (
 );
 
 
-ALTER TABLE public.areaformacao OWNER TO postgres;
+ALTER TABLE areaformacao OWNER TO postgres;
 
 --
 -- Name: areaformacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -603,14 +562,7 @@ CREATE SEQUENCE areaformacao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.areaformacao_sequence OWNER TO postgres;
-
---
--- Name: areaformacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('areaformacao_sequence', 75, false);
-
+ALTER TABLE areaformacao_sequence OWNER TO postgres;
 
 --
 -- Name: areainteresse; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -624,7 +576,7 @@ CREATE TABLE areainteresse (
 );
 
 
-ALTER TABLE public.areainteresse OWNER TO postgres;
+ALTER TABLE areainteresse OWNER TO postgres;
 
 --
 -- Name: areainteresse_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -636,7 +588,7 @@ CREATE TABLE areainteresse_areaorganizacional (
 );
 
 
-ALTER TABLE public.areainteresse_areaorganizacional OWNER TO postgres;
+ALTER TABLE areainteresse_areaorganizacional OWNER TO postgres;
 
 --
 -- Name: areainteresse_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -650,14 +602,7 @@ CREATE SEQUENCE areainteresse_sequence
     CACHE 1;
 
 
-ALTER TABLE public.areainteresse_sequence OWNER TO postgres;
-
---
--- Name: areainteresse_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('areainteresse_sequence', 1, false);
-
+ALTER TABLE areainteresse_sequence OWNER TO postgres;
 
 --
 -- Name: areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -677,7 +622,7 @@ CREATE TABLE areaorganizacional (
 );
 
 
-ALTER TABLE public.areaorganizacional OWNER TO postgres;
+ALTER TABLE areaorganizacional OWNER TO postgres;
 
 --
 -- Name: areaorganizacional_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -691,14 +636,7 @@ CREATE SEQUENCE areaorganizacional_sequence
     CACHE 1;
 
 
-ALTER TABLE public.areaorganizacional_sequence OWNER TO postgres;
-
---
--- Name: areaorganizacional_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('areaorganizacional_sequence', 1, false);
-
+ALTER TABLE areaorganizacional_sequence OWNER TO postgres;
 
 --
 -- Name: areavivencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -711,7 +649,7 @@ CREATE TABLE areavivencia (
 );
 
 
-ALTER TABLE public.areavivencia OWNER TO postgres;
+ALTER TABLE areavivencia OWNER TO postgres;
 
 --
 -- Name: areavivencia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -725,14 +663,7 @@ CREATE SEQUENCE areavivencia_sequence
     CACHE 1;
 
 
-ALTER TABLE public.areavivencia_sequence OWNER TO postgres;
-
---
--- Name: areavivencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('areavivencia_sequence', 1, false);
-
+ALTER TABLE areavivencia_sequence OWNER TO postgres;
 
 --
 -- Name: areavivenciapcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -746,7 +677,7 @@ CREATE TABLE areavivenciapcmat (
 );
 
 
-ALTER TABLE public.areavivenciapcmat OWNER TO postgres;
+ALTER TABLE areavivenciapcmat OWNER TO postgres;
 
 --
 -- Name: areavivenciapcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -760,14 +691,7 @@ CREATE SEQUENCE areavivenciapcmat_sequence
     CACHE 1;
 
 
-ALTER TABLE public.areavivenciapcmat_sequence OWNER TO postgres;
-
---
--- Name: areavivenciapcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('areavivenciapcmat_sequence', 1, false);
-
+ALTER TABLE areavivenciapcmat_sequence OWNER TO postgres;
 
 --
 -- Name: aspecto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -781,7 +705,7 @@ CREATE TABLE aspecto (
 );
 
 
-ALTER TABLE public.aspecto OWNER TO postgres;
+ALTER TABLE aspecto OWNER TO postgres;
 
 --
 -- Name: aspecto_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -795,14 +719,7 @@ CREATE SEQUENCE aspecto_sequence
     CACHE 1;
 
 
-ALTER TABLE public.aspecto_sequence OWNER TO postgres;
-
---
--- Name: aspecto_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('aspecto_sequence', 1, false);
-
+ALTER TABLE aspecto_sequence OWNER TO postgres;
 
 --
 -- Name: atitude; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -816,7 +733,7 @@ CREATE TABLE atitude (
 );
 
 
-ALTER TABLE public.atitude OWNER TO postgres;
+ALTER TABLE atitude OWNER TO postgres;
 
 --
 -- Name: atitude_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -828,7 +745,7 @@ CREATE TABLE atitude_areaorganizacional (
 );
 
 
-ALTER TABLE public.atitude_areaorganizacional OWNER TO postgres;
+ALTER TABLE atitude_areaorganizacional OWNER TO postgres;
 
 --
 -- Name: atitude_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -840,7 +757,7 @@ CREATE TABLE atitude_curso (
 );
 
 
-ALTER TABLE public.atitude_curso OWNER TO postgres;
+ALTER TABLE atitude_curso OWNER TO postgres;
 
 --
 -- Name: atitude_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -854,14 +771,7 @@ CREATE SEQUENCE atitude_sequence
     CACHE 1;
 
 
-ALTER TABLE public.atitude_sequence OWNER TO postgres;
-
---
--- Name: atitude_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('atitude_sequence', 1, false);
-
+ALTER TABLE atitude_sequence OWNER TO postgres;
 
 --
 -- Name: atividadesegurancapcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -876,7 +786,7 @@ CREATE TABLE atividadesegurancapcmat (
 );
 
 
-ALTER TABLE public.atividadesegurancapcmat OWNER TO postgres;
+ALTER TABLE atividadesegurancapcmat OWNER TO postgres;
 
 --
 -- Name: atividadesegurancapcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -890,14 +800,7 @@ CREATE SEQUENCE atividadesegurancapcmat_sequence
     CACHE 1;
 
 
-ALTER TABLE public.atividadesegurancapcmat_sequence OWNER TO postgres;
-
---
--- Name: atividadesegurancapcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('atividadesegurancapcmat_sequence', 1, false);
-
+ALTER TABLE atividadesegurancapcmat_sequence OWNER TO postgres;
 
 --
 -- Name: auditoria; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -915,7 +818,7 @@ CREATE TABLE auditoria (
 );
 
 
-ALTER TABLE public.auditoria OWNER TO postgres;
+ALTER TABLE auditoria OWNER TO postgres;
 
 --
 -- Name: auditoria_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -929,14 +832,7 @@ CREATE SEQUENCE auditoria_sequence
     CACHE 1;
 
 
-ALTER TABLE public.auditoria_sequence OWNER TO postgres;
-
---
--- Name: auditoria_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('auditoria_sequence', 1, false);
-
+ALTER TABLE auditoria_sequence OWNER TO postgres;
 
 --
 -- Name: avaliacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -957,7 +853,7 @@ CREATE TABLE avaliacao (
 );
 
 
-ALTER TABLE public.avaliacao OWNER TO postgres;
+ALTER TABLE avaliacao OWNER TO postgres;
 
 --
 -- Name: avaliacaocurso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -972,7 +868,7 @@ CREATE TABLE avaliacaocurso (
 );
 
 
-ALTER TABLE public.avaliacaocurso OWNER TO postgres;
+ALTER TABLE avaliacaocurso OWNER TO postgres;
 
 --
 -- Name: avaliacaocurso_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -986,14 +882,7 @@ CREATE SEQUENCE avaliacaocurso_sequence
     CACHE 1;
 
 
-ALTER TABLE public.avaliacaocurso_sequence OWNER TO postgres;
-
---
--- Name: avaliacaocurso_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('avaliacaocurso_sequence', 1, false);
-
+ALTER TABLE avaliacaocurso_sequence OWNER TO postgres;
 
 --
 -- Name: avaliacaodesempenho; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1015,7 +904,7 @@ CREATE TABLE avaliacaodesempenho (
 );
 
 
-ALTER TABLE public.avaliacaodesempenho OWNER TO postgres;
+ALTER TABLE avaliacaodesempenho OWNER TO postgres;
 
 --
 -- Name: avaliacaodesempenho_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1029,14 +918,7 @@ CREATE SEQUENCE avaliacaodesempenho_sequence
     CACHE 1;
 
 
-ALTER TABLE public.avaliacaodesempenho_sequence OWNER TO postgres;
-
---
--- Name: avaliacaodesempenho_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('avaliacaodesempenho_sequence', 1, false);
-
+ALTER TABLE avaliacaodesempenho_sequence OWNER TO postgres;
 
 --
 -- Name: avaliacaopratica; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1050,7 +932,7 @@ CREATE TABLE avaliacaopratica (
 );
 
 
-ALTER TABLE public.avaliacaopratica OWNER TO postgres;
+ALTER TABLE avaliacaopratica OWNER TO postgres;
 
 --
 -- Name: avaliacaopratica_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1064,14 +946,7 @@ CREATE SEQUENCE avaliacaopratica_sequence
     CACHE 1;
 
 
-ALTER TABLE public.avaliacaopratica_sequence OWNER TO postgres;
-
---
--- Name: avaliacaopratica_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('avaliacaopratica_sequence', 1, false);
-
+ALTER TABLE avaliacaopratica_sequence OWNER TO postgres;
 
 --
 -- Name: avaliacaoturma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1084,7 +959,7 @@ CREATE TABLE avaliacaoturma (
 );
 
 
-ALTER TABLE public.avaliacaoturma OWNER TO postgres;
+ALTER TABLE avaliacaoturma OWNER TO postgres;
 
 --
 -- Name: avaliacaoturma_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1098,14 +973,7 @@ CREATE SEQUENCE avaliacaoturma_sequence
     CACHE 1;
 
 
-ALTER TABLE public.avaliacaoturma_sequence OWNER TO postgres;
-
---
--- Name: avaliacaoturma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('avaliacaoturma_sequence', 1, false);
-
+ALTER TABLE avaliacaoturma_sequence OWNER TO postgres;
 
 --
 -- Name: bairro; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1118,7 +986,7 @@ CREATE TABLE bairro (
 );
 
 
-ALTER TABLE public.bairro OWNER TO postgres;
+ALTER TABLE bairro OWNER TO postgres;
 
 --
 -- Name: bairro_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1132,14 +1000,7 @@ CREATE SEQUENCE bairro_sequence
     CACHE 1;
 
 
-ALTER TABLE public.bairro_sequence OWNER TO postgres;
-
---
--- Name: bairro_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('bairro_sequence', 1, false);
-
+ALTER TABLE bairro_sequence OWNER TO postgres;
 
 --
 -- Name: beneficio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1152,7 +1013,7 @@ CREATE TABLE beneficio (
 );
 
 
-ALTER TABLE public.beneficio OWNER TO postgres;
+ALTER TABLE beneficio OWNER TO postgres;
 
 --
 -- Name: beneficio_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1166,14 +1027,7 @@ CREATE SEQUENCE beneficio_sequence
     CACHE 1;
 
 
-ALTER TABLE public.beneficio_sequence OWNER TO postgres;
-
---
--- Name: beneficio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('beneficio_sequence', 1, false);
-
+ALTER TABLE beneficio_sequence OWNER TO postgres;
 
 --
 -- Name: camposextras; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1200,7 +1054,7 @@ CREATE TABLE camposextras (
 );
 
 
-ALTER TABLE public.camposextras OWNER TO postgres;
+ALTER TABLE camposextras OWNER TO postgres;
 
 --
 -- Name: camposextras_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1214,14 +1068,7 @@ CREATE SEQUENCE camposextras_sequence
     CACHE 1;
 
 
-ALTER TABLE public.camposextras_sequence OWNER TO postgres;
-
---
--- Name: camposextras_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('camposextras_sequence', 1, false);
-
+ALTER TABLE camposextras_sequence OWNER TO postgres;
 
 --
 -- Name: candidato; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1311,7 +1158,7 @@ CREATE TABLE candidato (
 );
 
 
-ALTER TABLE public.candidato OWNER TO postgres;
+ALTER TABLE candidato OWNER TO postgres;
 
 --
 -- Name: candidato_areainteresse; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1323,7 +1170,7 @@ CREATE TABLE candidato_areainteresse (
 );
 
 
-ALTER TABLE public.candidato_areainteresse OWNER TO postgres;
+ALTER TABLE candidato_areainteresse OWNER TO postgres;
 
 --
 -- Name: candidato_cargo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1335,7 +1182,7 @@ CREATE TABLE candidato_cargo (
 );
 
 
-ALTER TABLE public.candidato_cargo OWNER TO postgres;
+ALTER TABLE candidato_cargo OWNER TO postgres;
 
 --
 -- Name: candidato_conhecimento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1347,7 +1194,7 @@ CREATE TABLE candidato_conhecimento (
 );
 
 
-ALTER TABLE public.candidato_conhecimento OWNER TO postgres;
+ALTER TABLE candidato_conhecimento OWNER TO postgres;
 
 --
 -- Name: candidato_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1361,14 +1208,7 @@ CREATE SEQUENCE candidato_sequence
     CACHE 1;
 
 
-ALTER TABLE public.candidato_sequence OWNER TO postgres;
-
---
--- Name: candidato_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('candidato_sequence', 1, false);
-
+ALTER TABLE candidato_sequence OWNER TO postgres;
 
 --
 -- Name: candidatocurriculo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1381,7 +1221,7 @@ CREATE TABLE candidatocurriculo (
 );
 
 
-ALTER TABLE public.candidatocurriculo OWNER TO postgres;
+ALTER TABLE candidatocurriculo OWNER TO postgres;
 
 --
 -- Name: candidatocurriculo_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1395,14 +1235,7 @@ CREATE SEQUENCE candidatocurriculo_sequence
     CACHE 1;
 
 
-ALTER TABLE public.candidatocurriculo_sequence OWNER TO postgres;
-
---
--- Name: candidatocurriculo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('candidatocurriculo_sequence', 1, false);
-
+ALTER TABLE candidatocurriculo_sequence OWNER TO postgres;
 
 --
 -- Name: candidatoeleicao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1417,7 +1250,7 @@ CREATE TABLE candidatoeleicao (
 );
 
 
-ALTER TABLE public.candidatoeleicao OWNER TO postgres;
+ALTER TABLE candidatoeleicao OWNER TO postgres;
 
 --
 -- Name: candidatoeleicao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1431,14 +1264,7 @@ CREATE SEQUENCE candidatoeleicao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.candidatoeleicao_sequence OWNER TO postgres;
-
---
--- Name: candidatoeleicao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('candidatoeleicao_sequence', 1, false);
-
+ALTER TABLE candidatoeleicao_sequence OWNER TO postgres;
 
 --
 -- Name: candidatoidioma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1452,7 +1278,7 @@ CREATE TABLE candidatoidioma (
 );
 
 
-ALTER TABLE public.candidatoidioma OWNER TO postgres;
+ALTER TABLE candidatoidioma OWNER TO postgres;
 
 --
 -- Name: candidatoidioma_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1466,14 +1292,7 @@ CREATE SEQUENCE candidatoidioma_sequence
     CACHE 1;
 
 
-ALTER TABLE public.candidatoidioma_sequence OWNER TO postgres;
-
---
--- Name: candidatoidioma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('candidatoidioma_sequence', 1, false);
-
+ALTER TABLE candidatoidioma_sequence OWNER TO postgres;
 
 --
 -- Name: candidatosolicitacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1493,7 +1312,7 @@ CREATE TABLE candidatosolicitacao (
 );
 
 
-ALTER TABLE public.candidatosolicitacao OWNER TO postgres;
+ALTER TABLE candidatosolicitacao OWNER TO postgres;
 
 --
 -- Name: candidatosolicitacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1507,14 +1326,7 @@ CREATE SEQUENCE candidatosolicitacao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.candidatosolicitacao_sequence OWNER TO postgres;
-
---
--- Name: candidatosolicitacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('candidatosolicitacao_sequence', 1, false);
-
+ALTER TABLE candidatosolicitacao_sequence OWNER TO postgres;
 
 --
 -- Name: cargo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1542,7 +1354,7 @@ CREATE TABLE cargo (
 );
 
 
-ALTER TABLE public.cargo OWNER TO postgres;
+ALTER TABLE cargo OWNER TO postgres;
 
 --
 -- Name: cargo_areaformacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1554,7 +1366,7 @@ CREATE TABLE cargo_areaformacao (
 );
 
 
-ALTER TABLE public.cargo_areaformacao OWNER TO postgres;
+ALTER TABLE cargo_areaformacao OWNER TO postgres;
 
 --
 -- Name: cargo_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1566,7 +1378,7 @@ CREATE TABLE cargo_areaorganizacional (
 );
 
 
-ALTER TABLE public.cargo_areaorganizacional OWNER TO postgres;
+ALTER TABLE cargo_areaorganizacional OWNER TO postgres;
 
 --
 -- Name: cargo_atitude; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1578,7 +1390,7 @@ CREATE TABLE cargo_atitude (
 );
 
 
-ALTER TABLE public.cargo_atitude OWNER TO postgres;
+ALTER TABLE cargo_atitude OWNER TO postgres;
 
 --
 -- Name: cargo_conhecimento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1590,7 +1402,7 @@ CREATE TABLE cargo_conhecimento (
 );
 
 
-ALTER TABLE public.cargo_conhecimento OWNER TO postgres;
+ALTER TABLE cargo_conhecimento OWNER TO postgres;
 
 --
 -- Name: cargo_etapaseletiva; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1602,7 +1414,7 @@ CREATE TABLE cargo_etapaseletiva (
 );
 
 
-ALTER TABLE public.cargo_etapaseletiva OWNER TO postgres;
+ALTER TABLE cargo_etapaseletiva OWNER TO postgres;
 
 --
 -- Name: cargo_habilidade; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1614,7 +1426,7 @@ CREATE TABLE cargo_habilidade (
 );
 
 
-ALTER TABLE public.cargo_habilidade OWNER TO postgres;
+ALTER TABLE cargo_habilidade OWNER TO postgres;
 
 --
 -- Name: cargo_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1628,14 +1440,7 @@ CREATE SEQUENCE cargo_sequence
     CACHE 1;
 
 
-ALTER TABLE public.cargo_sequence OWNER TO postgres;
-
---
--- Name: cargo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('cargo_sequence', 1, false);
-
+ALTER TABLE cargo_sequence OWNER TO postgres;
 
 --
 -- Name: cartao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1650,7 +1455,7 @@ CREATE TABLE cartao (
 );
 
 
-ALTER TABLE public.cartao OWNER TO postgres;
+ALTER TABLE cartao OWNER TO postgres;
 
 --
 -- Name: cartao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1664,14 +1469,7 @@ CREATE SEQUENCE cartao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.cartao_sequence OWNER TO postgres;
-
---
--- Name: cartao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('cartao_sequence', 1, true);
-
+ALTER TABLE cartao_sequence OWNER TO postgres;
 
 --
 -- Name: cat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1706,7 +1504,7 @@ CREATE TABLE cat (
 );
 
 
-ALTER TABLE public.cat OWNER TO postgres;
+ALTER TABLE cat OWNER TO postgres;
 
 --
 -- Name: cat_epi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1718,7 +1516,7 @@ CREATE TABLE cat_epi (
 );
 
 
-ALTER TABLE public.cat_epi OWNER TO postgres;
+ALTER TABLE cat_epi OWNER TO postgres;
 
 --
 -- Name: cat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1732,14 +1530,7 @@ CREATE SEQUENCE cat_sequence
     CACHE 1;
 
 
-ALTER TABLE public.cat_sequence OWNER TO postgres;
-
---
--- Name: cat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('cat_sequence', 1, false);
-
+ALTER TABLE cat_sequence OWNER TO postgres;
 
 --
 -- Name: certificacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1754,7 +1545,7 @@ CREATE TABLE certificacao (
 );
 
 
-ALTER TABLE public.certificacao OWNER TO postgres;
+ALTER TABLE certificacao OWNER TO postgres;
 
 --
 -- Name: certificacao_avaliacaopratica; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1766,7 +1557,7 @@ CREATE TABLE certificacao_avaliacaopratica (
 );
 
 
-ALTER TABLE public.certificacao_avaliacaopratica OWNER TO postgres;
+ALTER TABLE certificacao_avaliacaopratica OWNER TO postgres;
 
 --
 -- Name: certificacao_avaliacaopratica_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1780,14 +1571,7 @@ CREATE SEQUENCE certificacao_avaliacaopratica_sequence
     CACHE 1;
 
 
-ALTER TABLE public.certificacao_avaliacaopratica_sequence OWNER TO postgres;
-
---
--- Name: certificacao_avaliacaopratica_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('certificacao_avaliacaopratica_sequence', 1, false);
-
+ALTER TABLE certificacao_avaliacaopratica_sequence OWNER TO postgres;
 
 --
 -- Name: certificacao_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1799,7 +1583,7 @@ CREATE TABLE certificacao_curso (
 );
 
 
-ALTER TABLE public.certificacao_curso OWNER TO postgres;
+ALTER TABLE certificacao_curso OWNER TO postgres;
 
 --
 -- Name: certificacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1813,14 +1597,7 @@ CREATE SEQUENCE certificacao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.certificacao_sequence OWNER TO postgres;
-
---
--- Name: certificacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('certificacao_sequence', 1, false);
-
+ALTER TABLE certificacao_sequence OWNER TO postgres;
 
 --
 -- Name: cid; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1832,7 +1609,7 @@ CREATE TABLE cid (
 );
 
 
-ALTER TABLE public.cid OWNER TO postgres;
+ALTER TABLE cid OWNER TO postgres;
 
 --
 -- Name: cidade; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1846,7 +1623,7 @@ CREATE TABLE cidade (
 );
 
 
-ALTER TABLE public.cidade OWNER TO postgres;
+ALTER TABLE cidade OWNER TO postgres;
 
 --
 -- Name: cidade_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1860,14 +1637,7 @@ CREATE SEQUENCE cidade_sequence
     CACHE 1;
 
 
-ALTER TABLE public.cidade_sequence OWNER TO postgres;
-
---
--- Name: cidade_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('cidade_sequence', 5507, true);
-
+ALTER TABLE cidade_sequence OWNER TO postgres;
 
 --
 -- Name: cliente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1888,7 +1658,7 @@ CREATE TABLE cliente (
 );
 
 
-ALTER TABLE public.cliente OWNER TO postgres;
+ALTER TABLE cliente OWNER TO postgres;
 
 --
 -- Name: cliente_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1902,14 +1672,7 @@ CREATE SEQUENCE cliente_sequence
     CACHE 1;
 
 
-ALTER TABLE public.cliente_sequence OWNER TO postgres;
-
---
--- Name: cliente_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('cliente_sequence', 1, false);
-
+ALTER TABLE cliente_sequence OWNER TO postgres;
 
 --
 -- Name: clinicaautorizada; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1931,7 +1694,7 @@ CREATE TABLE clinicaautorizada (
 );
 
 
-ALTER TABLE public.clinicaautorizada OWNER TO postgres;
+ALTER TABLE clinicaautorizada OWNER TO postgres;
 
 --
 -- Name: clinicaautorizada_exame; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1943,7 +1706,7 @@ CREATE TABLE clinicaautorizada_exame (
 );
 
 
-ALTER TABLE public.clinicaautorizada_exame OWNER TO postgres;
+ALTER TABLE clinicaautorizada_exame OWNER TO postgres;
 
 --
 -- Name: clinicaautorizada_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1957,14 +1720,7 @@ CREATE SEQUENCE clinicaautorizada_sequence
     CACHE 1;
 
 
-ALTER TABLE public.clinicaautorizada_sequence OWNER TO postgres;
-
---
--- Name: clinicaautorizada_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('clinicaautorizada_sequence', 1, false);
-
+ALTER TABLE clinicaautorizada_sequence OWNER TO postgres;
 
 --
 -- Name: codigocbo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1976,7 +1732,7 @@ CREATE TABLE codigocbo (
 );
 
 
-ALTER TABLE public.codigocbo OWNER TO postgres;
+ALTER TABLE codigocbo OWNER TO postgres;
 
 --
 -- Name: colaborador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2056,7 +1812,6 @@ CREATE TABLE colaborador (
     size bigint,
     nomecontato character varying(30),
     camposextras_id bigint,
-    solicitacao_id bigint,
     dataatualizacao date,
     observacaodemissao text,
     datasolicitacaodesligamentoac date,
@@ -2068,7 +1823,7 @@ CREATE TABLE colaborador (
 );
 
 
-ALTER TABLE public.colaborador OWNER TO postgres;
+ALTER TABLE colaborador OWNER TO postgres;
 
 --
 -- Name: colaborador_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2082,14 +1837,7 @@ CREATE SEQUENCE colaborador_sequence
     CACHE 1;
 
 
-ALTER TABLE public.colaborador_sequence OWNER TO postgres;
-
---
--- Name: colaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('colaborador_sequence', 1, false);
-
+ALTER TABLE colaborador_sequence OWNER TO postgres;
 
 --
 -- Name: colaboradorafastamento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2108,7 +1856,7 @@ CREATE TABLE colaboradorafastamento (
 );
 
 
-ALTER TABLE public.colaboradorafastamento OWNER TO postgres;
+ALTER TABLE colaboradorafastamento OWNER TO postgres;
 
 --
 -- Name: colaboradorafastamento_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2122,14 +1870,7 @@ CREATE SEQUENCE colaboradorafastamento_sequence
     CACHE 1;
 
 
-ALTER TABLE public.colaboradorafastamento_sequence OWNER TO postgres;
-
---
--- Name: colaboradorafastamento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('colaboradorafastamento_sequence', 1, false);
-
+ALTER TABLE colaboradorafastamento_sequence OWNER TO postgres;
 
 --
 -- Name: colaboradoravaliacaopratica; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2146,7 +1887,7 @@ CREATE TABLE colaboradoravaliacaopratica (
 );
 
 
-ALTER TABLE public.colaboradoravaliacaopratica OWNER TO postgres;
+ALTER TABLE colaboradoravaliacaopratica OWNER TO postgres;
 
 --
 -- Name: colaboradoravaliacaopratica_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2160,14 +1901,7 @@ CREATE SEQUENCE colaboradoravaliacaopratica_sequence
     CACHE 1;
 
 
-ALTER TABLE public.colaboradoravaliacaopratica_sequence OWNER TO postgres;
-
---
--- Name: colaboradoravaliacaopratica_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('colaboradoravaliacaopratica_sequence', 1, false);
-
+ALTER TABLE colaboradoravaliacaopratica_sequence OWNER TO postgres;
 
 --
 -- Name: colaboradorcertificacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2182,7 +1916,7 @@ CREATE TABLE colaboradorcertificacao (
 );
 
 
-ALTER TABLE public.colaboradorcertificacao OWNER TO postgres;
+ALTER TABLE colaboradorcertificacao OWNER TO postgres;
 
 --
 -- Name: colaboradorcertificacao_colaboradorturma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2194,7 +1928,7 @@ CREATE TABLE colaboradorcertificacao_colaboradorturma (
 );
 
 
-ALTER TABLE public.colaboradorcertificacao_colaboradorturma OWNER TO postgres;
+ALTER TABLE colaboradorcertificacao_colaboradorturma OWNER TO postgres;
 
 --
 -- Name: colaboradorcertificacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2208,14 +1942,7 @@ CREATE SEQUENCE colaboradorcertificacao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.colaboradorcertificacao_sequence OWNER TO postgres;
-
---
--- Name: colaboradorcertificacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('colaboradorcertificacao_sequence', 1, false);
-
+ALTER TABLE colaboradorcertificacao_sequence OWNER TO postgres;
 
 --
 -- Name: colaboradoridioma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2229,7 +1956,7 @@ CREATE TABLE colaboradoridioma (
 );
 
 
-ALTER TABLE public.colaboradoridioma OWNER TO postgres;
+ALTER TABLE colaboradoridioma OWNER TO postgres;
 
 --
 -- Name: colaboradoridioma_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2243,14 +1970,7 @@ CREATE SEQUENCE colaboradoridioma_sequence
     CACHE 1;
 
 
-ALTER TABLE public.colaboradoridioma_sequence OWNER TO postgres;
-
---
--- Name: colaboradoridioma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('colaboradoridioma_sequence', 1, false);
-
+ALTER TABLE colaboradoridioma_sequence OWNER TO postgres;
 
 --
 -- Name: colaboradorocorrencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2267,7 +1987,7 @@ CREATE TABLE colaboradorocorrencia (
 );
 
 
-ALTER TABLE public.colaboradorocorrencia OWNER TO postgres;
+ALTER TABLE colaboradorocorrencia OWNER TO postgres;
 
 --
 -- Name: colaboradorocorrencia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2281,14 +2001,7 @@ CREATE SEQUENCE colaboradorocorrencia_sequence
     CACHE 1;
 
 
-ALTER TABLE public.colaboradorocorrencia_sequence OWNER TO postgres;
-
---
--- Name: colaboradorocorrencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('colaboradorocorrencia_sequence', 1, false);
-
+ALTER TABLE colaboradorocorrencia_sequence OWNER TO postgres;
 
 --
 -- Name: colaboradorperiodoexperienciaavaliacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2303,7 +2016,7 @@ CREATE TABLE colaboradorperiodoexperienciaavaliacao (
 );
 
 
-ALTER TABLE public.colaboradorperiodoexperienciaavaliacao OWNER TO postgres;
+ALTER TABLE colaboradorperiodoexperienciaavaliacao OWNER TO postgres;
 
 --
 -- Name: colaboradorperiodoexperienciaavaliacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2317,14 +2030,7 @@ CREATE SEQUENCE colaboradorperiodoexperienciaavaliacao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.colaboradorperiodoexperienciaavaliacao_sequence OWNER TO postgres;
-
---
--- Name: colaboradorperiodoexperienciaavaliacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('colaboradorperiodoexperienciaavaliacao_sequence', 1, false);
-
+ALTER TABLE colaboradorperiodoexperienciaavaliacao_sequence OWNER TO postgres;
 
 --
 -- Name: colaboradorpresenca; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2338,7 +2044,7 @@ CREATE TABLE colaboradorpresenca (
 );
 
 
-ALTER TABLE public.colaboradorpresenca OWNER TO postgres;
+ALTER TABLE colaboradorpresenca OWNER TO postgres;
 
 --
 -- Name: colaboradorpresenca_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2352,14 +2058,7 @@ CREATE SEQUENCE colaboradorpresenca_sequence
     CACHE 1;
 
 
-ALTER TABLE public.colaboradorpresenca_sequence OWNER TO postgres;
-
---
--- Name: colaboradorpresenca_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('colaboradorpresenca_sequence', 1, false);
-
+ALTER TABLE colaboradorpresenca_sequence OWNER TO postgres;
 
 --
 -- Name: colaboradorquestionario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2387,7 +2086,7 @@ CREATE TABLE colaboradorquestionario (
 );
 
 
-ALTER TABLE public.colaboradorquestionario OWNER TO postgres;
+ALTER TABLE colaboradorquestionario OWNER TO postgres;
 
 --
 -- Name: colaboradorquestionario_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2401,14 +2100,7 @@ CREATE SEQUENCE colaboradorquestionario_sequence
     CACHE 1;
 
 
-ALTER TABLE public.colaboradorquestionario_sequence OWNER TO postgres;
-
---
--- Name: colaboradorquestionario_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('colaboradorquestionario_sequence', 1, false);
-
+ALTER TABLE colaboradorquestionario_sequence OWNER TO postgres;
 
 --
 -- Name: colaboradorresposta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2427,7 +2119,7 @@ CREATE TABLE colaboradorresposta (
 );
 
 
-ALTER TABLE public.colaboradorresposta OWNER TO postgres;
+ALTER TABLE colaboradorresposta OWNER TO postgres;
 
 --
 -- Name: colaboradorresposta_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2441,14 +2133,7 @@ CREATE SEQUENCE colaboradorresposta_sequence
     CACHE 1;
 
 
-ALTER TABLE public.colaboradorresposta_sequence OWNER TO postgres;
-
---
--- Name: colaboradorresposta_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('colaboradorresposta_sequence', 1, false);
-
+ALTER TABLE colaboradorresposta_sequence OWNER TO postgres;
 
 --
 -- Name: colaboradorturma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2467,7 +2152,7 @@ CREATE TABLE colaboradorturma (
 );
 
 
-ALTER TABLE public.colaboradorturma OWNER TO postgres;
+ALTER TABLE colaboradorturma OWNER TO postgres;
 
 --
 -- Name: colaboradorturma_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2481,14 +2166,7 @@ CREATE SEQUENCE colaboradorturma_sequence
     CACHE 1;
 
 
-ALTER TABLE public.colaboradorturma_sequence OWNER TO postgres;
-
---
--- Name: colaboradorturma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('colaboradorturma_sequence', 1, false);
-
+ALTER TABLE colaboradorturma_sequence OWNER TO postgres;
 
 --
 -- Name: comissao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2504,7 +2182,7 @@ CREATE TABLE comissao (
 );
 
 
-ALTER TABLE public.comissao OWNER TO postgres;
+ALTER TABLE comissao OWNER TO postgres;
 
 --
 -- Name: comissao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2518,14 +2196,7 @@ CREATE SEQUENCE comissao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.comissao_sequence OWNER TO postgres;
-
---
--- Name: comissao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('comissao_sequence', 1, false);
-
+ALTER TABLE comissao_sequence OWNER TO postgres;
 
 --
 -- Name: comissaoeleicao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2539,7 +2210,7 @@ CREATE TABLE comissaoeleicao (
 );
 
 
-ALTER TABLE public.comissaoeleicao OWNER TO postgres;
+ALTER TABLE comissaoeleicao OWNER TO postgres;
 
 --
 -- Name: comissaoeleicao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2553,14 +2224,7 @@ CREATE SEQUENCE comissaoeleicao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.comissaoeleicao_sequence OWNER TO postgres;
-
---
--- Name: comissaoeleicao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('comissaoeleicao_sequence', 1, false);
-
+ALTER TABLE comissaoeleicao_sequence OWNER TO postgres;
 
 --
 -- Name: comissaomembro; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2575,7 +2239,7 @@ CREATE TABLE comissaomembro (
 );
 
 
-ALTER TABLE public.comissaomembro OWNER TO postgres;
+ALTER TABLE comissaomembro OWNER TO postgres;
 
 --
 -- Name: comissaomembro_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2589,14 +2253,7 @@ CREATE SEQUENCE comissaomembro_sequence
     CACHE 1;
 
 
-ALTER TABLE public.comissaomembro_sequence OWNER TO postgres;
-
---
--- Name: comissaomembro_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('comissaomembro_sequence', 1, false);
-
+ALTER TABLE comissaomembro_sequence OWNER TO postgres;
 
 --
 -- Name: comissaoperiodo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2609,7 +2266,7 @@ CREATE TABLE comissaoperiodo (
 );
 
 
-ALTER TABLE public.comissaoperiodo OWNER TO postgres;
+ALTER TABLE comissaoperiodo OWNER TO postgres;
 
 --
 -- Name: comissaoperiodo_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2623,14 +2280,7 @@ CREATE SEQUENCE comissaoperiodo_sequence
     CACHE 1;
 
 
-ALTER TABLE public.comissaoperiodo_sequence OWNER TO postgres;
-
---
--- Name: comissaoperiodo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('comissaoperiodo_sequence', 1, false);
-
+ALTER TABLE comissaoperiodo_sequence OWNER TO postgres;
 
 --
 -- Name: comissaoplanotrabalho; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2650,7 +2300,7 @@ CREATE TABLE comissaoplanotrabalho (
 );
 
 
-ALTER TABLE public.comissaoplanotrabalho OWNER TO postgres;
+ALTER TABLE comissaoplanotrabalho OWNER TO postgres;
 
 --
 -- Name: comissaoplanotrabalho_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2664,14 +2314,7 @@ CREATE SEQUENCE comissaoplanotrabalho_sequence
     CACHE 1;
 
 
-ALTER TABLE public.comissaoplanotrabalho_sequence OWNER TO postgres;
-
---
--- Name: comissaoplanotrabalho_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('comissaoplanotrabalho_sequence', 1, false);
-
+ALTER TABLE comissaoplanotrabalho_sequence OWNER TO postgres;
 
 --
 -- Name: comissaoreuniao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2690,7 +2333,7 @@ CREATE TABLE comissaoreuniao (
 );
 
 
-ALTER TABLE public.comissaoreuniao OWNER TO postgres;
+ALTER TABLE comissaoreuniao OWNER TO postgres;
 
 --
 -- Name: comissaoreuniao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2704,14 +2347,7 @@ CREATE SEQUENCE comissaoreuniao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.comissaoreuniao_sequence OWNER TO postgres;
-
---
--- Name: comissaoreuniao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('comissaoreuniao_sequence', 1, false);
-
+ALTER TABLE comissaoreuniao_sequence OWNER TO postgres;
 
 --
 -- Name: comissaoreuniaopresenca; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2726,7 +2362,7 @@ CREATE TABLE comissaoreuniaopresenca (
 );
 
 
-ALTER TABLE public.comissaoreuniaopresenca OWNER TO postgres;
+ALTER TABLE comissaoreuniaopresenca OWNER TO postgres;
 
 --
 -- Name: comissaoreuniaopresenca_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2740,14 +2376,7 @@ CREATE SEQUENCE comissaoreuniaopresenca_sequence
     CACHE 1;
 
 
-ALTER TABLE public.comissaoreuniaopresenca_sequence OWNER TO postgres;
-
---
--- Name: comissaoreuniaopresenca_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('comissaoreuniaopresenca_sequence', 1, false);
-
+ALTER TABLE comissaoreuniaopresenca_sequence OWNER TO postgres;
 
 --
 -- Name: comoficousabendovaga; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2759,7 +2388,7 @@ CREATE TABLE comoficousabendovaga (
 );
 
 
-ALTER TABLE public.comoficousabendovaga OWNER TO postgres;
+ALTER TABLE comoficousabendovaga OWNER TO postgres;
 
 --
 -- Name: comoficousabendovaga_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2773,14 +2402,7 @@ CREATE SEQUENCE comoficousabendovaga_sequence
     CACHE 1;
 
 
-ALTER TABLE public.comoficousabendovaga_sequence OWNER TO postgres;
-
---
--- Name: comoficousabendovaga_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('comoficousabendovaga_sequence', 2, false);
-
+ALTER TABLE comoficousabendovaga_sequence OWNER TO postgres;
 
 --
 -- Name: conhecimento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2794,7 +2416,7 @@ CREATE TABLE conhecimento (
 );
 
 
-ALTER TABLE public.conhecimento OWNER TO postgres;
+ALTER TABLE conhecimento OWNER TO postgres;
 
 --
 -- Name: habilidade; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2808,17 +2430,37 @@ CREATE TABLE habilidade (
 );
 
 
-ALTER TABLE public.habilidade OWNER TO postgres;
+ALTER TABLE habilidade OWNER TO postgres;
 
 --
 -- Name: competencia; Type: VIEW; Schema: public; Owner: postgres
 --
 
 CREATE VIEW competencia AS
-    (SELECT conhecimento.id, conhecimento.nome, conhecimento.empresa_id, conhecimento.observacao, 'C'::text AS tipo FROM conhecimento UNION SELECT habilidade.id, habilidade.nome, habilidade.empresa_id, habilidade.observacao, 'H'::text AS tipo FROM habilidade) UNION SELECT atitude.id, atitude.nome, atitude.empresa_id, atitude.observacao, 'A'::text AS tipo FROM atitude ORDER BY 1;
+ SELECT conhecimento.id,
+    conhecimento.nome,
+    conhecimento.empresa_id,
+    conhecimento.observacao,
+    'C'::text AS tipo
+   FROM conhecimento
+UNION
+ SELECT habilidade.id,
+    habilidade.nome,
+    habilidade.empresa_id,
+    habilidade.observacao,
+    'H'::text AS tipo
+   FROM habilidade
+UNION
+ SELECT atitude.id,
+    atitude.nome,
+    atitude.empresa_id,
+    atitude.observacao,
+    'A'::text AS tipo
+   FROM atitude
+  ORDER BY 1;
 
 
-ALTER TABLE public.competencia OWNER TO postgres;
+ALTER TABLE competencia OWNER TO postgres;
 
 --
 -- Name: composicaosesmt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2836,7 +2478,7 @@ CREATE TABLE composicaosesmt (
 );
 
 
-ALTER TABLE public.composicaosesmt OWNER TO postgres;
+ALTER TABLE composicaosesmt OWNER TO postgres;
 
 --
 -- Name: composicaosesmt_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2850,14 +2492,7 @@ CREATE SEQUENCE composicaosesmt_sequence
     CACHE 1;
 
 
-ALTER TABLE public.composicaosesmt_sequence OWNER TO postgres;
-
---
--- Name: composicaosesmt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('composicaosesmt_sequence', 1, false);
-
+ALTER TABLE composicaosesmt_sequence OWNER TO postgres;
 
 --
 -- Name: confighistoriconivel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2872,7 +2507,7 @@ CREATE TABLE confighistoriconivel (
 );
 
 
-ALTER TABLE public.confighistoriconivel OWNER TO postgres;
+ALTER TABLE confighistoriconivel OWNER TO postgres;
 
 --
 -- Name: confighistoriconivel_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2886,14 +2521,7 @@ CREATE SEQUENCE confighistoriconivel_sequence
     CACHE 1;
 
 
-ALTER TABLE public.confighistoriconivel_sequence OWNER TO postgres;
-
---
--- Name: confighistoriconivel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('confighistoriconivel_sequence', 1, false);
-
+ALTER TABLE confighistoriconivel_sequence OWNER TO postgres;
 
 --
 -- Name: configuracaocampoextra; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2913,7 +2541,7 @@ CREATE TABLE configuracaocampoextra (
 );
 
 
-ALTER TABLE public.configuracaocampoextra OWNER TO postgres;
+ALTER TABLE configuracaocampoextra OWNER TO postgres;
 
 --
 -- Name: configuracaocampoextra_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2927,14 +2555,7 @@ CREATE SEQUENCE configuracaocampoextra_sequence
     CACHE 1;
 
 
-ALTER TABLE public.configuracaocampoextra_sequence OWNER TO postgres;
-
---
--- Name: configuracaocampoextra_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('configuracaocampoextra_sequence', 33, false);
-
+ALTER TABLE configuracaocampoextra_sequence OWNER TO postgres;
 
 --
 -- Name: configuracaocampoextravisivelobrigadotorio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2949,7 +2570,7 @@ CREATE TABLE configuracaocampoextravisivelobrigadotorio (
 );
 
 
-ALTER TABLE public.configuracaocampoextravisivelobrigadotorio OWNER TO postgres;
+ALTER TABLE configuracaocampoextravisivelobrigadotorio OWNER TO postgres;
 
 --
 -- Name: configuracaocampoextravisivelobrigadotorio_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -2963,14 +2584,7 @@ CREATE SEQUENCE configuracaocampoextravisivelobrigadotorio_sequence
     CACHE 1;
 
 
-ALTER TABLE public.configuracaocampoextravisivelobrigadotorio_sequence OWNER TO postgres;
-
---
--- Name: configuracaocampoextravisivelobrigadotorio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('configuracaocampoextravisivelobrigadotorio_sequence', 1, false);
-
+ALTER TABLE configuracaocampoextravisivelobrigadotorio_sequence OWNER TO postgres;
 
 --
 -- Name: configuracaocompetenciaavaliacaodesempenho; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -2986,7 +2600,7 @@ CREATE TABLE configuracaocompetenciaavaliacaodesempenho (
 );
 
 
-ALTER TABLE public.configuracaocompetenciaavaliacaodesempenho OWNER TO postgres;
+ALTER TABLE configuracaocompetenciaavaliacaodesempenho OWNER TO postgres;
 
 --
 -- Name: configuracaocompetenciaavaliacaodesempenho_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3000,14 +2614,7 @@ CREATE SEQUENCE configuracaocompetenciaavaliacaodesempenho_sequence
     CACHE 1;
 
 
-ALTER TABLE public.configuracaocompetenciaavaliacaodesempenho_sequence OWNER TO postgres;
-
---
--- Name: configuracaocompetenciaavaliacaodesempenho_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('configuracaocompetenciaavaliacaodesempenho_sequence', 1, false);
-
+ALTER TABLE configuracaocompetenciaavaliacaodesempenho_sequence OWNER TO postgres;
 
 --
 -- Name: configuracaoimpressaocurriculo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3040,7 +2647,7 @@ CREATE TABLE configuracaoimpressaocurriculo (
 );
 
 
-ALTER TABLE public.configuracaoimpressaocurriculo OWNER TO postgres;
+ALTER TABLE configuracaoimpressaocurriculo OWNER TO postgres;
 
 --
 -- Name: configuracaoimpressaocurriculo_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3054,14 +2661,7 @@ CREATE SEQUENCE configuracaoimpressaocurriculo_sequence
     CACHE 1;
 
 
-ALTER TABLE public.configuracaoimpressaocurriculo_sequence OWNER TO postgres;
-
---
--- Name: configuracaoimpressaocurriculo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('configuracaoimpressaocurriculo_sequence', 1, false);
-
+ALTER TABLE configuracaoimpressaocurriculo_sequence OWNER TO postgres;
 
 --
 -- Name: configuracaolimitecolaborador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3074,7 +2674,7 @@ CREATE TABLE configuracaolimitecolaborador (
 );
 
 
-ALTER TABLE public.configuracaolimitecolaborador OWNER TO postgres;
+ALTER TABLE configuracaolimitecolaborador OWNER TO postgres;
 
 --
 -- Name: configuracaolimitecolaborador_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3088,14 +2688,7 @@ CREATE SEQUENCE configuracaolimitecolaborador_sequence
     CACHE 1;
 
 
-ALTER TABLE public.configuracaolimitecolaborador_sequence OWNER TO postgres;
-
---
--- Name: configuracaolimitecolaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('configuracaolimitecolaborador_sequence', 1, false);
-
+ALTER TABLE configuracaolimitecolaborador_sequence OWNER TO postgres;
 
 --
 -- Name: configuracaonivelcompetencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3114,7 +2707,7 @@ CREATE TABLE configuracaonivelcompetencia (
 );
 
 
-ALTER TABLE public.configuracaonivelcompetencia OWNER TO postgres;
+ALTER TABLE configuracaonivelcompetencia OWNER TO postgres;
 
 --
 -- Name: configuracaonivelcompetencia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3128,14 +2721,7 @@ CREATE SEQUENCE configuracaonivelcompetencia_sequence
     CACHE 1;
 
 
-ALTER TABLE public.configuracaonivelcompetencia_sequence OWNER TO postgres;
-
---
--- Name: configuracaonivelcompetencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('configuracaonivelcompetencia_sequence', 1, false);
-
+ALTER TABLE configuracaonivelcompetencia_sequence OWNER TO postgres;
 
 --
 -- Name: configuracaonivelcompetenciacandidato; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3150,7 +2736,7 @@ CREATE TABLE configuracaonivelcompetenciacandidato (
 );
 
 
-ALTER TABLE public.configuracaonivelcompetenciacandidato OWNER TO postgres;
+ALTER TABLE configuracaonivelcompetenciacandidato OWNER TO postgres;
 
 --
 -- Name: configuracaonivelcompetenciacandidato_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3164,14 +2750,7 @@ CREATE SEQUENCE configuracaonivelcompetenciacandidato_sequence
     CACHE 1;
 
 
-ALTER TABLE public.configuracaonivelcompetenciacandidato_sequence OWNER TO postgres;
-
---
--- Name: configuracaonivelcompetenciacandidato_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('configuracaonivelcompetenciacandidato_sequence', 1, false);
-
+ALTER TABLE configuracaonivelcompetenciacandidato_sequence OWNER TO postgres;
 
 --
 -- Name: configuracaonivelcompetenciacolaborador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3188,7 +2767,7 @@ CREATE TABLE configuracaonivelcompetenciacolaborador (
 );
 
 
-ALTER TABLE public.configuracaonivelcompetenciacolaborador OWNER TO postgres;
+ALTER TABLE configuracaonivelcompetenciacolaborador OWNER TO postgres;
 
 --
 -- Name: configuracaonivelcompetenciacolaborador_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3202,14 +2781,7 @@ CREATE SEQUENCE configuracaonivelcompetenciacolaborador_sequence
     CACHE 1;
 
 
-ALTER TABLE public.configuracaonivelcompetenciacolaborador_sequence OWNER TO postgres;
-
---
--- Name: configuracaonivelcompetenciacolaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('configuracaonivelcompetenciacolaborador_sequence', 1, false);
-
+ALTER TABLE configuracaonivelcompetenciacolaborador_sequence OWNER TO postgres;
 
 --
 -- Name: configuracaonivelcompetenciacriterio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3224,7 +2796,7 @@ CREATE TABLE configuracaonivelcompetenciacriterio (
 );
 
 
-ALTER TABLE public.configuracaonivelcompetenciacriterio OWNER TO postgres;
+ALTER TABLE configuracaonivelcompetenciacriterio OWNER TO postgres;
 
 --
 -- Name: configuracaonivelcompetenciacriterio_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3238,14 +2810,7 @@ CREATE SEQUENCE configuracaonivelcompetenciacriterio_sequence
     CACHE 1;
 
 
-ALTER TABLE public.configuracaonivelcompetenciacriterio_sequence OWNER TO postgres;
-
---
--- Name: configuracaonivelcompetenciacriterio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('configuracaonivelcompetenciacriterio_sequence', 1, false);
-
+ALTER TABLE configuracaonivelcompetenciacriterio_sequence OWNER TO postgres;
 
 --
 -- Name: configuracaonivelcompetenciafaixasalarial; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3259,7 +2824,7 @@ CREATE TABLE configuracaonivelcompetenciafaixasalarial (
 );
 
 
-ALTER TABLE public.configuracaonivelcompetenciafaixasalarial OWNER TO postgres;
+ALTER TABLE configuracaonivelcompetenciafaixasalarial OWNER TO postgres;
 
 --
 -- Name: configuracaonivelcompetenciafaixasalarial_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3273,14 +2838,7 @@ CREATE SEQUENCE configuracaonivelcompetenciafaixasalarial_sequence
     CACHE 1;
 
 
-ALTER TABLE public.configuracaonivelcompetenciafaixasalarial_sequence OWNER TO postgres;
-
---
--- Name: configuracaonivelcompetenciafaixasalarial_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('configuracaonivelcompetenciafaixasalarial_sequence', 1, false);
-
+ALTER TABLE configuracaonivelcompetenciafaixasalarial_sequence OWNER TO postgres;
 
 --
 -- Name: configuracaoperformance; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3295,7 +2853,7 @@ CREATE TABLE configuracaoperformance (
 );
 
 
-ALTER TABLE public.configuracaoperformance OWNER TO postgres;
+ALTER TABLE configuracaoperformance OWNER TO postgres;
 
 --
 -- Name: configuracaoperformance_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3309,14 +2867,7 @@ CREATE SEQUENCE configuracaoperformance_sequence
     CACHE 1;
 
 
-ALTER TABLE public.configuracaoperformance_sequence OWNER TO postgres;
-
---
--- Name: configuracaoperformance_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('configuracaoperformance_sequence', 1, false);
-
+ALTER TABLE configuracaoperformance_sequence OWNER TO postgres;
 
 --
 -- Name: configuracaorelatoriodinamico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3330,7 +2881,7 @@ CREATE TABLE configuracaorelatoriodinamico (
 );
 
 
-ALTER TABLE public.configuracaorelatoriodinamico OWNER TO postgres;
+ALTER TABLE configuracaorelatoriodinamico OWNER TO postgres;
 
 --
 -- Name: configuracaorelatoriodinamico_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3344,14 +2895,7 @@ CREATE SEQUENCE configuracaorelatoriodinamico_sequence
     CACHE 1;
 
 
-ALTER TABLE public.configuracaorelatoriodinamico_sequence OWNER TO postgres;
-
---
--- Name: configuracaorelatoriodinamico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('configuracaorelatoriodinamico_sequence', 1, false);
-
+ALTER TABLE configuracaorelatoriodinamico_sequence OWNER TO postgres;
 
 --
 -- Name: conhecimento_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3363,7 +2907,7 @@ CREATE TABLE conhecimento_areaorganizacional (
 );
 
 
-ALTER TABLE public.conhecimento_areaorganizacional OWNER TO postgres;
+ALTER TABLE conhecimento_areaorganizacional OWNER TO postgres;
 
 --
 -- Name: conhecimento_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3375,7 +2919,7 @@ CREATE TABLE conhecimento_curso (
 );
 
 
-ALTER TABLE public.conhecimento_curso OWNER TO postgres;
+ALTER TABLE conhecimento_curso OWNER TO postgres;
 
 --
 -- Name: conhecimento_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3389,14 +2933,7 @@ CREATE SEQUENCE conhecimento_sequence
     CACHE 1;
 
 
-ALTER TABLE public.conhecimento_sequence OWNER TO postgres;
-
---
--- Name: conhecimento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('conhecimento_sequence', 1, false);
-
+ALTER TABLE conhecimento_sequence OWNER TO postgres;
 
 --
 -- Name: criterioavaliacaocompetencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3411,7 +2948,7 @@ CREATE TABLE criterioavaliacaocompetencia (
 );
 
 
-ALTER TABLE public.criterioavaliacaocompetencia OWNER TO postgres;
+ALTER TABLE criterioavaliacaocompetencia OWNER TO postgres;
 
 --
 -- Name: criterioavaliacaocompetencia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3425,14 +2962,7 @@ CREATE SEQUENCE criterioavaliacaocompetencia_sequence
     CACHE 1;
 
 
-ALTER TABLE public.criterioavaliacaocompetencia_sequence OWNER TO postgres;
-
---
--- Name: criterioavaliacaocompetencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('criterioavaliacaocompetencia_sequence', 1, false);
-
+ALTER TABLE criterioavaliacaocompetencia_sequence OWNER TO postgres;
 
 --
 -- Name: curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3451,7 +2981,7 @@ CREATE TABLE curso (
 );
 
 
-ALTER TABLE public.curso OWNER TO postgres;
+ALTER TABLE curso OWNER TO postgres;
 
 --
 -- Name: curso_avaliacaocurso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3463,7 +2993,7 @@ CREATE TABLE curso_avaliacaocurso (
 );
 
 
-ALTER TABLE public.curso_avaliacaocurso OWNER TO postgres;
+ALTER TABLE curso_avaliacaocurso OWNER TO postgres;
 
 --
 -- Name: curso_empresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3475,7 +3005,7 @@ CREATE TABLE curso_empresa (
 );
 
 
-ALTER TABLE public.curso_empresa OWNER TO postgres;
+ALTER TABLE curso_empresa OWNER TO postgres;
 
 --
 -- Name: curso_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3489,14 +3019,7 @@ CREATE SEQUENCE curso_sequence
     CACHE 1;
 
 
-ALTER TABLE public.curso_sequence OWNER TO postgres;
-
---
--- Name: curso_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('curso_sequence', 1, false);
-
+ALTER TABLE curso_sequence OWNER TO postgres;
 
 --
 -- Name: cursolnt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3514,7 +3037,7 @@ CREATE TABLE cursolnt (
 );
 
 
-ALTER TABLE public.cursolnt OWNER TO postgres;
+ALTER TABLE cursolnt OWNER TO postgres;
 
 --
 -- Name: cursolnt_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3528,14 +3051,7 @@ CREATE SEQUENCE cursolnt_sequence
     CACHE 1;
 
 
-ALTER TABLE public.cursolnt_sequence OWNER TO postgres;
-
---
--- Name: cursolnt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('cursolnt_sequence', 1, false);
-
+ALTER TABLE cursolnt_sequence OWNER TO postgres;
 
 --
 -- Name: dependente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3550,7 +3066,7 @@ CREATE TABLE dependente (
 );
 
 
-ALTER TABLE public.dependente OWNER TO postgres;
+ALTER TABLE dependente OWNER TO postgres;
 
 --
 -- Name: dependente_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3564,14 +3080,7 @@ CREATE SEQUENCE dependente_sequence
     CACHE 1;
 
 
-ALTER TABLE public.dependente_sequence OWNER TO postgres;
-
---
--- Name: dependente_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('dependente_sequence', 1, false);
-
+ALTER TABLE dependente_sequence OWNER TO postgres;
 
 --
 -- Name: diaturma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3587,7 +3096,7 @@ CREATE TABLE diaturma (
 );
 
 
-ALTER TABLE public.diaturma OWNER TO postgres;
+ALTER TABLE diaturma OWNER TO postgres;
 
 --
 -- Name: diaturma_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3601,14 +3110,7 @@ CREATE SEQUENCE diaturma_sequence
     CACHE 1;
 
 
-ALTER TABLE public.diaturma_sequence OWNER TO postgres;
-
---
--- Name: diaturma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('diaturma_sequence', 1, false);
-
+ALTER TABLE diaturma_sequence OWNER TO postgres;
 
 --
 -- Name: dnt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3622,7 +3124,7 @@ CREATE TABLE dnt (
 );
 
 
-ALTER TABLE public.dnt OWNER TO postgres;
+ALTER TABLE dnt OWNER TO postgres;
 
 --
 -- Name: dnt_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3636,14 +3138,7 @@ CREATE SEQUENCE dnt_sequence
     CACHE 1;
 
 
-ALTER TABLE public.dnt_sequence OWNER TO postgres;
-
---
--- Name: dnt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('dnt_sequence', 1, false);
-
+ALTER TABLE dnt_sequence OWNER TO postgres;
 
 --
 -- Name: documentoanexo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3663,7 +3158,7 @@ CREATE TABLE documentoanexo (
 );
 
 
-ALTER TABLE public.documentoanexo OWNER TO postgres;
+ALTER TABLE documentoanexo OWNER TO postgres;
 
 --
 -- Name: documentoanexo_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3677,14 +3172,7 @@ CREATE SEQUENCE documentoanexo_sequence
     CACHE 1;
 
 
-ALTER TABLE public.documentoanexo_sequence OWNER TO postgres;
-
---
--- Name: documentoanexo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('documentoanexo_sequence', 1, false);
-
+ALTER TABLE documentoanexo_sequence OWNER TO postgres;
 
 --
 -- Name: eleicao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3718,7 +3206,7 @@ CREATE TABLE eleicao (
 );
 
 
-ALTER TABLE public.eleicao OWNER TO postgres;
+ALTER TABLE eleicao OWNER TO postgres;
 
 --
 -- Name: eleicao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3732,14 +3220,7 @@ CREATE SEQUENCE eleicao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.eleicao_sequence OWNER TO postgres;
-
---
--- Name: eleicao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('eleicao_sequence', 1, false);
-
+ALTER TABLE eleicao_sequence OWNER TO postgres;
 
 --
 -- Name: empresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3804,7 +3285,7 @@ CREATE TABLE empresa (
 );
 
 
-ALTER TABLE public.empresa OWNER TO postgres;
+ALTER TABLE empresa OWNER TO postgres;
 
 --
 -- Name: empresa_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3818,14 +3299,7 @@ CREATE SEQUENCE empresa_sequence
     CACHE 1;
 
 
-ALTER TABLE public.empresa_sequence OWNER TO postgres;
-
---
--- Name: empresa_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('empresa_sequence', 2, false);
-
+ALTER TABLE empresa_sequence OWNER TO postgres;
 
 --
 -- Name: empresabds; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3842,7 +3316,7 @@ CREATE TABLE empresabds (
 );
 
 
-ALTER TABLE public.empresabds OWNER TO postgres;
+ALTER TABLE empresabds OWNER TO postgres;
 
 --
 -- Name: empresabds_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3856,14 +3330,7 @@ CREATE SEQUENCE empresabds_sequence
     CACHE 1;
 
 
-ALTER TABLE public.empresabds_sequence OWNER TO postgres;
-
---
--- Name: empresabds_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('empresabds_sequence', 1, false);
-
+ALTER TABLE empresabds_sequence OWNER TO postgres;
 
 --
 -- Name: engenheiroresponsavel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3880,7 +3347,7 @@ CREATE TABLE engenheiroresponsavel (
 );
 
 
-ALTER TABLE public.engenheiroresponsavel OWNER TO postgres;
+ALTER TABLE engenheiroresponsavel OWNER TO postgres;
 
 --
 -- Name: engenheiroresponsavel_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3894,14 +3361,7 @@ CREATE SEQUENCE engenheiroresponsavel_sequence
     CACHE 1;
 
 
-ALTER TABLE public.engenheiroresponsavel_sequence OWNER TO postgres;
-
---
--- Name: engenheiroresponsavel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('engenheiroresponsavel_sequence', 1, false);
-
+ALTER TABLE engenheiroresponsavel_sequence OWNER TO postgres;
 
 --
 -- Name: entrevista; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3914,7 +3374,7 @@ CREATE TABLE entrevista (
 );
 
 
-ALTER TABLE public.entrevista OWNER TO postgres;
+ALTER TABLE entrevista OWNER TO postgres;
 
 --
 -- Name: entrevista_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3928,14 +3388,7 @@ CREATE SEQUENCE entrevista_sequence
     CACHE 1;
 
 
-ALTER TABLE public.entrevista_sequence OWNER TO postgres;
-
---
--- Name: entrevista_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('entrevista_sequence', 1, false);
-
+ALTER TABLE entrevista_sequence OWNER TO postgres;
 
 --
 -- Name: epc; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3949,7 +3402,7 @@ CREATE TABLE epc (
 );
 
 
-ALTER TABLE public.epc OWNER TO postgres;
+ALTER TABLE epc OWNER TO postgres;
 
 --
 -- Name: epc_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3963,14 +3416,7 @@ CREATE SEQUENCE epc_sequence
     CACHE 1;
 
 
-ALTER TABLE public.epc_sequence OWNER TO postgres;
-
---
--- Name: epc_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('epc_sequence', 1, false);
-
+ALTER TABLE epc_sequence OWNER TO postgres;
 
 --
 -- Name: epcpcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -3984,7 +3430,7 @@ CREATE TABLE epcpcmat (
 );
 
 
-ALTER TABLE public.epcpcmat OWNER TO postgres;
+ALTER TABLE epcpcmat OWNER TO postgres;
 
 --
 -- Name: epcpcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -3998,14 +3444,7 @@ CREATE SEQUENCE epcpcmat_sequence
     CACHE 1;
 
 
-ALTER TABLE public.epcpcmat_sequence OWNER TO postgres;
-
---
--- Name: epcpcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('epcpcmat_sequence', 1, false);
-
+ALTER TABLE epcpcmat_sequence OWNER TO postgres;
 
 --
 -- Name: epi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4024,7 +3463,7 @@ CREATE TABLE epi (
 );
 
 
-ALTER TABLE public.epi OWNER TO postgres;
+ALTER TABLE epi OWNER TO postgres;
 
 --
 -- Name: epi_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4038,14 +3477,7 @@ CREATE SEQUENCE epi_sequence
     CACHE 1;
 
 
-ALTER TABLE public.epi_sequence OWNER TO postgres;
-
---
--- Name: epi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('epi_sequence', 1, false);
-
+ALTER TABLE epi_sequence OWNER TO postgres;
 
 --
 -- Name: epihistorico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4062,7 +3494,7 @@ CREATE TABLE epihistorico (
 );
 
 
-ALTER TABLE public.epihistorico OWNER TO postgres;
+ALTER TABLE epihistorico OWNER TO postgres;
 
 --
 -- Name: epihistorico_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4076,14 +3508,7 @@ CREATE SEQUENCE epihistorico_sequence
     CACHE 1;
 
 
-ALTER TABLE public.epihistorico_sequence OWNER TO postgres;
-
---
--- Name: epihistorico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('epihistorico_sequence', 1, false);
-
+ALTER TABLE epihistorico_sequence OWNER TO postgres;
 
 --
 -- Name: epipcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4097,7 +3522,7 @@ CREATE TABLE epipcmat (
 );
 
 
-ALTER TABLE public.epipcmat OWNER TO postgres;
+ALTER TABLE epipcmat OWNER TO postgres;
 
 --
 -- Name: epipcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4111,14 +3536,7 @@ CREATE SEQUENCE epipcmat_sequence
     CACHE 1;
 
 
-ALTER TABLE public.epipcmat_sequence OWNER TO postgres;
-
---
--- Name: epipcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('epipcmat_sequence', 1, false);
-
+ALTER TABLE epipcmat_sequence OWNER TO postgres;
 
 --
 -- Name: estabelecimento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4141,7 +3559,7 @@ CREATE TABLE estabelecimento (
 );
 
 
-ALTER TABLE public.estabelecimento OWNER TO postgres;
+ALTER TABLE estabelecimento OWNER TO postgres;
 
 --
 -- Name: estabelecimento_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4155,14 +3573,7 @@ CREATE SEQUENCE estabelecimento_sequence
     CACHE 1;
 
 
-ALTER TABLE public.estabelecimento_sequence OWNER TO postgres;
-
---
--- Name: estabelecimento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('estabelecimento_sequence', 2, false);
-
+ALTER TABLE estabelecimento_sequence OWNER TO postgres;
 
 --
 -- Name: estado; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4175,7 +3586,7 @@ CREATE TABLE estado (
 );
 
 
-ALTER TABLE public.estado OWNER TO postgres;
+ALTER TABLE estado OWNER TO postgres;
 
 --
 -- Name: estado_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4189,14 +3600,7 @@ CREATE SEQUENCE estado_sequence
     CACHE 1;
 
 
-ALTER TABLE public.estado_sequence OWNER TO postgres;
-
---
--- Name: estado_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('estado_sequence', 27, true);
-
+ALTER TABLE estado_sequence OWNER TO postgres;
 
 --
 -- Name: etapaprocessoeleitoral; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4213,7 +3617,7 @@ CREATE TABLE etapaprocessoeleitoral (
 );
 
 
-ALTER TABLE public.etapaprocessoeleitoral OWNER TO postgres;
+ALTER TABLE etapaprocessoeleitoral OWNER TO postgres;
 
 --
 -- Name: etapaprocessoeleitoral_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4227,14 +3631,7 @@ CREATE SEQUENCE etapaprocessoeleitoral_sequence
     CACHE 1;
 
 
-ALTER TABLE public.etapaprocessoeleitoral_sequence OWNER TO postgres;
-
---
--- Name: etapaprocessoeleitoral_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('etapaprocessoeleitoral_sequence', 1, false);
-
+ALTER TABLE etapaprocessoeleitoral_sequence OWNER TO postgres;
 
 --
 -- Name: etapaseletiva; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4248,7 +3645,7 @@ CREATE TABLE etapaseletiva (
 );
 
 
-ALTER TABLE public.etapaseletiva OWNER TO postgres;
+ALTER TABLE etapaseletiva OWNER TO postgres;
 
 --
 -- Name: etapaseletiva_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4262,14 +3659,7 @@ CREATE SEQUENCE etapaseletiva_sequence
     CACHE 1;
 
 
-ALTER TABLE public.etapaseletiva_sequence OWNER TO postgres;
-
---
--- Name: etapaseletiva_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('etapaseletiva_sequence', 1, false);
-
+ALTER TABLE etapaseletiva_sequence OWNER TO postgres;
 
 --
 -- Name: evento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4281,7 +3671,7 @@ CREATE TABLE evento (
 );
 
 
-ALTER TABLE public.evento OWNER TO postgres;
+ALTER TABLE evento OWNER TO postgres;
 
 --
 -- Name: evento_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4295,14 +3685,7 @@ CREATE SEQUENCE evento_sequence
     CACHE 1;
 
 
-ALTER TABLE public.evento_sequence OWNER TO postgres;
-
---
--- Name: evento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('evento_sequence', 1, false);
-
+ALTER TABLE evento_sequence OWNER TO postgres;
 
 --
 -- Name: exame; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4318,7 +3701,7 @@ CREATE TABLE exame (
 );
 
 
-ALTER TABLE public.exame OWNER TO postgres;
+ALTER TABLE exame OWNER TO postgres;
 
 --
 -- Name: exame_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4332,14 +3715,7 @@ CREATE SEQUENCE exame_sequence
     CACHE 1;
 
 
-ALTER TABLE public.exame_sequence OWNER TO postgres;
-
---
--- Name: exame_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('exame_sequence', 3, true);
-
+ALTER TABLE exame_sequence OWNER TO postgres;
 
 --
 -- Name: examesolicitacaoexame; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4355,7 +3731,7 @@ CREATE TABLE examesolicitacaoexame (
 );
 
 
-ALTER TABLE public.examesolicitacaoexame OWNER TO postgres;
+ALTER TABLE examesolicitacaoexame OWNER TO postgres;
 
 --
 -- Name: examesolicitacaoexame_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4369,14 +3745,7 @@ CREATE SEQUENCE examesolicitacaoexame_sequence
     CACHE 1;
 
 
-ALTER TABLE public.examesolicitacaoexame_sequence OWNER TO postgres;
-
---
--- Name: examesolicitacaoexame_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('examesolicitacaoexame_sequence', 1, false);
-
+ALTER TABLE examesolicitacaoexame_sequence OWNER TO postgres;
 
 --
 -- Name: experiencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4398,7 +3767,7 @@ CREATE TABLE experiencia (
 );
 
 
-ALTER TABLE public.experiencia OWNER TO postgres;
+ALTER TABLE experiencia OWNER TO postgres;
 
 --
 -- Name: experiencia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4412,14 +3781,7 @@ CREATE SEQUENCE experiencia_sequence
     CACHE 1;
 
 
-ALTER TABLE public.experiencia_sequence OWNER TO postgres;
-
---
--- Name: experiencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('experiencia_sequence', 1, false);
-
+ALTER TABLE experiencia_sequence OWNER TO postgres;
 
 --
 -- Name: extintor; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4439,7 +3801,7 @@ CREATE TABLE extintor (
 );
 
 
-ALTER TABLE public.extintor OWNER TO postgres;
+ALTER TABLE extintor OWNER TO postgres;
 
 --
 -- Name: extintor_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4453,14 +3815,7 @@ CREATE SEQUENCE extintor_sequence
     CACHE 1;
 
 
-ALTER TABLE public.extintor_sequence OWNER TO postgres;
-
---
--- Name: extintor_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('extintor_sequence', 1, false);
-
+ALTER TABLE extintor_sequence OWNER TO postgres;
 
 --
 -- Name: extintorinspecao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4476,7 +3831,7 @@ CREATE TABLE extintorinspecao (
 );
 
 
-ALTER TABLE public.extintorinspecao OWNER TO postgres;
+ALTER TABLE extintorinspecao OWNER TO postgres;
 
 --
 -- Name: extintorinspecao_extintorinspecaoitem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4488,7 +3843,7 @@ CREATE TABLE extintorinspecao_extintorinspecaoitem (
 );
 
 
-ALTER TABLE public.extintorinspecao_extintorinspecaoitem OWNER TO postgres;
+ALTER TABLE extintorinspecao_extintorinspecaoitem OWNER TO postgres;
 
 --
 -- Name: extintorinspecao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4502,14 +3857,7 @@ CREATE SEQUENCE extintorinspecao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.extintorinspecao_sequence OWNER TO postgres;
-
---
--- Name: extintorinspecao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('extintorinspecao_sequence', 1, false);
-
+ALTER TABLE extintorinspecao_sequence OWNER TO postgres;
 
 --
 -- Name: extintorinspecaoitem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4521,7 +3869,7 @@ CREATE TABLE extintorinspecaoitem (
 );
 
 
-ALTER TABLE public.extintorinspecaoitem OWNER TO postgres;
+ALTER TABLE extintorinspecaoitem OWNER TO postgres;
 
 --
 -- Name: extintorinspecaoitem_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4535,14 +3883,7 @@ CREATE SEQUENCE extintorinspecaoitem_sequence
     CACHE 1;
 
 
-ALTER TABLE public.extintorinspecaoitem_sequence OWNER TO postgres;
-
---
--- Name: extintorinspecaoitem_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('extintorinspecaoitem_sequence', 12, false);
-
+ALTER TABLE extintorinspecaoitem_sequence OWNER TO postgres;
 
 --
 -- Name: extintormanutencao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4559,7 +3900,7 @@ CREATE TABLE extintormanutencao (
 );
 
 
-ALTER TABLE public.extintormanutencao OWNER TO postgres;
+ALTER TABLE extintormanutencao OWNER TO postgres;
 
 --
 -- Name: extintormanutencao_extintormanutencaoservico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4571,7 +3912,7 @@ CREATE TABLE extintormanutencao_extintormanutencaoservico (
 );
 
 
-ALTER TABLE public.extintormanutencao_extintormanutencaoservico OWNER TO postgres;
+ALTER TABLE extintormanutencao_extintormanutencaoservico OWNER TO postgres;
 
 --
 -- Name: extintormanutencao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4585,14 +3926,7 @@ CREATE SEQUENCE extintormanutencao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.extintormanutencao_sequence OWNER TO postgres;
-
---
--- Name: extintormanutencao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('extintormanutencao_sequence', 1, false);
-
+ALTER TABLE extintormanutencao_sequence OWNER TO postgres;
 
 --
 -- Name: extintormanutencaoservico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4604,7 +3938,7 @@ CREATE TABLE extintormanutencaoservico (
 );
 
 
-ALTER TABLE public.extintormanutencaoservico OWNER TO postgres;
+ALTER TABLE extintormanutencaoservico OWNER TO postgres;
 
 --
 -- Name: extintormanutencaoservico_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4618,14 +3952,7 @@ CREATE SEQUENCE extintormanutencaoservico_sequence
     CACHE 1;
 
 
-ALTER TABLE public.extintormanutencaoservico_sequence OWNER TO postgres;
-
---
--- Name: extintormanutencaoservico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('extintormanutencaoservico_sequence', 11, false);
-
+ALTER TABLE extintormanutencaoservico_sequence OWNER TO postgres;
 
 --
 -- Name: faixasalarial; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4641,7 +3968,7 @@ CREATE TABLE faixasalarial (
 );
 
 
-ALTER TABLE public.faixasalarial OWNER TO postgres;
+ALTER TABLE faixasalarial OWNER TO postgres;
 
 --
 -- Name: faixasalarial_certificacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4653,7 +3980,7 @@ CREATE TABLE faixasalarial_certificacao (
 );
 
 
-ALTER TABLE public.faixasalarial_certificacao OWNER TO postgres;
+ALTER TABLE faixasalarial_certificacao OWNER TO postgres;
 
 --
 -- Name: faixasalarial_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4667,14 +3994,7 @@ CREATE SEQUENCE faixasalarial_sequence
     CACHE 1;
 
 
-ALTER TABLE public.faixasalarial_sequence OWNER TO postgres;
-
---
--- Name: faixasalarial_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('faixasalarial_sequence', 1, false);
-
+ALTER TABLE faixasalarial_sequence OWNER TO postgres;
 
 --
 -- Name: faixasalarialhistorico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4693,7 +4013,7 @@ CREATE TABLE faixasalarialhistorico (
 );
 
 
-ALTER TABLE public.faixasalarialhistorico OWNER TO postgres;
+ALTER TABLE faixasalarialhistorico OWNER TO postgres;
 
 --
 -- Name: faixasalarialhistorico_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4707,14 +4027,7 @@ CREATE SEQUENCE faixasalarialhistorico_sequence
     CACHE 1;
 
 
-ALTER TABLE public.faixasalarialhistorico_sequence OWNER TO postgres;
-
---
--- Name: faixasalarialhistorico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('faixasalarialhistorico_sequence', 1, false);
-
+ALTER TABLE faixasalarialhistorico_sequence OWNER TO postgres;
 
 --
 -- Name: fase; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4727,7 +4040,7 @@ CREATE TABLE fase (
 );
 
 
-ALTER TABLE public.fase OWNER TO postgres;
+ALTER TABLE fase OWNER TO postgres;
 
 --
 -- Name: fase_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4741,14 +4054,7 @@ CREATE SEQUENCE fase_sequence
     CACHE 1;
 
 
-ALTER TABLE public.fase_sequence OWNER TO postgres;
-
---
--- Name: fase_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('fase_sequence', 1, false);
-
+ALTER TABLE fase_sequence OWNER TO postgres;
 
 --
 -- Name: fasepcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4764,7 +4070,7 @@ CREATE TABLE fasepcmat (
 );
 
 
-ALTER TABLE public.fasepcmat OWNER TO postgres;
+ALTER TABLE fasepcmat OWNER TO postgres;
 
 --
 -- Name: fasepcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4778,14 +4084,7 @@ CREATE SEQUENCE fasepcmat_sequence
     CACHE 1;
 
 
-ALTER TABLE public.fasepcmat_sequence OWNER TO postgres;
-
---
--- Name: fasepcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('fasepcmat_sequence', 1, false);
-
+ALTER TABLE fasepcmat_sequence OWNER TO postgres;
 
 --
 -- Name: faturamentomensal; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4799,7 +4098,7 @@ CREATE TABLE faturamentomensal (
 );
 
 
-ALTER TABLE public.faturamentomensal OWNER TO postgres;
+ALTER TABLE faturamentomensal OWNER TO postgres;
 
 --
 -- Name: faturamentomensal_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4813,14 +4112,7 @@ CREATE SEQUENCE faturamentomensal_sequence
     CACHE 1;
 
 
-ALTER TABLE public.faturamentomensal_sequence OWNER TO postgres;
-
---
--- Name: faturamentomensal_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('faturamentomensal_sequence', 1, false);
-
+ALTER TABLE faturamentomensal_sequence OWNER TO postgres;
 
 --
 -- Name: fichamedica; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4834,7 +4126,7 @@ CREATE TABLE fichamedica (
 );
 
 
-ALTER TABLE public.fichamedica OWNER TO postgres;
+ALTER TABLE fichamedica OWNER TO postgres;
 
 --
 -- Name: fichamedica_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4848,14 +4140,7 @@ CREATE SEQUENCE fichamedica_sequence
     CACHE 1;
 
 
-ALTER TABLE public.fichamedica_sequence OWNER TO postgres;
-
---
--- Name: fichamedica_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('fichamedica_sequence', 1, false);
-
+ALTER TABLE fichamedica_sequence OWNER TO postgres;
 
 --
 -- Name: formacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4874,7 +4159,7 @@ CREATE TABLE formacao (
 );
 
 
-ALTER TABLE public.formacao OWNER TO postgres;
+ALTER TABLE formacao OWNER TO postgres;
 
 --
 -- Name: formacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4888,14 +4173,7 @@ CREATE SEQUENCE formacao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.formacao_sequence OWNER TO postgres;
-
---
--- Name: formacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('formacao_sequence', 1, false);
-
+ALTER TABLE formacao_sequence OWNER TO postgres;
 
 --
 -- Name: funcao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4908,7 +4186,7 @@ CREATE TABLE funcao (
 );
 
 
-ALTER TABLE public.funcao OWNER TO postgres;
+ALTER TABLE funcao OWNER TO postgres;
 
 --
 -- Name: funcao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4922,14 +4200,7 @@ CREATE SEQUENCE funcao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.funcao_sequence OWNER TO postgres;
-
---
--- Name: funcao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('funcao_sequence', 1, false);
-
+ALTER TABLE funcao_sequence OWNER TO postgres;
 
 --
 -- Name: gasto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4945,7 +4216,7 @@ CREATE TABLE gasto (
 );
 
 
-ALTER TABLE public.gasto OWNER TO postgres;
+ALTER TABLE gasto OWNER TO postgres;
 
 --
 -- Name: gasto_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4959,14 +4230,7 @@ CREATE SEQUENCE gasto_sequence
     CACHE 1;
 
 
-ALTER TABLE public.gasto_sequence OWNER TO postgres;
-
---
--- Name: gasto_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('gasto_sequence', 1, false);
-
+ALTER TABLE gasto_sequence OWNER TO postgres;
 
 --
 -- Name: gastoempresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -4980,7 +4244,7 @@ CREATE TABLE gastoempresa (
 );
 
 
-ALTER TABLE public.gastoempresa OWNER TO postgres;
+ALTER TABLE gastoempresa OWNER TO postgres;
 
 --
 -- Name: gastoempresa_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4994,14 +4258,7 @@ CREATE SEQUENCE gastoempresa_sequence
     CACHE 1;
 
 
-ALTER TABLE public.gastoempresa_sequence OWNER TO postgres;
-
---
--- Name: gastoempresa_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('gastoempresa_sequence', 1, false);
-
+ALTER TABLE gastoempresa_sequence OWNER TO postgres;
 
 --
 -- Name: gastoempresaitem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5015,7 +4272,7 @@ CREATE TABLE gastoempresaitem (
 );
 
 
-ALTER TABLE public.gastoempresaitem OWNER TO postgres;
+ALTER TABLE gastoempresaitem OWNER TO postgres;
 
 --
 -- Name: gastoempresaitem_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5029,14 +4286,7 @@ CREATE SEQUENCE gastoempresaitem_sequence
     CACHE 1;
 
 
-ALTER TABLE public.gastoempresaitem_sequence OWNER TO postgres;
-
---
--- Name: gastoempresaitem_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('gastoempresaitem_sequence', 1, false);
-
+ALTER TABLE gastoempresaitem_sequence OWNER TO postgres;
 
 --
 -- Name: gerenciadorcomunicacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5054,7 +4304,7 @@ CREATE TABLE gerenciadorcomunicacao (
 );
 
 
-ALTER TABLE public.gerenciadorcomunicacao OWNER TO postgres;
+ALTER TABLE gerenciadorcomunicacao OWNER TO postgres;
 
 --
 -- Name: gerenciadorcomunicacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5068,14 +4318,7 @@ CREATE SEQUENCE gerenciadorcomunicacao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.gerenciadorcomunicacao_sequence OWNER TO postgres;
-
---
--- Name: gerenciadorcomunicacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('gerenciadorcomunicacao_sequence', 22, true);
-
+ALTER TABLE gerenciadorcomunicacao_sequence OWNER TO postgres;
 
 --
 -- Name: gerenciadorcomunicacao_usuario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5087,7 +4330,7 @@ CREATE TABLE gerenciadorcomunicacao_usuario (
 );
 
 
-ALTER TABLE public.gerenciadorcomunicacao_usuario OWNER TO postgres;
+ALTER TABLE gerenciadorcomunicacao_usuario OWNER TO postgres;
 
 --
 -- Name: grupoac; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5104,7 +4347,7 @@ CREATE TABLE grupoac (
 );
 
 
-ALTER TABLE public.grupoac OWNER TO postgres;
+ALTER TABLE grupoac OWNER TO postgres;
 
 --
 -- Name: grupoac_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5118,14 +4361,7 @@ CREATE SEQUENCE grupoac_sequence
     CACHE 1;
 
 
-ALTER TABLE public.grupoac_sequence OWNER TO postgres;
-
---
--- Name: grupoac_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('grupoac_sequence', 2, false);
-
+ALTER TABLE grupoac_sequence OWNER TO postgres;
 
 --
 -- Name: grupogasto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5138,7 +4374,7 @@ CREATE TABLE grupogasto (
 );
 
 
-ALTER TABLE public.grupogasto OWNER TO postgres;
+ALTER TABLE grupogasto OWNER TO postgres;
 
 --
 -- Name: grupogasto_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5152,14 +4388,7 @@ CREATE SEQUENCE grupogasto_sequence
     CACHE 1;
 
 
-ALTER TABLE public.grupogasto_sequence OWNER TO postgres;
-
---
--- Name: grupogasto_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('grupogasto_sequence', 1, false);
-
+ALTER TABLE grupogasto_sequence OWNER TO postgres;
 
 --
 -- Name: grupoocupacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5172,7 +4401,7 @@ CREATE TABLE grupoocupacional (
 );
 
 
-ALTER TABLE public.grupoocupacional OWNER TO postgres;
+ALTER TABLE grupoocupacional OWNER TO postgres;
 
 --
 -- Name: grupoocupacional_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5186,14 +4415,7 @@ CREATE SEQUENCE grupoocupacional_sequence
     CACHE 1;
 
 
-ALTER TABLE public.grupoocupacional_sequence OWNER TO postgres;
-
---
--- Name: grupoocupacional_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('grupoocupacional_sequence', 1, false);
-
+ALTER TABLE grupoocupacional_sequence OWNER TO postgres;
 
 --
 -- Name: habilidade_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5205,7 +4427,7 @@ CREATE TABLE habilidade_areaorganizacional (
 );
 
 
-ALTER TABLE public.habilidade_areaorganizacional OWNER TO postgres;
+ALTER TABLE habilidade_areaorganizacional OWNER TO postgres;
 
 --
 -- Name: habilidade_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5217,7 +4439,7 @@ CREATE TABLE habilidade_curso (
 );
 
 
-ALTER TABLE public.habilidade_curso OWNER TO postgres;
+ALTER TABLE habilidade_curso OWNER TO postgres;
 
 --
 -- Name: habilidade_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5231,14 +4453,7 @@ CREATE SEQUENCE habilidade_sequence
     CACHE 1;
 
 
-ALTER TABLE public.habilidade_sequence OWNER TO postgres;
-
---
--- Name: habilidade_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('habilidade_sequence', 1, false);
-
+ALTER TABLE habilidade_sequence OWNER TO postgres;
 
 --
 -- Name: historicoambiente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5254,7 +4469,7 @@ CREATE TABLE historicoambiente (
 );
 
 
-ALTER TABLE public.historicoambiente OWNER TO postgres;
+ALTER TABLE historicoambiente OWNER TO postgres;
 
 --
 -- Name: historicoambiente_epc; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5266,7 +4481,7 @@ CREATE TABLE historicoambiente_epc (
 );
 
 
-ALTER TABLE public.historicoambiente_epc OWNER TO postgres;
+ALTER TABLE historicoambiente_epc OWNER TO postgres;
 
 --
 -- Name: historicoambiente_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5280,14 +4495,7 @@ CREATE SEQUENCE historicoambiente_sequence
     CACHE 1;
 
 
-ALTER TABLE public.historicoambiente_sequence OWNER TO postgres;
-
---
--- Name: historicoambiente_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('historicoambiente_sequence', 1, false);
-
+ALTER TABLE historicoambiente_sequence OWNER TO postgres;
 
 --
 -- Name: historicobeneficio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5304,7 +4512,7 @@ CREATE TABLE historicobeneficio (
 );
 
 
-ALTER TABLE public.historicobeneficio OWNER TO postgres;
+ALTER TABLE historicobeneficio OWNER TO postgres;
 
 --
 -- Name: historicobeneficio_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5318,14 +4526,7 @@ CREATE SEQUENCE historicobeneficio_sequence
     CACHE 1;
 
 
-ALTER TABLE public.historicobeneficio_sequence OWNER TO postgres;
-
---
--- Name: historicobeneficio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('historicobeneficio_sequence', 1, false);
-
+ALTER TABLE historicobeneficio_sequence OWNER TO postgres;
 
 --
 -- Name: historicocandidato; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5345,7 +4546,7 @@ CREATE TABLE historicocandidato (
 );
 
 
-ALTER TABLE public.historicocandidato OWNER TO postgres;
+ALTER TABLE historicocandidato OWNER TO postgres;
 
 --
 -- Name: historicocandidato_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5359,14 +4560,7 @@ CREATE SEQUENCE historicocandidato_sequence
     CACHE 1;
 
 
-ALTER TABLE public.historicocandidato_sequence OWNER TO postgres;
-
---
--- Name: historicocandidato_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('historicocandidato_sequence', 1, false);
-
+ALTER TABLE historicocandidato_sequence OWNER TO postgres;
 
 --
 -- Name: historicocolaborador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5395,7 +4589,7 @@ CREATE TABLE historicocolaborador (
 );
 
 
-ALTER TABLE public.historicocolaborador OWNER TO postgres;
+ALTER TABLE historicocolaborador OWNER TO postgres;
 
 --
 -- Name: historicocolaborador_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5409,14 +4603,7 @@ CREATE SEQUENCE historicocolaborador_sequence
     CACHE 1;
 
 
-ALTER TABLE public.historicocolaborador_sequence OWNER TO postgres;
-
---
--- Name: historicocolaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('historicocolaborador_sequence', 1, false);
-
+ALTER TABLE historicocolaborador_sequence OWNER TO postgres;
 
 --
 -- Name: historicocolaboradorbeneficio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5430,7 +4617,7 @@ CREATE TABLE historicocolaboradorbeneficio (
 );
 
 
-ALTER TABLE public.historicocolaboradorbeneficio OWNER TO postgres;
+ALTER TABLE historicocolaboradorbeneficio OWNER TO postgres;
 
 --
 -- Name: historicocolaboradorbeneficio_beneficio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5442,7 +4629,7 @@ CREATE TABLE historicocolaboradorbeneficio_beneficio (
 );
 
 
-ALTER TABLE public.historicocolaboradorbeneficio_beneficio OWNER TO postgres;
+ALTER TABLE historicocolaboradorbeneficio_beneficio OWNER TO postgres;
 
 --
 -- Name: historicocolaboradorbeneficio_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5456,14 +4643,7 @@ CREATE SEQUENCE historicocolaboradorbeneficio_sequence
     CACHE 1;
 
 
-ALTER TABLE public.historicocolaboradorbeneficio_sequence OWNER TO postgres;
-
---
--- Name: historicocolaboradorbeneficio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('historicocolaboradorbeneficio_sequence', 1, false);
-
+ALTER TABLE historicocolaboradorbeneficio_sequence OWNER TO postgres;
 
 --
 -- Name: historicoextintor_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5477,14 +4657,7 @@ CREATE SEQUENCE historicoextintor_sequence
     CACHE 1;
 
 
-ALTER TABLE public.historicoextintor_sequence OWNER TO postgres;
-
---
--- Name: historicoextintor_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('historicoextintor_sequence', 1, false);
-
+ALTER TABLE historicoextintor_sequence OWNER TO postgres;
 
 --
 -- Name: historicoextintor; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5499,7 +4672,7 @@ CREATE TABLE historicoextintor (
 );
 
 
-ALTER TABLE public.historicoextintor OWNER TO postgres;
+ALTER TABLE historicoextintor OWNER TO postgres;
 
 --
 -- Name: historicofuncao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5514,7 +4687,7 @@ CREATE TABLE historicofuncao (
 );
 
 
-ALTER TABLE public.historicofuncao OWNER TO postgres;
+ALTER TABLE historicofuncao OWNER TO postgres;
 
 --
 -- Name: historicofuncao_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5526,7 +4699,7 @@ CREATE TABLE historicofuncao_curso (
 );
 
 
-ALTER TABLE public.historicofuncao_curso OWNER TO postgres;
+ALTER TABLE historicofuncao_curso OWNER TO postgres;
 
 --
 -- Name: historicofuncao_epi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5538,7 +4711,7 @@ CREATE TABLE historicofuncao_epi (
 );
 
 
-ALTER TABLE public.historicofuncao_epi OWNER TO postgres;
+ALTER TABLE historicofuncao_epi OWNER TO postgres;
 
 --
 -- Name: historicofuncao_exame; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5550,7 +4723,7 @@ CREATE TABLE historicofuncao_exame (
 );
 
 
-ALTER TABLE public.historicofuncao_exame OWNER TO postgres;
+ALTER TABLE historicofuncao_exame OWNER TO postgres;
 
 --
 -- Name: historicofuncao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5564,14 +4737,7 @@ CREATE SEQUENCE historicofuncao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.historicofuncao_sequence OWNER TO postgres;
-
---
--- Name: historicofuncao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('historicofuncao_sequence', 1, false);
-
+ALTER TABLE historicofuncao_sequence OWNER TO postgres;
 
 --
 -- Name: idioma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5583,7 +4749,7 @@ CREATE TABLE idioma (
 );
 
 
-ALTER TABLE public.idioma OWNER TO postgres;
+ALTER TABLE idioma OWNER TO postgres;
 
 --
 -- Name: idioma_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5597,14 +4763,7 @@ CREATE SEQUENCE idioma_sequence
     CACHE 1;
 
 
-ALTER TABLE public.idioma_sequence OWNER TO postgres;
-
---
--- Name: idioma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('idioma_sequence', 6, false);
-
+ALTER TABLE idioma_sequence OWNER TO postgres;
 
 --
 -- Name: indice; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5620,7 +4779,7 @@ CREATE TABLE indice (
 );
 
 
-ALTER TABLE public.indice OWNER TO postgres;
+ALTER TABLE indice OWNER TO postgres;
 
 --
 -- Name: indice_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5634,14 +4793,7 @@ CREATE SEQUENCE indice_sequence
     CACHE 1;
 
 
-ALTER TABLE public.indice_sequence OWNER TO postgres;
-
---
--- Name: indice_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('indice_sequence', 1, false);
-
+ALTER TABLE indice_sequence OWNER TO postgres;
 
 --
 -- Name: indicehistorico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5656,7 +4808,7 @@ CREATE TABLE indicehistorico (
 );
 
 
-ALTER TABLE public.indicehistorico OWNER TO postgres;
+ALTER TABLE indicehistorico OWNER TO postgres;
 
 --
 -- Name: indicehistorico_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5670,14 +4822,7 @@ CREATE SEQUENCE indicehistorico_sequence
     CACHE 1;
 
 
-ALTER TABLE public.indicehistorico_sequence OWNER TO postgres;
-
---
--- Name: indicehistorico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('indicehistorico_sequence', 1, false);
-
+ALTER TABLE indicehistorico_sequence OWNER TO postgres;
 
 --
 -- Name: lnt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5692,7 +4837,7 @@ CREATE TABLE lnt (
 );
 
 
-ALTER TABLE public.lnt OWNER TO postgres;
+ALTER TABLE lnt OWNER TO postgres;
 
 --
 -- Name: lnt_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5704,7 +4849,7 @@ CREATE TABLE lnt_areaorganizacional (
 );
 
 
-ALTER TABLE public.lnt_areaorganizacional OWNER TO postgres;
+ALTER TABLE lnt_areaorganizacional OWNER TO postgres;
 
 --
 -- Name: lnt_empresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5716,7 +4861,7 @@ CREATE TABLE lnt_empresa (
 );
 
 
-ALTER TABLE public.lnt_empresa OWNER TO postgres;
+ALTER TABLE lnt_empresa OWNER TO postgres;
 
 --
 -- Name: lnt_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5730,14 +4875,7 @@ CREATE SEQUENCE lnt_sequence
     CACHE 1;
 
 
-ALTER TABLE public.lnt_sequence OWNER TO postgres;
-
---
--- Name: lnt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('lnt_sequence', 1, false);
-
+ALTER TABLE lnt_sequence OWNER TO postgres;
 
 --
 -- Name: medicaorisco; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5751,7 +4889,7 @@ CREATE TABLE medicaorisco (
 );
 
 
-ALTER TABLE public.medicaorisco OWNER TO postgres;
+ALTER TABLE medicaorisco OWNER TO postgres;
 
 --
 -- Name: medicaorisco_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5765,14 +4903,7 @@ CREATE SEQUENCE medicaorisco_sequence
     CACHE 1;
 
 
-ALTER TABLE public.medicaorisco_sequence OWNER TO postgres;
-
---
--- Name: medicaorisco_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('medicaorisco_sequence', 1, false);
-
+ALTER TABLE medicaorisco_sequence OWNER TO postgres;
 
 --
 -- Name: medicocoordenador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5795,7 +4926,7 @@ CREATE TABLE medicocoordenador (
 );
 
 
-ALTER TABLE public.medicocoordenador OWNER TO postgres;
+ALTER TABLE medicocoordenador OWNER TO postgres;
 
 --
 -- Name: medicocoordenador_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5809,14 +4940,7 @@ CREATE SEQUENCE medicocoordenador_sequence
     CACHE 1;
 
 
-ALTER TABLE public.medicocoordenador_sequence OWNER TO postgres;
-
---
--- Name: medicocoordenador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('medicocoordenador_sequence', 1, false);
-
+ALTER TABLE medicocoordenador_sequence OWNER TO postgres;
 
 --
 -- Name: medidariscofasepcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5829,7 +4953,7 @@ CREATE TABLE medidariscofasepcmat (
 );
 
 
-ALTER TABLE public.medidariscofasepcmat OWNER TO postgres;
+ALTER TABLE medidariscofasepcmat OWNER TO postgres;
 
 --
 -- Name: medidariscofasepcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5843,14 +4967,7 @@ CREATE SEQUENCE medidariscofasepcmat_sequence
     CACHE 1;
 
 
-ALTER TABLE public.medidariscofasepcmat_sequence OWNER TO postgres;
-
---
--- Name: medidariscofasepcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('medidariscofasepcmat_sequence', 1, false);
-
+ALTER TABLE medidariscofasepcmat_sequence OWNER TO postgres;
 
 --
 -- Name: medidaseguranca; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5863,7 +4980,7 @@ CREATE TABLE medidaseguranca (
 );
 
 
-ALTER TABLE public.medidaseguranca OWNER TO postgres;
+ALTER TABLE medidaseguranca OWNER TO postgres;
 
 --
 -- Name: medidaseguranca_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5877,14 +4994,7 @@ CREATE SEQUENCE medidaseguranca_sequence
     CACHE 1;
 
 
-ALTER TABLE public.medidaseguranca_sequence OWNER TO postgres;
-
---
--- Name: medidaseguranca_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('medidaseguranca_sequence', 1, false);
-
+ALTER TABLE medidaseguranca_sequence OWNER TO postgres;
 
 --
 -- Name: mensagem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5902,7 +5012,7 @@ CREATE TABLE mensagem (
 );
 
 
-ALTER TABLE public.mensagem OWNER TO postgres;
+ALTER TABLE mensagem OWNER TO postgres;
 
 --
 -- Name: mensagem_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5916,14 +5026,7 @@ CREATE SEQUENCE mensagem_sequence
     CACHE 1;
 
 
-ALTER TABLE public.mensagem_sequence OWNER TO postgres;
-
---
--- Name: mensagem_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('mensagem_sequence', 1, false);
-
+ALTER TABLE mensagem_sequence OWNER TO postgres;
 
 --
 -- Name: migrations; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5934,7 +5037,7 @@ CREATE TABLE migrations (
 );
 
 
-ALTER TABLE public.migrations OWNER TO postgres;
+ALTER TABLE migrations OWNER TO postgres;
 
 --
 -- Name: motivodemissao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5949,7 +5052,7 @@ CREATE TABLE motivodemissao (
 );
 
 
-ALTER TABLE public.motivodemissao OWNER TO postgres;
+ALTER TABLE motivodemissao OWNER TO postgres;
 
 --
 -- Name: motivodemissao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5963,14 +5066,7 @@ CREATE SEQUENCE motivodemissao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.motivodemissao_sequence OWNER TO postgres;
-
---
--- Name: motivodemissao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('motivodemissao_sequence', 1, false);
-
+ALTER TABLE motivodemissao_sequence OWNER TO postgres;
 
 --
 -- Name: motivosolicitacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5983,7 +5079,7 @@ CREATE TABLE motivosolicitacao (
 );
 
 
-ALTER TABLE public.motivosolicitacao OWNER TO postgres;
+ALTER TABLE motivosolicitacao OWNER TO postgres;
 
 --
 -- Name: motivosolicitacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5997,14 +5093,7 @@ CREATE SEQUENCE motivosolicitacao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.motivosolicitacao_sequence OWNER TO postgres;
-
---
--- Name: motivosolicitacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('motivosolicitacao_sequence', 1, false);
-
+ALTER TABLE motivosolicitacao_sequence OWNER TO postgres;
 
 --
 -- Name: motivosolicitacaoepi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6016,7 +5105,7 @@ CREATE TABLE motivosolicitacaoepi (
 );
 
 
-ALTER TABLE public.motivosolicitacaoepi OWNER TO postgres;
+ALTER TABLE motivosolicitacaoepi OWNER TO postgres;
 
 --
 -- Name: motivosolicitacaoepi_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6030,14 +5119,7 @@ CREATE SEQUENCE motivosolicitacaoepi_sequence
     CACHE 1;
 
 
-ALTER TABLE public.motivosolicitacaoepi_sequence OWNER TO postgres;
-
---
--- Name: motivosolicitacaoepi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('motivosolicitacaoepi_sequence', 1, false);
-
+ALTER TABLE motivosolicitacaoepi_sequence OWNER TO postgres;
 
 --
 -- Name: naturezalesao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6050,7 +5132,7 @@ CREATE TABLE naturezalesao (
 );
 
 
-ALTER TABLE public.naturezalesao OWNER TO postgres;
+ALTER TABLE naturezalesao OWNER TO postgres;
 
 --
 -- Name: naturezalesao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6064,14 +5146,7 @@ CREATE SEQUENCE naturezalesao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.naturezalesao_sequence OWNER TO postgres;
-
---
--- Name: naturezalesao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('naturezalesao_sequence', 1, false);
-
+ALTER TABLE naturezalesao_sequence OWNER TO postgres;
 
 --
 -- Name: nivelcompetencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6084,7 +5159,7 @@ CREATE TABLE nivelcompetencia (
 );
 
 
-ALTER TABLE public.nivelcompetencia OWNER TO postgres;
+ALTER TABLE nivelcompetencia OWNER TO postgres;
 
 --
 -- Name: nivelcompetencia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6098,14 +5173,7 @@ CREATE SEQUENCE nivelcompetencia_sequence
     CACHE 1;
 
 
-ALTER TABLE public.nivelcompetencia_sequence OWNER TO postgres;
-
---
--- Name: nivelcompetencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('nivelcompetencia_sequence', 1, false);
-
+ALTER TABLE nivelcompetencia_sequence OWNER TO postgres;
 
 --
 -- Name: nivelcompetenciahistorico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6118,7 +5186,7 @@ CREATE TABLE nivelcompetenciahistorico (
 );
 
 
-ALTER TABLE public.nivelcompetenciahistorico OWNER TO postgres;
+ALTER TABLE nivelcompetenciahistorico OWNER TO postgres;
 
 --
 -- Name: nivelcompetenciahistorico_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6132,14 +5200,7 @@ CREATE SEQUENCE nivelcompetenciahistorico_sequence
     CACHE 1;
 
 
-ALTER TABLE public.nivelcompetenciahistorico_sequence OWNER TO postgres;
-
---
--- Name: nivelcompetenciahistorico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('nivelcompetenciahistorico_sequence', 1, false);
-
+ALTER TABLE nivelcompetenciahistorico_sequence OWNER TO postgres;
 
 --
 -- Name: noticia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6154,7 +5215,7 @@ CREATE TABLE noticia (
 );
 
 
-ALTER TABLE public.noticia OWNER TO postgres;
+ALTER TABLE noticia OWNER TO postgres;
 
 --
 -- Name: noticia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6168,14 +5229,7 @@ CREATE SEQUENCE noticia_sequence
     CACHE 1;
 
 
-ALTER TABLE public.noticia_sequence OWNER TO postgres;
-
---
--- Name: noticia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('noticia_sequence', 1, false);
-
+ALTER TABLE noticia_sequence OWNER TO postgres;
 
 --
 -- Name: obra; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6196,7 +5250,7 @@ CREATE TABLE obra (
 );
 
 
-ALTER TABLE public.obra OWNER TO postgres;
+ALTER TABLE obra OWNER TO postgres;
 
 --
 -- Name: obra_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6210,14 +5264,7 @@ CREATE SEQUENCE obra_sequence
     CACHE 1;
 
 
-ALTER TABLE public.obra_sequence OWNER TO postgres;
-
---
--- Name: obra_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('obra_sequence', 1, false);
-
+ALTER TABLE obra_sequence OWNER TO postgres;
 
 --
 -- Name: ocorrencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6236,7 +5283,7 @@ CREATE TABLE ocorrencia (
 );
 
 
-ALTER TABLE public.ocorrencia OWNER TO postgres;
+ALTER TABLE ocorrencia OWNER TO postgres;
 
 --
 -- Name: ocorrencia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6250,14 +5297,7 @@ CREATE SEQUENCE ocorrencia_sequence
     CACHE 1;
 
 
-ALTER TABLE public.ocorrencia_sequence OWNER TO postgres;
-
---
--- Name: ocorrencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('ocorrencia_sequence', 1, false);
-
+ALTER TABLE ocorrencia_sequence OWNER TO postgres;
 
 --
 -- Name: ordemdeservico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6291,7 +5331,7 @@ CREATE TABLE ordemdeservico (
 );
 
 
-ALTER TABLE public.ordemdeservico OWNER TO postgres;
+ALTER TABLE ordemdeservico OWNER TO postgres;
 
 --
 -- Name: ordemdeservico_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6305,14 +5345,7 @@ CREATE SEQUENCE ordemdeservico_sequence
     CACHE 1;
 
 
-ALTER TABLE public.ordemdeservico_sequence OWNER TO postgres;
-
---
--- Name: ordemdeservico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('ordemdeservico_sequence', 1, false);
-
+ALTER TABLE ordemdeservico_sequence OWNER TO postgres;
 
 --
 -- Name: papel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6331,7 +5364,7 @@ CREATE TABLE papel (
 );
 
 
-ALTER TABLE public.papel OWNER TO postgres;
+ALTER TABLE papel OWNER TO postgres;
 
 --
 -- Name: papel_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6345,14 +5378,7 @@ CREATE SEQUENCE papel_sequence
     CACHE 1;
 
 
-ALTER TABLE public.papel_sequence OWNER TO postgres;
-
---
--- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('papel_sequence', 702, false);
-
+ALTER TABLE papel_sequence OWNER TO postgres;
 
 --
 -- Name: parametrosdosistema; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6408,7 +5434,7 @@ CREATE TABLE parametrosdosistema (
 );
 
 
-ALTER TABLE public.parametrosdosistema OWNER TO postgres;
+ALTER TABLE parametrosdosistema OWNER TO postgres;
 
 --
 -- Name: parametrosdosistema_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6422,14 +5448,7 @@ CREATE SEQUENCE parametrosdosistema_sequence
     CACHE 1;
 
 
-ALTER TABLE public.parametrosdosistema_sequence OWNER TO postgres;
-
---
--- Name: parametrosdosistema_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('parametrosdosistema_sequence', 2, false);
-
+ALTER TABLE parametrosdosistema_sequence OWNER TO postgres;
 
 --
 -- Name: participanteavaliacaodesempenho; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6444,7 +5463,7 @@ CREATE TABLE participanteavaliacaodesempenho (
 );
 
 
-ALTER TABLE public.participanteavaliacaodesempenho OWNER TO postgres;
+ALTER TABLE participanteavaliacaodesempenho OWNER TO postgres;
 
 --
 -- Name: participanteavaliacaodesempenho_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6458,14 +5477,7 @@ CREATE SEQUENCE participanteavaliacaodesempenho_sequence
     CACHE 1;
 
 
-ALTER TABLE public.participanteavaliacaodesempenho_sequence OWNER TO postgres;
-
---
--- Name: participanteavaliacaodesempenho_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('participanteavaliacaodesempenho_sequence', 1, false);
-
+ALTER TABLE participanteavaliacaodesempenho_sequence OWNER TO postgres;
 
 --
 -- Name: participantecursolnt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6479,7 +5491,7 @@ CREATE TABLE participantecursolnt (
 );
 
 
-ALTER TABLE public.participantecursolnt OWNER TO postgres;
+ALTER TABLE participantecursolnt OWNER TO postgres;
 
 --
 -- Name: participantecursolnt_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6493,14 +5505,7 @@ CREATE SEQUENCE participantecursolnt_sequence
     CACHE 1;
 
 
-ALTER TABLE public.participantecursolnt_sequence OWNER TO postgres;
-
---
--- Name: participantecursolnt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('participantecursolnt_sequence', 1, false);
-
+ALTER TABLE participantecursolnt_sequence OWNER TO postgres;
 
 --
 -- Name: pausapreenchimentovagas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6514,7 +5519,7 @@ CREATE TABLE pausapreenchimentovagas (
 );
 
 
-ALTER TABLE public.pausapreenchimentovagas OWNER TO postgres;
+ALTER TABLE pausapreenchimentovagas OWNER TO postgres;
 
 --
 -- Name: pausapreenchimentovagas_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6528,14 +5533,7 @@ CREATE SEQUENCE pausapreenchimentovagas_sequence
     CACHE 1;
 
 
-ALTER TABLE public.pausapreenchimentovagas_sequence OWNER TO postgres;
-
---
--- Name: pausapreenchimentovagas_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('pausapreenchimentovagas_sequence', 1, false);
-
+ALTER TABLE pausapreenchimentovagas_sequence OWNER TO postgres;
 
 --
 -- Name: pcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6558,7 +5556,7 @@ CREATE TABLE pcmat (
 );
 
 
-ALTER TABLE public.pcmat OWNER TO postgres;
+ALTER TABLE pcmat OWNER TO postgres;
 
 --
 -- Name: pcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6572,14 +5570,7 @@ CREATE SEQUENCE pcmat_sequence
     CACHE 1;
 
 
-ALTER TABLE public.pcmat_sequence OWNER TO postgres;
-
---
--- Name: pcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('pcmat_sequence', 1, false);
-
+ALTER TABLE pcmat_sequence OWNER TO postgres;
 
 --
 -- Name: perfil; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6591,7 +5582,7 @@ CREATE TABLE perfil (
 );
 
 
-ALTER TABLE public.perfil OWNER TO postgres;
+ALTER TABLE perfil OWNER TO postgres;
 
 --
 -- Name: perfil_papel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6603,7 +5594,7 @@ CREATE TABLE perfil_papel (
 );
 
 
-ALTER TABLE public.perfil_papel OWNER TO postgres;
+ALTER TABLE perfil_papel OWNER TO postgres;
 
 --
 -- Name: perfil_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6617,14 +5608,7 @@ CREATE SEQUENCE perfil_sequence
     CACHE 1;
 
 
-ALTER TABLE public.perfil_sequence OWNER TO postgres;
-
---
--- Name: perfil_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('perfil_sequence', 3, false);
-
+ALTER TABLE perfil_sequence OWNER TO postgres;
 
 --
 -- Name: pergunta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6646,7 +5630,7 @@ CREATE TABLE pergunta (
 );
 
 
-ALTER TABLE public.pergunta OWNER TO postgres;
+ALTER TABLE pergunta OWNER TO postgres;
 
 --
 -- Name: pergunta_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6660,14 +5644,7 @@ CREATE SEQUENCE pergunta_sequence
     CACHE 1;
 
 
-ALTER TABLE public.pergunta_sequence OWNER TO postgres;
-
---
--- Name: pergunta_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('pergunta_sequence', 1, false);
-
+ALTER TABLE pergunta_sequence OWNER TO postgres;
 
 --
 -- Name: periodoexperiencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6682,7 +5659,7 @@ CREATE TABLE periodoexperiencia (
 );
 
 
-ALTER TABLE public.periodoexperiencia OWNER TO postgres;
+ALTER TABLE periodoexperiencia OWNER TO postgres;
 
 --
 -- Name: periodoexperiencia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6696,14 +5673,7 @@ CREATE SEQUENCE periodoexperiencia_sequence
     CACHE 1;
 
 
-ALTER TABLE public.periodoexperiencia_sequence OWNER TO postgres;
-
---
--- Name: periodoexperiencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('periodoexperiencia_sequence', 1, false);
-
+ALTER TABLE periodoexperiencia_sequence OWNER TO postgres;
 
 --
 -- Name: pesquisa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6716,7 +5686,7 @@ CREATE TABLE pesquisa (
 );
 
 
-ALTER TABLE public.pesquisa OWNER TO postgres;
+ALTER TABLE pesquisa OWNER TO postgres;
 
 --
 -- Name: pesquisa_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6730,14 +5700,7 @@ CREATE SEQUENCE pesquisa_sequence
     CACHE 1;
 
 
-ALTER TABLE public.pesquisa_sequence OWNER TO postgres;
-
---
--- Name: pesquisa_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('pesquisa_sequence', 1, false);
-
+ALTER TABLE pesquisa_sequence OWNER TO postgres;
 
 --
 -- Name: prioridadetreinamento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6751,7 +5714,7 @@ CREATE TABLE prioridadetreinamento (
 );
 
 
-ALTER TABLE public.prioridadetreinamento OWNER TO postgres;
+ALTER TABLE prioridadetreinamento OWNER TO postgres;
 
 --
 -- Name: prioridadetreinamento_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6765,14 +5728,7 @@ CREATE SEQUENCE prioridadetreinamento_sequence
     CACHE 1;
 
 
-ALTER TABLE public.prioridadetreinamento_sequence OWNER TO postgres;
-
---
--- Name: prioridadetreinamento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('prioridadetreinamento_sequence', 1, false);
-
+ALTER TABLE prioridadetreinamento_sequence OWNER TO postgres;
 
 --
 -- Name: prontuario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6787,7 +5743,7 @@ CREATE TABLE prontuario (
 );
 
 
-ALTER TABLE public.prontuario OWNER TO postgres;
+ALTER TABLE prontuario OWNER TO postgres;
 
 --
 -- Name: prontuario_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6801,14 +5757,7 @@ CREATE SEQUENCE prontuario_sequence
     CACHE 1;
 
 
-ALTER TABLE public.prontuario_sequence OWNER TO postgres;
-
---
--- Name: prontuario_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('prontuario_sequence', 1, false);
-
+ALTER TABLE prontuario_sequence OWNER TO postgres;
 
 --
 -- Name: providencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6821,7 +5770,7 @@ CREATE TABLE providencia (
 );
 
 
-ALTER TABLE public.providencia OWNER TO postgres;
+ALTER TABLE providencia OWNER TO postgres;
 
 --
 -- Name: providencia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6835,14 +5784,7 @@ CREATE SEQUENCE providencia_sequence
     CACHE 1;
 
 
-ALTER TABLE public.providencia_sequence OWNER TO postgres;
-
---
--- Name: providencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('providencia_sequence', 1, false);
-
+ALTER TABLE providencia_sequence OWNER TO postgres;
 
 --
 -- Name: quantidadelimitecolaboradoresporcargo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6856,7 +5798,7 @@ CREATE TABLE quantidadelimitecolaboradoresporcargo (
 );
 
 
-ALTER TABLE public.quantidadelimitecolaboradoresporcargo OWNER TO postgres;
+ALTER TABLE quantidadelimitecolaboradoresporcargo OWNER TO postgres;
 
 --
 -- Name: quantidadelimitecolaboradoresporcargo_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6870,14 +5812,7 @@ CREATE SEQUENCE quantidadelimitecolaboradoresporcargo_sequence
     CACHE 1;
 
 
-ALTER TABLE public.quantidadelimitecolaboradoresporcargo_sequence OWNER TO postgres;
-
---
--- Name: quantidadelimitecolaboradoresporcargo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('quantidadelimitecolaboradoresporcargo_sequence', 1, false);
-
+ALTER TABLE quantidadelimitecolaboradoresporcargo_sequence OWNER TO postgres;
 
 --
 -- Name: questionario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6897,7 +5832,7 @@ CREATE TABLE questionario (
 );
 
 
-ALTER TABLE public.questionario OWNER TO postgres;
+ALTER TABLE questionario OWNER TO postgres;
 
 --
 -- Name: questionario_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6911,14 +5846,7 @@ CREATE SEQUENCE questionario_sequence
     CACHE 1;
 
 
-ALTER TABLE public.questionario_sequence OWNER TO postgres;
-
---
--- Name: questionario_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('questionario_sequence', 1, false);
-
+ALTER TABLE questionario_sequence OWNER TO postgres;
 
 --
 -- Name: reajustecolaborador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6950,7 +5878,7 @@ CREATE TABLE reajustecolaborador (
 );
 
 
-ALTER TABLE public.reajustecolaborador OWNER TO postgres;
+ALTER TABLE reajustecolaborador OWNER TO postgres;
 
 --
 -- Name: reajustecolaborador_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -6964,14 +5892,7 @@ CREATE SEQUENCE reajustecolaborador_sequence
     CACHE 1;
 
 
-ALTER TABLE public.reajustecolaborador_sequence OWNER TO postgres;
-
---
--- Name: reajustecolaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('reajustecolaborador_sequence', 1, false);
-
+ALTER TABLE reajustecolaborador_sequence OWNER TO postgres;
 
 --
 -- Name: reajustefaixasalarial; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -6986,7 +5907,7 @@ CREATE TABLE reajustefaixasalarial (
 );
 
 
-ALTER TABLE public.reajustefaixasalarial OWNER TO postgres;
+ALTER TABLE reajustefaixasalarial OWNER TO postgres;
 
 --
 -- Name: reajustefaixasalarial_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7000,14 +5921,7 @@ CREATE SEQUENCE reajustefaixasalarial_sequence
     CACHE 1;
 
 
-ALTER TABLE public.reajustefaixasalarial_sequence OWNER TO postgres;
-
---
--- Name: reajustefaixasalarial_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('reajustefaixasalarial_sequence', 1, false);
-
+ALTER TABLE reajustefaixasalarial_sequence OWNER TO postgres;
 
 --
 -- Name: reajusteindice; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7022,7 +5936,7 @@ CREATE TABLE reajusteindice (
 );
 
 
-ALTER TABLE public.reajusteindice OWNER TO postgres;
+ALTER TABLE reajusteindice OWNER TO postgres;
 
 --
 -- Name: reajusteindice_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7036,14 +5950,7 @@ CREATE SEQUENCE reajusteindice_sequence
     CACHE 1;
 
 
-ALTER TABLE public.reajusteindice_sequence OWNER TO postgres;
-
---
--- Name: reajusteindice_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('reajusteindice_sequence', 1, false);
-
+ALTER TABLE reajusteindice_sequence OWNER TO postgres;
 
 --
 -- Name: realizacaoexame; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7057,7 +5964,7 @@ CREATE TABLE realizacaoexame (
 );
 
 
-ALTER TABLE public.realizacaoexame OWNER TO postgres;
+ALTER TABLE realizacaoexame OWNER TO postgres;
 
 --
 -- Name: realizacaoexame_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7071,14 +5978,7 @@ CREATE SEQUENCE realizacaoexame_sequence
     CACHE 1;
 
 
-ALTER TABLE public.realizacaoexame_sequence OWNER TO postgres;
-
---
--- Name: realizacaoexame_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('realizacaoexame_sequence', 1, false);
-
+ALTER TABLE realizacaoexame_sequence OWNER TO postgres;
 
 --
 -- Name: resposta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7093,7 +5993,7 @@ CREATE TABLE resposta (
 );
 
 
-ALTER TABLE public.resposta OWNER TO postgres;
+ALTER TABLE resposta OWNER TO postgres;
 
 --
 -- Name: resposta_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7107,14 +6007,7 @@ CREATE SEQUENCE resposta_sequence
     CACHE 1;
 
 
-ALTER TABLE public.resposta_sequence OWNER TO postgres;
-
---
--- Name: resposta_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('resposta_sequence', 1, false);
-
+ALTER TABLE resposta_sequence OWNER TO postgres;
 
 --
 -- Name: risco; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7128,7 +6021,7 @@ CREATE TABLE risco (
 );
 
 
-ALTER TABLE public.risco OWNER TO postgres;
+ALTER TABLE risco OWNER TO postgres;
 
 --
 -- Name: risco_epi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7140,7 +6033,7 @@ CREATE TABLE risco_epi (
 );
 
 
-ALTER TABLE public.risco_epi OWNER TO postgres;
+ALTER TABLE risco_epi OWNER TO postgres;
 
 --
 -- Name: risco_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7154,14 +6047,7 @@ CREATE SEQUENCE risco_sequence
     CACHE 1;
 
 
-ALTER TABLE public.risco_sequence OWNER TO postgres;
-
---
--- Name: risco_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('risco_sequence', 1, false);
-
+ALTER TABLE risco_sequence OWNER TO postgres;
 
 --
 -- Name: riscoambiente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7178,7 +6064,7 @@ CREATE TABLE riscoambiente (
 );
 
 
-ALTER TABLE public.riscoambiente OWNER TO postgres;
+ALTER TABLE riscoambiente OWNER TO postgres;
 
 --
 -- Name: riscoambiente_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7192,14 +6078,7 @@ CREATE SEQUENCE riscoambiente_sequence
     CACHE 1;
 
 
-ALTER TABLE public.riscoambiente_sequence OWNER TO postgres;
-
---
--- Name: riscoambiente_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('riscoambiente_sequence', 1, false);
-
+ALTER TABLE riscoambiente_sequence OWNER TO postgres;
 
 --
 -- Name: riscofasepcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7212,7 +6091,7 @@ CREATE TABLE riscofasepcmat (
 );
 
 
-ALTER TABLE public.riscofasepcmat OWNER TO postgres;
+ALTER TABLE riscofasepcmat OWNER TO postgres;
 
 --
 -- Name: riscofasepcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7226,14 +6105,7 @@ CREATE SEQUENCE riscofasepcmat_sequence
     CACHE 1;
 
 
-ALTER TABLE public.riscofasepcmat_sequence OWNER TO postgres;
-
---
--- Name: riscofasepcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('riscofasepcmat_sequence', 1, false);
-
+ALTER TABLE riscofasepcmat_sequence OWNER TO postgres;
 
 --
 -- Name: riscofuncao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7249,7 +6121,7 @@ CREATE TABLE riscofuncao (
 );
 
 
-ALTER TABLE public.riscofuncao OWNER TO postgres;
+ALTER TABLE riscofuncao OWNER TO postgres;
 
 --
 -- Name: riscofuncao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7263,14 +6135,7 @@ CREATE SEQUENCE riscofuncao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.riscofuncao_sequence OWNER TO postgres;
-
---
--- Name: riscofuncao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('riscofuncao_sequence', 1, false);
-
+ALTER TABLE riscofuncao_sequence OWNER TO postgres;
 
 --
 -- Name: riscomedicaorisco; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7287,7 +6152,7 @@ CREATE TABLE riscomedicaorisco (
 );
 
 
-ALTER TABLE public.riscomedicaorisco OWNER TO postgres;
+ALTER TABLE riscomedicaorisco OWNER TO postgres;
 
 --
 -- Name: riscomedicaorisco_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7301,14 +6166,7 @@ CREATE SEQUENCE riscomedicaorisco_sequence
     CACHE 1;
 
 
-ALTER TABLE public.riscomedicaorisco_sequence OWNER TO postgres;
-
---
--- Name: riscomedicaorisco_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('riscomedicaorisco_sequence', 1, false);
-
+ALTER TABLE riscomedicaorisco_sequence OWNER TO postgres;
 
 --
 -- Name: sinalizacaopcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7321,7 +6179,7 @@ CREATE TABLE sinalizacaopcmat (
 );
 
 
-ALTER TABLE public.sinalizacaopcmat OWNER TO postgres;
+ALTER TABLE sinalizacaopcmat OWNER TO postgres;
 
 --
 -- Name: sinalizacaopcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7335,14 +6193,7 @@ CREATE SEQUENCE sinalizacaopcmat_sequence
     CACHE 1;
 
 
-ALTER TABLE public.sinalizacaopcmat_sequence OWNER TO postgres;
-
---
--- Name: sinalizacaopcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('sinalizacaopcmat_sequence', 1, false);
-
+ALTER TABLE sinalizacaopcmat_sequence OWNER TO postgres;
 
 --
 -- Name: turma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7366,7 +6217,7 @@ CREATE TABLE turma (
 );
 
 
-ALTER TABLE public.turma OWNER TO postgres;
+ALTER TABLE turma OWNER TO postgres;
 
 --
 -- Name: turma_avaliacaoturma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7380,27 +6231,97 @@ CREATE TABLE turma_avaliacaoturma (
 );
 
 
-ALTER TABLE public.turma_avaliacaoturma OWNER TO postgres;
+ALTER TABLE turma_avaliacaoturma OWNER TO postgres;
 
 --
 -- Name: situacaoavaliacaoturma; Type: VIEW; Schema: public; Owner: postgres
 --
 
 CREATE VIEW situacaoavaliacaoturma AS
-    SELECT totais.id AS turma_id, CASE WHEN (totais.qtdavaliacoes = totais.qtdliberada) THEN 'L'::text WHEN (totais.qtdliberada > 0) THEN 'P'::text ELSE 'B'::text END AS status FROM (SELECT t.id, count(a.id) AS qtdavaliacoes, (SELECT count(tat3.id) AS count FROM turma_avaliacaoturma tat3 WHERE ((tat3.turma_id = t.id) AND (tat3.liberada = true))) AS qtdliberada FROM ((turma t LEFT JOIN turma_avaliacaoturma tat ON ((tat.turma_id = t.id))) LEFT JOIN avaliacaoturma a ON ((tat.avaliacaoturma_id = a.id))) GROUP BY t.id) totais;
+ SELECT totais.id AS turma_id,
+        CASE
+            WHEN (totais.qtdavaliacoes = totais.qtdliberada) THEN 'L'::text
+            WHEN (totais.qtdliberada > 0) THEN 'P'::text
+            ELSE 'B'::text
+        END AS status
+   FROM ( SELECT t.id,
+            count(a.id) AS qtdavaliacoes,
+            ( SELECT count(tat3.id) AS count
+                   FROM turma_avaliacaoturma tat3
+                  WHERE ((tat3.turma_id = t.id) AND (tat3.liberada = true))) AS qtdliberada
+           FROM ((turma t
+             LEFT JOIN turma_avaliacaoturma tat ON ((tat.turma_id = t.id)))
+             LEFT JOIN avaliacaoturma a ON ((tat.avaliacaoturma_id = a.id)))
+          GROUP BY t.id) totais;
 
 
-ALTER TABLE public.situacaoavaliacaoturma OWNER TO postgres;
+ALTER TABLE situacaoavaliacaoturma OWNER TO postgres;
 
 --
 -- Name: situacaocolaborador; Type: VIEW; Schema: public; Owner: postgres
 --
 
 CREATE VIEW situacaocolaborador AS
-    SELECT hc.id AS historicocolaboradorid, GREATEST(hc.data, hfs_hc.data, hi_hfs_hc.data, hi_hc.data) AS data, hc.tiposalario AS tipo, COALESCE((hfs_hc.quantidade * hi_hfs_hc.valor), hfs_hc.valor, (hc.quantidadeindice * hi_hc.valor), hc.salario) AS salario, c.id AS cargo_id, hc.faixasalarial_id, hc.estabelecimento_id, hc.areaorganizacional_id, hc.colaborador_id, hc.motivo FROM ((((((((((((historicocolaborador hc LEFT JOIN faixasalarial fs_hc ON ((fs_hc.id = hc.faixasalarial_id))) LEFT JOIN faixasalarialhistorico hfs_hc ON (((hfs_hc.faixasalarial_id = fs_hc.id) AND (hc.tiposalario = 1)))) LEFT JOIN cargo c ON ((c.id = fs_hc.cargo_id))) LEFT JOIN indice i_hfs_hc ON (((i_hfs_hc.id = hfs_hc.indice_id) AND (hfs_hc.tipo = 2)))) LEFT JOIN indicehistorico hi_hfs_hc ON ((i_hfs_hc.id = hi_hfs_hc.indice_id))) LEFT JOIN indice i_hc ON (((i_hc.id = hc.indice_id) AND (hc.tiposalario = 2)))) LEFT JOIN indicehistorico hi_hc ON ((hi_hc.indice_id = i_hc.id))) LEFT JOIN (SELECT hc2.data, hc2.colaborador_id AS colabid, COALESCE((SELECT min(hc3.data) AS min FROM historicocolaborador hc3 WHERE ((hc3.data > hc2.data) AND (hc3.colaborador_id = hc2.colaborador_id))), '2300-01-01'::date) AS dataproximo FROM historicocolaborador hc2 WHERE (hc2.status <> 3) ORDER BY hc2.colaborador_id, hc2.data) proximo ON (((proximo.data = hc.data) AND (proximo.colabid = hc.colaborador_id)))) LEFT JOIN (SELECT hfs2.data, hfs2.faixasalarial_id AS faixaid, COALESCE((SELECT min(fsh3.data) AS min FROM faixasalarialhistorico fsh3 WHERE ((fsh3.data > hfs2.data) AND (fsh3.faixasalarial_id = hfs2.faixasalarial_id))), '2300-01-01'::date) AS dataproximohistfaixa FROM faixasalarialhistorico hfs2 WHERE (hfs2.status <> 3) ORDER BY hfs2.faixasalarial_id, hfs2.data) proximafaixa ON (((proximafaixa.data = hfs_hc.data) AND (proximafaixa.faixaid = hfs_hc.faixasalarial_id)))) LEFT JOIN (SELECT hc3.id AS histcolabid, COALESCE((SELECT max(fsh.data) AS max FROM faixasalarialhistorico fsh WHERE ((fsh.data <= hc3.data) AND (fsh.faixasalarial_id = hc3.faixasalarial_id))), '1900-01-01'::date) AS dataatualfaixa FROM historicocolaborador hc3 WHERE ((hc3.tiposalario = 1) AND (hc3.status <> 3)) ORDER BY hc3.id) faixaatual ON ((faixaatual.histcolabid = hc.id))) LEFT JOIN (SELECT hfs3.id AS histfaixaid, COALESCE((SELECT max(hi.data) AS max FROM indicehistorico hi WHERE ((hi.data <= hfs3.data) AND (hi.indice_id = hfs3.indice_id))), '1900-01-01'::date) AS dataatualindicefaixa FROM faixasalarialhistorico hfs3 WHERE ((hfs3.tipo = 2) AND (hfs3.status <> 3)) ORDER BY hfs3.id) indiceatualfaixa ON ((indiceatualfaixa.histfaixaid = hfs_hc.id))) LEFT JOIN (SELECT hc4.id AS histcolabid, COALESCE((SELECT max(hi.data) AS max FROM indicehistorico hi WHERE ((hi.data <= hc4.data) AND (hi.indice_id = hc4.indice_id))), '1900-01-01'::date) AS dataatualindice FROM historicocolaborador hc4 WHERE ((hc4.tiposalario = 2) AND (hc4.status <> 3)) ORDER BY hc4.id) indiceatual ON ((indiceatual.histcolabid = hc.id))) WHERE ((((((((hc.status <> 3) AND ((hfs_hc.data < proximo.dataproximo) OR (hfs_hc.data IS NULL))) AND ((hi_hfs_hc.data < proximo.dataproximo) OR (hi_hfs_hc.data IS NULL))) AND ((hi_hfs_hc.data < proximafaixa.dataproximohistfaixa) OR (hi_hfs_hc.data IS NULL))) AND ((hfs_hc.data >= faixaatual.dataatualfaixa) OR (hfs_hc.data IS NULL))) AND ((hi_hfs_hc.data >= indiceatualfaixa.dataatualindicefaixa) OR (hi_hfs_hc.data IS NULL))) AND ((hi_hc.data < proximo.dataproximo) OR (hi_hc.data IS NULL))) AND ((hi_hc.data >= indiceatual.dataatualindice) OR (hi_hc.data IS NULL))) ORDER BY hc.colaborador_id, hc.data, hfs_hc.data, hi_hfs_hc.data, hi_hc.data;
+ SELECT hc.id AS historicocolaboradorid,
+    GREATEST(hc.data, hfs_hc.data, hi_hfs_hc.data, hi_hc.data) AS data,
+    hc.tiposalario AS tipo,
+    COALESCE((hfs_hc.quantidade * hi_hfs_hc.valor), hfs_hc.valor, (hc.quantidadeindice * hi_hc.valor), hc.salario) AS salario,
+    c.id AS cargo_id,
+    hc.faixasalarial_id,
+    hc.estabelecimento_id,
+    hc.areaorganizacional_id,
+    hc.colaborador_id,
+    hc.motivo
+   FROM ((((((((((((historicocolaborador hc
+     LEFT JOIN faixasalarial fs_hc ON ((fs_hc.id = hc.faixasalarial_id)))
+     LEFT JOIN faixasalarialhistorico hfs_hc ON (((hfs_hc.faixasalarial_id = fs_hc.id) AND (hc.tiposalario = 1))))
+     LEFT JOIN cargo c ON ((c.id = fs_hc.cargo_id)))
+     LEFT JOIN indice i_hfs_hc ON (((i_hfs_hc.id = hfs_hc.indice_id) AND (hfs_hc.tipo = 2))))
+     LEFT JOIN indicehistorico hi_hfs_hc ON ((i_hfs_hc.id = hi_hfs_hc.indice_id)))
+     LEFT JOIN indice i_hc ON (((i_hc.id = hc.indice_id) AND (hc.tiposalario = 2))))
+     LEFT JOIN indicehistorico hi_hc ON ((hi_hc.indice_id = i_hc.id)))
+     LEFT JOIN ( SELECT hc2.data,
+            hc2.colaborador_id AS colabid,
+            COALESCE(( SELECT min(hc3.data) AS min
+                   FROM historicocolaborador hc3
+                  WHERE ((hc3.data > hc2.data) AND (hc3.colaborador_id = hc2.colaborador_id))), '2300-01-01'::date) AS dataproximo
+           FROM historicocolaborador hc2
+          WHERE (hc2.status <> 3)
+          ORDER BY hc2.colaborador_id, hc2.data) proximo ON (((proximo.data = hc.data) AND (proximo.colabid = hc.colaborador_id))))
+     LEFT JOIN ( SELECT hfs2.data,
+            hfs2.faixasalarial_id AS faixaid,
+            COALESCE(( SELECT min(fsh3.data) AS min
+                   FROM faixasalarialhistorico fsh3
+                  WHERE ((fsh3.data > hfs2.data) AND (fsh3.faixasalarial_id = hfs2.faixasalarial_id))), '2300-01-01'::date) AS dataproximohistfaixa
+           FROM faixasalarialhistorico hfs2
+          WHERE (hfs2.status <> 3)
+          ORDER BY hfs2.faixasalarial_id, hfs2.data) proximafaixa ON (((proximafaixa.data = hfs_hc.data) AND (proximafaixa.faixaid = hfs_hc.faixasalarial_id))))
+     LEFT JOIN ( SELECT hc3.id AS histcolabid,
+            COALESCE(( SELECT max(fsh.data) AS max
+                   FROM faixasalarialhistorico fsh
+                  WHERE ((fsh.data <= hc3.data) AND (fsh.faixasalarial_id = hc3.faixasalarial_id))), '1900-01-01'::date) AS dataatualfaixa
+           FROM historicocolaborador hc3
+          WHERE ((hc3.tiposalario = 1) AND (hc3.status <> 3))
+          ORDER BY hc3.id) faixaatual ON ((faixaatual.histcolabid = hc.id)))
+     LEFT JOIN ( SELECT hfs3.id AS histfaixaid,
+            COALESCE(( SELECT max(hi.data) AS max
+                   FROM indicehistorico hi
+                  WHERE ((hi.data <= hfs3.data) AND (hi.indice_id = hfs3.indice_id))), '1900-01-01'::date) AS dataatualindicefaixa
+           FROM faixasalarialhistorico hfs3
+          WHERE ((hfs3.tipo = 2) AND (hfs3.status <> 3))
+          ORDER BY hfs3.id) indiceatualfaixa ON ((indiceatualfaixa.histfaixaid = hfs_hc.id)))
+     LEFT JOIN ( SELECT hc4.id AS histcolabid,
+            COALESCE(( SELECT max(hi.data) AS max
+                   FROM indicehistorico hi
+                  WHERE ((hi.data <= hc4.data) AND (hi.indice_id = hc4.indice_id))), '1900-01-01'::date) AS dataatualindice
+           FROM historicocolaborador hc4
+          WHERE ((hc4.tiposalario = 2) AND (hc4.status <> 3))
+          ORDER BY hc4.id) indiceatual ON ((indiceatual.histcolabid = hc.id)))
+  WHERE ((((((((hc.status <> 3) AND ((hfs_hc.data < proximo.dataproximo) OR (hfs_hc.data IS NULL))) AND ((hi_hfs_hc.data < proximo.dataproximo) OR (hi_hfs_hc.data IS NULL))) AND ((hi_hfs_hc.data < proximafaixa.dataproximohistfaixa) OR (hi_hfs_hc.data IS NULL))) AND ((hfs_hc.data >= faixaatual.dataatualfaixa) OR (hfs_hc.data IS NULL))) AND ((hi_hfs_hc.data >= indiceatualfaixa.dataatualindicefaixa) OR (hi_hfs_hc.data IS NULL))) AND ((hi_hc.data < proximo.dataproximo) OR (hi_hc.data IS NULL))) AND ((hi_hc.data >= indiceatual.dataatualindice) OR (hi_hc.data IS NULL)))
+  ORDER BY hc.colaborador_id, hc.data, hfs_hc.data, hi_hfs_hc.data, hi_hc.data;
 
 
-ALTER TABLE public.situacaocolaborador OWNER TO postgres;
+ALTER TABLE situacaocolaborador OWNER TO postgres;
 
 --
 -- Name: solicitacaoepi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7416,7 +6337,7 @@ CREATE TABLE solicitacaoepi (
 );
 
 
-ALTER TABLE public.solicitacaoepi OWNER TO postgres;
+ALTER TABLE solicitacaoepi OWNER TO postgres;
 
 --
 -- Name: solicitacaoepi_item; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7432,7 +6353,7 @@ CREATE TABLE solicitacaoepi_item (
 );
 
 
-ALTER TABLE public.solicitacaoepi_item OWNER TO postgres;
+ALTER TABLE solicitacaoepi_item OWNER TO postgres;
 
 --
 -- Name: solicitacaoepiitemdevolucao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7447,7 +6368,7 @@ CREATE TABLE solicitacaoepiitemdevolucao (
 );
 
 
-ALTER TABLE public.solicitacaoepiitemdevolucao OWNER TO postgres;
+ALTER TABLE solicitacaoepiitemdevolucao OWNER TO postgres;
 
 --
 -- Name: solicitacaoepiitementrega; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7462,17 +6383,68 @@ CREATE TABLE solicitacaoepiitementrega (
 );
 
 
-ALTER TABLE public.solicitacaoepiitementrega OWNER TO postgres;
+ALTER TABLE solicitacaoepiitementrega OWNER TO postgres;
 
 --
 -- Name: situacaosolicitacaoepi; Type: VIEW; Schema: public; Owner: postgres
 --
 
 CREATE VIEW situacaosolicitacaoepi AS
-    SELECT sub.solicitacaoepiid, sub.empresaid, sub.estabelecimentoid, sub.estabelecimentonome, sub.colaboradorid, sub.colaboradormatricula, sub.colaboradornome, sub.colaboradordesligado, sub.solicitacaoepidata, sub.cargonome, sub.qtdsolicitado, sub.qtdentregue, CASE WHEN (sub.qtdsolicitado <= sub.qtdentregue) THEN 'E'::text WHEN ((sub.qtdentregue > 0) AND (sub.qtdentregue < sub.qtdsolicitado)) THEN 'P'::text WHEN (sub.qtdentregue = 0) THEN 'A'::text ELSE NULL::text END AS solicitacaoepisituacaoentregue, sub.qtddevolvida, CASE WHEN (sub.qtdentregue < sub.qtddevolvida) THEN 'D'::text WHEN ((sub.qtddevolvida > 0) AND (sub.qtddevolvida < sub.qtdentregue)) THEN 'DP'::text WHEN (sub.qtddevolvida = 0) THEN NULL::text ELSE 'S'::text END AS solicitacaoepisituacaodevolvido FROM (SELECT se.id AS solicitacaoepiid, se.empresa_id AS empresaid, est.id AS estabelecimentoid, est.nome AS estabelecimentonome, c.id AS colaboradorid, c.matricula AS colaboradormatricula, c.nome AS colaboradornome, c.desligado AS colaboradordesligado, se.data AS solicitacaoepidata, ca.nome AS cargonome, (SELECT sum(sei2.qtdsolicitado) AS sum FROM solicitacaoepi_item sei2 WHERE (sei2.solicitacaoepi_id = se.id)) AS qtdsolicitado, COALESCE(sum(seie.qtdentregue), (0)::bigint) AS qtdentregue, COALESCE(sum(seid.qtddevolvida), (0)::bigint) AS qtddevolvida FROM (((((((solicitacaoepi se LEFT JOIN solicitacaoepi_item sei ON ((sei.solicitacaoepi_id = se.id))) LEFT JOIN solicitacaoepiitementrega seie ON ((seie.solicitacaoepiitem_id = sei.id))) LEFT JOIN solicitacaoepiitemdevolucao seid ON ((seid.solicitacaoepiitem_id = sei.id))) LEFT JOIN colaborador c ON ((se.colaborador_id = c.id))) LEFT JOIN historicocolaborador hc ON ((c.id = hc.colaborador_id))) LEFT JOIN estabelecimento est ON ((se.estabelecimento_id = est.id))) LEFT JOIN cargo ca ON ((se.cargo_id = ca.id))) WHERE ((hc.data = (SELECT max(hc2.data) AS max FROM historicocolaborador hc2 WHERE (((hc2.colaborador_id = c.id) AND (hc2.status = 1)) AND (hc2.data <= ('now'::text)::date)))) AND (hc.status = 1)) GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) sub;
+ SELECT sub.solicitacaoepiid,
+    sub.empresaid,
+    sub.estabelecimentoid,
+    sub.estabelecimentonome,
+    sub.colaboradorid,
+    sub.colaboradormatricula,
+    sub.colaboradornome,
+    sub.colaboradordesligado,
+    sub.solicitacaoepidata,
+    sub.cargonome,
+    sub.qtdsolicitado,
+    sub.qtdentregue,
+        CASE
+            WHEN (sub.qtdsolicitado <= sub.qtdentregue) THEN 'E'::text
+            WHEN ((sub.qtdentregue > 0) AND (sub.qtdentregue < sub.qtdsolicitado)) THEN 'P'::text
+            WHEN (sub.qtdentregue = 0) THEN 'A'::text
+            ELSE NULL::text
+        END AS solicitacaoepisituacaoentregue,
+    sub.qtddevolvida,
+        CASE
+            WHEN (sub.qtdentregue < sub.qtddevolvida) THEN 'D'::text
+            WHEN ((sub.qtddevolvida > 0) AND (sub.qtddevolvida < sub.qtdentregue)) THEN 'DP'::text
+            WHEN (sub.qtddevolvida = 0) THEN NULL::text
+            ELSE 'S'::text
+        END AS solicitacaoepisituacaodevolvido
+   FROM ( SELECT se.id AS solicitacaoepiid,
+            se.empresa_id AS empresaid,
+            est.id AS estabelecimentoid,
+            est.nome AS estabelecimentonome,
+            c.id AS colaboradorid,
+            c.matricula AS colaboradormatricula,
+            c.nome AS colaboradornome,
+            c.desligado AS colaboradordesligado,
+            se.data AS solicitacaoepidata,
+            ca.nome AS cargonome,
+            ( SELECT sum(sei2.qtdsolicitado) AS sum
+                   FROM solicitacaoepi_item sei2
+                  WHERE (sei2.solicitacaoepi_id = se.id)) AS qtdsolicitado,
+            COALESCE(sum(seie.qtdentregue), (0)::bigint) AS qtdentregue,
+            COALESCE(sum(seid.qtddevolvida), (0)::bigint) AS qtddevolvida
+           FROM (((((((solicitacaoepi se
+             LEFT JOIN solicitacaoepi_item sei ON ((sei.solicitacaoepi_id = se.id)))
+             LEFT JOIN solicitacaoepiitementrega seie ON ((seie.solicitacaoepiitem_id = sei.id)))
+             LEFT JOIN solicitacaoepiitemdevolucao seid ON ((seid.solicitacaoepiitem_id = sei.id)))
+             LEFT JOIN colaborador c ON ((se.colaborador_id = c.id)))
+             LEFT JOIN historicocolaborador hc ON ((c.id = hc.colaborador_id)))
+             LEFT JOIN estabelecimento est ON ((se.estabelecimento_id = est.id)))
+             LEFT JOIN cargo ca ON ((se.cargo_id = ca.id)))
+          WHERE ((hc.data = ( SELECT max(hc2.data) AS max
+                   FROM historicocolaborador hc2
+                  WHERE (((hc2.colaborador_id = c.id) AND (hc2.status = 1)) AND (hc2.data <= ('now'::text)::date)))) AND (hc.status = 1))
+          GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) sub;
 
 
-ALTER TABLE public.situacaosolicitacaoepi OWNER TO postgres;
+ALTER TABLE situacaosolicitacaoepi OWNER TO postgres;
 
 --
 -- Name: solicitacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7514,7 +6486,7 @@ CREATE TABLE solicitacao (
 );
 
 
-ALTER TABLE public.solicitacao OWNER TO postgres;
+ALTER TABLE solicitacao OWNER TO postgres;
 
 --
 -- Name: solicitacao_bairro; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7526,7 +6498,7 @@ CREATE TABLE solicitacao_bairro (
 );
 
 
-ALTER TABLE public.solicitacao_bairro OWNER TO postgres;
+ALTER TABLE solicitacao_bairro OWNER TO postgres;
 
 --
 -- Name: solicitacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7540,14 +6512,7 @@ CREATE SEQUENCE solicitacao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.solicitacao_sequence OWNER TO postgres;
-
---
--- Name: solicitacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('solicitacao_sequence', 1, false);
-
+ALTER TABLE solicitacao_sequence OWNER TO postgres;
 
 --
 -- Name: solicitacaoavaliacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7561,7 +6526,7 @@ CREATE TABLE solicitacaoavaliacao (
 );
 
 
-ALTER TABLE public.solicitacaoavaliacao OWNER TO postgres;
+ALTER TABLE solicitacaoavaliacao OWNER TO postgres;
 
 --
 -- Name: solicitacaoavaliacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7575,14 +6540,7 @@ CREATE SEQUENCE solicitacaoavaliacao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.solicitacaoavaliacao_sequence OWNER TO postgres;
-
---
--- Name: solicitacaoavaliacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('solicitacaoavaliacao_sequence', 1, false);
-
+ALTER TABLE solicitacaoavaliacao_sequence OWNER TO postgres;
 
 --
 -- Name: solicitacaobds; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7603,7 +6561,7 @@ CREATE TABLE solicitacaobds (
 );
 
 
-ALTER TABLE public.solicitacaobds OWNER TO postgres;
+ALTER TABLE solicitacaobds OWNER TO postgres;
 
 --
 -- Name: solicitacaobds_empresabds; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7615,7 +6573,7 @@ CREATE TABLE solicitacaobds_empresabds (
 );
 
 
-ALTER TABLE public.solicitacaobds_empresabds OWNER TO postgres;
+ALTER TABLE solicitacaobds_empresabds OWNER TO postgres;
 
 --
 -- Name: solicitacaobds_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7629,14 +6587,7 @@ CREATE SEQUENCE solicitacaobds_sequence
     CACHE 1;
 
 
-ALTER TABLE public.solicitacaobds_sequence OWNER TO postgres;
-
---
--- Name: solicitacaobds_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('solicitacaobds_sequence', 1, false);
-
+ALTER TABLE solicitacaobds_sequence OWNER TO postgres;
 
 --
 -- Name: solicitacaoepi_item_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7650,14 +6601,7 @@ CREATE SEQUENCE solicitacaoepi_item_sequence
     CACHE 1;
 
 
-ALTER TABLE public.solicitacaoepi_item_sequence OWNER TO postgres;
-
---
--- Name: solicitacaoepi_item_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('solicitacaoepi_item_sequence', 1, false);
-
+ALTER TABLE solicitacaoepi_item_sequence OWNER TO postgres;
 
 --
 -- Name: solicitacaoepi_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7671,14 +6615,7 @@ CREATE SEQUENCE solicitacaoepi_sequence
     CACHE 1;
 
 
-ALTER TABLE public.solicitacaoepi_sequence OWNER TO postgres;
-
---
--- Name: solicitacaoepi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('solicitacaoepi_sequence', 1, false);
-
+ALTER TABLE solicitacaoepi_sequence OWNER TO postgres;
 
 --
 -- Name: solicitacaoepiitemdevolucao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7692,14 +6629,7 @@ CREATE SEQUENCE solicitacaoepiitemdevolucao_sequence
     CACHE 1;
 
 
-ALTER TABLE public.solicitacaoepiitemdevolucao_sequence OWNER TO postgres;
-
---
--- Name: solicitacaoepiitemdevolucao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('solicitacaoepiitemdevolucao_sequence', 1, false);
-
+ALTER TABLE solicitacaoepiitemdevolucao_sequence OWNER TO postgres;
 
 --
 -- Name: solicitacaoepiitementrega_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7713,14 +6643,7 @@ CREATE SEQUENCE solicitacaoepiitementrega_sequence
     CACHE 1;
 
 
-ALTER TABLE public.solicitacaoepiitementrega_sequence OWNER TO postgres;
-
---
--- Name: solicitacaoepiitementrega_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('solicitacaoepiitementrega_sequence', 1, false);
-
+ALTER TABLE solicitacaoepiitementrega_sequence OWNER TO postgres;
 
 --
 -- Name: solicitacaoexame; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7739,7 +6662,7 @@ CREATE TABLE solicitacaoexame (
 );
 
 
-ALTER TABLE public.solicitacaoexame OWNER TO postgres;
+ALTER TABLE solicitacaoexame OWNER TO postgres;
 
 --
 -- Name: solicitacaoexame_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7753,14 +6676,7 @@ CREATE SEQUENCE solicitacaoexame_sequence
     CACHE 1;
 
 
-ALTER TABLE public.solicitacaoexame_sequence OWNER TO postgres;
-
---
--- Name: solicitacaoexame_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('solicitacaoexame_sequence', 1, false);
-
+ALTER TABLE solicitacaoexame_sequence OWNER TO postgres;
 
 --
 -- Name: tabelareajustecolaborador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7778,7 +6694,7 @@ CREATE TABLE tabelareajustecolaborador (
 );
 
 
-ALTER TABLE public.tabelareajustecolaborador OWNER TO postgres;
+ALTER TABLE tabelareajustecolaborador OWNER TO postgres;
 
 --
 -- Name: tabelareajustecolaborador_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7792,14 +6708,7 @@ CREATE SEQUENCE tabelareajustecolaborador_sequence
     CACHE 1;
 
 
-ALTER TABLE public.tabelareajustecolaborador_sequence OWNER TO postgres;
-
---
--- Name: tabelareajustecolaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tabelareajustecolaborador_sequence', 1, false);
-
+ALTER TABLE tabelareajustecolaborador_sequence OWNER TO postgres;
 
 --
 -- Name: tamanhoepi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7811,7 +6720,7 @@ CREATE TABLE tamanhoepi (
 );
 
 
-ALTER TABLE public.tamanhoepi OWNER TO postgres;
+ALTER TABLE tamanhoepi OWNER TO postgres;
 
 --
 -- Name: tamanhoepi_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7825,14 +6734,7 @@ CREATE SEQUENCE tamanhoepi_sequence
     CACHE 1;
 
 
-ALTER TABLE public.tamanhoepi_sequence OWNER TO postgres;
-
---
--- Name: tamanhoepi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tamanhoepi_sequence', 1, false);
-
+ALTER TABLE tamanhoepi_sequence OWNER TO postgres;
 
 --
 -- Name: testemunha; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7853,7 +6755,7 @@ CREATE TABLE testemunha (
 );
 
 
-ALTER TABLE public.testemunha OWNER TO postgres;
+ALTER TABLE testemunha OWNER TO postgres;
 
 --
 -- Name: testemunha_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7867,14 +6769,7 @@ CREATE SEQUENCE testemunha_sequence
     CACHE 1;
 
 
-ALTER TABLE public.testemunha_sequence OWNER TO postgres;
-
---
--- Name: testemunha_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('testemunha_sequence', 1, false);
-
+ALTER TABLE testemunha_sequence OWNER TO postgres;
 
 --
 -- Name: tipo_tamanhoepi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7888,7 +6783,7 @@ CREATE TABLE tipo_tamanhoepi (
 );
 
 
-ALTER TABLE public.tipo_tamanhoepi OWNER TO postgres;
+ALTER TABLE tipo_tamanhoepi OWNER TO postgres;
 
 --
 -- Name: tipo_tamanhoepi_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7902,14 +6797,7 @@ CREATE SEQUENCE tipo_tamanhoepi_sequence
     CACHE 1;
 
 
-ALTER TABLE public.tipo_tamanhoepi_sequence OWNER TO postgres;
-
---
--- Name: tipo_tamanhoepi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tipo_tamanhoepi_sequence', 1, false);
-
+ALTER TABLE tipo_tamanhoepi_sequence OWNER TO postgres;
 
 --
 -- Name: tipodespesa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7922,7 +6810,7 @@ CREATE TABLE tipodespesa (
 );
 
 
-ALTER TABLE public.tipodespesa OWNER TO postgres;
+ALTER TABLE tipodespesa OWNER TO postgres;
 
 --
 -- Name: tipodespesa_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7936,14 +6824,7 @@ CREATE SEQUENCE tipodespesa_sequence
     CACHE 1;
 
 
-ALTER TABLE public.tipodespesa_sequence OWNER TO postgres;
-
---
--- Name: tipodespesa_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tipodespesa_sequence', 1, false);
-
+ALTER TABLE tipodespesa_sequence OWNER TO postgres;
 
 --
 -- Name: tipodocumento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7955,7 +6836,7 @@ CREATE TABLE tipodocumento (
 );
 
 
-ALTER TABLE public.tipodocumento OWNER TO postgres;
+ALTER TABLE tipodocumento OWNER TO postgres;
 
 --
 -- Name: tipodocumento_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -7969,14 +6850,7 @@ CREATE SEQUENCE tipodocumento_sequence
     CACHE 1;
 
 
-ALTER TABLE public.tipodocumento_sequence OWNER TO postgres;
-
---
--- Name: tipodocumento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tipodocumento_sequence', 1, false);
-
+ALTER TABLE tipodocumento_sequence OWNER TO postgres;
 
 --
 -- Name: tipoepi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -7990,7 +6864,7 @@ CREATE TABLE tipoepi (
 );
 
 
-ALTER TABLE public.tipoepi OWNER TO postgres;
+ALTER TABLE tipoepi OWNER TO postgres;
 
 --
 -- Name: tipoepi_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -8004,14 +6878,7 @@ CREATE SEQUENCE tipoepi_sequence
     CACHE 1;
 
 
-ALTER TABLE public.tipoepi_sequence OWNER TO postgres;
-
---
--- Name: tipoepi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tipoepi_sequence', 1, false);
-
+ALTER TABLE tipoepi_sequence OWNER TO postgres;
 
 --
 -- Name: token; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -8023,7 +6890,7 @@ CREATE TABLE token (
 );
 
 
-ALTER TABLE public.token OWNER TO postgres;
+ALTER TABLE token OWNER TO postgres;
 
 --
 -- Name: token_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -8037,14 +6904,7 @@ CREATE SEQUENCE token_sequence
     CACHE 1;
 
 
-ALTER TABLE public.token_sequence OWNER TO postgres;
-
---
--- Name: token_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('token_sequence', 1, false);
-
+ALTER TABLE token_sequence OWNER TO postgres;
 
 --
 -- Name: turma_avaliacaoturma_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -8058,14 +6918,7 @@ CREATE SEQUENCE turma_avaliacaoturma_sequence
     CACHE 1;
 
 
-ALTER TABLE public.turma_avaliacaoturma_sequence OWNER TO postgres;
-
---
--- Name: turma_avaliacaoturma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('turma_avaliacaoturma_sequence', 1, false);
-
+ALTER TABLE turma_avaliacaoturma_sequence OWNER TO postgres;
 
 --
 -- Name: turma_documentoanexo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -8078,7 +6931,7 @@ CREATE TABLE turma_documentoanexo (
 );
 
 
-ALTER TABLE public.turma_documentoanexo OWNER TO postgres;
+ALTER TABLE turma_documentoanexo OWNER TO postgres;
 
 --
 -- Name: turma_documentoanexo_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -8092,14 +6945,7 @@ CREATE SEQUENCE turma_documentoanexo_sequence
     CACHE 1;
 
 
-ALTER TABLE public.turma_documentoanexo_sequence OWNER TO postgres;
-
---
--- Name: turma_documentoanexo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('turma_documentoanexo_sequence', 1, false);
-
+ALTER TABLE turma_documentoanexo_sequence OWNER TO postgres;
 
 --
 -- Name: turma_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -8113,14 +6959,7 @@ CREATE SEQUENCE turma_sequence
     CACHE 1;
 
 
-ALTER TABLE public.turma_sequence OWNER TO postgres;
-
---
--- Name: turma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('turma_sequence', 1, false);
-
+ALTER TABLE turma_sequence OWNER TO postgres;
 
 --
 -- Name: turmatipodespesa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -8134,7 +6973,7 @@ CREATE TABLE turmatipodespesa (
 );
 
 
-ALTER TABLE public.turmatipodespesa OWNER TO postgres;
+ALTER TABLE turmatipodespesa OWNER TO postgres;
 
 --
 -- Name: turmatipodespesa_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -8148,14 +6987,7 @@ CREATE SEQUENCE turmatipodespesa_sequence
     CACHE 1;
 
 
-ALTER TABLE public.turmatipodespesa_sequence OWNER TO postgres;
-
---
--- Name: turmatipodespesa_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('turmatipodespesa_sequence', 1, false);
-
+ALTER TABLE turmatipodespesa_sequence OWNER TO postgres;
 
 --
 -- Name: usuario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -8173,7 +7005,7 @@ CREATE TABLE usuario (
 );
 
 
-ALTER TABLE public.usuario OWNER TO postgres;
+ALTER TABLE usuario OWNER TO postgres;
 
 --
 -- Name: usuario_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -8187,14 +7019,7 @@ CREATE SEQUENCE usuario_sequence
     CACHE 1;
 
 
-ALTER TABLE public.usuario_sequence OWNER TO postgres;
-
---
--- Name: usuario_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('usuario_sequence', 2, true);
-
+ALTER TABLE usuario_sequence OWNER TO postgres;
 
 --
 -- Name: usuarioempresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -8208,7 +7033,7 @@ CREATE TABLE usuarioempresa (
 );
 
 
-ALTER TABLE public.usuarioempresa OWNER TO postgres;
+ALTER TABLE usuarioempresa OWNER TO postgres;
 
 --
 -- Name: usuarioempresa_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -8222,14 +7047,7 @@ CREATE SEQUENCE usuarioempresa_sequence
     CACHE 1;
 
 
-ALTER TABLE public.usuarioempresa_sequence OWNER TO postgres;
-
---
--- Name: usuarioempresa_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('usuarioempresa_sequence', 1, false);
-
+ALTER TABLE usuarioempresa_sequence OWNER TO postgres;
 
 --
 -- Name: usuariomensagem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -8244,7 +7062,7 @@ CREATE TABLE usuariomensagem (
 );
 
 
-ALTER TABLE public.usuariomensagem OWNER TO postgres;
+ALTER TABLE usuariomensagem OWNER TO postgres;
 
 --
 -- Name: usuariomensagem_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -8258,14 +7076,7 @@ CREATE SEQUENCE usuariomensagem_sequence
     CACHE 1;
 
 
-ALTER TABLE public.usuariomensagem_sequence OWNER TO postgres;
-
---
--- Name: usuariomensagem_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('usuariomensagem_sequence', 1, false);
-
+ALTER TABLE usuariomensagem_sequence OWNER TO postgres;
 
 --
 -- Name: usuarionoticia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -8278,7 +7089,7 @@ CREATE TABLE usuarionoticia (
 );
 
 
-ALTER TABLE public.usuarionoticia OWNER TO postgres;
+ALTER TABLE usuarionoticia OWNER TO postgres;
 
 --
 -- Name: usuarionoticia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -8292,29 +7103,49 @@ CREATE SEQUENCE usuarionoticia_sequence
     CACHE 1;
 
 
-ALTER TABLE public.usuarionoticia_sequence OWNER TO postgres;
-
---
--- Name: usuarionoticia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('usuarionoticia_sequence', 1, false);
-
+ALTER TABLE usuarionoticia_sequence OWNER TO postgres;
 
 --
 -- Name: view_cursonota; Type: VIEW; Schema: public; Owner: postgres
 --
 
 CREATE VIEW view_cursonota AS
-    SELECT ct.id AS colaboradorturma_id, ct.colaborador_id, ct.turma_id, count(ct.id) AS qtdavaliacoescurso, sum((((CASE WHEN (ac.tipo = 'a'::bpchar) THEN (cq.performance * (100)::double precision) ELSE aac.valor END >= ac.minimoaprovacao) OR (ac.minimoaprovacao IS NULL)))::integer) AS qtdavaliacoesaprovadaspornota, sum(CASE WHEN (ac.tipo = 'a'::bpchar) THEN (cq.performance * (100)::double precision) ELSE aac.valor END) AS nota FROM (((avaliacaocurso ac CROSS JOIN colaboradorturma ct) LEFT JOIN aproveitamentoavaliacaocurso aac ON (((ac.id = aac.avaliacaocurso_id) AND (ct.id = aac.colaboradorturma_id)))) LEFT JOIN colaboradorquestionario cq ON ((((ac.id = cq.avaliacaocurso_id) AND (ac.avaliacao_id = cq.avaliacao_id)) AND (ct.colaborador_id = cq.colaborador_id)))) WHERE ((ct.id = aac.colaboradorturma_id) OR ((ct.colaborador_id = cq.colaborador_id) AND (ct.turma_id = cq.turma_id))) GROUP BY ct.id, ct.colaborador_id, ct.turma_id ORDER BY ct.id;
+ SELECT ct.id AS colaboradorturma_id,
+    ct.colaborador_id,
+    ct.turma_id,
+    count(ct.id) AS qtdavaliacoescurso,
+    sum((((
+        CASE
+            WHEN (ac.tipo = 'a'::bpchar) THEN (cq.performance * (100)::double precision)
+            ELSE aac.valor
+        END >= ac.minimoaprovacao) OR (ac.minimoaprovacao IS NULL)))::integer) AS qtdavaliacoesaprovadaspornota,
+    sum(
+        CASE
+            WHEN (ac.tipo = 'a'::bpchar) THEN (cq.performance * (100)::double precision)
+            ELSE aac.valor
+        END) AS nota
+   FROM (((avaliacaocurso ac
+     CROSS JOIN colaboradorturma ct)
+     LEFT JOIN aproveitamentoavaliacaocurso aac ON (((ac.id = aac.avaliacaocurso_id) AND (ct.id = aac.colaboradorturma_id))))
+     LEFT JOIN colaboradorquestionario cq ON ((((ac.id = cq.avaliacaocurso_id) AND (ac.avaliacao_id = cq.avaliacao_id)) AND (ct.colaborador_id = cq.colaborador_id))))
+  WHERE ((ct.id = aac.colaboradorturma_id) OR ((ct.colaborador_id = cq.colaborador_id) AND (ct.turma_id = cq.turma_id)))
+  GROUP BY ct.id, ct.colaborador_id, ct.turma_id
+  ORDER BY ct.id;
 
 
-ALTER TABLE public.view_cursonota OWNER TO postgres;
+ALTER TABLE view_cursonota OWNER TO postgres;
 
 --
 -- Data for Name: afastamento; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: afastamento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('afastamento_sequence', 1, false);
 
 
 --
@@ -8324,9 +7155,23 @@ ALTER TABLE public.view_cursonota OWNER TO postgres;
 
 
 --
+-- Name: agenda_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('agenda_sequence', 1, false);
+
+
+--
 -- Data for Name: ambiente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: ambiente_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('ambiente_sequence', 1, false);
 
 
 --
@@ -8336,15 +7181,36 @@ ALTER TABLE public.view_cursonota OWNER TO postgres;
 
 
 --
+-- Name: anexo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('anexo_sequence', 1, false);
+
+
+--
 -- Data for Name: anuncio; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: anuncio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('anuncio_sequence', 1, false);
+
+
+--
 -- Data for Name: aproveitamentoavaliacaocurso; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: aproveitamentoavaliacaocurso_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('aproveitamentoavaliacaocurso_sequence', 1, false);
 
 
 --
@@ -8428,6 +7294,13 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 
 --
+-- Name: areaformacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('areaformacao_sequence', 75, false);
+
+
+--
 -- Data for Name: areainteresse; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -8440,9 +7313,23 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 
 --
+-- Name: areainteresse_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('areainteresse_sequence', 1, false);
+
+
+--
 -- Data for Name: areaorganizacional; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: areaorganizacional_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('areaorganizacional_sequence', 1, false);
 
 
 --
@@ -8452,15 +7339,36 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 
 --
+-- Name: areavivencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('areavivencia_sequence', 1, false);
+
+
+--
 -- Data for Name: areavivenciapcmat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: areavivenciapcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('areavivenciapcmat_sequence', 1, false);
+
+
+--
 -- Data for Name: aspecto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: aspecto_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('aspecto_sequence', 1, false);
 
 
 --
@@ -8482,15 +7390,36 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 
 --
+-- Name: atitude_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('atitude_sequence', 1, false);
+
+
+--
 -- Data for Name: atividadesegurancapcmat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: atividadesegurancapcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('atividadesegurancapcmat_sequence', 1, false);
+
+
+--
 -- Data for Name: auditoria; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: auditoria_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auditoria_sequence', 1, false);
 
 
 --
@@ -8506,9 +7435,23 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 
 --
+-- Name: avaliacaocurso_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('avaliacaocurso_sequence', 1, false);
+
+
+--
 -- Data for Name: avaliacaodesempenho; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: avaliacaodesempenho_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('avaliacaodesempenho_sequence', 1, false);
 
 
 --
@@ -8518,9 +7461,23 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 
 --
+-- Name: avaliacaopratica_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('avaliacaopratica_sequence', 1, false);
+
+
+--
 -- Data for Name: avaliacaoturma; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: avaliacaoturma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('avaliacaoturma_sequence', 1, false);
 
 
 --
@@ -8530,15 +7487,36 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 
 --
+-- Name: bairro_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('bairro_sequence', 1, false);
+
+
+--
 -- Data for Name: beneficio; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: beneficio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('beneficio_sequence', 1, false);
+
+
+--
 -- Data for Name: camposextras; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: camposextras_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('camposextras_sequence', 1, false);
 
 
 --
@@ -8566,9 +7544,23 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 
 --
+-- Name: candidato_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('candidato_sequence', 1, false);
+
+
+--
 -- Data for Name: candidatocurriculo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: candidatocurriculo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('candidatocurriculo_sequence', 1, false);
 
 
 --
@@ -8578,15 +7570,36 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 
 --
+-- Name: candidatoeleicao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('candidatoeleicao_sequence', 1, false);
+
+
+--
 -- Data for Name: candidatoidioma; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: candidatoidioma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('candidatoidioma_sequence', 1, false);
+
+
+--
 -- Data for Name: candidatosolicitacao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: candidatosolicitacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('candidatosolicitacao_sequence', 1, false);
 
 
 --
@@ -8632,10 +7645,24 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 
 --
+-- Name: cargo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('cargo_sequence', 1, false);
+
+
+--
 -- Data for Name: cartao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 INSERT INTO cartao (id, imgurl, mensagem, tipocartao, empresa_id) VALUES (1, 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', 'A', 1);
+
+
+--
+-- Name: cartao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('cartao_sequence', 1, true);
 
 
 --
@@ -8651,6 +7678,13 @@ INSERT INTO cartao (id, imgurl, mensagem, tipocartao, empresa_id) VALUES (1, 'ca
 
 
 --
+-- Name: cat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('cat_sequence', 1, false);
+
+
+--
 -- Data for Name: certificacao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -8663,9 +7697,23 @@ INSERT INTO cartao (id, imgurl, mensagem, tipocartao, empresa_id) VALUES (1, 'ca
 
 
 --
+-- Name: certificacao_avaliacaopratica_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('certificacao_avaliacaopratica_sequence', 1, false);
+
+
+--
 -- Data for Name: certificacao_curso; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: certificacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('certificacao_sequence', 1, false);
 
 
 --
@@ -28421,9 +27469,23 @@ INSERT INTO cidade (id, nome, codigoac, uf_id) VALUES (5507, 'Brasília', '00108
 
 
 --
+-- Name: cidade_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('cidade_sequence', 5507, true);
+
+
+--
 -- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: cliente_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('cliente_sequence', 1, false);
 
 
 --
@@ -28436,6 +27498,13 @@ INSERT INTO cidade (id, nome, codigoac, uf_id) VALUES (5507, 'Brasília', '00108
 -- Data for Name: clinicaautorizada_exame; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: clinicaautorizada_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('clinicaautorizada_sequence', 1, false);
 
 
 --
@@ -30877,15 +29946,36 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('223310', 'Zootecnista');
 
 
 --
+-- Name: colaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaborador_sequence', 1, false);
+
+
+--
 -- Data for Name: colaboradorafastamento; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: colaboradorafastamento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaboradorafastamento_sequence', 1, false);
+
+
+--
 -- Data for Name: colaboradoravaliacaopratica; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: colaboradoravaliacaopratica_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaboradoravaliacaopratica_sequence', 1, false);
 
 
 --
@@ -30901,9 +29991,23 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('223310', 'Zootecnista');
 
 
 --
+-- Name: colaboradorcertificacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaboradorcertificacao_sequence', 1, false);
+
+
+--
 -- Data for Name: colaboradoridioma; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: colaboradoridioma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaboradoridioma_sequence', 1, false);
 
 
 --
@@ -30913,9 +30017,23 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('223310', 'Zootecnista');
 
 
 --
+-- Name: colaboradorocorrencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaboradorocorrencia_sequence', 1, false);
+
+
+--
 -- Data for Name: colaboradorperiodoexperienciaavaliacao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: colaboradorperiodoexperienciaavaliacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaboradorperiodoexperienciaavaliacao_sequence', 1, false);
 
 
 --
@@ -30925,9 +30043,23 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('223310', 'Zootecnista');
 
 
 --
+-- Name: colaboradorpresenca_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaboradorpresenca_sequence', 1, false);
+
+
+--
 -- Data for Name: colaboradorquestionario; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: colaboradorquestionario_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaboradorquestionario_sequence', 1, false);
 
 
 --
@@ -30937,9 +30069,23 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('223310', 'Zootecnista');
 
 
 --
+-- Name: colaboradorresposta_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaboradorresposta_sequence', 1, false);
+
+
+--
 -- Data for Name: colaboradorturma; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: colaboradorturma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaboradorturma_sequence', 1, false);
 
 
 --
@@ -30949,9 +30095,23 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('223310', 'Zootecnista');
 
 
 --
+-- Name: comissao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('comissao_sequence', 1, false);
+
+
+--
 -- Data for Name: comissaoeleicao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: comissaoeleicao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('comissaoeleicao_sequence', 1, false);
 
 
 --
@@ -30961,9 +30121,23 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('223310', 'Zootecnista');
 
 
 --
+-- Name: comissaomembro_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('comissaomembro_sequence', 1, false);
+
+
+--
 -- Data for Name: comissaoperiodo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: comissaoperiodo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('comissaoperiodo_sequence', 1, false);
 
 
 --
@@ -30973,15 +30147,36 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('223310', 'Zootecnista');
 
 
 --
+-- Name: comissaoplanotrabalho_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('comissaoplanotrabalho_sequence', 1, false);
+
+
+--
 -- Data for Name: comissaoreuniao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: comissaoreuniao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('comissaoreuniao_sequence', 1, false);
+
+
+--
 -- Data for Name: comissaoreuniaopresenca; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: comissaoreuniaopresenca_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('comissaoreuniaopresenca_sequence', 1, false);
 
 
 --
@@ -30992,15 +30187,36 @@ INSERT INTO comoficousabendovaga (id, nome) VALUES (1, 'Outro');
 
 
 --
+-- Name: comoficousabendovaga_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('comoficousabendovaga_sequence', 2, false);
+
+
+--
 -- Data for Name: composicaosesmt; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: composicaosesmt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('composicaosesmt_sequence', 1, false);
+
+
+--
 -- Data for Name: confighistoriconivel; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: confighistoriconivel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('confighistoriconivel_sequence', 1, false);
 
 
 --
@@ -31042,9 +30258,23 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Name: configuracaocampoextra_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaocampoextra_sequence', 33, false);
+
+
+--
 -- Data for Name: configuracaocampoextravisivelobrigadotorio; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: configuracaocampoextravisivelobrigadotorio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaocampoextravisivelobrigadotorio_sequence', 1, false);
 
 
 --
@@ -31054,9 +30284,23 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Name: configuracaocompetenciaavaliacaodesempenho_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaocompetenciaavaliacaodesempenho_sequence', 1, false);
+
+
+--
 -- Data for Name: configuracaoimpressaocurriculo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: configuracaoimpressaocurriculo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaoimpressaocurriculo_sequence', 1, false);
 
 
 --
@@ -31066,9 +30310,23 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Name: configuracaolimitecolaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaolimitecolaborador_sequence', 1, false);
+
+
+--
 -- Data for Name: configuracaonivelcompetencia; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: configuracaonivelcompetencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaonivelcompetencia_sequence', 1, false);
 
 
 --
@@ -31078,9 +30336,23 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Name: configuracaonivelcompetenciacandidato_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaonivelcompetenciacandidato_sequence', 1, false);
+
+
+--
 -- Data for Name: configuracaonivelcompetenciacolaborador; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: configuracaonivelcompetenciacolaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaonivelcompetenciacolaborador_sequence', 1, false);
 
 
 --
@@ -31090,9 +30362,23 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Name: configuracaonivelcompetenciacriterio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaonivelcompetenciacriterio_sequence', 1, false);
+
+
+--
 -- Data for Name: configuracaonivelcompetenciafaixasalarial; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: configuracaonivelcompetenciafaixasalarial_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaonivelcompetenciafaixasalarial_sequence', 1, false);
 
 
 --
@@ -31102,9 +30388,23 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Name: configuracaoperformance_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaoperformance_sequence', 1, false);
+
+
+--
 -- Data for Name: configuracaorelatoriodinamico; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: configuracaorelatoriodinamico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaorelatoriodinamico_sequence', 1, false);
 
 
 --
@@ -31126,9 +30426,23 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Name: conhecimento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('conhecimento_sequence', 1, false);
+
+
+--
 -- Data for Name: criterioavaliacaocompetencia; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: criterioavaliacaocompetencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('criterioavaliacaocompetencia_sequence', 1, false);
 
 
 --
@@ -31150,9 +30464,23 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Name: curso_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('curso_sequence', 1, false);
+
+
+--
 -- Data for Name: cursolnt; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: cursolnt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('cursolnt_sequence', 1, false);
 
 
 --
@@ -31162,9 +30490,23 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Name: dependente_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('dependente_sequence', 1, false);
+
+
+--
 -- Data for Name: diaturma; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: diaturma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('diaturma_sequence', 1, false);
 
 
 --
@@ -31174,15 +30516,36 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Name: dnt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('dnt_sequence', 1, false);
+
+
+--
 -- Data for Name: documentoanexo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: documentoanexo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('documentoanexo_sequence', 1, false);
+
+
+--
 -- Data for Name: eleicao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: eleicao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('eleicao_sequence', 1, false);
 
 
 --
@@ -31193,9 +30556,23 @@ INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emai
 
 
 --
+-- Name: empresa_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('empresa_sequence', 2, false);
+
+
+--
 -- Data for Name: empresabds; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: empresabds_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('empresabds_sequence', 1, false);
 
 
 --
@@ -31205,9 +30582,23 @@ INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emai
 
 
 --
+-- Name: engenheiroresponsavel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('engenheiroresponsavel_sequence', 1, false);
+
+
+--
 -- Data for Name: entrevista; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: entrevista_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('entrevista_sequence', 1, false);
 
 
 --
@@ -31217,9 +30608,23 @@ INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emai
 
 
 --
+-- Name: epc_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('epc_sequence', 1, false);
+
+
+--
 -- Data for Name: epcpcmat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: epcpcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('epcpcmat_sequence', 1, false);
 
 
 --
@@ -31229,9 +30634,23 @@ INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emai
 
 
 --
+-- Name: epi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('epi_sequence', 1, false);
+
+
+--
 -- Data for Name: epihistorico; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: epihistorico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('epihistorico_sequence', 1, false);
 
 
 --
@@ -31241,10 +30660,24 @@ INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emai
 
 
 --
+-- Name: epipcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('epipcmat_sequence', 1, false);
+
+
+--
 -- Data for Name: estabelecimento; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 INSERT INTO estabelecimento (id, nome, logradouro, numero, complemento, bairro, cep, complementocnpj, codigoac, uf_id, cidade_id, empresa_id) VALUES (1, 'Estabelecimento Padrão', NULL, NULL, NULL, NULL, NULL, '0000', NULL, NULL, NULL, 1);
+
+
+--
+-- Name: estabelecimento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('estabelecimento_sequence', 2, false);
 
 
 --
@@ -31281,9 +30714,23 @@ INSERT INTO estado (id, sigla, nome) VALUES (27, 'TO', 'Tocantins');
 
 
 --
+-- Name: estado_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('estado_sequence', 27, true);
+
+
+--
 -- Data for Name: etapaprocessoeleitoral; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: etapaprocessoeleitoral_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('etapaprocessoeleitoral_sequence', 1, false);
 
 
 --
@@ -31293,9 +30740,23 @@ INSERT INTO estado (id, sigla, nome) VALUES (27, 'TO', 'Tocantins');
 
 
 --
+-- Name: etapaseletiva_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('etapaseletiva_sequence', 1, false);
+
+
+--
 -- Data for Name: evento; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: evento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('evento_sequence', 1, false);
 
 
 --
@@ -31307,9 +30768,23 @@ INSERT INTO exame (id, nome, periodicidade, periodico, empresa_id, aso) VALUES (
 
 
 --
+-- Name: exame_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('exame_sequence', 3, true);
+
+
+--
 -- Data for Name: examesolicitacaoexame; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: examesolicitacaoexame_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('examesolicitacaoexame_sequence', 1, false);
 
 
 --
@@ -31319,9 +30794,23 @@ INSERT INTO exame (id, nome, periodicidade, periodico, empresa_id, aso) VALUES (
 
 
 --
+-- Name: experiencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('experiencia_sequence', 1, false);
+
+
+--
 -- Data for Name: extintor; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: extintor_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('extintor_sequence', 1, false);
 
 
 --
@@ -31334,6 +30823,13 @@ INSERT INTO exame (id, nome, periodicidade, periodico, empresa_id, aso) VALUES (
 -- Data for Name: extintorinspecao_extintorinspecaoitem; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: extintorinspecao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('extintorinspecao_sequence', 1, false);
 
 
 --
@@ -31354,6 +30850,13 @@ INSERT INTO extintorinspecaoitem (id, descricao) VALUES (11, 'Outro');
 
 
 --
+-- Name: extintorinspecaoitem_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('extintorinspecaoitem_sequence', 12, false);
+
+
+--
 -- Data for Name: extintormanutencao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -31363,6 +30866,13 @@ INSERT INTO extintorinspecaoitem (id, descricao) VALUES (11, 'Outro');
 -- Data for Name: extintormanutencao_extintormanutencaoservico; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: extintormanutencao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('extintormanutencao_sequence', 1, false);
 
 
 --
@@ -31382,6 +30892,13 @@ INSERT INTO extintormanutencaoservico (id, descricao) VALUES (10, 'Válvula Cili
 
 
 --
+-- Name: extintormanutencaoservico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('extintormanutencaoservico_sequence', 11, false);
+
+
+--
 -- Data for Name: faixasalarial; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -31394,9 +30911,23 @@ INSERT INTO extintormanutencaoservico (id, descricao) VALUES (10, 'Válvula Cili
 
 
 --
+-- Name: faixasalarial_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('faixasalarial_sequence', 1, false);
+
+
+--
 -- Data for Name: faixasalarialhistorico; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: faixasalarialhistorico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('faixasalarialhistorico_sequence', 1, false);
 
 
 --
@@ -31406,9 +30937,23 @@ INSERT INTO extintormanutencaoservico (id, descricao) VALUES (10, 'Válvula Cili
 
 
 --
+-- Name: fase_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('fase_sequence', 1, false);
+
+
+--
 -- Data for Name: fasepcmat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: fasepcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('fasepcmat_sequence', 1, false);
 
 
 --
@@ -31418,9 +30963,23 @@ INSERT INTO extintormanutencaoservico (id, descricao) VALUES (10, 'Válvula Cili
 
 
 --
+-- Name: faturamentomensal_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('faturamentomensal_sequence', 1, false);
+
+
+--
 -- Data for Name: fichamedica; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: fichamedica_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('fichamedica_sequence', 1, false);
 
 
 --
@@ -31430,9 +30989,23 @@ INSERT INTO extintormanutencaoservico (id, descricao) VALUES (10, 'Válvula Cili
 
 
 --
+-- Name: formacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('formacao_sequence', 1, false);
+
+
+--
 -- Data for Name: funcao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: funcao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('funcao_sequence', 1, false);
 
 
 --
@@ -31442,15 +31015,36 @@ INSERT INTO extintormanutencaoservico (id, descricao) VALUES (10, 'Válvula Cili
 
 
 --
+-- Name: gasto_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('gasto_sequence', 1, false);
+
+
+--
 -- Data for Name: gastoempresa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: gastoempresa_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('gastoempresa_sequence', 1, false);
+
+
+--
 -- Data for Name: gastoempresaitem; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: gastoempresaitem_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('gastoempresaitem_sequence', 1, false);
 
 
 --
@@ -31481,6 +31075,13 @@ INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, d
 
 
 --
+-- Name: gerenciadorcomunicacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('gerenciadorcomunicacao_sequence', 22, true);
+
+
+--
 -- Data for Name: gerenciadorcomunicacao_usuario; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -31494,15 +31095,36 @@ INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acs
 
 
 --
+-- Name: grupoac_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('grupoac_sequence', 2, false);
+
+
+--
 -- Data for Name: grupogasto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: grupogasto_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('grupogasto_sequence', 1, false);
+
+
+--
 -- Data for Name: grupoocupacional; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: grupoocupacional_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('grupoocupacional_sequence', 1, false);
 
 
 --
@@ -31524,6 +31146,13 @@ INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acs
 
 
 --
+-- Name: habilidade_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('habilidade_sequence', 1, false);
+
+
+--
 -- Data for Name: historicoambiente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -31536,9 +31165,23 @@ INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acs
 
 
 --
+-- Name: historicoambiente_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('historicoambiente_sequence', 1, false);
+
+
+--
 -- Data for Name: historicobeneficio; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: historicobeneficio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('historicobeneficio_sequence', 1, false);
 
 
 --
@@ -31548,9 +31191,23 @@ INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acs
 
 
 --
+-- Name: historicocandidato_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('historicocandidato_sequence', 1, false);
+
+
+--
 -- Data for Name: historicocolaborador; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: historicocolaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('historicocolaborador_sequence', 1, false);
 
 
 --
@@ -31566,9 +31223,23 @@ INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acs
 
 
 --
+-- Name: historicocolaboradorbeneficio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('historicocolaboradorbeneficio_sequence', 1, false);
+
+
+--
 -- Data for Name: historicoextintor; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: historicoextintor_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('historicoextintor_sequence', 1, false);
 
 
 --
@@ -31596,6 +31267,13 @@ INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acs
 
 
 --
+-- Name: historicofuncao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('historicofuncao_sequence', 1, false);
+
+
+--
 -- Data for Name: idioma; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -31607,15 +31285,36 @@ INSERT INTO idioma (id, nome) VALUES (5, 'Italiano');
 
 
 --
+-- Name: idioma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('idioma_sequence', 6, false);
+
+
+--
 -- Data for Name: indice; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: indice_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('indice_sequence', 1, false);
+
+
+--
 -- Data for Name: indicehistorico; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: indicehistorico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('indicehistorico_sequence', 1, false);
 
 
 --
@@ -31637,9 +31336,23 @@ INSERT INTO idioma (id, nome) VALUES (5, 'Italiano');
 
 
 --
+-- Name: lnt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('lnt_sequence', 1, false);
+
+
+--
 -- Data for Name: medicaorisco; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: medicaorisco_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('medicaorisco_sequence', 1, false);
 
 
 --
@@ -31649,9 +31362,23 @@ INSERT INTO idioma (id, nome) VALUES (5, 'Italiano');
 
 
 --
+-- Name: medicocoordenador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('medicocoordenador_sequence', 1, false);
+
+
+--
 -- Data for Name: medidariscofasepcmat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: medidariscofasepcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('medidariscofasepcmat_sequence', 1, false);
 
 
 --
@@ -31661,9 +31388,23 @@ INSERT INTO idioma (id, nome) VALUES (5, 'Italiano');
 
 
 --
+-- Name: medidaseguranca_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('medidaseguranca_sequence', 1, false);
+
+
+--
 -- Data for Name: mensagem; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: mensagem_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('mensagem_sequence', 1, false);
 
 
 --
@@ -32162,6 +31903,7 @@ INSERT INTO migrations (name) VALUES ('20161214141240');
 INSERT INTO migrations (name) VALUES ('20161216140000');
 INSERT INTO migrations (name) VALUES ('20161226145507');
 INSERT INTO migrations (name) VALUES ('20170113094832');
+INSERT INTO migrations (name) VALUES ('20170201083928');
 
 
 --
@@ -32171,9 +31913,23 @@ INSERT INTO migrations (name) VALUES ('20170113094832');
 
 
 --
+-- Name: motivodemissao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('motivodemissao_sequence', 1, false);
+
+
+--
 -- Data for Name: motivosolicitacao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: motivosolicitacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('motivosolicitacao_sequence', 1, false);
 
 
 --
@@ -32183,9 +31939,23 @@ INSERT INTO migrations (name) VALUES ('20170113094832');
 
 
 --
+-- Name: motivosolicitacaoepi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('motivosolicitacaoepi_sequence', 1, false);
+
+
+--
 -- Data for Name: naturezalesao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: naturezalesao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('naturezalesao_sequence', 1, false);
 
 
 --
@@ -32195,9 +31965,23 @@ INSERT INTO migrations (name) VALUES ('20170113094832');
 
 
 --
+-- Name: nivelcompetencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('nivelcompetencia_sequence', 1, false);
+
+
+--
 -- Data for Name: nivelcompetenciahistorico; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: nivelcompetenciahistorico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('nivelcompetenciahistorico_sequence', 1, false);
 
 
 --
@@ -32207,9 +31991,23 @@ INSERT INTO migrations (name) VALUES ('20170113094832');
 
 
 --
+-- Name: noticia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('noticia_sequence', 1, false);
+
+
+--
 -- Data for Name: obra; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: obra_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('obra_sequence', 1, false);
 
 
 --
@@ -32219,9 +32017,23 @@ INSERT INTO migrations (name) VALUES ('20170113094832');
 
 
 --
+-- Name: ocorrencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('ocorrencia_sequence', 1, false);
+
+
+--
 -- Data for Name: ordemdeservico; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: ordemdeservico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('ordemdeservico_sequence', 1, false);
 
 
 --
@@ -32612,10 +32424,24 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 
 
 --
+-- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('papel_sequence', 702, false);
+
+
+--
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs, autorizacaogestornasolicitacaopessoal) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.176.208', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.62.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', '2', false, 1, true, 0, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,vinculo,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,modelosAvaliacao', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,email,fone,dt_admissao', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs, autorizacaogestornasolicitacaopessoal) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.177.209', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.62.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', '2', false, 1, true, 0, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,vinculo,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,modelosAvaliacao', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,email,fone,dt_admissao', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao', false);
+
+
+--
+-- Name: parametrosdosistema_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('parametrosdosistema_sequence', 2, false);
 
 
 --
@@ -32625,9 +32451,23 @@ INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, e
 
 
 --
+-- Name: participanteavaliacaodesempenho_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('participanteavaliacaodesempenho_sequence', 1, false);
+
+
+--
 -- Data for Name: participantecursolnt; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: participantecursolnt_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('participantecursolnt_sequence', 1, false);
 
 
 --
@@ -32637,9 +32477,23 @@ INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, e
 
 
 --
+-- Name: pausapreenchimentovagas_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pausapreenchimentovagas_sequence', 1, false);
+
+
+--
 -- Data for Name: pcmat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: pcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pcmat_sequence', 1, false);
 
 
 --
@@ -32954,9 +32808,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: perfil_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('perfil_sequence', 3, false);
+
+
+--
 -- Data for Name: pergunta; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: pergunta_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pergunta_sequence', 1, false);
 
 
 --
@@ -32966,9 +32834,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: periodoexperiencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('periodoexperiencia_sequence', 1, false);
+
+
+--
 -- Data for Name: pesquisa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: pesquisa_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pesquisa_sequence', 1, false);
 
 
 --
@@ -32978,9 +32860,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: prioridadetreinamento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('prioridadetreinamento_sequence', 1, false);
+
+
+--
 -- Data for Name: prontuario; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: prontuario_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('prontuario_sequence', 1, false);
 
 
 --
@@ -32990,9 +32886,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: providencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('providencia_sequence', 1, false);
+
+
+--
 -- Data for Name: quantidadelimitecolaboradoresporcargo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: quantidadelimitecolaboradoresporcargo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('quantidadelimitecolaboradoresporcargo_sequence', 1, false);
 
 
 --
@@ -33002,9 +32912,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: questionario_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('questionario_sequence', 1, false);
+
+
+--
 -- Data for Name: reajustecolaborador; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: reajustecolaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('reajustecolaborador_sequence', 1, false);
 
 
 --
@@ -33014,9 +32938,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: reajustefaixasalarial_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('reajustefaixasalarial_sequence', 1, false);
+
+
+--
 -- Data for Name: reajusteindice; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: reajusteindice_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('reajusteindice_sequence', 1, false);
 
 
 --
@@ -33026,9 +32964,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: realizacaoexame_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('realizacaoexame_sequence', 1, false);
+
+
+--
 -- Data for Name: resposta; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: resposta_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('resposta_sequence', 1, false);
 
 
 --
@@ -33044,9 +32996,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: risco_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('risco_sequence', 1, false);
+
+
+--
 -- Data for Name: riscoambiente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: riscoambiente_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('riscoambiente_sequence', 1, false);
 
 
 --
@@ -33056,9 +33022,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: riscofasepcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('riscofasepcmat_sequence', 1, false);
+
+
+--
 -- Data for Name: riscofuncao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: riscofuncao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('riscofuncao_sequence', 1, false);
 
 
 --
@@ -33068,9 +33048,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: riscomedicaorisco_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('riscomedicaorisco_sequence', 1, false);
+
+
+--
 -- Data for Name: sinalizacaopcmat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: sinalizacaopcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('sinalizacaopcmat_sequence', 1, false);
 
 
 --
@@ -33086,9 +33080,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: solicitacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('solicitacao_sequence', 1, false);
+
+
+--
 -- Data for Name: solicitacaoavaliacao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: solicitacaoavaliacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('solicitacaoavaliacao_sequence', 1, false);
 
 
 --
@@ -33104,6 +33112,13 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: solicitacaobds_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('solicitacaobds_sequence', 1, false);
+
+
+--
 -- Data for Name: solicitacaoepi; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -33116,9 +33131,30 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: solicitacaoepi_item_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('solicitacaoepi_item_sequence', 1, false);
+
+
+--
+-- Name: solicitacaoepi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('solicitacaoepi_sequence', 1, false);
+
+
+--
 -- Data for Name: solicitacaoepiitemdevolucao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: solicitacaoepiitemdevolucao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('solicitacaoepiitemdevolucao_sequence', 1, false);
 
 
 --
@@ -33128,9 +33164,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: solicitacaoepiitementrega_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('solicitacaoepiitementrega_sequence', 1, false);
+
+
+--
 -- Data for Name: solicitacaoexame; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: solicitacaoexame_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('solicitacaoexame_sequence', 1, false);
 
 
 --
@@ -33140,9 +33190,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: tabelareajustecolaborador_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tabelareajustecolaborador_sequence', 1, false);
+
+
+--
 -- Data for Name: tamanhoepi; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: tamanhoepi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tamanhoepi_sequence', 1, false);
 
 
 --
@@ -33152,9 +33216,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: testemunha_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('testemunha_sequence', 1, false);
+
+
+--
 -- Data for Name: tipo_tamanhoepi; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: tipo_tamanhoepi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tipo_tamanhoepi_sequence', 1, false);
 
 
 --
@@ -33164,9 +33242,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: tipodespesa_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tipodespesa_sequence', 1, false);
+
+
+--
 -- Data for Name: tipodocumento; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: tipodocumento_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tipodocumento_sequence', 1, false);
 
 
 --
@@ -33176,9 +33268,23 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: tipoepi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tipoepi_sequence', 1, false);
+
+
+--
 -- Data for Name: token; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: token_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('token_sequence', 1, false);
 
 
 --
@@ -33194,15 +33300,43 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 701);
 
 
 --
+-- Name: turma_avaliacaoturma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('turma_avaliacaoturma_sequence', 1, false);
+
+
+--
 -- Data for Name: turma_documentoanexo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
+-- Name: turma_documentoanexo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('turma_documentoanexo_sequence', 1, false);
+
+
+--
+-- Name: turma_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('turma_sequence', 1, false);
+
+
+--
 -- Data for Name: turmatipodespesa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: turmatipodespesa_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('turmatipodespesa_sequence', 1, false);
 
 
 --
@@ -33214,9 +33348,23 @@ INSERT INTO usuario (id, nome, login, senha, acessosistema, ultimologin, superad
 
 
 --
+-- Name: usuario_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('usuario_sequence', 2, true);
+
+
+--
 -- Data for Name: usuarioempresa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: usuarioempresa_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('usuarioempresa_sequence', 1, false);
 
 
 --
@@ -33226,9 +33374,23 @@ INSERT INTO usuario (id, nome, login, senha, acessosistema, ultimologin, superad
 
 
 --
+-- Name: usuariomensagem_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('usuariomensagem_sequence', 1, false);
+
+
+--
 -- Data for Name: usuarionoticia; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Name: usuarionoticia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('usuarionoticia_sequence', 1, false);
 
 
 --
@@ -35941,14 +36103,6 @@ ALTER TABLE ONLY colaboradorcertificacao
 
 ALTER TABLE ONLY colaborador
     ADD CONSTRAINT colaborador_motivodemissao_fk FOREIGN KEY (motivodemissao_id) REFERENCES motivodemissao(id);
-
-
---
--- Name: colaborador_solicitacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY colaborador
-    ADD CONSTRAINT colaborador_solicitacao_fk FOREIGN KEY (solicitacao_id) REFERENCES solicitacao(id);
 
 
 --

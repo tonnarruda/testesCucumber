@@ -222,7 +222,7 @@ import com.fortes.rh.test.dao.hibernate.captacao.CandidatoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.CandidatoDaoHibernateTest_Junit4;
 import com.fortes.rh.test.dao.hibernate.captacao.CandidatoIdiomaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.CandidatoSolicitacaoDaoHibernateTest;
-import com.fortes.rh.test.dao.hibernate.captacao.CandidatoSolicitacaoDaoHibernateTest_JUnit4;
+import com.fortes.rh.test.dao.hibernate.captacao.CandidatoSolicitacaoDaoHibernateTest_Junit4;
 import com.fortes.rh.test.dao.hibernate.captacao.CompetenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfigHistoricoNivelDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoImpressaoCurriculoDaoHibernateTest;
@@ -476,10 +476,10 @@ import com.fortes.rh.test.util.IntegerUtilTest;
 import com.fortes.rh.test.util.LongUtilTest;
 import com.fortes.rh.test.util.MailTest;
 import com.fortes.rh.test.util.MathUtilTest;
+import com.fortes.rh.test.util.ModelUtilTest;
 import com.fortes.rh.test.util.MontaRelatorioItextTest;
 import com.fortes.rh.test.util.SpringUtilTest;
 import com.fortes.rh.test.util.StringUtilTest;
-import com.fortes.rh.test.util.ModelUtilTest;
 import com.fortes.rh.test.util.ZipTest;
 import com.fortes.rh.test.web.action.IndexTest;
 import com.fortes.rh.test.web.action.MyActionSupportEditTest;
@@ -800,7 +800,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	CandidatoSolicitacaoManagerTest.class,
 	CandidatoSolicitacaoManagerTest_JUnit4.class,
 	CandidatoSolicitacaoDaoHibernateTest.class,
-	CandidatoSolicitacaoDaoHibernateTest_JUnit4.class,
+	CandidatoSolicitacaoDaoHibernateTest_Junit4.class,
 	CandidatoSolicitacaoListActionTest.class,
 	CandidatoSolicitacaoListActionTest_JUnit4.class,
 	MotivoSolicitacaoListActionTest.class,

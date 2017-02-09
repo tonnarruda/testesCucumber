@@ -1159,6 +1159,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.diferencaSalarialEmPorcentam = diferencaSalarialEmPorcentam;
 	}
 
+	@NaoAudita
 	public CandidatoSolicitacao getCandidatoSolicitacao() 
 	{
 		return candidatoSolicitacao;
@@ -1170,10 +1171,12 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	}
 	
 	public void setcandidatoSolicitacaoId(Long candidatoSolicitacaoId){
-		if(this.candidatoSolicitacao == null)
-			candidatoSolicitacao = new CandidatoSolicitacao();
-		
-		candidatoSolicitacao.setId(candidatoSolicitacaoId);
+		if(candidatoSolicitacaoId != null){
+			if(this.candidatoSolicitacao == null)
+				candidatoSolicitacao = new CandidatoSolicitacao();
+			
+			candidatoSolicitacao.setId(candidatoSolicitacaoId);
+		}
 	}
 
 	public Date getDataSolicitacaoDesligamento()

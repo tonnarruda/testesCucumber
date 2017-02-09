@@ -80,11 +80,16 @@ Funcionalidade: Cadastrar Colaborador
     Quando eu preencho "Nome" com "Silva Barbosa"
     E eu preencho o campo (JS) "CEP" com "60320-104"
     E eu saio do campo "CEP"
-    E eu espero 4 segundos
-    Então o campo "Logradouro" deve conter "Rua Haroldo Torres - de 501"
-    E o campo "Estado" deve ter "CE" selecionado
-    E o campo "cidade" deve ter "Fortaleza" selecionado
-    E o campo "bairroNome" deve conter "São Gerardo"
+    E eu espero 2 segundos
+   #Então o campo "Logradouro" deve conter "Rua Haroldo Torres - de 501"
+    E eu preencho "Logradouro" com "Rua Haroldo Torres - de 501"
+   #E o campo "Estado" deve ter "CE" selecionado
+    E eu seleciono "CE" de "Estado"
+    E eu espero 1 segundo
+   #E o campo "cidade" deve ter "Fortaleza" selecionado
+    E eu seleciono "Fortaleza" de "Cidade"
+   #E o campo "bairroNome" deve conter "São Gerardo"
+    E eu preencho "Bairro" com "São Gerardo"
 
     Então eu clico "Dados Funcionais"
     E eu seleciono (JS) "3" de "areaOrganizacional"

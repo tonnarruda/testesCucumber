@@ -3,7 +3,6 @@ package com.fortes.rh.dao.hibernate.captacao;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -30,11 +29,7 @@ public class FormacaoDaoHibernate extends GenericDaoHibernate<Formacao> implemen
 	{
 		String queryHQL = "delete from Formacao e where e.colaborador.id = :valor";
 
-		Query query = getSession().createQuery(queryHQL);
-
-		query.setLong("valor", colaborador.getId());
-
-		query.executeUpdate();
+		getSession().createQuery(queryHQL).setLong("valor",colaborador.getId()).executeUpdate();
 	}
 
 	public Collection<Formacao> findByColaborador(Long colaboradorId)

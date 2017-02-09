@@ -63,6 +63,19 @@
       <ref bean="empresaManagerTarget" />
     </property>
   </bean>
+    <bean id="formacaoManagerTarget" class="com.fortes.rh.business.captacao.FormacaoManagerImpl">
+    <property name="dao">
+      <ref bean="formacaoDao" />
+    </property>
+  </bean>
+  <bean id="formacaoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.FormacaoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="formacaoManagerTarget" />
+    </property>
+  </bean>
   <bean id="areaOrganizacionalManagerTarget" class="com.fortes.rh.business.geral.AreaOrganizacionalManagerImpl">
     <property name="dao">
       <ref bean="areaOrganizacionalDao" />
@@ -277,19 +290,6 @@
     </property>
     <property name="target">
       <ref bean="idiomaManagerTarget" />
-    </property>
-  </bean>
-  <bean id="formacaoManagerTarget" class="com.fortes.rh.business.captacao.FormacaoManagerImpl">
-    <property name="dao">
-      <ref bean="formacaoDao" />
-    </property>
-  </bean>
-  <bean id="formacaoManager" parent="parentManager">
-    <property name="proxyInterfaces">
-      <value>com.fortes.rh.business.captacao.FormacaoManager</value>
-    </property>
-    <property name="target">
-      <ref bean="formacaoManagerTarget" />
     </property>
   </bean>
   <bean id="experienciaManagerTarget" class="com.fortes.rh.business.captacao.ExperienciaManagerImpl">
