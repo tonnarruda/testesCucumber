@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
@@ -21,10 +24,16 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<ColaboradorCertificacao, ColaboradorCertificacaoDao> implements ColaboradorCertificacaoManager
 {
-	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;
-	private AvaliacaoPraticaManager avaliacaoPraticaManager;
+	@Autowired private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;
+	@Autowired private AvaliacaoPraticaManager avaliacaoPraticaManager;
+
+	@Autowired
+	ColaboradorCertificacaoManagerImpl( ColaboradorCertificacaoDao dao) {
+		setDao(dao);
+	}
 	
 	public Collection<ColaboradorCertificacao> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId) {
 		return getDao().findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
@@ -473,14 +482,6 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = getDao().findCertificaçõesNomesByColaboradoresTurmasIds(colaboradorTurmaId);
 		return colaboradoresTurmaMap.containsKey(colaboradorTurmaId);
 	} 
-
-	public void setAvaliacaoPraticaManager( AvaliacaoPraticaManager avaliacaoPraticaManager) {
-		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
-	}
-
-	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
-		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
-	}
 
 	public boolean existiColaboradorCertificadoByTurma(Long turmaId) {
 		return getDao().existiColaboradorCertificadoByTurma(turmaId);

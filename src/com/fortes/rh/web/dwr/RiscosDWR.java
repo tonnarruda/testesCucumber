@@ -3,6 +3,8 @@ package com.fortes.rh.web.dwr;
 import java.util.Collection;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +13,13 @@ import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.util.CollectionUtil;
 
 @Component
+@RemoteProxy(name="RiscosDWR")
+@SuppressWarnings("rawtypes")
 public class RiscosDWR
 {
-	@Autowired
-	private RiscoManager riscoManager;
+	@Autowired private RiscoManager riscoManager;
 
+	@RemoteMethod
 	public Map getRiscos(String grupoRisco)
 	{
 		Collection<Risco> riscos = riscoManager.find(new String[]{"grupoRisco"}, new Object[]{grupoRisco});
@@ -26,10 +30,5 @@ public class RiscosDWR
 			riscos.add(riscoBranco);
 		}
 		return new CollectionUtil<Risco>().convertCollectionToMap(riscos,"getId","getDescricao");
-	}
-
-	public void setRiscoManager(RiscoManager riscoManager)
-	{
-		this.riscoManager = riscoManager;
 	}
 }

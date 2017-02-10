@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,11 +14,13 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.util.CollectionUtil;
 
 @Component
+@RemoteProxy(name="FuncaoDWR")
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class FuncaoDWR
 {
-	@Autowired
-	private FuncaoManager funcaoManager;
+	@Autowired private FuncaoManager funcaoManager;
 
+	@RemoteMethod
 	public Map getFuncaoByFaixaSalarial(Long faixaId)
 	{
 		Collection<Funcao> funcaos = new ArrayList<Funcao>();
@@ -42,7 +46,7 @@ public class FuncaoDWR
 		return  new CollectionUtil<Funcao>().convertCollectionToMap(funcaoLista,"getId","getNome");
 	}
 
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Long, String> getByCargo(Long cargoId)
 	{
 		Collection<Funcao> funcaos = new ArrayList<Funcao>();
@@ -53,10 +57,5 @@ public class FuncaoDWR
 		}
 		
 		return new CollectionUtil<Funcao>().convertCollectionToMap(funcaos,"getId","getNome");
-	}
-
-	public void setFuncaoManager(FuncaoManager funcaoManager)
-	{
-		this.funcaoManager = funcaoManager;
 	}
 }

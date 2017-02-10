@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,11 +14,13 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.util.CollectionUtil;
 
 @Component
+@RemoteProxy(name="DntDWR")
+@SuppressWarnings("rawtypes")
 public class DntDWR
 {
-	@Autowired
-	private TurmaManager turmaManager;
+	@Autowired private TurmaManager turmaManager;
 
+	@RemoteMethod
 	public Map getTurmas(String cursoIdString)
 	{
 		Collection<Turma> turmas = new ArrayList<Turma>();
@@ -27,10 +31,4 @@ public class DntDWR
 
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricao");
 	}
-
-	public void setTurmaManager(TurmaManager turmaManager)
-	{
-		this.turmaManager = turmaManager;
-	}
-
 }

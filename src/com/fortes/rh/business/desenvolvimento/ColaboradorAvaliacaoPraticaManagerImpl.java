@@ -5,12 +5,21 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorAvaliacaoPraticaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 
+@Component
 public class ColaboradorAvaliacaoPraticaManagerImpl extends GenericManagerImpl<ColaboradorAvaliacaoPratica, ColaboradorAvaliacaoPraticaDao> implements ColaboradorAvaliacaoPraticaManager
 {
+	@Autowired
+	public ColaboradorAvaliacaoPraticaManagerImpl(ColaboradorAvaliacaoPraticaDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId, Long avaliacaoPraticaId, Boolean ordenarPorDataAscOuDesc, Boolean colabCertificacaoIsNull) {
 		return getDao().findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacaoId, avaliacaoPraticaId, ordenarPorDataAscOuDesc, colabCertificacaoIsNull);
 	}

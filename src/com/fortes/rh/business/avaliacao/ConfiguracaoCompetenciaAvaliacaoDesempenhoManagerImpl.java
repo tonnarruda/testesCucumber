@@ -2,6 +2,9 @@ package com.fortes.rh.business.avaliacao;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.captacao.CompetenciaManager;
@@ -16,13 +19,19 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<ConfiguracaoCompetenciaAvaliacaoDesempenho, ConfiguracaoCompetenciaAvaliacaoDesempenhoDao> implements ConfiguracaoCompetenciaAvaliacaoDesempenhoManager
 {                  
-	ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-	GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
-	FaixaSalarialManager faixaSalarialManager;
-	CompetenciaManager competenciaManager;
+	@Autowired ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	@Autowired FaixaSalarialManager faixaSalarialManager;
+	@Autowired CompetenciaManager competenciaManager;
+	
+	@Autowired
+	public ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl(ConfiguracaoCompetenciaAvaliacaoDesempenhoDao dao) {
+		setDao(dao);
+	}
 	
 	public void save(Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> configuracaoCompetenciaAvaliacaoDesempenhos, AvaliacaoDesempenho avaliacaoDesempenho) 
 	{
@@ -77,25 +86,5 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl extends Gener
 	@TesteAutomatico
 	public ConfiguracaoNivelCompetenciaFaixaSalarial getConfiguracaoNivelCompetenciaFaixaSalarial(Long avaliadorId, Long faixaSalarialId, Long avaliacaoDesempenhoId) {
 		return getDao().getConfiguracaoNivelCompetenciaFaixaSalarial(avaliadorId, faixaSalarialId, avaliacaoDesempenhoId);
-	}
-	
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
-	public void setCompetenciaManager(CompetenciaManager competenciaManager) {
-		this.competenciaManager = competenciaManager;
-	}
-
-	public void setAvaliacaoDesempenhoManager(AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {
-		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
 	}
 }

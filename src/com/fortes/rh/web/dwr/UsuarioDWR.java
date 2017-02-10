@@ -67,6 +67,7 @@ public class UsuarioDWR
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	@RemoteMethod
 	public Map getEmpresaUsuario(String usuarioNome)
 	{

@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,17 +24,15 @@ import com.fortes.rh.util.StringUtil;
 
 @Component
 @SuppressWarnings({"rawtypes"})
+@RemoteProxy(name="CandidatoDWR")
 public class CandidatoDWR
 {
-	@Autowired
-	private ConhecimentoManager conhecimentoManager;
-	@Autowired
-	private CandidatoManager candidatoManager;
-	@Autowired
-	private ColaboradorManager colaboradorManager;
-	@Autowired
-	private SolicitacaoManager solicitacaoManager;
+	@Autowired private ConhecimentoManager conhecimentoManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
 
+	@RemoteMethod
 	public Map getConhecimentos(String[] areaIntereseIds, Long empresaId)
 	{
 		Collection<Conhecimento> conhecimentos;
@@ -60,6 +60,7 @@ public class CandidatoDWR
 		return new CollectionUtil<Conhecimento>().convertCollectionToMap(conhecimentos,"getId","getNome");
 	}
 
+	@RemoteMethod
 	public Map getCandidatosHomonimos(String candidatoNome)
 	{
 		Collection<Candidato> candidatos = candidatoManager.getCandidatosByNome(candidatoNome);
@@ -67,6 +68,7 @@ public class CandidatoDWR
 		return new CollectionUtil<Candidato>().convertCollectionToMap(candidatos,"getId","getNomeCpf");
 	}
 	
+	@RemoteMethod
 	public Map find(String nome, String cpf, Long empresaId)
 	{
 		Pessoal pessoal = new Pessoal();
@@ -81,6 +83,7 @@ public class CandidatoDWR
 		return new CollectionUtil<Candidato>().convertCollectionToMap(candidatos,"getId","getNomeECpf");
 	}
 	
+	@RemoteMethod
 	public Collection<Object> findColaboradoresMesmoCpf(String[] candidatosCpfs)
 	{
 		Collection<Colaborador> colaboradores = candidatoManager.findColaboradoresMesmoCpf(candidatosCpfs);
@@ -102,6 +105,7 @@ public class CandidatoDWR
 		return retorno;
 	}
 
+	@RemoteMethod
 	public String montaMensagemExclusao(Long candidatoId, Long empresaId)
 	{
 		StringBuilder retorno = new StringBuilder();
@@ -127,23 +131,4 @@ public class CandidatoDWR
 		
 		return retorno.toString();
 	}
-    
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
-	
-	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager)
-	{
-		this.conhecimentoManager = conhecimentoManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
-		this.solicitacaoManager = solicitacaoManager;
-	}
 }
-

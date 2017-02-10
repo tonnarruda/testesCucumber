@@ -2,6 +2,9 @@ package com.fortes.rh.web.dwr;
 
 import java.util.Date;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
@@ -13,12 +16,14 @@ import com.fortes.rh.model.sesmt.OrdemDeServico;
 import com.fortes.rh.util.DateUtil;
 
 @Component
+@RemoteProxy(name="OrdemDeServicoDWR")
 public class OrdemDeServicoDWR {
 	
-	private OrdemDeServicoManager ordemDeServicoManager;
-	private EmpresaManager empresaManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private OrdemDeServicoManager ordemDeServicoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
 
+	@RemoteMethod
 	public OrdemDeServico recarregaDadosOrdemDeServico(Long colaboradorId, Long empresaId, String dataOrdemDeServico) throws Exception{
 		Date dataOrdemDeServico1 = DateUtil.criarDataMesAno(DateUtil.criarDataDiaMesAno(dataOrdemDeServico));
 		
@@ -52,21 +57,5 @@ public class OrdemDeServicoDWR {
 		if(ordemDeServico != null && dataOrdemDeServico.before(ordemDeServico.getData()))
 			throw new Exception("Não é possível inserir uma ordem de serviço.</br></br>A data informada está inferior a data da última Ordem de Serviço impressa."
 					+ "</br></br>Data da última ordem de serviço: " + ordemDeServico.getDataFormatada());
-	}
-	
-	public OrdemDeServico carregaUltimaOrdemDeServicoByColaborador(Long colaboradorId){
-		return ordemDeServicoManager.findUltimaOrdemDeServico(colaboradorId);
-	}
-
-	public void setOrdemDeServicoManager(OrdemDeServicoManager ordemDeServicoManager) {
-		this.ordemDeServicoManager = ordemDeServicoManager;
-	}
-	
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-	
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
-		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
 }

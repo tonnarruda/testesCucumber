@@ -19,10 +19,8 @@ import com.fortes.rh.util.Autenticador;
 @RemoteProxy(name="MorroDWR")
 public class MorroDWR
 {
-	@Autowired
-	private MorroManager morroManager;
-	@Autowired
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private MorroManager morroManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	@RemoteMethod
 	public String enviar(String mensagem, String classeExcecao, String stackTrace, String url, String browser) 

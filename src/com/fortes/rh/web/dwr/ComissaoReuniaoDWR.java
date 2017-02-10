@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,15 +23,14 @@ import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.util.DateUtil;
 
 @Component
+@RemoteProxy(name="ComissaoReuniaoDWR")
 public class ComissaoReuniaoDWR
 {
-	@Autowired
-	private ComissaoReuniaoManager comissaoReuniaoManager;
-	@Autowired
-	private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
-	@Autowired
-	private ComissaoManager comissaoManager;
+	@Autowired private ComissaoReuniaoManager comissaoReuniaoManager;
+	@Autowired private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
+	@Autowired private ComissaoManager comissaoManager;
 
+	@RemoteMethod
 	public Map<String,Object> prepareDadosReuniao(Long id) throws Exception
 	{
 		Map<String,Object> retorno = new HashMap<String, Object>();
@@ -59,6 +60,7 @@ public class ComissaoReuniaoDWR
 		return retorno;
 	}
 	
+	@RemoteMethod
 	public boolean validaDataNoPeriodoDaComissao(String dataReuniaoStr, Long comissaoId)
 	{
 		Date dataReuniao = null;
@@ -75,6 +77,7 @@ public class ComissaoReuniaoDWR
 		return comissaoManager.validaData(dataReuniao, comissaoId);
 	}
 	
+	@RemoteMethod
 	public Object findColaboradoresByDataReuniao(String dataReuniaoStr, Long comissaoId)
 	{
 		List<Object> retorno = new ArrayList<Object>();
@@ -94,6 +97,7 @@ public class ComissaoReuniaoDWR
 		return retorno;
 	}
 	
+	@RemoteMethod
 	public Object findPresencaColaboradoresByReuniao(Long comissaoReuniaoId, String dataReuniao)
 	{
 		List<Object> retorno = new ArrayList<Object>();
@@ -111,20 +115,5 @@ public class ComissaoReuniaoDWR
 		}
 		
 		return retorno;
-	}
-
-	public void setComissaoReuniaoManager(ComissaoReuniaoManager comissaoReuniaoManager)
-	{
-		this.comissaoReuniaoManager = comissaoReuniaoManager;
-	}
-
-	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager)
-	{
-		this.comissaoReuniaoPresencaManager = comissaoReuniaoPresencaManager;
-	}
-
-	public void setComissaoManager(ComissaoManager comissaoManager) 
-	{
-		this.comissaoManager = comissaoManager;
 	}
 }

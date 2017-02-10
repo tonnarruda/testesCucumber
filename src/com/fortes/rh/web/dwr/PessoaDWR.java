@@ -3,6 +3,8 @@ package com.fortes.rh.web.dwr;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,13 +16,13 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Pessoa;
 
 @Component
+@RemoteProxy(name="PessoaDWR")
 public class PessoaDWR
 {
-	@Autowired
-    private ColaboradorManager colaboradorManager;
-	@Autowired
-	private CandidatoManager candidatoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CandidatoManager candidatoManager;
 
+	@RemoteMethod
 	public Collection<Pessoa> verificaCpfDuplicado(String cpf, Long empresaId, Long id) throws Exception
 	{
 		String cpfSemMascara = cpf.replaceAll("\\.", "").replaceAll("-", "").trim();
@@ -38,13 +40,5 @@ public class PessoaDWR
 		}
 
 		return pessoas;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager) {
-		this.candidatoManager = candidatoManager;
 	}
 }

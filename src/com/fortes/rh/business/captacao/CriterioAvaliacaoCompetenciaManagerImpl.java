@@ -5,13 +5,22 @@ package com.fortes.rh.business.captacao;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.CriterioAvaliacaoCompetenciaDao;
 import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.util.CollectionUtil;
 
+@Component
 public class CriterioAvaliacaoCompetenciaManagerImpl extends GenericManagerImpl<CriterioAvaliacaoCompetencia, CriterioAvaliacaoCompetenciaDao> implements CriterioAvaliacaoCompetenciaManager
 {
+	@Autowired
+	public CriterioAvaliacaoCompetenciaManagerImpl(CriterioAvaliacaoCompetenciaDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<CriterioAvaliacaoCompetencia> findByCompetenciaAndCNCFId(Long competenciaId, Long configuracaonivelcompetenciafaixasalarialId, Character tipoCompetencia)
 	{
 		return getDao().findByCompetenciaAndCNCFId(competenciaId, configuracaonivelcompetenciafaixasalarialId, tipoCompetencia);

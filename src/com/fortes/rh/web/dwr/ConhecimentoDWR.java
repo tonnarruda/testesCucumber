@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +15,13 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
 @Component
+@RemoteProxy(name="ConhecimentoDWR")
+@SuppressWarnings("rawtypes")
 public class ConhecimentoDWR
 {
-	@Autowired
-	private ConhecimentoManager conhecimentoManager;
+	@Autowired private ConhecimentoManager conhecimentoManager;
 
-	@SuppressWarnings("rawtypes")
+	@RemoteMethod
 	public Map getConhecimentos(String[] areaOrganizacionalIds, Long empresaId)
 	{
 		Collection<Conhecimento> conhecimentos;
@@ -31,7 +34,7 @@ public class ConhecimentoDWR
 		return new CollectionUtil<Conhecimento>().convertCollectionToMap(conhecimentos,"getId","getNome");
 	}
 
-	@SuppressWarnings("rawtypes")
+	@RemoteMethod
 	public Map getByEmpresa(Long empresaId, Long[] empresaIds)
 	{
 		Collection<Conhecimento> conhecimentos = new ArrayList<Conhecimento>();
@@ -43,10 +46,4 @@ public class ConhecimentoDWR
 				
 		return new CollectionUtil<Conhecimento>().convertCollectionToMap(conhecimentos,"getId","getNome");
 	}
-
-	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager)
-	{
-		this.conhecimentoManager = conhecimentoManager;
-	}
-
 }

@@ -1,5 +1,8 @@
 package com.fortes.rh.web.dwr;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorAvaliacaoPraticaManager;
@@ -7,11 +10,13 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 
 @Component
+@RemoteProxy(name="ColaboradorAvaliacaoPraticaDWR")
 public class ColaboradorAvaliacaoPraticaDWR
 {
-	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;
-	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;
+	@Autowired private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	
+	@RemoteMethod
     public ColaboradorAvaliacaoPratica verificaUltimaCertificacao(Long colabAvPraticaId)
     {
     	ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = colaboradorAvaliacaoPraticaManager.findById(colabAvPraticaId);
@@ -21,12 +26,4 @@ public class ColaboradorAvaliacaoPraticaDWR
     	
     	return colaboradorAvaliacaoPratica;
     }
-
-    public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
-	}
-
-	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
-		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
-	}
 }

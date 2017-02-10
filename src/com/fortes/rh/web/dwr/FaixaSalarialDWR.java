@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,12 +16,13 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.web.tags.Option;
 
 @Component
+@RemoteProxy(name="FaixaSalarialDWR")
 @SuppressWarnings("rawtypes")
 public class FaixaSalarialDWR
 {
-	@Autowired
-	private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
 
+	@RemoteMethod
 	public Map getFaixas(String cargoId)
 	{
 		if (cargoId != null && !cargoId.equals("-1"))
@@ -44,6 +47,7 @@ public class FaixaSalarialDWR
 		return new HashMap<String, String>();
 	}
 	
+	@RemoteMethod
 	public Collection<Option> findByCargo(String cargoId)
 	{
 		Collection<Option> faixasRetorno = new ArrayList<Option>();
@@ -58,6 +62,7 @@ public class FaixaSalarialDWR
 		return faixasRetorno;
 	}
 
+	@RemoteMethod
 	public Map getByEmpresas(Long empresaId, Long[] empresaIds)
 	{
 		Collection<FaixaSalarial> faixas;
@@ -74,13 +79,9 @@ public class FaixaSalarialDWR
 		return new CollectionUtil<FaixaSalarial>().convertCollectionToMap(faixas, parametroKey, "getDescricaoComStatus");
 	}
 	
+	@RemoteMethod
 	public Map getByCargo(String cargoId)
 	{
 		return faixaSalarialManager.findByCargo(cargoId);
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
 	}
 }

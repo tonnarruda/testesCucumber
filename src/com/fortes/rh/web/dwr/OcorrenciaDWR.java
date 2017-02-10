@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +14,13 @@ import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.util.CollectionUtil;
 
 @Component
+@RemoteProxy(name="OcorrenciaDWR")
+@SuppressWarnings("unchecked")
 public class OcorrenciaDWR
 {
-	@Autowired
-	private OcorrenciaManager ocorrenciaManager;
+	@Autowired private OcorrenciaManager ocorrenciaManager;
 	
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Object, Object> getByEmpresas(Long empresaId, Long[] empresaIds) throws Exception
 	{
 		Collection<Ocorrencia> ocorrencias = new ArrayList<Ocorrencia>();
@@ -30,7 +33,7 @@ public class OcorrenciaDWR
 		return new CollectionUtil<Ocorrencia>().convertCollectionToMap(ocorrencias, "getId", "getDescricaoComEmpresa");
 	}
 
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Object, Object> getByEmpresa(Long empresaId) throws Exception
 	{
 		Collection<Ocorrencia> ocorrencias = new ArrayList<Ocorrencia>();
@@ -39,15 +42,10 @@ public class OcorrenciaDWR
 		return new CollectionUtil<Ocorrencia>().convertCollectionToMap(ocorrencias, "getId", "getDescricao");
 	}
 
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Object, Object> getByEmpresaComCodigoAc(Long empresaId) throws Exception
 	{
 		Collection<Ocorrencia> ocorrencias  = ocorrenciaManager.findComCodigoAC(empresaId);
 		return new CollectionUtil<Ocorrencia>().convertCollectionToMap(ocorrencias, "getCodigoAC", "getDescricao");
-	}
-	
-	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager)
-	{
-		this.ocorrenciaManager = ocorrenciaManager;
 	}
 }

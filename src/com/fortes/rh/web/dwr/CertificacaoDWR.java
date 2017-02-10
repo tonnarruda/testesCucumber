@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
@@ -13,10 +16,12 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
 @Component
+@RemoteProxy(name="CertificacaoDWR")
 public class CertificacaoDWR
 {
-	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 
+	@RemoteMethod
     public  Collection<CheckBox> getColaboradores(String dataIni, String dataFim, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Integer mesesCertificacoesAVencer, String[] areaOrganizacionalIds, String[] estabelecimentoIds, String[] certificacoesIds, String situacaoColaborador) {
     	Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
 		Long [] areasIdsLong = StringUtil.stringToLong(areaOrganizacionalIds);
@@ -42,8 +47,4 @@ public class CertificacaoDWR
     	
     	return checkboxes;
     }
-
-	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
-	}
 }

@@ -14,6 +14,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.directwebremoting.WebContextFactory;
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,25 +43,19 @@ import com.fortes.web.tags.CheckBox;
 import com.fortes.web.tags.Option;
 
 @Component
+@RemoteProxy(name="ReajusteDWR")
 public class ReajusteDWR
 {
-	@Autowired
-	private ColaboradorManager colaboradorManager;
-	@Autowired
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	@Autowired
-	private FaixaSalarialManager faixaSalarialManager;
-	@Autowired
-	private IndiceManager indiceManager;
-	@Autowired
-	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
-	@Autowired
-	private ReajusteColaboradorManager reajusteColaboradorManager;
-	@Autowired
-	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager; 
-	@Autowired
-	private ReajusteIndiceManager reajusteIndiceManager; 
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	@Autowired private ReajusteColaboradorManager reajusteColaboradorManager;
+	@Autowired private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager; 
+	@Autowired private ReajusteIndiceManager reajusteIndiceManager; 
 
+	@RemoteMethod
 	public Map<String, Object> getColaboradorSolicitacaoReajuste(Long colaboradorId) throws Exception
 	{
 		Map<String, Object> retorno = new HashMap<String, Object>();
@@ -113,6 +109,7 @@ public class ReajusteDWR
 		return retorno;
 	}
 
+	@RemoteMethod
 	public Long verificaColaborador(Long tabelaId, Long colaboradorId, boolean integraAC) throws Exception
 	{
 		if(tabelaId == -1)
@@ -141,6 +138,7 @@ public class ReajusteDWR
 		return colaboradorId;
 	}
 
+	@RemoteMethod
 	public Map<Long, String> getColaboradoresByAreaOrganizacional(String areaId)
 	{
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -165,11 +163,13 @@ public class ReajusteDWR
 		return retorno;
 	}
 
+	@RemoteMethod
 	public String calculaSalario(String tipoSalario, String faixaSalarialId, String indiceId, String quantidade, String salario) throws Exception
 	{
 		return calculaSalarioHistorico(tipoSalario, faixaSalarialId, indiceId, quantidade, salario, DateUtil.formataDiaMesAno(new Date()));
 	}
 
+	@RemoteMethod
 	public String calculaSalarioHistorico(String tipoSalario, String faixaSalarialId, String indiceId, String quantidade, String salario, String data) throws Exception
 	{
 		DecimalFormat formatador = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt", "BR"));
@@ -219,6 +219,7 @@ public class ReajusteDWR
 		return formatador.format(salarioCalculado);
 	}
 	
+	@RemoteMethod
 	public Collection<CheckBox> getFaixasByCargosDesabilitandoPorIndice(String[] cargoIds)
 	{
 		Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
@@ -247,6 +248,7 @@ public class ReajusteDWR
 		return checkboxes;
 	}
 	
+	@RemoteMethod
 	public Collection<CheckBox> getFaixasByCargosDesabilitandoPorIndiceSemPendencia(String[] cargoIds)
 	{
 		Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
@@ -273,6 +275,7 @@ public class ReajusteDWR
 		return checkboxes;
 	}
 	
+	@RemoteMethod
 	public Collection<Option> getFaixasByCargoDesabilitandoPorIndice(Long cargoId)
 	{
 		Collection<Option> options = new ArrayList<Option>();
@@ -301,6 +304,7 @@ public class ReajusteDWR
 		return options;
 	}
 	
+	@RemoteMethod
 	public Collection<CheckBox> getIndicesDesabilitandoPendentes()
 	{
 		Empresa empresa = SecurityUtil.getEmpresaByDWR(WebContextFactory.get().getHttpServletRequest().getSession());
@@ -331,6 +335,7 @@ public class ReajusteDWR
 		return checkboxes;
 	}
 	
+	@RemoteMethod
 	public Collection<Option> getOptionsIndicesDesabilitandoPendentes()
 	{
 		Empresa empresa = SecurityUtil.getEmpresaByDWR(WebContextFactory.get().getHttpServletRequest().getSession());
@@ -361,6 +366,7 @@ public class ReajusteDWR
 		return options;
 	}
 
+	@RemoteMethod
 	public Collection<CheckBox> getIndicesDesabilitando()
 	{
 		Empresa empresa = SecurityUtil.getEmpresaByDWR(WebContextFactory.get().getHttpServletRequest().getSession());
@@ -386,14 +392,15 @@ public class ReajusteDWR
 		return checkboxes;
 	}
 	
-	
+	@RemoteMethod
 	public Character getTipoReajuste(Long tabelaReajusteColaboradorId)
 	{
 		TabelaReajusteColaborador tabelaReajusteColaborador = tabelaReajusteColaboradorManager.findByIdProjection(tabelaReajusteColaboradorId);
 		
 		return tabelaReajusteColaborador.getTipoReajuste();
 	}
-	
+
+	@RemoteMethod
 	public Collection<Option> findRealinhamentosByPeriodo(Long empresaId, String dataIniStr, String dataFimStr)
 	{
 		Collection<Option> retorno = new ArrayList<Option>();
@@ -422,44 +429,4 @@ public class ReajusteDWR
 
 		return retorno;
 	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
-	}
-
-	public void setReajusteColaboradorManager(ReajusteColaboradorManager reajusteColaboradorManager)
-	{
-		this.reajusteColaboradorManager = reajusteColaboradorManager;
-	}
-
-	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager)
-	{
-		this.tabelaReajusteColaboradorManager = tabelaReajusteColaboradorManager;
-	}
-
-	public void setReajusteFaixaSalarialManager(ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) 
-	{
-		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
-	}
-
-	public void setReajusteIndiceManager(ReajusteIndiceManager reajusteIndiceManager) {
-		this.reajusteIndiceManager = reajusteIndiceManager;
-	}
-
 }

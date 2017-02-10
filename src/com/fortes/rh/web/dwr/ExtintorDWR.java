@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +14,13 @@ import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.util.CollectionUtil;
 
 @Component
+@RemoteProxy(name="ExtintorDWR")
+@SuppressWarnings("rawtypes")
 public class ExtintorDWR
 {
-	@Autowired
-	private ExtintorManager extintorManager;
+	@Autowired private ExtintorManager extintorManager;
 
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map getExtintorByEstabelecimento(String estabelecimentoId, String mensagemHeader)
 	{
 		// Descrição pode ser "Todos" (filtro listagem), "Selecione..." (edit)
@@ -45,10 +48,5 @@ public class ExtintorDWR
 		}
 
 		return CollectionUtil.convertCollectionToMap(colecaoRetorno, "getId", "getDescricao", Extintor.class);
-	}
-
-	public void setExtintorManager(ExtintorManager extintorManager)
-	{
-		this.extintorManager = extintorManager;
 	}
 }

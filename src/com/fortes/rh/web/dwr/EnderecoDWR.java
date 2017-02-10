@@ -4,16 +4,20 @@ import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.util.HttpUtil;
 
 @Component
+@RemoteProxy(name="EnderecoDWR")
 public class EnderecoDWR {
 
 	 //inserido dessa forma, pois a expresao que adiciona todos os caracter .(ponto) nao funciona neste caso.
 	 private String expressaoRegular = "[\\w\\s\\n\\-\\*\\|\\@\\#\\%\\&\\(\\)\\+\\=\\§\\!\\?\\;\\:\\>\\<\\,\\.\\/\\p{L}]*"; 
 
+	@RemoteMethod
 	public String buscaPorCep(String cep) 
 	{
 		try {

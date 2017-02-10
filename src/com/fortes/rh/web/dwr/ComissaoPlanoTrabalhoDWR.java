@@ -3,6 +3,8 @@ package com.fortes.rh.web.dwr;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,11 +12,12 @@ import com.fortes.rh.business.sesmt.ComissaoPlanoTrabalhoManager;
 import com.fortes.rh.model.sesmt.ComissaoPlanoTrabalho;
 
 @Component
+@RemoteProxy(name="ComissaoPlanoTrabalhoDWR")
 public class ComissaoPlanoTrabalhoDWR
 {
-	@Autowired
-	private ComissaoPlanoTrabalhoManager comissaoPlanoTrabalhoManager;
+	@Autowired private ComissaoPlanoTrabalhoManager comissaoPlanoTrabalhoManager;
 
+	@RemoteMethod
 	public Map<String,Object> prepareDados(Long id) throws Exception
 	{
 		Map<String,Object> retorno = new HashMap<String, Object>();
@@ -43,10 +46,5 @@ public class ComissaoPlanoTrabalhoDWR
 		}
 
 		return retorno;
-	}
-
-	public void setComissaoPlanoTrabalhoManager(ComissaoPlanoTrabalhoManager comissaoPlanoTrabalhoManager)
-	{
-		this.comissaoPlanoTrabalhoManager = comissaoPlanoTrabalhoManager;
 	}
 }

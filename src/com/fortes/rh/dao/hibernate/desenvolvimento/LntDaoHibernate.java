@@ -11,6 +11,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.LntDao;
@@ -18,6 +19,7 @@ import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.model.desenvolvimento.ParticipanteCursoLnt;
 import com.fortes.rh.model.dicionario.StatusLnt;
 
+@Component
 public class LntDaoHibernate extends GenericDaoHibernate<Lnt> implements LntDao
 {
 	@SuppressWarnings("unchecked")

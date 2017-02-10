@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,24 +23,21 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 
 @Component
+@RemoteProxy(name="TurmaDWR")
+@SuppressWarnings("rawtypes")
 public class TurmaDWR
 {
 	private final Boolean LIBERADA = true;
 	private final Boolean BLOQUEADA = false;
 	
-	@Autowired
-	private TurmaManager turmaManager;
-	@Autowired
-	private DiaTurmaManager diaTurmaManager;
-	@Autowired
-	private AvaliacaoTurmaManager avaliacaoTurmaManager;
-	@Autowired
-	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
-	@Autowired
-	private TurmaTipoDespesaManager turmaTipoDespesaManager;
-	@Autowired
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private TurmaManager turmaManager;
+	@Autowired private DiaTurmaManager diaTurmaManager;
+	@Autowired private AvaliacaoTurmaManager avaliacaoTurmaManager;
+	@Autowired private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
+	@Autowired private TurmaTipoDespesaManager turmaTipoDespesaManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
+	@RemoteMethod
 	public Turma getTurma(Long turmaId)
 	{
 		Turma turma = turmaManager.findByIdProjection(turmaId);
@@ -52,6 +51,7 @@ public class TurmaDWR
 		return turma;
 	}
 	
+	@RemoteMethod
 	public Map getTurmas(String cursoId)
 	{
 		if(cursoId == null || cursoId.trim().equals(""))
@@ -62,6 +62,7 @@ public class TurmaDWR
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricao");
 	}
 	
+	@RemoteMethod
 	public String enviarAviso(Long turmaId, Long empresaId)
 	{
 		Turma turma = turmaManager.findByIdProjection(turmaId);
@@ -70,6 +71,7 @@ public class TurmaDWR
 		return "Email enviado com sucesso.";
 	}
 
+	@RemoteMethod
 	public Map getTurmasByFiltro(String dataIni, String dataFim, char realizada, Long empresaId) throws Exception
 	{
 		Date dataPrevIni = null;
@@ -93,13 +95,14 @@ public class TurmaDWR
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricaoCurso");
 	}
 	
+	@RemoteMethod
 	public Map getTurmasByCursoNotTurmaId(Long cursoId, Long notTurmaId) throws Exception
 	{
 		Collection<Turma> turmas = turmaManager.getTurmasByCursoNotTurmaId(cursoId, notTurmaId);
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricao");
 	}
 
-	
+	@RemoteMethod
 	public Map getTurmasByCursos(Long[] cursoIds)throws Exception
 	{
 		if (cursoIds.length == 0)
@@ -110,6 +113,7 @@ public class TurmaDWR
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricaoCurso");
 	}
 
+	@RemoteMethod
 	public Map getTurmasFinalizadas(String cursoId)
 	{
 		if(cursoId == null || cursoId.trim().equals(""))
@@ -126,11 +130,13 @@ public class TurmaDWR
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricao");
 	}
 	
+	@RemoteMethod
 	public Collection<AvaliacaoTurma> getAvaliacaoTurmas(Long turmaId) 
 	{
 		return avaliacaoTurmaManager.findByTurma(turmaId);
 	}
 
+	@RemoteMethod
 	public boolean updateRealizada(Long turmaId, boolean realizada) throws Exception
 	{
 		try
@@ -146,6 +152,7 @@ public class TurmaDWR
 		return realizada;
 	}
 	
+	@RemoteMethod
 	public Long liberar(Long turmaId, Long avaliacaoTurmaId, Long empresaId)  
 	{
 		turmaAvaliacaoTurmaManager.updateLiberada(turmaId, avaliacaoTurmaId, LIBERADA, empresaId);
@@ -153,6 +160,7 @@ public class TurmaDWR
 		return turmaId;
 	}
 	
+	@RemoteMethod
 	public Long bloquear(Long turmaId, Long avaliacaoTurmaId, Long empresaId) 
 	{
 		turmaAvaliacaoTurmaManager.updateLiberada(turmaId, avaliacaoTurmaId, BLOQUEADA, empresaId);
@@ -160,43 +168,16 @@ public class TurmaDWR
 		return turmaId;
 	}
 	
+	@RemoteMethod
 	public Collection<TurmaTipoDespesa> getDespesas(Long turmaId)
 	{
 		return turmaTipoDespesaManager.findTipoDespesaTurma(turmaId);
 	}
 	
+	@RemoteMethod
 	public void saveDespesas(String turmaTipoDespesasJSON, Long turmaId, double totalCusto)
 	{
 		turmaTipoDespesaManager.save(turmaTipoDespesasJSON, turmaId);
 		turmaManager.updateCusto(turmaId, totalCusto);
-	}
-
-	public void setTurmaManager(TurmaManager turmaManager)
-	{
-		this.turmaManager = turmaManager;
-	}
-
-	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager) 
-	{
-		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
-	}
-
-	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) 
-	{
-		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
-	}
-
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
-
-	public void setTurmaAvaliacaoTurmaManager(TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) {
-		this.turmaAvaliacaoTurmaManager = turmaAvaliacaoTurmaManager;
-	}
-
-	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager) {
-		this.diaTurmaManager = diaTurmaManager;
 	}
 }

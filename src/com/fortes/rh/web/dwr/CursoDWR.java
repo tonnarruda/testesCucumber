@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,25 +25,23 @@ import com.fortes.rh.util.LongUtil;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
 @Component
+@RemoteProxy(name="CursoDWR")
+@SuppressWarnings("unchecked")
 public class CursoDWR
 {
-	@Autowired
-	private CursoManager cursoManager;
-	@Autowired
-	private EmpresaManager empresaManager;
-	@Autowired
-	private AvaliacaoCursoManager avaliacaoCursoManager;
-	@Autowired
-	private DocumentoAnexoManager documentoAnexoManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private AvaliacaoCursoManager avaliacaoCursoManager;
+	@Autowired private DocumentoAnexoManager documentoAnexoManager;
 
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Long,String> getCursosByEmpresa(Long empresaId) throws Exception
 	{
 		Collection<Curso> cursos = cursoManager.findAllSelect(empresaId);
 		return new CollectionUtil<Curso>().convertCollectionToMap(cursos,"getId","getNome");
 	}
 
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Long,String> getCursosByEmpresasParticipantes(Long[] empresasIds, String role, HttpServletRequest request) throws Exception
 	{
 		Collection<Curso> cursos;
@@ -60,7 +60,7 @@ public class CursoDWR
 		return new CollectionUtil<Curso>().convertCollectionToMap(cursos,"getId","getNome");
 	}
 	
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Long,String> getCursosByEmpresasIds(Long[] empresasIds) throws Exception
 	{
 		Collection<Curso> cursos = new ArrayList<Curso>();
@@ -71,6 +71,7 @@ public class CursoDWR
 		return new CollectionUtil<Curso>().convertCollectionToMap(cursos,"getId","getEmpresaNomeMaisNome");
 	}
 	
+	@RemoteMethod
 	public Collection<AvaliacaoCurso> getAvaliacaoCursos(Long[] cursosIds)
 	{
 		if (cursosIds.length == 0)
@@ -79,30 +80,15 @@ public class CursoDWR
 		return avaliacaoCursoManager.findByCursos(cursosIds);
 	}
 	
+	@RemoteMethod
 	public Curso findDadosBasicosById(Long cursoId){
 		return cursoManager.findByIdProjection(cursoId);
 	}
 	
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Long,String> getDocumentoAnexos(Long cursoId) 
 	{
 		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', cursoId);
 		return new CollectionUtil<DocumentoAnexo>().convertCollectionToMap(documentoAnexos,"getId","getDescricao");
-	}
-	
-	public void setCursoManager(CursoManager cursoManager) {
-		this.cursoManager = cursoManager;
-	}
-
-	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager) {
-		this.avaliacaoCursoManager = avaliacaoCursoManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
-	public void setDocumentoAnexoManager(DocumentoAnexoManager documentoAnexoManager) {
-		this.documentoAnexoManager = documentoAnexoManager;
-	}
+	}	
 }

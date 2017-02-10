@@ -3,6 +3,8 @@ package com.fortes.rh.web.dwr;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +13,12 @@ import com.fortes.rh.model.sesmt.EtapaProcessoEleitoral;
 import com.fortes.rh.util.DateUtil;
 
 @Component
+@RemoteProxy(name="EtapaProcessoEleitoralDWR")
 public class EtapaProcessoEleitoralDWR
 {
-	@Autowired
-	private EtapaProcessoEleitoralManager etapaProcessoEleitoralManager;
+	@Autowired private EtapaProcessoEleitoralManager etapaProcessoEleitoralManager;
 
+	@RemoteMethod
 	public Map<String,Object> prepareDadosEtapa(Long id) throws Exception
 	{
 		Map<String,Object> retorno = new HashMap<String, Object>();
@@ -39,10 +42,5 @@ public class EtapaProcessoEleitoralDWR
 		}
 
 		return retorno;
-	}
-
-	public void setEtapaProcessoEleitoralManager(EtapaProcessoEleitoralManager etapaProcessoEleitoralManager)
-	{
-		this.etapaProcessoEleitoralManager = etapaProcessoEleitoralManager;
 	}
 }

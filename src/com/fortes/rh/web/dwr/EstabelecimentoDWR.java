@@ -3,6 +3,8 @@ package com.fortes.rh.web.dwr;
 import java.util.Collection;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +13,12 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.CollectionUtil;
 
 @Component
+@RemoteProxy(name="EstabelecimentoDWR")
 public class EstabelecimentoDWR
 {
-	@Autowired
-	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
 
+	@RemoteMethod
 	public String calcularDV(String cnpj, String idEstabelecimento, String idEmpresa)
 	{
 		Long id = Long.valueOf(idEstabelecimento);
@@ -31,6 +34,7 @@ public class EstabelecimentoDWR
 		return dvRetorno;
 	}
 	
+	@RemoteMethod
 	@SuppressWarnings("unchecked")
 	public Map<Object, Object> getByEmpresa(Long empresaId)
 	{
@@ -47,6 +51,7 @@ public class EstabelecimentoDWR
 		return cu1.convertCollectionToMap(estabelecimentos, "getId", "getNome");
 	}
 
+	@RemoteMethod
 	@SuppressWarnings("unchecked")
 	public Map<Object, Object> getByEmpresas(Long empresaId, Long[] empresaIds)
 	{
@@ -58,10 +63,4 @@ public class EstabelecimentoDWR
 
 		return new CollectionUtil<Estabelecimento>().convertCollectionToMap(estabelecimentos, "getId", "getDescricaoComEmpresa");
 	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 }

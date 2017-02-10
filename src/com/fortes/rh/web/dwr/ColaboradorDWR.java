@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,23 +39,20 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
 @Component
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
+@RemoteProxy(name="ColaboradorDWR")
 public class ColaboradorDWR
 {
-    private HistoricoColaboradorManager historicoColaboradorManager;
-    private AreaOrganizacionalManager areaOrganizacionalManager;
-    private UsuarioEmpresaManager usuarioEmpresaManager;
-	@Autowired
-    private ColaboradorManager colaboradorManager;
-	@Autowired
-	private EmpresaManager empresaManager;
-	@Autowired
-	private UsuarioManager usuarioManager;
-	@Autowired
-	private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
-	@Autowired
-	private SolicitacaoManager solicitacaoManager;
+    @Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+    @Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+    @Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private UsuarioManager usuarioManager;
+	@Autowired private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
 
+	@RemoteMethod
 	public Map<Long, String> getColaboradores(String[] areaOrganizacionalIds, Long empresaId)
     {
         Collection<Colaborador> colaboradores;
@@ -74,6 +73,7 @@ public class ColaboradorDWR
     }
     
 	// TODO: SEM TESTE
+	@RemoteMethod
     public Map<Long, String> getColaboradoresByAreaNome(String[] areaOrganizacionalIds, String nome, String matricula, Long empresaId)
     {
     	Collection<Colaborador> colaboradores;
@@ -104,6 +104,7 @@ public class ColaboradorDWR
     }
     
 	// TODO: SEM TESTE
+	@RemoteMethod
     public Map<Long, String> getColaboradoresByAvaliacoes(Long[] avaliacaoIds)
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -114,6 +115,7 @@ public class ColaboradorDWR
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercialDesligado", Colaborador.class);
     }
 
+	@RemoteMethod
     public String updateConfiguracaoRelatorioDinamico(String campos, String titulo, Long usuarioId)
     {
     	try {
@@ -134,6 +136,7 @@ public class ColaboradorDWR
     	}
     }
 
+	@RemoteMethod
     public Map<Long, String> getColaboradoresAreaEstabelecimento(String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId)
     {
     	Collection<Colaborador> colaboradores;
@@ -167,6 +170,7 @@ public class ColaboradorDWR
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
 
+	@RemoteMethod
     public Map<Long, String> getColaboradoresByArea(String[] areaOrganizacionalIds, Long empresaId)
     {
         Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -179,6 +183,7 @@ public class ColaboradorDWR
         return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
 
+	@RemoteMethod
     public Collection<CheckBox> getColaboradoresByAreas(String[] areaOrganizacionalIds) throws Exception
     {
         Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -189,6 +194,7 @@ public class ColaboradorDWR
         return CheckListBoxUtil.populaCheckListBox(colaboradores, "getId", "getNomeMaisNomeComercial", new String[]{"getAreaOrganizacionalId"});
     }
     
+	@RemoteMethod
     public Map<Long, String> getByAreaEstabelecimentoEmpresas(String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId, Long[] empresaIds, String situacao, boolean exibirNomeEmpresa)
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -208,6 +214,7 @@ public class ColaboradorDWR
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", (exibirNomeEmpresa ? "getNomeComercialEmpresa" : "getNomeEOuNomeComercial"), Colaborador.class);
     }
     
+	@RemoteMethod
     public Map<Long, String> getPermitidosPorResponsavelCoresponsavel(Long usuarioLogadoId, String[] areaOrganizacionalIds, Long empresaId, String situacao, boolean considerarColaboradorDoUsuarioLogado) throws Exception
     {
     	Collection<Colaborador> colaboradoresPermitidos = new ArrayList<Colaborador>();
@@ -228,6 +235,7 @@ public class ColaboradorDWR
     	return CollectionUtil.convertCollectionToMap(colaboradoresPermitidos, "getId", "getNomeEOuNomeComercial", Colaborador.class);
     }
     
+	@RemoteMethod
     public Map<Long, String> getByAreaEstabelecimentoEmpresasResponsavel(Long usuarioLogadoId, String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId, Long[] empresaIds, String situacao, boolean exibirNomeEmpresa) throws Exception
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -273,6 +281,7 @@ public class ColaboradorDWR
 		return restringirVisualizacaoParaGestor;
 	}
 
+    @RemoteMethod
     public Map<Long, String> getColaboradoresByEstabelecimentoDataAdmissao(Long estabelecimentoId, String dataAdmissao, Long empresaId)
     {
     	Date data = null;
@@ -293,6 +302,7 @@ public class ColaboradorDWR
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
     
+    @RemoteMethod
     public Map<Long, String> getAvaliadores(Long avaliacaoDesempenhoId)
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -302,6 +312,7 @@ public class ColaboradorDWR
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
 
+    @RemoteMethod
 	public Map<Long, String> find(String nome, String cpf, String matricula, Long empresaId, boolean somenteAtivos, Long[] empresaIds)
 	{
 		Pessoal pessoal = new Pessoal();
@@ -321,6 +332,7 @@ public class ColaboradorDWR
 		return new CollectionUtil<Colaborador>().convertCollectionToMap(colaboradores,"getId","getNomeCpfMatricula");
 	}
 	
+    @RemoteMethod
 	public Collection<Object> findByNome(String nome, Long empresaId, boolean incluirColaboradoresDesligados)
 	{
 		Collection<String> nomesColabJaSubstituidos = solicitacaoManager.getNomesColabSubstituidosSolicitacaoEncerrada(empresaId);
@@ -341,6 +353,7 @@ public class ColaboradorDWR
 		return retorno;
 	}
 	
+    @RemoteMethod
     public Map<Long, String> getByFuncaoAmbiente(Long funcaoId, Long ambienteId)
     {
         Collection<Colaborador> colaboradores = colaboradorManager.findByFuncaoAmbiente(funcaoId, ambienteId);
@@ -348,6 +361,7 @@ public class ColaboradorDWR
         return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
     
+    @RemoteMethod
     public Map<String, Object> findFuncaoAmbiente(Long colaboradorId)
     {
     	Colaborador colaborador = colaboradorManager.findFuncaoAmbiente(colaboradorId);
@@ -371,6 +385,7 @@ public class ColaboradorDWR
     	return dados;
     }
     
+    @RemoteMethod
     public Collection<Object> findParentesByNome(Long colaboradorId, Long empresaId, String... nome)
     {
     	Empresa empresa = empresaManager.findById(empresaId);
@@ -386,6 +401,7 @@ public class ColaboradorDWR
     	return colaboradorManager.montaParentesByNome(colaboradores);
     }
     
+    @RemoteMethod
     public Boolean existeParentesByNome(Long colaboradorId, String nomePai, String nomeMae, String nomeConjuge, Long empresaId)
     {
     	Empresa empresa = empresaManager.findById(empresaId);
@@ -398,6 +414,7 @@ public class ColaboradorDWR
     		return false;
     }
     
+    @RemoteMethod
     public Map<String, Object> verificaDesligadoByCandidato(Long candidatoId)
     {
     	Map<String, Object> dados = new HashMap<String, Object>();
@@ -415,6 +432,7 @@ public class ColaboradorDWR
     	return dados;
     }
     
+	@RemoteMethod
     public Map getOcorrenciasByPeriodo(String dataIni, String dataFim, Long[] empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens){
     	Date dataInicio = null;
     	Date dataFinal = null;
@@ -436,6 +454,7 @@ public class ColaboradorDWR
 		return new CollectionUtil<Ocorrencia>().convertCollectionToMap(ocorrencias,"getId","getDescricaoComEmpresa");
 	}
     
+    @RemoteMethod
     public Collection<CheckBox> getByAreasIds(Long[] areasIds){
     	Collection<CheckBox> checkBoxs = new ArrayList<CheckBox>();
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -461,41 +480,8 @@ public class ColaboradorDWR
     	return checkBoxs;
     }
     
+    @RemoteMethod
     public boolean existeHistoricoAguardandoConfirmacaoNoFortesPessoal(Long colobaoradorId){
     	return (historicoColaboradorManager.findByColaboradorProjection(colobaoradorId, StatusRetornoAC.AGUARDANDO)).size() > 0;
     }
-    
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
-	public void setConfiguracaoRelatorioDinamicoManager(ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager) {
-		this.configuracaoRelatorioDinamicoManager = configuracaoRelatorioDinamicoManager;
-	}
-
-	public void setUsuarioManager(UsuarioManager usuarioManager) {
-		this.usuarioManager = usuarioManager;
-	}
-
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
-		this.solicitacaoManager = solicitacaoManager;
-	}
-	
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
 }

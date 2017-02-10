@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +15,13 @@ import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.util.CollectionUtil;
 
 @Component
+@RemoteProxy(name="CidadeDWR")
+@SuppressWarnings("rawtypes")
 public class CidadeDWR
 {
-	@Autowired
-	private CidadeManager cidadeManager;
+	@Autowired private CidadeManager cidadeManager;
 
+	@RemoteMethod
 	public Map getCidades(String ufId)
 	{
 		if(ufId != null && !ufId.equals("-1"))
@@ -43,6 +47,7 @@ public class CidadeDWR
 
 	}
 	
+	@RemoteMethod
 	public Map getCidadesCheckList(String ufId, Long[] cidadesCheck)
 	{
 		if(ufId != null && !ufId.equals("-1"))
@@ -58,10 +63,4 @@ public class CidadeDWR
 
 		return new HashMap();
 	}
-
-	public void setCidadeManager(CidadeManager cidadeManager)
-	{
-		this.cidadeManager = cidadeManager;
-	}
-
 }

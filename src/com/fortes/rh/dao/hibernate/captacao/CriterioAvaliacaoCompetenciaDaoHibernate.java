@@ -12,6 +12,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.CriterioAvaliacaoCompetenciaDao;
@@ -19,6 +20,7 @@ import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.util.LongUtil;
 
+@Component
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class CriterioAvaliacaoCompetenciaDaoHibernate extends GenericDaoHibernate<CriterioAvaliacaoCompetencia> implements CriterioAvaliacaoCompetenciaDao
 {

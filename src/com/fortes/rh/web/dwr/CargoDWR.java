@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +16,12 @@ import com.fortes.rh.util.LongUtil;
 
 @Component
 @SuppressWarnings({"unchecked", "rawtypes"})
+@RemoteProxy(name="CargoDWR")
 public class CargoDWR
 {
-	@Autowired
-	private CargoManager cargoManager;
+	@Autowired private CargoManager cargoManager;
 
+	@RemoteMethod
 	public Map getCargoByGrupo(String[] grupoOcupacionalIds, Long empresaId)
 	{
 		Collection<Cargo> cargos = getCargosByGrupoCollection(grupoOcupacionalIds, empresaId, null);
@@ -26,6 +29,7 @@ public class CargoDWR
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercadoComStatus");
 	}
 
+	@RemoteMethod
 	public Map getCargoByGrupoAtivoInativo(String[] grupoOcupacionalIds, Long empresaId, Character ativo)
 	{
 		Boolean cargoAtivo = null;
@@ -58,12 +62,14 @@ public class CargoDWR
 		return cargos;
 	}
 
+	@RemoteMethod
 	public Map getCargoByArea(String[] areaOrganizacionalIds, String label, Long empresaId)
 	{
 		Collection<Cargo> cargos = getCargosByArea(areaOrganizacionalIds, empresaId);
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", label);
 	}
 	
+	@RemoteMethod
 	public Map getCargoByGruposMaisSemGruposRelacionado(String[] gruposIds, Long empresaId)
 	{
 		Collection<Cargo> cargos = getCargosByGrupoCollection(gruposIds, empresaId, null);
@@ -80,6 +86,8 @@ public class CargoDWR
 		
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", "getNomeMercadoComStatus");
 	}
+	
+	@RemoteMethod
 	public Map getCargoByAreaMaisSemAreaRelacionada(String[] areaOrganizacionalIds, String label, Long empresaId)
 	{
 		Collection<Cargo> cargos = getCargosByArea(areaOrganizacionalIds, empresaId);
@@ -102,6 +110,7 @@ public class CargoDWR
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", label);
 	}
 	
+	@RemoteMethod
 	public Map getByEmpresa(Long empresaId, Long[] empresaIds)
 	{
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
@@ -129,12 +138,14 @@ public class CargoDWR
 		return cargos;
 	}
 	
+	@RemoteMethod
 	public Map getByEmpresas(Long empresaId, Long[] empresaIds)
 	{
 		Collection<Cargo> cargos = getFindAllSelect(empresaId, empresaIds);
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, "getId", "getNomeMercadoComEmpresaEStatus");
 	}
 	
+	@RemoteMethod
 	public Map getByEmpresasMaisSemAreaRelacionada(Long empresaId, Long[] empresaIds)
 	{
 		String getParametro = "getId";
@@ -157,6 +168,7 @@ public class CargoDWR
 		return cUtil.convertCollectionToMap(cargos, getParametro, "getNomeMercadoComEmpresaEStatus");
 	}
 	
+	@RemoteMethod
 	public boolean verificaCargoSemAreaRelacionada(Long empresaId)
 	{
 		if(empresaId == 0)
@@ -165,24 +177,22 @@ public class CargoDWR
 			return cargoManager.existemCargosSemAreaRelacionada(empresaId);
 	}
 	
+	@RemoteMethod
 	public Map getByAreaDoHistoricoColaborador(String[] areaOrganizacionalIds)
 	{
 		return cargoManager.findByAreaDoHistoricoColaborador(areaOrganizacionalIds); 
 	}
 
+	@RemoteMethod
 	public Collection<Cargo> getCargosByArea(Long areaOrganizacionalId, Long empresaId)
 	{
 		return cargoManager.findByArea(areaOrganizacionalId, empresaId);
 	}
 	
+	@RemoteMethod
 	public Map<Long, String> getCargosByAreaGrupo(Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId)
 	{
 		Collection<Cargo> cargos = cargoManager.findByAreaGrupo(areaOrganizacionalIds, grupoOcupacionalIds, empresaId);
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", "getNomeMercadoComEmpresaEStatus");
-	}
-	
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
 	}
 }

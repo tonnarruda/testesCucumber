@@ -14,6 +14,7 @@ import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.ParticipanteCursoLntDao;
@@ -21,6 +22,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ParticipanteCursoLnt;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 
+@Component
 public class ParticipanteCursoLntDaoHibernate extends GenericDaoHibernate<ParticipanteCursoLnt> implements ParticipanteCursoLntDao
 {
 	@SuppressWarnings("unchecked")

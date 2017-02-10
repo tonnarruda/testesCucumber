@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.desenvolvimento.LntManager;
@@ -13,11 +16,13 @@ import com.fortes.rh.model.desenvolvimento.ParticipanteCursoLnt;
 import com.fortes.rh.util.LongUtil;
 
 @Component
+@RemoteProxy(name="LntDWR")
 public class LntDWR {
 
-	private ParticipanteCursoLntManager participanteCursoLntManager;
-	private LntManager lntManager;
+	@Autowired private ParticipanteCursoLntManager participanteCursoLntManager;
+	@Autowired private LntManager lntManager;
 
+	@RemoteMethod
 	public String checaParticipantesNaLnt(Long lntId, Long[] areasIds){
 		Collection<ParticipanteCursoLnt>  participantesCursosLnt = participanteCursoLntManager.findByLntIdAndAreasParticipantesIdsAndEmpresasIds(lntId, null, null, new String[]{});
 		Map<Long, String> areaMap = new HashMap<Long, String>();
@@ -42,6 +47,7 @@ public class LntDWR {
 		return retorno;
 	}
 	
+	@RemoteMethod
 	public Collection<Lnt> findLntsColaborador(Long cursoId, Long colaboradorId){
 		Collection<Lnt> lnts = lntManager.findPossiveisLntsColaborador(cursoId, colaboradorId);
 		Long lntIdQueParticipa = lntManager.findLntColaboradorParticpa(cursoId, colaboradorId);
@@ -51,13 +57,5 @@ public class LntDWR {
 				lnt.setSelected(lnt.getId().equals(lntIdQueParticipa));
 		
 		return lnts;
-	}
-
-	public void setParticipanteCursoLntManager(ParticipanteCursoLntManager participanteCursoLntManager) {
-		this.participanteCursoLntManager = participanteCursoLntManager;
-	}
-
-	public void setLntManager(LntManager lntManager) {
-		this.lntManager = lntManager;
 	}
 }

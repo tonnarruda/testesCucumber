@@ -5,12 +5,21 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.ParticipanteCursoLntDao;
 import com.fortes.rh.model.desenvolvimento.ParticipanteCursoLnt;
 
+@Component
 public class ParticipanteCursoLntManagerImpl extends GenericManagerImpl<ParticipanteCursoLnt, ParticipanteCursoLntDao> implements ParticipanteCursoLntManager
 {
+	@Autowired
+	public ParticipanteCursoLntManagerImpl(ParticipanteCursoLntDao dao) {
+		setDao(dao);
+	}
+	
 	public Collection<ParticipanteCursoLnt> findByLnt(Long lntId) throws Exception{
 		return getDao().findByLnt(lntId);
 	}

@@ -4,17 +4,20 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.sesmt.ComissaoPeriodoManager;
 
 @Component
+@RemoteProxy(name="ComissaoPeriodoDWR")
 public class ComissaoPeriodoDWR
 {
-	@Autowired
-	private ComissaoPeriodoManager comissaoPeriodoManager;
+	@Autowired private ComissaoPeriodoManager comissaoPeriodoManager;
 
+	@RemoteMethod
 	public boolean validaDataDaComissao(String aPartirDe, Long comissaoPeriodoId)
 	{
 		Date data = null;
@@ -29,9 +32,5 @@ public class ComissaoPeriodoDWR
 		}
 		
 		return comissaoPeriodoManager.validaDataComissaoPeriodo(data, comissaoPeriodoId);
-	}
-
-	public void setComissaoPeriodoManager(ComissaoPeriodoManager comissaoPeriodoManager) {
-		this.comissaoPeriodoManager = comissaoPeriodoManager;
 	}
 }

@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -18,12 +21,18 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class LntManagerImpl extends GenericManagerImpl<Lnt, LntDao> implements LntManager
 {
-	 private ParticipanteCursoLntManager participanteCursoLntManager;
-	 private AreaOrganizacionalManager areaOrganizacionalManager;
-	 private EmpresaManager empresaManager;
+	@Autowired private ParticipanteCursoLntManager participanteCursoLntManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EmpresaManager empresaManager;
 
+	@Autowired
+	public LntManagerImpl(LntDao dao) {
+		setDao(dao);
+	}
+	
 	public void update(Lnt lnt){
 		getDao().update(lnt);
 	}
@@ -73,18 +82,6 @@ public class LntManagerImpl extends GenericManagerImpl<Lnt, LntDao> implements L
 		cursoLntManager.remove(new CollectionUtil<CursoLnt>().convertCollectionToArrayIds(cursosLnt));
 		
 		getDao().remove(lntId);
-	}
-	
-	public void setParticipanteCursoLntManager(ParticipanteCursoLntManager participanteCursoLntManager) {
-		this.participanteCursoLntManager = participanteCursoLntManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 
 	/**Método utilizado na auditoria**/

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,14 +19,14 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 
 @Component
+@RemoteProxy(name="CompetenciaDWR")
+@SuppressWarnings("rawtypes")
 public class CompetenciaDWR
 {
-	@Autowired
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-	@Autowired
-	private SolicitacaoManager solicitacaoManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
 
-	@SuppressWarnings("rawtypes")
+	@RemoteMethod
 	public Map getCompetenciasColaboradorByFaixaSalarialAndData(Long faixaId, String data)
 	{
 		if(!"  /  /    ".equals(data) && !"".equals(data) && faixaId != null && faixaId != 0)
@@ -33,7 +35,7 @@ public class CompetenciaDWR
 		return new LinkedHashMap();
 	}
 	
-	@SuppressWarnings("rawtypes")
+	@RemoteMethod
 	public Map getCompetenciasColaboradorByFaixaSalarialAndPeriodo(Long faixaId, String dataIni, String dataFim)
 	{
 		if(!"  /  /    ".equals(dataIni) && !"".equals(dataIni) && !"  /  /    ".equals(dataFim) && !"".equals(dataFim) && faixaId != null && faixaId != 0)
@@ -42,6 +44,7 @@ public class CompetenciaDWR
 		return new LinkedHashMap();
 	}
 	
+	@RemoteMethod
 	public String findVinculosCompetencia(Long faixaId, String dataString)
 	{
 		String msg = "";
@@ -115,9 +118,5 @@ public class CompetenciaDWR
 		}
 		
 		return msg;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 }

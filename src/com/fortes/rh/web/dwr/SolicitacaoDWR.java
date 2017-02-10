@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,21 +20,21 @@ import com.fortes.rh.util.DateUtil;
 
 @Component
 @SuppressWarnings("unchecked")
+@RemoteProxy(name="SolicitacaoDWR")
 public class SolicitacaoDWR {
 
-	@Autowired
-	private SolicitacaoManager solicitacaoManager;
-	@Autowired
-	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
-	@Autowired
-	private AnuncioManager anuncioManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
+	@Autowired private AnuncioManager anuncioManager;
 
+	@RemoteMethod
 	public Map<Long, String> getSolicitacoes(Long empresaId) 
 	{
 		Collection<Solicitacao> solicitacaos = solicitacaoManager.findSolicitacaoList(empresaId, false, StatusAprovacaoSolicitacao.APROVADO, false);
 		return new CollectionUtil<Solicitacao>().convertCollectionToMap(solicitacaos, "getId", "getDescricaoFormatada");
 	}
 
+	@RemoteMethod
 	public Map<String, String> getObsSolicitacao(Long solicitacaoId) 
 	{
 		Solicitacao solicitacao = solicitacaoManager.findById(solicitacaoId);
@@ -45,6 +47,7 @@ public class SolicitacaoDWR {
 		return solicitacaoMap;  
 	}
 	
+	@RemoteMethod
 	public Map<Long, String> getByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds) 
 	{
 		Collection<Solicitacao> solicitacoes = solicitacaoManager.findByEmpresaEstabelecimentosAreas(empresaId, estabelecimentosIds, areasIds);
@@ -52,11 +55,13 @@ public class SolicitacaoDWR {
 		return new CollectionUtil<Solicitacao>().convertCollectionToMap(solicitacoes, "getId", "getDescricaoFormatada");
 	}
 	
+	@RemoteMethod
 	public Collection<SolicitacaoAvaliacao> findAvaliacoesNaoRespondidas(Long solicitacaoId, Long candidatoId)
 	{
 		return solicitacaoAvaliacaoManager.findAvaliacaoesNaoRespondidas(solicitacaoId, candidatoId);
 	}
 	
+	@RemoteMethod
 	public String enviarAnuncioEmail(Long anuncioId, Long empresaId, String nomeFrom, String emailFrom, String nomeTo, String emailTo)
 	{
 		try {
@@ -67,20 +72,5 @@ public class SolicitacaoDWR {
 		}
 		
 		return "Anúncio de vaga enviado com sucesso";
-	}
-	
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) 
-	{
-		this.solicitacaoManager = solicitacaoManager;
-	}
-
-	public void setSolicitacaoAvaliacaoManager(SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) 
-	{
-		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
-	}
-
-	public void setAnuncioManager(AnuncioManager anuncioManager) 
-	{
-		this.anuncioManager = anuncioManager;
 	}
 }

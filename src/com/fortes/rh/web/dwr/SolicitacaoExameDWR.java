@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -21,17 +23,15 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
 @Component
+@RemoteProxy(name="SolicitacaoExameDWR")
 public class SolicitacaoExameDWR 
 {
-	@Autowired
-	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
-	@Autowired
-	private RealizacaoExameManager realizacaoExameManager;
-	@Autowired
-	private SolicitacaoExameManager solicitacaoExameManager;
-	@Autowired
-	private PlatformTransactionManager transactionManager;
+	@Autowired private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
+	@Autowired private RealizacaoExameManager realizacaoExameManager;
+	@Autowired private SolicitacaoExameManager solicitacaoExameManager;
+	@Autowired private PlatformTransactionManager transactionManager;
 	
+	@RemoteMethod
 	public String[] marcarNaoInformadosComoNormal(Long solicitacaoExameId)
 	{
 		Collection<String> ids = new ArrayList<String>();
@@ -76,6 +76,7 @@ public class SolicitacaoExameDWR
 		}
 	}
 
+	@RemoteMethod
 	public String verificaColaboradorExameDentroDoPrazo(Long colaboradorId,Long candidatoId,Long solicitacaoExameId,Long exameId) 
 	{
 		String textoResult = "";
@@ -135,26 +136,10 @@ public class SolicitacaoExameDWR
 		return textoResult;
 	}
 	
+	@RemoteMethod
 	public Integer findProximaOrdem(String data)
 	{
 		Date dataSolicitacaoExame = DateUtil.montaDataByString(data);
 		return solicitacaoExameManager.findProximaOrdem(dataSolicitacaoExame);
-	}
-	
-	public void setExameSolicitacaoExameManager(ExameSolicitacaoExameManager exameSolicitacaoExameManager) {
-		this.exameSolicitacaoExameManager = exameSolicitacaoExameManager;
-	}
-
-	public void setRealizacaoExameManager(RealizacaoExameManager realizacaoExameManager) {
-		this.realizacaoExameManager = realizacaoExameManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
-
-	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
-		this.solicitacaoExameManager = solicitacaoExameManager;
-	}
+	}	
 }
- 

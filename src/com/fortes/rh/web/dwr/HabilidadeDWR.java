@@ -3,6 +3,7 @@ package com.fortes.rh.web.dwr;
 import java.util.Collection;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +13,12 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
 @Component
+@RemoteProxy(name="HabilidadeDWR")
 public class HabilidadeDWR
 {
-	@Autowired
-	private HabilidadeManager habilidadeManager;
+	@Autowired private HabilidadeManager habilidadeManager;
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("rawtypes")
 	public Map getHabilidades(String[] areaOrganizacionalIds, Long empresaId)
 	{
 		Collection<Habilidade> habilidades;
@@ -29,10 +30,4 @@ public class HabilidadeDWR
 
 		return new CollectionUtil<Habilidade>().convertCollectionToMap(habilidades,"getId","getNome");
 	}
-
-	public void setHabilidadeManager(HabilidadeManager habilidadeManager) {
-		this.habilidadeManager = habilidadeManager;
-	}
-
-	
 }

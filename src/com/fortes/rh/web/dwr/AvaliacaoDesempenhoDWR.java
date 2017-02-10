@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,23 +25,23 @@ import com.fortes.web.tags.Option;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
 @Component
+@RemoteProxy(name="AvaliacaoDesempenhoDWR")
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class AvaliacaoDesempenhoDWR 
 {
-	@Autowired
-	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
-	@Autowired
-	private ColaboradorManager colaboradorManager;
-	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
-	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	@Autowired private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
+	@Autowired private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Long, String> getAvaliacoesByEmpresa(Long empresaId)
 	{
 		Collection<AvaliacaoDesempenho> avaliacoesDesempenho = avaliacaoDesempenhoManager.findAllSelect(empresaId, true, TipoModeloAvaliacao.DESEMPENHO);
 		return new CollectionUtil<AvaliacaoDesempenho>().convertCollectionToMap(avaliacoesDesempenho, "getId", ((empresaId == null || empresaId < 0) ? "getTituloComEmpresa" : "getTitulo"));
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RemoteMethod
 	public Map<Long, String> getAvaliacoesByEmpresaPermitidas(String naoApagar, HttpServletRequest request, Long... empresasIds)
 	{
 		Map session = new SessionMap(request);
@@ -56,7 +58,7 @@ public class AvaliacaoDesempenhoDWR
 		return new CollectionUtil<AvaliacaoDesempenho>().convertCollectionToMap(avaliacaoDesempenhos, "getId", ((empresasIds.length > 1) ? "getTituloComEmpresa" : "getTitulo"));
 	}
 	
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Long, String> getParticipantesByAvalEmpresaAreaCargo(Long avaliacaoDesempenhoId, Long empresaId, Long[] areasIds, Long[] cargosIds)
 	{
 		empresaId = (empresaId == null || empresaId == -1 || empresaId == 0) ? null : empresaId;
@@ -65,13 +67,14 @@ public class AvaliacaoDesempenhoDWR
 		return new CollectionUtil<Colaborador>().convertCollectionToMap(participantes, "getId", "getNome");
 	}
 	
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Long, String> getAvaliacoesNaoLiberadasByTitulo(Long empresaId, String titulo)
 	{
 		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(null, null, null, null, empresaId, titulo, null, false);
 		return CollectionUtil.convertCollectionToMap(avaliacaoDesempenhos, "getId", "getTitulo", AvaliacaoDesempenho.class);
 	}
 	
+	@RemoteMethod
 	public String verificaAvaliadosSemCompetencia(Long avaliacaoDesempenhoId)
 	{
 		if(configuracaoCompetenciaAvaliacaoDesempenhoManager.existe(null, avaliacaoDesempenhoId))
@@ -95,6 +98,7 @@ public class AvaliacaoDesempenhoDWR
 		return "";
 	}
 	
+	@RemoteMethod
 	public String verificaAvaliacoesComAvaliadosSemCompetencia(Long[] avaliacaoDesempenhoIds)
 	{
 		Collection<AvaliacaoDesempenho> avaliacoes = configuracaoCompetenciaAvaliacaoDesempenhoManager.findAvaliacoesComColabSemCompetenciaConfiguradaByAvalDesempenhoIds(avaliacaoDesempenhoIds);
@@ -115,6 +119,7 @@ public class AvaliacaoDesempenhoDWR
 		return "";
 	}
 
+	@RemoteMethod
 	public Collection<Option> getAvaliados(Long avaliacaoDesempenhoId, Long empresaId, Long[] areasIds, Long[] cargosIds)
 	{
 		Collection<Option> options = new ArrayList<Option>();
@@ -134,6 +139,7 @@ public class AvaliacaoDesempenhoDWR
 		return options;
 	}
 	
+	@RemoteMethod
 	public Map<Long, String> getAvaliadores(Long avaliacaoDesempenhoId, Long avaliadoId)
 	{
 		Map<Long, String> checks = new HashMap<Long, String>();
@@ -145,24 +151,8 @@ public class AvaliacaoDesempenhoDWR
 		return checks;
 	}
 	
+	@RemoteMethod
 	public boolean existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(Long avaliacaoDesempenhoId) {
 		return configuracaoCompetenciaAvaliacaoDesempenhoManager.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenhoId);
-	}
-	
-	public void setAvaliacaoDesempenhoManager(AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {
-		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
-		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaColaboradorManager(
-			ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
-		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
 	}
 }

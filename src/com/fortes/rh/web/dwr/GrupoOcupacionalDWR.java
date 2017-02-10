@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +14,13 @@ import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.util.CollectionUtil;
 
 @Component
+@RemoteProxy(name="GrupoOcupacionalDWR")
+@SuppressWarnings("unchecked")
 public class GrupoOcupacionalDWR
 {
-	@Autowired
-	private GrupoOcupacionalManager grupoOcupacionalManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
 	
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Object, Object> getByEmpresa(Long empresaId)
 	{
 		Collection<GrupoOcupacional> grupoOcupacionals;
@@ -30,7 +33,7 @@ public class GrupoOcupacionalDWR
 		return new CollectionUtil<GrupoOcupacional>().convertCollectionToMap(grupoOcupacionals, "getId", "getNome");
 	}
 	
-	@SuppressWarnings("unchecked")
+	@RemoteMethod
 	public Map<Long, String> getByEmpresas(Long empresaId, Long[] empresaIds) throws Exception
 	{
 		Collection<GrupoOcupacional> grupos = new ArrayList<GrupoOcupacional>();
@@ -40,10 +43,5 @@ public class GrupoOcupacionalDWR
 			grupos = grupoOcupacionalManager.findByEmpresasIds(empresaId);
 
 		return new CollectionUtil<GrupoOcupacional>().convertCollectionToMap(grupos, "getId", "getNome");
-	}
-
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager) 
-	{
-		this.grupoOcupacionalManager = grupoOcupacionalManager;
 	}
 }

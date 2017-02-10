@@ -3,6 +3,9 @@ package com.fortes.rh.web.dwr;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
@@ -13,11 +16,13 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CollectionUtil;
 
 @Component
+@RemoteProxy(name="ParticipanteCursoLntDWR")
 public class ParticipanteCursoLntDWR
 {
-	private ParticipanteCursoLntManager participanteCursoLntManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private ParticipanteCursoLntManager participanteCursoLntManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
 	
+	@RemoteMethod
 	public Collection<Colaborador> getParticipantesCursoLnt(Long cursoLntId)
 	{
 		if(cursoLntId == null)
@@ -52,13 +57,5 @@ public class ParticipanteCursoLntDWR
 		colaboradorParticipantesRetorno.addAll(colaboradorParticipantesJaInseridos);
 		
 		return colaboradorParticipantesRetorno;
-	}
-
-	public void setParticipanteCursoLntManager(ParticipanteCursoLntManager participanteCursoLntManager) {
-		this.participanteCursoLntManager = participanteCursoLntManager;
-	}
-
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 }

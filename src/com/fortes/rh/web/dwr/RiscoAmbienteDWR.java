@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,11 +17,12 @@ import com.fortes.rh.util.CollectionUtil;
 
 @Component
 @SuppressWarnings("unchecked")
+@RemoteProxy(name="RiscoAmbienteDWR")
 public class RiscoAmbienteDWR 
 {
-	@Autowired
-	private RiscoAmbienteManager riscoAmbienteManager;
+	@Autowired private RiscoAmbienteManager riscoAmbienteManager;
 	
+	@RemoteMethod
 	public Map<Object, Object> getRiscosByAmbienteData(Long ambienteId, String data) throws Exception
 	{
 		Date dataValida = null; 
@@ -36,9 +39,5 @@ public class RiscoAmbienteDWR
 		Collection<Risco> riscos = riscoAmbienteManager.findRiscosByAmbienteData(ambienteId, dataValida);
 		
 		return new CollectionUtil<Risco>().convertCollectionToMap(riscos, "getId", "getDescricao");
-	}
-
-	public void setRiscoAmbienteManager(RiscoAmbienteManager riscoAmbienteManager) {
-		this.riscoAmbienteManager = riscoAmbienteManager;
 	}
 }

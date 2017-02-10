@@ -3,6 +3,8 @@ package com.fortes.rh.web.dwr;
 import java.util.Collection;
 import java.util.Date;
 
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +15,13 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.util.DateUtil;
 
 @Component
+@RemoteProxy(name="DiaTurmaDWR")
 public class DiaTurmaDWR
 {
-	@Autowired
-	private DiaTurmaManager diaTurmaManager;
-	@Autowired
-	private TurmaManager turmaManager;
+	@Autowired private DiaTurmaManager diaTurmaManager;
+	@Autowired private TurmaManager turmaManager;
 
+	@RemoteMethod
 	public Collection<DiaTurma> getDias(String dataIniStr, String dataFimStr, Boolean aplicarPorTurno) throws Exception
 	{
 		Date dataIni = DateUtil.montaDataByString(dataIniStr);
@@ -31,6 +33,7 @@ public class DiaTurmaDWR
 		return diaTurmaManager.montaListaDias(dataIni, dataFim, aplicarPorTurno);
 	}
 	
+	@RemoteMethod
 	public String getDiasPorTurma(Long turmaId, String divName)
 	{
 		String[] properties = new String[] {"dataPrevIni","dataPrevFim"};
@@ -71,15 +74,5 @@ public class DiaTurmaDWR
 		}
 
 		return result.toString();
-	}
-
-	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager)
-	{
-		this.diaTurmaManager = diaTurmaManager;
-	}
-
-	public void setTurmaManager(TurmaManager turmaManager)
-	{
-		this.turmaManager = turmaManager;
 	}
 }
