@@ -37,7 +37,7 @@ import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.util.DateUtil;
 
-public class CandidatoSolicitacaoDaoHibernateTest_Junit4 extends GenericDaoHibernateTest_JUnit4<CandidatoSolicitacao>
+public class CandidatoSolicitacaoDaoHibernateTest_JUnit4 extends GenericDaoHibernateTest_JUnit4<CandidatoSolicitacao>
 {
 	@Autowired
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
