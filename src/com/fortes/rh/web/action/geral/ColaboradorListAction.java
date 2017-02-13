@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -761,10 +762,19 @@ public class ColaboradorListAction extends MyActionSupportList
 		JasperPrint jprint = JasperFillManager.fillReport(jreport, parametros, dataSource);
 		
 		HttpServletResponse response = ServletActionContext.getResponse();
-		response.setContentType("application/octet-stream");
-		response.setHeader("Content-Disposition", "attachment;filename=\"relatorioDinamico.pdf\"");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+		response.setContentType("application/pdf");
+		response.setHeader("Content-disposition", "attachment ; filename=relatorioDinamico.pdf");
 		
-		JasperExportManager.exportReportToPdfStream(jprint, response.getOutputStream());
+		byte[] output = JasperExportManager.exportReportToPdf(jprint);
+		response.setContentLength(output.length);
+		
+		ServletOutputStream ouputStream = response.getOutputStream();
+		ouputStream.write(output);
+		ouputStream.flush();
+		ouputStream.close();
 	}
 
 	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas,Collection<Long> cargos, String order) 
