@@ -1,7 +1,10 @@
 package com.fortes.rh.business.avaliacao;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
@@ -63,21 +66,37 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 	public void save(AvaliacaoDesempenho avaliacaoDesempenho,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliados,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores,Collection<ColaboradorQuestionario> colaboradorQuestionarios, Long[] colaboradorQuestionariosRemovidos, Long[] participantesAvaliadosRemovidos, Long[] participantesAvaliadoresRemovidos) throws Exception {
 		participantesAvaliados.removeAll(Collections.singleton(null));
 		this.saveOrUpdate(participantesAvaliados);
-		
+			
 		if ( !avaliacaoDesempenho.isLiberada() ) {
-			if (participantesAvaliadosRemovidos != null)
-				this.remove(participantesAvaliadosRemovidos);
+			removeParticipantes(participantesAvaliadosRemovidos);
 			
 			participantesAvaliadores.removeAll(Collections.singleton(null));
 			this.saveOrUpdate(participantesAvaliadores);
-			if (participantesAvaliadoresRemovidos != null)
-				this.remove(participantesAvaliadoresRemovidos);
+			removeParticipantes(participantesAvaliadoresRemovidos);
 			
 			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBeanOld("colaboradorQuestionarioManager");
 			colaboradorQuestionarios.removeAll(Collections.singleton(null));
 			colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
-			if (colaboradorQuestionariosRemovidos != null)
-				colaboradorQuestionarioManager.remove(colaboradorQuestionariosRemovidos);
+			removerColaboradorQuestionario(colaboradorQuestionarioManager, colaboradorQuestionariosRemovidos);
+		}
+	}
+	
+	private void removeParticipantes(Long[] idParticipantes){
+		if (idParticipantes != null){
+			Set<Long> set = new HashSet<>();
+			set.addAll(Arrays.asList(idParticipantes));
+			for (Long id : set) 
+					this.remove(id);
+		}
+	}
+	
+	private void removerColaboradorQuestionario(ColaboradorQuestionarioManager colaboradorQuestionarioManager, Long[] colaboradorQuestionariosRemovidos){
+		if (colaboradorQuestionariosRemovidos != null){
+			Set<Long> set = new HashSet<>();
+			set.addAll(Arrays.asList(colaboradorQuestionariosRemovidos));
+			for (Long id : set) {
+					colaboradorQuestionarioManager.remove(id);
+			} 
 		}
 	}
 
