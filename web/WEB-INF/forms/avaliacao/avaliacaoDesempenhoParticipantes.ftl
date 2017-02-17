@@ -242,7 +242,9 @@
 					$(this).css("background", "");
 				}
 			});
-			
+		
+			removerSelecao();
+		
 			$(".portlet-content .pesoAvaliador, .portlet-content .peso").toggle(!validForm);
 			$(".portlet-toggle").toggle(validForm);
 			if(validForm){
@@ -252,6 +254,14 @@
 				jAlert("Preencha os campos indicados.");
 			}
 		};
+		
+		function removerSelecao(){
+			$('.ui-widget-content').find('.ui-selected').each(function(){
+				$(this).parents(".box").find(".selecteds .list #"+$(this).attr("id")).remove();
+			});
+	
+			$('.ui-widget-content').find('.ui-selected').removeClass("ui-selected");
+		}
 		
 		</script>
 	</head>
