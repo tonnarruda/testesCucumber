@@ -385,4 +385,49 @@ http://10.1.3.48:8080/fortesrhhomologacao
 		</exec>
 		<echo message="Migrate executada."/>
 	</target>
+	
+	 <target name="stopTomcat">
+        <exec executable="service">
+            <arg value="tomcat7"/>
+            <arg value="stop"/>
+        </exec>
+        <echo message="Stop Tomcat 7"/>
+    </target>
+	
+    <target name="startTomcat">
+        <exec executable="service">
+            <arg value="tomcat7"/>
+            <arg value="start"/>
+        </exec>
+        <echo message="Start Tomcat 7"/>
+    </target>
+	
+	<target name="deploy">
+		<echo message="Início Deploy"/>
+		<antcall target="stopTomcat"/>
+		<echo message="Rodando Migrations banco homologacao"/>
+		<exec executable="ruby">
+            <arg value="migrate.rb"/>
+			<arg value="--db"/>
+            <arg value="homologacao"/>
+        </exec>
+		<echo message="Removendo pasta fortesrhhomologacao"/>
+		<exec executable="rm">
+            <arg value="-rf"/>
+            <arg value="/var/lib/tomcat7/webapps/fortesrhhomologacao/"/>
+        </exec>
+		<echo message="Limpando pasta work do Tomcat 7"/>
+		<exec executable="rm">
+            <arg value="-rf"/>
+            <arg value="/var/lib/tomcat7/work/*"/>
+        </exec>
+        <echo message="atualizando WAR"/>
+		<exec executable="cp">
+            <arg value="dist/fortesrh.war"/>
+            <arg value="/var/lib/tomcat7/webapps/fortesrhhomologacao.war"/>
+        </exec>
+		<antcall target="startTomcat"/>
+		<echo message="Fim Deploy"/>
+	</target>
+	
 </project>
