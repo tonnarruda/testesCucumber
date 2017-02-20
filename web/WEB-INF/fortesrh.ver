@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.17x.210" db="" data="xx/03/2017">
+		<Item visivel="S" motivo="P16100000309"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência: Ajuste de inconsistência ao tentar editar modelo que não possui respostas vinculadas.]]></Item>
+	</Versao>
 	<Versao id="1.1.177.209" db="" data="15/02/2017">
 		<Item visivel="S" motivo="P17010000073"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao informar se o candidato está apto quando participa de mais de uma etapa seletiva na mesma data em horários diferentes.]]></Item>
 		<Item visivel="S" motivo="S16110000065"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da seleção > Status do candidato: Guardar históricos dos status do candidato em cada solicitação que o mesmo participar.]]></Item>
