@@ -32,7 +32,8 @@ $(function(){
 		var msg = 'Sua sessão expirou.<br /><br />Clique em OK para efetuar o login novamente ou <br />'
 		msg += 'clique em CANCELAR* para permanecer visualizando<br />';
 		msg += 'esta tela.<br /><br />';
-		msg += '(*) optando por permanecer nesta tela, ao tentar realizar<br />alguma operação o login será solicitado.';
+		msg += '(*) optando por permanecer nesta tela, ao tentar realizar<br />alguma operação o login será solicitado.<br /><br />';
+		msg += 'Caso esteja inserindo ou editando algum formulário, as<br /> informações <b>não</b> serão gravadas pelo sistema.';
 		
 		var sessionTimer = setInterval(function() {
 			expiracao = new Date(horaExpiracao - new Date());
