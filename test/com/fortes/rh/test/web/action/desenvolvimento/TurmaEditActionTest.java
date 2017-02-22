@@ -545,7 +545,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	action.getAvaliacaoTurmas();
     	action.getAvaliacaoCursos();
     	action.setAvaliacaoCurso(null);
-    	action.setNotas(new String[]{"10","9","8"});
+    	action.setColabTurmaId_notas(new String[]{"10","9","8"});
     	action.setColaboradorTurmaIds(null);
     	action.getAproveitamentos();
     	action.isAvaliacaoRespondida();

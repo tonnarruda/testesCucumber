@@ -39,7 +39,6 @@ import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
-import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -57,7 +56,6 @@ import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
-import com.fortes.rh.thread.certificaColaboradorThread;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -165,7 +163,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private AvaliacaoCurso avaliacaoCurso;
 
 	private FiltroPlanoTreinamento filtroPlanoTreinamento;
-	private String[] notas;
+	private String[] colabTurmaId_notas;
 	private Long[] colaboradorTurmaIds;
 
 	// Indica se a requisição veio do plano de treinamento
@@ -585,7 +583,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public String saveAproveitamentoCurso()
 	{
 		try	{
-			aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, getEmpresaSistema().isControlarVencimentoPorCertificacao());
+			if(colabTurmaId_notas != null && colabTurmaId_notas.length > 0)
+				aproveitamentoAvaliacaoCursoManager.saveNotas(colabTurmaId_notas, avaliacaoCurso, getEmpresaSistema().isControlarVencimentoPorCertificacao());
 			addActionSuccess("Aproveitamento/Notas salvos com sucesso.");
 			prepareAproveitamento();
 			return Action.SUCCESS;
@@ -1127,11 +1126,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.avaliacaoCurso = avaliacaoCurso;
 	}
 
-	public void setNotas(String[] notas)
-	{
-		this.notas = notas;
-	}
-
 	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
 	{
 		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
@@ -1380,5 +1374,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public boolean isExisteColaboradorCertificado() {
 		return existeColaboradorCertificado;
+	}
+
+	public void setColabTurmaId_notas(String[] colabTurmaId_notas) {
+		this.colabTurmaId_notas = colabTurmaId_notas;
 	}
 }

@@ -38,9 +38,10 @@
 			valorCampo = valor;
 		}
 
-		function verificaValor(valor)
+		function verificaValor(valor, colaboradorTurmaId)
 		{
 			alterouCampo = valorCampo != valor;
+			$('#form').append('<input type="hidden" name="colabTurmaId_notas" value="' + colaboradorTurmaId + '_' + valor + '">');
 		}
 		
 		function calculaMediaDasNotas() {
@@ -142,7 +143,7 @@
 	<#if colaboradoresTurma?exists && 0 < colaboradoresTurma?size>
 	<div id="legendas" align="right"></div>
 		<br />
-		<@ww.form name="form" action="saveAproveitamentoCurso.action" onsubmit="" method="POST">
+		<@ww.form name="form" id="form" action="saveAproveitamentoCurso.action" onsubmit="" method="POST">
 			<#assign qtdColaborador = 0/>
 			<@display.table name="colaboradoresTurma" id="colaboradorTurma" class="dados">
 				<#assign qtdColaborador = qtdColaborador + 1/>
@@ -181,7 +182,7 @@
 								</#if>
 								
 								<#if !colaboradorTurma.certificadoEmTurmaPosterior>
-									<@ww.textfield id="nota_${colaboradorTurma.id}" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value); calculaMediaDasNotas();"/>
+									<@ww.textfield id="nota_${colaboradorTurma.id}" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value, ${colaboradorTurma.id}); calculaMediaDasNotas();"/>
 								<#else>
 									${valorNota}
 									<@ww.hidden id="nota_${colaboradorTurma.id}" name="notas" value="${valorNota}"/>
@@ -189,7 +190,7 @@
 							</#if>
 						</#list>
 						<#if valorNota?string == "-1" >
-							<@ww.textfield id="nota_${colaboradorTurma.id}" name="notas" value="" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value);"/>
+							<@ww.textfield id="nota_${colaboradorTurma.id}" name="notas" value="" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value, ${colaboradorTurma.id});"/>
 						</#if>
 					</#if>
 					<@ww.hidden name="colaboradorTurmaIds" value="${colaboradorTurma.id}"/>

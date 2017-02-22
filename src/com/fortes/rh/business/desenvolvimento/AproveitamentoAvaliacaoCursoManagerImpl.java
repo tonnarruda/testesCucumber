@@ -22,30 +22,31 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	private CertificacaoManager certificacaoManager;
 
-	public void saveNotas(Long[] colaboradorTurmaIds, String[] notas, AvaliacaoCurso avaliacaoCurso, boolean controlaVencimentoPorCertificacao) throws Exception
+	public void saveNotas(String[] colabTurmaId_notas, AvaliacaoCurso avaliacaoCurso, boolean controlaVencimentoPorCertificacao) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
-		try
-		{
+		try{
 			ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
-			for (int i=0; i<colaboradorTurmaIds.length; i++)
-			{
+			
+			for (String colabTurmaId_nota : colabTurmaId_notas)	{
+				String colaboradorTurmaId = colabTurmaId_nota.split("_")[0];
+				
 				Double valor = null;
-				if (!notas[i].equals(""))
-					valor = Double.parseDouble(notas[i].replace(',', '.'));
+				if (colabTurmaId_nota.split("_").length > 1)
+					valor = Double.parseDouble((colabTurmaId_nota.split("_")[1]).replace(',', '.'));
 				
 				ColaboradorTurma colabTurma = new ColaboradorTurma();
-				colabTurma.setId(colaboradorTurmaIds[i]);
+				colabTurma.setId(new Long(colaboradorTurmaId));
 				
 				AproveitamentoAvaliacaoCurso aproveitamento = new AproveitamentoAvaliacaoCurso(colabTurma, avaliacaoCurso, valor);
 				saveOrUpdate(aproveitamento, colaboradorTurmaManager, controlaVencimentoPorCertificacao);
 			}
 			
 			transactionManager.commit(status);
-		}catch (Exception e)
-		{
+			
+		}catch (Exception e){
 			transactionManager.rollback(status);
 			e.printStackTrace();
 			throw e;

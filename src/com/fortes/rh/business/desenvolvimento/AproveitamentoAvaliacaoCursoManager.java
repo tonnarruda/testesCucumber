@@ -10,7 +10,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 
 public interface AproveitamentoAvaliacaoCursoManager extends GenericManager<AproveitamentoAvaliacaoCurso>
 {
-	void saveNotas(Long[] colaboradorTurmaIds, String[] notas, AvaliacaoCurso avaliacaoCurso, boolean controlaVencimentoPorCertificacao) throws Exception;
+	void saveNotas(String[] colabTurmaId_notas, AvaliacaoCurso avaliacaoCurso, boolean controlaVencimentoPorCertificacao) throws Exception;
 	void saveNotas(ColaboradorTurma colaboradorTurma, String[] notas, Long[] avaliacaoCursoIds, boolean controlaVencimentoPorCertificacao);
 
 	Collection<AproveitamentoAvaliacaoCurso> findNotas(Long avaliacaoId, Long[] colaboradoresTurmaIds);

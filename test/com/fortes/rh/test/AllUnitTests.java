@@ -72,6 +72,7 @@ import com.fortes.rh.test.business.cargosalario.IndiceManagerTest;
 import com.fortes.rh.test.business.cargosalario.ReajusteColaboradorManagerTest;
 import com.fortes.rh.test.business.cargosalario.TabelaReajusteColaboradorManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.AproveitamentoAvaliacaoCursoManagerTest;
+import com.fortes.rh.test.business.desenvolvimento.AproveitamentoAvaliacaoCursoManagerTest_JUnit4;
 import com.fortes.rh.test.business.desenvolvimento.CertificacaoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorAvaliacaoPraticaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorCertificacaoManagerTest;
@@ -944,6 +945,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 
 	AproveitamentoAvaliacaoCursoDaoHibernateTest.class,
 	AproveitamentoAvaliacaoCursoManagerTest.class,
+	AproveitamentoAvaliacaoCursoManagerTest_JUnit4.class,
 
 	CertificacaoDaoHibernateTest.class,
 	CertificacaoManagerTest.class,
