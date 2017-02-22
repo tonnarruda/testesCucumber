@@ -10,4 +10,9 @@ public class MockJasperExportManager {
 	{
 
 	}
+	
+	public static byte[] exportReportToPdf(JasperPrint jasperPrint) throws JRException
+	{
+		return new byte[]{};
+	}
 }
