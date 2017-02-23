@@ -402,13 +402,17 @@ http://10.1.3.48:8080/fortesrhhomologacao
 	
 	<target name="deploy">
 		<echo message="Início Deploy"/>
+
 		<antcall target="stopTomcat"/>
+		<antcall target="war"/>
+		
 		<echo message="Rodando Migrations banco homologacao"/>
 		<exec executable="ruby">
             <arg value="migrate.rb"/>
 			<arg value="--db"/>
             <arg value="homologacao"/>
         </exec>
+		
 		<echo message="Removendo pasta fortesrhhomologacao"/>
 		<exec executable="rm">
             <arg value="-rf"/>

@@ -243,11 +243,10 @@
 				}
 			});
 		
-			removerSelecao();
-		
 			$(".portlet-content .pesoAvaliador, .portlet-content .peso").toggle(!validForm);
 			$(".portlet-toggle").toggle(validForm);
 			if(validForm){
+				removerSelecao();
 				processando('${urlImgs}');
 				$("#formParticipantes").submit();
 			}else {
