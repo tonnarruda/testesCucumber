@@ -81,8 +81,9 @@ public class ParticipanteAvaliacaoDesempenhoManagerTest
 		} catch (Exception e) {
 			exception = e;
 		}
-		verify(particapanteAvaliacaoDesempenhoDao, times(2)).remove(anyLong());
-		verify(colaboradorQuestionarioManager, times(2)).remove(anyLong());
+		verify(particapanteAvaliacaoDesempenhoDao, times(1)).remove(new Long[]{3L});
+		verify(particapanteAvaliacaoDesempenhoDao, times(1)).remove(new Long[]{4L});
+		verify(colaboradorQuestionarioManager, times(1)).remove(new Long[]{1L,2L});
 		assertNull(exception);
 	}
 

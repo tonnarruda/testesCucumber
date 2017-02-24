@@ -62,7 +62,6 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 		return getDao().findByAvalDesempenhoIdAbadColaboradorId(avaliacaoDesempenhoId, avaliadoId, tipoParticipanteAvaliacao);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void save(AvaliacaoDesempenho avaliacaoDesempenho,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliados,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores,Collection<ColaboradorQuestionario> colaboradorQuestionarios, Long[] colaboradorQuestionariosRemovidos, Long[] participantesAvaliadosRemovidos, Long[] participantesAvaliadoresRemovidos) throws Exception {
 		participantesAvaliados.removeAll(Collections.singleton(null));
 		this.saveOrUpdate(participantesAvaliados);
@@ -74,7 +73,7 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 			this.saveOrUpdate(participantesAvaliadores);
 			removeParticipantes(participantesAvaliadoresRemovidos);
 			
-			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBeanOld("colaboradorQuestionarioManager");
+			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
 			colaboradorQuestionarios.removeAll(Collections.singleton(null));
 			colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
 			removerColaboradorQuestionario(colaboradorQuestionarioManager, colaboradorQuestionariosRemovidos);
@@ -85,8 +84,7 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 		if (idParticipantes != null){
 			Set<Long> set = new HashSet<>();
 			set.addAll(Arrays.asList(idParticipantes));
-			for (Long id : set) 
-					this.remove(id);
+			this.remove(set.toArray(new Long[set.size()]));
 		}
 	}
 	
@@ -94,9 +92,7 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 		if (colaboradorQuestionariosRemovidos != null){
 			Set<Long> set = new HashSet<>();
 			set.addAll(Arrays.asList(colaboradorQuestionariosRemovidos));
-			for (Long id : set) {
-					colaboradorQuestionarioManager.remove(id);
-			} 
+			colaboradorQuestionarioManager.remove(set.toArray(new Long[set.size()]));
 		}
 	}
 

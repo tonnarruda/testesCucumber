@@ -255,7 +255,7 @@
 		};
 		
 		function removerSelecao(){
-			$('.ui-widget-content').find('.ui-selected').each(function(){
+			$('#avaliados-list').find('.ui-selected').each(function(){
 				$(this).parents(".box").find(".selecteds .list #"+$(this).attr("id")).remove();
 			});
 	

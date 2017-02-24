@@ -521,7 +521,14 @@
 							<td>
 								<#if candidato.foto?exists>
 									<#if moduloExterno?exists && moduloExterno>
-										<img src="<@ww.url includeParams="none" value="../captacao/candidato/showFoto.action?candidato.id=${candidato.id}"/>" style="display:inline" id="fotoImg" width="120px" height="120px">
+										<#if candidato.id?exists>
+											<img src="<@ww.url includeParams="none" value="../captacao/candidato/showFoto.action?candidato.id=${candidato.id}"/>" style="display:inline" id="fotoImg" width="120px" height="120px">
+										<#else>
+											<@ww.checkbox label="Manter foto atual" name="manterFoto" onclick="mostraFoto()" value="true" checked="checked" labelPosition="left"/>
+											<div id="fotoUpLoad" style="display:none;">
+												<@ww.file label="Nova Foto" name="candidato.foto" id="foto"/>
+											</div>
+										</#if>
 									<#else>
 										<img src="<@ww.url includeParams="none" value="showFoto.action?candidato.id=${candidato.id}"/>" style="display:inline" id="fotoImg" width="120px" height="120px">
 									</#if>

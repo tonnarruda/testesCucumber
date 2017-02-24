@@ -10,14 +10,13 @@ import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.util.CollectionUtil;
 
 
-@SuppressWarnings({"unchecked","deprecation"})
 public class BairroDWR
 {
 	private BairroManager bairroManager;
 
 	public String[] getBairros(String cidadeId)
 	{
-		if(cidadeId != null && !cidadeId.equals("-1"))
+		if(cidadeId != null && !cidadeId.equals("") && !cidadeId.equals("-1"))
 		{
 			Collection<Bairro> bairros =  bairroManager.findAllSelect(Long.valueOf(cidadeId));
 

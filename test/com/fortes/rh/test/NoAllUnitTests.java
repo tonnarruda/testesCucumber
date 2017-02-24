@@ -9,7 +9,7 @@ import com.fortes.rh.test.security.AccessTest;
 import com.fortes.rh.test.util.ImportacaoCSVUtilTest;
 import com.fortes.rh.test.util.MailSendRunnableTest;
 import com.fortes.rh.test.util.TestsNoIncludeAllUnitTest;
-import com.fortes.rh.web.dwr.UtilDWR;
+import com.fortes.rh.test.web.dwr.UtilDWRTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -18,6 +18,6 @@ import com.fortes.rh.web.dwr.UtilDWR;
 	MailSendRunnableTest.class,
 	ImportacaoCSVUtilTest.class,
 	AccessTest.class,
-	UtilDWR.class
+	UtilDWRTest.class
 })
 public class NoAllUnitTests{}
