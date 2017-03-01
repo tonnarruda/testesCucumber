@@ -126,7 +126,7 @@ public class LoginAction extends MyActionSupport
 	public boolean verificaCompatibilidadeDoJava()
 	{
 		String versaoJava = System.getProperty("java.version");
-		return versaoJava.contains("1.6") || versaoJava.contains("1.7");
+		return versaoJava.contains("1.7");
 	}
 	
 	public Collection<Empresa> getEmpresas()
