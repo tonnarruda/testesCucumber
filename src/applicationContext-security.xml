@@ -480,7 +480,7 @@
 				/cargosalario/cargo/prepareRelatorioCargo.action*=ROLE_REL_CARGO
 				/cargosalario/cargo/relatorioCargo.action*=ROLE_REL_CARGO
 				/cargosalario/cargo/prepareRelatorioColaboradorCargo.action*=ROLE_REL_COLAB_CARGO
-				/cargosalario/cargo/relatorioColaboradorCargo.action*=ROLE_REL_COLAB_CARGO
+				/cargosalario/cargo/relatorioColaboradorCargo*=ROLE_REL_COLAB_CARGO
 				/cargosalario/cargo/prepareInsert.action*=ROLE_CAD_CARGO_INSERIR
 				/cargosalario/cargo/insert.action*=ROLE_CAD_CARGO_INSERIR
 				/cargosalario/cargo/prepareUpdate.action*=ROLE_CAD_CARGO_EDITAR
