@@ -382,6 +382,11 @@
 			$('#divAssinatura hr').remove();
 			
 			populaDias(document.forms[0]);
+			
+			<#if !turmaPertenceAEmpresaLogada>
+				$('#listCheckBoxavaliacaoTurmasCheck').css('background', '#F9F9F9');
+				$('#listCheckBoxdocumentoAnexoCheck').css('background', '#F9F9F9');
+			</#if>
 		});
 		
 		function solicitaConfirmacaoDescertificacao(){

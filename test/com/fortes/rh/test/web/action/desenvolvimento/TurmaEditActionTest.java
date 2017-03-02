@@ -1,7 +1,6 @@
 package com.fortes.rh.test.web.action.desenvolvimento;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -34,24 +33,18 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DNT;
-import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.TipoDespesa;
-import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
-import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
-import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
@@ -172,161 +165,6 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	assertEquals("success", action.prepareInsert());
     	assertEquals(cursos, action.getCursos());
     }
-
-    public void testPrepareUpdate() throws Exception{
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	Curso curso = CursoFactory.getEntity(1L);
-    	action.setCurso(curso);
-    	Turma turma = TurmaFactory.getEntity(1L);
-    	turma.setEmpresa(empresa);
-    	turma.setDataPrevIni(new Date());
-    	turma.setCurso(curso);
-    	action.setTurma(turma);
-
-    	Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
-    	Collection<Curso> cursos = new ArrayList<Curso>();
-    	Collection<DocumentoAnexo> documentoAnexos = new ArrayList<DocumentoAnexo>();
-    	montaAvaliacaoTurmasCheck();
-    	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
-    	turmaManager.expects(once()).method("verificaAvaliacaoDeTurmaRespondida").with(eq(turma.getId())).will(returnValue(false));
-    	turmaAvaliacaoTurmaManager.expects(once()).method("verificaAvaliacaoliberada").with(eq(turma.getId())).will(returnValue(false));
-    	diaTurmaManager.expects(once()).method("find").with(ANYTHING, ANYTHING).will(returnValue(diaTurmas));
-    	colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").with(eq(turma.getId())).will(returnValue(true));
-
-    	cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[]{1L})).will(returnValue(cursos));
-    	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(eq(empresa.getId()),eq(curso.getId())).will(returnValue(true));
-    	tipoDespesaManager.expects(once()).method("find");
-    	turmaTipoDespesaManager.expects(once()).method("findTipoDespesaTurma").will(returnValue(new ArrayList<TurmaTipoDespesa>()));
-    	documentoAnexoManager.expects(once()).method("getDocumentoAnexoByOrigemId").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(documentoAnexos));
-    	documentoAnexoManager.expects(once()).method("findByTurma").with(ANYTHING).will(returnValue(documentoAnexos));
-
-    	assertEquals("success", action.prepareUpdate());
-    	assertMontaAvaliacaoTurmasCheck();
-    }
-    
-    public void testPrepareUpdateSomenteLeitura() throws Exception{
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	empresa.setControlarVencimentoCertificacaoPor(FiltroControleVencimentoCertificacao.CERTIFICACAO.getOpcao());
-    	action.setEmpresaSistema(empresa);
-    	
-    	Curso curso = CursoFactory.getEntity(1L);
-    	action.setCurso(curso);
-    	
-    	Turma turma = TurmaFactory.getEntity(1L);
-    	turma.setEmpresa(empresa);
-    	turma.setDataPrevIni(new Date());
-    	turma.setCurso(curso);
-    	action.setTurma(turma);
-    	
-    	Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
-    	Collection<Curso> cursos = new ArrayList<Curso>();
-    	Collection<DocumentoAnexo> documentoAnexos = new ArrayList<DocumentoAnexo>();
-
-    	montaAvaliacaoTurmasCheck();
-    	
-    	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
-    	turmaManager.expects(once()).method("verificaAvaliacaoDeTurmaRespondida").with(eq(turma.getId())).will(returnValue(false));
-    	turmaAvaliacaoTurmaManager.expects(once()).method("verificaAvaliacaoliberada").with(eq(turma.getId())).will(returnValue(false));
-    	diaTurmaManager.expects(once()).method("find").with(ANYTHING, ANYTHING).will(returnValue(diaTurmas));
-    	colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").with(eq(turma.getId())).will(returnValue(true));
-    	cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[]{1L})).will(returnValue(cursos));
-    	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(eq(empresa.getId()),eq(curso.getId())).will(returnValue(true));
-    	tipoDespesaManager.expects(once()).method("find");
-    	turmaTipoDespesaManager.expects(once()).method("findTipoDespesaTurma").with(eq(turma.getId())).will(returnValue(new ArrayList<TurmaTipoDespesa>()));
-    	documentoAnexoManager.expects(once()).method("getDocumentoAnexoByOrigemId").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(documentoAnexos));
-    	documentoAnexoManager.expects(once()).method("findByTurma").with(ANYTHING).will(returnValue(documentoAnexos));
-    	colaboradorCertificacaoManager.expects(once()).method("existeColaboradorCertificadoEmUmaTurmaPosterior").with(eq(turma.getId()), eq(null)).will(returnValue(true));
-    	
-    	assertEquals("success", action.prepareUpdate());
-    	assertMontaAvaliacaoTurmasCheck();
-    }
-    
-    public void testPrepareUpdateCursoNaoCompartilhado() throws Exception{
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	Curso curso = CursoFactory.getEntity(1L);
-    	action.setCurso(curso);
-    	
-    	Turma turma = TurmaFactory.getEntity(1L);
-    	turma.setEmpresa(empresa);
-    	turma.setDataPrevIni(new Date());
-    	turma.setCurso(curso);
-    	action.setTurma(turma);
-    	
-    	Collection<Curso> cursos = new ArrayList<Curso>();
-    	Collection<DocumentoAnexo> documentoAnexos = new ArrayList<DocumentoAnexo>();
-    	
-    	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
-    	cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[]{1L})).will(returnValue(cursos));
-    	tipoDespesaManager.expects(once()).method("find");
-    	documentoAnexoManager.expects(once()).method("getDocumentoAnexoByOrigemId").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(documentoAnexos));
-    	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(eq(empresa.getId()),eq(curso.getId())).will(returnValue(false));
-
-    	assertEquals("error", action.prepareUpdate());
-    }
-    
-    public void testPrepareUpdateTurmaNaoPertenceEmpresaLogada() throws Exception{
-    	Empresa empresaLogada = EmpresaFactory.getEmpresa(1L);
-    	action.setEmpresaSistema(empresaLogada);
-    	
-    	Empresa empresaTurma = EmpresaFactory.getEmpresa(2L);
-
-    	Curso curso = CursoFactory.getEntity(1L);
-    	action.setCurso(curso);
-    	
-    	Turma turma = TurmaFactory.getEntity(1L);
-    	turma.setEmpresa(empresaTurma);
-    	turma.setDataPrevIni(new Date());
-    	turma.setCurso(curso);
-    	action.setTurma(turma);
-    	
-    	Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
-    	Collection<Curso> cursos = new ArrayList<Curso>();
-    	Collection<DocumentoAnexo> documentoAnexos = new ArrayList<DocumentoAnexo>();
-    	Collection<TipoDespesa> tipoDespesas = Arrays.asList(new TipoDespesa());
-    	
-    	montaAvaliacaoTurmasCheck();
-    	
-    	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
-    	turmaManager.expects(once()).method("verificaAvaliacaoDeTurmaRespondida").with(eq(turma.getId())).will(returnValue(false));
-    	turmaAvaliacaoTurmaManager.expects(once()).method("verificaAvaliacaoliberada").with(eq(turma.getId())).will(returnValue(false));
-    	diaTurmaManager.expects(once()).method("find").with(ANYTHING, ANYTHING).will(returnValue(diaTurmas));
-    	colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").with(eq(turma.getId())).will(returnValue(true));
-
-    	cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[]{1L})).will(returnValue(cursos));
-    	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(eq(empresaLogada.getId()),eq(curso.getId())).will(returnValue(true));
-    	tipoDespesaManager.expects(once()).method("find");
-    	turmaTipoDespesaManager.expects(once()).method("findTipoDespesaTurma").with(eq(turma.getId())).will(returnValue(tipoDespesas));
-    	documentoAnexoManager.expects(once()).method("getDocumentoAnexoByOrigemId").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(documentoAnexos));
-    	documentoAnexoManager.expects(once()).method("findByTurma").with(ANYTHING).will(returnValue(documentoAnexos));
-
-    	assertEquals("success", action.prepareUpdate());
-    	assertMontaAvaliacaoTurmasCheck();
-    }
-
-	private void assertMontaAvaliacaoTurmasCheck() {
-		Collection<CheckBox> avaliacaoTurmasCheckList = action.getAvaliacaoTurmasCheckList();
-    	assertEquals(1, avaliacaoTurmasCheckList.size());
-    	assertEquals("Questionario1", ((CheckBox)avaliacaoTurmasCheckList.toArray()[0]).getNome());
-	}
-
-	private void montaAvaliacaoTurmasCheck() {
-		Questionario questionario = QuestionarioFactory.getEntity(1L, "Questionario1");
-		Questionario questionarioInativo = QuestionarioFactory.getEntity(2L, "Questionario2");
-		
-		AvaliacaoTurma avaliacaoTurma = AvaliacaoTurmaFactory.getEntity(1L);
-		avaliacaoTurma.setQuestionario(questionario);
-		
-		AvaliacaoTurma avaliacaoTurmaMarcadoInativo = AvaliacaoTurmaFactory.getEntity(2L);
-		avaliacaoTurmaMarcadoInativo.setAtiva(false);
-		avaliacaoTurmaMarcadoInativo.setQuestionario(questionarioInativo);
-		
-		Collection<AvaliacaoTurma> avaliacaoTurmas = Arrays.asList(avaliacaoTurma, avaliacaoTurmaMarcadoInativo);
-		
-		Collection<AvaliacaoTurma> avaliacaoTurmasMarcados = Arrays.asList(avaliacaoTurma);
-		
-    	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(eq(null), ANYTHING).will(returnValue(avaliacaoTurmas));
-    	avaliacaoTurmaManager.expects(once()).method("findByTurma").with(ANYTHING).will(returnValue(avaliacaoTurmasMarcados));
-	}
 
     public void testInsert() throws Exception
     {
