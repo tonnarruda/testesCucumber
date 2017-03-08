@@ -8,6 +8,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCandidato;
 import com.fortes.rh.model.geral.Colaborador;
 
 public interface ConfiguracaoNivelCompetenciaDao extends GenericDao<ConfiguracaoNivelCompetencia> 
@@ -34,7 +35,7 @@ public interface ConfiguracaoNivelCompetenciaDao extends GenericDao<Configuracao
 	void removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixasSalariais(Long[] faixaIds);
 	Collection<ConfiguracaoNivelCompetencia> findCompetenciasConfiguracaoNivelCompetenciaFaixaSalarial(Long[] competenciaIds, Long configuracaoNivelCompetenciaFaixaSalarialId);
 	Collection<Competencia> findCompetenciasColaboradorByFaixaSalarialAndPeriodo(Long faixaId, Date dataIni, Date dataFim);
-	boolean existeDependenciaComCompetenciasDoCandidato(Long faixaSalarialId, Date dataInicial, Date dataFinal);
+	Collection<ConfiguracaoNivelCompetenciaCandidato> candsComDependenciaComCompetenciasDoCandidato(Long faixaSalarialId, Date dataInicial, Date dataFinal);
 	Collection<Colaborador> findDependenciaComColaborador(Long faixaSalarialId,	Date data);
 	Collection<Candidato> findDependenciaComCandidato(Long faixaSalarialId, Date data);
 	void removeByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId);

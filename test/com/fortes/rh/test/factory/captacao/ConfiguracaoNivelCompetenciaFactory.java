@@ -16,6 +16,7 @@ public class ConfiguracaoNivelCompetenciaFactory
 	{
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = new ConfiguracaoNivelCompetencia();
 		configuracaoNivelCompetencia.setId(null);
+		
 		return configuracaoNivelCompetencia;
 	}
 	

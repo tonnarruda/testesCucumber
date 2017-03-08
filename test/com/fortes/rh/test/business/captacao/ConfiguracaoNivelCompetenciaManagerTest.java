@@ -951,8 +951,8 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 		
 		when(configuracaoNivelCompetenciaFaixaSalarialManager.findProximasConfiguracoesAposData(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData())).thenReturn(configuracaoNivelCompetenciaFaixaSalariais);
 		when(configuracaoNivelCompetenciaFaixaSalarialManager.findById(configuracaoNivelFaixaSalarial.getId())).thenReturn(configuracaoNivelFaixaSalarial);
-		when(configuracaoNivelCompetenciaColaboradorManager.existeDependenciaComCompetenciasDaFaixaSalarial(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial)).thenReturn(false);
-		when(configuracaoNivelCompetenciaDao.existeDependenciaComCompetenciasDoCandidato(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial)).thenReturn(false);
+		when(configuracaoNivelCompetenciaColaboradorManager.colabsComDependenciaComCompetenciasDaFaixaSalarial(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial)).thenReturn(new ArrayList<ConfiguracaoNivelCompetenciaColaborador>());
+		when(configuracaoNivelCompetenciaDao.candsComDependenciaComCompetenciasDoCandidato(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial)).thenReturn(new ArrayList<ConfiguracaoNivelCompetenciaCandidato>());
 
 		Exception ex = null;
 		try {
@@ -975,9 +975,15 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 		
 		Date dataDaProximaConfiguracaodaFaixaSalarial = configuracaoNivelFaixaSalarial.getData();
 		
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
+		configuracaoNivelCompetenciaColaborador.setColaboradorNome("colaboradorNome");
+		
+		Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradores = new ArrayList<ConfiguracaoNivelCompetenciaColaborador>();
+		configuracaoNivelCompetenciaColaboradores.add(configuracaoNivelCompetenciaColaborador);
+		
 		when(configuracaoNivelCompetenciaFaixaSalarialManager.findProximasConfiguracoesAposData(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData())).thenReturn(configuracaoNivelCompetenciaFaixaSalariais);
 		when(configuracaoNivelCompetenciaFaixaSalarialManager.findById(configuracaoNivelFaixaSalarial.getId())).thenReturn(configuracaoNivelFaixaSalarial);
-		when(configuracaoNivelCompetenciaColaboradorManager.existeDependenciaComCompetenciasDaFaixaSalarial(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial)).thenReturn(true);
+		when(configuracaoNivelCompetenciaColaboradorManager.colabsComDependenciaComCompetenciasDaFaixaSalarial(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial)).thenReturn(configuracaoNivelCompetenciaColaboradores);
 
 		Exception ex = null;
 		try {
@@ -986,7 +992,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 			ex = e;
 		}
 		
-		assertEquals("Esta configuração de competência não pode ser excluída, pois existe dependência com competências do colaborador.", ex.getMessage());
+		assertEquals("Esta configuração de competência não pode ser excluída, pois existem dependências com as competências dos colaboradores abaixo:</br>colaboradorNome", ex.getMessage());
 	}
 	
 	@Test
@@ -1000,10 +1006,16 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 		
 		Date dataDaProximaConfiguracaodaFaixaSalarial = configuracaoNivelFaixaSalarial.getData();
 		
+		ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = ConfiguracaoNivelCompetenciaCandidatoFactory.getEntity();
+		configuracaoNivelCompetenciaCandidato.setCandidatoNome("candidatoNome");
+		
+		Collection<ConfiguracaoNivelCompetenciaCandidato> configuracaoNivelCompetenciaCandidatos = new ArrayList<ConfiguracaoNivelCompetenciaCandidato>();
+		configuracaoNivelCompetenciaCandidatos.add(configuracaoNivelCompetenciaCandidato);
+		
 		when(configuracaoNivelCompetenciaFaixaSalarialManager.findProximasConfiguracoesAposData(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData())).thenReturn(configuracaoNivelCompetenciaFaixaSalariais);
 		when(configuracaoNivelCompetenciaFaixaSalarialManager.findById(configuracaoNivelFaixaSalarial.getId())).thenReturn(configuracaoNivelFaixaSalarial);
-		when(configuracaoNivelCompetenciaColaboradorManager.existeDependenciaComCompetenciasDaFaixaSalarial(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial)).thenReturn(false);
-		when(configuracaoNivelCompetenciaDao.existeDependenciaComCompetenciasDoCandidato(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial)).thenReturn(true);
+		when(configuracaoNivelCompetenciaColaboradorManager.colabsComDependenciaComCompetenciasDaFaixaSalarial(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial)).thenReturn(new ArrayList<ConfiguracaoNivelCompetenciaColaborador>());
+		when(configuracaoNivelCompetenciaDao.candsComDependenciaComCompetenciasDoCandidato(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial)).thenReturn(configuracaoNivelCompetenciaCandidatos);
 
 		Exception ex = null;
 		try {
@@ -1012,7 +1024,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 			ex = e;
 		}
 		
-		assertEquals("Esta configuração de competência não pode ser excluída, pois existe dependência com competências do candidato.", ex.getMessage());
+		assertEquals("Esta configuração de competência não pode ser excluída, pois existem dependências com as competências dos candidatos abaixo:</br>candidatoNome", ex.getMessage());
 	}
 	
 	@Test

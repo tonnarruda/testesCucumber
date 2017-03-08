@@ -1,80 +1,73 @@
 package com.fortes.rh.test.web.action.captacao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 
-import org.hibernate.ObjectNotFoundException;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.fortes.rh.business.captacao.NivelCompetenciaHistoricoManager;
 import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaHistoricoFactory;
 import com.fortes.rh.web.action.captacao.NivelCompetenciaHistoricoEditAction;
 
-public class NivelCompetenciaHistoricoEditActionTest extends MockObjectTestCase
+public class NivelCompetenciaHistoricoEditActionTest
 {
 	private NivelCompetenciaHistoricoEditAction action;
-	private Mock manager;
+	private NivelCompetenciaHistoricoManager manager;
 
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
-		super.setUp();
-		manager = new Mock(NivelCompetenciaHistoricoManager.class);
 		action = new NivelCompetenciaHistoricoEditAction();
-		action.setNivelCompetenciaHistoricoManager((NivelCompetenciaHistoricoManager) manager.proxy());
+
+		manager = mock(NivelCompetenciaHistoricoManager.class);
+		action.setNivelCompetenciaHistoricoManager(manager);
 
 		action.setNivelCompetenciaHistorico(new NivelCompetenciaHistorico());
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}
 
-	protected void tearDown() throws Exception
-	{
-		manager = null;
-		action = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testList() throws Exception
 	{
-		setEmpresaSistema();
-		
-		manager.expects(once()).method("find").will(returnValue(new ArrayList<NivelCompetenciaHistorico>()));
+		when(manager.find(new String[]{"empresa.id"}, new Object[]{1L})).thenReturn(new ArrayList<NivelCompetenciaHistorico>());
 		assertEquals("success", action.list());
 		assertNotNull(action.getNivelCompetenciaHistoricos());
 	}
 
+	@Test
 	public void testDelete() throws Exception
 	{
-		setEmpresaSistema();
 		
 		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(1L);
 		action.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
 
-		manager.expects(once()).method("removeNivelConfiguracaoHistorico");
-		manager.expects(once()).method("find").will(returnValue(new ArrayList<NivelCompetenciaHistorico>()));
+		when(manager.find(new String[]{"empresa.id"}, new Object[]{1L})).thenReturn(new ArrayList<NivelCompetenciaHistorico>());
 		assertEquals("success", action.delete());
 	}
 	
+	@Test
 	public void testDeleteException() throws Exception
 	{
-		setEmpresaSistema();
-		
 		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(1L);
 		action.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+	
+		when(manager.find(new String[]{"empresa.id"}, new Object[]{1L})).thenReturn(new ArrayList<NivelCompetenciaHistorico>());
+		doThrow(Exception.class).when(manager).removeNivelConfiguracaoHistorico(1L);
 		
-		manager.expects(once()).method("removeNivelConfiguracaoHistorico").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		manager.expects(once()).method("find").will(returnValue(new ArrayList<NivelCompetenciaHistorico>()));
 		assertEquals("success", action.delete());
+		assertEquals("Não foi possível excluir o histórico dos níveis de competência.", action.getActionErrors().toArray()[0]);
 	}
 
-	private Empresa setEmpresaSistema() {
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		action.setEmpresaSistema(empresa);
-		return empresa;
-	}
-
+	@Test
 	public void testGetSet() throws Exception
 	{
 		action.setNivelCompetenciaHistorico(null);
@@ -82,6 +75,4 @@ public class NivelCompetenciaHistoricoEditActionTest extends MockObjectTestCase
 		assertNotNull(action.getNivelCompetenciaHistorico());
 		assertTrue(action.getNivelCompetenciaHistorico() instanceof NivelCompetenciaHistorico);
 	}
-	
-	
 }

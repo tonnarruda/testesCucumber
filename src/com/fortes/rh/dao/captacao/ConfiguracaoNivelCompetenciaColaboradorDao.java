@@ -14,7 +14,7 @@ public interface ConfiguracaoNivelCompetenciaColaboradorDao extends GenericDao<C
 	void removeColaborador(Colaborador colaborador);
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 	ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId);
-	boolean existeDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal);
+	Collection<ConfiguracaoNivelCompetenciaColaborador> colabsComDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal);
 	boolean existeConfigCompetenciaParaAFaixaDestehistorico(Long historicoColaboradorId);
 	Collection<ConfiguracaoNivelCompetenciaColaborador> findByDataAndFaixaSalarial(Date dataInicio, Date dataFim, Long faixaSalarialId);
 	Collection<Colaborador> findAvaliadores(Long avaliacaoDesempenhoId,	Long avaliadoId);

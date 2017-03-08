@@ -56,6 +56,7 @@ import com.fortes.rh.test.business.captacao.ExperienciaManagerTest;
 import com.fortes.rh.test.business.captacao.FormacaoManagerTest;
 import com.fortes.rh.test.business.captacao.HabilidadeManagerTest;
 import com.fortes.rh.test.business.captacao.HistoricoCandidatoManagerTest;
+import com.fortes.rh.test.business.captacao.NivelCompetenciaHistoricoManagerTest;
 import com.fortes.rh.test.business.captacao.NivelCompetenciaManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoBDSManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest;
@@ -229,7 +230,9 @@ import com.fortes.rh.test.dao.hibernate.captacao.ConfigHistoricoNivelDaoHibernat
 import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoImpressaoCurriculoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaCandidatoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConhecimentoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.CriterioAvaliacaoCompetenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.EmpresaBdsDaoHibernateTest;
@@ -817,6 +820,8 @@ import com.fortes.test.web.tags.LinkTagTest;
 	NivelCompetenciaEditActionTest.class,
 	NivelCompetenciaManagerTest.class,
 	NivelCompetenciaDaoHibernateTest.class,
+	ConfiguracaoNivelCompetenciaDaoHibernateTest.class,
+	ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest_JUnit4.class,
 	ConfiguracaoNivelCompetenciaManagerTest.class,
 	ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest.class,
 	CompetenciaDaoHibernateTest.class,
@@ -824,6 +829,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	CtpsTest.class,
 	ConfigHistoricoNivelDaoHibernateTest.class,
 	ConfigHistoricoNivelManagerTest.class,
+	NivelCompetenciaHistoricoManagerTest.class,
 	ConfigHistoricoNivelEditActionTest.class,
 	NivelCompetenciaHistoricoDaoHibernateTest.class,
 	NivelCompetenciaHistoricoEditActionTest.class,

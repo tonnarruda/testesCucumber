@@ -16,7 +16,7 @@ public interface ConfiguracaoNivelCompetenciaColaboradorManager extends GenericM
 	void deleteDependenciasByFaixaSalarial(Long[] faixaIds);
 	ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId);
 	void verificaAvaliadorAnonimo(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador);
-	boolean existeDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal);
+	Collection<ConfiguracaoNivelCompetenciaColaborador> colabsComDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal);
 	boolean existeConfigCompetenciaParaAFaixaDestehistorico(Long historicoColaboradorId);
 	Collection<ConfiguracaoNivelCompetenciaColaborador> findByDataAndFaixaSalarial(Date dataInicio, Date dataFim, Long faixaSalarialId);
 	Collection<Colaborador> findCargosAvaliadores(Long avaliacaoDesempenhoId, Long avaliadoId);

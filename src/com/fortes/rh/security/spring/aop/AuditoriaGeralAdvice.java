@@ -3,9 +3,11 @@ package com.fortes.rh.security.spring.aop;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.log4j.Logger;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.security.SecurityManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -37,10 +39,12 @@ public class AuditoriaGeralAdvice implements MethodInterceptor {
 
 			Object resultado = this.audita(metodo);
 			return resultado;
-
+		
 		} catch (Exception e) {
 			System.out.println("Auditoria não funcionou.");
 			e.printStackTrace();
+			if (e.getCause() instanceof FortesException)
+				throw new FortesException(e.getCause().getMessage());	
 			return null;
 		}
 	}

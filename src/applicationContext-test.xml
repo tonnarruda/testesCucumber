@@ -405,4 +405,35 @@
 		<ref bean="sessionFactory" />
 	</property>
   </bean>
+  <bean id="nivelCompetenciaHistoricoDao" class="com.fortes.rh.dao.hibernate.captacao.NivelCompetenciaHistoricoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  <bean id="configuracaoNivelCompetenciaFaixaSalarialDao" class="com.fortes.rh.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  <bean id="configuracaoNivelCompetenciaColaboradorDao" class="com.fortes.rh.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaColaboradorDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  <bean id="configuracaoNivelCompetenciaDao" class="com.fortes.rh.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  <bean id="nivelCompetenciaDao" class="com.fortes.rh.dao.hibernate.captacao.NivelCompetenciaDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  <bean id="configuracaoNivelCompetenciaCandidatoDao" class="com.fortes.rh.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaCandidatoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
 </beans>

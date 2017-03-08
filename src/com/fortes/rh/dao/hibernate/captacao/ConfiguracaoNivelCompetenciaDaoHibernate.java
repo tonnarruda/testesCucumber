@@ -25,6 +25,7 @@ import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCandidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
@@ -610,8 +611,8 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 
 		return lista;				
 	}
-	
-	public boolean existeDependenciaComCompetenciasDoCandidato(Long faixaSalarialId, Date dataInicial, Date dataFinal)
+
+	public Collection<ConfiguracaoNivelCompetenciaCandidato> candsComDependenciaComCompetenciasDoCandidato(Long faixaSalarialId, Date dataInicial, Date dataFinal)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cnc");
 		criteria.createCriteria("cnc.configuracaoNivelCompetenciaCandidato", "cncc", Criteria.INNER_JOIN);
@@ -619,7 +620,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		criteria.createCriteria("ca.candidatoSolicitacaos", "cs", Criteria.INNER_JOIN);
 		criteria.createCriteria("cs.solicitacao", "s", Criteria.INNER_JOIN);
 		
-		criteria.setProjection(Projections.count("s.data"));
+		ProjectionList p = Projections.projectionList().create();
+		p. add(Projections.property("ca.nome"), "candidatoNome");
+		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.add(Expression.eq("cnc.faixaSalarial.id", faixaSalarialId));
 		criteria.add(Expression.eq("cs.triagem", false));
@@ -628,7 +631,10 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		if(dataFinal != null)
 			criteria.add(Expression.lt("s.data", dataFinal));
 		
-		return ((Integer) criteria.uniqueResult()) > 0;		
+		criteria.addOrder(Order.asc("ca.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaCandidato.class));
+		
+		return criteria.list();		
 	}
 
 	public Collection<Colaborador> findDependenciaComColaborador(Long faixaSalarialId, Date data) 

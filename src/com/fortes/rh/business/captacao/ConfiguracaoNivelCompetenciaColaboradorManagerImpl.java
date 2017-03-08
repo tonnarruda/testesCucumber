@@ -62,11 +62,11 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 	{
 		return getDao().findByData(data, colaboradorId, avaliadorId, colaboradorQuestionarioId);
 	}
-
+	
 	@TesteAutomatico
-	public boolean existeDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal)
+	public Collection<ConfiguracaoNivelCompetenciaColaborador> colabsComDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal)
 	{
-		return getDao().existeDependenciaComCompetenciasDaFaixaSalarial(faixaSalarialId, dataInicial, dataFinal);
+		return getDao().colabsComDependenciaComCompetenciasDaFaixaSalarial(faixaSalarialId, dataInicial, dataFinal);
 	}
 
 	@TesteAutomatico

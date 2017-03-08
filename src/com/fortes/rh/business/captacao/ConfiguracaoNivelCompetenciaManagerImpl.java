@@ -601,21 +601,37 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> proximasConfiguracoesDafaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findProximasConfiguracoesAposData(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 		Date dataDaProximaConfiguracaodaFaixaSalarial = (proximasConfiguracoesDafaixaSalarial.size() == 0 ? null : ((ConfiguracaoNivelCompetenciaFaixaSalarial) proximasConfiguracoesDafaixaSalarial.toArray()[0]).getData());
 
-		if(existeDependenciaComCompetenciasDoColaborador(configuracaoNivelCompetenciaFaixaSalarial, dataDaProximaConfiguracaodaFaixaSalarial))
-			throw new FortesException("Esta configuração de competência não pode ser excluída, pois existe dependência com competências do colaborador.");
-
-		if(existeDependenciaComCompetenciasDoCandidato(configuracaoNivelCompetenciaFaixaSalarial, dataDaProximaConfiguracaodaFaixaSalarial))
-			throw new FortesException("Esta configuração de competência não pode ser excluída, pois existe dependência com competências do candidato.");
+		checaPendenciaComConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaFaixaSalarial,	dataDaProximaConfiguracaodaFaixaSalarial);
+		checaPendenciaComConfiguracaoNivelCompetenciaCandidato(configuracaoNivelCompetenciaFaixaSalarial,dataDaProximaConfiguracaodaFaixaSalarial);
 	}
+
+	private void checaPendenciaComConfiguracaoNivelCompetenciaCandidato(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Date dataDaProximaConfiguracaodaFaixaSalarial) throws FortesException {
+		Collection<ConfiguracaoNivelCompetenciaCandidato> candsComDependenciaComCompetenciasDaFaixaSalarial = getDao().candsComDependenciaComCompetenciasDoCandidato(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial);
 		
-	private boolean existeDependenciaComCompetenciasDoColaborador(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Date dataDaProximaConfiguracaodaFaixaSalarial) 
-	{
-		return configuracaoNivelCompetenciaColaboradorManager.existeDependenciaComCompetenciasDaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial);
+		if(candsComDependenciaComCompetenciasDaFaixaSalarial.size() > 0){
+			StringBuffer stb = new StringBuffer("Esta configuração de competência não pode ser excluída, pois existem dependências com as competências dos <b>candidatos</b> abaixo:</br>");
+			for (ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato : candsComDependenciaComCompetenciasDaFaixaSalarial) {
+				stb.append(configuracaoNivelCompetenciaCandidato.getCandidato().getNome());
+				stb.append("; ");
+			}
+			
+			throw new FortesException(stb.toString().substring(0, stb.toString().length() - 2));
+		}
 	}
 
-	private boolean existeDependenciaComCompetenciasDoCandidato(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Date dataDaProximaConfiguracaodaFaixaSalarial)
-	{
-		return getDao().existeDependenciaComCompetenciasDoCandidato(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial);
+	private void checaPendenciaComConfiguracaoNivelCompetenciaColaborador(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Date dataDaProximaConfiguracaodaFaixaSalarial) throws FortesException {
+		Collection<ConfiguracaoNivelCompetenciaColaborador> colabsComDependenciaComCompetenciasDaFaixaSalarial = configuracaoNivelCompetenciaColaboradorManager.colabsComDependenciaComCompetenciasDaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial);
+		
+		if(colabsComDependenciaComCompetenciasDaFaixaSalarial.size() > 0){
+			StringBuffer stb = new StringBuffer("Esta configuração de competência não pode ser excluída, pois existem dependências com as competências dos <b>colaboradores</b> abaixo:</br>");
+			
+			for (ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador : colabsComDependenciaComCompetenciasDaFaixaSalarial) {
+				stb.append(configuracaoNivelCompetenciaColaborador.getColaborador().getNome());
+				stb.append("; ");
+			}
+			
+			throw new FortesException(stb.toString().substring(0, stb.toString().length() - 2));
+		}
 	}
 	
 	public void removeByCandidato(Long candidatoId) {

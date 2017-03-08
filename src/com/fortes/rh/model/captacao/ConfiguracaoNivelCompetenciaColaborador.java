@@ -53,6 +53,14 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 		this.colaborador = colaborador;
 	}
 	
+	public void setColaboradorNome(String colaboradorNome) 
+	{
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setNome(colaboradorNome);
+	}
+	
 	public FaixaSalarial getFaixaSalarial() 
 	{
 		return faixaSalarial;

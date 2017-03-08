@@ -149,11 +149,15 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		return (ConfiguracaoNivelCompetenciaColaborador) criteria.uniqueResult();
 	}
 
-	public boolean existeDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal)
+	@SuppressWarnings("unchecked")
+	public Collection<ConfiguracaoNivelCompetenciaColaborador> colabsComDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal)
 	{
-		// TODO: Criar teste
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "cncc");
-		criteria.setProjection(Projections.count("data"));
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
+		criteria.createCriteria("cncc.colaborador", "co");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("co.nome"), "colaboradorNome");
+		criteria.setProjection(Projections.distinct(p));
 				
 		criteria.add(Expression.eq("cncc.faixaSalarial.id", faixaSalarialId));
 		criteria.add(Expression.ge("cncc.data", dataInicial));
@@ -161,7 +165,11 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		if(dataFinal != null)
 			criteria.add(Expression.lt("cncc.data", dataFinal));
 
-		return ((Integer) criteria.uniqueResult()) > 0;	
+		criteria.addOrder(Order.asc("co.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaColaborador.class));
+		
+		return criteria.list();	
 	}
 
 	public boolean existeConfigCompetenciaParaAFaixaDestehistorico(Long historicoColaboradorId) 

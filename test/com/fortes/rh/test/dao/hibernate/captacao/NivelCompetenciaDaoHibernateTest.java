@@ -1312,55 +1312,6 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(conhecimento.getNome(), ((Competencia)competencias.toArray()[1]).getNome());
 	}
 	
-	public void testExisteDependenciaComCompetenciasDaCandidato()
-	{
-		assertTrue("Sem data final e data da solicitação igual à data início)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), null));
-		assertFalse("Sem data final e data da solicitação menor que data início)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("02/01/2019"), null));
-		assertTrue("Sem data final e data da solicitação maior que data início)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("03/01/2019"), DateUtil.criarDataDiaMesAno("02/01/2019"), null));
-		
-		assertFalse("Com data final e data da solicitação menor que data início)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("02/02/2019"), DateUtil.criarDataDiaMesAno("01/03/2019")));
-		assertTrue("Com data final e data da solicitação igual à data início)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/02/2019")));
-		assertTrue("Com data final e data da solicitação entre início e fim)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/03/2019")));
-		assertFalse("Com data final e data da solicitação igual à data final)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/02/2019")));
-		assertFalse("Com data final e data da solicitação maior que data final)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("02/02/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/02/2019")));
-	}
-	
-	private boolean setUpTestExisteDependenciaComCompetenciasDoCandidato(Date dataSolicitacao, Date dataInicio, Date dataFinal)
-	{
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarialDao.save(faixaSalarial);
-		
-		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
-		solicitacao.setData(dataSolicitacao);
-		solicitacaoDao.save(solicitacao);
-
-		Atitude atitude = criaAtitude();
-		
-		Candidato candidato = CandidatoFactory.getCandidato();
-		candidatoDao.save(candidato);
-		
-		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
-		candidatoSolicitacao.setCandidato(candidato);
-		candidatoSolicitacao.setSolicitacao(solicitacao);
-		candidatoSolicitacao.setTriagem(false);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao);
-		
-		candidato.setCandidatoSolicitacaos(Arrays.asList(candidatoSolicitacao));
-		candidatoDao.save(candidato);
-		
-		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
-		nivelCompetenciaDao.save(nivelCompetencia);
-		
-		ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = ConfiguracaoNivelCompetenciaCandidatoFactory.getEntity(candidato, solicitacao, null, new Date());
-		configuracaoNivelCompetenciaCandidatoDao.save(configuracaoNivelCompetenciaCandidato);
-		
-		ConfiguracaoNivelCompetencia cncFaixa = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(configuracaoNivelCompetenciaCandidato, faixaSalarial, nivelCompetencia, atitude.getId(), TipoCompetencia.ATITUDE);
-		configuracaoNivelCompetenciaDao.save(cncFaixa);
-
-		return configuracaoNivelCompetenciaDao.existeDependenciaComCompetenciasDoCandidato(faixaSalarial.getId(), dataInicio, dataFinal);
-		
-	}
-	
 	public void testFindDependenciaComColaborador()
 	{
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
