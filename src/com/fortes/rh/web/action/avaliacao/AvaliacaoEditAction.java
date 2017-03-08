@@ -176,6 +176,9 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		avaliacaoCurso = avaliacaoCursoManager.findById(avaliacaoCurso.getId());
 		
 		if(getEmpresaSistema().isControlarVencimentoPorCertificacao()){
+			if(colaboradorQuestionario == null)
+				colaboradorQuestionario = new ColaboradorQuestionario();
+			
 			colaboradorQuestionario.setAvaliacao(avaliacaoCurso.getAvaliacao());
 			Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
 			pontuacaoMaximaQuestionario = colaboradorRespostaManager.calculaPontuacaoMaximaQuestionario(colaboradorQuestionario, colaboradorRespostas, null);

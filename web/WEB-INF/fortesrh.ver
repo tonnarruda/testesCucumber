@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.17x.210" db="" data="xx/03/2017">
+		<Item visivel="S" motivo="P17020000249"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Ajuste na inconsistência de permissão de acesso ao gerar relatório em XLS.]]></Item>
 		<Item visivel="S" motivo="P16100000309"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência: Ajuste de inconsistência ao tentar editar modelo que não possui respostas vinculadas.]]></Item>
 		<Item visivel="S" motivo="P17020000188"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes > Gravar: Ajuste de inconsistência ao gravar participantes utilizando a funcionalidade de “Gerar autoavaliação para selecionados”.]]></Item>
 		<Item visivel="S" motivo="P17020000202"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste de inconsistência que duplicava relaionamento de avaliados com avaliadores.]]></Item>
-		<Item visivel="N" motivo="P17020000226"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações dos Alunos: Melhoria na performance ao inserir ou editar nota.]]></Item>
-		<Item visivel="N" motivo="P17020000249"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Ajuste na inconsistência de permissão de acesso ao gerar relatório em XLS.]]></Item>
+		<Item visivel="S" motivo="P17020000226"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações dos Alunos: Melhoria na performance ao inserir ou editar nota.]]></Item>
+		<Item visivel="S" motivo="P17020000243"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Ajuste da inconsistência ao listar "Questionário de Avaliação do Curso" em uma turma criada por outra empresa.]]></Item>
 	</Versao>
 	<Versao id="1.1.177.209" db="" data="15/02/2017">
 		<Item visivel="S" motivo="P17010000073"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao informar se o candidato está apto quando participa de mais de uma etapa seletiva na mesma data em horários diferentes.]]></Item>

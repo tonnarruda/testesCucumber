@@ -285,20 +285,15 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	private void montaAvaliacaoTurmasCheck() throws Exception {
 		Collection<AvaliacaoTurma> avaliacaoTurmasMarcadas = avaliacaoTurmaManager.findByTurma(turma.getId());
-		curso = cursoManager.findByIdProjection(curso.getId());
-		if (curso != null && (getEmpresaSistema().getId().equals(curso.getEmpresaId()) || !cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), curso.getId()))){
-			avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(null, getEmpresaSistema().getId());
-			Collection<AvaliacaoTurma> avaliacaoTurmasComIntaivasDaTurma = new ArrayList<AvaliacaoTurma>();
+		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(null, turma.getEmpresa().getId());
+		Collection<AvaliacaoTurma> avaliacaoTurmasComIntaivasDaTurma = new ArrayList<AvaliacaoTurma>();
 
-			for (AvaliacaoTurma avaliacaoTurma : avaliacaoTurmas) {
-				if((avaliacaoTurmasMarcadas.contains(avaliacaoTurma) || avaliacaoTurma.isAtiva()) && !avaliacaoTurmasComIntaivasDaTurma.contains(avaliacaoTurma))
-					avaliacaoTurmasComIntaivasDaTurma.add(avaliacaoTurma);
-			}
-
-			avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmasComIntaivasDaTurma, "getId", "getQuestionarioTituloMaisStatus", null);
-		}else{
-			avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmasMarcadas, "getId", "getQuestionarioTituloMaisStatus", null);
+		for (AvaliacaoTurma avaliacaoTurma : avaliacaoTurmas) {
+			if((avaliacaoTurmasMarcadas.contains(avaliacaoTurma) || avaliacaoTurma.isAtiva()) && !avaliacaoTurmasComIntaivasDaTurma.contains(avaliacaoTurma))
+				avaliacaoTurmasComIntaivasDaTurma.add(avaliacaoTurma);
 		}
+
+		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmasComIntaivasDaTurma, "getId", "getQuestionarioTituloMaisStatus", null);
 
 		avaliacaoTurmasCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacaoTurmasCheckList, avaliacaoTurmasMarcadas, "getId");
 	}

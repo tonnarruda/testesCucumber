@@ -181,7 +181,7 @@ public class TurmaEditActionTest_Junit4
 		assertEquals("success", action.getColaboradoresByFiltro());
 	}
 	
-	private void montaAvaliacaoTurmasCheck() {
+	private void montaAvaliacaoTurmasCheck(Long empresaId) {
 		Questionario questionario = QuestionarioFactory.getEntity(1L, "Questionario1");
 		Questionario questionarioInativo = QuestionarioFactory.getEntity(2L, "Questionario2");
 		
@@ -196,7 +196,7 @@ public class TurmaEditActionTest_Junit4
 		
 		Collection<AvaliacaoTurma> avaliacaoTurmasMarcados = Arrays.asList(avaliacaoTurma);
 		
-		when(avaliacaoTurmaManager.findAllSelect(null, 1L)).thenReturn(avaliacaoTurmas);
+		when(avaliacaoTurmaManager.findAllSelect(null, empresaId)).thenReturn(avaliacaoTurmas);
 		when(avaliacaoTurmaManager.findByTurma(1L)).thenReturn(avaliacaoTurmasMarcados);
 	}
 	
@@ -220,7 +220,7 @@ public class TurmaEditActionTest_Junit4
     	Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
     	Collection<Curso> cursos = new ArrayList<Curso>();
     	Collection<DocumentoAnexo> documentoAnexos = new ArrayList<DocumentoAnexo>();
-    	montaAvaliacaoTurmasCheck();
+    	montaAvaliacaoTurmasCheck(turma.getEmpresa().getId());
 
     	when(turmaManager.findByIdProjection(turma.getId())).thenReturn(turma);
     	when(turmaManager.verificaAvaliacaoDeTurmaRespondida(turma.getId())).thenReturn(false);
@@ -258,7 +258,7 @@ public class TurmaEditActionTest_Junit4
     	Collection<Curso> cursos = new ArrayList<Curso>();
     	Collection<DocumentoAnexo> documentoAnexos = new ArrayList<DocumentoAnexo>();
 
-    	montaAvaliacaoTurmasCheck();
+    	montaAvaliacaoTurmasCheck(turma.getEmpresa().getId());
     	
     	when(turmaManager.findByIdProjection(turma.getId())).thenReturn(turma);
     	when(turmaManager.verificaAvaliacaoDeTurmaRespondida(turma.getId())).thenReturn(false);
@@ -302,7 +302,7 @@ public class TurmaEditActionTest_Junit4
     }
 	
 	@Test
-    public void testPrepareUpdateTurmaNaoPertenceEmpresaLogada() throws Exception{
+    public void testPrepareUpdateTurmaNaoPertenceAEmpresaLogada() throws Exception{
     	Empresa empresaLogada = EmpresaFactory.getEmpresa(1L);
     	action.setEmpresaSistema(empresaLogada);
     	
@@ -323,7 +323,7 @@ public class TurmaEditActionTest_Junit4
     	Collection<DocumentoAnexo> documentoAnexos = new ArrayList<DocumentoAnexo>();
     	Collection<TurmaTipoDespesa> tipoDespesas = Arrays.asList(new TurmaTipoDespesa());
     	
-    	montaAvaliacaoTurmasCheck();
+    	montaAvaliacaoTurmasCheck(turma.getEmpresa().getId());
     	
     	when(turmaManager.findByIdProjection(turma.getId())).thenReturn(turma);
     	when(turmaManager.verificaAvaliacaoDeTurmaRespondida(turma.getId())).thenReturn(false);
@@ -337,7 +337,6 @@ public class TurmaEditActionTest_Junit4
     	when(documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', 1L)).thenReturn(documentoAnexos);
     	when(documentoAnexoManager.findByTurma(turma.getId())).thenReturn(documentoAnexos);
     	when(colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turma.getId(), null)).thenReturn(true);
-    	when(cursoManager.findByIdProjection(curso.getId())).thenReturn(curso);
 
     	assertEquals("success", action.prepareUpdate());
     	assertMontaAvaliacaoTurmasCheck();
