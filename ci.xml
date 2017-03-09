@@ -388,13 +388,15 @@ http://10.1.3.48:8080/fortesrhhomologacao
 	
 	 <target name="stopTomcat">
         <exec executable="sh">
-            <arg value="/home/fortes/tomcat7/bin/shutdown.sh"/>
+        	<arg value="-c"/>
+        	<arg value="/home/fortes/tomcat7/bin/shutdown.sh"/>
         </exec>
         <echo message="Stop Tomcat 7"/>
     </target>
 	
     <target name="startTomcat">
     	<exec executable="sh">
+    		<arg value="-c"/>
             <arg value="/home/fortes/tomcat7/bin/startup.sh"/>
         </exec>
         <echo message="Start Tomcat 7"/>
@@ -405,6 +407,7 @@ http://10.1.3.48:8080/fortesrhhomologacao
 
 		<antcall target="stopTomcat"/>
 		<antcall target="war"/>
+		<antcall target="stopTomcat"/>
 		
 		<echo message="Rodando Migrations banco homologacao"/>
 		<exec executable="ruby">
@@ -412,6 +415,7 @@ http://10.1.3.48:8080/fortesrhhomologacao
 			<arg value="--db"/>
             <arg value="homologacao"/>
         </exec>
+		<antcall target="stopTomcat"/>
 		
 		<echo message="Removendo pasta fortesrhhomologacao"/>
 		<exec executable="rm">
