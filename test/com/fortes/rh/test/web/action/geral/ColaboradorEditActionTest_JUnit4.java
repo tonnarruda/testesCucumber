@@ -28,6 +28,7 @@ import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
+import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
@@ -56,6 +57,7 @@ import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -82,6 +84,7 @@ import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoCampoExtraVisivelObrigadotorioFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -144,6 +147,7 @@ public class ColaboradorEditActionTest_JUnit4
 	private DocumentoAnexoManager documentoAnexoManager;
 	private ConfiguracaoPerformanceManager configuracaoPerformanceManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
+	private HistoricoCandidatoManager historicoCandidatoManager;
 
 	@Before
 	public void setUp () throws Exception
@@ -192,6 +196,7 @@ public class ColaboradorEditActionTest_JUnit4
 		usuarioEmpresaManager = mock(UsuarioEmpresaManager.class);
 		colaboradorPeriodoExperienciaAvaliacaoManager = mock(ColaboradorPeriodoExperienciaAvaliacaoManager.class);
 		configuracaoCampoExtraVisivelObrigadotorioManager = mock(ConfiguracaoCampoExtraVisivelObrigadotorioManager.class);
+		historicoCandidatoManager = mock(HistoricoCandidatoManager.class);
 		
 		action.setAreaOrganizacionalManager(areaOrganizacionalManager);
 		action.setColaboradorManager(colaboradorManager);
@@ -229,6 +234,7 @@ public class ColaboradorEditActionTest_JUnit4
         action.setConfiguracaoPerformanceManager(configuracaoPerformanceManager);
         action.setColaboradorPeriodoExperienciaAvaliacaoManager(colaboradorPeriodoExperienciaAvaliacaoManager);
         action.setConfiguracaoCampoExtraVisivelObrigadotorioManager(configuracaoCampoExtraVisivelObrigadotorioManager);
+        action.setHistoricoCandidatoManager(historicoCandidatoManager);
         
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -342,6 +348,7 @@ public class ColaboradorEditActionTest_JUnit4
 		assertEquals(Action.ERROR, action.insert());
 	}
 	
+	@Test
 	public void testPreparePerformanceFuncional() throws Exception{
 		Boolean moduloExterno = null;
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -349,6 +356,7 @@ public class ColaboradorEditActionTest_JUnit4
 		action.setEmpresaSistema(empresa);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity(2L, empresa);
+		colaborador.setCandidato(CandidatoFactory.getCandidato(1L));
 		action.setColaborador(colaborador);
 
 		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(1L, colaborador);
@@ -363,6 +371,8 @@ public class ColaboradorEditActionTest_JUnit4
 		Collection<DocumentoAnexo> documentoAnexosColaborador = Arrays.asList(DocumentoAnexoFactory.getEntity(1L, colaborador.getId(), OrigemAnexo.AnexoCandidato));
 		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = Arrays.asList(ConfiguracaoCampoExtraFactory.getEntity(1L, "", true, false));
 
+		MockSecurityUtil.roles = new String[]{"ROLE_VISUALIZAR_ANEXO_COLAB_LOGADO"};
+		
 		when(colaboradorManager.getFoto(eq(colaborador.getId()))).thenReturn(null);
 		when(configuracaoCampoExtraManager.find(eq(new String[]{"ativoColaborador", "empresa.id"}),eq(new Object[]{true, empresa.getId()}), eq(new String[]{"ordem"}))).thenReturn(configuracaoCampoExtras);
 		when(colaboradorManager.findColaboradorById(eq(colaborador.getId()))).thenReturn(colaborador);

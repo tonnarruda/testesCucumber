@@ -302,7 +302,17 @@
 			
 			<@frt.link verifyRole="ROLE_COLAB_LIST_SOLICITACAO" href="prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=${statusSolicitacao}&voltarPara=../../geral/colaborador/list.action" imgTitle="Incluir em Solicitação" imgName="db_add.gif" disabled=colaborador.statusAcPessoalAguardandoConfirmacao />
 			
-			<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="../documentoAnexo/listColaborador.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
+			<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_ANEXO_COLAB_LOGADO">
+				<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="../documentoAnexo/listColaborador.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
+			</@authz.authorize>
+
+			<@authz.authorize ifNotGranted="ROLE_VISUALIZAR_ANEXO_COLAB_LOGADO">
+				<#if colaborador.id == colaboradorLogadoId>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="#" imgTitle="Documentos do Colaborador" imgName="anexos.gif" opacity=true/>
+				<#else>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="../documentoAnexo/listColaborador.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
+				</#if>
+			</@authz.authorize>	
 
 			<#if colaborador.usuario.id?exists>
 				<@frt.link verifyRole="ROLE_COLAB_LIST_CRIARUSUARIO" href="../../acesso/usuario/prepareUpdate.action?origem=C&usuario.id=${colaborador.usuario.id}&colaborador.id=${colaborador.id}" imgTitle="Editar Acesso ao Sistema" imgName="key.gif"/>
