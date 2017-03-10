@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.desenvolvimento;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.CursoLntManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -19,9 +21,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class CursoListAction extends MyActionSupportList
 {
-	private CursoManager cursoManager;
-	private CursoLntManager cursoLntManager;
-	private EmpresaManager empresaManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private CursoLntManager cursoLntManager;
+	@Autowired private EmpresaManager empresaManager;
 	private Collection<Curso> cursos;
 	private Curso curso;
 	private String nomeCursoBusca;
@@ -131,15 +133,6 @@ public class CursoListAction extends MyActionSupportList
 		this.empresasCheckList = empresasCheckList;
 	}
 
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
 	public void setNovoTituloCursoClonado(String novoTituloCursoClonado) {
 		this.novoTituloCursoClonado = novoTituloCursoClonado;
 	}
@@ -150,9 +143,5 @@ public class CursoListAction extends MyActionSupportList
 	
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public void setCursoLntManager(CursoLntManager cursoLntManager) {
-		this.cursoLntManager = cursoLntManager;
 	}
 }

@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.pesquisa;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.PesquisaManager;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -16,8 +18,8 @@ public class PesquisaEditAction extends MyActionSupportEdit implements ModelDriv
 {
 	private static final long serialVersionUID = 1L;
 
-	private PesquisaManager pesquisaManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private PesquisaManager pesquisaManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 
 	private Pesquisa pesquisa;
 	private Questionario questionario;
@@ -128,11 +130,6 @@ public class PesquisaEditAction extends MyActionSupportEdit implements ModelDriv
 		this.pesquisa = pesquisa;
 	}
 
-	public void setPesquisaManager(PesquisaManager pesquisaManager)
-	{
-		this.pesquisaManager = pesquisaManager;
-	}
-
 	public Questionario getQuestionario()
 	{
 		return questionario;
@@ -145,9 +142,5 @@ public class PesquisaEditAction extends MyActionSupportEdit implements ModelDriv
 
 	public boolean isTemResposta() {
 		return temResposta;
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 }

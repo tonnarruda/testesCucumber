@@ -21,8 +21,8 @@ import com.opensymphony.xwork.ActionContext;
 @Component
 public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implements PapelManager
 {
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private static Long ROLE_CX_MENSAGEM = 495L;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ParametrosDoSistema parametrosDoSistema;
 	
 	@Autowired

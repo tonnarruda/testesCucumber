@@ -17,7 +17,7 @@ public class RelatorioUtil
 {
 	public static Map<String, Object> getParametrosRelatorio(String titulo, Empresa empresa, String filtro)
 	{
-		ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManager");
+		ParametrosDoSistemaManager parametrosDoSistemaManager = SpringUtil.getBean(ParametrosDoSistemaManager.class);
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 
 		Map<String, Object> parametros = new HashMap<String, Object>();

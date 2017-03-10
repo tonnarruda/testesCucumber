@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.pesquisa;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.pesquisa.EntrevistaManager;
 import com.fortes.rh.model.pesquisa.Entrevista;
 import com.fortes.rh.model.pesquisa.Questionario;
@@ -9,7 +11,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class EntrevistaEditAction extends MyActionSupportEdit
 {
-	private EntrevistaManager entrevistaManager;
+	@Autowired private EntrevistaManager entrevistaManager;
 
 	private Entrevista entrevista;
 	private Questionario questionario;
@@ -105,11 +107,6 @@ public class EntrevistaEditAction extends MyActionSupportEdit
 	public void setEntrevista(Entrevista entrevista)
 	{
 		this.entrevista = entrevista;
-	}
-
-	public void setEntrevistaManager(EntrevistaManager entrevistaManager)
-	{
-		this.entrevistaManager = entrevistaManager;
 	}
 
 	public Questionario getQuestionario()

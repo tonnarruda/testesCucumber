@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.ReajusteIndiceManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.model.cargosalario.Indice;
@@ -17,8 +19,8 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class ReajusteIndiceEditAction extends MyActionSupportEdit
 {
-	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
-	private ReajusteIndiceManager reajusteIndiceManager;
+	@Autowired private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	@Autowired private ReajusteIndiceManager reajusteIndiceManager;
 	
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
 	private Collection<Indice> indices = new ArrayList<Indice>();
@@ -132,11 +134,6 @@ public class ReajusteIndiceEditAction extends MyActionSupportEdit
 		return tabelaReajusteColaboradors;
 	}
 
-	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager) 
-	{
-		this.tabelaReajusteColaboradorManager = tabelaReajusteColaboradorManager;
-	}
-
 	public TabelaReajusteColaborador getTabelaReajusteColaborador() 
 	{
 		return tabelaReajusteColaborador;
@@ -200,10 +197,5 @@ public class ReajusteIndiceEditAction extends MyActionSupportEdit
 	public void setValorDissidio(Double valorDissidio) 
 	{
 		this.valorDissidio = valorDissidio;
-	}
-
-	public void setReajusteIndiceManager(ReajusteIndiceManager reajusteIndiceManager) 
-	{
-		this.reajusteIndiceManager = reajusteIndiceManager;
 	}
 }

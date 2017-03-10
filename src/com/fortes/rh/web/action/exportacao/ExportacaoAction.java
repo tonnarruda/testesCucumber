@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -26,9 +27,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class ExportacaoAction extends MyActionSupport
 {
-	private EmpresaManager empresaManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private CursoManager cursoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private CursoManager cursoManager;
 	
 	private Long empresaId;
 	private Collection<Empresa> empresas;
@@ -220,10 +221,6 @@ public class ExportacaoAction extends MyActionSupport
 		this.cursos = cursos;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
 	public String[] getAreasCheck() {
 		return areasCheck;
 	}
@@ -273,21 +270,12 @@ public class ExportacaoAction extends MyActionSupport
 		this.cursosCheck = cursosCheck;
 	}
 
-	public void setColaboradorTurmaManager(
-			ColaboradorTurmaManager colaboradorTurmaManager) {
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
 	public String getTextoTru() {
 		return textoTru;
 	}
 
 	public void setTextoTru(String textoTru) {
 		this.textoTru = textoTru;
-	}
-
-	public void setCursoManager(CursoManager cursoManager) {
-		this.cursoManager = cursoManager;
 	}
 
 	public String[] getTurmasCheck() {

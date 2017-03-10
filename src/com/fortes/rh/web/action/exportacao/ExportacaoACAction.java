@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -42,16 +43,16 @@ public class ExportacaoACAction extends MyActionSupport
 	private static final String EMPRESA = "empresa";
 	private static final String ESTABELECIMENTO = "estabelecimento";
 	
-	private EmpresaManager empresaManager;
-	private GrupoACManager grupoACManager;
-	private ColaboradorManager colaboradorManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
-	private OcorrenciaManager ocorrenciaManager;
-	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private GrupoACManager grupoACManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
+	@Autowired private OcorrenciaManager ocorrenciaManager;
+	@Autowired private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private AcPessoalClientColaborador acPessoalClientColaborador;
 	
 	private List<String> codigosACs;
@@ -418,24 +419,12 @@ public class ExportacaoACAction extends MyActionSupport
 		}
 	}
 	
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
 	public Collection<Empresa> getEmpresas() {
 		return empresas;
 	}
 
 	public void setEmpresas(Collection<Empresa> empresas) {
 		this.empresas = empresas;
-	}
-
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
-	public void setFaixaSalarialHistoricoManager(FaixaSalarialHistoricoManager faixaSalarialHistoricoManager) {
-		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
 	}
 	
 	public Empresa getEmpresa() {
@@ -444,10 +433,6 @@ public class ExportacaoACAction extends MyActionSupport
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
-	}
-
-	public void setGrupoACManager(GrupoACManager grupoACManager) {
-		this.grupoACManager = grupoACManager;
 	}
 
 	public Collection<GrupoAC> getGruposACs() {
@@ -482,11 +467,6 @@ public class ExportacaoACAction extends MyActionSupport
 		this.codigoAC = codigoAC;
 	}
 
-	public void setEstabelecimentoManager(
-			EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public Collection<Estabelecimento> getEstabelecimentos() {
 		return estabelecimentos;
 	}
@@ -501,27 +481,6 @@ public class ExportacaoACAction extends MyActionSupport
 
 	public void setCodigosACs(List<String> codigosACs) {
 		this.codigosACs = codigosACs;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager) {
-		this.ocorrenciaManager = ocorrenciaManager;
-	}
-
-	public void setColaboradorOcorrenciaManager(
-			ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) {
-		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
 	}
 	
 	public void setAcPessoalClientColaborador(

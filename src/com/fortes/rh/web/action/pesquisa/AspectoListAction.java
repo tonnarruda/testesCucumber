@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.pesquisa;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
@@ -18,8 +20,8 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class AspectoListAction extends MyActionSupportList
 {
-	private AspectoManager aspectoManager;
-	private QuestionarioManager questionarioManager;
+	@Autowired private AspectoManager aspectoManager;
+	@Autowired private QuestionarioManager questionarioManager;
 
 	private Collection<Aspecto> aspectos = new ArrayList<Aspecto>();
 
@@ -108,11 +110,6 @@ public class AspectoListAction extends MyActionSupportList
 		return aspectos;
 	}
 
-	public void setAspectoManager(AspectoManager aspectoManager)
-	{
-		this.aspectoManager = aspectoManager;
-	}
-
 	public Pesquisa getPesquisa()
 	{
 		return pesquisa;
@@ -148,11 +145,6 @@ public class AspectoListAction extends MyActionSupportList
 		return urlVoltar;
 	}
 
-	public void setQuestionarioManager(QuestionarioManager questionarioManager)
-	{
-		this.questionarioManager = questionarioManager;
-	}
-
 	public TipoQuestionario getTipoQuestionario()
 	{
 		return tipoQuestionario;
@@ -179,5 +171,4 @@ public class AspectoListAction extends MyActionSupportList
 	public void setModeloAvaliacao(char modeloAvaliacao) {
 		this.modeloAvaliacao = modeloAvaliacao;
 	}
-
 }

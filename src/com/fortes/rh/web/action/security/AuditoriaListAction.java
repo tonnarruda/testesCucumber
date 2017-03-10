@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.model.acesso.Usuario;
@@ -21,8 +23,8 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings("serial")
 public class AuditoriaListAction extends MyActionSupport
 {
-	private AuditoriaManager auditoriaManager;
-	private UsuarioManager usuarioManager;
+	@Autowired private AuditoriaManager auditoriaManager;
+	@Autowired private UsuarioManager usuarioManager;
 
 	private Collection<Auditoria> auditorias = new ArrayList<Auditoria>();
 	private Collection<Usuario> usuarios = new ArrayList<Usuario>();
@@ -157,16 +159,6 @@ public class AuditoriaListAction extends MyActionSupport
 	public void setUsuarios(Collection<Usuario> usuarios)
 	{
 		this.usuarios = usuarios;
-	}
-
-	public void setAuditoriaManager(AuditoriaManager auditoriaManager)
-	{
-		this.auditoriaManager = auditoriaManager;
-	}
-
-	public void setUsuarioManager(UsuarioManager usuarioManager)
-	{
-		this.usuarioManager = usuarioManager;
 	}
 
 	public String getEntidade()

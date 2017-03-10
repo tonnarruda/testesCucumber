@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
@@ -22,9 +23,9 @@ import com.opensymphony.xwork.ModelDriven;
 public class PerguntaEditAction extends MyActionSupportEdit implements ModelDriven
 {
 	private static final long serialVersionUID = 1L;
-	private PerguntaManager perguntaManager;
-	private RespostaManager respostaManager;
-	private AspectoManager aspectoManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private RespostaManager respostaManager;
+	@Autowired private AspectoManager aspectoManager;
 
 	private Pergunta pergunta = new Pergunta();
 	private Pesquisa pesquisa;
@@ -114,11 +115,6 @@ public class PerguntaEditAction extends MyActionSupportEdit implements ModelDriv
 		}
 	}
 
-	public void setPerguntaManager(PerguntaManager perguntaManager)
-	{
-		this.perguntaManager = perguntaManager;
-	}
-
 	public Pergunta getPergunta()
 	{
 		return pergunta;
@@ -132,11 +128,6 @@ public class PerguntaEditAction extends MyActionSupportEdit implements ModelDriv
 	public Object getModel()
 	{
 		return getPergunta();
-	}
-
-	public void setAspectoManager(AspectoManager aspectoManager)
-	{
-		this.aspectoManager = aspectoManager;
 	}
 
 	public Collection<Aspecto> getTemas()
@@ -194,11 +185,6 @@ public class PerguntaEditAction extends MyActionSupportEdit implements ModelDriv
 		return respostasSugeridas;
 	}
 
-	public void setRespostaManager(RespostaManager respostaManager)
-	{
-		this.respostaManager = respostaManager;
-	}
-
 	public String[] getRespostaObjetivaSugerida()
 	{
 		return respostaObjetivaSugerida;
@@ -237,5 +223,4 @@ public class PerguntaEditAction extends MyActionSupportEdit implements ModelDriv
 	{
 		this.multiplaResposta = multiplaResposta;
 	}
-
 }

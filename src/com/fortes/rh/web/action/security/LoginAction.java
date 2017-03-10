@@ -22,8 +22,7 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings("serial")
 public class LoginAction extends MyActionSupport
 {
-	@Autowired
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private Collection<Empresa> empresas = new ArrayList<Empresa>();
 	private String msgRemprot = "";
 	private String senhaBD;
@@ -140,11 +139,6 @@ public class LoginAction extends MyActionSupport
 	public void setEmpresas(Collection<Empresa> empresas)
 	{
 		this.empresas = empresas;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public String getMsgRemprot()

@@ -14,6 +14,8 @@ import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.model.type.File;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
@@ -74,25 +76,25 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 {
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 
-	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
-	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
-	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
-	private TurmaDocumentoAnexoManager turmaDocumentoAnexoManager;
-	private ColaboradorPresencaManager colaboradorPresencaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private TurmaTipoDespesaManager turmaTipoDespesaManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private DocumentoAnexoManager documentoAnexoManager;
-	private AvaliacaoCursoManager avaliacaoCursoManager;
-	private AvaliacaoTurmaManager avaliacaoTurmaManager;
-	private CertificacaoManager certificacaoManager;
-	private ColaboradorManager colaboradorManager;
-	private TipoDespesaManager tipoDespesaManager;
-	private DiaTurmaManager diaTurmaManager;
-	private EmpresaManager empresaManager;
-	private TurmaManager turmaManager;
-	private CursoManager cursoManager;
+	@Autowired private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
+	@Autowired private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
+	@Autowired private TurmaDocumentoAnexoManager turmaDocumentoAnexoManager;
+	@Autowired private ColaboradorPresencaManager colaboradorPresencaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private TurmaTipoDespesaManager turmaTipoDespesaManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private DocumentoAnexoManager documentoAnexoManager;
+	@Autowired private AvaliacaoCursoManager avaliacaoCursoManager;
+	@Autowired private AvaliacaoTurmaManager avaliacaoTurmaManager;
+	@Autowired private CertificacaoManager certificacaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private TipoDespesaManager tipoDespesaManager;
+	@Autowired private DiaTurmaManager diaTurmaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private TurmaManager turmaManager;
+	@Autowired private CursoManager cursoManager;
 	private DNTManager dNTManager;
 
 	private Turma turma;
@@ -711,11 +713,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.turmaManager = turmaManager;
 	}
 
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager)
-	{
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
 	public Collection<ColaboradorTurma> getColaboradorTurmasLista()
 	{
 		return colaboradorTurmasLista;
@@ -776,11 +773,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.semPlano = semPlano;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public Collection<PrioridadeTreinamento> getPrioridadeTreinamentos()
 	{
 		return prioridadeTreinamentos;
@@ -836,11 +828,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		return new CollectionUtil().convertCollectionToList(emptyData);
 	}
 
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
-	}
-
 	public Curso getCurso()
 	{
 		return curso;
@@ -869,11 +856,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public void setDiasCheckList(Collection<CheckBox> diasCheckList)
 	{
 		this.diasCheckList = diasCheckList;
-	}
-
-	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager)
-	{
-		this.diaTurmaManager = diaTurmaManager;
 	}
 
 	public Collection<Curso> getCursos()
@@ -914,11 +896,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public void setColaboradorPresencas(Collection<ColaboradorPresenca> colaboradorPresencas)
 	{
 		this.colaboradorPresencas = colaboradorPresencas;
-	}
-
-	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager)
-	{
-		this.colaboradorPresencaManager = colaboradorPresencaManager;
 	}
 
 	public Collection<SomatorioCursoMatriz> getSomatorioCursoMatrizs()
@@ -1031,11 +1008,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.data = data;
 	}
 
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public String[] getEstabelecimentosCheck()
 	{
 		return estabelecimentosCheck;
@@ -1111,11 +1083,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		return avaliacaoCursos;
 	}
 
-	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager)
-	{
-		this.avaliacaoCursoManager = avaliacaoCursoManager;
-	}
-
 	public AvaliacaoCurso getAvaliacaoCurso()
 	{
 		return avaliacaoCurso;
@@ -1126,11 +1093,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.avaliacaoCurso = avaliacaoCurso;
 	}
 
-	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
-	{
-		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
-	}
-
 	public void setColaboradorTurmaIds(Long[] colaboradorTurmaIds)
 	{
 		this.colaboradorTurmaIds = colaboradorTurmaIds;
@@ -1139,11 +1101,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public Collection<AproveitamentoAvaliacaoCurso> getAproveitamentos()
 	{
 		return aproveitamentos;
-	}
-
-	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager)
-	{
-		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
 	}
 
 	public boolean isAvaliacaoRespondida()
@@ -1176,11 +1133,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.certificadoDe = certificadoDe;
 	}
 
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager)
-	{
-		this.certificacaoManager = certificacaoManager;
-	}
-
 	public Certificado getCertificado()
 	{
 		return certificado;
@@ -1191,11 +1143,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.certificado = certificado;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Collection<ColaboradorTurma> getColaboradoresTurma()
 	{
 		return colaboradoresTurma;
@@ -1204,11 +1151,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public Collection<CertificacaoTreinamentosRelatorio> getCertificacaoTreinamentos()
 	{
 		return certificacaoTreinamentos;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
 	}
 
 	public boolean isPlanoTreinamento() {
@@ -1265,10 +1207,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.documentoAnexoCheckList = documentoAnexoCheckList;
 	}
 
-	public void setTipoDespesaManager(TipoDespesaManager tipoDespesaManager) {
-		this.tipoDespesaManager = tipoDespesaManager;
-	}
-
 	public Collection<TipoDespesa> getTipoDespesas() {
 		return tipoDespesas;
 	}
@@ -1289,14 +1227,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.custos = custos;
 	}
 
-	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
-		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
-	}
-
-	public void setDocumentoAnexoManager(DocumentoAnexoManager documentoAnexoManager) {
-		this.documentoAnexoManager = documentoAnexoManager;
-	}
-
 	public boolean isContemCustosDetalhados() {
 		return contemCustosDetalhados;
 	}
@@ -1315,10 +1245,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public void setTurmaAvaliacaoTurma(TurmaAvaliacaoTurma turmaAvaliacaoTurma) {
 		this.turmaAvaliacaoTurma = turmaAvaliacaoTurma;
-	}
-
-	public void setTurmaAvaliacaoTurmaManager(TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) {
-		this.turmaAvaliacaoTurmaManager = turmaAvaliacaoTurmaManager;
 	}
 	
 	public boolean isTurmaPertenceAEmpresaLogada()
@@ -1359,17 +1285,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.imprimirNotaNoVerso = imprimirNotaNoVerso;
 	}
 
-	public void setColaboradorCertificacaoManager( ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
-	}
-
 	public boolean isSomenteLeitura() {
 		return somenteLeitura;
-	}
-
-	public void setTurmaDocumentoAnexoManager(
-			TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) {
-		this.turmaDocumentoAnexoManager = turmaDocumentoAnexoManager;
 	}
 
 	public boolean isExisteColaboradorCertificado() {

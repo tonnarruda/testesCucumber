@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.pesquisa;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.Questionario;
@@ -9,7 +11,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class AvaliacaoTurmaEditAction extends MyActionSupportEdit
 {
-	private AvaliacaoTurmaManager avaliacaoTurmaManager;
+	@Autowired private AvaliacaoTurmaManager avaliacaoTurmaManager;
 
 	private AvaliacaoTurma avaliacaoTurma;
 	private Questionario questionario;
@@ -104,10 +106,7 @@ public class AvaliacaoTurmaEditAction extends MyActionSupportEdit
 	{
 		this.avaliacaoTurma = avaliacaoTurma;
 	}
-	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager)
-	{
-		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
-	}
+	
 	public Questionario getQuestionario()
 	{
 		return questionario;

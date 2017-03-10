@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.desenvolvimento;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class ColaboradorPresencaListAction extends MyActionSupportList
 {
-	private ColaboradorPresencaManager colaboradorPresencaManager;
+	@Autowired private ColaboradorPresencaManager colaboradorPresencaManager;
 
 	private Collection colaboradorPresencas;
 
@@ -51,10 +53,5 @@ public class ColaboradorPresencaListAction extends MyActionSupportList
 	public void setColaboradorPresenca(ColaboradorPresenca colaboradorPresenca)
 	{
 		this.colaboradorPresenca = colaboradorPresenca;
-	}
-
-	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager)
-	{
-		this.colaboradorPresencaManager = colaboradorPresencaManager;
 	}
 }

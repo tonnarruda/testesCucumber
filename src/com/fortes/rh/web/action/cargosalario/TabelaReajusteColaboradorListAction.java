@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.cargosalario;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.exception.IntegraACException;
@@ -13,8 +15,8 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
-	private ReajusteColaboradorManager reajusteColaboradorManager;
+	@Autowired private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	@Autowired private ReajusteColaboradorManager reajusteColaboradorManager;
 
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors;
 
@@ -90,21 +92,5 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 	public void setTabelaReajusteColaborador(TabelaReajusteColaborador tabelaReajusteColaborador)
 	{
 		this.tabelaReajusteColaborador=tabelaReajusteColaborador;
-	}
-
-	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager)
-	{
-		this.tabelaReajusteColaboradorManager=tabelaReajusteColaboradorManager;
-	}
-
-	public ReajusteColaboradorManager getReajusteColaboradorManager()
-	{
-		return reajusteColaboradorManager;
-	}
-
-	public void setReajusteColaboradorManager(
-			ReajusteColaboradorManager reajusteColaboradorManager)
-	{
-		this.reajusteColaboradorManager = reajusteColaboradorManager;
 	}
 }

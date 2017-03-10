@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -26,11 +26,10 @@ public class FichaMedicaListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private FichaMedicaManager fichaMedicaManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	private CandidatoManager candidatoManager;
-	private ColaboradorRespostaManager colaboradorRespostaManager; 
-	private EmpresaManager empresaManager;
+	@Autowired private FichaMedicaManager fichaMedicaManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager; 
+	@Autowired private EmpresaManager empresaManager;
 
 	private Collection<FichaMedica> fichaMedicas = new ArrayList<FichaMedica>();
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
@@ -189,16 +188,6 @@ public class FichaMedicaListAction extends MyActionSupportList
 		this.fichaMedica = fichaMedica;
 	}
 
-	public void setFichaMedicaManager(FichaMedicaManager fichaMedicaManager)
-	{
-		this.fichaMedicaManager = fichaMedicaManager;
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-	}
-
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios()
 	{
 		return colaboradorQuestionarios;
@@ -212,11 +201,6 @@ public class FichaMedicaListAction extends MyActionSupportList
 	public void setCandidato(Candidato candidato)
 	{
 		this.candidato = candidato;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
 	}
 
 	public Collection<Candidato> getCandidatos()
@@ -284,11 +268,6 @@ public class FichaMedicaListAction extends MyActionSupportList
 		this.dataIni = dataIni;
 	}
 
-	public void setColaboradorRespostaManager(ColaboradorRespostaManager colaboradorRespostaManager)
-	{
-		this.colaboradorRespostaManager = colaboradorRespostaManager;
-	}
-
 	public String getActionMsg()
 	{
 		return actionMsg;
@@ -313,9 +292,5 @@ public class FichaMedicaListAction extends MyActionSupportList
 
 	public void setEmpresasCheck(String[] empresasCheck) {
 		this.empresasCheck = empresasCheck;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 }

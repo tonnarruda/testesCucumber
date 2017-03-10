@@ -194,7 +194,7 @@
 	<servlet>
 		<servlet-name>xfire</servlet-name>
 		<servlet-class>org.codehaus.xfire.spring.XFireSpringServlet</servlet-class>
-	</servlet>
+	</servlet >
 
 	<servlet-mapping>
 		<servlet-name>xfire</servlet-name>
@@ -213,28 +213,30 @@
 		</param-value>
 	</context-param>
 
-	<taglib>
-		<taglib-uri>webwork</taglib-uri>
-		<taglib-location>/WEB-INF/lib/webwork-2.2.7.jar</taglib-location>
-	</taglib>
-
-	<!-- 
-	<taglib>
-		<taglib-uri>http://acegisecurity.org/authz</taglib-uri>
-		<taglib-location>/WEB-INF/tlds/authz.tld</taglib-location>
-	</taglib>
-	-->
-
-    <taglib>
-        <taglib-uri>http://displaytag.sourceforge.net/</taglib-uri>
-        <taglib-location>/WEB-INF/tlds/displaytag.tld</taglib-location>
-    </taglib>
-
-	<taglib>
-		<taglib-uri>fortes</taglib-uri>
-		<taglib-location>/WEB-INF/tlds/fortes.tld</taglib-location>
-	</taglib>
-
+	<jsp-config>
+		<taglib>
+			<taglib-uri>webwork</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/webwork.tld</taglib-location>
+			<!-- <taglib-location>/WEB-INF/lib/webwork-2.2.7.jar</taglib-location> -->
+		</taglib>
+	
+		<!-- 
+		<taglib>
+			<taglib-uri>http://acegisecurity.org/authz</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/authz.tld</taglib-location>
+		</taglib>
+		-->
+	
+	    <taglib>
+	        <taglib-uri>http://displaytag.sourceforge.net/</taglib-uri>
+	        <taglib-location>/WEB-INF/tlds/displaytag.tld</taglib-location>
+	    </taglib>
+	
+		<taglib>
+			<taglib-uri>fortes</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/fortes.tld</taglib-location>
+		</taglib>
+	</jsp-config>
 	<!-- Página de erro personalizada  -->
 	<error-page>
 		<error-code>500</error-code>

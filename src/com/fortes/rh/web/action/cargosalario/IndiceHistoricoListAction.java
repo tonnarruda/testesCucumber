@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.cargosalario;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
@@ -9,7 +11,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class IndiceHistoricoListAction extends MyActionSupportList
 {
-	private IndiceHistoricoManager indiceHistoricoManager;
+	@Autowired private IndiceHistoricoManager indiceHistoricoManager;
 
 	private IndiceHistorico indiceHistorico;
 	private Indice indiceAux;
@@ -44,11 +46,6 @@ public class IndiceHistoricoListAction extends MyActionSupportList
 	public void setIndiceHistorico(IndiceHistorico indiceHistorico)
 	{
 		this.indiceHistorico = indiceHistorico;
-	}
-
-	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
-	{
-		this.indiceHistoricoManager = indiceHistoricoManager;
 	}
 
 	public Indice getIndiceAux()

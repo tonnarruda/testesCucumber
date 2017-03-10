@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.model.type.File;
 import com.fortes.rh.business.importacao.ImportacaoColaboradorManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
@@ -20,10 +22,10 @@ public class ImportacaoAction extends MyActionSupport
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
-	private ImportacaoColaboradorManager importacaoColaboradorManager;
-	private AfastamentoManager afastamentoManager;
-	private EpiManager epiManager;
+	@Autowired private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
+	@Autowired private ImportacaoColaboradorManager importacaoColaboradorManager;
+	@Autowired private AfastamentoManager afastamentoManager;
+	@Autowired private EpiManager epiManager;
 	
 	private File arquivo;
 	private String pathArquivo;
@@ -184,25 +186,12 @@ public class ImportacaoAction extends MyActionSupport
 		return SUCCESS;
 	}
 
-	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
-		this.colaboradorAfastamentoManager = colaboradorAfastamentoManager;
-	}
-
 	public File getArquivo() {
 		return arquivo;
 	}
 
 	public void setArquivo(File arquivo) {
 		this.arquivo = arquivo;
-	}
-
-	public void setImportacaoColaboradorManager(ImportacaoColaboradorManager importacaoColaboradorManager) {
-		this.importacaoColaboradorManager = importacaoColaboradorManager;
-	}
-	
-	public void setAfastamentoManager(AfastamentoManager afastamentoManager)
-	{
-		this.afastamentoManager = afastamentoManager;
 	}
 
 	public String getPathArquivo() {
@@ -227,9 +216,5 @@ public class ImportacaoAction extends MyActionSupport
 
 	public Map<String, Long> getAfastamentos() {
 		return afastamentos;
-	}
-
-	public void setEpiManager(EpiManager epiManager) {
-		this.epiManager = epiManager;
 	}
 }

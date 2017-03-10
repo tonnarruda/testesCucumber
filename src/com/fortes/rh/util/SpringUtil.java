@@ -1,7 +1,11 @@
 package com.fortes.rh.util;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.opensymphony.webwork.ServletActionContext;
@@ -12,7 +16,8 @@ import com.opensymphony.webwork.ServletActionContext;
  *
  * Classe responsável por fornecer acesso aos recursos do Spring
  */
-public final class SpringUtil
+@Component
+public class SpringUtil
 {
 	/** Lista de todos os arquivos de contexto do Spring */
 	private static String[] contexts = {"applicationContext.xml",
@@ -81,4 +86,18 @@ public final class SpringUtil
 		ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
 		return ctx.getBean(bean);
 	}
+	
+
+	private static SpringUtil instance;
+	@Autowired
+    private ApplicationContext applicationContext;
+	
+	 @PostConstruct
+	 public void registerInstance() {
+		 instance = this;
+	 }
+	 
+	 public static <T> T getBean(Class<T> clazz) {
+	     return instance.applicationContext.getBean(clazz);
+	 }
 }

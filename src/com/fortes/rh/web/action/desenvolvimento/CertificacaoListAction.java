@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -20,9 +22,9 @@ public class CertificacaoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private CertificacaoManager certificacaoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private CursoManager cursoManager;
+	@Autowired private CertificacaoManager certificacaoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private CursoManager cursoManager;
 
 	private Collection<Certificacao> certificacaos;
 	private Collection<MatrizTreinamento> matrizTreinamentos;
@@ -120,11 +122,6 @@ public class CertificacaoListAction extends MyActionSupportList
 		this.certificacao = certificacao;
 	}
 
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager)
-	{
-		this.certificacaoManager = certificacaoManager;
-	}
-
 	public Collection<CheckBox> getAreasCheckList()
 	{
 		return areasCheckList;
@@ -150,11 +147,6 @@ public class CertificacaoListAction extends MyActionSupportList
 		this.faixaSalarialsCheck = faixaSalarialsCheck;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
@@ -169,10 +161,6 @@ public class CertificacaoListAction extends MyActionSupportList
 		return cursos;
 	}
 
-	public void setCursoManager(CursoManager cursoManager) {
-		this.cursoManager = cursoManager;
-	}
-
 	public String getNomeBusca() {
 		return nomeBusca;
 	}
@@ -180,5 +168,4 @@ public class CertificacaoListAction extends MyActionSupportList
 	public void setNomeBusca(String nomeBusca) {
 		this.nomeBusca = nomeBusca;
 	}
-
 }

@@ -4,6 +4,8 @@ package com.fortes.rh.web.action.desenvolvimento;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CursoLntManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -23,11 +25,11 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private CursoManager cursoManager;
-	private AvaliacaoCursoManager avaliacaoCursoManager;
-	private EmpresaManager empresaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private CursoLntManager cursoLntManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private AvaliacaoCursoManager avaliacaoCursoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private CursoLntManager cursoLntManager;
 
 	private Curso curso;
 	private boolean codigoTRUCurso;
@@ -161,11 +163,6 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		this.curso = curso;
 	}
 
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
-	}
-
 	public Collection<CheckBox> getAvaliacaoCursoCheckList()
 	{
 		return avaliacaoCursoCheckList;
@@ -174,11 +171,6 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 	public void setAvaliacaoCursoCheck(String[] avaliacaoCursoCheck)
 	{
 		this.avaliacaoCursoCheck = avaliacaoCursoCheck;
-	}
-
-	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager)
-	{
-		this.avaliacaoCursoManager = avaliacaoCursoManager;
 	}
 
 	public int getPage()
@@ -213,10 +205,6 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		return empresas;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
 	public Collection<CheckBox> getEmpresasCheckList() {
 		return empresasCheckList;
 	}
@@ -227,10 +215,6 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 
 	public boolean isCompartilharCursos() {
 		return compartilharCursos;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 	
 	public boolean isCursoCompartilhado()
@@ -253,10 +237,6 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 
 	public void setCursoLntId(Long cursoLntId) {
 		this.cursoLntId = cursoLntId;
-	}
-
-	public void setCursoLntManager(CursoLntManager cursoLntManager) {
-		this.cursoLntManager = cursoLntManager;
 	}
 
 	public Long getLntId() {

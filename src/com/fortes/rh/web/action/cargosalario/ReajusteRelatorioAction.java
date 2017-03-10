@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
@@ -36,15 +38,15 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings( { "unchecked", "serial" })
 public class ReajusteRelatorioAction extends MyActionSupport
 {
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private GrupoOcupacionalManager grupoOcupacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private ReajusteColaboradorManager reajusteColaboradorManager;
-	private ReajusteIndiceManager reajusteIndiceManager;
-	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
-	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private CargoManager cargoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ReajusteColaboradorManager reajusteColaboradorManager;
+	@Autowired private ReajusteIndiceManager reajusteIndiceManager;
+	@Autowired private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
+	@Autowired private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private CargoManager cargoManager;
 
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private LinkedHashMap filtrarPor;
@@ -261,11 +263,6 @@ public class ReajusteRelatorioAction extends MyActionSupport
 		this.areaOrganizacionals = areaOrganizacionals;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public Collection<GrupoOcupacional> getGrupoOcupacionals()
 	{
 		return grupoOcupacionals;
@@ -274,11 +271,6 @@ public class ReajusteRelatorioAction extends MyActionSupport
 	public void setGrupoOcupacionals(Collection<GrupoOcupacional> grupoOcupacionals)
 	{
 		this.grupoOcupacionals = grupoOcupacionals;
-	}
-
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager)
-	{
-		this.grupoOcupacionalManager = grupoOcupacionalManager;
 	}
 
 	public boolean isImprimirSomenteTotais()
@@ -299,11 +291,6 @@ public class ReajusteRelatorioAction extends MyActionSupport
 	public void setTabelaReajusteColaboradors(Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors)
 	{
 		this.tabelaReajusteColaboradors = tabelaReajusteColaboradors;
-	}
-
-	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager)
-	{
-		this.tabelaReajusteColaboradorManager = tabelaReajusteColaboradorManager;
 	}
 
 	public TabelaReajusteColaborador getTabelaReajusteColaborador()
@@ -346,19 +333,9 @@ public class ReajusteRelatorioAction extends MyActionSupport
 		this.dataSource = dataSource;
 	}
 
-	public void setReajusteColaboradorManager(ReajusteColaboradorManager reajusteColaboradorManager)
-	{
-		this.reajusteColaboradorManager = reajusteColaboradorManager;
-	}
-
 	public Map getParametros()
 	{
 		return parametros;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public String[] getEstabelecimentosCheck()
@@ -433,25 +410,12 @@ public class ReajusteRelatorioAction extends MyActionSupport
 		return indicesCheckList;
 	}
 
-	public void setHistoricoColaboradorManager(	HistoricoColaboradorManager historicoColaboradorManager) {
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
 	public Collection<ReajusteFaixaSalarial> getDataSourceFaixaSalarial() {
 		return dataSourceFaixaSalarial;
 	}
 
 	public Collection<ReajusteIndice> getDataSourceIndice() {
 		return dataSourceIndice;
-	}
-
-	public void setReajusteFaixaSalarialManager(
-			ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) {
-		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
-	}
-
-	public void setReajusteIndiceManager(ReajusteIndiceManager reajusteIndiceManager) {
-		this.reajusteIndiceManager = reajusteIndiceManager;
 	}
 
 	public void setFaixaSalarialsCheck(String[] faixaSalarialsCheck) {
@@ -468,10 +432,6 @@ public class ReajusteRelatorioAction extends MyActionSupport
 
 	public Collection<CheckBox> getCargosCheckList() {
 		return cargosCheckList;
-	}
-
-	public void setCargoManager(CargoManager cargoManager) {
-		this.cargoManager = cargoManager;
 	}
 
 	public void setIndicesCheck(String[] indicesCheck) {

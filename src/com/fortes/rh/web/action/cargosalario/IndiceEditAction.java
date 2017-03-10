@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.model.cargosalario.Indice;
@@ -14,8 +16,8 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class IndiceEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private IndiceManager indiceManager;
-	private IndiceHistoricoManager indiceHistoricoManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private IndiceHistoricoManager indiceHistoricoManager;
 
 	private Indice indiceAux;
 	private IndiceHistorico indiceHistorico;
@@ -94,16 +96,6 @@ public class IndiceEditAction extends MyActionSupportEdit implements ModelDriven
 		if (indiceAux == null)
 			indiceAux = new Indice();
 		return indiceAux;
-	}
-
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
-	}
-
-	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
-	{
-		this.indiceHistoricoManager = indiceHistoricoManager;
 	}
 
 	public Collection<IndiceHistorico> getIndicesHistoricos()

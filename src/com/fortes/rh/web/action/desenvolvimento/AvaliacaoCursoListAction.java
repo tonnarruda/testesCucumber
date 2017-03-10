@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -22,9 +24,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class AvaliacaoCursoListAction extends MyActionSupportList
 {
-	private AvaliacaoCursoManager avaliacaoCursoManager;
-	private CursoManager cursoManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private AvaliacaoCursoManager avaliacaoCursoManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 
 	private Collection<AvaliacaoCurso> avaliacaoCursos = new ArrayList<AvaliacaoCurso>();
 	private AvaliacaoCurso avaliacaoCurso;
@@ -113,18 +115,9 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 		this.avaliacaoCurso = avaliacaoCurso;
 	}
 
-	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager)
-	{
-		this.avaliacaoCursoManager = avaliacaoCursoManager;
-	}
-
 	public Map<Character, String> getTipos()
 	{
 		return tipos;
-	}
-
-	public void setCursoManager(CursoManager cursoManager) {
-		this.cursoManager = cursoManager;
 	}
 
 	public Collection<Curso> getCursos() {
@@ -173,10 +166,6 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
 		return colaboradorQuestionarios;
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
 	public Map<String, Object> getParametros() {

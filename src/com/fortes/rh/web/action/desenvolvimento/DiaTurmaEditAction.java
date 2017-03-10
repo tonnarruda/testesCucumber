@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.desenvolvimento;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
@@ -13,8 +15,8 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class DiaTurmaEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private DiaTurmaManager diaTurmaManager;
-	private TurmaManager turmaManager;
+	@Autowired private DiaTurmaManager diaTurmaManager;
+	@Autowired private TurmaManager turmaManager;
 
 	private DiaTurma diaTurma;
 
@@ -72,16 +74,6 @@ public class DiaTurmaEditAction extends MyActionSupportEdit implements ModelDriv
 	public void setDiaTurma(DiaTurma diaTurma)
 	{
 		this.diaTurma = diaTurma;
-	}
-
-	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager)
-	{
-		this.diaTurmaManager = diaTurmaManager;
-	}
-
-	public void setTurmaManager(TurmaManager turmaManager)
-	{
-		this.turmaManager = turmaManager;
 	}
 
 	public Collection<Turma> getTurmas()

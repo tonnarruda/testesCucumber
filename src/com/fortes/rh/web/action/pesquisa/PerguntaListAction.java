@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.pesquisa;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
@@ -16,9 +18,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings({"serial"})
 public class PerguntaListAction extends MyActionSupportList
 {
-	private PerguntaManager perguntaManager;
-	private AspectoManager aspectoManager;
-	private QuestionarioManager questionarioManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private AspectoManager aspectoManager;
+	@Autowired private QuestionarioManager questionarioManager;
 
 	private Pergunta pergunta;
 	private Aspecto aspecto;
@@ -135,16 +137,6 @@ public class PerguntaListAction extends MyActionSupportList
 		return perguntas;
 	}
 
-	public void setPerguntaManager(PerguntaManager perguntaManager)
-	{
-		this.perguntaManager = perguntaManager;
-	}
-
-	public void setAspectoManager(AspectoManager aspectoManager)
-	{
-		this.aspectoManager = aspectoManager;
-	}
-
 	public Pergunta getPergunta()
 	{
 		return pergunta;
@@ -198,11 +190,6 @@ public class PerguntaListAction extends MyActionSupportList
 	public TipoPergunta getTipoPergunta()
 	{
 		return tipoPergunta;
-	}
-
-	public void setQuestionarioManager(QuestionarioManager questionarioManager)
-	{
-		this.questionarioManager = questionarioManager;
 	}
 
 	public Questionario getQuestionario()

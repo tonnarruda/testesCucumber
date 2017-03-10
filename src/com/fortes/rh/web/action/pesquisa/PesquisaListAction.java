@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.pesquisa;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.PesquisaManager;
@@ -21,10 +23,10 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class PesquisaListAction extends MyActionSupportList
 {
-    private PesquisaManager pesquisaManager;
-    private ColaboradorManager colaboradorManager;
-    private EmpresaManager empresaManager;
-    private QuestionarioManager questionarioManager;
+	@Autowired private PesquisaManager pesquisaManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private QuestionarioManager questionarioManager;
 
     private Pesquisa pesquisa = new Pesquisa();
     private Colaborador colaborador;
@@ -104,11 +106,6 @@ public class PesquisaListAction extends MyActionSupportList
 		return pesquisas;
 	}
 
-	public void setPesquisaManager(PesquisaManager pesquisaManager)
-	{
-		this.pesquisaManager = pesquisaManager;
-	}
-
 	public Pesquisa getPesquisa()
 	{
 		return pesquisa;
@@ -132,24 +129,12 @@ public class PesquisaListAction extends MyActionSupportList
 		this.matricula = matricula;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Colaborador getColaborador() {
 		return colaborador;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
 	public void setEmpresaCodigo(String empresaCodigo) {
 		this.empresaCodigo = empresaCodigo;
-	}
-
-	public void setQuestionarioManager(QuestionarioManager questionarioManager) {
-		this.questionarioManager = questionarioManager;
 	}
 
 	public Collection<Questionario> getQuestionarios() {

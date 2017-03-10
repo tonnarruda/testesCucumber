@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
@@ -14,7 +16,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class ReajusteColaboradorListAction extends MyActionSupportList
 {
-	private ReajusteColaboradorManager reajusteColaboradorManager;
+	@Autowired private ReajusteColaboradorManager reajusteColaboradorManager;
 
 	private Collection<ReajusteColaborador> reajusteColaboradors = new ArrayList<ReajusteColaborador>();
 
@@ -46,10 +48,6 @@ public class ReajusteColaboradorListAction extends MyActionSupportList
 
 	public void setReajusteColaborador(ReajusteColaborador reajusteColaborador){
 		this.reajusteColaborador=reajusteColaborador;
-	}
-
-	public void setReajusteColaboradorManager(ReajusteColaboradorManager reajusteColaboradorManager){
-		this.reajusteColaboradorManager=reajusteColaboradorManager;
 	}
 
 	public TabelaReajusteColaborador getTabelaReajusteColaborador()

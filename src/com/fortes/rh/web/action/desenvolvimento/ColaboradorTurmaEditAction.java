@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
@@ -46,18 +48,18 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private ColaboradorManager colaboradorManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private ColaboradorManager colaboradorManager;
 	private DNTManager dNTManager;
-	private PrioridadeTreinamentoManager prioridadeTreinamentoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private CargoManager cargoManager;
-	private TurmaManager turmaManager;
-	private CursoManager cursoManager;
-	private AvaliacaoCursoManager avaliacaoCursoManager;
-	private EmpresaManager empresaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private PrioridadeTreinamentoManager prioridadeTreinamentoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private TurmaManager turmaManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private AvaliacaoCursoManager avaliacaoCursoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
 
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	private Collection<PrioridadeTreinamento> prioridadeTreinamentos = null;
@@ -339,11 +341,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		return Action.SUCCESS;
 	}
 	
-	public void setEstabelecimentoManager(
-			EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public ColaboradorTurma getColaboradorTurma()
 	{
 		if(colaboradorTurma == null)
@@ -361,16 +358,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		return getColaboradorTurma();
 	}
 
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager)
-	{
-		this.colaboradorTurmaManager=colaboradorTurmaManager;
-	}
-
-	public void setPrioridadeTreinamentoManager(PrioridadeTreinamentoManager prioridadeTreinamentoManager)
-	{
-		this.prioridadeTreinamentoManager = prioridadeTreinamentoManager;
-	}
-
 	public Collection<PrioridadeTreinamento> getPrioridadeTreinamentos()
 	{
 		return prioridadeTreinamentos;
@@ -379,11 +366,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	public void setPrioridadeTreinamentos(Collection<PrioridadeTreinamento> prioridadeTreinamentos)
 	{
 		this.prioridadeTreinamentos = prioridadeTreinamentos;
-	}
-
-	public void setTurmaManager(TurmaManager turmaManager)
-	{
-		this.turmaManager = turmaManager;
 	}
 
 	public Collection<Turma> getTurmas()
@@ -456,16 +438,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		this.gruposCheckList = gruposCheckList;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
 	public Collection<ColaboradorTurma> getColaboradorTurmas()
 	{
 		return colaboradorTurmas;
@@ -524,11 +496,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	public void setTurma(Turma turma)
 	{
 		this.turma = turma;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public int getPage() {
@@ -614,11 +581,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	public void setCursos(Collection<Curso> cursos)
 	{
 		this.cursos = cursos;
-	}
-
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
 	}
 
 	public Colaborador getColaborador()
@@ -720,11 +682,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	{
 		this.avaliacaoTurma = avaliacaoTurma;
 	}
-	
-	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager)
-	{
-		this.avaliacaoCursoManager = avaliacaoCursoManager;
-	}
 
 	public Collection<AvaliacaoCurso> getAvaliacaoCursos()
 	{
@@ -759,14 +716,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		this.planoTreinamento = planoTreinamento;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public Boolean getCompartilharColaboradores() {
 		return compartilharColaboradores;
 	}
@@ -794,10 +743,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	public void setEstabelecimentosCheckList(
 			Collection<CheckBox> estabelecimentosCheckList) {
 		this.estabelecimentosCheckList = estabelecimentosCheckList;
-	}
-
-	public EstabelecimentoManager getEstabelecimentoManager() {
-		return estabelecimentoManager;
 	}
 
 	public String[] getEstabelecimentosCheck() {

@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.cargosalario;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class IndiceListAction extends MyActionSupportList
 {
-	private IndiceManager indiceManager;
+	@Autowired private IndiceManager indiceManager;
 
 	private Collection<Indice> indices;
 
@@ -59,11 +61,6 @@ public class IndiceListAction extends MyActionSupportList
 	public void setIndiceAux(Indice indiceAux)
 	{
 		this.indiceAux = indiceAux;
-	}
-
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
 	}
 
 	public boolean isIntegradoAC()

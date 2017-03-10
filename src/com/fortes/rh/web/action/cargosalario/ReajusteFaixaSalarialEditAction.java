@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.ReajusteFaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
@@ -19,9 +21,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 {
-	private CargoManager cargoManager;
-	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
-	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	@Autowired private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
 	
 	private TabelaReajusteColaborador tabelaReajusteColaborador;
 	private ReajusteFaixaSalarial reajusteFaixaSalarial;
@@ -151,10 +153,6 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 		this.faixasCheck = faixasCheck;
 	}
 
-	public void setCargoManager(CargoManager cargoManager) {
-		this.cargoManager = cargoManager;
-	}
-
 	public TabelaReajusteColaborador getTabelaReajusteColaborador() {
 		return tabelaReajusteColaborador;
 	}
@@ -171,10 +169,6 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 		this.tabelaReajusteColaboradors = tabelaReajusteColaboradors;
 	}
 
-	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager) {
-		this.tabelaReajusteColaboradorManager = tabelaReajusteColaboradorManager;
-	}
-
 	public char getDissidioPor() {
 		return dissidioPor;
 	}
@@ -189,10 +183,6 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 
 	public void setValorDissidio(Double valorDissidio) {
 		this.valorDissidio = valorDissidio;
-	}
-
-	public void setReajusteFaixaSalarialManager(ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) {
-		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
 	}
 
 	public ReajusteFaixaSalarial getReajusteFaixaSalarial() {

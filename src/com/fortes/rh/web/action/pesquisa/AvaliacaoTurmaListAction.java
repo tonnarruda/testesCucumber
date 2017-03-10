@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.pesquisa;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.model.geral.Colaborador;
@@ -19,8 +21,8 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class AvaliacaoTurmaListAction extends  MyActionSupportList
 {
-	private AvaliacaoTurmaManager avaliacaoTurmaManager;
-	private EmpresaManager empresaManager;
+	@Autowired private AvaliacaoTurmaManager avaliacaoTurmaManager;
+	@Autowired private EmpresaManager empresaManager;
 	
 	private ColaboradorQuestionario colaboradorQuestionario;
 
@@ -134,11 +136,6 @@ public class AvaliacaoTurmaListAction extends  MyActionSupportList
 		this.avaliacaoTurma = avaliacaoTurma;
 	}
 
-	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager)
-	{
-		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
-	}
-
 	public Collection<CheckBox> getEmpresasCheckList() {
 		return empresasCheckList;
 	}
@@ -153,9 +150,5 @@ public class AvaliacaoTurmaListAction extends  MyActionSupportList
 
 	public void setEmpresasCheck(String[] empresasCheck) {
 		this.empresasCheck = empresasCheck;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 }

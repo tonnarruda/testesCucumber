@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
@@ -66,27 +68,27 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	private GrupoOcupacionalManager grupoOcupacionalManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private CargoManager cargoManager;
-	private ColaboradorManager colaboradorManager;
-	private QuestionarioManager questionarioManager;
-	private EmpresaManager empresaManager;
-	private AvaliacaoManager avaliacaoManager;
-	private ColaboradorRespostaManager colaboradorRespostaManager;
-	private PerguntaManager perguntaManager;
-	private RespostaManager respostaManager;
-	private CandidatoManager candidatoManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-	private NivelCompetenciaManager nivelCompetenciaManager;
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
-	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
-	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private QuestionarioManager questionarioManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private RespostaManager respostaManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private NivelCompetenciaManager nivelCompetenciaManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	@Autowired private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
+	@Autowired private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
 
 	private Avaliacao avaliacao;
 	private Avaliacao avaliacaoExperiencia;
@@ -661,31 +663,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 			return Action.SUCCESS;
 	}
 
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager)
-	{
-		this.grupoOcupacionalManager = grupoOcupacionalManager;
-	}
-
 	public Questionario getQuestionario()
 	{
 		return questionario;
@@ -749,11 +726,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public void setCalcularPercentual(boolean calcularPercentual)
 	{
 		this.calcularPercentual = calcularPercentual;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public boolean isAplicarPorParte()
@@ -821,11 +793,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		return tipoQuestionario;
 	}
 
-	public void setQuestionarioManager(QuestionarioManager questionarioManager)
-	{
-		this.questionarioManager = questionarioManager;
-	}
-
 	public boolean isExibirBotaoConcluir()
 	{
 		return exibirBotaoConcluir;
@@ -833,10 +800,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public Collection<Empresa> getEmpresas() {
 		return empresas;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 
 	public Long getEmpresaId() {
@@ -851,11 +814,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public void setColaborador(Colaborador colaborador)
 	{
 		this.colaborador = colaborador;
-	}
-
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager)
-	{
-		this.avaliacaoManager = avaliacaoManager;
 	}
 
 	public Collection<Pergunta> getPerguntas()
@@ -901,19 +859,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		return avaliacaoExperiencias;
 	}
 
-	public void setColaboradorRespostaManager(ColaboradorRespostaManager colaboradorRespostaManager)
-	{
-		this.colaboradorRespostaManager = colaboradorRespostaManager;
-	}
-
-	public void setPerguntaManager(PerguntaManager perguntaManager) {
-		this.perguntaManager = perguntaManager;
-	}
-
-	public void setRespostaManager(RespostaManager respostaManager) {
-		this.respostaManager = respostaManager;
-	}
-
 	public void setPerguntas(Collection<Pergunta> perguntas) {
 		this.perguntas = perguntas;
 	}
@@ -944,10 +889,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		this.solicitacao = solicitacao;
 	}
 
-	public void setCandidatoManager(CandidatoManager candidatoManager) {
-		this.candidatoManager = candidatoManager;
-	}
-
 	public Map<String, Object> getParametros() {
 		return parametros;
 	}
@@ -958,10 +899,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setOrdenarPorAspecto(Boolean ordenarPorAspecto) {
 		this.ordenarPorAspecto = ordenarPorAspecto;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public Boolean getCompartilharColaboradores() {
@@ -1004,26 +941,12 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		this.anuncioId = anuncioId;
 	}
 
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
 	public boolean isPreview() {
 		return preview;
 	}
 
 	public void setPreview(boolean preview) {
 		this.preview = preview;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(
-			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
-	}
-
-	public void setNivelCompetenciaManager(
-			NivelCompetenciaManager nivelCompetenciaManager) {
-		this.nivelCompetenciaManager = nivelCompetenciaManager;
 	}
 
 	public Collection<ConfiguracaoNivelCompetenciaVO> getNiveisCompetenciaFaixaSalariaisVOs() {
@@ -1066,11 +989,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		this.questionarioVO = questionarioVO;
 	}
 
-	public void setCandidatoSolicitacaoManager(
-			CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
-
 	public Collection<CandidatoSolicitacao> getCandidatoSolicitacaos() {
 		return candidatoSolicitacaos;
 	}
@@ -1110,11 +1028,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		this.autoAvaliacao = autoAvaliacao;
 	}
 
-	public void setAvaliacaoDesempenhoManager(
-			AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {
-		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
-	}
-
 	public Integer getPontuacaoMaximaQuestionario() {
 		return pontuacaoMaximaQuestionario;
 	}
@@ -1125,16 +1038,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public boolean isMostrarPerformanceAvalDesempenho() {
 		return getEmpresaSistema().isMostrarPerformanceAvalDesempenho();
-	}
-
-	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(
-			ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
-		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
-	}
-
-	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(
-			ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
-		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	}
 
 	public boolean isExistConfigCompetenciaAvaliacaoDesempenho() {

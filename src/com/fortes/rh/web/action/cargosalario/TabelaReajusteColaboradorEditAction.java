@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
@@ -36,13 +38,13 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	
 	private static final long serialVersionUID = 1L;
 	
-	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
-	private ReajusteColaboradorManager reajusteColaboradorManager;
-	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
-	private ReajusteIndiceManager reajusteIndiceManager;
-	private GrupoOcupacionalManager grupoOcupacionalManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	@Autowired private ReajusteColaboradorManager reajusteColaboradorManager;
+	@Autowired private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
+	@Autowired private ReajusteIndiceManager reajusteIndiceManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
 
 	private TabelaReajusteColaborador tabelaReajusteColaborador;
 	private GrupoOcupacional grupoOcupacional;
@@ -311,16 +313,6 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		this.tabelaReajusteColaborador=tabelaReajusteColaborador;
 	}
 
-	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager)
-	{
-		this.tabelaReajusteColaboradorManager = tabelaReajusteColaboradorManager;
-	}
-
-	public void setReajusteColaboradorManager(ReajusteColaboradorManager reajusteColaboradorManager)
-	{
-		this.reajusteColaboradorManager = reajusteColaboradorManager;
-	}
-
 	public Collection<AreaOrganizacional> getAreaOrganizacionals()
 	{
 		return areaOrganizacionals;
@@ -342,17 +334,6 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		this.grupoOcupacionals = grupoOcupacionals;
 	}
 
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setGrupoOcupacionalManager(
-			GrupoOcupacionalManager grupoOcupacionalManager)
-	{
-		this.grupoOcupacionalManager = grupoOcupacionalManager;
-	}
 	public AreaOrganizacional getAreaOrganizacional()
 	{
 		return areaOrganizacional;
@@ -441,11 +422,6 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		this.grupoOcupacionalsCheck = grupoOcupacionalsCheck;
 	}
 
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
 	public Double getValorTotalFolha()
 	{
 		return valorTotalFolha;
@@ -463,19 +439,11 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		this.reajustesFaixaSalarial = reajustesFaixaSalarial;
 	}
 
-	public void setReajusteFaixaSalarialManager(ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) {
-		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
-	}
-
 	public Collection<ReajusteIndice> getReajustesIndice() {
 		return reajustesIndice;
 	}
 
 	public void setReajustesIndice(Collection<ReajusteIndice> reajustesIndice) {
 		this.reajustesIndice = reajustesIndice;
-	}
-
-	public void setReajusteIndiceManager(ReajusteIndiceManager reajusteIndiceManager) {
-		this.reajusteIndiceManager = reajusteIndiceManager;
 	}
 }

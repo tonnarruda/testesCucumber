@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -47,15 +49,16 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	private ColaboradorRespostaManager colaboradorRespostaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private QuestionarioManager questionarioManager;
-	private ColaboradorManager colaboradorManager;
-	private AvaliacaoManager avaliacaoManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private QuestionarioManager questionarioManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private EmpresaManager empresaManager;
 
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 	private Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
@@ -94,7 +97,6 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
 	private Collection<PerguntaFichaMedica> perguntasRespondidas = new ArrayList<PerguntaFichaMedica>();
 	
-	private EmpresaManager empresaManager;
 	private Collection<Empresa> empresas;
 	private Long empresaId = -1L;
 	private char respondida;
@@ -307,11 +309,6 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		this.colaboradorQuestionario = colaboradorQuestionario;
 	}
 
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-	}
-
 	public Questionario getQuestionario()
 	{
 		return questionario;
@@ -332,11 +329,6 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		this.pesquisaId = pesquisaId;
 	}
 
-	public void setColaboradorRespostaManager(ColaboradorRespostaManager colaboradorRespostaManager)
-	{
-		this.colaboradorRespostaManager = colaboradorRespostaManager;
-	}
-
 	public Collection<ColaboradorResposta> getColaboradorRespostas()
 	{
 		return colaboradorRespostas;
@@ -352,11 +344,6 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		this.colaboradorId = colaboradorId;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Colaborador getColaborador()
 	{
 		return colaborador;
@@ -370,16 +357,6 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	public TipoPergunta getTipoPergunta()
 	{
 		return tipoPergunta;
-	}
-
-	public ColaboradorManager getColaboradorManager()
-	{
-		return colaboradorManager;
-	}
-	
-	public void setQuestionarioManager(QuestionarioManager questionarioManager)
-	{
-		this.questionarioManager = questionarioManager;
 	}
 
 	public String getUrlVoltar()
@@ -480,10 +457,6 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 //		this.empresa = empresa;
 //	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
 	public Long getEmpresaId() {
 		return empresaId;
 	}
@@ -516,10 +489,6 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		return totalNaoRespondidas;
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public Boolean getCompartilharColaboradores() {
 		return compartilharColaboradores;
 	}
@@ -549,16 +518,6 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		this.estabelecimentosCheckList = estabelecimentosCheckList;
 	}
 
-	public void setEstabelecimentoManager(
-			EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public String getReportFilter() {
 		return reportFilter;
 	}
@@ -579,10 +538,6 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		this.modoEconomico = modoEconomico;
 	}
 
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
-		this.avaliacaoManager = avaliacaoManager;
-	}
-
 	public void setAvaliacaoId(Long avaliacaoId) {
 		this.avaliacaoId = avaliacaoId;
 	}
@@ -593,19 +548,6 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	public void setAgruparPorAspecto(boolean agruparPorAspecto) {
 		this.agruparPorAspecto = agruparPorAspecto;
-	}
-
-	public ParametrosDoSistemaManager getParametrosDoSistemaManager() {
-		return parametrosDoSistemaManager;
-	}
-
-	public GerenciadorComunicacaoManager getGerenciadorComunicacaoManager() {
-		return gerenciadorComunicacaoManager;
-	}
-	
-	public void setGerenciadorComunicacaoManager(
-			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
 	public Solicitacao getSolicitacao() {

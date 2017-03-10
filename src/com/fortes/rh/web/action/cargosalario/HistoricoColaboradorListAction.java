@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.apache.commons.beanutils.BeanComparator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NestedRuntimeException;
 
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
@@ -60,16 +61,16 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private ColaboradorManager colaboradorManager;
-	private EmpresaManager empresaManager;
-	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private CargoManager cargoManager;
-	private FaturamentoMensalManager faturamentoMensalManager;
-	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private FaturamentoMensalManager faturamentoMensalManager;
+	@Autowired private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 
 	private Collection<HistoricoColaborador> historicoColaboradors;
 
@@ -710,16 +711,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		this.historicoColaborador = historicoColaborador;
 	}
 
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Collection getHistoricoColaboradors()
 	{
 		return historicoColaboradors;
@@ -732,11 +723,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			historicoColaborador = new HistoricoColaborador();
 		}
 		return historicoColaborador;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public Map getParametros()
@@ -774,11 +760,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		this.estabelecimentosCheckList = estabelecimentosCheckList;
 	}
 
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public StatusRetornoAC getStatusRetornoAC()
 	{
 		return statusRetornoAC;
@@ -795,11 +776,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setOrigemSituacao(String origemSituacao) {
 		this.origemSituacao = origemSituacao;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
 	}
 
 	public Long[] getEmpresaIds()
@@ -921,10 +897,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		this.areaId = areaId;
 	}
 
-	public void setColaboradorOcorrenciaManager(ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) {
-		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
-	}
-
 	public String getGrfEvolucaoAbsenteismo() {
 		return grfEvolucaoAbsenteismo;
 	}
@@ -965,8 +937,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		return dataSourceSituacoesColaborador;
 	}
 
-	public void setDataSourceSituacoesColaborador(
-			Collection<SituacaoColaborador> dataSourceSituacoesColaborador) {
+	public void setDataSourceSituacoesColaborador(Collection<SituacaoColaborador> dataSourceSituacoesColaborador) {
 		this.dataSourceSituacoesColaborador = dataSourceSituacoesColaborador;
 	}
 
@@ -984,10 +955,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setMesesSemReajuste(int mesesSemReajuste) {
 		this.mesesSemReajuste = mesesSemReajuste;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public Boolean getCompartilharColaboradores() {
@@ -1020,10 +987,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public String getGrfEvolucaoFaturamento() {
 		return grfEvolucaoFaturamento;
-	}
-
-	public void setFaturamentoMensalManager(FaturamentoMensalManager faturamentoMensalManager) {
-		this.faturamentoMensalManager = faturamentoMensalManager;
 	}
 
 	public char getAgruparPor() {
@@ -1241,10 +1204,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	
 	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
 		this.empresasPermitidas = empresasPermitidas;
-	}
-
-	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
-		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
 	}
 
 	public Collection<CheckBox> getOcorrenciasCheckList() {

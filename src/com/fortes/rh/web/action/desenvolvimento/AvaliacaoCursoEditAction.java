@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.desenvolvimento;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
@@ -15,8 +17,8 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings( { "serial" })
 public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDriven
 {
-	private AvaliacaoCursoManager avaliacaoCursoManager;
-	private AvaliacaoManager avaliacaoManager;
+	@Autowired private AvaliacaoCursoManager avaliacaoCursoManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
 	
 	private AvaliacaoCurso avaliacaoCurso;
 	private Map<Character, String> tipos = new TipoAvaliacaoCurso();
@@ -91,11 +93,6 @@ public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDr
 		this.avaliacaoCurso = avaliacaoCurso;
 	}
 
-	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager)
-	{
-		this.avaliacaoCursoManager = avaliacaoCursoManager;
-	}
-
 	public Map<Character, String> getTipos()
 	{
 		return tipos;
@@ -109,12 +106,7 @@ public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDr
 		this.avaliacoes = avaliacoes;
 	}
 
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
-		this.avaliacaoManager = avaliacaoManager;
-	}
-
 	public boolean isExisteAvaliacaoRespondida() {
 		return existeAvaliacaoRespondida;
 	}
-	
 }

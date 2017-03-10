@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorAvaliacaoPraticaManager;
@@ -24,11 +26,11 @@ import com.opensymphony.xwork.Action;
 public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;
-	private CertificacaoManager certificacaoManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private AvaliacaoPraticaManager avaliacaoPraticaManager;
-	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;
+	@Autowired private CertificacaoManager certificacaoManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private AvaliacaoPraticaManager avaliacaoPraticaManager;
+	@Autowired private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 
 	private ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica;
 	private Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas;
@@ -342,15 +344,6 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		this.colaborador = colaborador;
 	}
 
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager) {
-		this.certificacaoManager = certificacaoManager;
-	}
-
-	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager)
-	{
-		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
-	}
-
 	public Collection<Colaborador> getColaboradores() {
 		return colaboradores;
 	}
@@ -363,17 +356,8 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		return colaboradorTurmas;
 	}
 
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
 	public void setColaboradorAvaliacaoPraticas(Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas) {
 		this.colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticas;
-	}
-
-	public void setAvaliacaoPraticaManager(
-			AvaliacaoPraticaManager avaliacaoPraticaManager) {
-		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
 	}
 
 	public Date getHoje() {
@@ -386,10 +370,6 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 
 	public void setColaboradorCertificacao(ColaboradorCertificacao colaboradorCertificacao) {
 		this.colaboradorCertificacao = colaboradorCertificacao;
-	}
-
-	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
 
 	public ColaboradorCertificacao getColaboradorCertificacao() {

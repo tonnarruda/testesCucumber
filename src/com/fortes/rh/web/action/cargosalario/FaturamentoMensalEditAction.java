@@ -15,6 +15,7 @@ public class FaturamentoMensalEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	@Autowired private FaturamentoMensalManager faturamentoMensalManager;
+	
 	private FaturamentoMensal faturamentoMensal;
 	private Collection<FaturamentoMensal> faturamentoMensals;
 

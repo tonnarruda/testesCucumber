@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoLntManager;
 import com.fortes.rh.business.desenvolvimento.LntManager;
@@ -43,16 +45,16 @@ public class LntEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private LntManager lntManager;
-	private ParticipanteCursoLntManager participanteCursoLntManager;
-	private CursoLntManager cursoLntManager;
-	private EmpresaManager empresaManager;
-	private AvaliacaoTurmaManager avaliacaoTurmaManager;
-	private TurmaManager turmaManager;
-	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private LntManager lntManager;
+	@Autowired private ParticipanteCursoLntManager participanteCursoLntManager;
+	@Autowired private CursoLntManager cursoLntManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private AvaliacaoTurmaManager avaliacaoTurmaManager;
+	@Autowired private TurmaManager turmaManager;
+	@Autowired private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
 	
 	private Lnt lnt = new Lnt();
 	private char status = StatusLnt.TODOS;
@@ -555,11 +557,6 @@ public class LntEditAction extends MyActionSupportList
 	{
 		this.lnt = lnt;
 	}
-
-	public void setLntManager(LntManager lntManager)
-	{
-		this.lntManager = lntManager;
-	}
 	
 	public Collection<Lnt> getLnts()
 	{
@@ -574,15 +571,6 @@ public class LntEditAction extends MyActionSupportList
 		return participantesCheckList;
 	}
 
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-	
-	public void setCursoLntManager(CursoLntManager cursoLntManager) {
-		this.cursoLntManager = cursoLntManager;
-	}
-
 	public void setAreasCheck(String[] areasCheck) {
 		this.areasCheck = areasCheck;
 	}
@@ -594,28 +582,10 @@ public class LntEditAction extends MyActionSupportList
 	public void setStatus(char status) {
 		this.status = status;
 	}
-	
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager)
-	{
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
-	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager) {
-		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
-	}
-	
-	public void setTurmaManager(TurmaManager turmaManager) {
-		this.turmaManager = turmaManager;
-	}
 
 	public HashMap<Character, String> getListaStatusLnt()
 	{
 		return listaStatusLnt;
-	}
-
-	public void setParticipanteCursoLntManager(ParticipanteCursoLntManager participanteCursoLntManager)
-	{
-		this.participanteCursoLntManager = participanteCursoLntManager;
 	}
 
 	public Collection<ParticipanteCursoLnt> getParticipantesCursosLnt()
@@ -653,10 +623,6 @@ public class LntEditAction extends MyActionSupportList
 
 	public void setEmpresasCheck(Long[] empresasCheck) {
 		this.empresasCheck = empresasCheck;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 
 	public Long[] getEmpresaIds() {
@@ -706,10 +672,6 @@ public class LntEditAction extends MyActionSupportList
 	public void setEmpresaIds(Long[] empresaIds) {
 		this.empresaIds = empresaIds;
 	}
-
-	public void setTurmaAvaliacaoTurmaManager(TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) {
-		this.turmaAvaliacaoTurmaManager = turmaAvaliacaoTurmaManager;
-	}
 	
 	public Collection<CheckBox> getCursosCheckList() {
 		return cursosCheckList;
@@ -737,10 +699,6 @@ public class LntEditAction extends MyActionSupportList
 
 	public void setHorasFim(String[] horasFim) {
 		this.horasFim = horasFim;
-	}
-
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 
 	public void setParticipantesCheck(Long[] participantesCheck) {

@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.pesquisa;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class ColaboradorRespostaListAction extends MyActionSupportList
 {
-	private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager;
 
 	private Collection<ColaboradorResposta> colaboradorRespostas;
 	private ColaboradorResposta colaboradorResposta;
@@ -41,10 +43,6 @@ public class ColaboradorRespostaListAction extends MyActionSupportList
 
 	public void setColaboradorResposta(ColaboradorResposta colaboradorResposta){
 		this.colaboradorResposta=colaboradorResposta;
-	}
-
-	public void setColaboradorRespostaManager(ColaboradorRespostaManager colaboradorRespostaManager){
-		this.colaboradorRespostaManager=colaboradorRespostaManager;
 	}
 
 	public Collection<ColaboradorResposta> getColaboradorRespostas()

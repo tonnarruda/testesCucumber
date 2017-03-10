@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -34,12 +36,12 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ColaboradorRespostaManager colaboradorRespostaManager = null;
-    private PesquisaManager pesquisaManager;
-    private QuestionarioManager questionarioManager;
-    private ColaboradorManager colaboradorManager;
-    private CandidatoManager candidatoManager;
-    private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private PesquisaManager pesquisaManager;
+	@Autowired private QuestionarioManager questionarioManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
     private boolean exibirImprimir;
     
     private Collection<QuestionarioRelatorio> dataSource;
@@ -311,52 +313,24 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         return colaboradorResposta;
     }
 
-
     public ColaboradorResposta getColaboradorResposta()
     {
         return colaboradorResposta;
     }
-
 
     public void setColaboradorResposta(ColaboradorResposta colaboradorResposta)
     {
         this.colaboradorResposta = colaboradorResposta;
     }
 
-
-    public ColaboradorRespostaManager getColaboradorRespostaManager()
-    {
-        return colaboradorRespostaManager;
-    }
-
-
-    public void setColaboradorRespostaManager(ColaboradorRespostaManager colaboradorRespostaManager)
-    {
-        this.colaboradorRespostaManager = colaboradorRespostaManager;
-    }
-
-
     public Pesquisa getPesquisa()
     {
         return pesquisa;
     }
 
-
     public void setPesquisa(Pesquisa pesquisa)
     {
         this.pesquisa = pesquisa;
-    }
-
-
-    public PesquisaManager getPesquisaManager()
-    {
-        return pesquisaManager;
-    }
-
-
-    public void setPesquisaManager(PesquisaManager pesquisaManager)
-    {
-        this.pesquisaManager = pesquisaManager;
     }
 
     public String getRespostas()
@@ -434,19 +408,9 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         this.questionario = questionario;
     }
 
-    public void setQuestionarioManager(QuestionarioManager questionarioManager)
-    {
-        this.questionarioManager = questionarioManager;
-    }
-
     public TipoQuestionario getTipoQuestionario()
     {
         return tipoQuestionario;
-    }
-
-    public void setColaboradorManager(ColaboradorManager colaboradorManager)
-    {
-        this.colaboradorManager = colaboradorManager;
     }
 
 	public Collection<ColaboradorResposta> getColaboradorRespostas()
@@ -484,11 +448,6 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 		this.candidato = candidato;
 	}
 
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
-
 	public char getVinculo()
 	{
 		return vinculo;
@@ -507,11 +466,6 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 	public void setFichaMedica(FichaMedica fichaMedica)
 	{
 		this.fichaMedica = fichaMedica;
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
 	public boolean isRespondePorOutroUsuario() {
@@ -573,5 +527,4 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 	public void setInserirFichaMedica(boolean inserirFichaMedica) {
 		this.inserirFichaMedica = inserirFichaMedica;
 	}
-
 }

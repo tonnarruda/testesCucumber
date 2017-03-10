@@ -151,10 +151,10 @@ public class ValidationExceptionInterceptor implements Interceptor
 					&& sc != null && !sc.getAuthentication().getPrincipal().equals("anonymousUser"))
 			{
 				Empresa empresa = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession());
-				EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBean("empresaManagerImpl");
+				EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBean(EmpresaManager.class);
 				if(empresa != null && empresa.getId() != null && empresaManager.emProcessoExportacaoAC(empresa.getId()))
 				{
-					ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManagerImpl");
+					ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean(ParametrosDoSistemaManager.class);
 
 					HttpServletResponse response = ServletActionContext.getResponse();
 					response.sendRedirect(parametrosDoSistemaManager.getContexto() + "/exportacao/prepareExportarAC.action");

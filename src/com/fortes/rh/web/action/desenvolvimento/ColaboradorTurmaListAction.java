@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
@@ -54,18 +56,18 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private EmpresaManager empresaManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	private CargoManager cargoManager;
-	private GrupoOcupacionalManager grupoOcupacionalManager;
-	private TurmaManager turmaManager;
-	private CertificacaoManager certificacaoManager;
-	private ColaboradorManager colaboradorManager;
-	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
+	@Autowired private TurmaManager turmaManager;
+	@Autowired private CertificacaoManager certificacaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	private Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
@@ -495,11 +497,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		this.colaboradorTurma=colaboradorTurma;
 	}
 
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager)
-	{
-		this.colaboradorTurmaManager=colaboradorTurmaManager;
-	}
-
 	public Turma getTurma()
 	{
 		return turma;
@@ -568,11 +565,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	public void setPrioridadeTreinamentos(Collection<PrioridadeTreinamento> prioridadeTreinamentos)
 	{
 		this.prioridadeTreinamentos = prioridadeTreinamentos;
-	}
-
-	public void setTurmaManager(TurmaManager turmaManager)
-	{
-		this.turmaManager = turmaManager;
 	}
 
 	public FiltroPlanoTreinamento getFiltroPlanoTreinamento()
@@ -653,16 +645,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		return parametros;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public void setQtdMesesSemCurso(int qtdMesesSemCurso)
 	{
 		this.qtdMesesSemCurso = qtdMesesSemCurso;
@@ -681,11 +663,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	public void setExibeFiltro(boolean exibeFiltro)
 	{
 		this.exibeFiltro = exibeFiltro;
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
 	public Colaborador getColaborador()
@@ -733,16 +710,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		return empresaId;
 	}
 
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager)
-	{
-		this.grupoOcupacionalManager = grupoOcupacionalManager;
-	}
-
 	public void setEmpresaId(Long empresaId)
 	{
 		this.empresaId = empresaId;
@@ -766,11 +733,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	public Collection<CheckBox> getGruposCheckList()
 	{
 		return gruposCheckList;
-	}
-
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager)
-	{
-		this.certificacaoManager = certificacaoManager;
 	}
 
 	public char getFiltro()
@@ -831,10 +793,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		return colaboradors;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public void setColaboradorId(Long colaboradorId) {
 		this.colaboradorId = colaboradorId;
 	}
@@ -847,20 +805,8 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		return json;
 	}
 
-	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager) {
-		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
-	}
-
 	public Collection<Empresa> getEmpresas() {
 		return empresas;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public Boolean getCompartilharColaboradores() {

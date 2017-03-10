@@ -10,12 +10,12 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class PerfilManagerImpl extends GenericManagerImpl<Perfil, PerfilDao> implements PerfilManager
 {
-	private PapelManager papelManager;
+	@Autowired private PapelManager papelManager;
+	private ColaboradorManager colaboradorManager;
 	
 	@Autowired
 	PerfilManagerImpl(PerfilDao dao) {
@@ -53,8 +53,6 @@ public class PerfilManagerImpl extends GenericManagerImpl<Perfil, PerfilDao> imp
 	public Collection<String> getEmailsByRoleLiberaSolicitacao(Long empresaId)
 	{
 		Collection<Perfil> perfis = getDao().findPerfisByCodigoPapel("ROLE_LIBERA_SOLICITACAO");
-		
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		Collection<String> emails = colaboradorManager.findEmailsDeColaboradoresByPerfis(perfis, empresaId);
 		
 		return emails;
@@ -74,9 +72,5 @@ public class PerfilManagerImpl extends GenericManagerImpl<Perfil, PerfilDao> imp
 	
 	public void removePerfilPapelByPapelId(Long papelId) {
 		getDao().removePerfilPapelByPapelId(papelId);
-	}
-	
-	public void setPapelManager(PapelManager papelManager) {
-		this.papelManager = papelManager;
 	}
 }

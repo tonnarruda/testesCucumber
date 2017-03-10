@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.pesquisa;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -21,10 +23,10 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class EntrevistaListAction extends  MyActionSupportList
 {
-	private EntrevistaManager entrevistaManager;
-	private ColaboradorManager colaboradorManager;
-	private EmpresaManager empresaManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private EntrevistaManager entrevistaManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private ColaboradorQuestionario colaboradorQuestionario;
 
 	private Collection<Entrevista> entrevistas = new ArrayList<Entrevista>();
@@ -110,10 +112,6 @@ public class EntrevistaListAction extends  MyActionSupportList
 		this.entrevista=entrevista;
 	}
 
-	public void setEntrevistaManager(EntrevistaManager entrevistaManager){
-		this.entrevistaManager=entrevistaManager;
-	}
-
 	public Colaborador getColaborador()
 	{
 		return colaborador;
@@ -124,19 +122,9 @@ public class EntrevistaListAction extends  MyActionSupportList
 		this.colaborador = colaborador;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public void setColaboradorQuestionario(ColaboradorQuestionario colaboradorQuestionario)
 	{
 		this.colaboradorQuestionario = colaboradorQuestionario;
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
 	public ColaboradorQuestionario getColaboradorQuestionario()
@@ -168,9 +156,5 @@ public class EntrevistaListAction extends  MyActionSupportList
 
 	public void setEmpresasCheckList(Collection<CheckBox> empresasCheckList) {
 		this.empresasCheckList = empresasCheckList;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 }

@@ -78,7 +78,7 @@ public class PerfilDaoHibernate extends GenericDaoHibernate<Perfil> implements P
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 		criteria.setProjection(Projections.rowCount());
 
-		return (Integer) criteria.uniqueResult();
+		return ((Long) criteria.uniqueResult()).intValue();
 	}
 
 	public void removePerfilPapelByPapelId(Long papelId) {

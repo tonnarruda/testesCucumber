@@ -12,6 +12,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
@@ -58,19 +60,19 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings("serial")
 public class TurmaListAction extends MyActionSupportList
 {
-	private TurmaManager turmaManager;
-	private CursoManager cursoManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private AvaliacaoCursoManager avaliacaoCursoManager;
-	private AvaliacaoTurmaManager avaliacaoTurmaManager;
-	private EmpresaManager empresaManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-	private TipoDespesaManager tipoDespesaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
-	private TurmaDocumentoAnexoManager  turmaDocumentoAnexoManager;
+	@Autowired private TurmaManager turmaManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private AvaliacaoCursoManager avaliacaoCursoManager;
+	@Autowired private AvaliacaoTurmaManager avaliacaoTurmaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private TipoDespesaManager tipoDespesaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
+	@Autowired private TurmaDocumentoAnexoManager  turmaDocumentoAnexoManager;
 
 	private Turma turma;
 	private Curso curso;
@@ -589,11 +591,6 @@ public class TurmaListAction extends MyActionSupportList
 		this.turma = turma;
 	}
 
-	public void setTurmaManager(TurmaManager turmaManager)
-	{
-		this.turmaManager = turmaManager;
-	}
-
 	public Curso getCurso()
 	{
 		return curso;
@@ -604,11 +601,6 @@ public class TurmaListAction extends MyActionSupportList
 		this.curso = curso;
 	}
 
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
-	}
-
 	public Collection<ColaboradorTurma> getDataSource()
 	{
 		return dataSource;
@@ -617,11 +609,6 @@ public class TurmaListAction extends MyActionSupportList
 	public void setDataSource(Collection<ColaboradorTurma> dataSource)
 	{
 		this.dataSource = dataSource;
-	}
-
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager)
-	{
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 
 	public Collection<Curso> getCursos()
@@ -693,10 +680,6 @@ public class TurmaListAction extends MyActionSupportList
 		return avaliacaoCursos;
 	}
 
-	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager) {
-		this.avaliacaoCursoManager = avaliacaoCursoManager;
-	}
-
 	public String getTotalCargaHoraria() {
 		return totalCargaHoraria;
 	}
@@ -712,23 +695,11 @@ public class TurmaListAction extends MyActionSupportList
 	public Collection<AvaliacaoTurma> getAvaliacaoTurmas() {
 		return avaliacaoTurmas;
 	}
-
-	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager) {
-		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
-	}
-
 	
 	public Collection<Empresa> getEmpresas()
 	{
 		return empresas;
 	}
-
-	
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
 	
 	public Long[] getEmpresaIds()
 	{
@@ -761,11 +732,6 @@ public class TurmaListAction extends MyActionSupportList
 
 	public Collection<ConfiguracaoNivelCompetencia> getConfiguracaoNivelCompetencias() {
 		return configuracaoNivelCompetencias;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(
-			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
 	public Long getEmpresaId() {
@@ -804,14 +770,6 @@ public class TurmaListAction extends MyActionSupportList
 		this.diasTurmasCheck = diasTurmasCheck;
 	}
 
-	public void setEstabelecimentoManager(	EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public char getColaboradoresAvaliados() {
 		return colaboradoresAvaliados;
 	}
@@ -826,10 +784,6 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setTipoDespesas(Collection<TipoDespesa> tipoDespesas) {
 		this.tipoDespesas = tipoDespesas;
-	}
-
-	public void setTipoDespesaManager(TipoDespesaManager tipoDespesaManager) {
-		this.tipoDespesaManager = tipoDespesaManager;
 	}
 
 	public Collection<String> getCustos() {
@@ -862,10 +816,6 @@ public class TurmaListAction extends MyActionSupportList
 
 	public boolean isCompartilharColaboradores() {
 		return compartilharColaboradores;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public void setHorariosIni(Collection<String[]> horariosIni) {
@@ -930,14 +880,6 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public void setTurmaAvaliacaoTurmaManager( TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) {
-		this.turmaAvaliacaoTurmaManager = turmaAvaliacaoTurmaManager;
-	}
-
-	public void setTurmaDocumentoAnexoManager( TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) {
-		this.turmaDocumentoAnexoManager = turmaDocumentoAnexoManager;
 	}
 
 	public String getJson() {

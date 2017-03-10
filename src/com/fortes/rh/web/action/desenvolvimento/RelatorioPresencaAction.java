@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -25,11 +27,11 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class RelatorioPresencaAction extends MyActionSupport
 {
-	private CursoManager cursoManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private TurmaManager turmaManager;
-	private ColaboradorPresencaManager colaboradorPresencaManager;
-	private DiaTurmaManager diaTurmaManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private TurmaManager turmaManager;
+	@Autowired private ColaboradorPresencaManager colaboradorPresencaManager;
+	@Autowired private DiaTurmaManager diaTurmaManager;
 	private Collection<Curso> cursos;
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	private Collection<Turma> turmas;
@@ -268,11 +270,6 @@ public class RelatorioPresencaAction extends MyActionSupport
 		return colaboradorTurmas;
 	}
 
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager)
-	{
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
 	public Map<String,Object> getParametros()
 	{
 		return parametros;
@@ -283,19 +280,9 @@ public class RelatorioPresencaAction extends MyActionSupport
 		return cursos;
 	}
 
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
-	}
-
 	public void setParametros(Map<String,Object> parametros)
 	{
 		this.parametros = parametros;
-	}
-
-	public void setTurmaManager(TurmaManager turmaManager)
-	{
-		this.turmaManager = turmaManager;
 	}
 
 	public Collection<Turma> getTurmas()
@@ -326,11 +313,6 @@ public class RelatorioPresencaAction extends MyActionSupport
 	public Collection<ListaDePresenca> getListaDePresencas()
 	{
 		return listaDePresencas;
-	}
-
-	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager)
-	{
-		this.colaboradorPresencaManager = colaboradorPresencaManager;
 	}
 
 	public int getQtdLinhas()
@@ -468,9 +450,5 @@ public class RelatorioPresencaAction extends MyActionSupport
 	public void setExibirSituacaoAtualColaborador(
 			boolean exibirSituacaoAtualColaborador) {
 		this.exibirSituacaoAtualColaborador = exibirSituacaoAtualColaborador;
-	}
-
-	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager) {
-		this.diaTurmaManager = diaTurmaManager;
 	}
 }

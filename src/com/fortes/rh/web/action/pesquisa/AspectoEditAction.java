@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.pesquisa;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
@@ -14,7 +16,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class AspectoEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private AspectoManager aspectoManager;
+	@Autowired private AspectoManager aspectoManager;
 
 	private Aspecto aspecto = new Aspecto();
 	private Questionario questionario = new Questionario();
@@ -101,11 +103,6 @@ public class AspectoEditAction extends MyActionSupportEdit implements ModelDrive
 	public void setAspecto(Aspecto aspecto)
 	{
 		this.aspecto = aspecto;
-	}
-
-	public void setAspectoManager(AspectoManager aspectoManager)
-	{
-		this.aspectoManager = aspectoManager;
 	}
 
 	public Pergunta getPergunta()

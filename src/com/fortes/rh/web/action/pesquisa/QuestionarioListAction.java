@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
@@ -50,17 +51,17 @@ public class QuestionarioListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private QuestionarioManager questionarioManager;
-	private PerguntaManager perguntaManager;
-	private AspectoManager aspectoManager;
-    private AreaOrganizacionalManager areaOrganizacionalManager;
-    private EntrevistaManager entrevistaManager;
-    private FichaMedicaManager fichaMedicaManager;
-    private EmpresaManager empresaManager;
-    private EstabelecimentoManager estabelecimentoManager;
-    private TurmaManager turmaManager;
-    private CursoManager cursoManager;
-    private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private QuestionarioManager questionarioManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private AspectoManager aspectoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EntrevistaManager entrevistaManager;
+	@Autowired private FichaMedicaManager fichaMedicaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private TurmaManager turmaManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Questionario questionario;
 	private ColaboradorQuestionario colaboradorQuestionario;
@@ -462,11 +463,6 @@ public class QuestionarioListAction extends MyActionSupportList
     	this.imprimirFormaEconomica = imprimirFormaEconomica;
     }
 
-	public void setPerguntaManager(PerguntaManager perguntaManager)
-	{
-		this.perguntaManager = perguntaManager;
-	}
-
 	public Questionario getQuestionario()
 	{
 		return questionario;
@@ -475,11 +471,6 @@ public class QuestionarioListAction extends MyActionSupportList
 	public void setQuestionario(Questionario questionario)
 	{
 		this.questionario = questionario;
-	}
-
-	public void setQuestionarioManager(QuestionarioManager questionarioManager)
-	{
-		this.questionarioManager = questionarioManager;
 	}
 
 	public Collection<QuestionarioRelatorio> getDataSource()
@@ -502,11 +493,6 @@ public class QuestionarioListAction extends MyActionSupportList
 		return aspectos;
 	}
 
-	public void setAspectoManager(AspectoManager aspectoManager)
-	{
-		this.aspectoManager = aspectoManager;
-	}
-
 	public TipoPergunta getTipoPergunta()
 	{
 		return tipoPergunta;
@@ -525,11 +511,6 @@ public class QuestionarioListAction extends MyActionSupportList
 	public TipoQuestionario getTipoQuestionario()
 	{
 		return tipoQuestionario;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public boolean isAgruparPorAspectos()
@@ -654,11 +635,6 @@ public class QuestionarioListAction extends MyActionSupportList
 		this.areasIds = areasIds;
 	}
 
-	public void setEntrevistaManager(EntrevistaManager entrevistaManager)
-	{
-		this.entrevistaManager = entrevistaManager;
-	}
-
 	public Collection<Entrevista> getEntrevistas()
 	{
 		return entrevistas;
@@ -734,10 +710,6 @@ public class QuestionarioListAction extends MyActionSupportList
 		this.colaboradorQuestionario = colaboradorQuestionario;
 	}
 
-	public void setFichaMedicaManager(FichaMedicaManager fichaMedicaManager) {
-		this.fichaMedicaManager = fichaMedicaManager;
-	}
-
 	public Collection<FichaMedica> getFichaMedicas() {
 		return fichaMedicas;
 	}
@@ -750,17 +722,8 @@ public class QuestionarioListAction extends MyActionSupportList
 		return empresaId;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
 	public Long[] getEmpresaIds() {
 		return empresaIds;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public void setEstabelecimentosCheck(String[] estabelecimentosCheck)
@@ -815,18 +778,6 @@ public class QuestionarioListAction extends MyActionSupportList
 
 	public Collection<CheckBox> getAreaOrganizacionalsCheckList() {
 		return areaOrganizacionalsCheckList;
-	}
-
-	public void setTurmaManager(TurmaManager turmaManager) {
-		this.turmaManager = turmaManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
-	public void setCursoManager(CursoManager cursoManager) {
-		this.cursoManager = cursoManager;
 	}
 
 	public String getAssinatura1() {

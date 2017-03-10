@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
@@ -36,14 +38,14 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 {
 	private static final long serialVersionUID = 1L;
 	
-	private CertificacaoManager certificacaoManager;
-	private CursoManager cursoManager;
-	private AvaliacaoPraticaManager avaliacaoPraticaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private EmpresaManager empresaManager;
-	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired private CertificacaoManager certificacaoManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private AvaliacaoPraticaManager avaliacaoPraticaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	
 	private Collection<ColaboradorCertificacao> colaboradorCertificacoes = new ArrayList<ColaboradorCertificacao>();
 	private Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
@@ -364,19 +366,9 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		this.certificacao = certificacao;
 	}
 
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager)
-	{
-		this.certificacaoManager = certificacaoManager;
-	}
-
 	public Collection<CheckBox> getCursoCheckList()
 	{
 		return cursosCheckList;
-	}
-
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
 	}
 
 	public Collection<CheckBox> getCursosCheckList()
@@ -399,11 +391,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public Collection<CheckBox> getAvaliacoesPraticasCheckList() {
 		return avaliacoesPraticasCheckList;
-	}
-
-	public void setAvaliacaoPraticaManager(
-			AvaliacaoPraticaManager avaliacaoPraticaManager) {
-		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
 	}
 
 	public void setAvaliacoesPraticasCheck(String[] avaliacoesPraticasCheck) {
@@ -430,27 +417,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		return estabelecimentosCheckList;
 	}
 
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEstabelecimentoManager(
-			EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public Collection<Empresa> getEmpresas() {
 		return empresas;
-	}
-
-	public void setParametrosDoSistemaManager(
-			ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 
 	public Long getEmpresaId() {
@@ -463,11 +431,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public Collection<ColaboradorCertificacao> getColaboradorCertificacoes() {
 		return colaboradorCertificacoes;
-	}
-
-	public void setColaboradorCertificacaoManager(
-			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
 
 	public Map<String, Object> getParametros() {

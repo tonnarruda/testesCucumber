@@ -1,6 +1,8 @@
 package com.fortes.rh.web.action.pesquisa;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.pesquisa.FichaMedicaManager;
 import com.fortes.rh.model.pesquisa.FichaMedica;
 import com.fortes.rh.model.pesquisa.Questionario;
@@ -11,7 +13,7 @@ public class FichaMedicaEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 
-	private FichaMedicaManager fichaMedicaManager;
+	@Autowired private FichaMedicaManager fichaMedicaManager;
 
 	private FichaMedica fichaMedica;
 	private Questionario questionario;
@@ -88,10 +90,7 @@ public class FichaMedicaEditAction extends MyActionSupportEdit
 	{
 		this.fichaMedica = fichaMedica;
 	}
-	public void setFichaMedicaManager(FichaMedicaManager fichaMedicaManager)
-	{
-		this.fichaMedicaManager = fichaMedicaManager;
-	}
+	
 	public Questionario getQuestionario()
 	{
 		return questionario;

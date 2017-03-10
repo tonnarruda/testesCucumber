@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.thumb;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.thumb.ThumbnailManager;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
@@ -8,7 +10,7 @@ public class ThumbnailAction extends MyActionSupport {
 	
 	private static final long serialVersionUID = 1L;
 	
-	ThumbnailManager manager;
+	@Autowired ThumbnailManager manager;
 	
 	public String form() {
 		return Action.SUCCESS;
@@ -24,9 +26,4 @@ public class ThumbnailAction extends MyActionSupport {
 		}
 		return Action.SUCCESS;
 	}
-	
-	public void setThumbnailManager(ThumbnailManager manager) {
-		this.manager = manager;
-	}
-	
 }

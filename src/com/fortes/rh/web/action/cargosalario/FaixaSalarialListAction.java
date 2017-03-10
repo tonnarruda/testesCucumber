@@ -17,6 +17,7 @@ public class FaixaSalarialListAction extends MyActionSupportList
 {
 	@Autowired private CargoManager cargoManager;
 	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private FaixaSalarial faixaSalarial;
 	private Cargo cargo;

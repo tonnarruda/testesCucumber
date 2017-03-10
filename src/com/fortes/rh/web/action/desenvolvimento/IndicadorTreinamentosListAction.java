@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.jfree.chart.JFreeChart;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
@@ -37,14 +38,14 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private CursoManager cursoManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private ColaboradorPresencaManager colaboradorPresencaManager;
-	private TurmaManager turmaManager;
-	private TurmaTipoDespesaManager turmaTipoDespesaManager;
-	private EmpresaManager empresaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private ColaboradorPresencaManager colaboradorPresencaManager;
+	@Autowired private TurmaManager turmaManager;
+	@Autowired private TurmaTipoDespesaManager turmaTipoDespesaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
 
 	private JFreeChart chart;
 	private IndicadorTreinamento indicadorTreinamento = new IndicadorTreinamento();
@@ -225,11 +226,6 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		
 		return Action.SUCCESS;
 	}
-	
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
-	}
 
 	public IndicadorTreinamento getIndicadorTreinamento()
 	{
@@ -246,11 +242,6 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		return chart;
 	}
 
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager)
-	{
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
@@ -259,18 +250,6 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	public Collection<String> getColecao()
 	{
 		return colecao;
-	}
-	
-	public void setTurmaManager(TurmaManager turmaManager) {
-		this.turmaManager = turmaManager;
-	}
-	
-	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager) {
-		this.colaboradorPresencaManager = colaboradorPresencaManager;
-	}
-
-	public ColaboradorPresencaManager getColaboradorPresencaManager() {
-		return colaboradorPresencaManager;
 	}
 
 	public String getGrfTreinamento() {
@@ -297,10 +276,6 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		this.json = json;
 	}
 
-	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
-		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
-	}
-
 	public String getGrfFrequenciaParticipantes()
 	{
 		return grfFrequenciaParticipantes;
@@ -319,11 +294,6 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	public Collection<CheckBox> getEmpresasCheckList()
 	{
 		return empresasCheckList;
-	}
-	
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
 	}
 
 	public Integer getQtdParticipantesPresentes() {
@@ -349,11 +319,6 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	public void setAreasCheck(Long[] areasCheck) {
 		this.areasCheck = areasCheck;
 	}
-
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
 	
 	public Collection<CheckBox> getEstabelecimentosCheckList() {
 		return estabelecimentosCheckList;
@@ -362,15 +327,6 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	public void setEstabelecimentosCheckList(
 			Collection<CheckBox> estabelecimentosCheckList) {
 		this.estabelecimentosCheckList = estabelecimentosCheckList;
-	}
-
-	public EstabelecimentoManager getEstabelecimentoManager() {
-		return estabelecimentoManager;
-	}
-
-	public void setEstabelecimentoManager(
-			EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public Long[] getEstabelecimentosCheck() {

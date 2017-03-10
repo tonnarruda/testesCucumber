@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.cargosalario;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.model.cargosalario.Indice;
@@ -11,8 +13,8 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings( { "serial" })
 public class IndiceHistoricoEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private IndiceHistoricoManager indiceHistoricoManager;
-	private IndiceManager indiceManager;
+	@Autowired private IndiceHistoricoManager indiceHistoricoManager;
+	@Autowired private IndiceManager indiceManager;
 
 	private IndiceHistorico indiceHistorico;
 	private Indice indiceAux;
@@ -119,11 +121,6 @@ public class IndiceHistoricoEditAction extends MyActionSupportEdit implements Mo
 		this.indiceHistorico = indiceHistorico;
 	}
 
-	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
-	{
-		this.indiceHistoricoManager = indiceHistoricoManager;
-	}
-
 	public Indice getIndiceAux()
 	{
 		return indiceAux;
@@ -132,11 +129,6 @@ public class IndiceHistoricoEditAction extends MyActionSupportEdit implements Mo
 	public void setIndiceAux(Indice indiceAux)
 	{
 		this.indiceAux = indiceAux;
-	}
-
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
 	}
 
 	public boolean isIntegradoAC()

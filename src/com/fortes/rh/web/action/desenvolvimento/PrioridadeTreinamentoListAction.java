@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.desenvolvimento;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.PrioridadeTreinamentoManager;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class PrioridadeTreinamentoListAction extends MyActionSupportList
 {
-	private PrioridadeTreinamentoManager prioridadeTreinamentoManager;
+	@Autowired private PrioridadeTreinamentoManager prioridadeTreinamentoManager;
 	private Collection<PrioridadeTreinamento> prioridadeTreinamentos;
 	private PrioridadeTreinamento prioridadeTreinamento;
 
@@ -59,10 +61,5 @@ public class PrioridadeTreinamentoListAction extends MyActionSupportList
 	public void setPrioridadeTreinamento(PrioridadeTreinamento prioridadeTreinamento)
 	{
 		this.prioridadeTreinamento = prioridadeTreinamento;
-	}
-
-	public void setPrioridadeTreinamentoManager(PrioridadeTreinamentoManager prioridadeTreinamentoManager)
-	{
-		this.prioridadeTreinamentoManager = prioridadeTreinamentoManager;
 	}
 }

@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -57,12 +59,12 @@ public class ExternoAction extends MyActionSupport
 	private Long empresaId;
 	private String mensagemLogin;
 	
-	private AnuncioManager anuncioManager;
-	private EmpresaManager empresaManager;
-	private CandidatoManager candidatoManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private DocumentoAnexoManager documentoAnexoManager;
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private AnuncioManager anuncioManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private DocumentoAnexoManager documentoAnexoManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 
 	private Collection<Anuncio> anuncios = null;
 	private Collection<DocumentoAnexo> documentosAnexos;
@@ -470,16 +472,6 @@ public class ExternoAction extends MyActionSupport
 		this.candidato = candidato;
 	}
 
-	public CandidatoManager getCandidatoManager()
-	{
-		return candidatoManager;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
-
 	public String getCpf()
 	{
 		return cpf;
@@ -528,11 +520,6 @@ public class ExternoAction extends MyActionSupport
 		this.msg = msg;
 	}
 
-	public void setAnuncioManager(AnuncioManager anuncioManager)
-	{
-		this.anuncioManager = anuncioManager;
-	}
-
 	public Anuncio getAnuncio()
 	{
 		return anuncio;
@@ -553,11 +540,6 @@ public class ExternoAction extends MyActionSupport
 		this.candidatoSolicitacao = candidatoSolicitacao;
 	}
 
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
-	{
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
-
 	public String getMensagem()
 	{
 		return mensagem;
@@ -576,11 +558,6 @@ public class ExternoAction extends MyActionSupport
 	public void setEmpresaId(Long empresaId)
 	{
 		this.empresaId = empresaId;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
 	}
 
 	public boolean isModuloExterno()
@@ -608,17 +585,8 @@ public class ExternoAction extends MyActionSupport
 		this.sucessoRespostaAvaliacao = sucessoRespostaAvaliacao;
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public Collection<DocumentoAnexo> getDocumentosAnexos() {
 		return documentosAnexos;
-	}
-
-	public void setDocumentoAnexoManager(DocumentoAnexoManager documentoAnexoManager) {
-		this.documentoAnexoManager = documentoAnexoManager;
 	}
 
 	public DocumentoAnexo getDocumentoAnexo() {

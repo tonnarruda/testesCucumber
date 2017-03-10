@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
@@ -49,17 +51,17 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ReajusteColaboradorManager reajusteColaboradorManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
-	private FuncaoManager funcaoManager;
-	private AmbienteManager ambienteManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private ColaboradorManager colaboradorManager;
-	private GrupoOcupacionalManager grupoOcupacionalManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private IndiceManager indiceManager;
+	@Autowired private ReajusteColaboradorManager reajusteColaboradorManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private AmbienteManager ambienteManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private IndiceManager indiceManager;
 
 	private ReajusteColaborador reajusteColaborador;
 	private TabelaReajusteColaborador tabelaReajusteColaborador;
@@ -375,11 +377,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		this.reajusteColaborador = reajusteColaborador;
 	}
 
-	public void setReajusteColaboradorManager(ReajusteColaboradorManager reajusteColaboradorManager)
-	{
-		this.reajusteColaboradorManager = reajusteColaboradorManager;
-	}
-
 	public Collection<FaixaSalarial> getFaixasPropostas()
 	{
 		return faixasPropostas;
@@ -408,11 +405,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	public void setColaboradores(Collection<Colaborador> colaboradores)
 	{
 		this.colaboradores = colaboradores;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public Collection<AreaOrganizacional> getAreaOrganizacionals()
@@ -495,11 +487,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		this.tabelaReajusteColaboradors = tabelaReajusteColaboradors;
 	}
 
-	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager)
-	{
-		this.tabelaReajusteColaboradorManager = tabelaReajusteColaboradorManager;
-	}
-
 	public AreaOrganizacional getAreaOrganizacionalFiltro()
 	{
 		return areaOrganizacionalFiltro;
@@ -580,24 +567,9 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		this.funcaos = funcaos;
 	}
 
-	public void setFuncaoManager(FuncaoManager funcaoManager)
-	{
-		this.funcaoManager = funcaoManager;
-	}
-
-	public void setAmbienteManager(AmbienteManager ambienteManager)
-	{
-		this.ambienteManager = ambienteManager;
-	}
-
 	public Collection<Estabelecimento> getEstabelecimentos()
 	{
 		return estabelecimentos;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public Estabelecimento getEstabelecimentoAtual()
@@ -618,11 +590,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	public void setEstabelecimentoProposto(Estabelecimento estabelecimentoProposto)
 	{
 		this.estabelecimentoProposto = estabelecimentoProposto;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public String[] getAreasCheck()
@@ -670,11 +637,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		return gruposCheckList;
 	}
 
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager)
-	{
-		this.grupoOcupacionalManager = grupoOcupacionalManager;
-	}
-
 	public char getDissidioPor()
 	{
 		return dissidioPor;
@@ -705,11 +667,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		this.filtrarPor = filtrarPor;
 	}
 
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
 	public boolean isExibeSalario()
 	{
 		return exibeSalario;
@@ -733,16 +690,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	public void setTiposSalarios(Map<Object, Object> tiposSalarios)
 	{
 		this.tiposSalarios = tiposSalarios;
-	}
-
-	public IndiceManager getIndiceManager()
-	{
-		return indiceManager;
-	}
-
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
 	}
 
 	public Collection<Indice> getIndices()
@@ -783,11 +730,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	public void setFaixaSalarials(Collection<FaixaSalarial> faixaSalarials)
 	{
 		this.faixaSalarials = faixaSalarials;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
 	}
 
 	public String getDescricaoTipoSalario()

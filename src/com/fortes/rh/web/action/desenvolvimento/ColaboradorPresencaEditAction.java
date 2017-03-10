@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.desenvolvimento;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
@@ -15,9 +17,9 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class ColaboradorPresencaEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private ColaboradorPresencaManager colaboradorPresencaManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private DiaTurmaManager diaTurmaManager;
+	@Autowired private ColaboradorPresencaManager colaboradorPresencaManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private DiaTurmaManager diaTurmaManager;
 
 	private ColaboradorPresenca colaboradorPresenca;
 
@@ -80,15 +82,6 @@ public class ColaboradorPresencaEditAction extends MyActionSupportEdit implement
 		this.colaboradorPresenca = colaboradorPresenca;
 	}
 
-	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager)
-	{
-		this.colaboradorPresencaManager = colaboradorPresencaManager;
-	}
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager)
-	{
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
 	public Collection<ColaboradorTurma> getColaboradorTurmas()
 	{
 		return colaboradorTurmas;
@@ -97,11 +90,6 @@ public class ColaboradorPresencaEditAction extends MyActionSupportEdit implement
 	public void setColaboradorTurmas(Collection<ColaboradorTurma> colaboradorTurmas)
 	{
 		this.colaboradorTurmas = colaboradorTurmas;
-	}
-
-	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager)
-	{
-		this.diaTurmaManager = diaTurmaManager;
 	}
 
 	public Collection<DiaTurma> getDiaTurmas()

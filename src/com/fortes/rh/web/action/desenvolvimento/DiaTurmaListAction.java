@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.desenvolvimento;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class DiaTurmaListAction extends MyActionSupportList
 {
-	private DiaTurmaManager diaTurmaManager;
+	@Autowired private DiaTurmaManager diaTurmaManager;
 
 	private Collection<DiaTurma> diaTurmas;
 
@@ -51,10 +53,5 @@ public class DiaTurmaListAction extends MyActionSupportList
 	public void setDiaTurma(DiaTurma diaTurma)
 	{
 		this.diaTurma = diaTurma;
-	}
-
-	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager)
-	{
-		this.diaTurmaManager = diaTurmaManager;
 	}
 }
