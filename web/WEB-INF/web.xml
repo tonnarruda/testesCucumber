@@ -26,6 +26,10 @@
 	</session-config>
 
 	<listener>
+		<listener-class>se.jiderhamn.classloader.leak.prevention.ClassLoaderLeakPreventor</listener-class>
+	</listener>
+
+	<listener>
 		<listener-class>com.fortes.rh.config.Log4jInitListener</listener-class>
 	</listener>
 

@@ -30,10 +30,14 @@ import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXmlExporter;
+import net.sf.jasperreports.engine.fill.JRAbstractLRUVirtualizer;
+import net.sf.jasperreports.engine.fill.JRSwapFileVirtualizer;
+import net.sf.jasperreports.engine.util.JRSwapFile;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.fortes.rh.util.ArquivoUtil;
 import com.opensymphony.util.TextUtils;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.webwork.views.jasperreports.JasperReportConstants;
@@ -121,9 +125,16 @@ public class MyJasperReportsResult extends JasperReportsResult implements Jasper
 			String systemId = servletContext.getRealPath(finalLocation);
 			Map parameters = new OgnlValueStackShadowMap(stack);
 			File directory = new File(systemId.substring(0, systemId.lastIndexOf(File.separator)));
+
+			JRSwapFile arquivoSwap = new JRSwapFile(ArquivoUtil.getRhHome(), 4096, 100);
+			JRAbstractLRUVirtualizer virtualizer = new JRSwapFileVirtualizer(100, arquivoSwap, true);
+			
 			parameters.put("reportDirectory", directory);
 			parameters.put(JRParameter.REPORT_LOCALE, invocation.getInvocationContext().getLocale());
-			
+			parameters.put(JRParameter.REPORT_VIRTUALIZER, virtualizer);
+			 
+			// Instancia o virtualizador
+			 
 			// Map contendo os parâmetros para o relatório
 			if (parametersMap != null)
 			{
@@ -270,6 +281,7 @@ public class MyJasperReportsResult extends JasperReportsResult implements Jasper
 				throw new ServletException(e.getMessage(), e);
 			}
 		}
+		System.gc();
 	}
 	
 	private void criaCookieProcessando(HttpServletResponse response) {

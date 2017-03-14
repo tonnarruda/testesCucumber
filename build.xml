@@ -21,7 +21,7 @@
 		<pathelement location="${class_dir}" />
 		<fileset dir="${env.JASPER_LIB}">  
 			<include name="*.jar" />
-			<exclude name="jasperreports-chart-themes-5.0.0.jar"/> 
+			<exclude name="jasperreports-chart-themes-6.3.1.jar"/> 
 		</fileset>
 	</path>
 
@@ -152,11 +152,7 @@
 			</fileset>
 		</copy>
 		
-		<!-- Gera hibernate.cfg.xml com hibernate.show_sql = false -->
-		<exec executable="ruby" failonerror="true">
-			<arg value="${ant.project.name}/geracaoHibernateCfg.rb" />
-			<arg value="${tmpweb}/WEB-INF/classes" />
-		</exec>
+
 		
 		<!-- Gera War file de acordo com o diretorio temporario -->
 		<war webxml="${tmpweb}/WEB-INF/web.xml"

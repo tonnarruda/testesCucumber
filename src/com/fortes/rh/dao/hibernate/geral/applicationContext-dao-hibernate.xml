@@ -32,11 +32,6 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
-  <bean id="candidatoDaoTarget" class="com.fortes.rh.dao.hibernate.captacao.CandidatoDaoHibernate">
-    <property name="sessionFactory">
-      <ref bean="sessionFactory" />
-    </property>
-  </bean>
   <bean id="idiomaDaoTarget" class="com.fortes.rh.dao.hibernate.captacao.IdiomaDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
