@@ -9,11 +9,16 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
+import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.RelatorioAnaliseDesempenhoColaborador;
 import com.fortes.rh.model.avaliacao.ResultadoCompetencia;
 import com.fortes.rh.model.avaliacao.ResultadoCompetenciaColaborador;
@@ -601,11 +606,25 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> proximasConfiguracoesDafaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findProximasConfiguracoesAposData(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 		Date dataDaProximaConfiguracaodaFaixaSalarial = (proximasConfiguracoesDafaixaSalarial.size() == 0 ? null : ((ConfiguracaoNivelCompetenciaFaixaSalarial) proximasConfiguracoesDafaixaSalarial.toArray()[0]).getData());
 
-		checaPendenciaComConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaFaixaSalarial,	dataDaProximaConfiguracaodaFaixaSalarial);
-		checaPendenciaComConfiguracaoNivelCompetenciaCandidato(configuracaoNivelCompetenciaFaixaSalarial,dataDaProximaConfiguracaodaFaixaSalarial);
+		checaDependenciaComConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaFaixaSalarial,	dataDaProximaConfiguracaodaFaixaSalarial);
+		checaDependenciaComConfiguracaoNivelCompetenciaCandidato(configuracaoNivelCompetenciaFaixaSalarial,dataDaProximaConfiguracaodaFaixaSalarial);
+		checaDependenciaComAvaliacaoDesempenho(configuracaoNivelCompetenciaFaixaSalarial);
 	}
 
-	private void checaPendenciaComConfiguracaoNivelCompetenciaCandidato(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Date dataDaProximaConfiguracaodaFaixaSalarial) throws FortesException {
+	private void checaDependenciaComAvaliacaoDesempenho(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) throws FortesException {
+		AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
+		Collection<AvaliacaoDesempenho>  avaliacoesDesempenho = avaliacaoDesempenhoManager.findByCncfId(configuracaoNivelCompetenciaFaixaSalarial.getId()); 
+		if(avaliacoesDesempenho.size() > 0){
+			StringBuffer stb = new StringBuffer("Esta configuração de competência não pode ser excluída, pois existem dependências com as competências das <b>Avaliações de Desempenho</b> abaixo:</br>");
+			for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacoesDesempenho) {
+				stb.append(avaliacaoDesempenho.getTitulo());
+				stb.append("; ");
+			}
+			throw new FortesException(stb.toString().substring(0, stb.toString().length() - 2));
+		}
+	}
+
+	private void checaDependenciaComConfiguracaoNivelCompetenciaCandidato(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Date dataDaProximaConfiguracaodaFaixaSalarial) throws FortesException {
 		Collection<ConfiguracaoNivelCompetenciaCandidato> candsComDependenciaComCompetenciasDaFaixaSalarial = getDao().candsComDependenciaComCompetenciasDoCandidato(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial);
 		
 		if(candsComDependenciaComCompetenciasDaFaixaSalarial.size() > 0){
@@ -619,7 +638,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		}
 	}
 
-	private void checaPendenciaComConfiguracaoNivelCompetenciaColaborador(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Date dataDaProximaConfiguracaodaFaixaSalarial) throws FortesException {
+	private void checaDependenciaComConfiguracaoNivelCompetenciaColaborador(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Date dataDaProximaConfiguracaodaFaixaSalarial) throws FortesException {
 		Collection<ConfiguracaoNivelCompetenciaColaborador> colabsComDependenciaComCompetenciasDaFaixaSalarial = configuracaoNivelCompetenciaColaboradorManager.colabsComDependenciaComCompetenciasDaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial);
 		
 		if(colabsComDependenciaComCompetenciasDaFaixaSalarial.size() > 0){

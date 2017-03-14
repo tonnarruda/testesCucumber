@@ -17,4 +17,5 @@ public interface AvaliacaoDesempenhoDao extends GenericDao<AvaliacaoDesempenho>
 	Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId);
 	Collection<AvaliacaoDesempenho> findComCompetencia(Long empresaId);
 	boolean isExibiNivelCompetenciaExigido(Long avaliacaoDesempenhoId);
+	Collection<AvaliacaoDesempenho> findByCncfId(Long configuracaoNivelCompetenciaFaixaSalarialId);
 }

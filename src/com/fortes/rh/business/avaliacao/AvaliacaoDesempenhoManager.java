@@ -37,4 +37,5 @@ public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDese
 	void saveOrUpdateRespostaAvDesempenho(Usuario usuario, Empresa empresa, Colaborador colaborador, ColaboradorQuestionario colaboradorQuestionario, AvaliacaoDesempenho avaliacaoDesempenho, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Collection<Pergunta> perguntas, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais);
 	Collection<AvaliacaoDesempenho> findComCompetencia(Long empresaId);
 	boolean isExibiNivelCompetenciaExigido(Long avaliacaoDesempenhoId);
+	Collection<AvaliacaoDesempenho> findByCncfId(Long configuracaoNivelCompetenciaFaixaSalarialId);
 }

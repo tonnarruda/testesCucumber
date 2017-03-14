@@ -17,6 +17,7 @@ import org.hibernate.type.Type;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
@@ -251,5 +252,20 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
 		
 		return (Boolean) query.uniqueResult();
+	}
+
+	public Collection<AvaliacaoDesempenho> findByCncfId(Long configuracaoNivelCompetenciaFaixaSalarialId) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ad.id"), "id");
+		p.add(Projections.property("ad.titulo"), "titulo");
+
+		Criteria criteria = getSession().createCriteria(ConfiguracaoCompetenciaAvaliacaoDesempenho.class, "ccad");
+		criteria.createCriteria("ccad.avaliacaoDesempenho", "ad", Criteria.INNER_JOIN);
+		criteria.add(Expression.eq("ccad.configuracaoNivelCompetenciaFaixaSalarial.id", configuracaoNivelCompetenciaFaixaSalarialId));
+		
+		criteria.setProjection(Projections.distinct(p));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(AvaliacaoDesempenho.class));
+		return criteria.list();
 	}
 }

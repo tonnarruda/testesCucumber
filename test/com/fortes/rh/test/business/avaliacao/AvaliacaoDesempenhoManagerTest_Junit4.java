@@ -487,6 +487,13 @@ public class AvaliacaoDesempenhoManagerTest_Junit4
 		assertTrue(avaliacaoDesempenhoManager.isExibiNivelCompetenciaExigido(avaliacaoDesempenhoId));
 	}
 	
+	@Test
+	public void testFindByCncfId(){
+		Long configuracaoNivelCompetenciaFaixaSalarialId = 2L;
+		when(avaliacaoDesempenhoDao.findByCncfId(configuracaoNivelCompetenciaFaixaSalarialId)).thenReturn(new ArrayList<AvaliacaoDesempenho>());
+		assertEquals(0, avaliacaoDesempenhoManager.findByCncfId(configuracaoNivelCompetenciaFaixaSalarialId).size());
+	}
+	
 
 	private void mockTestGetResultadoAvaliacaoDesempenho(NivelCompetenciaHistorico nivelCompetenciaHistorico, ConfiguracaoNivelCompetenciaFaixaSalarial cncf, ConfiguracaoNivelCompetencia cncColab1, ConfiguracaoNivelCompetencia cncColab2, Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDoColaborador, Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDaFaixa, Collection<ConfiguracaoNivelCompetenciaCriterio> cncCriterios, AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId, Empresa empresa) {
 		when(configuracaoNivelCompetenciaManager.findCompetenciasAndPesos(avaliacaoDesempenho.getId(), avaliadoId)).thenReturn(configNiveisCompetenciasDoColaborador);

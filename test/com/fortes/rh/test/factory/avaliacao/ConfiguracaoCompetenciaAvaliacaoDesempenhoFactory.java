@@ -23,7 +23,8 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoFactory
 		return ConfiguracaoCompetenciaAvaliacaoDesempenho;
 	}
 	
-	public static ConfiguracaoCompetenciaAvaliacaoDesempenho getEntity(Long id, Colaborador avaliador, AvaliacaoDesempenho avaliacaoDesempenho, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Character tipoCompetencia, Long competenciaId)
+	public static ConfiguracaoCompetenciaAvaliacaoDesempenho getEntity(Long id, Colaborador avaliador, AvaliacaoDesempenho avaliacaoDesempenho,
+			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Character tipoCompetencia, Long competenciaId)
 	{
 		ConfiguracaoCompetenciaAvaliacaoDesempenho ConfiguracaoCompetenciaAvaliacaoDesempenho = getEntity(id);
 		ConfiguracaoCompetenciaAvaliacaoDesempenho.setAvaliador(avaliador);

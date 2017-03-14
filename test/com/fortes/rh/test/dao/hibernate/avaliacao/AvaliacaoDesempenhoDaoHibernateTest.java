@@ -1,40 +1,61 @@
 package com.fortes.rh.test.dao.hibernate.avaliacao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
+import java.util.Date;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
+import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
+import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
+import com.fortes.rh.test.factory.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
+import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 
-public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest<AvaliacaoDesempenho>
+public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<AvaliacaoDesempenho>
 {
-	private ConfiguracaoCompetenciaAvaliacaoDesempenhoDao configuracaoCompetenciaAvaliacaoDesempenhoDao;
-	private ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao;
-	private ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao;
-	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
-	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
-	private FaixaSalarialDao faixaSalarialDao;
-	private ColaboradorDao colaboradorDao;
-	private AvaliacaoDao avaliacaoDao;
-	private EmpresaDao empresaDao;
+	@Autowired private ConfiguracaoCompetenciaAvaliacaoDesempenhoDao configuracaoCompetenciaAvaliacaoDesempenhoDao;
+	@Autowired private ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao;
+	@Autowired private ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao;
+	@Autowired private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
+	@Autowired private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
+	@Autowired private FaixaSalarialDao faixaSalarialDao;
+	@Autowired private ColaboradorDao colaboradorDao;
+	@Autowired private AvaliacaoDao avaliacaoDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private ConhecimentoDao conhecimentoDao;
+	@Autowired private ConfiguracaoCompetenciaAvaliacaoDesempenhoDao competenciaAvaliacaoDesempenhoDao;
 
 	@Override
 	public AvaliacaoDesempenho getEntity()
@@ -53,6 +74,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		this.avaliacaoDesempenhoDao = avaliacaoDesempenhoDao;
 	}
 	
+	@Test
 	public void testFindAllSelect()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -71,6 +93,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		
 	}
 	
+	@Test
 	public void testFindByAvaliador()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -115,6 +138,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(1, avaliacaoDesempenhoDao.findByAvaliador(colaborador.getId(), true, empresa.getId()).size());
 	}
 	
+	@Test
 	public void testLiberarOrBloquear()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -135,6 +159,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		assertTrue(retorno.isLiberada());
 	}
 	
+	@Test
 	public void testFindTituloModeloAvaliacao()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -173,6 +198,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(new Integer(1), avaliacaoDesempenhoDao.findCountTituloModeloAvaliacao(null, null, null, null, empresa.getId(), "ação", avaliacao.getId(), true));
 	}
 	
+	@Test
 	public void testFindIdsAvaliacaoDesempenha()
 	{
 		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity();
@@ -196,6 +222,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(2, avaliacaoDesempenhoDao.findIdsAvaliacaoDesempenho(avaliacao1.getId()).size());
 	}
 	
+	@Test
 	public void testFindComCompetencia()
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
@@ -236,6 +263,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(1, avaliacaoDesempenhoDao.findComCompetencia(empresa1.getId()).size());
 	}
 	
+	@Test
 	public void testIsExibiNivelCompetenciaExigido()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -250,36 +278,31 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		assertTrue(avaliacaoDesempenhoDao.isExibiNivelCompetenciaExigido(avaliacaoDesempenho.getId()));
 	}
 	
-	public void setEmpresaDao(EmpresaDao empresaDao) {
-		this.empresaDao = empresaDao;
-	}
-
-	public void setAvaliacaoDao(AvaliacaoDao avaliacaoDao) {
-		this.avaliacaoDao = avaliacaoDao;
-	}
-
-	public void setColaboradorQuestionarioDao(ColaboradorQuestionarioDao colaboradorQuestionarioDao) {
-		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
-	}
-
-	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
-		this.colaboradorDao = colaboradorDao;
-	}
-
-	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
-		this.faixaSalarialDao = faixaSalarialDao;
-	}
-
-	public void setConfiguracaoNivelCompetenciaFaixaSalarialDao(ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao) {
-		this.configuracaoNivelCompetenciaFaixaSalarialDao = configuracaoNivelCompetenciaFaixaSalarialDao;
-	}
-
-	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoDao(ConfiguracaoCompetenciaAvaliacaoDesempenhoDao configuracaoCompetenciaAvaliacaoDesempenhoDao) {
-		this.configuracaoCompetenciaAvaliacaoDesempenhoDao = configuracaoCompetenciaAvaliacaoDesempenhoDao;
-	}
-
-	public void setConfiguracaoNivelCompetenciaColaboradorDao(
-			ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao) {
-		this.configuracaoNivelCompetenciaColaboradorDao = configuracaoNivelCompetenciaColaboradorDao;
+	@Test
+	public void testFindByCncfId() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador avaliador = ColaboradorFactory.getEntity(null, empresa);
+		colaboradorDao.save(avaliador);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(null, "Avalação", false, null, empresa);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial, new Date());
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
+		
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(null, "Conhecimento", empresa);
+		conhecimentoDao.save(conhecimento);
+		
+		ConfiguracaoCompetenciaAvaliacaoDesempenho competenciaAvaliacaoDesempenho = ConfiguracaoCompetenciaAvaliacaoDesempenhoFactory.getEntity
+					(null, avaliador, avaliacaoDesempenho, configuracaoNivelCompetenciaFaixaSalarial, TipoCompetencia.CONHECIMENTO, conhecimento.getId());
+		configuracaoCompetenciaAvaliacaoDesempenhoDao.save(competenciaAvaliacaoDesempenho);
+		
+		Collection<AvaliacaoDesempenho> avaliacoesDesempenho = avaliacaoDesempenhoDao.findByCncfId(configuracaoNivelCompetenciaFaixaSalarial.getId());
+		assertEquals(avaliacaoDesempenho.getId(), avaliacoesDesempenho.iterator().next().getId());
 	}
 }

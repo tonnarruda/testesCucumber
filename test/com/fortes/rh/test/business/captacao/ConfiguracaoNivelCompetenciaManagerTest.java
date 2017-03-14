@@ -19,6 +19,7 @@ import mockit.Mockit;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfigHistoricoNivelManager;
@@ -33,6 +34,7 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.RelatorioAnaliseDesempenhoColaborador;
 import com.fortes.rh.model.avaliacao.ResultadoCompetencia;
 import com.fortes.rh.model.avaliacao.ResultadoCompetenciaColaborador;
@@ -90,6 +92,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 {
 	private ConfiguracaoNivelCompetenciaManagerImpl manager = new ConfiguracaoNivelCompetenciaManagerImpl();
 	private NivelCompetenciaManager nivelCompetenciaManager;
+	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
 	private ColaboradorRespostaManager colaboradorRespostaManager;
 	private ConfigHistoricoNivelManager configHistoricoNivelManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
@@ -141,6 +144,8 @@ public class ConfiguracaoNivelCompetenciaManagerTest
         configuracaoCompetenciaAvaliacaoDesempenhoManager = mock(ConfiguracaoCompetenciaAvaliacaoDesempenhoManager.class);
         MockSpringUtilJUnit4.mocks.put("configuracaoCompetenciaAvaliacaoDesempenhoManager", configuracaoCompetenciaAvaliacaoDesempenhoManager);
         
+        avaliacaoDesempenhoManager = mock(AvaliacaoDesempenhoManager.class);
+        MockSpringUtilJUnit4.mocks.put("avaliacaoDesempenhoManager", avaliacaoDesempenhoManager);
 
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
     }
@@ -939,7 +944,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 	}
 	
 	@Test
-	public void removeConfiguracaoNivelCompetenciaFaixaSalarial(){
+	public void testRemoveConfiguracaoNivelCompetenciaFaixaSalarial(){
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(2L);
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial, "01/01/2016");
 		configuracaoNivelFaixaSalarial.setId(1L);
@@ -965,7 +970,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 	}
 	
 	@Test
-	public void removeConfiguracaoNivelCompetenciaFaixaSalarialDependenciaComCompetenciasDaFaixaSalarial(){
+	public void testRemoveConfiguracaoNivelCompetenciaFaixaSalarialDependenciaComCompetenciasDaFaixaSalarial(){
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(2L);
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial, "01/01/2016");
 		configuracaoNivelFaixaSalarial.setId(1L);
@@ -992,11 +997,39 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 			ex = e;
 		}
 		
-		assertEquals("Esta configuração de competência não pode ser excluída, pois existem dependências com as competências dos colaboradores abaixo:</br>colaboradorNome", ex.getMessage());
+		assertEquals("Esta configuração de competência não pode ser excluída, pois existem dependências com as competências dos <b>colaboradores</b> abaixo:</br>colaboradorNome", ex.getMessage());
 	}
 	
 	@Test
-	public void removeConfiguracaoNivelCompetenciaFaixaSalarialDependenciaComCompetenciasDoCandidato(){
+	public void testRemoveConfiguracaoNivelCompetenciaFaixaSalarialDependenciaComCompetenciasConfiguradasEmAvaliacaoDeDesempenho(){
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(2L);
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial, "01/01/2016");
+		configuracaoNivelFaixaSalarial.setId(1L);
+		
+		Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> configuracaoNivelCompetenciaFaixaSalariais = new ArrayList<ConfiguracaoNivelCompetenciaFaixaSalarial>();
+		configuracaoNivelCompetenciaFaixaSalariais.add(configuracaoNivelFaixaSalarial);
+		Collection<AvaliacaoDesempenho>  avaliacoesDesempenho = Arrays.asList(AvaliacaoDesempenhoFactory.getEntity("Avaliação de Desempenho"));
+		
+		Date dataDaProximaConfiguracaodaFaixaSalarial = configuracaoNivelFaixaSalarial.getData();
+		
+		when(configuracaoNivelCompetenciaFaixaSalarialManager.findProximasConfiguracoesAposData(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData())).thenReturn(configuracaoNivelCompetenciaFaixaSalariais);
+		when(configuracaoNivelCompetenciaFaixaSalarialManager.findById(configuracaoNivelFaixaSalarial.getId())).thenReturn(configuracaoNivelFaixaSalarial);
+		when(configuracaoNivelCompetenciaColaboradorManager.colabsComDependenciaComCompetenciasDaFaixaSalarial(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial)).thenReturn(new ArrayList<ConfiguracaoNivelCompetenciaColaborador>());
+		when(configuracaoNivelCompetenciaDao.candsComDependenciaComCompetenciasDoCandidato(configuracaoNivelFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial)).thenReturn(new ArrayList<ConfiguracaoNivelCompetenciaCandidato>());
+		when(avaliacaoDesempenhoManager.findByCncfId(configuracaoNivelFaixaSalarial.getId())).thenReturn(avaliacoesDesempenho);
+		
+		Exception ex = null;
+		try {
+			manager.removeConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelFaixaSalarial.getId());
+		} catch (Exception e) {
+			ex = e;
+		}
+		
+		assertEquals("Esta configuração de competência não pode ser excluída, pois existem dependências com as competências das <b>Avaliações de Desempenho</b> abaixo:</br>Avaliação de Desempenho", ex.getMessage());
+	}
+	
+	@Test
+	public void testRemoveConfiguracaoNivelCompetenciaFaixaSalarialDependenciaComCompetenciasDoCandidato(){
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(2L);
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial, "01/01/2016");
 		configuracaoNivelFaixaSalarial.setId(1L);
@@ -1024,7 +1057,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 			ex = e;
 		}
 		
-		assertEquals("Esta configuração de competência não pode ser excluída, pois existem dependências com as competências dos candidatos abaixo:</br>candidatoNome", ex.getMessage());
+		assertEquals("Esta configuração de competência não pode ser excluída, pois existem dependências com as competências dos <b>candidatos</b> abaixo:</br>candidatoNome", ex.getMessage());
 	}
 	
 	@Test

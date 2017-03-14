@@ -435,5 +435,9 @@
 		<ref bean="sessionFactory" />
 	</property>
   </bean>
-  
+  <bean id="configuracaoCompetenciaAvaliacaoDesempenhoDao" class="com.fortes.rh.dao.hibernate.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
 </beans>

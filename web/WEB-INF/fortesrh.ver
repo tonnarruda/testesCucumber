@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.17x.210" db="" data="xx/03/2017">
+		<Item visivel="S" motivo="S16040000319"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Informar com quais faixas salariais os níveis de competência possuem vínculo ao solicitar a exclusão de um histórico.]]></Item>
 		<Item visivel="S" motivo="P17020000249"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Ajuste na inconsistência de permissão de acesso ao gerar relatório em XLS.]]></Item>
 		<Item visivel="S" motivo="P16100000309"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência: Ajuste de inconsistência ao tentar editar modelo que não possui respostas vinculadas.]]></Item>
 		<Item visivel="S" motivo="P17020000188"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes > Gravar: Ajuste de inconsistência ao gravar participantes utilizando a funcionalidade de “Gerar autoavaliação para selecionados”.]]></Item>
