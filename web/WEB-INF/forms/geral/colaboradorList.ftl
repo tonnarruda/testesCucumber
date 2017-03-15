@@ -308,7 +308,7 @@
 
 			<@authz.authorize ifNotGranted="ROLE_VISUALIZAR_ANEXO_COLAB_LOGADO">
 				<#if colaborador.id == colaboradorLogadoId>
-					<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="#" imgTitle="Documentos do Colaborador" imgName="anexos.gif" opacity=true/>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="#" imgTitle="Você não ter permissão de visualizar seus documentos em anexo." imgName="anexos.gif" opacity=true/>
 				<#else>
 					<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="../documentoAnexo/listColaborador.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
 				</#if>
