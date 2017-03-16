@@ -204,7 +204,7 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		tEmpregado.setUfSigla("CE");
 		tEmpregado.setCidadeCodigoAC("04400");
 		
-		acPessoalClientColaboradorImpl.atualizar(tEmpregado, empresa);
+		acPessoalClientColaboradorImpl.atualizar(tEmpregado, empresa, null);
 		
 		ResultSet result = query("select nome,foto from epg where codigo = '000007' and emp_codigo = '" + empCodigo + "'");
 		if (result.next()){

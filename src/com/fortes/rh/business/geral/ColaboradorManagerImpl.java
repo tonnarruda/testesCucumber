@@ -568,46 +568,47 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 
 	//TODO: SEM TESTE
-	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias,	Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception
+	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias,	Empresa empresa, boolean editarHistorico, Double salarioColaborador, Date dataAlteracao, boolean dadosIntegradosAtualizados) 
+			 throws IntegraACException, Exception
 	{
-		verificaEntidadeIdNulo(colaborador);
-		colaborador.setEmpresa(empresa);
-		
-		update(colaborador);
-		salvarBairro(colaborador);
-
-		formacaoManager.removeColaborador(colaborador);
-		colaboradorIdiomaManager.removeColaborador(colaborador);
-		experienciaManager.removeColaborador(colaborador);
-
-		saveDetalhes(colaborador, formacaos, idiomas, experiencias);
-
-		HistoricoColaborador historicoColaborador = null;
-		if (editarHistorico)
-		{
-			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
-			setDadosHistoricoColaborador(historicoColaborador, colaborador);
-			historicoColaborador = historicoColaboradorManager.ajustaTipoSalario(historicoColaborador, colaborador.getHistoricoColaborador()
-					.getTipoSalario(), colaborador.getHistoricoColaborador().getIndice(), colaborador.getHistoricoColaborador().getQuantidadeIndice(),
-					salarioColaborador);
-
-			historicoColaboradorManager.update(historicoColaborador);
-			colaborador.setHistoricoColaborador(historicoColaborador);
-		}
-
-		// Flush necessário quando houver uma operação com banco/sistema externo.
-		// garante que erro no banco do RH levantará uma Exception antes de alterar o outro banco.
-		getDao().getHibernateTemplateByGenericDao().flush();
-
-		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
-		{
-			if (editarHistorico)// deleta o registro na CTT do AC e cria um novo
-				contratarColaboradorNoAC(colaborador, historicoColaborador, empresa, true);
-			else
-				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa);
-		}
-		
-		replicaUpdateCandidato(findAllRelacionamentos(colaborador.getId()), idiomas);
+			verificaEntidadeIdNulo(colaborador);
+			colaborador.setEmpresa(empresa);
+			
+			update(colaborador);
+			salvarBairro(colaborador);
+	
+			formacaoManager.removeColaborador(colaborador);
+			colaboradorIdiomaManager.removeColaborador(colaborador);
+			experienciaManager.removeColaborador(colaborador);
+	
+			saveDetalhes(colaborador, formacaos, idiomas, experiencias);
+	
+			HistoricoColaborador historicoColaborador = null;
+			if (editarHistorico)
+			{
+				historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
+				setDadosHistoricoColaborador(historicoColaborador, colaborador);
+				historicoColaborador = historicoColaboradorManager.ajustaTipoSalario(historicoColaborador, colaborador.getHistoricoColaborador()
+						.getTipoSalario(), colaborador.getHistoricoColaborador().getIndice(), colaborador.getHistoricoColaborador().getQuantidadeIndice(),
+						salarioColaborador);
+	
+				historicoColaboradorManager.update(historicoColaborador);
+				colaborador.setHistoricoColaborador(historicoColaborador);
+			}
+	
+			// Flush necessário quando houver uma operação com banco/sistema externo.
+			// garante que erro no banco do RH levantará uma Exception antes de alterar o outro banco.
+			getDao().getHibernateTemplateByGenericDao().flush();
+	
+			if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
+			{
+				if (editarHistorico)// deleta o registro na CTT do AC e cria um novo
+					contratarColaboradorNoAC(colaborador, historicoColaborador, empresa, true);
+				else if(dadosIntegradosAtualizados)
+					acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa, dataAlteracao);
+			}
+			
+			replicaUpdateCandidato(findAllRelacionamentos(colaborador.getId()), idiomas);
 	}
 
 	/**Replica as alterações do colaborador no candidato */
@@ -1348,7 +1349,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findComNotaDoCurso(colaboradorIds, turmaId);
 	}
 
-	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa) throws Exception{
+	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa, Date dataAlteracao, boolean dadosIntegradosAtualizados) 
+			throws IntegraACException, Exception{
 		try{
 			Colaborador colaboradorOriginal = findColaboradorById(colaborador.getId());
 			getDao().updateInfoPessoais(colaborador);
@@ -1358,18 +1360,20 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaboradorIdiomaManager.removeColaborador(colaborador);
 			experienciaManager.removeColaborador(colaborador);
 
+			if(dadosIntegradosAtualizados)
+				if(empresa.isAcIntegra() && verifyExists(new String[]{"id", "naoIntegraAc", "codigoAC"}, new Object[]{colaborador.getId(), false, colaborador.getCodigoAC()})){
+					colaborador = findColaboradorById(colaborador.getId());
+					acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa, dataAlteracao);
+				}
+
 			saveDetalhes(colaborador, formacaos, idiomas, experiencias);
-
-			if(empresa.isAcIntegra() && verifyExists(new String[]{"id", "naoIntegraAc", "codigoAC"}, new Object[]{colaborador.getId(), false, colaborador.getCodigoAC()})){
-				colaborador = findColaboradorById(colaborador.getId());
-				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa);
-			}
-
 			Colaborador colaboradorAtualizado = findColaboradorById(colaborador.getId());
 			replicaUpdateCandidato(findAllRelacionamentos(colaborador.getId()), idiomas);
 			
 			gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
-		} catch (Exception e){
+		}catch (IntegraACException e){
+			throw new IntegraACException(e.getMessage());
+		}catch (Exception e){
 			e.printStackTrace();
 			throw new Exception("Não foi possível editar o colaborador.");
 		}
@@ -2934,7 +2938,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.getContato().setFoneCelular("9" + colaborador.getContato().getFoneCelular());
 			
 			if (!colaborador.isNaoIntegraAc() && colaborador.getEmpresa().isAcIntegra()){
-				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, colaborador.getEmpresa().getCodigoAC()), colaborador.getEmpresa());
+				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, colaborador.getEmpresa().getCodigoAC()), colaborador.getEmpresa(), null);
 			}
 			
 			getDao().update(colaborador);

@@ -36,11 +36,11 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 	}
 
 	//atualiza apenas o epg
-	public void atualizar(TEmpregado empregado, Empresa empresa) throws Exception {
+	public void atualizar(TEmpregado empregado, Empresa empresa, Date dataAlteracao) throws IntegraACException, Exception {
 		try {
 			StringBuilder token = new StringBuilder();
 			GrupoAC grupoAC = new GrupoAC();
-			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "atualizarEmpregado");
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "atualizarEmpregadoComHistorico");
 
 			QName qname = new QName(grupoAC.getAcUrlWsdl(), "TEmpregado");
 			call.registerTypeMapping(TEmpregado.class, qname, new BeanSerializerFactory(TEmpregado.class, qname), new BeanDeserializerFactory(TEmpregado.class, qname));
@@ -50,19 +50,20 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 			call.addParameter("Token", xmlstring, ParameterMode.IN);
 			call.addParameter("Empregado", xmltype, ParameterMode.IN);
+			call.addParameter("DataHistorico", xmlstring, ParameterMode.IN);
 
 			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
-			Object[] param = new Object[] { token.toString(), empregado };
+			Object[] param = new Object[] { token.toString(), empregado, DateUtil.formataDiaMesAno(dataAlteracao)};
 
 			TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
-			boolean retorno = result.getSucesso("atualizarEmpregado", param, this.getClass()); 
-            if(!retorno)
-				throw new Exception();
-
+			boolean retorno = result.getSucesso("atualizarEmpregadoComHistorico", param, this.getClass()); 
+			if(!retorno){
+				throw new Exception(result.getException());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new IntegraACException(e, "Não foi possível atualizar este colaborador no Fortes Pessoal.");
+			throw new IntegraACException(e, "Não foi possível gravar a atualização das informações. " + e.getMessage());
 		}
 	}
 

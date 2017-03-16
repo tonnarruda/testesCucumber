@@ -16,7 +16,7 @@ import com.fortes.rh.model.ws.TSituacao;
 
 public interface AcPessoalClientColaborador
 {
-	public void atualizar(TEmpregado empregado, Empresa empresa) throws Exception;
+	public void atualizar(TEmpregado empregado, Empresa empresa, Date dataAlteracao) throws IntegraACException, Exception;
 
 	public boolean contratar(TEmpregado empregado, TSituacao situacao, Empresa empresa);
 

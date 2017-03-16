@@ -281,6 +281,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	
 	private ParametrosDoSistema parametrosDoSistema;
 	private ConfiguracaoCampoExtraVisivelObrigadotorio campoExtraVisivelObrigadotorio;
+	private boolean dadosIntegradosAtualizados = false;
+	private Date dataAlteracao = null;
 	
 	private void prepare() throws Exception
 	{
@@ -292,7 +294,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		{
 			addActionError(e.getMessage());
 		}
-		
+		dataAlteracao = new Date();
 		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		
 		obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
@@ -409,6 +411,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public String prepareUpdateInfoPessoais() throws Exception
 	{
+		dadosIntegradosAtualizados = false;
+		dataAlteracao = new Date();
+		
 		Map session = ActionContext.getContext().getSession();
 		colaborador = SecurityUtil.getColaboradorSession(session);
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
@@ -845,16 +850,16 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if(colaborador.getVinculo().equals(Vinculo.SOCIO))
 				colaborador.setNaoIntegraAc(true);
 			
-			colaboradorManager.update(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(),editarHistorico, salarioColaborador);
+			colaboradorManager.update(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(),editarHistorico, salarioColaborador, dataAlteracao, dadosIntegradosAtualizados);
 			
 			boolean removeAvGestor = (getColaboradorSistemaId() == colaboradorAux.getId()) && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA"}); 
 			colaboradorPeriodoExperienciaAvaliacaoManager.atualizaConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor, removeAvGestor);
 		}
 		catch (IntegraACException e)
 		{
-			addActionError("Erro ao gravar as informações do colaborador no Fortes Pessoal.");
+			dadosIntegradosAtualizados = true;
+			addActionError(e.getMessage());
 			prepareUpdate();
-			
 			return Action.INPUT;
 		}
 		catch (LimiteColaboradorExceditoException e)
@@ -885,10 +890,15 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			recuperarSessao();
 			
 			colaborador.setDataAtualizacao(new Date());
-			colaboradorManager.updateInfoPessoais(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema());
+			colaboradorManager.updateInfoPessoais(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(), dataAlteracao, dadosIntegradosAtualizados);
 			prepareUpdateInfoPessoais();
-			
 			addActionSuccess("Dados atualizado com sucesso.");
+		}
+		catch (IntegraACException e){
+			dataAlteracao = new Date();
+			dadosIntegradosAtualizados = true;
+			prepareUpdateInfoPessoais();
+			addActionError(e.getMessage());
 		}
 		catch (Exception e)
 		{
@@ -2040,5 +2050,21 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public ConfiguracaoCampoExtraVisivelObrigadotorio getCampoExtraVisivelObrigadotorio() {
 		return campoExtraVisivelObrigadotorio;
+	}
+	
+	public boolean isDadosIntegradosAtualizados() {
+		return dadosIntegradosAtualizados;
+	}
+
+	public void setDadosIntegradosAtualizados(boolean dadosIntegradosAtualizados) {
+		this.dadosIntegradosAtualizados = dadosIntegradosAtualizados;
+	}
+	
+	public Date getDataAlteracao() {
+		return dataAlteracao;
+	}
+
+	public void setDataAlteracao(Date dataAlteracao) {
+		this.dataAlteracao = dataAlteracao;
 	}
 }

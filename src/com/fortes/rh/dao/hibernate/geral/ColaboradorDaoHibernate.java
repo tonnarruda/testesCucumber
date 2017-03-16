@@ -507,7 +507,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("emp.nome"), "empresaNome");
 		p.add(Projections.property("emp.codigoAC"), "empresaCodigoAC");
 		p.add(Projections.property("emp.grupoAC"), "empresaGrupoAC");
+		p.add(Projections.property("emp.acIntegra"), "empresaAcIntegra");
 		p.add(Projections.property("emp.campoExtraColaborador"), "campoExtraColaborador");
+		p.add(Projections.property("c.naoIntegraAc"), "naoIntegraAc");
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.id", id));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));

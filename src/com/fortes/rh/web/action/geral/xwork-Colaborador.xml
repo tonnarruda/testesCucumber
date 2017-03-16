@@ -289,6 +289,7 @@
 			<result name="success" type="redirect">list.action</result>
 			<result name="dependente" type="redirect">/geral/dependente/list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorEdit.ftl</result>
+			
 		</action>
 
 		<action name="showFoto" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="showFoto" />

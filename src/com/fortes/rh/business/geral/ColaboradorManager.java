@@ -52,7 +52,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	@Audita(operacao="Inserção", auditor=ColaboradorAuditorCallbackImpl.class)
 	public boolean insert(Colaborador colaborador, Double salarioColaborador, Long idCandidato, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Solicitacao solicitacao, Empresa empresa, Long candidatoSolicitacaoId) throws Exception;
 	@Audita(operacao="Atualização", auditor=ColaboradorAuditorCallbackImpl.class)
-	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception;
+	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa, boolean editarHistorico, Double salarioColaborador, Date dataAlteracao, boolean dadosIntegradosAtualizados)  throws IntegraACException, Exception;
 	@Audita(operacao="Remoção", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void remove(Colaborador colaborador, Empresa empresa) throws Exception;
 	@Audita(operacao="Desligamento", auditor=ColaboradorAuditorCallbackImpl.class)
@@ -120,7 +120,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findAllSelect(String situacao, Long notUsuarioId, Long... empresaIds);
 	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds, Boolean colabDesligado);
 	public Collection<Colaborador> findComNotaDoCurso(Collection<Long> colaboradorIds, Long turmaId);
-	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa) throws Exception;
+	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa, Date dataAlteracao, boolean dadosIntegradosAtualizados) throws IntegraACException, Exception;
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId);
 	public Colaborador updateEmpregado(TEmpregado empregado) throws Exception;
 	public void saveEmpregadosESituacoes(TEmpregado[] tEmpregados, TSituacao[] tSituacoes, Empresa empresa) throws Exception;

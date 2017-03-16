@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.security.SecurityManager;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -45,6 +46,8 @@ public class AuditoriaGeralAdvice implements MethodInterceptor {
 			e.printStackTrace();
 			if (e.getCause() instanceof FortesException)
 				throw new FortesException(e.getCause().getMessage());	
+			if(e.getCause() instanceof IntegraACException)
+				throw new IntegraACException(e.getCause().getMessage());
 			return null;
 		}
 	}
