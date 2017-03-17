@@ -21,8 +21,16 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 	public Collection<Anuncio> findAnunciosSolicitacaoAberta(Long empresaIdExterno)
 	{
 		Criteria criteria = getSession().createCriteria(Anuncio.class, "a");
-		criteria.createAlias("a.solicitacao", "s");
-		criteria.createAlias("s.candidatoSolicitacaos", "cs", Criteria.LEFT_JOIN);
+		criteria.createCriteria("a.solicitacao", "s");
+		criteria.createCriteria("s.empresa", "e");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.titulo"), "titulo");
+		p.add(Projections.property("a.dataPrevisaoEncerramento"), "dataPrevisaoEncerramento");
+		p.add(Projections.property("s.quantidade"), "projectionSolicitacaoQtde");
+		p.add(Projections.property("e.nome"), "projectionSolicitacaoEmpresaNome");
+		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("s.encerrada", false));
 		criteria.add(Expression.eq("s.suspensa", false));
@@ -36,6 +44,7 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 		criteria.addOrder(Order.asc("a.titulo"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();
 	}

@@ -66,7 +66,7 @@
 							<strong>${anuncio.titulo}</strong>  
 							(Você já está concorrendo a esta vaga) <br />
 							
-							<#if (anuncio.qtdAvaliacoes > 0) && (anuncio.qtdAvaliacoes > anuncio.qtdAvaliacoesRespondidas)>
+							<#if (anuncio.qtdAvaliacoes?exists && anuncio.qtdAvaliacoes > 0) && (anuncio.qtdAvaliacoes > anuncio.qtdAvaliacoesRespondidas)>
 								<a href="javascript:;" onclick="menuAvaliacoesSolicitacao(${anuncio.id}, '${anuncio.titulo}', ${anuncio.solicitacao.id});">Responder às avaliações</a>
 							</#if>
 						<#else>
