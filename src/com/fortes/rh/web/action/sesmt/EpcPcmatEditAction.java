@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.EpcManager;
 import com.fortes.rh.business.sesmt.EpcPcmatManager;
 import com.fortes.rh.model.sesmt.Epc;
@@ -14,8 +16,8 @@ import com.opensymphony.xwork.Action;
 public class EpcPcmatEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private EpcPcmatManager epcPcmatManager;
-	private EpcManager epcManager;
+	@Autowired private EpcPcmatManager epcPcmatManager;
+	@Autowired private EpcManager epcManager;
 	
 	private EpcPcmat epcPcmat;
 	private Pcmat pcmat;
@@ -112,19 +114,10 @@ public class EpcPcmatEditAction extends MyActionSupportList
 	{
 		this.epcPcmat = epcPcmat;
 	}
-
-	public void setEpcPcmatManager(EpcPcmatManager epcPcmatManager)
-	{
-		this.epcPcmatManager = epcPcmatManager;
-	}
 	
 	public Collection<EpcPcmat> getEpcPcmats()
 	{
 		return epcPcmats;
-	}
-
-	public void setEpcManager(EpcManager epcManager) {
-		this.epcManager = epcManager;
 	}
 
 	public Collection<Epc> getEpcs() {

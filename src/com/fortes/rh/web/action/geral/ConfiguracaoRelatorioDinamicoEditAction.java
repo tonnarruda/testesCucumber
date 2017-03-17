@@ -1,6 +1,8 @@
 package com.fortes.rh.web.action.geral;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManager;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.ActionContext;
 public class ConfiguracaoRelatorioDinamicoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
+	@Autowired private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
 
 	private String campos;
 	private String titulo;
@@ -24,11 +26,6 @@ public class ConfiguracaoRelatorioDinamicoEditAction extends MyActionSupportList
 			e.printStackTrace();
 			return Action.ERROR;			
 		}
-	}
-
-	public void setConfiguracaoRelatorioDinamicoManager(ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager)
-	{
-		this.configuracaoRelatorioDinamicoManager = configuracaoRelatorioDinamicoManager;
 	}
 
 	public String getCampos() {
@@ -46,5 +43,4 @@ public class ConfiguracaoRelatorioDinamicoEditAction extends MyActionSupportList
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
-
 }

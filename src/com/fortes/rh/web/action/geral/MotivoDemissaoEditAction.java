@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.geral;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -9,7 +11,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class MotivoDemissaoEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private MotivoDemissaoManager motivoDemissaoManager;
+	@Autowired private MotivoDemissaoManager motivoDemissaoManager;
 	
 	private MotivoDemissao motivoDemissao;
 	
@@ -69,11 +71,6 @@ public class MotivoDemissaoEditAction extends MyActionSupportEdit implements Mod
 	public void setMotivoDemissao(MotivoDemissao motivoDemissao)
 	{
 		this.motivoDemissao = motivoDemissao;
-	}
-
-	public void setMotivoDemissaoManager(MotivoDemissaoManager motivoDemissaoManager)
-	{
-		this.motivoDemissaoManager = motivoDemissaoManager;
 	}
 
 	public boolean isExibeFlagTurnover() {

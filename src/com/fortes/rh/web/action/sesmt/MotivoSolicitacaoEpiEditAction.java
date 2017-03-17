@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.MotivoSolicitacaoEpiManager;
 import com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.Action;
 public class MotivoSolicitacaoEpiEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private MotivoSolicitacaoEpiManager motivoSolicitacaoEpiManager;
+	@Autowired private MotivoSolicitacaoEpiManager motivoSolicitacaoEpiManager;
 	private MotivoSolicitacaoEpi motivoSolicitacaoEpi;
 	private Collection<MotivoSolicitacaoEpi> motivoSolicitacaoEpis;
 
@@ -103,11 +105,6 @@ public class MotivoSolicitacaoEpiEditAction extends MyActionSupportList
 	public void setMotivoSolicitacaoEpi(MotivoSolicitacaoEpi motivoSolicitacaoEpi)
 	{
 		this.motivoSolicitacaoEpi = motivoSolicitacaoEpi;
-	}
-
-	public void setMotivoSolicitacaoEpiManager(MotivoSolicitacaoEpiManager motivoSolicitacaoEpiManager)
-	{
-		this.motivoSolicitacaoEpiManager = motivoSolicitacaoEpiManager;
 	}
 	
 	public Collection<MotivoSolicitacaoEpi> getMotivoSolicitacaoEpis()

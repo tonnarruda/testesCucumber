@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.EngenheiroResponsavelManager;
 import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class EngenheiroResponsavelListAction extends MyActionSupportList
 {
-	private EngenheiroResponsavelManager engenheiroResponsavelManager;
+	@Autowired private EngenheiroResponsavelManager engenheiroResponsavelManager;
 
 	private Collection<EngenheiroResponsavel> engenheiroResponsavels;
 
@@ -57,9 +59,5 @@ public class EngenheiroResponsavelListAction extends MyActionSupportList
 
 	public void setEngenheiroResponsavel(EngenheiroResponsavel engenheiroResponsavel){
 		this.engenheiroResponsavel=engenheiroResponsavel;
-	}
-
-	public void setEngenheiroResponsavelManager(EngenheiroResponsavelManager engenheiroResponsavelManager){
-		this.engenheiroResponsavelManager=engenheiroResponsavelManager;
 	}
 }

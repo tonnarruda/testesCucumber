@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -27,10 +28,10 @@ public class PppEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ColaboradorManager colaboradorManager;
-	private FuncaoManager funcaoManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private EmpresaManager empresaManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private EmpresaManager empresaManager;
 
 	private Colaborador colaborador;
 	private String nit;
@@ -49,7 +50,6 @@ public class PppEditAction extends MyActionSupportList
 	private String cpfBusca;
 	private boolean imprimirRecibo = false;
 
-	@SuppressWarnings("unchecked")
 	public String list() throws Exception
 	{
 		Map<String, Object> parametros = new HashMap<String, Object>();
@@ -151,10 +151,7 @@ public class PppEditAction extends MyActionSupportList
 	{
 		this.responsavel = responsavel;
 	}
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
+
 	public Collection<PppRelatorio> getDataSource()
 	{
 		return dataSource;
@@ -164,13 +161,12 @@ public class PppEditAction extends MyActionSupportList
 	{
 		return observacoes;
 	}
+
 	public void setObservacoes(String observacoes)
 	{
 		this.observacoes = observacoes;
 	}
-	public void setFuncaoManager(FuncaoManager funcaoManager) {
-		this.funcaoManager = funcaoManager;
-	}
+
 	public Collection<Colaborador> getColaboradors() {
 		return colaboradors;
 	}
@@ -199,10 +195,6 @@ public class PppEditAction extends MyActionSupportList
 		return respostas;
 	}
 
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
 	public Date getData() {
 		return data;
 	}
@@ -217,10 +209,6 @@ public class PppEditAction extends MyActionSupportList
 
 	public void setImprimirRecibo(boolean imprimirRecibo) {
 		this.imprimirRecibo = imprimirRecibo;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 
 	public Empresa getEmpresa() {

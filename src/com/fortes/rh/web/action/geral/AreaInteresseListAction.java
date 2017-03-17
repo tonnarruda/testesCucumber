@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.AreaInteresseManager;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class AreaInteresseListAction extends MyActionSupportList
 {
-	private AreaInteresseManager areaInteresseManager;
+	@Autowired private AreaInteresseManager areaInteresseManager;
 
 	private Collection<AreaInteresse> areaInteresses;
 	private AreaInteresse areaInteresse;
@@ -56,9 +58,5 @@ public class AreaInteresseListAction extends MyActionSupportList
 
 	public void setAreaInteresse(AreaInteresse areaInteresse){
 		this.areaInteresse=areaInteresse;
-	}
-
-	public void setAreaInteresseManager(AreaInteresseManager areaInteresseManager){
-		this.areaInteresseManager=areaInteresseManager;
 	}
 }

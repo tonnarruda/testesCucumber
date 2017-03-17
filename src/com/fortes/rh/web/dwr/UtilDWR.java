@@ -134,16 +134,4 @@ public class UtilDWR
 		 }
 		 return valor;
 	}
-	
-	@RemoteMethod
-	public void setAcPessoalClient(AcPessoalClient acPessoalClient)
-	{
-		this.acPessoalClient = acPessoalClient;
-	}
-
-	@RemoteMethod
-	public void setMail(Mail mail)
-	{
-		this.mail = mail;
-	}
 }

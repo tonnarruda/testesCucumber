@@ -9,6 +9,7 @@ import javax.xml.rpc.ParameterMode;
 import org.apache.axis.client.Call;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.exception.IntegraACException;
@@ -23,7 +24,7 @@ import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 @Component
 public class AcPessoalClientCargo
 {
-	private AcPessoalClient acPessoalClient;
+	@Autowired private AcPessoalClient acPessoalClient;
 
 	public boolean deleteCargo(String[] codigoACs, Empresa empresa) throws Exception{
 		try{
@@ -201,10 +202,5 @@ public class AcPessoalClientCargo
             e.printStackTrace();
             throw e;
         }
-	}
-
-	public void setAcPessoalClient(AcPessoalClient acPessoalClient)
-	{
-		this.acPessoalClient = acPessoalClient;
 	}
 }

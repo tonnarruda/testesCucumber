@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.io.File;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.DocumentoVersaoManager;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.webwork.ServletActionContext;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class DocumentoVersaoListAction extends MyActionSupportList
 {
-	private DocumentoVersaoManager documentoVersaoManager;
+	@Autowired private DocumentoVersaoManager documentoVersaoManager;
 
 	String textoXml = "";
 
@@ -26,11 +28,6 @@ public class DocumentoVersaoListAction extends MyActionSupportList
 		textoXml = documentoVersaoManager.lerArquivoXML(xmlFile);
 
 		return Action.SUCCESS;
-	}
-
-	public void setDocumentoVersaoManager(DocumentoVersaoManager documentoVersaoManager)
-	{
-		this.documentoVersaoManager = documentoVersaoManager;
 	}
 
 	public String getTextoXml()
@@ -58,5 +55,4 @@ public class DocumentoVersaoListAction extends MyActionSupportList
 				file.delete();
 		}
 	}
-
 }

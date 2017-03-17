@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ConfiguracaoLimiteColaboradorManager;
@@ -20,10 +22,10 @@ import com.opensymphony.xwork.Action;
 public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager;
-	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private CargoManager cargoManager;
+	@Autowired private ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager;
+	@Autowired private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private CargoManager cargoManager;
 	
 	private ConfiguracaoLimiteColaborador configuracaoLimiteColaborador;
 	private Collection<ConfiguracaoLimiteColaborador> configuracaoLimiteColaboradors;
@@ -147,11 +149,6 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	{
 		this.configuracaoLimiteColaborador = configuracaoLimiteColaborador;
 	}
-
-	public void setConfiguracaoLimiteColaboradorManager(ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager)
-	{
-		this.configuracaoLimiteColaboradorManager = configuracaoLimiteColaboradorManager;
-	}
 	
 	public Collection<ConfiguracaoLimiteColaborador> getConfiguracaoLimiteColaboradors()
 	{
@@ -160,10 +157,6 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 
 	public Collection<AreaOrganizacional> getAreaOrganizacionais() {
 		return areaOrganizacionais;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public Long getEmpresaId() {
@@ -180,14 +173,6 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 
 	public Collection<Cargo> getCargos() {
 		return cargos;
-	}
-
-	public void setCargoManager(CargoManager cargoManager) {
-		this.cargoManager = cargoManager;
-	}
-
-	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {
-		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
 	}
 
 	public Long[] getIdsFamiliasAreasJaConfiguradas() {

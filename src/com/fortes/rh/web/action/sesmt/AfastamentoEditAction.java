@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 
 public class AfastamentoEditAction extends MyActionSupportList
 {
-	private AfastamentoManager afastamentoManager;
+	@Autowired private AfastamentoManager afastamentoManager;
 	private Afastamento afastamento;
 	private Collection<Afastamento> afastamentos;
 
@@ -72,11 +74,6 @@ public class AfastamentoEditAction extends MyActionSupportList
 	public void setAfastamento(Afastamento afastamento)
 	{
 		this.afastamento = afastamento;
-	}
-
-	public void setAfastamentoManager(AfastamentoManager afastamentoManager)
-	{
-		this.afastamentoManager = afastamentoManager;
 	}
 
 	public Collection<Afastamento> getAfastamentos()

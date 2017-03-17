@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.sesmt;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.AnexoManager;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.sesmt.Anexo;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class AnexoListAction extends MyActionSupportList
 {
-	private AnexoManager anexoManager;
+	@Autowired private AnexoManager anexoManager;
 
 	private Anexo anexo;
 
@@ -40,13 +42,8 @@ public class AnexoListAction extends MyActionSupportList
 		return anexo;
 	}
 
-	public void setAnexoManager(AnexoManager anexoManager){
-		this.anexoManager=anexoManager;
-	}
-
 	public void setAnexo(Anexo anexo)
 	{
 		this.anexo = anexo;
 	}
-
 }

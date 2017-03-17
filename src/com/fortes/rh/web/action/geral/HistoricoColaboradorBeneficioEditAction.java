@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.BeneficioManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.HistoricoColaboradorBeneficioManager;
@@ -19,9 +21,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings({"serial"})
 public class HistoricoColaboradorBeneficioEditAction extends MyActionSupportEdit
 {
-	private HistoricoColaboradorBeneficioManager historicoColaboradorBeneficioManager;
-	private ColaboradorManager colaboradorManager;
-	private BeneficioManager beneficioManager;
+	@Autowired private HistoricoColaboradorBeneficioManager historicoColaboradorBeneficioManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private BeneficioManager beneficioManager;
 
 	private HistoricoColaboradorBeneficio historicoColaboradorBeneficio;
 	private Colaborador colaborador;
@@ -185,16 +187,6 @@ public class HistoricoColaboradorBeneficioEditAction extends MyActionSupportEdit
 		this.historicoColaboradorBeneficio = historicoColaboradorBeneficio;
 	}
 
-	public void setHistoricoColaboradorBeneficioManager(HistoricoColaboradorBeneficioManager historicoColaboradorBeneficioManager)
-	{
-		this.historicoColaboradorBeneficioManager = historicoColaboradorBeneficioManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Colaborador getColaborador()
 	{
 		return colaborador;
@@ -208,11 +200,6 @@ public class HistoricoColaboradorBeneficioEditAction extends MyActionSupportEdit
 	public Collection<CheckBox> getBeneficiosCheckList()
 	{
 		return beneficiosCheckList;
-	}
-
-	public void setBeneficioManager(BeneficioManager beneficioManager)
-	{
-		this.beneficioManager = beneficioManager;
 	}
 
 	public void setBeneficiosCheckList(Collection<CheckBox> beneficiosCheckList)

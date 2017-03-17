@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ExtintorManager;
 import com.fortes.rh.business.sesmt.ExtintorManutencaoManager;
@@ -22,9 +24,10 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 
-	private ExtintorManutencaoManager extintorManutencaoManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private ExtintorManager extintorManager;
+	@Autowired private ExtintorManutencaoServicoManager extintorManutencaoServicoManager;
+	@Autowired private ExtintorManutencaoManager extintorManutencaoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ExtintorManager extintorManager;
 
 	private Extintor extintor;
 	private ExtintorManutencao extintorManutencao;
@@ -34,7 +37,6 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 	private Collection<Extintor> extintors;
 	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<ExtintorManutencaoServico> extintorManutencaoServicos;
-	private ExtintorManutencaoServicoManager extintorManutencaoServicoManager;
 
 	private String[] servicoChecks;
 
@@ -205,15 +207,6 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 		this.extintorManutencao = extintorManutencao;
 	}
 
-	public void setExtintorManutencaoManager(ExtintorManutencaoManager extintorManutencaoManager)
-	{
-		this.extintorManutencaoManager = extintorManutencaoManager;
-	}
-	public void setExtintorManager(ExtintorManager extintorManager)
-	{
-		this.extintorManager = extintorManager;
-	}
-
 	public Collection<Extintor> getExtintors()
 	{
 		return extintors;
@@ -289,16 +282,6 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 		return extintorManutencaoServicos;
 	}
 
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setExtintorManutencaoServicoManager(ExtintorManutencaoServicoManager extintorManutencaoServicoManager)
-	{
-		this.extintorManutencaoServicoManager = extintorManutencaoServicoManager;
-	}
-
 	public boolean isSomenteSemRetorno()
 	{
 		return somenteSemRetorno;
@@ -330,10 +313,6 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 
 	public Map getParametros() {
 		return parametros;
-	}
-
-	public EstabelecimentoManager getEstabelecimentoManager() {
-		return estabelecimentoManager;
 	}
 
 	public Extintor getExtintor() {

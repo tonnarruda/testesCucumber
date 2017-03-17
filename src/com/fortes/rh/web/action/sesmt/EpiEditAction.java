@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.EpiHistoricoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
@@ -29,12 +31,12 @@ public class EpiEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 	
-	private EpiManager epiManager;
-	private TipoEPIManager tipoEPIManager;
-	private EpiHistoricoManager epiHistoricoManager;
-	private ColaboradorManager colaboradorManager;
-	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
-	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
+	@Autowired private EpiManager epiManager;
+	@Autowired private TipoEPIManager tipoEPIManager;
+	@Autowired private EpiHistoricoManager epiHistoricoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
+	@Autowired private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
 
 	private Epi epi;
 	private EpiHistorico epiHistorico;
@@ -196,16 +198,6 @@ public class EpiEditAction extends MyActionSupportEdit
 		this.epi = epi;
 	}
 
-	public void setEpiManager(EpiManager epiManager)
-	{
-		this.epiManager = epiManager;
-	}
-
-	public void setTipoEPIManager(TipoEPIManager tipoEPIManager)
-	{
-		this.tipoEPIManager = tipoEPIManager;
-	}
-
 	public Collection<EpiHistorico> getEpiHistoricos()
 	{
 		return epiHistoricos;
@@ -216,11 +208,6 @@ public class EpiEditAction extends MyActionSupportEdit
 		this.epiHistoricos = epiHistoricos;
 	}
 
-	public void setEpiHistoricoManager(EpiHistoricoManager epiHistoricoManager)
-	{
-		this.epiHistoricoManager = epiHistoricoManager;
-	}
-
 	public EpiHistorico getEpiHistorico()
 	{
 		return epiHistorico;
@@ -229,11 +216,6 @@ public class EpiEditAction extends MyActionSupportEdit
 	public void setEpiHistorico(EpiHistorico epiHistorico)
 	{
 		this.epiHistorico = epiHistorico;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public Collection<Colaborador> getColaboradors()
@@ -277,15 +259,7 @@ public class EpiEditAction extends MyActionSupportEdit
 		return dataSourceFichaEpi;
 	}
 
-	public void setSolicitacaoEpiItemManager(SolicitacaoEpiItemManager solicitacaoEpiItemManager) {
-		this.solicitacaoEpiItemManager = solicitacaoEpiItemManager;
-	}
-
 	public void setSolicitacaoEpi(SolicitacaoEpi solicitacaoEpi) {
 		this.solicitacaoEpi = solicitacaoEpi;
-	}
-
-	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
-		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
 	}
 }

@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.CidManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -20,13 +22,13 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 
-	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
-	private ColaboradorAfastamento colaboradorAfastamento;
-	private ColaboradorManager colaboradorManager;
-	private AfastamentoManager afastamentoManager;
-	private CidManager cidManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private AfastamentoManager afastamentoManager;
+	@Autowired private CidManager cidManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
+	private ColaboradorAfastamento colaboradorAfastamento;
 	private Collection<Afastamento> afastamentos;
 
 	private Collection<Colaborador> colaboradors;
@@ -147,16 +149,6 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 		this.colaboradorAfastamento = colaboradorAfastamento;
 	}
 
-	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager)
-	{
-		this.colaboradorAfastamentoManager = colaboradorAfastamentoManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Collection<Colaborador> getColaboradors()
 	{
 		return colaboradors;
@@ -177,21 +169,7 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 		return afastamentos;
 	}
 
-	public void setAfastamentoManager(AfastamentoManager afastamentoManager)
-	{
-		this.afastamentoManager = afastamentoManager;
-	}
-
-	public void setCidManager(CidManager cidManager) {
-		this.cidManager = cidManager;
-	}
-
 	public String getDescricao() {
 		return descricao;
-	}
-
-	public void setGerenciadorComunicacaoManager(
-			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

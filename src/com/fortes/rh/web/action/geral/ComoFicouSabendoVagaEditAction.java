@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ComoFicouSabendoVagaManager;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.util.DateUtil;
@@ -16,7 +18,7 @@ import com.opensymphony.xwork.Action;
 public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private ComoFicouSabendoVagaManager comoFicouSabendoVagaManager;
+	@Autowired private ComoFicouSabendoVagaManager comoFicouSabendoVagaManager;
 	private ComoFicouSabendoVaga comoFicouSabendoVaga;
 	private Collection<ComoFicouSabendoVaga> comoFicouSabendoVagas;
 	private Collection<ComoFicouSabendoVaga> dataSource;
@@ -121,11 +123,6 @@ public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
 	public void setComoFicouSabendoVaga(ComoFicouSabendoVaga comoFicouSabendoVaga)
 	{
 		this.comoFicouSabendoVaga = comoFicouSabendoVaga;
-	}
-
-	public void setComoFicouSabendoVagaManager(ComoFicouSabendoVagaManager comoFicouSabendoVagaManager)
-	{
-		this.comoFicouSabendoVagaManager = comoFicouSabendoVagaManager;
 	}
 	
 	public Collection<ComoFicouSabendoVaga> getComoFicouSabendoVagas()

@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
@@ -20,9 +22,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings({"serial"})
 public class DocumentoAnexoEditAction extends MyActionSupportEdit
 {
-	private DocumentoAnexoManager documentoAnexoManager;
-	private EtapaSeletivaManager etapaSeletivaManager;
-	private TipoDocumentoManager tipoDocumentoManager;
+	@Autowired private DocumentoAnexoManager documentoAnexoManager;
+	@Autowired private EtapaSeletivaManager etapaSeletivaManager;
+	@Autowired private TipoDocumentoManager tipoDocumentoManager;
 
 	private DocumentoAnexo documentoAnexo;
 	private Collection<EtapaSeletiva> etapaSeletivas;
@@ -227,11 +229,6 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		this.documentoAnexo = documentoAnexo;
 	}
 
-	public void setDocumentoAnexoManager(DocumentoAnexoManager documentoAnexoManager)
-	{
-		this.documentoAnexoManager = documentoAnexoManager;
-	}
-
 	public Collection<EtapaSeletiva> getEtapaSeletivas()
 	{
 		return etapaSeletivas;
@@ -240,11 +237,6 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 	public void setEtapaSeletivas(Collection<EtapaSeletiva> etapaSeletivas)
 	{
 		this.etapaSeletivas = etapaSeletivas;
-	}
-
-	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager)
-	{
-		this.etapaSeletivaManager = etapaSeletivaManager;
 	}
 
 	public com.fortes.model.type.File getDocumento()
@@ -332,10 +324,6 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		this.tipoDocumentos = tipoDocumentos;
 	}
 
-	public void setTipoDocumentoManager(TipoDocumentoManager tipoDocumentoManager) {
-		this.tipoDocumentoManager = tipoDocumentoManager;
-	}
-
 	public void setOrigemDocumento(Character origemDocumento) {
 		this.origemDocumento = origemDocumento;
 	}
@@ -351,5 +339,4 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 	public void setOrigemIdDocumento(Long origemIdDocumento) {
 		this.origemIdDocumento = origemIdDocumento;
 	}
-
 }

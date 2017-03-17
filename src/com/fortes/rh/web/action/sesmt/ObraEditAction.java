@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.sesmt.ObraManager;
@@ -16,9 +18,9 @@ public class ObraEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ObraManager obraManager;
-	private EstadoManager estadoManager;
-	private CidadeManager cidadeManager;
+	@Autowired private ObraManager obraManager;
+	@Autowired private EstadoManager estadoManager;
+	@Autowired private CidadeManager cidadeManager;
 
 	private Obra obra;
 	
@@ -121,11 +123,6 @@ public class ObraEditAction extends MyActionSupportList
 	{
 		this.obra = obra;
 	}
-
-	public void setObraManager(ObraManager obraManager)
-	{
-		this.obraManager = obraManager;
-	}
 	
 	public Collection<Obra> getObras()
 	{
@@ -138,14 +135,6 @@ public class ObraEditAction extends MyActionSupportList
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public void setEstadoManager(EstadoManager estadoManager) {
-		this.estadoManager = estadoManager;
-	}
-
-	public void setCidadeManager(CidadeManager cidadeManager) {
-		this.cidadeManager = cidadeManager;
 	}
 
 	public Collection<Cidade> getCidades() {

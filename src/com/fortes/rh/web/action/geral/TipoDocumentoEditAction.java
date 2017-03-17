@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.TipoDocumentoManager;
 import com.fortes.rh.model.geral.TipoDocumento;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.Action;
 public class TipoDocumentoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private TipoDocumentoManager tipoDocumentoManager;
+	@Autowired private TipoDocumentoManager tipoDocumentoManager;
 	private TipoDocumento tipoDocumento;
 	private Collection<TipoDocumento> tipoDocumentos;
 
@@ -79,11 +81,6 @@ public class TipoDocumentoEditAction extends MyActionSupportList
 	public void setTipoDocumento(TipoDocumento tipoDocumento)
 	{
 		this.tipoDocumento = tipoDocumento;
-	}
-
-	public void setTipoDocumentoManager(TipoDocumentoManager tipoDocumentoManager)
-	{
-		this.tipoDocumentoManager = tipoDocumentoManager;
 	}
 	
 	public Collection<TipoDocumento> getTipoDocumentos()

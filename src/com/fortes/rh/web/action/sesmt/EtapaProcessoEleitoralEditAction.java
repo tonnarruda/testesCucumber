@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.sesmt.EleicaoManager;
 import com.fortes.rh.business.sesmt.EtapaProcessoEleitoralManager;
@@ -19,15 +20,13 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class EtapaProcessoEleitoralEditAction extends MyActionSupportEdit
 {
-	private EtapaProcessoEleitoralManager etapaProcessoEleitoralManager = null;
+	@Autowired private EleicaoManager eleicaoManager;
+	@Autowired private EtapaProcessoEleitoralManager etapaProcessoEleitoralManager;
+
 	private EtapaProcessoEleitoral etapaProcessoEleitoral;
 	private Eleicao eleicao;
 	private Collection<EtapaProcessoEleitoral> etapaProcessoEleitorals;
-	private EleicaoManager eleicaoManager;
-	
-
 	private String antesOuDepois = "";
-
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private Collection<EtapaProcessoEleitoral> dataSource;
 
@@ -136,11 +135,6 @@ public class EtapaProcessoEleitoralEditAction extends MyActionSupportEdit
 		this.etapaProcessoEleitoral = etapaProcessoEleitoral;
 	}
 
-	public void setEtapaProcessoEleitoralManager(EtapaProcessoEleitoralManager etapaProcessoEleitoralManager)
-	{
-		this.etapaProcessoEleitoralManager = etapaProcessoEleitoralManager;
-	}
-
 	public String getAntesOuDepois()
 	{
 		return antesOuDepois;
@@ -174,8 +168,5 @@ public class EtapaProcessoEleitoralEditAction extends MyActionSupportEdit
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
-	}
-	public void setEleicaoManager(EleicaoManager eleicaoManager) {
-		this.eleicaoManager = eleicaoManager;
 	}
 }

@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.GastoEmpresaItemManager;
 import com.fortes.rh.model.geral.GastoEmpresa;
 import com.fortes.rh.model.geral.GastoEmpresaItem;
@@ -17,7 +19,7 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings({"serial"})
 public class GastoEmpresaItemListAction extends MyActionSupportList
 {
-	private GastoEmpresaItemManager gastoEmpresaItemManager;
+	@Autowired private GastoEmpresaItemManager gastoEmpresaItemManager;
 
 	private Collection<GastoEmpresaItem> gastoEmpresaItems;
 
@@ -100,7 +102,6 @@ public class GastoEmpresaItemListAction extends MyActionSupportList
 		return gastoEmpresaItems;
 	}
 
-
 	public GastoEmpresaItem getGastoEmpresaItem(){
 		if(gastoEmpresaItem == null){
 			gastoEmpresaItem = new GastoEmpresaItem();
@@ -110,9 +111,5 @@ public class GastoEmpresaItemListAction extends MyActionSupportList
 
 	public void setGastoEmpresaItem(GastoEmpresaItem gastoEmpresaItem){
 		this.gastoEmpresaItem=gastoEmpresaItem;
-	}
-
-	public void setGastoEmpresaItemManager(GastoEmpresaItemManager gastoEmpresaItemManager){
-		this.gastoEmpresaItemManager=gastoEmpresaItemManager;
 	}
 }

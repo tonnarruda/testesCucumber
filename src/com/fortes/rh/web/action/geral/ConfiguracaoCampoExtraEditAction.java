@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
@@ -15,8 +17,8 @@ import com.opensymphony.xwork.ActionContext;
 public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
-	private EmpresaManager empresaManager;
+	@Autowired private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	@Autowired private EmpresaManager empresaManager;
 	
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras;
 	private int[] ordens = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
@@ -93,11 +95,6 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 		}
 		
 	}
-
-	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager)
-	{
-		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
-	}
 	
 	public Collection<ConfiguracaoCampoExtra> getConfiguracaoCampoExtras()
 	{
@@ -127,10 +124,6 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 
 	public Collection<Empresa> getEmpresas() {
 		return empresas;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 
 	public Empresa getEmpresa() {

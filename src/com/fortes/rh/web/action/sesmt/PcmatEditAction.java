@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.sesmt.ObraManager;
@@ -25,8 +26,8 @@ public class PcmatEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private PcmatManager pcmatManager;
-	private ObraManager obraManager;
+	@Autowired private PcmatManager pcmatManager;
+	@Autowired private ObraManager obraManager;
 	
 	private Pcmat pcmat;
 	private Pcmat ultimoPcmat;
@@ -199,11 +200,6 @@ public class PcmatEditAction extends MyActionSupportList
 	{
 		this.pcmat = pcmat;
 	}
-
-	public void setPcmatManager(PcmatManager pcmatManager)
-	{
-		this.pcmatManager = pcmatManager;
-	}
 	
 	public Collection<Pcmat> getPcmats()
 	{
@@ -212,10 +208,6 @@ public class PcmatEditAction extends MyActionSupportList
 
 	public Collection<Obra> getObras() {
 		return obras;
-	}
-
-	public void setObraManager(ObraManager obraManager) {
-		this.obraManager = obraManager;
 	}
 
 	public Obra getObra() {

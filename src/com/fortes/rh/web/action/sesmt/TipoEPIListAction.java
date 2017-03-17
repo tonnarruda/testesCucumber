@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class TipoEPIListAction extends MyActionSupportList
 {
-	private TipoEPIManager tipoEPIManager;
+	@Autowired private TipoEPIManager tipoEPIManager;
 
 	private Collection<TipoEPI> tipoEPIs;
 
@@ -67,9 +69,5 @@ public class TipoEPIListAction extends MyActionSupportList
 
 	public void setTipoEPI(TipoEPI tipoEPI){
 		this.tipoEPI=tipoEPI;
-	}
-
-	public void setTipoEPIManager(TipoEPIManager tipoEPIManager){
-		this.tipoEPIManager=tipoEPIManager;
 	}
 }

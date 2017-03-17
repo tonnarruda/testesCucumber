@@ -6,7 +6,6 @@ import org.springframework.aop.MethodBeforeAdvice;
 
 public class ModelValidationAdvice implements MethodBeforeAdvice
 {
-	@SuppressWarnings("unchecked")
 	public void before(Method m, Object[] args, Object target) throws Throwable
 	{
 		if ((args.length) > 0 && args[0] != null)			

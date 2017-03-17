@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ColaboradorIdiomaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.geral.Colaborador;
@@ -14,8 +16,8 @@ import com.opensymphony.xwork.Preparable;
 @SuppressWarnings("serial")
 public class ColaboradorIdiomaEditAction extends MyActionSupportEdit implements Preparable, ModelDriven
 {
-	private ColaboradorIdiomaManager colaboradorIdiomaManager;
-	private ColaboradorManager colaboradorManager;
+	@Autowired private ColaboradorIdiomaManager colaboradorIdiomaManager;
+	@Autowired private ColaboradorManager colaboradorManager;
 
 	private ColaboradorIdioma colaboradorIdioma;
 	private Collection<Colaborador> colaboradors;
@@ -70,13 +72,6 @@ public class ColaboradorIdiomaEditAction extends MyActionSupportEdit implements 
 		return getColaboradorIdioma();
 	}
 
-	public void setColaboradorIdiomaManager(ColaboradorIdiomaManager colaboradorIdiomaManager){
-		this.colaboradorIdiomaManager=colaboradorIdiomaManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
 	public Collection<Colaborador> getColaboradors() {
 		return colaboradors;
 	}

@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Ocorrencia;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class OcorrenciaListAction extends MyActionSupportList
 {
-	private OcorrenciaManager ocorrenciaManager;
+	@Autowired private OcorrenciaManager ocorrenciaManager;
 
 	private Collection<Ocorrencia> ocorrencias;
 
@@ -61,9 +63,5 @@ public class OcorrenciaListAction extends MyActionSupportList
 
 	public void setOcorrencia(Ocorrencia ocorrencia){
 		this.ocorrencia=ocorrencia;
-	}
-
-	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager){
-		this.ocorrenciaManager=ocorrenciaManager;
 	}
 }

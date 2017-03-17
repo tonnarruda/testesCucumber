@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
@@ -26,14 +28,14 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private MedicaoRiscoManager medicaoRiscoManager;
-	private AmbienteManager ambienteManager;
-	private FuncaoManager funcaoManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private CargoManager cargoManager;
-	private RiscoAmbienteManager riscoAmbienteManager;
-	private RiscoFuncaoManager riscoFuncaoManager;
-	private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
+	@Autowired private MedicaoRiscoManager medicaoRiscoManager;
+	@Autowired private AmbienteManager ambienteManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private RiscoAmbienteManager riscoAmbienteManager;
+	@Autowired private RiscoFuncaoManager riscoFuncaoManager;
+	@Autowired private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
 	
 	private Ambiente ambiente = new Ambiente();
 	private Funcao funcao = new Funcao();
@@ -253,19 +255,10 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	{
 		this.medicaoRisco = medicaoRisco;
 	}
-
-	public void setMedicaoRiscoManager(MedicaoRiscoManager medicaoRiscoManager)
-	{
-		this.medicaoRiscoManager = medicaoRiscoManager;
-	}
 	
 	public Collection<MedicaoRisco> getMedicaoRiscos()
 	{
 		return medicaoRiscos;
-	}
-
-	public void setAmbienteManager(AmbienteManager ambienteManager) {
-		this.ambienteManager = ambienteManager;
 	}
 
 	public Collection<Ambiente> getAmbientes() {
@@ -283,11 +276,6 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 
 	public void setAmbiente(Ambiente ambiente) {
 		this.ambiente = ambiente;
-	}
-
-	public void setEstabelecimentoManager(
-			EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public Collection<Estabelecimento> getEstabelecimentos() {
@@ -324,10 +312,6 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 
 	public void setTecnicaValues(String[] tecnicaValues) {
 		this.tecnicaValues = tecnicaValues;
-	}
-
-	public void setRiscoAmbienteManager(RiscoAmbienteManager riscoAmbienteManager) {
-		this.riscoAmbienteManager = riscoAmbienteManager;
 	}
 
 	public Collection<Risco> getRiscos() {
@@ -415,22 +399,5 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	
 	public void setControlaRiscoPor(char controlaRiscoPor) {
 		this.controlaRiscoPor = controlaRiscoPor;
-	}
-
-	public void setCargoManager(CargoManager cargoManager) {
-		this.cargoManager = cargoManager;
-	}
-
-	public void setFuncaoManager(FuncaoManager funcaoManager) {
-		this.funcaoManager = funcaoManager;
-	}
-
-	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
-		this.riscoFuncaoManager = riscoFuncaoManager;
-	}
-
-	public void setRiscoMedicaoRiscoManager(
-			RiscoMedicaoRiscoManager riscoMedicaoRiscoManager) {
-		this.riscoMedicaoRiscoManager = riscoMedicaoRiscoManager;
 	}
 }

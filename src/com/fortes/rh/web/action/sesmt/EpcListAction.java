@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.EpcManager;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class EpcListAction extends MyActionSupportList
 {
-	private EpcManager epcManager;
+	@Autowired private EpcManager epcManager;
 
 	private Collection<Epc> epcs;
 
@@ -76,9 +78,5 @@ public class EpcListAction extends MyActionSupportList
 
 	public void setEpc(Epc epc){
 		this.epc=epc;
-	}
-
-	public void setEpcManager(EpcManager epcManager){
-		this.epcManager=epcManager;
 	}
 }

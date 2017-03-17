@@ -4,6 +4,7 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.Collection;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.sesmt.TamanhoEPIManager;
@@ -14,7 +15,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class TamanhoEPIListAction extends MyActionSupportList
 {
-	private TamanhoEPIManager tamanhoEPIManager;
+	@Autowired private TamanhoEPIManager tamanhoEPIManager;
 
 	private Collection<TamanhoEPI> tamanhoEPIs;
 
@@ -47,14 +48,6 @@ public class TamanhoEPIListAction extends MyActionSupportList
 		return list();
 	}
 
-	public TamanhoEPIManager getTamanhoEPIManager() {
-		return tamanhoEPIManager;
-	}
-
-	public void setTamanhoEPIManager(TamanhoEPIManager tamanhoEPIManager) {
-		this.tamanhoEPIManager = tamanhoEPIManager;
-	}
-
 	public Collection<TamanhoEPI> getTamanhoEPIs() {
 		return tamanhoEPIs;
 	}
@@ -70,5 +63,4 @@ public class TamanhoEPIListAction extends MyActionSupportList
 	public void setTamanhoEPI(TamanhoEPI tamanhoEPI) {
 		this.tamanhoEPI = tamanhoEPI;
 	}
-
 }

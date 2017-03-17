@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.ClinicaAutorizadaManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.model.dicionario.TipoClinica;
@@ -17,8 +19,8 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class ClinicaAutorizadaEditAction extends MyActionSupportEdit
 {
-	private ClinicaAutorizadaManager clinicaAutorizadaManager;
-	private ExameManager exameManager;
+	@Autowired private ClinicaAutorizadaManager clinicaAutorizadaManager;
+	@Autowired private ExameManager exameManager;
 
 	private ClinicaAutorizada clinicaAutorizada;
 	private Map tipos;
@@ -95,11 +97,6 @@ public class ClinicaAutorizadaEditAction extends MyActionSupportEdit
 		this.clinicaAutorizada = clinicaAutorizada;
 	}
 
-	public void setClinicaAutorizadaManager(ClinicaAutorizadaManager clinicaAutorizadaManager)
-	{
-		this.clinicaAutorizadaManager = clinicaAutorizadaManager;
-	}
-
 	public Map getTipos()
 	{
 		return tipos;
@@ -113,11 +110,6 @@ public class ClinicaAutorizadaEditAction extends MyActionSupportEdit
 	public Collection<Exame> getExames()
 	{
 		return exames;
-	}
-
-	public void setExameManager(ExameManager exameManager)
-	{
-		this.exameManager = exameManager;
 	}
 
 	public void setExamesCheck(String[] examesCheck)

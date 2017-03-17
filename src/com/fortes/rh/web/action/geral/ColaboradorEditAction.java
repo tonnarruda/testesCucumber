@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -121,42 +122,47 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ColaboradorManager colaboradorManager;
-	private EstadoManager estadoManager;
-	private CidadeManager cidadeManager;
-	private ColaboradorIdiomaManager colaboradorIdiomaManager;
-	private CandidatoIdiomaManager candidatoIdiomaManager;
-	private FormacaoManager formacaoManager;
-	private ExperienciaManager experienciaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private CandidatoManager candidatoManager;
-	private SolicitacaoManager solicitacaoManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private DocumentoAnexoManager documentoAnexoManager;
-	private SolicitacaoExameManager solicitacaoExameManager;
-	private IndiceManager indiceManager;
-	private AcPessoalClientSistema acPessoalClientSistema;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
-	private HistoricoCandidatoManager historicoCandidatoManager;
-	private CatManager catManager;
-	private ComissaoManager comissaoManager;
-	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
-	private CamposExtrasManager camposExtrasManager;
-	private ConfiguracaoPerformanceManager configuracaoPerformanceManager;
-	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
-	private PeriodoExperienciaManager periodoExperienciaManager;
-	private AvaliacaoManager avaliacaoManager;
-	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
-	private PlatformTransactionManager transactionManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private UsuarioManager usuarioManager;
-	private UsuarioEmpresaManager usuarioEmpresaManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EstadoManager estadoManager;
+	@Autowired private CidadeManager cidadeManager;
+	@Autowired private ColaboradorIdiomaManager colaboradorIdiomaManager;
+	@Autowired private CandidatoIdiomaManager candidatoIdiomaManager;
+	@Autowired private FormacaoManager formacaoManager;
+	@Autowired private ExperienciaManager experienciaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private DocumentoAnexoManager documentoAnexoManager;
+	@Autowired private SolicitacaoExameManager solicitacaoExameManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private AcPessoalClientSistema acPessoalClientSistema;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
+	@Autowired private HistoricoCandidatoManager historicoCandidatoManager;
+	@Autowired private CatManager catManager;
+	@Autowired private ComissaoManager comissaoManager;
+	@Autowired private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	@Autowired private CamposExtrasManager camposExtrasManager;
+	@Autowired private ConfiguracaoPerformanceManager configuracaoPerformanceManager;
+	@Autowired private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
+	@Autowired private PeriodoExperienciaManager periodoExperienciaManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private UsuarioManager usuarioManager;
+	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private AmbienteManager ambienteManager;
+	@Autowired private IndiceHistoricoManager indiceHistoricoManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	
 	private Colaborador colaborador;
 	private AreaOrganizacional areaOrganizacional;
@@ -192,11 +198,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	private HistoricoColaborador historicoColaborador;
 	private Collection<Funcao> funcoes;
-	private FuncaoManager funcaoManager;
 	private Collection<Ambiente> ambientes;
-	private AmbienteManager ambienteManager;
 
-	private IndiceHistoricoManager indiceHistoricoManager;
 	private RelatorioPerformanceFuncional relatorioPerformanceFuncional;
 	
 	private String descricao;
@@ -251,7 +254,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private Double quantidadeIndice;
 	private Indice indice;
 
-	private FaixaSalarialManager faixaSalarialManager;
 	//Collection<FaixaSalarialHistorico> faixas;
 	private Collection<FaixaSalarial> faixas;
 	private Double valorCalculado;
@@ -264,7 +266,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private char statusCandSol;
 	private String obsACPessoal;
 	
@@ -1154,10 +1155,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.colaborador=colaborador;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager){
-		this.colaboradorManager=colaboradorManager;
-	}
-
 	public Collection<Cargo> getCargos() {
 		return cargos;
 	}
@@ -1188,12 +1185,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setEstadosCivis(Map estadosCivis) {
 		this.estadosCivis = estadosCivis;
-	}
-
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public AreaOrganizacional getAreaOrganizacional()
@@ -1227,11 +1218,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.salarioColaborador = salarioColaborador;
 	}
 
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
 	public Collection<Cidade> getCidades()
 	{
 		return cidades;
@@ -1252,31 +1238,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.estados = estados;
 	}
 
-	public void setCidadeManager(CidadeManager cidadeManager)
-	{
-		this.cidadeManager = cidadeManager;
-	}
-
-	public void setEstadoManager(EstadoManager estadoManager)
-	{
-		this.estadoManager = estadoManager;
-	}
-
-	public void setColaboradorIdiomaManager(ColaboradorIdiomaManager colaboradorIdiomaManager)
-	{
-		this.colaboradorIdiomaManager = colaboradorIdiomaManager;
-	}
-
-	public void setExperienciaManager(ExperienciaManager experienciaManager)
-	{
-		this.experienciaManager = experienciaManager;
-	}
-
-	public void setFormacaoManager(FormacaoManager formacaoManager)
-	{
-		this.formacaoManager = formacaoManager;
-	}
-
 	public Candidato getCandidato()
 	{
 		return candidato;
@@ -1285,16 +1246,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setCandidato(Candidato candidato)
 	{
 		this.candidato = candidato;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
-
-	public void setCandidatoIdiomaManager(CandidatoIdiomaManager candidatoIdiomaManager)
-	{
-		this.candidatoIdiomaManager = candidatoIdiomaManager;
 	}
 
 	public Long getIdCandidato()
@@ -1361,21 +1312,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.motivo = motivo;
 	}
 
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
-	{
-		this.solicitacaoManager = solicitacaoManager;
-	}
-
-	public FuncaoManager getFuncaoManager()
-	{
-		return funcaoManager;
-	}
-
-	public void setFuncaoManager(FuncaoManager funcaoManager)
-	{
-		this.funcaoManager = funcaoManager;
-	}
-
 	public Collection<Funcao> getFuncoes()
 	{
 		return funcoes;
@@ -1436,21 +1372,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		return cursosColaborador;
 	}
 
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager)
-	{
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
-	public ColaboradorTurmaManager getColaboradorTurmaManager()
-	{
-		return colaboradorTurmaManager;
-	}
-
-	public void setColaboradorOcorrenciaManager(ColaboradorOcorrenciaManager colaboradorOcorrenciaManager)
-	{
-		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
-	}
-
 	public Collection<ColaboradorOcorrencia> getOcorrenciasColaborador()
 	{
 		return ocorrenciasColaborador;
@@ -1461,11 +1382,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		return estabelecimentos;
 	}
 
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public Map getVinculos()
 	{
 		return vinculos;
@@ -1474,11 +1390,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setVinculos(Map vinculos)
 	{
 		this.vinculos = vinculos;
-	}
-
-	public void setDocumentoAnexoManager(DocumentoAnexoManager documentoAnexoManager)
-	{
-		this.documentoAnexoManager = documentoAnexoManager;
 	}
 
 	public Collection<DocumentoAnexo> getDocumentoAnexosColaborador()
@@ -1531,11 +1442,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.deficiencias = deficiencias;
 	}
 
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
-	}
-
 	public int getSalarioPropostoPor()
 	{
 		return salarioPropostoPor;
@@ -1581,16 +1487,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		return indices;
 	}
 
-	public IndiceHistoricoManager getIndiceHistoricoManager()
-	{
-		return indiceHistoricoManager;
-	}
-
-	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
-	{
-		this.indiceHistoricoManager = indiceHistoricoManager;
-	}
-
 	public Collection<FaixaSalarial> getFaixas()
 	{
 		return faixas;
@@ -1601,11 +1497,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.faixas = faixas;
 	}
 
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
 	public Collection<Ambiente> getAmbientes()
 	{
 		return ambientes;
@@ -1614,11 +1505,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setAmbientes(Collection<Ambiente> ambientes)
 	{
 		this.ambientes = ambientes;
-	}
-
-	public void setAmbienteManager(AmbienteManager ambienteManager)
-	{
-		this.ambienteManager = ambienteManager;
 	}
 
 	public Double getValorCalculado()
@@ -1651,11 +1537,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.manterFoto = manterFoto;
 	}
 
-	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager)
-	{
-		this.solicitacaoExameManager = solicitacaoExameManager;
-	}
-
 	public HashMap<String, String> getCodigosGFIP() {
 		return codigosGFIP;
 	}
@@ -1665,37 +1546,16 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		return cqAvaliacaoExperiencias;
 	}
 
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-	}
-
-	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
-		this.colaboradorAfastamentoManager = colaboradorAfastamentoManager;
-	}
-
 	public Collection<ColaboradorAfastamento> getAfastamentosColaborador() {
 		return afastamentosColaborador;
-	}
-
-	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager) {
-		this.historicoCandidatoManager = historicoCandidatoManager;
 	}
 
 	public Collection<HistoricoCandidato> getHistoricosCandidatoByColaborador() {
 		return historicosCandidatoByColaborador;
 	}
 
-	public void setCatManager(CatManager catManager) {
-		this.catManager = catManager;
-	}
-
 	public Collection<Cat> getCatsColaborador() {
 		return catsColaborador;
-	}
-
-	public void setComissaoManager(ComissaoManager comissaoManager) {
-		this.comissaoManager = comissaoManager;
 	}
 
 	public Collection<ParticipacaoColaboradorCipa> getParticipacoesNaCipaColaborador() {
@@ -1712,11 +1572,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.habilitaCampoExtra = habilitaCampoExtra;
 	}
 
-	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager)
-	{
-		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
-	}
-
 	public Collection<ConfiguracaoCampoExtra> getConfiguracaoCampoExtras()
 	{
 		return configuracaoCampoExtras;
@@ -1730,11 +1585,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setCamposExtras(CamposExtras camposExtras)
 	{
 		this.camposExtras = camposExtras;
-	}
-
-	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager)
-	{
-		this.camposExtrasManager = camposExtrasManager;
 	}
 
 	public void setConfiguracaoCampoExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras)
@@ -1787,11 +1637,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		return configPerformanceBoxes;
 	}
 
-	public void setConfiguracaoPerformanceManager(ConfiguracaoPerformanceManager configuracaoPerformanceManager)
-	{
-		this.configuracaoPerformanceManager = configuracaoPerformanceManager;
-	}
-
 	public Long getCandidatoSolicitacaoId()
 	{
 		return candidatoSolicitacaoId;
@@ -1800,11 +1645,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setCandidatoSolicitacaoId(Long candidatoSolicitacaoId)
 	{
 		this.candidatoSolicitacaoId = candidatoSolicitacaoId;
-	}
-
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
-	{
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
 	public char getStatusCandSol()
@@ -1820,11 +1660,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setObsACPessoal(String obsACPessoal)
 	{
 		this.obsACPessoal = obsACPessoal;
-	}
-
-	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager)
-	{
-		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
 	}
 
 	public Collection<ColaboradorQuestionario> getPesquisas()
@@ -1857,16 +1692,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		return periodoExperiencias;
 	}
 
-	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager)
-	{
-		this.periodoExperienciaManager = periodoExperienciaManager;
-	}
-
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager)
-	{
-		this.avaliacaoManager = avaliacaoManager;
-	}
-
 	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradorAvaliacoes()
 	{
 		return colaboradorAvaliacoes;
@@ -1875,11 +1700,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setColaboradorAvaliacoes(Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes)
 	{
 		this.colaboradorAvaliacoes = colaboradorAvaliacoes;
-	}
-
-	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager)
-	{
-		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
 	}
 
 	public Collection<Avaliacao> getAvaliacoes()
@@ -1932,11 +1752,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.encerrarSolicitacao = encerrarSolicitacao;
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
 	public Collection<CheckBox> getAreaCheckList()
 	{
 		return areaCheckList;
@@ -1986,10 +1801,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	{
 		this.cqAvaliacaoExperiencias = cqAvaliacaoExperiencias;
 	}
-
-	public ParametrosDoSistemaManager getParametrosDoSistemaManager() {
-		return parametrosDoSistemaManager;
-	}
 	
 	public ParametrosDoSistema getParametrosDoSistema() {
 		return parametrosDoSistema;
@@ -1997,23 +1808,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setParametrosDoSistema(ParametrosDoSistema parametrosDoSistema) {
 		this.parametrosDoSistema = parametrosDoSistema;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
-	public void setUsuarioManager(UsuarioManager usuarioManager) {
-		this.usuarioManager = usuarioManager;
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager)
-	{
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
 	public String getDescricao() {
@@ -2030,10 +1824,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setJson(String json) {
 		this.json = json;
-	}
-
-	public void setConfiguracaoCampoExtraVisivelObrigadotorioManager(ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager) {
-		this.configuracaoCampoExtraVisivelObrigadotorioManager = configuracaoCampoExtraVisivelObrigadotorioManager;
 	}
 
 	public ConfiguracaoCampoExtraVisivelObrigadotorio getCampoExtraVisivelObrigadotorio() {

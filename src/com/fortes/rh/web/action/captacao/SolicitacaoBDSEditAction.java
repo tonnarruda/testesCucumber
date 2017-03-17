@@ -37,6 +37,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings("serial")
 public class SolicitacaoBDSEditAction extends MyActionSupportEdit implements ModelDriven
 {
+	@Autowired private Mail mail;
 	@Autowired private CargoManager cargoManager;
 	@Autowired private CandidatoManager candidatoManager;
 	@Autowired private EmpresaBdsManager empresaBdsManager;
@@ -66,7 +67,6 @@ public class SolicitacaoBDSEditAction extends MyActionSupportEdit implements Mod
 	private Map escolaridades;
 	private Map sexos;
 
-	private Mail mail;
 
 	public String execute() throws Exception
 	{
@@ -302,16 +302,6 @@ public class SolicitacaoBDSEditAction extends MyActionSupportEdit implements Mod
 	public void setSolicitacao(Solicitacao solicitacao)
 	{
 		this.solicitacao = solicitacao;
-	}
-
-	public Mail getMail()
-	{
-		return mail;
-	}
-
-	public void setMail(Mail mail)
-	{
-		this.mail = mail;
 	}
 
 	public String getEmpresasBdsEnviadas()

@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.TamanhoEPIManager;
 import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.business.sesmt.TipoTamanhoEPIManager;
@@ -16,11 +18,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings({"serial"})
 public class TipoEPIEditAction extends MyActionSupportEdit
 {
-	private TipoEPIManager tipoEPIManager;
-	
-	private TamanhoEPIManager tamanhoEPIManager;
-	
-	private TipoTamanhoEPIManager tipoTamanhoEPIManager;
+	@Autowired private TipoEPIManager tipoEPIManager;
+	@Autowired private TamanhoEPIManager tamanhoEPIManager;
+	@Autowired private TipoTamanhoEPIManager tipoTamanhoEPIManager;
 
 	private TipoEPI tipoEPI;
 	private Long tipoEPIId;
@@ -102,11 +102,6 @@ public class TipoEPIEditAction extends MyActionSupportEdit
 		this.tipoEPI = tipoEPI;
 	}
 
-	public void setTipoEPIManager(TipoEPIManager tipoEPIManager)
-	{
-		this.tipoEPIManager = tipoEPIManager;
-	}
-
 	public String[] getTamanhosCheck() {
 		return tamanhosCheck;
 	}
@@ -123,10 +118,6 @@ public class TipoEPIEditAction extends MyActionSupportEdit
 		this.tamanhosCheckList = tamanhosCheckList;
 	}
 
-	public void setTamanhoEPIManager(TamanhoEPIManager tamanhoEPIManager) {
-		this.tamanhoEPIManager = tamanhoEPIManager;
-	}
-
 	public Collection<TipoTamanhoEPI> getTamanhoEPIs() {
 		return tamanhoEPIs;
 	}
@@ -141,10 +132,5 @@ public class TipoEPIEditAction extends MyActionSupportEdit
 
 	public void setTamanhos(TamanhoEPI[] tamanhos) {
 		this.tamanhos = tamanhos;
-	}
-
-	public void setTipoTamanhoEPIManager(TipoTamanhoEPIManager tipoTamanhoEPIManager) {
-		this.tipoTamanhoEPIManager = tipoTamanhoEPIManager;
-	}
-	
+	}	
 }

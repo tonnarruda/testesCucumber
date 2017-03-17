@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.ProvidenciaManager;
 import com.fortes.rh.model.acesso.Usuario;
@@ -18,8 +20,8 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings({"serial"})
 public class OcorrenciaProvidenciaEditAction extends MyActionSupportList
 {
-	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
-	private ProvidenciaManager providenciaManager;
+	@Autowired private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
+	@Autowired private ProvidenciaManager providenciaManager;
 
 	private ColaboradorOcorrencia colaboradorOcorrencia;
 	private String ocorrenciaDescricao;
@@ -88,11 +90,6 @@ public class OcorrenciaProvidenciaEditAction extends MyActionSupportList
 		return colaboradorOcorrencias;
 	}
 
-	public void setColaboradorOcorrenciaManager(ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) 
-	{
-		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
-	}
-
 	public ColaboradorOcorrencia getColaboradorOcorrencia() {
 		return colaboradorOcorrencia;
 	}
@@ -107,10 +104,6 @@ public class OcorrenciaProvidenciaEditAction extends MyActionSupportList
 
 	public void setColaboradorNome(String colaboradorNome) {
 		this.colaboradorNome = colaboradorNome;
-	}
-
-	public void setProvidenciaManager(ProvidenciaManager providenciaManager) {
-		this.providenciaManager = providenciaManager;
 	}
 
 	public String getOcorrenciaDescricao() {

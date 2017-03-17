@@ -1,16 +1,18 @@
 package com.fortes.rh.web.action.geral;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
 
-@SuppressWarnings({"serial", ""})
+@SuppressWarnings({"serial"})
 public class MensagemEditAction extends MyActionSupport implements ModelDriven
 {
-	private MensagemManager mensagemManager = null;
+	@Autowired private MensagemManager mensagemManager;
 
 	private Mensagem mensagem;
 
@@ -70,10 +72,5 @@ public class MensagemEditAction extends MyActionSupport implements ModelDriven
 	public void setMensagem(Mensagem mensagem)
 	{
 		this.mensagem = mensagem;
-	}
-
-	public void setMensagemManager(MensagemManager mensagemManager)
-	{
-		this.mensagemManager = mensagemManager;
 	}
 }

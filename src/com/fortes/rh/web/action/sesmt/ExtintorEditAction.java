@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ExtintorInspecaoManager;
 import com.fortes.rh.business.sesmt.ExtintorManager;
@@ -26,11 +28,11 @@ public class ExtintorEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 
-	private ExtintorManager extintorManager;
-	private HistoricoExtintorManager historicoExtintorManager;
-	private ExtintorManutencaoManager extintorManutencaoManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private ExtintorInspecaoManager extintorInspecaoManager;
+	@Autowired private ExtintorManager extintorManager;
+	@Autowired private HistoricoExtintorManager historicoExtintorManager;
+	@Autowired private ExtintorManutencaoManager extintorManutencaoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ExtintorInspecaoManager extintorInspecaoManager;
 
 	private Extintor extintor;
 	private Collection<Extintor> extintors;
@@ -219,11 +221,6 @@ public class ExtintorEditAction extends MyActionSupportList
 		this.extintor = extintor;
 	}
 
-	public void setExtintorManager(ExtintorManager extintorManager)
-	{
-		this.extintorManager = extintorManager;
-	}
-
 	public Collection<Extintor> getExtintors()
 	{
 		return extintors;
@@ -247,11 +244,6 @@ public class ExtintorEditAction extends MyActionSupportList
 	public void setAtivo(char ativo)
 	{
 		this.ativo = ativo;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public Collection<Estabelecimento> getEstabelecimentos()
@@ -339,20 +331,12 @@ public class ExtintorEditAction extends MyActionSupportList
 		return parametros;
 	}
 
-	public void setExtintorInspecaoManager(ExtintorInspecaoManager extintorInspecaoManager) {
-		this.extintorInspecaoManager = extintorInspecaoManager;
-	}
-
 	public ExtintorInspecao getExtintorInspecao() {
 		return extintorInspecao;
 	}
 
 	public void setExtintorInspecao(ExtintorInspecao extintorInspecao) {
 		this.extintorInspecao = extintorInspecao;
-	}
-
-	public void setExtintorManutencaoManager(ExtintorManutencaoManager extintorManutencaoManager) {
-		this.extintorManutencaoManager = extintorManutencaoManager;
 	}
 	
 	public void setDataHidro(Date dataHidro) {
@@ -365,11 +349,6 @@ public class ExtintorEditAction extends MyActionSupportList
 
 	public Collection<HistoricoExtintor> getHistoricoExtintores() {
 		return historicoExtintores;
-	}
-
-	public void setHistoricoExtintorManager(
-			HistoricoExtintorManager historicoExtintorManager) {
-		this.historicoExtintorManager = historicoExtintorManager;
 	}
 
 	public HistoricoExtintor getHistoricoExtintor() {

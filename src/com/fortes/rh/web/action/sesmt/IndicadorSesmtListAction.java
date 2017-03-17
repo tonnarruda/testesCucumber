@@ -4,6 +4,8 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.CatManager;
@@ -23,12 +25,12 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings("serial")
 public class IndicadorSesmtListAction extends MyActionSupportList
 {
-	private CatManager catManager;
-	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
-	private RealizacaoExameManager realizacaoExameManager;
-	private ProntuarioManager prontuarioManager;
-	private EmpresaManager empresaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private CatManager catManager;
+	@Autowired private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
+	@Autowired private RealizacaoExameManager realizacaoExameManager;
+	@Autowired private ProntuarioManager prontuarioManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
 	private Empresa empresa;
 	
@@ -84,10 +86,6 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	public void setCatManager(CatManager catManager) {
-		this.catManager = catManager;
-	}
-
 	public int getQtdDiasSemAcidentes() {
 		return qtdDiasSemAcidentes;
 	}
@@ -120,24 +118,12 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 		this.grfQtdAfastamentosPorMotivo = grfQtdAfastamentosPorMotivo;
 	}
 
-	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
-		this.colaboradorAfastamentoManager = colaboradorAfastamentoManager;
-	}
-
 	public String getGrfQtdCatsPorHorario() {
 		return grfQtdCatsPorHorario;
 	}
 
-	public void setRealizacaoExameManager(RealizacaoExameManager realizacaoExameManager) {
-		this.realizacaoExameManager = realizacaoExameManager;
-	}
-
 	public int getQtdExamesRealizados() {
 		return qtdExamesRealizados;
-	}
-
-	public void setProntuarioManager(ProntuarioManager prontuarioManager) {
-		this.prontuarioManager = prontuarioManager;
 	}
 
 	public int getQtdProntuarios() {
@@ -166,13 +152,5 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 
 	public Collection<Empresa> getEmpresas() {
 		return empresas;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

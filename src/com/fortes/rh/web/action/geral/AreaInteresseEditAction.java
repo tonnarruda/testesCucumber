@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.AreaInteresseManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.geral.AreaInteresse;
@@ -13,11 +15,11 @@ import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
 
-@SuppressWarnings({"unchecked","serial"})
+@SuppressWarnings({"serial"})
 public class AreaInteresseEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private AreaInteresseManager areaInteresseManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private AreaInteresseManager areaInteresseManager;
 
 	private AreaInteresse areaInteresse;
 	private AreaOrganizacional areaOrganizacional;
@@ -87,10 +89,6 @@ public class AreaInteresseEditAction extends MyActionSupportEdit implements Mode
 		return getAreaInteresse();
 	}
 
-	public void setAreaInteresseManager(AreaInteresseManager areaInteresseManager){
-		this.areaInteresseManager=areaInteresseManager;
-	}
-
 	public AreaOrganizacional getAreaOrganizacional()
 	{
 		return areaOrganizacional;
@@ -99,12 +97,6 @@ public class AreaInteresseEditAction extends MyActionSupportEdit implements Mode
 	public void setAreaOrganizacional(AreaOrganizacional areaOrganizacional)
 	{
 		this.areaOrganizacional = areaOrganizacional;
-	}
-
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public String[] getAreasCheck()
@@ -126,5 +118,4 @@ public class AreaInteresseEditAction extends MyActionSupportEdit implements Mode
 	{
 		this.areasCheckList = areasCheckList;
 	}
-
 }

@@ -4,6 +4,7 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AgendaManager;
@@ -18,9 +19,9 @@ import com.opensymphony.xwork.Action;
 public class AgendaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private AgendaManager agendaManager;
-	private EventoManager eventoManager;
-	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private AgendaManager agendaManager;
+	@Autowired private EventoManager eventoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
 
 	private Agenda agenda;
 	
@@ -119,11 +120,6 @@ public class AgendaEditAction extends MyActionSupportList
 		this.agenda = agenda;
 	}
 
-	public void setAgendaManager(AgendaManager agendaManager)
-	{
-		this.agendaManager = agendaManager;
-	}
-	
 	public Collection<Agenda> getAgendas()
 	{
 		return agendas;
@@ -142,10 +138,7 @@ public class AgendaEditAction extends MyActionSupportList
 	{
 		return eventos;
 	}
-	public void setEventoManager(EventoManager eventoManager)
-	{
-		this.eventoManager = eventoManager;
-	}
+	
 	public String getDataMesAno()
 	{
 		return dataMesAno;
@@ -184,11 +177,6 @@ public class AgendaEditAction extends MyActionSupportList
 	public void setQtdPeriodo(Integer qtdPeriodo)
 	{
 		this.qtdPeriodo = qtdPeriodo;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public Collection<Estabelecimento> getEstabelecimentos()

@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.GrupoGastoManager;
 import com.fortes.rh.model.geral.GrupoGasto;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class GrupoGastoListAction extends MyActionSupportList
 {
-	private GrupoGastoManager grupoGastoManager;
+	@Autowired private GrupoGastoManager grupoGastoManager;
 
 	private Collection<GrupoGasto> grupoGastos;
 
@@ -62,9 +64,5 @@ public class GrupoGastoListAction extends MyActionSupportList
 
 	public void setGrupoGasto(GrupoGasto grupoGasto){
 		this.grupoGasto=grupoGasto;
-	}
-
-	public void setGrupoGastoManager(GrupoGastoManager grupoGastoManager){
-		this.grupoGastoManager=grupoGastoManager;
 	}
 }

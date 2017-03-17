@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.AreaVivenciaManager;
 import com.fortes.rh.business.sesmt.AreaVivenciaPcmatManager;
 import com.fortes.rh.model.sesmt.AreaVivencia;
@@ -14,8 +16,8 @@ import com.opensymphony.xwork.Action;
 public class AreaVivenciaPcmatEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private AreaVivenciaPcmatManager areaVivenciaPcmatManager;
-	private AreaVivenciaManager areaVivenciaManager;
+	@Autowired private AreaVivenciaPcmatManager areaVivenciaPcmatManager;
+	@Autowired private AreaVivenciaManager areaVivenciaManager;
 	
 	private AreaVivenciaPcmat areaVivenciaPcmat;
 	private Pcmat pcmat;
@@ -111,11 +113,6 @@ public class AreaVivenciaPcmatEditAction extends MyActionSupportList
 	{
 		this.areaVivenciaPcmat = areaVivenciaPcmat;
 	}
-
-	public void setAreaVivenciaPcmatManager(AreaVivenciaPcmatManager areaVivenciaPcmatManager)
-	{
-		this.areaVivenciaPcmatManager = areaVivenciaPcmatManager;
-	}
 	
 	public Pcmat getPcmat() 
 	{
@@ -140,10 +137,6 @@ public class AreaVivenciaPcmatEditAction extends MyActionSupportList
 	public Collection<AreaVivencia> getAreasVivencia() 
 	{
 		return areasVivencia;
-	}
-
-	public void setAreaVivenciaManager(AreaVivenciaManager areaVivenciaManager) {
-		this.areaVivenciaManager = areaVivenciaManager;
 	}
 
 	public Long getUltimoPcmatId() {

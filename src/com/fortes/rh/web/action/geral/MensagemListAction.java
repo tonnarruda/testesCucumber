@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.web.action.MyActionSupport;
@@ -16,7 +18,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class MensagemListAction extends MyActionSupport
 {
-	private MensagemManager mensagemManager = null;
+	@Autowired private MensagemManager mensagemManager;
 
 	private Collection mensagems = null;
 
@@ -58,9 +60,5 @@ public class MensagemListAction extends MyActionSupport
 
 	public void setMensagem(Mensagem mensagem){
 		this.mensagem=mensagem;
-	}
-
-	public void setMensagemManager(MensagemManager mensagemManager){
-		this.mensagemManager=mensagemManager;
 	}
 }

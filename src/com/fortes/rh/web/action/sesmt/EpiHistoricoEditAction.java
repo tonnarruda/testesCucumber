@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.EpiHistoricoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.model.sesmt.Epi;
@@ -14,8 +16,8 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 	
-	private EpiHistoricoManager epiHistoricoManager;
-	private EpiManager epiManager;
+	@Autowired private EpiHistoricoManager epiHistoricoManager;
+	@Autowired private EpiManager epiManager;
 
 	private EpiHistorico epiHistorico;
 
@@ -127,11 +129,6 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
 		this.epiHistorico = epiHistorico;
 	}
 
-	public void setEpiHistoricoManager(EpiHistoricoManager epiHistoricoManager)
-	{
-		this.epiHistoricoManager = epiHistoricoManager;
-	}
-
 	public Collection<Epi> getEpis()
 	{
 		return epis;
@@ -140,11 +137,6 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
 	public void setEpis(Collection<Epi> epis)
 	{
 		this.epis = epis;
-	}
-
-	public void setEpiManager(EpiManager epiManager)
-	{
-		this.epiManager = epiManager;
 	}
 
 	public Epi getEpi()

@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.TipoDespesaManager;
 import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.Action;
 public class TipoDespesaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private TipoDespesaManager tipoDespesaManager;
+	@Autowired private TipoDespesaManager tipoDespesaManager;
 	private TipoDespesa tipoDespesa;
 	private Collection<TipoDespesa> tipoDespesas;
 
@@ -79,11 +81,6 @@ public class TipoDespesaEditAction extends MyActionSupportList
 	public void setTipoDespesa(TipoDespesa tipoDespesa)
 	{
 		this.tipoDespesa = tipoDespesa;
-	}
-
-	public void setTipoDespesaManager(TipoDespesaManager tipoDespesaManager)
-	{
-		this.tipoDespesaManager = tipoDespesaManager;
 	}
 	
 	public Collection<TipoDespesa> getTipoDespesas()

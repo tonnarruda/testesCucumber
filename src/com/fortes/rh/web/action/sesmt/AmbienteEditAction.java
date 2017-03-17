@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpcManager;
@@ -31,13 +33,13 @@ public class AmbienteEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private AmbienteManager ambienteManager;
-	private HistoricoAmbienteManager historicoAmbienteManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private EpcManager epcManager;
-	private RiscoManager riscoManager;
-	private RiscoAmbienteManager riscoAmbienteManager;
-	private EpiManager epiManager;
+	@Autowired private AmbienteManager ambienteManager;
+	@Autowired private HistoricoAmbienteManager historicoAmbienteManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private EpcManager epcManager;
+	@Autowired private RiscoManager riscoManager;
+	@Autowired private RiscoAmbienteManager riscoAmbienteManager;
+	@Autowired private EpiManager epiManager;
 
 	private Ambiente ambiente;
 	private HistoricoAmbiente historicoAmbiente;
@@ -214,11 +216,6 @@ public class AmbienteEditAction extends MyActionSupportList
 		this.ambiente = ambiente;
 	}
 
-	public void setAmbienteManager(AmbienteManager ambienteManager)
-	{
-		this.ambienteManager = ambienteManager;
-	}
-
 	public HistoricoAmbiente getHistoricoAmbiente()
 	{
 		return historicoAmbiente;
@@ -247,16 +244,6 @@ public class AmbienteEditAction extends MyActionSupportList
 		this.mapasDeRisco = mapasDeRisco;
 	}
 
-	public void setHistoricoAmbienteManager(HistoricoAmbienteManager historicoAmbienteManager)
-	{
-		this.historicoAmbienteManager = historicoAmbienteManager;
-	}
-
-	public void setEstabelecimentoManager(
-			EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public Collection<Estabelecimento> getEstabelecimentos() {
 		return estabelecimentos;
 	}
@@ -277,20 +264,12 @@ public class AmbienteEditAction extends MyActionSupportList
 		this.epcCheck = epcCheck;
 	}
 
-	public void setEpcManager(EpcManager epcManager) {
-		this.epcManager = epcManager;
-	}
-
 	public Collection<Epc> getEpcs() {
 		return epcs;
 	}
 
 	public Collection<Risco> getRiscos() {
 		return riscos;
-	}
-
-	public void setRiscoManager(RiscoManager riscoManager) {
-		this.riscoManager = riscoManager;
 	}
 
 	public String[] getRiscoChecks() {
@@ -352,14 +331,6 @@ public class AmbienteEditAction extends MyActionSupportList
 
 	public void setAmbienteCheckList(Collection<CheckBox> ambienteCheckList) {
 		this.ambienteCheckList = ambienteCheckList;
-	}
-
-	public void setRiscoAmbienteManager(RiscoAmbienteManager riscoAmbienteManager) {
-		this.riscoAmbienteManager = riscoAmbienteManager;
-	}
-	
-	public void setEpiManager(EpiManager epiManager) {
-		this.epiManager = epiManager;
 	}
 
 	public Map<String, Object> getParametros()

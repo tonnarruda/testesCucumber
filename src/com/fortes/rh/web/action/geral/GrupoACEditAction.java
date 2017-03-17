@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.geral.GrupoACManager;
@@ -13,7 +14,7 @@ import com.opensymphony.xwork.Action;
 public class GrupoACEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private GrupoACManager grupoACManager;
+	@Autowired private GrupoACManager grupoACManager;
 	private GrupoAC grupoAC;
 	private Collection<GrupoAC> grupoACs;
 
@@ -112,11 +113,6 @@ public class GrupoACEditAction extends MyActionSupportList
 	public void setGrupoAC(GrupoAC grupoAC)
 	{
 		this.grupoAC = grupoAC;
-	}
-
-	public void setGrupoACManager(GrupoACManager grupoACManager)
-	{
-		this.grupoACManager = grupoACManager;
 	}
 	
 	public Collection<GrupoAC> getGrupoACs()

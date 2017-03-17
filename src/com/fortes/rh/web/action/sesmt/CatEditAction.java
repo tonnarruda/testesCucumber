@@ -10,6 +10,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -41,14 +43,14 @@ import com.opensymphony.xwork.Action;
 public class CatEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private CatManager catManager;
-	private ColaboradorManager colaboradorManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EpiManager epiManager;
-	private AmbienteManager ambienteManager;
-	private NaturezaLesaoManager naturezaLesaoManager;
-	private TestemunhaManager testemunhaManager;
+	@Autowired private CatManager catManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EpiManager epiManager;
+	@Autowired private AmbienteManager ambienteManager;
+	@Autowired private NaturezaLesaoManager naturezaLesaoManager;
+	@Autowired private TestemunhaManager testemunhaManager;
 
 	private Colaborador colaborador;
 	private Cat cat;
@@ -395,11 +397,6 @@ public class CatEditAction extends MyActionSupportList
 		this.cat = cat;
 	}
 
-	public void setCatManager(CatManager catManager)
-	{
-		this.catManager = catManager;
-	}
-
 	public Colaborador getColaborador()
 	{
 		return colaborador;
@@ -408,11 +405,6 @@ public class CatEditAction extends MyActionSupportList
 	public void setColaborador(Colaborador colaborador)
 	{
 		this.colaborador = colaborador;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public Collection<Cat> getCats()
@@ -443,11 +435,6 @@ public class CatEditAction extends MyActionSupportList
 	public void setInicio(Date inicio)
 	{
 		this.inicio = inicio;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public String[] getEstabelecimentosCheck()
@@ -501,14 +488,6 @@ public class CatEditAction extends MyActionSupportList
 		this.areasCheck = areasCheck;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEpiManager(EpiManager epiManager) {
-		this.epiManager = epiManager;
-	}
-
 	public void setEpisChecked(String[] episChecked) {
 		this.episChecked = episChecked;
 	}
@@ -517,16 +496,8 @@ public class CatEditAction extends MyActionSupportList
 		return episCheckList;
 	}
 
-	public void setAmbienteManager(AmbienteManager ambienteManager) {
-		this.ambienteManager = ambienteManager;
-	}
-
 	public Collection<Ambiente> getAmbientes() {
 		return ambientes;
-	}
-
-	public void setNaturezaLesaoManager(NaturezaLesaoManager naturezaLesaoManager) {
-		this.naturezaLesaoManager = naturezaLesaoManager;
 	}
 
 	public Collection<NaturezaLesao> getNaturezaLesaos() {
@@ -621,9 +592,5 @@ public class CatEditAction extends MyActionSupportList
 	public void setExibirFotoAcidente(boolean exibirFotoAcidente)
 	{
 		this.exibirFotoAcidente = exibirFotoAcidente;
-	}
-
-	public void setTestemunhaManager(TestemunhaManager testemunhaManager) {
-		this.testemunhaManager = testemunhaManager;
 	}
 }

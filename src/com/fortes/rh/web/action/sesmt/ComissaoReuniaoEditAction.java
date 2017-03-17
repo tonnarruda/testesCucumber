@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.ComissaoMembroManager;
@@ -28,10 +29,10 @@ public class ComissaoReuniaoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ComissaoReuniaoManager comissaoReuniaoManager;
-	private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
-	private ComissaoManager comissaoManager;
-	private ComissaoMembroManager comissaoMembroManager;
+	@Autowired private ComissaoReuniaoManager comissaoReuniaoManager;
+	@Autowired private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
+	@Autowired private ComissaoManager comissaoManager;
+	@Autowired private ComissaoMembroManager comissaoMembroManager;
 
 	private ComissaoReuniao comissaoReuniao;
 	private Collection<ComissaoReuniao> comissaoReuniaos;
@@ -186,10 +187,6 @@ public class ComissaoReuniaoEditAction extends MyActionSupportList
 		this.comissaoReuniao = comissaoReuniao;
 	}
 
-	public void setComissaoReuniaoManager(ComissaoReuniaoManager comissaoReuniaoManager)
-	{
-		this.comissaoReuniaoManager = comissaoReuniaoManager;
-	}
 	public Collection<Comissao> getComissaos()
 	{
 		return comissaos;
@@ -223,11 +220,6 @@ public class ComissaoReuniaoEditAction extends MyActionSupportList
 	public Collection<Colaborador> getColaboradors()
 	{
 		return colaboradors;
-	}
-
-	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager)
-	{
-		this.comissaoMembroManager = comissaoMembroManager;
 	}
 
 	public String[] getColaboradorChecks()
@@ -268,13 +260,5 @@ public class ComissaoReuniaoEditAction extends MyActionSupportList
 	public Collection<ComissaoReuniaoPresencaMatriz> getComissaoReuniaoPresencaMatrizes()
 	{
 		return comissaoReuniaoPresencaMatrizes;
-	}
-	
-	public void setComissaoManager(ComissaoManager comissaoManager) {
-		this.comissaoManager = comissaoManager;
-	}
-
-	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager) {
-		this.comissaoReuniaoPresencaManager = comissaoReuniaoPresencaManager;
 	}
 }

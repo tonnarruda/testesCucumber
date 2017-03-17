@@ -12,6 +12,7 @@ import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.util.Rotation;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.model.pesquisa.Pergunta;
@@ -24,7 +25,7 @@ public class ResultadoPesquisa extends MyActionSupport
 {
 	private static final long serialVersionUID = 1L;
 
-	private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager;
 
 	private String idPergunta;
 	private String idPesquisa;
@@ -101,11 +102,6 @@ public class ResultadoPesquisa extends MyActionSupport
 	public String getIdPergunta()
 	{
 		return idPergunta;
-	}
-
-	public void setColaboradorRespostaManager(ColaboradorRespostaManager colaboradorRespostaManager)
-	{
-		this.colaboradorRespostaManager = colaboradorRespostaManager;
 	}
 
 	public Collection<Resposta> getRespostas()

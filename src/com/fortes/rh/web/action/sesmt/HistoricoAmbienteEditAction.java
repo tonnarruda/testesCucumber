@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpcManager;
 import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
@@ -20,10 +22,10 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 
-	private HistoricoAmbienteManager historicoAmbienteManager;
-	private EpcManager epcManager;
-	private RiscoManager riscoManager;
-	private AmbienteManager ambienteManager;
+	@Autowired private HistoricoAmbienteManager historicoAmbienteManager;
+	@Autowired private EpcManager epcManager;
+	@Autowired private RiscoManager riscoManager;
+	@Autowired private AmbienteManager ambienteManager;
 
 	private HistoricoAmbiente historicoAmbiente;
 	private Ambiente ambiente;
@@ -140,11 +142,6 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 		this.historicoAmbiente = historicoAmbiente;
 	}
 
-	public void setHistoricoAmbienteManager(HistoricoAmbienteManager historicoAmbienteManager)
-	{
-		this.historicoAmbienteManager = historicoAmbienteManager;
-	}
-
 	public Ambiente getAmbiente()
 	{
 		return ambiente;
@@ -185,19 +182,6 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 
 	public void setEpcEficazChecks(String[] epcEficazChecks) {
 		this.epcEficazChecks = epcEficazChecks;
-	}
-
-	public void setEpcManager(EpcManager epcManager) {
-		this.epcManager = epcManager;
-	}
-
-	public void setRiscoManager(RiscoManager riscoManager) {
-		this.riscoManager = riscoManager;
-	}
-
-	public void setAmbienteManager(AmbienteManager ambienteManager)
-	{
-		this.ambienteManager = ambienteManager;
 	}
 
 	public Collection<RiscoAmbiente> getRiscosAmbientes() {

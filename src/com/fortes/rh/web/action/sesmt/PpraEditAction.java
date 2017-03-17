@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -21,8 +23,8 @@ public class PpraEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 
-	private EstabelecimentoManager estabelecimentoManager;
-	private AmbienteManager ambienteManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private AmbienteManager ambienteManager;
 	
 	private Collection<Estabelecimento> estabelecimentos;
 	
@@ -96,11 +98,6 @@ public class PpraEditAction extends MyActionSupportEdit
 		this.data = data;
 	}
 
-	public void setEstabelecimentoManager(
-			EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public Collection<Estabelecimento> getEstabelecimentos() {
 		return estabelecimentos;
 	}
@@ -139,10 +136,6 @@ public class PpraEditAction extends MyActionSupportEdit
 
 	public void setEstabelecimento(Estabelecimento estabelecimento) {
 		this.estabelecimento = estabelecimento;
-	}
-
-	public void setAmbienteManager(AmbienteManager ambienteManager) {
-		this.ambienteManager = ambienteManager;
 	}
 
 	public Map<String, Object> getParametros() {

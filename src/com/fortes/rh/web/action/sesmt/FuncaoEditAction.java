@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -34,13 +36,16 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings({"serial"})
 public class FuncaoEditAction extends MyActionSupportEdit
 {
-	private FuncaoManager funcaoManager;
-	private CargoManager cargoManager;
-	private HistoricoFuncaoManager historicoFuncaoManager;
-	private ExameManager exameManager;
-	private EpiManager epiManager;
-	private RiscoManager riscoManager;
-	private CursoManager cursoManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private ExameManager exameManager;
+	@Autowired private EpiManager epiManager;
+	@Autowired private RiscoManager riscoManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private AmbienteManager ambienteManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private HistoricoFuncaoManager historicoFuncaoManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
 
 	private Funcao funcao;
 	private Cargo cargoTmp;
@@ -50,17 +55,11 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	private Collection<HistoricoFuncao> historicoFuncaos = new ArrayList<HistoricoFuncao>();
 
     private Collection<Ambiente> ambientes;
-    private AmbienteManager ambienteManager;
-
 	private Collection<RiscoFuncao> riscosFuncoes;
-
 	private String[] riscoChecks;
-
     
     private Colaborador colaborador;
-    private ColaboradorManager colaboradorManager;
     private HistoricoColaborador historicoColaborador;
-    private HistoricoColaboradorManager historicoColaboradorManager;
     private Collection<Funcao> funcaos = new ArrayList<Funcao>();
 
     private AreaOrganizacional areaBusca;
@@ -215,11 +214,6 @@ public class FuncaoEditAction extends MyActionSupportEdit
 		this.funcao = funcao;
 	}
 
-	public void setFuncaoManager(FuncaoManager funcaoManager)
-	{
-		this.funcaoManager = funcaoManager;
-	}
-
 	public Collection<Cargo> getCargos()
 	{
 		return cargos;
@@ -230,11 +224,6 @@ public class FuncaoEditAction extends MyActionSupportEdit
 		this.cargos = cargos;
 	}
 
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
 	public Cargo getCargoTmp()
 	{
 		return cargoTmp;
@@ -243,11 +232,6 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	public void setCargoTmp(Cargo cargoTmp)
 	{
 		this.cargoTmp = cargoTmp;
-	}
-
-	public void setHistoricoFuncaoManager(HistoricoFuncaoManager historicoFuncaoManager)
-	{
-		this.historicoFuncaoManager = historicoFuncaoManager;
 	}
 
 	public HistoricoFuncao getHistoricoFuncao()
@@ -270,11 +254,6 @@ public class FuncaoEditAction extends MyActionSupportEdit
 		this.historicoFuncaos = historicoFuncaos;
 	}
 
-	public void setAmbienteManager(AmbienteManager ambienteManager)
-	{
-		this.ambienteManager = ambienteManager;
-	}
-
 	public Collection<Ambiente> getAmbientes()
 	{
 		return ambientes;
@@ -295,11 +274,6 @@ public class FuncaoEditAction extends MyActionSupportEdit
 		this.colaborador = colaborador;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public HistoricoColaborador getHistoricoColaborador()
 	{
 		return historicoColaborador;
@@ -310,10 +284,6 @@ public class FuncaoEditAction extends MyActionSupportEdit
 		this.historicoColaborador = historicoColaborador;
 	}
 
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
 	public Collection<Funcao> getFuncaos()
 	{
 		return funcaos;
@@ -368,16 +338,6 @@ public class FuncaoEditAction extends MyActionSupportEdit
 		return examesCheckList;
 	}
 
-	public void setExameManager(ExameManager exameManager)
-	{
-		this.exameManager = exameManager;
-	}
-
-	public void setEpiManager(EpiManager epiManager)
-	{
-		this.epiManager = epiManager;
-	}
-
 	public Collection<CheckBox> getEpisCheckList()
 	{
 		return episCheckList;
@@ -424,14 +384,4 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	public void setRiscosFuncoes(Collection<RiscoFuncao> riscosFuncoes) {
 		this.riscosFuncoes = riscosFuncoes;
 	}
-
-	public void setRiscoManager(RiscoManager riscoManager) {
-		this.riscoManager = riscoManager;
-	}
-
-	public void setCursoManager(CursoManager cursoManager) {
-		this.cursoManager = cursoManager;
-	}
-
-
 }

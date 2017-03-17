@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ExtintorInspecaoItemManager;
 import com.fortes.rh.business.sesmt.ExtintorInspecaoManager;
@@ -21,9 +23,10 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 
-	private ExtintorInspecaoManager extintorInspecaoManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private ExtintorManager extintorManager;
+	@Autowired private ExtintorManager extintorManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ExtintorInspecaoManager extintorInspecaoManager;
+	@Autowired private ExtintorInspecaoItemManager extintorInspecaoItemManager;
 	private Extintor extintor;
 
 	private ExtintorInspecao extintorInspecao;
@@ -40,7 +43,6 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 	
 	private String empresasResponsaveis;
 
-	private ExtintorInspecaoItemManager extintorInspecaoItemManager;
 
 	// Filtro da listagem
 	private Long estabelecimentoId;
@@ -213,10 +215,6 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 		this.extintorInspecao = extintorInspecao;
 	}
 
-	public void setExtintorInspecaoManager(ExtintorInspecaoManager extintorInspecaoManager)
-	{
-		this.extintorInspecaoManager = extintorInspecaoManager;
-	}
 	public Collection<Extintor> getExtintors()
 	{
 		return extintors;
@@ -235,11 +233,6 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 	public void setEstabelecimento(Estabelecimento estabelecimento)
 	{
 		this.estabelecimento = estabelecimento;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public Collection<Estabelecimento> getEstabelecimentos()
@@ -300,16 +293,6 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 	public void setItemChecks(String[] itemChecks)
 	{
 		this.itemChecks = itemChecks;
-	}
-
-	public void setExtintorInspecaoItemManager(ExtintorInspecaoItemManager extintorInspecaoItemManager)
-	{
-		this.extintorInspecaoItemManager = extintorInspecaoItemManager;
-	}
-
-	public void setExtintorManager(ExtintorManager extintorManager)
-	{
-		this.extintorManager = extintorManager;
 	}
 
 	public String getEmpresasResponsaveis()

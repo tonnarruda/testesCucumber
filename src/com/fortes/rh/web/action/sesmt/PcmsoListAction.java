@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.PcmsoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -19,8 +21,8 @@ public class PcmsoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private PcmsoManager pcmsoManager;
-	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private PcmsoManager pcmsoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
 	
 	private Date dataIni;
 	private Date dataFim;
@@ -76,16 +78,6 @@ public class PcmsoListAction extends MyActionSupportList
 		}
 		
 		return Action.INPUT;
-	}
-	
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setPcmsoManager(PcmsoManager pcmsoManager)
-	{
-		this.pcmsoManager = pcmsoManager;
 	}
 	
 	public Collection<Estabelecimento> getEstabelecimentos()

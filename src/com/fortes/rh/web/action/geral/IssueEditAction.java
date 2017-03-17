@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.IssueManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.github.Issue;
@@ -12,7 +14,7 @@ import com.opensymphony.xwork.Action;
 public class IssueEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private IssueManager issueManager;
+	@Autowired private IssueManager issueManager;
 	private Issue issue;
 	private String labels;
 	private boolean closed;
@@ -94,11 +96,6 @@ public class IssueEditAction extends MyActionSupportList
 	public void setIssue(Issue issue)
 	{
 		this.issue = issue;
-	}
-
-	public void setIssueManager(IssueManager issueManager)
-	{
-		this.issueManager = issueManager;
 	}
 	
 	public Collection<Issue> getIssues()

@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.MedicoCoordenadorManager;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -13,7 +15,7 @@ public class MedicoCoordenadorEditAction extends MyActionSupportEdit implements 
 {
 	private static final long serialVersionUID = 1L;
 
-	private MedicoCoordenadorManager medicoCoordenadorManager;
+	@Autowired private MedicoCoordenadorManager medicoCoordenadorManager;
 
 	private MedicoCoordenador medicoCoordenador;
 	private boolean manterAssinatura;
@@ -140,11 +142,6 @@ public class MedicoCoordenadorEditAction extends MyActionSupportEdit implements 
 	public void setMedicoCoordenador(MedicoCoordenador medicoCoordenador)
 	{
 		this.medicoCoordenador = medicoCoordenador;
-	}
-
-	public void setMedicoCoordenadorManager(MedicoCoordenadorManager medicoCoordenadorManager)
-	{
-		this.medicoCoordenadorManager = medicoCoordenadorManager;
 	}
 
 	public boolean isManterAssinatura()

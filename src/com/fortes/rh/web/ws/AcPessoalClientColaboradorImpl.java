@@ -13,6 +13,7 @@ import org.apache.axis.encoding.ser.ArrayDeserializerFactory;
 import org.apache.axis.encoding.ser.ArraySerializerFactory;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.exception.IntegraACException;
@@ -31,11 +32,8 @@ import com.fortes.rh.util.StringUtil;
 
 @Component
 public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborador {
-	private AcPessoalClient acPessoalClient;
-
-	public void setAcPessoalClient(AcPessoalClient acPessoalClient) {
-		this.acPessoalClient = acPessoalClient;
-	}
+	
+	@Autowired private AcPessoalClient acPessoalClient;
 
 	//atualiza apenas o epg
 	public void atualizar(TEmpregado empregado, Empresa empresa) throws Exception {

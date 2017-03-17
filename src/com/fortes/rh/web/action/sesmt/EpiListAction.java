@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.sesmt.EpiManager;
@@ -22,14 +23,14 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class EpiListAction extends MyActionSupportList
 {
-	private EpiManager epiManager;
+	@Autowired private EpiManager epiManager;
+	@Autowired private TipoEPIManager tipoEPIManager;
 
 	private Collection<Epi> epis;
 	private Epi epi;
 	
 	private String[] tipoEPICheck;
 	private Collection<CheckBox> tipoEPICheckList = new ArrayList<CheckBox>();
-	private TipoEPIManager tipoEPIManager;
 	
 	private Date venc;
 	private Collection<Epi> dataSource;
@@ -123,11 +124,6 @@ public class EpiListAction extends MyActionSupportList
 		this.epi=epi;
 	}
 
-	public void setEpiManager(EpiManager epiManager)
-	{
-		this.epiManager=epiManager;
-	}
-
 	public Date getVenc()
 	{
 		return venc;
@@ -146,10 +142,6 @@ public class EpiListAction extends MyActionSupportList
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
-	}
-
-	public void setTipoEPIManager(TipoEPIManager tipoEPIManager) {
-		this.tipoEPIManager = tipoEPIManager;
 	}
 
 	public String[] getTipoEPICheck() {
@@ -183,5 +175,4 @@ public class EpiListAction extends MyActionSupportList
 	public void setAtivo(char ativo) {
 		this.ativo = ativo;
 	}
-
 }

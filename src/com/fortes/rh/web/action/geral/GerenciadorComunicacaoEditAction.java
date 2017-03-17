@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -24,11 +26,11 @@ import com.opensymphony.xwork.Action;
 public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private UsuarioManager usuarioManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private UsuarioManager usuarioManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
 	private GerenciadorComunicacao gerenciadorComunicacao;
 	private Collection<GerenciadorComunicacao> gerenciadorComunicacaos;
@@ -199,11 +201,6 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	{
 		this.gerenciadorComunicacao = gerenciadorComunicacao;
 	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager)
-	{
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
 	
 	public Collection<GerenciadorComunicacao> getGerenciadorComunicacaos()
 	{
@@ -222,10 +219,6 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 
 	public TreeMap<Integer, String> getMeioComunicacoes() {
 		return meioComunicacoes;
-	}
-
-	public void setUsuarioManager(UsuarioManager usuarioManager) {
-		this.usuarioManager = usuarioManager;
 	}
 
 	public String[] getUsuariosCheck() {
@@ -252,19 +245,5 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	public Collection<CheckBox> getAreasCheckList()
 	{
 		return areasCheckList;
-	}
-	
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

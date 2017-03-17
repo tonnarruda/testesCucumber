@@ -6,6 +6,7 @@ import javax.xml.rpc.ParameterMode;
 import org.apache.axis.client.Call;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.model.geral.Empresa;
@@ -16,12 +17,7 @@ import com.fortes.rh.model.ws.TOcorrencia;
 @Component
 public class AcPessoalClientOcorrenciaImpl implements AcPessoalClientOcorrencia
 {
-	private AcPessoalClient acPessoalClient;
-
-	public void setAcPessoalClient(AcPessoalClient acPessoalClient)
-	{
-		this.acPessoalClient = acPessoalClient;
-	}
+	@Autowired private AcPessoalClient acPessoalClient;
 
 	public String criarTipoOcorrencia(TOcorrencia tocorrencia, Empresa empresa) throws Exception
 	{

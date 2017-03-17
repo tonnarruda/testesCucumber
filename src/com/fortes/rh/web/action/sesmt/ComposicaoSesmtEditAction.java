@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.ComposicaoSesmtManager;
 import com.fortes.rh.model.sesmt.ComposicaoSesmt;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.Action;
 public class ComposicaoSesmtEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private ComposicaoSesmtManager composicaoSesmtManager;
+	@Autowired private ComposicaoSesmtManager composicaoSesmtManager;
 	private ComposicaoSesmt composicaoSesmt;
 	private Collection<ComposicaoSesmt> composicaoSesmts;
 
@@ -80,11 +82,6 @@ public class ComposicaoSesmtEditAction extends MyActionSupportList
 	public void setComposicaoSesmt(ComposicaoSesmt composicaoSesmt)
 	{
 		this.composicaoSesmt = composicaoSesmt;
-	}
-
-	public void setComposicaoSesmtManager(ComposicaoSesmtManager composicaoSesmtManager)
-	{
-		this.composicaoSesmtManager = composicaoSesmtManager;
 	}
 	
 	public Collection<ComposicaoSesmt> getComposicaoSesmts()

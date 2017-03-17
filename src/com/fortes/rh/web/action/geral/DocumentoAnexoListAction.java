@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class DocumentoAnexoListAction extends MyActionSupportList
 {
-	private DocumentoAnexoManager documentoAnexoManager;
+	@Autowired private DocumentoAnexoManager documentoAnexoManager;
 
 	private Collection<DocumentoAnexo> documentoAnexos;
 	
@@ -95,11 +97,6 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 	public void setDocumentoAnexo(DocumentoAnexo documentoAnexo)
 	{
 		this.documentoAnexo = documentoAnexo;
-	}
-
-	public void setDocumentoAnexoManager(DocumentoAnexoManager documentoAnexoManager)
-	{
-		this.documentoAnexoManager = documentoAnexoManager;
 	}
 
 	public void setDocumentoAnexos(Collection<DocumentoAnexo> documentoAnexos)

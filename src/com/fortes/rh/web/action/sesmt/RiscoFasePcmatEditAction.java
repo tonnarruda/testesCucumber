@@ -4,6 +4,8 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.FasePcmatManager;
 import com.fortes.rh.business.sesmt.MedidaRiscoFasePcmatManager;
 import com.fortes.rh.business.sesmt.MedidaSegurancaManager;
@@ -22,11 +24,11 @@ import com.opensymphony.xwork.Action;
 public class RiscoFasePcmatEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private RiscoManager riscoManager;
-	private FasePcmatManager fasePcmatManager;
-	private RiscoFasePcmatManager riscoFasePcmatManager;
-	private MedidaSegurancaManager medidaSegurancaManager;
-	private MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager;
+	@Autowired private RiscoManager riscoManager;
+	@Autowired private FasePcmatManager fasePcmatManager;
+	@Autowired private RiscoFasePcmatManager riscoFasePcmatManager;
+	@Autowired private MedidaSegurancaManager medidaSegurancaManager;
+	@Autowired private MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager;
 	
 	private FasePcmat fasePcmat;
 	private RiscoFasePcmat riscoFasePcmat;
@@ -124,10 +126,6 @@ public class RiscoFasePcmatEditAction extends MyActionSupportList
 		return list();
 	}
 
-	public void setRiscoFasePcmatManager(RiscoFasePcmatManager riscoFasePcmatManager) {
-		this.riscoFasePcmatManager = riscoFasePcmatManager;
-	}
-
 	public RiscoFasePcmat getRiscoFasePcmat() {
 		return riscoFasePcmat;
 	}
@@ -156,11 +154,6 @@ public class RiscoFasePcmatEditAction extends MyActionSupportList
 		return medidasSeguranca;
 	}
 
-	public void setMedidaSegurancaManager(
-			MedidaSegurancaManager medidaSegurancaManager) {
-		this.medidaSegurancaManager = medidaSegurancaManager;
-	}
-
 	public void setMedidasCheck(Long[] medidasCheck) {
 		this.medidasCheck = medidasCheck;
 	}
@@ -175,19 +168,6 @@ public class RiscoFasePcmatEditAction extends MyActionSupportList
 
 	public void setRiscos(Collection<Risco> riscos) {
 		this.riscos = riscos;
-	}
-
-	public void setRiscoManager(RiscoManager riscoManager) {
-		this.riscoManager = riscoManager;
-	}
-
-	public void setFasePcmatManager(FasePcmatManager fasePcmatManager) {
-		this.fasePcmatManager = fasePcmatManager;
-	}
-
-	public void setMedidaRiscoFasePcmatManager(
-			MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager) {
-		this.medidaRiscoFasePcmatManager = medidaRiscoFasePcmatManager;
 	}
 
 	public Long getUltimoPcmatId() {

@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.EventoManager;
 import com.fortes.rh.model.sesmt.Evento;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.Action;
 public class EventoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private EventoManager eventoManager;
+	@Autowired private EventoManager eventoManager;
 	private Evento evento;
 	private Collection<Evento> eventos;
 
@@ -83,11 +85,6 @@ public class EventoEditAction extends MyActionSupportList
 	public void setEvento(Evento evento)
 	{
 		this.evento = evento;
-	}
-
-	public void setEventoManager(EventoManager eventoManager)
-	{
-		this.eventoManager = eventoManager;
 	}
 	
 	public Collection<Evento> getEventos()

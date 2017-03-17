@@ -1,6 +1,8 @@
 package com.fortes.rh.web.action.sesmt;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.EpcManager;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class EpcEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private EpcManager epcManager;
+	@Autowired private EpcManager epcManager;
 
 	private Epc epc;
 
@@ -111,10 +113,5 @@ public class EpcEditAction extends MyActionSupportEdit implements ModelDriven
 	public void setEpc(Epc epc)
 	{
 		this.epc = epc;
-	}
-
-	public void setEpcManager(EpcManager epcManager)
-	{
-		this.epcManager = epcManager;
 	}
 }

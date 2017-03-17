@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
@@ -41,12 +43,12 @@ public class ColaboradorReportAction extends MyActionSupport
 
 	private Collection<Colaborador> dataSource;
 
-	private AreaOrganizacionalManager areaOrganizacionalManager = null;
-	private GrupoOcupacionalManager grupoOcupacionalManager = null;
-	private EstabelecimentoManager estabelecimentoManager;
-	private ColaboradorManager colaboradorManager;
-	private CargoManager cargoManager;
-	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
 
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors;
 	private Collection<AreaOrganizacional> areaOrganizacionals;
@@ -69,7 +71,6 @@ public class ColaboradorReportAction extends MyActionSupport
 	private String reportFilter;
 	private String reportTitle;
 	
-	@SuppressWarnings("unchecked")
 	public String execute()
 	{
 		return SUCCESS;
@@ -133,10 +134,7 @@ public class ColaboradorReportAction extends MyActionSupport
 			prepareProjecaoSalarialFiltro();
  			return Action.INPUT;
 		}
-
-
 	}
-
 
 	public Collection<AreaOrganizacional> getAreaOrganizacionals()
 	{
@@ -146,16 +144,6 @@ public class ColaboradorReportAction extends MyActionSupport
 	public void setAreaOrganizacionals(Collection<AreaOrganizacional> areaOrganizacionals)
 	{
 		this.areaOrganizacionals = areaOrganizacionals;
-	}
-
-	public ColaboradorManager getColaboradorManager()
-	{
-		return colaboradorManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public Collection<Colaborador> getDataSource()
@@ -213,20 +201,6 @@ public class ColaboradorReportAction extends MyActionSupport
 		return parametros;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager)
-	{
-		this.grupoOcupacionalManager = grupoOcupacionalManager;
-	}
 	public List getEmptyDataSource()
 	{
 		return emptyDataSource;
@@ -240,11 +214,6 @@ public class ColaboradorReportAction extends MyActionSupport
 	public void setCargosCheckList(Collection<CheckBox> cargosCheckList)
 	{
 		this.cargosCheckList = cargosCheckList;
-	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
 	}
 
 	public String[] getCargosCheck()
@@ -317,11 +286,6 @@ public class ColaboradorReportAction extends MyActionSupport
 		this.tabelaReajusteColaboradors = tabelaReajusteColaboradors;
 	}
 
-	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager)
-	{
-		this.tabelaReajusteColaboradorManager = tabelaReajusteColaboradorManager;
-	}
-
 	public TabelaReajusteColaborador getTabelaReajusteColaborador()
 	{
 		return tabelaReajusteColaborador;
@@ -339,5 +303,4 @@ public class ColaboradorReportAction extends MyActionSupport
 	public String getReportTitle() {
 		return reportTitle;
 	}
-
 }

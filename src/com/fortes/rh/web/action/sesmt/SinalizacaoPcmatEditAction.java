@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.SinalizacaoPcmatManager;
 import com.fortes.rh.model.sesmt.Pcmat;
 import com.fortes.rh.model.sesmt.SinalizacaoPcmat;
@@ -12,7 +14,7 @@ import com.opensymphony.xwork.Action;
 public class SinalizacaoPcmatEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private SinalizacaoPcmatManager sinalizacaoPcmatManager;
+	@Autowired private SinalizacaoPcmatManager sinalizacaoPcmatManager;
 	
 	private SinalizacaoPcmat sinalizacaoPcmat;
 	private Pcmat pcmat;
@@ -105,11 +107,6 @@ public class SinalizacaoPcmatEditAction extends MyActionSupportList
 	public void setSinalizacaoPcmat(SinalizacaoPcmat sinalizacaoPcmat)
 	{
 		this.sinalizacaoPcmat = sinalizacaoPcmat;
-	}
-
-	public void setSinalizacaoPcmatManager(SinalizacaoPcmatManager sinalizacaoPcmatManager)
-	{
-		this.sinalizacaoPcmatManager = sinalizacaoPcmatManager;
 	}
 	
 	public Collection<SinalizacaoPcmat> getSinalizacaoPcmats()

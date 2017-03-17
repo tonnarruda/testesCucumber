@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.rpc.Call;
 import javax.xml.rpc.ParameterMode;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.geral.GrupoACManager;
@@ -14,8 +15,8 @@ import com.fortes.rh.model.geral.GrupoAC;
 @Component
 public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
 {
-	private AcPessoalClient acPessoalClient;
-	private GrupoACManager grupoACManager;
+	@Autowired private AcPessoalClient acPessoalClient;
+	@Autowired private GrupoACManager grupoACManager;
 
 	public String getVersaoWebServiceAC(Empresa empresa) throws Exception
 	{
@@ -43,11 +44,6 @@ public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
             e.printStackTrace();
             throw e;
         }
-	}
-
-	public void setAcPessoalClient(AcPessoalClient acPessoalClient)
-	{
-		this.acPessoalClient = acPessoalClient;
 	}
 
 	public void verificaWebService(Empresa empresa) throws IntegraACException
@@ -94,9 +90,4 @@ public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
             throw e;
         }
 	}
-
-	public void setGrupoACManager(GrupoACManager grupoACManager) {
-		this.grupoACManager = grupoACManager;
-	}
-
 }

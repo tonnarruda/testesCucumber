@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.FaseManager;
 import com.fortes.rh.business.sesmt.FasePcmatManager;
 import com.fortes.rh.model.sesmt.Fase;
@@ -14,8 +16,8 @@ import com.opensymphony.xwork.Action;
 public class FasePcmatEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private FasePcmatManager fasePcmatManager;
-	private FaseManager faseManager;
+	@Autowired private FasePcmatManager fasePcmatManager;
+	@Autowired private FaseManager faseManager;
 	
 	private FasePcmat fasePcmat;
 	private Pcmat pcmat;
@@ -120,20 +122,12 @@ public class FasePcmatEditAction extends MyActionSupportList
 		this.fasesPcmat = fasesPcmat;
 	}
 
-	public void setFasePcmatManager(FasePcmatManager fasePcmatManager) {
-		this.fasePcmatManager = fasePcmatManager;
-	}
-
 	public Collection<Fase> getFases() {
 		return fases;
 	}
 
 	public void setFases(Collection<Fase> fases) {
 		this.fases = fases;
-	}
-
-	public void setFaseManager(FaseManager faseManager) {
-		this.faseManager = faseManager;
 	}
 
 	public Long getUltimoPcmatId() {

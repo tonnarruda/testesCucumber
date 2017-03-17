@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -35,11 +36,11 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ColaboradorManager colaboradorManager;
-	private MotivoDemissaoManager motivoDemissaoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private PlatformTransactionManager transactionManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private MotivoDemissaoManager motivoDemissaoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private PlatformTransactionManager transactionManager;
 	
 	private Colaborador colaborador;
 	private Comissao comissao;
@@ -303,11 +304,6 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return getColaborador();
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Date getDataDesligamento()
 	{
 		return dataDesligamento;
@@ -354,11 +350,6 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		this.motivoDemissaos = motivoDemissaos;
 	}
 
-	public void setMotivoDemissaoManager(MotivoDemissaoManager motivoDemissaoManager)
-	{
-		this.motivoDemissaoManager = motivoDemissaoManager;
-	}
-
 	public MotivoDemissao getMotDemissao()
 	{
 		return motDemissao;
@@ -401,24 +392,11 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return colaboradores;
 	}
 
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
 	public Character getGerouSubstituicao() {
 		return gerouSubstituicao;
 	}
 
 	public void setGerouSubstituicao(Character gerouSubstituicao) {
 		this.gerouSubstituicao = gerouSubstituicao;
-	}
-	
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
 	}
 }

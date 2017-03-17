@@ -5,6 +5,8 @@ import java.util.Collection;
 
 import javax.persistence.PersistenceException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.business.sesmt.ComissaoPeriodoManager;
@@ -21,9 +23,9 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 
-	private ComissaoPeriodoManager comissaoPeriodoManager;
-	private ComissaoMembroManager comissaoMembroManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ComissaoPeriodoManager comissaoPeriodoManager;
+	@Autowired private ComissaoMembroManager comissaoMembroManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	private ComissaoPeriodo comissaoPeriodo;
 	private Comissao comissao;
@@ -43,7 +45,6 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 	private String nomeBusca;
 	private boolean clonar = false;
 	private ComissaoMembro comissaoMembro;
-
 
 	public String prepare() throws Exception
 	{
@@ -155,11 +156,6 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 		this.comissaoPeriodo = comissaoPeriodo;
 	}
 
-	public void setComissaoPeriodoManager(ComissaoPeriodoManager comissaoPeriodoManager)
-	{
-		this.comissaoPeriodoManager = comissaoPeriodoManager;
-	}
-
 	public Collection<ComissaoPeriodo> getComissaoPeriodos()
 	{
 		return comissaoPeriodos;
@@ -178,11 +174,6 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 	public Collection<ComissaoMembro> getComissaoMembros()
 	{
 		return comissaoMembros;
-	}
-
-	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager)
-	{
-		this.comissaoMembroManager = comissaoMembroManager;
 	}
 
 	public FuncaoComissao getFuncoes()
@@ -253,11 +244,6 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 	public void setComissaoMembro(ComissaoMembro comissaoMembro)
 	{
 		this.comissaoMembro = comissaoMembro;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public boolean isClonar() {

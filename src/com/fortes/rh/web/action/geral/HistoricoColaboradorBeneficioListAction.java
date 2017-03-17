@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.HistoricoColaboradorBeneficioManager;
 import com.fortes.rh.model.geral.Colaborador;
@@ -12,8 +14,8 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class HistoricoColaboradorBeneficioListAction extends MyActionSupportList
 {
-	private HistoricoColaboradorBeneficioManager historicoColaboradorBeneficioManager;
-	private ColaboradorManager colaboradorManager;
+	@Autowired private HistoricoColaboradorBeneficioManager historicoColaboradorBeneficioManager;
+	@Autowired private ColaboradorManager colaboradorManager;
 
 	private Collection<HistoricoColaboradorBeneficio> historicoColaboradorBeneficios;
 
@@ -72,15 +74,6 @@ public class HistoricoColaboradorBeneficioListAction extends MyActionSupportList
 
 	public void setHistoricoColaboradorBeneficio(HistoricoColaboradorBeneficio historicoColaboradorBeneficio){
 		this.historicoColaboradorBeneficio=historicoColaboradorBeneficio;
-	}
-
-	public void setHistoricoColaboradorBeneficioManager(HistoricoColaboradorBeneficioManager historicoColaboradorBeneficioManager){
-		this.historicoColaboradorBeneficioManager=historicoColaboradorBeneficioManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public Colaborador getColaborador()

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.persistence.PersistenceException;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.EleicaoManager;
@@ -23,14 +24,14 @@ public class ComissaoEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 
-	private ComissaoManager comissaoManager;
+	@Autowired private ComissaoManager comissaoManager;
+	@Autowired private EleicaoManager eleicaoManager;
 
 	private Comissao comissao;
 	private Collection<Comissao> comissaos;
 
 	Collection<ComissaoPeriodo> comissaoPeriodos;
 
-	private EleicaoManager eleicaoManager;
 	private Collection<Eleicao> eleicaos;
 	private Eleicao eleicao;
 	
@@ -158,15 +159,6 @@ public class ComissaoEditAction extends MyActionSupportEdit
 	public void setComissao(Comissao comissao)
 	{
 		this.comissao = comissao;
-	}
-
-	public void setComissaoManager(ComissaoManager comissaoManager)
-	{
-		this.comissaoManager = comissaoManager;
-	}
-	public void setEleicaoManager(EleicaoManager eleicaoManager)
-	{
-		this.eleicaoManager = eleicaoManager;
 	}
 
 	public Collection<Eleicao> getEleicaos()

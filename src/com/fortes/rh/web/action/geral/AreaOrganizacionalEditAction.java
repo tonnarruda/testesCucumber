@@ -189,11 +189,6 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 		this.podeEditarAreaMae = podeEditarAreaMae;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public boolean isLimitado()
 	{
 		return limitado;
@@ -215,5 +210,4 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 	public Collection<Colaborador> getCoResponsaveis() {
 		return coResponsaveis;
 	}
-
 }

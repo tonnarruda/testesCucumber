@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -38,12 +40,12 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings({"serial","unchecked"})
 public class OcorrenciaEditAction extends MyActionSupportEdit
 {
-	private OcorrenciaManager ocorrenciaManager;
-	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
-	private EmpresaManager empresaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired private OcorrenciaManager ocorrenciaManager;
+	@Autowired private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
 
 	private Ocorrencia ocorrencia;
 	@SuppressWarnings("unused")
@@ -262,11 +264,6 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 		this.ocorrencia = ocorrencia;
 	}
 
-	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager)
-	{
-		this.ocorrenciaManager = ocorrenciaManager;
-	}
-
 	public Map getParametros()
 	{
 		return parametros;
@@ -457,11 +454,6 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 		this.colaboradoresOcorrencias = colaboradoresOcorrencias;
 	}
 
-	public void setColaboradorOcorrenciaManager(ColaboradorOcorrenciaManager colaboradorOcorrenciaManager)
-	{
-		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
-	}
-
 	public List getEmptyDataSource()
 	{
 		return new CollectionUtil().convertCollectionToList(colaboradorOcorrenciaRelatorios);
@@ -515,25 +507,6 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	public Collection<Empresa> getEmpresas()
 	{
 		return empresas;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-	
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 
 	public Boolean getCompartilharColaboradores()

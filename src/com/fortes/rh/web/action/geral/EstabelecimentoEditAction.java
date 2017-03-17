@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -18,9 +19,9 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class EstabelecimentoEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private EstabelecimentoManager estabelecimentoManager;
-	private EstadoManager estadoManager;
-	private CidadeManager cidadeManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private EstadoManager estadoManager;
+	@Autowired private CidadeManager cidadeManager;
 
 	private Collection<Estado> ufs = null;
 	private Collection<Cidade> cidades = new ArrayList<Cidade>();
@@ -124,21 +125,6 @@ public class EstabelecimentoEditAction extends MyActionSupportEdit implements Mo
 	public void setEstabelecimento(Estabelecimento estabelecimento)
 	{
 		this.estabelecimento = estabelecimento;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setEstadoManager(EstadoManager estadoManager)
-	{
-		this.estadoManager = estadoManager;
-	}
-
-	public void setCidadeManager(CidadeManager cidadeManager)
-	{
-		this.cidadeManager = cidadeManager;
 	}
 
 	public Collection<Estado> getUfs()

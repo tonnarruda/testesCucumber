@@ -95,24 +95,15 @@ import com.opensymphony.xwork.ActionContext;
 public class ColaboradorListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	@Autowired
-	private ColaboradorManager colaboradorManager = null;
-	@Autowired
-	private EstabelecimentoManager estabelecimentoManager;
-	@Autowired
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	@Autowired
-	private CargoManager cargoManager;
-	@Autowired
-	private EmpresaManager empresaManager;
-	@Autowired
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	@Autowired
-	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
-	@Autowired
-	private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
-	@Autowired
-	private UsuarioManager usuarioManager;
+	@Autowired private ColaboradorManager colaboradorManager = null;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	@Autowired private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
+	@Autowired private UsuarioManager usuarioManager;
 	
 	private Collection<Colaborador> colaboradors = null;
 	private Colaborador colaborador;
@@ -1530,20 +1521,12 @@ public class ColaboradorListAction extends MyActionSupportList
 		this.habilitaCampoExtra = habilitaCampoExtra;
 	}
 
-	public ParametrosDoSistemaManager getParametrosDoSistemaManager() {
-		return parametrosDoSistemaManager;
-	}
-
 	public Collection<ConfiguracaoCampoExtra> getConfiguracaoCampoExtras() {
 		return configuracaoCampoExtras;
 	}
 
 	public void setConfiguracaoCampoExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras) {
 		this.configuracaoCampoExtras = configuracaoCampoExtras;
-	}
-
-	public ConfiguracaoCampoExtraManager getConfiguracaoCampoExtraManager() {
-		return configuracaoCampoExtraManager;
 	}
 
 	public Collection<String> getColunasMarcadas() {

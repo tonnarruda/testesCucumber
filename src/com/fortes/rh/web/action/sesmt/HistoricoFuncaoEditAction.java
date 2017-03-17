@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
@@ -23,11 +25,11 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings({"serial"})
 public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 {
-	private HistoricoFuncaoManager historicoFuncaoManager;
-	private ExameManager exameManager;
-	private EpiManager epiManager;
-	private RiscoManager riscoManager;
-	private CursoManager cursoManager;
+	@Autowired private HistoricoFuncaoManager historicoFuncaoManager;
+	@Autowired private ExameManager exameManager;
+	@Autowired private RiscoManager riscoManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private EpiManager epiManager;
 
 	private HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 	private Funcao funcao;
@@ -139,11 +141,6 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		this.historicoFuncao = historicoFuncao;
 	}
 
-	public void setHistoricoFuncaoManager(HistoricoFuncaoManager historicoFuncaoManager)
-	{
-		this.historicoFuncaoManager = historicoFuncaoManager;
-	}
-
 	public Funcao getFuncao()
 	{
 		return funcao;
@@ -164,11 +161,6 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		this.cargoTmp = cargoTmp;
 	}
 
-	public void setExameManager(ExameManager exameManager)
-	{
-		this.exameManager = exameManager;
-	}
-
 	public Long[] getExamesChecked()
 	{
 		return examesChecked;
@@ -187,11 +179,6 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	public Collection<CheckBox> getEpisCheckList()
 	{
 		return episCheckList;
-	}
-
-	public void setEpiManager(EpiManager epiManager)
-	{
-		this.epiManager = epiManager;
 	}
 
 	public void setEpisChecked(Long[] episChecked)
@@ -225,10 +212,6 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		this.riscosFuncoes = riscosFuncoes;
 	}
 
-	public void setRiscoManager(RiscoManager riscoManager) {
-		this.riscoManager = riscoManager;
-	}
-
 	public Long[] getRiscoChecks() {
 		return riscoChecks;
 	}
@@ -251,9 +234,5 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 
 	public void setCursosChecked(Long[] cursosChecked) {
 		this.cursosChecked = cursosChecked;
-	}
-
-	public void setCursoManager(CursoManager cursoManager) {
-		this.cursoManager = cursoManager;
 	}
 }

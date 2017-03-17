@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 
 import org.apache.axis.client.Call;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.exception.IntegraACException;
@@ -15,7 +16,7 @@ import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 @Component
 public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 {
-	private AcPessoalClient acPessoalClient;
+	@Autowired private AcPessoalClient acPessoalClient;
 
 	public boolean deleteLotacao(AreaOrganizacional areaOrganizacional, Empresa empresa) throws IntegraACException
 	{
@@ -117,10 +118,5 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 			e.printStackTrace();
 			throw new IntegraACException("Erro ao obter a máscara de lotações do Fortes Pessoal.");
 		}
-	}
-
-	public void setAcPessoalClient(AcPessoalClient acPessoalClient)
-	{
-		this.acPessoalClient = acPessoalClient;
 	}
 }

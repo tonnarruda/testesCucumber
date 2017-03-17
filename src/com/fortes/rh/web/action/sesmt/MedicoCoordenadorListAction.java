@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.MedicoCoordenadorManager;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -11,7 +13,7 @@ public class MedicoCoordenadorListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 
-	private MedicoCoordenadorManager medicoCoordenadorManager;
+	@Autowired private MedicoCoordenadorManager medicoCoordenadorManager;
 
 	private Collection<MedicoCoordenador> medicoCoordenadors;
 
@@ -58,9 +60,5 @@ public class MedicoCoordenadorListAction extends MyActionSupportList
 
 	public void setMedicoCoordenador(MedicoCoordenador medicoCoordenador){
 		this.medicoCoordenador=medicoCoordenador;
-	}
-
-	public void setMedicoCoordenadorManager(MedicoCoordenadorManager medicoCoordenadorManager){
-		this.medicoCoordenadorManager=medicoCoordenadorManager;
 	}
 }

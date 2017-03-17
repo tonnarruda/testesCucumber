@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -34,10 +36,14 @@ import com.fortes.web.tags.CheckBox;
 @SuppressWarnings("serial")
 public class SolicitacaoEpiListAction extends MyActionSupportList
 {
-	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
-	private SolicitacaoEpiManager solicitacaoEpiManager;
-	private ColaboradorManager colaboradorManager;
-	private EpiManager epiManager;
+	@Autowired private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private SolicitacaoEpiManager solicitacaoEpiManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private TipoEPIManager tipoEPIManager;
+	@Autowired private EpiManager epiManager;
+
 	private Collection<SolicitacaoEpi> solicitacaoEpis;
 	private Collection<SolicitacaoEpiItem> solicitacaoEpiItems;
 	private String[] epiCheck;
@@ -52,8 +58,6 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private Colaborador colaborador = new Colaborador();
 	private Empresa empresa;
 	
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentoCheck;
@@ -63,7 +67,6 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	private String[] tipoEPICheck;
 	private Collection<CheckBox> tipoEPICheckList = new ArrayList<CheckBox>();
-	private TipoEPIManager tipoEPIManager;
 	
 	private SolicitacaoEpi solicitacaoEpi;
 	private boolean entrega;
@@ -266,10 +269,6 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		this.solicitacaoEpi=solicitacaoEpi;
 	}
 
-	public void setSolicitacaoEpiManager(SolicitacaoEpiManager solicitacaoEpiManager){
-		this.solicitacaoEpiManager=solicitacaoEpiManager;
-	}
-
 	public void setDataFim(Date dataFim)
 	{
 		this.dataFim = dataFim;
@@ -353,10 +352,6 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		this.agruparPor = agruparPor;
 	}
 
-	public void setEpiManager(EpiManager epiManager) {
-		this.epiManager = epiManager;
-	}
-
 	public Collection<CheckBox> getEpiCheckList() {
 		return epiCheckList;
 	}
@@ -397,10 +392,6 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		this.tipoEPICheckList = tipoEPICheckList;
 	}
 
-	public void setTipoEPIManager(TipoEPIManager tipoEPIManager) {
-		this.tipoEPIManager = tipoEPIManager;
-	}
-
 	public String[] getAreasCheck() {
 		return areasCheck;
 	}
@@ -433,20 +424,8 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		this.estabelecimentoCheckList = estabelecimentoCheckList;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public Collection<CheckBox> getColaboradorCheckList() {
 		return colaboradorCheckList;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public void setColaboradorCheck(String[] colaboradorCheck) {
@@ -511,10 +490,6 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public Map<String, String> getSituacoesDoColaborador() {
 		return situacoesDoColaborador;
-	}
-
-	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
-		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
 	}
 
 	public boolean isExibirDesligados() {

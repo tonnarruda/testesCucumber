@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.sesmt.ComissaoEleicaoManager;
 import com.fortes.rh.business.sesmt.EleicaoManager;
@@ -17,15 +19,15 @@ public class ComissaoEleicaoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 
-	private ComissaoEleicaoManager comissaoEleicaoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ComissaoEleicaoManager comissaoEleicaoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EleicaoManager eleicaoManager;
 
 	private Collection<ComissaoEleicao> comissaoEleicaos;
 
 	private ComissaoEleicao comissaoEleicao;
 	private FuncaoComissaoEleitoral funcaoComissaoEleitoral = new FuncaoComissaoEleitoral();
 	private Eleicao eleicao;
-	private EleicaoManager eleicaoManager;
 	
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] colaboradorsCheck;
@@ -127,11 +129,6 @@ public class ComissaoEleicaoListAction extends MyActionSupportList
 		this.comissaoEleicao = comissaoEleicao;
 	}
 
-	public void setComissaoEleicaoManager(ComissaoEleicaoManager comissaoEleicaoManager)
-	{
-		this.comissaoEleicaoManager = comissaoEleicaoManager;
-	}
-
 	public Eleicao getEleicao()
 	{
 		return eleicao;
@@ -162,11 +159,6 @@ public class ComissaoEleicaoListAction extends MyActionSupportList
 		return colaboradorsCheckList;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public void setColaboradorsCheck(String[] colaboradorsCheck)
 	{
 		this.colaboradorsCheck = colaboradorsCheck;
@@ -191,9 +183,4 @@ public class ComissaoEleicaoListAction extends MyActionSupportList
 	{
 		return funcaoComissaos;
 	}
-	
-	public void setEleicaoManager(EleicaoManager eleicaoManager) {
-		this.eleicaoManager = eleicaoManager;
-	}
-
 }

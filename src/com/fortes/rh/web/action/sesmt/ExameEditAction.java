@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.sesmt;
 
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.model.sesmt.Exame;
@@ -12,7 +13,7 @@ public class ExameEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 
-	private ExameManager exameManager;
+	@Autowired private ExameManager exameManager;
 
 	private Exame exame;
 
@@ -109,10 +110,5 @@ public class ExameEditAction extends MyActionSupportEdit
 	public void setExame(Exame exame)
 	{
 		this.exame = exame;
-	}
-
-	public void setExameManager(ExameManager exameManager)
-	{
-		this.exameManager = exameManager;
 	}
 }

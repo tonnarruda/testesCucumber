@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.sesmt.EpiManager;
@@ -20,8 +21,8 @@ public class RiscoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private RiscoManager riscoManager;
-	private EpiManager epiManager;
+	@Autowired private RiscoManager riscoManager;
+	@Autowired private EpiManager epiManager;
 
 	private Collection<Epi> epis = new ArrayList<Epi>();
 	private Collection<CheckBox> episCheckList = new ArrayList<CheckBox>();
@@ -173,11 +174,6 @@ public class RiscoEditAction extends MyActionSupportList
 		this.risco = risco;
 	}
 
-	public void setRiscoManager(RiscoManager riscoManager)
-	{
-		this.riscoManager = riscoManager;
-	}
-
 	public Map<String, String> getGrupoRiscos()
 	{
 		return grupoRiscos;
@@ -206,11 +202,6 @@ public class RiscoEditAction extends MyActionSupportList
 	public void setEpisCheckList(Collection<CheckBox> episCheckList)
 	{
 		this.episCheckList = episCheckList;
-	}
-
-	public void setEpiManager(EpiManager epiManager)
-	{
-		this.epiManager = epiManager;
 	}
 
 	public Collection<Epi> getEpis()

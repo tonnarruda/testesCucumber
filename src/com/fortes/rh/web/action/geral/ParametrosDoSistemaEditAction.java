@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.postgresql.util.PSQLException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.acesso.PerfilManager;
@@ -62,18 +63,19 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private static final long serialVersionUID = 1L;
 	private static final long PERFIL_AUTORIZAR_PARTICIPACAO_COLAB_EM_SOLICITACAO_DE_PESSOAL = 684L;
 	
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private PerfilManager perfilManager;
-	private ColaboradorManager colaboradorManager;
-	private EstabelecimentoManager estabelecimentoManager ;
-	private FaixaSalarialManager faixaSalarialManager;
-	private IndiceManager indiceManager;
-	private OcorrenciaManager ocorrenciaManager;
-	private EmpresaManager empresaManager;
-	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private PerfilManager perfilManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager ;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private OcorrenciaManager ocorrenciaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	@Autowired private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
 
 	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<AreaOrganizacional> areaOrganizacionals;
@@ -96,7 +98,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private Collection<CheckBox> horariosBackupList = new ArrayList<CheckBox>();
 	
 	private boolean habilitaCampoExtra;
-	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 	
 	private Collection<CheckBox> modulosSistema = new ArrayList<CheckBox>();
@@ -379,16 +380,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		this.parametrosDoSistema = parametrosDoSistema;
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
-	public void setPerfilManager(PerfilManager perfilManager)
-	{
-		this.perfilManager = perfilManager;
-	}
-
 	public Collection<Perfil> getPerfils()
 	{
 		return perfils;
@@ -447,10 +438,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		return areaOrganizacionals;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public Empresa getEmpresa() {
 		return empresa;
 	}
@@ -463,14 +450,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		return colaboradors;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 	public Collection<Estabelecimento> getEstabelecimentos() {
 		return estabelecimentos;
 	}
@@ -479,20 +458,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		return faixaSalarials;
 	}
 
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
-	public void setIndiceManager(IndiceManager indiceManager) {
-		this.indiceManager = indiceManager;
-	}
-
 	public Collection<Indice> getIndices() {
 		return indices;
-	}
-
-	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager) {
-		this.ocorrenciaManager = ocorrenciaManager;
 	}
 
 	public Collection<Ocorrencia> getOcorrencias() {
@@ -505,10 +472,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	
 	public Collection<Empresa> getEmpresas() {
 		return empresas;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 
 	public void setAreaOrganizacionals(
@@ -540,10 +503,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		this.ocorrenciaIds = ocorrenciaIds;
 	}
 
-	public void setColaboradorOcorrenciaManager(ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) {
-		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
-	}
-
 	public String getLogErro() {
 		return logErro;
 	}
@@ -568,24 +527,11 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		return modulosSistemaCheck;
 	}
 
-	public void setGerenciadorComunicacaoManager( GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
-	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
-		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
-	}
-
 	public ConfiguracaoCampoExtraVisivelObrigadotorio getCampoExtraVisivelObrigadotorio() {
 		return campoExtraVisivelObrigadotorio;
 	}
 
 	public void setCampoExtraVisivelObrigadotorio( ConfiguracaoCampoExtraVisivelObrigadotorio campoExtraVisivelObrigadotorio) {
 		this.campoExtraVisivelObrigadotorio = campoExtraVisivelObrigadotorio;
-	}
-
-	public void setConfiguracaoCampoExtraVisivelObrigadotorioManager(
-			ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager) {
-		this.configuracaoCampoExtraVisivelObrigadotorioManager = configuracaoCampoExtraVisivelObrigadotorioManager;
 	}
 }

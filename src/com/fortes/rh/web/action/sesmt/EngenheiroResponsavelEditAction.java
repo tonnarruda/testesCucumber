@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.sesmt;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.EngenheiroResponsavelManager;
 import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -9,7 +11,7 @@ public class EngenheiroResponsavelEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 
-	private EngenheiroResponsavelManager engenheiroResponsavelManager;
+	@Autowired private EngenheiroResponsavelManager engenheiroResponsavelManager;
 
 	private EngenheiroResponsavel engenheiroResponsavel;
 
@@ -62,10 +64,4 @@ public class EngenheiroResponsavelEditAction extends MyActionSupportEdit
 	{
 		this.engenheiroResponsavel = engenheiroResponsavel;
 	}
-
-	public void setEngenheiroResponsavelManager(EngenheiroResponsavelManager engenheiroResponsavelManager)
-	{
-		this.engenheiroResponsavelManager = engenheiroResponsavelManager;
-	}
-
 }

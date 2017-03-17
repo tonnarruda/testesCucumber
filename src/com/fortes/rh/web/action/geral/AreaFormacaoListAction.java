@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class AreaFormacaoListAction extends MyActionSupportList
 {
-	private AreaFormacaoManager areaFormacaoManager;
+	@Autowired private AreaFormacaoManager areaFormacaoManager;
 
 	private Collection<AreaFormacao> areaFormacaos;
 
@@ -54,9 +56,5 @@ public class AreaFormacaoListAction extends MyActionSupportList
 
 	public void setAreaFormacao(AreaFormacao areaFormacao){
 		this.areaFormacao=areaFormacao;
-	}
-
-	public void setAreaFormacaoManager(AreaFormacaoManager areaFormacaoManager){
-		this.areaFormacaoManager=areaFormacaoManager;
 	}
 }

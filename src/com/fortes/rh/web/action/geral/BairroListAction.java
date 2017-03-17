@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EstadoManager;
@@ -15,9 +17,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class BairroListAction extends MyActionSupportList
 {
-	private BairroManager bairroManager;
-	private EstadoManager estadoManager;
-	private CidadeManager cidadeManager;
+	@Autowired private BairroManager bairroManager;
+	@Autowired private EstadoManager estadoManager;
+	@Autowired private CidadeManager cidadeManager;
 
 	private Collection<Bairro> bairros = new ArrayList<Bairro>();
 	private Collection<Estado> estados = new ArrayList<Estado>();
@@ -74,15 +76,6 @@ public class BairroListAction extends MyActionSupportList
 		this.bairro=bairro;
 	}
 
-	public void setBairroManager(BairroManager bairroManager){
-		this.bairroManager=bairroManager;
-	}
-
-	public void setEstadoManager(EstadoManager estadoManager)
-	{
-		this.estadoManager = estadoManager;
-	}
-
 	public Collection<Estado> getEstados()
 	{
 		return estados;
@@ -101,10 +94,5 @@ public class BairroListAction extends MyActionSupportList
 	public Collection<Cidade> getCidades()
 	{
 		return cidades;
-	}
-
-	public void setCidadeManager(CidadeManager cidadeManager)
-	{
-		this.cidadeManager = cidadeManager;
 	}
 }

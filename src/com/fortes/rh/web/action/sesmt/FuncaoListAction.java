@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -34,12 +35,12 @@ public class FuncaoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 
-	private FuncaoManager funcaoManager;
-	private CargoManager cargoManager;
-	private ColaboradorManager colaboradorManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private HistoricoFuncaoManager historicoFuncaoManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private HistoricoFuncaoManager historicoFuncaoManager;
 	
 	private Collection<Funcao> funcaos = new ArrayList<Funcao>();
 	private Collection<AreaOrganizacional> areas;
@@ -232,11 +233,6 @@ public class FuncaoListAction extends MyActionSupportList
 		this.funcao = funcao;
 	}
 
-	public void setFuncaoManager(FuncaoManager funcaoManager)
-	{
-		this.funcaoManager = funcaoManager;
-	}
-
 	public Cargo getCargoTmp()
 	{
 		return cargoTmp;
@@ -250,16 +246,6 @@ public class FuncaoListAction extends MyActionSupportList
 	public void setFuncaos(Collection<Funcao> funcaos)
 	{
 		this.funcaos = funcaos;
-	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public Collection<Colaborador> getColaboradors()
@@ -312,11 +298,6 @@ public class FuncaoListAction extends MyActionSupportList
 		this.areaBusca = areaBusca;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public Colaborador getColaborador()
 	{
 		return this.colaborador;
@@ -335,11 +316,6 @@ public class FuncaoListAction extends MyActionSupportList
 	public void setHistoricoColaborador(HistoricoColaborador historicoColaborador)
 	{
 		this.historicoColaborador = historicoColaborador;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public Collection<Estabelecimento> getEstabelecimentos()
@@ -398,14 +374,8 @@ public class FuncaoListAction extends MyActionSupportList
 		this.funcoesCheckList = funcoesCheckList;
 	}
 
-	public void setHistoricoFuncaoManager(HistoricoFuncaoManager historicoFuncaoManager)
-	{
-		this.historicoFuncaoManager = historicoFuncaoManager;
-	}
-
 	public void setTipoAtivo(char tipoAtivo)
 	{
 		this.tipoAtivo = tipoAtivo;
 	}
-
 }

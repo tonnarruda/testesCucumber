@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.NaturezaLesaoManager;
 import com.fortes.rh.model.sesmt.NaturezaLesao;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.Action;
 public class NaturezaLesaoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private NaturezaLesaoManager naturezaLesaoManager;
+	@Autowired private NaturezaLesaoManager naturezaLesaoManager;
 	private NaturezaLesao naturezaLesao;
 	private Collection<NaturezaLesao> naturezaLesaos;
 
@@ -80,11 +82,6 @@ public class NaturezaLesaoEditAction extends MyActionSupportList
 	public void setNaturezaLesao(NaturezaLesao naturezaLesao)
 	{
 		this.naturezaLesao = naturezaLesao;
-	}
-
-	public void setNaturezaLesaoManager(NaturezaLesaoManager naturezaLesaoManager)
-	{
-		this.naturezaLesaoManager = naturezaLesaoManager;
 	}
 	
 	public Collection<NaturezaLesao> getNaturezaLesaos()

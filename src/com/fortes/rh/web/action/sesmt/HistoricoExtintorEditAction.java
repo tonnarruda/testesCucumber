@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ExtintorManager;
 import com.fortes.rh.business.sesmt.HistoricoExtintorManager;
@@ -20,9 +22,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class HistoricoExtintorEditAction extends MyActionSupportList
 {
-	private HistoricoExtintorManager historicoExtintorManager;
-	private ExtintorManager extintorManager;
-	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private HistoricoExtintorManager historicoExtintorManager;
+	@Autowired private ExtintorManager extintorManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
 	
 	private HistoricoExtintor historicoExtintor;
 	private Extintor extintor;
@@ -116,14 +118,6 @@ public class HistoricoExtintorEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	public void setHistoricoExtintorManager(HistoricoExtintorManager historicoExtintorManager) {
-		this.historicoExtintorManager = historicoExtintorManager;
-	}
-
-	public void setExtintorManager(ExtintorManager extintorManager) {
-		this.extintorManager = extintorManager;
-	}
-
 	public Extintor getExtintor() {
 		return extintor;
 	}
@@ -138,10 +132,6 @@ public class HistoricoExtintorEditAction extends MyActionSupportList
 
 	public Collection<Estabelecimento> getEstabelecimentos() {
 		return estabelecimentos;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public HistoricoExtintor getHistoricoExtintor() {

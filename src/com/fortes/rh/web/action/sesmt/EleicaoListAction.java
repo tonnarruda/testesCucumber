@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.EleicaoManager;
 import com.fortes.rh.exception.RemoveCascadeException;
 import com.fortes.rh.model.sesmt.Eleicao;
@@ -12,7 +14,7 @@ public class EleicaoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 
-	private EleicaoManager eleicaoManager;
+	@Autowired private EleicaoManager eleicaoManager;
 
 	private Collection<Eleicao> eleicaos;
 
@@ -63,10 +65,5 @@ public class EleicaoListAction extends MyActionSupportList
 	public void setEleicao(Eleicao eleicao)
 	{
 		this.eleicao = eleicao;
-	}
-
-	public void setEleicaoManager(EleicaoManager eleicaoManager)
-	{
-		this.eleicaoManager = eleicaoManager;
 	}
 }

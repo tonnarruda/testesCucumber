@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ClienteManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Cliente;
@@ -14,7 +16,7 @@ import com.opensymphony.xwork.ActionContext;
 public class ClienteEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private ClienteManager clienteManager;
+	@Autowired private ClienteManager clienteManager;
 	private Cliente cliente;
 	private Collection<Cliente> clientes;
 	private boolean usuarioFortes=false;
@@ -87,11 +89,6 @@ public class ClienteEditAction extends MyActionSupportList
 	public void setCliente(Cliente cliente)
 	{
 		this.cliente = cliente;
-	}
-
-	public void setClienteManager(ClienteManager clienteManager)
-	{
-		this.clienteManager = clienteManager;
 	}
 	
 	public Collection<Cliente> getClientes()

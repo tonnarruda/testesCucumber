@@ -8,6 +8,7 @@ import javax.xml.rpc.ParameterMode;
 import org.apache.axis.client.Call;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.exception.IntegraACException;
@@ -21,7 +22,7 @@ import com.fortes.rh.model.ws.TSituacao;
 @Component
 public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReajusteInterface
 {
-	private AcPessoalClient acPessoalClient;
+	@Autowired private AcPessoalClient acPessoalClient;
 
 	public void aplicaReajuste(Collection<HistoricoColaborador> historicosAc, Empresa empresa) throws Exception
 	{

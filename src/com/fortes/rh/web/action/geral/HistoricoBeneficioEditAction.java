@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.geral;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.BeneficioManager;
 import com.fortes.rh.business.geral.HistoricoBeneficioManager;
 import com.fortes.rh.model.geral.Beneficio;
@@ -10,8 +12,8 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings( { "serial" })
 public class HistoricoBeneficioEditAction extends MyActionSupport
 {
-	private HistoricoBeneficioManager historicoBeneficioManager;
-	private BeneficioManager beneficioManager;
+	@Autowired private HistoricoBeneficioManager historicoBeneficioManager;
+	@Autowired private BeneficioManager beneficioManager;
 	private HistoricoBeneficio historicoBeneficio;
 	private Beneficio beneficio;
 
@@ -135,11 +137,6 @@ public class HistoricoBeneficioEditAction extends MyActionSupport
 		this.historicoBeneficio = historicoBeneficio;
 	}
 
-	public void setHistoricoBeneficioManager(HistoricoBeneficioManager historicoBeneficioManager)
-	{
-		this.historicoBeneficioManager = historicoBeneficioManager;
-	}
-
 	public Beneficio getBeneficio()
 	{
 		return beneficio;
@@ -149,10 +146,4 @@ public class HistoricoBeneficioEditAction extends MyActionSupport
 	{
 		this.beneficio = beneficio;
 	}
-
-	public void setBeneficioManager(BeneficioManager beneficioManager)
-	{
-		this.beneficioManager = beneficioManager;
-	}
-
 }

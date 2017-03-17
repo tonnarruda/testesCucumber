@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.AtividadeSegurancaPcmatManager;
 import com.fortes.rh.model.sesmt.AtividadeSegurancaPcmat;
 import com.fortes.rh.model.sesmt.Pcmat;
@@ -12,7 +14,7 @@ import com.opensymphony.xwork.Action;
 public class AtividadeSegurancaPcmatEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private AtividadeSegurancaPcmatManager atividadeSegurancaPcmatManager;
+	@Autowired private AtividadeSegurancaPcmatManager atividadeSegurancaPcmatManager;
 	
 	private AtividadeSegurancaPcmat atividadeSegurancaPcmat;
 	private Pcmat pcmat;
@@ -104,11 +106,6 @@ public class AtividadeSegurancaPcmatEditAction extends MyActionSupportList
 	public void setAtividadeSegurancaPcmat(AtividadeSegurancaPcmat atividadeSegurancaPcmat)
 	{
 		this.atividadeSegurancaPcmat = atividadeSegurancaPcmat;
-	}
-
-	public void setAtividadeSegurancaPcmatManager(AtividadeSegurancaPcmatManager atividadeSegurancaPcmatManager)
-	{
-		this.atividadeSegurancaPcmatManager = atividadeSegurancaPcmatManager;
 	}
 
 	public Collection<AtividadeSegurancaPcmat> getAtividadesSegurancaPcmat() 

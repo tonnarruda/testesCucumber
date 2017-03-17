@@ -10,6 +10,7 @@ import javax.xml.rpc.ServiceException;
 import org.apache.axis.client.Service;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.geral.GrupoACManager;
@@ -20,8 +21,8 @@ import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 @Component
 public class AcPessoalClientImpl implements AcPessoalClient
 {
-	private Service service;
-	private GrupoACManager grupoACManager; 
+	@Autowired private Service service;
+	@Autowired private GrupoACManager grupoACManager; 
 
 	public String getToken(GrupoAC grupoAC) throws ServiceException, RemoteException
 	{
@@ -60,14 +61,4 @@ public class AcPessoalClientImpl implements AcPessoalClient
         call.registerTypeMapping(TFeedbackPessoalWebService.class, qnameFeedBack, new BeanSerializerFactory(TFeedbackPessoalWebService.class, qnameFeedBack), new BeanDeserializerFactory(TFeedbackPessoalWebService.class, qnameFeedBack));
     	call.setReturnType(qnameFeedBack);
 	}
-
-	public void setService(Service service)
-	{
-		this.service = service;
-	}
-
-	public void setGrupoACManager(GrupoACManager grupoACManager) {
-		this.grupoACManager = grupoACManager;
-	}
-
 }

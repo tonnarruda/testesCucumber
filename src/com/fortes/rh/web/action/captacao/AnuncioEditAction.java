@@ -41,13 +41,13 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 	@Autowired private AnuncioManager anuncioManager;
 	@Autowired private SolicitacaoManager solicitacaoManager;
 	@Autowired private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
+	@Autowired private Mail mail;
 
 	private Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos;
 	
 	private String[] solicitacaoAvaliacaosCheck;
     private Collection<CheckBox> solicitacaoAvaliacaosCheckList = new ArrayList<CheckBox>();
 	
-	private Mail mail;
 	private Anuncio anuncio;
 	private Solicitacao solicitacao;
 	private String acao = "";
@@ -430,11 +430,6 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 	public void setEmailAvulso(String emailAvulso)
 	{
 		this.emailAvulso = emailAvulso;
-	}
-
-	public void setMail(Mail mail)
-	{
-		this.mail = mail;
 	}
 
 	public Collection<SolicitacaoAvaliacao> getSolicitacaoAvaliacaos() 

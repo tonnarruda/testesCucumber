@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
@@ -34,11 +36,11 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 
 	private Collection<Colaborador> dataSource;
 
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private ColaboradorManager colaboradorManager;
-	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private EmpresaManager empresaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private EmpresaManager empresaManager;
 
 	private Collection<AreaOrganizacional> areaOrganizacionals;
 	private Collection<GrupoOcupacional> grupoOcupacionals;
@@ -178,11 +180,6 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 		this.areaOrganizacionals = areaOrganizacionals;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public Collection<GrupoOcupacional> getGrupoOcupacionals()
 	{
 		return grupoOcupacionals;
@@ -229,11 +226,6 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 		this.estabelecimentosCheckList = estabelecimentosCheckList;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Collection<CheckBox> getAreaOrganizacionalsCheckList()
 	{
 		return areaOrganizacionalsCheckList;
@@ -264,19 +256,9 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 		this.grupoOcupacionalsCheckList = grupoOcupacionalsCheckList;
 	}
 
-	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager)
-	{
-		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
-	}
-
 	public Collection<ConfiguracaoCampoExtra> getConfiguracaoCampoExtras()
 	{
 		return configuracaoCampoExtras;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public boolean isHabilitaCampoExtra()
@@ -302,11 +284,6 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 	public Collection<Empresa> getEmpresas()
 	{
 		return empresas;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
 	}
 
 	public Long[] getEmpresaIds()

@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -32,11 +34,11 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private MotivoDemissaoManager motivoDemissaoManager;
-	private ColaboradorManager colaboradorManager;
-	private EmpresaManager empresaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private MotivoDemissaoManager motivoDemissaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	private Collection<MotivoDemissao> motivoDemissaos = null;
 	private Collection<Colaborador> colaboradores;
@@ -200,7 +202,6 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 		return motivoDemissaos;
 	}
 
-
 	public MotivoDemissao getMotivoDemissao(){
 		if(motivoDemissao == null){
 			motivoDemissao = new MotivoDemissao();
@@ -210,10 +211,6 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 
 	public void setMotivoDemissao(MotivoDemissao motivoDemissao){
 		this.motivoDemissao=motivoDemissao;
-	}
-
-	public void setMotivoDemissaoManager(MotivoDemissaoManager motivoDemissaoManager){
-		this.motivoDemissaoManager=motivoDemissaoManager;
 	}
 
 	public String[] getAreasCheck()
@@ -301,11 +298,6 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 		return colaboradores;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public void setAreasCheckList(Collection<CheckBox> areasCheckList)
 	{
 		this.areasCheckList = areasCheckList;
@@ -336,11 +328,6 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 		this.exibirObservacao = exibirObservacao;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
 	public Empresa getEmpresa()
 	{
 		return empresa;
@@ -361,10 +348,6 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 		this.empresa = empresa;
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public Boolean getCompartilharColaboradores() {
 		return compartilharColaboradores;
 	}
@@ -375,10 +358,6 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 
 	public void setAgruparPor(String agruparPor) {
 		this.agruparPor = agruparPor;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public String getReportFilter() {

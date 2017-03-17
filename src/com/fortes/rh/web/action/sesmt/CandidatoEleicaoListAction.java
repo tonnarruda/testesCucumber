@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -30,15 +31,16 @@ public class CandidatoEleicaoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private CandidatoEleicaoManager candidatoEleicaoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private ColaboradorManager colaboradorManager;
+	@Autowired private EleicaoManager eleicaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CandidatoEleicaoManager candidatoEleicaoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
 	
 	private Collection<CandidatoEleicao> candidatoEleicaos;
 
 	private CandidatoEleicao candidatoEleicao;
 	private Eleicao eleicao;
-	private EleicaoManager eleicaoManager;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] candidatosCheck;
 	private Collection<CheckBox> candidatosCheckList = new ArrayList<CheckBox>();
@@ -55,11 +57,9 @@ public class CandidatoEleicaoListAction extends MyActionSupportList
 	private Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 	
 	private HistoricoColaborador historicoColaborador;
-	private HistoricoColaboradorManager historicoColaboradorManager;
 	private Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 	private Date data;
 	
-
 	public String list() throws Exception
 	{
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
@@ -232,11 +232,6 @@ public class CandidatoEleicaoListAction extends MyActionSupportList
 		this.candidatoEleicao = candidatoEleicao;
 	}
 
-	public void setCandidatoEleicaoManager(CandidatoEleicaoManager candidatoEleicaoManager)
-	{
-		this.candidatoEleicaoManager = candidatoEleicaoManager;
-	}
-
 	public Eleicao getEleicao()
 	{
 		return eleicao;
@@ -250,11 +245,6 @@ public class CandidatoEleicaoListAction extends MyActionSupportList
 	public Collection<CheckBox> getAreasCheckList()
 	{
 		return areasCheckList;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public String getNomeBusca()
@@ -292,11 +282,6 @@ public class CandidatoEleicaoListAction extends MyActionSupportList
 		this.qtdVotos = qtdVotos;
 	}
 
-	public void setEleicaoManager(EleicaoManager eleicaoManager)
-	{
-		this.eleicaoManager = eleicaoManager;
-	}
-
 	public Collection<LinhaCedulaEleitoralRelatorio> getCedulas()
 	{
 		return cedulas;
@@ -305,11 +290,6 @@ public class CandidatoEleicaoListAction extends MyActionSupportList
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) 
-	{
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public String getData() 
@@ -334,13 +314,4 @@ public class CandidatoEleicaoListAction extends MyActionSupportList
 	public HistoricoColaborador getHistoricoColaborador() {
 		return historicoColaborador;
 	}
-
-	public HistoricoColaboradorManager getHistoricoColaboradorManager() {
-		return historicoColaboradorManager;
-	}
-
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
-	}
+}

@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.business.sesmt.ComissaoPlanoTrabalhoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -16,8 +18,8 @@ import com.fortes.rh.web.action.MyActionSupport;
 @SuppressWarnings("serial")
 public class ComissaoPlanoTrabalhoEditAction extends MyActionSupport
 {
-	private ComissaoPlanoTrabalhoManager comissaoPlanoTrabalhoManager;
-	private ComissaoMembroManager comissaoMembroManager;
+	@Autowired private ComissaoPlanoTrabalhoManager comissaoPlanoTrabalhoManager;
+	@Autowired private ComissaoMembroManager comissaoMembroManager;
 
 	private ComissaoPlanoTrabalho comissaoPlanoTrabalho;
 	private Collection<ComissaoPlanoTrabalho> comissaoPlanoTrabalhos;
@@ -109,11 +111,6 @@ public class ComissaoPlanoTrabalhoEditAction extends MyActionSupport
 		this.comissaoPlanoTrabalho = comissaoPlanoTrabalho;
 	}
 
-	public void setComissaoPlanoTrabalhoManager(ComissaoPlanoTrabalhoManager comissaoPlanoTrabalhoManager)
-	{
-		this.comissaoPlanoTrabalhoManager = comissaoPlanoTrabalhoManager;
-	}
-
 	public Comissao getComissao()
 	{
 		return comissao;
@@ -127,11 +124,6 @@ public class ComissaoPlanoTrabalhoEditAction extends MyActionSupport
 	public Collection<ComissaoPlanoTrabalho> getComissaoPlanoTrabalhos()
 	{
 		return comissaoPlanoTrabalhos;
-	}
-
-	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager)
-	{
-		this.comissaoMembroManager = comissaoMembroManager;
 	}
 
 	public Collection<Colaborador> getColaboradors()

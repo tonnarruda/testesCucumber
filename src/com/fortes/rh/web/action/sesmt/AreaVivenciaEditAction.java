@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.AreaVivenciaManager;
 import com.fortes.rh.model.sesmt.AreaVivencia;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.Action;
 public class AreaVivenciaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private AreaVivenciaManager areaVivenciaManager;
+	@Autowired private AreaVivenciaManager areaVivenciaManager;
 	
 	private AreaVivencia areaVivencia;
 	private Collection<AreaVivencia> areaVivencias;
@@ -102,11 +104,6 @@ public class AreaVivenciaEditAction extends MyActionSupportList
 	public void setAreaVivencia(AreaVivencia areaVivencia)
 	{
 		this.areaVivencia = areaVivencia;
-	}
-
-	public void setAreaVivenciaManager(AreaVivenciaManager areaVivenciaManager)
-	{
-		this.areaVivenciaManager = areaVivenciaManager;
 	}
 	
 	public Collection<AreaVivencia> getAreaVivencias()

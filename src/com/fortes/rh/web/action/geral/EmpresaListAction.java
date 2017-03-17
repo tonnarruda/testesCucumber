@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.geral;
 import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.geral.Empresa;
@@ -15,7 +16,7 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings("serial")
 public class EmpresaListAction extends MyActionSupportList
 {
-	private EmpresaManager empresaManager;
+	@Autowired private EmpresaManager empresaManager;
 
 	private Collection<Empresa> empresas;
 	private Empresa empresa;
@@ -70,10 +71,6 @@ public class EmpresaListAction extends MyActionSupportList
 
 	public void setEmpresa(Empresa empresa){
 		this.empresa=empresa;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager){
-		this.empresaManager=empresaManager;
 	}
 
 	public boolean isUsuarioFortes() {

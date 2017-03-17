@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.MensagemManager;
@@ -23,9 +24,11 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class UsuarioMensagemEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private UsuarioMensagemManager usuarioMensagemManager = null;
-	private UsuarioManager usuarioManager;
-	private MensagemManager mensagemManager;
+	@Autowired private UsuarioManager usuarioManager;
+	@Autowired private MensagemManager mensagemManager;
+	@Autowired private UsuarioMensagem usuarioMensagem;
+	@Autowired private UsuarioMensagemManager usuarioMensagemManager;
+
 	private Long usuarioMensagemProximoId;
 	private Long usuarioMensagemAnteriorId;
 	private String navegacao;
@@ -33,7 +36,6 @@ public class UsuarioMensagemEditAction extends MyActionSupportEdit implements Mo
 	private Integer qtdTotal;
 	private boolean noMessages;
 
-	private UsuarioMensagem usuarioMensagem;
 
 	private Usuario usuarioRem;
 	private Empresa empresaEmp;
@@ -179,16 +181,6 @@ public class UsuarioMensagemEditAction extends MyActionSupportEdit implements Mo
 		return usuarioMensagem;
 	}
 
-	public void setUsuarioMensagem(UsuarioMensagem usuarioMensagem)
-	{
-		this.usuarioMensagem = usuarioMensagem;
-	}
-
-	public void setUsuarioMensagemManager(UsuarioMensagemManager usuarioMensagemManager)
-	{
-		this.usuarioMensagemManager = usuarioMensagemManager;
-	}
-
 	public String[] getUsuariosCheck()
 	{
 		return usuariosCheck;
@@ -219,11 +211,6 @@ public class UsuarioMensagemEditAction extends MyActionSupportEdit implements Mo
 		this.usuarioRem = usuarioRem;
 	}
 
-	public void setUsuarioManager(UsuarioManager usuarioManager)
-	{
-		this.usuarioManager = usuarioManager;
-	}
-
 	public Empresa getEmpresaEmp()
 	{
 		return empresaEmp;
@@ -232,11 +219,6 @@ public class UsuarioMensagemEditAction extends MyActionSupportEdit implements Mo
 	public void setEmpresaEmp(Empresa empresaEmp)
 	{
 		this.empresaEmp = empresaEmp;
-	}
-
-	public void setMensagemManager(MensagemManager mensagemManager)
-	{
-		this.mensagemManager = mensagemManager;
 	}
 
 	public Mensagem getMensagemNova()

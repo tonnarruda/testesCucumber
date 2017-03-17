@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.ClinicaAutorizadaManager;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class ClinicaAutorizadaListAction extends MyActionSupportList
 {
-	private ClinicaAutorizadaManager clinicaAutorizadaManager;
+	@Autowired private ClinicaAutorizadaManager clinicaAutorizadaManager;
 
 	private Collection<ClinicaAutorizada> clinicaAutorizadas;
 
@@ -61,9 +63,5 @@ public class ClinicaAutorizadaListAction extends MyActionSupportList
 
 	public void setClinicaAutorizada(ClinicaAutorizada clinicaAutorizada){
 		this.clinicaAutorizada=clinicaAutorizada;
-	}
-
-	public void setClinicaAutorizadaManager(ClinicaAutorizadaManager clinicaAutorizadaManager){
-		this.clinicaAutorizadaManager=clinicaAutorizadaManager;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -28,11 +29,11 @@ public class EleicaoEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 	
-	private EleicaoManager eleicaoManager;
-	private EtapaProcessoEleitoralManager etapaProcessoEleitoralManager;
-	private CandidatoEleicaoManager candidatoEleicaoManager;
-	private ColaboradorManager colaboradorManager;
-	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private EleicaoManager eleicaoManager;
+	@Autowired private EtapaProcessoEleitoralManager etapaProcessoEleitoralManager;
+	@Autowired private CandidatoEleicaoManager candidatoEleicaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
 
 	private Eleicao eleicao;
 	private Collection<Estabelecimento> estabelecimentos;
@@ -336,16 +337,6 @@ public class EleicaoEditAction extends MyActionSupportEdit
 		this.eleicao = eleicao;
 	}
 
-	public void setEleicaoManager(EleicaoManager eleicaoManager)
-	{
-		this.eleicaoManager = eleicaoManager;
-	}
-
-	public void setEtapaProcessoEleitoralManager(EtapaProcessoEleitoralManager etapaProcessoEleitoralManager)
-	{
-		this.etapaProcessoEleitoralManager = etapaProcessoEleitoralManager;
-	}
-
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
@@ -354,21 +345,6 @@ public class EleicaoEditAction extends MyActionSupportEdit
 	public Collection<CandidatoEleicao> getDataSource()
 	{
 		return dataSource;
-	}
-
-	public void setCandidatoEleicaoManager(CandidatoEleicaoManager candidatoEleicaoManager)
-	{
-		this.candidatoEleicaoManager = candidatoEleicaoManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public Collection<Estabelecimento> getEstabelecimentos()

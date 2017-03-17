@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.sesmt;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -11,8 +13,8 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class HistoricoFuncaoListAction extends MyActionSupportList
 {
-	private HistoricoFuncaoManager historicoFuncaoManager;
-	private RiscoFuncaoManager riscoFuncaoManager;
+	@Autowired private HistoricoFuncaoManager historicoFuncaoManager;
+	@Autowired private RiscoFuncaoManager riscoFuncaoManager;
 
 	private HistoricoFuncao historicoFuncao;
 	private Funcao funcao;
@@ -33,11 +35,6 @@ public class HistoricoFuncaoListAction extends MyActionSupportList
 			return "SUCESSO_VEIO_SESMT";
 		else
 			return Action.SUCCESS;
-	}
-
-	public void setHistoricoFuncaoManager(HistoricoFuncaoManager historicoFuncaoManager)
-	{
-		this.historicoFuncaoManager = historicoFuncaoManager;
 	}
 
 	public HistoricoFuncao getHistoricoFuncao()
@@ -79,9 +76,4 @@ public class HistoricoFuncaoListAction extends MyActionSupportList
 	{
 		this.veioDoSESMT = veioDoSESMT;
 	}
-
-	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
-		this.riscoFuncaoManager = riscoFuncaoManager;
-	}
-
 }

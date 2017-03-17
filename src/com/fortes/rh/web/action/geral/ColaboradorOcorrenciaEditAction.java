@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -39,14 +41,14 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings({"serial"})
 public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 {
-	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
-	private ColaboradorManager colaboradorManager;
-	private OcorrenciaManager ocorrenciaManager;
-	private AfastamentoManager afastamentoManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private ProvidenciaManager providenciaManager;
+	@Autowired private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private OcorrenciaManager ocorrenciaManager;
+	@Autowired private AfastamentoManager afastamentoManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ProvidenciaManager providenciaManager;
 
 	private ColaboradorOcorrencia colaboradorOcorrencia;
 	private Colaborador colaborador;
@@ -303,21 +305,6 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		this.colaboradorOcorrencia = colaboradorOcorrencia;
 	}
 
-	public void setColaboradorOcorrenciaManager(ColaboradorOcorrenciaManager colaboradorOcorrenciaManager)
-	{
-		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager)
-	{
-		this.ocorrenciaManager = ocorrenciaManager;
-	}
-
 	public Collection<Ocorrencia> getOcorrencias()
 	{
 		return ocorrencias;
@@ -353,11 +340,6 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		return colaboradorOcorrencias;
 	}
 
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
 	public HistoricoColaborador getHistoricoColab()
 	{
 		return historicoColab;
@@ -365,14 +347,6 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 	public Collection<Colaborador> getColaboradors() {
 		return colaboradors;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public void setAreasCheck(String[] areasCheck) {
@@ -423,16 +397,8 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		this.ocorrenciasCheck = ocorrenciasCheck;
 	}
 
-	public void setProvidenciaManager(ProvidenciaManager providenciaManager) {
-		this.providenciaManager = providenciaManager;
-	}
-
 	public Collection<Providencia> getProvidencias() {
 		return providencias;
-	}
-
-	public void setAfastamentoManager(AfastamentoManager afastamentoManager) {
-		this.afastamentoManager = afastamentoManager;
 	}
 
 	public void setAfastamentosCheck(String[] afastamentosCheck) {

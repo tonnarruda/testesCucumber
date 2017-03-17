@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ProvidenciaManager;
 import com.fortes.rh.model.geral.Providencia;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.Action;
 public class ProvidenciaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private ProvidenciaManager providenciaManager;
+	@Autowired private ProvidenciaManager providenciaManager;
 	private Providencia providencia;
 	private Collection<Providencia> providencias;
 
@@ -95,11 +97,6 @@ public class ProvidenciaEditAction extends MyActionSupportList
 	public void setProvidencia(Providencia providencia)
 	{
 		this.providencia = providencia;
-	}
-
-	public void setProvidenciaManager(ProvidenciaManager providenciaManager)
-	{
-		this.providenciaManager = providenciaManager;
 	}
 	
 	public Collection<Providencia> getProvidencias()

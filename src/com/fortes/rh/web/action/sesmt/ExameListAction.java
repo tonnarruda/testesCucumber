@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -42,15 +43,14 @@ public class ExameListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ExameManager exameManager;
-	private SolicitacaoExameManager solicitacaoExameManager;
-	private MedicoCoordenadorManager medicoCoordenadorManager;
-	private ColaboradorManager colaboradorManager;
-	private CandidatoManager candidatoManager;
-
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private ClinicaAutorizadaManager clinicaAutorizadaManager;
+	@Autowired private ExameManager exameManager;
+	@Autowired private SolicitacaoExameManager solicitacaoExameManager;
+	@Autowired private MedicoCoordenadorManager medicoCoordenadorManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ClinicaAutorizadaManager clinicaAutorizadaManager;
 
 	private Collection<Exame> exames;
 
@@ -332,28 +332,9 @@ public class ExameListAction extends MyActionSupportList
 		this.exame=exame;
 	}
 
-	public void setExameManager(ExameManager exameManager){
-		this.exameManager=exameManager;
-	}
-
 	public void setExames(Collection<Exame> exames)
 	{
 		this.exames = exames;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setMedicoCoordenadorManager(MedicoCoordenadorManager medicoCoordenadorManager)
-	{
-		this.medicoCoordenadorManager = medicoCoordenadorManager;
 	}
 
 	public Candidato getCandidato()
@@ -409,16 +390,6 @@ public class ExameListAction extends MyActionSupportList
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public String[] getAreasCheck()
@@ -526,10 +497,6 @@ public class ExameListAction extends MyActionSupportList
 		return motivos;
 	}
 
-	public void setClinicaAutorizadaManager(ClinicaAutorizadaManager clinicaAutorizadaManager) {
-		this.clinicaAutorizadaManager = clinicaAutorizadaManager;
-	}
-
 	public ClinicaAutorizada getClinicaAutorizada() {
 		return clinicaAutorizada;
 	}
@@ -540,10 +507,6 @@ public class ExameListAction extends MyActionSupportList
 
 	public Collection<ExamesRealizadosRelatorio> getExamesRealizados() {
 		return examesRealizados;
-	}
-
-	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
-		this.solicitacaoExameManager = solicitacaoExameManager;
 	}
 
 	public void setSolicitacaoExame(SolicitacaoExame solicitacaoExame) {
@@ -614,5 +577,4 @@ public class ExameListAction extends MyActionSupportList
 	public void setExibirExamesNaoRealizados(boolean exibirExamesNaoRealizados) {
 		this.exibirExamesNaoRealizados = exibirExamesNaoRealizados;
 	}
-
 }

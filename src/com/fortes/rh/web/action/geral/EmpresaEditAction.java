@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
@@ -46,13 +47,13 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings("serial")
 public class EmpresaEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private EmpresaManager empresaManager;
-	private EstadoManager estadoManager;
-	private CidadeManager cidadeManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private GrupoACManager grupoACManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private CartaoManager cartaoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private EstadoManager estadoManager;
+	@Autowired private CidadeManager cidadeManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private GrupoACManager grupoACManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private CartaoManager cartaoManager;
 	private Collection<Cartao> cartoes = new ArrayList<Cartao>();
 	private Cartao cartaoAniversario = new Cartao();
 	private Cartao cartaoAnoDeEmpresa = new Cartao();
@@ -377,11 +378,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		return getEmpresa();
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
 	public File getLogo()
 	{
 		return logo;
@@ -400,16 +396,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	public Collection<Estado> getUfs()
 	{
 		return ufs;
-	}
-
-	public void setCidadeManager(CidadeManager cidadeManager)
-	{
-		this.cidadeManager = cidadeManager;
-	}
-
-	public void setEstadoManager(EstadoManager estadoManager)
-	{
-		this.estadoManager = estadoManager;
 	}
 
 	public Empresa getEmpresaOrigem() {
@@ -444,11 +430,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		return empresas;
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public ParametrosDoSistema getParametrosDoSistema()
 	{
 		return parametrosDoSistema;
@@ -468,10 +449,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		return grupoACs;
 	}
 
-	public void setGrupoACManager(GrupoACManager grupoACManager) {
-		this.grupoACManager = grupoACManager;
-	}
-
 	public Collection<Colaborador> getColaboradores() {
 		return colaboradores;
 	}
@@ -486,10 +463,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public void setImgCartaoAniversariante(File imgCartaoAniversariante) {
 		this.imgCartaoAniversariante = imgCartaoAniversariante;
-	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
 	public Collection<CheckBox> getOcorrenciaCheckList() {
@@ -514,10 +487,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public String getMotivoDesintegracao() {
 		return motivoDesintegracao;
-	}
-
-	public void setCartaoManager(CartaoManager cartaoManager) {
-		this.cartaoManager = cartaoManager;
 	}
 
 	public Collection<Cartao> getCartoes() {

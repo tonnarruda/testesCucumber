@@ -6,6 +6,7 @@ import javax.xml.rpc.ParameterMode;
 import org.apache.axis.client.Call;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.model.geral.Empresa;
@@ -16,7 +17,7 @@ import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 @Component
 public class AcPessoalClientColaboradorOcorrenciaImpl implements AcPessoalClientColaboradorOcorrencia
 {
-	private AcPessoalClient acPessoalClient;
+	@Autowired private AcPessoalClient acPessoalClient;
 
 	public boolean criarColaboradorOcorrencia(TOcorrenciaEmpregado ocorrenciaEmpregado, Empresa empresa) throws Exception
 	{
@@ -82,10 +83,5 @@ public class AcPessoalClientColaboradorOcorrenciaImpl implements AcPessoalClient
 	        e.printStackTrace();
 	        throw new Exception(e);
 	    }
-	}
-	
-	public void setAcPessoalClient(AcPessoalClient acPessoalClient)
-	{
-		this.acPessoalClient = acPessoalClient;
 	}
 }

@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.GastoManager;
 import com.fortes.rh.business.geral.GrupoGastoManager;
 import com.fortes.rh.model.geral.Gasto;
@@ -16,8 +18,8 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class GastoEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private GastoManager gastoManager;
-	private GrupoGastoManager grupoGastoManager;
+	@Autowired private GastoManager gastoManager;
+	@Autowired private GrupoGastoManager grupoGastoManager;
 
 	private Gasto gasto;
 	private GrupoGasto grupoGastoAgrupar;
@@ -140,16 +142,6 @@ public class GastoEditAction extends MyActionSupportEdit implements ModelDriven
 		this.gasto = gasto;
 	}
 
-	public void setGastoManager(GastoManager gastoManager)
-	{
-		this.gastoManager = gastoManager;
-	}
-
-	public void setGrupoGastoManager(GrupoGastoManager grupoGastoManager)
-	{
-		this.grupoGastoManager = grupoGastoManager;
-	}
-
 	public Collection<GrupoGasto> getGrupoGastos()
 	{
 		return grupoGastos;
@@ -219,5 +211,4 @@ public class GastoEditAction extends MyActionSupportEdit implements ModelDriven
 	{
 		this.gastoDoGrupos = gastoDoGrupos;
 	}
-
 }

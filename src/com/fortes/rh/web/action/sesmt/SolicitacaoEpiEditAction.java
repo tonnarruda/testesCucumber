@@ -4,6 +4,8 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.EpiHistoricoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
@@ -31,15 +33,15 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings({"serial"})
 public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 {
-	private SolicitacaoEpiManager solicitacaoEpiManager;
-	private ColaboradorManager colaboradorManager;
-	private EpiManager epiManager;
-	private EpiHistoricoManager epiHistoricoManager;
-	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
-	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
-	private SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager;
-	private MotivoSolicitacaoEpiManager motivoSolicitacaoEpiManager;
-	private TipoEPIManager tipoEPIManager;
+	@Autowired private SolicitacaoEpiManager solicitacaoEpiManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EpiManager epiManager;
+	@Autowired private EpiHistoricoManager epiHistoricoManager;
+	@Autowired private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
+	@Autowired private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
+	@Autowired private SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager;
+	@Autowired private MotivoSolicitacaoEpiManager motivoSolicitacaoEpiManager;
+	@Autowired private TipoEPIManager tipoEPIManager;
 
 	private Colaborador colaborador;
 	private SolicitacaoEpi solicitacaoEpi;
@@ -408,11 +410,6 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		this.solicitacaoEpi = solicitacaoEpi;
 	}
 
-	public void setSolicitacaoEpiManager(SolicitacaoEpiManager solicitacaoEpiManager)
-	{
-		this.solicitacaoEpiManager = solicitacaoEpiManager;
-	}
-
 	public Colaborador getColaborador()
 	{
 		return colaborador;
@@ -426,16 +423,6 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	public Collection<Colaborador> getColaboradors()
 	{
 		return colaboradors;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setEpiManager(EpiManager epiManager)
-	{
-		this.epiManager = epiManager;
 	}
 
 	public Object[][] getListaEpis()
@@ -477,13 +464,6 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	{
 		return solicitacaoEpiItems;
 	}
-
-	public void setSolicitacaoEpiItemManager(SolicitacaoEpiItemManager solicitacaoEpiItemManager)
-	{
-		this.solicitacaoEpiItemManager = solicitacaoEpiItemManager;
-	}
-
-
 
 	public void setDataEntrega(Date dataEntrega) {
 		this.dataEntrega = dataEntrega;
@@ -534,14 +514,6 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		this.solicitacaoEpiItemDevolucao = solicitacaoEpiItemDevolucao;
 	}
 
-	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
-		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
-	}
-
-	public void setEpiHistoricoManager(EpiHistoricoManager epiHistoricoManager) {
-		this.epiHistoricoManager = epiHistoricoManager;
-	}
-
 	public Collection<EpiHistorico> getEpiHistoricos() {
 		return epiHistoricos;
 	}
@@ -549,11 +521,6 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	public Collection<MotivoSolicitacaoEpi> getMotivoSolicitacaoEpis()
 	{
 		return motivoSolicitacaoEpis;
-	}
-
-	public void setMotivoSolicitacaoEpiManager(MotivoSolicitacaoEpiManager motivoSolicitacaoEpiManager)
-	{
-		this.motivoSolicitacaoEpiManager = motivoSolicitacaoEpiManager;
 	}
 
 	public String[] getSelectMotivoSolicitacaoEpi()
@@ -576,18 +543,5 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	public Collection<TamanhoEPI> getTamanhoEpis() {
 		return tamanhoEpis;
-	}
-
-	public void setTipoEPIManager(TipoEPIManager tipoEPIManager) {
-		this.tipoEPIManager = tipoEPIManager;
-	}
-
-	public SolicitacaoEpiItemDevolucaoManager getSolicitacaoEpiItemDevolucaoManager() {
-		return solicitacaoEpiItemDevolucaoManager;
-	}
-
-	public void setSolicitacaoEpiItemDevolucaoManager(
-			SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager) {
-		this.solicitacaoEpiItemDevolucaoManager = solicitacaoEpiItemDevolucaoManager;
 	}
 }

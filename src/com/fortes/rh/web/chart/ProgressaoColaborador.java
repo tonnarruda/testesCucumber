@@ -11,6 +11,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -19,14 +20,9 @@ import com.fortes.rh.web.action.MyActionSupport;
 
 public class ProgressaoColaborador extends MyActionSupport
 {
-	private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
 	private Long id;
 	private JFreeChart chart;
-
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
 
 	public void setId(Long id)
 	{

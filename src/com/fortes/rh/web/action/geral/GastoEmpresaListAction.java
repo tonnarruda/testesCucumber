@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.GastoEmpresaItemManager;
 import com.fortes.rh.business.geral.GastoEmpresaManager;
 import com.fortes.rh.model.geral.GastoEmpresa;
@@ -13,8 +15,8 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class GastoEmpresaListAction extends MyActionSupportList
 {
-	private GastoEmpresaManager gastoEmpresaManager;
-	private GastoEmpresaItemManager gastoEmpresaItemManager;
+	@Autowired private GastoEmpresaManager gastoEmpresaManager;
+	@Autowired private GastoEmpresaItemManager gastoEmpresaItemManager;
 	private Collection<GastoEmpresa> gastoEmpresas;
 
 	private GastoEmpresa gastoEmpresa;
@@ -64,14 +66,5 @@ public class GastoEmpresaListAction extends MyActionSupportList
 
 	public void setGastoEmpresa(GastoEmpresa gastoEmpresa){
 		this.gastoEmpresa=gastoEmpresa;
-	}
-
-	public void setGastoEmpresaManager(GastoEmpresaManager gastoEmpresaManager){
-		this.gastoEmpresaManager=gastoEmpresaManager;
-	}
-
-	public void setGastoEmpresaItemManager(GastoEmpresaItemManager gastoEmpresaItemManager)
-	{
-		this.gastoEmpresaItemManager = gastoEmpresaItemManager;
 	}
 }

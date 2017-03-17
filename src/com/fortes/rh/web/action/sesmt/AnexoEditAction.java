@@ -6,6 +6,8 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.sesmt.AnexoManager;
@@ -20,7 +22,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class AnexoEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private AnexoManager anexoManager;
+	@Autowired private AnexoManager anexoManager;
 
 	private File arquivo;
 	private Anexo anexo;
@@ -134,11 +136,6 @@ public class AnexoEditAction extends MyActionSupportEdit implements ModelDriven
 	public void setAnexo(Anexo anexo)
 	{
 		this.anexo = anexo;
-	}
-
-	public void setAnexoManager(AnexoManager anexoManager)
-	{
-		this.anexoManager = anexoManager;
 	}
 
 	public File getArquivo()

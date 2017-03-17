@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.sesmt;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.TamanhoEPIManager;
 import com.fortes.rh.model.sesmt.TamanhoEPI;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -8,7 +10,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings({"serial"})
 public class TamanhoEPIEditAction extends MyActionSupportEdit
 {
-	private TamanhoEPIManager tamanhoEPIManager;
+	@Autowired private TamanhoEPIManager tamanhoEPIManager;
 
 	private TamanhoEPI tamanhoEPI;
 
@@ -48,16 +50,7 @@ public class TamanhoEPIEditAction extends MyActionSupportEdit
 		return tamanhoEPI;
 	}
 
-	public TamanhoEPIManager getTamanhoEPIManager() {
-		return tamanhoEPIManager;
-	}
-
-	public void setTamanhoEPIManager(TamanhoEPIManager tamanhoEPIManager) {
-		this.tamanhoEPIManager = tamanhoEPIManager;
-	}
-
 	public void setTamanhoEPI(TamanhoEPI tamanhoEPI) {
 		this.tamanhoEPI = tamanhoEPI;
 	}
-
 }

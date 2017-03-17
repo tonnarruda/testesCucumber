@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.util.StringUtil;
@@ -14,7 +16,7 @@ public class CodigoCBOEditAction extends MyActionSupportEdit
 	private String json;
 	private String codigo;
 	private String descricao;
-	private CodigoCBOManager codigoCBOManager;
+	@Autowired private CodigoCBOManager codigoCBOManager;
 
 	public String find() throws Exception
 	{
@@ -37,14 +39,6 @@ public class CodigoCBOEditAction extends MyActionSupportEdit
 		this.json = json;
 	}
 
-	public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) {
-		this.codigoCBOManager = codigoCBOManager;
-	}
-
-	public CodigoCBOManager getCodigoCBOManager() {
-		return codigoCBOManager;
-	}
-
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
@@ -52,5 +46,4 @@ public class CodigoCBOEditAction extends MyActionSupportEdit
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
 }

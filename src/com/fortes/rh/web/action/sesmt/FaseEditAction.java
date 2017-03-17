@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.sesmt.FaseManager;
 import com.fortes.rh.model.sesmt.Fase;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork.Action;
 public class FaseEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private FaseManager faseManager;
+	@Autowired private FaseManager faseManager;
 	private Fase fase;
 	private Collection<Fase> fases;
 	private String descricao;
@@ -88,11 +90,6 @@ public class FaseEditAction extends MyActionSupportList
 		}
 
 		return list();
-	}
-	
-	public void setFaseManager(FaseManager faseManager)
-	{
-		this.faseManager = faseManager;
 	}
 
 	public String getDescricao() {

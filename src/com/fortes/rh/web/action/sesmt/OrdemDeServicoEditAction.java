@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -31,12 +33,12 @@ import com.opensymphony.xwork.Action;
 public class OrdemDeServicoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private OrdemDeServicoManager ordemDeServicoManager;
-	private UsuarioEmpresaManager usuarioEmpresaManager;
-	private ColaboradorManager colaboradorManager;
-	private CargoManager cargoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private OrdemDeServicoManager ordemDeServicoManager;
+	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CargoManager cargoManager;
 
 	private Collection<Estabelecimento> estabelecimentosList = new ArrayList<Estabelecimento>();
 	private Collection<AreaOrganizacional> areasList = new ArrayList<AreaOrganizacional>();
@@ -274,15 +276,6 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 	public boolean isDataDesligamentoInferiorADataAtual(){
 		return colaborador.isDesligado() && (colaborador.getDataDesligamento().compareTo(DateUtil.criarDataMesAno(new Date())) < 0);
 	}
-	
-	public void setOrdemDeServicoManager(OrdemDeServicoManager ordemDeServicoManager)
-	{
-		this.ordemDeServicoManager = ordemDeServicoManager;
-	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
 
 	public Collection<Colaborador> getColaboradores() {
 		return colaboradores;
@@ -290,22 +283,6 @@ public class OrdemDeServicoEditAction extends MyActionSupportList
 
 	public void setColaboradores(Collection<Colaborador> colaboradores) {
 		this.colaboradores = colaboradores;
-	}
-
-	public void setAreaOrganizacionalManager( AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEstabelecimentoManager( EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setCargoManager(CargoManager cargoManager) {
-		this.cargoManager = cargoManager;
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 
 	public Integer getRevisao() {

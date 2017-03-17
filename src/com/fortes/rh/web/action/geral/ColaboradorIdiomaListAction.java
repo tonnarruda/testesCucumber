@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ColaboradorIdiomaManager;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class ColaboradorIdiomaListAction extends MyActionSupportList
 {
-	private ColaboradorIdiomaManager colaboradorIdiomaManager;
+	@Autowired private ColaboradorIdiomaManager colaboradorIdiomaManager;
 
 	private Collection<ColaboradorIdioma> colaboradorIdiomas;
 
@@ -45,9 +47,5 @@ public class ColaboradorIdiomaListAction extends MyActionSupportList
 
 	public void setColaboradorIdioma(ColaboradorIdioma colaboradorIdioma){
 		this.colaboradorIdioma=colaboradorIdioma;
-	}
-
-	public void setColaboradorIdiomaManager(ColaboradorIdiomaManager colaboradorIdiomaManager){
-		this.colaboradorIdiomaManager=colaboradorIdiomaManager;
 	}
 }

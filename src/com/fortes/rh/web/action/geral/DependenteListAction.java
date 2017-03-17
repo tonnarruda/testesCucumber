@@ -8,6 +8,8 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.DependenteManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Dependente;
@@ -19,7 +21,7 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings("serial")
 public class DependenteListAction extends MyActionSupportList
 {
-	private DependenteManager dependenteManager;
+	@Autowired private DependenteManager dependenteManager;
 
 	private Collection<Dependente> dependentes;
 
@@ -65,10 +67,6 @@ public class DependenteListAction extends MyActionSupportList
 		this.dependente=dependente;
 	}
 
-	public void setDependenteManager(DependenteManager dependenteManager){
-		this.dependenteManager=dependenteManager;
-	}
-
 	public Colaborador getColaborador() {
 		return colaborador;
 	}
@@ -76,5 +74,4 @@ public class DependenteListAction extends MyActionSupportList
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
-
 }

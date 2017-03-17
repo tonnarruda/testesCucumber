@@ -8,6 +8,7 @@ import javax.xml.rpc.ParameterMode;
 import org.apache.axis.client.Call;
 import org.apache.axis.encoding.ser.ArrayDeserializerFactory;
 import org.apache.axis.encoding.ser.ArraySerializerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.model.geral.Empresa;
@@ -17,7 +18,7 @@ import com.fortes.rh.util.SpringUtil;
 @Component
 public class AcPessoalImportadorGastos
 {
-	private AcPessoalClient acPessoalClient;
+	@Autowired private AcPessoalClient acPessoalClient;
 
 	@SuppressWarnings("deprecation")
 	public String[] importarGastos(Date data, Empresa empresa)
@@ -70,11 +71,5 @@ public class AcPessoalImportadorGastos
 		{
 			e.printStackTrace();
 		}
-	}
-
-
-	public void setAcPessoalClient(AcPessoalClient acPessoalClient)
-	{
-		this.acPessoalClient = acPessoalClient;
 	}
 }

@@ -4,6 +4,8 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.ProntuarioManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -21,8 +23,8 @@ public class ProntuarioEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ProntuarioManager prontuarioManager;
-	private ColaboradorManager colaboradorManager;
+	@Autowired private ProntuarioManager prontuarioManager;
+	@Autowired private ColaboradorManager colaboradorManager;
 
 	private Collection<Prontuario> prontuarios;
 	private Collection<Colaborador> colaboradors;
@@ -154,11 +156,6 @@ public class ProntuarioEditAction extends MyActionSupportEdit
 		this.prontuario = prontuario;
 	}
 
-	public void setProntuarioManager(ProntuarioManager prontuarioManager)
-	{
-		this.prontuarioManager = prontuarioManager;
-	}
-
 	public Collection<Prontuario> getProntuarios()
 	{
 		return prontuarios;
@@ -177,11 +174,6 @@ public class ProntuarioEditAction extends MyActionSupportEdit
 	public Collection<Colaborador> getColaboradors()
 	{
 		return colaboradors;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public String getColaboradorNome()

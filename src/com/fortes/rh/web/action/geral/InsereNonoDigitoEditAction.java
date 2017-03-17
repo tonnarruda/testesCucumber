@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstadoManager;
@@ -18,9 +20,9 @@ public class InsereNonoDigitoEditAction extends MyActionSupportEdit
 	private Long[] estadosCheck;
 	private Collection<CheckBox> estadosCheckList = new ArrayList<CheckBox>();
 	
-	private EstadoManager estadoManager;
-	private ColaboradorManager colaboradorManager;
-	private CandidatoManager candidatoManager;
+	@Autowired private EstadoManager estadoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CandidatoManager candidatoManager;
 	
 
 	public String prepareInsert() throws Exception {
@@ -62,17 +64,4 @@ public class InsereNonoDigitoEditAction extends MyActionSupportEdit
 	public void setEstadosCheckList(Collection<CheckBox> estadosCheckList) {
 		this.estadosCheckList = estadosCheckList;
 	}
-
-	public void setEstadoManager(EstadoManager estadoManager) {
-		this.estadoManager = estadoManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager) {
-		this.candidatoManager = candidatoManager;
-	}
-
 }

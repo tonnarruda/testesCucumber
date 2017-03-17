@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.GastoManager;
 import com.fortes.rh.model.geral.Gasto;
 import com.fortes.rh.model.geral.GastoEmpresaItem;
@@ -18,7 +20,7 @@ import com.opensymphony.xwork.Preparable;
 @SuppressWarnings({"serial"})
 public class GastoEmpresaItemEditAction extends MyActionSupportEdit implements ModelDriven,Preparable
 {
-	private GastoManager gastoManager;
+	@Autowired private GastoManager gastoManager;
 
 	private GastoEmpresaItem gastoEmpresaItem;
 
@@ -129,10 +131,6 @@ public class GastoEmpresaItemEditAction extends MyActionSupportEdit implements M
 		return getGastoEmpresaItem();
 	}
 
-	public void setGastoManager(GastoManager gastoManager)
-	{
-		this.gastoManager = gastoManager;
-	}
 	public Collection<Gasto> getGastos()
 	{
 		return gastos;

@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.geral;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.model.geral.UsuarioMensagem;
 import com.fortes.rh.web.action.MyActionSupport;
@@ -8,8 +10,8 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class UsuarioMensagemListAction extends MyActionSupport
 {
-	private UsuarioMensagemManager usuarioMensagemManager = null;
-	private UsuarioMensagem usuarioMensagem;
+	@Autowired private UsuarioMensagemManager usuarioMensagemManager;
+	@Autowired private UsuarioMensagem usuarioMensagem;
 
 	private boolean fromPopup = false;
 	private boolean fromTodasMensagens = false;
@@ -47,16 +49,6 @@ public class UsuarioMensagemListAction extends MyActionSupport
 			usuarioMensagem = new UsuarioMensagem();
 		}
 		return usuarioMensagem;
-	}
-
-	public void setUsuarioMensagem(UsuarioMensagem usuarioMensagem)
-	{
-		this.usuarioMensagem = usuarioMensagem;
-	}
-
-	public void setUsuarioMensagemManager(UsuarioMensagemManager usuarioMensagemManager)
-	{
-		this.usuarioMensagemManager = usuarioMensagemManager;
 	}
 
 	public boolean isFromPopup()

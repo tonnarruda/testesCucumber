@@ -6,6 +6,8 @@ package com.fortes.rh.web.action.geral;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.DependenteManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Dependente;
@@ -18,7 +20,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings("serial")
 public class DependenteEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private DependenteManager dependenteManager;
+	@Autowired private DependenteManager dependenteManager;
 
 	private Dependente dependente;
 
@@ -78,10 +80,6 @@ public class DependenteEditAction extends MyActionSupportEdit implements ModelDr
 
 	public void setDependente(Dependente dependente){
 		this.dependente=dependente;
-	}
-
-	public void setDependenteManager(DependenteManager dependenteManager){
-		this.dependenteManager=dependenteManager;
 	}
 
 	public Colaborador getColaborador() {

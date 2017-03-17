@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class EstabelecimentoListAction extends MyActionSupportList
 {
-	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
 
 	private Collection<Estabelecimento> estabelecimentos;
 
@@ -77,9 +79,5 @@ public class EstabelecimentoListAction extends MyActionSupportList
 
 	public void setEstabelecimento(Estabelecimento estabelecimento){
 		this.estabelecimento=estabelecimento;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager){
-		this.estabelecimentoManager=estabelecimentoManager;
 	}
 }

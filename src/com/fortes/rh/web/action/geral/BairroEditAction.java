@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EstadoManager;
@@ -16,9 +18,9 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class BairroEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private BairroManager bairroManager;
-	private EstadoManager estadoManager;
-	private CidadeManager cidadeManager;
+	@Autowired private BairroManager bairroManager;
+	@Autowired private EstadoManager estadoManager;
+	@Autowired private CidadeManager cidadeManager;
 
 	private Bairro bairro;
 	private Bairro bairroDestino;
@@ -141,11 +143,6 @@ public class BairroEditAction extends MyActionSupportEdit implements ModelDriven
 		this.bairro = bairro;
 	}
 
-	public void setBairroManager(BairroManager bairroManager)
-	{
-		this.bairroManager = bairroManager;
-	}
-
 	public Collection<Estado> getEstados()
 	{
 		return estados;
@@ -159,16 +156,6 @@ public class BairroEditAction extends MyActionSupportEdit implements ModelDriven
 	public void setEstado(Estado estado)
 	{
 		this.estado = estado;
-	}
-
-	public void setEstadoManager(EstadoManager estadoManager)
-	{
-		this.estadoManager = estadoManager;
-	}
-
-	public void setCidadeManager(CidadeManager cidadeManager)
-	{
-		this.cidadeManager = cidadeManager;
 	}
 
 	public Collection<Cidade> getCidades()

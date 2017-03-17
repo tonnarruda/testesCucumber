@@ -1,6 +1,8 @@
 package com.fortes.rh.web.action.geral;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.GrupoGastoManager;
 import com.fortes.rh.model.geral.GrupoGasto;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -10,7 +12,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings("serial")
 public class GrupoGastoEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private GrupoGastoManager grupoGastoManager;
+	@Autowired private GrupoGastoManager grupoGastoManager;
 
 	private GrupoGasto grupoGasto;
 
@@ -74,10 +76,4 @@ public class GrupoGastoEditAction extends MyActionSupportEdit implements ModelDr
 	{
 		return getGrupoGasto();
 	}
-
-	public void setGrupoGastoManager(GrupoGastoManager grupoGastoManager)
-	{
-		this.grupoGastoManager=grupoGastoManager;
-	}
-
 }

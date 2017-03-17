@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.ExameSolicitacaoExameManager;
@@ -32,9 +33,9 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private SolicitacaoExameManager solicitacaoExameManager;
-	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
-	private ExameManager exameManager;
+	@Autowired private SolicitacaoExameManager solicitacaoExameManager;
+	@Autowired private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
+	@Autowired private ExameManager exameManager;
 
 	private Collection<SolicitacaoExame> solicitacaoExames;
 	private Collection<ExameSolicitacaoExame> exameSolicitacaoExames;
@@ -155,10 +156,6 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 		this.solicitacaoExame=solicitacaoExame;
 	}
 
-	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager){
-		this.solicitacaoExameManager=solicitacaoExameManager;
-	}
-
 	public Date getDataFim()
 	{
 		return dataFim;
@@ -229,11 +226,6 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 		return exameSolicitacaoExames;
 	}
 
-	public void setExameSolicitacaoExameManager(ExameSolicitacaoExameManager exameSolicitacaoExameManager)
-	{
-		this.exameSolicitacaoExameManager = exameSolicitacaoExameManager;
-	}
-
 	public String[] getExamesCheck() {
 		return examesCheck;
 	}
@@ -246,9 +238,6 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 		return examesCheckList;
 	}
 
-	public void setExameManager(ExameManager exameManager) {
-		this.exameManager = exameManager;
-	}
 	public String getResultado() {
 		return resultado;
 	}

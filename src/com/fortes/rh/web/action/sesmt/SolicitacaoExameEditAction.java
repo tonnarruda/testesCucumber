@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -39,14 +40,14 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 	
-	private SolicitacaoExameManager solicitacaoExameManager;
-	private ColaboradorManager colaboradorManager;
-	private CandidatoManager candidatoManager;
-	private MedicoCoordenadorManager medicoCoordenadorManager;
-	private ExameManager exameManager;
-	private ClinicaAutorizadaManager clinicaAutorizadaManager;
-	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
-	private RealizacaoExameManager realizacaoExameManager;
+	@Autowired private SolicitacaoExameManager solicitacaoExameManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private MedicoCoordenadorManager medicoCoordenadorManager;
+	@Autowired private ExameManager exameManager;
+	@Autowired private ClinicaAutorizadaManager clinicaAutorizadaManager;
+	@Autowired private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
+	@Autowired private RealizacaoExameManager realizacaoExameManager;
 
 	private SolicitacaoExame solicitacaoExame;
 	private Collection<Exame> exames;
@@ -419,15 +420,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	{
 		this.solicitacaoExame = solicitacaoExame;
 	}
-	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager)
-	{
-		this.solicitacaoExameManager = solicitacaoExameManager;
-	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
 	public String getMatriculaBusca()
 	{
 		return matriculaBusca;
@@ -448,10 +441,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	{
 		return medicoCoordenadors;
 	}
-	public void setMedicoCoordenadorManager(MedicoCoordenadorManager medicoCoordenadorManager)
-	{
-		this.medicoCoordenadorManager = medicoCoordenadorManager;
-	}
+	
 	public Candidato getCandidato()
 	{
 		return candidato;
@@ -488,22 +478,12 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	{
 		this.candidatos = candidatos;
 	}
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
+	
 	public Collection<Exame> getExames()
 	{
 		return exames;
 	}
-	public void setExameManager(ExameManager exameManager)
-	{
-		this.exameManager = exameManager;
-	}
-	public void setClinicaAutorizadaManager(ClinicaAutorizadaManager clinicaAutorizadaManager)
-	{
-		this.clinicaAutorizadaManager = clinicaAutorizadaManager;
-	}
+	
 	public Collection<ClinicaAutorizada> getClinicaAutorizadas()
 	{
 		return clinicaAutorizadas;
@@ -554,9 +534,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	public void setGravarEImprimir(boolean gravarEImprimir) {
 		this.gravarEImprimir = gravarEImprimir;
 	}
-	public void setExameSolicitacaoExameManager(ExameSolicitacaoExameManager exameSolicitacaoExameManager) {
-		this.exameSolicitacaoExameManager = exameSolicitacaoExameManager;
-	}
+	
 	public Collection<ExameSolicitacaoExame> getExameSolicitacaoExames() {
 		return exameSolicitacaoExames;
 	}
@@ -591,10 +569,6 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 
 	public void setSelectResultados(String[] selectResultados) {
 		this.selectResultados = selectResultados;
-	}
-
-	public void setRealizacaoExameManager(RealizacaoExameManager realizacaoExameManager) {
-		this.realizacaoExameManager = realizacaoExameManager;
 	}
 
 	public Date getSolicitacaoExameData() {
@@ -644,8 +618,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	public void setAgruparPorMotivo(boolean agruparPorMotivo) {
 		this.agruparPorMotivo = agruparPorMotivo;
 	}
-	
-	
+		
 	public boolean isOrdenarPorNome() {
 		return ordenarPorNome;
 	}
@@ -698,12 +671,10 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 		this.primeiraExecucao = primeiraExecucao;
 	}
 
-	
 	public Date getDataAnterior()
 	{
 		return dataAnterior;
 	}
-
 	
 	public void setDataAnterior(Date dataAnterior)
 	{

@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.geral;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -9,7 +11,7 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class AreaFormacaoEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private AreaFormacaoManager areaFormacaoManager;
+	@Autowired private AreaFormacaoManager areaFormacaoManager;
 
 	private AreaFormacao areaFormacao;
 
@@ -64,10 +66,5 @@ public class AreaFormacaoEditAction extends MyActionSupportEdit implements Model
 	public void setAreaFormacao(AreaFormacao areaFormacao)
 	{
 		this.areaFormacao = areaFormacao;
-	}
-
-	public void setAreaFormacaoManager(AreaFormacaoManager areaFormacaoManager)
-	{
-		this.areaFormacaoManager = areaFormacaoManager;
 	}
 }

@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
@@ -26,10 +28,10 @@ import com.opensymphony.xwork.Action;
 public class ColaboradorAfastamentoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private ColaboradorAfastamentoManager colaboradorAfastamentoManager = null;
-	private AfastamentoManager afastamentoManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
+	@Autowired private AfastamentoManager afastamentoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
@@ -247,10 +249,6 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 		this.colaboradorAfastamento=colaboradorAfastamento;
 	}
 
-	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager){
-		this.colaboradorAfastamentoManager=colaboradorAfastamentoManager;
-	}
-
 	public String[] getEstabelecimentosCheck()
 	{
 		return estabelecimentosCheck;
@@ -275,11 +273,6 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	{
 		return afastamentos;
 	}
-
-	public void setAfastamentoManager(AfastamentoManager afastamentoManager)
-	{
-		this.afastamentoManager = afastamentoManager;
-	}
 	
 	public String getMatriculaBusca() {
 		return matriculaBusca;
@@ -297,11 +290,6 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	public void setNomeBusca(String nomeBusca)
 	{
 		this.nomeBusca = nomeBusca;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public Map<String, Object> getParametros()
@@ -331,10 +319,6 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 
 	public Collection<CheckBox> getAreasCheckList() {
 		return areasCheckList;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public boolean isAgruparPorCid() {
