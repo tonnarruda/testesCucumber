@@ -105,7 +105,7 @@
 
 	<#if msg?exists && msg != "">
 		<script>
-			jAlert('${msg}');
+			jAlert('${msg?replace("%20"," ")}');
 			document.getElementById('cpfRH').focus();
 		</script>
 	</#if>
