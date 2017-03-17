@@ -56,6 +56,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private Collection<Cartao> cartoes = new ArrayList<Cartao>();
 	private Cartao cartaoAniversario = new Cartao();
 	private Cartao cartaoAnoDeEmpresa = new Cartao();
+	private Cartao cartaoBoasVindas = new Cartao();
 	private Cartao cartao = new Cartao();
 
 	private Collection<Estado> ufs = null;
@@ -124,6 +125,8 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 				cartaoAniversario = cartao;
 			else if(cartao.getTipoCartao().equals(TipoCartao.ANO_DE_EMPRESA))
 				cartaoAnoDeEmpresa = cartao;
+			else if(cartao.getTipoCartao().equals(TipoCartao.BOAS_VINDAS))
+				cartaoBoasVindas = cartao;
 		}
 	}
 
@@ -189,28 +192,25 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	}
 	
 	private void configuraCartoes(){
-		if(cartaoAniversario.getFile() != null)
-			cartaoAniversario = cartaoManager.saveImagemCartao(cartaoAniversario, "logoEmpresas");
+		configuraCartoes(cartaoAniversario);
+		configuraCartoes(cartaoAnoDeEmpresa);
+		configuraCartoes(cartaoBoasVindas);
 		
-		if(cartaoAnoDeEmpresa.getFile() != null)
-			cartaoAnoDeEmpresa = cartaoManager.saveImagemCartao(cartaoAnoDeEmpresa, "logoEmpresas");
-		
-		if((cartaoAniversario.getImgUrl() != null && !cartaoAniversario.getImgUrl().isEmpty()) || (cartaoAniversario.getMensagem() != null && !cartaoAniversario.getMensagem().isEmpty()))
-			cartoes.add(cartaoAniversario);
-		else if(cartao.getId() != null)
-			cartaoManager.remove(cartaoAniversario);
-		
-		if((cartaoAnoDeEmpresa.getImgUrl() != null && !cartaoAnoDeEmpresa.getImgUrl().isEmpty()) || (cartaoAnoDeEmpresa.getMensagem() != null && !cartaoAnoDeEmpresa.getMensagem().isEmpty()))
-			cartoes.add(cartaoAnoDeEmpresa);
-		else if(cartao.getId() != null)
-			cartaoManager.remove(cartaoAnoDeEmpresa);
-		
-		for (Cartao carto : cartoes) {
+		for (Cartao carto : cartoes) 
 			carto.setEmpresa(empresa);
-		}
 		
 		empresa.setCartoes(cartoes);
 	}
+	
+	private void configuraCartoes(Cartao cart){
+		if(cart.getFile() != null)
+			cart = cartaoManager.saveImagemCartao(cart, "logoEmpresas");
+		
+		if((cart.getImgUrl() != null && !cart.getImgUrl().isEmpty()) || (cart.getMensagem() != null && !cart.getMensagem().isEmpty()))
+			cartoes.add(cart);
+		else if(cartao.getId() != null)
+			cartaoManager.remove(cart);
+	} 
 	
 	public String update() throws Exception
 	{
@@ -550,5 +550,13 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public void setCartao(Cartao cartao) {
 		this.cartao = cartao;
+	}
+
+	public Cartao getCartaoBoasVindas() {
+		return cartaoBoasVindas;
+	}
+
+	public void setCartaoBoasVindas(Cartao cartaoBoasVindas) {
+		this.cartaoBoasVindas = cartaoBoasVindas;
 	}
 }

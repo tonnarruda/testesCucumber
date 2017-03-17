@@ -303,6 +303,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
 			contratarColaboradorNoAC(colaborador, historico, empresa, true);
+		else 
+			gerenciadorComunicacaoManager.enviaEmailBoasVindasColaborador(colaborador);
 
 		gerenciadorComunicacaoManager.enviaAvisoContratacao(historico);
 
@@ -1429,6 +1431,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			historicoColaborador.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
 			historicoColaboradorManager.bindSituacao(tSituacao, historicoColaborador);
 			historicoColaboradorManager.save(historicoColaborador);
+
+			gerenciadorComunicacaoManager.enviaEmailBoasVindasColaborador(colaborador);
 		}
 	}
 	
@@ -3087,6 +3091,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
+	public Collection<Colaborador> findByAdmitidos(Date data) {
+		return getDao().findByAdmitidos(data);
+	}
+	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;

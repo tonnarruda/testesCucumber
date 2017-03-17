@@ -5552,4 +5552,27 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("                            ) ");
 		return Expression.sqlRestriction(sql.toString());
 	}
+
+	public Collection<Colaborador> findByAdmitidos(Date data) {
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.empresa", "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.contato.email"), "emailColaborador");
+		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
+		p.add(Projections.property("e.id"), "empresaId");
+		p.add(Projections.property("e.nome"), "empresaNome");
+		p.add(Projections.property("e.emailRemetente"), "empresaEmailRemetente");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("c.dataAdmissao", data));
+
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return criteria.list();
+	}		
 }

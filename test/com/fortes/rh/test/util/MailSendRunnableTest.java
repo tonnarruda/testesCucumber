@@ -26,7 +26,7 @@ public class MailSendRunnableTest extends MockObjectTestCase
 		params.setEmailSmtp("samuel@gmail.com");
 		params.setEmailPort(587);
 		
-		Message msg = mailSendRunnable.prepareMessage("João", params, "Teste de email", "body", null, true, true);
+		Message msg = mailSendRunnable.prepareMessage("João", params, "Teste de email", "body", null, true, true, null);
 		
 		assertEquals("Teste de email", msg.getSubject());
 	}

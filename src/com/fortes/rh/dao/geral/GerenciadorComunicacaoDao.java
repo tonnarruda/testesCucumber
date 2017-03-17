@@ -12,4 +12,5 @@ public interface GerenciadorComunicacaoDao extends GenericDao<GerenciadorComunic
 	public Collection<Empresa> findEmpresasByOperacaoId(Integer operacaoId);
 	public boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao);
 	public void removeByOperacao(Integer[] operacoes);
+	public GerenciadorComunicacao findByOperacaoIdAndEmpresaId(Integer operacaoId, Long empresaId);
 }

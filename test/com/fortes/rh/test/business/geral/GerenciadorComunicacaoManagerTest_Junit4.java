@@ -990,4 +990,36 @@ public class GerenciadorComunicacaoManagerTest_Junit4
 		return colaborador;
 	}
 	
+	@Test
+	public void testEnviaEmailBoasVindasColaboradorJob() throws AddressException, MessagingException 
+	{
+		Empresa empresa = criaEmpresa();
+
+		Colaborador colab1 = ColaboradorFactory.getEntity(1L, empresa);
+		colab1.setEmailColaborador("email@gmail.com");
+
+		Colaborador colab2 = ColaboradorFactory.getEntity(2L, empresa);
+		colab2.setNome("Colaborador");
+		
+		Collection<Colaborador> colaboradores = new ArrayList<>();
+		colaboradores.add(colab1);
+		colaboradores.add(colab2);
+
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L, empresa, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR);
+		
+		Cartao cartao = CartaoFactory.getEntity(empresa);
+		cartao.setMensagem("teste");
+		
+		when(colaboradorManager.findByAdmitidos(any(Date.class))).thenReturn(colaboradores);
+		when(gerenciadorComunicacaoDao.findByOperacaoIdAndEmpresaId(Operacao.BOAS_VINDAS_COLABORADORES.getId(), empresa.getId())).thenReturn(gerenciadorComunicacao);
+		when(cartaoManager.findByEmpresaIdAndTipo(empresa.getId(), TipoCartao.BOAS_VINDAS)).thenReturn(cartao);
+		
+		gerenciadorComunicacaoManager.enviaEmailBoasVindasColaboradorJob();
+
+		verify(colaboradorManager, times(1)).findByAdmitidos(any(Date.class));
+		verify(gerenciadorComunicacaoDao, times(2)).findByOperacaoIdAndEmpresaId(Operacao.BOAS_VINDAS_COLABORADORES.getId(), empresa.getId());
+		verify(cartaoManager, times(2)).findByEmpresaIdAndTipo(empresa.getId(), TipoCartao.BOAS_VINDAS);
+		verify(mail, times(1)).sendImg(empresa, "Seja bem vindo a empresa " + colab1.getEmpresaNome(), cartao.getMensagem().replace("#NOMECOLABORADOR#", colab1.getNome()), ArquivoUtil.getPathBackGroundCartao(cartao.getImgUrl()), colab1.getContato().getEmail());
+		verify(mail, times(1)).sendImg(empresa, "Seja bem vindo a empresa " + colab2.getEmpresaNome(), cartao.getMensagem().replace("#NOMECOLABORADOR#", colab2.getNome()), ArquivoUtil.getPathBackGroundCartao(cartao.getImgUrl()), colab2.getContato().getEmail());
+	}
 }

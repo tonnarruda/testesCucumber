@@ -7284,4 +7284,17 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
 		return historicoColaborador;
 	}
+	
+	@Test
+	public void testFindByAdmitidos() {
+		Empresa empresa = saveEmpresa();
+
+		Colaborador colaborador1 = saveColaborador(empresa, "C1", "012345", "01234567890", DateUtil.criarDataMesAno(1, 2, 2013));
+		colaboradorDao.save(colaborador1);
+		Colaborador colaborador2 = saveColaborador(empresa, "C2", "012345", "01234567890", new Date());
+		colaboradorDao.save(colaborador2);
+		
+		Collection<Colaborador> retorno = colaboradorDao.findByAdmitidos(new Date());
+		assertTrue(retorno.size() >= 1);
+	}
 }

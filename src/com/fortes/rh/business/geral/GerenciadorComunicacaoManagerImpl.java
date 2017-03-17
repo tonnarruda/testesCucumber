@@ -1217,7 +1217,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		try{
 			Collection<Empresa> empresas = getDao().findEmpresasByOperacaoId(Operacao.ENVIAR_CARTAO_ANIVERSARIANTES.getId());
 			if (empresas != null && empresas.size() > 0){
-				ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 				colaboradorManager.enviaEmailAniversariantes(empresas);
 			}
 		} catch (Exception e) {
@@ -2140,6 +2139,35 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			}
 		}
 	}
+
+	public void enviaEmailBoasVindasColaboradorJob(){
+		Collection<Colaborador> colaboradores = colaboradorManager.findByAdmitidos(new Date());
+		for (Colaborador colaborador : colaboradores) {
+			if(colaborador.getContato() != null && colaborador.getContato().getEmail() != null)
+				enviaEmailBoasVindasColaborador(colaborador);
+		}
+	}
+
+	public void enviaEmailBoasVindasColaborador(Colaborador colaborador){
+		try {
+			GerenciadorComunicacao gerenciadorComunicacao = getDao().findByOperacaoIdAndEmpresaId(Operacao.BOAS_VINDAS_COLABORADORES.getId(), colaborador.getEmpresa().getId());
+			if (gerenciadorComunicacao != null && gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())
+					&& colaborador.getContato() != null && colaborador.getContato().getEmail() != null && colaborador.getDataAdmissao().getTime() <= new Date().getTime()){
+				Cartao cartao = cartaoManager.findByEmpresaIdAndTipo(colaborador.getEmpresa().getId(), TipoCartao.BOAS_VINDAS);
+				if(cartao != null)
+					mail.sendImg(colaborador.getEmpresa(), "Seja bem vindo a empresa " + colaborador.getEmpresaNome(), cartao.getMensagem().replace("#NOMECOLABORADOR#", colaborador.getNome()), ArquivoUtil.getPathBackGroundCartao(cartao.getImgUrl()), colaborador.getContato().getEmail());		
+			}
+		} catch (Exception e) {
+			System.out.println("Email de boas vindas não funcionou.");
+			e.printStackTrace();
+		}
+	}
+	
+	public void enviaCartoes(){
+		enviaEmailCartaoAniversariantes();
+		enviaEmailBoasVindasColaboradorJob();
+		enviaEmailQuandoColaboradorCompletaAnoDeEmpresa();
+	} 
 	
 	private String formateMensagem(String subject, StringBuilder body)
 	{

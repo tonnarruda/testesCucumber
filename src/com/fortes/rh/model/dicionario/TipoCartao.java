@@ -7,11 +7,13 @@ public class TipoCartao extends LinkedHashMap<String, String>
 {
 	public static final String ANIVERSARIO = "A";
 	public static final String ANO_DE_EMPRESA = "E";
+	public static final String BOAS_VINDAS = "B";
 	
 	public TipoCartao() 
 	{
 		put(ANIVERSARIO, "Aniversário");
 		put(ANO_DE_EMPRESA, "Ano de empresa");
+		put(BOAS_VINDAS, "Boas-Vindas");
 	}
 	
 	public static String getDescricao(String tipo)
@@ -32,5 +34,10 @@ public class TipoCartao extends LinkedHashMap<String, String>
 	public static String getAnoDeEmpresa()
 	{
 		return ANO_DE_EMPRESA;
+	}
+	
+	public static String getBoasVindas()
+	{
+		return BOAS_VINDAS;
 	}
 }

@@ -142,18 +142,19 @@
     <property name="targetObject" ref="importadorGastosACJob"/>
     <property name="targetMethod" value="execute"/>
   </bean>
-  
-  <bean name="emailCartaoAniversariantesJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
+  <bean name="emailCartaoJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
     <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
     <property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
+    <property name="empresaManager" ref="empresaManager" />
+    <property name="colaboradorManager" ref="colaboradorManager" />
+    <property name="cartaoManager" ref="cartaoManager" />
     <property name="mail" ref="mail" />
   </bean>
-  <bean name="emailCartaoAniversariantes" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-  	<property name="name" value="Enviar cartões para os aniversariantes do dia"/>
-    <property name="targetObject" ref="emailCartaoAniversariantesJob"/>
-    <property name="targetMethod" value="enviaEmailCartaoAniversariantes"/>
+  <bean name="emailCartao" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Enviar cartões"/>
+    <property name="targetObject" ref="emailCartaoJob"/>
+    <property name="targetMethod" value="enviaCartoes"/>
   </bean>
-  
   <bean name="quantidadeCurriculosJob" class="com.fortes.rh.business.captacao.QuantidadeCurriculos">
 	<property name="candidatoManager" ref="candidatoManager" />
 	<property name="empresaManager" ref="empresaManager" />
@@ -184,19 +185,6 @@
   	<property name="name" value="Enviar lembrete para responder avaliações de desempenho"/>
     <property name="targetObject" ref="lembreteResponderAvaliacaoDesempenhoJob"/>
     <property name="targetMethod" value="enviarLembreteResponderAvaliacaoDesempenho"/>
-  </bean>
-  
-  <bean name="emailQuandoColaboradorCompletaAnoDeEmpresaJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
-    <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
-    <property name="empresaManager" ref="empresaManager" />
-    <property name="colaboradorManager" ref="colaboradorManager" />
-    <property name="cartaoManager" ref="cartaoManager" />
-    <property name="mail" ref="mail" />
-  </bean>
-  <bean name="emailQuandoColaboradorCompletaAnoDeEmpresa" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-  	<property name="name" value="Enviar email quando colaborador completa ano de empresa"/>
-    <property name="targetObject" ref="emailQuandoColaboradorCompletaAnoDeEmpresaJob"/>
-    <property name="targetMethod" value="enviaEmailQuandoColaboradorCompletaAnoDeEmpresa"/>
   </bean>
 
   <bean name="lembreteEntregaEpiJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
@@ -340,8 +328,8 @@
     <property name="jobDetail" ref="quantidadeCurriculos" />
     <property name="cronExpression" value="0 10 7 1 * ?" /> <!-- Todo dia 1 de cada mes as 07:10h am -->
   </bean>
-  <bean id="cronTriggerEmailCartaoAniversariantes" class="org.springframework.scheduling.quartz.CronTriggerBean">
-    <property name="jobDetail" ref="emailCartaoAniversariantes" />
+  <bean id="cronTriggerEmailCartao" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="emailCartao" />
 	<property name="cronExpression" value="0 20 6 * * ?" /> <!-- Todo os dias as 06:20h am -->
   </bean>
   <bean id="cronTriggerLembreteAberturaSolicitacaoEpi" class="org.springframework.scheduling.quartz.CronTriggerBean">
@@ -355,10 +343,6 @@
   <bean id="cronTriggerlembreteResponderAvaliacaoDesempenho" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteResponderAvaliacaoDesempenho" />
 	<property name="cronExpression" value="0 30 6 * * ?" /> <!-- Todo os dias as 06:30h am -->
-  </bean>
-  <bean id="cronTriggeremailQuandoColaboradorCompletaAnoDeEmpresa" class="org.springframework.scheduling.quartz.CronTriggerBean">
-    <property name="jobDetail" ref="emailQuandoColaboradorCompletaAnoDeEmpresa" />
-	<property name="cronExpression" value="0 50 6 * * ?" /> <!-- Todo os dias as 06:50h am -->
   </bean>
   <bean id="cronTriggerlembreteContratoTemporarioColaborador" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteContratoTemporarioColaborador" />
@@ -394,11 +378,10 @@
 		<ref bean="cronTriggerBackupCleaner" />
 		<ref bean="cronTriggerQuantidadeCurriculos" />
 		<ref bean="cronTriggerLembreteExamesPrevistos" />
-		<ref bean="cronTriggerEmailCartaoAniversariantes" />
+		<ref bean="cronTriggerEmailCartao" />
 		<ref bean="cronTriggerLembreteAberturaSolicitacaoEpi" />
 		<ref bean="cronTriggerLembreteEntregaEpi" />
 		<ref bean="cronTriggerlembreteResponderAvaliacaoDesempenho" />
-		<ref bean="cronTriggeremailQuandoColaboradorCompletaAnoDeEmpresa" />
 		<ref bean="cronTriggerlembreteContratoTemporarioColaborador" />
 		<ref bean="cronTriggerlembreteHabilitacaoAVencer" />
 		<ref bean="cronTriggerImportarUltimasNoticias" />

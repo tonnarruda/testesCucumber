@@ -22,7 +22,7 @@ public class OperacaoTest
 	@Test
 	public void testQtdOperacoes()
 	{
-		assertEquals(43, Operacao.values().length);
+		assertEquals(44, Operacao.values().length);
 	}
 
 	@Test
@@ -80,6 +80,7 @@ public class OperacaoTest
 		assertEquals("Iniciar o período da LNT", Operacao.getDescricaoById(++i));
 		assertEquals("Encerrar o período da LNT", Operacao.getDescricaoById(++i));
 		assertEquals("Finalizar LNT", Operacao.getDescricaoById(++i));
+		assertEquals("Colaborador for contratado (cartão de boas-vindas)", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -141,6 +142,7 @@ public class OperacaoTest
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 41
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 42
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 43
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 44
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -192,6 +194,7 @@ public class OperacaoTest
 		assertEquals(++i, Operacao.INICIAR_PERIODO_LNT.getId());							// 41
 		assertEquals(++i, Operacao.ENCERRAR_PERIODO_LNT.getId());							// 42
 		assertEquals(++i, Operacao.FINALIZAR_LNT.getId());									// 43
+		assertEquals(++i, Operacao.BOAS_VINDAS_COLABORADORES.getId());						// 44
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
 
@@ -722,6 +725,18 @@ public class OperacaoTest
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
 		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 		assertEquals(4,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+	}
+	
+	@Test
+	public void testBoasVindasColaborador(){
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.BOAS_VINDAS_COLABORADORES;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	@AfterClass

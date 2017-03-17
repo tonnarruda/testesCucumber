@@ -504,6 +504,15 @@ public enum Operacao
 			
 			return this.getListMeioComunicacao();
 		}
+	},
+	
+	BOAS_VINDAS_COLABORADORES(44, "Colaborador for contratado (cartão de boas-vindas)", "Info. Funcionais"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR);
+
+			return this.getListMeioComunicacao();
+		}
 	};
 	
 	private int id;

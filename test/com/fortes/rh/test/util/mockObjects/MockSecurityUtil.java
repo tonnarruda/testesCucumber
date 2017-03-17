@@ -8,6 +8,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 
 public class MockSecurityUtil
 {
@@ -54,5 +55,9 @@ public class MockSecurityUtil
 	public static Long getIdUsuarioLoged(Map session)
 	{
 		return 1L;
+	}
+	
+	public static Empresa getEmpresaByDWR(HttpSession session) {
+		return EmpresaFactory.getEmpresa();
 	}
 }

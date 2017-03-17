@@ -153,6 +153,12 @@
 				jAlert("A quantidade de caracteres do campo [Mensagem do Cartão de Ano de Empresa] não pode ser maior que 300");
 				return false;
 			}
+			
+			if($('#mensagemCartaoBoasVindas').val().length > 300)
+			{
+				jAlert("A quantidade de caracteres do campo [Mensagem do Cartão de Boas-Vindas] não pode ser maior que 300");
+				return false;
+			}
 
 			$('#senhaPadrao').css("background", "#FFF");
 			if($("#criarUsuarioAutomaticamente").is(":checked") && $("#senhaPadrao").val() == "")
@@ -189,6 +195,25 @@
 				jAlert("Base CNPJ deve ter 8 dígitos.");
 			
 		}
+		
+		<#if empresa.id?exists>
+			function enviaEmailCartao()
+			{
+				var email = prompt("Enviar mensagem para o e-mail:", "");
+				if(email != null){
+					if(email.trim() != ""){
+						DWRUtil.useLoadingMessage('Enviando...');
+						UtilDWR.enviaEmailCartaoBoasVindas(apresentaMsg, email, ${empresa.id}, $('#nome').val(), $('#remetente').val());
+					}else
+						jAlert("Email Inválido!");
+				}
+			}
+			
+			function apresentaMsg(data)
+			{
+				jAlert(data);
+			}
+		</#if>
 	</script>
 </head>
 <body>
@@ -406,6 +431,26 @@
 						<@ww.textarea label="Mensagem (Utilize a expressão #NOMECOLABORADOR#, caso queira exibir o nome do colaborador que completa ano de empresa)" id="mensagemCartaoAnoEmpresa" name="cartaoAnoDeEmpresa.mensagem" cssStyle="height:40px;"/>
 					</ul>
 				</@ww.div>
+				
+				<@ww.div cssClass="divInfoInterna">
+					<h2>Boas-vindas</h2>	
+					<ul>
+						<@ww.file label="Imagem" name="cartaoBoasVindas.file" id="imgCartaoBoasVindas" liClass="liLeft"/>
+						<li>
+							<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
+								<#if empresa.id?exists && cartaoBoasVindas.imgUrl?exists && cartaoBoasVindas.imgUrl != "">
+									<a href="#" onclick="enviaEmailCartao();"><img title="Visualizar cartão de boas vindas a empresa." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgCartao.action?cartao.imgUrl=${cartaoBoasVindas.imgUrl}"/>"></a>
+								</#if>
+							</@ww.div>
+						</li>
+						<#if cartaoBoasVindas.mensagem?exists>						
+							<#assign msgBoasVindas=cartaoBoasVindas.mensagem />
+						<#else>
+							<#assign msgBoasVindas="Seja bem vindo(a) #NOMECOLABORADOR#" />
+						</#if>
+						<@ww.textarea label="Mensagem (Utilize a expressão #NOMECOLABORADOR#, caso queira exibir o nome do colaborador que completa a boas-vindas a empresa)" value="${msgBoasVindas}" id="mensagemCartaoBoasVindas" name="cartaoBoasVindas.mensagem" cssStyle="height:40px;"/>
+					</ul>
+				</@ww.div>
 			</@ww.div>
 		</li>
 		
@@ -447,9 +492,15 @@
 		<@ww.hidden name="cartaoAniversario.id" />
 		<@ww.hidden name="cartaoAniversario.imgUrl" />
 		
+		<@ww.hidden name="cartaoAnoDeEmpresa.empresa.id" />
 		<@ww.hidden name="cartaoAnoDeEmpresa.id" />
 		<@ww.hidden name="cartaoAnoDeEmpresa.tipoCartao" value="E" />
 		<@ww.hidden name="cartaoAnoDeEmpresa.imgUrl"/>
+		
+		<@ww.hidden name="cartaoBoasVindas.empresa.id" />
+		<@ww.hidden name="cartaoBoasVindas.id" />
+		<@ww.hidden name="cartaoBoasVindas.tipoCartao" value="B" />
+		<@ww.hidden name="cartaoBoasVindas.imgUrl"/>
 	<@ww.token/>
 	</@ww.form>
 

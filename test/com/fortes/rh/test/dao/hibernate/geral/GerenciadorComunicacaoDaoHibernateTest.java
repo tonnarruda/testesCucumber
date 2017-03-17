@@ -130,6 +130,35 @@ public class GerenciadorComunicacaoDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals(0, gerenciadorComunicacaoDao.findByOperacaoId(Operacao.AUTORIZACAO_SOLIC_PESSOAL_GESTOR_INCLUIR_COLAB.getId(), empresa.getId()).size());
 	}
 
+	public void testFindByOperacaoAndEmpresaId() 
+	{		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		GerenciadorComunicacao gerenciadorComunicacao1 = getEntity();
+		gerenciadorComunicacao1.setOperacao(Operacao.BOAS_VINDAS_COLABORADORES.getId());
+		gerenciadorComunicacao1.setEnviarPara(EnviarPara.COLABORADOR.getId());
+		gerenciadorComunicacao1.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao1.setEmpresa(empresa);
+		gerenciadorComunicacaoDao.save(gerenciadorComunicacao1);
+		
+		GerenciadorComunicacao gerenciadorComunicacao2 = getEntity();
+		gerenciadorComunicacao2.setOperacao(Operacao.ENCERRAR_SOLICITACAO.getId());
+		gerenciadorComunicacao2.setEmpresa(empresa);
+		gerenciadorComunicacaoDao.save(gerenciadorComunicacao2);
+		
+		GerenciadorComunicacao gerenciadorComunicacao3 = getEntity();
+		gerenciadorComunicacao3.setOperacao(Operacao.GERAR_BACKUP.getId());
+		gerenciadorComunicacao3.setEmpresa(empresa);
+		gerenciadorComunicacaoDao.save(gerenciadorComunicacao3);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = gerenciadorComunicacaoDao.findByOperacaoIdAndEmpresaId(Operacao.BOAS_VINDAS_COLABORADORES.getId(), empresa.getId());
+		
+		assertEquals(EnviarPara.COLABORADOR.getId() , gerenciadorComunicacao.getEnviarPara());
+		assertEquals(new Integer(Operacao.BOAS_VINDAS_COLABORADORES.getId()) , gerenciadorComunicacao.getOperacao());
+		assertEquals(MeioComunicacao.EMAIL.getId() , gerenciadorComunicacao.getMeioComunicacao());
+	}
+	
 	
 	@Override
 	public GerenciadorComunicacao getEntity()

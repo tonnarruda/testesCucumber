@@ -28,6 +28,25 @@ public class GerenciadorComunicacaoDaoHibernate extends GenericDaoHibernate<Gere
 		
 		return criteria.list();	
 	}
+	
+	public GerenciadorComunicacao findByOperacaoIdAndEmpresaId(Integer operacaoId, Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "gc");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("gc.enviarPara"), "enviarPara");
+		p.add(Projections.property("gc.meioComunicacao"), "meioComunicacao");
+		p.add(Projections.property("gc.operacao"),"operacao");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("gc.operacao", operacaoId));
+		criteria.add(Expression.eq("gc.empresa.id", empresaId));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(GerenciadorComunicacao.class));
+		
+		return (GerenciadorComunicacao) criteria.uniqueResult();	
+	}
 
 	public Collection<Empresa> findEmpresasByOperacaoId(Integer operacaoId) 
 	{

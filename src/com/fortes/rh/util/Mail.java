@@ -53,21 +53,32 @@ public class Mail
     public void send(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, boolean utilizarThread, String... to) throws AddressException, MessagingException
     {
     	if(to != null && to.length > 0)
-    		procSend(empresa, parametros, subject, body, null, utilizarThread, to);
+    		procSend(empresa, parametros, subject, body, utilizarThread, null, to);
     }
     
     public void send(String from, String subject, String body, String... to) throws AddressException, MessagingException
     {
     	ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
-    	procSend(parametros, from, subject, body, null, true, to);
+    	procSend(parametros, from, subject, body, null, true, null, to);
     }
 
     private void procSend(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, DataSource[] attachedFiles, boolean utilizarThread, String... to) throws AddressException, MessagingException
     {
-    	procSend(parametros, getRemetente(empresa, parametros), subject, body, attachedFiles, utilizarThread, to);
+    	procSend(parametros, getRemetente(empresa, parametros), subject, body, attachedFiles, utilizarThread, null, to);
     }
 
-	private String getRemetente(Empresa empresa, ParametrosDoSistema parametros) 
+    public void sendImg(Empresa empresa, String subject, String body, String urlImg, String... to) throws AddressException, MessagingException
+    {
+    	ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
+    	procSend(empresa, parametros, subject, body, true, urlImg, to);
+    }
+    
+    private void procSend(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, boolean utilizarThread, String urlImg, String... to) throws AddressException, MessagingException
+    {
+    	procSend(parametros, getRemetente(empresa, parametros), subject, body, null, utilizarThread, urlImg, to);
+    }
+
+    private String getRemetente(Empresa empresa, ParametrosDoSistema parametros) 
 	{
 		String from;
     	
@@ -87,14 +98,15 @@ public class Mail
 		return from;
 	}
     
-    private void procSend(ParametrosDoSistema parametros, String from, String subject, String body, DataSource[] attachedFiles, boolean utilizarThread, String... to) throws AddressException, AddressException, MessagingException
+	
+    private void procSend(ParametrosDoSistema parametros, String from, String subject, String body, DataSource[] attachedFiles, boolean utilizarThread, String urlImg, String... to) throws AddressException, AddressException, MessagingException
     {
     	if(parametros.isEnvioDeEmailHabilitado())
     	{
 			if (to == null || to.length == 0)
 				throw new AddressException("Destinatários não informados.");
 			
-			MailSendRunnable mailSendRunnable = new MailSendRunnable(parametros, from, subject, body, attachedFiles, to);
+			MailSendRunnable mailSendRunnable = new MailSendRunnable(parametros, from, subject, body, attachedFiles, urlImg, to);
 			
 			if(utilizarThread){
 				Thread threadSendEmail = new Thread(mailSendRunnable);
@@ -118,7 +130,7 @@ public class Mail
 			throw new Exception("Envio de Email desabilitado, entre em contato com o suporte.");
 		
 		MailSendRunnable mailSendRunnable = new MailSendRunnable();
-		Message msg = mailSendRunnable.prepareMessage(getRemetente(empresa, parametros), parametros, subject, body, null,  autenticacao, tls);
+		Message msg = mailSendRunnable.prepareMessage(getRemetente(empresa, parametros), parametros, subject, body, null,  autenticacao, tls, null);
 		List<String> emails = new ArrayList<String>();
 
 		emails.add(email);

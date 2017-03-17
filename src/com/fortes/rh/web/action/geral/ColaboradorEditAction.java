@@ -647,7 +647,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				transactionManager.commit(status);
 				
 				verifyCadastroUsuario();
-				
+					
 				if(solicitacao != null && solicitacao.getId() != null)
 					return "successSolicitacao";
 				else

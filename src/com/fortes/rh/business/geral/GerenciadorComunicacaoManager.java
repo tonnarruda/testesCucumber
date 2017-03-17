@@ -77,4 +77,7 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaAvisoInicioLnt(Collection<Lnt> lnts);
 	void enviaAvisoFimLnt(Collection<Lnt> lnts);
 	void enviaAvisoLntFinalizada(String subject, StringBuilder body, String link, Long empresaId, Collection<Long> areasIds, Map<String, Object> parametros, Map<Long, Collection<ParticipanteCursoLnt>> mapPerticipantesLNTPorResponsaveis, Collection<ParticipanteCursoLnt> participanteCursoLntsEmpresa);
+	void enviaEmailBoasVindasColaborador(Colaborador colaborador);
+	void enviaEmailBoasVindasColaboradorJob();
+	void enviaCartoes();
 }

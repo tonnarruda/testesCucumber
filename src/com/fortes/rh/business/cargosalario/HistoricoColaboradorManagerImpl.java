@@ -1035,8 +1035,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public HistoricoColaborador updateSituacao(TSituacao situacao) throws Exception
 	{
 		HistoricoColaborador historicoColaborador = getDao().findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
-
+		
 		historicoColaborador = bindSituacao(situacao, historicoColaborador);
+		historicoColaborador.setStatusAnterior(historicoColaborador.getStatus());
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 
 		getDao().update(historicoColaborador);

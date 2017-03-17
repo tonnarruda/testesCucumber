@@ -26,11 +26,17 @@ import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManagerImpl;
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.MensagemManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
+import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -38,7 +44,11 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.json.ColaboradorJson;
+import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -47,6 +57,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -65,7 +76,11 @@ public class ColaboradorManagerTest_Junit4
     private HistoricoColaboradorManager historicoColaboradorManager;
     private PlatformTransactionManager transactionManager;
     private AreaOrganizacionalManager areaOrganizacionalManager;
-    
+    private EstadoManager estadoManager;
+    private EmpresaManager empresaManager;
+    private ParametrosDoSistemaManager parametrosDoSistemaManager;
+    private UsuarioEmpresaManager usuarioEmpresaManager;
+    private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
     @Before
     public void setUp() throws Exception
@@ -79,6 +94,10 @@ public class ColaboradorManagerTest_Junit4
         historicoColaboradorManager= mock(HistoricoColaboradorManager.class);
         transactionManager = mock(PlatformTransactionManager.class);
         areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
+        estadoManager = mock(EstadoManager.class);
+        empresaManager = mock(EmpresaManager.class);
+        parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
+        gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
         
         colaboradorManager.setDao(colaboradorDao);
         colaboradorManager.setCandidatoManager(candidatoManager);
@@ -89,9 +108,16 @@ public class ColaboradorManagerTest_Junit4
         colaboradorManager.setHistoricoColaboradorManager(historicoColaboradorManager);
         colaboradorManager.setTransactionManager(transactionManager);
         colaboradorManager.setAreaOrganizacionalManager(areaOrganizacionalManager);
+        colaboradorManager.setEstadoManager(estadoManager);
+        colaboradorManager.setEmpresaManager(empresaManager);
+        colaboradorManager.setParametrosDoSistemaManager(parametrosDoSistemaManager);
+        colaboradorManager.setGerenciadorComunicacaoManager(gerenciadorComunicacaoManager);
         
         usuarioManager = mock(UsuarioManager.class);
+        usuarioEmpresaManager = mock(UsuarioEmpresaManager.class);
         MockSpringUtilJUnit4.mocks.put("usuarioManager", usuarioManager);
+        MockSpringUtilJUnit4.mocks.put("usuarioEmpresaManager", usuarioEmpresaManager);
+        
         
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
     }
@@ -429,5 +455,101 @@ public class ColaboradorManagerTest_Junit4
     	
     	when(colaboradorDao.findColaboradoresQueNuncaRealizaramTreinamento(empresaId, areaIds, estabelecimentosIds)).thenReturn(Arrays.asList(ColaboradorFactory.getEntity()));
     	assertEquals(1, colaboradorManager.findColaboradoresQueNuncaRealizaramTreinamento(empresaId, cursosIds, areaIds, estabelecimentosIds).size());
+    }
+    
+	private TEmpregado iniciaTEmpregado() {
+		TEmpregado empregado = new TEmpregado();
+    	empregado.setId(1);
+    	empregado.setCidadeCodigoAC("1234");
+    	empregado.setUfSigla("UF");
+    	empregado.setSexo("M");
+    	empregado.setDeficiencia("1");
+    	empregado.setCtpsDV("");
+    	empregado.setIdentidadeUF("UF");
+    	empregado.setCtpsUFSigla("UF");
+    	empregado.setCtpsDV("1");
+    	empregado.setEscolaridade("Superior Completo");
+		return empregado;
+	}
+    
+    @Test
+    public void testSaveEmpregadosESituacoes() throws Exception
+    {
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setCriarUsuarioAutomaticamente(true);
+    	
+    	TEmpregado tEmpregado = iniciaTEmpregado();
+    	tEmpregado.setCodigoACDestino("codigoACDestino");
+    	tEmpregado.setCodigoAC("tEmp1");
+    	
+    	Pessoal pessoal = new Pessoal();
+    	pessoal.setEscolaridade("Especialização");
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setPessoal(pessoal);
+    	Estado estado = EstadoFactory.getEntity(1L);
+    	Cidade cidade = CidadeFactory.getEntity();
+    	cidade.setId(1L);
+    	cidade.setUf(estado);
+    	
+    	TSituacao tSituacao1 = new TSituacao();
+    	tSituacao1.setEmpregadoCodigoAC("tEmp1");
+    	tSituacao1.setEmpregadoCodigoACDestino("codigoACDestino");
+    	TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
+    	
+    	Usuario usuario = new Usuario(colaborador.getNome(), colaborador.getPessoal().getCpf(), empresa.getSenhaPadrao(), true, colaborador);
+    	
+    	when(cidadeManager.findByCodigoAC("1234", "UF")).thenReturn(cidade);
+		when(estadoManager.findBySigla("UF")).thenReturn(estado);
+		when(empresaManager.findEntidadeComAtributosSimplesById(empresa.getId())).thenReturn(empresa);
+		when(usuarioManager.existeLogin(usuario)).thenReturn(false);
+		when(parametrosDoSistemaManager.findByIdProjection(1L)).thenReturn(parametrosDoSistema);
+    	
+    	Exception e = null;
+    	try {
+    		colaboradorManager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);
+    	} catch (Exception e2) {
+    		e = e2;
+    	}
+    	assertNull(e);
+    }
+    
+    @Test
+    public void testSaveEmpregadosESituacoesException() throws Exception
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	
+    	TEmpregado tEmpregado = iniciaTEmpregado();
+    	tEmpregado.setCodigoAC("tEmp1");
+    	
+    	Pessoal pessoal = new Pessoal();
+    	pessoal.setEscolaridade("Especialização");
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setPessoal(pessoal);
+    	Estado estado = EstadoFactory.getEntity(1L);
+    	Cidade cidade = CidadeFactory.getEntity();
+    	cidade.setId(1L);
+    	cidade.setUf(estado);
+    	
+    	TSituacao tSituacao1 = new TSituacao();
+    	tSituacao1.setEmpregadoCodigoAC("tEmp1");
+		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
+    	
+		when(cidadeManager.findByCodigoAC("1234", "UF")).thenReturn(cidade);
+		when(estadoManager.findBySigla("UF")).thenReturn(estado);
+		when(empresaManager.findEntidadeComAtributosSimplesById(empresa.getId())).thenReturn(empresa);
+    	when(empresaManager.findEntidadeComAtributosSimplesById(empresa.getId())).thenReturn(empresa);
+    	
+    	Exception e = null;
+    	try {
+    		colaboradorManager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);
+		} catch (Exception e2) {
+			e = e2;
+		}
+    	
+    	assertEquals("O empregado null está sem situação.", e.getMessage());
     }
 }

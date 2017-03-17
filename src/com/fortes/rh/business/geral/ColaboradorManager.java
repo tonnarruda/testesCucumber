@@ -249,4 +249,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByAreasIds(Long... areasIds);
 	public Collection<Colaborador> findAniversariantesPorTempoDeEmpresa(int mes, boolean agruparPorArea, Long[] empresaIds, Long[] estabelecimentoIds, Long[] areaIds) throws Exception;
 	public Collection<Colaborador> findColaboradoresQueNuncaRealizaramTreinamento(Long[] empresasIds, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds) throws Exception;
+	public Collection<Colaborador> findByAdmitidos(Date data);
 }

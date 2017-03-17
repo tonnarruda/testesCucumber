@@ -53,6 +53,7 @@ import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.MovimentacaoAC;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
@@ -585,9 +586,9 @@ public class RHServiceImpl implements RHService
 		
 		try{
 			verifyToken(token, true);
-			verifyAndUpdateColaborador(empregado);
-			verifyAndUpdateHistoricoColaborador(situacao);
-			
+			Colaborador colaborador = verifyAndUpdateColaborador(empregado);
+			verifyAndUpdateHistoricoColaborador(situacao, colaborador);
+				
 			transactionManager.commit(status);
 			return new FeedbackWebService(true);
 		}catch (TokenException e) {
@@ -601,22 +602,27 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	private void verifyAndUpdateHistoricoColaborador(TSituacao situacao) throws Exception {
+	private void verifyAndUpdateHistoricoColaborador(TSituacao situacao, Colaborador colaborador) throws Exception {
 		try	{
 			HistoricoColaborador historicoColaborador = historicoColaboradorManager.updateSituacao(situacao);
 			
-			if (historicoColaborador.getMotivo().equals(MotivoHistoricoColaborador.CONTRATADO)) 
+			if (historicoColaborador.getMotivo().equals(MotivoHistoricoColaborador.CONTRATADO)){ 
 				colaboradorManager.criarUsuarioParaColaborador(historicoColaborador.getColaborador(), historicoColaborador.getColaborador().getEmpresa());
+				if(historicoColaborador.getStatusAnterior() == StatusRetornoAC.AGUARDANDO)
+					gerenciadorComunicacaoManager.enviaEmailBoasVindasColaborador(colaborador);
+			}
 		}catch (Exception e){
 			e.printStackTrace();
 			throw new Exception("Erro ao atualizar situação do colaborador.");
 		}
 	}
 
-	private void verifyAndUpdateColaborador(TEmpregado empregado) throws Exception {
+	private Colaborador verifyAndUpdateColaborador(TEmpregado empregado) throws Exception {
 		Colaborador colaborador = colaboradorManager.updateEmpregado(empregado);
 		if(colaborador == null)
 			throw new Exception("Empregado não encontrado.");
+		
+		return colaborador;
 	}
 	
 	public FeedbackWebService cancelarContratacao(String token, TEmpregado empregado, TSituacao situacao,  String mensagem){

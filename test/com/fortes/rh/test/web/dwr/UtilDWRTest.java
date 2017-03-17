@@ -2,22 +2,35 @@ package com.fortes.rh.test.web.dwr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.rmi.RemoteException;
 
+import javax.servlet.http.HttpSession;
 import javax.xml.rpc.ServiceException;
+
+import mockit.Mockit;
 
 import org.apache.axis.client.Service;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.ltd.getahead.dwr.WebContext;
+import uk.ltd.getahead.dwr.WebContextFactory;
+
+import com.fortes.rh.business.geral.CartaoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.model.dicionario.TipoCartao;
+import com.fortes.rh.model.geral.Cartao;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.captacao.CartaoFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.web.dwr.UtilDWR;
 import com.fortes.rh.web.ws.AcPessoalClient;
@@ -31,6 +44,7 @@ public class UtilDWRTest
 	Service service;
 	Mail mail;
 	ParametrosDoSistemaManager parametrosDoSistemaManager;
+	CartaoManager cartaoManager;
 
 	@Before
 	public void setUp() throws Exception
@@ -42,11 +56,15 @@ public class UtilDWRTest
 		service = mock(Service.class);
 		mail = mock(Mail.class);
 		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
-
+		cartaoManager = mock(CartaoManager.class);
+		
 		utilDWR.setAcPessoalClient(acPessoalClient);
 		utilDWR.setGrupoACManager(grupoACManager);
 		utilDWR.setMail(mail);
 		utilDWR.setParametrosDoSistemaManager(parametrosDoSistemaManager);
+		utilDWR.setCartaoManager(cartaoManager);
+		
+		//Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
 
 	@Test
@@ -92,5 +110,15 @@ public class UtilDWRTest
 		String retorno = utilDWR.findUltimaVersaoPortal();
 		
 		assertTrue(retorno.contains("{\"sucesso\":\"1\", \"versao\":"));
+	}
+	
+	@Test
+	public void testEnviaEmailCartaoBoasVindasException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		when(cartaoManager.findByEmpresaIdAndTipo(empresa.getId(), TipoCartao.BOAS_VINDAS)).thenReturn(null);
+		
+		String retorno = utilDWR.enviaEmailCartaoBoasVindas("email", empresa.getId(), empresa.getNome(), empresa.getEmailRemetente());
+		assertEquals("Erro desconhecido, entre em contato com o suporte.",retorno);
 	}
 }

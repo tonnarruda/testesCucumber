@@ -9,12 +9,16 @@ import javax.mail.AuthenticationFailedException;
 
 import uk.ltd.getahead.dwr.WebContextFactory;
 
+import com.fortes.rh.business.geral.CartaoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.model.dicionario.TipoCartao;
+import com.fortes.rh.model.geral.Cartao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClient;
@@ -25,6 +29,9 @@ public class UtilDWR
 	private AcPessoalClient acPessoalClient;
 	private GrupoACManager grupoACManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private CartaoManager cartaoManager;
+	
+	private static String ENVIADO = "Email enviado com sucesso.";
 
 	public String getToken(String grupoAC)
 	{ 
@@ -68,8 +75,39 @@ public class UtilDWR
 				throw e;
 		}
 
-		return "Email enviado com sucesso.";
+		return ENVIADO;
 	}
+
+	public String enviaEmailCartaoBoasVindas(String email, Long empresaId, String empresaNome, String empresaEmailRemetente) throws Exception
+	{
+		try {
+			//Testa se o envio de email esta funcionando
+			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+			String msgRetorno = enviaEmail("teste@xteste.com", parametrosDoSistema.isAutenticacao(), parametrosDoSistema.isTls());
+			if(!msgRetorno.equals(ENVIADO))
+				return msgRetorno;
+			//*
+			
+			if(empresaEmailRemetente == null)
+				empresaEmailRemetente = "teste@teste.com.br";
+			
+			Empresa empresa = new Empresa();
+			empresa.setId(empresaId);
+			empresa.setEmailRemetente(empresaEmailRemetente);
+			empresa.setNome(empresaNome);
+			
+			Cartao cartao = cartaoManager.findByEmpresaIdAndTipo(empresa.getId(), TipoCartao.BOAS_VINDAS);
+			mail.sendImg(empresa, "Seja bem vindo a empresa " + empresa.getNome(), cartao.getMensagem().replace("#NOMECOLABORADOR#", "'Nome do Colaborador'"), ArquivoUtil.getPathBackGroundCartao(cartao.getImgUrl()), email);
+		} catch (Exception e) {
+			e.printStackTrace();
+			if(e.getMessage() == null)
+				return "Erro desconhecido, entre em contato com o suporte.";
+			else
+				throw e;
+		}
+
+		return "Email enviado com sucesso.</br> Verifique no email " + email + " se o teste de aviso de boas-vindas chegou.";
+	}	
 	
 	public String findUltimaVersaoPortal()
 	{
@@ -144,5 +182,9 @@ public class UtilDWR
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) 
 	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void setCartaoManager(CartaoManager cartaoManager) {
+		this.cartaoManager = cartaoManager;
 	}
 }

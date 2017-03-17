@@ -1,5 +1,6 @@
 package com.fortes.rh.util;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,20 +32,23 @@ public class MailSendRunnable implements Runnable {
 	String from;
 	String subject;
 	String body;
+	String urlImg;
 	DataSource[] attachedFiles;
 	String[] to;
+	static String CID = "imgRH123";
 	
 	private JavaMailSenderImpl mailSender;
 	private SimpleMailMessage message;
 	
 	public MailSendRunnable(){}
 	
-	public MailSendRunnable(ParametrosDoSistema parametros, String from, String subject, String body, DataSource[] attachedFiles, String... to)
+	public MailSendRunnable(ParametrosDoSistema parametros, String from, String subject, String body, DataSource[] attachedFiles, String urlImg, String... to)
 	{
 		this.parametros= parametros;
 		this.from= from;
 		this.subject = subject;
 		this.body = body;
+		this.urlImg = urlImg;
 		this.attachedFiles = attachedFiles;
 		this.to = to;
 	}
@@ -59,7 +63,7 @@ public class MailSendRunnable implements Runnable {
 	
     public void executar() throws Exception, MessagingException 
     {
-		Message msg = prepareMessage(from, parametros, subject, body, attachedFiles,  parametros.isAutenticacao(), parametros.isTls());
+		Message msg = prepareMessage(from, parametros, subject, body, attachedFiles,  parametros.isAutenticacao(), parametros.isTls(), urlImg);
 
 		List<String> emails = new ArrayList<String>();
 
@@ -80,11 +84,11 @@ public class MailSendRunnable implements Runnable {
     }
 
 	@SuppressWarnings("deprecation")
-	public Message prepareMessage(String from, ParametrosDoSistema params, String subject, String body, DataSource[] attachedFiles, Boolean autenticacao, Boolean tls) throws MessagingException, AddressException, UnsupportedEncodingException
+	public Message prepareMessage(String from, ParametrosDoSistema params, String subject, String body, DataSource[] attachedFiles, Boolean autenticacao, Boolean tls, String urlImg) throws MessagingException, AddressException, UnsupportedEncodingException
 	{
 		Session session;
 
-		BodyMessage bodyMessage = new BodyMessage(body);
+		BodyMessage bodyMessage = new BodyMessage(body, urlImg != null);
 
 		message = (SimpleMailMessage) SpringUtil.getBeanOld("mailMessage");
 		mailSender = (JavaMailSenderImpl) SpringUtil.getBeanOld("mailSender");
@@ -127,6 +131,19 @@ public class MailSendRunnable implements Runnable {
 
         mimesContainer.addBodyPart(text);
 
+        if(urlImg != null){
+        	try {
+        	MimeBodyPart imagePart = new MimeBodyPart();
+				imagePart.attachFile(urlImg);
+				imagePart.setContentID("<" + CID + ">");
+				imagePart.setDisposition(MimeBodyPart.INLINE);
+				mimesContainer.addBodyPart(imagePart);
+			} catch (IOException e) {
+				System.out.println("Imagem não pode ser anexada no email pois o mesmo não existe");
+				e.printStackTrace();
+			}
+        }
+        
         if (attachedFiles != null)
         {
 	    	for (DataSource file : attachedFiles)
@@ -149,9 +166,11 @@ public class MailSendRunnable implements Runnable {
 		private final String footer = initFooter();
 		private String content;
 
-		BodyMessage(String content)
+		BodyMessage(String content, boolean adicionarImgBody)
 		{
 			this.content = content;
+			if(adicionarImgBody)
+				this.content += "<div style='width:550px; margin:30px 0px'><img alt='Smiley face' width='550' align='middle' src=\"cid:" + CID + "\" /></div>";
 		}
 
 		private String initHeader()
