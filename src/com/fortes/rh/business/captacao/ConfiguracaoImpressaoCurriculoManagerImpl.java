@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoImpressaoCurriculoDao;
 import com.fortes.rh.model.captacao.ConfiguracaoImpressaoCurriculo;
 

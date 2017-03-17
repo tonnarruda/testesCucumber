@@ -123,5 +123,4 @@ public class MensagemManagerImpl extends GenericManagerImpl<Mensagem, MensagemDa
 	public void removerMensagensViculadasByColaborador(Long[] colaboradoresIds) {
 		getDao().removerMensagensViculadasByColaborador(colaboradoresIds);
 	}
-	
 }

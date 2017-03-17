@@ -22,10 +22,10 @@ import com.fortes.rh.util.LongUtil;
 @Component
 public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericManagerImpl<QuantidadeLimiteColaboradoresPorCargo, QuantidadeLimiteColaboradoresPorCargoDao> implements QuantidadeLimiteColaboradoresPorCargoManager
 {
-	private ColaboradorManager colaboradorManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager;
 	
 	@Autowired
 	QuantidadeLimiteColaboradoresPorCargoManagerImpl(QuantidadeLimiteColaboradoresPorCargoDao dao) {
@@ -108,18 +108,6 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 		}
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Collection<QuantidadeLimiteColaboradoresPorCargo> findByEmpresa(Long empresaId) throws Exception 
 	{
 		Collection<ConfiguracaoLimiteColaborador> configuracaos = configuracaoLimiteColaboradorManager.findAllSelect(empresaId);
@@ -154,9 +142,5 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 		}
 		
 		return limites;
-	}
-
-	public void setConfiguracaoLimiteColaboradorManager(ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager) {
-		this.configuracaoLimiteColaboradorManager = configuracaoLimiteColaboradorManager;
 	}
 }

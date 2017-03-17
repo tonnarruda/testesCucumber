@@ -15,7 +15,7 @@ import com.fortes.web.tags.CheckBox;
 @Component
 public class GrupoOcupacionalManagerImpl extends GenericManagerImpl<GrupoOcupacional, GrupoOcupacionalDao> implements GrupoOcupacionalManager
 {
-	private CargoManager cargoManager;
+	@Autowired private CargoManager cargoManager;
 	
 	@Autowired
 	GrupoOcupacionalManagerImpl(GrupoOcupacionalDao dao) {
@@ -66,10 +66,5 @@ public class GrupoOcupacionalManagerImpl extends GenericManagerImpl<GrupoOcupaci
 	public Collection<GrupoOcupacional> findByEmpresasIds(Long... empresaIds) 
 	{
 		return getDao().findByEmpresasIds(empresaIds);
-	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
 	}
 }

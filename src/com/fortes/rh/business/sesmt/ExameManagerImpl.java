@@ -27,7 +27,7 @@ import com.fortes.web.tags.CheckBox;
 @Component
 public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implements ExameManager
 {
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	Map<String,Object> parametros = new HashMap<String, Object>();
 	
 	@Autowired
@@ -181,9 +181,4 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	{
 		return getDao().find(page, pagingSize, empresaId, exame);
 	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-	
 }

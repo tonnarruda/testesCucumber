@@ -27,7 +27,7 @@ import com.fortes.rh.util.LongUtil;
 @Component
 public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements CatManager
 {
-	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	@Autowired
 	CatManagerImpl(CatDao fooDao) {
@@ -179,9 +179,5 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 			else
 				cat.setFotoUrl(null);
 		}
-	}
-	
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

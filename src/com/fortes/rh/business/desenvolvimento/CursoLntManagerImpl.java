@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.CursoLntDao;
 import com.fortes.rh.model.desenvolvimento.CursoLnt;
@@ -12,11 +15,16 @@ import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.model.desenvolvimento.ParticipanteCursoLnt;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class CursoLntManagerImpl extends GenericManagerImpl<CursoLnt, CursoLntDao> implements CursoLntManager
 {
-	private ParticipanteCursoLntManager participanteCursoLntManager;
+	@Autowired private ParticipanteCursoLntManager participanteCursoLntManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired
+	public CursoLntManagerImpl(CursoLntDao cursoLntDao) {
+		setDao(cursoLntDao);
+	}
 	
 	public Collection<CursoLnt> findByLntId(Long lntId) {
 		return getDao().findByLntId(lntId);
@@ -96,8 +104,6 @@ public class CursoLntManagerImpl extends GenericManagerImpl<CursoLnt, CursoLntDa
 
 	private void participantesASeremRemovidos(String[] participantesRemovidos, Map<Long, Collection<Long>> mapParticipantesCursoLntRemovidos) {
 		if (participantesRemovidos != null && participantesRemovidos.length > 0){
-			ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
-			
 			Collection<Long> participantesCollection = new ArrayList<Long>();
 			for(Collection<Long> participantesCursoLntCollection : mapParticipantesCursoLntRemovidos.values())
 				participantesCollection.addAll(participantesCursoLntCollection);
@@ -138,10 +144,6 @@ public class CursoLntManagerImpl extends GenericManagerImpl<CursoLnt, CursoLntDa
 	
 	public void removeCursoId(Long cursoId) {
 		getDao().removeCursoId(cursoId);
-	}
-	
-	public void setParticipanteCursoLntManager(ParticipanteCursoLntManager participanteCursoLntManager) {
-		this.participanteCursoLntManager = participanteCursoLntManager;
 	}
 
 	public ParticipanteCursoLntManager getParticipanteCursoLntManager() {

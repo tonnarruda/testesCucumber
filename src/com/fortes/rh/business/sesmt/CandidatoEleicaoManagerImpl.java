@@ -27,10 +27,10 @@ import com.fortes.rh.util.LongUtil;
 @Component
 public class CandidatoEleicaoManagerImpl extends GenericManagerImpl<CandidatoEleicao, CandidatoEleicaoDao> implements CandidatoEleicaoManager
 {
-	private PlatformTransactionManager transactionManager;
-	private ColaboradorManager colaboradorManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EleicaoManager eleicaoManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EleicaoManager eleicaoManager;
 	
 	@Autowired
 	CandidatoEleicaoManagerImpl(CandidatoEleicaoDao fooDao) {
@@ -79,11 +79,6 @@ public class CandidatoEleicaoManagerImpl extends GenericManagerImpl<CandidatoEle
 		}
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
 	public Collection<CandidatoEleicao> getColaboradoresByEleicao(Long eleicaoId, Long empresaId) throws Exception
 	{
 		Collection<CandidatoEleicao> candidatoEleicaos = findByEleicao(eleicaoId);
@@ -116,16 +111,6 @@ public class CandidatoEleicaoManagerImpl extends GenericManagerImpl<CandidatoEle
 		}
 		
 		return candidatoEleicaos;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	/**
@@ -186,11 +171,6 @@ public class CandidatoEleicaoManagerImpl extends GenericManagerImpl<CandidatoEle
 			if(eleitosIds != null)
 				getDao().setEleito(true, LongUtil.arrayStringToArrayLong(eleitosIds));
 		}
-	}
-
-	public void setEleicaoManager(EleicaoManager eleicaoManager)
-	{
-		this.eleicaoManager = eleicaoManager;
 	}
 
 	public Collection<LinhaCedulaEleitoralRelatorio> montaCedulas(Collection<CandidatoEleicao> candidatoEleicaos) throws Exception

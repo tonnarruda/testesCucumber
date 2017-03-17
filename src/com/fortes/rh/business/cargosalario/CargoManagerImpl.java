@@ -46,25 +46,28 @@ import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientCargo;
 import com.fortes.web.tags.CheckBox;
 
 @Component
 public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implements CargoManager
 {
-	private AcPessoalClientCargo acPessoalClientCargo;
-	private EmpresaManager empresaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private AreaFormacaoManager areaFormacaoManager;
-	private ConhecimentoManager conhecimentoManager;
-	private HabilidadeManager habilidadeManager;
-	private AtitudeManager atitudeManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private EtapaSeletivaManager etapaSeletivaManager;
-	private ExperienciaManager experienciaManager;
-	private PlatformTransactionManager transactionManager;
-	private CodigoCBOManager codigoCBOManager;
+	@Autowired private AcPessoalClientCargo acPessoalClientCargo;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private AreaFormacaoManager areaFormacaoManager;
+	@Autowired private ConhecimentoManager conhecimentoManager;
+	@Autowired private HabilidadeManager habilidadeManager;
+	@Autowired private AtitudeManager atitudeManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private EtapaSeletivaManager etapaSeletivaManager;
+	@Autowired private ExperienciaManager experienciaManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private CodigoCBOManager codigoCBOManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private GrupoOcupacionalManager grupoOcupacionalManager;
 	
 	@Autowired
 	CargoManagerImpl(CargoDao dao) {
@@ -112,8 +115,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 
 	public Collection<Cargo> getCargosByIds(Long[] cargoIds, Long empresaId) throws Exception
 	{
-		FaixaSalarialManager faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
-		
 		Collection<Cargo> cargos = getDao().findCargosByIds(cargoIds, empresaId);
 		
 		for (Cargo cargo : cargos)
@@ -263,7 +264,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	
 	private Collection<FaixaSalarial> removeFaixasSalariais(Long cargoId) throws Exception
 	{
-		FaixaSalarialManager faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
 		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findFaixaSalarialByCargo(cargoId);
 
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
@@ -275,16 +275,13 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 
 	private void removeDependencias(Long cargoId)
 	{
-		FuncaoManager funcaoManager = (FuncaoManager) SpringUtil.getBean("funcaoManager");
 		funcaoManager.removeFuncaoAndHistoricosByCargo(cargoId);
 		
 		Cargo cargo = findByIdProjection(cargoId);
 		experienciaManager.desvinculaCargo(cargo.getId(), cargo.getNomeMercado());
 		
-		QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager = (QuantidadeLimiteColaboradoresPorCargoManager) SpringUtil.getBean("quantidadeLimiteColaboradoresPorCargoManager");
 		quantidadeLimiteColaboradoresPorCargoManager.deleteByCargo(cargoId);
 		
-		CandidatoManager candidatoManager = (CandidatoManager) SpringUtil.getBean("candidatoManager");
 		candidatoManager.deleteCargosPretendidos(cargoId);
 	}
 
@@ -323,7 +320,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 
 	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds, List<String> mensagens)
 	{
-		faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
 		Collection<Cargo> cargos = getDao().findSincronizarCargos(empresaOrigemId);
 		Map<Long, GrupoOcupacional> novosGruposOcupacionais = new HashMap<Long, GrupoOcupacional>();
 		
@@ -385,7 +381,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 
 	private GrupoOcupacional clonarGrupoOcupacional(GrupoOcupacional grupoOcupacional, Long empresaDestinoId) 
 	{
-		GrupoOcupacionalManager grupoOcupacionalManager = (GrupoOcupacionalManager) SpringUtil.getBean("grupoOcupacionalManager");
 		GrupoOcupacional grupoOcupacionalDestino = new GrupoOcupacional();
 		
 		grupoOcupacionalDestino.setNome(grupoOcupacional.getNome());
@@ -568,60 +563,5 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	public void insereAreaRelacionada(Long areaMaeId, Long areaId) 
 	{
 		getDao().insereAreaRelacionada(areaMaeId, areaId);
-	}
-	
-	public void setHabilidadeManager(HabilidadeManager habilidadeManager) 
-	{
-		this.habilidadeManager = habilidadeManager;
-	}
-	
-	public void setAtitudeManager(AtitudeManager atitudeManager) 
-	{
-		this.atitudeManager = atitudeManager;
-	}
-	
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) 
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-	
-	public void setAreaFormacaoManager(AreaFormacaoManager areaFormacaoManager) 
-	{
-		this.areaFormacaoManager = areaFormacaoManager;
-	}
-	
-	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager) 
-	{
-		this.conhecimentoManager = conhecimentoManager;
-	}
-	
-	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager)
-	{
-		this.etapaSeletivaManager = etapaSeletivaManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
-	public void setAcPessoalClientCargo(AcPessoalClientCargo acPessoalClientCargo)
-	{
-		this.acPessoalClientCargo = acPessoalClientCargo;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
-	public void setExperienciaManager(ExperienciaManager experienciaManager)
-	{
-		this.experienciaManager = experienciaManager;
-	}
-
-	public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) 
-	{
-		this.codigoCBOManager = codigoCBOManager;
 	}
 }

@@ -35,9 +35,9 @@ import com.fortes.rh.util.LongUtil;
 @Component
 public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<ColaboradorQuestionario, ColaboradorQuestionarioDao> implements ColaboradorQuestionarioManager
 {
-	private PerguntaManager perguntaManager;
-	private ColaboradorManager colaboradorManager;
-	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
 	
 	@Autowired
 	ColaboradorQuestionarioManagerImpl(ColaboradorQuestionarioDao colaboradorQuestionarioDao) {
@@ -259,11 +259,6 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return colaboradorRespostas;
 	}
 
-	public void setPerguntaManager(PerguntaManager perguntaManager)
-	{
-		this.perguntaManager = perguntaManager;
-	}
-
 	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId)
 	{
 		return getDao().findAvaliacaoByColaborador(colaboradorId);
@@ -316,10 +311,6 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	public Collection<ColaboradorQuestionario> findByColaboradorAndAvaliacaoDesempenho(Long colaboradorId, Long avaliacaoDesempenhoId, boolean isAvaliado, boolean desconsiderarAutoAvaliacao)
 	{
 		return getDao().findByColaboradorAndAvaliacaoDesempenho(colaboradorId, avaliacaoDesempenhoId, isAvaliado, false);
-	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
 	}
 
 	public Collection<ColaboradorQuestionario> associarParticipantes(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores) throws Exception
@@ -520,10 +511,6 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		}
 		
 		return false;
-	}
-
-	public void setParticipanteAvaliacaoDesempenhoManager( ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager) {
-		this.participanteAvaliacaoDesempenhoManager = participanteAvaliacaoDesempenhoManager;
 	}
 
 	public boolean existeColaboradorQuestionarioRespondidoParcialmente(Long avaliacaoDesepenhoId, Long avaliadorId) {

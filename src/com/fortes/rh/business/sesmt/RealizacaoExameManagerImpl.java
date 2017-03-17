@@ -23,7 +23,7 @@ import com.fortes.rh.model.sesmt.relatorio.ExameAnualRelatorio;
 @Component
 public class RealizacaoExameManagerImpl extends GenericManagerImpl<RealizacaoExame, RealizacaoExameDao> implements RealizacaoExameManager
 {
-	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
+	@Autowired private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
 	
 	@Autowired
 	RealizacaoExameManagerImpl(RealizacaoExameDao realizacaoExameDao) {
@@ -153,11 +153,6 @@ public class RealizacaoExameManagerImpl extends GenericManagerImpl<RealizacaoExa
 	{
 		if (!realizacaoExameIds.isEmpty())
 			getDao().marcarResultadoComoNormal(realizacaoExameIds);
-	}
-
-	public void setExameSolicitacaoExameManager(ExameSolicitacaoExameManager exameSolicitacaoExameManager)
-	{
-		this.exameSolicitacaoExameManager = exameSolicitacaoExameManager;
 	}
 
 	public Collection<Long> findIdsBySolicitacaoExame(long solicitacaoExameId)

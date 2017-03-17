@@ -50,16 +50,16 @@ import com.fortes.rh.util.ConverterUtil;
 @Component
 public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<ColaboradorResposta, ColaboradorRespostaDao> implements ColaboradorRespostaManager
 {
-    private PlatformTransactionManager transactionManager;
-    private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-    private HistoricoColaboradorManager historicoColaboradorManager;
-    private QuestionarioManager questionarioManager;
-    private ColaboradorManager colaboradorManager;
-    private CandidatoManager candidatoManager; // usado na auditoria
-    private AvaliacaoManager avaliacaoManager;
-    private UsuarioManager usuarioManager ;
-    private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
-    private NivelCompetenciaManager nivelCompetenciaManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private QuestionarioManager questionarioManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CandidatoManager candidatoManager; // usado na auditoria
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private UsuarioManager usuarioManager ;
+	@Autowired private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
+	@Autowired private NivelCompetenciaManager nivelCompetenciaManager;
     
     @Autowired
     ColaboradorRespostaManagerImpl(ColaboradorRespostaDao colaboradorRespostaDao) {
@@ -334,16 +334,6 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	{
 		return this.colaboradorQuestionarioManager;
 	}
-
-    public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-    {
-        this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-    }
-
-    public void setTransactionManager(PlatformTransactionManager transactionManager)
-    {
-        this.transactionManager = transactionManager;
-    }
 
 	public Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId, Long colaboradorQuestionarioId)
 	{
@@ -692,24 +682,9 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		return getDao().verificaQuantidadeColaboradoresQueResponderamPesquisaAnonima(perguntasIds, estabelecimentosIds, areasIds, cargosIds, questionarioId, quantidadeColaboradoresRelatorioPesquisaAnonima);
 	}
 
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) 
-	{
-		this.avaliacaoManager = avaliacaoManager;
-	}
-
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-	
 	public QuestionarioManager getQuestionarioManager()
 	{
 		return this.questionarioManager;
-	}
-	
-	public void setQuestionarioManager(QuestionarioManager questionarioManager)
-	{
-		this.questionarioManager = questionarioManager;
 	}
 	
 	public ColaboradorManager getColaboradorManager()
@@ -717,31 +692,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		return this.colaboradorManager;
 	}
 	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setUsuarioManager(UsuarioManager usuarioManager)
-	{
-		this.usuarioManager = usuarioManager;
-	}
-
-	public void setNivelCompetenciaManager(NivelCompetenciaManager nivelCompetenciaManager) 
-	{
-		this.nivelCompetenciaManager = nivelCompetenciaManager;
-	}
-
 	public CandidatoManager getCandidatoManager() {
 		return candidatoManager;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager) {
-		this.candidatoManager = candidatoManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(
-			ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
-		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
 	}
 }

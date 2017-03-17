@@ -26,10 +26,10 @@ import com.fortes.web.tags.CheckBox;
 @Component
 public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> implements AnuncioManager
 {
-	private EmpresaManager empresaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private EmpresaBdsManager empresaBdsManager;
-	private Mail mail;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private EmpresaBdsManager empresaBdsManager;
+	@Autowired private Mail mail;
 	
 	@Autowired
 	AnuncioManagerImpl(AnuncioDao anuncioDao) {
@@ -120,25 +120,5 @@ public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> 
 		body.append("<a href='" + parametros.getAppUrl() + "/externo/verAnuncio.action?anuncio.id=" + anuncioId + "' title='Mais informações'>Mais informações</a><br /><br />");
 		
 		mail.send(emailFrom, StringUtil.retiraAcento(subject), body.toString(), emailTo);
-	}
-	
-	public void setEmpresaBdsManager(EmpresaBdsManager empresaBdsManager)
-	{
-		this.empresaBdsManager = empresaBdsManager;
-	}
-
-	public void setMail(Mail mail) 
-	{
-		this.mail = mail;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) 
-	{
-		this.empresaManager = empresaManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) 
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

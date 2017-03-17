@@ -23,7 +23,7 @@ import com.fortes.rh.util.DateUtil;
 @Component
 public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDao> implements DiaTurmaManager
 {
-	private PlatformTransactionManager transactionManager;
+	@Autowired private PlatformTransactionManager transactionManager;
 
 	@Autowired
 	DiaTurmaManagerImpl(DiaTurmaDao dao) {
@@ -116,11 +116,6 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 			transactionManager.rollback(status);
 			throw e;
 		}
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
 	}
 	
 	public void deleteDiasTurma(Long turmaId)

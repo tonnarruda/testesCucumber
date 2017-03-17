@@ -38,7 +38,6 @@ import com.fortes.rh.model.sesmt.relatorio.QtdPorFuncaoRelatorio;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 import com.ibm.icu.util.Calendar;
 
@@ -46,15 +45,16 @@ import com.ibm.icu.util.Calendar;
 @SuppressWarnings("unchecked")
 public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> implements FuncaoManager
 {
-	private ColaboradorManager colaboradorManager;
-	private CatManager catManager;
-	private RiscoMedicaoRiscoManager  riscoMedicaoRiscoManager;
-	private EpiManager epiManager;
-	private HistoricoAmbienteManager historicoAmbienteManager;
-	private EngenheiroResponsavelManager engenheiroResponsavelManager;
-	private MedicoCoordenadorManager medicoCoordenadorManager;
-	
-	HistoricoFuncaoManager historicoFuncaoManager = null;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CatManager catManager;
+	@Autowired private RiscoMedicaoRiscoManager  riscoMedicaoRiscoManager;
+	@Autowired private EpiManager epiManager;
+	@Autowired private HistoricoAmbienteManager historicoAmbienteManager;
+	@Autowired private EngenheiroResponsavelManager engenheiroResponsavelManager;
+	@Autowired private MedicoCoordenadorManager medicoCoordenadorManager;
+	@Autowired private HistoricoFuncaoManager historicoFuncaoManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private RiscoFuncaoManager riscoFuncaoManager;
 	
 	@Autowired
 	FuncaoManagerImpl(FuncaoDao funcaoDao) {
@@ -64,8 +64,6 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 	// TODO refatorar esse código, não devia estar nesse manager
 	public Collection<PppRelatorio> populaRelatorioPpp(Colaborador colaborador, Empresa empresa, Date data, String nit, String cnae, String responsavel, String observacoes, String[] respostas) throws Exception
 	{
-		HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBean("historicoColaboradorManager"); 
-		historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
 		Collection<HistoricoColaborador> historicosDoColaboradors = historicoColaboradorManager.findByColaboradorData(colaborador.getId(),data);
 		
 		if(historicosDoColaboradors == null || historicosDoColaboradors.isEmpty())
@@ -367,8 +365,6 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 
 		if(funcaos.size() > 0)
 		{
-			HistoricoFuncaoManager historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
-
 			CollectionUtil<Funcao> funcaoUtil = new CollectionUtil<Funcao>();
 			Long[] funcaoIds = funcaoUtil.convertCollectionToArrayIds(funcaos);
 			historicoFuncaoManager.removeByFuncoes(funcaoIds);
@@ -378,10 +374,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 	
 	public void removeFuncao(Funcao funcao)
 	{
-		RiscoFuncaoManager riscoFuncaoManager = (RiscoFuncaoManager) SpringUtil.getBean("riscoFuncaoManager");
 		riscoFuncaoManager.removeByFuncao(funcao.getId());
-		
-		HistoricoFuncaoManager historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
 		Collection<HistoricoFuncao> historicoFuncaos = historicoFuncaoManager.findByFuncao(funcao.getId());
 		for (HistoricoFuncao historicoFuncao : historicoFuncaos)
 			historicoFuncaoManager.remove(historicoFuncao.getId());
@@ -451,36 +444,6 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		}
 
 		return new ArrayList<CheckBox>();
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setCatManager(CatManager catManager) {
-		this.catManager = catManager;
-	}
-
-	public void setHistoricoAmbienteManager(
-			HistoricoAmbienteManager historicoAmbienteManager) {
-		this.historicoAmbienteManager = historicoAmbienteManager;
-	}
-
-	public void setRiscoMedicaoRiscoManager(
-			RiscoMedicaoRiscoManager riscoMedicaoRiscoManager) {
-		this.riscoMedicaoRiscoManager = riscoMedicaoRiscoManager;
-	}
-
-	public void setEpiManager(EpiManager epiManager) {
-		this.epiManager = epiManager;
-	}
-
-	public void setEngenheiroResponsavelManager(EngenheiroResponsavelManager engenheiroResponsavelManager) {
-		this.engenheiroResponsavelManager = engenheiroResponsavelManager;
-	}
-
-	public void setMedicoCoordenadorManager(MedicoCoordenadorManager medicoCoordenadorManager) {
-		this.medicoCoordenadorManager = medicoCoordenadorManager;
 	}
 
 	public Collection<Long> findFuncaoAtualDosColaboradores(Date data, Long estabelecimentoId)

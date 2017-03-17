@@ -3,8 +3,8 @@ package com.fortes.rh.business.desenvolvimento;
 import java.util.Collection;
 import java.util.Date;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -16,14 +16,14 @@ import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
 import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<AproveitamentoAvaliacaoCurso, AproveitamentoAvaliacaoCursoDao> implements AproveitamentoAvaliacaoCursoManager
 {
-	private PlatformTransactionManager transactionManager;
-	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
-	private CertificacaoManager certificacaoManager;
+	@Autowired private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private CertificacaoManager certificacaoManager;
 	
 	@Autowired
 	AproveitamentoAvaliacaoCursoManagerImpl(AproveitamentoAvaliacaoCursoDao dao) {
@@ -36,8 +36,6 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
 		try{
-			ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
-			
 			for (String colabTurmaId_nota : colabTurmaId_notas)	{
 				String colaboradorTurmaId = colabTurmaId_nota.split("_")[0];
 				
@@ -93,11 +91,6 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 		 return getDao().findNotas(avaliacaoId, colaboradoresTurmaIds);
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
 	public Collection<Long> find(Long id, int qtdAvaliacao, String wherePor, Boolean aprovado)
 	{
 		return getDao().find(id, qtdAvaliacao, wherePor, aprovado);
@@ -140,7 +133,6 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 
 	public void saveNotas(ColaboradorTurma colaboradorTurma, String[] notas, Long[] avaliacaoCursoIds, boolean controlaVencimentoPorCertificacao)
 	{
-		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
 		for (int i = 0; i < notas.length; i++)
 		{
 			if(!notas[i].equals(""))
@@ -165,14 +157,5 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 	public Collection<AproveitamentoAvaliacaoCurso> findByColaboradorCurso(Long colaboradorId, Long cursoId) 
 	{
 		return getDao().findByColaboradorCurso(colaboradorId, cursoId);
-	}
-
-	public void setColaboradorCertificacaoManager(
-			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
-	}
-
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager) {
-		this.certificacaoManager = certificacaoManager;
 	}
 }

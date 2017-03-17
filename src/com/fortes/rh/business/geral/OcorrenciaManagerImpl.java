@@ -14,13 +14,13 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.ws.TOcorrencia;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientOcorrencia;
 
 @Component
 public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, OcorrenciaDao> implements OcorrenciaManager
 {
-	private AcPessoalClientOcorrencia acPessoalClientOcorrencia;
+	@Autowired private AcPessoalClientOcorrencia acPessoalClientOcorrencia;
+	@Autowired private EmpresaManager empresaManager;
 	
 	@Autowired
 	OcorrenciaManagerImpl(OcorrenciaDao dao) {
@@ -100,7 +100,6 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 	{
 		Collection<Ocorrencia> ocorrenciaInteresseDeOrigem = getDao().findSincronizarOcorrenciaInteresse(empresaOrigemId);
 
-		EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBean("empresaManager");
 		Empresa empresaOrigem = empresaManager.findByIdProjection(empresaOrigemId);
 		
 		if(!empresaOrigem.isAcIntegra() && empresaDestino.isAcIntegra())
@@ -139,11 +138,6 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 	public Ocorrencia findByCodigoAC(String codigo, String codigoEmpresa, String grupoAC)
 	{
 		return getDao().findByCodigoAC(codigo, codigoEmpresa, grupoAC);
-	}
-
-	public void setAcPessoalClientOcorrencia(AcPessoalClientOcorrencia acPessoalClientOcorrencia)
-	{
-		this.acPessoalClientOcorrencia = acPessoalClientOcorrencia;
 	}
 	
 	private void clonar(Ocorrencia ocorrenciaInteresse, Long empresaDestinoId) {

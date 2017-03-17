@@ -34,15 +34,15 @@ import com.fortes.rh.web.ws.AcPessoalClientTabelaReajusteInterface;
 @Component
 public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<TabelaReajusteColaborador, TabelaReajusteColaboradorDao> implements TabelaReajusteColaboradorManager
 {
-	private ReajusteColaboradorManager reajusteColaboradorManager;
-	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
-	private ReajusteIndiceManager reajusteIndiceManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
-	private IndiceHistoricoManager indiceHistoricoManager;
-	private AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste;
-	private ColaboradorManager colaboradorManager;
-	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
+	@Autowired private ReajusteColaboradorManager reajusteColaboradorManager;
+	@Autowired private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
+	@Autowired private ReajusteIndiceManager reajusteIndiceManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
+	@Autowired private IndiceHistoricoManager indiceHistoricoManager;
+	@Autowired private AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 
 	//private final Boolean APROVADA = true;  - Descomentar se for necessário criar o método para encontrar tabelas aprovadas.
 	private final Boolean NAO_APROVADA = false;
@@ -352,16 +352,6 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		}
 	}
 
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-	
-	public void setReajusteColaboradorManager(	ReajusteColaboradorManager reajusteColaboradorManager) 
-	{
-		this.reajusteColaboradorManager = reajusteColaboradorManager;
-	}
-
 	public Integer getCount(Long empresaId)
 	{
 		return getDao().getCount(empresaId);
@@ -375,40 +365,5 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	public TabelaReajusteColaborador findByIdProjection(Long tabelaReajusteColaboradorId)
 	{
 		return getDao().findByIdProjection(tabelaReajusteColaboradorId);
-	}
-
-	public void setAcPessoalClientTabelaReajuste(AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste)
-	{
-		this.acPessoalClientTabelaReajuste = acPessoalClientTabelaReajuste;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) 
-	{
-		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
-	}
-
-	public void setReajusteFaixaSalarialManager(ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) 
-	{
-		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
-	}
-
-	public void setFaixaSalarialHistoricoManager(FaixaSalarialHistoricoManager faixaSalarialHistoricoManager) 
-	{
-		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
-	}
-
-	public void setReajusteIndiceManager(ReajusteIndiceManager reajusteIndiceManager)
-	{
-		this.reajusteIndiceManager = reajusteIndiceManager;
-	}
-
-	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
-	{
-		this.indiceHistoricoManager = indiceHistoricoManager;
 	}
 }

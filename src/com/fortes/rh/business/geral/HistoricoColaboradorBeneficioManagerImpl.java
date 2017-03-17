@@ -26,19 +26,14 @@ public class HistoricoColaboradorBeneficioManagerImpl extends GenericManagerImpl
 {
 
 	private Collection<HistoricoBeneficio> historicoBeneficios = new ArrayList<HistoricoBeneficio>();
-	private HistoricoBeneficioManager historicoBeneficioManager;
-	private PlatformTransactionManager transactionManager;
+	@Autowired private HistoricoBeneficioManager historicoBeneficioManager;
+	@Autowired private PlatformTransactionManager transactionManager;
 
 	@Autowired
 	HistoricoColaboradorBeneficioManagerImpl(HistoricoColaboradorBeneficioDao dao) {
 		setDao(dao);
 	}
 	
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
 	public List filtroRelatorioByColaborador(LinkedHashMap filtro)
 	{
 		setHistoricoBeneficios(historicoBeneficioManager.getHistoricos());
@@ -159,11 +154,6 @@ public class HistoricoColaboradorBeneficioManagerImpl extends GenericManagerImpl
 		return getDao().getUltimoHistorico(colaboradorId);
 	}
 
-	public void setHistoricoBeneficioManager(HistoricoBeneficioManager historicoBeneficioManager)
-	{
-		this.historicoBeneficioManager = historicoBeneficioManager;
-	}
-
 	public void setHistoricoBeneficios(Collection<HistoricoBeneficio> historicoBeneficios)
 	{
 		this.historicoBeneficios = historicoBeneficios;
@@ -224,5 +214,4 @@ public class HistoricoColaboradorBeneficioManagerImpl extends GenericManagerImpl
 			throw new Exception("Não foi possível deletar este histórico de benefícios.");
 		}
 	}
-
 }

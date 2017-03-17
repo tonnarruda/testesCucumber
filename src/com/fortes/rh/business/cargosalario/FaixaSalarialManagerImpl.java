@@ -29,19 +29,19 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientCargo;
 
 @Component
 @SuppressWarnings("unchecked")
 public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, FaixaSalarialDao> implements FaixaSalarialManager
 {
-	private PlatformTransactionManager transactionManager;
-	private AcPessoalClientCargo acPessoalClientCargo;
-	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
-	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
+	@Autowired private CertificacaoManager certificacaoManager;
+	@Autowired private AcPessoalClientCargo acPessoalClientCargo;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	@Autowired private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 
 	@Autowired
 	FaixaSalarialManagerImpl(FaixaSalarialDao dao) {
@@ -205,11 +205,6 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		return getDao().findCodigoACById(id);
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
 	public Collection<FaixaSalarial> findAllSelectByCargo(Long empresaId)
 	{
 		return getDao().findAllSelectByCargo(empresaId);
@@ -218,21 +213,10 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	public Collection<FaixaSalarial> findDistinctDescricao(Long[] empresaIds){
 		return getDao().findDistinctDescricao(empresaIds);
 	}
-	
-	
-	public void setAcPessoalClientCargo(AcPessoalClientCargo acPessoalClientCargo)
-	{
-		this.acPessoalClientCargo = acPessoalClientCargo;
-	}
 
 	public FaixaSalarial findByFaixaSalarialId(Long faixaSalarialId)
 	{
 		return getDao().findByFaixaSalarialId(faixaSalarialId);
-	}
-
-	public void setFaixaSalarialHistoricoManager(FaixaSalarialHistoricoManager faixaSalarialHistoricoManager)
-	{
-		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
 	}
 
 	public Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo, Long faixaInativaId)
@@ -339,7 +323,6 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	public void deleteFaixaSalarial(Long[] faixaIds) throws Exception {
 		
 		if (faixaIds != null && faixaIds.length > 0) {
-			CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBean("certificacaoManager");
 			faixaSalarialHistoricoManager.deleteByFaixaSalarial(faixaIds);
 			certificacaoManager.deleteByFaixaSalarial(faixaIds);
 			configuracaoNivelCompetenciaColaboradorManager.deleteByFaixaSalarial(faixaIds);
@@ -408,18 +391,5 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	public Collection<FaixaSalarial> findComHistoricoAtualByEmpresa(Long empresaId, boolean semCodigoAC) 
 	{
 		return getDao().findComHistoricoAtualByEmpresa(empresaId, semCodigoAC);
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
-		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager)
-	{
-		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
 	}
 }

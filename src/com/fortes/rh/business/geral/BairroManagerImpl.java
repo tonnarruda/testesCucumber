@@ -17,14 +17,15 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.dao.geral.BairroDao;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 
 @Component
 public class BairroManagerImpl extends GenericManagerImpl<Bairro, BairroDao> implements BairroManager
 {
-	private PlatformTransactionManager transactionManager;
-	private SolicitacaoManager solicitacaoManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CandidatoManager candidatoManager;
 	
 	@Autowired
 	BairroManagerImpl(BairroDao dao) {
@@ -73,9 +74,6 @@ public class BairroManagerImpl extends GenericManagerImpl<Bairro, BairroDao> imp
 			bairro = findByIdProjection(bairro.getId());
 			bairroDestino = findByIdProjection(bairroDestino.getId());
 	
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
-			CandidatoManager candidatoManager = (CandidatoManager) SpringUtil.getBean("candidatoManager");
-			
 			colaboradorManager.migrarBairro(bairro.getNome(), bairroDestino.getNome());
 			candidatoManager.migrarBairro(bairro.getNome(), bairroDestino.getNome());
 			solicitacaoManager.migrarBairro(bairro.getId(), bairroDestino.getId());
@@ -97,22 +95,12 @@ public class BairroManagerImpl extends GenericManagerImpl<Bairro, BairroDao> imp
 		return getDao().findByIdProjection(id);
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
 	public Collection<Bairro> findByCidade(Cidade cidade)
 	{
 		if(cidade != null && cidade.getId() != null)
 			return findAllSelect(cidade.getId());
 		
 		return new ArrayList<Bairro>();
-	}
-
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
-	{
-		this.solicitacaoManager = solicitacaoManager;
 	}
 
 	public String getArrayBairros()

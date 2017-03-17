@@ -14,12 +14,14 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfigHistoricoNivelDao;
 import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 
+@Component
 public class ConfigHistoricoNivelDaoHibernate extends GenericDaoHibernate<ConfigHistoricoNivel> implements ConfigHistoricoNivelDao
 {
 	@SuppressWarnings("unchecked")

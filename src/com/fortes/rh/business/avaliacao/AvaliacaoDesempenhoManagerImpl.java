@@ -51,20 +51,20 @@ import com.fortes.web.tags.CheckBox;
 @Component
 public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<AvaliacaoDesempenho, AvaliacaoDesempenhoDao> implements AvaliacaoDesempenhoManager
 {
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	private PerguntaManager perguntaManager;
-	private RespostaManager respostaManager;
-	private ColaboradorRespostaManager colaboradorRespostaManager;
-	private QuestionarioManager questionarioManager;
-	private AvaliacaoManager avaliacaoManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private ColaboradorManager colaboradorManager;
-	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-	private NivelCompetenciaManager nivelCompetenciaManager;
-	private ConfiguracaoNivelCompetenciaCriterioManager configuracaoNivelCompetenciaCriterioManager;
-	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
-	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private RespostaManager respostaManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private QuestionarioManager questionarioManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private NivelCompetenciaManager nivelCompetenciaManager;
+	@Autowired private ConfiguracaoNivelCompetenciaCriterioManager configuracaoNivelCompetenciaCriterioManager;
+	@Autowired private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	@Autowired private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 	
 	@Autowired
 	AvaliacaoDesempenhoManagerImpl(AvaliacaoDesempenhoDao dao) {
@@ -397,66 +397,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 
 	public boolean isExibiNivelCompetenciaExigido(Long avaliacaoDesempenhoId) {
 		return getDao().isExibiNivelCompetenciaExigido(avaliacaoDesempenhoId)   ;
-	}
-	
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
-		this.avaliacaoManager = avaliacaoManager;
-	}
-	
-	public void setPerguntaManager(PerguntaManager perguntaManager) {
-		this.perguntaManager = perguntaManager;
-	}
-
-	public void setRespostaManager(RespostaManager respostaManager) {
-		this.respostaManager = respostaManager;
-	}
-
-	public void setColaboradorRespostaManager(ColaboradorRespostaManager colaboradorRespostaManager) {
-		this.colaboradorRespostaManager = colaboradorRespostaManager;
-	}
-
-	public void setQuestionarioManager(QuestionarioManager questionarioManager) {
-		this.questionarioManager = questionarioManager;
-	}
-	
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
-	public ColaboradorManager getColaboradorManager() {
-		return colaboradorManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setParticipanteAvaliacaoDesempenhoManager(ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager) {
-		this.participanteAvaliacaoDesempenhoManager = participanteAvaliacaoDesempenhoManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager( ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
-	}
-
-	public void setNivelCompetenciaManager( NivelCompetenciaManager nivelCompetenciaManager) {
-		this.nivelCompetenciaManager = nivelCompetenciaManager;
-	}
-	
-	public void setConfiguracaoNivelCompetenciaCriterioManager( ConfiguracaoNivelCompetenciaCriterioManager configuracaoNivelCompetenciaCriterioManager ) {
-		this.configuracaoNivelCompetenciaCriterioManager = configuracaoNivelCompetenciaCriterioManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
-		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
-		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
 	}
 
 	@Override

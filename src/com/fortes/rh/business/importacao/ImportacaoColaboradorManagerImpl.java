@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -15,16 +16,12 @@ import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 @Component
 public class ImportacaoColaboradorManagerImpl implements ImportacaoColaboradorManager {
 
-	private ColaboradorManager colaboradorManager;
+	@Autowired private ColaboradorManager colaboradorManager;
 
 	private Integer countColaboradoresImportados = 0;
 	private Integer countColaboradoresNaoEncontrados = 0;
 	private Integer countColaboradoresSemCpf = 0;
 	private String cpfsNaoEncontrados = "";
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
 
 	public void importarDadosPessoaisByCpf(File arquivo, Empresa empresa) throws Exception {
 		

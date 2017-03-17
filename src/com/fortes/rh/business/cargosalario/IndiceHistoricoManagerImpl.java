@@ -10,11 +10,13 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class IndiceHistoricoManagerImpl extends GenericManagerImpl<IndiceHistorico, IndiceHistoricoDao> implements IndiceHistoricoManager
 {
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
+	
 	@Autowired
 	IndiceHistoricoManagerImpl(IndiceHistoricoDao dao) {
 		setDao(dao);
@@ -50,15 +52,12 @@ public class IndiceHistoricoManagerImpl extends GenericManagerImpl<IndiceHistori
 		return getDao().findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa(indiceId, data, dataProximoHistorico, dataDesligamento, faixaSalarialId);
 	}
 
-	@SuppressWarnings("deprecation")
 	public boolean remove(Date data, Long indiceId) throws FortesException
 	{
 		if(!existeHistoricoAnteriorDaData(data, indiceId)){
-			HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
 			if(historicoColaboradorManager.existeDependenciaComHistoricoIndice(data, indiceId))
 				throw new FortesException("O histórico deste índice não pode ser excluído, pois existe histórico de colaborador no RH que depende deste valor.");
 
-			FaixaSalarialHistoricoManager faixaSalarialHistoricoManager = (FaixaSalarialHistoricoManager) SpringUtil.getBeanOld("faixaSalarialHistoricoManager");
 			if(faixaSalarialHistoricoManager.existeDependenciaComHistoricoIndice(data, indiceId))
 				throw new FortesException("O histórico deste índice não pode ser excluído, pois existe histórico de faixa salarial no RH que depende deste valor.");
 		}

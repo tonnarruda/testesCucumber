@@ -2,15 +2,19 @@ package com.fortes.rh.business.geral;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.ws.AcPessoalImportadorGastos;
 
+@Component
 public class ImportadorGastosAC
 {
-	private GastoEmpresaManager gastoEmpresaManager;
-	private EmpresaManager empresaManager;
-	private AcPessoalImportadorGastos acPessoalImportadorGastos;
+	@Autowired private GastoEmpresaManager gastoEmpresaManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private AcPessoalImportadorGastos acPessoalImportadorGastos;
 
 	@SuppressWarnings("deprecation")
 	public void execute()
@@ -35,20 +39,5 @@ public class ImportadorGastosAC
 				}
 			}
 		}
-	}
-
-	public void setAcPessoalImportadorGastos(AcPessoalImportadorGastos acPessoalImportadorGastos)
-	{
-		this.acPessoalImportadorGastos = acPessoalImportadorGastos;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
-	public void setGastoEmpresaManager(GastoEmpresaManager gastoEmpresaManager)
-	{
-		this.gastoEmpresaManager = gastoEmpresaManager;
 	}
 }

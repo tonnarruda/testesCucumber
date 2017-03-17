@@ -15,7 +15,7 @@ import com.fortes.rh.model.acesso.Perfil;
 public class PerfilManagerImpl extends GenericManagerImpl<Perfil, PerfilDao> implements PerfilManager
 {
 	@Autowired private PapelManager papelManager;
-	private ColaboradorManager colaboradorManager;
+	@Autowired private ColaboradorManager colaboradorManager;
 	
 	@Autowired
 	PerfilManagerImpl(PerfilDao dao) {

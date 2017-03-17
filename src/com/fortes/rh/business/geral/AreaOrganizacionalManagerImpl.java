@@ -48,7 +48,6 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientLotacao;
 import com.fortes.web.tags.CheckBox;
@@ -58,14 +57,17 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings("unchecked")
 public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrganizacional, AreaOrganizacionalDao> implements AreaOrganizacionalManager
 {
-	private AcPessoalClientLotacao acPessoalClientLotacao;
-	private PlatformTransactionManager transactionManager;
-	@Autowired
-	private ColaboradorManager colaboradorManager;
-	@Autowired
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	@Autowired
-	private CargoManager cargoManager;
+	@Autowired private AcPessoalClientLotacao acPessoalClientLotacao;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private AreaInteresseManager areaInteresseManager;
+	@Autowired private ConhecimentoManager conhecimentoManager;
+	@Autowired private HabilidadeManager habilidadeManager;
+	@Autowired private AtitudeManager atitudeManager;
+	@Autowired private ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager;
+	@Autowired private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 	@Autowired
 	AreaOrganizacionalManagerImpl(AreaOrganizacionalDao dao) {
 		setDao(dao);
@@ -385,11 +387,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		}
 
 		return areas;
-	}
-
-	public void setAcPessoalClientLotacao(AcPessoalClientLotacao acPessoalClientLotacao)
-	{
-		this.acPessoalClientLotacao = acPessoalClientLotacao;
 	}
 
 	@TesteAutomatico
@@ -869,14 +866,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	public void deleteAreaOrganizacional(Long[] areaIds) throws Exception {
 
 		if (areaIds != null && areaIds.length > 0) {
-			AreaInteresseManager areaInteresseManager = (AreaInteresseManager) SpringUtil.getBean("areaInteresseManager");
-			ConhecimentoManager conhecimentoManager = (ConhecimentoManager) SpringUtil.getBean("conhecimentoManager");
-			HabilidadeManager habilidadeManager = (HabilidadeManager) SpringUtil.getBean("habilidadeManager");
-			AtitudeManager atitudeManager = (AtitudeManager) SpringUtil.getBean("atitudeManager");
-			ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager = (ConfiguracaoLimiteColaboradorManager) SpringUtil.getBean("configuracaoLimiteColaboradorManager");
-			QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager = (QuantidadeLimiteColaboradoresPorCargoManager) SpringUtil.getBean("quantidadeLimiteColaboradoresPorCargoManager");
-			CargoManager cargoManager = (CargoManager) SpringUtil.getBean("cargoManager");
-			
 			areaInteresseManager.deleteByAreaOrganizacional(areaIds);
 			conhecimentoManager.deleteByAreaOrganizacional(areaIds);
 			habilidadeManager.deleteByAreaOrganizacional(areaIds);
@@ -1089,10 +1078,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	public String getMascaraLotacoesAC(Empresa empresa) throws Exception 
 	{
 		return acPessoalClientLotacao.getMascara(empresa);
-	}
-	
-	public void setTransactionManager(PlatformTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
 	}
 	
 	@TesteAutomatico(metodoMock="findAreasDoResponsavelCoResponsavel")

@@ -22,18 +22,18 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.xwork.ActionContext;
 
 @Component
 public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, SolicitacaoDao> implements SolicitacaoManager
 {
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
-	private AnuncioManager anuncioManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager;
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private AnuncioManager anuncioManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	
 	@Autowired
 	SolicitacaoManagerImpl(SolicitacaoDao solicitacaoDao) {
@@ -81,7 +81,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 			return false;
 		else
 		{
-			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
 			configuracaoNivelCompetenciaManager.removeBySolicitacaoId(solicitacaoId);
 			colaboradorQuestionarioManager.removeBySolicitacaoId(solicitacaoId);
 			pausaPreenchimentoVagasManager.removeBySolicitacaoId(solicitacaoId);
@@ -90,12 +89,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 			getDao().remove(new Long[]{solicitacaoId});
 			return true;
 		}
-	}
-
-	
-
-	public void setAnuncioManager(AnuncioManager anuncioManager) {
-		this.anuncioManager = anuncioManager;
 	}
 
 	public Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa)
@@ -330,26 +323,5 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		}
 		
 		return (totalPercentual / solicitacoes.size()) * 100.0;
-	}
-
-	public void setCandidatoSolicitacaoManager(	CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
-	
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
-	public void setSolicitacaoAvaliacaoManager(SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) {
-		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
-	}
-
-	public void setPausaPreenchimentoVagasManager(PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager) {
-		this.pausaPreenchimentoVagasManager = pausaPreenchimentoVagasManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(
-			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 }

@@ -22,10 +22,10 @@ public class AvaliacaoTurmaManagerImpl extends GenericManagerImpl<AvaliacaoTurma
 {
 	private final String EMPRESA_INVALIDA = "A Avaliação solicitada não existe nesta empresa.";
 
-	private QuestionarioManager questionarioManager;
-	private PerguntaManager perguntaManager;
-	private PlatformTransactionManager transactionManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private QuestionarioManager questionarioManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 
 	@Autowired
 	AvaliacaoTurmaManagerImpl(AvaliacaoTurmaDao avaliacaoTurmaDao) {
@@ -168,21 +168,6 @@ public class AvaliacaoTurmaManagerImpl extends GenericManagerImpl<AvaliacaoTurma
 		}
 	}
 
-	public void setQuestionarioManager(QuestionarioManager questionarioManager)
-	{
-		this.questionarioManager = questionarioManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
-	public void setPerguntaManager(PerguntaManager perguntaManager)
-	{
-		this.perguntaManager = perguntaManager;
-	}
-
 	public Long getIdByQuestionario(Long questionarioId)
 	{
 		return getDao().getIdByQuestionario(questionarioId);
@@ -191,11 +176,6 @@ public class AvaliacaoTurmaManagerImpl extends GenericManagerImpl<AvaliacaoTurma
 	public Integer getCount(Long empresaId)
 	{
 		return getDao().getCount(empresaId);
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
 	public Collection<AvaliacaoTurma> findAllSelect(Boolean ativa, Long... empresaId)

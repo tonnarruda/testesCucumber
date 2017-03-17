@@ -17,7 +17,7 @@ import com.fortes.rh.util.RelatorioUtil;
 @Component
 public class MotivoDemissaoManagerImpl extends GenericManagerImpl<MotivoDemissao, MotivoDemissaoDao> implements MotivoDemissaoManager
 {
-	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
 	
 	@Autowired
 	MotivoDemissaoManagerImpl(MotivoDemissaoDao dao) {
@@ -59,9 +59,4 @@ public class MotivoDemissaoManagerImpl extends GenericManagerImpl<MotivoDemissao
 		
 		getDao().save(motivoDemissao);
 	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
 }

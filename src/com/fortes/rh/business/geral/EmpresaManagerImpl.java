@@ -45,7 +45,6 @@ import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.Mail;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 import com.ibm.icu.text.SimpleDateFormat;
@@ -53,24 +52,27 @@ import com.ibm.icu.text.SimpleDateFormat;
 @Component
 public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> implements EmpresaManager
 {
-	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
 	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
-	private MotivoDemissaoManager motivoDemissaoManager;
-	private AreaInteresseManager areaInteresseManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private ConhecimentoManager conhecimentoManager;
-	private HabilidadeManager habilidadeManager;
-	private OcorrenciaManager ocorrenciaManager;
-	private AtitudeManager atitudeManager;
-	private IndiceManager indiceManager;
-	private CidadeManager cidadeManager;
-	private CargoManager cargoManager;
-	private RiscoManager riscoManager;
-	private EpiManager epiManager;
-	private Mail mail;
-	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
+	@Autowired private MotivoDemissaoManager motivoDemissaoManager;
+	@Autowired private AreaInteresseManager areaInteresseManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private ConhecimentoManager conhecimentoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private HabilidadeManager habilidadeManager;
+	@Autowired private OcorrenciaManager ocorrenciaManager;
+	@Autowired private AmbienteManager ambienteManager;
+	@Autowired private AtitudeManager atitudeManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private CidadeManager cidadeManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private RiscoManager riscoManager;
+	@Autowired private TurmaManager turmaManager;
+	@Autowired private EpiManager epiManager;
+	@Autowired private Mail mail;
+	@Autowired private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
 	
 	@Autowired
 	EmpresaManagerImpl(EmpresaDao dao) {
@@ -241,7 +243,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CARGOS)){
-			cargoManager = (CargoManager) SpringUtil.getBean("cargoManager");
 			cargoManager.sincronizar(empresaOrigemId, empresaDestino, areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds, mensagens);
 		}
 		
@@ -250,12 +251,10 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.EPIS)){
-			epiManager = (EpiManager) SpringUtil.getBean("epiManager");
 			epiManager.sincronizar(empresaOrigemId, empresaDestinoId, epiIds);
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CURSOSETURMAS)){
-			TurmaManager turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
 			turmaManager.sincronizar(empresaOrigemId, empresaDestinoId);
 		}
 		
@@ -268,7 +267,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.AMBIENTE)){
-			AmbienteManager ambienteManager = (AmbienteManager) SpringUtil.getBean("ambienteManager");
 			ambienteManager.sincronizar(empresaOrigemId, empresaDestinoId);
 		}
 		
@@ -445,8 +443,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	{
 		if(empresa.isAcIntegra())
 		{
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
-			
 			Collection<Colaborador> colaboradors = colaboradorManager.findSemCodigoAC(empresa.getId());
 			Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findSemCodigoAC(empresa.getId());
 			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findSemCodigoAC(empresa.getId());
@@ -574,79 +570,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		getDao().setProcessoExportacaoAC(empresaId, processoExportacaoAC);
 	}
 
-	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager) {
-		this.conhecimentoManager = conhecimentoManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setAreaInteresseManager(AreaInteresseManager areaInteresseManager) {
-		this.areaInteresseManager = areaInteresseManager;
-	}
-	
-	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager) {
-		this.ocorrenciaManager = ocorrenciaManager;
-	}
-	
-	public void setEpiManager(EpiManager epiManager) {
-		this.epiManager = epiManager;
-	}
-	
-	public OcorrenciaManager getOcorrenciaManager() {
-		return ocorrenciaManager;
-	}
-	
-	public void setCargoManager(CargoManager cargoManager) {
-		this.cargoManager = cargoManager;
-	}
-
-	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
-		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
-	}
-
-	public void setHabilidadeManager(HabilidadeManager habilidadeManager) {
-		this.habilidadeManager = habilidadeManager;
-	}
-
-	public void setAtitudeManager(AtitudeManager atitudeManager) {
-		this.atitudeManager = atitudeManager;
-	}
-
-	public void setMotivoDemissaoManager(MotivoDemissaoManager motivoDemissaoManager) {
-		this.motivoDemissaoManager = motivoDemissaoManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
-	public void setIndiceManager(IndiceManager indiceManager) {
-		this.indiceManager = indiceManager;
-	}
-
-	public void setCidadeManager(CidadeManager cidadeManager) {
-		this.cidadeManager = cidadeManager;
-	}
-
 	public Empresa getCnae(Long empresaId) {
 		return getDao().getCnae(empresaId);
-	}
-
-	public void setRiscoManager(RiscoManager riscoManager) {
-		this.riscoManager = riscoManager;
-	}
-
-	public void setMail(Mail mail) {
-		this.mail = mail;
-	}
-
-	public void setConfiguracaoCampoExtraVisivelObrigadotorioManager(ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager) {
-		this.configuracaoCampoExtraVisivelObrigadotorioManager = configuracaoCampoExtraVisivelObrigadotorioManager;
 	}
 }

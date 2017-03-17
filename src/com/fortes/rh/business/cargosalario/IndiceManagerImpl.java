@@ -17,7 +17,7 @@ import com.fortes.rh.util.CollectionUtil;
 @Component
 public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> implements IndiceManager
 {
-	private IndiceHistoricoManager indiceHistoricoManager;
+	@Autowired private IndiceHistoricoManager indiceHistoricoManager;
 	
 	@Autowired
 	IndiceManagerImpl(IndiceDao dao) {
@@ -68,11 +68,6 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 		CollectionUtil<IndiceHistorico> indiceHistoricoUtil = new CollectionUtil<IndiceHistorico>();
 
 		return indiceHistoricoUtil.convertCollectionToArrayIds(indiceHistoricos);
-	}
-
-	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
-	{
-		this.indiceHistoricoManager = indiceHistoricoManager;
 	}
 
 	public Indice findByIdProjection(Long indiceId)
@@ -150,5 +145,4 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 	public Integer getCount(String nome){
 		return getDao().getCount(nome);
 	}
-
 }

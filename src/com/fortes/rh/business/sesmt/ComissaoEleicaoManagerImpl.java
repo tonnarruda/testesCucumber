@@ -20,7 +20,7 @@ import com.fortes.rh.util.LongUtil;
 @Component
 public class ComissaoEleicaoManagerImpl extends GenericManagerImpl<ComissaoEleicao, ComissaoEleicaoDao> implements ComissaoEleicaoManager
 {
-	private PlatformTransactionManager transactionManager;
+	@Autowired private PlatformTransactionManager transactionManager;
 	
 	@Autowired
 	ComissaoEleicaoManagerImpl(ComissaoEleicaoDao fooDao) {
@@ -92,10 +92,5 @@ public class ComissaoEleicaoManagerImpl extends GenericManagerImpl<ComissaoEleic
 	public void removeByEleicao(Long eleicaoId)
 	{
 		getDao().removeByEleicao(eleicaoId);
-	}
-	
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
 	}
 }

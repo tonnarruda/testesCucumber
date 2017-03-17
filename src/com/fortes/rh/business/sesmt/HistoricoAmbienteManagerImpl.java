@@ -21,7 +21,7 @@ import com.fortes.rh.util.LongUtil;
 @Component
 public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAmbiente, HistoricoAmbienteDao> implements HistoricoAmbienteManager
 {
-	private RiscoAmbienteManager riscoAmbienteManager; 
+	@Autowired private RiscoAmbienteManager riscoAmbienteManager; 
 	
 	@Autowired
 	HistoricoAmbienteManagerImpl(HistoricoAmbienteDao historicoAmbienteDao) {
@@ -87,10 +87,6 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 		// Deixa o hibernate gerenciar as remoções dos relacionamentos 
 		HistoricoAmbiente historicoAmbiente = getDao().findById(id); // não tirar essa linha.
 		getDao().remove(historicoAmbiente);
-	}
-	
-	public void setRiscoAmbienteManager(RiscoAmbienteManager riscoAmbienteManager) {
-		this.riscoAmbienteManager = riscoAmbienteManager;
 	}
 
 	public Collection<HistoricoAmbiente> findByAmbiente(Long ambienteId) 

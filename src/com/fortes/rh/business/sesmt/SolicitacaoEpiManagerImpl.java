@@ -27,8 +27,8 @@ import com.fortes.rh.util.LongUtil;
 @Component
 public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi, SolicitacaoEpiDao> implements SolicitacaoEpiManager
 {
-	private PlatformTransactionManager transactionManager;
-	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 
 	@Autowired
 	SolicitacaoEpiManagerImpl(SolicitacaoEpiDao solicitacaoEpiDao) {
@@ -201,15 +201,4 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		
 		return devolucoes;
 	}
-	
-	public void setSolicitacaoEpiItemManager(SolicitacaoEpiItemManager solicitacaoEpiItemManager)
-	{
-		this.solicitacaoEpiItemManager = solicitacaoEpiItemManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-	
 }

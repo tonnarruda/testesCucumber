@@ -19,11 +19,11 @@ import com.fortes.rh.model.desenvolvimento.ParticipanteCursoLnt;
 import com.fortes.rh.thread.LntGerenciadorComunicacaoThread;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class LntManagerImpl extends GenericManagerImpl<Lnt, LntDao> implements LntManager
 {
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	@Autowired private ParticipanteCursoLntManager participanteCursoLntManager;
 	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
 	@Autowired private EmpresaManager empresaManager;
@@ -55,7 +55,7 @@ public class LntManagerImpl extends GenericManagerImpl<Lnt, LntDao> implements L
 		
 		Lnt lnt = getDao().findById(lntId);
 		Map<String, Object> parametros = RelatorioUtil.getParametrosRelatorio("Participantes da LNT", empresaManager.findById(empresaId), "LNT: " + lnt.getDescricao() + "\nPeríodo: " + lnt.getPeriodoFormatado());
-		new LntGerenciadorComunicacaoThread(lnt, participanteCursoLntManager, areaOrganizacionalManager, (GerenciadorComunicacaoManager) SpringUtil.getBean("gerenciadorComunicacaoManager"), parametros).start();
+		new LntGerenciadorComunicacaoThread(lnt, participanteCursoLntManager, areaOrganizacionalManager, gerenciadorComunicacaoManager, parametros).start();
 	}
 	
 	public void reabrir(Long lntId){

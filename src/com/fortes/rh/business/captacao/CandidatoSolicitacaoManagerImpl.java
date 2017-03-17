@@ -12,7 +12,6 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Usuario;
@@ -27,13 +26,15 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<CandidatoSolicitacao, CandidatoSolicitacaoDao> implements CandidatoSolicitacaoManager
 {
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	@Autowired
 	CandidatoSolicitacaoManagerImpl(CandidatoSolicitacaoDao candidatoDao) {
@@ -83,11 +84,9 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		Character statusAutorizacaoGestor = null;
 		
 		if(parametrosDoSistemaManager.findById(1L).isAutorizacaoGestorNaSolicitacaoPessoal()){
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 			Colaborador colaborador = colaboradorManager.findByCandidato(candidatoId, null);
 		
 			if(colaborador != null){
-				GerenciadorComunicacaoManager gerenciadorComunicacaoManager = (GerenciadorComunicacaoManager) SpringUtil.getBean("gerenciadorComunicacaoManager");
 				gerenciadorComunicacaoManager.enviarAvisoAoInserirColaboradorSolicitacaoDePessoal(empresa, usuarioLogado, colaborador.getId(), solicitacaoId);
 				statusAutorizacaoGestor = StatusAutorizacaoGestor.ANALISE;
 			}
@@ -136,7 +135,6 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 
     public Collection<CandidatoSolicitacao> verificaExisteColaborador(Collection<CandidatoSolicitacao> candidatoSolicitacaos, Long empresaId)
     {
-    	ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
         for(CandidatoSolicitacao candidatoSolicitacao : candidatoSolicitacaos)
             candidatoSolicitacao.setExisteColaborador(colaboradorManager.candidatoEhColaborador(candidatoSolicitacao.getCandidato().getId(), empresaId));
 
@@ -233,10 +231,6 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		getDao().updateStatusAutorizacaoGestor(candidatoSolicitacao);
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public CandidatoSolicitacao findByHistoricoColaboradorId(Long historicoColaboradorId) {
 		return getDao().findByHistoricoColaboradorId(historicoColaboradorId);
 	}
@@ -246,7 +240,6 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		
 		getDao().updateStatusParaIndiferenteEmSolicitacoesEmAndamento(candidatoSolicitacao.getCandidato().getId());
 		
-		CandidatoManager candidatoManager = (CandidatoManager) SpringUtil.getBeanOld("candidatoManager");
 		candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradorId);
 	}
 

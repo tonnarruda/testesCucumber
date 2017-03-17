@@ -3,6 +3,8 @@ package com.fortes.rh.business.ws;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -22,10 +24,10 @@ import com.fortes.rh.util.DateUtil;
 
 public class RHServiceIntranetImpl implements RHServiceIntranet
 {
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private CargoManager cargoManager;
-	private ColaboradorManager colaboradorManager;
-	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
 
 	public Collection<SetorIntranet> setoresIntranetList(String empresaId) 
 	{
@@ -112,24 +114,5 @@ public class RHServiceIntranetImpl implements RHServiceIntranet
 		}
 		
 		return unidadesIntranet;
-	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) 
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setCargoManager(CargoManager cargoManager) 
-	{
-		this.cargoManager = cargoManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 }

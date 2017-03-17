@@ -1,12 +1,15 @@
 package com.fortes.rh.business.captacao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.geral.EmpresaManager;
 
-
+@Component
 public class QuantidadeCurriculos
 {
-	private CandidatoManager candidatoManager;
-	private EmpresaManager empresaManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private EmpresaManager empresaManager;
 	
 	public void execute()
 	{
@@ -18,13 +21,5 @@ public class QuantidadeCurriculos
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	public void setCandidatoManager(CandidatoManager candidatoManager) {
-		this.candidatoManager = candidatoManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 }

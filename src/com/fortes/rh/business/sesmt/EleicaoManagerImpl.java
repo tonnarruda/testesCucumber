@@ -19,16 +19,15 @@ import com.fortes.rh.model.sesmt.CandidatoEleicao;
 import com.fortes.rh.model.sesmt.Eleicao;
 import com.fortes.rh.model.sesmt.EtapaProcessoEleitoral;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class EleicaoManagerImpl extends GenericManagerImpl<Eleicao, EleicaoDao> implements EleicaoManager
 {
-	private PlatformTransactionManager transactionManager;
-	private ComissaoEleicaoManager comissaoEleicaoManager;
-	private CandidatoEleicaoManager candidatoEleicaoManager;
-	private EtapaProcessoEleitoralManager etapaProcessoEleitoralManager;
-	private ComissaoManager comissaoManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ComissaoEleicaoManager comissaoEleicaoManager;
+	@Autowired private CandidatoEleicaoManager candidatoEleicaoManager;
+	@Autowired private EtapaProcessoEleitoralManager etapaProcessoEleitoralManager;
+	@Autowired private ComissaoManager comissaoManager;
 
 	@Autowired
 	EleicaoManagerImpl(EleicaoDao eleicaoDao) {
@@ -192,8 +191,6 @@ public class EleicaoManagerImpl extends GenericManagerImpl<Eleicao, EleicaoDao> 
 
 	public void removeCascade(Long id) throws Exception
 	{
-		candidatoEleicaoManager = (CandidatoEleicaoManager) SpringUtil.getBean("candidatoEleicaoManager");
-
 		// verificar se existe Comissão ou Candidatos associados à eleição
 		if (comissaoManager.getCount(new String[] {"eleicao.id"}, new Object[]{id}) >= 1)
 		{
@@ -227,8 +224,6 @@ public class EleicaoManagerImpl extends GenericManagerImpl<Eleicao, EleicaoDao> 
 	
 	public Collection<ParticipacaoColaboradorCipa> getParticipacoesDeColaboradorEmEleicoes(Long colaboradorId)
 	{
-		candidatoEleicaoManager = (CandidatoEleicaoManager) SpringUtil.getBean("candidatoEleicaoManager");
-		
 		Collection<CandidatoEleicao> candidatoEleicaos = candidatoEleicaoManager.findByColaborador(colaboradorId);
 		
 		Collection<ParticipacaoColaboradorCipa> participacoes = new ArrayList<ParticipacaoColaboradorCipa>();
@@ -239,25 +234,5 @@ public class EleicaoManagerImpl extends GenericManagerImpl<Eleicao, EleicaoDao> 
 		}
 		
 		return participacoes;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
-	public void setComissaoEleicaoManager(ComissaoEleicaoManager comissaoEleicaoManager)
-	{
-		this.comissaoEleicaoManager = comissaoEleicaoManager;
-	}
-
-	public void setEtapaProcessoEleitoralManager(EtapaProcessoEleitoralManager etapaProcessoEleitoralManager)
-	{
-		this.etapaProcessoEleitoralManager = etapaProcessoEleitoralManager;
-	}
-
-	public void setComissaoManager(ComissaoManager comissaoManager)
-	{
-		this.comissaoManager = comissaoManager;
 	}
 }

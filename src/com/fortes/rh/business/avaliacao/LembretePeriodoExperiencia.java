@@ -1,20 +1,17 @@
 package com.fortes.rh.business.avaliacao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
-import com.fortes.rh.util.SpringUtil;
 
-
-@SuppressWarnings("deprecation")
+@Component
 public class LembretePeriodoExperiencia
 {
-	private AvaliacaoManager avaliacaoManager;
-	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
 	
 	public void execute() {
-		
-		avaliacaoManager = (AvaliacaoManager) SpringUtil.getBeanOld("avaliacaoManager");
-		colaboradorPeriodoExperienciaAvaliacaoManager = (ColaboradorPeriodoExperienciaAvaliacaoManager) SpringUtil.getBeanOld("colaboradorPeriodoExperienciaAvaliacaoManager");
-		
 		avaliacaoManager.enviaLembrete();
 		colaboradorPeriodoExperienciaAvaliacaoManager.enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo();
 	}

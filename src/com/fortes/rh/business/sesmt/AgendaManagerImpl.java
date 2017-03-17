@@ -17,7 +17,7 @@ import com.fortes.rh.util.DateUtil;
 @Component
 public class AgendaManagerImpl extends GenericManagerImpl<Agenda, AgendaDao> implements AgendaManager
 {
-	private PlatformTransactionManager transactionManager;
+	@Autowired private PlatformTransactionManager transactionManager;
 	
 	@Autowired
 	AgendaManagerImpl(AgendaDao fooDao) {
@@ -68,11 +68,6 @@ public class AgendaManagerImpl extends GenericManagerImpl<Agenda, AgendaDao> imp
 	public Collection<Agenda> findByPeriodoEvento(Date dataIni, Date dataFim, Estabelecimento estabelecimento, Evento evento)
 	{
 		return getDao().findByPeriodoEvento(dataIni, dataFim, estabelecimento, evento);
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
 	}
 
 	public void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception {

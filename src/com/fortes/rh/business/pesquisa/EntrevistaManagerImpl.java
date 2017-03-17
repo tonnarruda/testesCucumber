@@ -10,7 +10,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
 import com.fortes.rh.dao.pesquisa.EntrevistaDao;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Empresa;
@@ -24,10 +23,10 @@ public class EntrevistaManagerImpl extends GenericManagerImpl<Entrevista, Entrev
 {
 	private final String EMPRESA_INVALIDA = "A Entrevista solicitada não existe nesta empresa.";
 
-	private QuestionarioManager questionarioManager;
-	private PerguntaManager perguntaManager;
-	private PlatformTransactionManager transactionManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private QuestionarioManager questionarioManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 
 	@Autowired
 	EntrevistaManagerImpl(EntrevistaDao dao) {
@@ -161,21 +160,6 @@ public class EntrevistaManagerImpl extends GenericManagerImpl<Entrevista, Entrev
 		return entrevista;
 	}
 
-	public void setQuestionarioManager(QuestionarioManager questionarioManager)
-	{
-		this.questionarioManager = questionarioManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
-	public void setPerguntaManager(PerguntaManager perguntaManager)
-	{
-		this.perguntaManager = perguntaManager;
-	}
-
 	public Long getIdByQuestionario(Long questionarioId)
 	{
 		return getDao().getIdByQuestionario(questionarioId);
@@ -184,11 +168,6 @@ public class EntrevistaManagerImpl extends GenericManagerImpl<Entrevista, Entrev
 	public Integer getCount(Long empresaId)
 	{
 		return getDao().getCount(empresaId);
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
 	public Collection<Entrevista> findAllSelect(Long empresaId, Boolean ativa)

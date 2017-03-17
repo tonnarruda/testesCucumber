@@ -7,11 +7,13 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.CartaoDao;
 import com.fortes.rh.model.geral.Cartao;
 
+@Component
 public class CartaoDaoHibernate extends GenericDaoHibernate<Cartao> implements CartaoDao
 {
 	private ProjectionList projectionCartao() {

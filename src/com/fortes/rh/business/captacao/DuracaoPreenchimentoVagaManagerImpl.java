@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -20,11 +21,10 @@ import com.fortes.rh.util.CollectionUtil;
 @SuppressWarnings("unchecked")
 public class DuracaoPreenchimentoVagaManagerImpl implements DuracaoPreenchimentoVagaManager
 {
-	
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private CargoManager cargoManager;
-	private SolicitacaoManager solicitacaoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
 	
 	private Map<Long, String> getAreas(Long empresaId) throws Exception {
 		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, null, null, false);
@@ -105,21 +105,5 @@ public class DuracaoPreenchimentoVagaManagerImpl implements DuracaoPreenchimento
 			Long areaId = indicadorDuracaoPreenchimentoVaga.getAreaOrganizacional().getId();
 			indicadorDuracaoPreenchimentoVaga.getAreaOrganizacional().setNome(mapNomesAreasOrganizacionais.get(areaId));
 		}
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setCargoManager(CargoManager cargoManager) {
-		this.cargoManager = cargoManager;
-	}
-
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
-		this.solicitacaoManager = solicitacaoManager;
 	}
 }

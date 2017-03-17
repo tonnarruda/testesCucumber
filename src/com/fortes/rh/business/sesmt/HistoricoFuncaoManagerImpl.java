@@ -30,27 +30,17 @@ import com.fortes.rh.util.LongUtil;
 @Component
 public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFuncao, HistoricoFuncaoDao> implements HistoricoFuncaoManager
 {
-	private FuncaoManager funcaoManager;
-	private AbstractPlatformTransactionManager transactionManager;
-	private ExameManager exameManager;
-	private EpiManager epiManager;
-	private RiscoFuncaoManager riscoFuncaoManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private AbstractPlatformTransactionManager transactionManager;
+	@Autowired private ExameManager exameManager;
+	@Autowired private EpiManager epiManager;
+	@Autowired private RiscoFuncaoManager riscoFuncaoManager;
 	
 	@Autowired
 	HistoricoFuncaoManagerImpl(HistoricoFuncaoDao historicoFuncaoDao) {
 			setDao(historicoFuncaoDao);
 	}
 	
-	public void setTransactionManager(AbstractPlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
-	public void setFuncaoManager(FuncaoManager funcaoManager)
-	{
-		this.funcaoManager = funcaoManager;
-	}
-
 	public void saveFuncaoHistorico(Funcao funcao, HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] cursosChecked, String[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -299,20 +289,5 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 	public Collection<HistoricoFuncao> findByFuncao(Long funcaoId) 
 	{
 		return getDao().findByFuncao(funcaoId);
-	}
-	
-	public void setExameManager(ExameManager exameManager)
-	{
-		this.exameManager = exameManager;
-	}
-
-	public void setEpiManager(EpiManager epiManager)
-	{
-		this.epiManager = epiManager;
-	}
-
-	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) 
-	{
-		this.riscoFuncaoManager = riscoFuncaoManager;
 	}
 }

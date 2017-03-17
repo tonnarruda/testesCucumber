@@ -14,7 +14,7 @@ import com.fortes.rh.web.ws.AcPessoalClientSistema;
 @Component
 public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<ParametrosDoSistema, ParametrosDoSistemaDao> implements ParametrosDoSistemaManager
 {
-	private AcPessoalClientSistema acPessoalClientSistema;
+	@Autowired private AcPessoalClientSistema acPessoalClientSistema;
 	
 	@Autowired
 	ParametrosDoSistemaManagerImpl(ParametrosDoSistemaDao dao) {
@@ -62,11 +62,6 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 	public String getContexto()
 	{
 		return getDao().getContexto();
-	}
-
-	public void setAcPessoalClientSistema(AcPessoalClientSistema acPessoalClientSistema)
-	{
-		this.acPessoalClientSistema = acPessoalClientSistema;
 	}
 
 	public boolean isACIntegrado(Empresa empresa) throws Exception

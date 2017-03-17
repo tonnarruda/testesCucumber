@@ -11,11 +11,13 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.CursoLntDao;
 import com.fortes.rh.model.desenvolvimento.CursoLnt;
 
+@Component
 public class CursoLntDaoHibernate extends GenericDaoHibernate<CursoLnt> implements CursoLntDao
 {
 	@SuppressWarnings("unchecked")

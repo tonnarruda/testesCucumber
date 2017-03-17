@@ -31,9 +31,9 @@ import com.fortes.web.tags.CheckBox;
 @Component
 public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDao> implements PerguntaManager
 {
-	private RespostaManager respostaManager;
-	private AspectoManager aspectoManager;
-	private PlatformTransactionManager transactionManager;
+	@Autowired private RespostaManager respostaManager;
+	@Autowired private AspectoManager aspectoManager;
+	@Autowired private PlatformTransactionManager transactionManager;
 	
 	@Autowired
 	PerguntaManagerImpl(PerguntaDao dao) {
@@ -512,22 +512,6 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 				respostaManager.clonarResposta(perguntaClonada, respostas);
 			}
     	}
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
-	public void setRespostaManager(RespostaManager respostaManager)
-	{
-		this.respostaManager = respostaManager;
-	}
-
-
-	public void setAspectoManager(AspectoManager aspectoManager)
-	{
-		this.aspectoManager = aspectoManager;
 	}
 
 	public void removerPerguntasDoQuestionario(Long questionarioId)

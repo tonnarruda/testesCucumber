@@ -22,9 +22,9 @@ import com.fortes.rh.util.DateUtil;
 @Component
 public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPeriodo, ComissaoPeriodoDao> implements ComissaoPeriodoManager
 {
-	private CandidatoEleicaoManager candidatoEleicaoManager;
-	private ComissaoMembroManager comissaoMembroManager;
-	private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
+	@Autowired private CandidatoEleicaoManager candidatoEleicaoManager;
+	@Autowired private ComissaoMembroManager comissaoMembroManager;
+	@Autowired private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
 
 	@Autowired
 	ComissaoPeriodoManagerImpl(ComissaoPeriodoDao fooDao) {
@@ -146,15 +146,6 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 
 		this.remove(ids);
 	}
-
-	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager)
-	{
-		this.comissaoMembroManager = comissaoMembroManager;
-	}
-	public void setCandidatoEleicaoManager(CandidatoEleicaoManager candidatoEleicaoManager)
-	{
-		this.candidatoEleicaoManager = candidatoEleicaoManager;
-	}
 	
 	public Date getDataFim(ComissaoPeriodo comissaoPeriodo) {
 		
@@ -196,9 +187,5 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 			return false;
 		
 		return true;
-	}
-	
-	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager) {
-		this.comissaoReuniaoPresencaManager = comissaoReuniaoPresencaManager;
 	}
 }

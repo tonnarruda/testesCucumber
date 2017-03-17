@@ -13,7 +13,7 @@ import com.fortes.rh.model.sesmt.RiscoFasePcmat;
 @Component
 public class RiscoFasePcmatManagerImpl extends GenericManagerImpl<RiscoFasePcmat, RiscoFasePcmatDao> implements RiscoFasePcmatManager
 {
-	private MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager;
+	@Autowired private MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager;
 	
 	@Autowired
 	RiscoFasePcmatManagerImpl(RiscoFasePcmatDao riscoFasePcmatDao) {
@@ -48,10 +48,6 @@ public class RiscoFasePcmatManagerImpl extends GenericManagerImpl<RiscoFasePcmat
 			
 			medidaRiscoFasePcmatManager.save(medida);
 		}
-	}
-
-	public void setMedidaRiscoFasePcmatManager(MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager) {
-		this.medidaRiscoFasePcmatManager = medidaRiscoFasePcmatManager;
 	}
 
 	public void clonar(Long fasePcmatOrigemId, Long fasePcmatDestinoId) 

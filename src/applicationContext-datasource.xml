@@ -51,4 +51,7 @@
 			<ref local="sessionFactory" />
 		</property>
 	</bean>
+	
+	<bean id="service" class="org.apache.axis.client.Service" />
+	
 </beans>

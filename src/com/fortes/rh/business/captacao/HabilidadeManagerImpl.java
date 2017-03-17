@@ -17,14 +17,14 @@ import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
 @Component
 public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, HabilidadeDao> implements HabilidadeManager
 {
-	AreaOrganizacionalManager areaOrganizacionalManager;
-	CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
+	@Autowired CursoManager cursoManager;
+	@Autowired AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
 
 	@Autowired
 	HabilidadeManagerImpl(HabilidadeDao fooDao) {
@@ -149,23 +149,11 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 		Habilidade habilidade = getDao().findByIdProjection(habilidadeId);
 		
 		if(habilidade != null) {
-			CursoManager cursoManager = (CursoManager) SpringUtil.getBean("cursoManager");
-			
 			habilidade.setAreaOrganizacionals(areaOrganizacionalManager.findByHabilidade(habilidadeId));
 			habilidade.setCursos(cursoManager.findByCompetencia(habilidadeId, TipoCompetencia.HABILIDADE));
 			habilidade.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(habilidadeId, TipoCompetencia.HABILIDADE));
 		}
 
 		return habilidade;
-	}
-	
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setCriterioAvaliacaoCompetenciaManager(
-			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
-		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 }

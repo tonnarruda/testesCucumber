@@ -11,11 +11,13 @@ import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetenciaColaborador, ConfiguracaoNivelCompetenciaColaboradorDao> implements ConfiguracaoNivelCompetenciaColaboradorManager
 {
+	@Autowired
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	
 	@Autowired
 	ConfiguracaoNivelCompetenciaColaboradorManagerImpl(ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao) {
 		setDao(configuracaoNivelCompetenciaColaboradorDao);
@@ -62,7 +64,6 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 
 	public void deleteDependenciasByFaixaSalarial(Long[] faixaIds)
 	{
-		ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager = (ConfiguracaoNivelCompetenciaManager) SpringUtil.getBean("configuracaoNivelCompetenciaManager");
 		configuracaoNivelCompetenciaManager.removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixaSalarial(faixaIds);
 	}
 	

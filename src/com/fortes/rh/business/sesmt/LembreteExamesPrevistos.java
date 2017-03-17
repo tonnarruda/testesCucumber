@@ -1,15 +1,15 @@
 package com.fortes.rh.business.sesmt;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.geral.EmpresaManager;
 
 @Component
-@SuppressWarnings("deprecation")
 public class LembreteExamesPrevistos
 {
-	private ExameManager exameManager;
-	private EmpresaManager empresaManager;
+	@Autowired private ExameManager exameManager;
+	@Autowired private EmpresaManager empresaManager;
 	
 	public void executeLembreteExamesPrevistos() 
 	{	
@@ -22,14 +22,4 @@ public class LembreteExamesPrevistos
 			e.printStackTrace();
 		}		
 	}
-	
-	public void setExameManager(ExameManager exameManager) 
-	{
-		this.exameManager = exameManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) 
-	{
-		this.empresaManager = empresaManager;
-	}	
 }

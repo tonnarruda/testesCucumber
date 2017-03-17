@@ -20,7 +20,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 @Component
 public class AreaInteresseManagerImpl extends GenericManagerImpl<AreaInteresse, AreaInteresseDao> implements AreaInteresseManager
 {
-	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
 	
 	@Autowired
 	AreaInteresseManagerImpl(AreaInteresseDao dao) {
@@ -82,10 +82,6 @@ public class AreaInteresseManagerImpl extends GenericManagerImpl<AreaInteresse, 
 		areaInteresse.setEmpresaId(empresaDestinoId);
 		
 		getDao().save(areaInteresse);
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	@TesteAutomatico

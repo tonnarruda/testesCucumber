@@ -15,7 +15,7 @@ import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 @Component
 public class ConfiguracaoLimiteColaboradorManagerImpl extends GenericManagerImpl<ConfiguracaoLimiteColaborador, ConfiguracaoLimiteColaboradorDao> implements ConfiguracaoLimiteColaboradorManager
 {
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	@Autowired
 	ConfiguracaoLimiteColaboradorManagerImpl(ConfiguracaoLimiteColaboradorDao dao) {
@@ -41,9 +41,5 @@ public class ConfiguracaoLimiteColaboradorManagerImpl extends GenericManagerImpl
 	@TesteAutomatico
 	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
 		getDao().deleteByAreaOrganizacional(areaIds);
-	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

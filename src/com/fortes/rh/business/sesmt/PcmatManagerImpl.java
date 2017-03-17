@@ -41,15 +41,15 @@ import com.fortes.rh.util.StringUtil;
 @Component
 public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implements PcmatManager
 {
-	private EmpresaManager empresaManager;
-	private ObraManager obraManager;
-	private FasePcmatManager fasePcmatManager;
-	private MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager;
-	private AreaVivenciaPcmatManager areaVivenciaPcmatManager;
-	private AtividadeSegurancaPcmatManager atividadeSegurancaPcmatManager;
-	private EpiPcmatManager epiPcmatManager;
-	private EpcPcmatManager epcPcmatManager;
-	private SinalizacaoPcmatManager sinalizacaoPcmatManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ObraManager obraManager;
+	@Autowired private FasePcmatManager fasePcmatManager;
+	@Autowired private MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager;
+	@Autowired private AreaVivenciaPcmatManager areaVivenciaPcmatManager;
+	@Autowired private AtividadeSegurancaPcmatManager atividadeSegurancaPcmatManager;
+	@Autowired private EpiPcmatManager epiPcmatManager;
+	@Autowired private EpcPcmatManager epcPcmatManager;
+	@Autowired private SinalizacaoPcmatManager sinalizacaoPcmatManager;
 	
 	@Autowired
 	PcmatManagerImpl(PcmatDao pcmatDao) {
@@ -380,43 +380,5 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		
 		for (AtividadeSegurancaPcmat atividade : atividadesSegurancaPcmat) 
 			docx.addTableRow(table, atividade.getNome(), DateUtil.formataMesExtensoAno(atividade.getData()), atividade.getCargaHorariaEmHora());
-	}
-
-	public void setFasePcmatManager(FasePcmatManager fasePcmatManager) {
-		this.fasePcmatManager = fasePcmatManager;
-	}
-
-	public void setAtividadeSegurancaPcmatManager(AtividadeSegurancaPcmatManager atividadeSegurancaPcmatManager) {
-		this.atividadeSegurancaPcmatManager = atividadeSegurancaPcmatManager;
-	}
-
-	public void setEpiPcmatManager(EpiPcmatManager epiPcmatManager) {
-		this.epiPcmatManager = epiPcmatManager;
-	}
-
-	public void setEpcPcmatManager(EpcPcmatManager epcPcmatManager) {
-		this.epcPcmatManager = epcPcmatManager;
-	}
-
-	public void setAreaVivenciaPcmatManager(AreaVivenciaPcmatManager areaVivenciaPcmatManager) {
-		this.areaVivenciaPcmatManager = areaVivenciaPcmatManager;
-	}
-
-	public void setMedidaRiscoFasePcmatManager(
-			MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager) {
-		this.medidaRiscoFasePcmatManager = medidaRiscoFasePcmatManager;
-	}
-
-	public void setObraManager(ObraManager obraManager) {
-		this.obraManager = obraManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
-	public void setSinalizacaoPcmatManager(
-			SinalizacaoPcmatManager sinalizacaoPcmatManager) {
-		this.sinalizacaoPcmatManager = sinalizacaoPcmatManager;
 	}
 }

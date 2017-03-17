@@ -36,25 +36,20 @@ import com.fortes.rh.util.StringUtil;
 @Component
 public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implements TurmaManager
 {
-	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
-	private ColaboradorPresencaManager colaboradorPresencaManager;
-	private FaturamentoMensalManager faturamentoMensalManager;
-	private TurmaTipoDespesaManager turmaTipoDespesaManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private PlatformTransactionManager transactionManager;
-	private DiaTurmaManager diaTurmaManager;
-	private CursoManager cursoManager;
+	@Autowired private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired private ColaboradorPresencaManager colaboradorPresencaManager;
+	@Autowired private FaturamentoMensalManager faturamentoMensalManager;
+	@Autowired private TurmaTipoDespesaManager turmaTipoDespesaManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private DiaTurmaManager diaTurmaManager;
+	@Autowired private CursoManager cursoManager;
 	
 	@Autowired
 	TurmaManagerImpl(TurmaDao dao) {
 		setDao(dao);
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
 	public void removeCascade(Long turmaId, TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager, TurmaDocumentoAnexoManager turmaDocumentoAnexoManager) throws Exception
@@ -398,46 +393,5 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 				colaboradorTurmaManager.save(colaboradorTurma);
 			}
 		}
-	}
-	
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) 
-	{
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
-	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager)
-	{
-		this.diaTurmaManager = diaTurmaManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-	
-	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
-	{
-		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
-	}
-	
-	public void setCursoManager(CursoManager cursoManager) {
-		this.cursoManager = cursoManager;
-	}
-	
-	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
-		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
-	}
-
-	public void setFaturamentoMensalManager(FaturamentoMensalManager faturamentoMensalManager) {
-		this.faturamentoMensalManager = faturamentoMensalManager;
-	}
-
-	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager)
-	{
-		this.colaboradorPresencaManager = colaboradorPresencaManager;
-	}
-
-	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
 }

@@ -30,27 +30,22 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.ws.TSituacaoCargo;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientCargo;
 
 @Component
 public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaSalarialHistorico, FaixaSalarialHistoricoDao> implements FaixaSalarialHistoricoManager
 {
-	IndiceHistoricoManager indiceHistoricoManager;
-	IndiceManager indiceManager;
-	private AcPessoalClientCargo acPessoalClientCargo;
-	private PlatformTransactionManager transactionManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private AcPessoalClientCargo acPessoalClientCargo;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private IndiceHistoricoManager indiceHistoricoManager;
+	@Autowired private PlatformTransactionManager transactionManager;
 
 	@Autowired
 	FaixaSalarialHistoricoManagerImpl(FaixaSalarialHistoricoDao dao) {
 		setDao(dao);
 	}
 	
-	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
-	{
-		this.indiceHistoricoManager = indiceHistoricoManager;
-	}
-
 	public FaixaSalarialHistorico save(FaixaSalarialHistorico faixaSalarialHistorico, FaixaSalarial faixaSalarial, Empresa empresa, boolean salvaNoAC) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -66,7 +61,6 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 			{
 				if(faixaSalarial != null && faixaSalarial.getId() != null && faixaSalarial.getCodigoAC() == null)
 				{
-					FaixaSalarialManager faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
 					faixaSalarial = faixaSalarialManager.findCodigoACById(faixaSalarial.getId());
 					faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
 				}
@@ -102,7 +96,6 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 			{
 				if(faixaSalarial != null && faixaSalarial.getId() != null && faixaSalarial.getCodigoAC() == null)
 				{
-					FaixaSalarialManager faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
 					faixaSalarial = faixaSalarialManager.findCodigoACById(faixaSalarial.getId());
 				}
 			}
@@ -294,24 +287,9 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		return indiceHistoricoManager.existeHistoricoAnteriorOuIgualDaData(data, indiceId);
 	}
 
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
-	}
-
 	public boolean setStatus(Long faixaSalarialHistoricoId, boolean aprovado)
 	{
 		return getDao().setStatus(faixaSalarialHistoricoId, aprovado);
-	}
-
-	public void setAcPessoalClientCargo(AcPessoalClientCargo acPessoalClientCargo)
-	{
-		this.acPessoalClientCargo = acPessoalClientCargo;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
 	}
 
 	public void remove(Long faixaSalarialHistoricoId, Empresa empresa, boolean removerDoAC) throws Exception

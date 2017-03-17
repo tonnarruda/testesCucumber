@@ -14,7 +14,7 @@ import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 @Component
 public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericManagerImpl<ColaboradorPeriodoExperienciaAvaliacao, ColaboradorPeriodoExperienciaAvaliacaoDao> implements ColaboradorPeriodoExperienciaAvaliacaoManager 
 {
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	@Autowired
 	ColaboradorPeriodoExperienciaAvaliacaoManagerImpl(ColaboradorPeriodoExperienciaAvaliacaoDao dao) {
@@ -85,9 +85,5 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericMa
 	{
 		Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradores = getDao().findColaboradoresComAvaliacaoNaoRespondida();
 		gerenciadorComunicacaoManager.enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo(colaboradores);
-	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.util.ArquivoUtil;
@@ -19,7 +20,7 @@ public class MorroManagerImpl implements MorroManager
 	private static Logger logger = Logger.getLogger(MorroManagerImpl.class);
 	private final String PATH = ArquivoUtil.getRhHome() + File.separatorChar;
 	
-	private FileBoxManager fileBoxManager;
+	@Autowired private FileBoxManager fileBoxManager;
 	
 	public void enviar(String mensagem, String classeExcecao, String stackTrace, String url, String browser, String versao, String clienteCnpj, String clienteNome, String usuario) throws Exception
 	{
@@ -110,10 +111,4 @@ public class MorroManagerImpl implements MorroManager
 		
 		return texto.toString();
 	}
-	
-	public void setFileBoxManager(FileBoxManager fileBoxManager)
-	{
-		this.fileBoxManager = fileBoxManager;
-	}
-	
 }

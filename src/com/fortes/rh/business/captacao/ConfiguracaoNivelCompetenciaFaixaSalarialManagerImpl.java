@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class ConfiguracaoNivelCompetenciaFaixaSalarialManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetenciaFaixaSalarial, ConfiguracaoNivelCompetenciaFaixaSalarialDao> implements ConfiguracaoNivelCompetenciaFaixaSalarialManager
 {
+	@Autowired ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	@Autowired
 	ConfiguracaoNivelCompetenciaFaixaSalarialManagerImpl(ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao) {
 		setDao(configuracaoNivelCompetenciaFaixaSalarialDao);
@@ -27,7 +27,6 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialManagerImpl extends Generi
 	
 	public void deleteDependenciasByFaixaSalarial(Long[] faixaIds)
 	{
-		ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager = (ConfiguracaoNivelCompetenciaManager) SpringUtil.getBean("configuracaoNivelCompetenciaManager");
 		configuracaoNivelCompetenciaManager.removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixaSalarial(faixaIds);
 	}
 

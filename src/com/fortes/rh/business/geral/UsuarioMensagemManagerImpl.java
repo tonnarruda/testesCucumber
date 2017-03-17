@@ -303,11 +303,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		saveMensagemAndUsuarioMensagem(mensagem, remetente, link, usuariosCoResponsaveisAreaOrganizacionais, null, tipoMensagem, avaliacao, usuarioIdDesconsiderado);
 	}
 
-	public void setMensagemManager(MensagemManager mensagemManager)
-	{
-		this.mensagemManager = mensagemManager;
-	}
-
 	public Long getAnteriorOuProximo(Long usuarioMensagemId, Long usuarioId, Long empresaId, char opcao, Character tipo)
 	{
 		Integer count = countMensagens(empresaId, usuarioId, tipo);
@@ -332,14 +327,5 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 	public Integer countMensagens(Long empresaId, Long usuarioId, Character tipo) 
 	{
 		return getDao().countMensagens(empresaId, usuarioId, tipo);
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) 
-	{
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
-
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 }

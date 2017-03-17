@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -15,11 +18,16 @@ import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
-import com.fortes.rh.util.SpringUtil;
 
+@Component
 public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<ParticipanteAvaliacaoDesempenho, ParticipanteAvaliacaoDesempenhoDao> implements ParticipanteAvaliacaoDesempenhoManager
 {
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired
+	public ParticipanteAvaliacaoDesempenhoManagerImpl(ParticipanteAvaliacaoDesempenhoDao participanteAvaliacaoDesempenhoDao) {
+		setDao(participanteAvaliacaoDesempenhoDao);
+	}
 	
 	public void clone(AvaliacaoDesempenho avaliacaoDesempenho, Collection<ParticipanteAvaliacaoDesempenho> participantes) 
 	{
@@ -73,7 +81,6 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 			this.saveOrUpdate(participantesAvaliadores);
 			removeParticipantes(participantesAvaliadoresRemovidos);
 			
-			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
 			colaboradorQuestionarios.removeAll(Collections.singleton(null));
 			colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
 			removerColaboradorQuestionario(colaboradorQuestionarioManager, colaboradorQuestionariosRemovidos);
@@ -94,9 +101,5 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 			set.addAll(Arrays.asList(colaboradorQuestionariosRemovidos));
 			colaboradorQuestionarioManager.remove(set.toArray(new Long[set.size()]));
 		}
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 }

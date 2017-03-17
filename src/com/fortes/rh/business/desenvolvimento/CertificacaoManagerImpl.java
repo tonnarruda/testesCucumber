@@ -26,10 +26,10 @@ import com.fortes.web.tags.CheckBox;
 @Component
 public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, CertificacaoDao> implements CertificacaoManager
 {
-	private FaixaSalarialManager faixaSalarialManager;
-	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
-	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager; 
-	private AvaliacaoPraticaManager avaliacaoPraticaManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager; 
+	@Autowired private AvaliacaoPraticaManager avaliacaoPraticaManager;
 	
 	@Autowired
 	CertificacaoManagerImpl(CertificacaoDao dao) {
@@ -80,12 +80,6 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 		}
 
 		return new ArrayList<CheckBox>();
-	}
-
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
 	}
 
 	public Collection<CertificacaoTreinamentosRelatorio> montaCertificacao(Long certificacaoId, String[] colaboradoresCheck, Certificado certificado, Collection<Curso> cursos, boolean vencimentoPorCertificacao){
@@ -222,18 +216,4 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 	public Collection<Certificacao> findCollectionByIdProjection(Long[] certificacoesIds) {
 		return getDao().findCollectionByIdProjection(certificacoesIds);
 	}
-
-	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
-	}
-
-	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
-		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
-	}
-
-	public void setAvaliacaoPraticaManager(
-			AvaliacaoPraticaManager avaliacaoPraticaManager) {
-		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
-	}
-
 }

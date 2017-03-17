@@ -215,8 +215,4 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 				|| !parametrosDoSistemaManager.findById(1L).verificaRemprot() 
 				|| !Autenticador.getModulosNaoConfigurados().contains(75L);
 	}
-	
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
 }

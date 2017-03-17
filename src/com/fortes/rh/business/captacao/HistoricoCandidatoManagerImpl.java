@@ -26,30 +26,19 @@ import com.fortes.rh.model.captacao.relatorio.ProcessoSeletivoRelatorio;
 import com.fortes.rh.model.captacao.relatorio.ProdutividadeRelatorio;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 @SuppressWarnings({"deprecation","unchecked"})
 public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoCandidato, HistoricoCandidatoDao> implements HistoricoCandidatoManager
 {
-	private EtapaSeletivaManager etapaSeletivaManager;
-	private PlatformTransactionManager transactionManager;
-	private CandidatoManager candidatoManager;
+	@Autowired private EtapaSeletivaManager etapaSeletivaManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private CandidatoManager candidatoManager;
 	
 	@Autowired
 	HistoricoCandidatoManagerImpl(HistoricoCandidatoDao fooDao) {
         setDao(fooDao);
     }
-
-	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager)
-	{
-		this.etapaSeletivaManager = etapaSeletivaManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
 
 	public Collection<HistoricoCandidato> findByCandidato(Candidato candidato)
 	{
@@ -202,7 +191,6 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 		try
 		{
 			save(historicoCandidato, candidatosCheck);
-			candidatoManager = (CandidatoManager) SpringUtil.getBean("candidatoManager");
 			candidatoManager.setBlackList(historicoCandidato, candidatosCheck, blacklist);
 
 			transactionManager.commit(status);
@@ -224,11 +212,6 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 	public HistoricoCandidato findByIdProjection(Long historicoId)
 	{
 		return getDao().findByIdProjection(historicoId);
-	}
-	
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
 	}
 
 	public Collection<ProcessoSeletivoRelatorio> relatorioProcessoSeletivo(String ano, Long empresaId, Long cargoId, Long[] etapaIds)

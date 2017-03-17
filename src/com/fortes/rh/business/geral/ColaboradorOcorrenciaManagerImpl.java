@@ -34,15 +34,15 @@ import com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrencia;
 @Component
 public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<ColaboradorOcorrencia, ColaboradorOcorrenciaDao> implements ColaboradorOcorrenciaManager
 {
-	private PlatformTransactionManager transactionManager;
-	private ColaboradorManager colaboradorManager;
-	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
-	private OcorrenciaManager ocorrenciaManager;
-	private AcPessoalClientColaboradorOcorrencia acPessoalClientColaboradorOcorrencia;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private UsuarioManager usuarioManager;
-	private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
+	@Autowired private OcorrenciaManager ocorrenciaManager;
+	@Autowired private AcPessoalClientColaboradorOcorrencia acPessoalClientColaboradorOcorrencia;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private UsuarioManager usuarioManager;
+	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
 
 	@Autowired
 	ColaboradorOcorrenciaManagerImpl(ColaboradorOcorrenciaDao dao) {
@@ -313,24 +313,6 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		
 		absenteismo.setQtdDiasTrabalhados(DateUtil.contaDiasUteisMes(inicioDoMes, considerarSabadoNoAbsenteismo, considerarDomingoNoAbsenteismo));
 	}
-	
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager)
-	{
-		this.ocorrenciaManager = ocorrenciaManager;
-	}
-
-	public void setAcPessoalClientColaboradorOcorrencia(AcPessoalClientColaboradorOcorrencia acPessoalClientColaboradorOcorrencia)
-	{
-		this.acPessoalClientColaboradorOcorrencia = acPessoalClientColaboradorOcorrencia;
-	}
 
 	public Collection<Object[]> montaGraficoAbsenteismo(String dataMesAnoIni, String dataMesAnoFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Empresa empresaLogada) 
 	{
@@ -438,25 +420,5 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		}
 		
 		return colaboradorOcorrencias;
-	}
-	
-	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
-		this.colaboradorAfastamentoManager = colaboradorAfastamentoManager;
-	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setUsuarioManager(UsuarioManager usuarioManager) {
-		this.usuarioManager = usuarioManager;
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 }

@@ -17,7 +17,7 @@ import com.fortes.rh.util.CollectionUtil;
 @Component
 public class CandidatoIdiomaManagerImpl extends GenericManagerImpl<CandidatoIdioma, CandidatoIdiomaDao> implements CandidatoIdiomaManager
 {
-	private ColaboradorIdiomaManager colaboradorIdiomaManager;
+	@Autowired private ColaboradorIdiomaManager colaboradorIdiomaManager;
 	
 	@Autowired
 	CandidatoIdiomaManagerImpl(CandidatoIdiomaDao candidatoIdiomaDao) {
@@ -86,10 +86,5 @@ public class CandidatoIdiomaManagerImpl extends GenericManagerImpl<CandidatoIdio
 		}
 		
 		return candidatoIdiomas;
-	}
-
-	public void setColaboradorIdiomaManager(ColaboradorIdiomaManager colaboradorIdiomaManager)
-	{
-		this.colaboradorIdiomaManager = colaboradorIdiomaManager;
 	}
 }

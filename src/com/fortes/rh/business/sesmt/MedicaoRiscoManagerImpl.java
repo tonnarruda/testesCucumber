@@ -21,8 +21,8 @@ import com.fortes.rh.util.StringUtil;
 @Component
 public class MedicaoRiscoManagerImpl extends GenericManagerImpl<MedicaoRisco, MedicaoRiscoDao> implements MedicaoRiscoManager
 {
-	private PlatformTransactionManager transactionManager;
-	private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
 	
 	@Autowired
 	MedicaoRiscoManagerImpl(MedicaoRiscoDao medicaoRiscoDao) {
@@ -158,15 +158,5 @@ public class MedicaoRiscoManagerImpl extends GenericManagerImpl<MedicaoRisco, Me
 	public Collection<RiscoMedicaoRisco> findRiscoMedicaoRiscos(Long medicaoRiscoId) 
 	{
 		return getDao().findRiscoMedicaoRiscos(medicaoRiscoId);
-	}
-	
-	public void setRiscoMedicaoRiscoManager(RiscoMedicaoRiscoManager riscoMedicaoRiscoManager) 
-	{
-		this.riscoMedicaoRiscoManager = riscoMedicaoRiscoManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager) 
-	{
-		this.transactionManager = transactionManager;
 	}
 }

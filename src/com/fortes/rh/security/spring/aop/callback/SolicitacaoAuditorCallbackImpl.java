@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
@@ -24,7 +26,6 @@ import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.DadosAuditados;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -32,6 +33,16 @@ import com.fortes.security.auditoria.MetodoInterceptado;
 public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 	
 	private static final String VIRGULA_ESPACO = ", ";
+	@Autowired private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
+	@Autowired private BairroManager bairroManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private AmbienteManager ambienteManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private MotivoSolicitacaoManager motivoSolicitacaoManager;
+	@Autowired private CidadeManager cidadeManager;
 
 	public Auditavel processa(MetodoInterceptado metodo) throws Throwable 
 	{
@@ -110,12 +121,10 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		Solicitacao solicitacao = (Solicitacao) metodo.getParametros()[0];
 		Solicitacao solicitacaoAnterior = (Solicitacao) carregaEntidade(metodo, solicitacao);
 
-		SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager = (SolicitacaoAvaliacaoManager) SpringUtil.getBean("solicitacaoAvaliacaoManager");
 		Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos =  solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacaoAnterior.getId(), null);
 		
 		Long[] avaliacoesIds = (Long[]) metodo.getParametros()[1];
 		
-		BairroManager bairroManager = (BairroManager) SpringUtil.getBean("bairroManager");
 		Collection<Bairro> bairros = bairroManager.getBairrosBySolicitacao(solicitacaoAnterior.getId());
 		
 		metodo.processa();
@@ -136,7 +145,6 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		dadosAnteriores.put("funcaoNome", solicitacaoAnterior.getFuncao() != null && solicitacaoAnterior.getFuncao().getNome() != null ? solicitacaoAnterior.getFuncao().getNome() : "");
 		
 		if (solicitacaoAvaliacaos != null && !solicitacaoAvaliacaos.isEmpty()) {
-			AvaliacaoManager avaliacaoManager = (AvaliacaoManager) SpringUtil.getBean("avaliacaoManager");
 			StringBuilder avaliacoes = new StringBuilder();
 			for (SolicitacaoAvaliacao solicitacaoAvaliacao : solicitacaoAvaliacaos) {
 				avaliacoes.append(avaliacaoManager.findById(solicitacaoAvaliacao.getAvaliacao().getId()).getTitulo());
@@ -201,34 +209,28 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		dadosAtualizados.put("horarioComercial", solicitacao.getHorarioComercial());
 
 		dadosAtualizados.put("estabelecimentoId", solicitacao.getEstabelecimento().getId().toString());
-		EstabelecimentoManager estabelecimentoManager = (EstabelecimentoManager) SpringUtil.getBean("estabelecimentoManager");
 		dadosAtualizados.put("estabelecimentoNome", estabelecimentoManager.findById(solicitacao.getEstabelecimento().getId()).getNome());
 		
 		dadosAtualizados.put("areaOrganizacionalId", solicitacao.getAreaOrganizacional().getId().toString());
-		AreaOrganizacionalManager areaOrganizacionalManager = (AreaOrganizacionalManager) SpringUtil.getBean("areaOrganizacionalManager");
 		dadosAtualizados.put("areaOrganizacionalNome", areaOrganizacionalManager.findById(solicitacao.getAreaOrganizacional().getId()).getNome());
 		
 		dadosAtualizados.put("ambienteId", solicitacao.getAmbiente() != null && solicitacao.getAmbiente().getId() != null ? solicitacao.getAmbiente().getId().toString() : "");
 		String ambienteNome = "";
 		if (solicitacao.getAmbiente() != null && solicitacao.getAmbiente().getId() != null) {
-			AmbienteManager ambienteManager = (AmbienteManager) SpringUtil.getBean("ambienteManager");
 			ambienteNome = ambienteManager.findById(solicitacao.getAmbiente().getId()).getNome();
 		}
 		dadosAtualizados.put("ambienteNome", ambienteNome);
 
 		dadosAtualizados.put("faixaSalarialId", solicitacao.getFaixaSalarial().getId().toString());
-		FaixaSalarialManager faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
 		dadosAtualizados.put("cargo/faixaSalarialNome", faixaSalarialManager.findByFaixaSalarialId(solicitacao.getFaixaSalarial().getId()).getNomeDeCargoEFaixa());
 		
 		dadosAtualizados.put("funcaoId", solicitacao.getFuncao() != null && solicitacao.getFuncao().getId() != null ? solicitacao.getFuncao().getId().toString() : "");
 		String funcaoNome = "";
 		if (solicitacao.getFuncao() != null && solicitacao.getFuncao().getId() != null) {
-			FuncaoManager funcaoManager = (FuncaoManager) SpringUtil.getBean("funcaoManager");
 			funcaoNome = funcaoManager.findById(solicitacao.getFuncao().getId()).getNome();
 		}
 		dadosAtualizados.put("funcaoNome", funcaoNome);
 		
-		AvaliacaoManager avaliacaoManager = (AvaliacaoManager) SpringUtil.getBean("avaliacaoManager");
 		if (avaliacoesIds != null && avaliacoesIds.length > 0) {
 			List<Avaliacao> avaliacaos = (List<Avaliacao>) avaliacaoManager.findById(avaliacoesIds);
 			StringBuilder avaliacoes = new StringBuilder();
@@ -243,7 +245,6 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		dadosAtualizados.put("quantidade", String.valueOf(solicitacao.getQuantidade()));
 		
 		dadosAtualizados.put("motivoSolicitacaoId", solicitacao.getMotivoSolicitacao().getId().toString());
-		MotivoSolicitacaoManager motivoSolicitacaoManager = (MotivoSolicitacaoManager) SpringUtil.getBean("motivoSolicitacaoManager");
 		dadosAtualizados.put("motivoSolicitacaoDescricao", motivoSolicitacaoManager.findById(solicitacao.getMotivoSolicitacao().getId()).getDescricao());
 		
 		if (emailsMarcados != null && emailsMarcados.length > 0) {
@@ -263,7 +264,6 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		dadosAtualizados.put("idadeMinima", solicitacao.getIdadeMinimaDesc() != null ? solicitacao.getIdadeMinimaDesc() : "");
 		dadosAtualizados.put("idadeMaxima", solicitacao.getIdadeMaximaDesc() != null ? solicitacao.getIdadeMaximaDesc() : "");
 		
-		CidadeManager cidadeManager = (CidadeManager) SpringUtil.getBean("cidadeManager");
 		String estadoSigla = "";
 		String cidadeNome = "";
 		if (solicitacao.getCidade() != null && solicitacao.getCidade().getId() != null) {
@@ -276,7 +276,6 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		
 		Collection<Bairro> bairros = solicitacao.getBairros();
 		if (bairros != null && !bairros.isEmpty()) {
-			BairroManager bairroManager = (BairroManager) SpringUtil.getBean("bairroManager");
 			StringBuilder bairrosStr = new StringBuilder();
 			for (Bairro bairro : bairros) {
 				bairrosStr.append(bairroManager.findById(bairro.getId()).getNome());

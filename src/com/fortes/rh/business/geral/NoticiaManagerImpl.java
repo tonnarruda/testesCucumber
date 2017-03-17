@@ -21,13 +21,14 @@ import com.fortes.rh.model.geral.Noticia;
 import com.fortes.rh.model.geral.NoticiaComparator;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.IntegerUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.opensymphony.xwork.ActionContext;
 
 @Component
 public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> implements NoticiaManager
 {
+	@Autowired private NoticiaManager noticiaManager;
+	
 	@Autowired
 	NoticiaManagerImpl(NoticiaDao dao) {
 		setDao(dao);
@@ -47,15 +48,13 @@ public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> 
 		ActionContext.getContext().getSession().put(Noticia.ULTIMAS_NOTICIAS, StringUtil.toJSON(noticias, null));
 	}
 	
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings({ "unchecked"})
 	public void importarUltimasNoticias()
     {
 		final String URL_INFO  = "http://www.fortesinformatica.com.br/cgi-bin/resources/resourcesvc?cmd=info&name=PublicidadeParaProdutos";
 		final String URL_LISTA = "http://www.fortesinformatica.com.br/cgi-bin/resources/resourcesvc?cmd=get&id=";
 		
 		SAXBuilder builder = new SAXBuilder();
-		
-		NoticiaManager noticiaManager = (NoticiaManager) SpringUtil.getBeanOld("noticiaManager");
 		
 		try {
 			HttpURLConnection.setFollowRedirects(false);

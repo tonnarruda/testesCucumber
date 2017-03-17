@@ -13,7 +13,7 @@ import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 @Component
 public class CamposExtrasManagerImpl extends GenericManagerImpl<CamposExtras, CamposExtrasDao> implements CamposExtrasManager
 {
-	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	@Autowired private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	
 	@Autowired
 	CamposExtrasManagerImpl(CamposExtrasDao dao) {
@@ -72,10 +72,5 @@ public class CamposExtrasManagerImpl extends GenericManagerImpl<CamposExtras, Ca
 		}
 		else
 			return save(camposExtras);
-	}
-
-	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager)
-	{
-		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
 	}
 }

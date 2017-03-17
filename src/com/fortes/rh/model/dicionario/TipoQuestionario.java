@@ -2,6 +2,8 @@ package com.fortes.rh.model.dicionario;
 
 import java.util.LinkedHashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.pesquisa.Questionario;

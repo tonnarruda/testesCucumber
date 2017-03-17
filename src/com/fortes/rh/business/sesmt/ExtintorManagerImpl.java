@@ -22,10 +22,10 @@ import com.fortes.rh.util.StringUtil;
 @Component
 public class ExtintorManagerImpl extends GenericManagerImpl<Extintor, ExtintorDao> implements ExtintorManager
 {
-	private HistoricoExtintorManager historicoExtintorManager;
-	private ExtintorInspecaoManager extintorInspecaoManager;
-	private ExtintorManutencaoManager extintorManutencaoManager;
-	private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private HistoricoExtintorManager historicoExtintorManager;
+	@Autowired private ExtintorInspecaoManager extintorInspecaoManager;
+	@Autowired private ExtintorManutencaoManager extintorManutencaoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
 	
 	@Autowired
 	ExtintorManagerImpl(ExtintorDao extintorDao) {
@@ -126,25 +126,5 @@ public class ExtintorManagerImpl extends GenericManagerImpl<Extintor, ExtintorDa
 	{
 		historicoExtintorManager.removeByExtintor(extintorId);
 		getDao().remove(extintorId);
-	}
-
-	public void setExtintorInspecaoManager(ExtintorInspecaoManager extintorInspecaoManager)
-	{
-		this.extintorInspecaoManager = extintorInspecaoManager;
-	}
-
-	public void setExtintorManutencaoManager(ExtintorManutencaoManager extintorManutencaoManager)
-	{
-		this.extintorManutencaoManager = extintorManutencaoManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setHistoricoExtintorManager(
-			HistoricoExtintorManager historicoExtintorManager) {
-		this.historicoExtintorManager = historicoExtintorManager;
 	}
 }

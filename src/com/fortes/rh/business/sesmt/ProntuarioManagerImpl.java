@@ -26,11 +26,11 @@ import com.fortes.rh.util.CollectionUtil;
 @Component
 public class ProntuarioManagerImpl extends GenericManagerImpl<Prontuario, ProntuarioDao> implements ProntuarioManager
 {
-	private ColaboradorManager colaboradorManager;
-	private RealizacaoExameManager realizacaoExameManager;
-	private FichaMedicaManager fichaMedicaManager;
-	private SolicitacaoExameManager solicitacaoExameManager;
-	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private RealizacaoExameManager realizacaoExameManager;
+	@Autowired private FichaMedicaManager fichaMedicaManager;
+	@Autowired private SolicitacaoExameManager solicitacaoExameManager;
+	@Autowired private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
 
 	@Autowired
 	ProntuarioManagerImpl(ProntuarioDao prontuarioDao) {
@@ -69,28 +69,5 @@ public class ProntuarioManagerImpl extends GenericManagerImpl<Prontuario, Prontu
 	
 	public Integer findQtdByEmpresa(Long empresaId, Date dataIni, Date dataFim) {
 		return getDao().findQtdByEmpresa(empresaId, dataIni, dataFim);
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setRealizacaoExameManager(RealizacaoExameManager realizacaoExameManager)
-	{
-		this.realizacaoExameManager = realizacaoExameManager;
-	}
-
-	public void setFichaMedicaManager(FichaMedicaManager fichaMedicaManager)
-	{
-		this.fichaMedicaManager = fichaMedicaManager;
-	}
-
-	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
-		this.solicitacaoExameManager = solicitacaoExameManager;
-	}
-
-	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
-		this.colaboradorAfastamentoManager = colaboradorAfastamentoManager;
 	}
 }

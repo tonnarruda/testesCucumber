@@ -17,15 +17,15 @@ import com.fortes.rh.model.sesmt.ComissaoMembro;
 import com.fortes.rh.model.sesmt.relatorio.AtaPosseRelatorio;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class ComissaoManagerImpl extends GenericManagerImpl<Comissao, ComissaoDao> implements ComissaoManager
 {
-	private ComissaoReuniaoManager comissaoReuniaoManager;
-	private ComissaoPeriodoManager comissaoPeriodoManager;
-	private ComissaoPlanoTrabalhoManager comissaoPlanoTrabalhoManager;
-	private ComissaoMembroManager comissaoMembroManager;
+	@Autowired private EleicaoManager eleicaoManager;
+	@Autowired private ComissaoMembroManager comissaoMembroManager;
+	@Autowired private ComissaoReuniaoManager comissaoReuniaoManager;
+	@Autowired private ComissaoPeriodoManager comissaoPeriodoManager;
+	@Autowired private ComissaoPlanoTrabalhoManager comissaoPlanoTrabalhoManager;
 
 	@Autowired
 	ComissaoManagerImpl(ComissaoDao fooDao) {
@@ -116,7 +116,6 @@ public class ComissaoManagerImpl extends GenericManagerImpl<Comissao, ComissaoDa
 	
 	public Collection<ParticipacaoColaboradorCipa> getParticipacoesDeColaboradorNaCipa(Long colaboradorId)
 	{
-		EleicaoManager eleicaoManager = (EleicaoManager) SpringUtil.getBean("eleicaoManager");
 		Collection<ParticipacaoColaboradorCipa> participacoesNaCipa = null;
 		
 		// participações em eleições
@@ -133,24 +132,5 @@ public class ComissaoManagerImpl extends GenericManagerImpl<Comissao, ComissaoDa
 	public List<Colaborador> findColaboradoresByDataReuniao(Date dataReuniao, Long comissaoId) 
 	{
 		return getDao().findColaboradoresByDataReuniao(dataReuniao, comissaoId);
-	}
-	
-	public void setComissaoPeriodoManager(ComissaoPeriodoManager comissaoPeriodoManager)
-	{
-		this.comissaoPeriodoManager = comissaoPeriodoManager;
-	}
-	
-	public void setComissaoReuniaoManager(ComissaoReuniaoManager comissaoReuniaoManager)
-	{
-		this.comissaoReuniaoManager = comissaoReuniaoManager;
-	}
-	
-	public void setComissaoPlanoTrabalhoManager(ComissaoPlanoTrabalhoManager comissaoPlanoTrabalhoManager)
-	{
-		this.comissaoPlanoTrabalhoManager = comissaoPlanoTrabalhoManager;
-	}
-	
-	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager) {
-		this.comissaoMembroManager = comissaoMembroManager;
 	}
 }

@@ -4,14 +4,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.ConfigHistoricoNivelDao;
 import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 
+@Component
 public class ConfigHistoricoNivelManagerImpl extends GenericManagerImpl<ConfigHistoricoNivel, ConfigHistoricoNivelDao> implements ConfigHistoricoNivelManager
 {
-	private NivelCompetenciaManager nivelCompetenciaManager;
+	@Autowired private NivelCompetenciaManager nivelCompetenciaManager;
+	@Autowired
+	public ConfigHistoricoNivelManagerImpl(ConfigHistoricoNivelDao configHistoricoNivelDao) {
+		setDao(configHistoricoNivelDao);
+	}
 	
 	public Collection<ConfigHistoricoNivel> findByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId) {
 		return getDao().findByNivelCompetenciaHistoricoId(nivelCompetenciaHistoricoId);
@@ -29,10 +37,6 @@ public class ConfigHistoricoNivelManagerImpl extends GenericManagerImpl<ConfigHi
 		}
 		
 		return configHistoricoNivels;
-	}
-
-	public void setNivelCompetenciaManager(NivelCompetenciaManager nivelCompetenciaManager) {
-		this.nivelCompetenciaManager = nivelCompetenciaManager;
 	}
 
 	public void removeByNivelConfiguracaoHistorico(Long nivelConfiguracaoHIstoricoId) {

@@ -31,14 +31,14 @@ import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 @Component
 public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, AvaliacaoDao> implements AvaliacaoManager
 {
-	private RespostaManager respostaManager;
-	private PerguntaManager perguntaManager;
-	private MensagemManager mensagemManager;
-	private QuestionarioManager questionarioManager;
-	private PeriodoExperienciaManager periodoExperienciaManager;
-	private ColaboradorRespostaManager colaboradorRespostaManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
+	@Autowired private RespostaManager respostaManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private MensagemManager mensagemManager;
+	@Autowired private QuestionarioManager questionarioManager;
+	@Autowired private PeriodoExperienciaManager periodoExperienciaManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
 	
 	@Autowired
 	AvaliacaoManagerImpl(AvaliacaoDao dao) {
@@ -186,38 +186,5 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	
 	public Collection<Avaliacao> findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(Long empresaId, Long colaboradorId){
 		return getDao().findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(empresaId, colaboradorId);
-	}
-	
-	public void setQuestionarioManager(QuestionarioManager questionarioManager) {
-		this.questionarioManager = questionarioManager;
-	}
-
-	public void setRespostaManager(RespostaManager respostaManager) {
-		this.respostaManager = respostaManager;
-	}
-
-	public void setColaboradorRespostaManager(ColaboradorRespostaManager colaboradorRespostaManager) {
-		this.colaboradorRespostaManager = colaboradorRespostaManager;
-	}
-	
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-	
-	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
-	{
-		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
-	}
-
-	public void setMensagemManager(MensagemManager mensagemManager) {
-		this.mensagemManager = mensagemManager;
-	}
-	
-	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager){
-		this.periodoExperienciaManager = periodoExperienciaManager;
-	}
-	
-	public void setPerguntaManager(PerguntaManager perguntaManager) {
-		this.perguntaManager = perguntaManager;
 	}
 }

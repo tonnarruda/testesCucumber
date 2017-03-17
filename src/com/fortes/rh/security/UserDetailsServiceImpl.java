@@ -22,12 +22,9 @@ import com.fortes.rh.util.StringUtil;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService
 {
-	@Autowired
-	private UsuarioManager usuarioManager;
-	@Autowired
-	private ColaboradorManager colaboradorManager;
-	@Autowired
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private UsuarioManager usuarioManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException, DataAccessException
  	{
@@ -47,19 +44,5 @@ public class UserDetailsServiceImpl implements UserDetailsService
 		}
 		else
 			throw new UsernameNotFoundException("Usuário '" + login + "' não cadastrado...");
-	}
-
- 	public void setUsuarioManager(UsuarioManager usuarioManager)
- 	{
- 		this.usuarioManager = usuarioManager;
- 	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

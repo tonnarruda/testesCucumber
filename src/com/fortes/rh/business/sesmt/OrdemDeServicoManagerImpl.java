@@ -25,11 +25,11 @@ import com.fortes.rh.util.DateUtil;
 @Component
 public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico, OrdemDeServicoDao> implements OrdemDeServicoManager
 {
-	private HistoricoFuncaoManager historicoFuncaoManager;
-	private ColaboradorManager colaboradorManager;
-	private RiscoFuncaoManager riscoFuncaoManager;
-	private CursoManager cursoManager;
-	private EpiManager epiManager;
+	@Autowired private HistoricoFuncaoManager historicoFuncaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private RiscoFuncaoManager riscoFuncaoManager;
+	@Autowired private CursoManager cursoManager;
+	@Autowired private EpiManager epiManager;
 
 	@Autowired
 	OrdemDeServicoManagerImpl(OrdemDeServicoDao fooDao) {
@@ -124,29 +124,5 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 	
 	public OrdemDeServico findUltimaOrdemDeServicoImpressa(Long colaboradorId) {
 		return getDao().findUltimaOrdemDeServicoImpressa(colaboradorId);
-	}
-	
-	public void setHistoricoFuncaoManager(HistoricoFuncaoManager historicoFuncaoManager) {
-		this.historicoFuncaoManager = historicoFuncaoManager;
-	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-	
-	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
-		this.riscoFuncaoManager = riscoFuncaoManager;
-	}
-
-	public void setEpiManager(EpiManager epiManager) {
-		this.epiManager = epiManager;
-	}
-
-	public CursoManager getCursoManager() {
-		return cursoManager;
-	}
-
-	public void setCursoManager(CursoManager cursoManager) {
-		this.cursoManager = cursoManager;
 	}
 }

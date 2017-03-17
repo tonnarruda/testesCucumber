@@ -62,7 +62,6 @@ import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.rh.web.ws.AcPessoalClientTabelaReajusteInterface;
@@ -71,22 +70,25 @@ import com.fortes.rh.web.ws.AcPessoalClientTabelaReajusteInterface;
 @SuppressWarnings({"unchecked"})
 public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<HistoricoColaborador, HistoricoColaboradorDao> implements HistoricoColaboradorManager
 {
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private IndiceHistoricoManager indiceHistoricoManager;
-	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
-	private AcPessoalClientColaborador acPessoalClientColaborador;
-	private AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste;
-	private PlatformTransactionManager transactionManager;
-	private ReajusteColaboradorManager reajusteColaboradorManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private IndiceHistoricoManager indiceHistoricoManager;
+	@Autowired private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
+	@Autowired private AcPessoalClientColaborador acPessoalClientColaborador;
+	@Autowired private AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ReajusteColaboradorManager reajusteColaboradorManager;
 
-	private EstabelecimentoManager estabelecimentoManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private IndiceManager indiceManager;
-	private EmpresaManager empresaManager;
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private SolicitacaoManager solicitacaoManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private AmbienteManager ambienteManager;
+	@Autowired private FuncaoManager funcaoManager;
 	
 	@Autowired
 	HistoricoColaboradorManagerImpl(HistoricoColaboradorDao dao) {
@@ -503,11 +505,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().getHistoricosAtuaisByEstabelecimentoAreaGrupo(estabelecimentoIds, filtrarPor, areaOrganizacionalIds, grupoOcupacionalIds, empresaId, dataTabela);
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public HistoricoColaborador ajustaTipoSalario(HistoricoColaborador historico, int salarioPropostoPor, Indice indice, Double quantidadeIndice, Double salarioColaborador)
 	{
 		switch (salarioPropostoPor)
@@ -640,16 +637,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			dataProximo = historicoColaboradors.get(proximo).getData();
 
 		return dataProximo;
-	}
-
-	public void setFaixaSalarialHistoricoManager(FaixaSalarialHistoricoManager faixaSalarialHistoricoManager)
-	{
-		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
-	}
-
-	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
-	{
-		this.indiceHistoricoManager = indiceHistoricoManager;
 	}
 
 	public Collection<HistoricoColaborador> findByColaboradorProjection(Long colaboradorId, Integer statusRetornoAC)
@@ -800,17 +787,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historico;
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
 	// TODO Mensagem de erro usando HTML... achar solução para o problema, chorarrrr
 	public void removeHistoricoAndReajuste(Long historicoColaboradorId, Long colaboradorId, Empresa empresa, boolean removerDoAC) throws Exception
 	{
 		HistoricoColaborador historicoColaboradorTmp = findByIdProjection(historicoColaboradorId);
 		
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		Colaborador colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorId);
 		
 		if (historicoColaboradorTmp.getData().equals(colaborador.getDataAdmissao()))
@@ -984,36 +965,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public String findColaboradorCodigoAC(Long historicoColaboradorId)
 	{
 		return getDao().findColaboradorCodigoAC(historicoColaboradorId);
-	}
-
-	public void setReajusteColaboradorManager(ReajusteColaboradorManager reajusteColaboradorManager)
-	{
-		this.reajusteColaboradorManager = reajusteColaboradorManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
-	}
-
-	public void setAcPessoalClientTabelaReajuste(AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste)
-	{
-		this.acPessoalClientTabelaReajuste = acPessoalClientTabelaReajuste;
-	}
-
-	public void setAcPessoalClientColaborador(AcPessoalClientColaborador acPessoalClientColaborador)
-	{
-		this.acPessoalClientColaborador = acPessoalClientColaborador;
 	}
 
 	public HistoricoColaborador ajustaAmbienteFuncao(HistoricoColaborador historicoColaborador)
@@ -1361,9 +1312,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	// TODO consertar as referências cíclicas / refatorar os managers de ambiente e funcao 
 	
 	private void prepareAmbientes(Collection<HistoricoColaborador> historicoColaboradors) {
-		
-		AmbienteManager ambienteManager = (AmbienteManager) SpringUtil.getBean("ambienteManager");
-		
 		HashMap<Long, Collection<Ambiente>> mapEstabelecimentoAmbiente = new HashMap<Long, Collection<Ambiente>>();
 		
 		for (HistoricoColaborador historicoColaborador : historicoColaboradors) {
@@ -1376,10 +1324,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			historicoColaborador.setAmbientes(mapEstabelecimentoAmbiente.get(estabelecimento.getId()));
 		}
 	}
+	
 	private void prepareFuncoes(Collection<HistoricoColaborador> historicoColaboradors) {
-		
-		FuncaoManager funcaoManager = (FuncaoManager) SpringUtil.getBean("funcaoManager");
-		
 		HashMap<Long, Collection<Funcao>> mapCargoFuncao = new HashMap<Long, Collection<Funcao>>();
 		
 		for (HistoricoColaborador historicoColaborador : historicoColaboradors) {
@@ -1607,25 +1553,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		Collection<HistoricoColaborador> historicosColaboradores = getDao().findByEmpresaComHistorico(empresa.getId(), StatusRetornoAC.AGUARDANDO, true);
 		acPessoalClientTabelaReajuste.saveHistoricoColaborador(historicosColaboradores, empresa, null, false);
 	}
-	
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
 
 	@TesteAutomatico
 	public HistoricoColaborador findHistoricoColaboradorByData(Long colaboradorId, Date data) {
 		return getDao().findHistoricoColaboradorByData(colaboradorId, data);
-	}
-
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
-		this.solicitacaoManager = solicitacaoManager;
 	}
 }

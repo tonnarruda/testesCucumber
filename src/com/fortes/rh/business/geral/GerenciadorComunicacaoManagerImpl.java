@@ -87,35 +87,41 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.ModelUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 
 @Component
-@SuppressWarnings("deprecation")
 public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<GerenciadorComunicacao, GerenciadorComunicacaoDao> implements GerenciadorComunicacaoManager
 {
 	private static Logger logger = Logger.getLogger(GerenciadorComunicacaoManagerImpl.class);
 	
-	ColaboradorCertificacaoManager colaboradorCertificacaoManager;
-	CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-	ParticipanteCursoLntManager participanteCursoLntManager;
-	ParametrosDoSistemaManager parametrosDoSistemaManager;
-	AreaOrganizacionalManager areaOrganizacionalManager;
-	PeriodoExperienciaManager periodoExperienciaManager;
-	MotivoSolicitacaoManager motivoSolicitacaoManager;
-	UsuarioMensagemManager usuarioMensagemManager;
-	ComissaoMembroManager comissaoMembroManager;
-	UsuarioEmpresaManager usuarioEmpresaManager;
-	ProvidenciaManager providenciaManager;
-	ColaboradorManager colaboradorManager;
-	MensagemManager mensagemManager;
-	EmpresaManager empresaManager;
-	PerfilManager perfilManager;
-	CartaoManager cartaoManager;
-	CargoManager cargoManager;
-	CidManager cidManager;
-	LntManager lntManager;
-	Mail mail;
+	@Autowired ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired ColaboradorAfastamentoManager colaboradorAfastamentoManager;
+	@Autowired CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired ParticipanteCursoLntManager participanteCursoLntManager;
+	@Autowired HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired PeriodoExperienciaManager periodoExperienciaManager;
+	@Autowired MotivoSolicitacaoManager motivoSolicitacaoManager;
+	@Autowired ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired UsuarioMensagemManager usuarioMensagemManager;
+	@Autowired EstabelecimentoManager estabelecimentoManager;
+	@Autowired ComissaoMembroManager comissaoMembroManager;
+	@Autowired UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired QuestionarioManager questionarioManager;
+	@Autowired ProvidenciaManager providenciaManager;
+	@Autowired ColaboradorManager colaboradorManager;
+	@Autowired SolicitacaoManager solicitacaoManager;
+	@Autowired MensagemManager mensagemManager;
+	@Autowired EmpresaManager empresaManager;
+	@Autowired UsuarioManager usuarioManager;
+	@Autowired PerfilManager perfilManager;
+	@Autowired CartaoManager cartaoManager;
+	@Autowired CargoManager cargoManager;
+	@Autowired ExameManager exameManager;
+	@Autowired CidManager cidManager;
+	@Autowired LntManager lntManager;
+	@Autowired Mail mail;
 	
 	@Autowired
 	GerenciadorComunicacaoManagerImpl(GerenciadorComunicacaoDao dao) {
@@ -175,7 +181,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 	public void enviaEmailSolicitanteSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario){
 		try {
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 			Colaborador colaboradorSolicitante = colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId(), true);
 			
 			if(colaboradorSolicitante != null && colaboradorSolicitante.getContato() != null && colaboradorSolicitante.getContato().getEmail() != null)
@@ -207,7 +212,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	public void enviarLembreteResponderAvaliacaoDesempenho(){
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		Collection<Colaborador> avaliadores = colaboradorManager.findColaboradorDeAvaliacaoDesempenhoNaoRespondida();
 		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
 		
@@ -244,7 +248,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	public void enviarLembreteAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Empresa empresa){
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		Collection<Colaborador> avaliadores = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenhoId, false, false);
 		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
 		
@@ -313,7 +316,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 
 	public void enviaLembreteDeQuestionarioNaoLiberado(){
-		QuestionarioManager questionarioManager = (QuestionarioManager) SpringUtil.getBeanOld("questionarioManager");
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.PESQUISA_NAO_LIBERADA.getId(), null);
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos){
 			try{
@@ -363,7 +365,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
     			}
     			
     			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
-    				ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
     				Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
     				String[] emails = colaboradorManager.findEmailsByUsuarios(LongUtil.collectionToCollectionLong(usuariosConfigurados));
     				mail.send(empresa, subject, body.toString(), null, emails);
@@ -457,8 +458,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 	public void enviaLembreteExamesPrevistos(Collection<Empresa> empresas) {
 		try	{
-			ExameManager exameManager = (ExameManager) SpringUtil.getBeanOld("exameManager");
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 			Map<String,Object> parametros = new HashMap<String, Object>();
 			
 			for (Empresa empresa : empresas){
@@ -500,7 +499,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	public void enviaMensagemLembretePeriodoExperiencia(){
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		Collection<PeriodoExperiencia> periodoExperiencias = periodoExperienciaManager.findAllAtivos();
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId(), null);
 		
@@ -586,7 +584,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	public void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(Long colaboradorAvaliadoId, Long avaliacaoId, Usuario usuario, Empresa empresa){
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		Colaborador colaboradorAvaliado = colaboradorManager.findByIdDadosBasicos(colaboradorAvaliadoId, null);
 		Colaborador avaliador = colaboradorManager.findByUsuarioProjection(usuario.getId(), true);
 		
@@ -638,7 +635,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					mensagem.append("As respostas da avaliação do período de experiência do colaborador ").append(colaboradorQuestionario.getColaborador().getNomeMaisNomeComercial()).append(" foram excluídas pelo usuário ").append(usuario.getNome());
 					mensagem.append("<br/><br/>Avaliação do Período de Experiência: " + colaboradorQuestionario.getAvaliacao().getTitulo());
 					mensagem.append("<br/>Colaborador Avaliado: " + colaboradorQuestionario.getColaborador().getNomeMaisNomeComercial());
-					ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 					String[] emails = colaboradorManager.findEmailsByUsuarios(LongUtil.collectionToCollectionLong(usuariosConfigurados));
 					mail.send(empresa, "[RH] - Exclusão das resposta da avaliação do período de experiência, do colaborador -" + colaboradorQuestionario.getColaborador().getNomeMaisNomeComercial(), mensagem.toString(), null, emails);
 				}
@@ -648,7 +644,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void enviaAvisoOcorrenciaCadastrada(ColaboradorOcorrencia colaboradorOcorrencia, Long empresaId){
 		try {
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 			Colaborador colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorOcorrencia.getColaborador().getId());
 			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 			String providenciaDescricao = "";
@@ -693,7 +688,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	public void enviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi(){
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		StringBuilder mensagem;
 		Collection<UsuarioEmpresa> usuariosEmpresa;
 		Collection<Integer> diasLembrete;
@@ -715,7 +709,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	public void enviarEmailTerminoContratoTemporarioColaborador() throws Exception{
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		StringBuilder body;
 		Collection<Integer> diasLembretes;
 		Collection<Colaborador> colaboradors;
@@ -740,7 +733,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	public void enviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi(){
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.NAO_ABERTURA_SOLICITACAO_EPI.getId(), null);
 		
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos){
@@ -778,7 +770,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	public void enviaAvisoDesligamentoColaboradorAC(String codigoEmpresa, String grupoAC, Empresa empresa, String... codigosACColaboradores){
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		Collection<Colaborador> colaboradores = colaboradorManager.findColaboradoresByCodigoAC(empresa.getId(), true, codigosACColaboradores);
 		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(codigoEmpresa, grupoAC, null);
 
@@ -815,7 +806,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					emails = areaOrganizacionalManager.getEmailsResponsaveis(colaborador.getAreaOrganizacional().getId(), colaborador.getEmpresa().getId(), AreaOrganizacional.CORRESPONSAVEL, colaborador.getContato().getEmail());
 					mail.send(gerenciadorComunicacao.getEmpresa(), subject, msgGeral, null, emails);
 				}else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
-					UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 					CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
 					Long[] usuariosIds = collUtil.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios());
 					emails = usuarioManager.findEmailsByUsuario(usuariosIds, colaborador.getContato().getEmail());
@@ -908,7 +898,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 	public void enviarAvisoEmail(Turma turma, Long empresaId){
 		Empresa empresa = empresaManager.findByIdProjection(empresaId);
-		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColaboradoresComEmailByTurma(turma.getId(), false); 
 
 		String subject = "[RH] - Lembrete: Curso " + turma.getCurso().getNome();
@@ -929,7 +918,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void enviarAvisoAvaliacaoEmail(Turma turma, AvaliacaoTurma avaliacaoTurma, Long empresaId){
 		Empresa empresa = empresaManager.findByIdProjection(empresaId);
-		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColaboradoresComEmailByTurma(turma.getId(), true); 
 		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
 		String subject = "[RH] - Avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome();
@@ -981,7 +969,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 
 	public void enviaMensagemCancelamentoSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC){
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		colaborador = colaboradorManager.findByCodigoAC(colaborador.getCodigoAC(), colaborador.getEmpresa());
 		
 		StringBuilder mensagemFinal = new StringBuilder();
@@ -1002,7 +989,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	public void enviaAvisoDeAfastamento(Long colaboradorAfastamentoId, Empresa empresa){
-		ColaboradorAfastamentoManager colaboradorAfastamentoManager = (ColaboradorAfastamentoManager) SpringUtil.getBean("colaboradorAfastamentoManager");
 		ColaboradorAfastamento colaboradorAfastamento = colaboradorAfastamentoManager.findByColaboradorAfastamentoId(colaboradorAfastamentoId);
 		
 		if(colaboradorAfastamento != null){
@@ -1058,7 +1044,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 
 	public void enviaAvisoContratacao(HistoricoColaborador historicoColaborador){
-		HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBean("historicoColaboradorManager");
 		historicoColaborador = historicoColaboradorManager.findByIdProjection(historicoColaborador.getId());
 		
 		StringBuilder  mensagem = new StringBuilder("Contratação efetuada para o colaborador " + historicoColaborador.getColaborador().getNomeMaisNomeComercial());
@@ -1100,7 +1085,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 	private void enviaEmailsUsuarios(Collection<GerenciadorComunicacao> gerenciadorComunicacaos, Empresa empresa, String subject, String mensagem){
 		try {
-			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 			CollectionUtil<Usuario> cul = new CollectionUtil<Usuario>();
 			
 			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
@@ -1215,7 +1199,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		try{
 			Collection<Empresa> empresas = getDao().findEmpresasByOperacaoId(Operacao.ENVIAR_CARTAO_ANIVERSARIANTES.getId());
 			if (empresas != null && empresas.size() > 0){
-				ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 				colaboradorManager.enviaEmailAniversariantes(empresas);
 			}
 		} catch (Exception e) {
@@ -1241,7 +1224,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
 						mail.send(empresa, subject, mensagem, null, emails);
 					} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
-						UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 						CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
 						Long[] usuariosIds = collUtil.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios());
 						String[] emails = usuarioManager.findEmailsByUsuario(usuariosIds, null);
@@ -1264,7 +1246,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void enviaMensagemHabilitacaoAVencer(){
 		try {
 			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.HABILITACAO_A_VENCER.getId(), null);
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 			Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 			String mensagemBase = "As carteiras de habilitação dos colaboradores relacionados abaixo estão próximas do vencimento:\n";
 			String subject = "[RH] - Aviso de vencimento de habilitação";
@@ -1295,7 +1276,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
 			enviaEmailParaResponsavelRhEUsuarios(mensagemBase, subject, gerenciadorComunicacao, mapAreaColaborador, emails);
 		} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
-			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 			CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
 			Long[] usuariosIds = collUtil.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios());
 			String[] emails = usuarioManager.findEmailsByUsuario(usuariosIds, null);
@@ -1369,14 +1349,12 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			if (!gerenciadorComunicacaos.isEmpty()) {
 				ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
 
-				ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 				Colaborador solicitante = colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId(), true);
 
 				String nomeSolicitante = "";
 				if(solicitante != null) nomeSolicitante = solicitante.getNomeMaisNomeComercial();
 
 				solicitacao.setMotivoSolicitacao(motivoSolicitacaoManager.findById(solicitacao.getMotivoSolicitacao().getId()));
-				EstabelecimentoManager estabelecimentoManager = (EstabelecimentoManager) SpringUtil.getBean("estabelecimentoManager");
 				solicitacao.setEstabelecimento(estabelecimentoManager.findById(solicitacao.getEstabelecimento().getId()));
 
 				String nomeLiberador = "";
@@ -1409,7 +1387,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				if (emailsRH != null && emailsRH.size() > 0) 
 					mail.send(empresa, parametrosDoSistema, subject, bodyResponsavel, true, StringUtil.converteCollectionToArrayString(emailsRH));
 			}else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL.getId())){
-				UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 				String[] emailsByUsuario = usuarioManager.findEmailsByPerfil("ROLE_LIBERA_SOLICITACAO", empresa.getId()); 
 				String link = parametrosDoSistema.getAppUrl() + "/captacao/solicitacao/prepareUpdate.action?solicitacao.id=" + solicitacao.getId();
 				String bodyAprovarReprovar = body.toString();
@@ -1420,7 +1397,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				String notEmail = null;
 				if(solicitacao.isInvisivelParaGestor())
 					notEmail = areaOrganizacionalManager.getEmailResponsavel(solicitacao.getAreaOrganizacional().getId());
-				UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 				String[] emailsByUsuario = usuarioManager.findEmailByPerfilAndGestor("ROLE_LIBERA_SOLICITACAO", empresa.getId(), solicitacao.getAreaOrganizacional().getId(), false, notEmail);
 				if(emailsByUsuario != null && emailsByUsuario.length > 0 ){
 					String link = parametrosDoSistema.getAppUrl() + "/captacao/solicitacao/prepareUpdate.action?solicitacao.id=" + solicitacao.getId();
@@ -1463,12 +1439,10 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaborador.getAreaOrganizacional().getId(), colaborador.getEmpresa().getId(), AreaOrganizacional.CORRESPONSAVEL, null);
 						mail.send(empresa, subject, body, null, emails);
 					} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))	{
-						ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 						Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
 						String[] emails = colaboradorManager.findEmailsByUsuarios(LongUtil.collectionToCollectionLong(usuariosConfigurados));
 						mail.send(empresa, subject, body, null, emails);
 					} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.APLICAR_REALINHAMENTO.getId())){
-						UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 						String[] emails = usuarioManager.findEmailsByPerfil("ROLE_MOV_APLICARREALINHAMENTO", empresa.getId());
 						ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 						String link = parametrosDoSistema.getAppUrl() + "/cargosalario/tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=" + tabelaReajusteColaboradorId;
@@ -1482,7 +1456,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 	public void enviaAvisoSolicitacaoDesligamento(Long colaboradorId, Long usuarioId, Long empresaId){
 		try {
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 			Colaborador colaborador = colaboradorManager.findByIdComHistorico(colaboradorId);
 			String email = "";
 			
@@ -1492,8 +1465,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			Empresa empresa = empresaManager.findByIdProjection(empresaId);
 			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 			String link = parametrosDoSistema.getAppUrl() + "/geral/colaborador/visualizarSolicitacaoDesligamento.action?colaborador.id=" + colaborador.getId();
-			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
-			
 			Usuario usuario = usuarioManager.findByIdProjection(usuarioId);
 			
 			String subject = "[RH] - Solicitação de desligamento de colaborador";
@@ -1550,7 +1521,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				return;
 			
 			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 			String status = (aprovado? "aprovada" : "reprovada");
 			String subject = "[RH] - Solicitação de desligamento de colaborador " + status;
 			StringBuilder body = new StringBuilder();
@@ -1659,7 +1629,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			String[] emails = gerenciadorComunicacao.getEmpresa().getArrayEmailRespRH();
 			mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
 		} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
-			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 			CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
 			String[] emails = usuarioManager.findEmailsByUsuario(collUtil.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios()), null);
 			mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
@@ -1674,7 +1643,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	private void notificacaoCurso(ParametrosDoSistema parametros, Collection<GerenciadorComunicacao> gerenciadorComunicacaos){
-		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
 		Collection<ColaboradorTurma> colaboradoresTurmas = new ArrayList<ColaboradorTurma>();
 		Collection<Integer> diasLembrete = new ArrayList<Integer>();
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos){
@@ -1719,7 +1687,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			String[] emails = gerenciadorComunicacao.getEmpresa().getArrayEmailRespRH();
 			mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
 		} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
-			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 			CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
 			String[] emails = usuarioManager.findEmailsByUsuario(collUtil.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios()), null);
 			mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
@@ -1859,7 +1826,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					String[] emails = empresa.getEmailRespRH().split(";");
 					mail.send(empresa, titulo, corpo, null, emails);
 				}else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
-					ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 					Collection<UsuarioEmpresa> usuariosEmpresas = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
 					String[] emails = colaboradorManager.findEmailsByUsuarios(LongUtil.collectionToCollectionLong(usuariosEmpresas));
 					mail.send(empresa, titulo, corpo, null, StringUtil.remove(emails, emailUsuarioLogado));
@@ -1877,10 +1843,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		try {
 			ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
 			if(parametros.isAutorizacaoGestorNaSolicitacaoPessoal()){
-				SolicitacaoManager solicitacaoManager = (SolicitacaoManager) SpringUtil.getBean("solicitacaoManager");
 				Solicitacao solicitacao = solicitacaoManager.findById(solicitacaoId);
 
-				ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 				Colaborador colaborador = colaboradorManager.findByIdDadosBasicos(colaboradorId, null); 
 				
 				String titulo = "Autorização da participação do colaborador em uma Solicitação de Pessoal";
@@ -1911,15 +1875,11 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void enviarAvisoAoAlterarStatusColaboradorSolPessoal(Usuario usuarioLogado, CandidatoSolicitacao candidatoSolicitacaoAnterior, CandidatoSolicitacao candidatoSolicitacao, Empresa empresa) {
 		try {
 			ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
-			SolicitacaoManager solicitacaoManager = (SolicitacaoManager) SpringUtil.getBean("solicitacaoManager");
 			Solicitacao solicitacao = solicitacaoManager.findById(candidatoSolicitacaoAnterior.getSolicitacao().getId());
 
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 			Colaborador colaborador = colaboradorManager.findByCandidato(candidatoSolicitacaoAnterior.getCandidato().getId(), empresa.getId());
 			colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), null); 
 			
-			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
-
 			Usuario usuarioSolicitante = null;
 			if(candidatoSolicitacaoAnterior.getUsuarioSolicitanteAutorizacaoGestor() != null){
 				usuarioSolicitante = usuarioManager.findById(candidatoSolicitacaoAnterior.getUsuarioSolicitanteAutorizacaoGestor().getId());
@@ -2142,88 +2102,5 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	private String formateMensagem(String subject, StringBuilder body)
 	{
 		return subject + "\n\n" + body.toString().replaceAll("<br>", "\n");
-	}
-
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
-
-	public void setMail(Mail mail) {
-		this.mail = mail;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
-	public void setPerfilManager(PerfilManager perfilManager) {
-		this.perfilManager = perfilManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
-	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager) {
-		this.periodoExperienciaManager = periodoExperienciaManager;
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
-
-	public void setUsuarioMensagemManager(UsuarioMensagemManager usuarioMensagemManager) {
-		this.usuarioMensagemManager = usuarioMensagemManager;
-	}
-
-	public void setMensagemManager(MensagemManager mensagemManager) {
-		this.mensagemManager = mensagemManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setCargoManager(CargoManager cargoManager) {
-		this.cargoManager = cargoManager;
-	}
-	
-	public void setProvidenciaManager(ProvidenciaManager providenciaManager)
-	{
-		this.providenciaManager = providenciaManager;
-	}
-
-	public void setCidManager(CidManager cidManager) {
-		this.cidManager = cidManager;
-	}
-
-	public void setMotivoSolicitacaoManager(MotivoSolicitacaoManager motivoSolicitacaoManager) {
-		this.motivoSolicitacaoManager = motivoSolicitacaoManager;
-	}
-
-	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager) {
-		this.comissaoMembroManager = comissaoMembroManager;
-	}
-
-	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager)
-	{
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setCartaoManager(CartaoManager cartaoManager) {
-		this.cartaoManager = cartaoManager;
-	}
-
-	public void setLntManager(LntManager lntManager) {
-		this.lntManager = lntManager;
-	}
-
-	public void setParticipanteCursoLntManager(ParticipanteCursoLntManager participanteCursoLntManager)
-	{
-		this.participanteCursoLntManager = participanteCursoLntManager;
 	}
 }

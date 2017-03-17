@@ -15,7 +15,7 @@ import com.fortes.rh.util.MathUtil;
 @Component
 public class ReajusteFaixaSalarialManagerImpl extends GenericManagerImpl<ReajusteFaixaSalarial, ReajusteFaixaSalarialDao> implements ReajusteFaixaSalarialManager
 {
-	private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
 	
 	@Autowired
 	ReajusteFaixaSalarialManagerImpl(ReajusteFaixaSalarialDao dao) {
@@ -69,13 +69,4 @@ public class ReajusteFaixaSalarialManagerImpl extends GenericManagerImpl<Reajust
 	{
 		return getDao().verificaPendenciasPorFaixa(faixaSalarialId);
 	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) 
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
-	
-
-
 }

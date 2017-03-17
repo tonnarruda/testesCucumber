@@ -19,7 +19,7 @@ import com.fortes.rh.util.DateUtil;
 @Component
 public class HistoricoExtintorManagerImpl extends GenericManagerImpl<HistoricoExtintor, HistoricoExtintorDao> implements HistoricoExtintorManager
 {
-	private PlatformTransactionManager transactionManager;
+	@Autowired private PlatformTransactionManager transactionManager;
 	
 	@Autowired
 	HistoricoExtintorManagerImpl(HistoricoExtintorDao historicoExtintorDao) {
@@ -95,9 +95,5 @@ public class HistoricoExtintorManagerImpl extends GenericManagerImpl<HistoricoEx
 			transactionManager.rollback(status);
 			throw e;
 		}
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
 	}
 }

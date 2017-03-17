@@ -24,14 +24,14 @@ import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuniao, ComissaoReuniaoDao> implements ComissaoReuniaoManager
 {
-	private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
-	private ComissaoMembroManager comissaoMembroManager;
-	private ComissaoPeriodoManager comissaoPeriodoManager;
+	@Autowired private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
+	@Autowired private ComissaoPeriodoManager comissaoPeriodoManager;
+	@Autowired private ComissaoMembroManager comissaoMembroManager;
+	@Autowired private ComissaoManager comissaoManager;
 
 	@Autowired
 	ComissaoReuniaoManagerImpl(ComissaoReuniaoDao fooDao) {
@@ -168,24 +168,9 @@ public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuni
 		
 		return presencas;
 	}
-
-	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager)
-	{
-		this.comissaoReuniaoPresencaManager = comissaoReuniaoPresencaManager;
-	}
-
-	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager)
-	{
-		this.comissaoMembroManager = comissaoMembroManager;
-	}
-
-	public void setComissaoPeriodoManager(ComissaoPeriodoManager comissaoPeriodoManager) {
-		this.comissaoPeriodoManager = comissaoPeriodoManager;
-	}
 	
 	public void sugerirReuniao(Comissao comissao)
 	{
-		ComissaoManager comissaoManager = (ComissaoManager) SpringUtil.getBean("comissaoManager");
 		java.util.Date sugerirData = comissao.getDataIni();
 		try {
 			for(int i = 1; i <= 12; i++)

@@ -30,7 +30,6 @@ import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.model.sesmt.relatorio.FichaEpiRelatorio;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 import com.fortes.web.tags.CheckBox;
@@ -38,11 +37,11 @@ import com.fortes.web.tags.CheckBox;
 @Component
 public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements EpiManager
 {
-	private EpiHistoricoManager epiHistoricoManager;
-	private TipoEPIManager tipoEPIManager;
-	private PlatformTransactionManager transactionManager;
-	private ColaboradorManager colaboradorManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private EpiHistoricoManager epiHistoricoManager;
+	@Autowired private TipoEPIManager tipoEPIManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
 	
 	@Autowired
 	EpiManagerImpl(EpiDao epiDao) {
@@ -139,16 +138,6 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 		remove(epi);
 	}
 	
-	public void setEpiHistoricoManager(EpiHistoricoManager epiHistoricoManager)
-	{
-		this.epiHistoricoManager = epiHistoricoManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
 	public FichaEpiRelatorio findImprimirFicha(Empresa empresaSistema, Colaborador colaborador)
 	{
 		colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO);
@@ -189,7 +178,6 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 			Collection<EpiHistorico> epiHistoricos = popularEpiHistoricoComIds(epiOrigemId, epi.getId());
 			epi.setEpiHistoricos(epiHistoricos);
 			
-			TipoEPIManager tipoEPIManager = (TipoEPIManager) SpringUtil.getBean("tipoEPIManager");
 			Long tipoEPIIdAtual = tipoEPIManager.findTipoEPIId(epi.getTipoEPI().getId());
 			Long tipoEPIIdNovo = tipoEPIIds.get(tipoEPIIdAtual);
 			TipoEPI tipoEPI = tipoEPIManager.findTipoEPI(tipoEPIIdNovo);
@@ -201,7 +189,6 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 	
 	private Map<Long, Long> clonarTipoEPI(Long empresaOrigemId, Long empresaDestinoId) 
 	{
-		TipoEPIManager tipoEPIManager = (TipoEPIManager) SpringUtil.getBean("tipoEPIManager");
 		Collection<TipoEPI> tipoEPIs = tipoEPIManager.findCollectionTipoEPI(empresaOrigemId);
 		Map<Long, Long> tipoEPIIds = new HashMap<Long, Long>();
 		
@@ -356,20 +343,5 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 				epiHistoricoManager.update(epiHistorico);
 			}
 		}
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-	
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setTipoEPIManager(TipoEPIManager tipoEPIManager) 
-	{
-		this.tipoEPIManager = tipoEPIManager;
 	}
 }

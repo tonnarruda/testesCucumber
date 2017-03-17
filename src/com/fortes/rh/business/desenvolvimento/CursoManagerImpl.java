@@ -24,16 +24,17 @@ import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
 @Component
 public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implements CursoManager
 {
-	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
-	private PlatformTransactionManager transactionManager;
-	private ColaboradorManager colaboradorManager;
-	private CursoLntManager cursoLntManager;
+	@Autowired private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CursoLntManager cursoLntManager;
+	@Autowired private TurmaManager turmaManager;
 	
 	@Autowired
 	CursoManagerImpl(CursoDao dao) {
@@ -114,11 +115,9 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 
 		indicadorTreinamento.setHorasPerCapita(horasPerCapita);
 		
-		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
 		percentualFrequencia = colaboradorTurmaManager.percentualFrequencia(dataIni, dataFim, empresaIds, cursoIds, areasIds, estabelecimentosIds);
 		indicadorTreinamento.setPercentualFrequencia(percentualFrequencia);
 		
-		TurmaManager turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
 		percentualInvestimento = turmaManager.getPercentualInvestimento(somaCustos, dataIni, dataFim, empresaIds);
 		indicadorTreinamento.setPercentualInvestimento(percentualInvestimento);
 		
@@ -315,21 +314,6 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	public boolean existePresenca(Long cursoId) {
 		return getDao().existePresenca(cursoId);
 	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
-	{
-		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
 
 	public Collection<Curso> findByHistoricoFuncaoId(Long historicoFuncaoId) {
 		return getDao().findByHistoricoFuncaoId(historicoFuncaoId);
@@ -348,9 +332,5 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		}
 
 		return checks;
-	}
-
-	public void setCursoLntManager(CursoLntManager cursoLntManager) {
-		this.cursoLntManager = cursoLntManager;
 	}
 }

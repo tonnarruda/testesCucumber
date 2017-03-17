@@ -13,13 +13,13 @@ import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CnpjUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
 @Component
 public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimento, EstabelecimentoDao> implements EstabelecimentoManager
 {
-	private AgendaManager agendaManager;
+	@Autowired private AmbienteManager ambienteManager;
+	@Autowired private AgendaManager agendaManager;
 	
 	@Autowired
 	EstabelecimentoManagerImpl(EstabelecimentoDao dao) {
@@ -125,7 +125,6 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 	public void deleteEstabelecimento(Long[] estabelecimentoIds) throws Exception {
 		
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0) {
-			AmbienteManager ambienteManager = (AmbienteManager) SpringUtil.getBean("ambienteManager");
 			ambienteManager.deleteByEstabelecimento(estabelecimentoIds);
 			agendaManager.deleteByEstabelecimento(estabelecimentoIds);
 			
@@ -140,9 +139,5 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 	public void updateCodigoAC(Long estabelecimentoId, String codigoAC) 
 	{
 		getDao().updateCodigoAC(estabelecimentoId, codigoAC);
-	}
-	
-	public void setAgendaManager(AgendaManager agendaManager) {
-		this.agendaManager = agendaManager;
 	}
 }

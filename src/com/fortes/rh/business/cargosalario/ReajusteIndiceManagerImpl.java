@@ -16,7 +16,7 @@ import com.fortes.rh.util.MathUtil;
 @Component
 public class ReajusteIndiceManagerImpl extends GenericManagerImpl<ReajusteIndice, ReajusteIndiceDao> implements ReajusteIndiceManager
 {
-	private IndiceManager indiceManager;
+	@Autowired private IndiceManager indiceManager;
 	
 	@Autowired
 	ReajusteIndiceManagerImpl(ReajusteIndiceDao dao) {
@@ -68,10 +68,5 @@ public class ReajusteIndiceManagerImpl extends GenericManagerImpl<ReajusteIndice
 	public void updateValorProposto(Long reajusteIndiceId, Double valorAtual, char dissidioPor, Double valorDissidio) throws Exception 
 	{
 		getDao().updateValorProposto(reajusteIndiceId, MathUtil.calculaDissidio(dissidioPor, valorDissidio, valorAtual));
-	}
-	
-	public void setIndiceManager(IndiceManager indiceManager) 
-	{
-		this.indiceManager = indiceManager;
 	}
 }

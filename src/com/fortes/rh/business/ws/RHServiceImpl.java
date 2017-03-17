@@ -8,6 +8,7 @@ import java.util.Date;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -89,32 +90,32 @@ import com.fortes.rh.util.StringUtil;
 
 public class RHServiceImpl implements RHService
 {
-	private ColaboradorManager colaboradorManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private EmpresaManager empresaManager;
-	private CidadeManager cidadeManager;
-	private IndiceManager indiceManager;
-	private IndiceHistoricoManager indiceHistoricoManager;
-	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private UsuarioMensagemManager usuarioMensagemManager;
-	private UsuarioEmpresaManager usuarioEmpresaManager;
-	private MensagemManager mensagemManager;
-	private CargoManager cargoManager;
-	private CandidatoManager candidatoManager;
-	private OcorrenciaManager ocorrenciaManager;
-	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private GrupoACManager grupoACManager;
-	private UsuarioManager usuarioManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private PlatformTransactionManager transactionManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private PesquisaManager pesquisaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private AuditoriaManager auditoriaManager;
-	private TokenManager tokenManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private CidadeManager cidadeManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private IndiceHistoricoManager indiceHistoricoManager;
+	@Autowired private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private UsuarioMensagemManager usuarioMensagemManager;
+	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired private MensagemManager mensagemManager;
+	@Autowired private CargoManager cargoManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private OcorrenciaManager ocorrenciaManager;
+	@Autowired private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private GrupoACManager grupoACManager;
+	@Autowired private UsuarioManager usuarioManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private PesquisaManager pesquisaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private AuditoriaManager auditoriaManager;
+	@Autowired private TokenManager tokenManager;
 
 	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Não é possível excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_SITUACAO = "Não é possível excluir situação do empregado, existem outros cadastros utilizando essa situação.";
@@ -1541,126 +1542,5 @@ public class RHServiceImpl implements RHService
 	public String versaoDoSistema()
 	{
 		return parametrosDoSistemaManager.findById(1L).getAppVersao();
-	}
-	
-	public void setCidadeManager(CidadeManager cidadeManager)
-	{
-		this.cidadeManager = cidadeManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
-	}
-
-	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
-	{
-		this.indiceHistoricoManager = indiceHistoricoManager;
-	}
-
-	public void setFaixaSalarialHistoricoManager(FaixaSalarialHistoricoManager faixaSalarialHistoricoManager)
-	{
-		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
-	}
-
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
-	public void setUsuarioMensagemManager(UsuarioMensagemManager usuarioMensagemManager)
-	{
-		this.usuarioMensagemManager = usuarioMensagemManager;
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)
-	{
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
-
-	public void setMensagemManager(MensagemManager mensagemManager)
-	{
-		this.mensagemManager = mensagemManager;
-	}
-
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
-
-	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager)
-	{
-		this.ocorrenciaManager = ocorrenciaManager;
-	}
-
-	public void setColaboradorOcorrenciaManager(ColaboradorOcorrenciaManager colaboradorOcorrenciaManager)
-	{
-		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
-	public void setGrupoACManager(GrupoACManager grupoACManager) {
-		this.grupoACManager = grupoACManager;
-	}
-
-	public void setUsuarioManager(UsuarioManager usuarioManager) {
-		this.usuarioManager = usuarioManager;
-	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
-
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
-	public void setPesquisaManager(PesquisaManager pesquisaManager) {
-		this.pesquisaManager = pesquisaManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
-	public void setAuditoriaManager(AuditoriaManager auditoriaManager) {
-		this.auditoriaManager = auditoriaManager;
-	}
-
-	public void setTokenManager(TokenManager tokenManager) {
-		this.tokenManager = tokenManager;
 	}
 }

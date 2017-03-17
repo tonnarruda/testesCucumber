@@ -43,18 +43,23 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.GerenciadorComunicacaoRunnable;
 import com.fortes.rh.util.MathUtil;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, QuestionarioDao> implements QuestionarioManager
 {
-    private PerguntaManager perguntaManager;
-    private RespostaManager respostaManager;
-    private AspectoManager aspectoManager;
-    private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-    private ColaboradorManager colaboradorManager;
-    private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private RespostaManager respostaManager;
+	@Autowired private AspectoManager aspectoManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private PesquisaManager pesquisaManager;
+	@Autowired private EntrevistaManager entrevistaManager;
+	@Autowired private FichaMedicaManager fichaMedicaManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private AvaliacaoManager avaliacaoManager;
+	
     @Autowired
     QuestionarioManagerImpl(QuestionarioDao dao) {
 		setDao(dao);
@@ -90,10 +95,6 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         String urlVoltar = "";
         Long id = null;
 
-        PesquisaManager pesquisaManager = (PesquisaManager) SpringUtil.getBean("pesquisaManager");
-        EntrevistaManager entrevistaManager = (EntrevistaManager) SpringUtil.getBean("entrevistaManager");
-        FichaMedicaManager fichaMedicaManager = (FichaMedicaManager) SpringUtil.getBean("fichaMedicaManager");
-
         if((id = pesquisaManager.getIdByQuestionario(questionarioId)) != null)
             urlVoltar = "../pesquisa/prepareUpdate.action?pesquisa.id=" + id;
         else if((id = entrevistaManager.getIdByQuestionario(questionarioId)) != null)
@@ -107,7 +108,6 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     public void liberarQuestionario(Long questionarioId, Empresa empresa) throws Exception
     {
         getDao().liberarQuestionario(questionarioId);
-        ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
         Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionario(questionarioId);
 
         Questionario questionario = getDao().findByIdProjection(questionarioId);
@@ -120,7 +120,6 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 
 	public void enviaEmailNaoRespondida(Empresa empresa, Long questionarioId) throws Exception 
 	{
-        ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
 		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionarioEmpresaRespondida(questionarioId, false, null, empresa.getId());
 		Questionario questionario = getDao().findByIdProjection(questionarioId);
 		gerenciadorComunicacaoManager.enviaEmailQuestionario(empresa, questionario, colaboradorQuestionarios);
@@ -228,20 +227,10 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         questionario.setPerguntas(perguntasOrdenadas);
 
     }
-
-    public void setPerguntaManager(PerguntaManager perguntaManager)
-    {
-        this.perguntaManager = perguntaManager;
-    }
     
     public PerguntaManager getPerguntaManager() {
 		return perguntaManager;
 	}
-
-	public void setRespostaManager(RespostaManager respostaManager)
-    {
-        this.respostaManager = respostaManager;
-    }
 
     public RespostaManager getRespostaManager() {
 		return respostaManager;
@@ -278,16 +267,9 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         aspectoManager.removerAspectosDoQuestionario(questionarioId);
     }
 
-    public void setAspectoManager(AspectoManager aspectoManager)
-    {
-        this.aspectoManager = aspectoManager;
-    }
-
     //TODO Refatorar consultas grandes como banco da vega esta exibindo "could not execute query" quando marcamos áreas organizacionais 
     public Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Questionario questionario) throws Exception
     {
-    	ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) SpringUtil.getBean("colaboradorRespostaManager");
-
     	boolean existeRespostaSemCargo = colaboradorRespostaManager.existeRespostaSemCargo(perguntasIds);
     	if (cargosIds != null && cargosIds.length > 0 && existeRespostaSemCargo)
     		throw new Exception("Existem respostas sem a informação dos cargos dos colaboradores que a responderam. Provavelmente, elas foram realizadas em versões anteriores à versão 1.1.116.128, que passa a fazer esse registro. Nesse caso, o filtro por cargos não é recomendado.");
@@ -302,7 +284,6 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null, null);
        
         if(questionario.isAnonimo() && questionario.getTipo() == TipoQuestionario.PESQUISA ) {
-        	ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManager");
         	ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
         	
         	questionario.setTotalColab(colaboradorQuestionarioManager.countByQuestionarioRespondido(questionario.getId()));
@@ -370,7 +351,6 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 		
 		String avaliadoNome = colaboradorManager.getNome(avaliadoId);
 		Double mediaPeformance = colaboradorQuestionarioManager.getMediaPeformance(avaliadoId, avaliacaoDesempenho.getId(), desconsiderarAutoAvaliacao);
-		AvaliacaoManager avaliacaoManager = (AvaliacaoManager) SpringUtil.getBean("avaliacaoManager");
 		String obsAvaliadores = avaliacaoManager.montaObsAvaliadores(colaboradorRespostas);
 				
 		for (Pergunta pergunta: perguntas)
@@ -537,8 +517,6 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     {
         Collection<Pergunta> perguntas = perguntaManager.getPerguntasRespostaByQuestionario(id);
 
-        ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) SpringUtil.getBean("colaboradorRespostaManager");
-        FichaMedicaManager fichaMedicaManager = (FichaMedicaManager) SpringUtil.getBean("fichaMedicaManager");
         Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
 
         if(colaboradorQuestionarioId != null)
@@ -563,7 +541,6 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 		ColaboradorQuestionario colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionarioId);
     	Collection<Pergunta> perguntas = perguntaManager.getPerguntasRespostaByQuestionario(colaboradorQuestionario.getAvaliacao().getId());
     	
-    	ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) SpringUtil.getBean("colaboradorRespostaManager");
     	Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
     	
 		colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario, colaboradorQuestionario.getAvaliacao().getId());
@@ -636,19 +613,4 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 	{
 		return getDao().findQuestionario(colaboradorId);
 	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) 
-	{
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-	
-    public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-    {
-        this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-    }
 }

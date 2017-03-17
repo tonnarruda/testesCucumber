@@ -36,12 +36,12 @@ import com.fortes.rh.util.LongUtil;
 @Component
 public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoExame, SolicitacaoExameDao> implements SolicitacaoExameManager
 {
-	private PlatformTransactionManager transactionManager;
-	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
-	private RealizacaoExameManager realizacaoExameManager;
-	private RiscoAmbienteManager riscoAmbienteManager;
-	private RiscoFuncaoManager riscoFuncaoManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
+	@Autowired private RealizacaoExameManager realizacaoExameManager;
+	@Autowired private RiscoAmbienteManager riscoAmbienteManager;
+	@Autowired private RiscoFuncaoManager riscoFuncaoManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
 	
 	@Autowired
 	SolicitacaoExameManagerImpl(SolicitacaoExameDao solicitacaoExameDao) {
@@ -119,11 +119,6 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 			e.printStackTrace();
 			throw new PersistenceException(e.getMessage());
 		}
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
 	}
 
 	public Collection<SolicitacaoExameRelatorio> imprimirSolicitacaoExames(Long solicitacaoExameId) throws ColecaoVaziaException
@@ -233,16 +228,6 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 			getDao().transferirColaboradorToCandidato(empresaId, candidatoId, colaboradorId);
 	}
 
-	public void setRealizacaoExameManager(RealizacaoExameManager realizacaoExameManager)
-	{
-		this.realizacaoExameManager = realizacaoExameManager;
-	}
-	
-	public void setExameSolicitacaoExameManager(ExameSolicitacaoExameManager exameSolicitacaoExameManager)
-	{
-		this.exameSolicitacaoExameManager = exameSolicitacaoExameManager;
-	}
-
 	public MedicoCoordenador setMedicoByQuantidade(Collection<MedicoCoordenador> medicoCoordenadors) 
 	{
 		if(medicoCoordenadors != null && medicoCoordenadors.size() == 1)
@@ -255,14 +240,6 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 	public SolicitacaoExame findByIdProjection(Long id)
 	{
 		return getDao().findByIdProjection(id);
-	}
-
-	public void setRiscoAmbienteManager(RiscoAmbienteManager riscoAmbienteManager) {
-		this.riscoAmbienteManager = riscoAmbienteManager;
-	}
-
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
-		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
 
 	public void removeByCandidato(Long candidatoId) {
@@ -300,9 +277,4 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 			}
 		}
 	}
-
-	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
-		this.riscoFuncaoManager = riscoFuncaoManager;
-	}
-	
 }

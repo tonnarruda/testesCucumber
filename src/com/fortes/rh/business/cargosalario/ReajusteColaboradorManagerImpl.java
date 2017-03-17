@@ -28,19 +28,18 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.RelatorioUtil;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 @SuppressWarnings("unchecked")
 public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteColaborador, ReajusteColaboradorDao> implements ReajusteColaboradorManager
 {
-	private IndiceManager indiceManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private PlatformTransactionManager transactionManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
 	
 	@Autowired
 	ReajusteColaboradorManagerImpl(ReajusteColaboradorDao dao) {
@@ -64,9 +63,6 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 	{
 		if(areaOrganizacionalManager.verificaMaternidade(reajusteColaborador.getAreaOrganizacionalProposta().getId(), null))
 			throw new FortesException("Não é possível fazer solicitações para áreas que possuem sub-áreas.");
-		
-		tabelaReajusteColaboradorManager = (TabelaReajusteColaboradorManager) SpringUtil.getBean("tabelaReajusteColaboradorManager");
-		historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBean("historicoColaboradorManager");
 		
 		TabelaReajusteColaborador tabelaReajusteColaboradorTemp = tabelaReajusteColaboradorManager.findByIdProjection(reajusteColaborador.getTabelaReajusteColaborador().getId());
 		if(historicoColaboradorManager.verifyExists(new String[]{"data", "colaborador.id"}, new Object[]{tabelaReajusteColaboradorTemp.getData(), reajusteColaborador.getColaborador().getId()}))
@@ -212,11 +208,6 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 		return colaboradorIds;
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
 	public void deleteByColaboradoresTabelaReajuste(Long[] colaboradorIds, Long tabelaReajusteColaboradorId)
 	{
 		getDao().deleteByColaboradoresTabelaReajuste(colaboradorIds, tabelaReajusteColaboradorId);
@@ -288,11 +279,6 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 		return reajusteColaboradors;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public Map<String, Object> getParametrosRelatorio(String nomeRelatorio, Empresa empresa, String nomeFiltro)
 	{
 		Map<String, Object> parametros = RelatorioUtil.getParametrosRelatorio(nomeRelatorio, empresa, nomeFiltro);
@@ -318,21 +304,5 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 		}
 
 		return reajusteColaborador.getSalarioProposto();
-	}
-
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
-	
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager)
-	{
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

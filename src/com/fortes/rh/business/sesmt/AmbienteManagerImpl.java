@@ -37,14 +37,14 @@ import com.fortes.web.tags.CheckBox;
 @Component
 public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDao> implements AmbienteManager
 {
-	private HistoricoAmbienteManager historicoAmbienteManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private FuncaoManager funcaoManager;
-	private EpcManager epcManager;
-	private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
-	private EpiManager epiManager;
-	private ComposicaoSesmtManager composicaoSesmtManager;
-	private EmpresaManager empresaManager;
+	@Autowired private HistoricoAmbienteManager historicoAmbienteManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private EpcManager epcManager;
+	@Autowired private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
+	@Autowired private EpiManager epiManager;
+	@Autowired private ComposicaoSesmtManager composicaoSesmtManager;
+	@Autowired private EmpresaManager empresaManager;
 	
 	private Collection<PpraLtcatRelatorio> relatorios = null;
 	
@@ -294,31 +294,5 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 				}
 			}
 		}
-	}
-	
-	public void setFuncaoManager(FuncaoManager funcaoManager) {
-		this.funcaoManager = funcaoManager;
-	}
-	public void setEpcManager(EpcManager epcManager) {
-		this.epcManager = epcManager;
-	}
-	public void setRiscoMedicaoRiscoManager(RiscoMedicaoRiscoManager riscoMedicaoRiscoManager) {
-		this.riscoMedicaoRiscoManager = riscoMedicaoRiscoManager;
-	}
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-	public void setEpiManager(EpiManager epiManager) {
-		this.epiManager = epiManager;
-	}
-	public void setHistoricoAmbienteManager(HistoricoAmbienteManager historicoAmbienteManager)
-	{
-		this.historicoAmbienteManager = historicoAmbienteManager;
-	}
-	public void setComposicaoSesmtManager(ComposicaoSesmtManager composicaoSesmtManager) {
-		this.composicaoSesmtManager = composicaoSesmtManager;
-	}
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 }

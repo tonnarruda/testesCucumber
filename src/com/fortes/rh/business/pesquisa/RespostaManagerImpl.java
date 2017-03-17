@@ -10,11 +10,12 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.pesquisa.RespostaDao;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Resposta;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class RespostaManagerImpl extends GenericManagerImpl<Resposta, RespostaDao> implements RespostaManager
 {
+	@Autowired private PerguntaManager perguntaManager;
+	
 	@Autowired
 	RespostaManagerImpl(RespostaDao dao) {
 		setDao(dao);
@@ -80,7 +81,6 @@ public class RespostaManagerImpl extends GenericManagerImpl<Resposta, RespostaDa
 
 	public Collection<Resposta> findRespostasSugeridas(Long questionarioId)
 	{
-		PerguntaManager perguntaManager = (PerguntaManager) SpringUtil.getBean("perguntaManager");
 		Long ultimaPerguntaObjetivaId = perguntaManager.findUltimaPerguntaObjetiva(questionarioId);
 
 		return getDao().findByPergunta(ultimaPerguntaObjetivaId);

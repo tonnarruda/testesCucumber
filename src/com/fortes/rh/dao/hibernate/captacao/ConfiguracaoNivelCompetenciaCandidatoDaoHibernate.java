@@ -5,11 +5,13 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.stereotype.Component;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaCandidatoDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCandidato;
 
+@Component
 public class ConfiguracaoNivelCompetenciaCandidatoDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetenciaCandidato> implements ConfiguracaoNivelCompetenciaCandidatoDao
 {
 	public ConfiguracaoNivelCompetenciaCandidato findByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId) {

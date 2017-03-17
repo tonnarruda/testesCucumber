@@ -19,8 +19,8 @@ import com.fortes.rh.model.geral.HistoricoBeneficio;
 @Component
 public class BeneficioManagerImpl extends GenericManagerImpl<Beneficio, BeneficioDao> implements BeneficioManager
 {
-	private PlatformTransactionManager transactionManager;
-	private HistoricoBeneficioManager historicoBeneficioManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private HistoricoBeneficioManager historicoBeneficioManager;
 	
 	@Autowired
 	BeneficioManagerImpl(BeneficioDao dao) {
@@ -54,16 +54,6 @@ public class BeneficioManagerImpl extends GenericManagerImpl<Beneficio, Benefici
 			throw e;
 		}
 
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
-	public void setHistoricoBeneficioManager(HistoricoBeneficioManager historicoBeneficioManager)
-	{
-		this.historicoBeneficioManager = historicoBeneficioManager;
 	}
 
 	public Collection<Beneficio> getBeneficiosByHistoricoColaborador(Long historicoId)

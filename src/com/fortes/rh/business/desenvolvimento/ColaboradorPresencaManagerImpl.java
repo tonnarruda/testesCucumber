@@ -19,18 +19,13 @@ import com.fortes.rh.model.desenvolvimento.DiaTurma;
 @Component
 public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<ColaboradorPresenca, ColaboradorPresencaDao> implements ColaboradorPresencaManager
 {
-	private ColaboradorTurmaManager colaboradorTurmaManager;
-	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
-	private CertificacaoManager certificacaoManager;
+	@Autowired private ColaboradorTurmaManager colaboradorTurmaManager;
+	@Autowired private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired private CertificacaoManager certificacaoManager;
 	
 	@Autowired
 	ColaboradorPresencaManagerImpl(ColaboradorPresencaDao dao) {
 		setDao(dao);
-	}
-
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager)
-	{
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 
 	public Collection<ColaboradorPresenca> findPresencaByTurma(Long id)
@@ -174,15 +169,5 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 	public Integer qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(Long diaTurmaId, Long estabelecimentoId) 
 	{
 		return getDao().qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(diaTurmaId, estabelecimentoId);
-	}
-
-	public void setColaboradorCertificacaoManager(
-			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
-	}
-
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager) {
-		this.certificacaoManager = certificacaoManager;
-	} 
-	
+	}	
 }

@@ -26,10 +26,8 @@ import com.fortes.model.type.File;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.CamposExtrasManager;
-import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
-import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -69,7 +67,6 @@ import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.util.Zip;
 import com.thoughtworks.xstream.XStream;
@@ -79,26 +76,26 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, CandidatoDao> implements CandidatoManager
 {
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-	private HistoricoCandidatoManager historicoCandidatoManager;
-	private AnuncioManager anuncioManager;
-	private Mail mail;
-	private FormacaoManager formacaoManager;
-	private ExperienciaManager experienciaManager;
-	private CandidatoIdiomaManager candidatoIdiomaManager;
-	private SolicitacaoManager solicitacaoManager;
-	private PlatformTransactionManager transactionManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private BairroManager bairroManager;
-	private CandidatoCurriculoManager candidatoCurriculoManager;
-	private EtapaSeletivaManager etapaSeletivaManager;
-	private CidadeManager cidadeManager;
-	private EstadoManager estadoManager;
-	private SolicitacaoExameManager solicitacaoExameManager;
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
-	private CamposExtrasManager camposExtrasManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private HistoricoCandidatoManager historicoCandidatoManager;
+	@Autowired private AnuncioManager anuncioManager;
+	@Autowired private Mail mail;
+	@Autowired private FormacaoManager formacaoManager;
+	@Autowired private ExperienciaManager experienciaManager;
+	@Autowired private CandidatoIdiomaManager candidatoIdiomaManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private BairroManager bairroManager;
+	@Autowired private CandidatoCurriculoManager candidatoCurriculoManager;
+	@Autowired private EtapaSeletivaManager etapaSeletivaManager;
+	@Autowired private SolicitacaoExameManager solicitacaoExameManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	@Autowired private CamposExtrasManager camposExtrasManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private ColaboradorManager colaboradorManager;
 	
 	private int totalSize;
 	
@@ -208,9 +205,6 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public void removeCandidato(Candidato candidato) throws Exception
 	{
-		ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
-		ColaboradorManager colaboradorManager= (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
-		
 		candidatoSolicitacaoManager.removeCandidato(candidato.getId());
 		colaboradorManager.setCandidatoNull(candidato.getId());
 		colaboradorQuestionarioManager.removeByCandidato(candidato.getId());
@@ -744,11 +738,6 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return getDao().findCandidatoCpf(cpf, empresaId);
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public void updateSetContratado(Long candidatoId, Long empresaId)
 	{
 		getDao().updateSetContratado(candidatoId, empresaId);
@@ -991,51 +980,6 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		getDao().atualizaTextoOcr(candidato);
 	}
 
-	public void setBairroManager(BairroManager bairroManager)
-	{
-		this.bairroManager = bairroManager;
-	}
-
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
-	{
-		this.solicitacaoManager = solicitacaoManager;
-	}
-
-	public void setCandidatoIdiomaManager(CandidatoIdiomaManager candidatoIdiomaManager)
-	{
-		this.candidatoIdiomaManager = candidatoIdiomaManager;
-	}
-
-	public void setExperienciaManager(ExperienciaManager experienciaManager)
-	{
-		this.experienciaManager = experienciaManager;
-	}
-
-	public void setFormacaoManager(FormacaoManager formacaoManager)
-	{
-		this.formacaoManager = formacaoManager;
-	}
-
-	public void setAnuncioManager(AnuncioManager anuncioManager)
-	{
-		this.anuncioManager = anuncioManager;
-	}
-
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
-	{
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
-
-	public void setMail(Mail mail)
-	{
-		this.mail = mail;
-	}
-
-	public void setCandidatoCurriculoManager(CandidatoCurriculoManager candidatoCurriculoManager)
-	{
-		this.candidatoCurriculoManager = candidatoCurriculoManager;
-	}
-
 	public Collection<Candidato> getCandidatosByNome(String candidatoNome)
 	{
 		return getDao().getCandidatosByNome(candidatoNome);
@@ -1106,11 +1050,6 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	public void enviaAvisoDeCadastroCandidato(String nomeCandidato, Long empresaId)
 	{
 		gerenciadorComunicacaoManager.enviaAvisoDeCadastroCandidato(nomeCandidato, empresaId);
-	}
-	
-	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager)
-	{
-		this.etapaSeletivaManager = etapaSeletivaManager;
 	}
 
 	public Collection<Candidato> findByNomeCpf(Candidato candidato, Long empresaId)
@@ -1268,44 +1207,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) {
 		return getDao().getAutoComplete(descricao, empresaId);
 	}
-	
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
 
-	public void setEstadoManager(EstadoManager estadoManager) {
-		this.estadoManager = estadoManager;
-	}
-
-	public void setCidadeManager(CidadeManager cidadeManager) {
-		this.cidadeManager = cidadeManager;
-	}
-	
-	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager) {
-		this.historicoCandidatoManager = historicoCandidatoManager;
-	}
-
-	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
-		this.solicitacaoExameManager = solicitacaoExameManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
-	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
-	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
-		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
-	}
-
-	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager) {
-		this.camposExtrasManager = camposExtrasManager;
-	}
-	
 	public Collection<CandidatoJsonVO> getCandidatosJsonVO(Long etapaSeletivaId) {
 		Collection<CandidatoJsonVO> candidatoJsonVOs = new ArrayList<CandidatoJsonVO>();
 		Collection<Candidato> candidatos = getDao().getCandidatosByEtapaSeletiva(etapaSeletivaId);

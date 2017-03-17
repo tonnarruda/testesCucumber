@@ -22,13 +22,13 @@ import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<ColaboradorCertificacao, ColaboradorCertificacaoDao> implements ColaboradorCertificacaoManager
 {
 	@Autowired private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;
 	@Autowired private AvaliacaoPraticaManager avaliacaoPraticaManager;
+	@Autowired private CertificacaoManager certificacaoManager;
 
 	@Autowired
 	ColaboradorCertificacaoManagerImpl( ColaboradorCertificacaoDao dao) {
@@ -155,9 +155,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return colaboradorCertificacaosRetorno;
 	}	
 	
-	@SuppressWarnings("deprecation")
 	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, Boolean certificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] filtroColaboradoresIds, String situacaoColaborador) {
-		CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBeanOld("certificacaoManager");
 		Collection<Certificacao> certificacoes = certificacaoManager.findCollectionByIdProjection(certificacoesIds);
 		Map<Long, Collection<AvaliacaoPratica>> mapAvaliacoesPraticas = avaliacaoPraticaManager.findMapByCertificacaoId(certificacoesIds);
 		Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno = new ArrayList<ColaboradorCertificacao>(); 
@@ -337,11 +335,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	}
 
 	
-	@SuppressWarnings("deprecation")
 	private void certificaDependentesRecursivo(ColaboradorCertificacao colaboradorCertificacao, CertificacaoManager certificacaoManager) {
-		if(certificacaoManager == null)
-			certificacaoManager = (CertificacaoManager) SpringUtil.getBeanOld("certificacaoManager");
-			
 		Collection<Certificacao> certificadosDependentes = certificacaoManager.findDependentes(colaboradorCertificacao.getCertificacao().getId());
 		
 		if(certificadosDependentes != null){

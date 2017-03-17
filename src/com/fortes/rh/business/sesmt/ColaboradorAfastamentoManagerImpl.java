@@ -38,10 +38,10 @@ import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 @Component
 public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<ColaboradorAfastamento, ColaboradorAfastamentoDao> implements ColaboradorAfastamentoManager
 {
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private AfastamentoManager afastamentoManager;
-	private ColaboradorManager colaboradorManager; 
-	private CidManager cidManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private AfastamentoManager afastamentoManager;
+	@Autowired private ColaboradorManager colaboradorManager; 
+	@Autowired private CidManager cidManager;
 	
 	private Collection<ColaboradorAfastamento> colaboradorAfastamentos;
 	
@@ -283,19 +283,6 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		return getDao().findQtdAfastamentosInss(empresaId, dataIni, dataFim, inss);
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setAfastamentoManager(AfastamentoManager afastamentoManager) {
-		this.afastamentoManager = afastamentoManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Integer getCountAfastamentosImportados() {
 		return countAfastamentosImportados;
 	}
@@ -307,10 +294,6 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 	@TesteAutomatico
 	public Collection<ColaboradorAfastamento> findByColaborador(Long colaboradorId) {
 		return getDao().findByColaborador(colaboradorId);
-	}
-
-	public void setCidManager(CidManager cidManager) {
-		this.cidManager = cidManager;
 	}
 
 	public Collection<ColaboradorAfastamentoMatriz> montaMatrizResumo(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento, char ordenarPor, char totalizarDiasPor, boolean agruparPorArea) throws Exception 

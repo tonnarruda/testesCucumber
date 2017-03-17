@@ -17,17 +17,17 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDao> implements PesquisaManager
 {
 	private final String EMPRESA_INVALIDA = "A Pesquisa solicitada não existe nesta empresa.";
 
-	private QuestionarioManager questionarioManager;
-	private PerguntaManager perguntaManager;
-	private PlatformTransactionManager transactionManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private PerguntaManager perguntaManager;
+	@Autowired private QuestionarioManager questionarioManager;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private ColaboradorRespostaManager colaboradorRespostaManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	
 	@Autowired
 	PesquisaManagerImpl(PesquisaDao dao) {
@@ -61,7 +61,6 @@ public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDa
 		if (colaboradorQuestionarios.size() > 0)
 			throw new Exception("Não foi possível excluir a pesquisa. Pesquisa possui colaboradores.");
 		
-		ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) SpringUtil.getBean("colaboradorRespostaManager");  
 		colaboradorRespostaManager.removeByQuestionarioId(pesquisa.getQuestionario().getId());
 		
 		questionarioManager.removerPerguntasDoQuestionario(pesquisa.getQuestionario().getId());
@@ -212,25 +211,5 @@ public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDa
 	public Integer getCount(Long empresaId, String questionarioTitulo)
 	{
 		return getDao().getCount(empresaId, questionarioTitulo);
-	}
-
-	public void setQuestionarioManager(QuestionarioManager questionarioManager)
-	{
-		this.questionarioManager = questionarioManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
-	public void setPerguntaManager(PerguntaManager perguntaManager)
-	{
-		this.perguntaManager = perguntaManager;
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 }

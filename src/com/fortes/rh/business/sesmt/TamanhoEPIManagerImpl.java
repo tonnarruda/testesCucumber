@@ -10,11 +10,12 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.TamanhoEPIDao;
 import com.fortes.rh.model.sesmt.TamanhoEPI;
 import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
 @Component
 public class TamanhoEPIManagerImpl extends GenericManagerImpl<TamanhoEPI, TamanhoEPIDao> implements TamanhoEPIManager {
+	
+	@Autowired private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 	
 	@Autowired
 	TamanhoEPIManagerImpl(TamanhoEPIDao tamanhoEPIDao) {
@@ -29,7 +30,6 @@ public class TamanhoEPIManagerImpl extends GenericManagerImpl<TamanhoEPI, Tamanh
 			checks = CheckListBoxUtil.populaCheckListBox(tamanhoEPIs, "getId", "getDescricao", null);
 			
 			if ( tipoEPIId != null) {
-				SolicitacaoEpiItemManager solicitacaoEpiItemManager = (SolicitacaoEpiItemManager) SpringUtil.getBean("solicitacaoEpiItemManager");
 				for (CheckBox tamanhoCheckBox : checks) {
 					tamanhoCheckBox.setDesabilitado(solicitacaoEpiItemManager.countByTipoEPIAndTamanhoEPI(tipoEPIId, Long.parseLong(tamanhoCheckBox.getId())) > 0);
 				}

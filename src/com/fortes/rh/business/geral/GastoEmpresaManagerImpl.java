@@ -51,14 +51,14 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class GastoEmpresaManagerImpl extends GenericManagerImpl<GastoEmpresa, GastoEmpresaDao> implements GastoEmpresaManager
 {
-	private GastoEmpresaItemManager gastoEmpresaItemManager;
-	private ColaboradorManager colaboradorManager;
-	private HistoricoColaboradorBeneficioManager historicoColaboradorBeneficioManager;
-	private GastoManager gastoManager;
-	private TurmaManager turmaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private AbstractPlatformTransactionManager transactionManager;
-	private Mail mail;
+	@Autowired private GastoEmpresaItemManager gastoEmpresaItemManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private HistoricoColaboradorBeneficioManager historicoColaboradorBeneficioManager;
+	@Autowired private GastoManager gastoManager;
+	@Autowired private TurmaManager turmaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private AbstractPlatformTransactionManager transactionManager;
+	@Autowired private Mail mail;
 
 	@Autowired
 	GastoEmpresaManagerImpl(GastoEmpresaDao dao) {
@@ -482,32 +482,6 @@ public class GastoEmpresaManagerImpl extends GenericManagerImpl<GastoEmpresa, Ga
 		mail.send(empresa, "[RH] Erro na sincronização", corpo.toString(), null, empresa.getEmailRespSetorPessoal());
 	}
 
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setGastoManager(GastoManager gastoManager)
-	{
-		this.gastoManager = gastoManager;
-	}
-
-	public void setGastoEmpresaItemManager(GastoEmpresaItemManager gastoEmpresaItemManager)
-	{
-		this.gastoEmpresaItemManager = gastoEmpresaItemManager;
-	}
-
-	public void setMail(Mail mail)
-	{
-		this.mail = mail;
-	}
-
-	public void setTransactionManager(AbstractPlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
 	public Integer getCount(Long empresaId)
 	{
 		return getDao().getCount(empresaId);
@@ -516,21 +490,6 @@ public class GastoEmpresaManagerImpl extends GenericManagerImpl<GastoEmpresa, Ga
 	public Collection<GastoEmpresa> findAllList(int page, int pagingSize, Long empresaId)
 	{
 		return getDao().findAllList(page, pagingSize, empresaId);
-	}
-
-	public void setHistoricoColaboradorBeneficioManager(HistoricoColaboradorBeneficioManager historicoColaboradorBeneficioManager)
-	{
-		this.historicoColaboradorBeneficioManager = historicoColaboradorBeneficioManager;
-	}
-
-	public void setTurmaManager(TurmaManager turmaManager)
-	{
-		this.turmaManager = turmaManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public Collection<GastoRelatorioItem> multiplicarGastoRelatorioItem(GastoRelatorioItem gastoRelatorioItem, Date dataIni, Date dataFim)

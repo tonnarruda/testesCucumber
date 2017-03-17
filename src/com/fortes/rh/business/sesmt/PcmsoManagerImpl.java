@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -29,17 +30,17 @@ import com.fortes.rh.util.StringUtil;
 @Component
 public class PcmsoManagerImpl implements PcmsoManager
 {
-	private AgendaManager agendaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private RealizacaoExameManager realizacaoExameManager;
-	private CatManager catManager;
-	private HistoricoFuncaoManager historicoFuncaoManager;
-	private FuncaoManager funcaoManager;
-	private RiscoAmbienteManager riscoAmbienteManager;
-	private HistoricoAmbienteManager historicoAmbienteManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private EmpresaManager empresaManager;
-	private ComposicaoSesmtManager composicaoSesmtManager;
+	@Autowired private AgendaManager agendaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private RealizacaoExameManager realizacaoExameManager;
+	@Autowired private CatManager catManager;
+	@Autowired private HistoricoFuncaoManager historicoFuncaoManager;
+	@Autowired private FuncaoManager funcaoManager;
+	@Autowired private RiscoAmbienteManager riscoAmbienteManager;
+	@Autowired private HistoricoAmbienteManager historicoAmbienteManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private ComposicaoSesmtManager composicaoSesmtManager;
 
 	public Collection<PCMSO> montaRelatorio(Date dataIni, Date dataFim, Estabelecimento estabelecimento, Long empresaId, boolean exibirAgenda, boolean exibirDistColaboradorSetor, boolean exibirRiscos, boolean exibirEpis, boolean exibirExames, boolean exibirAcidentes, boolean exibirComposicaoSesmt) throws Exception
 	{
@@ -226,52 +227,5 @@ public class PcmsoManagerImpl implements PcmsoManager
 			pcmso.setComposicaoSesmts(Arrays.asList(composicaoSesmt));
 		}
 		return "";
-	}
-	
-	public void setAgendaManager(AgendaManager agendaManager)
-	{
-		this.agendaManager = agendaManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setRealizacaoExameManager(RealizacaoExameManager realizacaoExameManager) {
-		this.realizacaoExameManager = realizacaoExameManager;
-	}
-
-	public void setCatManager(CatManager catManager) {
-		this.catManager = catManager;
-	}
-
-	public void setHistoricoFuncaoManager(HistoricoFuncaoManager historicoFuncaoManager)
-	{
-		this.historicoFuncaoManager = historicoFuncaoManager;
-	}
-
-	public void setFuncaoManager(FuncaoManager funcaoManager)
-	{
-		this.funcaoManager = funcaoManager;
-	}
-
-	public void setRiscoAmbienteManager(RiscoAmbienteManager riscoAmbienteManager) {
-		this.riscoAmbienteManager = riscoAmbienteManager;
-	}
-
-	public void setHistoricoAmbienteManager(HistoricoAmbienteManager historicoAmbienteManager) {
-		this.historicoAmbienteManager = historicoAmbienteManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
-		this.estabelecimentoManager = estabelecimentoManager;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
-
-	public void setComposicaoSesmtManager(ComposicaoSesmtManager composicaoSesmtManager) {
-		this.composicaoSesmtManager = composicaoSesmtManager;
 	}
 }

@@ -5,13 +5,21 @@ import java.util.Collection;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.ConfiguracaoCampoExtraVisivelObrigadotorioDao;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtraVisivelObrigadotorio;
 
+@Component
 public class ConfiguracaoCampoExtraVisivelObrigadotorioManagerImpl extends GenericManagerImpl<ConfiguracaoCampoExtraVisivelObrigadotorio, ConfiguracaoCampoExtraVisivelObrigadotorioDao> implements ConfiguracaoCampoExtraVisivelObrigadotorioManager
 {
+	@Autowired
+	public ConfiguracaoCampoExtraVisivelObrigadotorioManagerImpl(ConfiguracaoCampoExtraVisivelObrigadotorioDao configuracaoCampoExtraVisivelObrigadotorioDao) {
+		setDao(configuracaoCampoExtraVisivelObrigadotorioDao);
+	}
+	
 	public ConfiguracaoCampoExtraVisivelObrigadotorio findByEmpresaId( Long empresaId, String tipoConfiguracao) {
 		return getDao().findByEmpresaId(empresaId, tipoConfiguracao);
 	}

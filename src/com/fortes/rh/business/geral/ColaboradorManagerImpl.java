@@ -124,7 +124,6 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.MathUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.web.tags.CheckBox;
@@ -133,36 +132,39 @@ import com.fortes.web.tags.CheckBox;
 @SuppressWarnings("unchecked")
 public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, ColaboradorDao> implements ColaboradorManager
 {
-	private FormacaoManager formacaoManager;
-	private ExperienciaManager experienciaManager;
-	private ColaboradorIdiomaManager colaboradorIdiomaManager;
-	private CandidatoManager candidatoManager;
-	private MensagemManager mensagemManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private Mail mail;
-	private PlatformTransactionManager transactionManager;
-	private DuracaoPreenchimentoVagaManager duracaoPreenchimentoVagaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private AcPessoalClientColaborador acPessoalClientColaborador;
-	private EmpresaManager empresaManager;
-	private EstabelecimentoManager estabelecimentoManager;
-	private BairroManager bairroManager;
-	private CidadeManager cidadeManager;
-	private IndiceManager indiceManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private EstadoManager estadoManager;
-	private CamposExtrasManager camposExtrasManager;
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
-	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private SolicitacaoManager solicitacaoManager;
-	private AuditoriaManager auditoriaManager;
-	private CandidatoIdiomaManager candidatoIdiomaManager;
-	private SolicitacaoExameManager solicitacaoExameManager;
-	private CartaoManager cartaoManager;
+	@Autowired private FormacaoManager formacaoManager;
+	@Autowired private ExperienciaManager experienciaManager;
+	@Autowired private ColaboradorIdiomaManager colaboradorIdiomaManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private MensagemManager mensagemManager;
+	@Autowired private HistoricoColaboradorManager historicoColaboradorManager;
+	@Autowired private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	@Autowired private Mail mail;
+	@Autowired private PlatformTransactionManager transactionManager;
+	@Autowired private DuracaoPreenchimentoVagaManager duracaoPreenchimentoVagaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private AcPessoalClientColaborador acPessoalClientColaborador;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private EstabelecimentoManager estabelecimentoManager;
+	@Autowired private BairroManager bairroManager;
+	@Autowired private CidadeManager cidadeManager;
+	@Autowired private IndiceManager indiceManager;
+	@Autowired private FaixaSalarialManager faixaSalarialManager;
+	@Autowired private EstadoManager estadoManager;
+	@Autowired private CamposExtrasManager camposExtrasManager;
+	@Autowired private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	@Autowired private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	@Autowired private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	@Autowired private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
+	@Autowired private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	@Autowired private SolicitacaoManager solicitacaoManager;
+	@Autowired private AuditoriaManager auditoriaManager;
+	@Autowired private CandidatoIdiomaManager candidatoIdiomaManager;
+	@Autowired private SolicitacaoExameManager solicitacaoExameManager;
+	@Autowired private CartaoManager cartaoManager;
+	@Autowired private UsuarioManager usuarioManager;
+	@Autowired private UsuarioEmpresaManager usuarioEmpresaManager;
+	@Autowired private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
 	
 	private static final String RETIRAFOTO = "S";
 	private static final String NAORETIRAFOTO = "N";
@@ -207,11 +209,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
 	}
 
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Long[] idsLong)
@@ -697,45 +694,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				experienciaManager.save(e);
 			}
 	}
-	
-	public void setColaboradorIdiomaManager(ColaboradorIdiomaManager colaboradorIdiomaManager)
-	{
-		this.colaboradorIdiomaManager = colaboradorIdiomaManager;
-	}
-
-	public void setExperienciaManager(ExperienciaManager experienciaManager)
-	{
-		this.experienciaManager = experienciaManager;
-	}
-
-	public void setFormacaoManager(FormacaoManager formacaoManager)
-	{
-		this.formacaoManager = formacaoManager;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
-
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
 
 	public void setMail(Mail mail)
 	{
 		this.mail = mail;
-	}
-
-	public ParametrosDoSistemaManager getParametrosDoSistemaManager()
-	{
-		return parametrosDoSistemaManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	@TesteAutomatico
@@ -854,42 +816,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByArea(areaFiltro);
 	}
 
-	public DuracaoPreenchimentoVagaManager getDuracaoPreenchimentoVagaManager()
-	{
-		return duracaoPreenchimentoVagaManager;
-	}
-
-	public void setDuracaoPreenchimentoVagaManager(DuracaoPreenchimentoVagaManager duracaoPreenchimentoVagaManager)
-	{
-		this.duracaoPreenchimentoVagaManager = duracaoPreenchimentoVagaManager;
-	}
-
 	public Collection<Colaborador> findByFuncaoAmbiente(Long funcaoId, Long ambienteId)
 	{
 		if(funcaoId == null || ambienteId == null)
 			return null;
 		
 		return getDao().findByFuncaoAmbiente(funcaoId, ambienteId);
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setAcPessoalClientColaborador(AcPessoalClientColaborador acPessoalClientColaborador)
-	{
-		this.acPessoalClientColaborador = acPessoalClientColaborador;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public Collection<Colaborador> findByAreaEstabelecimento(Long areaOrganizacionalId, Long estabelecimentoId)
@@ -907,11 +839,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByEstabelecimento(estabelecimentoIds);
 	}
 
-	public void setBairroManager(BairroManager bairroManager)
-	{
-		this.bairroManager = bairroManager;
-	}
-
 	@TesteAutomatico
 	public Colaborador findByIdProjectionUsuario(Long colaboradorId)
 	{
@@ -921,11 +848,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, CamposExtras camposExtras, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim, String situacao, Character enviadoParaAC, Long... empresasIds)
 	{
 		return getDao().findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentosIds, areasIds, cargosIds, camposExtras, order, dataAdmissaoIni, dataAdmissaoFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim, situacao, enviadoParaAC, empresasIds);
-	}
-
-	public void setCidadeManager(CidadeManager cidadeManager)
-	{
-		this.cidadeManager = cidadeManager;
 	}
 
 	public Colaborador findColaboradorByIdProjection(Long colaboradorId)
@@ -1049,8 +971,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		try
 		{
-			@SuppressWarnings("deprecation")
-			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 			if(!integradoAC || desligaByAC)
 				usuarioManager.removeAcessoSistema(colaboradoresIds);
 			
@@ -1082,10 +1002,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void religaColaborador(Long colaboradorId) throws Exception
 	{
-		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 		usuarioManager.reativaAcessoSistema(colaboradorId);
 		candidatoManager.updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);
 		candidatoSolicitacaoManager.updateStatusSolicitacoesEmAndamentoByColaboradorId(StatusCandidatoSolicitacao.APROMOVER, colaboradorId);
@@ -1282,16 +1200,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findComAnoDeEmpresa(empresaId, data);
 	}
 
-	public void setIndiceManager(IndiceManager indiceManager)
-	{
-		this.indiceManager = indiceManager;
-	}
-
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
-	{
-		this.faixaSalarialManager = faixaSalarialManager;
-	}
-
 	public void respondeuEntrevista(Long colaboradorId)
 	{
 		getDao().setRespondeuEntrevista(colaboradorId);
@@ -1436,15 +1344,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void criarUsuarioParaColaborador(Colaborador colaborador, Empresa empresa) throws Exception {
 		if(empresaManager.findEntidadeComAtributosSimplesById(empresa.getId()).isCriarUsuarioAutomaticamente()){
-			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 			Usuario usuario = new Usuario(colaborador.getNome(), colaborador.getPessoal().getCpf(), empresa.getSenhaPadrao(), true, colaborador);
 			if(!usuarioManager.existeLogin(usuario)) {
 				usuarioManager.save(usuario);
 				ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-				UsuarioEmpresaManager usuarioEmpresaManager = (UsuarioEmpresaManager) SpringUtil.getBeanOld("usuarioEmpresaManager");
 				UsuarioEmpresa usuarioEmpresa = new UsuarioEmpresa(usuario, parametrosDoSistema.getPerfilPadrao(), empresa);
 				usuarioEmpresaManager.save(usuarioEmpresa);
 				atualizarUsuario(colaborador.getId(), usuario.getId());
@@ -1959,10 +1864,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findColaboradoresByArea(areaIds, nome, matricula, empresaId, nomeComercial);
 	}
 
-	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager)
-	{
-		this.camposExtrasManager = camposExtrasManager;
-	}
 	public Integer qtdTotalDiasDaTurmaVezesColaboradoresInscritos(Date dataPrevIni, Date dataPrevFim, Long[] EmpresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds) 
 	{
 		return getDao().qtdTotalDiasDaTurmaVezesColaboradoresInscritos(dataPrevIni, dataPrevFim, EmpresaIds, cursoIds, areasIds, estabelecimentosIds);
@@ -2114,7 +2015,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Colaborador> findColabPeriodoExperienciaAgrupadoPorModelo(Long empresaId, Date periodoIni, Date periodoFim, Long avaliacaoId, String[] areasCheck, String[] estabelecimentoCheck, String[] colaboradorsCheck, boolean considerarAutoAvaliacao) throws Exception 
 	{
-		AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
 		Collection<AvaliacaoDesempenho> avaliacaoIds = avaliacaoDesempenhoManager.findIdsAvaliacaoDesempenho(avaliacaoId);
 		CollectionUtil<AvaliacaoDesempenho> clu = new CollectionUtil<AvaliacaoDesempenho>();
 		Collection<Colaborador> retorno = getDao().findColabPeriodoExperiencia(periodoIni, periodoFim, clu.convertCollectionToArrayIds(avaliacaoIds), StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck), StringUtil.stringToLong(colaboradorsCheck), considerarAutoAvaliacao, false, empresaId);
@@ -2569,22 +2469,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	@TesteAutomatico
 	public Collection<ColaboradorJsonVO> getColaboradoresJsonVO(Long[] areaOrganizacionalIds) {
 		return getDao().getColaboradoresJsonVO(areaOrganizacionalIds);
-	}
-
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
-		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
-	}
-
-	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
-		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
-	}
-
-	public void setMensagemManager(MensagemManager mensagemManager) {
-		this.mensagemManager = mensagemManager;
 	}
 
 	@TesteAutomatico
@@ -3045,46 +2929,5 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			throw new ColecaoVaziaException("Não existe dados para os filtros informados.");
 		
 		return colaboradores;
-	}
-	
-	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
-	{
-		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
-	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) 
-	{
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) 
-	{
-		this.solicitacaoManager = solicitacaoManager;
-	}
-
-	public void setAuditoriaManager(AuditoriaManager auditoriaManager) 
-	{
-		this.auditoriaManager = auditoriaManager;
-	}
-
-	public void setEstadoManager(EstadoManager estadoManager)
-	{
-		this.estadoManager = estadoManager;
-	}
-
-	public CandidatoIdiomaManager getCandidatoIdiomaManager() {
-		return candidatoIdiomaManager;
-	}
-
-	public void setCandidatoIdiomaManager(CandidatoIdiomaManager candidatoIdiomaManager) {
-		this.candidatoIdiomaManager = candidatoIdiomaManager;
-	}
-
-	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
-		this.solicitacaoExameManager = solicitacaoExameManager;
-	}
-
-	public void setCartaoManager(CartaoManager cartaoManager) {
-		this.cartaoManager = cartaoManager;
 	}
 }

@@ -43,21 +43,21 @@ import com.fortes.rh.thread.certificaColaboradorThread;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.SpringUtil;
 import com.ibm.icu.math.BigDecimal;
 
 @Component
 @SuppressWarnings("unchecked")
 public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorTurma, ColaboradorTurmaDao> implements ColaboradorTurmaManager
 {
-	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private CertificacaoManager certificacaoManager;
-	private ColaboradorManager colaboradorManager;
-	private EmpresaManager empresaManager;
-	private CursoManager cursoManager;
+	@Autowired private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
+	@Autowired private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	@Autowired private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	@Autowired private ColaboradorPresencaManager colaboradorPresencaManager;
+	@Autowired private AreaOrganizacionalManager areaOrganizacionalManager;
+	@Autowired private CertificacaoManager certificacaoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private EmpresaManager empresaManager;
+	@Autowired private CursoManager cursoManager;
 	
 	@Autowired
 	ColaboradorTurmaManagerImpl(ColaboradorTurmaDao dao) {
@@ -676,7 +676,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Double percentualFrequencia(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds)
 	{
 		Integer qtdDiasTotal = colaboradorManager.qtdTotalDiasDaTurmaVezesColaboradoresInscritos(dataIni, dataFim, empresaIds, cursoIds, areasIds, estabelecimentosIds);
-		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBean("colaboradorPresencaManager");
 		Integer qtdDiasPresentes = colaboradorPresencaManager.qtdDiaPresentesTurma(dataIni, dataFim, empresaIds, cursoIds, areasIds, estabelecimentosIds);
 
 		if (qtdDiasTotal.equals(0)){
@@ -1111,45 +1110,4 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		
 		return turmasComParticipantes.values();
 	}
-
-	
-	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
-		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
-	}
-	
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-	}
-	
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
-	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-	
-	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
-	{
-		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
-	}
-	
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager) 
-	{
-		this.certificacaoManager = certificacaoManager;
-	}
-	
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-	
-	public void setEmpresaManager(EmpresaManager empresaManager) 
-	{
-		this.empresaManager = empresaManager;
-	}
-
 }

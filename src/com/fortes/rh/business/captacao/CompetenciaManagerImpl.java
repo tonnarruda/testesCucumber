@@ -10,7 +10,6 @@ import com.fortes.rh.model.captacao.Competencia;
 @Component
 public class CompetenciaManagerImpl extends GenericManagerImpl<Competencia, CompetenciaDao> implements CompetenciaManager
 {
-	
 	@Autowired
 	CompetenciaManagerImpl(CompetenciaDao competenciaDao) {
 		setDao(competenciaDao);

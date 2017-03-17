@@ -11,12 +11,11 @@ import com.fortes.rh.dao.sesmt.EtapaProcessoEleitoralDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Eleicao;
 import com.fortes.rh.model.sesmt.EtapaProcessoEleitoral;
-import com.fortes.rh.util.SpringUtil;
 
 @Component
 public class EtapaProcessoEleitoralManagerImpl extends GenericManagerImpl<EtapaProcessoEleitoral, EtapaProcessoEleitoralDao> implements EtapaProcessoEleitoralManager
 {
-	private EleicaoManager eleicaoManager;
+	@Autowired private EleicaoManager eleicaoManager;
 
 	@Autowired
 	EtapaProcessoEleitoralManagerImpl(EtapaProcessoEleitoralDao etapaProcessoEleitoralDao) {
@@ -47,7 +46,6 @@ public class EtapaProcessoEleitoralManagerImpl extends GenericManagerImpl<EtapaP
 
 	public Eleicao findImprimirCalendario(Long eleicaoId)
 	{
-		eleicaoManager = (EleicaoManager)SpringUtil.getBean("eleicaoManager");
 		Eleicao eleicao = eleicaoManager.findByIdProjection(eleicaoId);
 		Collection<EtapaProcessoEleitoral> colecao = getDao().findAllSelect(null, eleicaoId, "prazo");
 		eleicao.setEtapaProcessoEleitorals(colecao);
@@ -79,7 +77,6 @@ public class EtapaProcessoEleitoralManagerImpl extends GenericManagerImpl<EtapaP
 	{
 		if(etapaProcessoEleitoral.getEleicao() != null)
 		{
-			eleicaoManager = (EleicaoManager)SpringUtil.getBean("eleicaoManager");
 			Eleicao eleicao = eleicaoManager.findByIdProjection(etapaProcessoEleitoral.getEleicao().getId());
 			etapaProcessoEleitoral.setDataPrazoCalculada(eleicao.getPosse(), true);
 		}

@@ -21,9 +21,9 @@ import com.fortes.rh.model.sesmt.TamanhoEPI;
 @Component
 public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<SolicitacaoEpiItem, SolicitacaoEpiItemDao> implements SolicitacaoEpiItemManager
 {
-	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
-	private SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager;
-	private EpiHistoricoManager epiHistoricoManager;
+	@Autowired private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
+	@Autowired private SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager;
+	@Autowired private EpiHistoricoManager epiHistoricoManager;
 	
 	@Autowired
 	SolicitacaoEpiItemManagerImpl(SolicitacaoEpiItemDao solicitacaoEpiItemDao) {
@@ -131,18 +131,5 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 	
 	public Integer countByTipoEPIAndTamanhoEPI(Long tipoEPIId, Long tamanhoEPIId) {
 		return getDao().countByTipoEPIAndTamanhoEPI(tipoEPIId, tamanhoEPIId);
-	}
-	
-	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
-		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
-	}
-
-	public void setEpiHistoricoManager(EpiHistoricoManager epiHistoricoManager) {
-		this.epiHistoricoManager = epiHistoricoManager;
-	}
-
-	public void setSolicitacaoEpiItemDevolucaoManager(
-			SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager) {
-		this.solicitacaoEpiItemDevolucaoManager = solicitacaoEpiItemDevolucaoManager;
 	}
 }

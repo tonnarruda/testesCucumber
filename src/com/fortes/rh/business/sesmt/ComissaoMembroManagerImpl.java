@@ -21,7 +21,7 @@ import com.fortes.rh.util.LongUtil;
 @Component
 public class ComissaoMembroManagerImpl extends GenericManagerImpl<ComissaoMembro, ComissaoMembroDao> implements ComissaoMembroManager
 {
-	private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
+	@Autowired private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
 	
 	@Autowired
 	ComissaoMembroManagerImpl(ComissaoMembroDao fooDao) {
@@ -115,10 +115,4 @@ public class ComissaoMembroManagerImpl extends GenericManagerImpl<ComissaoMembro
 	{
 		return getDao().colaboradoresComEstabilidade(colaboradoresIds);
 	}
-	
-	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager) {
-		this.comissaoReuniaoPresencaManager = comissaoReuniaoPresencaManager;
-	}
-
-	
 }

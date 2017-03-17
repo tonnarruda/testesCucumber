@@ -18,9 +18,9 @@ import com.fortes.rh.util.ArquivoUtil;
 @Component
 public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo, DocumentoAnexoDao> implements DocumentoAnexoManager
 {
-	private ColaboradorManager colaboradorManager;
-	private CandidatoManager candidatoManager;
-	private CursoManager cursoManager;
+	@Autowired private ColaboradorManager colaboradorManager;
+	@Autowired private CandidatoManager candidatoManager;
+	@Autowired private CursoManager cursoManager;
 	
 	@Autowired
 	DocumentoAnexoManagerImpl(DocumentoAnexoDao dao) {
@@ -127,17 +127,5 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 			nome = cursoManager.findById(id).getNome();
 			
 		return nome;
-	}
-
-	public void setCandidatoManager(CandidatoManager candidatoManager) {
-		this.candidatoManager = candidatoManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setCursoManager(CursoManager cursoManager) {
-		this.cursoManager = cursoManager;
 	}
 }

@@ -8,14 +8,23 @@ import java.util.Map;
 
 import javax.activation.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.CartaoDao;
 import com.fortes.rh.model.geral.Cartao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.ArquivoUtil;
 
+@Component
 public class CartaoManagerImpl extends GenericManagerImpl<Cartao, CartaoDao> implements CartaoManager
 {
+	@Autowired
+	public CartaoManagerImpl(CartaoDao cartaoDao) {
+		setDao(cartaoDao);
+	}
+	
 	public Cartao findByEmpresaIdAndTipo(Long empresaId, String tipoCartao) {
 		return getDao().findByEmpresaIdAndTipo(empresaId, tipoCartao);
 	}
