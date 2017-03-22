@@ -67,7 +67,7 @@ public class NivelCompetenciaHistoricoManagerTest
 			nivelCompetenciaHistoricoManagerImpl.removeNivelConfiguracaoHistorico(1L);
 			fail("Era para ter entrado na exceção");
 		} catch (FortesException e) {
-			assertEquals("Este histórico dos níveis de competência não pode ser excluído, pois existem dependências</br> com as configuraçõe de competências das faixas salariais abaixo.</br>nome faixa", e.getMessage()); 
+			assertEquals("Este histórico dos níveis de competência não pode ser excluído, pois existem dependências</br> com as configurações de competências das faixas salariais abaixo.</br>nome faixa", e.getMessage()); 
 		}
 	}
 }

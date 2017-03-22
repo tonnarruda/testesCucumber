@@ -20,7 +20,7 @@ public class NivelCompetenciaHistoricoManagerImpl extends GenericManagerImpl<Niv
 		Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> configNivelCompetenciaFaixaSalariais = getDao().dependenciaComCompetenciasDaFaixaSalarial(id);
 		
 		if(configNivelCompetenciaFaixaSalariais.size() > 0){
-			StringBuffer stb = new StringBuffer("Este histórico dos níveis de competência não pode ser excluído, pois existem dependências</br> com as configuraçõe de competências das faixas salariais abaixo.</br>");
+			StringBuffer stb = new StringBuffer("Este histórico dos níveis de competência não pode ser excluído, pois existem dependências</br> com as configurações de competências das faixas salariais abaixo.</br>");
 			for (ConfiguracaoNivelCompetenciaFaixaSalarial configCompFs : configNivelCompetenciaFaixaSalariais){
 				stb.append(configCompFs.getFaixaSalarial().getNomeDeCargoEFaixa());
 				stb.append("; ");
