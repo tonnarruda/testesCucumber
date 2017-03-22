@@ -123,10 +123,10 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		Funcao f2 = FuncaoFactory.getEntity(null, "FB");
 		funcaoDao.save(f2);
 		
-		Epi epi1 = EpiFactory.getEntity(null, "epi 1");
+		Epi epi1 = EpiFactory.getEntity(null, "epi 1", null);
 		epiDao.save(epi1);		
 
-		Epi epi2 = EpiFactory.getEntity(null, "epi 2");
+		Epi epi2 = EpiFactory.getEntity(null, "epi 2", null);
 		epiDao.save(epi2);		
 		
 		Collection<Epi> epis = Arrays.asList(epi1, epi2);

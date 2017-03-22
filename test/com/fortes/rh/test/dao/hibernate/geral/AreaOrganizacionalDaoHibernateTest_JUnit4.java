@@ -46,21 +46,6 @@ public class AreaOrganizacionalDaoHibernateTest_JUnit4  extends DaoHibernateAnno
 	@Autowired
 	private LntDao lntDao;
 
-	public AreaOrganizacional getEntity()
-	{
-		AreaOrganizacional areaOrganizacional = new AreaOrganizacional();
-
-		areaOrganizacional.setId(null);
-		areaOrganizacional.setAreaMae(null);
-		areaOrganizacional.setAreasInteresse(null);
-		areaOrganizacional.setCodigoAC("0");
-		areaOrganizacional.setConhecimentos(null);
-		areaOrganizacional.setDescricao("descrição");
-		areaOrganizacional.setNome("nome da area organizacional");
-
-		return areaOrganizacional;
-	}
-
 	@Test
 	public void testGetAncestraisIds(){
 		Empresa empresa = EmpresaFactory.getEmpresa();

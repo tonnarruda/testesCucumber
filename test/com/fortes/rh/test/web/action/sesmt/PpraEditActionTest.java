@@ -105,7 +105,7 @@ public class PpraEditActionTest extends MockObjectTestCase
 		ambienteManager.expects(once()).method("populaCheckBox").will(returnValue(ambienteCheckList));
 		
 		assertEquals("input", action.gerarRelatorio());
-		assertEquals("Não existem dados para o filtro informado.", action.getActionErrors().toArray()[0]);
+		assertEquals("Não existem dados para o filtro informado.", action.getActionMessages().toArray()[0]);
 		assertEquals(1, action.getAmbienteCheckList().size());
 	}
 	

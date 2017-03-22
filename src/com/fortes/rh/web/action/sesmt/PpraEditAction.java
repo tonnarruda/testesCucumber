@@ -13,6 +13,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.relatorio.PpraLtcatRelatorio;
 import com.fortes.rh.util.Autenticador;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
@@ -47,8 +48,10 @@ public class PpraEditAction extends MyActionSupportEdit
     	
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		
-		if (estabelecimento != null)
+		if (estabelecimento != null){
 			ambienteCheckList = ambienteManager.populaCheckBox(estabelecimento.getId());
+			ambienteCheckList = CheckListBoxUtil.marcaCheckListBox(ambienteCheckList, ambienteCheck);
+		}
 		
 		return SUCCESS;
 	}
@@ -68,12 +71,11 @@ public class PpraEditAction extends MyActionSupportEdit
 			parametros.put("AGRUPADO_POR_AMBIENTE", getEmpresaSistema().getControlaRiscoPor() == 'A');
 			parametros.put("QUEBRAR_PAGINA", isQuebrarPagina());
 			
-			
 			dataSource = ambienteManager.montaRelatorioPpraLtcat(getEmpresaSistema(), estabelecimento.getId(), data, ambienteCheck, gerarPpra, gerarLtcat, exibirComposicaoSesmt);
 		}
 		catch (ColecaoVaziaException e)
 		{
-			addActionError(e.getMessage());
+			addActionMessage(e.getMessage());
 			prepareRelatorio();
 			return INPUT;
 		}

@@ -34,4 +34,13 @@ public class HistoricoFuncaoFactory
 		
 		return historicoFuncao;
 	}
+	
+	public static HistoricoFuncao getEntity(String descricao, Collection<Epi> epis)
+	{
+		HistoricoFuncao historicoFuncao = getEntity();
+		historicoFuncao.setDescricao(descricao);
+		historicoFuncao.setEpis(epis);
+		
+		return historicoFuncao;
+	}
 }

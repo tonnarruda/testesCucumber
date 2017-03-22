@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 
 
 public class AmbienteFactory
@@ -41,6 +42,14 @@ public class AmbienteFactory
 		ambiente.setNome(nome);
 		ambiente.setEmpresa(empresa);
 		ambiente.setEstabelecimento(estabelecimento);
+		return ambiente;
+	}
+	
+	public static Ambiente getEntity(Long id, String nome, HistoricoAmbiente historicoAtual, Collection<HistoricoAmbiente> historicoAmbientes) {
+		Ambiente ambiente = getEntity(id);
+		ambiente.setNome(nome);
+		ambiente.setHistoricoAtual(historicoAtual);
+		ambiente.setHistoricoAmbientes(historicoAmbientes);
 		return ambiente;
 	}
 }

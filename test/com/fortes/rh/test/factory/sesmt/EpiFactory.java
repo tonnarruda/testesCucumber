@@ -1,5 +1,6 @@
 package com.fortes.rh.test.factory.sesmt;
 
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.TipoEPI;
 
@@ -22,10 +23,11 @@ public class EpiFactory
 		return epi;
 	}
 	
-	public static Epi getEntity(Long id, String nome)
+	public static Epi getEntity(Long id, String nome, Empresa empresa)
 	{
 		Epi epi = getEntity(id);
 		epi.setNome(nome);
+		epi.setEmpresa(empresa);
 		
 		return epi;
 	}

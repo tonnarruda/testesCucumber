@@ -87,6 +87,9 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 			}
 		}
 		
+		if(!isControlaRiscoPorAmbiente && relatorios.isEmpty())
+			throw new ColecaoVaziaException("Nos históricos dos colaboradores não existem funções vinculadas aos ambientes selecionados no filtro.");
+		
 		return relatorios;
 	}
 	
