@@ -233,7 +233,7 @@
 			$('#dataAdmissaoTooltipHelp').qtip({ content: 'Não é possível alterar a data de admissão quando integrado com o Fortes Pessoal.' });
 			$('#vinculoTooltipHelp').qtip({ content: 'Não é possível alterar o vínculo quando integrado com o Fortes Pessoal.' });
 			
-			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
+			addBuscaCEP('cep', 'endereco', 'bairroNome', 'cidade', 'uf');
 
 			<#if avaliacoes?exists>
 				<#list avaliacoes as avaliacao>

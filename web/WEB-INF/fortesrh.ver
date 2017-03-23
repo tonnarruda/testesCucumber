@@ -11,6 +11,7 @@
 		<Item visivel="N" motivo="S16120000156"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Novo Perfil de "Visualizar Documentos do colaborador logado".]]></Item>
 		<Item visivel="S" motivo="P17030000044"><![CDATA[Info. Funcionais > Relatórios > Admitidos > Exportar: Ajuste de inconsistência ao apresentar as informações de "Motivo da Admissão" e "Turnover" no relatório XLS.]]></Item>
 		<Item visivel="N" motivo="S17030199999"><![CDATA[Sistema: Alteração na verificação da compatibilidade do Java para a versão 7.]]></Item>
+		<Item visivel="N" motivo="P17030000124"><![CDATA[Sistema: Atualização da tabela candidato adicionando restrição de NOT NULL para o nome do candidato.]]></Item>
 	</Versao>
 	<Versao id="1.1.177.209" db="" data="15/02/2017">
 		<Item visivel="S" motivo="P17010000073"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ajuste de inconsistência ao informar se o candidato está apto quando participa de mais de uma etapa seletiva na mesma data em horários diferentes.]]></Item>
