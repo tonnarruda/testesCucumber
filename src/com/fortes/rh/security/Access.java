@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 
@@ -49,12 +51,15 @@ public class Access {
     
 	private static boolean hiperAccess(String password, String sysPassword) throws Exception{
 		if(sysPassword != null){
-			String enderecoMac = enderecoMac();
-			if(enderecoMac == null)
+			Collection<String> enderecosMac = enderecosMac();
+			if(enderecosMac == null || enderecosMac.size() == 0)
 				return false;
-			
-			return hashMD5(enderecoMac.toLowerCase() + " - " + password).equals(sysPassword);
-		}
+
+			for (String enderecoMac : enderecosMac) {
+				if(hashMD5(enderecoMac.toLowerCase() + " - " + password).equals(sysPassword))
+					return true;
+			}
+		}			
 		
 		return false;
 	}
@@ -81,29 +86,36 @@ public class Access {
 		return hashtext;
 	}
 	
-	private static String enderecoMac() throws Exception{
+	private static Collection<String> enderecosMac() throws Exception{
+		Collection<String> enderecosMac = new ArrayList<String>();
 		byte[] mac = null;
 		if(System.getProperty("os.name").toLowerCase().contains("windows")){
 			InetAddress address = InetAddress.getLocalHost();  
 			NetworkInterface network = NetworkInterface.getByInetAddress(address);  
 			mac = network.getHardwareAddress();  
+			if(mac != null){
+				StringBuilder sb = new StringBuilder();
+				for (int i = 0; i < mac.length; i++)
+					sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));        
+
+				enderecosMac.add(sb.toString());  
+			}
+			
 		}else{
 			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
 			while(networkInterfaces.hasMoreElements()){
 				NetworkInterface network = networkInterfaces.nextElement();
 				mac = network.getHardwareAddress();
-				if(mac != null) break;
+				if(mac != null){
+					StringBuilder sb = new StringBuilder();
+					for (int i = 0; i < mac.length; i++)
+						sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));        
+
+					enderecosMac.add(sb.toString());  
+				}
 			}
 		}
 
-		if(mac != null){
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < mac.length; i++)
-				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));        
-
-			return sb.toString();  
-		}
-
-		return "";
+		return enderecosMac;
 	}
 }
