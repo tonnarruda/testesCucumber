@@ -333,13 +333,13 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 				if(dataFim != null) 
 					ultimoColaboradorCertificacao.add(Restrictions.le("cc2.data", dataFim));
 				if(mesesCertificacoesAVencer != null && mesesCertificacoesAVencer != 0){
-					String dataVencimento = DateUtil.formataDiaMesAno(DateUtil.incrementaMes(new Date(), mesesCertificacoesAVencer));
+					String dataVencimento = DateUtil.formataAnoMesDia(DateUtil.incrementaMes(new Date(), mesesCertificacoesAVencer));
 					ultimoColaboradorCertificacao.add(Expression.sqlRestriction("(this0__.data + ("+alias+".periodicidade || ' month')::interval) <= '" + dataVencimento + "' ", new String[]{}, new Type[]{}));
 				}else if (cetificadosVencidos != null){
 					if(cetificadosVencidos )
-						ultimoColaboradorCertificacao.add(Expression.sqlRestriction("(this0__.data + ("+alias+".periodicidade || ' month')::interval) < '" + DateUtil.formataDiaMesAno(new Date()) + "' ", new String[]{}, new Type[]{}));
+						ultimoColaboradorCertificacao.add(Expression.sqlRestriction("(this0__.data + ("+alias+".periodicidade || ' month')::interval) < '" + DateUtil.formataAnoMesDia(new Date()) + "' ", new String[]{}, new Type[]{}));
 					else
-						ultimoColaboradorCertificacao.add(Expression.sqlRestriction("( " + alias+".periodicidade is null or (this0__.data + ("+alias+".periodicidade || ' month')::interval) >= '" + DateUtil.formataDiaMesAno(new Date()) + "' )", new String[]{}, new Type[]{}));
+						ultimoColaboradorCertificacao.add(Expression.sqlRestriction("( " + alias+".periodicidade is null or (this0__.data + ("+alias+".periodicidade || ' month')::interval) >= '" + DateUtil.formataAnoMesDia(new Date()) + "' )", new String[]{}, new Type[]{}));
 				}
 		
 		return ultimoColaboradorCertificacao;

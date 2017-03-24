@@ -8,6 +8,7 @@
 		<Item visivel="S" motivo="P17020000202"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste de inconsistência que duplicava relaionamento de avaliados com avaliadores.]]></Item>
 		<Item visivel="S" motivo="P17020000226"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações dos Alunos: Melhoria na performance ao inserir ou editar nota.]]></Item>
 		<Item visivel="S" motivo="P17020000243"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Ajuste da inconsistência ao listar "Questionário de Avaliação do Curso" em uma turma criada por outra empresa.]]></Item>
+		<Item visivel="S" motivo="S17030000289"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Permitir que sejam selecionadas até 15 certificações.]]></Item>
 		<Item visivel="N" motivo="S16120000156"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Novo Perfil de "Visualizar Documentos do colaborador logado".]]></Item>
 		<Item visivel="S" motivo="P17030000044"><![CDATA[Info. Funcionais > Relatórios > Admitidos > Exportar: Ajuste de inconsistência ao apresentar as informações de "Motivo da Admissão" e "Turnover" no relatório XLS.]]></Item>
 		<Item visivel="N" motivo="S17030199999"><![CDATA[Sistema: Alteração na verificação da compatibilidade do Java para a versão 7.]]></Item>

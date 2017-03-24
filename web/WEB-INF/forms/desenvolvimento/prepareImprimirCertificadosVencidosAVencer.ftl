@@ -78,7 +78,7 @@
 		
 		function validaQtd()
 		{
-		    if($("input[name='certificacoesCheck']:checked").size() >= 3)
+		    if($("input[name='certificacoesCheck']:checked").size() >= 15)
 		        $("input[name='certificacoesCheck']").not(':checked').attr('disabled','disabled').parent().css('color', '#DEDEDE');
 		    else
 		        $("input[name='certificacoesCheck']").removeAttr('disabled').parent().css('color', '#5C5C5A');
@@ -132,7 +132,7 @@
 			</@ww.div>
 		</fieldset>
 		</br>
-		<@frt.checkListBox name="certificacoesCheck" label="Certificações (máx. 3 opções)" id="certificacoesCheck" list="certificacoesCheckList" filtro="true" onClick="populaColaborador();validaQtd();" required="true"/>
+		<@frt.checkListBox name="certificacoesCheck" label="Certificações (máx. 15 opções)" id="certificacoesCheck" list="certificacoesCheckList" filtro="true" onClick="populaColaborador();validaQtd();" required="true"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true" onClick="populaColaborador();"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true" onClick="populaColaborador();"/>
 		<@frt.checkListBox name="colaboradoresCheck" id="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" filtro="true"/>
