@@ -20,6 +20,6 @@ public class EnderecoDWRTest extends TestCase {
 	}
 	
 	public void testDeveRetornarErroQuandoServidorDoYahooEstiverOffline() {
-			assertTrue(enderecoDwr.buscaPorCep("63657520325aaaa").contains("404"));
+		assertTrue(enderecoDwr.buscaPorCep("63657520325aaaa").contains("404"));
 	}
 }

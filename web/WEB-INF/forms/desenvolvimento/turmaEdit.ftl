@@ -9,7 +9,7 @@
 	#diasTable { border: none; }
 	#diasTable td { padding: 0px; }
 	#diasTable input[type='text'] { border: 1px solid #BEBEBE; width: 50px; }
-	.hora { text-align: right; }
+	.horas { text-align: right; }
 	.invalido { background-color: #FFEEC2 !important; }
 	
 	.confirmarDescertificacaoDiv{	min-height: 50px;
@@ -50,7 +50,6 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DiaTurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/json2.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
@@ -136,12 +135,13 @@
 					{
 						row +=	"	<td><label for='" + id + "'>" + diasTurma[i].turnoDescricao.capitalize() + "</label></td>\n";
 					}
-					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni" class="hora" maxlength="5" disabled=true /> às <input type="text" id="horaFim-' + id + '" name="horariosFim" class="hora" maxlength="5" disabled=true /></td>\n';
+					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni" class="horas" maxlength="5" disabled=true /> às <input type="text" id="horaFim-' + id + '" name="horariosFim" class="horas" maxlength="5" disabled=true /></td>\n';
 					row += 		"</tr>\n";
 				
 					$('#diasTable').append(row);
 					$('#horaIni-' + id).css('background-color', '#ECECEC');
 					$('#horaFim-' + id).css('background-color', '#ECECEC');
+					$('.horas').mask("99:99");
 				}
 				
 				$("input[name='diasCheck']").change(function() {
@@ -320,6 +320,12 @@
 				
 				horaIni = $('#horaIni-' + id).val();
 				horaFim = $('#horaFim-' + id).val();
+				
+				if(horaIni == "__:__")
+					$('#horaIni-' + id).val('');
+					
+				if(horaFim == "__:__")
+					$('#horaFim-' + id).val('');
 				
 				if((!horaIni && horaFim) || (horaIni && !horaFim))
 				{

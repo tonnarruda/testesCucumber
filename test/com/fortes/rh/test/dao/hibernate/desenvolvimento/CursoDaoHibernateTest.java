@@ -289,9 +289,9 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		
 		Curso curso2 = saveCurso("curso 2", empresa, 30*60);
 		Turma turma2 = saveTurma(curso2, dataDoisMesesDepois, dataQuatroMesesDepois, true, 500.50);
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014)); 
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014));
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014));		
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014), null, null); 
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014), null, null);
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014), null, null);		
 
 		saveColaboradorTurma(curso1, turma1, colaborador1); 
 		saveColaboradorTurma(curso1, turma1, colaborador2);
@@ -925,7 +925,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Colaborador colaborador = saveColaborador(empresa);
 		Curso curso = saveCurso("Curso Básico", empresa, 20);
 		Turma turma = saveTurma(curso, new Date(), new Date(), true, 0.0);
-		DiaTurma diaTurma = getDiaTurma(turma, new Date());
+		DiaTurma diaTurma = getDiaTurma(turma, new Date(), null, null);
 		
 		ColaboradorTurma colaboradorTurma = saveColaboradorTurma(curso, turma, colaborador);
 		ColaboradorPresenca colaboradorPresenca = ColaboradorPresencaFactory.getEntity();
@@ -943,7 +943,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Colaborador colaborador = saveColaborador(empresa);
 		Curso curso1 = saveCurso("Curso Básico", empresa, 20);
 		Turma turma1 = saveTurma(curso1, new Date(), new Date(), true, 0.0);
-		DiaTurma diaTurma = getDiaTurma(turma1, new Date());
+		DiaTurma diaTurma = getDiaTurma(turma1, new Date(), null, null);
 
 		Curso curso2 = saveCurso("Curso Avançado", empresa, 20);
 		Turma turma2 = saveTurma(curso2, new Date(), new Date(), false, 0.0);
@@ -986,9 +986,9 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		
 		Curso curso2 = saveCurso("curso 2", empresa, 30*60);
 		Turma turma2 = saveTurma(curso2, dataMes4, dataMes6, true, 500.50);
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014)); 
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014));
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014));		
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014), null, null); 
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014), null, null);
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014), null, null);		
 
 		saveColaboradorTurma(curso1, turma1, colaborador1); 
 		saveColaboradorTurma(curso1, turma1, colaborador2);
@@ -1023,9 +1023,9 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		
 		Curso curso2 = saveCurso("curso 2", empresa, 30*60);
 		Turma turma2 = saveTurma(curso2, dataMes4, dataMes6, true, 500.50);
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014)); 
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014));
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014));		
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014), null, null); 
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014), null, null);
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014), null, null);		
 
 		saveColaboradorTurma(curso1, turma1, colaborador1); 
 		saveColaboradorTurma(curso2, turma2, colaborador2);
@@ -1061,9 +1061,12 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Curso curso2 = saveCurso("curso 2", empresa, 30*60);
 		Turma turma2 = saveTurma(curso2, dataMes4, dataMes6, true, 500.50);
 		
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014)); 
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014));
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014));		
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014), null, null); 
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014), null, null);
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014), null, null);
+		getDiaTurma(turma1, DateUtil.criarDataMesAno(5, 4, 2014), "8:00", "11:00"); 
+		getDiaTurma(turma1, DateUtil.criarDataMesAno(20, 4, 2014), "8:00", "11:00");
+		getDiaTurma(turma1, DateUtil.criarDataMesAno(5, 6, 2014), "8:00", "11:00");	
 
 		saveColaboradorTurma(curso1, turma1, colaborador1); 
 		saveColaboradorTurma(curso2, turma2, colaborador1); 
@@ -1071,15 +1074,18 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		
 		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
 		
-		Double result = cursoDao.findQtdHorasRatiada(dataMes4, dataMes5, new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, new Long[]{curso1.getId(), curso2.getId()});
+		Double result = cursoDao.findQtdHorasRatiada(dataMes4, dataMes5, new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, new Long[]{curso1.getId(), curso2.getId()}, false);
 		assertEquals(40.0, result/60);
+		
+		result = cursoDao.findQtdHorasRatiada(dataMes4, dataMes5, new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, new Long[]{curso1.getId(), curso2.getId()}, true);
+		assertEquals(6.0, result/60);
 	}
 
 	public void testFindCargaHorariaTreinamentRatiada() {
 		Date dataHistorico = DateUtil.criarDataMesAno(1, 2, 2014); 
-    	Date dataMes4 = DateUtil.criarDataMesAno(1, 4, 2014);
-    	Date dataMes5 = DateUtil.criarDataMesAno(1, 5, 2014);
-    	Date dataMes6 = DateUtil.criarDataMesAno(1, 6, 2014);
+    	Date dataMes1 = DateUtil.criarDataMesAno(1, 4, 2014);
+    	Date dataMes2 = DateUtil.criarDataMesAno(1, 5, 2014);
+    	Date dataMes3 = DateUtil.criarDataMesAno(1, 6, 2014);
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -1093,14 +1099,18 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Colaborador colaborador2 = getColaboradorComHistorico(empresa, estabelecimento2, area, dataHistorico, StatusRetornoAC.CONFIRMADO);
 
 		Curso curso1 = saveCurso("curso 1", empresa, 10*60);
-		Turma turma1 = saveTurma(curso1, dataMes4, dataMes5, true, 200.0);
+		Turma turma1 = saveTurma(curso1, dataMes1, dataMes2, true, 200.0);
 		
 		Curso curso2 = saveCurso("curso 2", empresa, 30*60);
-		Turma turma2 = saveTurma(curso2, dataMes4, dataMes6, true, 500.50);
+		Turma turma2 = saveTurma(curso2, dataMes1, dataMes3, true, 500.50);
 		
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014)); 
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014));
-		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014));		
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 4, 2014), null, null); 
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(20, 4, 2014), null, null);
+		getDiaTurma(turma2, DateUtil.criarDataMesAno(5, 6, 2014), null, null);
+		getDiaTurma(turma1, DateUtil.criarDataMesAno(5, 4, 2014), "8:00", "10:00"); 
+		getDiaTurma(turma1, DateUtil.criarDataMesAno(20, 4, 2014), "8:00", "10:00");
+		getDiaTurma(turma1, DateUtil.criarDataMesAno(5, 6, 2014), "8:00", "10:00");
+		diaTurmaDao.getHibernateTemplateByGenericDao().flush();
 
 		saveColaboradorTurma(curso1, turma1, colaborador1); 
 		saveColaboradorTurma(curso1, turma1, colaborador2); 
@@ -1108,8 +1118,11 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		
 		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
 		
-		Integer result = cursoDao.findCargaHorariaTreinamentoRatiada(new Long[]{curso1.getId(), curso2.getId()}, new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, dataMes4, dataMes5, true);
+		Integer result = cursoDao.findCargaHorariaTreinamentoRatiada(new Long[]{curso1.getId(), curso2.getId()}, new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, dataMes1, dataMes2, true, false);
 		assertEquals(20, result/60);
+		
+		result = cursoDao.findCargaHorariaTreinamentoRatiada(new Long[]{curso1.getId(), curso2.getId()}, new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId(), estabelecimento2.getId()}, new Long[]{area.getId()}, dataMes1, dataMes2, true, true);
+		assertEquals(4, result/60);
 	}
 	
 	private Curso criaCurso(char tipoAvaliacaoCurso, boolean comResposta, Double valorResposta)
@@ -1177,12 +1190,14 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		return estabelecimento;
 	}
 	
-	private DiaTurma getDiaTurma(Turma turma, Date data){
-		DiaTurma diaTurma1 = DiaTurmaFactory.getEntity();
-		diaTurma1.setTurma(turma);
-		diaTurma1.setDia(data);
-		diaTurmaDao.save(diaTurma1);
-		return diaTurma1;
+	private DiaTurma getDiaTurma(Turma turma, Date data, String horaIni, String horaFim){
+		DiaTurma diaTurma = DiaTurmaFactory.getEntity();
+		diaTurma.setTurma(turma);
+		diaTurma.setDia(data);
+		diaTurma.setHoraIni(horaIni);
+		diaTurma.setHoraFim(horaFim);
+		diaTurmaDao.save(diaTurma);
+		return diaTurma;
 	}
 
 	private Turma saveTurma(Curso curso, Date dataInicio, Date dataFim, boolean realizada, Double custo){
