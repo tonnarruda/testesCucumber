@@ -15,6 +15,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 
@@ -174,7 +175,7 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 		
 		return criteria.list();
 	}
-
+	
 	public Collection<UsuarioEmpresa> findUsuarioCoResponsavelAreaOrganizacional(Collection<Long> areasIds)
 	{
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
@@ -265,6 +266,34 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(UsuarioEmpresa.class));
 		
+		return criteria.list();
+	}
+
+	public Collection<UsuarioEmpresa> findUsuarioResponsavelOuCoResponsavelPorAreaOrganizacional(Collection<Long> areasIds, Long colaboradorId, int tipoResponsavel) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.distinct(Projections.property("r.usuario")), "usuario");
+		p.add(Projections.property("r.empresa"), "empresa");
+		
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
+		if(AreaOrganizacional.RESPONSAVEL == tipoResponsavel)
+			criteria.createCriteria("ao.responsavel", "r", Criteria.LEFT_JOIN);
+		else
+			criteria.createCriteria("ao.coResponsavel", "r", Criteria.LEFT_JOIN);
+		
+		criteria.createCriteria("r.usuario", "u", Criteria.LEFT_JOIN);
+		criteria.createCriteria("u.usuarioEmpresas", "ue");
+		criteria.createCriteria("ue.perfil", "per");
+		criteria.createCriteria("per.papeis", "p");
+		
+		criteria.add(Expression.in("ao.id", areasIds));
+		if(AreaOrganizacional.RESPONSAVEL == tipoResponsavel)
+			criteria.add(Expression.or(Expression.eq("p.codigo", "ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA"), Expression.ne("ao.responsavel.id", colaboradorId)));
+		else
+			criteria.add(Expression.or(Expression.eq("p.codigo", "ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA"), Expression.ne("ao.coResponsavel.id", colaboradorId)));
+		
+		criteria.setProjection(p);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(UsuarioEmpresa.class));		
 		return criteria.list();
 	}
 }

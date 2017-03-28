@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.geral;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -43,5 +44,11 @@ public class AreaOrganizacionalManagerTest_Junit4
 		
 		assertEquals(areas, areaOrganizacionalManager.findByLntIdComEmpresa(lnt.getId(), areasIds));
 	}
-		
+	
+	@Test
+	public void testIsResposnsavelOrCoResponsavelPorPropriaArea() {
+		Long colaboradorId = 2L;
+		when(areaOrganizacionalDao.isResposnsavelOrCoResponsavelPorPropriaArea(colaboradorId, AreaOrganizacional.RESPONSAVEL)).thenReturn(true);
+		assertTrue(areaOrganizacionalManager.isResposnsavelOrCoResponsavelPorPropriaArea(colaboradorId, AreaOrganizacional.RESPONSAVEL));
+	}
 }

@@ -18,6 +18,7 @@ public interface UsuarioEmpresaManager extends GenericManager<UsuarioEmpresa>
 	Collection<UsuarioEmpresa> findUsuariosByEmpresaRole(Long empresaId, String role);
 	boolean containsRole(Long usuarioId, Long empresaId, String role);
 	Collection<UsuarioEmpresa> findUsuarioResponsavelAreaOrganizacional(Collection<Long> areasIds);
+	Collection<UsuarioEmpresa> findUsuarioResponsavelOuCoResponsavelPorAreaOrganizacional(Collection<Long> areasIds, Long colaboradorId, int tipoResponsavel);
 	Collection<UsuarioEmpresa> findUsuarioCoResponsavelAreaOrganizacional(Collection<Long> areasIds);
 	Collection<UsuarioEmpresa> findPerfisEmpresas();
 	Collection<UsuarioEmpresa> findUsuariosAtivo(Collection<Long> usuarioIds, Long empresaId);

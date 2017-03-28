@@ -13,4 +13,5 @@ public interface AvaliacaoDao extends GenericDao<Avaliacao>
 	Collection<Avaliacao> findPeriodoExperienciaIsNull(char acompanhamentoExperiencia, Long empresaId);
 	Collection<Avaliacao> findAllSelectComAvaliacaoDesempenho(Long empresaId, boolean ativa);
 	Collection<Avaliacao> findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(Long empresaId, Long colaboradorId);
+	Collection<Avaliacao> findModelosAcompanhamentoPeriodoExperiencia(boolean ativo, Long empresaId, Long colaboradorId, Long colaboradorLogadoId, Integer tipoResponsavel);
 }

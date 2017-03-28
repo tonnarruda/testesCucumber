@@ -25,6 +25,7 @@ import com.fortes.rh.security.spring.aop.callback.crud.UpdateAuditorCallbackImpl
 import com.fortes.rh.test.business.acesso.PapelManagerTest;
 import com.fortes.rh.test.business.acesso.PerfilManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioEmpresaManagerTest;
+import com.fortes.rh.test.business.acesso.UsuarioEmpresaManagerTest_JUnit4;
 import com.fortes.rh.test.business.acesso.UsuarioManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest_Junit4;
@@ -130,6 +131,7 @@ import com.fortes.rh.test.business.geral.TipoDespesaManagerTest;
 import com.fortes.rh.test.business.geral.TipoDocumentoManagerTest;
 import com.fortes.rh.test.business.geral.TurmaTipoDespesaManagerTest;
 import com.fortes.rh.test.business.geral.UsuarioMensagemManagerTest;
+import com.fortes.rh.test.business.geral.UsuarioMensagemManagerTest_Junit4;
 import com.fortes.rh.test.business.importacao.ImportacaoColaboradorManagerTest;
 import com.fortes.rh.test.business.pesquisa.AspectoManagerTest;
 import com.fortes.rh.test.business.pesquisa.ColaboradorQuestionarioManagerTest;
@@ -749,6 +751,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	UsuarioEditActionTest.class,
 	UsuarioEmpresaDaoHibernateTest.class,
 	UsuarioEmpresaManagerTest.class,
+	UsuarioEmpresaManagerTest_JUnit4.class,
 
     //CAPTAÇÃO
 	ConfiguracaoImpressaoCurriculoDaoHibernateTest.class,
@@ -1028,6 +1031,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ColaboradorReportActionTest.class,
 	UsuarioMensagemDaoHibernateTest.class,
 	UsuarioMensagemManagerTest.class,
+	UsuarioMensagemManagerTest_Junit4.class,
 	UsuarioMensagemEditActionTest.class,
 	UsuarioMensagemListActionTest.class,
 	UsuarioMensagemDWRTest.class,

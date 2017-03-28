@@ -285,7 +285,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 			save(usuarioMensagem);
 		}
 	}
-
+	
 	public void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String msg, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao, Long usuarioIdDesconsiderado)
 	{
 		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionais = usuarioEmpresaManager.findUsuarioResponsavelAreaOrganizacional(areasIds);
@@ -336,5 +336,10 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
+	}
+
+	public void saveMensagemResponderAcompPeriodoExperiencia(String msg, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao, Colaborador colaborador, int tipoResponsavel) {
+		Collection<UsuarioEmpresa> usuariosEmpresa = usuarioEmpresaManager.findUsuarioResponsavelOuCoResponsavelPorAreaOrganizacional(areasIds, colaborador.getId(), tipoResponsavel);
+		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosEmpresa, null, tipoMensagem, avaliacao, null);
 	}
 }

@@ -100,4 +100,6 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Map<Long, String> findMapCoResponsaveisIdsEmails(Long empresaId);
 	public Collection<Long> getAncestraisIds (Long... areasIds);
 	public Collection<Long> getDescendentesIds (Long... areasIds);
+	public boolean isResposnsavelOrCoResponsavelPorPropriaArea(Long colaboradorId, int tipoResponsavel);
+	public Integer defineTipoResponsavel(Long colaboradorId);
 }

@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -14,6 +15,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
@@ -21,6 +23,7 @@ import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.util.LongUtil;
 
@@ -206,5 +209,68 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		criteria.addOrder(Order.asc("a.titulo"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Avaliacao.class));
 		return criteria.list();
+	}
+
+	public Collection<Avaliacao> findModelosAcompanhamentoPeriodoExperiencia( boolean ativo, Long empresaId, Long colaboradorId, Long colaboradorLogadoId, Integer tipoResponsavel) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.titulo"), "titulo");
+		p.add(Projections.property("a.cabecalho"), "cabecalho");
+		p.add(Projections.property("a.percentualAprovacao"), "percentualAprovacao");
+		p.add(Projections.property("a.ativo"), "ativo");
+		p.add(Projections.property("a.tipoModeloAvaliacao"), "tipoModeloAvaliacao");
+		p.add(Projections.property("a.empresa.id"), "projectionEmpresaId");
+		p.add(Projections.property("a.periodoExperiencia"), "periodoExperiencia");
+		p.add(Projections.property("a.avaliarCompetenciasCargo"), "avaliarCompetenciasCargo");
+		p.add(Projections.property("a.respostasCompactas"), "respostasCompactas");
+		
+		Criteria criteria = getSession().createCriteria(Avaliacao.class, "a");
+		criteria.add(Expression.eq("a.ativo",true));
+		criteria.add(Expression.eq("a.empresa.id", empresaId));
+		criteria.add(Expression.eq("a.tipoModeloAvaliacao", TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA));
+		if(tipoResponsavel != null)
+			montacriteriaRestringirVisualizacaoDeModelosParaGestorDaPropriaArea(criteria, colaboradorLogadoId, tipoResponsavel);
+			
+		criteria.setProjection(p);
+		criteria.addOrder(Order.asc("a.titulo"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Avaliacao.class));
+		return criteria.list();
+	}
+	
+	private Criteria montacriteriaRestringirVisualizacaoDeModelosParaGestorDaPropriaArea(Criteria criteria, Long colaboradorLogadoId, Integer tipoResponsavel){
+		DetachedCriteria subquery =  DetachedCriteria.forClass(ColaboradorPeriodoExperienciaAvaliacao.class, "cpe")
+				.setProjection(Projections.property("cpe.avaliacao.id"))
+				.add(Restrictions.eq("cpe.colaborador.id", colaboradorLogadoId))
+				.add(Restrictions.eq("cpe.tipo", 'G'));
+		
+		criteria.add(Subqueries.propertyNotIn("a.id",subquery));
+		criteria.add(montaCriterio(colaboradorLogadoId, tipoResponsavel));
+		
+		return criteria;
+	}
+	
+	private Criterion montaCriterio(Long colaboradorLogadoId, Integer tipoResponsavel){
+		String condicaoTipoResponsavel = "responsavel_id";
+		if(tipoResponsavel == AreaOrganizacional.CORRESPONSAVEL)
+			condicaoTipoResponsavel = "coResponsavel_id";
+		
+		StringBuilder sql = new StringBuilder(" ");
+		sql.append(" this_.id not in ( ");
+		sql.append(" 	select cq.avaliacao_id from colaboradorquestionario cq ");
+		sql.append(" 	where cq.colaborador_id = ? and cq.avaliacaoDesempenho_id is null ");
+		sql.append("	and cq.respondida = true and avaliacao_id is not null ");
+		sql.append("	and cq.avaliador_id in( ");
+		sql.append("		with areaId as( ");
+		sql.append("			select ao.id from historicocolaborador  hc ");
+		sql.append("				join areaOrganizacional ao on ao.id = hc.areaorganizacional_id ");
+		sql.append("				where hc.data = ( select max(hc2.data) from historicoColaborador hc2 where hc2.colaborador_id =? and hc2.status = 1) ");
+		sql.append("				and hc.colaborador_id = ? ");
+		sql.append("		) ");
+		sql.append("		select " + condicaoTipoResponsavel + " from areaorganizacional");
+		sql.append("		where id in (select * from ancestrais_areas_ids((select * from areaId))) and " + condicaoTipoResponsavel + " <> ? ");
+		sql.append("	)");
+		sql.append(" )");
+		
+		return Expression.sqlRestriction(sql.toString(), new Long[] {colaboradorLogadoId, colaboradorLogadoId, colaboradorLogadoId, colaboradorLogadoId}, new Type[]{Hibernate.LONG, Hibernate.LONG, Hibernate.LONG, Hibernate.LONG});
 	}
 }

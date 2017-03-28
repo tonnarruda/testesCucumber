@@ -2950,7 +2950,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder sql = new StringBuilder();
 		sql.append("select distinct co.id as coid, co.nome as conome, co.nomeComercial as conomecomercial, co.matricula as comatricula, ");
 		sql.append("cg.nome as cgnome, fs.nome as fsnome, ao.id as aoid, ao.nome as aonome, am.id as amid, am.nome as amnome, ");
-		sql.append("co.empresa_id as empresaid, es.nome as esnome, cpea.avaliacao_id as avalid, emp.nome as empnome, fun.nome as fnome ");
+		sql.append("co.empresa_id as empresaid, es.nome as esnome, cpea.avaliacao_id as avalid, emp.nome as empnome, fun.nome as fnome, ");
+		sql.append("ao.responsavel_id as responsavel, ao.coresponsavel_id as coresponsavel, co.usuario_id as usuarioId, co.email as coemail ");
 		sql.append("from HistoricoColaborador as hc ");
 		sql.append("inner join colaborador as co on hc.colaborador_id = co.id ");
 		sql.append("left join faixaSalarial as fs on hc.faixaSalarial_id = fs.id ");
@@ -3008,6 +3009,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 					(array[12] != null ? ((BigInteger) array[12]).longValue(): null),
 					(String) array[13], (String) array[14]); 
 					
+			colaborador.getAreaOrganizacional().setResponsavelId(( array[15] != null ? ((BigInteger) array[15]).longValue(): null));
+			colaborador.getAreaOrganizacional().setResponsavelId(( array[16] != null ? ((BigInteger) array[16]).longValue(): null));
+			colaborador.setUsuarioIdProjection(array[17] != null ? ((BigInteger) array[17]).longValue(): null);
+			colaborador.setEmailColaborador((String) array[18]);
 			colaboradores.add(colaborador);
 		}
 

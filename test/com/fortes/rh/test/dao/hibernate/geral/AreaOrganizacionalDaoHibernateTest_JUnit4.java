@@ -1,8 +1,11 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +20,16 @@ import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.DaoHibernateAnnotationTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 
 public class AreaOrganizacionalDaoHibernateTest_JUnit4  extends DaoHibernateAnnotationTest
 {
@@ -102,5 +110,29 @@ public class AreaOrganizacionalDaoHibernateTest_JUnit4  extends DaoHibernateAnno
 		Collection<Long> areasIds = areaOrganizacionalDao.getDescendentesIds(new Long[]{areaAvo.getId()});
 		
 		assertEquals(5, areasIds.size());
+	}
+	
+	@Test
+	public void testIsResposnsavelOrCoResponsavelPorPropriaArea() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaFilha = AreaOrganizacionalFactory.getEntity(null, "Area Filha", true, empresa);
+		areaOrganizacionalDao.save(areaFilha);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, new Date(), StatusRetornoAC.CONFIRMADO);
+		historicoColaborador.setAreaOrganizacional(areaFilha);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		areaFilha.setResponsavel(colaborador);
+		areaOrganizacionalDao.update(areaFilha);
+		
+		areaOrganizacionalDao.getHibernateTemplateByGenericDao().flush();
+		
+		assertTrue(areaOrganizacionalDao.isResposnsavelOrCoResponsavelPorPropriaArea(colaborador.getId(), AreaOrganizacional.RESPONSAVEL));
+		assertFalse(areaOrganizacionalDao.isResposnsavelOrCoResponsavelPorPropriaArea(colaborador.getId(), AreaOrganizacional.CORRESPONSAVEL));
 	}
 }

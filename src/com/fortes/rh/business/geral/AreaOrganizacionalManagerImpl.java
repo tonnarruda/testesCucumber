@@ -1168,4 +1168,18 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	public Collection<Long> getDescendentesIds (Long... areasIds){
 		return getDao().getDescendentesIds(areasIds);
 	}
+
+	public boolean isResposnsavelOrCoResponsavelPorPropriaArea( Long colaboradorId, int tipoResponsavel) {
+		return getDao().isResposnsavelOrCoResponsavelPorPropriaArea(colaboradorId, tipoResponsavel);
+	}
+	
+	public Integer defineTipoResponsavel(Long colaboradorId){
+		boolean responsavel = this.isResposnsavelOrCoResponsavelPorPropriaArea(colaboradorId, AreaOrganizacional.RESPONSAVEL);
+		boolean coresponsavel = this.isResposnsavelOrCoResponsavelPorPropriaArea(colaboradorId, AreaOrganizacional.CORRESPONSAVEL);
+		if(responsavel)
+			return AreaOrganizacional.RESPONSAVEL;
+		else if(coresponsavel)
+			return AreaOrganizacional.CORRESPONSAVEL;
+		return null;
+	}
 }

@@ -193,7 +193,8 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 				if(!colaborador.getNome().equals(colaborador.getNomeComercial()))
 					nomeComercialEntreParentese = " (" + colaborador.getNomeComercial() + ")";
 				
-				colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId());				
+				boolean possuiRole = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA"});
+				colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId(), colaboradorLogado, possuiRole, areaOrganizacionalManager);				
 			}
 		}
 		

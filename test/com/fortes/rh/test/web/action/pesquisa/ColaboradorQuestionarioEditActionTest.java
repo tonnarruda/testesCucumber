@@ -368,7 +368,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		Collection<ColaboradorResposta> colaboradorRespostas = Arrays.asList(colaboradorResposta1, colaboradorResposta2, colaboradorResposta3);
 		
 		colaboradorManager.expects(once()).method("findByIdProjectionEmpresa").will(returnValue(colaborador));
-		avaliacaoManager.expects(once()).method("find").will(returnValue(new ArrayList<Avaliacao>()));
+		avaliacaoManager.expects(once()).method("findModelosAcompanhamentoPeriodoExperiencia").withAnyArguments().will(returnValue(new ArrayList<Avaliacao>()));
 		colaboradorQuestionarioManager.expects(once()).method("findByColaboradorAvaliacao").will(returnValue(null));
 		colaboradorQuestionarioManager.expects(once()).method("populaQuestionario").will(returnValue(colaboradorRespostas));
 		perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq(colaborador.getNome()));

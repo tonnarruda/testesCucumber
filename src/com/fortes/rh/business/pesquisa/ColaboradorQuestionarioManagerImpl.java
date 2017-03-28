@@ -11,6 +11,7 @@ import org.apache.commons.beanutils.BeanComparator;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.exception.AvaliacaoRespondidaException;
@@ -255,9 +256,13 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		this.perguntaManager = perguntaManager;
 	}
 
-	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId)
+	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, Colaborador colaboradorLogado, boolean possuiRole, AreaOrganizacionalManager areaOrganizacionalManager)
 	{
-		return getDao().findAvaliacaoByColaborador(colaboradorId);
+		if(colaboradorLogado!= null && colaboradorId.equals(colaboradorLogado.getId()) && !possuiRole){
+			
+			return getDao().findAvaliacaoByColaborador(colaboradorId, colaboradorLogado.getId(), areaOrganizacionalManager.defineTipoResponsavel(colaboradorLogado.getId()));
+		}
+		return getDao().findAvaliacaoByColaborador(colaboradorId, null, null);
 	}
 	
 	public Collection<ColaboradorQuestionario> findAvaliacaoDesempenhoByColaborador(Long colaboradorId){

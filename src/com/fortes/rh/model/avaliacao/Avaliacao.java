@@ -76,6 +76,14 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 		
 		empresa.setNome(empresaNome);
 	}
+
+	public void setProjectionEmpresaId(Long empresaId)
+	{
+		if (empresa == null)
+			empresa = new Empresa();
+		
+		empresa.setId(empresaId);
+	}
 	
 	public String getTitulo() {
 		return titulo;

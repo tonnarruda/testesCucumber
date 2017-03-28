@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.desenvolvimento.Turma;
@@ -31,7 +32,7 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	ColaboradorQuestionario findByIdProjection(Long id);
 	ColaboradorQuestionario findByIdColaboradorCandidato(Long colaboradorQuestionarioId);
 	Collection<ColaboradorResposta> populaQuestionario(Avaliacao avaliacao);
-	Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId);
+	Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, Colaborador colaboradorLogado, boolean possuiRole, AreaOrganizacionalManager areaOrganizacionalManager);
 	public Collection<ColaboradorQuestionario> findAvaliacaoDesempenhoByColaborador(Long colaboradorId);
 	Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId, Boolean respondida, Long empresaId);
 	void save(AvaliacaoDesempenho avaliacaoDesempenho, Long[] colaboradorIds, boolean isAvaliado);

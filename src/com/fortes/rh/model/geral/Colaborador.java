@@ -1758,6 +1758,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.contato.setFoneCelular(celular);
 	}
 
+	public void setContatoEmail(String email){
+		if(this.contato == null)
+			this.contato = new Contato();
+		this.contato.setEmail(email);
+	}
+	
 	public void setPessoalConjuge(String conjuge)
 	{
 		inicializaPessoal();
@@ -1945,6 +1951,22 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		iniciaAreaOrganizacional();
 		areaOrganizacional.setNome(nome);
+	}
+
+	public Long getAreaOrganizacionalResponsavelId()
+	{
+		if(areaOrganizacional != null && areaOrganizacional.getResponsavel() != null )
+			return areaOrganizacional.getResponsavel().getId();
+			
+		return null;
+	}
+	
+	public Long getAreaOrganizacionalCoResponsavelId()
+	{
+		if(areaOrganizacional != null && areaOrganizacional.getCoResponsavel() != null )
+			return areaOrganizacional.getCoResponsavel().getId();
+		
+		return null;
 	}
 	
 	public void setAreaOrganizacionalCodigoAC(String codigoAC)
@@ -2188,6 +2210,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public Usuario getUsuario()
 	{
 		return usuario;
+	}
+	public Long getUsuarioId()
+	{
+		if(usuario != null )
+			return usuario.getId();
+		
+		return null;
 	}
 	public void setUsuario(Usuario usuario)
 	{

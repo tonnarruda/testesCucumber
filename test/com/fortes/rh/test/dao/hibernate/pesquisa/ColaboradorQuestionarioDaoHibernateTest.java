@@ -5,7 +5,10 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.acesso.PapelDao;
+import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
+import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
@@ -107,6 +110,9 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	private CursoDao cursoDao;
 	private AvaliacaoCursoDao avaliacaoCursoDao;
 	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao; 
+	private PapelDao papelDao;
+	private UsuarioEmpresaDao usuarioEmpresaDao;
+	private PerfilDao perfilDao;
 
 	public void setColaboradorRespostaDao(ColaboradorRespostaDao colaboradorRespostaDao)
 	{
@@ -337,25 +343,33 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		Avaliacao avaliacaoExperiencia = AvaliacaoFactory.getEntity();
 		avaliacaoDao.save(avaliacaoExperiencia);
 
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setEmpresa(empresa);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(null, empresa);
+		colaborador.setUsuario(usuario);
 		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, new Date(), null, areaOrganizacional);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		areaOrganizacional.setResponsavel(colaborador);
+		areaOrganizacionalDao.save(areaOrganizacional);
 
-		ColaboradorQuestionario colaboradorQuestionario1 = new ColaboradorQuestionario();
-		colaboradorQuestionario1.setColaborador(colaborador);
-		colaboradorQuestionario1.setAvaliacao(avaliacaoExperiencia);
+		ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(null, colaborador, avaliacaoExperiencia);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
 
-		ColaboradorQuestionario colaboradorQuestionario2 = new ColaboradorQuestionario();
-		colaboradorQuestionario2.setColaborador(colaborador);
-		colaboradorQuestionario2.setAvaliacao(null);
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity(null, colaborador, null);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
 
-		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findAvaliacaoByColaborador(colaborador.getId());
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findAvaliacaoByColaborador(colaborador.getId(), colaborador.getId(), AreaOrganizacional.RESPONSAVEL);
 
 		assertEquals(1, retorno.size());
 	}
-	
+		
 	public void testFindAvaliacaoDesempenhoByColaborador() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -1556,5 +1570,17 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	public void setAproveitamentoAvaliacaoCursoDao(
 			AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao) {
 		this.aproveitamentoAvaliacaoCursoDao = aproveitamentoAvaliacaoCursoDao;
+	}
+
+	public void setPapelDao(PapelDao papelDao) {
+		this.papelDao = papelDao;
+	}
+
+	public void setUsuarioEmpresaDao(UsuarioEmpresaDao usuarioEmpresaDao) {
+		this.usuarioEmpresaDao = usuarioEmpresaDao;
+	}
+
+	public void setPerfilDao(PerfilDao perfilDao) {
+		this.perfilDao = perfilDao;
 	}
 }

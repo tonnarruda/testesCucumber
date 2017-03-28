@@ -549,7 +549,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		return mensagem.toString();
 	}
 	
-	private void decideGerenciadorEnviaMensagemLembretePeriodoExperiencia(GerenciadorComunicacao gerenciadorComunicacao, Colaborador colaborador, StringBuilder mensagemTitulo,	String mensagem) {
+	private void decideGerenciadorEnviaMensagemLembretePeriodoExperiencia(GerenciadorComunicacao gerenciadorComunicacao, Colaborador colaborador, StringBuilder mensagemTitulo, String mensagem) {
 		String link = "";
 		try {
 			Avaliacao avaliacao = null;
@@ -565,14 +565,23 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);	
 				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem, "RH", linkParaResposta, usuariosConfigurados, colaborador, TipoMensagem.AVALIACAO_DESEMPENHO, null, null);
 			}else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())){
-				usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem, "RH", link, colaborador.getAreaOrganizacional().getDescricaoIds(), TipoMensagem.AVALIACAO_DESEMPENHO, avaliacao, null);
+				usuarioMensagemManager.saveMensagemResponderAcompPeriodoExperiencia(mensagem, "RH", link, colaborador.getAreaOrganizacional().getDescricaoIds(), TipoMensagem.AVALIACAO_DESEMPENHO, avaliacao, colaborador, AreaOrganizacional.RESPONSAVEL);
 			}else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())){
-				usuarioMensagemManager.saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(mensagem, "RH", link, colaborador.getAreaOrganizacional().getDescricaoIds(), TipoMensagem.AVALIACAO_DESEMPENHO, avaliacao, null);
+				usuarioMensagemManager.saveMensagemResponderAcompPeriodoExperiencia(mensagem, "RH", link, colaborador.getAreaOrganizacional().getDescricaoIds(), TipoMensagem.AVALIACAO_DESEMPENHO, avaliacao, colaborador, AreaOrganizacional.CORRESPONSAVEL);
 			}else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())){
-				String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaborador.getAreaOrganizacional().getId(), colaborador.getEmpresa().getId(), AreaOrganizacional.RESPONSAVEL, null);
+				String notEmail = "";
+				if (colaborador.getId().equals(colaborador.getAreaOrganizacionalResponsavelId()) 
+						&& !usuarioEmpresaManager.containsRole(colaborador.getUsuarioId(), colaborador.getEmpresa().getId(), "ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA"))
+					notEmail = colaborador.getContato().getEmail();
+				String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaborador.getAreaOrganizacional().getId(), colaborador.getEmpresa().getId(), AreaOrganizacional.RESPONSAVEL, notEmail);
 				mail.send(gerenciadorComunicacao.getEmpresa(), mensagemTitulo.toString(), mensagem.replace("\n", "<br>"), null, emails);
 			}else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())){
-				String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaborador.getAreaOrganizacional().getId(), colaborador.getEmpresa().getId(), AreaOrganizacional.CORRESPONSAVEL, null);
+				String notEmail = "";
+				if (colaborador.getId().equals(colaborador.getAreaOrganizacionalCoResponsavelId()) 
+						&& !usuarioEmpresaManager.containsRole(colaborador.getUsuarioId(), colaborador.getEmpresa().getId(), "ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA"))
+					notEmail = colaborador.getContato().getEmail();
+				
+				String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaborador.getAreaOrganizacional().getId(), colaborador.getEmpresa().getId(), AreaOrganizacional.CORRESPONSAVEL, notEmail);
 				mail.send(gerenciadorComunicacao.getEmpresa(), mensagemTitulo.toString(), mensagem.replace("\n", "<br>"), null, emails);
 			}
 		} catch (Exception e) {e.printStackTrace();}

@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.geral.Colaborador;
 
 public interface UsuarioEmpresaDao extends GenericDao<UsuarioEmpresa>
 {
@@ -29,4 +30,6 @@ public interface UsuarioEmpresaDao extends GenericDao<UsuarioEmpresa>
 	public Collection<UsuarioEmpresa> findUsuariosAtivo(Collection<Long> usuarioIds, Long empresaId);
 
 	public Collection<UsuarioEmpresa> findByColaboradorId(Long colaboradorId);
+
+	public Collection<UsuarioEmpresa> findUsuarioResponsavelOuCoResponsavelPorAreaOrganizacional(	Collection<Long> areasIds, Long colaboradorId, int tipoResponsavel);
 }

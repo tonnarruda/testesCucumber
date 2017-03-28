@@ -8,6 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
@@ -27,6 +28,7 @@ import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pesquisa;
@@ -446,7 +448,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return (ColaboradorQuestionario) criteria.uniqueResult();
 	}
 
-	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId)
+	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, Long colaboradorLogadoId, Integer tipoResponsavel)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
 		criteria.createCriteria("cq.colaborador", "colab", Criteria.LEFT_JOIN);
@@ -463,11 +465,13 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("av.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("av.titulo"), "projectionAvaliacaoTitulo");
 		
-		criteria.setProjection(p);
-		
 		criteria.add(Expression.eq("colab.id", colaboradorId));
 		criteria.add(Expression.isNull("cq.avaliacaoDesempenho"));
 		
+		if(tipoResponsavel != null)
+			criteria.add(criterionRetorneGestoresAreasAncestrais(colaboradorLogadoId, tipoResponsavel));
+		
+		criteria.setProjection(p);
 		criteria.addOrder(Order.desc("cq.respondidaEm"));
 		criteria.addOrder(Order.asc("colab.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -475,7 +479,25 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		return criteria.list();
 	}
-
+	
+	private Criterion criterionRetorneGestoresAreasAncestrais(Long colaboradorLogadoId, int tipoResponsavel){
+		String condicaoResponsavel = "responsavel_id";
+		if(AreaOrganizacional.CORRESPONSAVEL == tipoResponsavel)
+			condicaoResponsavel = "coresponsavel_id";
+			
+		StringBuilder sql = new StringBuilder("this_.avaliador_id not in( ");
+		sql.append("		with areaId as (");
+		sql.append("						select ao.id from historicocolaborador hc ");
+		sql.append("						join areaOrganizacional ao on ao.id = hc.areaorganizacional_id ");
+		sql.append("						where hc.data = ( select max(hc2.data) from historicoColaborador hc2 where hc2.colaborador_id = ? and hc2.status = 1) ");
+		sql.append("						and hc.colaborador_id = ? ");
+		sql.append("					   ) ");
+		sql.append("		select "+ condicaoResponsavel + " from areaorganizacional where id in (select * from ancestrais_areas_ids((select a.id from areaId as a))) ");
+		sql.append("		and "+ condicaoResponsavel + " <> ? ) ");
+		
+		return Expression.sqlRestriction(sql.toString(), new Long[] {colaboradorLogadoId, colaboradorLogadoId, colaboradorLogadoId}, new Type[]{Hibernate.LONG, Hibernate.LONG, Hibernate.LONG});
+	}
+	
 	public Collection<ColaboradorQuestionario> findAvaliacaoDesempenhoByColaborador(Long colaboradorId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");

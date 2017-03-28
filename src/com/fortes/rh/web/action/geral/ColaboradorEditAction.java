@@ -977,7 +977,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			
 			pesquisas = colaboradorQuestionarioManager.findByColaborador(colaborador.getId());
 			
-			cqAvaliacaoExperiencias = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId());
+			Colaborador colaboradorLogado = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+			boolean possuiRole = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA"});
+			cqAvaliacaoExperiencias = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId(), colaboradorLogado, possuiRole, areaOrganizacionalManager);
 			
 			historicoColaboradors = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), empresaDoColaborador.getId());
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());

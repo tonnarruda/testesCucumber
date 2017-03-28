@@ -24,4 +24,5 @@ public interface UsuarioMensagemManager extends GenericManager<UsuarioMensagem>
 	Long getAnteriorOuProximo(Long usuarioMensagemId, Long usuarioId, Long empresaId, char opcao, Character tipo);
 	void delete(UsuarioMensagem usuarioMensagem, Long[] usuarioMensagemIds);
 	Integer countMensagens(Long empresaId, Long usuarioId, Character tipo);
+	void saveMensagemResponderAcompPeriodoExperiencia(String msg, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao, Colaborador colaborador, int tipoResponsavel);
 }

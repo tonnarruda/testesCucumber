@@ -513,8 +513,11 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		}
 		
 		colaborador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getColaborador().getId());
-		avaliacaoExperiencias = avaliacaoManager.find(new String[]{"ativo", "tipoModeloAvaliacao", "empresa.id"}, new Object[]{true, TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, getEmpresaSistema().getId()}, new String[]{"titulo"});
 		
+		Colaborador colaboradorLogado = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+		boolean possuiRole = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA"});
+																											  
+		avaliacaoExperiencias = avaliacaoManager.findModelosAcompanhamentoPeriodoExperiencia(getEmpresaSistema().getId(), colaborador.getId(), colaboradorLogado, possuiRole, areaOrganizacionalManager);
 		colaboradorRespostas = colaboradorQuestionarioManager.populaQuestionario(colaboradorQuestionario.getAvaliacao());
 		
 		montaPerguntasRespostas();

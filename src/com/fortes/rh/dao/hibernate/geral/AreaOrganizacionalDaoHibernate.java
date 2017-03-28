@@ -9,17 +9,20 @@ import java.util.Iterator;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -662,5 +665,28 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		criteria.add(Expression.in("ao.id", areasIds));
 
 		return criteria.list();
+	}
+
+	public boolean isResposnsavelOrCoResponsavelPorPropriaArea( Long colaboradorId, int tipoResponsavel) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ao.id"), "areaId");
+		
+		DetachedCriteria subquery =  DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eq("hc2.colaborador.id", colaboradorId))
+				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+		
+		String condicaoTipoResponsavel = "ao.responsavel.id";
+		if(tipoResponsavel == AreaOrganizacional.CORRESPONSAVEL)
+			condicaoTipoResponsavel = "ao.coResponsavel.id";
+		
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.areaOrganizacional", "ao");
+		criteria.add(Expression.eq("hc.colaborador.id", colaboradorId));
+		criteria.add(Subqueries.propertyEq("hc.data",subquery));
+		criteria.add(Expression.eq(condicaoTipoResponsavel, colaboradorId));
+		
+		criteria.setProjection(p);
+		return criteria.list().size() > 0;
 	}
 }

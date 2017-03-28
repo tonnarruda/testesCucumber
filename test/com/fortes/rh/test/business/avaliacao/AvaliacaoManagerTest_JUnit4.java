@@ -1,10 +1,11 @@
 package com.fortes.rh.test.business.avaliacao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManagerImpl;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
@@ -20,9 +22,12 @@ import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.pesquisa.PerguntaFactory;
 
 public class AvaliacaoManagerTest_JUnit4
@@ -43,7 +48,7 @@ public class AvaliacaoManagerTest_JUnit4
         respostaManager = mock(RespostaManager.class);
         questionarioManager = mock(QuestionarioManager.class);
         colaboradorRespostaManager = mock(ColaboradorRespostaManager.class);
-        
+
         avaliacaoManager.setDao(avaliacaoDao);
         avaliacaoManager.setPerguntaManager(perguntaManager);
         avaliacaoManager.setRespostaManager(respostaManager);
@@ -102,5 +107,29 @@ public class AvaliacaoManagerTest_JUnit4
 		when(avaliacaoDao.findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(empresaId, colaboradorId)).thenReturn(avaliacoes);
 		
 		assertEquals(avaliacoes.size(), avaliacaoManager.findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(empresaId, colaboradorId).size());
+	}
+	
+	@Test
+	public void testFindModelosAcompanhamentoPeriodoExperiencia(){
+		Long empresaId = 2L;
+		Colaborador colaboradorLogadoId = ColaboradorFactory.getEntity(1L);
+		Collection<Avaliacao> avaliacoes = AvaliacaoFactory.getCollection();
+		AreaOrganizacionalManager areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
+		
+		when(areaOrganizacionalManager.isResposnsavelOrCoResponsavelPorPropriaArea(colaboradorLogadoId.getId(), AreaOrganizacional.RESPONSAVEL)).thenReturn(false);
+		when(areaOrganizacionalManager.isResposnsavelOrCoResponsavelPorPropriaArea(colaboradorLogadoId.getId(), AreaOrganizacional.CORRESPONSAVEL)).thenReturn(false);
+		when(avaliacaoDao.findModelosAcompanhamentoPeriodoExperiencia(true, empresaId, colaboradorLogadoId.getId(), null, null)).thenReturn(avaliacoes);
+		assertEquals(avaliacoes.size(), avaliacaoManager.findModelosAcompanhamentoPeriodoExperiencia(empresaId, colaboradorLogadoId.getId(), colaboradorLogadoId, true, areaOrganizacionalManager).size());
+	}
+	
+	@Test
+	public void testFindModelosAcompanhamentoPeriodoExperienciaComColaboradorLogadoNulo(){
+		Long empresaId = 2L;
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		Collection<Avaliacao> avaliacoes = AvaliacaoFactory.getCollection();
+		AreaOrganizacionalManager areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
+		
+		when(avaliacaoDao.findModelosAcompanhamentoPeriodoExperiencia(true, empresaId, colaborador.getId(), null, null)).thenReturn(avaliacoes);
+		assertEquals(avaliacoes.size(), avaliacaoManager.findModelosAcompanhamentoPeriodoExperiencia(empresaId, colaborador.getId(), null, true, areaOrganizacionalManager).size());
 	}
 }

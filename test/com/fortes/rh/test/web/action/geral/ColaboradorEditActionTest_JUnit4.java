@@ -57,7 +57,6 @@ import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
-import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -377,7 +376,7 @@ public class ColaboradorEditActionTest_JUnit4
 		when(configuracaoCampoExtraManager.find(eq(new String[]{"ativoColaborador", "empresa.id"}),eq(new Object[]{true, empresa.getId()}), eq(new String[]{"ordem"}))).thenReturn(configuracaoCampoExtras);
 		when(colaboradorManager.findColaboradorById(eq(colaborador.getId()))).thenReturn(colaborador);
 		when(colaboradorQuestionarioManager.findAvaliacaoDesempenhoByColaborador(eq(colaborador.getId()))).thenReturn(new ArrayList<ColaboradorQuestionario>());
-		when(colaboradorQuestionarioManager.findAvaliacaoByColaborador(eq(colaborador.getId()))).thenReturn(new ArrayList<ColaboradorQuestionario>());
+		when(colaboradorQuestionarioManager.findAvaliacaoByColaborador(eq(colaborador.getId()), any(Colaborador.class), eq(false), eq(areaOrganizacionalManager))).thenReturn(new ArrayList<ColaboradorQuestionario>());
 		when(historicoColaboradorManager.progressaoColaborador(eq(colaborador.getId()), eq(empresa.getId()))).thenReturn(historicoColaboradors);
 		when(historicoColaboradorManager.getHistoricoAtual(eq(colaborador.getId()))).thenReturn(historicoColaborador1);
 		when(colaboradorIdiomaManager.findByColaborador(eq(colaborador.getId()))).thenReturn(colaboradorsIdioma);

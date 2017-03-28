@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.MensagemManager;
@@ -18,6 +19,7 @@ import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
@@ -180,6 +182,15 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		return getDao().findModelosPeriodoExperienciaAtivosAndModelosConfiguradosParaOColaborador(empresaId, colaboradorId);
 	}
 	
+	public Collection<Avaliacao> findModelosAcompanhamentoPeriodoExperiencia(Long empresaId, Long colaboradorId, Colaborador colaboradorLogado, boolean possuiRole, AreaOrganizacionalManager areaOrganizacionalManager) {
+		
+		if(colaboradorLogado != null && colaboradorId.equals(colaboradorLogado.getId()) && !possuiRole){
+			return getDao().findModelosAcompanhamentoPeriodoExperiencia(true, empresaId, colaboradorId, colaboradorLogado.getId(), areaOrganizacionalManager.defineTipoResponsavel(colaboradorLogado.getId()));
+		}
+		else		
+			return getDao().findModelosAcompanhamentoPeriodoExperiencia(true, empresaId, colaboradorId, null, null);
+	}
+
 	public void setQuestionarioManager(QuestionarioManager questionarioManager) {
 		this.questionarioManager = questionarioManager;
 	}

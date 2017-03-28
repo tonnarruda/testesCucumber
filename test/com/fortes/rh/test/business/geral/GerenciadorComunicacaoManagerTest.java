@@ -695,8 +695,8 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 colaboradorManager.expects(atLeastOnce()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments().isVoid();
-		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemRespAreaOrganizacional").withAnyArguments().isVoid();
-		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional").withAnyArguments().isVoid();
+		 usuarioMensagemManager.expects(once()).method("saveMensagemResponderAcompPeriodoExperiencia").withAnyArguments().isVoid();
+		 usuarioMensagemManager.expects(once()).method("saveMensagemResponderAcompPeriodoExperiencia").withAnyArguments().isVoid();
 		 areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(new Constraint[]{eq(teo.getAreaOrganizacional().getId()), eq(teo.getEmpresa().getId()), eq(AreaOrganizacional.RESPONSAVEL), ANYTHING}).will(returnValue(emails));
 		 areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(new Constraint[]{eq(teo.getAreaOrganizacional().getId()), eq(teo.getEmpresa().getId()), eq(AreaOrganizacional.CORRESPONSAVEL), ANYTHING}).will(returnValue(emails));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});

@@ -358,6 +358,80 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		assertFalse(usuarioEmpresaDao.containsRole(usuario.getId(), empresa.getId(), "x"));
 	}
 	
+	public void testFindUsuarioResponsavelAreaOrganizacionalSemPermissaoDeResponderoProprioAcompanhamento()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador responsavelArea = ColaboradorFactory.getEntity("João", empresa, usuario, null);
+		colaboradorDao.save(responsavelArea);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, responsavelArea, null, null);
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		criaUsuarioEmpresa(usuario, empresa, "Role");
+		
+		Collection<Long> areasIds = Arrays.asList(areaOrganizacional.getId());
+		
+		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaDao.findUsuarioResponsavelOuCoResponsavelPorAreaOrganizacional(areasIds, responsavelArea.getId(), AreaOrganizacional.RESPONSAVEL);
+		
+		assertEquals(0, usuarioEmpresas.size());
+	}
+	
+	public void testFindUsuarioResponsavelAreaOrganizacionalComPermissaoDeResponderoProprioAcompanhamento()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador responsavelArea = ColaboradorFactory.getEntity("João", empresa, usuario, null);
+		colaboradorDao.save(responsavelArea);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, responsavelArea, null, null);
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		criaUsuarioEmpresa(usuario, empresa, "ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA");
+		
+		Collection<Long> areasIds = Arrays.asList(areaOrganizacional.getId());
+		
+		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaDao.findUsuarioResponsavelOuCoResponsavelPorAreaOrganizacional(areasIds, responsavelArea.getId(), AreaOrganizacional.RESPONSAVEL);
+		
+		assertEquals(1, usuarioEmpresas.size());
+	}
+	
+	public void testFindUsuarioResponsavelAreaOrganizacionalSemPermissaoDeResponderoProprioAcompanhamentoMasNaoEGestor()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		criaUsuarioEmpresa(usuario, empresa, "ROLE");
+		
+		Colaborador responsavelArea = ColaboradorFactory.getEntity("João", empresa, usuario, null);
+		colaboradorDao.save(responsavelArea);
+
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, responsavelArea, null, null);
+		areaOrganizacionalDao.save(areaOrganizacional);
+
+		Usuario usuario2 = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario2);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity("João", empresa, usuario2, null);
+		colaboradorDao.save(colaborador);
+		
+		Collection<Long> areasIds = Arrays.asList(areaOrganizacional.getId());
+		
+		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaDao.findUsuarioResponsavelOuCoResponsavelPorAreaOrganizacional(areasIds, colaborador.getId(), AreaOrganizacional.RESPONSAVEL);
+		
+		assertEquals(1, usuarioEmpresas.size());
+	}
+
 	private void criaUsuarioEmpresa(Usuario usuario, Empresa empresa, String role){
 		Papel papel = new Papel();
 		papel.setCodigo(role);
