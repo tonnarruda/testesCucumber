@@ -69,6 +69,16 @@
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	
+			<result name="successTitulo" type="xls">
+				<param name="dataSource">acompanhamentos</param>
+				<param name="documentName">periodoDeAcompanhamentoDeExperiencia.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Área Organizacional,Matrícula,Nome,Cargo/Faixa,Data de Admissão,Dias,Período,Avaliação,Avaliador</param>
+				<param name="propertiesGroup">areaOrganizacional.descricao,matricula,nome,cargoFaixa,dataAdmissaoString</param>
+				<param name="properties">areaOrganizacional.descricao,matricula,nome,cargoFaixa,dataAdmissaoString,diasDescricao,periodoExperiencia,avaliacaoTitulo,avaliadorNome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperiencia.ftl</result>
 		</action>
 

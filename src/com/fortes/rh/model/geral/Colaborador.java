@@ -225,6 +225,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private String avaliacaoTitulo;
 	@Transient
+	private String avaliadorNome;
+	@Transient
 	private Date respondidaEm;
 	@Transient
 	private Integer pesoAvaliador;
@@ -366,13 +368,16 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		setCargoNomeProjection(cargoNome);
 	}
 
-	public Colaborador(Long id, Date avaliacaoRespondidaEm, Double performance, Integer qtdDiasRespondeuAvExperiencia, Long periodoExperienciaId)
+	//findComAvaliacoesExperiencias
+	public Colaborador(Long id, Date avaliacaoRespondidaEm, Double performance, Integer qtdDiasRespondeuAvExperiencia, Long periodoExperienciaId, String avaliacaoTitulo, String avaliadorNome)
 	{
 		this.setId(id);
 		this.avaliacaoRespondidaEm = avaliacaoRespondidaEm;
 		this.qtdDiasRespondeuAvExperiencia = qtdDiasRespondeuAvExperiencia;
 		this.performance = performance;
 		this.periodoExperienciaId = periodoExperienciaId;
+		this.avaliacaoTitulo = avaliacaoTitulo;
+		this.avaliadorNome = avaliadorNome;
 	}
 	
 	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Boolean desligado, Boolean naoIntegraAc, Double historicoSalario,
@@ -3398,5 +3403,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setIscritoNaTurma(boolean iscritoNaTurma) {
 		this.iscritoNaTurma = iscritoNaTurma;
+	}
+
+	public String getAvaliadorNome() {
+		return avaliadorNome;
+	}
+
+	public void setAvaliadorNome(String avaliadorNome) {
+		this.avaliadorNome = avaliadorNome;
 	}
 }

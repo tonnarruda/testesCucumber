@@ -3686,10 +3686,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findComAvaliacoesExperiencias(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck) 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, cq.respondidaEm, cq.performance, cast((cq.respondidaEm - co.dataAdmissao) + 1 as int), av.periodoExperiencia.id) ");
+		hql.append("select new Colaborador(co.id, cq.respondidaEm, cq.performance, cast((cq.respondidaEm - co.dataAdmissao) + 1 as int), av.periodoExperiencia.id, av.titulo, avaliador.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join co.colaboradorQuestionarios as cq ");
+		hql.append("left join cq.avaliador as avaliador ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("inner join cq.avaliacao as av ");
 		hql.append("where hc.data = ( ");

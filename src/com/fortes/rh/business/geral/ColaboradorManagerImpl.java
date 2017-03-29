@@ -2044,14 +2044,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return gordura;
 	}
 
-	public List<AcompanhamentoExperienciaColaborador> getAvaliacoesExperienciaPendentesPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception 
+	public List<AcompanhamentoExperienciaColaborador> getAvaliacoesExperienciaPendentesPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Collection<PeriodoExperiencia> periodoExperiencias, boolean exibirTituloAvaliacao) throws Exception 
 	{
 		List<AcompanhamentoExperienciaColaborador> acompanhamentos = new ArrayList<AcompanhamentoExperienciaColaborador>();
 		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(null, null, empresa, areasCheck, estabelecimentoCheck, null);
 		Collection<Colaborador> colaboradoresRespostas = getDao().findComAvaliacoesExperiencias(null, null, empresa, areasCheck, estabelecimentoCheck);
-	 	
-		for (Colaborador colab : colaboradores)
-			defineAcompanhamentoColaborador(periodoIni, periodoFim,	periodoExperiencias, acompanhamentos, colaboradoresRespostas, colab);
+ 	
+		if(exibirTituloAvaliacao){
+			for (Colaborador colab : colaboradores)
+				defineAcompanhamentoColaboradorComTitulo(periodoIni, periodoFim,	periodoExperiencias, acompanhamentos, colaboradoresRespostas, colab);
+		}else{
+			for (Colaborador colab : colaboradores)
+				defineAcompanhamentoColaborador(periodoIni, periodoFim,	periodoExperiencias, acompanhamentos, colaboradoresRespostas, colab);
+		}
 
 		if(acompanhamentos.isEmpty())
 			throw new Exception ("Não existem colaboradores com os filtros selecionados" ); 
@@ -2066,6 +2071,33 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return acompanhamentos;
 	}
 
+	private void defineAcompanhamentoColaboradorComTitulo(Date periodoIni, Date periodoFim, Collection<PeriodoExperiencia> periodoExperiencias, List<AcompanhamentoExperienciaColaborador> acompanhamentos, Collection<Colaborador> colaboradoresRespostas, Colaborador colab) {
+		for (PeriodoExperiencia periodoExperiencia : periodoExperiencias){
+			Date dataDoPeriodoDeExperiencia = DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()-1);
+			boolean temPeriodoExperiencia = false;
+
+			for (Colaborador colaboradorResposta : colaboradoresRespostas){
+				if(colab.getId().equals(colaboradorResposta.getId()) && periodoExperiencia.getId().equals(colaboradorResposta.getPeriodoExperienciaId())
+						&& dataDoPeriodoDeExperiencia.getTime() <= periodoFim.getTime() && dataDoPeriodoDeExperiencia.getTime() >= periodoIni.getTime()){
+					
+					AcompanhamentoExperienciaColaborador experienciaColaborador = new AcompanhamentoExperienciaColaborador(colab.getMatricula(), colab.getNome(), colab.getCargoFaixa(), colab.getAreaOrganizacional(), colab.getDataAdmissao());
+					experienciaColaborador.addPeriodo(colaboradorResposta.getAvaliacaoRespondidaEm(), colaboradorResposta.getPerformance(), 
+							DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()-1)), 
+							colaboradorResposta.getAvaliadorNome(), colaboradorResposta.getAvaliacaoTitulo(), periodoExperiencia.getDiasDescricao());
+					
+					acompanhamentos.add(experienciaColaborador);
+					temPeriodoExperiencia = true;
+				}
+			}
+
+			if(!temPeriodoExperiencia && dataDoPeriodoDeExperiencia.getTime() <= periodoFim.getTime() && dataDoPeriodoDeExperiencia.getTime() >= periodoIni.getTime()){
+				AcompanhamentoExperienciaColaborador experienciaColaborador = new AcompanhamentoExperienciaColaborador(colab.getMatricula(), colab.getNome(), colab.getCargoFaixa(), colab.getAreaOrganizacional(), colab.getDataAdmissao());
+				experienciaColaborador.addPeriodo(null, null, DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()-1)),null, null, periodoExperiencia.getDiasDescricao());
+				acompanhamentos.add(experienciaColaborador);
+			}
+		}
+	}
+	
 	private void defineAcompanhamentoColaborador(Date periodoIni, Date periodoFim, Collection<PeriodoExperiencia> periodoExperiencias, List<AcompanhamentoExperienciaColaborador> acompanhamentos, Collection<Colaborador> colaboradoresRespostas, Colaborador colab) {
 		AcompanhamentoExperienciaColaborador experienciaColaborador = new AcompanhamentoExperienciaColaborador(colab.getMatricula(), colab.getNome(), colab.getCargoFaixa(), colab.getAreaOrganizacional(), colab.getDataAdmissao());
 		boolean temPeriodoExperiencia = false;

@@ -20,12 +20,13 @@ public class AcompanhamentoExperienciaColaboradorTest extends TestCase {
 		AcompanhamentoExperienciaColaborador acompanhamento = new AcompanhamentoExperienciaColaborador("123456", "joao", "mecanico I", area, DateUtil.criarDataMesAno(01, 01, 2011));
 		acompanhamento.addPeriodo(DateUtil.criarDataMesAno(01, 02, 2011), "75%", "");
 		acompanhamento.addPeriodo(DateUtil.criarDataMesAno(15, 02, 2011), "85%", "");
-		acompanhamento.addPeriodo(null, null, "");
-		acompanhamento.addPeriodo(DateUtil.criarDataMesAno(01, 06, 2011), "80%", "");
+		acompanhamento.addPeriodo(null, null, null);
+		acompanhamento.addPeriodo(null, null, "01/05/2011");
 		
 		assertEquals("01/02/2011 (75%)", acompanhamento.getPeriodoColunaUm());
 		assertEquals("15/02/2011 (85%)", acompanhamento.getPeriodoColunaDois());
-		assertEquals("01/06/2011 (80%)", acompanhamento.getPeriodoColunaQuatro());
+		assertNull(acompanhamento.getPeriodoColunaTres());
+		assertEquals("Previsto: 01/05/2011", acompanhamento.getPeriodoColunaQuatro());
 	}
 		
 	public void testPopulaAcompanhamentoExperienciaColaboradorSemUltimoPeriodo()
@@ -41,6 +42,20 @@ public class AcompanhamentoExperienciaColaboradorTest extends TestCase {
 		assertEquals("Previsto: 01/05/2011", acompanhamento.getPeriodoColunaDois());
 		assertEquals("15/02/2011 (85%)", acompanhamento.getPeriodoColunaTres());
 		assertNull(acompanhamento.getPeriodoColunaQuatro());
+	}
+	
+	public void testPopulaAcompanhamentoExperienciaColaboradorComAvaliacaoETiulo()
+	{
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity(1L);
+		
+		AcompanhamentoExperienciaColaborador acompanhamento = new AcompanhamentoExperienciaColaborador("456789", "pedro", "lavador I", area, DateUtil.criarDataMesAno(01, 01, 2011));
+		acompanhamento.addPeriodo(DateUtil.criarDataMesAno(01, 02, 2011), "75%", "01/05/2011","Avaliador 1", "Avaliação 1", "30 Dias");
+		acompanhamento.addPeriodo(null, null, "01/05/2011","Avaliador 1", "Avaliação 1", "60 Dias");
+		acompanhamento.addPeriodo(null, null, null, null, null, null);
+		
+		assertEquals("01/02/2011 (75%)", acompanhamento.getPeriodoColunaUm());
+		assertEquals("Previsto: 01/05/2011", acompanhamento.getPeriodoColunaDois());
+		assertNull(acompanhamento.getPeriodoColunaTres());
 	}
 	
 	public void testGetAreaId()

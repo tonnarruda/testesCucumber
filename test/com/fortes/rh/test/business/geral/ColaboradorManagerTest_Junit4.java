@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.geral;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import mockit.Mockit;
 
@@ -20,25 +22,32 @@ import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManagerImpl;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.json.ColaboradorJson;
 import com.fortes.rh.model.ws.TSituacao;
+import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 
@@ -54,6 +63,8 @@ public class ColaboradorManagerTest_Junit4
     private AcPessoalClientColaborador acPessoalClientColaborador;
     private HistoricoColaboradorManager historicoColaboradorManager;
     private PlatformTransactionManager transactionManager;
+    private AreaOrganizacionalManager areaOrganizacionalManager;
+    
 
     @Before
     public void setUp() throws Exception
@@ -66,6 +77,7 @@ public class ColaboradorManagerTest_Junit4
         acPessoalClientColaborador = mock(AcPessoalClientColaborador.class);
         historicoColaboradorManager= mock(HistoricoColaboradorManager.class);
         transactionManager = mock(PlatformTransactionManager.class);
+        areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
         
         colaboradorManager.setDao(colaboradorDao);
         colaboradorManager.setCandidatoManager(candidatoManager);
@@ -75,6 +87,7 @@ public class ColaboradorManagerTest_Junit4
         colaboradorManager.setAcPessoalClientColaborador(acPessoalClientColaborador);
         colaboradorManager.setHistoricoColaboradorManager(historicoColaboradorManager);
         colaboradorManager.setTransactionManager(transactionManager);
+        colaboradorManager.setAreaOrganizacionalManager(areaOrganizacionalManager);
         
         usuarioManager = mock(UsuarioManager.class);
         MockSpringUtilJUnit4.mocks.put("usuarioManager", usuarioManager);
@@ -197,5 +210,183 @@ public class ColaboradorManagerTest_Junit4
 			exception = e;
 		}
     	assertNull(exception);
+    }
+    
+    @Test
+    public void testFindAdmitidosNoPeriodo() throws Exception
+    {
+    	Date dataReferencia = DateUtil.criarDataMesAno(25, 01, 2011);
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	Integer tempoDeEmpresa = 150;
+    	    	
+    	String[] areasCheck = new String[1];
+    	String[] estabelecimentoCheck = new String[1];
+
+    	Colaborador colaborador1 = new Colaborador(1L, "joao", "", dataReferencia, "", "", null, "pedro", 40, "areaNome", "areaMaeNome", "estabelecimentoNome");
+    	Colaborador colaborador2 = new Colaborador(2L, "maria", "", dataReferencia, "", "", null, "pedro", 12,  "areaNome", "areaMaeNome", "estabelecimentoNome");
+    	
+    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+    	colaboradores.add(colaborador1);
+    	colaboradores.add(colaborador2);
+    	
+    	Colaborador colaborador3 = new Colaborador(1L, dataReferencia, 1.0, 12, 1L, "", "");
+    	Colaborador colaborador5 = new Colaborador(1L, dataReferencia, 1.0, 33, 2L, "", "");
+    	Colaborador colaborador4 = new Colaborador(2L, dataReferencia, 1.0, 12, 1L, "", "");
+    	
+    	Collection<Colaborador> colaboradoresComAvaliacoes = new ArrayList<Colaborador>();
+    	colaboradoresComAvaliacoes.add(colaborador3);
+    	colaboradoresComAvaliacoes.add(colaborador5);
+    	colaboradoresComAvaliacoes.add(colaborador4);
+    	
+    	Collection<PeriodoExperiencia> periodoExperiencias = new ArrayList<PeriodoExperiencia>();
+
+    	PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity(1L);
+    	periodoExperiencia.setDias(10);
+
+    	PeriodoExperiencia periodoExperiencia2 = PeriodoExperienciaFactory.getEntity(2L);
+    	periodoExperiencia2.setDias(30);
+    	
+    	periodoExperiencias.add(periodoExperiencia);
+    	periodoExperiencias.add(periodoExperiencia2);
+    	
+    	when(colaboradorDao.findAdmitidosNoPeriodo(null, dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa)).thenReturn(colaboradores);
+    	when(colaboradorDao.findComAvaliacoesExperiencias(null, dataReferencia, empresa, areasCheck, estabelecimentoCheck)).thenReturn(colaboradoresComAvaliacoes);
+    	
+    	Collection<Colaborador> colabs = colaboradorManager.getAvaliacoesExperienciaPendentes(null, dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, null, periodoExperiencias);
+    	assertEquals(2, colabs.size());
+    	assertEquals("10 dias, respondida (12 dias)\n30 dias, respondida (33 dias)", ((Colaborador)colabs.toArray()[0]).getStatusAvaliacao());
+    	assertEquals("10 dias, respondida (12 dias)", ((Colaborador)colabs.toArray()[1]).getStatusAvaliacao());
+    	assertEquals("03/02/2011\n23/02/2011", ((Colaborador)colabs.toArray()[0]).getDatasDeAvaliacao());
+    	assertEquals("03/02/2011", ((Colaborador)colabs.toArray()[1]).getDatasDeAvaliacao());
+    }
+    
+    @Test
+    public void testGetAvaliacoesExperienciaPendentesPeriodo() throws Exception
+    {
+    	Date dataFim = DateUtil.criarDataMesAno(25, 01, 2011);
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	
+    	String[] areasCheck = new String[1];
+    	String[] estabelecimentoCheck = new String[1];
+    	
+    	Colaborador colaborador1 = new Colaborador(1L, "joao","", dataFim, "", "", null, "pedro", 40, "areaNome", "areaMaeNome", "estabelecimentoNome");
+    	colaborador1.setMatricula("1232456");
+    	Colaborador colaborador2 = new Colaborador(2L, "maria","", dataFim, "", "", null, "pedro", 12, "areaNome", "areaMaeNome", "estabelecimentoNome");
+    	colaborador2.setMatricula("9999999");
+    	
+    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+    	colaboradores.add(colaborador1);
+    	colaboradores.add(colaborador2);
+    	
+    	Colaborador colaboradorResposta3 = new Colaborador(2L, dataFim, 1.0, 30, 1L, "", "");
+    	Colaborador colaboradorResposta4 = new Colaborador(2L, dataFim, 1.0, 55, 3L, "", "");
+    	Colaborador colaboradorResposta5 = new Colaborador(5L, dataFim, 1.0, 33, 2L, "", "");
+    	
+    	Collection<Colaborador> colaboradoresComAvaliacoes = new ArrayList<Colaborador>();
+    	colaboradoresComAvaliacoes.add(colaboradorResposta3);
+    	colaboradoresComAvaliacoes.add(colaboradorResposta4);
+    	colaboradoresComAvaliacoes.add(colaboradorResposta5);
+    	    	
+    	PeriodoExperiencia periodoExperiencia30Dias = PeriodoExperienciaFactory.getEntity(1L);
+    	periodoExperiencia30Dias.setDias(30);
+    	
+    	PeriodoExperiencia periodoExperiencia60Dias = PeriodoExperienciaFactory.getEntity(2L);
+    	periodoExperiencia60Dias.setDias(60);
+    	
+    	PeriodoExperiencia periodoExperiencia90Dias = PeriodoExperienciaFactory.getEntity(3L);
+    	periodoExperiencia90Dias.setDias(90);
+    	
+    	Collection<PeriodoExperiencia> periodoExperiencias = new ArrayList<PeriodoExperiencia>();
+    	periodoExperiencias.add(periodoExperiencia30Dias);
+    	periodoExperiencias.add(periodoExperiencia60Dias);
+    	periodoExperiencias.add(periodoExperiencia90Dias);
+    	
+    	when(colaboradorDao.findAdmitidosNoPeriodo(null, null, empresa, areasCheck, estabelecimentoCheck, null)).thenReturn(colaboradores);
+    	when(colaboradorDao.findComAvaliacoesExperiencias(null, null, empresa, areasCheck, estabelecimentoCheck)).thenReturn(colaboradoresComAvaliacoes);
+    	
+    	Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+    	
+		when(areaOrganizacionalManager.findByEmpresasIds(new Long[]{empresa.getId()}, AreaOrganizacional.TODAS)).thenReturn(areas);
+		when(areaOrganizacionalManager.montaFamilia(areas)).thenReturn(areas);
+		when(areaOrganizacionalManager.getAreaOrganizacional(areas, null)).thenReturn(new AreaOrganizacional());
+    	
+    	List<AcompanhamentoExperienciaColaborador> acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(DateUtil.criarDataMesAno(20, 01, 2010), DateUtil.criarDataMesAno(20, 01, 2012), empresa, areasCheck, estabelecimentoCheck, periodoExperiencias, false);
+    	assertEquals(2, acompanhamentos.size());
+    	
+    	assertEquals("1232456", acompanhamentos.get(0).getMatricula());
+    	assertEquals(3, acompanhamentos.get(0).getPeriodoExperiencias().size());
+    	assertEquals("Previsto: 23/02/2011", acompanhamentos.get(0).getPeriodoExperiencias().get(0));
+    	assertEquals("Previsto: 25/03/2011", acompanhamentos.get(0).getPeriodoExperiencias().get(1));
+    	assertEquals("Previsto: 24/04/2011", acompanhamentos.get(0).getPeriodoExperiencias().get(2));
+
+    	assertEquals("9999999", acompanhamentos.get(1).getMatricula());
+    	assertEquals(3, acompanhamentos.get(1).getPeriodoExperiencias().size());
+    	assertNotNull(acompanhamentos.get(1).getPeriodoExperiencias().get(0));
+    	assertEquals("Previsto: 25/03/2011", acompanhamentos.get(1).getPeriodoExperiencias().get(1));
+    	assertNotNull(acompanhamentos.get(1).getPeriodoExperiencias().get(2));
+    }
+    
+    @Test
+    public void testGetAvaliacoesExperienciaPendentesPeriodoExibirTituloAvaliacao() throws Exception
+    {
+    	Date dataFim = DateUtil.criarDataMesAno(25, 01, 2011);
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	
+    	String[] areasCheck = new String[1];
+    	String[] estabelecimentoCheck = new String[1];
+    	
+    	Colaborador colaborador1 = new Colaborador(1L, "joao","", dataFim, "", "", null, "pedro", 40, "areaNome", "areaMaeNome", "estabelecimentoNome");
+    	colaborador1.setMatricula("1232456");
+    	Colaborador colaborador2 = new Colaborador(2L, "maria","", dataFim, "", "", null, "pedro", 12, "areaNome", "areaMaeNome", "estabelecimentoNome");
+    	colaborador2.setMatricula("9999999");
+    	
+    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+    	colaboradores.add(colaborador1);
+    	colaboradores.add(colaborador2);
+    	
+    	Colaborador colaboradorResposta3 = new Colaborador(2L, dataFim, 1.0, 30, 1L, "", "");
+    	Colaborador colaboradorResposta4 = new Colaborador(2L, dataFim, 1.0, 55, 3L, "", "");
+    	Colaborador colaboradorResposta5 = new Colaborador(5L, dataFim, 1.0, 33, 2L, "", "");
+    	
+    	Collection<Colaborador> colaboradoresComAvaliacoes = new ArrayList<Colaborador>();
+    	colaboradoresComAvaliacoes.add(colaboradorResposta3);
+    	colaboradoresComAvaliacoes.add(colaboradorResposta4);
+    	colaboradoresComAvaliacoes.add(colaboradorResposta5);
+    	    	
+    	PeriodoExperiencia periodoExperiencia30Dias = PeriodoExperienciaFactory.getEntity(1L);
+    	periodoExperiencia30Dias.setDias(30);
+    	
+    	PeriodoExperiencia periodoExperiencia60Dias = PeriodoExperienciaFactory.getEntity(2L);
+    	periodoExperiencia60Dias.setDias(60);
+    	
+    	PeriodoExperiencia periodoExperiencia90Dias = PeriodoExperienciaFactory.getEntity(3L);
+    	periodoExperiencia90Dias.setDias(90);
+    	
+    	Collection<PeriodoExperiencia> periodoExperiencias = new ArrayList<PeriodoExperiencia>();
+    	periodoExperiencias.add(periodoExperiencia30Dias);
+    	periodoExperiencias.add(periodoExperiencia60Dias);
+    	periodoExperiencias.add(periodoExperiencia90Dias);
+    	
+    	when(colaboradorDao.findAdmitidosNoPeriodo(null, null, empresa, areasCheck, estabelecimentoCheck, null)).thenReturn(colaboradores);
+    	when(colaboradorDao.findComAvaliacoesExperiencias(null, null, empresa, areasCheck, estabelecimentoCheck)).thenReturn(colaboradoresComAvaliacoes);
+    	
+    	Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+    	
+		when(areaOrganizacionalManager.findByEmpresasIds(new Long[]{empresa.getId()}, AreaOrganizacional.TODAS)).thenReturn(areas);
+		when(areaOrganizacionalManager.montaFamilia(areas)).thenReturn(areas);
+		when(areaOrganizacionalManager.getAreaOrganizacional(areas, null)).thenReturn(new AreaOrganizacional());
+    	
+    	List<AcompanhamentoExperienciaColaborador> acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(DateUtil.criarDataMesAno(20, 01, 2010), DateUtil.criarDataMesAno(20, 01, 2012), empresa, areasCheck, estabelecimentoCheck, periodoExperiencias, true);
+    	assertEquals(6, acompanhamentos.size());
+    	
+    	assertEquals("1232456", acompanhamentos.get(0).getMatricula());
+    	assertEquals("Previsto: 23/02/2011", acompanhamentos.get(0).getPeriodoExperiencia());
+    	assertEquals("Previsto: 25/03/2011", acompanhamentos.get(1).getPeriodoExperiencia());
+    	assertEquals("Previsto: 24/04/2011", acompanhamentos.get(2).getPeriodoExperiencia());
+
+    	assertEquals("9999999", acompanhamentos.get(3).getMatricula());
+    	assertNotNull(acompanhamentos.get(1).getPeriodoExperiencia());
+    	assertEquals("Previsto: 25/03/2011", acompanhamentos.get(1).getPeriodoExperiencia());
+    	assertNotNull(acompanhamentos.get(1).getPeriodoExperiencia());
     }
 }

@@ -498,6 +498,7 @@ import com.fortes.rh.test.web.action.avaliacao.AvaliacaoExperienciaEditActionTes
 import com.fortes.rh.test.web.action.avaliacao.AvaliacaoPraticaEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.PerguntaAvaliacaoEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.PeriodoExperienciaEditActionTest;
+import com.fortes.rh.test.web.action.avaliacao.PeriodoExperienciaEditActionTest_JUnit4;
 import com.fortes.rh.test.web.action.backup.BackupActionTest;
 import com.fortes.rh.test.web.action.captacao.AnuncioListActionTest;
 import com.fortes.rh.test.web.action.captacao.AtitudeEditActionTest;
@@ -1468,6 +1469,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	PeriodoExperienciaManagerTest.class,
 	PeriodoExperienciaManagerTest_Junit4.class,
 	PeriodoExperienciaEditActionTest.class,
+	PeriodoExperienciaEditActionTest_JUnit4.class,
 	AvaliacaoExperienciaEditActionTest.class,
 	PerguntaAvaliacaoEditActionTest.class,
 	AcompanhamentoExperienciaColaboradorTest.class,

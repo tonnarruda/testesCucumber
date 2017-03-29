@@ -111,7 +111,6 @@
 		function submitLiberarEmLote()
 		{
 			var avaliacaoDesempenhoIds =  $("input[name=avaliacoesCheck]:checked").map(function(){return $(this).val();}).get();
-			console.log(avaliacaoDesempenhoIds);
 			AvaliacaoDesempenhoDWR.verificaAvaliacoesComAvaliadosSemCompetencia(avaliacaoDesempenhoIds, function(msg) {
 				if (msg != '')
 				{

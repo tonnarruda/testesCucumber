@@ -99,6 +99,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Collection<CartaoAcompanhamentoExperienciaVO> cartoesAcompanhamentoExperienciaVOs;
 	private boolean compartilharColaboradores;
 	private boolean agruparPorArea;
+	private boolean exibirTituloAvaliacao;
 		
 	private void prepare() throws Exception
 	{
@@ -159,8 +160,21 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		prepare();
 		populaEstabAreaPeriodoCheck();
-		periodoIni = new Date();
-		periodoFim = DateUtil.incrementaMes(periodoIni, 1) ;
+		
+		if(periodoIni == null)
+			periodoIni = new Date();
+		
+		if(periodoFim == null)
+			periodoFim = DateUtil.incrementaMes(periodoIni, 1) ;
+		
+		if(periodoCheck != null && periodoCheck.length > 0)
+			periodoCheckList = CheckListBoxUtil.marcaCheckListBox(periodoCheckList, periodoCheck);
+		
+		if(estabelecimentoCheck != null && estabelecimentoCheck.length > 0)
+			estabelecimentoCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentoCheckList, estabelecimentoCheck);
+		
+		if(areasCheckList != null && areasCheckList.size() > 0)
+			areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		
 		return Action.SUCCESS;
 	}
@@ -238,8 +252,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		try {
 			periodoExperiencias = periodoExperienciaManager.findByIdsOrderDias(LongUtil.arrayStringToArrayLong(periodoCheck));
-			
-			acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(periodoIni, periodoFim, getEmpresaSistema(), areasCheck, estabelecimentoCheck, periodoExperiencias);
+			acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(periodoIni, periodoFim, getEmpresaSistema(), areasCheck, estabelecimentoCheck, periodoExperiencias, exibirTituloAvaliacao);
 			
 			reportTitle = "Relatório de Acompanhamento de Experiência";
 			reportFilter = "Período: " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n"; 
@@ -254,9 +267,11 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 				parametros.put("tituloPeriodo" + coluna++, periodo.getDiasDescricao());
 				columnsNameDinamic.add(periodo.getDiasDescricao());
 			}
-		}
-		catch (Exception e)
-		{
+			
+			if(exibirTituloAvaliacao)
+				return "successTitulo";
+		
+		}catch (Exception e){
 			addActionMessage(e.getMessage());
 			e.printStackTrace();
 			prepareRelatorioAcompanhamentoExperiencia();
@@ -715,5 +730,13 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public void setAgruparPorArea(boolean agruparPorArea) {
 		this.agruparPorArea = agruparPorArea;
+	}
+
+	public void setExibirTituloAvaliacao(boolean exibirTituloAvaliacao) {
+		this.exibirTituloAvaliacao = exibirTituloAvaliacao;
+	}
+
+	public boolean isExibirTituloAvaliacao() {
+		return exibirTituloAvaliacao;
 	}
 }
