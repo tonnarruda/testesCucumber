@@ -22,21 +22,30 @@
 			<interceptor-ref name="candidatoSolicitacaoListDeleteStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoSolicitacaoList.ftl</result>
 		</action>
+		<action name="delete" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="delete">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="candidatoSolicitacaoListDeleteStack" />
+			<result name="success" type="redirect"><![CDATA[list.action?solicitacao.id=${solicitacao.id}]]></result>
+		</action>
+
 		<action name="listTriagem" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="listTriagem">
+			<interceptor-ref name="defaultListStack"/>
+			<interceptor-ref name="candidatoSolicitacaoListDeleteStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoSolicitacaoTriagemList.ftl</result>
 		</action>
-		
 		<action name="removerCandidatosDaSolicitacao" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="removerCandidatosDaSolicitacao">
-			<interceptor-ref name="candidatoSolicitacaoListDeleteStack" />
-			<result name="success" type="redirect"><![CDATA[list.action?solicitacao.id=${solicitacao.id}]]></result>
-		</action>
-		<action name="delete" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="delete">
-			<interceptor-ref name="candidatoSolicitacaoListDeleteStack" />
-			<result name="success" type="redirect"><![CDATA[list.action?solicitacao.id=${solicitacao.id}]]></result>
-		</action>
-		<action name="removerTriagem" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="removerTriagem">
+			<interceptor-ref name="defaultUpdateStack"/>
 			<result name="success" type="redirect">listTriagem.action?solicitacao.id=${solicitacao.id}</result>
 		</action>
+		<action name="removerCandidatoDaSolicitacao" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="removerCandidatoDaSolicitacao">
+			<interceptor-ref name="defaultUpdateStack"/>
+			<result name="success" type="redirect">listTriagem.action?solicitacao.id=${solicitacao.id}</result>
+		</action>
+		<action name="removerTriagem" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="removerTriagem">
+			<interceptor-ref name="defaultUpdateStack"/>
+			<result name="success" type="redirect">listTriagem.action?solicitacao.id=${solicitacao.id}</result>
+		</action>
+
 		<action name="verHistoricoCandidato" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="verHistoricoCandidato">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/verHistoricoCandidato.ftl</result>
 		</action>

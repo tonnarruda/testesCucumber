@@ -2,7 +2,7 @@ package com.fortes.rh.test.web.action.captacao;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,14 +24,18 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.StatusAutorizacaoGestor;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction;
 import com.opensymphony.xwork.Action;
@@ -163,5 +167,118 @@ public class CandidatoSolicitacaoListActionTest_JUnit4
     	action.autorizarColabSolicitacaoPessoal();
     	
     	assertEquals("Ocorreu uma inconsistência ao tentar gravar o status.", action.getActionErrors().toArray()[0]);
+    }
+    
+    @Test
+    public void testRemoverCandidatoDaSolicitacaoException(){
+    	Exception exception = new Exception();
+    	CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1L);
+    	Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
+    	action.setSolicitacao(solicitacao);
+    	action.setCandidatoSolicitacao(candidatoSolicitacao);
+    	
+    	doThrow(Exception.class).when(candidatoSolicitacaoManager).remove(new Long[]{action.getCandidatoSolicitacao().getId()});
+    	
+    	assertEquals("success", action.removerCandidatoDaSolicitacao());
+    	assertEquals("Erro ao excluír o candidato do processo seletivo: " + exception.getMessage(), action.getActionErrors().iterator().next());
+	}
+    
+    @Test
+    public void testRemoverCandidatoDaSolicitacao(){
+    	CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1L);
+    	Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
+    	action.setSolicitacao(solicitacao);
+    	action.setCandidatoSolicitacao(candidatoSolicitacao);
+    	
+    	assertEquals("success", action.removerCandidatoDaSolicitacao());
+    	assertEquals("Candidato excluído do processo seletivo.", action.getActionSuccess().iterator().next());
+	}
+    
+    @Test
+    public void testRemoverTriagemComCandidatosSelecionados() throws Exception
+    {
+    	Long[] candidatoSolicitacaoIdsSelecionados = new Long[] {1L};
+    	action.setCandidatoSolicitacaoIdsSelecionados(candidatoSolicitacaoIdsSelecionados);
+    	assertEquals(Action.SUCCESS, action.removerTriagem());
+    	assertEquals("Candidato(s) inserido(s) no processo selectivo com sucesso.", action.getActionSuccess().iterator().next());
+    }
+    
+    @Test
+    public void testRemoverTriagemSemCandidatosSelecionados() throws Exception
+    {
+    	Long[] candidatoSolicitacaoIdsSelecionados = new Long[] {};
+    	action.setCandidatoSolicitacaoIdsSelecionados(candidatoSolicitacaoIdsSelecionados);
+    	
+    	assertEquals(Action.SUCCESS, action.removerTriagem());
+    }
+    
+    @Test
+    public void testRemoverTriagemException() throws Exception
+    {
+    	Exception exception = new Exception();
+    	Long[] candidatoSolicitacaoIdsSelecionados = new Long[] {1L};
+    	action.setCandidatoSolicitacaoIdsSelecionados(candidatoSolicitacaoIdsSelecionados);
+    	
+    	doThrow(Exception.class).when(candidatoSolicitacaoManager).updateTriagem(candidatoSolicitacaoIdsSelecionados, false);
+    	
+    	assertEquals(Action.SUCCESS, action.removerTriagem());
+    	assertEquals("Erro ao inserir o(s) candidato(s) no processo seletivo: " + exception.getMessage(), action.getActionErrors().iterator().next());
+    }
+    
+    @Test
+    public void testRemoverCandidatosDaSolicitacao()
+	{
+    	Long[] candidatoSolicitacaoIdsSelecionados = new Long[] {1L};
+    	action.setCandidatoSolicitacaoIdsSelecionados(candidatoSolicitacaoIdsSelecionados);
+    	assertEquals(Action.SUCCESS, action.removerCandidatosDaSolicitacao());
+    	assertEquals("Candidato(s) excluído(s) do processo seletivo.", action.getActionSuccess().iterator().next());
+	}
+    
+    @Test
+    public void testRemoverCandidatosDaSolicitacaoException() throws Exception
+    {
+    	Exception exception = new Exception();
+    	Long[] candidatoSolicitacaoIdsSelecionados = new Long[] {};
+    	action.setCandidatoSolicitacaoIdsSelecionados(candidatoSolicitacaoIdsSelecionados);
+    	
+    	doThrow(Exception.class).when(candidatoSolicitacaoManager).remove(candidatoSolicitacaoIdsSelecionados);
+    	
+    	assertEquals(Action.SUCCESS, action.removerCandidatosDaSolicitacao());
+    	assertEquals("Erro ao remover candidatos do processo seletivo: " + exception.getMessage(), action.getActionErrors().iterator().next());
+    }
+    
+    @Test
+    public void testDelete() throws Exception
+    {
+    	Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
+    	Candidato candidato = CandidatoFactory.getCandidato(1L);
+    	
+    	CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1L);
+    	candidatoSolicitacao.setSolicitacao(solicitacao);
+    	candidatoSolicitacao.setCandidato(candidato);
+    	
+    	action.setCandidatoSolicitacao(candidatoSolicitacao);
+    	when(candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacao.getId())).thenReturn(candidatoSolicitacao);
+    	
+    	assertEquals(Action.SUCCESS, action.delete());
+    	assertEquals("Candidato excluído do processo seletivo.", action.getActionSuccess().iterator().next());    	
+    }
+    
+    @Test
+    public void testDeleteException() throws Exception
+    {
+    	Exception exception = new Exception();
+    	Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
+    	Candidato candidato = CandidatoFactory.getCandidato(1L);
+    	
+    	CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1L);
+    	candidatoSolicitacao.setSolicitacao(solicitacao);
+    	candidatoSolicitacao.setCandidato(candidato);
+    	
+    	action.setCandidatoSolicitacao(candidatoSolicitacao);
+    	when(candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacao.getId())).thenReturn(candidatoSolicitacao);
+    	doThrow(Exception.class).when(candidatoSolicitacaoManager).remove(new Long[]{action.getCandidatoSolicitacao().getId()});
+    	assertEquals(Action.SUCCESS, action.delete());
+    	assertEquals("Erro ao excluír o candidato do processo seletivo: " + exception.getMessage(), action.getActionErrors().iterator().next());
     }
 }

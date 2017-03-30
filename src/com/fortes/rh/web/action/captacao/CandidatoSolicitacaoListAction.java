@@ -132,29 +132,49 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		candidatoSolicitacao = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());
-		historicoColaboradorManager.removeVinculoCandidatoSolicitacao(candidatoSolicitacao.getId());
-		historicoCandidatoManager.removeByCandidatoSolicitacao(candidatoSolicitacao.getId());
-		configuracaoNivelCompetenciaManager.removeByCandidatoAndSolicitacao(candidatoSolicitacao.getCandidato().getId(), candidatoSolicitacao.getSolicitacao().getId());
-		
-		candidatoSolicitacaoManager.remove(new Long[]{candidatoSolicitacao.getId()});
-		solicitacao = candidatoSolicitacao.getSolicitacao();
-
+		try {
+			candidatoSolicitacao = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());
+			historicoColaboradorManager.removeVinculoCandidatoSolicitacao(candidatoSolicitacao.getId());
+			historicoCandidatoManager.removeByCandidatoSolicitacao(candidatoSolicitacao.getId());
+			configuracaoNivelCompetenciaManager.removeByCandidatoAndSolicitacao(candidatoSolicitacao.getCandidato().getId(), candidatoSolicitacao.getSolicitacao().getId());
+			
+			candidatoSolicitacaoManager.remove(new Long[]{candidatoSolicitacao.getId()});
+			solicitacao = candidatoSolicitacao.getSolicitacao();
+			addActionSuccess("Candidato excluído do processo seletivo.");
+		} catch (Exception e) {
+			addActionError("Erro ao excluír o candidato do processo seletivo: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String removerCandidatoDaSolicitacao(){
+		try {
+			candidatoSolicitacaoManager.remove(new Long[]{candidatoSolicitacao.getId()});
+			addActionSuccess("Candidato excluído do processo seletivo.");
+		} catch (Exception e) {
+			addActionError("Erro ao excluír o candidato do processo seletivo: " + e.getMessage());
+			e.printStackTrace();
+		}
 		return Action.SUCCESS;
 	}
 
 	public String removerTriagem() throws Exception
 	{
-		if (candidatoSolicitacaoIdsSelecionados != null && candidatoSolicitacaoIdsSelecionados.length > 0) {
-			candidatoSolicitacaoManager.updateTriagem(candidatoSolicitacaoIdsSelecionados, false);
+		try {
+			if (candidatoSolicitacaoIdsSelecionados != null && candidatoSolicitacaoIdsSelecionados.length > 0) {
+				candidatoSolicitacaoManager.updateTriagem(candidatoSolicitacaoIdsSelecionados, false);
+			}
+			addActionSuccess("Candidato(s) inserido(s) no processo selectivo com sucesso.");
+		} catch (Exception e) {
+			addActionError("Erro ao inserir o(s) candidato(s) no processo seletivo: " + e.getMessage());
+			e.printStackTrace();
 		}
-
 		return Action.SUCCESS;
 	}
 
 	public String verHistoricoCandidato() throws Exception
 	{
-		//candidatoSolicitacaos = candidatoSolicitacaoManager.find(new String[]{"candidato.id"}, new Object[]{candidato.getId()}, new String[]{"solicitacao.data asc"});
 		historicoCandidatos = historicoCandidatoManager.findByCandidato(candidato);
 		historicos = historicoCandidatoManager.montaMapaHistorico(historicoCandidatos);
 
@@ -205,11 +225,11 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	{
 		try {
 			candidatoSolicitacaoManager.remove(candidatoSolicitacaoIdsSelecionados);
+			addActionSuccess("Candidato(s) excluído(s) do processo seletivo.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			addActionError("Erro ao remover candidatos.");
+			addActionError("Erro ao remover candidatos do processo seletivo: " + e.getMessage());
 		}
-		
 		return Action.SUCCESS;
 	}
 	

@@ -6,10 +6,8 @@ import java.util.Collection;
 
 import mockit.Mockit;
 
-import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
@@ -26,11 +24,9 @@ import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -173,45 +169,6 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("findBySolicitacaoTriagem").with(eq(solicitacao.getId())).will(returnValue(candidatoSolicitacaos));
     	
     	assertEquals(Action.SUCCESS, action.listTriagem());
-    }
-    
-    public void testDelete() throws Exception
-    {
-    	Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
-    	Candidato candidato = CandidatoFactory.getCandidato(1L);
-    	
-    	CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1L);
-    	candidatoSolicitacao.setSolicitacao(solicitacao);
-    	candidatoSolicitacao.setCandidato(candidato);
-    	
-    	action.setCandidatoSolicitacao(candidatoSolicitacao);
-    	
-    	Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
-    	
-    	manager.expects(once()).method("findCandidatoSolicitacaoById").with(eq(candidatoSolicitacao.getId())).will(returnValue(candidatoSolicitacao));
-    	historicoColaboradorManager.expects(once()).method("removeVinculoCandidatoSolicitacao").with(eq(candidatoSolicitacao.getId())).isVoid();
-    	historicoCandidatoManager.expects(once()).method("removeByCandidatoSolicitacao").with(eq(candidatoSolicitacao.getId())).isVoid();
-    	configuracaoNivelCompetenciaManager.expects(once()).method("removeByCandidatoAndSolicitacao").with(eq(candidatoSolicitacao.getCandidato().getId()), eq(candidatoSolicitacao.getSolicitacao().getId())).isVoid();
-    	manager.expects(once()).method("remove").with(eq(new Long[]{candidatoSolicitacao.getId()})).isVoid();
-    	
-    	assertEquals(Action.SUCCESS, action.delete());
-    }
-    
-    public void testRemoverTriagemComCandidatosSelecionados() throws Exception
-    {
-    	Long[] candidatoSolicitacaoIdsSelecionados = new Long[] {1L};
-    	action.setCandidatoSolicitacaoIdsSelecionados(candidatoSolicitacaoIdsSelecionados);
-    	manager.expects(once()).method("updateTriagem").with(eq(candidatoSolicitacaoIdsSelecionados), eq(false)).isVoid();
-    	
-    	assertEquals(Action.SUCCESS, action.removerTriagem());
-    }
-    
-    public void testRemoverTriagemSemCandidatosSelecionados() throws Exception
-    {
-    	Long[] candidatoSolicitacaoIdsSelecionados = new Long[] {};
-    	action.setCandidatoSolicitacaoIdsSelecionados(candidatoSolicitacaoIdsSelecionados);
-    	
-    	assertEquals(Action.SUCCESS, action.removerTriagem());
     }
     
     public void testVerHistoricoCandidato() throws Exception
