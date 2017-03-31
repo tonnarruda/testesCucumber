@@ -12,6 +12,7 @@
 		<Item visivel="S" motivo="P17020000226"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações dos Alunos: Melhoria na performance ao inserir ou editar nota.]]></Item>
 		<Item visivel="S" motivo="P17020000243"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Ajuste da inconsistência ao listar "Questionário de Avaliação do Curso" em uma turma criada por outra empresa.]]></Item>
 		<Item visivel="S" motivo="S17030000289"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Permitir que sejam selecionadas até 15 certificações.]]></Item>
+		<Item visivel="S" motivo="P17030000283"><![CDATA[T&D > Painel de Indicadores: Ajuste no cálculo dos indicadores "Horas de Treinamento per Capita" e "Total de Horas de Treinamento".]]></Item>
 		<Item visivel="N" motivo="S16120000156"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Novo Perfil de "Visualizar Documentos do colaborador logado".]]></Item>
 		<Item visivel="S" motivo="P17030000044"><![CDATA[Info. Funcionais > Relatórios > Admitidos > Exportar: Ajuste de inconsistência ao apresentar as informações de "Motivo da Admissão" e "Turnover" no relatório XLS.]]></Item>
 		<Item visivel="S" motivo="P17030000213"><![CDATA[SESMT > Relatórios > PPRA e LTCAT > Relatório: Ajuste na inconsistência ao emitir relatório em branco quando não existem funções vinculadas aos ambientes selecionados no filtro.]]></Item>

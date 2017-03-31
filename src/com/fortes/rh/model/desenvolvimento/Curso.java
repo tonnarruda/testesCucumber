@@ -22,6 +22,7 @@ import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -106,6 +107,7 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 		}
 	}
 
+	@NaoAudita
 	public String getCargaHorariaEmHora() 
 	{
 		if (cargaHoraria != null && !cargaHoraria.equals("")) {
@@ -138,15 +140,18 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	}
 	
 	//Usado no iReport
+	@NaoAudita
 	public String getNomeMaisCargaHoraria()
 	{
 		return nome + "\nCarga Horária: " + getCargaHorariaEmHora();
 	}
 	
+	@NaoAudita
 	public String getEmpresaNomeMaisNome()
 	{
 		return this.empresa.getNome() + "-" + nome;
 	}
+	
 	public void setNome(String nome)
 	{
 		this.nome = nome;
@@ -234,7 +239,8 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 		if (this.empresa == null)
 			this.empresa = new Empresa();
 	}
-
+	
+	@NaoAudita
 	public Long getEmpresaId()
 	{
 		return this.empresa.getId();
@@ -251,6 +257,7 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 		return (StringUtils.leftPad(hora.toString(), 4, caracterAntecessorHora) + ":" +StringUtils.leftPad(minutos.toString(), 2, "0")).trim();		
 	}
 	
+	@NaoAudita
 	public String getCargaHorariaMinutos() {
 		return formataCargaHorariaMinutos(cargaHoraria, "");		
 	}
@@ -328,6 +335,7 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 		this.certificacaoNome = certificacaoNome;
 	}
 	
+	@NaoAudita
 	public String getCertificacaoNome() {
 		return this.certificacaoNome == null ? "" : this.certificacaoNome;
 	}

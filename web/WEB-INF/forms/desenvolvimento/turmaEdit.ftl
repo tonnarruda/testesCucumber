@@ -9,7 +9,7 @@
 	#diasTable { border: none; }
 	#diasTable td { padding: 0px; }
 	#diasTable input[type='text'] { border: 1px solid #BEBEBE; width: 50px; }
-	.horas { text-align: right; }
+	.hora { text-align: right; }
 	.invalido { background-color: #FFEEC2 !important; }
 	
 	.confirmarDescertificacaoDiv{	min-height: 50px;
@@ -53,7 +53,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/json2.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script><!-- Usado para o function.js cssClass=hora-->
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.priceformat-2.1-14.js"/>"></script><!-- Usado para o function.js cssClass=hora-->
 
 	<#include "../ftl/mascarasImports.ftl" />
 
@@ -77,6 +77,12 @@
 		<#assign custo = turma.custo/>
 	<#else>
 		<#assign custo = ''/>
+	</#if>
+	
+	<#if planoTreinamento>
+		<#assign urlVoltar="filtroPlanoTreinamento.action"/>
+	<#else>
+		<#assign urlVoltar="list.action?curso.id=${curso.id}"/>
 	</#if>
 	
 	<#assign temPresencasRegistradas = turma.temPresenca?exists && turma.temPresenca/>
@@ -135,13 +141,12 @@
 					{
 						row +=	"	<td><label for='" + id + "'>" + diasTurma[i].turnoDescricao.capitalize() + "</label></td>\n";
 					}
-					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni" class="horas" maxlength="5" disabled=true /> às <input type="text" id="horaFim-' + id + '" name="horariosFim" class="horas" maxlength="5" disabled=true /></td>\n';
+					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni" class="hora" maxlength="5" disabled=true /> às <input type="text" id="horaFim-' + id + '" name="horariosFim" class="hora" maxlength="5" disabled=true /></td>\n';
 					row += 		"</tr>\n";
 				
 					$('#diasTable').append(row);
 					$('#horaIni-' + id).css('background-color', '#ECECEC');
 					$('#horaFim-' + id).css('background-color', '#ECECEC');
-					$('.horas').mask("99:99");
 				}
 				
 				$("input[name='diasCheck']").change(function() {
@@ -420,10 +425,17 @@
 			confirmacaoDescertificacao = "true";
 		}
 		
+		function processa(botao){
+			$('.btn').attr('disabled','disabled');
+			if(botao.id == "btnGravar")
+				enviar();
+			else
+				window.location='${urlVoltar}';
+		}
+		
 		function enviar(){
 			if(confirmacaoDescertificacao != "false")
 			validarCampos();	
-			
 		}
 	</script>
 <@ww.head/>
@@ -577,17 +589,10 @@
 			</#list>
 		</#if>
 	</@ww.form>
-
-	<#if planoTreinamento>
-		<#assign urlVoltar="filtroPlanoTreinamento.action"/>
-	<#else>
-		<#assign urlVoltar="list.action?curso.id=${curso.id}"/>
-	</#if>
-
 	<#if !somenteLeitura>
 		<div class="buttonGroup">
-			<button id="btnGravar" onclick="enviar()" class="btnGravar" accesskey="${accessKey}"></button>
-			<button onclick="window.location='${urlVoltar}'" class="btnVoltar"></button>
+			<button id="btnGravar" onclick="processa(this);" class="btnGravar btn" accesskey="${accessKey}"></button>
+			<button id="btnVoltar" onclick="processa(this);" class="btnVoltar btn"></button>
 		</div>
 	</#if>
 	

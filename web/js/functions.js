@@ -844,7 +844,8 @@ jQuery.fn.insertAtCaret = function (tagName) {
 			$(this).priceFormat({
 		    	prefix: '',
 		    	centsSeparator: ':',
-		    	thousandsSeparator: ''
+		    	thousandsSeparator: '',
+		    	clearOnEmpty: true
 			});
 	});
   	
