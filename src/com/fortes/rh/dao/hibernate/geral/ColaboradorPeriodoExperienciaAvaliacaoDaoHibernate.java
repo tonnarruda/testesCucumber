@@ -14,10 +14,20 @@ import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernate extends GenericDaoHibernate<ColaboradorPeriodoExperienciaAvaliacao> implements ColaboradorPeriodoExperienciaAvaliacaoDao
 {
 
-	public void removeByColaborador(Long... colaboradorIds) 
+	public void removeByColaborador(Character tipoColaboradorPeriodoExperienciaAvaliacao, Long... colaboradorIds) 
 	{
-		String queryHQL = "delete from ColaboradorPeriodoExperienciaAvaliacao c where c.colaborador.id in (:colaboradorIds)";
-		getSession().createQuery(queryHQL).setParameterList("colaboradorIds", colaboradorIds).executeUpdate();	
+		String queryHQL = "delete from ColaboradorPeriodoExperienciaAvaliacao c where c.colaborador.id in (:colaboradorIds) ";
+		
+		if(tipoColaboradorPeriodoExperienciaAvaliacao != null)
+			queryHQL += " and c.tipo = :tipoColaboradorPeriodoExperienciaAvaliacao ";
+		
+		Query query = getSession().createQuery(queryHQL);
+		query.setParameterList("colaboradorIds", colaboradorIds);
+		
+		if(tipoColaboradorPeriodoExperienciaAvaliacao != null)
+			query.setCharacter("tipoColaboradorPeriodoExperienciaAvaliacao", tipoColaboradorPeriodoExperienciaAvaliacao);	
+		
+		query.executeUpdate();	
 	}
 
 	@SuppressWarnings("unchecked")

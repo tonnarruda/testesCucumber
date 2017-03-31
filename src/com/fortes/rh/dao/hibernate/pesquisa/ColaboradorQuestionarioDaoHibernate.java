@@ -485,15 +485,14 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		if(AreaOrganizacional.CORRESPONSAVEL == tipoResponsavel)
 			condicaoResponsavel = "coresponsavel_id";
 			
-		StringBuilder sql = new StringBuilder("this_.avaliador_id not in( ");
+		StringBuilder sql = new StringBuilder("(this_.avaliador_id is null or this_.avaliador_id not in( ");
 		sql.append("		with areaId as (");
-		sql.append("						select ao.id from historicocolaborador hc ");
-		sql.append("						join areaOrganizacional ao on ao.id = hc.areaorganizacional_id ");
-		sql.append("						where hc.data = ( select max(hc2.data) from historicoColaborador hc2 where hc2.colaborador_id = ? and hc2.status = 1) ");
+		sql.append("						select hc.areaorganizacional_id as id from historicocolaborador hc ");
+		sql.append("						where hc.data = (select max(hc2.data) from historicoColaborador hc2 where hc2.colaborador_id = ? and hc2.status = 1) ");
 		sql.append("						and hc.colaborador_id = ? ");
 		sql.append("					   ) ");
 		sql.append("		select "+ condicaoResponsavel + " from areaorganizacional where id in (select * from ancestrais_areas_ids((select a.id from areaId as a))) ");
-		sql.append("		and "+ condicaoResponsavel + " <> ? ) ");
+		sql.append("		and "+ condicaoResponsavel + " <> ? ) )");
 		
 		return Expression.sqlRestriction(sql.toString(), new Long[] {colaboradorLogadoId, colaboradorLogadoId, colaboradorLogadoId}, new Type[]{Hibernate.LONG, Hibernate.LONG, Hibernate.LONG});
 	}

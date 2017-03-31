@@ -13,6 +13,7 @@
 		<Item visivel="N" motivo="S16120000156"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Novo Perfil de "Visualizar Documentos do colaborador logado".]]></Item>
 		<Item visivel="S" motivo="P17030000044"><![CDATA[Info. Funcionais > Relatórios > Admitidos > Exportar: Ajuste de inconsistência ao apresentar as informações de "Motivo da Admissão" e "Turnover" no relatório XLS.]]></Item>
 		<Item visivel="S" motivo="P17030000213"><![CDATA[SESMT > Relatórios > PPRA e LTCAT > Relatório: Ajuste na inconsistência ao emitir relatório em branco quando não existem funções vinculadas aos ambientes selecionados no filtro.]]></Item>
+		<Item visivel="S" motivo="P17030000319"><![CDATA[Utilitários -> Cadastros -> Perfis -> Inserir/Editar: Novo perfil para permitir que o gestor e o cogestor recebam notificações, visualizem e respondam suas próprias avaliações vinculadas ao seu gestor imediato.]]></Item>
 		<Item visivel="N" motivo="S17030199999"><![CDATA[Sistema: Alteração na verificação da compatibilidade do Java para a versão 7.]]></Item>
 		<Item visivel="N" motivo="P17030000124"><![CDATA[Sistema: Atualização da tabela candidato adicionando restrição de NOT NULL para o nome do candidato.]]></Item>
 	</Versao>

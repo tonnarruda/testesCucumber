@@ -90,7 +90,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerTest extends MockObjec
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		
 		colaboradorPeriodoExperienciaAvaliacaoDao.expects(once()).method("removeByColaborador").withAnyArguments();
-		manager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador.getId());
+		manager.removeConfiguracaoAvaliacaoPeriodoExperiencia(null, colaborador.getId());
 	}
 
 	public void testExecutaTesteAutomaticoDoManager() {

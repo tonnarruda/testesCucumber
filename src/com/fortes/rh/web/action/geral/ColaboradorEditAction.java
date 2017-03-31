@@ -847,8 +847,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			
 			colaboradorManager.update(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(),editarHistorico, salarioColaborador);
 			
-			colaboradorPeriodoExperienciaAvaliacaoManager.atualizaConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
-
+			boolean removeAvGestor = (getColaboradorSistemaId() == colaboradorAux.getId()) && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA"}); 
+			colaboradorPeriodoExperienciaAvaliacaoManager.atualizaConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor, removeAvGestor);
 		}
 		catch (IntegraACException e)
 		{

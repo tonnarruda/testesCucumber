@@ -68,7 +68,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		ColaboradorPeriodoExperienciaAvaliacao configuracao = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(colaborador, null, null, ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(configuracao);
 		
-		colaboradorPeriodoExperienciaAvaliacaoDao.removeByColaborador(colaborador.getId());
+		colaboradorPeriodoExperienciaAvaliacaoDao.removeByColaborador(null, colaborador.getId());
 		Collection<ColaboradorPeriodoExperienciaAvaliacao> configuracoes = colaboradorPeriodoExperienciaAvaliacaoDao.find(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()});
 		
 		assertEquals(0, configuracoes.size());

@@ -259,7 +259,7 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		sql.append(" 	select cq.avaliacao_id from colaboradorquestionario cq ");
 		sql.append(" 	where cq.colaborador_id = ? and cq.avaliacaoDesempenho_id is null ");
 		sql.append("	and cq.respondida = true and avaliacao_id is not null ");
-		sql.append("	and cq.avaliador_id in( ");
+		sql.append("	and (cq.avaliador_id is null or cq.avaliador_id in( ");
 		sql.append("		with areaId as( ");
 		sql.append("			select ao.id from historicocolaborador  hc ");
 		sql.append("				join areaOrganizacional ao on ao.id = hc.areaorganizacional_id ");
@@ -269,7 +269,7 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		sql.append("		select " + condicaoTipoResponsavel + " from areaorganizacional");
 		sql.append("		where id in (select * from ancestrais_areas_ids((select * from areaId))) and " + condicaoTipoResponsavel + " <> ? ");
 		sql.append("	)");
-		sql.append(" )");
+		sql.append(" ))");
 		
 		return Expression.sqlRestriction(sql.toString(), new Long[] {colaboradorLogadoId, colaboradorLogadoId, colaboradorLogadoId, colaboradorLogadoId}, new Type[]{Hibernate.LONG, Hibernate.LONG, Hibernate.LONG, Hibernate.LONG});
 	}

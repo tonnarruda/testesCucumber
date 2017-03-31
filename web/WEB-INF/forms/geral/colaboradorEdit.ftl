@@ -722,7 +722,6 @@
 						<@ww.select label="Estabelecimento" name="historicoColaborador.estabelecimento.id" id="estabelecimento" list="estabelecimentos" required="true" listKey="id" listValue="nome" headerKey="" disabled= "${somenteLeitura}" headerValue="Selecione..." cssStyle="width: 355px;" onchange="${funcaoEstabelecimento}"/>
 						<@ww.select label="Área Organizacional" name="historicoColaborador.areaOrganizacional.id" id="areaOrganizacional" list="areaOrganizacionals" required="true" listKey="id" listValue="descricaoComCodigoAC" headerKey="" disabled= "${somenteLeitura}" headerValue="Selecione..." cssStyle="width: 355px;" onchange="verificaMaternidade(this.value, 'areaOrganizacional');"/>
 						
-						
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 						
 							<label for="ambiente">Ambiente:</label><#if obrigarAmbienteFuncao>*</#if> <img id="ambienteTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
@@ -898,9 +897,17 @@
 					</@display.column>
 					<@display.column title="Modelo do Acompanhamento do Período de Experiência">
 						<@ww.hidden name="colaboradorAvaliacoesGestor[${i}].periodoExperiencia.id" value="${periodoExperiencia.id}" />
-						<@ww.select theme="simple" name="colaboradorAvaliacoesGestor[${i}].avaliacao.id" cssClass="periodoExperiencia" id="modeloPeriodoGestor${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
+						<#if colaboradorSistemaId?exists && colaboradorSistemaId == colaborador.id>
+							<@authz.authorize ifAllGranted="ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA">
+								<@ww.select theme="simple" name="colaboradorAvaliacoesGestor[${i}].avaliacao.id" cssClass="periodoExperiencia" id="modeloPeriodoGestor${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
+							</@authz.authorize>
+							<@authz.authorize ifNotGranted="ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA">
+								<@ww.select theme="simple" name="colaboradorAvaliacoesGestor[${i}].avaliacao.id" cssClass="periodoExperiencia" id="modeloPeriodoGestor${periodoExperiencia.id}" disabled="true" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
+							</@authz.authorize>
+						<#else>
+							<@ww.select theme="simple" name="colaboradorAvaliacoesGestor[${i}].avaliacao.id" cssClass="periodoExperiencia" id="modeloPeriodoGestor${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
+						</#if>
 					</@display.column>
-					
 					<#assign i = i + 1 />
 				</@display.table>
 			</fieldset>

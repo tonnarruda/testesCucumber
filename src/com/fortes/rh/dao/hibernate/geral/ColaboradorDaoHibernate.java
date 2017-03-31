@@ -3010,7 +3010,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 					(String) array[13], (String) array[14]); 
 					
 			colaborador.getAreaOrganizacional().setResponsavelId(( array[15] != null ? ((BigInteger) array[15]).longValue(): null));
-			colaborador.getAreaOrganizacional().setResponsavelId(( array[16] != null ? ((BigInteger) array[16]).longValue(): null));
+			colaborador.getAreaOrganizacional().setCoResponsavelId(( array[16] != null ? ((BigInteger) array[16]).longValue(): null));
 			colaborador.setUsuarioIdProjection(array[17] != null ? ((BigInteger) array[17]).longValue(): null);
 			colaborador.setEmailColaborador((String) array[18]);
 			colaboradores.add(colaborador);

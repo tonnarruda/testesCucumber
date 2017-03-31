@@ -12,15 +12,19 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericMa
 {
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
-	public void atualizaConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor)
+	public void atualizaConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor, Boolean removeAvGestor)
 	{
-		removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador.getId());
+		Character tipoColaboradorPeriodoExperienciaAvaliacao = null;
+		if(!removeAvGestor)
+			tipoColaboradorPeriodoExperienciaAvaliacao = ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR;
+		
+		removeConfiguracaoAvaliacaoPeriodoExperiencia(tipoColaboradorPeriodoExperienciaAvaliacao, colaborador.getId());
 		saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
 	}
 	
 	public void atualizaConfiguracaoAvaliacaoPeriodoExperienciaEmVariosColaboradores(Long[] colaboradorIds, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor)
 	{
-		removeConfiguracaoAvaliacaoPeriodoExperiencia(colaboradorIds);
+		removeConfiguracaoAvaliacaoPeriodoExperiencia(null, colaboradorIds);
 		
 		for (Long colaboradorId : colaboradorIds) {
 			saveConfiguracaoAvaliacaoPeriodoExperiencia(new Colaborador(null, null, colaboradorId), colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
@@ -56,9 +60,9 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericMa
 		}
 	}
 
-	public void removeConfiguracaoAvaliacaoPeriodoExperiencia(Long... colaboradorIds) 
+	public void removeConfiguracaoAvaliacaoPeriodoExperiencia(Character TipoColaboradorPeriodoExperienciaAvaliacao, Long... colaboradorIds) 
 	{
-		getDao().removeByColaborador(colaboradorIds);
+		getDao().removeByColaborador(TipoColaboradorPeriodoExperienciaAvaliacao, colaboradorIds);
 	}
 	
 	@TesteAutomatico

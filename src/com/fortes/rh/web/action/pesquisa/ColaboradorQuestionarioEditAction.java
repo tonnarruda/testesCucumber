@@ -289,7 +289,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	
 	public String prepareResponderAvaliacaoDesempenho(){
 		colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
-		avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
+		
+		if(colaboradorQuestionario.getAvaliador() != null)
+			avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
 		
 		if(colaboradorQuestionario.getRespondida() || colaboradorQuestionario.isRespondidaParcialmente())
 			prepareResponderAvaliacaoDesempenhoUpdate();

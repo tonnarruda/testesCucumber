@@ -422,6 +422,9 @@ http://10.1.3.48:8080/fortesrhhomologacao
             <arg value="-rf"/>
             <arg value="/home/fortes/tomcat7/webapps/fortesrhhomologacao/"/>
         </exec>
+		<exec executable="rm">
+            <arg value="/home/fortes/tomcat7/webapps/fortesrhhomologacao.war"/>
+        </exec>
 		<echo message="Limpando pasta work do Tomcat 7"/>
 		<exec executable="rm">
             <arg value="-rf"/>

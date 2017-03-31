@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.geral.NoticiaManager;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Noticia;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -24,6 +25,7 @@ public abstract class MyActionSupport extends ActionSupport
 	
 	private Empresa empresaSistema = null;
 	private Usuario usuarioSistema = null;
+	private Colaborador colaboradorSistema = null;
 	private Collection<Long> videosAjuda = null;
 	private String actionErr = null;
 	private String actionMsg = null;
@@ -196,5 +198,15 @@ public abstract class MyActionSupport extends ActionSupport
 	public void setMsgAlert(String msgAlert)
 	{
 		this.msgAlert = msgAlert;
+	}
+
+	public Long getColaboradorSistemaId() {
+		if (colaboradorSistema == null)
+			colaboradorSistema = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+		
+		if (colaboradorSistema != null)
+			return colaboradorSistema.getId();
+		
+		return null;
 	}
 }

@@ -258,10 +258,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 
 	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, Colaborador colaboradorLogado, boolean possuiRole, AreaOrganizacionalManager areaOrganizacionalManager)
 	{
-		if(colaboradorLogado!= null && colaboradorId.equals(colaboradorLogado.getId()) && !possuiRole){
-			
+		if(colaboradorLogado!= null && colaboradorId.equals(colaboradorLogado.getId()) && !possuiRole)
 			return getDao().findAvaliacaoByColaborador(colaboradorId, colaboradorLogado.getId(), areaOrganizacionalManager.defineTipoResponsavel(colaboradorLogado.getId()));
-		}
+		
 		return getDao().findAvaliacaoByColaborador(colaboradorId, null, null);
 	}
 	

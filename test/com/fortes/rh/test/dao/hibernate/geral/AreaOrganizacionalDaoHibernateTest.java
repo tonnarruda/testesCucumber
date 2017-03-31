@@ -657,7 +657,30 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		assertEquals(0, areas.size());
 	}
 	
-	
+	public void testisResposnsavelOrCoResponsavelPorPropriaArea(){
+		Colaborador colaboradorResponsavel = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaboradorResponsavel);
+		
+		Colaborador colaboradorCoResponsavel = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaboradorCoResponsavel);
+		
+		AreaOrganizacional areaOrganizacional= AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setResponsavel(colaboradorResponsavel);
+		areaOrganizacional.setCoResponsavel(colaboradorCoResponsavel);
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaboradorResponsavel, new Date(), null, null, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(colaboradorCoResponsavel, new Date(), null, null, areaOrganizacional, null, null, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		assertTrue(areaOrganizacionalDao.isResposnsavelOrCoResponsavelPorPropriaArea(colaboradorResponsavel.getId(), AreaOrganizacional.RESPONSAVEL));
+		assertFalse(areaOrganizacionalDao.isResposnsavelOrCoResponsavelPorPropriaArea(colaboradorCoResponsavel.getId(), AreaOrganizacional.RESPONSAVEL));
+		
+		assertFalse(areaOrganizacionalDao.isResposnsavelOrCoResponsavelPorPropriaArea(colaboradorResponsavel.getId(), AreaOrganizacional.CORRESPONSAVEL));
+		assertTrue(areaOrganizacionalDao.isResposnsavelOrCoResponsavelPorPropriaArea(colaboradorCoResponsavel.getId(), AreaOrganizacional.CORRESPONSAVEL));
+	}
 	
 	
 	public void setCargoDao(CargoDao cargoDao)
