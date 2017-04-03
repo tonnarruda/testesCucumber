@@ -708,7 +708,6 @@ import com.fortes.rh.test.web.dwr.ConfiguracaoPerformanceDWRTest;
 import com.fortes.rh.test.web.dwr.ConhecimentoDWRTest;
 import com.fortes.rh.test.web.dwr.DiaTurmaDWRTest;
 import com.fortes.rh.test.web.dwr.DntDWRTest;
-import com.fortes.rh.test.web.dwr.EnderecoDWRTest;
 import com.fortes.rh.test.web.dwr.EstabelecimentoDWRTest;
 import com.fortes.rh.test.web.dwr.ExtintorDWRTest;
 import com.fortes.rh.test.web.dwr.FaixaSalarialDWRTest;
@@ -1562,7 +1561,6 @@ import com.fortes.test.web.tags.LinkTagTest;
 	TurmaDWRTest.class,
 	TurmaDWRTest_Junit4.class,
 	FaixaSalarialDWRTest.class,
-	EnderecoDWRTest.class,
 	SolicitacaoDWRTest.class,
 	OcorrenciaDWRTest.class,
 	AvaliacaoDesempenhoDWRTest.class,

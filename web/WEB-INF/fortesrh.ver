@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.17x.210" db="" data="xx/03/2017">
+		<Item visivel="S" motivo="S17030000314"><![CDATA[Tela Inicial -> Caixa de Mensagens de Recrutamento & Seleção -> Candidatos da Seleção - Externo: Ao aprovar ou reprovar a participação do candidato na solicitação, o sistema retorna uma mensagem de confirmação da ação e permanece na listagem.]]></Item>
+		<Item visivel="S" motivo="S17030000314"><![CDATA[R&S -> Movimentações -> Solicitação de Pessoal -> Candidatos da Seleção -> Triagem Módulo Externo: Ao aprovar ou reprovar a participação do candidato na solicitação, o sistema retorna uma mensagem de confirmação da ação e permanece na listagem.]]></Item>
 		<Item visivel="S" motivo="S16040000319"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Informar com quais faixas salariais os níveis de competência possuem vínculo ao solicitar a exclusão de um histórico.]]></Item>
 		<Item visivel="S" motivo="P17020000249"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Ajuste na inconsistência de permissão de acesso ao gerar relatório em XLS.]]></Item>
 		<Item visivel="S" motivo="P16100000309"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência: Ajuste de inconsistência ao tentar editar modelo que não possui respostas vinculadas.]]></Item>
