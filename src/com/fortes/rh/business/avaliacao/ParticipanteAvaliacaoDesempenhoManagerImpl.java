@@ -10,6 +10,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.avaliacao.ParticipanteAvaliacaoDesempenhoDao;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -75,6 +76,15 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 			
 			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
 			colaboradorQuestionarios.removeAll(Collections.singleton(null));
+			
+			Avaliacao avaliacao = avaliacaoDesempenho.getAvaliacao();
+			
+			if (colaboradorQuestionarios != null) {
+				for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios) {
+					colaboradorQuestionario.setAvaliacao(avaliacao);
+				}
+			}
+				
 			colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
 			removerColaboradorQuestionario(colaboradorQuestionarioManager, colaboradorQuestionariosRemovidos);
 		}
