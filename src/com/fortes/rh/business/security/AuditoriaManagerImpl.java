@@ -67,7 +67,6 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 		return getDao().findOperacoesPeloModulo(modulo);
 	}
 
-	@SuppressWarnings("unchecked")
 	public String getDetalhes(String dados) 
 	{
 		String entidade;

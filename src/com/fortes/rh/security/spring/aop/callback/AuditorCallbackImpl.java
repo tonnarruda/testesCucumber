@@ -39,6 +39,10 @@ public abstract class AuditorCallbackImpl implements AuditorCallback {
 		if(chv == null)
 			chv = getChaveDefault();
 		
+		if(chv.length() > 255){
+			chv = chv.substring(0, 255);
+		}
+		
 		return chv;
 	}
 
