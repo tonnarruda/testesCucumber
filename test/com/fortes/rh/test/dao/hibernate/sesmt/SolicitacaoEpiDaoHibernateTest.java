@@ -34,6 +34,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TipoEPI;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiVO;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -497,8 +498,8 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
     	Cargo cargo = CargoFactory.getEntity("Motorista");
     	cargoDao.save(cargo);
     	
-    	SolicitacaoEpi solicitacaoEpiEntregue = SolicitacaoEpiFactory.getEntity(dataIni, colaborador1, empresa, estabelecimento1, cargo);
-		solicitacaoEpiDao.save(solicitacaoEpiEntregue);
+    	SolicitacaoEpi solicitacaoEpiEntregue = saveSolicitacaoEpi(dataIni,
+				empresa, colaborador1, estabelecimento1, cargo);
 		
 		SolicitacaoEpiItem solicitacaoEpiItem_solicitacaoEpiEntregue = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpiEntregue, epi, 3);
 		solicitacaoEpiItemDao.save(solicitacaoEpiItem_solicitacaoEpiEntregue);
@@ -506,8 +507,8 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity(dataIni, solicitacaoEpiItem_solicitacaoEpiEntregue, 3);
 		solicitacaoEpiItemEntregaDao.save(entrega);
 		
-		SolicitacaoEpi solicitacaoEpiAberta = SolicitacaoEpiFactory.getEntity(dataMeio, colaborador1, empresa, estabelecimento1, cargo);
-		solicitacaoEpiDao.save(solicitacaoEpiAberta);
+		SolicitacaoEpi solicitacaoEpiAberta = saveSolicitacaoEpi(dataMeio,
+				empresa, colaborador1, estabelecimento1, cargo);
 		
 		SolicitacaoEpiItem solicitacaoEpiItem_solicitacaoEpiAberta = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpiAberta, epi, 3);
 		solicitacaoEpiItemDao.save(solicitacaoEpiItem_solicitacaoEpiAberta);
@@ -712,89 +713,98 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Date dataMeio=DateUtil.criarDataMesAno(13, 03, 2010);
 		Date dataFim=DateUtil.criarDataMesAno(01, 04, 2010);
 
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setNome("José");
-		colaborador.setDesligado(false);
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity("José");
 		colaboradorDao.save(colaborador);
 
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento);
 		
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
-		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2010));
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, DateUtil.criarDataMesAno(01, 01, 2010), StatusRetornoAC.CONFIRMADO);
 		historicoColaborador.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(historicoColaborador);
-
-		Empresa empresa = EmpresaFactory.getEmpresa();
-    	empresaDao.save(empresa);
 		
-		Epi epi1 = EpiFactory.getEntity();
-		epi1.setNome("Epi Nome 1");
-    	epi1.setEmpresa(empresa);
-    	epiDao.save(epi1);
-
-    	Epi epi2 = EpiFactory.getEntity();
-    	epi2.setNome("Epi Nome 2");
-    	epi2.setEmpresa(empresa);
-    	epiDao.save(epi2);
+		Epi epi1 = saveEpi(empresa, "Epi Nome 1");
+    	Epi epi2 = saveEpi(empresa, "Epi Nome 2");
+    	Epi epi3 = saveEpi(empresa, "Epi Nome 3");
+    	Epi epi4 = saveEpi(empresa, "Epi Nome 4");
     	
-    	Epi epi3 = EpiFactory.getEntity();
-    	epi3.setNome("Epi Nome 3");
-    	epi3.setEmpresa(empresa);
-    	epiDao.save(epi3);
-    	
-    	Cargo cargo = CargoFactory.getEntity();
-    	cargo.setNome("motorista");
+    	Cargo cargo = CargoFactory.getEntity("Motorista");
     	cargoDao.save(cargo);
     	
-    	SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
-		solicitacaoEpi.setEmpresa(empresa);
-		solicitacaoEpi.setData(dataIni);
-		solicitacaoEpi.setColaborador(colaborador);
-		solicitacaoEpi.setCargo(cargo);
-		solicitacaoEpiDao.save(solicitacaoEpi);
+    	SolicitacaoEpi solicitacaoEpi1 = saveSolicitacaoEpi(dataIni, empresa, colaborador, estabelecimento, cargo);
+    	SolicitacaoEpi solicitacaoEpi2 =  saveSolicitacaoEpi(dataMeio, empresa, colaborador, estabelecimento, cargo);
+    	SolicitacaoEpi solicitacaoEpi3 =  saveSolicitacaoEpi(dataFim, empresa, colaborador, estabelecimento, cargo);
+    	
+		SolicitacaoEpiItem item1 = saveSolicitacaoEpiItem(solicitacaoEpi1, epi1, 3);
+		SolicitacaoEpiItem item2 = saveSolicitacaoEpiItem(solicitacaoEpi2, epi2, 2);
+		SolicitacaoEpiItem item3 = saveSolicitacaoEpiItem(solicitacaoEpi2, epi3, 3);
+		SolicitacaoEpiItem item4 = saveSolicitacaoEpiItem(solicitacaoEpi3, epi4, 3);
 		
-		SolicitacaoEpiItem item = SolicitacaoEpiItemFactory.getEntity();
-		item.setSolicitacaoEpi(solicitacaoEpi);
-		item.setEpi(epi1);
-		item.setQtdSolicitado(3);
-		solicitacaoEpiItemDao.save(item);
+		saveSolicitacaoEpiItemEntrega(dataIni, item2, 2);
+		saveSolicitacaoEpiItemDevolucao(DateUtil.criarDataMesAno(01, 06, 2010), item2, 1);
+
+		saveSolicitacaoEpiItemEntrega(dataIni, item3, 3);
+		saveSolicitacaoEpiItemDevolucao(DateUtil.criarDataMesAno(01, 06, 2010), item3, 3);
+
+		saveSolicitacaoEpiItemEntrega(dataIni, item4, 2);
 		
-		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity();
-		solicitacaoEpi2.setEmpresa(empresa);
-		solicitacaoEpi2.setData(dataMeio);
-		solicitacaoEpi2.setColaborador(colaborador);
-		solicitacaoEpi2.setCargo(cargo);
-		solicitacaoEpiDao.save(solicitacaoEpi2);
+		Collection<SolicitacaoEpiItemVO> lista = solicitacaoEpiDao.findEpisWithItens(empresa.getId(), null, dataFim, SituacaoSolicitacaoEpi.TODAS, colaborador, null, SituacaoColaborador.TODOS, null, 'N');
 		
-		SolicitacaoEpiItem item2 = SolicitacaoEpiItemFactory.getEntity();
-		item2.setSolicitacaoEpi(solicitacaoEpi2);
-		item2.setEpi(epi2);
-		item2.setQtdSolicitado(2);
-		solicitacaoEpiItemDao.save(item2);
+		SolicitacaoEpiItemVO vo1 = (SolicitacaoEpiItemVO) lista.toArray()[0];		
+		SolicitacaoEpiItemVO vo2 = (SolicitacaoEpiItemVO) lista.toArray()[1];		
+		SolicitacaoEpiItemVO vo3 = (SolicitacaoEpiItemVO) lista.toArray()[2];		
+		SolicitacaoEpiItemVO vo4 = (SolicitacaoEpiItemVO) lista.toArray()[3];		
+
+		assertEquals(4, lista.size());
+		assertEquals(item4.getQtdSolicitado(), vo1.getQtdSolicitadoItem());
+		assertEquals(item3.getQtdSolicitado(), vo2.getQtdSolicitadoItem());
+		assertEquals(item2.getQtdSolicitado(), vo3.getQtdSolicitadoItem());
+		assertEquals(item1.getQtdSolicitado(), vo4.getQtdSolicitadoItem());
 		
-		SolicitacaoEpiItem item3 = SolicitacaoEpiItemFactory.getEntity();
-		item3.setSolicitacaoEpi(solicitacaoEpi2);
-		item3.setEpi(epi3);
-		item3.setQtdSolicitado(3);
-		solicitacaoEpiItemDao.save(item3);
-//		
-//		Collection<SolicitacaoEpiItemVO> lista = solicitacaoEpiDao.findEpisWithItens(empresa.getId(), dataIni, dataFim, 'A', null, null, SituacaoColaborador.TODOS);
-//		SolicitacaoEpiItemVO vo1 = (SolicitacaoEpiItemVO) lista.toArray()[0];		
-//		SolicitacaoEpiItemVO vo2 = (SolicitacaoEpiItemVO) lista.toArray()[1];		
-//		SolicitacaoEpiItemVO vo3 = (SolicitacaoEpiItemVO) lista.toArray()[2];		
-//		
-//		assertEquals(3, lista.size());
-//		assertEquals(item2.getQtdSolicitado(), vo1.getQtdSolicitadoItem());
-//		assertEquals(item3.getQtdSolicitado(), vo2.getQtdSolicitadoItem());
-//		assertEquals(item.getQtdSolicitado(), vo3.getQtdSolicitadoItem());
-//		assertEquals(new Integer(5), vo1.getQtdSolicitadoTotal());
-//		assertEquals(new Integer(5), vo2.getQtdSolicitadoTotal());
-//		assertEquals(new Integer(3), vo3.getQtdSolicitadoTotal());
+		assertEquals(new Integer(3), vo1.getQtdSolicitadoTotal());
+		assertEquals(new Integer(5), vo2.getQtdSolicitadoTotal());
+		assertEquals(new Integer(5), vo3.getQtdSolicitadoTotal());
+		assertEquals(new Integer(3), vo4.getQtdSolicitadoTotal());
+		
+
+		assertEquals("Sem Devolução", vo1.getSituacaoDescricaoDevolucao(), SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(vo1.getQtdDevolvida(), vo1.getQtdEntregue()));
+		assertEquals("Devolvido Parcialmente", vo2.getSituacaoDescricaoDevolucao(), SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(vo2.getQtdDevolvida(), vo2.getQtdEntregue()));
+		assertEquals("Devolvido", vo3.getSituacaoDescricaoDevolucao(), SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(vo3.getQtdDevolvida(), vo3.getQtdEntregue()));
+		assertEquals("Sem EPI a devolver", vo4.getSituacaoDescricaoDevolucao(), SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(vo4.getQtdDevolvida(), vo4.getQtdEntregue()));
 	}
 
+	private SolicitacaoEpi saveSolicitacaoEpi(Date dataIni, Empresa empresa, Colaborador colaborador, Estabelecimento estabelecimento, Cargo cargo) {
+		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(dataIni, colaborador, empresa, estabelecimento, cargo);
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		return solicitacaoEpi;
+	}
+
+	private Epi saveEpi(Empresa empresa, String nome) {
+		Epi epi = EpiFactory.getEntity(null, nome, empresa);
+    	epiDao.save(epi);
+		return epi;
+	}
+	
+	private SolicitacaoEpiItem saveSolicitacaoEpiItem(SolicitacaoEpi solicitacaoEpi, Epi epi, Integer quantidadeSolicitada){
+		SolicitacaoEpiItem item = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpi, epi, quantidadeSolicitada);
+		solicitacaoEpiItemDao.save(item);
+		return item;
+	}
+	
+	private SolicitacaoEpiItemEntrega saveSolicitacaoEpiItemEntrega(Date dataEntrega, SolicitacaoEpiItem item, Integer qtdEntregue){
+		SolicitacaoEpiItemEntrega entregaItem = SolicitacaoEpiItemEntregaFactory.getEntity(dataEntrega, item, qtdEntregue);
+		solicitacaoEpiItemEntregaDao.save(entregaItem);
+		return entregaItem;
+	}
+	
+	private SolicitacaoEpiItemDevolucao saveSolicitacaoEpiItemDevolucao(Date dataDevolucao, SolicitacaoEpiItem item, Integer qtdDevolvida){
+		SolicitacaoEpiItemDevolucao devolucaoItem = SolicitacaoEpiItemDevolucaoFactory.getEntity(dataDevolucao, qtdDevolvida, item);
+		solicitacaoEpiItemDevolucaoDao.save(devolucaoItem);
+		return devolucaoItem;
+	}
 	
 	public void testFindByColaboradorId()
 	{

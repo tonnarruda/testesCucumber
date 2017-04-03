@@ -171,9 +171,11 @@ public class AvaliacaoDaoHibernateTest_Junit4 extends GenericDaoHibernateTest_JU
 		Colaborador colaboradorResponsavelAreaMae = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaboradorResponsavelAreaMae);
 		
+		areaOrganizacionalFilha.setAreasInteresse(null);
 		areaOrganizacionalFilha.setResponsavel(colaboradorResponsavelAreaFilha);
 		areaOrganizacionalDao.update(areaOrganizacionalFilha);
 		
+		areaOrganizacionalMae.setAreasInteresse(null);
 		areaOrganizacionalMae.setResponsavel(colaboradorResponsavelAreaMae);
 		areaOrganizacionalDao.update(areaOrganizacionalMae);
 		
