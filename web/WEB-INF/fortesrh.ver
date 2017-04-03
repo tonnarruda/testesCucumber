@@ -1,22 +1,24 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.17x.210" db="" data="xx/03/2017">
-		<Item visivel="S" motivo="S17030000314"><![CDATA[Tela Inicial -> Caixa de Mensagens de Recrutamento & Seleção -> Candidatos da Seleção - Externo: Ao aprovar ou reprovar a participação do candidato na solicitação, o sistema retorna uma mensagem de confirmação da ação e permanece na listagem.]]></Item>
-		<Item visivel="S" motivo="S17030000314"><![CDATA[R&S -> Movimentações -> Solicitação de Pessoal -> Candidatos da Seleção -> Triagem Módulo Externo: Ao aprovar ou reprovar a participação do candidato na solicitação, o sistema retorna uma mensagem de confirmação da ação e permanece na listagem.]]></Item>
+	<Versao id="1.1.178.210" db="" data="05/03/2017">
+		<Item visivel="S" motivo="P17030000314"><![CDATA[Tela Inicial > Caixa de Mensagens de Recrutamento & Seleção > Candidatos da Seleção - Externo: Ao aprovar ou reprovar a participação do candidato na solicitação, o sistema retorna uma mensagem de confirmação da ação e permanece na listagem.]]></Item>
+		<Item visivel="S" motivo="P17030000314"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem Módulo Externo: Ao aprovar ou reprovar a participação do candidato na solicitação, o sistema retorna uma mensagem de confirmação da ação e permanece na listagem.]]></Item>
 		<Item visivel="S" motivo="S16040000319"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos: Informar com quais faixas salariais os níveis de competência possuem vínculo ao solicitar a exclusão de um histórico.]]></Item>
 		<Item visivel="S" motivo="P17020000249"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Ajuste na inconsistência de permissão de acesso ao gerar relatório em XLS.]]></Item>
 		<Item visivel="S" motivo="P16100000309"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência: Ajuste de inconsistência ao tentar editar modelo que não possui respostas vinculadas.]]></Item>
 		<Item visivel="S" motivo="P17020000188"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes > Gravar: Ajuste de inconsistência ao gravar participantes utilizando a funcionalidade de “Gerar autoavaliação para selecionados”.]]></Item>
-		<Item visivel="S" motivo="P17020000202"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste de inconsistência que duplicava relaionamento de avaliados com avaliadores.]]></Item>
+		<Item visivel="S" motivo="P17020000202"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste de inconsistência que duplicava relacionamento de avaliados com avaliadores.]]></Item>
+		<Item visivel="S" motivo="P17030000353"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Ajuste de inconsistência ao gravar o relacionamento de avaliados e avaliadores.]]></Item>
 		<Item visivel="S" motivo="S15100000331"><![CDATA[Aval. Desempenho > Relatórios > Acompanhamento do Período de Experiência > Exportar: Nova forma de gerar o relatório em XLS que possibilita a apresentar os "Dias de Acompanhamento do Período de Experiência" em linhas(exibe avaliação e avaliador) ou colunas(padrão).]]></Item>
 		<Item visivel="S" motivo="P17020000226"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações dos Alunos: Melhoria na performance ao inserir ou editar nota.]]></Item>
 		<Item visivel="S" motivo="P17020000243"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Ajuste da inconsistência ao listar "Questionário de Avaliação do Curso" em uma turma criada por outra empresa.]]></Item>
 		<Item visivel="S" motivo="S17030000289"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Permitir que sejam selecionadas até 15 certificações.]]></Item>
 		<Item visivel="S" motivo="P17030000283"><![CDATA[T&D > Painel de Indicadores: Ajuste no cálculo dos indicadores "Horas de Treinamento per Capita" e "Total de Horas de Treinamento".]]></Item>
 		<Item visivel="N" motivo="S16120000156"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Novo Perfil de "Visualizar Documentos do colaborador logado".]]></Item>
+		<Item visivel="S" motivo="S16120000156"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Novo Perfil de "Visualizar Documentos do colaborador logado".]]></Item>
 		<Item visivel="S" motivo="P17030000044"><![CDATA[Info. Funcionais > Relatórios > Admitidos > Exportar: Ajuste de inconsistência ao apresentar as informações de "Motivo da Admissão" e "Turnover" no relatório XLS.]]></Item>
 		<Item visivel="S" motivo="P17030000213"><![CDATA[SESMT > Relatórios > PPRA e LTCAT > Relatório: Ajuste na inconsistência ao emitir relatório em branco quando não existem funções vinculadas aos ambientes selecionados no filtro.]]></Item>
-		<Item visivel="S" motivo="P17030000319"><![CDATA[Utilitários -> Cadastros -> Perfis -> Inserir/Editar: Novo perfil para permitir que o gestor e o cogestor recebam notificações, visualizem e respondam suas próprias avaliações vinculadas ao seu gestor imediato.]]></Item>
+		<Item visivel="S" motivo="P17030000319"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Novo perfil para permitir que o gestor e o cogestor recebam notificações, visualizem e respondam suas próprias avaliações vinculadas ao seu gestor imediato.]]></Item>
 		<Item visivel="N" motivo="S17030199999"><![CDATA[Sistema: Alteração na verificação da compatibilidade do Java para a versão 7.]]></Item>
 		<Item visivel="N" motivo="P17030000124"><![CDATA[Sistema: Atualização da tabela candidato adicionando restrição de NOT NULL para o nome do candidato.]]></Item>
 	</Versao>
