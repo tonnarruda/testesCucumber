@@ -3,6 +3,8 @@ package com.fortes.rh.security.spring.aop.callback;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.vidageek.mirror.dsl.Matcher;
 import net.vidageek.mirror.dsl.Mirror;
 
@@ -36,12 +38,7 @@ public abstract class AuditorCallbackImpl implements AuditorCallback {
 	protected String getChaveNaEntidade() {
 		String chv = new ChaveNaEntidade(entidade).procura(); 
 		
-		if(chv == null)
-			chv = getChaveDefault();
-		
-		if(chv.length() > 255){
-			chv = chv.substring(0, 255);
-		}
+		chv = StringUtils.defaultString(chv, StringUtils.abbreviate(getChaveDefault(), 255));
 		
 		return chv;
 	}
