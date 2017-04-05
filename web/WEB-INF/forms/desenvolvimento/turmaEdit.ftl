@@ -99,7 +99,6 @@
 		
 		function populaDocumentoAnexos(data)
 		{
-			console.log(data);
 			addChecks('documentoAnexoCheck', data, 'descricao');
 		}
 		
@@ -360,7 +359,8 @@
 			if(validaFormularioEPeriodo('form', new Array('curso','desc','inst','custo','prevIni','prevFim'), new Array('prevIni', 'prevFim'), true)){
 				processando('<@ww.url includeParams="none" value="/imgs/"/>');
 				document.form.submit();
-			}
+			}else
+				$('.btn').removeAttr('disabled');
 		}
 		
 		$(function() {
@@ -435,7 +435,7 @@
 		
 		function enviar(){
 			if(confirmacaoDescertificacao != "false")
-			validarCampos();	
+				validarCampos();	
 		}
 	</script>
 <@ww.head/>
@@ -466,10 +466,10 @@
 			</div> 
 			<div class="wwctrl" id="wwctrl_custo">
 				<#if turmaPertenceAEmpresaLogada>
-					<@ww.textfield theme="simple" id="custo" name="turma.custo" cssClass="moeda" maxlength="12" size="12" cssStyle="width:90px; text-align:right;"/>
+					<@ww.textfield theme="simple" id="custo" name="turma.custo" cssClass="moedaCurso" maxlength="12" size="12" cssStyle="width:90px; text-align:right;"/>
 					<a href="javascript:;" id=detalharCusto  onclick="abrirPopupDespesas();" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
 				<#else>
-					<@ww.textfield theme="simple" id="custo" name="turma.custo" cssClass="moeda" maxlength="12" size="12" cssStyle="width:90px; text-align:right;" readonly=true/>
+					<@ww.textfield theme="simple" id="custo" name="turma.custo" cssClass="moedaCurso" maxlength="12" size="12" cssStyle="width:90px; text-align:right;" readonly=true/>
 					<img id="tooltipCusto" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -3px" />
 				</#if>
 			</div> 
@@ -523,11 +523,11 @@
 
 			<#assign dataIni=""/>
 			<#if turma?exists && turma.dataPrevIni?exists>
-				<#assign dataIni=turma.dataPrevIni/>
+				<#assign dataIni=turma.dataPrevIni?date/>
 			</#if>
 			<#assign dataFim=""/>
 			<#if turma?exists && turma.dataPrevFim?exists>
-				<#assign dataFim=turma.dataPrevFim/>
+				<#assign dataFim=turma.dataPrevFim?date/>
 			</#if>
 				
 			<#if temPresencasRegistradas>
@@ -607,7 +607,7 @@
 		<@display.table name="tipoDespesas" id="tipoDespesa" class="dados" style="width:450px;">
 			<@display.column property="descricao" title="Descrição"/>
 			<@display.column title="Custo (R$)" style="text-align: center; width:120px;">
-				<input type="text" name="${tipoDespesa.id}" class="despesa moeda" maxlength="10" size="12" style="text-align:right; width: 90px;border:1px solid #BEBEBE;"/>
+				<input type="text" name="${tipoDespesa.id}" class="despesa moedaCurso" maxlength="10" size="12" style="text-align:right; width: 90px;border:1px solid #BEBEBE;"/>
 			</@display.column>
 		</@display.table>
 	</div>

@@ -109,6 +109,7 @@ public class CheckListBoxTag extends TagSupport
 			
 			checkGroup.append("</div><div id='listCheckBox"+ name +"' class='listCheckBox' " + dimensionList + ">");
 
+			if(checks != null)
 			for (CheckBox cb : checks)
 			{
 				String check = "";

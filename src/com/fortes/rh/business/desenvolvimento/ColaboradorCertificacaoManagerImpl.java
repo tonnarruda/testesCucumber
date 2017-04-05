@@ -459,6 +459,9 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	}
 
 	public void setCertificaçõesNomesInColaboradorTurmas(Collection<ColaboradorTurma> colaboradorTurmas) {
+		if(colaboradorTurmas.size() == 0)
+			return;
+		
 		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = getDao().findCertificaçõesNomesByColaboradoresTurmasIds(new CollectionUtil<ColaboradorTurma>().convertCollectionToArrayIds(colaboradorTurmas));
 		
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
@@ -470,6 +473,8 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	}
 	
 	public boolean isCertificadoByColaboradorTurmaId(Long colaboradorTurmaId){
+		if(colaboradorTurmaId == null)
+			return false;
 		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = getDao().findCertificaçõesNomesByColaboradoresTurmasIds(colaboradorTurmaId);
 		return colaboradoresTurmaMap.containsKey(colaboradorTurmaId);
 	} 

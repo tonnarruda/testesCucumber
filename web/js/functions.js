@@ -836,6 +836,14 @@ jQuery.fn.insertAtCaret = function (tagName) {
   };
 
   jQuery(function() {
+  	$('.moedaCurso').live('focus', function() {
+		$(this).priceFormat({
+			prefix: '',
+			centsSeparator: ',',
+			thousandsSeparator: '.'
+		});
+	});
+  	
   	$('.moeda').live('focus', function() {
 		$(this).priceFormat();
 	});

@@ -24,7 +24,7 @@ Funcionalidade: Cadastrar Estabelecimento
     E eu preencho o campo (JS) "CEP" com "60320-104"
     E eu saio do campo "CEP"
     E eu espero 4 segundos
-    Então o campo "Logradouro" deve conter "Rua Haroldo Torres - de 501"
+    Então o campo "Logradouro" deve conter "Rua Haroldo Torres"
     E o campo "Estado" deve ter "CE" selecionado
     E o campo "cidade" deve ter "Fortaleza" selecionado
     E o campo "bairroNome" deve conter "São Gerardo"
