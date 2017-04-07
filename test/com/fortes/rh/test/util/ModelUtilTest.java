@@ -92,6 +92,7 @@ public class ModelUtilTest extends TestCase
     
     public void testHasNullModelo1Null()
     {
+    	Colaborador colaboradorNulo = null;
     	Colaborador colaborador1 = ColaboradorFactory.getEntity();
     	colaborador1.setPessoal(null);
     	Colaborador colaborador2 = ColaboradorFactory.getEntity();
@@ -101,6 +102,7 @@ public class ModelUtilTest extends TestCase
     	
     	assertTrue(ModelUtil.hasNull("getPessoal().getCtps().getCtpsNumero()", colaborador1, colaborador2, colaborador3));
     	assertFalse(ModelUtil.hasNull("getPessoal().getCtps().getCtpsNumero()", colaborador2, colaborador3));
+    	assertTrue(ModelUtil.hasNull("getPessoal().getCtps().getCtpsNumero()", colaboradorNulo));
     }
     
     public void testHasNullModelo2Null()

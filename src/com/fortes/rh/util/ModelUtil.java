@@ -58,6 +58,9 @@ public class ModelUtil
 	 */
 
 	public static boolean hasNull(String metodos, AbstractModel... models) {
+		if (models == null)
+			return true;
+		
 		for (AbstractModel model : models) {
 			Object valor = getValor(model, metodos, false);
 			if(valor == null)

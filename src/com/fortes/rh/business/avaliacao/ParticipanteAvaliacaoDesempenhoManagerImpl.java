@@ -16,6 +16,7 @@ import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.util.ModelUtil;
 import com.fortes.rh.util.SpringUtil;
 
 public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<ParticipanteAvaliacaoDesempenho, ParticipanteAvaliacaoDesempenhoDao> implements ParticipanteAvaliacaoDesempenhoManager
@@ -79,7 +80,7 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 			
 			Avaliacao avaliacao = avaliacaoDesempenho.getAvaliacao();
 			
-			if (colaboradorQuestionarios != null) {
+			if (!ModelUtil.hasNull("getId", avaliacao) && colaboradorQuestionarios != null) {
 				for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios) {
 					colaboradorQuestionario.setAvaliacao(avaliacao);
 				}
