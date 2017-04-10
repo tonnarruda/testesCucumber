@@ -968,6 +968,7 @@ Dado /^que exista uma connfiguracao de nivel de competencia da faixa salarial "(
     data competencia_data
     faixasalarial :faixasalarial, :nome => faixasalarial_nome
     id 1
+    nivelcompetenciahistorico_id 1
   end
 end
 
@@ -977,6 +978,7 @@ Dado /^que exista uma connfiguracao de nivel de competencia "([^"]*)" no conheci
     configuracaonivelcompetenciafaixasalarial :configuracaonivelcompetenciafaixasalarial, :data => competencia_data
     competencia :competencia, :nome => conhecimento_nome
     tipocompetencia 'C'
+    pesocompetencia 1
   end
 end
 
