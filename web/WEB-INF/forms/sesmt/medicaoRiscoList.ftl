@@ -20,6 +20,9 @@
 	
 </head>
 <body>
+	<@ww.actionerror />
+	<@ww.actionmessage />
+
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="form" id="form" action="list.action" method="POST">
 		<@ww.hidden id="controlaRiscoPor" name="controlaRiscoPor"/>
@@ -36,9 +39,6 @@
 	<#include "../util/bottomFiltro.ftl" />
 	<br/>
 
-	<@ww.actionmessage />
-	<@ww.actionerror />
-	
 	<@display.table name="medicaoRiscos" id="medicaoRisco" class="dados">
 		<@display.column title="Ações" class="acao">
 			<a href="prepareUpdate.action?controlaRiscoPor=${controlaRiscoPor}&medicaoRisco.id=${medicaoRisco.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>

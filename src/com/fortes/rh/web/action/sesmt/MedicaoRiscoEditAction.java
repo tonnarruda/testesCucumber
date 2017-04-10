@@ -179,10 +179,11 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 				medicaoRisco.setFuncao(funcao);
 			
 			medicaoRiscoManager.save(medicaoRisco, riscoIds, ltcatValues, ppraValues, tecnicaValues, intensidadeValues);
+			addActionSuccess("Medição de risco gravada com sucesso.");
 		}
 		catch (Exception e) 
 		{
-			addActionError("Não foi possível gravar esta medição.");
+			addActionError("Não foi possível gravar esta medição de risco.");
 			prepareInsert();
 			return INPUT;
 		}
@@ -201,10 +202,11 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 				medicaoRisco.setFuncao(funcao);
 			
 			medicaoRiscoManager.save(medicaoRisco, riscoIds, ltcatValues, ppraValues, tecnicaValues, intensidadeValues);
+			addActionSuccess("Medição de risco atualizada com sucesso.");
 		}
 		catch (Exception e) 
 		{
-			addActionError("Não foi possível gravar esta medição.");
+			addActionError("Não foi possível gravar esta medição de risco.");
 			prepareUpdate();
 			return INPUT;
 		}
