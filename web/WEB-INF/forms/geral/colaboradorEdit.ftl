@@ -897,7 +897,7 @@
 					</@display.column>
 					<@display.column title="Modelo do Acompanhamento do Período de Experiência">
 						<@ww.hidden name="colaboradorAvaliacoesGestor[${i}].periodoExperiencia.id" value="${periodoExperiencia.id}" />
-						<#if colaboradorSistemaId?exists && colaboradorSistemaId == colaborador.id>
+						<#if colaboradorSistemaId?exists && colaborador?exists && colaborador.id?exists && colaboradorSistemaId == colaborador.id>
 							<@authz.authorize ifAllGranted="ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA">
 								<@ww.select theme="simple" name="colaboradorAvaliacoesGestor[${i}].avaliacao.id" cssClass="periodoExperiencia" id="modeloPeriodoGestor${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
 							</@authz.authorize>
