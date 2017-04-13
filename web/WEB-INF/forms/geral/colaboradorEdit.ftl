@@ -196,99 +196,28 @@
 		var arrayObrigatorios = new Array();
 		var colaboradorMap = new Object();
 		
-	if ("${colaborador.id}" != null){
-		colaboradorMap["nome"] = "${colaborador.nome}";
-		colaboradorMap["nomeComercial"] = "${colaborador.nomeComercial}";
-		colaboradorMap["nomeComercial"] = "${colaborador.nomeComercial}";
-		colaboradorMap["pessoal.dataNascimento"] = "${colaborador.pessoal.dataNascimento}";
-		colaboradorMap["pessoal.sexo"] = "${colaborador.pessoal.sexo}";
-		colaboradorMap["pessoal.cpf"] = "${colaborador.pessoal.cpf}";
-		colaboradorMap["endereco.logradouro"] = "${colaborador.endereco.logradouro}";
-		colaboradorMap["endereco.numero"] = "${colaborador.endereco.numero}";
-		colaboradorMap["endereco.complemento"] = "${colaborador.endereco.complemento}";
-		colaboradorMap["endereco.bairro"] = "${colaborador.endereco.bairro}";
-		colaboradorMap["endereco.cep"] = "${colaborador.endereco.cepFormatado}";
-	
-		<#if colaborador.endereco.uf?exists>
-			colaboradorMap["endereco.uf.sigla"] = "${colaborador.endereco.uf.sigla}";
-		</#if>
-		<#if colaborador.endereco.cidade?exists>
-			colaboradorMap["endereco.cidade.nome"] = "${colaborador.endereco.cidade.nome}";
-		</#if>
-		colaboradorMap["contato.email"] = "${colaborador.contato.email}";
-		colaboradorMap["contato.ddd"] = "${colaborador.contato.ddd}";
-		colaboradorMap["contato.foneFixo"] = "${colaborador.contato.foneFixo}";
-		colaboradorMap["contato.foneCelular"] = "${colaborador.contato.foneCelular}";
-		colaboradorMap["pessoal.escolaridade"] = "${colaborador.pessoal.escolaridade}";
-		colaboradorMap["pessoal.estadoCivil"] = "${colaborador.pessoal.estadoCivil}";
-		colaboradorMap["pessoal.deficiencia"] = "${colaborador.pessoal.deficiencia}";
-		colaboradorMap["pessoal.pai"] = "${colaborador.pessoal.pai}";
-		colaboradorMap["pessoal.mae"] = "${colaborador.pessoal.mae}";
-		colaboradorMap["pessoal.conjuge"] = "${colaborador.pessoal.conjuge}";
-		colaboradorMap["pessoal.qtdFilhos"] = "${colaborador.pessoal.qtdFilhos}";
-		
-		colaboradorMap["pessoal.rg"] = "${colaborador.pessoal.rg}";
-		colaboradorMap["pessoal.rgOrgaoEmissor"] = "${colaborador.pessoal.rgOrgaoEmissor}";
-		
-		colaboradorMap["pessoal.rgDataExpedicao"] = "${colaborador.pessoal.rgDataExpedicao}";
-		<#if colaborador.habilitacao?exists && colaborador.habilitacao.numeroHab?exists>
-			colaboradorMap["habilitacao.numeroHab"] = "${colaborador.habilitacao.numeroHab}";
-		</#if>
-		<#if colaborador.habilitacao?exists && colaborador.habilitacao.registro?exists>
-			colaboradorMap["habilitacao.numeroHab"] = "${colaborador.habilitacao.registro}";
-		</#if>
-		<#if colaborador.habilitacao?exists && colaborador.habilitacao.vencimento?exists>
-			colaboradorMap["habilitacao.numeroHab"] = "${colaborador.habilitacao.vencimento}";
-		</#if>
-		<#if colaborador.habilitacao?exists && colaborador.habilitacao.categoria?exists>
-			colaboradorMap["habilitacao.numeroHab"] = "${colaborador.habilitacao.categoria}";
-		</#if>
-		<#if colaborador.pessoal.tituloEleitoral?exists && colaborador.pessoal.tituloEleitoral.titEleitNumero?exists>
-			colaboradorMap["pessoal.tituloEleitoral.titEleitNumero"] = "${colaborador.pessoal.tituloEleitoral.titEleitNumero}";
-		</#if>
-		<#if colaborador.pessoal.tituloEleitoral?exists && colaborador.pessoal.tituloEleitoral.titEleitZona?exists>
-			colaboradorMap["pessoal.tituloEleitoral.titEleitZona"] = "${colaborador.pessoal.tituloEleitoral.titEleitZona}";
-		</#if>
-		<#if colaborador.pessoal.tituloEleitoral?exists && colaborador.pessoal.tituloEleitoral.titEleitSecao?exists>
-			colaboradorMap["pessoal.tituloEleitoral.titEleitNumero"] = "${colaborador.pessoal.tituloEleitoral.titEleitSecao}";
-		</#if>
-		<#if colaborador.pessoal.certificadoMilitar?exists && colaborador.pessoal.certificadoMilitar.certMilNumero?exists>
-			colaboradorMap["pessoal.certificadoMilitar.certMilNumero"] = "${colaborador.pessoal.certificadoMilitar.certMilNumero}";
-		</#if>
-		<#if colaborador.pessoal.certificadoMilitar?exists && colaborador.pessoal.certificadoMilitar.certMilTipo?exists>
-			colaboradorMap["pessoal.certificadoMilitar.certMilTipo"] = "${colaborador.pessoal.certificadoMilitar.certMilTipo}";
-		</#if>
-		<#if colaborador.pessoal.certificadoMilitar?exists && colaborador.pessoal.certificadoMilitar.certMilSerie?exists>
-			colaboradorMap["pessoal.certificadoMilitar.certMilSerie"] = "${colaborador.pessoal.certificadoMilitar.certMilSerie}";
-		</#if>
-		
-		<#if colaborador.pessoal.ctps?exists>
-			<#if colaborador.pessoal.ctps.ctpsNumero?exists>
-				colaboradorMap["pessoal.ctps.ctpsNumero"] = "${colaborador.pessoal.ctps.ctpsNumero}";
-			</#if>
-			<#if colaborador.pessoal.ctps.ctpsSerie?exists>
-				colaboradorMap["pessoal.ctps.ctpsSerie"] = "${colaborador.pessoal.ctps.ctpsSerie}";
-			</#if>
-			<#if colaborador.pessoal.ctps.ctpsDv?exists>
-				colaboradorMap["pessoal.ctps.ctpsDv"] = "${colaborador.pessoal.ctps.ctpsDv}";
-			</#if>
-			<#if colaborador.pessoal.ctps.ctpsUf?exists>
-				colaboradorMap["pessoal.ctps.ctpsUf.sigla"] = "${colaborador.pessoal.ctps.ctpsUf.sigla}";
-			</#if>
-		</#if>
-		colaboradorMap["pessoal.pis"] = "${colaborador.pessoal.pis}";
-	}
-		
-		
 		$(function() {
-			
 			$(".campo").each(function(){
 				var campos = camposColaboradorVisivel.split(',');
 				var id = this.id.replace('wwgrp_', '');
 				var idNaoEncontrado = ($.inArray(id, campos) == -1);
 			    if (idNaoEncontrado)
 					$(this).hide();
-			});		
+			});	
+			
+			<#if colaborador.id?exists>
+				$(".campoAdd").each(function(){
+					var id = this.id.replace('wwgrp_', '');
+					if(id == 'cpf' || id =='cep'){
+						colaboradorMap[id] = replaceAll($('#' + id).val().replace('-',''),'.','');
+					}else{
+						if($('#' + id).val() == "  /  /    ")
+							colaboradorMap[id] = "";
+						else
+							colaboradorMap[id] = $('#' + id).val();
+					}
+				});		
+			</#if>	
 
 			$.each(camposColaboradorObrigatorio.split(','), function (index, idCampo) {
 			    var lblAntigo = $('label[for='+idCampo+']');
@@ -351,7 +280,7 @@
 			
 			<#if edicao == "false">
 				$('#nomePai, #nomeMae, #nomeConjuge, #nome').blur(function() {
-					if (this.value) verificaParentes(colaboradorId, [this.value]);
+					if (this.value) verificaParentes(colaboradorId, [this.value], false);
 				});
 				
 				<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
@@ -491,8 +420,13 @@
 	    function verificaParentes(colaboradorId, nomes, validaForm)
 		{
 			$('#parentesDialog').empty();
-	    	ColaboradorDWR.findParentesByNome(	colaboradorId, <@authz.authentication operation="empresaId"/>, nomes, function(dados) { 
-	    		listaParentes(dados, '<@authz.authentication operation="empresaNome"/>', validaForm ); 
+	    	ColaboradorDWR.findParentesByNome(colaboradorId, <@authz.authentication operation="empresaId"/>, nomes, function(dados) { 
+	    		if(validaForm){
+	    			if(listaParentesInsertColaborador(dados, '<@authz.authentication operation="empresaNome"/>'))
+	    				validaFormularioDinamico(); 
+	    		}else{
+	    			listaParentes(dados, '<@authz.authentication operation="empresaNome"/>');
+	    		}
 	    	});
 		}
 
@@ -507,7 +441,7 @@
 			else
 				arrayValidacao = arrayValidacao.concat(new Array('dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario'));
 		}
-		function validaFormularioDinamico(noSubmit)
+		function validaFormularioDinamico()
 		{
 			marcaAbas = true;
 			exibeLabelDosCamposNaoPreenchidos = true;
@@ -563,13 +497,12 @@
 				</#if>
 			</@authz.authorize>
 			
-			if( ${colaborador.id} != null){
-				if(validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}), (noSubmit == true))){
-					submitForm();
-				}
-			}
-			else
-				return validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}), (noSubmit == true));
+			<#if colaborador.id?exists && colaborador.empresa.acIntegra && !colaborador.naoIntegraAc>
+				if(validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}), true))
+					dialogIntegraAc();
+			<#else>
+				validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}));
+			</#if>
 		}
 		
 		function prepareSubmit() {
@@ -612,7 +545,7 @@
 													[
 													    {
 													        text: "Sim",
-													        click: function() { $(this).dialog("close"); submit(); }
+													        click: function() { $(this).dialog("close"); submiter(); }
 													    },
 													    {
 													        text: "Não",
@@ -624,27 +557,25 @@
 													]
 												});
 			} else {
-				submit();
+				submiter();
 			}
 		}
 		
-		function submit()
+		function submiter()
 		{
-			if (setaCampos() && validaFormularioDinamico(true))
-			{
-				verificaParentes(colaboradorId, [$('#nomePai').val(), $('#nomeMae').val(), $('#nomeConjuge').val(), $('#nome').val()], validaFormularioDinamico);
-			}
+			setaCampos();
+			<#if edicao == "false">
+				verificaParentes(colaboradorId, [$('#nomePai').val(), $('#nomeMae').val(), $('#nomeConjuge').val(), $('#nome').val()], true);
+			<#else>
+				validaFormularioDinamico();
+			</#if>
 		}
 		
-		function submitForm(){
-			<#assign validarCampos="true"/>
-			var dadosIntegradosModificados = "${dadosIntegradosAtualizados}";
-			if(!dadosIntegradosModificados ){
+		function dialogIntegraAc(){
+			if(!houveAlteracaoDosCampos()){
 				$('#dataAlteracao').val(null);
 				$('#form').submit();
-			}
-			else {
-				<#assign dadosIntegradosAtualizados = "true"/>
+			}else {
 				$('#divDecideAlteracaoOrRetificacao').dialog({ 	
 													modal: true, 
 													title: 'Informações Pessoais',
@@ -655,7 +586,12 @@
 													    {
 													        text: "Gravar",
 												        	click: function() { 
-												        		validaDataAlteracao();
+												        		if($('input[name="tipoAlteracao"]:checked').length > 0){
+													        		$('#dadosIntegradosAtualizados').val(true);
+													        		validaDataAlteracao();
+													        	}else{
+															    	jAlert("Marque pelo menos uma das opções.");    	
+													        	}
 												        	}
 													    },
 													    {
@@ -695,13 +631,17 @@
 				$('#form').submit();
 			}
 		}
-			
-		function atualizaDadosIntegrados(nomeCampo, valor){
-			if(${colaborador.empresa.acIntegra?string} && !${colaborador.naoIntegraAc?string}){
-				if(colaboradorMap[nomeCampo] != valor){
-					<#assign dadosIntegradosAtualizados = "true"/>
+		
+		function houveAlteracaoDosCampos(){
+			retorno = false;
+			$(".campoAdd").each(function(){
+				var id = this.id.replace('wwgrp_', '');
+				if(colaboradorMap[id] != $('#' + id).val()){
+					retorno = true;	
 				}
-			}
+			});
+			
+			return retorno;	
 		}
 	</script>
 </head>
@@ -737,7 +677,7 @@
 		<div style="clear: both;"></div>
 	</div>
 
-	<@ww.form id="form" name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST" enctype="multipart/form-data">
+	<@ww.form id="form" name="form" action="${formAction}" method="POST" enctype="multipart/form-data">
 		<div id="content1">
 
 			<#assign somenteLeituraIntegraAC="false" />
@@ -786,37 +726,37 @@
 				<@ww.file label="Foto" name="colaborador.foto" id="foto"/>
 	        </#if>
 
-			<@ww.textfield label="Nome" name="colaborador.nome" id="nome" liClass="liLeft campo" cssStyle="width: 300px;" maxLength="60" onblur="${funcaoNome};atualizaDadosIntegrados('nome', this.value);"/>
-			<@ww.textfield label="Nome Comercial" name="colaborador.nomeComercial"  liClass="campo" id="nomeComercial" cssStyle="width: 300px;" maxLength="30" onblur="atualizaDadosIntegrados('nomeComercial', this.value);"/>
-			<@ww.datepicker label="Nascimento" name="colaborador.pessoal.dataNascimento" value="${dataNasc}" id="nascimento" liClass="liLeft campo" cssClass="mascaraData" onchange="atualizaDadosIntegrados('pessoal.dataNascimento', this.value);"/>
-			<@ww.select label="Sexo" id="sexo" name="colaborador.pessoal.sexo" list="sexos" cssStyle="width: 85px;" liClass="liLeft campo" onchange="atualizaDadosIntegrados('pessoal.sexo', this.value);"/>
-			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpf" liClass="campo" cssClass="mascaraCpf" onchange="verificaCpf(this.value);" onblur="verificaCpf(this.value);atualizaDadosIntegrados('pessoal.cpf', this.value);"/>
+			<@ww.textfield label="Nome" name="colaborador.nome" id="nome" liClass="liLeft campo campoAdd" cssStyle="width: 300px;" maxLength="60" onblur="${funcaoNome};"/>
+			<@ww.textfield label="Nome Comercial" name="colaborador.nomeComercial"  liClass="campo" id="nomeComercial" cssStyle="width: 300px;" maxLength="30" />
+			<@ww.datepicker label="Nascimento" name="colaborador.pessoal.dataNascimento" value="${dataNasc}" id="nascimento" liClass="liLeft campo campoAdd" cssClass="mascaraData"/>
+			<@ww.select label="Sexo" id="sexo" name="colaborador.pessoal.sexo" list="sexos" cssStyle="width: 85px;" liClass="liLeft campo campoAdd"/>
+			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpf" liClass="campo campoAdd" cssClass="mascaraCpf" onchange="verificaCpf(this.value);" onblur="verificaCpf(this.value);"/>
 			<@ww.div id="msgCPFDuplicado" cssStyle="display:none;"></@ww.div>
 			<@ww.div id="wwgrp_endereco" cssClass="campo">
-				<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft" onblur="atualizaDadosIntegrados('endereco.cep', this.value);"/>
-				<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="endereco" cssStyle="width: 300px;" liClass="liLeft" maxLength="40" onblur="atualizaDadosIntegrados('endereco.logradouro', this.value);"/>
-				<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" cssStyle="width:40px;" liClass="liLeft" maxLength="10" onblur="atualizaDadosIntegrados('endereco.numero', this.value);"/>
-				<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" id="complemento" cssStyle="width: 205px;" maxLength="20" onblur="atualizaDadosIntegrados('endereco.complemento', this.value);"/>
-				<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" onchange="atualizaDadosIntegrados('endereco.uf.id', this.value);"/>
-				<@ww.select label="Cidade" name="colaborador.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" onchange="atualizaDadosIntegrados('endereco.cidade.id', this.value);"/>
-				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" cssStyle="width: 325px;" maxLength="85" onblur="atualizaDadosIntegrados('endereco.bairro', this.value);"/>
+				<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft campoAdd"/>
+				<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="endereco" cssStyle="width: 300px;" liClass="liLeft campoAdd" maxLength="40" />
+				<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" cssStyle="width:40px;" liClass="liLeft campoAdd" maxLength="10" />
+				<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" id="complemento" licClass="campoAdd" cssStyle="width: 205px;" maxLength="20" />
+				<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft campoAdd" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
+				<@ww.select label="Cidade" name="colaborador.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft campoAdd" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue=""/>
+				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" liClass="campoAdd" cssStyle="width: 325px;" maxLength="85" />
 				<@ww.div id="bairroContainer"/>
 			</@ww.div>
 
-			<@ww.textfield label="E-mail"    name="colaborador.contato.email" id="email" cssClass="mascaraEmail" maxLength="200" liClass="liLeft campo" onblur="atualizaDadosIntegrados('contato.email', this.value);"/>
+			<@ww.textfield label="E-mail" name="colaborador.contato.email" id="email" cssClass="mascaraEmail" maxLength="200" liClass="liLeft campo campoAdd" />
 			<@ww.div id="wwgrp_fone"  cssClass="campo">
-				<@ww.textfield label="DDD" name="colaborador.contato.ddd" id="ddd" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" maxLength="2" cssStyle="width:25px;" onblur="atualizaDadosIntegrados('contato.ddd', this.value);"/>
-				<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="9" liClass="liLeft" cssStyle="width:80px;" onblur="atualizaDadosIntegrados('contato.foneFixo', this.value);"/>
+				<@ww.textfield label="DDD" name="colaborador.contato.ddd" id="ddd" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft campoAdd" maxLength="2" cssStyle="width:25px;" />
+				<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="9" liClass="liLeft campoAdd" cssStyle="width:80px;"/>
 			</@ww.div>
-			<@ww.textfield label="Celular"   name="colaborador.contato.foneCelular"  liClass="campo" onkeypress = "return(somenteNumeros(event,''));" id="celular" maxLength="9" cssStyle="width:80px;" onblur="atualizaDadosIntegrados('contato.foneCelular', this.value);"/>
-			<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 303px;" liClass="liLeft campo" headerKey="" headerValue="Selecione..."  conchange="atualizaDadosIntegrados('pessoal.escolaridade', this.value);"/>
-			<@ww.select label="Estado Civil" name="colaborador.pessoal.estadoCivil" id="estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="liLeft campo"  onchange="atualizaDadosIntegrados('pessoal.estadoCivil', this.value);"/>
-			<@ww.select label="Deficiência" name="colaborador.pessoal.deficiencia" id="deficiencia" list="deficiencias" cssStyle="width: 160px;"  liClass="campo"  onchange="atualizaDadosIntegrados('pessoal.deficiencia', this.value);"/>
+			<@ww.textfield label="Celular"   name="colaborador.contato.foneCelular"  liClass="campo campoAdd" onkeypress = "return(somenteNumeros(event,''));" id="celular" maxLength="9" cssStyle="width:80px;"/>
+			<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 303px;" liClass="liLeft campo campoAdd" headerKey="" headerValue="Selecione..."  />
+			<@ww.select label="Estado Civil" name="colaborador.pessoal.estadoCivil" id="estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="liLeft campo campoAdd"  />
+			<@ww.select label="Deficiência" name="colaborador.pessoal.deficiencia" id="deficiencia" list="deficiencias" cssStyle="width: 160px;"  liClass="campo campoAdd" />
 
-			<@ww.textfield label="Nome do Pai" name="colaborador.pessoal.pai" id="nomePai" liClass="liLeft campo" cssStyle="width: 300px;" maxLength="60" onblur="atualizaDadosIntegrados('pessoal.pai', this.value);"/>
-			<@ww.textfield label="Nome da Mãe" name="colaborador.pessoal.mae" id="nomeMae" cssStyle="width: 300px;" maxLength="60"  liClass="campo"  onblur="atualizaDadosIntegrados('pessoal.mae', this.value);"/>
-			<@ww.textfield label="Nome do Cônjuge" name="colaborador.pessoal.conjuge" id="nomeConjuge" cssStyle="width: 300px;" maxLength="40" liClass="liLeft campo"  onblur="atualizaDadosIntegrados('pessoal.conjuge', this.value);"/>
-			<@ww.textfield label="Qtd. Filhos" onkeypress = "return(somenteNumeros(event,''));" maxLength="2" name="colaborador.pessoal.qtdFilhos" id="qtdFilhos" liClass="campo" cssStyle="width:25px; text-align:right;" maxLength="2"  onblur="atualizaDadosIntegrados('pessoal.qtdFilhos', this.value);"/>
+			<@ww.textfield label="Nome do Pai" name="colaborador.pessoal.pai" id="nomePai" liClass="liLeft campo campoAdd" cssStyle="width: 300px;" maxLength="60" />
+			<@ww.textfield label="Nome da Mãe" name="colaborador.pessoal.mae" id="nomeMae" cssStyle="width: 300px;" maxLength="60"  liClass="campo campoAdd"  />
+			<@ww.textfield label="Nome do Cônjuge" name="colaborador.pessoal.conjuge" id="nomeConjuge" cssStyle="width: 300px;" maxLength="40" liClass="liLeft campo campoAdd" />
+			<@ww.textfield label="Qtd. Filhos" onkeypress = "return(somenteNumeros(event,''));" maxLength="2" name="colaborador.pessoal.qtdFilhos" id="qtdFilhos" liClass="campo campoAdd" cssStyle="width:25px; text-align:right;" maxLength="2" />
 			<div style="clear: both;"></div>
 		</div>
 
@@ -824,7 +764,7 @@
 			<#if integraAc && !colaborador.naoIntegraAc>
 				<@ww.textfield label="Código no Fortes Pessoal" name="colaborador.codigoAC" id="codigoAC" disabled="true" cssStyle="width: 80px;"/>
 			</#if>
-			<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matricula" disabled= "${(integraAc && !colaborador.naoIntegraAc)?string}" cssStyle="width:150px;" liClass="liLeft campo" maxLength="20" onblur="atualizaDadosIntegrados('matricula', this.value);"/>
+			<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matricula" disabled= "${(integraAc && !colaborador.naoIntegraAc)?string}" cssStyle="width:150px;" liClass="liLeft campo campoAdd" maxLength="20" />
 
 			<#if somenteLeituraIntegraAC=="true" && edicao=="true">
 				<label for="dt_admissao">Admissão:</label><br />
@@ -834,7 +774,7 @@
 				<@ww.hidden  name="colaborador.dataAdmissao" value="${dataAdm}" />
 			<#else>
 				<#if editarHistorico>
-					<@ww.datepicker label="Admissão" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" cssClass="mascaraData" onblur="${funcaoDataAdmissao}" onchange="${funcaoDataAdmissao}"/>
+					<@ww.datepicker label="Admissão" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" liClass="campoAdd" cssClass="mascaraData" onblur="${funcaoDataAdmissao}" onchange="${funcaoDataAdmissao}"/>
 				<#else>
 					<label for="dt_admissao">Admissão:</label><br />
 					<input type="text" theme="simple" disabled="true" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" style="background:#F6F6F6;" class="mascaraData"/>
@@ -854,7 +794,7 @@
 			<#else>
 				<@ww.div id="wwgrp_vinculo"  cssClass="campo">
 					<label for="vinculo">Colocação:</label><br />
-					<@ww.select theme="simple" label="Colocação" name="colaborador.vinculo" list="vinculos" cssClass="campo" cssStyle="width: 150px;"  id="vinculo" onchange="habilitaDtEncerramentoContrato(),checkNaoIntegraAC();" />
+					<@ww.select theme="simple" label="Colocação" name="colaborador.vinculo" list="vinculos" cssClass="campo campoAdd" cssStyle="width: 150px;" id="vinculo" onchange="habilitaDtEncerramentoContrato(),checkNaoIntegraAC();" />
 					<#if integraAc && !colaborador.naoIntegraAc>
 						<img id="vinculoSocioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
 					</#if>
@@ -949,10 +889,10 @@
 				<@ww.div id="wwgrp_identidade" cssClass="campo">
 					<ul>
 						<b><@ww.label label="Identidade" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.rg" id="identidade" cssStyle="width: 106px;" maxLength="15" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));" onblur="atualizaDadosIntegrados('pessoal.rg', this.value);"/>
-				  	   	<@ww.textfield label="Órgão Emissor" name="colaborador.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="10" liClass="liLeft" onblur="atualizaDadosIntegrados('pessoal.rgOrgaoEmissor', this.value);"/>
-				       	<@ww.select label="Estado" name="colaborador.pessoal.rgUf.id" id="rgUf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" onchange="atualizaDadosIntegrados('pessoal.rgUf.id', this.value);"/>
-				      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.rgDataExpedicao" id="rgDataExpedicao" cssClass="mascaraData" value="${rgDataExpedicao}" onchange="atualizaDadosIntegrados('pessoal.rgDataExpedicao', this.value);"/>
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.rg" id="identidade" cssStyle="width: 106px;" maxLength="15" liClass="liLeft campoAdd" onkeypress = "return(somenteNumeros(event,'{,}'));" />
+				  	   	<@ww.textfield label="Órgão Emissor" id="rgOrgaoEmissor" name="colaborador.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="10" liClass="liLeft campoAdd" />
+				       	<@ww.select label="Estado" name="colaborador.pessoal.rgUf.id" id="rgUf" list="estados" liClass="liLeft campoAdd" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
+				      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.rgDataExpedicao" id="rgDataExpedicao" liClass="campoAdd" cssClass="mascaraData" value="${rgDataExpedicao}" />
 				      	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
 			      	</ul>
 				</@ww.div>
@@ -961,11 +901,11 @@
 				<@ww.div id="wwgrp_carteiraHabilitacao" cssClass="campo">
 					<ul>
 				       	<b><@ww.label label="Carteira de Habilitação" /></b>
-						<@ww.textfield label="Nº de Registro" id="carteiraHabilitacao" name="colaborador.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));" onblur="atualizaDadosIntegrados('pessoal.rg', this.value);"/>
-				      	<@ww.textfield label="Prontuário" name="colaborador.habilitacao.registro" cssStyle="" maxLength="15" liClass="liLeft" onblur="atualizaDadosIntegrados('habilitacao.registro', this.value);"/>
-				      	<@ww.datepicker label="Emissão" name="colaborador.habilitacao.emissao" id="emissao" liClass="liLeft" cssClass="mascaraData" value="${habEmissao}" onblur="atualizaDadosIntegrados('habilitacao.emissao', this.value);"/>
-				      	<@ww.datepicker label="Vencimento" name="colaborador.habilitacao.vencimento" id="vencimento" liClass="liLeft" cssClass="mascaraData" value="${dataVenc}" onblur="atualizaDadosIntegrados('habilitacao.vencimento', this.value);"/>
-				       	<@ww.textfield label="Categoria(s)" name="colaborador.habilitacao.categoria" cssStyle="width:25px" maxLength="3" onblur="atualizaDadosIntegrados('habilitacao.categoria', this.value);"/>
+						<@ww.textfield label="Nº de Registro" id="carteiraHabilitacao" name="colaborador.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft campoAdd" onkeypress = "return(somenteNumeros(event,'{,}'));" />
+				      	<@ww.textfield label="Prontuário" id="prontuario" name="colaborador.habilitacao.registro" cssStyle="" maxLength="15" liClass="liLeft campoAdd" />
+				      	<@ww.datepicker label="Emissão" name="colaborador.habilitacao.emissao" id="emissao" liClass="liLeft" cssClass="mascaraData campoAdd" value="${habEmissao}" />
+				      	<@ww.datepicker label="Vencimento" name="colaborador.habilitacao.vencimento" id="vencimento" liClass="liLeft campoAdd" cssClass="mascaraData" value="${dataVenc}" />
+				       	<@ww.textfield label="Categoria(s)" name="colaborador.habilitacao.categoria" id="chCategoria" liClass="campoAdd" cssStyle="width:25px" maxLength="3" />
 				       	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
 		       		</ul>
 				</@ww.div>
@@ -974,9 +914,9 @@
 				<@ww.div id="wwgrp_tituloEleitoral" cssClass="campo">
 					<ul>
 						<b><@ww.label label="Título Eleitoral" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.tituloEleitoral.titEleitNumero" id="tituloEleitoral" cssStyle="width: 95px;" maxLength="13" liClass="liLeft" onblur="atualizaDadosIntegrados('pessoal.tituloEleitoral.titEleitNumero', this.value);"/>
-				    	<@ww.textfield label="Zona" name="colaborador.pessoal.tituloEleitoral.titEleitZona" id="titEleitZona" cssStyle="width: 95px;" maxLength="3" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));" onblur="atualizaDadosIntegrados('pessoal.tituloEleitoral.titEleitZona', this.value);"/>
-				    	<@ww.textfield label="Seção" name="colaborador.pessoal.tituloEleitoral.titEleitSecao" id="titEleitSecao" cssStyle="width: 95px;" maxLength="4" onkeypress = "return(somenteNumeros(event,'{,}'));" onblur="atualizaDadosIntegrados('pessoal.tituloEleitoral.titEleitSecao', this.value);"/>
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.tituloEleitoral.titEleitNumero" id="tituloEleitoral" cssStyle="width: 95px;" maxLength="13" liClass="liLeft campoAdd" />
+				    	<@ww.textfield label="Zona" name="colaborador.pessoal.tituloEleitoral.titEleitZona" id="titEleitZona" cssStyle="width: 95px;" maxLength="3" liClass="liLeft campoAdd" onkeypress = "return(somenteNumeros(event,'{,}'));" />
+				    	<@ww.textfield label="Seção" name="colaborador.pessoal.tituloEleitoral.titEleitSecao" id="titEleitSecao" cssStyle="width: 95px;" maxLength="4" liClass="campoAdd" onkeypress = "return(somenteNumeros(event,'{,}'));" />
 				    	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
 	       			</ul>
 				</@ww.div>
@@ -985,9 +925,9 @@
 				<@ww.div id="wwgrp_certificadoMilitar" cssClass="campo">
 					<ul>
 						<b><@ww.label label="Certificado Militar" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.certificadoMilitar.certMilNumero" id="certificadoMilitar" cssStyle="width: 88px;" maxLength="12" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));" onblur="atualizaDadosIntegrados('pessoal.certificadoMilitar.certMilNumero', this.value);"/>
-				    	<@ww.textfield label="Tipo" name="colaborador.pessoal.certificadoMilitar.certMilTipo" id="certMilTipo" cssStyle="width: 38px;" maxLength="5" liClass="liLeft" onblur="atualizaDadosIntegrados('pessoal.certificadoMilitar.certMilTipo', this.value);"/>
-				    	<@ww.textfield label="Série" name="colaborador.pessoal.certificadoMilitar.certMilSerie" id="certMilSerie" cssStyle="width: 88px;" maxLength="12" onblur="atualizaDadosIntegrados('pessoal.certificadoMilitar.certMilSerie', this.value);"/>
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.certificadoMilitar.certMilNumero" id="certificadoMilitar" cssStyle="width: 88px;" maxLength="12" liClass="liLeft campoAdd" onkeypress = "return(somenteNumeros(event,'{,}'));" />
+				    	<@ww.textfield label="Tipo" name="colaborador.pessoal.certificadoMilitar.certMilTipo" id="certMilTipo" cssStyle="width: 38px;" maxLength="5" liClass="liLeft campoAdd" />
+				    	<@ww.textfield label="Série" name="colaborador.pessoal.certificadoMilitar.certMilSerie" id="certMilSerie" cssStyle="width: 88px;" maxLength="12" liClass="campoAdd" />
 				    	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
 	      			</ul>
 				</@ww.div>
@@ -996,11 +936,11 @@
 				<@ww.div >
 					<ul>
 						<b><@ww.label label="CTPS - Carteira de Trabalho e Previdência Social" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.ctps.ctpsNumero" id="ctps" cssStyle="width: 58px;" maxLength="8" liClass="liLeft" onblur="atualizaDadosIntegrados('pessoal.ctps.ctpsNumero', this.value);"/>
-				    	<@ww.textfield label="Série" name="colaborador.pessoal.ctps.ctpsSerie" id="ctpsSerie" cssStyle="width: 38px;" maxLength="6" liClass="liLeft" onblur="atualizaDadosIntegrados('pessoal.ctps.ctpsSerie', this.value);"/>
-				    	<@ww.textfield label="DV" name="colaborador.pessoal.ctps.ctpsDv" id="ctpsDv" cssStyle="width: 11px;" maxLength="1" liClass="liLeft" onblur="atualizaDadosIntegrados('pessoal.ctps.ctpsDv', this.value);"/>
-				       	<@ww.select label="Estado" name="colaborador.pessoal.ctps.ctpsUf.id" id="ctpsUf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" onblur="atualizaDadosIntegrados('pessoal.ctps.ctpsUf.id', this.value);"/>
-				      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.ctps.ctpsDataExpedicao" id="ctpsDataExpedicao" cssClass="mascaraData" value="${ctpsDataExpedicao}" onblur="atualizaDadosIntegrados('pessoal.ctps.ctpsDataExpedicao', this.value);"/>
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.ctps.ctpsNumero" id="ctps" cssStyle="width: 58px;" maxLength="8" liClass="liLeft campoAdd" />
+				    	<@ww.textfield label="Série" name="colaborador.pessoal.ctps.ctpsSerie" id="ctpsSerie" cssStyle="width: 38px;" maxLength="6" liClass="liLeft campoAdd" />
+				    	<@ww.textfield label="DV" name="colaborador.pessoal.ctps.ctpsDv" id="ctpsDv" cssStyle="width: 11px;" maxLength="1" liClass="liLeft campoAdd" />
+				       	<@ww.select label="Estado" name="colaborador.pessoal.ctps.ctpsUf.id" id="ctpsUf" list="estados" liClass="liLeft campoAdd" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
+				      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.ctps.ctpsDataExpedicao" id="ctpsDataExpedicao" liClass="campoAdd" cssClass="mascaraData" value="${ctpsDataExpedicao}" />
 				      	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
 					</ul>
 				</@ww.div>
@@ -1009,7 +949,7 @@
 				<@ww.div >
 					<ul>
 						<b><@ww.label label="PIS - Programa de Integração Social"/></b>
-						<@ww.textfield label="Número" name="colaborador.pessoal.pis" id="pis" cssClass="mascaraPis" cssStyle="width: 79px;" onkeypress = "return(somenteNumeros(event,'{,}'));" maxLength="11" onblur="atualizaDadosIntegrados('pessoal.pis', this.value);"/>
+						<@ww.textfield label="Número" name="colaborador.pessoal.pis" id="pis" liClass="campoAdd" cssClass="mascaraPis" cssStyle="width: 79px;" onkeypress = "return(somenteNumeros(event,'{,}'));" maxLength="11" />
 				    	<div style="clear: both;"></div>
 				   	</ul>
 				</@ww.div>
@@ -1117,7 +1057,7 @@
 		<@ww.hidden name="colaborador.dataSolicitacaoDesligamento"/>
 		<@ww.hidden name="colaborador.dataSolicitacaoDesligamentoAc"/>
 		<@ww.hidden name="candidatoSolicitacaoId"/>
-		<@ww.hidden name="dadosIntegradosAtualizados" value="${dadosIntegradosAtualizados}"/>
+		<@ww.hidden name="dadosIntegradosAtualizados" id="dadosIntegradosAtualizados" value="${dadosIntegradosAtualizados}"/>
 		<@ww.hidden name="dataAlteracao" id="dataAlteracao"/>
 		
 		<@ww.hidden name="page" />
@@ -1169,11 +1109,11 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/forms/geral/bairros.js?version=${versao}"/>'></script>
 	
 	<div id="parentesDialog"></div>
-	<div id="divDecideAlteracaoOrRetificacao">Para as informações modificadas, você deseja atualizá-las ou retificá-las?
+	<div id="divDecideAlteracaoOrRetificacao">Para as informações modificadas, você deseja criar um novo histórico ou retificá-las?
 		</br></br>
-		<@ww.div id="divTipoAteracao" cssClass="radio">
-						<input id="tipoAteracao" name="tipoAlteracao" type="radio" value="A" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Atualizar</label>
-						<input id="tipoAteracao" name="tipoAlteracao" type="radio" value="R" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Retificar</label>
+		<@ww.div id="divTipoAlteracao" cssClass="radio">
+			<input id="tipoAlteracao" name="tipoAlteracao" type="radio" value="A" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Novo Histórico</label>
+			<input id="tipoAlteracao" name="tipoAlteracao" type="radio" value="R" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Retificar</label>
 		</@ww.div>
 		</br>
 		<@ww.div id="divInformeDataAlteracao">

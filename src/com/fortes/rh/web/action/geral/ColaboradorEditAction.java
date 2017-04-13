@@ -858,7 +858,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		catch (IntegraACException e)
 		{
 			dadosIntegradosAtualizados = true;
-			addActionError(e.getMessage());
+			if(e.getMessage().contains("Data do último histórico cadastral"))
+				addActionWarning(e.getMessage());
+			else
+				addActionError(e.getMessage());
 			prepareUpdate();
 			return Action.INPUT;
 		}

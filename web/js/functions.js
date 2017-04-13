@@ -1228,29 +1228,23 @@ function desabilita(campo) {
 	campo.attr('disabled','disabled').css('background-color', '#ECECEC');
 }
 
-function listaParentes(dados, empresaNome, submit)
+function listaParentes(dados, empresaNome)
 {
-	
-	if ($(dados).size() > 0)
-	{
-    	var lista = "<strong>Dados do colaborador</strong>";
-    	lista += "<div class='divInfoColabDestaque'>";
-    	lista += montaTabelaDados($('#nome').val(), $('#nomeConjuge').val(), $('#nomePai').val(), $('#nomeMae').val(), $('#ende').val() + ' ' + $('#num').val() + ' ' + $('#complemento').val(), $('#cidade option:selected').text(), $('#uf option:selected').text(), $('#ddd').val() + ' ' + $('#fone').val() + ' ' + $('#celular').val(), empresaNome);
-    	lista += "</div>";
-    	
-    	lista += "<strong>Possíveis parentes</strong>";
-    	
-    	$(dados).each(function(i, colaborador) {
-    		 lista += '<div class="divInfoColab">';
-    		 lista += montaTabelaDados(colaborador.nome, colaborador.conjuge, colaborador.pai, colaborador.mae, colaborador.endereco, colaborador.cidade, colaborador.uf, colaborador.fone, colaborador.empresaNome );
-    		 lista += '</div>';
-    	});
-    	
+	if ($(dados).size() > 0){
+		var lista = "<strong>Dados do colaborador</strong>";
+		lista += "<div class='divInfoColabDestaque'>";
+		lista += montaTabelaDados($('#nome').val(), $('#nomeConjuge').val(), $('#nomePai').val(), $('#nomeMae').val(), $('#ende').val() + ' ' + $('#num').val() + ' ' + $('#complemento').val(), $('#cidade option:selected').text(), $('#uf option:selected').text(), $('#ddd').val() + ' ' + $('#fone').val() + ' ' + $('#celular').val(), empresaNome);
+		lista += "</div>";
+		lista += "<strong>Possíveis parentes</strong>";
+		
+		$(dados).each(function(i, colaborador) {
+			 lista += '<div class="divInfoColab">';
+			 lista += montaTabelaDados(colaborador.nome, colaborador.conjuge, colaborador.pai, colaborador.mae, colaborador.endereco, colaborador.cidade, colaborador.uf, colaborador.fone, colaborador.empresaNome );
+			 lista += '</div>';
+		});
+		
     	botoes = [{ text: "Fechar", click: function() { $(this).dialog("close"); }}];
 
-    	if(submit)
-			botoes.push({ text: "Gravar", click: submit});
-    	
     	$('#parentesDialog').html(lista)
     						.dialog({	title: 'Verificação de Parentesco',
     									modal: true,
@@ -1259,8 +1253,36 @@ function listaParentes(dados, empresaNome, submit)
     									buttons: botoes
 									});
 	}
-	else if (submit)
-		submit();
+}
+
+function listaParentesInsertColaborador(dados, empresaNome)
+{
+	if ($(dados).size() > 0){
+		var lista = "<strong>Dados do colaborador</strong>";
+		lista += "<div class='divInfoColabDestaque'>";
+		lista += montaTabelaDados($('#nome').val(), $('#nomeConjuge').val(), $('#nomePai').val(), $('#nomeMae').val(), $('#ende').val() + ' ' + $('#num').val() + ' ' + $('#complemento').val(), $('#cidade option:selected').text(), $('#uf option:selected').text(), $('#ddd').val() + ' ' + $('#fone').val() + ' ' + $('#celular').val(), empresaNome);
+		lista += "</div>";
+		lista += "<strong>Possíveis parentes</strong>";
+		
+		$(dados).each(function(i, colaborador) {
+			 lista += '<div class="divInfoColab">';
+			 lista += montaTabelaDados(colaborador.nome, colaborador.conjuge, colaborador.pai, colaborador.mae, colaborador.endereco, colaborador.cidade, colaborador.uf, colaborador.fone, colaborador.empresaNome );
+			 lista += '</div>';
+		});
+		
+    	botoes = [{ text: "Fechar", click: function() { $(this).dialog("close"); }}];
+		botoes.push({ text: "Gravar", click: function() {$(this).dialog("close"); validaFormularioDinamico(); }});
+    	
+    	$('#parentesDialog').html(lista)
+    						.dialog({	title: 'Verificação de Parentesco',
+    									modal: true,
+    									width: 700,
+    									height: 360,
+    									buttons: botoes
+									});
+    	return false;
+	}else 
+		return true;
 }
 
 function montaTabelaDados(nome, conjuge, pai, mae, endereco, cidade, uf, fone, empresaNome)

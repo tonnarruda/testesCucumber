@@ -112,8 +112,9 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 		}
 		catch (Exception e)
 		{
+			System.out.println("Erro ao obter a máscara de lotações do Fortes Pessoal.");
 			e.printStackTrace();
-			throw new IntegraACException("Erro ao obter a máscara de lotações do Fortes Pessoal.");
+			return "";
 		}
 	}
 

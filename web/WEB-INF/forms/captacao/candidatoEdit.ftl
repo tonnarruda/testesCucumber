@@ -138,7 +138,9 @@
 		function verificaParentes(nomes)
 		{
 			$('#parentesDialog').empty();
-	    	ColaboradorDWR.findParentesByNome(null, <@authz.authentication operation="empresaId"/>, nomes, function(dados) { listaParentes(dados, '<@authz.authentication operation="empresaNome"/>'); });
+	    	ColaboradorDWR.findParentesByNome(null, <@authz.authentication operation="empresaId"/>, nomes, function(dados) { 
+	    		listaParentes(dados, '<@authz.authentication operation="empresaNome"/>'); 
+	    	});
 		}
 
 		function populaConhecimento(frm, nameCheck)
