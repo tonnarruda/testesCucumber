@@ -974,6 +974,10 @@ public class DateUtil
 				else
 					tempoExtenso += (anos > 0 ?"e ":"") + meses + " meses";
 			}
+			
+			if(meses <= 0 && anos == 0){
+				tempoExtenso = DateUtil.diferencaEntreDatas(inicio, fim, false) + " dias"; 
+			}
 		}
 		
 		return tempoExtenso.trim();

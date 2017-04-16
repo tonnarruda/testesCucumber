@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.17x.2xx" db="" data="xx/xx/2017">
+		<Item visivel="S" motivo="P17030000411"><![CDATA[T&D -> Relatórios -> Colaboradores sem treinamento: Ajuste no relatório para informar a quantos dias o colaborador está sem o curso. E nova opção para gerar o relatório de colaboradores que 'Nunca realizaram os cursos selecionados'.]]></Item>
+		<Item visivel="S" motivo="S17040000067"><![CDATA[T&D -> Relatórios -> Colaboradores sem treinamento: Nova opção para gerar o relatório de colaboradores que 'Nunca realizou nenhum curso na empresa.]]></Item>
+		<Item visivel="S" motivo="P17040000077"><![CDATA[T&D -> Relatórios -> Colaboradores sem treinamento: Ajuste de inconsistência ao gerar o relatório selecionando todas as empresas.]]></Item> 
+	</Versao>
 	<Versao id="1.1.178.210" db="" data="06/03/2017">
 		<Item visivel="S" motivo="P17030000314"><![CDATA[Tela Inicial > Caixa de Mensagens de Recrutamento & Seleção > Candidatos da Seleção - Externo: Ao aprovar ou reprovar a participação do candidato na solicitação, o sistema retorna uma mensagem de confirmação da ação e permanece na listagem.]]></Item>
 		<Item visivel="S" motivo="P17030000314"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem Módulo Externo: Ao aprovar ou reprovar a participação do candidato na solicitação, o sistema retorna uma mensagem de confirmação da ação e permanece na listagem.]]></Item>

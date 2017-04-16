@@ -92,6 +92,12 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">colaboradores_sem_treinamento.pdf</param>
 			</result>
+			<result name="nunca_realizou_nenhum_treinamento" type="jasper">
+				<param name="location">WEB-INF/report/colaboradores_sem_treinamento_nunca_realizou_treinamento.jasper</param>
+				<param name="dataSource">colaboradors</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradores_sem_treinamento.pdf</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorTreinamento.ftl</result>
 		</action>
 		<action name="relatorioColaboradorComTreinamento" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="relatorioColaboradorComTreinamento">

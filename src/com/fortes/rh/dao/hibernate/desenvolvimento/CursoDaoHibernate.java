@@ -563,7 +563,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 
-	public Collection<Curso> findByEmpresaIdAndCursosId(Long empresaId,	Long... cursosIds) 
+	public Collection<Curso> findByEmpresaIdAndCursosId(Long[] empresasIds, 	Long... cursosIds) 
 	{
 		Criteria criteria = getSession().createCriteria(Curso.class,"c");
 
@@ -572,8 +572,8 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		p.add(Projections.property("c.nome"), "nome");
 		criteria.setProjection(p);
 
-		if(empresaId != null && !empresaId.equals(-1L))
-			criteria.add(Expression.eq("c.empresa.id", empresaId));
+		if(empresasIds != null && empresasIds.length > 0)
+			criteria.add(Expression.in("c.empresa.id", empresasIds));
 		
 		if(LongUtil.arrayIsNotEmpty(cursosIds))
 			criteria.add(Expression.in("c.id", cursosIds));

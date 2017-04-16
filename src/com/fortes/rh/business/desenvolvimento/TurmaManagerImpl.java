@@ -108,11 +108,12 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
 			turmaDocumentoAnexoManager.salvarDocumentoAnexos(turma.getId(), documentoAnexoIds);
 		}
+
 		verificaAprovacaoByTurma(turma.getId());
 		verificaCertificacaoByColaboradorTurma(turma, validarCertificacao, certificacaoManager);
 	}
 	
-	private void verificaAprovacaoByTurma(Long turmaId) {
+	public void verificaAprovacaoByTurma(Long turmaId) {
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findByTurmaId(turmaId);
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
 			colaboradorTurmaManager.aprovarOrReprovarColaboradorTurma(colaboradorTurma.getId(), turmaId, colaboradorTurma.getCurso().getId());
@@ -163,22 +164,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 
 	public void updateTurmaDias(Turma turma, String[] diasCheck, String[] horasIni, String[] horasFim) throws Exception
 	{
-		boolean result = false;
-		
-		try
-		{
-			update(turma);
-			result = colaboradorPresencaManager.existPresencaByTurma(turma.getId());
-			if(!result)
-			{
-				diaTurmaManager.saveDiasTurma(turma, diasCheck, horasIni, horasFim);
-			}
-		}
-		catch(Exception e)
-		{
-			throw e;
-		}
-
+		update(turma);
+		if(!colaboradorPresencaManager.existPresencaByTurma(turma.getId()))
+			diaTurmaManager.saveDiasTurma(turma, diasCheck, horasIni, horasFim);
 	}
 	
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId) 

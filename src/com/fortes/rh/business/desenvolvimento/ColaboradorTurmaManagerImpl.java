@@ -18,6 +18,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -30,8 +31,7 @@ import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.CursoPontuacaoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
-import com.fortes.rh.model.dicionario.StatusAprovacao;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.StatusTreinamento;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -357,55 +357,66 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradorTurmas;
 	}
 
-	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Integer qtdMesesSemCurso, String situacaoColaborador, char aprovadoFiltro) throws Exception
+	public Collection<ColaboradorTurma> findRelatorioSemTreinamentoAprovadosOrReprovados(Long[] empresasIds, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Integer qtdMesesSemCurso, String situacaoColaborador,
+			String filtroStatusTreinamento) throws Exception
 	{
+		Boolean aprovado = null;
+		if(filtroStatusTreinamento.equals(StatusTreinamento.APROVADO))
+			aprovado = true;
+		else if(filtroStatusTreinamento.equals(StatusTreinamento.REPROVADO))
+			aprovado = false;
+		
 		Date data = new Date();
 		if(qtdMesesSemCurso != null && qtdMesesSemCurso >= 0)
 			data = DateUtil.incrementaMes(data, -1*qtdMesesSemCurso); 
+			
+		Collection<ColaboradorTurma> colaboradorTurmasRetorno = getDao().findRelatorioSemTreinamentoAprovadosOrReprovados(empresasIds, cursosIds, areaIds, estabelecimentoIds, data, situacaoColaborador, aprovado);
 		
+		if(colaboradorTurmasRetorno == null || colaboradorTurmasRetorno.isEmpty())
+			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
+		
+		return colaboradorTurmasRetorno;
+	}
+
+	public Collection<ColaboradorTurma> findRelatorioColaboradoresQueNuncaRealizaramOsCursosSelecioandos(Long[] empresasIds, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, String situacaoColaborador) throws Exception
+	{
 		Collection<ColaboradorTurma> colaboradorTurmasRetorno = new ArrayList<ColaboradorTurma>();
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findRelatorioSemTreinamento(empresaId, cursosIds, areaIds, estabelecimentoIds, data, situacaoColaborador);
-		
-		if(aprovadoFiltro != 'T')
-			colaboradorTurmasRetorno = filtraColaboradorTurmaAprovadosOuReprovadosByFiltroAprovado(aprovadoFiltro, colaboradorTurmas);
-		else
-		{
-			ColaboradorTurma ct;
-			Collection<Curso> cursos = cursoManager.findByEmpresaIdAndCursosId(empresaId, cursosIds);
-			Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, estabelecimentoIds, areaIds, StatusRetornoAC.CONFIRMADO, false, false, situacaoColaborador, false, new String[]{"emp.nome", "e.nome","areaOrganizacionalNome", "c.nome"});
-			boolean adicionarColaboardorTurma = true; 
+		Collection<Curso> cursos = cursoManager.findByEmpresaIdAndCursosId(empresasIds, cursosIds);
+		LinkedHashMap<Long, Collection<Long>> mapCursoColaboradorComTreinamento = findCursoComColaborador(empresasIds, areaIds, estabelecimentoIds, cursosIds); 
+		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaEstabelecimentoAndAreaOrganizacional(empresasIds, estabelecimentoIds, areaIds, situacaoColaborador);
 
-			for (Curso curso : cursos) 
-			{
-				for (Colaborador colaborador : colaboradores) 
-				{
-					for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
-					{
-						if(curso.getId().equals(colaboradorTurma.getCurso().getId()) && colaborador.getId().equals(colaboradorTurma.getColaborador().getId()))
-						{
-							colaboradorTurmasRetorno.add(colaboradorTurma);
-							adicionarColaboardorTurma = false;
-							break;
-						}
-					}	
-						
-					if(adicionarColaboardorTurma)
-					{
-						ct = new ColaboradorTurma();
-						ct.setColaborador(colaborador);
-						ct.setCurso(curso);
-						colaboradorTurmasRetorno.add(ct);
-					}
-
-					adicionarColaboardorTurma = true;
-				}
-			}		
+		validaTamanhoDoRelatorio(cursos.size(), colaboradores.size());
+			
+		for (Curso curso : cursos) {
+			for (Colaborador colaborador : colaboradores) {
+				if(!mapCursoColaboradorComTreinamento.containsKey(curso.getId()) || !mapCursoColaboradorComTreinamento.get(curso.getId()).contains(colaborador.getId()))
+					colaboradorTurmasRetorno.add(new ColaboradorTurma(colaborador, curso));
+			}
 		}
 		
 		if(colaboradorTurmasRetorno == null || colaboradorTurmasRetorno.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
 		
 		return colaboradorTurmasRetorno;
+	}
+	
+	private void validaTamanhoDoRelatorio(int qtdCursos, int qtdColaboradores) throws Exception{
+		if((qtdCursos * qtdColaboradores) > 640000)
+			throw new FortesException("Os filtros selecionados irão gerar um relatório com mais de 16 mil páginas. Não é possível gerar um relatório com esse volume de dados." +
+					" Selecione menos cursos e solicite a impressão do relatório novamente. <b>Aconselhamos selecionar menos de 400 cursos.</b>");
+	}
+	
+	private LinkedHashMap<Long, Collection<Long>> findCursoComColaborador(Long[] empresaIds, Long[] areaIds, Long[] estabelecimentoIds, Long[] cursosIds) {
+		LinkedHashMap<Long, Collection<Long>> mapCursoComColaboradores = new LinkedHashMap<Long, Collection<Long>>();
+		Collection<ColaboradorTurma> colaboradorTurmaComTreinamento =  getDao().findColabororesTurmaComTreinamento(empresaIds, areaIds, estabelecimentoIds, cursosIds);
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmaComTreinamento) {
+			if(!mapCursoComColaboradores.containsKey(colaboradorTurma.getCurso().getId()))
+				mapCursoComColaboradores.put(colaboradorTurma.getCurso().getId(), new ArrayList<Long>());
+			
+			mapCursoComColaboradores.get(colaboradorTurma.getCurso().getId()).add(colaboradorTurma.getColaborador().getId());
+		}
+		
+		return mapCursoComColaboradores;
 	}
 
 	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, char aprovadoFiltro, String situacao) throws Exception
@@ -415,25 +426,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			throw new ColecaoVaziaException();
 		
 		return colaboradorTurmas;
-	}
-
-	private Collection<ColaboradorTurma> filtraColaboradorTurmaAprovadosOuReprovadosByFiltroAprovado(char aprovadoFiltro, Collection<ColaboradorTurma> colaboradorTurmas) 
-	{
-		Boolean aprovado = null;
-		if(aprovadoFiltro == StatusAprovacao.APROVADO)
-			aprovado = true;
-		if(aprovadoFiltro == StatusAprovacao.REPROVADO)
-			aprovado = false;
-		
-		Collection<ColaboradorTurma> retorno = new ArrayList<ColaboradorTurma>();
-		for (ColaboradorTurma ct : colaboradorTurmas) 
-		{
-			ct.setAprovado(verificaAprovacao(ct));
-			if(aprovado == null || ct.isAprovado() == aprovado)
-				retorno.add(ct);
-		}
-		
-		return retorno;
 	}
 	
 	public Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId)

@@ -3,6 +3,7 @@ package com.fortes.rh.test.business.geral;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -388,5 +389,45 @@ public class ColaboradorManagerTest_Junit4
     	assertNotNull(acompanhamentos.get(1).getPeriodoExperiencia());
     	assertEquals("Previsto: 25/03/2011", acompanhamentos.get(1).getPeriodoExperiencia());
     	assertNotNull(acompanhamentos.get(1).getPeriodoExperiencia());
+    }
+    
+    @Test
+    public void testFindByEmpresaEstabelecimentoAndAreaOrganizacional(){
+    	Long[] empresasIds = new Long[]{1L};
+    	Long[] estabelecimentosIds = null;
+    	Long[] areasIds = null;
+    	
+    	when(colaboradorDao.findByEmpresaEstabelecimentoAndAreaOrganizacional(empresasIds, estabelecimentosIds, areasIds, SituacaoColaborador.ATIVO)).thenReturn(new ArrayList<Colaborador>());
+    	assertEquals(0, colaboradorManager.findByEmpresaEstabelecimentoAndAreaOrganizacional(empresasIds, estabelecimentosIds, areasIds, SituacaoColaborador.ATIVO).size());
+	}
+    
+    @Test
+    public void testFindColaboradoresQueNuncaRealizaramTreinamentoException() throws Exception {
+    	Long[] empresaId = new Long[]{2L};
+    	Long[] cursosIds = new Long[]{1L};
+    	Long[] areaIds = new Long[]{2L, 3L};
+    	Long[] estabelecimentosIds = null;
+    	 
+    	when(colaboradorDao.findColaboradoresQueNuncaRealizaramTreinamento(empresaId, areaIds, estabelecimentosIds)).thenReturn(new ArrayList<Colaborador>());
+    	Exception exception = null;
+    	try {
+    		colaboradorManager.findColaboradoresQueNuncaRealizaramTreinamento(empresaId, cursosIds, areaIds, estabelecimentosIds);
+		} catch (Exception e) {
+			exception = e;
+		}
+    	assertNotNull(exception);
+    	assertTrue(exception instanceof ColecaoVaziaException);
+    	
+	}
+
+    @Test
+    public void testFindColaboradoresQueNuncaRealizaramTreinamento() throws Exception {
+    	Long[] empresaId = new Long[]{2L};
+    	Long[] cursosIds = new Long[]{1L};
+    	Long[] areaIds = new Long[]{2L, 3L};
+    	Long[] estabelecimentosIds = null;
+    	
+    	when(colaboradorDao.findColaboradoresQueNuncaRealizaramTreinamento(empresaId, areaIds, estabelecimentosIds)).thenReturn(Arrays.asList(ColaboradorFactory.getEntity()));
+    	assertEquals(1, colaboradorManager.findColaboradoresQueNuncaRealizaramTreinamento(empresaId, cursosIds, areaIds, estabelecimentosIds).size());
     }
 }

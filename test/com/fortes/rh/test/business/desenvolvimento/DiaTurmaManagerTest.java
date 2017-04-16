@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import mockit.Mockit;
+
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManagerImpl;
@@ -16,6 +19,7 @@ import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
 
 @SuppressWarnings("deprecation")
 public class DiaTurmaManagerTest extends MockObjectTestCase
@@ -32,6 +36,8 @@ public class DiaTurmaManagerTest extends MockObjectTestCase
         
 		transactionManager = new Mock(PlatformTransactionManager.class);
 		diaTurmaManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+		
+		Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
     }
 
 	public void testMontaListaDias()
@@ -101,10 +107,9 @@ public class DiaTurmaManagerTest extends MockObjectTestCase
 		Turma turma = TurmaFactory.getEntity(1L);
 		String[] diasCheck = new String[]{"01/01/2009"};
 		
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		diaTurmaDao.expects(once()).method("deleteDiasTurma").with(eq(turma.getId())).isVoid();
-		diaTurmaDao.expects(once()).method("save").with(ANYTHING).isVoid();
-		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		diaTurmaDao.expects(once()).method("save").with(ANYTHING);
+		diaTurmaDao.expects(once()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		
 		Exception ex = null;
 		try
@@ -124,9 +129,7 @@ public class DiaTurmaManagerTest extends MockObjectTestCase
 		Turma turma = TurmaFactory.getEntity(1L);
 		String[] diasCheck = new String[]{"01/01/2009"};
 		
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		diaTurmaDao.expects(once()).method("deleteDiasTurma").with(eq(turma.getId())).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 		
 		Exception ex = null;
 		try

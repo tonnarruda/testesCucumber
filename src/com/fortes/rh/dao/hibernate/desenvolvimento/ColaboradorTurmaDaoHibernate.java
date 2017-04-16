@@ -626,39 +626,23 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return (Integer)query.list().size();
 	}
 
-	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date data, String situacaoColaborador){
+	public Collection<ColaboradorTurma> findRelatorioSemTreinamentoAprovadosOrReprovados(Long[] empresasIds, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date data, String situacaoColaborador, Boolean aprovado){
 		StringBuilder sql = new StringBuilder();
 		sql.append(" select c.id as colaboradorId, c.nome as colaboradorNome, c.matricula as matricula, ao.id as areaId, monta_familia_area(ao.id) as areaNome, ");
 		sql.append(" es.nome as estabelecimentoNome, emp.nome as empresaNome, max(colabTurmaRealizadaPeriodo.dataPrevFim) as dataPrevFim, ");
-		sql.append(" colabTurmaRealizadaPeriodo.cursoId, colabTurmaRealizadaPeriodo.cursoNome, colabTurmaRealizadaPeriodo.qtdpresenca, colabTurmaRealizadaPeriodo.totaldias, ");
-		sql.append(" colabTurmaRealizadaPeriodo.percentualMinimoFrequencia, colabTurmaRealizadaPeriodo.qtdavaliacoescurso, colabTurmaRealizadaPeriodo.qtdavaliacoesaprovadaspornota, colabTurmaRealizadaPeriodo.nota ");
+		
+		sql.append(" colabTurmaRealizadaPeriodo.cursoId, colabTurmaRealizadaPeriodo.cursoNome, colabTurmaRealizadaPeriodo.aprovado as aprovado " );
 		sql.append(" from colaborador c ");
 		sql.append(" inner join ( ");
-		sql.append(" 	select distinct ct.colaborador_id, t.dataPrevFim, c.id as cursoId, c.nome as cursoNome, ");
-		sql.append(" 	cp.qtdpresenca, dt.totaldias, c.percentualMinimoFrequencia, ca.qtdavaliacoescurso, rct.qtdavaliacoesaprovadaspornota, rct.nota ");
+		sql.append(" 	select distinct ct.colaborador_id, t.dataPrevFim, c.id as cursoId, c.nome as cursoNome, ct.aprovado as aprovado ");
 		sql.append(" 	from colaboradorturma as ct  ");
-		sql.append(" 	inner join turma as t on t.id = ct.turma_id and	t.dataPrevFim <= :data and t.realizada ");
-		sql.append(" 	inner join curso c on c.id = t.curso_id      ");
-		sql.append("	left join ( ");
-		sql.append("		select turma_id, count(dia) as totaldias from diaturma ");
-		sql.append("		group by turma_id ");
-		sql.append("		order by turma_id ");
-		sql.append("		) as dt	on dt.turma_id = t.id ");
-		sql.append("	left join ( ");
-		sql.append("		select colaboradorturma_id, count(id) as qtdpresenca  ");
-		sql.append("		from colaboradorpresenca ");
-		sql.append("		where presenca=true ");
-		sql.append("		group by colaboradorturma_id ");
-		sql.append("		order by colaboradorturma_id ");
-		sql.append("		)as cp on cp.colaboradorturma_id = ct.id ");
-		sql.append("	left join ( ");
-		sql.append("		select  ");
-		sql.append("			cursos_id, ");
-		sql.append("			count(avaliacaocursos_id) as qtdavaliacoescurso ");
-		sql.append("		from curso_avaliacaocurso ");
-		sql.append("		group by cursos_id ");
-		sql.append("		order by cursos_id )as ca on ca.cursos_id = c.id ");
-		sql.append("	left join View_CursoNota as rct on rct.colaboradorturma_id = ct.id ");
+		sql.append(" 	inner join turma as t on t.id = ct.turma_id and t.realizada ");
+		sql.append(" 	inner join curso c on c.id = t.curso_id ");
+		sql.append(" 	where c.id in (:cursosIds) ");
+		if(aprovado != null)
+			sql.append(" and ct.aprovado = :aprovado ");
+		sql.append(" 	and t.dataPrevFim = ( select max(t2.dataPrevFim) from colaboradorturma as ct2 inner join turma as t2 on t2.id = ct2.turma_id and t2.realizada "); 
+		sql.append(" 	inner join curso c2 on c2.id = t2.curso_id  where ct2.colaborador_id = ct.colaborador_id and c2.id = c.id ) ");
 		sql.append(" 	) as colabTurmaRealizadaPeriodo on colabTurmaRealizadaPeriodo.colaborador_id = c.id  ");
 		sql.append(" left join historicocolaborador as hc on hc.colaborador_id = c.id and hc.data=(select max(hc2.data) from HistoricoColaborador hc2  ");
 		sql.append(" 									where hc2.colaborador_id=c.id and hc2.data <= current_date and hc2.status = :status  ");
@@ -666,7 +650,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append(" left join areaOrganizacional as ao on ao.id = hc.areaorganizacional_id  ");
 		sql.append(" left join estabelecimento as es on es.id = hc.estabelecimento_id  ");
 		sql.append(" left join empresa as emp on emp.id = c.empresa_id  ");
-		sql.append(" where 1=1  ");
+		sql.append(" where (current_date - colabTurmaRealizadaPeriodo.dataPrevFim) >= (current_date - :data) " );
 		
 		if (situacaoColaborador != null)
 		{
@@ -686,11 +670,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			}
 		}
 		
-		if(empresaId != null)
-			sql.append(	" and c.empresa_id = :empresaId ");
-
-		if (LongUtil.arrayIsNotEmpty(cursosIds))
-			sql.append(" and colabTurmaRealizadaPeriodo.cursoId in (:cursosIds) ");
+		sql.append(	" and c.empresa_id in(:empresasIds)");
 
 		if (LongUtil.arrayIsNotEmpty(areaIds))
 			sql.append(" and ao.id in (:areasId) ");
@@ -698,29 +678,25 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			sql.append(" and es.id in (:estabelecimentosId) ");
 		
-		sql.append(" group by colabTurmaRealizadaPeriodo.cursoId, colabTurmaRealizadaPeriodo.cursoNome, emp.nome ,es.nome, ao.id, areaNome, c.id, c.nome, c.matricula, ");
-		sql.append(" colabTurmaRealizadaPeriodo.qtdpresenca, colabTurmaRealizadaPeriodo.totaldias, colabTurmaRealizadaPeriodo.percentualMinimoFrequencia, ");
-		sql.append(" colabTurmaRealizadaPeriodo.qtdavaliacoescurso, colabTurmaRealizadaPeriodo.qtdavaliacoesaprovadaspornota, colabTurmaRealizadaPeriodo.nota ");
+		sql.append(" group by colabTurmaRealizadaPeriodo.cursoId, colabTurmaRealizadaPeriodo.cursoNome, emp.nome ,es.nome, ao.id, areaNome, c.id, c.nome, c.matricula, colabTurmaRealizadaPeriodo.aprovado ");
 		sql.append(" order by colabTurmaRealizadaPeriodo.cursoNome, emp.nome, es.nome, areaNome, c.nome ");
 
 		SQLQuery query = getSession().createSQLQuery(sql.toString());
 
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
-		if(data != null)
-			query.setDate("data", data);
-		
-		if(empresaId != null)
-			query.setLong("empresaId", empresaId);
-		
-		if (LongUtil.arrayIsNotEmpty(cursosIds))
-			query.setParameterList("cursosIds", cursosIds, Hibernate.LONG);
+		query.setDate("data", data);
+		query.setParameterList("cursosIds", cursosIds, Hibernate.LONG);
+		query.setParameterList("empresasIds", empresasIds);
 
 		if (LongUtil.arrayIsNotEmpty(areaIds))
 			query.setParameterList("areasId", areaIds, Hibernate.LONG);
 
 		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			query.setParameterList("estabelecimentosId", estabelecimentoIds, Hibernate.LONG);
+		
+		if(aprovado != null)
+			query.setBoolean("aprovado", aprovado);
 
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		List resultado = query.list();
@@ -752,22 +728,47 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			if(res[9] != null)
 				ct.setCursoNome(res[9].toString());
 			if(res[10] != null)
-				ct.setQtdPresenca(new Integer(res[10].toString()));
-			if(res[11] != null)
-				ct.setTotalDias(new Integer(res[11].toString()));
-			if(res[12] != null && ct.getCurso() != null)
-				ct.getCurso().setPercentualMinimoFrequencia((Double) res[12]);
-			if(res[13] != null)
-				ct.setQtdAvaliacoesCurso(new Integer(res[13].toString()));
-			if(res[14] != null)
-				ct.setQtdAvaliacoesAprovadasPorNota(new Integer(res[14].toString()));
-			if(res[15] != null)
-				ct.setNota((Double)res[15]);
-			
+				ct.setAprovado(((boolean)res[10]));
 			colaboradorTurmas.add(ct);
 		}
 		
 		return colaboradorTurmas;
+	}
+
+	
+	public Collection<ColaboradorTurma> findColabororesTurmaComTreinamento(Long[] empresasIds, Long[] areaIds, Long[] estabelecimentoIds, Long[] cursosIds)
+	{
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("colab.id"), "colaboradorId");
+		p.add(Projections.property("ct.curso.id"), "cursoId");
+
+		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
+		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
+		criteria.createCriteria("ct.colaborador", "colab", Criteria.INNER_JOIN);
+		criteria.createCriteria("colab.empresa", "e", Criteria.INNER_JOIN);
+		criteria.createCriteria("colab.historicoColaboradors", "hc", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.estabelecimento", "es", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.INNER_JOIN);
+		
+		if(LongUtil.arrayIsNotEmpty(empresasIds))
+			criteria.add(Expression.in("e.id", empresasIds));
+		
+		if (LongUtil.arrayIsNotEmpty(areaIds))
+			criteria.add(Expression.in("ao.id", areaIds));
+
+		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
+			criteria.add(Expression.in("es.id", estabelecimentoIds));
+		
+		criteria.add(Expression.or(Expression.isNull("colab.dataDesligamento"), Expression.gt("colab.dataDesligamento", new Date())));
+	
+		if (LongUtil.arrayIsNotEmpty(cursosIds))
+			criteria.add(Expression.in("ct.curso.id", cursosIds));
+			
+		criteria.setProjection(Projections.distinct(p));
+		criteria.addOrder(Order.asc("ct.curso.id")).addOrder(Order.asc("colab.id"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
+		return criteria.list();
 	}
 
 	public Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean turmaRealizada)

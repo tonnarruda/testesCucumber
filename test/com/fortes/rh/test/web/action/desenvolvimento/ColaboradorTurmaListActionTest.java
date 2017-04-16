@@ -34,6 +34,7 @@ import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRelatorio;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
+import com.fortes.rh.model.dicionario.StatusTreinamento;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -223,11 +224,12 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Curso curso = CursoFactory.getEntity(1L);
     	curso.setNome("Como programar");
     	action.setCurso(curso);
-
+    	action.setStatus(StatusTreinamento.APROVADO_REPROVADO);
+    	
     	Long[] cursos = new Long[]{curso.getId()};
     	
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamento").withAnyArguments().will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamentoAprovadosOrReprovados").withAnyArguments().will(returnValue(new ArrayList<ColaboradorTurma>()));
     	
     	assertEquals("success", action.relatorioColaboradorSemTreinamento());
     }
@@ -237,13 +239,14 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Curso curso = CursoFactory.getEntity(1L);
     	curso.setNome("Como programar");
     	action.setCurso(curso);
+    	action.setStatus(StatusTreinamento.APROVADO_REPROVADO);
     	
 		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
     	parametrosDoSistema.setCompartilharCandidatos(true);
 		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamento").withAnyArguments().will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
+    	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamentoAprovadosOrReprovados").withAnyArguments().will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	
     	assertEquals("input", action.relatorioColaboradorSemTreinamento());

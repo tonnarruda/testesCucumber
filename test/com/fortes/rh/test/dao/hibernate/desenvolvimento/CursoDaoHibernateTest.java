@@ -859,7 +859,6 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		assertFalse("Avaliação por avaliação sem resposta", existeAvaliacaoAluno8Respondida);
 	}
 	
-	
 	public void testFindByEmpresaIdAndCursosId()
 	{
 		Empresa emp1 = EmpresaFactory.getEmpresa();
@@ -871,22 +870,22 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Curso curso1 = saveCurso("Curso de direção", emp1, 0);
 		Curso curso2 = saveCurso("Direção", emp2, 0); 
 		
-		Collection<Curso> cursos = cursoDao.findByEmpresaIdAndCursosId(emp1.getId(), new Long[]{});
+		Collection<Curso> cursos = cursoDao.findByEmpresaIdAndCursosId(new Long[]{emp1.getId()}, new Long[]{});
 		assertEquals(1, cursos.size());
 		
-		cursos = cursoDao.findByEmpresaIdAndCursosId(null, curso1.getId());
+		cursos = cursoDao.findByEmpresaIdAndCursosId(new Long[]{emp1.getId(), emp2.getId()}, curso1.getId());
 		assertEquals(1, cursos.size());
 		
-		cursos = cursoDao.findByEmpresaIdAndCursosId(emp1.getId(), curso1.getId());
+		cursos = cursoDao.findByEmpresaIdAndCursosId(new Long[]{emp1.getId()}, curso1.getId());
 		assertEquals(1, cursos.size());
 
-		cursos = cursoDao.findByEmpresaIdAndCursosId(emp2.getId(), new Long[]{});
+		cursos = cursoDao.findByEmpresaIdAndCursosId(new Long[]{emp2.getId()}, new Long[]{});
 		assertEquals(1, cursos.size());
 		
-		cursos = cursoDao.findByEmpresaIdAndCursosId(emp2.getId(), curso2.getId());
+		cursos = cursoDao.findByEmpresaIdAndCursosId(new Long[]{emp2.getId()}, curso2.getId());
 		assertEquals(1, cursos.size());
 		
-		cursos = cursoDao.findByEmpresaIdAndCursosId(null, new Long[]{});
+		cursos = cursoDao.findByEmpresaIdAndCursosId(new Long[]{emp1.getId(), emp2.getId()}, new Long[]{});
 		assertTrue(cursos.size() >= 2);
 	}
 

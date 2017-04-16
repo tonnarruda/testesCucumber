@@ -3070,7 +3070,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		return colaboradores;
 	}
+
+	public Collection<Colaborador> findByEmpresaEstabelecimentoAndAreaOrganizacional(Long[] empresasIds, Long[] estabelecimentosIds, Long[] areasIds, String situacaoColaborador){
+		return getDao().findByEmpresaEstabelecimentoAndAreaOrganizacional(empresasIds, estabelecimentosIds, areasIds, situacaoColaborador);
+	}
 	
+	public Collection<Colaborador> findColaboradoresQueNuncaRealizaramTreinamento( Long[] empresasIds, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds) throws Exception {
+		Collection<Colaborador> colaboradores = getDao().findColaboradoresQueNuncaRealizaramTreinamento(empresasIds, areaIds, estabelecimentoIds); 
+		if(colaboradores == null || colaboradores.isEmpty())
+			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
+		
+		return colaboradores;
+	}
+
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;

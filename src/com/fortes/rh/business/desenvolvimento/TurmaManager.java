@@ -53,4 +53,5 @@ public interface TurmaManager extends GenericManager<Turma>
 	public Collection<TurmaJson> getTurmasJson(String baseCnpj, Long turmaId, char realizada);
 	public Collection<Turma> getTurmasByCursoNotTurmaId(Long cursoId, Long notTurmaId);
 	public void clonarColaboradores(Long turmaId, Long cursoId, Long[] turmasCheck)throws Exception;
+	public void verificaAprovacaoByTurma(Long turmaId);
 }

@@ -156,4 +156,6 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<ColaboradorJson> getColaboradoresJson(String baseCnpj, Long colaboradorId, String colaboradorMatricula);
 	public Collection<Colaborador> findByAreasIds(Long... areasIds);
 	public Collection<Colaborador> findAniversariantesPorTempoDeEmpresa(int mes, boolean agruparPorArea, Long[] empresaIds, Long[] estabelecimentoIds, Long[] areaIds);
+	public Collection<Colaborador> findByEmpresaEstabelecimentoAndAreaOrganizacional(Long[] empresasIds, Long[] estabelecimentosIds, Long[] areasIds, String situacaoColaborador);
+	public Collection<Colaborador> findColaboradoresQueNuncaRealizaramTreinamento(Long[] empresasIds, Long[] areasIds, Long[] estabelecimentosIds);
 }

@@ -22,6 +22,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -33,6 +34,7 @@ import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRela
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusAprovacao;
+import com.fortes.rh.model.dicionario.StatusTreinamento;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -42,6 +44,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -143,7 +146,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private boolean exibeCargaHorariaEfetiva;
 	
 	private char filtroAgrupamento;
-
+	private String status;
+	private Long[] empresasPermitidas;
+	
 	public String list() throws Exception
 	{
 		if(msgAlert != null && !msgAlert.equals(""))
@@ -292,23 +297,33 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public String relatorioColaboradorSemTreinamento()
 	{
-		try
-		{
+		try{
 			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
-			colaboradorTurmas = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, LongUtil.arrayStringToArrayLong(cursosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), qtdMesesSemCurso, situacao, aprovado);
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que não fizeram o treinamento", getEmpresaSistema(), "");
+			
+			if(status.equals(StatusTreinamento.NUNCA_REALIZOU_NENHUM_TREINAMENTO)){
+				colaboradors = colaboradorManager.findColaboradoresQueNuncaRealizaramTreinamento(EmpresaUtil.empresasSelecionadas(empresaId, empresasPermitidas), LongUtil.arrayStringToArrayLong(cursosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
+				return "nunca_realizou_nenhum_treinamento";
+			} else if(status.equals(StatusTreinamento.SEM_TREINAMENTO)){
+				colaboradorTurmas = colaboradorTurmaManager.findRelatorioColaboradoresQueNuncaRealizaramOsCursosSelecioandos(EmpresaUtil.empresasSelecionadas(empresaId, empresasPermitidas), LongUtil.arrayStringToArrayLong(cursosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), situacao);
+				parametros.put("SEM_TREINAMENTO", true);
+			} else{
+				colaboradorTurmas = colaboradorTurmaManager.findRelatorioSemTreinamentoAprovadosOrReprovados(EmpresaUtil.empresasSelecionadas(empresaId, empresasPermitidas), LongUtil.arrayStringToArrayLong(cursosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), qtdMesesSemCurso, situacao, status);
+				parametros.put("SEM_TREINAMENTO", false);
+			}
 
-			return Action.SUCCESS;
-		}
-		catch (ColecaoVaziaException e)
-		{
-			addActionMessage(e.getMessage());
+			return  Action.SUCCESS;
+		}catch (FortesException e){
+			addActionWarning(e.getMessage());
 			prepareRelatorioColaborador();
 
 			return Action.INPUT;
-		}
-		catch (Exception e)
-		{
+		}catch (ColecaoVaziaException e){
+			addActionMessage(e.getMessage());
+			prepareRelatorioColaborador();
+			
+			return Action.INPUT;
+		}catch (Exception e){
 			addActionError("Erro ao gerar relatório");
 			e.printStackTrace();
 			prepareRelatorioColaborador();
@@ -942,6 +957,10 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		return new StatusAprovacao();
 	}
 
+	public LinkedHashMap<String, String> getStatusTreinamento(){
+		return new StatusTreinamento();
+	}
+
 	public String getDinamicColumns() {
 		return dinamicColumns;
 	}
@@ -968,5 +987,17 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public void setLntId(Long lntId) {
 		this.lntId = lntId;
-	} 
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
+		this.empresasPermitidas = empresasPermitidas;
+	}
 }

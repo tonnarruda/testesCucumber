@@ -1343,86 +1343,44 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		return diaTurma;
 	}
    
-    public void testFindRelatorioSemTreinamento()
-    {
-    	Empresa empresa = EmpresaFactory.getEmpresa();
-    	empresaDao.save(empresa);
+	public void testFindRelatorioSemTreinamento()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
 
-    	Colaborador colaboradorInscritoCurso = ColaboradorFactory.getEntity();
-    	colaboradorInscritoCurso.setEmpresa(empresa);
-    	colaboradorInscritoCurso.setDesligado(false);
-    	colaboradorDao.save(colaboradorInscritoCurso);
-    	
-    	Colaborador colaboradorNaoInscritoCurso = ColaboradorFactory.getEntity();
-    	colaboradorNaoInscritoCurso.setEmpresa(empresa);
-    	colaboradorNaoInscritoCurso.setDesligado(false);
-    	colaboradorDao.save(colaboradorNaoInscritoCurso);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
 
-    	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-    	estabelecimentoDao.save(estabelecimento);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setNome("Area 1");
+		areaOrganizacionalDao.save(areaOrganizacional);
 
-    	AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
-    	areaOrganizacional1.setNome("Area 1");
-    	areaOrganizacionalDao.save(areaOrganizacional1);
+		Colaborador colaboradorInscritoCurso = saveColaboradorComHistorico("Colab 1", empresa, estabelecimento, areaOrganizacional, null, DateUtil.criarDataMesAno(1, 1, 1999), StatusRetornoAC.CONFIRMADO);
 
-    	HistoricoColaborador historicoColaboradorAtualDoInscrito = HistoricoColaboradorFactory.getEntity();
-    	historicoColaboradorAtualDoInscrito.setColaborador(colaboradorInscritoCurso);
-    	historicoColaboradorAtualDoInscrito.setData(DateUtil.criarDataMesAno(1, 1, 1999));
-    	historicoColaboradorAtualDoInscrito.setAreaOrganizacional(areaOrganizacional1);
-    	historicoColaboradorAtualDoInscrito.setStatus(StatusRetornoAC.CONFIRMADO);
-    	historicoColaboradorAtualDoInscrito.setEstabelecimento(estabelecimento);
-    	historicoColaboradorDao.save(historicoColaboradorAtualDoInscrito);
+		Curso curso = CursoFactory.getEntity();
+		curso.setEmpresa(empresa);
+		cursoDao.save(curso);
 
-    	HistoricoColaborador historicoColaboradorNaoInscrito = HistoricoColaboradorFactory.getEntity();
-    	historicoColaboradorNaoInscrito.setColaborador(colaboradorNaoInscritoCurso);
-    	historicoColaboradorNaoInscrito.setData(DateUtil.criarDataMesAno(1, 1, 2000));
-    	historicoColaboradorNaoInscrito.setAreaOrganizacional(areaOrganizacional1);
-    	historicoColaboradorNaoInscrito.setStatus(StatusRetornoAC.CONFIRMADO);
-    	historicoColaboradorNaoInscrito.setEstabelecimento(estabelecimento);
-    	historicoColaboradorDao.save(historicoColaboradorNaoInscrito);
-    	
-    	Curso curso = CursoFactory.getEntity();
-    	curso.setEmpresa(empresa);
-    	cursoDao.save(curso);
+		Turma turma1 = saveTurma(curso, DateUtil.criarDataMesAno(1, 11, 2014), DateUtil.criarDataMesAno(1, 11, 2014), true);
+		Turma turma2 = saveTurma(curso, DateUtil.criarDataMesAno(1, 12, 2014), DateUtil.criarDataMesAno(1, 12, 2014), true);
 
-    	Turma turma1 = TurmaFactory.getEntity();
-    	turma1.setDataPrevFim(DateUtil.criarDataMesAno(1, 11, 2014));
-    	turma1.setCurso(curso);
-    	turma1.setRealizada(true);
-    	turmaDao.save(turma1);
-    	
-    	Turma turma2 = TurmaFactory.getEntity();
-    	turma2.setDataPrevFim(DateUtil.criarDataMesAno(1, 12, 2014));
-    	turma2.setCurso(curso);
-    	turma2.setRealizada(true);
-    	turmaDao.save(turma2);
-    	
-    	ColaboradorTurma colaboradorTurma1 = ColaboradorTurmaFactory.getEntity();
-    	colaboradorTurma1.setColaborador(colaboradorInscritoCurso);
-    	colaboradorTurma1.setTurma(turma1);
-    	colaboradorTurma1.setCurso(curso);
-    	colaboradorTurmaDao.save(colaboradorTurma1);
-    	
-    	ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity();
-    	colaboradorTurma2.setColaborador(colaboradorInscritoCurso);
-    	colaboradorTurma2.setTurma(turma2);
-    	colaboradorTurma2.setCurso(curso);
-    	colaboradorTurmaDao.save(colaboradorTurma2);
+		saveColaboradorTurma(curso, turma1, colaboradorInscritoCurso, true);
+		saveColaboradorTurma(curso, turma2, colaboradorInscritoCurso, true);
 
-    	Long[] cursoIds = new Long[]{curso.getId()};
-    	Long[] areaIds = new Long[]{areaOrganizacional1.getId()};
-    	Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
+		Long[] cursoIds = new Long[]{curso.getId()};
+		Long[] areaIds = new Long[]{areaOrganizacional.getId()};
+		Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
 
-    	colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
-    	
-    	Collection<ColaboradorTurma> colaboradoresSemTreinamento = colaboradorTurmaDao.findRelatorioSemTreinamento(empresa.getId(), cursoIds, areaIds, estabelecimentoIds, DateUtil.criarDataMesAno(1, 6, 2015), null);
-    	assertEquals(1, colaboradoresSemTreinamento.size());
+		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
 
-    	ColaboradorTurma colaboradorSemTreinamento = (ColaboradorTurma) colaboradoresSemTreinamento.toArray()[0];
-    	assertEquals(colaboradorInscritoCurso.getNome(), colaboradorSemTreinamento.getColaborador().getNome());
-    	assertEquals(turma2.getDataPrevFim(), colaboradorSemTreinamento.getTurma().getDataPrevFim());
-    }
+		Collection<ColaboradorTurma> colaboradoresSemTreinamento = colaboradorTurmaDao.findRelatorioSemTreinamentoAprovadosOrReprovados(new Long[]{empresa.getId()}, cursoIds, areaIds, estabelecimentoIds, DateUtil.criarDataMesAno(1, 6, 2015), null, true);
+		assertEquals(1, colaboradoresSemTreinamento.size());
 
+		ColaboradorTurma colaboradorSemTreinamento = (ColaboradorTurma) colaboradoresSemTreinamento.toArray()[0];
+		assertEquals(colaboradorInscritoCurso.getNome(), colaboradorSemTreinamento.getColaborador().getNome());
+		assertEquals(turma2.getDataPrevFim(), colaboradorSemTreinamento.getTurma().getDataPrevFim());
+	}
+	
     public void testFindRelatorioHistoricoTreinamentos()
     {
     	Date hoje = new Date();

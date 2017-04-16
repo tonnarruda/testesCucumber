@@ -7,9 +7,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
@@ -64,51 +61,37 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 
 		return diaTurmas;
 	}
-    // sempre deleta todos os dias e salva os novos.
+    
+	// sempre deleta todos os dias e salva os novos.
 	public void saveDiasTurma(Turma turma, String[] diasCheck, String[] horasIni, String[] horasFim) throws Exception
 	{
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
+		deleteDiasTurma(turma.getId());
+		if(diasCheck != null){
+			DiaTurma diaTurmaTmp;
+			for (int i=0; i < diasCheck.length; i++){
+				String[] dataTurno = diasCheck[i].split(";");
 
-		try
-		{
-			deleteDiasTurma(turma.getId());
-
-			if(diasCheck != null)
-			{
-				DiaTurma diaTurmaTmp;
-				for (int i=0; i < diasCheck.length; i++)
-				{
-					String[] dataTurno = diasCheck[i].split(";");
-
-					if(dataTurno.length == 1)
-						dataTurno = diasCheck[i].split("-");
-					
-					diaTurmaTmp = new DiaTurma();
-					diaTurmaTmp.setDia(DateUtil.montaDataByString(dataTurno[0].trim()));
-					diaTurmaTmp.setTurma(turma);
-					
-					if(dataTurno.length > 1 && dataTurno[1].length() == 1)
-						diaTurmaTmp.setTurno(dataTurno[1].charAt(0));
-					
-					if(horasIni != null && !"".equals(horasIni[i]))
-						diaTurmaTmp.setHoraIni(horasIni[i]);
-					
-					if(horasFim != null && !"".equals(horasFim[i]))
-						diaTurmaTmp.setHoraFim(horasFim[i]);
-					
-					save(diaTurmaTmp);
-				}
+				if(dataTurno.length == 1)
+					dataTurno = diasCheck[i].split("-");
+				
+				diaTurmaTmp = new DiaTurma();
+				diaTurmaTmp.setDia(DateUtil.montaDataByString(dataTurno[0].trim()));
+				diaTurmaTmp.setTurma(turma);
+				
+				if(dataTurno.length > 1 && dataTurno[1].length() == 1)
+					diaTurmaTmp.setTurno(dataTurno[1].charAt(0));
+				
+				if(horasIni != null && !"".equals(horasIni[i]))
+					diaTurmaTmp.setHoraIni(horasIni[i]);
+				
+				if(horasFim != null && !"".equals(horasFim[i]))
+					diaTurmaTmp.setHoraFim(horasFim[i]);
+				
+				save(diaTurmaTmp);
 			}
-
-			transactionManager.commit(status);
 		}
-		catch(Exception e)
-		{
-			transactionManager.rollback(status);
-			throw e;
-		}
+		
+		getDao().getHibernateTemplateByGenericDao().flush();
 	}
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager)

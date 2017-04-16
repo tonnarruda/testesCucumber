@@ -106,6 +106,11 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private Boolean possuiLntASerVinculado;
 
 	public ColaboradorTurma() {	}
+	
+	public ColaboradorTurma(Colaborador colaborador, Curso curso) {
+		this.colaborador = colaborador;
+		this.curso = curso;
+	}
 
 	public ColaboradorTurma(Long id, Long colaboradorId )
 	{
@@ -740,6 +745,13 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.tempoSemCurso = tempoSemCurso;
 	}
 
+	public String getStatusAprovacao(){
+		if(turma != null)
+			return this.aprovado == true ? "Aprovado": "Reprovado";  
+		else
+			return "";
+	} 
+	
 	/** atributo <i>transiente</i>. */
 	public boolean isRespondeuAvaliacaoTurma()
 	{

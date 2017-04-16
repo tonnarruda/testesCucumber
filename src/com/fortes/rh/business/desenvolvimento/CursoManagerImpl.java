@@ -301,9 +301,9 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		getDao().save(curso);
 	}
 
-	public Collection<Curso> findByEmpresaIdAndCursosId(Long empresaId,	Long... cursosIds) 
+	public Collection<Curso> findByEmpresaIdAndCursosId(Long[] empresasIds,	Long... cursosIds) 
 	{
-		return getDao().findByEmpresaIdAndCursosId( empresaId, cursosIds);
+		return getDao().findByEmpresaIdAndCursosId(empresasIds, cursosIds);
 	}
 	
 	public boolean existePresenca(Long cursoId) {

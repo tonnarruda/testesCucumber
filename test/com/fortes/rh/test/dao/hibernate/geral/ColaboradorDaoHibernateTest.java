@@ -7042,6 +7042,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		return empresa;
 	}
 
+	@Test
 	public void testFindByAreasIds(){
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -7072,6 +7073,50 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Collection<Colaborador> retornoColab = colaboradorDao.findByAreasIds(areaOrganizacional.getId());
 		
 		assertEquals(1, retornoColab.size());
+	}
+	
+	@Test
+	public void testFindByEmpresaEstabelecimentoAndAreaOrganizacional(){
+		Empresa empresa = saveEmpresa();
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
+		AreaOrganizacional areaOrganizacional1 = saveAreaOrganizacional();
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		Estabelecimento estabelecimento1 = saveEstabelecimento();
+		
+		saveColaboradorComHistorico(empresa, "Colab 1", new Date(), estabelecimento1, areaOrganizacional1, StatusRetornoAC.CONFIRMADO, null, null);
+		Colaborador colaborador2 = saveColaboradorComHistorico(empresa, "Colab 2", new Date(), estabelecimento, areaOrganizacional, StatusRetornoAC.CONFIRMADO, null, null);
+		
+		Collection<Colaborador> colaboradoresRetorno = colaboradorDao.findByEmpresaEstabelecimentoAndAreaOrganizacional(new Long[]{empresa.getId()}, new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()}, SituacaoColaborador.ATIVO);
+		assertEquals(1, colaboradoresRetorno.size());
+		assertEquals(colaborador2.getNome(), colaboradoresRetorno.iterator().next().getNome());
+	}
+	
+	@Test
+	public void testFindColaboradoresQueNuncaRealizaramTreinamento() {
+		Empresa empresa = saveEmpresa();
+		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
+		AreaOrganizacional areaOrganizacional1 = saveAreaOrganizacional();
+		Estabelecimento estabelecimento = saveEstabelecimento();
+		Estabelecimento estabelecimento1 = saveEstabelecimento();
+		
+		Colaborador colaborador1 = saveColaboradorComHistorico(empresa, "Colab 1", new Date(), estabelecimento1, areaOrganizacional1, StatusRetornoAC.CONFIRMADO, null, null);
+		Colaborador colaborador2 = saveColaboradorComHistorico(empresa, "Colab 2", new Date(), estabelecimento, areaOrganizacional, StatusRetornoAC.CONFIRMADO, null, null);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma = TurmaFactory.getEntity(curso, true);
+		turmaDao.save(turma);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador1, curso, turma);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		Long[] areasIds = new Long[]{areaOrganizacional.getId(), areaOrganizacional1.getId()};
+		Long[] estabelecimentosIds = new Long[]{estabelecimento.getId(), estabelecimento1.getId()};
+		
+		Collection<Colaborador> colaboradoresSemTreinamento = colaboradorDao.findColaboradoresQueNuncaRealizaramTreinamento(new Long[]{empresa.getId()}, areasIds, estabelecimentosIds);
+		assertEquals(1, colaboradoresSemTreinamento.size());
+		assertEquals(colaborador2.getNome(), colaboradoresSemTreinamento.iterator().next().getNome());
 	}
 	
 	private FaixaSalarial saveFaixaSalarial(Cargo cargo){

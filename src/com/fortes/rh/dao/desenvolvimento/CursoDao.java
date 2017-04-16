@@ -32,7 +32,7 @@ public interface CursoDao extends GenericDao<Curso>
 	public boolean existeEmpresasNoCurso(Long empresaId, Long cursoId);
 	public Collection<Empresa> findEmpresasParticipantes(Long cursoId);
 	public boolean existeAvaliacaoAlunoRespondida(Long cursoId, char tipoAvaliacaoCurso);
-	public Collection<Curso> findByEmpresaIdAndCursosId(Long empresaId, Long... cursosIds);
+	public Collection<Curso> findByEmpresaIdAndCursosId(Long[] empresasIds, Long... cursosIds);
 	public Collection<Curso> somaDespesasPorCurso(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public Collection<Curso> findByHistoricoFuncaoId(Long historicoFuncaoId);
 	public boolean existePresenca(Long cursoId);
